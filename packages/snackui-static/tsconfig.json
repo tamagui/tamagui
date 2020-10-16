@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "module": "CommonJS",
+    "outDir": "_",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "references": [{ "path": "../ui" }, { "path": "../react-test-env" }]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "snackui",
+  "version": "0.0.1",
+  "main": "_/index.js",
+  "tsmain": "src/index",
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "npm-run-all --parallel build:main build:web",
+    "build:main": "tsc -b || true",
+    "build:web": "ttsc -p tsconfig.node.json || true",
+    "watch": "npm-run-all --parallel watch:main watch:web",
+    "watch:main": "tsc -b --watch --preserveWatchOutput",
+    "watch:web": "ttsc -p tsconfig.node.json --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@o/async": "*",
+    "@o/fast-compare": "^2.7.6",
+    "lodash": "^4.17.20",
+    "react-laag": "^1.7.3",
+    "react-storage-hooks": "^4.0.0",
+    "react-feather": "2.0.8",
+    "react-native-web": "*",
+    "expo-linear-gradient": "^8.2.1",
+    "@react-native-community/blur": "^3.6.0"
+  },
+  "peerDependencies": {
+    "react-native": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "ttypescript": "^1.5.12",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "npm-run-all": "^4.1.5"
+  }
+}

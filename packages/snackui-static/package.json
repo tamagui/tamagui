@@ -1,0 +1,48 @@
+{
+  "name": "snackui-static",
+  "version": "0.0.1",
+  "main": "_/index.js",
+  "private": true,
+  "workspaces": {
+    "nohoist": [
+      "react-native-web"
+    ]
+  },
+  "scripts": {
+    "build": "tsc -b || true",
+    "watch": "tsc -b --watch --preserveWatchOutput",
+    "test": "true #DISH_ENV=test ava test/* --verbose",
+    "test:debug": "DEBUG_FILE=extract-specs.tsx DEBUG=1 yarn test",
+    "test:watch": "yarn test --watch",
+    "test:update-snapshots": "ava --update-snapshots"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/generator": "^7.11.6",
+    "@babel/parser": "^7.11.5",
+    "@babel/traverse": "^7.11.5",
+    "@babel/types": "^7.11.5",
+    "snackui": "*",
+    "babel-literal-to-ast": "^2.1.0",
+    "fs-extra": "^9.0.0",
+    "invariant": "^2.2.4",
+    "loader-utils": "^2.0.0",
+    "memory-fs": "*",
+    "react-native-web": "*",
+    "webpack": "^4.44.2"
+  },
+  "devDependencies": {
+    "@o/babel-preset": "*",
+    "@o/react-test-env": "*",
+    "@types/react-native": "^0.62.12",
+    "@types/webpack": "4.41.13",
+    "ava": "^3.8.2",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.5.3",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.0.0",
+    "react": "*",
+    "react-dom": "*"
+  }
+}
