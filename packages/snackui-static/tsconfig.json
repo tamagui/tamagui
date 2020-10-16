@@ -8,5 +8,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [{ "path": "../ui" }, { "path": "../react-test-env" }]
+  "references": [{ "path": "../snackui" }]
 }

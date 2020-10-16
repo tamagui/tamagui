@@ -6,19 +6,24 @@ A few features:
 
 - Stack views
   - VStack, HStack, ZStack, [much like SwiftUI](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
-- Optimizing Compiler (forked from [JSXUI](https://github.com/jsxstyle/jsxstyle))
-  - Webpack plugin for web
-  - Extracts styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961)
-  - Flattens most base views down to `<div />` and `<span />` when possible, greatly increasing render performance
-  - Supports imported constant files for compiling shared constants and colors to CSS as well
-- Supports a few pseudo styles for native and web
-  - hoverStyle, pressStyle, and focusStyle property on all Stacks
-- Normalizes some styling between Native/Web to be more consistent
-- Paragraph, Button and a few other low level views with helpful defaults
+- Optimizing Compiler (forked from [JSXUI](https://github.com/jsxstyle/jsxstyle)
+  - Webpack plugin for web.
+  - Extracts styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
+  - Flattens most base views down to `<div />` and `<span />` when possible, greatly increasing render performance.
+  - Supports imported constant files for compiling shared constants and colors to CSS as well.
+  - Supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
+  - Supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
+- Supports a few pseudo styles for native and web.
+  - hoverStyle, pressStyle, and focusStyle property on all Stacks.
+- Normalizes some styling between Native/Web to be more consistent.
+- Paragraph, Button and a few other low level views with helpful defaults.
+- Helpful development features
+  - Adds name information to every compiled tag in dev mode to better see which DOM nodes come from which component.
+  - Add `// debug` to the top of any file to get a detailed print of every optimization and deoptimization.
 
-SnackUI is lightweight, it doesn't prescribe much beyond providing a few basic views that help you lay things out and providing an optimizing compiler.
+As far as components go, SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
 
-SnackUI views flatten all style props onto the base props, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle):
+SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle):
 
 - VStack, HStack, ZStack
 
@@ -30,9 +35,9 @@ export function Component() {
     <VStack
       marginHorizontal={10}
       backgroundColor="red"
-      hoverStyle={{ backgroundColor: 'red' }}
+      hoverStyle={{ backgroundColor: 'blue' }}
     >
-      <Text>Hello world</Text>
+      <Text color="green">Hello world</Text>
     </VStack>
   )
 }
@@ -41,16 +46,18 @@ export function Component() {
 This will compile on the web to something like this:
 
 ```tsx
+const _cn1 = "r-1awozwy r-y47klf r-rs99b7 r-h-1udh08x"
+const _cn2 = "r-4qtqp9 r-1i10wst r-x376lf"
 export function Component() {
   return (
-    <div className="r-1awozwy r-y47klf r-rs99b7 r-h-1udh08x">
-      <span className="r-4qtqp9 r-1i10wst">Hello world</span>
+    <div className={_cn1}>
+      <span className={_cn2}>Hello world</span>
     </div>
   )
 }
 ```
 
-Why is this beneficial? React Native Web's views like `<View />` and `<Text />` are actually not so simple. [Read the source of Text](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/Text/index.js), for example. When you're rendering a large page with many text and view elements that are simple, using snackui saves React from having to process all of that logic on every render, for every Text and View.
+Why is this beneficial? React Native Web's views like `<View />` and `<Text />` are actually not so simple. [Read the source of Text](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/Text/index.js) for example. When you're rendering a large page with many text and view elements that can be statically extracted, using snackui saves React from having to process all of that logic on every render, for every Text and View.
 
 ## Setup
 
@@ -90,6 +97,8 @@ module.exports = {
   ]
 }
 ```
+
+Two big things to note before choosing this library. One is that react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI.
 
 ## Current Issues
 

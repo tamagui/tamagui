@@ -15,7 +15,7 @@
     "watch:web": "ttsc -p tsconfig.node.json --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@o/async": "*",
+    "@o/async": "^0.0.1",
     "@o/fast-compare": "^2.7.6",
     "lodash": "^4.17.20",
     "react-laag": "^1.7.3",

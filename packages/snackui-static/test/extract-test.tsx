@@ -8,6 +8,9 @@ import React from 'react'
 // import { ViewStyle } from 'react-native'
 import webpack from 'webpack'
 
+// @ts-ignore
+window.matchMedia = function() {}
+
 import { UIStaticWebpackPlugin, getStylesAtomic } from '../src'
 
 const mode = 'production'

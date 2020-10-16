@@ -173,7 +173,7 @@ const createStack = (defaultProps?: ViewStyle) => {
 
     let content = (
       <ViewComponent
-        ref={combineRefs(innerRef, ref)}
+        ref={combineRefs(innerRef, ref) as any}
         {...viewProps}
         // @ts-ignore
         className={className}

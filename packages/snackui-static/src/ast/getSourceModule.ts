@@ -39,7 +39,7 @@ export function getSourceModule(
       local = itemNode.local.name
       usesImportSyntax = true
       if (t.isImportSpecifier(itemNode)) {
-        imported = itemNode.imported.name
+        imported = itemNode.imported['name']
         destructured = true
       } else {
         imported = itemNode.local.name

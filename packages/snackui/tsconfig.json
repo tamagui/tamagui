@@ -7,9 +7,4 @@
     "rootDir": "./src"
   },
   "include": ["src"],
-  "references": [{
-    "path": "../async"
-  }, {
-    "path": "../use-store"
-  }]
 }
