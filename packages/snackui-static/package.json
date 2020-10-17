@@ -27,6 +27,8 @@
     "webpack": "^4.44.2"
   },
   "devDependencies": {
+    "typescript": "4.1.0-beta",
+    "@types/node": "^14.11.10",
     "@o/babel-preset": "*",
     "@o/react-test-env": "*",
     "@types/react-native": "^0.62.12",

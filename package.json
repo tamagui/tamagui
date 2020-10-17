@@ -21,7 +21,6 @@
     "prettier": "^2.1.2",
     "prettier-plugin-import-sort": "^0.0.4",
     "ts-node": "9.0.0",
-    "typescript": "4.1.0-beta",
     "ultra-runner": "^3.5.0"
   },
   "importSort": {

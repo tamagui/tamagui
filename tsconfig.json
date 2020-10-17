@@ -13,7 +13,7 @@
     "incremental": true,
     "jsx": "react",
     "skipLibCheck": true,
-    "module": "ES2020",
+    "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitAny": false,
@@ -27,6 +27,7 @@
     "strictNullChecks": true,
     "target": "ES2019",
     "lib": ["dom", "esnext"],
+    "types": ["node"],
     "typeRoots": ["./node_modules/@types", "./types"]
   },
   "exclude": ["_"],
