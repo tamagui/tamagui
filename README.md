@@ -1,25 +1,38 @@
-# SnackUI (beta)
+<h1 align="center">
+  <img margin="auto" width="612px" src="https://raw.githubusercontent.com/natew/snackui/master/snackui.jpg" alt="SnackUI">
+  <br>
+  SnackUI
+  <br>
+</h1>
 
-SnackUI is a ui kit for react native and react native web that builds on the ideas of [JSXUI](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web.
+<h4 align="center">A fast UI kit for React Native (+ web) with SwiftUI stacks.</h4>
 
-A few features:
+<p align="center">
+  <a href="#setup">Setup</a> •
+  <a href="#issues">Issues</a> •
+  <a href="#license">License</a>
+</p>
 
-- Stack views
+SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXUI](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web.
+
+## Features
+
+- **Stack views**
   - VStack, HStack, ZStack, [much like SwiftUI](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
-- Optimizing Compiler (forked from [JSXUI](https://github.com/jsxstyle/jsxstyle)
-  - Webpack plugin for web.
-  - Extracts styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
-  - Flattens most base views down to `<div />` and `<span />` when possible, greatly increasing render performance.
+- **Optimizing Compiler** (forked from [JSXUI](https://github.com/jsxstyle/jsxstyle))
+  - Webpack plugin turns heavy views into light divs and spans.
+  - Extracts inline styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
+  - Greatly increasing render performance.
   - Supports imported constant files for compiling shared constants and colors to CSS as well.
   - Supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
   - Supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
-- Supports a few pseudo styles for native and web.
-  - hoverStyle, pressStyle, and focusStyle property on all Stacks.
-- Normalizes some styling between Native/Web to be more consistent.
-- Paragraph, Button and a few other low level views with helpful defaults.
-- Helpful development features
-  - Adds name information to every compiled tag in dev mode to better see which DOM nodes come from which component.
-  - Add `// debug` to the top of any file to get a detailed print of every optimization and deoptimization.
+- **Pseudo style support**
+  - For native and web
+  - hoverStyle, pressStyle, and focusStyle
+- **Normalized styling** between Native/Web to be more consistent.
+- **Helpful development features**
+  - Adds component name in DOM elements.
+  - Add `// debug` to the top of file for detailed optimization info.
 
 As far as components go, SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
 
@@ -98,11 +111,15 @@ module.exports = {
 }
 ```
 
-Two big things to note before choosing this library. One is that react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI.
+Two big things to note before choosing this library. One is that react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now:
 
-## Current Issues
+```
+// todo
+```
 
-snackui is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. Upcoming fixes:
+## Issues
+
+SnackUI is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. Upcoming fixes:
 
 - [ ] A few issues in compilation where it can fail on complex extractions
 - [ ] Media Query syntax support with compilation to CSS
@@ -112,3 +129,6 @@ snackui is still early stage. It works well for us, and we've built a fairly lar
 - [ ] ZStack needs correct behavior to be similar to SwiftUI
   - Right now it doesn't position child elements as Absolute positioned
 
+## License
+
+MIT License, see [LICENSE](https://github.com/natew/snackui/blob/master/LICENSE)
