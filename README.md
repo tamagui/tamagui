@@ -9,36 +9,38 @@
 
 <p align="center">
   <a href="#setup">Setup</a> •
+  <a href="#example">Example</a> •
   <a href="#issues">Issues</a> •
   <a href="#license">License</a>
 </p>
 
-SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXUI](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web.
+SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web.
 
 ## Features
 
-- **Stack views**
-  - VStack, HStack, ZStack, [much like SwiftUI](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
-- **Optimizing Compiler** (forked from [JSXUI](https://github.com/jsxstyle/jsxstyle))
-  - Webpack plugin turns heavy views into light divs and spans.
+- **Negative overhead with rnw**
+  - Better than no overhead, SnackUI actually reduces your bundle size significantly over using vanilla react-native-web
+- **Stack views** fully typed in TypeScript
+  - VStack, HStack, ZStack
+  - Inspired by the great [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
+- **Optimizing Compiler** (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
+  - Flattens `<View />` and `<Text />` into `<div />` and `<span />` where possible, increasing render performance.
   - Extracts inline styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
-  - Greatly increasing render performance.
   - Supports imported constant files for compiling shared constants and colors to CSS as well.
   - Supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
   - Supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
-- **Pseudo style support**
-  - For native and web
+- **Pseudo styles** for native and web
   - hoverStyle, pressStyle, and focusStyle
-- **Normalized styling** between Native/Web to be more consistent.
+- **Normalizes** styling between Native/Web
 - **Helpful development features**
-  - Adds component name in DOM elements.
+  - Add component name in DOM elements.
   - Add `// debug` to the top of file for detailed optimization info.
 
 As far as components go, SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
 
-SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle):
+SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
 
-- VStack, HStack, ZStack
+## Example
 
 ```tsx
 import { VStack, Text } from 'snackui'
@@ -122,12 +124,16 @@ Two big things to note before choosing this library. One is that react-native-we
 SnackUI is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. Upcoming fixes:
 
 - [ ] A few issues in compilation where it can fail on complex extractions
+- [ ] ZStack needs correct behavior to be similar to SwiftUI
+  - Right now it doesn't position child elements as Absolute positioned
+
+## Roadmap
+
 - [ ] Media Query syntax support with compilation to CSS
   - Plan is to have an array syntax if possible: `margin={[10, 20, 30]}`
 - [ ] Themes with compilation to CSS
   - Plan is to use CSS Variables on web
-- [ ] ZStack needs correct behavior to be similar to SwiftUI
-  - Right now it doesn't position child elements as Absolute positioned
+- [ ] Statically extract spacing prop
 
 ## License
 

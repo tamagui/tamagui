@@ -1,13 +1,7 @@
 {
   "name": "snackui-static",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "_/index.js",
-  "private": true,
-  "workspaces": {
-    "nohoist": [
-      "react-native-web"
-    ]
-  },
   "scripts": {
     "build": "tsc -b || true",
     "watch": "tsc -b --watch --preserveWatchOutput",

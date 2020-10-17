@@ -135,7 +135,7 @@ export function extractStyles(
   // Find gloss require in program root
   ast.program.body.forEach((item: t.Node) => {
     if (t.isImportDeclaration(item)) {
-      if (item.source.value === 'snackui' || sourceFileName.includes('/ui/src')) {
+      if (item.source.value === 'snackui' || sourceFileName.includes('/snackui/src')) {
         doesImport = true
       }
       if (doesImport) {
