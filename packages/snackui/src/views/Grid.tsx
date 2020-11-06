@@ -1,5 +1,4 @@
 import React from 'react'
-import { View } from 'react-native'
 
 import { isWeb } from '../constants'
 import { HStack } from './Stacks'
@@ -25,5 +24,22 @@ export function Grid({ children, itemMinWidth = 200 }: GridProps) {
     )
   }
 
-  return <HStack flexWrap="wrap">{children}</HStack>
+  const childrenList = React.Children.toArray(children)
+
+  return (
+    <HStack alignItems="center" justifyContent="center" flexWrap="wrap">
+      {childrenList.map((child, i) => {
+        if (!child) {
+          return null
+        }
+
+        // index key bad
+        return (
+          <HStack key={i} flex={1} minWidth={itemMinWidth}>
+            {child}
+          </HStack>
+        )
+      })}
+    </HStack>
+  )
 }

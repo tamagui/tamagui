@@ -109,8 +109,8 @@ const useTextStyle = (allProps: TextProps) => {
           if (val === 'inherit') {
             continue
           }
-          if (key === 'fontSize' && val < 16) {
-            style.fontSize = 16
+          if (key === 'fontSize' && val < 12) {
+            style.fontSize = 12
             continue
           }
         }

@@ -15,8 +15,8 @@ import {
   TranslateYTransform,
 } from 'react-native'
 
-import { useConstant } from '../hooks/useConstant'
 import { isWeb } from '../constants'
+import { useConstant } from '../hooks/useConstant'
 import { StackProps, VStack } from './Stacks'
 
 const defaultAnimation = {

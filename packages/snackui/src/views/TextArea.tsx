@@ -1,4 +1,4 @@
-import { default as React } from 'react'
+import React from 'react'
 import { StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
 
 import { useTextStylePropsSplit } from '../hooks/useTextStylePropsSplit'

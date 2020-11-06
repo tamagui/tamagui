@@ -1,16 +1,19 @@
-import { default as React, useLayoutEffect, useRef } from 'react'
+import React, { forwardRef, useLayoutEffect, useRef } from 'react'
 import { StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
 
 import { isWeb } from '../constants'
+import { combineRefs } from '../helpers/combineRefs'
 import { useTextStylePropsSplit } from '../hooks/useTextStylePropsSplit'
 import { InteractiveContainer } from './InteractiveContainer'
 
-export const Input = (
-  props: Omit<TextInputProps, 'style'> &
-    TextStyle & {
-      name?: string
-    }
-) => {
+// TODO make this extractable / take flat style props
+
+export type InputProps = Omit<TextInputProps, 'style'> &
+  TextStyle & {
+    name?: string
+  }
+
+export const Input = forwardRef((props: InputProps, ref) => {
   const { textProps, styleProps } = useTextStylePropsSplit(props)
   const textRef = useRef<HTMLInputElement>()
 
@@ -25,7 +28,7 @@ export const Input = (
   return (
     <InteractiveContainer {...styleProps}>
       <TextInput
-        ref={textRef as any}
+        ref={combineRefs(textRef as any, ref as any)}
         {...textProps}
         style={[
           sheet.inputStyle,
@@ -39,7 +42,7 @@ export const Input = (
       />
     </InteractiveContainer>
   )
-}
+})
 
 const sheet = StyleSheet.create({
   inputStyle: {

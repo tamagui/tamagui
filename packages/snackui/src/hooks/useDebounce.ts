@@ -8,10 +8,13 @@ type DebounceSettings = {
   trailing?: boolean
 }
 
+// pull outside to avoid re-creating every render
+const defaultOptions = { leading: false }
+
 export function useDebounce<A extends (...args: any) => any>(
   fn: A,
   wait: number,
-  options: DebounceSettings = { leading: false },
+  options: DebounceSettings = defaultOptions,
   mountArgs: any[] = []
 ): A & {
   cancel: () => void

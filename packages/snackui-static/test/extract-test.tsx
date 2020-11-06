@@ -8,10 +8,10 @@ import React from 'react'
 // import { ViewStyle } from 'react-native'
 import webpack from 'webpack'
 
-// @ts-ignore
-window.matchMedia = function() {}
-
 import { UIStaticWebpackPlugin, getStylesAtomic } from '../src'
+
+// @ts-ignore
+window.matchMedia = function () {}
 
 const mode = 'production'
 process.env.NODE_ENV = 'test'
@@ -81,7 +81,7 @@ test('converts a style object to class names', async (t) => {
   t.assert(!!style2)
   t.assert(!!style3)
   t.assert(
-    styles.find((x) => x.property === 'borderBottomStyle').value === 'solid',
+    styles.find((x) => x.property === 'borderBottomStyle').value === 'solid'
   )
   t.deepEqual(style1!.rules, [
     '.r-backgroundColor-1g6456j{background-color:rgba(255,0,0,1.00);}',
@@ -247,6 +247,9 @@ async function extractStaticApp() {
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
       mainFields: ['tsmain', 'browser', 'module', 'main'],
+      alias: {
+        'react-native': 'react-native-web',
+      },
     },
     module: {
       rules: [
@@ -280,6 +283,7 @@ async function extractStaticApp() {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
+        'process.env.SNACKUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
     ],
   })

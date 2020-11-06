@@ -17,7 +17,7 @@ export default function GlossWebpackLoader(this: any, content) {
   const pluginContext: PluginContext = this['snackui-static']
   invariant(
     pluginContext,
-    'snackui-static must be added to the plugins array in your webpack config',
+    'snackui-static must be added to the plugins array in your webpack config'
   )
 
   const options: LoaderOptions = loaderUtils.getOptions(this) || {}
@@ -37,7 +37,7 @@ export default function GlossWebpackLoader(this: any, content) {
       warnCallback: (str: string, ...args: any[]) =>
         this.emitWarning(new Error(util.format(str, ...args))),
     },
-    options,
+    options
   )
 
   if (!rv.cssFileName || rv.css.length === 0) {

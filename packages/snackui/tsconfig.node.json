@@ -6,7 +6,8 @@
     "outDir": "dist",
     "module": "CommonJS",
     "paths": {
-      "react-native": ["../../node_modules/react-native-web/dist/cjs/index.js"]
+      // TODO: need to make this work in monorepo and outside
+      "react-native": ["../../../node_modules/react-native-web/dist/cjs/index.js"]
     },
     "plugins": [
       {

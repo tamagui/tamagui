@@ -1,5 +1,5 @@
-import { AbsoluteVStack, Box, Spacer, Text, VStack } from 'snackui'
 import React from 'react'
+import { AbsoluteVStack, Box, Spacer, Text, VStack } from 'snackui'
 
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'

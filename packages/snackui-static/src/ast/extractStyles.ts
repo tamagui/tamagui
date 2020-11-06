@@ -5,10 +5,10 @@ import vm from 'vm'
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import * as AllExports from 'snackui/node'
 import { writeFileSync } from 'fs-extra'
 import invariant from 'invariant'
 import { TextStyle, ViewStyle } from 'react-native'
+import * as AllExports from 'snackui/node'
 
 import { GLOSS_CSS_FILE } from '../constants'
 import { getStylesAtomic, pseudos } from '../style/getStylesAtomic'
@@ -48,7 +48,7 @@ type OptimizableComponent = Function & {
 const FAILED_EVAL = Symbol('failed_style_eval')
 
 const validComponents: { [key: string]: OptimizableComponent } = Object.keys(
-  AllExports,
+  AllExports
 )
   .filter((key) => !!AllExports[key]?.staticConfig)
   .reduce((obj, name) => {
@@ -90,7 +90,7 @@ export function extractStyles(
   src: string | Buffer,
   sourceFileName: string,
   { cacheObject, errorCallback }: Options,
-  userOptions: ExtractStylesOptions,
+  userOptions: ExtractStylesOptions
 ): {
   js: string | Buffer
   css: string
@@ -103,11 +103,11 @@ export function extractStyles(
   }
   invariant(
     typeof sourceFileName === 'string' && path.isAbsolute(sourceFileName),
-    '`sourceFileName` must be an absolute path to a .js file',
+    '`sourceFileName` must be an absolute path to a .js file'
   )
   invariant(
     typeof cacheObject === 'object' && cacheObject !== null,
-    '`cacheObject` must be an object',
+    '`cacheObject` must be an object'
   )
 
   const shouldPrintDebug =
@@ -135,7 +135,10 @@ export function extractStyles(
   // Find gloss require in program root
   ast.program.body.forEach((item: t.Node) => {
     if (t.isImportDeclaration(item)) {
-      if (item.source.value === 'snackui' || sourceFileName.includes('/snackui/src')) {
+      if (
+        item.source.value === 'snackui' ||
+        sourceFileName.includes('/snackui/src')
+      ) {
         doesImport = true
       }
       if (doesImport) {
@@ -221,7 +224,7 @@ export function extractStyles(
                 userOptions.evaluateImportsWhitelist ?? ['constants.js'],
                 sourceFileName,
                 bindingCache,
-                shouldPrintDebug,
+                shouldPrintDebug
               )
               if (shouldPrintDebug) {
                 console.log('staticNamespace', staticNamespace)
@@ -234,7 +237,7 @@ export function extractStyles(
                 if (t.isIdentifier(n)) {
                   invariant(
                     staticNamespace.hasOwnProperty(n.name),
-                    `identifier not in staticNamespace: "${n.name}"`,
+                    `identifier not in staticNamespace: "${n.name}"`
                   )
                   return staticNamespace[n.name]
                 }
@@ -291,6 +294,9 @@ export function extractStyles(
           )
         }
 
+        let didFailStaticallyExtractingSpread = false
+        let numberNonStaticSpreads = 0
+
         node.attributes.forEach((attr, index) => {
           if (!t.isJSXSpreadAttribute(attr)) {
             flattenedAttributes.push(attr)
@@ -316,6 +322,8 @@ export function extractStyles(
                 consequent: cStyle,
               })
               return
+            } else {
+              didFailStaticallyExtractingSpread = true
             }
           }
 
@@ -332,6 +340,8 @@ export function extractStyles(
                 })
                 return
               }
+            } else {
+              didFailStaticallyExtractingSpread = true
             }
           }
 
@@ -350,19 +360,22 @@ export function extractStyles(
               } else {
                 for (const k in spreadValue) {
                   const value = spreadValue[k]
+                  // this is a null spread:
                   if (value && typeof value === 'object') {
                     continue
                   }
+                  numberNonStaticSpreads++
                   flattenedAttributes.push(
                     t.jsxAttribute(
                       t.jsxIdentifier(k),
-                      t.jsxExpressionContainer(literalToAst(value)),
-                    ),
+                      t.jsxExpressionContainer(literalToAst(value))
+                    )
                   )
                 }
               }
             } catch (err) {
               console.warn('caught object err', err)
+              didFailStaticallyExtractingSpread = true
               couldntParse = true
             }
           }
@@ -378,19 +391,22 @@ export function extractStyles(
         const styleExpansions: { name: string; value: any }[] = []
 
         const foundLastSpreadIndex = flattenedAttributes.findIndex((x) =>
-          t.isJSXSpreadAttribute(x),
+          t.isJSXSpreadAttribute(x)
         )
         const hasOneEndingSpread =
-          staticTernaries.length === 0 &&
+          !didFailStaticallyExtractingSpread &&
+          numberNonStaticSpreads <= 1 &&
           lastSpreadIndex > -1 &&
           foundLastSpreadIndex === lastSpreadIndex
         let simpleSpreadIdentifier: t.Identifier | null = null
         const isSingleSimpleSpread =
           hasOneEndingSpread &&
           flattenedAttributes.some((x) => {
-            if (t.isJSXSpreadAttribute(x) && t.isIdentifier(x.argument)) {
-              simpleSpreadIdentifier = x.argument
-              return true
+            if (t.isJSXSpreadAttribute(x)) {
+              if (t.isIdentifier(x.argument)) {
+                simpleSpreadIdentifier = x.argument
+                return true
+              }
             }
           })
 
@@ -403,6 +419,7 @@ export function extractStyles(
             isSingleSimpleSpread,
             lastSpreadIndex,
             foundLastSpreadIndex,
+            inlinePropCount,
           })
           console.log('attrs:', node.attributes.map(attrGetName).join(', '))
         }
@@ -418,10 +435,17 @@ export function extractStyles(
             // haven't hit the last spread operator (we can optimize single simple spreads still)
             notToLastSpread
           ) {
-            if (shouldPrintDebug) {
-              console.log('attr inline via non normal attr', notToLastSpread)
+            if (t.isJSXSpreadAttribute(attribute)) {
+              // spread fine
+            } else {
+              if (shouldPrintDebug) {
+                console.log(
+                  'inline (non normal attr)',
+                  attribute['name']?.['name']
+                )
+              }
+              inlinePropCount++
             }
-            inlinePropCount++
             return true
           }
 
@@ -533,16 +557,16 @@ export function extractStyles(
           function addBinaryConditional(
             operator: any,
             staticExpr: any,
-            cond: t.ConditionalExpression,
+            cond: t.ConditionalExpression
           ) {
             if (getStaticConditional(cond)) {
               staticTernaries.push({
                 test: cond.test,
                 alternate: attemptEval(
-                  t.binaryExpression(operator, staticExpr, cond.alternate),
+                  t.binaryExpression(operator, staticExpr, cond.alternate)
                 ),
                 consequent: attemptEval(
-                  t.binaryExpression(operator, staticExpr, cond.consequent),
+                  t.binaryExpression(operator, staticExpr, cond.consequent)
                 ),
               })
               return true
@@ -563,7 +587,7 @@ export function extractStyles(
                 if (shouldPrintDebug) {
                   console.log(
                     'couldnt statically evaluate conditional',
-                    err.message,
+                    err.message
                   )
                 }
               }
@@ -618,7 +642,7 @@ export function extractStyles(
             console.log(
               'deopt due to inline + spread',
               inlinePropCount,
-              staticTernaries,
+              staticTernaries
             )
           }
           node.attributes = ogAttributes
@@ -641,7 +665,7 @@ export function extractStyles(
 
         // if all style props have been extracted, gloss component can be
         // converted to a div or the specified component
-        if (inlinePropCount === 0) {
+        if (inlinePropCount === 0 && !isSingleSimpleSpread) {
           if (
             process.env.NODE_ENV === 'development' ||
             process.env.DEBUG ||
@@ -654,9 +678,9 @@ export function extractStyles(
                 t.stringLiteral(
                   componentName
                     ? `${componentName}-${node.name.name}`
-                    : node.name.name,
-                ),
-              ),
+                    : node.name.name
+                )
+              )
             )
           }
           // since were removing down to div, we need to push the default styles onto this classname
@@ -734,7 +758,7 @@ export function extractStyles(
 
         if (shouldPrintDebug) {
           console.log(
-            `\nname: ${node.name.name}\ninlinePropCount: ${inlinePropCount}\ndomNode: ${domNode}`,
+            `\nname: ${node.name.name}\ninlinePropCount: ${inlinePropCount}\ndomNode: ${domNode}`
           )
         }
 
@@ -743,12 +767,12 @@ export function extractStyles(
           (attr) =>
             !t.isJSXSpreadAttribute(attr) &&
             attr.name &&
-            attr.name.name === 'className',
+            attr.name.name === 'className'
         )
         if (classNamePropIndex > -1) {
           classNamePropValue = getPropValueFromAttributes(
             'className',
-            node.attributes,
+            node.attributes
           )
           node.attributes.splice(classNamePropIndex, 1)
         }
@@ -761,8 +785,8 @@ export function extractStyles(
               node.attributes.push(
                 t.jsxAttribute(
                   t.jsxIdentifier(key),
-                  t.jsxExpressionContainer(t.nullLiteral()),
-                ),
+                  t.jsxExpressionContainer(t.nullLiteral())
+                )
               )
             }
           }
@@ -787,7 +811,7 @@ export function extractStyles(
         }
 
         let classNamePropValueForReals = buildClassNamePropValue(
-          classNameObjects,
+          classNameObjects
         )
 
         // get extracted classNames
@@ -830,14 +854,14 @@ export function extractStyles(
                 t.conditionalExpression(
                   record.test,
                   t.stringLiteral(cCN),
-                  t.stringLiteral(aCN),
-                ),
+                  t.stringLiteral(aCN)
+                )
               )
             } else {
               return t.conditionalExpression(
                 record.test,
                 t.stringLiteral(cCN),
-                t.stringLiteral(aCN),
+                t.stringLiteral(aCN)
               )
             }
           } else {
@@ -845,7 +869,7 @@ export function extractStyles(
             return t.conditionalExpression(
               record.test,
               t.stringLiteral((idx > 0 && cCN ? ' ' : '') + cCN),
-              t.stringLiteral((idx > 0 && aCN ? ' ' : '') + aCN),
+              t.stringLiteral((idx > 0 && aCN ? ' ' : '') + aCN)
             )
           }
         }
@@ -864,8 +888,8 @@ export function extractStyles(
               t.binaryExpression(
                 '+',
                 t.stringLiteral(' '),
-                classNamePropValueForReals!,
-              ),
+                classNamePropValueForReals!
+              )
             )
           } else {
             // if no spread/className prop, we can optimize all the way
@@ -904,12 +928,12 @@ export function extractStyles(
                   simpleSpreadIdentifier,
                   t.memberExpression(
                     simpleSpreadIdentifier,
-                    t.identifier('className'),
-                  ),
+                    t.identifier('className')
+                  )
                 ),
-                t.stringLiteral(''),
-              ),
-            ),
+                t.stringLiteral('')
+              )
+            )
           )
         }
 
@@ -917,13 +941,13 @@ export function extractStyles(
           classNamePropValueForReals = hoistClassNames(
             traversePath,
             existingHoists,
-            classNamePropValueForReals,
+            classNamePropValueForReals
           )
           node.attributes.push(
             t.jsxAttribute(
               t.jsxIdentifier('className'),
-              t.jsxExpressionContainer(classNamePropValueForReals as any),
-            ),
+              t.jsxExpressionContainer(classNamePropValueForReals as any)
+            )
           )
         }
 
@@ -938,7 +962,7 @@ export function extractStyles(
           '/* %s:%s (%s) */',
           sourceFileName.replace(process.cwd(), '.'),
           lineNumbers,
-          originalNodeName,
+          originalNodeName
         )
 
         for (const className in stylesByClassName) {
@@ -1015,7 +1039,7 @@ export function extractStyles(
 
   if (css !== '') {
     ast.program.body.unshift(
-      t.importDeclaration([], t.stringLiteral(cssImportFileName)),
+      t.importDeclaration([], t.stringLiteral(cssImportFileName))
     )
   }
 
@@ -1031,7 +1055,7 @@ export function extractStyles(
       sourceFileName,
       sourceMaps: true,
     },
-    src,
+    src
   )
 
   if (shouldPrintDebug) {
@@ -1040,7 +1064,7 @@ export function extractStyles(
       result.code
         .split('\n')
         .filter((line) => !line.startsWith('//'))
-        .join('\n'),
+        .join('\n')
     )
     console.log('output css >> ', css)
   }
@@ -1088,21 +1112,21 @@ function buildClassNamePropValue(classNameObjects: ClassNameObject[]) {
       inner = t.conditionalExpression(
         val,
         t.binaryExpression('+', t.stringLiteral(' '), val),
-        t.stringLiteral(''),
+        t.stringLiteral('')
       )
     } else {
       if (t.isStringLiteral(acc)) {
         return t.binaryExpression(
           '+',
           t.stringLiteral(`${acc.value} `),
-          t.logicalExpression('||', val, t.stringLiteral('')),
+          t.logicalExpression('||', val, t.stringLiteral(''))
         )
       }
       // use a logical expression for more complex prop values
       inner = t.binaryExpression(
         '+',
         t.stringLiteral(' '),
-        t.logicalExpression('||', val, t.stringLiteral('')),
+        t.logicalExpression('||', val, t.stringLiteral(''))
       )
     }
     return t.binaryExpression('+', acc, inner)
@@ -1156,21 +1180,21 @@ function hoistClassNames(path: any, existing: any, expr: any) {
     return t.binaryExpression(
       expr.operator,
       hoist(expr.left),
-      hoist(expr.right),
+      hoist(expr.right)
     )
   }
   if (t.isLogicalExpression(expr)) {
     return t.logicalExpression(
       expr.operator,
       hoist(expr.left),
-      hoist(expr.right),
+      hoist(expr.right)
     )
   }
   if (t.isConditionalExpression(expr)) {
     return t.conditionalExpression(
       expr.test,
       hoist(expr.consequent),
-      hoist(expr.alternate),
+      hoist(expr.alternate)
     )
   }
   return expr

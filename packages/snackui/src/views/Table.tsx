@@ -95,7 +95,7 @@ if (process.env.IS_STATIC) {
 }
 
 const tableHeadTextDefaultProps: TextProps = {
-  backgroundColor: '#eee',
+  backgroundColor: 'rgba(0,0,0,0.05)',
   padding: 2,
   paddingHorizontal: 8,
   marginLeft: -8,
