@@ -1,1 +1,1 @@
-export const GLOSS_CSS_FILE = `__gloss.css`
+export const CSS_FILE_NAME = '__snack.css'

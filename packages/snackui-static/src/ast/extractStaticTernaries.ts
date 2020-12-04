@@ -2,8 +2,6 @@ import generate from '@babel/generator'
 import * as t from '@babel/types'
 import invariant from 'invariant'
 
-import { CacheObject } from '../types'
-
 export interface Ternary {
   test: t.Expression
   consequent: Object | null
@@ -16,17 +14,10 @@ export type TernaryRecord = {
   alternateStyles: Object
 }
 
-export function extractStaticTernaries(
-  ternaries: Ternary[],
-  cacheObject: CacheObject
-) {
+export function extractStaticTernaries(ternaries: Ternary[]) {
   invariant(
     Array.isArray(ternaries),
     'extractStaticTernaries expects param 1 to be an array of ternaries'
-  )
-  invariant(
-    typeof cacheObject === 'object' && cacheObject !== null,
-    'extractStaticTernaries expects param 3 to be an object'
   )
 
   if (ternaries.length === 0) {

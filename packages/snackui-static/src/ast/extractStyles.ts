@@ -5,18 +5,13 @@ import vm from 'vm'
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import { writeFileSync } from 'fs-extra'
 import invariant from 'invariant'
 import { TextStyle, ViewStyle } from 'react-native'
 import * as AllExports from 'snackui/node'
 
-import { GLOSS_CSS_FILE } from '../constants'
-import { getStylesAtomic, pseudos } from '../style/getStylesAtomic'
-import {
-  CacheObject,
-  ClassNameToStyleObj,
-  ExtractStylesOptions,
-} from '../types'
+import { CSS_FILE_NAME } from '../constants'
+import { getStylesAtomic, pseudos } from '../getStylesAtomic'
+import { ClassNameToStyleObj, ExtractStylesOptions } from '../types'
 import { evaluateAstNode } from './evaluateAstNode'
 import {
   Ternary,
@@ -27,9 +22,6 @@ import { getPropValueFromAttributes } from './getPropValueFromAttributes'
 import { getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
 import { parse } from './parse'
-
-const UI_PATH = require.resolve('snackui')
-const UI_STYLE_PATH = path.join(UI_PATH, '..', '..', 'style.css')
 
 type OptimizableComponent = Function & {
   staticConfig: {
@@ -60,12 +52,6 @@ if (!!process.env.DEBUG) {
   console.log('validComponents', Object.keys(validComponents))
 }
 
-export interface Options {
-  cacheObject: CacheObject
-  errorCallback?: (str: string, ...args: any[]) => void
-  warnCallback?: (str: string, ...args: any[]) => void
-}
-
 type ClassNameObject = t.StringLiteral | t.Expression
 
 interface TraversePath<TNode = any> {
@@ -84,17 +70,14 @@ const UNTOUCHED_PROPS = {
 // per-file cache of evaluated bindings
 const bindingCache: Record<string, string | null> = {}
 
-const globalCSSMap = new Map<string, string>()
-
 export function extractStyles(
   src: string | Buffer,
   sourceFileName: string,
-  { cacheObject, errorCallback }: Options,
   userOptions: ExtractStylesOptions
-): {
+): null | {
   js: string | Buffer
   css: string
-  cssFileName: string | null
+  cssFileName: string
   ast: t.File
   map: any // RawSourceMap from 'source-map'
 } {
@@ -105,29 +88,24 @@ export function extractStyles(
     typeof sourceFileName === 'string' && path.isAbsolute(sourceFileName),
     '`sourceFileName` must be an absolute path to a .js file'
   )
-  invariant(
-    typeof cacheObject === 'object' && cacheObject !== null,
-    '`cacheObject` must be an object'
-  )
 
   const shouldPrintDebug =
     (!!process.env.DEBUG &&
       (process.env.DEBUG_FILE
         ? sourceFileName.includes(process.env.DEBUG_FILE)
         : true)) ||
-    src.startsWith('// debug')
+    (src[0] === '/' && src.startsWith('// debug'))
 
   const options: ExtractStylesOptions = {
     evaluateVars: true,
     ...userOptions,
   }
 
-  const sourceDir = path.dirname(sourceFileName)
-
   // Using a map for (officially supported) guaranteed insertion order
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const ast = parse(src)
 
+  let didAddGlobal = false
   let didExtract = false
   let doesImport = false
   let doesUseValidImport = false
@@ -153,13 +131,7 @@ export function extractStyles(
 
   // gloss isn't included anywhere, so let's bail
   if (!doesImport || !doesUseValidImport) {
-    return {
-      ast,
-      css: '',
-      cssFileName: null,
-      js: src,
-      map: null,
-    }
+    return null
   }
 
   if (shouldPrintDebug) {
@@ -179,25 +151,16 @@ export function extractStyles(
         const ogAttributes = node.attributes
         const componentName = findComponentName(traversePath.scope)
 
-        if (
-          // skip non-identifier opening elements (member expressions, etc.)
-          !t.isJSXIdentifier(node.name) ||
-          // skip non-gloss components
-          !validComponents[node.name.name]
-        ) {
+        // skip non-identifier opening elements (member expressions, etc.)
+        if (!t.isJSXIdentifier(node.name)) {
+          return
+        }
+        const component = validComponents[node.name.name]
+        if (!component || !component.staticConfig) {
           return
         }
 
-        // Remember the source component
-
-        const component = validComponents[node.name.name]!
         const { staticConfig } = component
-
-        if (!staticConfig) {
-          console.log('skipping', node.name.name)
-          return
-        }
-
         const originalNodeName = node.name.name
         const isTextView = originalNodeName.endsWith('Text')
         const validStyles = staticConfig?.validStyles ?? {}
@@ -270,9 +233,9 @@ export function extractStyles(
             return []
           }
           const res = getStylesAtomic(style, null, shouldPrintDebug)
-          res.forEach((x) => {
+          for (const x of res) {
             stylesByClassName[x.identifier] = x
-          })
+          }
           return res
         }
 
@@ -520,13 +483,7 @@ export function extractStyles(
             // dynamic
           } else {
             if (shouldPrintDebug) {
-              console.log('attr', {
-                name,
-                inlinePropCount,
-                styleValue,
-                value,
-                attribute: attribute?.value?.['expression'],
-              })
+              console.log('attr', name, styleValue)
             }
             viewStyles[name] = styleValue
             return false
@@ -685,7 +642,7 @@ export function extractStyles(
           }
           // since were removing down to div, we need to push the default styles onto this classname
           if (shouldPrintDebug) {
-            console.log({ component, originalNodeName, defaultStyle })
+            console.log('default styles', originalNodeName, defaultStyle)
           }
           viewStyles = {
             ...defaultStyle,
@@ -827,7 +784,7 @@ export function extractStyles(
           }
         }
 
-        const ternaries = extractStaticTernaries(staticTernaries, cacheObject)
+        const ternaries = extractStaticTernaries(staticTernaries)
         if (shouldPrintDebug) {
           console.log(JSON.stringify({ staticTernaries, ternaries }, null, 2))
         }
@@ -965,6 +922,10 @@ export function extractStyles(
           originalNodeName
         )
 
+        if (shouldPrintDebug) {
+          console.log('final styled classnames', Object.keys(stylesByClassName))
+        }
+
         for (const className in stylesByClassName) {
           if (cssMap.has(className)) {
             if (comment) {
@@ -975,18 +936,12 @@ export function extractStyles(
           } else {
             if (stylesByClassName[className]) {
               const { rules } = stylesByClassName[className]
-              if (rules.length > 1) {
-                console.log(rules)
-                throw new Error(`huh?`)
-              }
               if (rules.length) {
-                didExtract = true
-                if (process.env.NODE_ENV !== 'production') {
-                  if (globalCSSMap.has(className)) {
-                    continue
-                  }
-                  globalCSSMap.set(className, rules[0])
+                if (rules.length > 1) {
+                  console.log(rules)
+                  throw new Error(`Shouldn't have more than one rule`)
                 }
+                didExtract = true
                 cssMap.set(className, {
                   css: rules[0],
                   commentTexts: [comment],
@@ -1004,13 +959,7 @@ export function extractStyles(
     if (shouldPrintDebug) {
       console.log('END - nothing extracted!', sourceFileName, '\n', src)
     }
-    return {
-      ast,
-      css: '',
-      cssFileName: null,
-      js: src,
-      map: null,
-    }
+    return null
   }
 
   const css = Array.from(cssMap.values())
@@ -1018,24 +967,9 @@ export function extractStyles(
     .join(' ')
   const extName = path.extname(sourceFileName)
   const baseName = path.basename(sourceFileName, extName)
-
-  let cssFileName: string
-  let cssImportFileName: string
-
-  if (process.env.NODE_ENV === 'production') {
-    cssImportFileName = `./${baseName}${GLOSS_CSS_FILE}`
-    cssFileName = path.join(sourceDir, cssImportFileName)
-  } else {
-    // in dev mode dedupe into one big global sheet
-    cssImportFileName = 'snackui/style.css'
-    cssFileName = UI_STYLE_PATH
-
-    // only writes if new values found since last write
-    if (cssMap.size) {
-      const cssOut = Array.from(globalCSSMap.values()).join('\n')
-      writeFileSync(UI_STYLE_PATH, cssOut)
-    }
-  }
+  const cssImportFileName = `./${baseName}${CSS_FILE_NAME}`
+  const sourceDir = path.dirname(sourceFileName)
+  const cssFileName = path.join(sourceDir, cssImportFileName)
 
   if (css !== '') {
     ast.program.body.unshift(
@@ -1060,19 +994,19 @@ export function extractStyles(
 
   if (shouldPrintDebug) {
     console.log(
-      'output >> ',
+      '\n\noutput code >> ',
       result.code
         .split('\n')
         .filter((line) => !line.startsWith('//'))
         .join('\n')
     )
-    console.log('output css >> ', css)
+    console.log('\n\noutput css >> ', css)
   }
 
   return {
     ast,
-    css,
     cssFileName,
+    css,
     js: result.code,
     map: result.map,
   }
