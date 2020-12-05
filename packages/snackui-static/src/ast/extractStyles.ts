@@ -1,27 +1,17 @@
 import path from 'path'
 import util from 'util'
-import vm from 'vm'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import invariant from 'invariant'
-import { TextStyle, ViewStyle } from 'react-native'
-import * as AllExports from 'snackui/node'
 
 import { CSS_FILE_NAME } from '../constants'
-import { getStylesAtomic, pseudos } from '../getStylesAtomic'
+import { getStylesAtomic } from '../getStylesAtomic'
 import { ClassNameToStyleObj, ExtractStylesOptions } from '../types'
 import { createExtractor } from './createExtractor'
-import { evaluateAstNode } from './evaluateAstNode'
-import {
-  Ternary,
-  TernaryRecord,
-  extractStaticTernaries,
-} from './extractStaticTernaries'
+import { TernaryRecord } from './extractStaticTernaries'
 import { getPropValueFromAttributes } from './getPropValueFromAttributes'
-import { getStaticBindingsForScope } from './getStaticBindingsForScope'
-import { literalToAst } from './literalToAst'
 import { parse } from './parse'
 
 type ClassNameObject = t.StringLiteral | t.Expression

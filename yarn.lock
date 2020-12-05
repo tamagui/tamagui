@@ -571,7 +571,7 @@
   resolved "https://registry.npmjs.org/@o/fast-compare/-/fast-compare-2.7.6.tgz#1d0fedcb27b44e212aafd9e7f94499930499bfb9"
   integrity sha512-YACb8iZqClwjxUBQyjQuXT5L0T/iYOGdkD58q31P04iXyq27BZjdE0k3MiszQ7XezeAdO+WsdmTqaotBbjkbLw==
 
-"@o/react-test-env@*":
+"@o/react-test-env@*", "@o/react-test-env@^0.0.1":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@o/react-test-env/-/react-test-env-0.0.1.tgz#b126ee86a8832ddf6558fa11515758649403ea4c"
   integrity sha512-6+rXhPb56GH3HoENMek+tSeBsj9e6y3HGqOVOoq+r7ROEhrnARiTx4jVy/aGqooyIhlmmtZ40w0935gePcJwZA==
