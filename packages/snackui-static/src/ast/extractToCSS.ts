@@ -16,7 +16,7 @@ import { parse } from './parse'
 
 type ClassNameObject = t.StringLiteral | t.Expression
 
-export function extractStyles(
+export function extractToCSS(
   src: string | Buffer,
   sourceFileName: string,
   userOptions: ExtractStylesOptions
@@ -54,6 +54,8 @@ export function extractStyles(
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists = {}
 
+  let didExtract = false
+
   traverse(ast, {
     Program(path) {
       extractor.parse(path, {
@@ -69,6 +71,8 @@ export function extractStyles(
           originalNodeName,
           spreadInfo,
         }) => {
+          didExtract = true
+
           let classNamePropValue: t.Expression | null = null
           const classNamePropIndex = node.attributes.findIndex(
             (attr) =>
@@ -290,9 +294,9 @@ export function extractStyles(
     },
   })
 
-  // if (!extracted) {
-  //   return null
-  // }
+  if (!didExtract) {
+    return null
+  }
 
   const css = Array.from(cssMap.values())
     .map((v) => v.commentTexts.map((txt) => `${txt}\n`).join('') + v.css)

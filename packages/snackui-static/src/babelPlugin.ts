@@ -5,7 +5,7 @@ import * as t from '@babel/types'
 import { createExtractor, literalToAst } from 'snackui-static'
 
 const importNativeView = template(`
-import { View as ReactNativeView } from 'react-native';
+import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
 `)
 
 const importStyleSheet = template(`
@@ -33,39 +33,49 @@ export default declare((api): { name: string; visitor: Visitor } => {
           let sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
 
+          function addSheetStyle(style: any) {
+            const key = `${Object.keys(sheetStyles).length}`
+            sheetStyles[key] = style
+            return readStyleExpr(key)
+          }
+
+          function readStyleExpr(key: string) {
+            return template(`SHEET['KEY']`)({
+              SHEET: sheetIdentifier.name,
+              KEY: key,
+            })['expression'] as t.MemberExpression
+          }
+
           extractor.parse(root, {
-            getFlattenedNode() {
+            getFlattenedNode(props) {
               if (!hasImportedView) {
                 hasImportedView = true
                 root.unshiftContainer('body', importNativeView())
               }
-              return 'ReactNativeView'
+              return props.isTextView
+                ? '__ReactNativeText'
+                : '__ReactNativeView'
             },
             onExtractTag(props) {
-              const sheetKey = `${Object.keys(sheetStyles).length}`
-              sheetStyles[sheetKey] = props.viewStyles
+              assertValidTag(props.node)
 
-              if (
-                props.node.attributes.find(
-                  (x) => x.type === 'JSXAttribute' && x.name.name === 'style'
-                )
-              ) {
-                // we can just deopt here instead and log warning
-                // need to make onExtractTag have a special catch error or similar
-                throw new Error(
-                  `Cannot pass style attribute to extracted style`
-                )
+              const baseStyleExpr = addSheetStyle(props.viewStyles)
+              const stylesExpr = t.arrayExpression([baseStyleExpr])
+
+              if (props.ternaries) {
+                for (const ternary of props.ternaries) {
+                  const cons = addSheetStyle(ternary.consequentStyles)
+                  const alt = addSheetStyle(ternary.alternateStyles)
+                  stylesExpr.elements.push(
+                    t.conditionalExpression(ternary.test, cons, alt)
+                  )
+                }
               }
-
-              const styleExpr = template(`[SHEET['KEY']]`)({
-                SHEET: sheetIdentifier.name,
-                KEY: sheetKey,
-              }) as t.ExpressionStatement
 
               props.node.attributes.push(
                 t.jsxAttribute(
                   t.jsxIdentifier('style'),
-                  t.jsxExpressionContainer(styleExpr.expression)
+                  t.jsxExpressionContainer(stylesExpr)
                 )
               )
             },
@@ -78,7 +88,6 @@ export default declare((api): { name: string; visitor: Visitor } => {
           root.unshiftContainer('body', importStyleSheet())
 
           const sheetObject = literalToAst(sheetStyles)
-
           const sheetOuter = template(
             `const SHEET = ReactNativeStyleSheet.create(null)`
           )({
@@ -88,9 +97,21 @@ export default declare((api): { name: string; visitor: Visitor } => {
           // replace the null with our object
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
 
-          root.pushContainer('body', sheetOuter)
+          root.unshiftContainer('body', sheetOuter)
         },
       },
     },
   }
 })
+
+function assertValidTag(node: t.JSXOpeningElement) {
+  if (
+    node.attributes.find(
+      (x) => x.type === 'JSXAttribute' && x.name.name === 'style'
+    )
+  ) {
+    // we can just deopt here instead and log warning
+    // need to make onExtractTag have a special catch error or similar
+    throw new Error(`Cannot pass style attribute to extracted style`)
+  }
+}

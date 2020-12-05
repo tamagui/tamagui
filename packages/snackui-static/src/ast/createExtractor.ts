@@ -110,7 +110,6 @@ export function createExtractor({
         return null
       }
 
-      let didExtract = false
       let couldntParse = false
 
       /**
@@ -138,7 +137,7 @@ export function createExtractor({
           const domNode = props.getFlattenedNode({ isTextView })
 
           if (shouldPrintDebug) {
-            console.log('node', originalNodeName, domNode)
+            console.log(`\n<${originalNodeName} />`)
           }
 
           const isStaticAttributeName = (name: string) => {
@@ -161,7 +160,7 @@ export function createExtractor({
                   shouldPrintDebug
                 )
                 if (shouldPrintDebug) {
-                  console.log('staticNamespace', staticNamespace)
+                  console.log('  staticNamespace', staticNamespace)
                 }
                 const evalContext = vm.createContext(staticNamespace)
 
@@ -188,7 +187,7 @@ export function createExtractor({
               return attemptEval(n)
             } catch (err) {
               if (shouldPrintDebug) {
-                console.log('attemptEvalSafe failed', err.message)
+                console.log('  attemptEvalSafe failed', err.message)
               }
               return FAILED_EVAL
             }
@@ -303,7 +302,7 @@ export function createExtractor({
           })
 
           if (couldntParse) {
-            console.log('COULDNT PARSE')
+            console.log('  COULDNT PARSE')
             return
           }
 
@@ -335,18 +334,17 @@ export function createExtractor({
           let inlinePropCount = 0
 
           if (shouldPrintDebug) {
-            console.log('spreads:', {
+            console.log('  spreads:', {
               hasOneEndingSpread,
               isSingleSimpleSpread,
               lastSpreadIndex,
               foundLastSpreadIndex,
-              inlinePropCount,
             })
-            console.log('attrs:', node.attributes.map(attrGetName).join(', '))
+            console.log('  attrs:', node.attributes.map(attrGetName).join(', '))
           }
 
           node.attributes = node.attributes.filter((attribute, idx) => {
-            const notToLastSpread =
+            const isntOnLastSpread =
               idx < lastSpreadIndex && !isSingleSimpleSpread
             if (
               t.isJSXSpreadAttribute(attribute) ||
@@ -355,14 +353,14 @@ export function createExtractor({
               // filter out JSXIdentifiers
               typeof attribute.name.name !== 'string' ||
               // haven't hit the last spread operator (we can optimize single simple spreads still)
-              notToLastSpread
+              isntOnLastSpread
             ) {
               if (t.isJSXSpreadAttribute(attribute)) {
                 // spread fine
               } else {
                 if (shouldPrintDebug) {
                   console.log(
-                    'inline (non normal attr)',
+                    '  inline (non normal attr)',
                     attribute['name']?.['name']
                   )
                 }
@@ -391,7 +389,7 @@ export function createExtractor({
               if (styleValue === FAILED_EVAL) {
                 if (shouldPrintDebug) {
                   console.warn(
-                    'Failed style expansion!',
+                    '  Failed style expansion!',
                     name,
                     attribute?.value
                   )
@@ -408,6 +406,7 @@ export function createExtractor({
             const isBoolean = value == null
 
             if (isBoolean) {
+              // ? not sure, but may be able to optimize here
               inlinePropCount++
               return true
             }
@@ -442,12 +441,14 @@ export function createExtractor({
 
             const styleValue = attemptEvalSafe(value)
 
+            if (shouldPrintDebug) {
+              console.log('  attr', name, styleValue)
+            }
+
             if (styleValue === FAILED_EVAL) {
-              // dynamic
+              // dynamic or ternary
+              // not doing anything here so we can fall down to the ternaries
             } else {
-              if (shouldPrintDebug) {
-                console.log('attr', name, styleValue)
-              }
               viewStyles[name] = styleValue
               return false
             }
@@ -462,6 +463,14 @@ export function createExtractor({
               // if one side is a ternary, and the other side is evaluatable, we can maybe extract
               const lVal = attemptEvalSafe(left)
               const rVal = attemptEvalSafe(right)
+              if (shouldPrintDebug) {
+                console.log(
+                  `  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(
+                    rVal
+                  )}`
+                )
+              }
+
               if (lVal !== FAILED_EVAL && t.isConditionalExpression(right)) {
                 if (addBinaryConditional(operator, left, right)) {
                   return false
@@ -472,6 +481,12 @@ export function createExtractor({
                   return false
                 }
               }
+
+              if (shouldPrintDebug) {
+                console.log(`  evalBinaryExpression cant extract`)
+              }
+              inlinePropCount++
+              return true
             }
 
             function addBinaryConditional(
@@ -480,14 +495,16 @@ export function createExtractor({
               cond: t.ConditionalExpression
             ) {
               if (getStaticConditional(cond)) {
+                const alternate = attemptEval(
+                  t.binaryExpression(operator, staticExpr, cond.alternate)
+                )
+                const consequent = attemptEval(
+                  t.binaryExpression(operator, staticExpr, cond.consequent)
+                )
                 staticTernaries.push({
                   test: cond.test,
-                  alternate: attemptEval(
-                    t.binaryExpression(operator, staticExpr, cond.alternate)
-                  ),
-                  consequent: attemptEval(
-                    t.binaryExpression(operator, staticExpr, cond.consequent)
-                  ),
+                  alternate: { [name]: alternate },
+                  consequent: { [name]: consequent },
                 })
                 return true
               }
@@ -506,7 +523,7 @@ export function createExtractor({
                 } catch (err) {
                   if (shouldPrintDebug) {
                     console.log(
-                      'couldnt statically evaluate conditional',
+                      '  couldnt statically evaluate conditional',
                       err.message
                     )
                   }
@@ -527,7 +544,7 @@ export function createExtractor({
                     }
                   } catch (err) {
                     if (shouldPrintDebug) {
-                      console.log('couldnt statically evaluate', err)
+                      console.log('  couldnt statically evaluate', err)
                     }
                   }
                 }
@@ -548,7 +565,7 @@ export function createExtractor({
             }
 
             if (shouldPrintDebug) {
-              console.log('inline prop via no match', name, value.type)
+              console.log('  inline prop via no match', name, value.type)
             }
 
             // if we've made it this far, the prop stays inline
@@ -564,8 +581,8 @@ export function createExtractor({
           ) {
             if (shouldPrintDebug) {
               console.log(
-                'deopt due to inline + spread',
-                inlinePropCount,
+                '  deopt due to inline + spread',
+                { inlinePropCount },
                 staticTernaries
               )
             }
@@ -585,6 +602,10 @@ export function createExtractor({
               defaultStaticProps[key] = defaultProps[key]
               styleExpansions.push({ name: key, value: defaultProps[key] })
             }
+          }
+
+          if (shouldPrintDebug) {
+            console.log('  finish extract', { inlinePropCount })
           }
 
           // if all style props have been extracted, component can be
@@ -609,7 +630,7 @@ export function createExtractor({
             }
             // since were removing down to div, we need to push the default styles onto this classname
             if (shouldPrintDebug) {
-              console.log('default styles', originalNodeName, defaultStyle)
+              console.log('  default styles', originalNodeName, defaultStyle)
             }
             viewStyles = {
               ...defaultStyle,
@@ -622,7 +643,7 @@ export function createExtractor({
           // second pass, style expansions
           let styleExpansionError = false
           if (shouldPrintDebug) {
-            console.log('styleExpansions', { defaultProps, styleExpansions })
+            console.log('  styleExpansions', { defaultProps, styleExpansions })
           }
           if (styleExpansions.length) {
             if (shouldPrintDebug) {
@@ -669,7 +690,7 @@ export function createExtractor({
           }
 
           if (shouldPrintDebug) {
-            console.log('viewStyles', inlinePropCount, viewStyles)
+            console.log('  viewStyles', inlinePropCount, viewStyles)
           }
 
           if (styleExpansionError) {
@@ -682,7 +703,7 @@ export function createExtractor({
 
           if (shouldPrintDebug) {
             console.log(
-              `\nname: ${node.name.name}\ninlinePropCount: ${inlinePropCount}\ndomNode: ${domNode}`
+              `  >> is extracting, inlinePropCount: ${inlinePropCount}, domNode: ${domNode}`
             )
           }
 
@@ -709,6 +730,17 @@ export function createExtractor({
               return
             }
             traversePath.node.closingElement.name.name = node.name.name
+          }
+
+          if (shouldPrintDebug) {
+            console.log(
+              '  EVAL staticTernaries',
+              staticTernaries.map((x) => [
+                `${x.test['object']?.['name']}.${x.test['property']?.['name']}`,
+                x.alternate,
+                x.consequent,
+              ])
+            )
           }
 
           const ternaries = extractStaticTernaries(staticTernaries)

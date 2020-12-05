@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra'
 import loaderUtils from 'loader-utils'
 
-import { extractStyles } from './ast/extractStyles'
+import { extractToCSS } from './ast/extractToCSS'
 import { LoaderOptions } from './types'
 
 Error.stackTraceLimit = Infinity
@@ -10,15 +10,12 @@ export default function GlossWebpackLoader(this: any, content) {
   if (this.cacheable) {
     this.cacheable()
   }
-
-  const options: LoaderOptions = loaderUtils.getOptions(this) || {}
-
   if (content[0] === '/' && content.startsWith('// static-ui-ignore')) {
     return content
   }
 
-  const rv = extractStyles(content, this.resourcePath, options)
-
+  const options: LoaderOptions = loaderUtils.getOptions(this) || {}
+  const rv = extractToCSS(content, this.resourcePath, options)
   if (!rv) {
     return content
   }

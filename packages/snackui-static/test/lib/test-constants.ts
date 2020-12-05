@@ -3,10 +3,8 @@ import path from 'path'
 import { TestRenderer } from '@o/react-test-env'
 import anyTest, { TestInterface } from 'ava'
 
-export const specDir = path.join(__dirname)
+export const specDir = path.join(__dirname, '..', 'spec')
 export const outDir = path.join(specDir, 'out')
-export const outFile = 'out.js'
-export const outFileFull = path.join(outDir, outFile)
 
 type TestApp = {
   renderer: TestRenderer.ReactTestRenderer

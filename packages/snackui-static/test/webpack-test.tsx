@@ -6,13 +6,12 @@ import { TestRenderer, act, render } from '@o/react-test-env'
 import React from 'react'
 import webpack from 'webpack'
 
-import {
-  outDir,
-  outFile,
-  outFileFull,
-  specDir,
-  test,
-} from './spec/test-constants'
+import { externalizeModules } from './lib/externalizeModules'
+import { outDir, specDir, test } from './lib/test-constants'
+import { testStyles } from './lib/testStyles'
+
+const outFile = 'out-webpack.js'
+const outFileFull = path.join(outDir, outFile)
 
 // @ts-ignore
 window.matchMedia = function () {}
@@ -35,6 +34,11 @@ test.before(async (t) => {
     })
   }
 })
+
+//
+// test styles
+//
+// testStyles(test)
 
 test('1. extracts to a div for simple views', async (t) => {
   const { test1 } = t.context
@@ -138,7 +142,6 @@ test('14. extracts psuedo styles and evaluates constants', async (t) => {
 test('15. extracts spacer (complex expansion)', async (t) => {
   const { test15 } = t.context
   const out = test15.renderer.toJSON()
-  console.log('out', out)
   t.snapshot(out)
 })
 
@@ -159,14 +162,12 @@ async function extractStaticApp() {
     },
     entry: path.join(specDir, 'extract-specs.tsx'),
     output: {
+      publicPath: '',
       libraryTarget: 'commonjs',
       filename: outFile,
       path: outDir,
     },
-    externals: {
-      react: 'react',
-      'react-dom': 'react-dom',
-    },
+    externals: [externalizeModules],
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
       mainFields: ['tsmain', 'browser', 'module', 'main'],
