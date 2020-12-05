@@ -31,7 +31,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "typescript": "4.1.0-beta",
+    "typescript": "4.1.2",
     "@types/node": "^14.11.10",
     "ttypescript": "^1.5.12",
     "@types/react": "^16.9.35",

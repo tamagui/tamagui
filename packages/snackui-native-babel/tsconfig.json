@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "module": "CommonJS",
+    "outDir": "_",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../snackui-static"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import { IFs } from 'memfs'
+
 export interface CacheObject {
   [key: string]: any
 }
@@ -13,9 +15,7 @@ export interface LoaderOptions extends ExtractStylesOptions {
 }
 
 export interface PluginContext {
-  cacheObject: CacheObject
-  memoryFS: any
-  fileList: Set<string>
+  fs: IFs
 }
 
 export type StyleObject = {

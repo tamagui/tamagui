@@ -8,7 +8,7 @@ import React from 'react'
 // import { ViewStyle } from 'react-native'
 import webpack from 'webpack'
 
-import { UIStaticWebpackPlugin, getStylesAtomic } from '../src'
+import { getStylesAtomic } from '../src'
 
 // @ts-ignore
 window.matchMedia = function () {}
@@ -81,7 +81,7 @@ test('converts a style object to class names', async (t) => {
   t.assert(!!style2)
   t.assert(!!style3)
   t.assert(
-    styles.find((x) => x.property === 'borderBottomStyle').value === 'solid'
+    styles.find((x) => x.property === 'borderBottomStyle')?.value === 'solid'
   )
   t.deepEqual(style1!.rules, [
     '.r-backgroundColor-1g6456j{background-color:rgba(255,0,0,1.00);}',
@@ -271,7 +271,7 @@ async function extractStaticApp() {
         {
           test: /\.css$/,
           use: [
-            { loader: 'file-loader', options: { name: 'out.[hash].css' } },
+            { loader: 'file-loader', options: { name: 'out.[fullhash].css' } },
             'extract-loader',
             'css-loader',
           ],
@@ -279,7 +279,6 @@ async function extractStaticApp() {
       ],
     },
     plugins: [
-      new UIStaticWebpackPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
@@ -288,7 +287,7 @@ async function extractStaticApp() {
     ],
   })
 
-  await new Promise((res) => {
+  await new Promise<void>((res) => {
     compiler.run((err, result) => {
       console.log({ err })
       console.log(result?.toString())

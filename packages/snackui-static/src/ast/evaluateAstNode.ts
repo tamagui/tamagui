@@ -31,10 +31,9 @@ export function evaluateAstNode(
         key = value.key.name
       } else if (
         t.isStringLiteral(value.key) ||
-        t.isNumberLiteral(value.key) ||
         t.isNumericLiteral(value.key)
       ) {
-        key = value.key['value']
+        key = value.key.value
       } else {
         throw new Error('Unsupported key type: ' + value.key.type)
       }

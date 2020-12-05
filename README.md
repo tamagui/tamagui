@@ -43,7 +43,7 @@ SnackUI views flatten all style props onto the base props so there's no separate
 ## Example
 
 ```tsx
-import { VStack, Text } from 'snackui'
+import { Text, VStack } from 'snackui'
 
 export function Component() {
   return (
@@ -61,8 +61,8 @@ export function Component() {
 This will compile on the web to something like this:
 
 ```tsx
-const _cn1 = "r-1awozwy r-y47klf r-rs99b7 r-h-1udh08x"
-const _cn2 = "r-4qtqp9 r-1i10wst r-x376lf"
+const _cn1 = 'r-1awozwy r-y47klf r-rs99b7 r-h-1udh08x'
+const _cn2 = 'r-4qtqp9 r-1i10wst r-x376lf'
 export function Component() {
   return (
     <div className={_cn1}>
@@ -85,8 +85,6 @@ npm i snackui snackui-static
 Then add to your webpack config:
 
 ```js
-const { UIStaticWebpackPlugin } = require('snackui-static')
-
 module.exports = {
   module: {
     rules: [
@@ -104,20 +102,21 @@ module.exports = {
             },
           },
         ].filter(Boolean),
-      }
-    ]
-  }
-  plugins: [
-    new UIStaticWebpackPlugin()
-  ]
+      },
+    ],
+  },
 }
 ```
 
-Two big things to note before choosing this library. One is that react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now:
+You'll likely want to gitignore the outputted style files, though it's not necessary. In your `.gitignore`:
 
 ```
-// todo
+*__snack.css
 ```
+
+Two big things to note before choosing this library. One is that react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
+
+- [Patch for react-native-web experimental](docs/react-native-web+0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
 
 ## Issues
 
