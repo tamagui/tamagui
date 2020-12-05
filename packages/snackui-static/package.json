@@ -26,8 +26,7 @@
     "invariant": "^2.2.4",
     "loader-utils": "^2.0.0",
     "react-native-web": "*",
-    "webpack": "^4.44.2",
-    "webpack-virtual-modules": "0.4.1"
+    "webpack": "^5.10.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.12.1",

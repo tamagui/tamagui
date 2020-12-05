@@ -1,10 +1,12 @@
-import React from 'react'
+import * as React from 'react'
 import { AbsoluteVStack, Box, Spacer, Text, VStack } from 'snackui'
 
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'
 
 const nonStaticInt = eval(`10`)
+
+export const SpecReact = React
 
 type TestProps = {
   conditional?: boolean
@@ -14,12 +16,15 @@ type TestProps = {
 export function Test1() {
   return (
     <VStack
+      className="test1"
       flex={1}
       borderRadius={100}
       backgroundColor="red"
       shadowRadius={10}
       shadowColor="#000"
-    />
+    >
+      <Text>hello world</Text>
+    </VStack>
   )
 }
 

@@ -16,7 +16,7 @@ export default declare((api): { name: string; visitor: Visitor } => {
   api.assertVersion(7)
 
   const extractor = createExtractor({
-    shouldPrintDebug: true,
+    shouldPrintDebug: process.env.DEBUG ? true : false,
     userOptions: {
       evaluateImportsWhitelist: ['constants.ts'],
     },
@@ -42,7 +42,6 @@ export default declare((api): { name: string; visitor: Visitor } => {
               return 'ReactNativeView'
             },
             onExtractTag(props) {
-              console.log('ok', props.originalNodeName, props.viewStyles)
               const sheetKey = `${Object.keys(sheetStyles).length}`
               sheetStyles[sheetKey] = props.viewStyles
 
@@ -88,21 +87,6 @@ export default declare((api): { name: string; visitor: Visitor } => {
 
           // replace the null with our object
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
-
-          // const sheetAst = t.variableDeclaration('const', [
-          //   t.variableDeclarator(
-          //     t.identifier(),
-          //     t.callExpression(
-          //       t.objectExpression([
-          //         t.objectProperty(
-          //           t.identifier('ReactNativeStyleSheet'),
-          //           t.identifier('create')
-          //         ),
-          //       ]),
-          //       [sheetObject]
-          //     )
-          //   ),
-          // ])
 
           root.pushContainer('body', sheetOuter)
         },

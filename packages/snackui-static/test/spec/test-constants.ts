@@ -13,6 +13,7 @@ type TestApp = {
   rendererFalse: TestRenderer.ReactTestRenderer
   Element: any
 }
+
 export const test = anyTest as TestInterface<{
   test1: TestApp
   test2: TestApp

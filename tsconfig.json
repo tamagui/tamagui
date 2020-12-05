@@ -28,10 +28,15 @@
     "target": "ES2019",
     "lib": ["dom", "esnext"],
     "types": ["node"],
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "composite": true
   },
+
   "exclude": ["_"],
+
   "typeAcquisition": {
     "enable": true
-  }
+  },
+
+  "references": []
 }
