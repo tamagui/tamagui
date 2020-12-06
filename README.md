@@ -18,27 +18,38 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 
 ## Features
 
-- **Negative overhead with rnw**
-  - Better than no overhead, SnackUI actually reduces your bundle size significantly over using vanilla react-native-web
-- **Stack views** fully typed in TypeScript
-  - VStack, HStack, ZStack
-  - Inspired by the great [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
-- **Optimizing Compiler** (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
-  - Flattens `<View />` and `<Text />` into `<div />` and `<span />` where possible, increasing render performance.
-  - Extracts inline styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
-  - Supports imported constant files for compiling shared constants and colors to CSS as well.
-  - Supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
-  - Supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
-- **Pseudo styles** for native and web
-  - hoverStyle, pressStyle, and focusStyle
-- **Normalizes** styling between Native/Web
-- **Helpful development features**
-  - Add component name in DOM elements.
-  - Add `// debug` to the top of file for detailed optimization info.
-
-As far as components go, SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
+SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
 
 SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
+
+### Low overhead
+
+- **low to 0-overhead** over using React Native / Web
+
+### Stack views
+
+- **Stack views** with flat, simpler RN TypeScript types
+  - VStack, HStack, ZStack
+  - inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
+
+### Optimizing compiler
+
+- fork of [JSXStyle](https://github.com/jsxstyle/jsxstyle)
+- flattens `<View />` and `<Text />` into `<div />` and `<span />` where possible, increasing render performance.
+- extracts inline styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
+- supports imported constant files for compiling shared constants and colors to CSS as well.
+- supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
+- supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
+
+### Pseudo styles
+
+- hoverStyle, pressStyle, and focusStyle
+- normalized for native and web
+
+### Development helpers
+
+- add component name in DOM elements.
+- add `// debug` to the top of file for detailed optimization info.
 
 ## Example
 
@@ -76,13 +87,25 @@ Why is this beneficial? React Native Web's views like `<View />` and `<Text />` 
 
 ## Setup
 
-Add snackui and snackui-static to your project:
+Add snackui to your project:
 
 ```bash
-npm i snackui snackui-static
+yarn add snackui @snackui/static
 ```
 
-Then add to your webpack config:
+You'll likely want to gitignore the outputted style files, though it's not necessary. In your `.gitignore`:
+
+```
+*__snack.css
+```
+
+### Babel - Native / Simple extraction (experimental)
+
+For a simpler setup you can just add `@snackui/static` as a babel plugin to get extraction just to StyleSheet.create(). This isn't as performant as going to CSS, but works with anything that supports babel.
+
+### Webpack - CSS extraction
+
+For web apps to extract to CSS, SnackUI only supports Webpack for now (4 and 5). Add the loader to your webpack config after `babel-loader`:
 
 ```js
 module.exports = {
@@ -95,7 +118,7 @@ module.exports = {
             loader: 'babel-loader',
           },
           {
-            loader: require.resolve('snackui-static/loader'),
+            loader: require.resolve('@snackui/static/loader'),
             options: {
               // file names that you import for shared constants/colors extraction
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
@@ -108,13 +131,7 @@ module.exports = {
 }
 ```
 
-You'll likely want to gitignore the outputted style files, though it's not necessary. In your `.gitignore`:
-
-```
-*__snack.css
-```
-
-Two big things to note before choosing this library. One is that react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
+react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
 
 - [Patch for react-native-web experimental](docs/react-native-web+0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
 
@@ -122,7 +139,6 @@ Two big things to note before choosing this library. One is that react-native-we
 
 SnackUI is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. Upcoming fixes:
 
-- [ ] A few issues in compilation where it can fail on complex extractions
 - [ ] ZStack needs correct behavior to be similar to SwiftUI
   - Right now it doesn't position child elements as Absolute positioned
 

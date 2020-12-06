@@ -174,7 +174,10 @@ export function createExtractor({
                     )
                     return staticNamespace[n.name]
                   }
-                  return vm.runInContext(`(${generate(n).code})`, evalContext)
+                  return vm.runInContext(
+                    `(${generate(n as any).code})`,
+                    evalContext
+                  )
                 }
 
                 return (n: t.Node) => {

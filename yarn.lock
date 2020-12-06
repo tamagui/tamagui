@@ -5346,11 +5346,6 @@ webpack-sources@^2.1.1:
     source-list-map "^2.0.1"
     source-map "^0.6.1"
 
-webpack-virtual-modules@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.npmjs.org/webpack-virtual-modules/-/webpack-virtual-modules-0.4.1.tgz#cae5a7085d34331d077225f77037bea233dbfdad"
-  integrity sha512-BH/RKOHk223WdBDLFqghztx3DF5AqR3CKg3ue1KN9S1SAaXP68Kj/4rF0lsdysxXaanzx7aWl1u0+lnfj7+OtQ==
-
 webpack@^5.10.0:
   version "5.10.0"
   resolved "https://registry.npmjs.org/webpack/-/webpack-5.10.0.tgz#6f77c31522a2c525152d9c344f9765d168b3df08"

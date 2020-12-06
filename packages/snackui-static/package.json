@@ -1,5 +1,5 @@
 {
-  "name": "snackui-static",
+  "name": "@snackui/static",
   "version": "0.0.2",
   "main": "_/index.js",
   "scripts": {

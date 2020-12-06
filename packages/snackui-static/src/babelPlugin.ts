@@ -2,7 +2,7 @@ import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
-import { createExtractor, literalToAst } from 'snackui-static'
+import { createExtractor, literalToAst } from '@snackui/static'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -12,7 +12,10 @@ const importStyleSheet = template(`
 import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 `)
 
-export default declare((api): { name: string; visitor: Visitor } => {
+export const babelPlugin = declare((api): {
+  name: string
+  visitor: Visitor
+} => {
   api.assertVersion(7)
 
   const extractor = createExtractor({
