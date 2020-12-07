@@ -2,7 +2,9 @@ import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
-import { createExtractor, literalToAst } from '@snackui/static'
+
+import { createExtractor } from './ast/createExtractor'
+import { literalToAst } from './ast/literalToAst'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
