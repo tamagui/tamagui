@@ -704,9 +704,6 @@ export function createExtractor({
             console.log('  styleExpansions', { defaultProps, styleExpansions })
           }
           if (styleExpansions.length) {
-            if (shouldPrintDebug) {
-              console.log('styleExpansions', styleExpansions)
-            }
             // first build fullStyles to pass in
             const fullProps = {
               ...defaultStaticProps,
@@ -736,7 +733,10 @@ export function createExtractor({
             for (const { name, value } of styleExpansions) {
               const expandedStyle = getStyleExpansion(name, value)
               if (shouldPrintDebug) {
-                console.log('expanded', { styleExpansionError, expandedStyle })
+                console.log('  expanded', {
+                  styleExpansionError,
+                  expandedStyle,
+                })
               }
               if (styleExpansionError) {
                 break

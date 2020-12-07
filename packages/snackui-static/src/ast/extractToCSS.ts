@@ -123,7 +123,7 @@ export function extractToCSS(
               classNames.push(style.identifier)
             }
             if (shouldPrintDebug) {
-              console.log({ classNames, viewStyles })
+              console.log('  ', { classNames, viewStyles })
             }
           }
 
@@ -171,7 +171,7 @@ export function extractToCSS(
           if (ternaries?.length) {
             const ternaryExprs = ternaries.map(getTernaryExpression)
             if (shouldPrintDebug) {
-              console.log('ternaryExprs', ternaryExprs)
+              console.log('  ternaryExprs', ternaryExprs)
             }
             if (classNamePropValueForReals) {
               classNamePropValueForReals = t.binaryExpression(
@@ -260,7 +260,7 @@ export function extractToCSS(
 
           if (shouldPrintDebug) {
             console.log(
-              'final styled classnames',
+              '  final styled classnames',
               Object.keys(stylesByClassName)
             )
           }
@@ -277,7 +277,7 @@ export function extractToCSS(
                 const { rules } = stylesByClassName[className]
                 if (rules.length) {
                   if (rules.length > 1) {
-                    console.log(rules)
+                    console.log('  ', { rules })
                     throw new Error(`Shouldn't have more than one rule`)
                   }
                   // didExtract = true
