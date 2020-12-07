@@ -86,7 +86,7 @@ export function createExtractor({
   const excludeProps = new Set(options.excludeProps ?? [])
 
   if (shouldPrintDebug) {
-    console.log('  createExtractor', { options })
+    console.log('createExtractor', { options })
   }
 
   return {

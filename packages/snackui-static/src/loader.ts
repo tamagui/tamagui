@@ -30,6 +30,9 @@ export default function GlossWebpackLoader(this: any, content) {
       writeFile()
     }
   } catch (err) {
+    if (err.code !== 'ENOENT') {
+      throw err
+    }
     // doesnt exist
     writeFile()
   }
