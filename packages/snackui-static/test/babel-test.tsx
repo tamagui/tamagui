@@ -68,7 +68,7 @@ function extract(code: string) {
   return babel.transformSync(code, {
     filename: 'test.tsx',
     plugins: [
-      require('../_/index'),
+      require('@snackui/babel-plugin'),
       [
         '@babel/plugin-syntax-typescript',
         {
@@ -111,7 +111,7 @@ async function extractStaticApp() {
               loader: 'babel-loader',
               options: {
                 // add our plugin
-                plugins: [require.resolve('../_/index')],
+                plugins: [require.resolve('@snackui/babel-plugin')],
                 presets: [require.resolve('@o/babel-preset')],
               },
             },
