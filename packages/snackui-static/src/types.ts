@@ -8,6 +8,8 @@ export interface ExtractStylesOptions {
   // options here
   evaluateVars?: boolean
   evaluateImportsWhitelist?: string[]
+  deoptProps?: string[]
+  excludeProps?: string[]
 }
 
 export interface LoaderOptions extends ExtractStylesOptions {

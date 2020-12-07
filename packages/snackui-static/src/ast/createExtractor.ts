@@ -68,17 +68,25 @@ type ExtractTagProps = {
 
 export function createExtractor({
   shouldPrintDebug = false,
-  userOptions,
+  options,
   sourceFileName,
 }: {
   shouldPrintDebug?: boolean
-  userOptions: ExtractStylesOptions
+  options: ExtractStylesOptions
   sourceFileName: string
 }) {
   const bindingCache: Record<string, string | null> = {}
-  const options: ExtractStylesOptions = {
+
+  options = {
     evaluateVars: true,
-    ...userOptions,
+    ...options,
+  }
+
+  const deoptProps = new Set(options.deoptProps ?? [])
+  const excludeProps = new Set(options.excludeProps ?? [])
+
+  if (shouldPrintDebug) {
+    console.log('  createExtractor', { options })
   }
 
   return {
@@ -219,6 +227,25 @@ export function createExtractor({
 
           let didFailStaticallyExtractingSpread = false
           let numberNonStaticSpreads = 0
+          let shouldDeopt = false
+
+          const hasDeopt = (obj: Object) => {
+            return Object.keys(obj).some((x) => deoptProps.has(x))
+          }
+
+          const omitExcludeStyles = (obj: Object) => {
+            if (!excludeProps.size) {
+              return obj
+            }
+            const res = {}
+            for (const key in obj) {
+              if (excludeProps.has(key)) {
+                continue
+              }
+              res[key] = obj[key]
+            }
+            return res
+          }
 
           node.attributes.forEach((attr, index) => {
             if (!t.isJSXSpreadAttribute(attr)) {
@@ -238,11 +265,16 @@ export function createExtractor({
                 ? attemptEvalSafe(consequent)
                 : FAILED_EVAL
 
+              if (hasDeopt(aStyle) || hasDeopt(cStyle)) {
+                shouldDeopt = true
+                return
+              }
+
               if (aStyle !== FAILED_EVAL && cStyle !== FAILED_EVAL) {
                 staticTernaries.push({
                   test,
-                  alternate: aStyle,
-                  consequent: cStyle,
+                  alternate: omitExcludeStyles(aStyle),
+                  consequent: omitExcludeStyles(cStyle),
                 })
                 return
               } else {
@@ -256,9 +288,13 @@ export function createExtractor({
                 const spreadStyle = attemptEvalSafe(attr.argument.right)
                 if (spreadStyle !== FAILED_EVAL) {
                   const test = (attr.argument as t.LogicalExpression).left
+                  if (hasDeopt(spreadStyle)) {
+                    shouldDeopt = true
+                    return
+                  }
                   staticTernaries.push({
                     test,
-                    consequent: spreadStyle,
+                    consequent: omitExcludeStyles(spreadStyle),
                     alternate: null,
                   })
                   return
@@ -304,8 +340,8 @@ export function createExtractor({
             }
           })
 
-          if (couldntParse) {
-            console.log('  COULDNT PARSE')
+          if (couldntParse || shouldDeopt) {
+            console.log('  COULDNT PARSE / DEOPT')
             return
           }
 
@@ -373,6 +409,22 @@ export function createExtractor({
             }
 
             const name = attribute.name.name
+
+            if (excludeProps.has(name)) {
+              if (shouldPrintDebug) {
+                console.log(`  excluding ${name}`)
+              }
+              return false
+            }
+
+            if (deoptProps.has(name)) {
+              if (shouldPrintDebug) {
+                console.log(`  deopting ${name}`)
+              }
+              inlinePropCount++
+              return true
+            }
+
             let value: any = t.isJSXExpressionContainer(attribute?.value)
               ? attribute.value.expression
               : attribute.value
@@ -600,6 +652,9 @@ export function createExtractor({
           // get our expansion props vs our style props
           for (const key in defaultProps) {
             if (validStyles[key]) {
+              if (excludeProps.has(key)) {
+                continue
+              }
               defaultStyle[key] = defaultProps[key]
             } else {
               defaultStaticProps[key] = defaultProps[key]
@@ -687,6 +742,11 @@ export function createExtractor({
                 break
               }
               if (expandedStyle) {
+                if (excludeProps.size) {
+                  for (const key of [...excludeProps]) {
+                    delete expandedStyle[key]
+                  }
+                }
                 Object.assign(viewStyles, expandedStyle)
               }
             }

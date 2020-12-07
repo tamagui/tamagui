@@ -20,8 +20,17 @@ export const babelPlugin = declare((api): {
 
   const extractor = createExtractor({
     shouldPrintDebug: process.env.DEBUG ? true : false,
-    userOptions: {
+    options: {
       evaluateImportsWhitelist: ['constants.ts'],
+      deoptProps: ['hoverStyle', 'pressStyle', 'focusStyle', 'pointerEvents'],
+      excludeProps: [
+        'display',
+        'userSelect',
+        'whiteSpace',
+        'textOverflow',
+        'cursor',
+        'contain',
+      ],
     },
     sourceFileName: '',
   })

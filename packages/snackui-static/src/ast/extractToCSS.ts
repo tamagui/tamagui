@@ -19,7 +19,7 @@ type ClassNameObject = t.StringLiteral | t.Expression
 export function extractToCSS(
   src: string | Buffer,
   sourceFileName: string,
-  userOptions: ExtractStylesOptions
+  options: ExtractStylesOptions
 ): null | {
   js: string | Buffer
   css: string
@@ -48,7 +48,7 @@ export function extractToCSS(
   const extractor = createExtractor({
     shouldPrintDebug,
     sourceFileName,
-    userOptions,
+    options,
   })
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
