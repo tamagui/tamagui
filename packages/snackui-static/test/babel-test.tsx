@@ -1,4 +1,4 @@
-import '@o/react-test-env/jsdom-register'
+import '@dish/react-test-env/jsdom-register'
 
 import path from 'path'
 
@@ -112,7 +112,7 @@ async function extractStaticApp() {
               options: {
                 // add our plugin
                 plugins: [require.resolve('@snackui/babel-plugin')],
-                presets: [require.resolve('@o/babel-preset')],
+                presets: [require.resolve('@dish/babel-preset')],
               },
             },
           ],

@@ -10,7 +10,12 @@
 
   "include": ["src"],
 
-  "references": [{
-    "path": "../../../packages/async"
-  }]
+  "references": [
+    {
+      "path": "../../../packages/async"
+    },
+    {
+      "path": "../../../packages/fast-compare"
+    }
+  ]
 }

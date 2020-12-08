@@ -1,4 +1,4 @@
-import { isEqual } from '@o/fast-compare'
+import { isEqual } from '@dish/fast-compare'
 import { debounce } from 'lodash'
 import React, { DependencyList, EffectCallback } from 'react'
 

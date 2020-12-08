@@ -1,8 +1,8 @@
-import '@o/react-test-env/jsdom-register'
+import '@dish/react-test-env/jsdom-register'
 
 import path from 'path'
 
-import { TestRenderer, act, render } from '@o/react-test-env'
+import { TestRenderer, act, render } from '@dish/react-test-env'
 import React from 'react'
 import webpack from 'webpack'
 

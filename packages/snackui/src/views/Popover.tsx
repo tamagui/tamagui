@@ -1,4 +1,4 @@
-import { fullyIdle, series } from '@o/async'
+import { fullyIdle, series } from '@dish/async'
 import React, {
   useCallback,
   useEffect,

@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { TestRenderer } from '@o/react-test-env'
+import { TestRenderer } from '@dish/react-test-env'
 import anyTest, { TestInterface } from 'ava'
 
 export const specDir = path.join(__dirname, '..', 'spec')

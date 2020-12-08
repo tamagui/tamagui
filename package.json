@@ -1,6 +1,7 @@
 {
   "name": "snackui-monorepo",
   "private": true,
+  "version": "0.0.0",
   "engines": {
     "node": "12.16.1"
   },

@@ -1,1 +1,1 @@
-module.exports = require('@o/babel-preset')
+module.exports = require('@dish/babel-preset')

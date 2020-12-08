@@ -1,4 +1,4 @@
-import { cleanup, render } from '@o/react-test-env'
+import { cleanup, render } from '@dish/react-test-env'
 import { TestInterface } from 'ava'
 import React from 'react'
 

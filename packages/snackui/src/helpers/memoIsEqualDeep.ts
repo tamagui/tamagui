@@ -1,4 +1,4 @@
-import { IsEqualOptions, isEqual } from '@o/fast-compare'
+import { IsEqualOptions, isEqual } from '@dish/fast-compare'
 import _ from 'lodash'
 import { memo } from 'react'
 

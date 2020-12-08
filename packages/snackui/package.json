@@ -3,10 +3,12 @@
   "version": "0.0.2",
   "main": "_/index.js",
   "tsmain": "src/index",
+  "types": "_/index.d.ts",
   "sideEffects": [
     "*.css"
   ],
   "scripts": {
+    "prebuild": "rm -f tsconfig.tsbuildinfo",
     "build": "npm-run-all --parallel build:main build:node",
     "build:main": "tsc -b",
     "build:node": "ttsc -p tsconfig.node.json",
@@ -15,8 +17,8 @@
     "watch:web": "ttsc -p tsconfig.node.json --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@o/async": "^0.0.1",
-    "@o/fast-compare": "^2.7.6",
+    "@dish/async": "^0.0.1",
+    "@dish/fast-compare": "^2.7.6",
     "lodash": "^4.17.20",
     "react-laag": "^1.7.3",
     "react-storage-hooks": "^4.0.0",
