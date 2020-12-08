@@ -30,7 +30,6 @@ SnackUI views flatten all style props onto the base props so there's no separate
 
 SnackUI features:
 
-- Stack views
 - **Stack views** with flat, simpler RN TypeScript types
   - VStack, HStack, ZStack
   - inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
