@@ -18,8 +18,9 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 
 ## Features
 
-SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler. It aims to be a **win-win-win-win**:
+SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler. It aims to be a **win-win-win-win-win**:
 
+- **Nicer base views**: Stacks are easy to learn and use
 - **Less up front time**: No more jumping between style/view, no time spent thinking about naming things.
 - **Less long term maintenance**: No dead code to clean up, no thinking about merging shared styles.
 - **Smaller bundle sizes**: Because everything is extracted to atomic CSS and theres no managing duplicate styles, you ship less JS and lighten your bundle.
@@ -27,30 +28,25 @@ SnackUI is light. It doesn't prescribe much beyond providing a few basic views t
 
 SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
 
-### Stack views
+SnackUI features:
 
+- Stack views
 - **Stack views** with flat, simpler RN TypeScript types
   - VStack, HStack, ZStack
   - inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
-
-### Optimizing compiler
-
-- fork of [JSXStyle](https://github.com/jsxstyle/jsxstyle)
-- flattens `<View />` and `<Text />` into `<div />` and `<span />` where possible, increasing render performance.
-- extracts inline styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
-- supports imported constant files for compiling shared constants and colors to CSS as well.
-- supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
-- supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
-
-### Pseudo styles
-
-- hoverStyle, pressStyle, and focusStyle
-- normalized for native and web
-
-### Development tools
-
-- add component name in DOM elements.
-- add `// debug` to the top of file for detailed optimization info.
+- Optimizing compiler
+  - fork of [JSXStyle](https://github.com/jsxstyle/jsxstyle)
+  - flattens `<View />` and `<Text />` into `<div />` and `<span />` where possible, increasing render performance.
+  - extracts inline styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
+  - supports imported constant files for compiling shared constants and colors to CSS as well.
+  - supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
+  - supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
+- Pseudo styles
+  - supports hoverStyle, pressStyle, and focusStyle
+  - normalizes tricky styling between native and web
+- Development tools
+  - shows component name in DOM elements.
+  - add `// debug` to the top of file for detailed optimization info.
 
 ## Example
 
@@ -133,10 +129,6 @@ module.exports = {
 ```
 
 react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
-
-- [Patch for react-native-web experimental](docs/react-native-web+0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
-
-Two big things to note before choosing this library. One is that react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
 
 - [Patch for react-native-web experimental](docs/react-native-web+0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
 
