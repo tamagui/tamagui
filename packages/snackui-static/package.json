@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "main": "_/index.js",
   "scripts": {
-    "build": "tsc -b || true",
+    "build": "tsc -b",
     "watch": "tsc -b --watch --preserveWatchOutput",
     "test": "SNACKUI_COMPILE_PROCESS=1 ava test/* --verbose",
     "test:debug": "SNACKUI_COMPILE_PROCESS=1 DEBUG_FILE=extract-specs.tsx DEBUG=1 yarn test",
