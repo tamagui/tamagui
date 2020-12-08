@@ -1,6 +1,6 @@
 {
   "name": "@snack/proxy-worm",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "index.js",
   "scripts": {
     "build": "true",

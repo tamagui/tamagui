@@ -1,6 +1,6 @@
 {
   "name": "snackui",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "_/index.js",
   "tsmain": "src/index",
   "types": "_/index.d.ts",
@@ -19,25 +19,25 @@
   "dependencies": {
     "@dish/async": "^0.0.1",
     "@dish/fast-compare": "^2.7.6",
-    "lodash": "^4.17.20",
-    "react-laag": "^1.7.3",
-    "react-storage-hooks": "^4.0.0",
-    "react-feather": "2.0.8",
-    "react-native-web": "*",
+    "@react-native-community/blur": "^3.6.0",
     "expo-linear-gradient": "8.4.0",
-    "@react-native-community/blur": "^3.6.0"
+    "lodash": "^4.17.20",
+    "react-feather": "2.0.8",
+    "react-laag": "^1.7.3",
+    "react-native-web": "*",
+    "react-storage-hooks": "^4.0.0"
   },
   "peerDependencies": {
-    "react-native": "*",
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "*"
   },
   "devDependencies": {
-    "typescript": "4.1.2",
     "@types/node": "^14.11.10",
-    "ttypescript": "^1.5.12",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "ttypescript": "^1.5.12",
+    "typescript": "4.1.2"
   }
 }
