@@ -18,7 +18,8 @@
     "build": "ultra -r --no-pretty --concurrency 16 build",
     "build:watch": "ultra -r --no-pretty --concurrency 500 watch",
     "test": "ultra -r --no-pretty --serial test",
-    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true"
+    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
+    "publish:all": "lerna publish"
   },
   "devDependencies": {
     "ava": "^3.8.2",
