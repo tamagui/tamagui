@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@snackui/static": "^0.0.2"
+    "@snackui/static": "^0.0.3"
   }
 }
