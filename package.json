@@ -19,6 +19,7 @@
   "devDependencies": {
     "@zerollup/ts-transform-paths": "^1.7.18",
     "ava": "^3.8.2",
+    "lerna": "^3.22.1",
     "prettier": "^2.1.2",
     "prettier-plugin-import-sort": "^0.0.4",
     "ts-node": "9.0.0",
