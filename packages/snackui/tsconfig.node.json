@@ -5,12 +5,14 @@
     "incremental": false,
     "outDir": "dist",
     "module": "CommonJS",
-    "paths": {
-      "react-native": ["../proxy-worm/index.js"]
-    },
     "plugins": [
       {
-        "transform": "@zerollup/ts-transform-paths"
+        "transform": "ts-transform-import-path-rewrite",
+        "import": "transform",
+        "alias": {
+          "^(react-native)$": "@dish/proxy-worm"
+        },
+        "type": "config"
       }
     ]
   }

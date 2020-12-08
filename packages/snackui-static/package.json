@@ -30,7 +30,8 @@
     "react-native-web": "*",
     "snackui": "^0.0.4",
     "unionfs": "^4.4.0",
-    "webpack": "^5.10.0"
+    "webpack": "^5.10.0",
+    "@dish/proxy-worm": "*"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.12.1",
@@ -54,5 +55,6 @@
     "react-test-renderer": "^16.14.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "4.1.2"
-  }
+  },
+  "gitHead": "173494bcef776ed00305f904d42ba48165159af6"
 }

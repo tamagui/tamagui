@@ -8,6 +8,10 @@
   "workspaces": {
     "packages": [
       "packages/*"
+    ],
+    "nohoist": [
+      "@dish/proxy-worm",
+      "@dish/proxy-worm/**"
     ]
   },
   "scripts": {
@@ -17,7 +21,6 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true"
   },
   "devDependencies": {
-    "@zerollup/ts-transform-paths": "^1.7.18",
     "ava": "^3.8.2",
     "lerna": "^3.22.1",
     "prettier": "^2.1.2",
