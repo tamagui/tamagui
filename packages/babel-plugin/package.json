@@ -3,6 +3,9 @@
   "version": "0.0.3",
   "main": "index.js",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@snackui/static": "^0.0.3"
   }
