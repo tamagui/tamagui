@@ -1,6 +1,6 @@
 {
   "name": "@snackui/static",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "_/index.js",
   "scripts": {
     "prebuild": "rm -f tsconfig.tsbuildinfo",
@@ -10,6 +10,9 @@
     "test:debug": "SNACKUI_COMPILE_PROCESS=1 DEBUG_FILE=extract-specs.tsx DEBUG=1 yarn test",
     "test:watch": "SNACKUI_COMPILE_PROCESS=1 yarn test --watch",
     "test:update-snapshots": "ava --update-snapshots"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "license": "MIT",
   "dependencies": {
