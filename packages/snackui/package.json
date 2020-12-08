@@ -24,7 +24,7 @@
     "react-storage-hooks": "^4.0.0",
     "react-feather": "2.0.8",
     "react-native-web": "*",
-    "expo-linear-gradient": "^8.3.1",
+    "expo-linear-gradient": "8.4.0",
     "@react-native-community/blur": "^3.6.0"
   },
   "peerDependencies": {
