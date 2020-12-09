@@ -18,13 +18,24 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 
 ## Features
 
-SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler. It aims to be a **win-win-win-win-win**:
+SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
+
+### Tradeoffs
+
+#### Pros
 
 - **Nicer base views**: Stacks are easy to learn and use
 - **Less up front time**: No more jumping between style/view, no time spent thinking about naming things.
 - **Less long term maintenance**: No dead code to clean up, no thinking about merging shared styles.
 - **Smaller bundle sizes**: Because everything is extracted to atomic CSS and theres no managing duplicate styles, you ship less JS and lighten your bundle.
 - **Faster runtime performance**: Your browser can parse the CSS as it loads the page, view flattening means React trees are far more shallow.
+- **Devtools**: Compiler outputs helpful information to DOM
+
+#### Cons
+
+- **More setup**: Need to configure a webpack plugin and babel plugin
+- **Is Beta**: Will run into edge cases
+- **Testing**: Needs to implement some testing helpers
 
 SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
 
