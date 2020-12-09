@@ -16,11 +16,9 @@
 
 SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web.
 
-## Features
-
 SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
 
-### Tradeoffs
+## Tradeoffs
 
 #### Pros
 
@@ -36,6 +34,8 @@ SnackUI is light. It doesn't prescribe much beyond providing a few basic views t
 - **More setup**: Need to configure a webpack plugin and babel plugin
 - **Is Beta**: Will run into edge cases
 - **Testing**: Needs to implement some testing helpers
+
+## Features
 
 SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
 
