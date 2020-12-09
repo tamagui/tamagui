@@ -97,7 +97,7 @@ Why is this beneficial? React Native Web's views like `<View />` and `<Text />` 
 Add snackui to your project:
 
 ```bash
-yarn add snackui @snackui/static
+yarn add snackui @snackui/babel-plugin
 ```
 
 You'll likely want to gitignore the outputted style files, though it's not necessary. In your `.gitignore`:
@@ -108,7 +108,9 @@ You'll likely want to gitignore the outputted style files, though it's not neces
 
 ### Babel - Native / Simple extraction (experimental)
 
-For a simpler setup you can just add `@snackui/static` as a babel plugin to get extraction just to StyleSheet.create(). This isn't as performant as going to CSS, but works with anything that supports babel.
+For a simpler setup you can just add `@snackui/babel-plugin` as a babel plugin to your babel config to get extraction just to StyleSheet.create(). This isn't as performant as going to CSS, but works with anything that supports babel.
+
+You can technically just use the babel plugin, but if you want much better flattening and CSS extraction, read on.
 
 ### Webpack - CSS extraction
 
