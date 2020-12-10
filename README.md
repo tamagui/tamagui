@@ -92,38 +92,42 @@ export function Component() {
 
 Why is this beneficial? React Native Web's views like `<View />` and `<Text />` are actually not so simple. [Read the source of Text](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/Text/index.js) for example. When you're rendering a large page with many text and view elements that can be statically extracted, using snackui saves React from having to process all of that logic on every render, for every Text and View.
 
-SnackUI supports extracting quite a few more advanced things:
+SnackUI has fairly advanced optimizations:
+
 
 ```tsx
 import { Text, VStack } from 'snackui'
 import { redColor } from './colors'
-/ this entire component can be extracted:
+
+// this entire component can be extracted:
+
+const height = 10
+
 export function Component(props) {
-  const height = 10
   return (
     <VStack
-      / constant values
+      // constant values
       height={height}
-      / imported constants (using the evaluateImportsWhitelist option)
+      // imported constants (using evaluateImportsWhitelist option)
       color={redColor}
-      / inline conditionals
+      // inline conditionals
       backgroundColor={props.highlight ? 'red' : 'blue'}
-      / spread objects
-      {...(props.hoverable && {
-        hoverStyle: { backgroundColor: 'blue' },
-      })}
-      / spread conditional objects
-      {...(props.condition
-        ? {
-            hoverStyle: { backgroundColor: 'blue' },
-          }
-        : {
-            hoverStyle: { backgroundColor: 'red' },
-          })}
+      // spread objects
+      {...props.hoverable && {
+        hoverStyle: { backgroundColor: 'blue' }
+      }}
+      // spread conditional objects
+      {...props.condition ? {
+          hoverStyle: { backgroundColor: 'blue' }
+        } : {
+          hoverStyle: { backgroundColor: 'red' }
+        }
+      }
     />
   )
 }
 ```
+
 
 ## Setup
 
