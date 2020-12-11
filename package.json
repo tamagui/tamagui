@@ -22,11 +22,11 @@
     "publish:all": "lerna publish"
   },
   "devDependencies": {
-    "ava": "^3.8.2",
+    "ava": "^3.14.0",
     "lerna": "^3.22.1",
-    "prettier": "^2.1.2",
-    "prettier-plugin-import-sort": "^0.0.4",
-    "ts-node": "9.0.0",
+    "prettier": "^2.2.1",
+    "prettier-plugin-import-sort": "^0.0.6",
+    "ts-node": "^9.1.1",
     "ultra-runner": "^3.6.0"
   },
   "importSort": {
