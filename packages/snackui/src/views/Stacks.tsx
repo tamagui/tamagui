@@ -316,6 +316,7 @@ const createStack = (defaultProps?: ViewStyle) => {
       expansionProps: {
         fullscreen: fullscreenStyle,
         disabled: disabledStyle,
+        shadowColor: fixNativeShadow,
         contain: ({ contain }) => ({
           contain,
         }),
@@ -342,7 +343,7 @@ function fixNativeShadow(props: any) {
     if (!('shadowOpacity' in props)) {
       const color = props.shadowColor as string
       res = res || {}
-      if (color[0] === 'r' && color[4] === 'a') {
+      if (color[0] === 'r' && color[3] === 'a') {
         const alphaIndex = color.lastIndexOf(',') + 1
         const alpha = +color.slice(alphaIndex).replace(')', '')
         if (isNaN(alpha)) {
