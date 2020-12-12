@@ -63,9 +63,10 @@ export function getStaticBindingsForScope(
         moduleName = path.resolve(sourceDir, moduleName)
       }
 
-      const isOnWhitelist = whitelist.some(
-        (x) => basename(x) === basename(moduleName)
-      )
+      const isOnWhitelist = whitelist.some((test) => moduleName.endsWith(test))
+
+      // TODO we could cache this at the file level.. and check if its been touched since
+
       if (isOnWhitelist) {
         let src: any
         const filenames = [
@@ -93,7 +94,7 @@ export function getStaticBindingsForScope(
           }
         }
         if (shouldPrintDebug) {
-          console.log('>> module on whitelist', moduleName)
+          console.log(' bindings via', moduleName)
         }
       }
       continue
