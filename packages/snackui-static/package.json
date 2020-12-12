@@ -1,6 +1,6 @@
 {
   "name": "@snackui/static",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "_/index.js",
   "scripts": {
     "prebuild": "rm -f tsconfig.tsbuildinfo",
@@ -22,16 +22,16 @@
     "@babel/parser": "^7.12.7",
     "@babel/traverse": "^7.12.9",
     "@babel/types": "^7.12.7",
+    "@dish/proxy-worm": "*",
     "babel-literal-to-ast": "^2.1.0",
     "fs-extra": "^9.0.0",
     "invariant": "^2.2.4",
     "loader-utils": "^2.0.0",
     "memfs": "^3.2.0",
     "react-native-web": "*",
-    "snackui": "^0.0.4",
+    "snackui": "^0.0.5",
     "unionfs": "^4.4.0",
-    "webpack": "^5.10.0",
-    "@dish/proxy-worm": "*"
+    "webpack": "^5.10.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.12.1",
