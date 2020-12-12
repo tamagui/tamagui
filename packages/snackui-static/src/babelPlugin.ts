@@ -1,4 +1,3 @@
-import { PluginOptions } from '@babel/core'
 import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
@@ -6,6 +5,7 @@ import * as t from '@babel/types'
 
 import { createExtractor } from './extractor/createExtractor'
 import { literalToAst } from './extractor/literalToAst'
+import { PluginOptions } from './types'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -28,7 +28,13 @@ export const babelPlugin = declare((api, options: PluginOptions): {
 
     visitor: {
       Program: {
-        enter(root) {
+        enter(this: any, root, state) {
+          const sourceFileName = this.file.opts.filename
+
+          if (options.exclude?.test(sourceFileName)) {
+            return
+          }
+
           let hasImportedView = false
           let sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
@@ -49,8 +55,9 @@ export const babelPlugin = declare((api, options: PluginOptions): {
           }
 
           extractor.parse(root, {
+            sourceFileName,
             shouldPrintDebug,
-            evaluateImportsWhitelist: ['constants.ts'],
+            evaluateImportsWhitelist: ['constants.js', 'colors.js'],
             deoptProps: [
               'hoverStyle',
               'pressStyle',

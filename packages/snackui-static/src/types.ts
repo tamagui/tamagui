@@ -5,12 +5,13 @@ export interface CacheObject {
 }
 
 export interface PluginOptions {
-  // options here
+  // user options
   evaluateVars?: boolean
   evaluateImportsWhitelist?: string[]
+  exclude?: RegExp
+  // more internal
   deoptProps?: string[]
   excludeProps?: string[]
-  cacheFile?: string
 }
 
 export interface PluginContext {
