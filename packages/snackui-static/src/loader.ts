@@ -1,10 +1,13 @@
 import * as fs from 'fs-extra'
 import loaderUtils from 'loader-utils'
 
-import { extractToCSS } from './ast/extractToCSS'
-import { LoaderOptions } from './types'
+import { createExtractor } from './extractor/createExtractor'
+import { extractToClassNames } from './extractor/extractToClassNames'
+import { PluginOptions } from './types'
 
 Error.stackTraceLimit = Infinity
+
+const extractor = createExtractor()
 
 export default function GlossWebpackLoader(this: any, content) {
   if (this.cacheable) {
@@ -14,8 +17,8 @@ export default function GlossWebpackLoader(this: any, content) {
     return content
   }
 
-  const options: LoaderOptions = loaderUtils.getOptions(this) || {}
-  const rv = extractToCSS(content, this.resourcePath, options)
+  const options: PluginOptions = loaderUtils.getOptions(this) || {}
+  const rv = extractToClassNames(extractor, content, this.resourcePath, options)
   if (!rv) {
     return content
   }

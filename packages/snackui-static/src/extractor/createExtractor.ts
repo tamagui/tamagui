@@ -7,8 +7,8 @@ import invariant from 'invariant'
 import { TextStyle, ViewStyle } from 'react-native'
 import * as AllExports from 'snackui/node'
 
-import { pseudos } from '../getStylesAtomic'
-import { ExtractStylesOptions } from '../types'
+import { pseudos } from '../css/getStylesAtomic'
+import { PluginOptions } from '../types'
 import { evaluateAstNode } from './evaluateAstNode'
 import {
   Ternary,
@@ -24,8 +24,6 @@ const UNTOUCHED_PROPS = {
   style: true,
   className: true,
 }
-
-type ClassNameObject = t.StringLiteral | t.Expression
 
 type OptimizableComponent = Function & {
   staticConfig: {
@@ -66,37 +64,32 @@ type ExtractTagProps = {
   }
 }
 
-export function createExtractor({
-  shouldPrintDebug = false,
-  options,
-  sourceFileName,
-}: {
+export type Extractor = ReturnType<typeof createExtractor>
+
+export type ExtractorParseProps = PluginOptions & {
+  sourceFileName?: string
   shouldPrintDebug?: boolean
-  options: ExtractStylesOptions
-  sourceFileName: string
-}) {
+  onExtractTag: (props: ExtractTagProps) => void
+  getFlattenedNode: (props: { isTextView: boolean }) => string
+}
+
+export function createExtractor() {
   const bindingCache: Record<string, string | null> = {}
-
-  options = {
-    evaluateVars: true,
-    ...options,
-  }
-
-  const deoptProps = new Set(options.deoptProps ?? [])
-  const excludeProps = new Set(options.excludeProps ?? [])
-
-  if (shouldPrintDebug) {
-    console.log('createExtractor', { options })
-  }
-
   return {
     parse: (
       path: NodePath<t.Program>,
-      props: {
-        onExtractTag: (props: ExtractTagProps) => void
-        getFlattenedNode: (props: { isTextView: boolean }) => string
-      }
+      {
+        evaluateImportsWhitelist = [],
+        evaluateVars = true,
+        shouldPrintDebug = false,
+        sourceFileName = '',
+        onExtractTag,
+        getFlattenedNode,
+        ...props
+      }: ExtractorParseProps
     ) => {
+      const deoptProps = new Set(props.deoptProps ?? [])
+      const excludeProps = new Set(props.excludeProps ?? [])
       let doesUseValidImport = false
 
       /**
@@ -142,7 +135,7 @@ export function createExtractor({
           const originalNodeName = node.name.name
           const isTextView = originalNodeName.endsWith('Text')
           const validStyles = staticConfig?.validStyles ?? {}
-          const domNode = props.getFlattenedNode({ isTextView })
+          const domNode = getFlattenedNode({ isTextView })
 
           if (shouldPrintDebug) {
             console.log(`\n<${originalNodeName} />`)
@@ -156,13 +149,13 @@ export function createExtractor({
             )
           }
 
-          const attemptEval = !options.evaluateVars
+          const attemptEval = !evaluateVars
             ? evaluateAstNode
             : (() => {
                 // Generate scope object at this level
                 const staticNamespace = getStaticBindingsForScope(
                   traversePath.scope,
-                  options.evaluateImportsWhitelist ?? ['constants.js'],
+                  evaluateImportsWhitelist ?? ['constants.js'],
                   sourceFileName,
                   bindingCache,
                   shouldPrintDebug
@@ -341,7 +334,9 @@ export function createExtractor({
           })
 
           if (couldntParse || shouldDeopt) {
-            console.log('  COULDNT PARSE / DEOPT')
+            if (shouldPrintDebug) {
+              console.log(`  `, { couldntParse, shouldDeopt })
+            }
             return
           }
 
@@ -808,7 +803,7 @@ export function createExtractor({
 
           const ternaries = extractStaticTernaries(staticTernaries)
 
-          props.onExtractTag({
+          onExtractTag({
             attemptEval,
             jsxPath: traversePath,
             node,

@@ -7,19 +7,20 @@ import * as t from '@babel/types'
 import invariant from 'invariant'
 
 import { CSS_FILE_NAME } from '../constants'
-import { getStylesAtomic } from '../getStylesAtomic'
-import { ClassNameToStyleObj, ExtractStylesOptions } from '../types'
-import { createExtractor } from './createExtractor'
-import { TernaryRecord } from './extractStaticTernaries'
+import { getStylesAtomic } from '../css/getStylesAtomic'
+import { Extractor, createExtractor } from '../extractor/createExtractor'
+import { TernaryRecord } from '../extractor/extractStaticTernaries'
+import { ClassNameToStyleObj, PluginOptions } from '../types'
+import { babelParse } from './babelParse'
 import { getPropValueFromAttributes } from './getPropValueFromAttributes'
-import { parse } from './parse'
 
 type ClassNameObject = t.StringLiteral | t.Expression
 
-export function extractToCSS(
+export function extractToClassNames(
+  extractor: Extractor,
   src: string | Buffer,
   sourceFileName: string,
-  options: ExtractStylesOptions
+  options: PluginOptions
 ): null | {
   js: string | Buffer
   css: string
@@ -43,13 +44,21 @@ export function extractToCSS(
     (src[0] === '/' && src.startsWith('// debug'))
 
   // Using a map for (officially supported) guaranteed insertion order
-  const ast = parse(src)
+  let ast: t.File
 
-  const extractor = createExtractor({
-    shouldPrintDebug,
-    sourceFileName,
-    options,
-  })
+  try {
+    ast = babelParse(src)
+  } catch (err) {
+    console.error(
+      'babel parsing error',
+      sourceFileName,
+      err.message,
+      '\n',
+      err.stack,
+      src
+    )
+    throw new Error(`Couldn't parse`)
+  }
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists = {}

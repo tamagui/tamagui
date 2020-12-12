@@ -5,7 +5,7 @@ import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet
 import createReactDOMStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createReactDOMStyle'
 import i18Style from 'react-native-web/dist/cjs/exports/StyleSheet/i18nStyle'
 
-import { StyleObject } from './types'
+import { StyleObject } from '../types'
 
 export const pseudos = {
   focusStyle: {
