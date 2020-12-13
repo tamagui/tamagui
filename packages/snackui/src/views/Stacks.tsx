@@ -316,7 +316,7 @@ const createStack = (defaultProps?: ViewStyle) => {
       expansionProps: {
         fullscreen: fullscreenStyle,
         disabled: disabledStyle,
-        shadowColor: fixNativeShadow,
+        shadowColor: isWeb ? null : fixNativeShadow,
         contain: ({ contain }) => ({
           contain,
         }),
@@ -332,13 +332,14 @@ const defaultShadowOffset = {
   height: 0,
 }
 
-function fixNativeShadow(props: any) {
-  let res
+function fixNativeShadow(props: StackProps) {
+  let res: any
   if ('shadowColor' in props) {
+    res = {
+      shadowColor: props.shadowColor,
+    }
     if (!('shadowOffset' in props)) {
-      res = {
-        shadowOffset: defaultShadowOffset,
-      }
+      res.shadowOffset = defaultShadowOffset
     }
     if (!('shadowOpacity' in props)) {
       const color = props.shadowColor as string

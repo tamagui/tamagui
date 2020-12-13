@@ -79,7 +79,7 @@ export function createExtractor() {
     parse: (
       path: NodePath<t.Program>,
       {
-        evaluateImportsWhitelist = [],
+        evaluateImportsWhitelist = ['constants.js'],
         evaluateVars = true,
         shouldPrintDebug = false,
         sourceFileName = '',
@@ -91,6 +91,10 @@ export function createExtractor() {
       const deoptProps = new Set(props.deoptProps ?? [])
       const excludeProps = new Set(props.excludeProps ?? [])
       let doesUseValidImport = false
+
+      if (sourceFileName === '') {
+        throw new Error(`Must provide a source file name`)
+      }
 
       /**
        * Step 1: Determine if importing any statically extractable components
@@ -156,7 +160,7 @@ export function createExtractor() {
           // Generate scope object at this level
           const staticNamespace = getStaticBindingsForScope(
             traversePath.scope,
-            evaluateImportsWhitelist ?? ['constants.js'],
+            evaluateImportsWhitelist,
             sourceFileName,
             bindingCache,
             shouldPrintDebug
@@ -740,7 +744,7 @@ export function createExtractor() {
               const expansion = staticConfig?.expansionProps?.[name]
               if (typeof expansion === 'function') {
                 if (shouldPrintDebug) {
-                  console.log('expanding', name, value, fullProps)
+                  console.log('  expanding', name, value)
                 }
                 try {
                   return expansion({ ...fullProps, [name]: value })

@@ -80,6 +80,10 @@ export function getStaticBindingsForScope(
             break
           }
         }
+        if (src === undefined) {
+          console.warn('missing?')
+          return {}
+        }
         if (sourceModule.destructured) {
           if (sourceModule.imported) {
             ret[k] = src[sourceModule.imported]

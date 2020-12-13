@@ -1,6 +1,6 @@
-// dont import react-native
+// dont import things
 
-export const isWeb = typeof document !== 'undefined'
+export const isWeb = !process.env.TARGET || process.env.TARGET === 'web'
 export const isWebIOS =
   typeof window !== 'undefined' &&
   (/iPad|iPhone|iPod/.test(navigator.platform) ||

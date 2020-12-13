@@ -8,7 +8,7 @@ import invariant from 'invariant'
 
 import { CSS_FILE_NAME } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
-import { Extractor, createExtractor } from '../extractor/createExtractor'
+import { Extractor } from '../extractor/createExtractor'
 import { TernaryRecord } from '../extractor/extractStaticTernaries'
 import { ClassNameToStyleObj, PluginOptions } from '../types'
 import { babelParse } from './babelParse'
@@ -68,6 +68,9 @@ export function extractToClassNames(
   traverse(ast, {
     Program(path) {
       extractor.parse(path, {
+        sourceFileName,
+        shouldPrintDebug,
+        ...options,
         getFlattenedNode: ({ isTextView }) => {
           return isTextView ? 'span' : 'div'
         },
