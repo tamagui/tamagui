@@ -114,6 +114,9 @@ export const babelPlugin = declare((api, options: PluginOptions): {
           })
 
           if (!Object.keys(sheetStyles).length) {
+            if (shouldPrintDebug) {
+              console.log('END no styles')
+            }
             return
           }
 
