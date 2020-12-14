@@ -1,13 +1,13 @@
 {
   "name": "@snackui/babel-plugin",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "index.js",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@snackui/static": "^0.0.5"
+    "@snackui/static": "^0.0.6"
   },
   "gitHead": "173494bcef776ed00305f904d42ba48165159af6"
 }

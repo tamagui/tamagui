@@ -1,6 +1,6 @@
 {
   "name": "@snackui/static",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "_/index.js",
   "scripts": {
     "prebuild": "rm -f tsconfig.tsbuildinfo",
@@ -29,7 +29,7 @@
     "loader-utils": "^2.0.0",
     "memfs": "^3.2.0",
     "react-native-web": "*",
-    "snackui": "^0.0.5",
+    "snackui": "^0.0.6",
     "unionfs": "^4.4.0",
     "webpack": "^5.10.0"
   },
