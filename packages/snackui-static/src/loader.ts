@@ -13,7 +13,7 @@ export default function GlossWebpackLoader(this: any, content) {
   if (this.cacheable) {
     this.cacheable()
   }
-  if (content[0] === '/' && content.startsWith('// static-ui-ignore')) {
+  if (content[0] === '/' && content.startsWith('// disable-snackui')) {
     return content
   }
 

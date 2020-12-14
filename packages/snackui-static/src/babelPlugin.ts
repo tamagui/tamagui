@@ -38,8 +38,13 @@ export const babelPlugin = declare((api, options: PluginOptions): {
           let hasImportedView = false
           let sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
-          const shouldPrintDebug =
-            root.node.body[0]?.leadingComments?.[0]?.value === ' debug'
+          const firstComment = root.node.body[0]?.leadingComments?.[0]?.value
+
+          if (firstComment === 'disable-snackui') {
+            return
+          }
+
+          const shouldPrintDebug = firstComment === ' debug'
 
           function addSheetStyle(style: any) {
             const key = `${Object.keys(sheetStyles).length}`
