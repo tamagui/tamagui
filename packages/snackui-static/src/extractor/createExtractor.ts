@@ -826,11 +826,7 @@ export function createExtractor() {
           if (shouldPrintDebug) {
             console.log(
               '  EVAL staticTernaries',
-              staticTernaries.map((x) => [
-                `${x.test['object']?.['name']}.${x.test['property']?.['name']}`,
-                x.alternate,
-                x.consequent,
-              ])
+              staticTernaries.map((x) => [x.test, x.alternate, x.consequent])
             )
           }
 
