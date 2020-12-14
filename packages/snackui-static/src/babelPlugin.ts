@@ -1,3 +1,4 @@
+import generator from '@babel/generator'
 import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
@@ -129,6 +130,10 @@ export const babelPlugin = declare((api, options: PluginOptions): {
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
 
           root.unshiftContainer('body', sheetOuter)
+
+          if (shouldPrintDebug) {
+            console.log('>>', generator(root.parent).code)
+          }
         },
       },
     },
