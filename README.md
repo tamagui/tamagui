@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img margin="auto" width="612px" src="https://raw.githubusercontent.com/natew/snackui/master/snackui.jpg" alt="SnackUI">
+  <img margin="auto" width="612px" src="https://raw.githubusercontent.com/natew/snackui/master/snackui.png" alt="SnackUI">
   <br>
   SnackUI
   <br>
