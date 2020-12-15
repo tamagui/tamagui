@@ -1,17 +1,13 @@
 import generate from '@babel/generator'
+import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import invariant from 'invariant'
 
 export interface Ternary {
   test: t.Expression
+  remove: Function
   consequent: Object | null
   alternate: Object | null
-}
-
-export type TernaryRecord = {
-  test: t.Expression
-  consequentStyles: Object
-  alternateStyles: Object
 }
 
 export function extractStaticTernaries(ternaries: Ternary[]) {
@@ -24,10 +20,10 @@ export function extractStaticTernaries(ternaries: Ternary[]) {
     return null
   }
 
-  const ternariesByKey: Record<string, TernaryRecord> = {}
+  const ternariesByKey: { [key: string]: Ternary } = {}
 
   for (let idx = -1, len = ternaries.length; ++idx < len; ) {
-    const { test, consequent, alternate } = ternaries[idx]
+    const { test, consequent, alternate, remove } = ternaries[idx]
 
     let ternaryTest = test
 
@@ -53,15 +49,18 @@ export function extractStaticTernaries(ternaries: Ternary[]) {
 
     const key = generate(ternaryTest).code
 
-    ternariesByKey[key] = ternariesByKey[key] || {
-      alternateStyles: {},
-      consequentStyles: {},
-      test: ternaryTest,
+    if (!ternariesByKey[key]) {
+      ternariesByKey[key] = {
+        alternate: {},
+        consequent: {},
+        test: ternaryTest,
+        remove,
+      }
     }
     const altStyle = (shouldSwap ? consequent : alternate) ?? {}
     const consStyle = (shouldSwap ? alternate : consequent) ?? {}
-    Object.assign(ternariesByKey[key].alternateStyles, altStyle)
-    Object.assign(ternariesByKey[key].consequentStyles, consStyle)
+    Object.assign(ternariesByKey[key].alternate, altStyle)
+    Object.assign(ternariesByKey[key].consequent, consStyle)
   }
 
   const ternaryExpression = Object.keys(ternariesByKey).map((key) => {

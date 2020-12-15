@@ -2,12 +2,12 @@ import '@dish/react-test-env/jsdom-register'
 
 import path from 'path'
 
-import * as babel from '@babel/core'
 import anyTest, { TestInterface } from 'ava'
 import React from 'react'
 import webpack from 'webpack'
 
 import { externalizeModules } from './lib/externalizeModules'
+import { extractBabel } from './lib/extract'
 import { outDir, specDir } from './lib/test-constants'
 import { testStyles } from './lib/testStyles'
 
@@ -23,6 +23,7 @@ export const test = anyTest as TestInterface<{
 
 test.before(async (t) => {
   await extractStaticApp()
+  process.env.IS_STATIC = undefined
   t.context.app = require(outFileFull)
 })
 
@@ -32,7 +33,7 @@ test.before(async (t) => {
 testStyles(test)
 
 test('basic extraction', async (t) => {
-  const output = extract(`
+  const output = extractBabel(`
 import { VStack } from 'snackui'
 
 export function Test() {
@@ -47,7 +48,7 @@ export function Test() {
 })
 
 test('basic conditional extraction', async (t) => {
-  const output = extract(`
+  const output = extractBabel(`
 import { VStack } from 'snackui'
 
 export function Test() {
@@ -64,21 +65,6 @@ export function Test() {
   t.assert(code.includes(`_sheet["3"], x ? _sheet["4"] : _sheet["5"]`))
 })
 
-function extract(code: string) {
-  return babel.transformSync(code, {
-    filename: 'test.tsx',
-    plugins: [
-      require('@snackui/babel-plugin'),
-      [
-        '@babel/plugin-syntax-typescript',
-        {
-          isTSX: true,
-        },
-      ],
-    ],
-  })
-}
-
 async function extractStaticApp() {
   const compiler = webpack({
     context: specDir,
@@ -87,6 +73,7 @@ async function extractStaticApp() {
     optimization: {
       minimize: false,
       concatenateModules: false,
+      splitChunks: false,
     },
     entry: path.join(specDir, 'extract-specs.tsx'),
     output: {

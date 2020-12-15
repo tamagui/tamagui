@@ -2,14 +2,16 @@ import path from 'path'
 import util from 'util'
 
 import generate from '@babel/generator'
-import traverse from '@babel/traverse'
+import traverse, { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import invariant from 'invariant'
+import { ViewStyle } from 'react-native'
+import { defaultMediaQueries, mediaObjectToString } from 'snackui/node'
 
 import { CSS_FILE_NAME } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
 import { Extractor } from '../extractor/createExtractor'
-import { TernaryRecord } from '../extractor/extractStaticTernaries'
+import { Ternary } from '../extractor/extractStaticTernaries'
 import { ClassNameToStyleObj, PluginOptions } from '../types'
 import { babelParse } from './babelParse'
 import { getPropValueFromAttributes } from './getPropValueFromAttributes'
@@ -62,12 +64,15 @@ export function extractToClassNames(
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists = {}
+  const mediaQueries = options.mediaQueries ?? defaultMediaQueries
 
   let didExtract = false
 
+  const modifiedComponents = new Set<NodePath<any>>()
+
   traverse(ast, {
-    Program(path) {
-      extractor.parse(path, {
+    Program(programPath) {
+      extractor.parse(programPath, {
         sourceFileName,
         shouldPrintDebug,
         ...options,
@@ -81,6 +86,8 @@ export function extractToClassNames(
           ternaries,
           jsxPath,
           originalNodeName,
+          filePath,
+          lineNumbers,
           spreadInfo,
         }) => {
           didExtract = true
@@ -110,11 +117,78 @@ export function extractToClassNames(
             }
           }
 
+          const stylesByClassName: ClassNameToStyleObj = {}
+          const filteredMediaQueries = new Set<string>()
+
+          // convert media query ternaries into media queries
+          if (ternaries) {
+            ternaries = ternaries.filter((ternary) => {
+              const result = getMediaQueryTernary(jsxPath, ternary)
+              if (!result) {
+                // cant evaluate as media query, keep it
+                return true
+              }
+              const { key, bindingName } = result
+              const mediaQuery = mediaQueries[key]
+              if (!mediaQuery) {
+                console.error(
+                  `Media query key "${key}" but not found in: ${Object.keys(
+                    mediaQueries
+                  )}`
+                )
+                return true
+              }
+              const getStyleObj = (
+                styleObj: ViewStyle | null,
+                negate = false
+              ) => {
+                return styleObj ? { styleObj, negate } : null
+              }
+              const styleOpts = [
+                getStyleObj(ternary.consequent, false),
+                getStyleObj(ternary.alternate, true),
+              ].filter(isPresent)
+              for (const { styleObj, negate } of styleOpts) {
+                const styles = getStylesAtomic(styleObj, null, shouldPrintDebug)
+                const mediaStyles = styles.map((style) => {
+                  const negKey = negate ? '_not' : ''
+                  const identifier = `${style.identifier}_${key}${negKey}`
+                  const className = `.${identifier}`
+                  const mediaSelector = mediaObjectToString(mediaQueries[key])
+                  const screenStr = negate ? ' not' : ''
+                  const mediaStr = `@media${screenStr} screen and ${mediaSelector}`
+                  const styleInner = style.rules[0].replace(
+                    style.className,
+                    className
+                  )
+                  const styleRule = `${mediaStr} { ${styleInner} }`
+                  return {
+                    ...style,
+                    identifier,
+                    className,
+                    rules: [styleRule],
+                  }
+                })
+
+                // add to output
+                for (const mediaStyle of mediaStyles) {
+                  stylesByClassName[mediaStyle.identifier] = mediaStyle
+                  classNameObjects.push(t.stringLiteral(mediaStyle.identifier))
+                }
+              }
+
+              // filter out
+              ternary.remove()
+              filteredMediaQueries.add(bindingName)
+
+              return false
+            })
+          }
+
           let classNamePropValueForReals = buildClassNamePropValue(
             classNameObjects
           )
 
-          const stylesByClassName: ClassNameToStyleObj = {}
           const addStylesAtomic = (style: any) => {
             if (!style || !Object.keys(style).length) {
               return []
@@ -135,18 +209,18 @@ export function extractToClassNames(
               classNames.push(style.identifier)
             }
             if (shouldPrintDebug) {
-              console.log('  ', { classNames, viewStyles })
+              console.log('  ', classNames.join(', '), viewStyles)
             }
           }
 
-          function getTernaryExpression(record: TernaryRecord, idx: number) {
+          function getTernaryExpression(record: Ternary, idx: number) {
             const consInfo = addStylesAtomic({
               ...viewStyles,
-              ...record.consequentStyles,
+              ...record.consequent,
             })
             const altInfo = addStylesAtomic({
               ...viewStyles,
-              ...record.alternateStyles,
+              ...record.alternate,
             })
             const cCN = consInfo.map((x) => x.identifier).join(' ')
             const aCN = altInfo.map((x) => x.identifier).join(' ')
@@ -256,16 +330,14 @@ export function extractToClassNames(
             )
           }
 
-          const lineNumbers =
-            node.loc &&
-            node.loc.start.line +
-              (node.loc.start.line !== node.loc.end.line
-                ? `-${node.loc.end.line}`
-                : '')
+          const parentFn = findTopmostFunction(jsxPath)
+          if (parentFn) {
+            modifiedComponents.add(parentFn)
+          }
 
           const comment = util.format(
             '/* %s:%s (%s) */',
-            sourceFileName.replace(process.cwd(), '.'),
+            filePath,
             lineNumbers,
             originalNodeName
           )
@@ -273,7 +345,7 @@ export function extractToClassNames(
           if (shouldPrintDebug) {
             console.log(
               '  final styled classnames',
-              Object.keys(stylesByClassName)
+              Object.keys(stylesByClassName).join(', ')
             )
           }
 
@@ -305,6 +377,13 @@ export function extractToClassNames(
       })
     },
   })
+
+  // run once after traversing to save some runtime cost
+  if (modifiedComponents.size) {
+    for (const comp of [...modifiedComponents]) {
+      removeUnusedMediaQueryHooks(comp, shouldPrintDebug)
+    }
+  }
 
   if (!didExtract) {
     return null
@@ -460,5 +539,139 @@ function hoistClassNames(path: any, existing: any, expr: any) {
     ])
     parent.unshiftContainer('body', variable)
     return uid
+  }
+}
+
+function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression) {
+  if (!t.isCallExpression(init)) return false
+  if (!t.isIdentifier(init.callee)) return false
+  // TODO could support renaming useMedia by looking up import first
+  if (init.callee.name !== 'useMedia') return false
+  if (!jsxPath.scope.hasBinding('useMedia')) return false
+  const useMediaImport = jsxPath.scope.getBinding('useMedia')?.path.parent
+  if (!t.isImportDeclaration(useMediaImport)) return false
+  if (useMediaImport.source.value !== 'snackui') return false
+  return true
+}
+
+function getMediaQueryTernary(
+  jsxPath: NodePath<t.JSXElement>,
+  ternary: Ternary
+) {
+  // const media = useMedia()
+  // ... media.sm
+  if (
+    t.isMemberExpression(ternary.test) &&
+    t.isIdentifier(ternary.test.object) &&
+    t.isIdentifier(ternary.test.property)
+  ) {
+    const name = ternary.test.object.name
+    const key = ternary.test.property.name
+    if (!jsxPath.scope.hasBinding(name)) return false
+    const bindingNode = jsxPath.scope.getBinding(name)?.path?.node
+    if (!t.isVariableDeclarator(bindingNode) || !bindingNode.init) return false
+    if (!isValidMediaCall(jsxPath, bindingNode.init)) return false
+    return { key, bindingName: name }
+  }
+  // const { sm } = useMedia()
+  // ... sm
+  if (t.isIdentifier(ternary.test)) {
+    const key = ternary.test.name
+    const node = jsxPath.scope.getBinding(ternary.test.name)?.path?.node
+    if (!t.isVariableDeclarator(node)) return false
+    if (!node.init || !isValidMediaCall(jsxPath, node.init)) return false
+    return { key, bindingName: key }
+  }
+  return false
+}
+
+export function isPresent<T extends Object>(
+  input: null | undefined | T
+): input is T {
+  return input != null
+}
+
+function findTopmostFunction(jsxPath: NodePath<t.JSXElement>) {
+  // get topmost fn
+  const isFunction = (path: NodePath<any>) =>
+    path.isArrowFunctionExpression() || path.isFunctionDeclaration()
+  let compFn: NodePath<any> = jsxPath
+  while (true) {
+    const parent = compFn.findParent(isFunction)
+    if (parent) {
+      compFn = parent
+    } else {
+      break
+    }
+  }
+  if (!compFn) {
+    console.error(`Couldn't find a topmost function for media query extraction`)
+    return null
+  }
+  return compFn
+}
+
+function removeUnusedMediaQueryHooks(
+  compFn: NodePath<any>,
+  shouldPrintDebug: boolean
+) {
+  compFn.scope.crawl()
+  // check the top level statements
+  let bodyStatements = compFn?.get('body') as any
+  if (!bodyStatements) {
+    console.log('no body statemnts?', compFn)
+    return
+  }
+  if (!Array.isArray(bodyStatements)) {
+    if (bodyStatements.isBlockStatement()) {
+      bodyStatements = bodyStatements.get('body')
+    }
+  }
+  if (!Array.isArray(bodyStatements)) {
+    return
+  }
+  const statements = bodyStatements as NodePath<any>[]
+  for (const statement of statements) {
+    if (!statement.isVariableDeclaration()) {
+      continue
+    }
+    const declarations = statement.get('declarations')
+    if (!Array.isArray(declarations)) {
+      continue
+    }
+    const isBindingReferenced = (name: string) => {
+      return !!statement.scope.getBinding(name)?.referenced
+    }
+    for (const declarator of declarations) {
+      const id = declarator.get('id')
+      const init = declarator.node.init
+      if (Array.isArray(id) || Array.isArray(init)) {
+        continue
+      }
+      const shouldRemove = (() => {
+        if (t.isIdentifier(id.node)) {
+          // remove "const media = useMedia()"
+          const name = id.node.name
+          return !isBindingReferenced(name)
+        } else if (t.isObjectPattern(id.node)) {
+          // remove "const { sm } = useMedia()"
+          const propPaths = id.get('properties') as NodePath<any>[]
+          return propPaths.every((prop) => {
+            if (!prop.isObjectProperty()) return false
+            const value = prop.get('value')
+            if (Array.isArray(value) || !value.isIdentifier()) return false
+            const name = value.node.name
+            return !isBindingReferenced(name)
+          })
+        }
+        return false
+      })()
+      if (shouldRemove) {
+        declarator.remove()
+        if (shouldPrintDebug) {
+          console.log(`  removed unused media query ${id.node['name'] ?? ''}`)
+        }
+      }
+    }
   }
 }

@@ -204,11 +204,37 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 See [the roadmap](roadmap.md):
 
-- [ ] Themes
 - [ ] Media Queries
-- [ ] Support <Stack spacing />
-- [ ] Support <Input />, <Spacer flex />, <LinearGradient />, maybe <Image />
+- [ ] Themes
+- [ ] Extract advanced reference extraction
+- [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
+- [ ] Support `<Stack spacing />`
+- [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
 - [ ] Support a few logical HTML props: onPress, etc
+
+#### Advanced reference extraction (plan)
+
+Complex example:
+
+```tsx
+function Component() {
+  const media = useMedia()
+
+  // support extracting this to CSS entirely
+  const color = media.xs ? 'red' : 'blue'
+  const styles = {
+    maxWidth: media.sm ? 100 : 200
+    // ... other extaction semantics support as well
+  }
+
+  return (
+    <>
+      <VStack {...styles} color={color} />
+      <VStack width={styles.maxWidth} />
+    </>
+  )
+}
+```
 
 ## License
 

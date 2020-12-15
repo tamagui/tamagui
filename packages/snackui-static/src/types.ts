@@ -1,4 +1,5 @@
 import { IFs } from 'memfs'
+import { MediaQueries } from 'snackui'
 
 export interface CacheObject {
   [key: string]: any
@@ -9,7 +10,8 @@ export interface PluginOptions {
   evaluateVars?: boolean
   evaluateImportsWhitelist?: string[]
   exclude?: RegExp
-  // more internal
+  mediaQueries?: MediaQueries
+  // probably non user options
   deoptProps?: string[]
   excludeProps?: string[]
 }

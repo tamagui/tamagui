@@ -47,7 +47,7 @@ export function testStyles(
   })
 }
 
-async function getTestElement(Component: any, conditional = false) {
+export async function getTestElement(Component: any, conditional = false) {
   const out = render(<Component conditional={conditional} />)
   const childElement = await out.findByText('hello world')
   const element = childElement.parentElement!
@@ -59,7 +59,7 @@ async function getTestElement(Component: any, conditional = false) {
   }
 }
 
-async function getTestElements(Component: any) {
+export async function getTestElements(Component: any) {
   return [
     await getTestElement(Component, true),
     await getTestElement(Component, false),

@@ -13,6 +13,7 @@ type TestApp = {
 }
 
 export const test = anyTest as TestInterface<{
+  testmediaquery: TestApp
   test1: TestApp
   test2: TestApp
   test3: TestApp

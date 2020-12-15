@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AbsoluteVStack, Box, Spacer, Text, VStack } from 'snackui'
+import { AbsoluteVStack, Box, Spacer, Text, VStack, useMedia } from 'snackui'
 
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'
@@ -12,6 +12,30 @@ type TestProps = {
 }
 
 const child = <Text>hello world</Text>
+
+export function TestMediaQuery() {
+  const media = useMedia() // should extract
+  const { sm } = useMedia() // should extract
+  const media2 = useMedia() // should remain
+  const media3 = useMedia() // should remain
+  return (
+    <>
+      <VStack
+        backgroundColor={!sm ? 'green' : 'red'}
+        paddingRight={media.sm ? 10 : 0}
+        {...(media.xs && { borderTopWidth: 1 })}
+      >
+        {child}
+      </VStack>
+      <VStack
+        borderRightWidth={media2.xs && nonStaticInt ? 1 : 0}
+        borderLeftWidth={media3.sm ? 1 : 0}
+      >
+        {media3.lg && <div />}
+      </VStack>
+    </>
+  )
+}
 
 export function Test1() {
   return (

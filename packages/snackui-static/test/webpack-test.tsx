@@ -1,3 +1,4 @@
+import '@expo/match-media'
 import '@dish/react-test-env/jsdom-register'
 
 import path from 'path'
@@ -8,19 +9,17 @@ import webpack from 'webpack'
 
 import { externalizeModules } from './lib/externalizeModules'
 import { outDir, specDir, test } from './lib/test-constants'
-import { testStyles } from './lib/testStyles'
+import { getTestElement } from './lib/testStyles'
 
 const outFile = 'out-webpack.js'
 const outFileFull = path.join(outDir, outFile)
-
-// @ts-ignore
-window.matchMedia = function () {}
 
 process.env.NODE_ENV = 'test'
 process.env.IDENTIFY_TAGS = 'true'
 
 test.before(async (t) => {
   await extractStaticApp()
+  process.env.IS_STATIC = undefined
   const app = require(outFileFull)
   t.context.app = app
   for (const key in app) {
@@ -33,6 +32,14 @@ test.before(async (t) => {
       }
     })
   }
+})
+
+test('extracts media queries', async (t) => {
+  const { TestMediaQuery } = t.context.app
+  const { style } = await getTestElement(TestMediaQuery)
+  // TODO not picking up media queries
+  console.log('out', style.backgroundColor, style.paddingRight)
+  t.assert(true)
 })
 
 //
@@ -159,6 +166,7 @@ async function extractStaticApp() {
     optimization: {
       minimize: false,
       concatenateModules: false,
+      splitChunks: false,
     },
     entry: path.join(specDir, 'extract-specs.tsx'),
     output: {
