@@ -35,6 +35,7 @@
     "webpack": "^5.10.2"
   },
   "devDependencies": {
+    "@snackui/babel-plugin": "*",
     "@babel/plugin-syntax-typescript": "^7.12.1",
     "@dish/babel-preset": "*",
     "@dish/react-test-env": "*",
