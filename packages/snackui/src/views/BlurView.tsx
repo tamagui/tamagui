@@ -46,7 +46,8 @@ export function BlurView({
       backgroundColor={fallbackBackgroundColor}
       {...props}
     >
-      {/* <div
+      <div
+        className="backdrop-filter"
         style={{
           position: 'absolute',
           width: '100%',
@@ -54,8 +55,9 @@ export function BlurView({
           backdropFilter: 'blur(20px)',
           borderRadius,
         }}
-      /> */}
-      {children}
+      >
+        {children}
+      </div>
     </VStack>
   )
 }

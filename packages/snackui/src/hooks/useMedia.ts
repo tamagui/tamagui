@@ -78,10 +78,12 @@ export const configureMedia = (queries: MediaQueries = mediaQueries) => {
     const match = getMatch()
     media[key] = !!match.matches
     match.addEventListener('change', () => {
-      console.log('changed!', media[key], !!getMatch().matches)
       media[key] = !!getMatch().matches
-      for (const listener of [...mediaQueryListeners[key]]) {
-        listener()
+      const listeners = mediaQueryListeners[key]
+      if (listeners?.size) {
+        for (const cb of [...listeners]) {
+          cb()
+        }
       }
     })
   }

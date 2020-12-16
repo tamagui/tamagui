@@ -172,7 +172,7 @@ export function Test9() {
 export function Test10({ textStyle }) {
   return (
     <Text fontSize={10}>
-      <Text selectable onTextChange={() => {}}>
+      <Text selectable>
         <Text
           color={nonStaticInt ? '#000' : '#fff'}
           fontSize={15}

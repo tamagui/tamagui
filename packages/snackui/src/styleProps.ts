@@ -27,7 +27,6 @@ export const stylePropsView = {
   borderTopWidth: true,
   borderWidth: true,
   opacity: true,
-  testID: true,
   transform: true,
   transformMatrix: true,
   rotation: true,
@@ -89,8 +88,7 @@ export const stylePropsView = {
   shadowRadius: true,
 }
 
-export const stylePropsText = {
-  ...stylePropsView,
+export const stylePropsTextOnly = {
   color: true,
   fontFamily: true,
   fontSize: true,
@@ -106,4 +104,9 @@ export const stylePropsText = {
   textShadowOffset: true,
   textShadowRadius: true,
   textTransform: true,
+}
+
+export const stylePropsText = {
+  ...stylePropsView,
+  ...stylePropsTextOnly,
 }

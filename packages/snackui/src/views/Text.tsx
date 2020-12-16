@@ -6,6 +6,8 @@ import {
   TextStyle,
 } from 'react-native'
 
+import { stylePropsText, stylePropsTextOnly } from '../styleProps'
+
 export type TextProps = Omit<ReactTextProps, 'style'> &
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
     display?: TextStyle['display'] | 'inherit'
@@ -18,7 +20,7 @@ export type TextProps = Omit<ReactTextProps, 'style'> &
     userSelect?: string
   }
 
-const defaultProps: TextStyle = {
+const defaultStyle: TextStyle = {
   // fixes transforms not working on web
   display: 'inline-block' as any,
 }
@@ -37,14 +39,19 @@ const ellipseStyle = {
 
 export const Text = (allProps: TextProps) => {
   const [props, style] = useTextStyle(allProps)
-  const textRef = useRef(null)
-  return <ReactText ref={textRef} {...props} style={[style, props['style']]} />
+  console.log('what is', props, style)
+  return (
+    <ReactText
+      {...props}
+      style={[isWeb ? defaultStyle : null, style, props['style']]}
+    />
+  )
 }
 
 if (process.env.IS_STATIC) {
   Text.staticConfig = {
-    validStyles: require('../styleProps').stylePropsText,
-    defaultProps,
+    validStyles: stylePropsText,
+    defaultProps: defaultStyle,
     expansionProps: {
       selectable: selectableStyle,
       ellipse: ellipseStyle,
@@ -52,29 +59,57 @@ if (process.env.IS_STATIC) {
   }
 }
 
-const textNonStylePropReg = /^(allow.*|on[A-Z].*|.*[Mm]ode)/
 const isWeb = Platform.OS === 'web'
-const webOnlyStyleKeys = {
+
+const webOnlySpecificStyleKeys = {
   userSelect: true,
-  hoverStyle: true,
-  pressStyle: true,
-  className: true,
   textOverflow: true,
   whiteSpace: true,
   wordWrap: true,
-  cursor: true,
   selectable: true,
-  size: true,
 }
 
-const useTextStyle = (allProps: TextProps) => {
+const webOnlyProps = {
+  className: true,
+}
+
+const webOnlyStyleKeys = {
+  hoverStyle: true,
+  pressStyle: true,
+  cursor: true,
+}
+
+const textSpecificProps = {
+  allowFontScaling: true,
+  ellipsizeMode: true,
+  lineBreakMode: true,
+  numberOfLines: true,
+  maxFontSizeMultiplier: true,
+}
+
+const testProps = {
+  all: {
+    ...textSpecificProps,
+    ...stylePropsText,
+    ...webOnlySpecificStyleKeys,
+    ...webOnlyStyleKeys,
+  },
+  specific: {
+    ...webOnlyStyleKeys,
+    ...webOnlySpecificStyleKeys,
+    ...textSpecificProps,
+    ...stylePropsTextOnly,
+  },
+}
+
+export const useTextStyle = (
+  allProps: TextProps,
+  onlyTextSpecificStyle?: boolean
+) => {
   return useMemo(() => {
-    const props: ReactTextProps = {}
-    const style: TextStyle = isWeb
-      ? {
-          ...defaultProps,
-        }
-      : {}
+    const props: TextProps = {}
+    const style: TextStyle = {}
+    const test = onlyTextSpecificStyle ? testProps.specific : testProps.all
     for (const key in allProps) {
       if (!isWeb) {
         if (key === 'ellipse') {
@@ -82,13 +117,12 @@ const useTextStyle = (allProps: TextProps) => {
           props['lineBreakMode'] = 'clip'
           continue
         }
-        if (webOnlyStyleKeys[key]) {
+        if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
           continue
         }
       }
       const val = allProps[key]
-      if (val === undefined) continue
-      if (val) {
+      if (test[key]) {
         if (key === 'selectable') {
           Object.assign(style, selectableStyle as any)
           continue
@@ -97,11 +131,6 @@ const useTextStyle = (allProps: TextProps) => {
           Object.assign(style, ellipseStyle as any)
           continue
         }
-      }
-      const isProp = textNonStyleProps[key] ?? textNonStylePropReg.test(key)
-      if (isProp) {
-        props[key] = val
-      } else {
         if (!isWeb) {
           if (key === 'display' && val === 'inline') {
             continue
@@ -115,25 +144,10 @@ const useTextStyle = (allProps: TextProps) => {
           }
         }
         style[key] = val
+      } else {
+        props[key] = val
       }
     }
-    return [props, style]
+    return [props, style] as const
   }, [allProps])
-}
-
-const textNonStyleProps = {
-  href: true,
-  className: true,
-  allowFontScaling: true,
-  ellipsizeMode: true,
-  lineBreakMode: true,
-  numberOfLines: true,
-  onLayout: true,
-  onPress: true,
-  onLongPress: true,
-  style: true,
-  children: true,
-  testID: true,
-  nativeID: true,
-  maxFontSizeMultiplier: true,
 }

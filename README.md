@@ -259,6 +259,7 @@ See [the roadmap](roadmap.md):
 - [ ] Support `<Stack spacing />`
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
 - [ ] Support a few logical HTML props: onPress, etc
+- [ ] Test performance of useMemo calls / splitProps
 
 #### Advanced traversal plan
 

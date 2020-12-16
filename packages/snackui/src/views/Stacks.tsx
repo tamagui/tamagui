@@ -46,6 +46,13 @@ const useViewStylePropsSplit = (props: { [key: string]: any }) => {
         viewProps[key] = props[key]
       }
     }
+    // temp bugfix - we need to figure out a better way than inversing theme vars
+    if (
+      styleProps.shadowColor !== props.shadowColor &&
+      typeof styleProps.shadowOpacity !== 'undefined'
+    ) {
+      styleProps.shadowColor = props.shadowColor
+    }
     return { styleProps, viewProps }
   }, [props])
 }

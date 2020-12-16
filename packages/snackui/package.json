@@ -1,6 +1,7 @@
 {
   "name": "snackui",
   "version": "0.0.6",
+  "main": "_/index.js",
   "module": "_/index.js",
   "tsmain": "src/index",
   "types": "_/index.d.ts",
