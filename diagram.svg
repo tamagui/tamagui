@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="706px" height="331px" viewBox="0 0 706 331" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>diagram</title>
+    <defs>
+        <linearGradient x1="0%" y1="50.067527%" x2="97.419567%" y2="49.876025%" id="linearGradient-1">
+            <stop stop-color="#F0BC8A" offset="0%"></stop>
+            <stop stop-color="#DE5A58" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="diagram" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" stroke="#C4BDE1" stroke-width="5" fill="#DAD6E9" x="57" y="84" width="283" height="207"></rect>
+        <rect id="Rectangle" stroke="#C4BDE1" stroke-width="5" fill="#EBE9F6" x="74" y="100" width="73" height="176"></rect>
+        <rect id="Rectangle-Copy" stroke="#C4BDE1" stroke-width="5" fill="#EBE9F6" x="162" y="100" width="73" height="176"></rect>
+        <rect id="Rectangle-Copy-2" stroke="#C4BDE1" stroke-width="5" fill="#EBE9F6" x="250" y="100" width="73" height="176"></rect>
+        <g id="Group" transform="translate(407.000000, 83.500000)" stroke="#C4BDE1" stroke-width="5">
+            <polygon id="Rectangle" fill="#DAD6E9" transform="translate(104.000000, 105.000000) rotate(-270.000000) translate(-104.000000, -105.000000) " points="-1 1.5 209 1.5 209 208.5 -1 208.5"></polygon>
+            <polygon id="Rectangle" fill="#EBE9F6" transform="translate(103.000000, 53.500000) rotate(-270.000000) translate(-103.000000, -53.500000) " points="66 -34.5 140 -34.5 140 141.5 66 141.5"></polygon>
+            <polygon id="Rectangle-Copy" fill="#EBE9F6" transform="translate(103.000000, 157.500000) rotate(-270.000000) translate(-103.000000, -157.500000) " points="66 69.5 140 69.5 140 245.5 66 245.5"></polygon>
+        </g>
+        <text id="&lt;HStack-spacing=&quot;md&quot;" fill="url(#linearGradient-1)" fill-rule="nonzero" font-family="BitstreamVeraSansMono-Oblique, Bitstream Vera Sans Mono" font-size="20" font-style="italic" font-weight="normal" letter-spacing="-1">
+            <tspan x="72.5283203" y="52">&lt;</tspan>
+            <tspan x="83.5693359" y="52" font-family="BitstreamVeraSansMono-BoldOb, Bitstream Vera Sans Mono" font-weight="bold">HStack</tspan>
+            <tspan x="149.81543" y="52"> spacing="md" /&gt; </tspan>
+        </text>
+        <text id="&lt;VStack-spacing=&quot;lg&quot;" fill="url(#linearGradient-1)" fill-rule="nonzero" font-family="BitstreamVeraSansMono-Oblique, Bitstream Vera Sans Mono" font-size="20" font-style="italic" font-weight="normal" letter-spacing="-1">
+            <tspan x="389.52832" y="52">&lt;</tspan>
+            <tspan x="400.569336" y="52" font-family="BitstreamVeraSansMono-BoldOb, Bitstream Vera Sans Mono" font-weight="bold">VStack</tspan>
+            <tspan x="466.81543" y="52"> spacing="lg" /&gt; </tspan>
+        </text>
+    </g>
+</svg>

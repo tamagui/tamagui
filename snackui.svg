@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="612px" height="192px" viewBox="0 0 612 192" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>snackui</title>
+    <defs>
+        <linearGradient x1="0%" y1="51.8231778%" x2="97.419567%" y2="46.6527709%" id="linearGradient-1">
+            <stop stop-color="#F0BC8A" offset="0%"></stop>
+            <stop stop-color="#DE5A58" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#F1C891" offset="0%"></stop>
+            <stop stop-color="#DE6057" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="snackui" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <text id="Snack" fill="url(#linearGradient-1)" fill-rule="nonzero" font-family="TwCenMT-Regular, Tw Cen MT" font-size="132" font-weight="normal" letter-spacing="-3.7">
+            <tspan x="57.8037109" y="146">Snack</tspan>
+            <tspan x="347.196289" y="146" font-size="72"> </tspan>
+        </text>
+        <text id="UI" font-family="TwCenMT-Regular, Tw Cen MT" font-size="147" font-weight="normal" letter-spacing="-4.759091" fill="#7F7F7F">
+            <tspan x="350.75079" y="151">UI</tspan>
+        </text>
+        <g id="Group" transform="translate(431.000000, 47.000000)">
+            <text id="🍑" fill="#B55454" transform="translate(79.000000, 79.000000) rotate(-310.000000) translate(-79.000000, -79.000000) " font-family="AppleColorEmoji, Apple Color Emoji" font-size="80" font-weight="normal" letter-spacing="2.5">
+                <tspan x="37.75" y="103">🍑</tspan>
+            </text>
+            <path d="M74.6826986,38.2025155 C63.3937319,40.3970432 53.9412275,46.1696938 49.6894493,60.3542758 C46.8549305,69.8106638 47.5871791,82.4141835 51.886195,98.1648349 C59.1669339,106.054945 69.6657772,110 83.3827249,110 C103.958146,110 114.952766,100.718965 116.761728,86.616764 C118.57069,72.5145632 109.763493,64.5452867 101.049671,58.4433402 C101.818226,52.2372518 85.9716652,36.0079878 74.6826986,38.2025155 Z" id="Path" fill="url(#linearGradient-2)" opacity="0.905040923"></path>
+        </g>
+    </g>
+</svg>

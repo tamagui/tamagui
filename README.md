@@ -1,9 +1,9 @@
 <h1 align="center">
-  <img margin="auto" width="612px" src="https://raw.githubusercontent.com/natew/snackui/master/snackui.png" alt="SnackUI">
+  <img margin="auto" width="612px" src="https://raw.githubusercontent.com/natew/snackui/master/snackui.svg" alt="SnackUI">
   <br>
 </h1>
 
-<h4 align="center">The faster SwiftUI-inspired UI kit for React Native & Web.</h4>
+<h4 align="center">The smart SwiftUI-inspired UI kit for React Native & Web.</h4>
 
 <p align="center">
   <a href="#setup">Setup</a> •
@@ -17,6 +17,10 @@
 SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web.
 
 SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
+
+<div align="center">
+  <img margin="auto" width="706px" src="https://raw.githubusercontent.com/natew/snackui/master/diagram.svg" alt="Illustration of <HStack spacing='md' /> <VStack spacing='lg' />">
+</div>
 
 ## Features
 
