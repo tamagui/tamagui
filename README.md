@@ -14,9 +14,7 @@
   <a href="#license">License</a>
 </p>
 
-SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web.
-
-SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
+SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web. SnackUI is light; it doesn't prescribe much beyond basic views, hooks, and an optimizing compiler.
 
 <div align="center">
   <img margin="auto" width="706px" src="https://raw.githubusercontent.com/natew/snackui/master/docs/diagram.png" alt="Illustration of <HStack spacing='md' /> <VStack spacing='lg' />">
@@ -27,18 +25,18 @@ SnackUI is light. It doesn't prescribe much beyond providing a few basic views t
 - **Stack views** with flat, simpler RN TypeScript types
   - VStack, HStack, ZStack
   - Inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
-- Optimizing compiler (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
+- **Optimizing compiler** (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
   - Flatten `<View />` / `<Text />` into `<div />` / `<span />`.
   - Extract inline styles to optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
   - Support constant imports.
   - Support conditionals like `color={isLarge ? 'red' : 'blue'}` and `<Text {...isLarge && { color: 'red' }} />`
-- Pseudo styles
+- **Pseudo styles**
   - Supports hoverStyle, pressStyle, and focusStyle
   - Normalizes tricky styling between native and web
-- Media Queries
+- **Media Queries**
   - Universal support for native + web
   - Simple `useMedia` hook that with advanced optimization and graceful fallback
-- Development tools
+- **Development tools**
   - Shows component name in DOM elements.
   - Add `// debug` to the top of file for detailed optimization info.
 
@@ -76,7 +74,25 @@ export function Component() {
 }
 ```
 
-Why is this beneficial? React Native Web's views like `<View />` and `<Text />` are actually not so simple. [Read the source of Text](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/Text/index.js) for example. When you're rendering a large page with many text and view elements that can be statically extracted, using snackui saves React from having to process all of that logic on every render, for every Text and View.
+And on native:
+
+```tsx
+import { View, Text, StyleSheet } from 'react-native'
+
+export function Component() {
+  return (
+    <View style={[sheet[0]]}>
+      <Text style={[sheet[1]]}>Hello world</Text>
+    </View>
+  )
+}
+
+const sheet = StyleSheet.create({
+  // ... styles for 0 and 1
+})
+```
+
+Why do this? Beyond the joy and [many benefits](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle) of Stack views with inline styling, react-native-web views like `<View />` and `<Text />` aren't free. [Read the source of Text](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/Text/index.js) for example. When you're rendering a large page with many text and view elements, snackui saves React from having to process all of that logic on every render, for every Text and View.
 
 ### Supported extractions
 
