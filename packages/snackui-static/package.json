@@ -11,6 +11,7 @@
     "test:watch": "SNACKUI_COMPILE_PROCESS=1 yarn test --watch",
     "test:update-snapshots": "ava --update-snapshots"
   },
+  "private": false,
   "publishConfig": {
     "access": "public"
   },

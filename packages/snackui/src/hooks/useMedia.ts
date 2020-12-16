@@ -1,3 +1,15 @@
+//
+// for types:
+//
+//   interface MyMediaQueries {}
+//   const myMediaQueries: MyMediaQueries = {}
+//   configureMedia(myMediaQueries)
+//   declare module 'snackui' {
+//     interface MediaQueryState extends MyMediaQueries
+//   }
+//
+//
+
 import { useEffect, useLayoutEffect, useRef } from 'react'
 
 import { useConstant } from './useConstant'
@@ -17,14 +29,6 @@ global.matchMedia =
     return { addEventListener() {}, removeEventListener() {}, matches: [] }
   }
 
-//
-// this is the default, can be overriden in types:
-//
-//   interface MyMediaQueries {}
-//   const myMediaQueries: MyMediaQueries = {}
-//   configureMedia(myMediaQueries)
-//   declare module 'snackui' { interface MediaQueryState extends MyMediaQueries }
-//
 export interface MediaQueryState {
   xs: boolean
   notXs: boolean
@@ -53,17 +57,17 @@ export const defaultMediaQueries = {
   tall: { minHeight: 820 },
 }
 
-let mediaQueries: MediaQueries = { ...defaultMediaQueries }
-
 const media: { [key in keyof MediaQueryState]: boolean } = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
-let hasConfigured = false
 
 export const getMedia = () => media
 
+let hasConfigured = false
+let mediaQueries: MediaQueries = { ...defaultMediaQueries }
+
 export const configureMedia = (queries: MediaQueries = mediaQueries) => {
   if (hasConfigured) {
-    throw new Error(`Already configured once`)
+    throw new Error(`Already configured mediaQueries once`)
   }
   hasConfigured = true
   mediaQueries = queries
@@ -103,7 +107,6 @@ export const useMedia = () => {
       isRendering: true,
     }
   }
-
   state.current.isRendering = true
 
   // track usage
@@ -139,7 +142,7 @@ export const useMedia = () => {
         if (typeof key !== 'string') return
         if (!(key in media)) {
           throw new Error(
-            `No media query configured "${String(key)}", options: ${Object.keys(
+            `No media query configured "${String(key)}" in: ${Object.keys(
               media
             )}`
           )
