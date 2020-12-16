@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img margin="auto" width="612px" src="https://raw.githubusercontent.com/natew/snackui/master/snackui.svg" alt="SnackUI">
+  <img margin="auto" width="612px" src="https://raw.githubusercontent.com/natew/snackui/master/docs/snackui.png" alt="SnackUI">
   <br>
 </h1>
 
@@ -19,34 +19,30 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 SnackUI is light. It doesn't prescribe much beyond providing a few basic views that help you lay things out and providing the optimizing compiler.
 
 <div align="center">
-  <img margin="auto" width="706px" src="https://raw.githubusercontent.com/natew/snackui/master/diagram.svg" alt="Illustration of <HStack spacing='md' /> <VStack spacing='lg' />">
+  <img margin="auto" width="706px" src="https://raw.githubusercontent.com/natew/snackui/master/docs/diagram.png" alt="Illustration of <HStack spacing='md' /> <VStack spacing='lg' />">
 </div>
 
 ## Features
 
-SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
-
-SnackUI features:
-
 - **Stack views** with flat, simpler RN TypeScript types
   - VStack, HStack, ZStack
-  - inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
-- Optimizing compiler
-  - fork of [JSXStyle](https://github.com/jsxstyle/jsxstyle)
-  - flattens `<View />` and `<Text />` into `<div />` and `<span />` where possible, increasing render performance.
-  - extracts inline styles to highly optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
-  - supports imported constant files for compiling shared constants and colors to CSS as well.
-  - supports simple conditionals like `color={isLarge ? 'red' : 'blue'}`
-  - supports simple spreads like: `<Text {...isLarge && { color: 'red' }} />`
+  - Inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
+- Optimizing compiler (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
+  - Flatten `<View />` / `<Text />` into `<div />` / `<span />`.
+  - Extract inline styles to optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
+  - Support constant imports.
+  - Support conditionals like `color={isLarge ? 'red' : 'blue'}` and `<Text {...isLarge && { color: 'red' }} />`
 - Pseudo styles
-  - supports hoverStyle, pressStyle, and focusStyle
-  - normalizes tricky styling between native and web
+  - Supports hoverStyle, pressStyle, and focusStyle
+  - Normalizes tricky styling between native and web
 - Media Queries
   - Universal support for native + web
-  - Simple `useMedia` hook that supports advanced optimization and graceful fallback
+  - Simple `useMedia` hook that with advanced optimization and graceful fallback
 - Development tools
-  - shows component name in DOM elements.
-  - add `// debug` to the top of file for detailed optimization info.
+  - Shows component name in DOM elements.
+  - Add `// debug` to the top of file for detailed optimization info.
+
+SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
 
 ## Example
 
