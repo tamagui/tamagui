@@ -25,8 +25,6 @@ interface Binding {
   value: any
 }
 
-require('ts-node').register({})
-
 export function getStaticBindingsForScope(
   scope: any,
   whitelist: string[] = [],

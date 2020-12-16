@@ -11,8 +11,18 @@ import { pseudos } from '../css/getStylesAtomic'
 import { PluginOptions } from '../types'
 import { evaluateAstNode } from './evaluateAstNode'
 import { Ternary, extractStaticTernaries } from './extractStaticTernaries'
+import { findTopmostFunction } from './findTopmostFunction'
 import { getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
+import { removeUnusedHooks } from './removeUnusedHooks'
+
+// used by getStaticBindingsForScope + themeFile
+require('ts-node').register({
+  transpileOnly: true,
+  compilerOptions: {
+    module: 'CommonJS',
+  },
+})
 
 const FAILED_EVAL = Symbol('failed_style_eval')
 const UNTOUCHED_PROPS = {
@@ -33,6 +43,11 @@ type OptimizableComponent = Function & {
         | ((props: any) => ViewStyle | TextStyle)
     }
   }
+}
+
+const validHooks = {
+  useMedia: true,
+  useTheme: true,
 }
 
 const validComponents: { [key: string]: OptimizableComponent } = Object.keys(
@@ -73,12 +88,15 @@ export type ExtractorParseProps = PluginOptions & {
 
 export function createExtractor() {
   const bindingCache: Record<string, string | null> = {}
+  const themesByFile = {}
+
   return {
     parse: (
       path: NodePath<t.Program>,
       {
         evaluateImportsWhitelist = ['constants.js'],
         evaluateVars = true,
+        themesFile,
         shouldPrintDebug = false,
         sourceFileName = '',
         onExtractTag,
@@ -86,6 +104,14 @@ export function createExtractor() {
         ...props
       }: ExtractorParseProps
     ) => {
+      if (themesFile) {
+        themesByFile[themesFile] =
+          themesByFile[themesFile] || require(themesFile).default
+      }
+      const themes = themesFile ? themesByFile[themesFile] : null
+      const themeKeys = new Set(
+        themes ? Object.keys(themes[Object.keys(themes)[0]]) : []
+      )
       const deoptProps = new Set(props.deoptProps ?? [])
       const excludeProps = new Set(props.excludeProps ?? [])
       let doesUseValidImport = false
@@ -101,7 +127,8 @@ export function createExtractor() {
         ImportDeclaration(path) {
           if (path.node.source.value === 'snackui') {
             path.node.specifiers.forEach((specifier) => {
-              if (validComponents[specifier.local.name]) {
+              const name = specifier.local.name
+              if (validComponents[name] || validHooks[name]) {
                 doesUseValidImport = true
               }
             })
@@ -118,6 +145,7 @@ export function createExtractor() {
       }
 
       let couldntParse = false
+      const modifiedComponents = new Set<NodePath<any>>()
 
       /**
        * Step 2: Statically extract from JSX < /> nodes
@@ -174,6 +202,22 @@ export function createExtractor() {
 
                 // called when evaluateAstNode encounters a dynamic-looking prop
                 const evalFn = (n: t.Node) => {
+                  // themes
+                  if (themes) {
+                    if (
+                      t.isMemberExpression(n) &&
+                      t.isIdentifier(n.property) &&
+                      isValidThemeHook(traversePath, n)
+                    ) {
+                      const key = n.property.name
+                      if (!themeKeys.has(key)) {
+                        throw new Error(
+                          `Accessing non-existent theme key: ${key}`
+                        )
+                      }
+                      return `var(--${key})`
+                    }
+                  }
                   // variable
                   if (t.isIdentifier(n)) {
                     invariant(
@@ -713,6 +757,12 @@ export function createExtractor() {
             return true
           }
 
+          // before deopt, can still optimize
+          const parentFn = findTopmostFunction(traversePath)
+          if (parentFn) {
+            modifiedComponents.add(parentFn)
+          }
+
           // if inlining + spreading + ternary, deopt fully
           if (
             inlinePropCount &&
@@ -721,13 +771,13 @@ export function createExtractor() {
           ) {
             if (shouldPrintDebug) {
               console.log(
-                '  deopt due to inline + spread',
+                '  deopt due to inline + spread?',
                 { inlinePropCount },
                 staticTernaries
               )
             }
-            node.attributes = ogAttributes
-            return
+            // node.attributes = ogAttributes
+            // return
           }
 
           const defaultProps = component.staticConfig?.defaultProps ?? {}
@@ -926,6 +976,19 @@ export function createExtractor() {
           })
         },
       })
+
+      /**
+       * Step 3: Remove dead code from removed media query / theme hooks
+       */
+      if (modifiedComponents.size) {
+        const all = Array.from(modifiedComponents)
+        if (shouldPrintDebug) {
+          console.log('  checking', all.length, 'components for dead hooks')
+        }
+        for (const comp of all) {
+          removeUnusedHooks(comp, shouldPrintDebug)
+        }
+      }
     },
   }
 }
@@ -960,10 +1023,20 @@ function findComponentName(scope) {
   return componentName
 }
 
-const getIdentifier = (expr: t.Expression) => {
-  return t.isIdentifier(expr)
-    ? expr.name
-    : t.isMemberExpression(expr) && t.isIdentifier(expr.object)
-    ? expr.object.name
-    : null
+function isValidThemeHook(
+  jsxPath: NodePath<t.JSXElement>,
+  n: t.MemberExpression
+) {
+  if (!t.isIdentifier(n.object) || !t.isIdentifier(n.property)) return false
+  const binding = jsxPath.scope.bindings[n.object.name]
+  if (!binding.path.isVariableDeclarator()) return false
+  const init = binding.path.node.init
+  if (!t.isCallExpression(init)) return false
+  if (!t.isIdentifier(init.callee)) return false
+  // TODO could support renaming useTheme by looking up import first
+  if (init.callee.name !== 'useTheme') return false
+  const importNode = binding.scope.getBinding('useTheme')?.path.parent
+  if (!t.isImportDeclaration(importNode)) return false
+  if (importNode.source.value !== 'snackui') return false
+  return true
 }

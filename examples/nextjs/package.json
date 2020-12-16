@@ -1,0 +1,19 @@
+{
+  "name": "example-snackui-nextjs",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "npx next dev",
+    "build": "true",
+    "start": "npx next start"
+  },
+  "dependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "snackui": "*"
+  },
+  "devDependencies": {
+    "@snackui/static": "*",
+    "@snackui/babel-plugin": "*"
+  }
+}

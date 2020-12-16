@@ -14,7 +14,9 @@ import { Extractor } from '../extractor/createExtractor'
 import { Ternary } from '../extractor/extractStaticTernaries'
 import { ClassNameToStyleObj, PluginOptions } from '../types'
 import { babelParse } from './babelParse'
+import { findTopmostFunction } from './findTopmostFunction'
 import { getPropValueFromAttributes } from './getPropValueFromAttributes'
+import { removeUnusedHooks } from './removeUnusedHooks'
 
 type ClassNameObject = t.StringLiteral | t.Expression
 
@@ -67,8 +69,6 @@ export function extractToClassNames(
   const mediaQueries = options.mediaQueries ?? defaultMediaQueries
 
   let didExtract = false
-
-  const modifiedComponents = new Set<NodePath<any>>()
 
   traverse(ast, {
     Program(programPath) {
@@ -330,11 +330,6 @@ export function extractToClassNames(
             )
           }
 
-          const parentFn = findTopmostFunction(jsxPath)
-          if (parentFn) {
-            modifiedComponents.add(parentFn)
-          }
-
           const comment = util.format(
             '/* %s:%s (%s) */',
             filePath,
@@ -364,7 +359,6 @@ export function extractToClassNames(
                     console.log('  ', { rules })
                     throw new Error(`Shouldn't have more than one rule`)
                   }
-                  // didExtract = true
                   cssMap.set(className, {
                     css: rules[0],
                     commentTexts: [comment],
@@ -377,13 +371,6 @@ export function extractToClassNames(
       })
     },
   })
-
-  // run once after traversing to save some runtime cost
-  if (modifiedComponents.size) {
-    for (const comp of [...modifiedComponents]) {
-      removeUnusedMediaQueryHooks(comp, shouldPrintDebug)
-    }
-  }
 
   if (!didExtract) {
     return null
@@ -585,93 +572,6 @@ function getMediaQueryTernary(
   return false
 }
 
-export function isPresent<T extends Object>(
-  input: null | undefined | T
-): input is T {
+function isPresent<T extends Object>(input: null | undefined | T): input is T {
   return input != null
-}
-
-function findTopmostFunction(jsxPath: NodePath<t.JSXElement>) {
-  // get topmost fn
-  const isFunction = (path: NodePath<any>) =>
-    path.isArrowFunctionExpression() || path.isFunctionDeclaration()
-  let compFn: NodePath<any> = jsxPath
-  while (true) {
-    const parent = compFn.findParent(isFunction)
-    if (parent) {
-      compFn = parent
-    } else {
-      break
-    }
-  }
-  if (!compFn) {
-    console.error(`Couldn't find a topmost function for media query extraction`)
-    return null
-  }
-  return compFn
-}
-
-function removeUnusedMediaQueryHooks(
-  compFn: NodePath<any>,
-  shouldPrintDebug: boolean
-) {
-  compFn.scope.crawl()
-  // check the top level statements
-  let bodyStatements = compFn?.get('body') as any
-  if (!bodyStatements) {
-    console.log('no body statemnts?', compFn)
-    return
-  }
-  if (!Array.isArray(bodyStatements)) {
-    if (bodyStatements.isBlockStatement()) {
-      bodyStatements = bodyStatements.get('body')
-    }
-  }
-  if (!Array.isArray(bodyStatements)) {
-    return
-  }
-  const statements = bodyStatements as NodePath<any>[]
-  for (const statement of statements) {
-    if (!statement.isVariableDeclaration()) {
-      continue
-    }
-    const declarations = statement.get('declarations')
-    if (!Array.isArray(declarations)) {
-      continue
-    }
-    const isBindingReferenced = (name: string) => {
-      return !!statement.scope.getBinding(name)?.referenced
-    }
-    for (const declarator of declarations) {
-      const id = declarator.get('id')
-      const init = declarator.node.init
-      if (Array.isArray(id) || Array.isArray(init)) {
-        continue
-      }
-      const shouldRemove = (() => {
-        if (t.isIdentifier(id.node)) {
-          // remove "const media = useMedia()"
-          const name = id.node.name
-          return !isBindingReferenced(name)
-        } else if (t.isObjectPattern(id.node)) {
-          // remove "const { sm } = useMedia()"
-          const propPaths = id.get('properties') as NodePath<any>[]
-          return propPaths.every((prop) => {
-            if (!prop.isObjectProperty()) return false
-            const value = prop.get('value')
-            if (Array.isArray(value) || !value.isIdentifier()) return false
-            const name = value.node.name
-            return !isBindingReferenced(name)
-          })
-        }
-        return false
-      })()
-      if (shouldRemove) {
-        declarator.remove()
-        if (shouldPrintDebug) {
-          console.log(`  removed unused media query ${id.node['name'] ?? ''}`)
-        }
-      }
-    }
-  }
 }

@@ -1,4 +1,3 @@
-import { IFs } from 'memfs'
 import { MediaQueries } from 'snackui'
 
 export interface CacheObject {
@@ -7,6 +6,7 @@ export interface CacheObject {
 
 export interface PluginOptions {
   // user options
+  themesFile?: string
   evaluateVars?: boolean
   evaluateImportsWhitelist?: string[]
   exclude?: RegExp
@@ -14,10 +14,6 @@ export interface PluginOptions {
   // probably non user options
   deoptProps?: string[]
   excludeProps?: string[]
-}
-
-export interface PluginContext {
-  fs: IFs
 }
 
 export type StyleObject = {

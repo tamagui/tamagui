@@ -35,7 +35,7 @@ index 57519b1..6aa2ff3 100644
 +++ b/node_modules/react-native-web/dist/exports/TextInput/index.js
 @@ -377,7 +377,7 @@ var TextInput = forwardRef(function (props, forwardedRef) {
    supportedProps.classList = classList; // 'auto' by default allows browsers to infer writing direction
-
+ 
    supportedProps.dir = dir !== undefined ? dir : 'auto';
 -  supportedProps.enterkeyhint = returnKeyType;
 +  supportedProps.enterKeyHint = returnKeyType;
@@ -61,7 +61,7 @@ index 211c00a..1d2488a 100644
 @@ -177,6 +177,10 @@ var createDOMProps = function createDOMProps(component, props) {
      domProps.className = className;
    }
-
+ 
 +  if (props.className) {
 +    domProps.className = `${domProps.className || ''} ${props.className}`
 +  }
@@ -69,3 +69,23 @@ index 211c00a..1d2488a 100644
    if (style) {
      domProps.style = style;
    } // OTHER
+diff --git a/node_modules/react-native-web/dist/modules/normalizeColor/index.js b/node_modules/react-native-web/dist/modules/normalizeColor/index.js
+index 223451f..65366d3 100644
+--- a/node_modules/react-native-web/dist/modules/normalizeColor/index.js
++++ b/node_modules/react-native-web/dist/modules/normalizeColor/index.js
+@@ -16,8 +16,13 @@ var normalizeColor = function normalizeColor(color, opacity) {
+ 
+   if (color == null) return;
+ 
+-  if (typeof color === 'string' && isWebColor(color)) {
+-    return color;
++  if (typeof color === 'string') {
++    if (isWebColor(color)) {
++      return color;
++    }
++    if (color[0] === '-') {
++      return color
++    }
+   }
+ 
+   var colorInt = processColor(color);

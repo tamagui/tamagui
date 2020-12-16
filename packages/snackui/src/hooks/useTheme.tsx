@@ -23,19 +23,36 @@ import React, {
 
 import { isWeb } from '../constants'
 import { useConstant } from './useConstant'
+import { useForceUpdate } from './useForceUpdate'
 
-export interface Theme {
+export interface ThemeObject {
   [key: string]: any
 }
 
 export interface Themes {
-  [key: string]: Theme
+  [key: string]: ThemeObject
 }
 
 type ThemeName = keyof Themes
 
 let hasConfigured = false
 let themes: Themes = {}
+
+// for usage later on in mapping value => variable
+const inverseValueToVariable: {
+  [key: string]: { [subKey: string]: string }
+} = {}
+
+export function useGetCssVariable() {
+  const activeTheme = useContext(ActiveThemeContext)
+  return <A extends string | number>(value: A) => {
+    if (!activeTheme) {
+      return value
+    }
+    const themeVal = inverseValueToVariable[activeTheme.name]?.[value]
+    return themeVal ?? value
+  }
+}
 
 export const configureThemes = (userThemes: Themes) => {
   if (hasConfigured) {
@@ -49,12 +66,17 @@ export const configureThemes = (userThemes: Themes) => {
     const tag = createStyleTag()
     for (const themeName in userThemes) {
       const theme = userThemes[themeName]
+      inverseValueToVariable[themeName] =
+        inverseValueToVariable[themeName] || {}
       let vars = ''
       for (const themeKey in theme) {
         const themeVal = theme[themeKey]
-        vars += `--${themeKey}: ${themeVal};`
+        const variableName = `--${themeKey}`
+        inverseValueToVariable[themeName][themeVal] = `var(${variableName})`
+        vars += `${variableName}: ${themeVal};`
       }
-      tag?.sheet?.insertRule(`.${themeName} { ${vars} }`)
+      const rule = `.${themeName} { ${vars} }`
+      tag?.sheet?.insertRule(rule)
     }
   }
 }
@@ -103,6 +125,7 @@ type UseThemeState = {
 }
 
 export const useTheme = () => {
+  const forceUpdate = useForceUpdate()
   const manager = useContext(ActiveThemeContext)
   const themes = useContext(ThemeContext)
   const state = useRef() as React.MutableRefObject<UseThemeState>
@@ -125,7 +148,7 @@ export const useTheme = () => {
   })
 
   useEffect(() => {
-    return manager.onUpdate(state.current.uuid, () => {})
+    return manager.onUpdate(state.current.uuid, forceUpdate)
   }, [])
 
   return useConstant(() => {
@@ -153,13 +176,12 @@ export const ThemeProvider = (props: {
   defaultTheme: ThemeName
   children?: any
 }) => {
-  const [themeManager] = useState(() => new ActiveThemeManager())
-
+  if (!hasConfigured) {
+    throw new Error(`Missing configureThemes() call, add to your root file`)
+  }
   return (
     <ThemeContext.Provider value={props.themes}>
-      <ActiveThemeContext.Provider value={themeManager}>
-        {props.children}
-      </ActiveThemeContext.Provider>
+      <Theme name={props.defaultTheme}>{props.children}</Theme>
     </ThemeContext.Provider>
   )
 }
@@ -171,9 +193,11 @@ export type ThemeProps = {
 
 export const Theme = (props: ThemeProps) => {
   const parent = useContext(ActiveThemeContext)
-  const [themeManager, setThemeManager] = useState(
-    () => new ActiveThemeManager()
-  )
+  const [themeManager, setThemeManager] = useState(() => {
+    const manager = new ActiveThemeManager()
+    manager.setActiveTheme(`${props.name}`)
+    return manager
+  })
 
   useLayoutEffect(() => {
     if (props.name === parent.name) {
@@ -187,11 +211,21 @@ export const Theme = (props: ThemeProps) => {
     }
   }, [props.name])
 
-  return (
+  const contents = (
     <ActiveThemeContext.Provider value={themeManager}>
       {props.children}
     </ActiveThemeContext.Provider>
   )
+
+  if (isWeb) {
+    return (
+      <div className={themeManager.name} style={{ display: 'contents' }}>
+        {contents}
+      </div>
+    )
+  }
+
+  return contents
 }
 
 function createStyleTag(): HTMLStyleElement | null {
