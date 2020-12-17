@@ -252,7 +252,9 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 See [the roadmap](roadmap.md):
 
+- [ ] Support extraction of custom components that extend lower level ones
 - [ ] Media Queries test coverage, docs and configuration
+  - [ ] `display` prop not extracting
 - [ ] Themes
 - [ ] Extraction - advanced traversals (see [plan](#advanced-traversal-plan))
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed

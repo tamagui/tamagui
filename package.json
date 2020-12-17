@@ -16,8 +16,8 @@
     ]
   },
   "scripts": {
-    "build": "ultra -r --no-pretty --concurrency 16 build",
-    "build:watch": "ultra -r --no-pretty --concurrency 500 watch",
+    "build": "ultra -r --no-pretty build",
+    "build:watch": "ultra -r --no-pretty watch",
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish:all": "lerna publish"
@@ -28,7 +28,7 @@
     "prettier": "^2.2.1",
     "prettier-plugin-import-sort": "^0.0.6",
     "ts-node": "^9.1.1",
-    "ultra-runner": "^3.6.0"
+    "ultra-runner": "^3.7.1"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

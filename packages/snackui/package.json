@@ -22,7 +22,7 @@
     "@dish/fast-compare": "^2.7.6",
     "@dish/proxy-worm": "^0.0.4",
     "@react-native-community/blur": "^3.6.0",
-    "expo-linear-gradient": "8.4.0",
+    "expo-linear-gradient": "^8.4.0",
     "lodash": "^4.17.20",
     "react-feather": "2.0.8",
     "react-laag": "^1.7.3",
