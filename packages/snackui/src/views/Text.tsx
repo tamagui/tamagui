@@ -39,7 +39,6 @@ const ellipseStyle = {
 
 export const Text = (allProps: TextProps) => {
   const [props, style] = useTextStyle(allProps)
-  console.log('what is', props, style)
   return (
     <ReactText
       {...props}
