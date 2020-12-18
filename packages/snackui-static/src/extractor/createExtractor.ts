@@ -360,9 +360,13 @@ export function createExtractor() {
                       return
                     }
                     const test = (attr.argument as t.LogicalExpression).left
-                    const evalValue = attemptEvalSafe(test)
-                    if (evalValue === FAILED_EVAL) {
+                    const testValue = attemptEvalSafe(test)
+                    if (testValue === FAILED_EVAL) {
                       // its fine we just cant extract all the way
+                    }
+                    if (!testValue) {
+                      // if its value it evaluates to nada
+                      return
                     }
                     const cons = omitExcludeStyles(spreadStyle)
                     staticTernaries.push({
