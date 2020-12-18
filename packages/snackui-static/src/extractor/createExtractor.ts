@@ -114,6 +114,17 @@ export function createExtractor() {
       )
       const deoptProps = new Set(props.deoptProps ?? [])
       const excludeProps = new Set(props.excludeProps ?? [])
+      const isExcludedProp = (name: string) => {
+        const res = excludeProps.has(name)
+        if (res && shouldPrintDebug) console.log(`  excluding ${name}`)
+        return res
+      }
+      const isDeoptedProp = (name: string) => {
+        const res = deoptProps.has(name)
+        if (res && shouldPrintDebug) console.log(`  deopting ${name}`)
+        return res
+      }
+
       let doesUseValidImport = false
 
       if (sourceFileName === '') {
@@ -275,11 +286,10 @@ export function createExtractor() {
           }
 
           let didFailStaticallyExtractingSpread = false
-          let numberNonStaticSpreads = 0
           let shouldDeopt = false
 
           const hasDeopt = (obj: Object) => {
-            return Object.keys(obj).some((x) => deoptProps.has(x))
+            return Object.keys(obj).some(isDeoptedProp)
           }
 
           const omitExcludeStyles = (obj: Object) => {
@@ -288,7 +298,7 @@ export function createExtractor() {
             }
             const res = {}
             for (const key in obj) {
-              if (excludeProps.has(key)) {
+              if (isExcludedProp(key)) {
                 continue
               }
               res[key] = obj[key]
@@ -398,11 +408,10 @@ export function createExtractor() {
                   } else {
                     for (const k in spreadValue) {
                       const value = spreadValue[k]
-                      // this is a null spread:
-                      if (value && typeof value === 'object') {
+                      // this is a null prop:
+                      if (!value && typeof value === 'object') {
                         continue
                       }
-                      numberNonStaticSpreads++
                       flattenedAttributes.push(
                         t.jsxAttribute(
                           t.jsxIdentifier(k),
@@ -426,6 +435,10 @@ export function createExtractor() {
             return
           }
 
+          if (shouldPrintDebug) {
+            console.log('flattenedAttributes', flattenedAttributes)
+          }
+
           node.attributes = flattenedAttributes
 
           const styleExpansions: { name: string; value: any }[] = []
@@ -435,7 +448,6 @@ export function createExtractor() {
           )
           const hasOneEndingSpread =
             !didFailStaticallyExtractingSpread &&
-            numberNonStaticSpreads <= 1 &&
             lastSpreadIndex > -1 &&
             foundLastSpreadIndex === lastSpreadIndex
           let simpleSpreadIdentifier: t.Identifier | null = null
@@ -498,8 +510,9 @@ export function createExtractor() {
               } else {
                 if (shouldPrintDebug) {
                   console.log(
-                    '  inline (non normal attr)',
-                    attribute['name']?.['name']
+                    '  inline (non normal attr?)',
+                    attribute['name']?.['name'],
+                    { isntOnLastSpread }
                   )
                 }
                 inlinePropCount++
@@ -509,17 +522,10 @@ export function createExtractor() {
 
             const name = attribute.name.name
 
-            if (excludeProps.has(name)) {
-              if (shouldPrintDebug) {
-                console.log(`  excluding ${name}`)
-              }
-              return false
+            if (isExcludedProp(name)) {
+              return true
             }
-
-            if (deoptProps.has(name)) {
-              if (shouldPrintDebug) {
-                console.log(`  deopting ${name}`)
-              }
+            if (isDeoptedProp(name)) {
               inlinePropCount++
               return true
             }
@@ -787,7 +793,7 @@ export function createExtractor() {
           // get our expansion props vs our style props
           for (const key in defaultProps) {
             if (validStyles[key]) {
-              if (excludeProps.has(key)) {
+              if (isExcludedProp(key)) {
                 continue
               }
               defaultStyle[key] = defaultProps[key]
@@ -819,7 +825,8 @@ export function createExtractor() {
           ) {
             // add name so we can debug it more easily
             const preName = componentName ? `${componentName}:` : ''
-            node.attributes.push(
+            // unshift so spreads/nesting overwrite
+            node.attributes.unshift(
               t.jsxAttribute(
                 t.jsxIdentifier('data-is'),
                 t.stringLiteral(
@@ -916,20 +923,25 @@ export function createExtractor() {
             )
           }
 
-          if (inlinePropCount) {
-            // if only some style props were extracted AND additional props are spread onto the component,
-            // add the props back with null values to prevent spread props from incorrectly overwriting the extracted prop value
-            for (const key in defaultStyle) {
-              if (key in viewStyles) {
-                node.attributes.push(
-                  t.jsxAttribute(
-                    t.jsxIdentifier(key),
-                    t.jsxExpressionContainer(t.nullLiteral())
-                  )
-                )
-              }
-            }
-          }
+          // i dont think this is correct, the real problem is that sometimes react-native-web
+          // adds styles as classname, sometimes as style={} inline. inline will always work
+          // and override our extracted styles, which is intended. but if it adds classname, it will
+          // fail. i believe the right patch is in RNW, ensuring all inline classnames are !important
+
+          // if (inlinePropCount) {
+          //   // if only some style props were extracted AND additional props are spread onto the component,
+          //   // add the props back with null values to prevent spread props from incorrectly overwriting the extracted prop value
+          //   for (const key in defaultStyle) {
+          //     if (key in viewStyles) {
+          //       node.attributes.push(
+          //         t.jsxAttribute(
+          //           t.jsxIdentifier(key),
+          //           t.jsxExpressionContainer(t.nullLiteral())
+          //         )
+          //       )
+          //     }
+          //   }
+          // }
 
           if (traversePath.node.closingElement) {
             // this seems strange

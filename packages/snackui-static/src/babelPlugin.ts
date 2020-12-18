@@ -104,6 +104,18 @@ export const babelPlugin = declare((api, options: PluginOptions): {
                 }
               }
 
+              if (
+                props.spreadInfo.isSingleSimple &&
+                props.spreadInfo.simpleIdentifier
+              ) {
+                stylesExpr.elements.push(
+                  t.memberExpression(
+                    props.spreadInfo.simpleIdentifier,
+                    t.identifier('style')
+                  )
+                )
+              }
+
               props.node.attributes.push(
                 t.jsxAttribute(
                   t.jsxIdentifier('style'),
