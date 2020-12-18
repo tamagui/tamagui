@@ -5,6 +5,7 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import invariant from 'invariant'
 import { TextStyle, ViewStyle } from 'react-native'
+import { StaticComponent } from 'snackui'
 import * as AllExports from 'snackui/node'
 
 import { pseudos } from '../css/getStylesAtomic'
@@ -31,26 +32,12 @@ const UNTOUCHED_PROPS = {
   className: true,
 }
 
-type OptimizableComponent = Function & {
-  staticConfig: {
-    validStyles: { [key: string]: boolean }
-    defaultProps: any
-    expansionProps?: {
-      // eg: <ZStack fullscreen />, { fullscreen: { position: 'absolute', ... } }
-      [key: string]:
-        | ViewStyle
-        | TextStyle
-        | ((props: any) => ViewStyle | TextStyle)
-    }
-  }
-}
-
 const validHooks = {
   useMedia: true,
   useTheme: true,
 }
 
-const validComponents: { [key: string]: OptimizableComponent } = Object.keys(
+const validComponents: { [key: string]: StaticComponent } = Object.keys(
   AllExports
 )
   .filter((key) => !!AllExports[key]?.staticConfig)
@@ -182,7 +169,7 @@ export function createExtractor() {
 
           const { staticConfig } = component
           const originalNodeName = node.name.name
-          const isTextView = originalNodeName.endsWith('Text')
+          const isTextView = staticConfig.isText ?? false
           const validStyles = staticConfig?.validStyles ?? {}
           const domNode = getFlattenedNode({ isTextView })
 

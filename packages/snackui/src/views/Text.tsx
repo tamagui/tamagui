@@ -49,6 +49,7 @@ export const Text = (allProps: TextProps) => {
 
 if (process.env.IS_STATIC) {
   Text.staticConfig = {
+    isText: true,
     validStyles: stylePropsText,
     defaultProps: defaultStyle,
     expansionProps: {
