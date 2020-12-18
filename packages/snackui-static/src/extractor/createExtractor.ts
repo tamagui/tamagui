@@ -134,17 +134,21 @@ export function createExtractor() {
       /**
        * Step 1: Determine if importing any statically extractable components
        */
-      path.traverse({
-        ImportDeclaration(path) {
-          if (path.node.source.value === 'snackui') {
-            path.node.specifiers.forEach((specifier) => {
-              const name = specifier.local.name
-              if (validComponents[name] || validHooks[name]) {
-                doesUseValidImport = true
-              }
-            })
-          }
-        },
+      const isInsideSnackUI = sourceFileName.includes('/snackui/')
+      path.get('body').forEach((bodyPath) => {
+        if (!bodyPath.isImportDeclaration()) return
+        const importStr = bodyPath.node.source.value
+        if (
+          importStr === 'snackui' ||
+          (isInsideSnackUI && importStr[0] === '.')
+        ) {
+          bodyPath.node.specifiers.forEach((specifier) => {
+            const name = specifier.local.name
+            if (validComponents[name] || validHooks[name]) {
+              doesUseValidImport = true
+            }
+          })
+        }
       })
 
       if (shouldPrintDebug) {
@@ -433,10 +437,6 @@ export function createExtractor() {
               console.log(`  `, { couldntParse, shouldDeopt })
             }
             return
-          }
-
-          if (shouldPrintDebug) {
-            console.log('flattenedAttributes', flattenedAttributes)
           }
 
           node.attributes = flattenedAttributes
