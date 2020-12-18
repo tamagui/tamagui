@@ -365,21 +365,17 @@ export function createExtractor() {
               ) {
                 if (isStyleObject(attr.argument.right)) {
                   const spreadStyle = attemptEvalSafe(attr.argument.right)
-                  if (spreadStyle !== FAILED_EVAL) {
+                  if (spreadStyle === FAILED_EVAL) {
+                    didFailStaticallyExtractingSpread = true
+                  } else {
                     if (hasDeopt(spreadStyle)) {
                       shouldDeopt = true
                       return
                     }
                     const test = (attr.argument as t.LogicalExpression).left
                     const evalValue = attemptEvalSafe(test)
-                    if (shouldPrintDebug) {
-                      console.log('  evalValue', evalValue)
-                    }
-                    if (!evalValue) {
-                      if (shouldPrintDebug) {
-                        console.log('evaluated false, leave empty')
-                      }
-                      return
+                    if (evalValue === FAILED_EVAL) {
+                      // its fine we just cant extract all the way
                     }
                     const cons = omitExcludeStyles(spreadStyle)
                     staticTernaries.push({
@@ -392,8 +388,6 @@ export function createExtractor() {
                     })
                     return
                   }
-                } else {
-                  didFailStaticallyExtractingSpread = true
                 }
               }
 
@@ -405,7 +399,7 @@ export function createExtractor() {
                 lastSpreadIndex = flattenedAttributes.push(attr) - 1
               }
 
-              if (spreadValue) {
+              if (typeof spreadValue !== 'undefined') {
                 try {
                   if (typeof spreadValue !== 'object' || spreadValue == null) {
                     lastSpreadIndex = flattenedAttributes.push(attr) - 1
@@ -854,7 +848,7 @@ export function createExtractor() {
           // second pass, style expansions
           let styleExpansionError = false
           if (shouldPrintDebug) {
-            console.log('  styleExpansions', { defaultProps, styleExpansions })
+            console.log('  styleExpansions', styleExpansions)
           }
           if (styleExpansions.length) {
             // first build fullStyles to pass in
@@ -923,10 +917,17 @@ export function createExtractor() {
             )
           }
 
-          // i dont think this is correct, the real problem is that sometimes react-native-web
-          // adds styles as classname, sometimes as style={} inline. inline will always work
-          // and override our extracted styles, which is intended. but if it adds classname, it will
-          // fail. i believe the right patch is in RNW, ensuring all inline classnames are !important
+          // TODO: we need to handle atomic collisions at runtime
+          // for example:
+
+          // const Paragraph = (props) => <Text color="red" {...props} />
+
+          // needs to turn into:
+
+          // const Paragraph = (props) => <Text {...props} className={mergeClassNames(`clr-red`, props.className)} />
+
+          // where mergeClassNames() uses the `uniqueStylePrefix` in styleProps to properly reduce className
+          // down, overriding the user supplied ones
 
           // if (inlinePropCount) {
           //   // if only some style props were extracted AND additional props are spread onto the component,
@@ -965,8 +966,8 @@ export function createExtractor() {
                     : t.isMemberExpression(x.test)
                     ? [x.test.object['name'], x.test.property['name']]
                     : x.test,
-                  x.alternate,
                   x.consequent,
+                  x.alternate,
                 ])
                 .flat()
             )

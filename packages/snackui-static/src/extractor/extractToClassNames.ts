@@ -14,9 +14,7 @@ import { Extractor } from '../extractor/createExtractor'
 import { Ternary } from '../extractor/extractStaticTernaries'
 import { ClassNameToStyleObj, PluginOptions } from '../types'
 import { babelParse } from './babelParse'
-import { findTopmostFunction } from './findTopmostFunction'
 import { getPropValueFromAttributes } from './getPropValueFromAttributes'
-import { removeUnusedHooks } from './removeUnusedHooks'
 
 type ClassNameObject = t.StringLiteral | t.Expression
 
@@ -67,6 +65,14 @@ export function extractToClassNames(
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists = {}
   const mediaQueries = options.mediaQueries ?? defaultMediaQueries
+
+  // for now order first strongest
+  const mediaKeys = Object.keys(mediaQueries)
+  const mediaKeysLen = mediaKeys.length
+  const mediaKeyPrecendence = mediaKeys.reduce((acc, cur, i) => {
+    acc[cur] = new Array(mediaKeysLen - i).fill(':root').join('')
+    return acc
+  }, {})
 
   let didExtract = false
 
@@ -125,6 +131,9 @@ export function extractToClassNames(
             ternaries = ternaries.filter((ternary) => {
               const result = getMediaQueryTernary(jsxPath, ternary)
               if (!result) {
+                if (shouldPrintDebug) {
+                  console.log('  not media query', result)
+                }
                 // cant evaluate as media query, keep it
                 return true
               }
@@ -148,6 +157,10 @@ export function extractToClassNames(
                 getStyleObj(ternary.consequent, false),
                 getStyleObj(ternary.alternate, true),
               ].filter(isPresent)
+              if (shouldPrintDebug && !styleOpts.length) {
+                console.log('  media query, no styles?')
+                return true
+              }
               for (const { styleObj, negate } of styleOpts) {
                 const styles = getStylesAtomic(styleObj, null, shouldPrintDebug)
                 const mediaStyles = styles.map((style) => {
@@ -157,10 +170,11 @@ export function extractToClassNames(
                   const mediaSelector = mediaObjectToString(mediaQueries[key])
                   const screenStr = negate ? ' not' : ''
                   const mediaStr = `@media${screenStr} screen and ${mediaSelector}`
-                  const styleInner = style.rules[0].replace(
+                  const precendencePrefix = mediaKeyPrecendence[key]
+                  const styleInner = `${precendencePrefix} ${style.rules[0].replace(
                     style.className,
                     className
-                  )
+                  )}`
                   const styleRule = `${mediaStr} { ${styleInner} }`
                   return {
                     ...style,
@@ -171,6 +185,9 @@ export function extractToClassNames(
                 })
 
                 // add to output
+                if (shouldPrintDebug) {
+                  console.log('  media style:', mediaStyles)
+                }
                 for (const mediaStyle of mediaStyles) {
                   stylesByClassName[mediaStyle.identifier] = mediaStyle
                   classNameObjects.push(t.stringLiteral(mediaStyle.identifier))
@@ -207,9 +224,6 @@ export function extractToClassNames(
             const styles = addStylesAtomic(viewStyles)
             for (const style of styles) {
               classNames.push(style.identifier)
-            }
-            if (shouldPrintDebug) {
-              console.log('  ', classNames.join(', '), viewStyles)
             }
           }
 
@@ -529,18 +543,6 @@ function hoistClassNames(path: any, existing: any, expr: any) {
   }
 }
 
-function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression) {
-  if (!t.isCallExpression(init)) return false
-  if (!t.isIdentifier(init.callee)) return false
-  // TODO could support renaming useMedia by looking up import first
-  if (init.callee.name !== 'useMedia') return false
-  if (!jsxPath.scope.hasBinding('useMedia')) return false
-  const useMediaImport = jsxPath.scope.getBinding('useMedia')?.path.parent
-  if (!t.isImportDeclaration(useMediaImport)) return false
-  if (useMediaImport.source.value !== 'snackui') return false
-  return true
-}
-
 function getMediaQueryTernary(
   jsxPath: NodePath<t.JSXElement>,
   ternary: Ternary
@@ -570,6 +572,18 @@ function getMediaQueryTernary(
     return { key, bindingName: key }
   }
   return false
+}
+
+function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression) {
+  if (!t.isCallExpression(init)) return false
+  if (!t.isIdentifier(init.callee)) return false
+  // TODO could support renaming useMedia by looking up import first
+  if (init.callee.name !== 'useMedia') return false
+  if (!jsxPath.scope.hasBinding('useMedia')) return false
+  const useMediaImport = jsxPath.scope.getBinding('useMedia')?.path.parent
+  if (!t.isImportDeclaration(useMediaImport)) return false
+  if (useMediaImport.source.value !== 'snackui') return false
+  return true
 }
 
 function isPresent<T extends Object>(input: null | undefined | T): input is T {

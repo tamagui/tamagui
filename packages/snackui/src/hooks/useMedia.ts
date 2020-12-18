@@ -37,6 +37,7 @@ export interface MediaQueryState {
   md: boolean
   lg: boolean
   xl: boolean
+  xxl: boolean
   short: boolean
   tall: boolean
 }
@@ -53,6 +54,7 @@ export const defaultMediaQueries = {
   md: { minWidth: 960 },
   lg: { minWidth: 1120 },
   xl: { minWidth: 1280 },
+  xxl: { minWidth: 1420 },
   short: { maxHeight: 820 },
   tall: { minHeight: 820 },
 }

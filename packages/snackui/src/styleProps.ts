@@ -110,3 +110,16 @@ export const stylePropsText = {
   ...stylePropsView,
   ...stylePropsTextOnly,
 }
+
+// unique shortkey for each style key
+// for atomic styles prefixing and collision dedupe
+export const uniqueStylePrefix = {}
+for (const name in stylePropsText) {
+  let keyLen = 1
+  let key = name.slice(0, keyLen)
+  while (uniqueStylePrefix[key]) {
+    keyLen++
+    key = name.slice(0, keyLen)
+  }
+  uniqueStylePrefix[name] = key
+}

@@ -6,13 +6,15 @@ import { HStack } from './Stacks'
 export type GridProps = {
   children?: any
   itemMinWidth?: number
+  gap?: any
 }
 
-export function Grid({ children, itemMinWidth = 200 }: GridProps) {
+export function Grid({ children, itemMinWidth = 200, gap }: GridProps) {
   if (isWeb) {
     return (
       <div
         style={{
+          gap,
           display: 'grid',
           justifyContent: 'stretch',
           // gridTemplateRows: 'repeat(4, 1fr)',
