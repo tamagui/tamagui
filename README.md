@@ -250,13 +250,14 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 ## Roadmap
 
-See [the roadmap](roadmap.md):
+See [the roadmap](roadmap.md) for details:
 
+- [ ] Docs / docs site
 - [ ] Support extraction of custom components that extend lower level ones
 - [ ] Media Queries test coverage, docs and configuration
-- [ ] Themes
-- [ ] [Scaling](#roadmap-scaling)
-- [ ] Extraction - advanced traversals (see [plan](#roadmap-advanced-traversal-plan))
+- [ ] [Themes](roadmap.md#themes)
+- [ ] [Scaling](roadmap.md#scaling)
+- [ ] Extraction - advanced traversals (see [plan](roadmap.md#advanced-traversal))
 - [ ] Support `<Stack spacing />`
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
 - [ ] Support a few logical HTML props: onPress, etc
@@ -264,89 +265,6 @@ See [the roadmap](roadmap.md):
 - [ ] Support reloading constants/themes during watch
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
 - [ ] Explore using `babel-plugin-minify-dead-code-elimination` instead of internal hook code
-
-#### Roadmap - Advanced traversal plan
-
-Complex example:
-
-```tsx
-function Component() {
-  const media = useMedia()
-
-  // support extracting this to CSS entirely
-  const color = media.xs ? 'red' : 'blue'
-  const styles = {
-    maxWidth: media.sm ? 100 : 200
-    // ... other extaction semantics support as well
-  }
-
-  return (
-    <>
-      <VStack {...styles} color={color} />
-      <VStack width={styles.maxWidth} />
-    </>
-  )
-}
-```
-
-#### Roadmap - Scaling
-
-One of the biggest needs in a UI is the ability to scale components to different sizes. This is not like Media Queries in that this simply having different size buttons, cards, and text on the same media/device.
-
-The problem can be handled similarly to Media Queries and Themes in that it likely wants to be used like a hook/prop that most of the time can be extracted, but easily falls back to runtime for complex cases.
-
-The hard part is it likley has a combinatorial effect with Media queries, where you want to scale things differently based on the media query. This section is just a thought experiment on how scaling could work.
-
-Difficulties:
-
-- Scale props may be different across components, would require understanding types or require a pragma comment for js
-- Combining with media query explodes complexity a bit, but limiting the use cases could be confusing.
-
-
-```tsx
-// idea 1
-// flexible, hard to extract
-function Component(props: { scale: 'sm' | 'md' | 'lg' }) {
-  const media = useMedia()
-  const fontSize = useScale(props.scale, {
-    sm: 12,
-    md: 14,
-    lg: 16
-  })
-
-  return (
-    <>
-      <Text fontSize={fontSize * media.sm ? 0.5 : 1} />
-    </>
-  )
-}
-
-// idea 2
-// less flexible, easier to extract
-const useScale = createScale({
-  // media query outside (optional?)
-  default: {
-    // scale inside
-    sm: 12,
-    md: 14,
-    lg: 16
-  },
-  sm: {
-    sm: 10,
-    md: 12,
-    lg: 14
-  }
-})
-
-function Component(props: { scale: 'sm' | 'md' | 'lg' }) {
-  const fontSize = useScale(props.scale)
-  return (
-    <>
-      <Text fontSize={fontSize} />
-    </>
-  )
-}
-```
 
 
 ## License

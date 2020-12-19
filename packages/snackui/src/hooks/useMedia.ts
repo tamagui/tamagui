@@ -140,10 +140,12 @@ export const useMedia = () => {
   }, [])
 
   return useConstant(() => {
-    return new Proxy({} as MediaQueryState, {
-      get(_, key) {
+    return new Proxy(media, {
+      get(target, key) {
         if (!media) return
-        if (typeof key !== 'string') return
+        if (typeof key !== 'string') {
+          return Reflect.get(target, key)
+        }
         if (!(key in media)) {
           throw new Error(
             `No media query configured "${String(key)}" in: ${Object.keys(
@@ -154,7 +156,10 @@ export const useMedia = () => {
         if (state.current.isRendering) {
           state.current.nextSelections[key] = true
         }
-        return media[key]
+        if (key in media) {
+          return media[key]
+        }
+        return Reflect.get(media, key)
       },
     })
   })
