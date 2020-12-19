@@ -220,7 +220,7 @@ Then, the root of your components:
 
 ```tsx
 import { configureThemes, ThemeProvider } from 'snackui'
-import themes from './themes'
+import themes, { MyTheme, MyThemes } from './themes'
 
 // configure the types
 declare module 'snackui' {
