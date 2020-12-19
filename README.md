@@ -184,10 +184,12 @@ const light: MyTheme = {
   color: '#000',
 }
 
-export default {
+const themes = {
   dark,
   light,
 }
+
+export default themes
 ```
 
 Then, add a `themesFile` property to your loader options. Please note, this means your themes file should be loadable by the node process.
