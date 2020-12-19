@@ -134,7 +134,7 @@ export function Component(props) {
 
 ### Media Queries
 
-**Beta**. Very early support for media queries has landed via the hook `useMedia`. It's designed to work much the same as the advanced conditional statements do above. If SnackUI extracts all media query statements, it will remove the hook for you.
+**Beta**. Early support for media queries has landed via the hook `useMedia`. It's designed to work much the same as the advanced conditional statements do above. If SnackUI extracts all media query statements, it will remove the hook for you.
 
 Customizing the queries isn't supported quite yet, but planned to work without syntax changes. You'll have to make do with the defaults for the beta.
 
@@ -159,6 +159,118 @@ export function Component(props) {
 Using the hook syntax has the nice benefit of falling back gracefully when it's not supported, without any change in syntax. Only width/height media queries work for now. To see if your media query extracted successfully, add `// debug` to the top of the file.
 
 On native media queries are not extracted and left to parse at runtime.
+
+### Themes
+
+**Beta**. Early support for themes has also landed via the hook `useTheme`.
+
+First, set up your themes in its own file:
+
+```ts
+// themes.ts
+
+export type MyTheme = typeof dark
+export type MyThemes = typeof themes
+
+const dark = {
+  backgroundColor: '#000',
+  borderColor: '#222',
+  color: '#fff',
+}
+
+const light: MyTheme = {
+  backgroundColor: '#fff',
+  borderColor: '#eee',
+  color: '#000',
+}
+
+export default {
+  dark,
+  light,
+}
+```
+
+Then, add a `themesFile` property to your loader options. Please note, this means your themes file should be loadable by the node process.
+
+```js
+module: {
+  rules: [
+    {
+      test: /\.[jt]sx?$/,
+      use: [
+        {
+          loader: 'babel-loader',
+        },
+        {
+          loader: require.resolve('@snackui/static/loader'),
+          options: {
+            evaluateImportsWhitelist: ['constants.js', 'colors.js'],
+            themesFile: require.resolve('./themes.ts'),
+          },
+        },
+      ]
+    }
+  ]
+}
+```
+
+Then, the root of your components:
+
+```tsx
+import { configureThemes, ThemeProvider } from 'snackui'
+import themes from './themes'
+
+// configure the types
+declare module 'snackui' {
+  interface ThemeObject extends MyTheme {}
+  interface Themes extends MyThemes {}
+}
+
+configureThemes(themes)
+
+export function App() {
+  return (
+    <ThemeProvider themes={themes} defaultTheme="light">
+      <Component />
+    </ThemeProvider>
+  )
+}
+```
+
+Finally, in any component below that:
+
+```tsx
+export function Component() {
+  const theme = useTheme()
+  return (
+    <VStack color={theme.color} />
+  )
+}
+```
+
+SnackUI will extract this and other more complex use cases (logical expressions, ternaries), removing the hook. The CSS will be something like:
+
+```css
+.light {
+  --color: #000;
+  --backgroundColor: #fff;
+  --borderColor: #eee;
+}
+.theme-color {
+  color: var(--color);
+}
+```
+
+And the output component:
+
+```tsx
+const _cn = `theme-color`
+export function Component() {
+  return (
+    <div className={_cn} />
+  )
+}
+```
 
 ## Setup
 
