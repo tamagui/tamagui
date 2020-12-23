@@ -82,6 +82,7 @@ export const configureMedia = (queries: MediaQueries = mediaQueries) => {
     match.addEventListener('change', () => {
       media[key] = !!getMatch().matches
       const listeners = mediaQueryListeners[key]
+      console.log('got change event', listeners?.size)
       if (listeners?.size) {
         for (const cb of [...listeners]) {
           cb()
@@ -95,6 +96,7 @@ type UseMediaState = {
   selections: { [key: string]: boolean }
   nextSelections: { [key: string]: boolean }
   isRendering: boolean
+  isUnmounted: boolean
 }
 
 export const useMedia = () => {
@@ -108,6 +110,7 @@ export const useMedia = () => {
     state.current = {
       selections: {},
       nextSelections: {},
+      isUnmounted: false,
       isRendering: true,
     }
   }
@@ -117,11 +120,13 @@ export const useMedia = () => {
   useLayoutEffect(() => {
     const st = state.current
     st.isRendering = false
+    // delete old
     for (const key in st.selections) {
       if (!(key in st.nextSelections)) {
         mediaQueryListeners[key].delete(forceUpdate)
       }
     }
+    // add new
     for (const key in st.nextSelections) {
       if (!(key in st.selections)) {
         mediaQueryListeners[key] = mediaQueryListeners[key] || new Set()
@@ -131,15 +136,22 @@ export const useMedia = () => {
   })
 
   // unmount
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => {
-      for (const key in state.current.selections) {
+      const st = state.current
+      st.isUnmounted = true
+      const allKeys = {
+        ...st.selections,
+        ...st.nextSelections,
+      }
+      for (const key in allKeys) {
         mediaQueryListeners[key].delete(forceUpdate)
       }
     }
   }, [])
 
   return useConstant(() => {
+    const st = state.current
     return new Proxy(media, {
       get(target, key) {
         if (!media) return
@@ -153,8 +165,10 @@ export const useMedia = () => {
             )}`
           )
         }
-        if (state.current.isRendering) {
-          state.current.nextSelections[key] = true
+        if (!st.isUnmounted) {
+          if (st.isRendering) {
+            st.nextSelections[key] = true
+          }
         }
         if (key in media) {
           return media[key]
