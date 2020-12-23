@@ -42,8 +42,10 @@ export interface MediaQueryState {
   tall: boolean
 }
 
+export type MediaQueryKey = keyof MediaQueryState
+
 export type MediaQueries = {
-  [key in keyof MediaQueryState]: MediaQueryShort
+  [key in MediaQueryKey]: MediaQueryShort
 }
 
 export const defaultMediaQueries = {
@@ -59,30 +61,36 @@ export const defaultMediaQueries = {
   tall: { minHeight: 820 },
 }
 
-const media: { [key in keyof MediaQueryState]: boolean } = {} as any
+const mediaState: { [key in keyof MediaQueryState]: boolean } = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
-export const getMedia = () => media
+export const getMedia = () => mediaState
 
 let hasConfigured = false
-let mediaQueries: MediaQueries = { ...defaultMediaQueries }
 
-export const configureMedia = (queries: MediaQueries = mediaQueries) => {
+export type ConfigureMediaQueryOptions = {
+  queries: MediaQueries
+  // defaultActive?: MediaQueryKey[]
+}
+
+export const configureMedia = ({
+  queries = defaultMediaQueries,
+}: ConfigureMediaQueryOptions) => {
   if (hasConfigured) {
     throw new Error(`Already configured mediaQueries once`)
   }
   hasConfigured = true
-  mediaQueries = queries
 
   // setup
   for (const key in queries) {
     const getMatch = () => global.matchMedia(mediaObjectToString(queries[key]))
     const match = getMatch()
-    media[key] = !!match.matches
+    mediaState[key] = !!match.matches
     match.addEventListener('change', () => {
-      media[key] = !!getMatch().matches
+      const next = !!getMatch().matches
+      if (next === mediaState[key]) return
+      mediaState[key] = next
       const listeners = mediaQueryListeners[key]
-      console.log('got change event', listeners?.size)
       if (listeners?.size) {
         for (const cb of [...listeners]) {
           cb()
@@ -99,9 +107,14 @@ type UseMediaState = {
   isUnmounted: boolean
 }
 
+const defaultOptions: ConfigureMediaQueryOptions = {
+  queries: defaultMediaQueries,
+  // defaultActive: ['sm', 'xs']
+}
+
 export const useMedia = () => {
   if (!hasConfigured) {
-    configureMedia()
+    configureMedia(defaultOptions)
   }
 
   const forceUpdate = useForceUpdate()
@@ -152,16 +165,16 @@ export const useMedia = () => {
 
   return useConstant(() => {
     const st = state.current
-    return new Proxy(media, {
+    return new Proxy(mediaState, {
       get(target, key) {
-        if (!media) return
+        if (!mediaState) return
         if (typeof key !== 'string') {
           return Reflect.get(target, key)
         }
-        if (!(key in media)) {
+        if (!(key in mediaState)) {
           throw new Error(
             `No media query configured "${String(key)}" in: ${Object.keys(
-              media
+              mediaState
             )}`
           )
         }
@@ -170,10 +183,10 @@ export const useMedia = () => {
             st.nextSelections[key] = true
           }
         }
-        if (key in media) {
-          return media[key]
+        if (key in mediaState) {
+          return mediaState[key]
         }
-        return Reflect.get(media, key)
+        return Reflect.get(mediaState, key)
       },
     })
   })
