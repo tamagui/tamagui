@@ -56,8 +56,7 @@ export function extractToClassNames(
       sourceFileName,
       err.message,
       '\n',
-      err.stack,
-      src
+      err.stack
     )
     throw new Error(`Couldn't parse`)
   }
