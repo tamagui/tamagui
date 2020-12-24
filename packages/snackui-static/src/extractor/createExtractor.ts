@@ -121,13 +121,12 @@ export function createExtractor() {
       /**
        * Step 1: Determine if importing any statically extractable components
        */
-      const isInsideSnackUI = sourceFileName.includes('/snackui/')
       path.get('body').forEach((bodyPath) => {
         if (!bodyPath.isImportDeclaration()) return
         const importStr = bodyPath.node.source.value
         if (
           importStr === 'snackui' ||
-          (isInsideSnackUI && importStr[0] === '.')
+          (isInsideSnackUI(sourceFileName) && importStr[0] === '.')
         ) {
           bodyPath.node.specifiers.forEach((specifier) => {
             const name = specifier.local.name
@@ -209,7 +208,7 @@ export function createExtractor() {
                     if (
                       t.isMemberExpression(n) &&
                       t.isIdentifier(n.property) &&
-                      isValidThemeHook(traversePath, n)
+                      isValidThemeHook(traversePath, n, sourceFileName)
                     ) {
                       const key = n.property.name
                       if (!themeKeys.has(key)) {
@@ -1029,7 +1028,8 @@ function findComponentName(scope) {
 
 function isValidThemeHook(
   jsxPath: NodePath<t.JSXElement>,
-  n: t.MemberExpression
+  n: t.MemberExpression,
+  sourceFileName: string
 ) {
   if (!t.isIdentifier(n.object) || !t.isIdentifier(n.property)) return false
   const binding = jsxPath.scope.bindings[n.object.name]
@@ -1041,6 +1041,13 @@ function isValidThemeHook(
   if (init.callee.name !== 'useTheme') return false
   const importNode = binding.scope.getBinding('useTheme')?.path.parent
   if (!t.isImportDeclaration(importNode)) return false
-  if (importNode.source.value !== 'snackui') return false
+  if (importNode.source.value !== 'snackui') {
+    if (!isInsideSnackUI(sourceFileName)) {
+      return false
+    }
+  }
   return true
 }
+
+export const isInsideSnackUI = (srcName: string) =>
+  srcName.includes('/snackui/')

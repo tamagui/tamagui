@@ -10,7 +10,7 @@ import { defaultMediaQueries, mediaObjectToString } from 'snackui/node'
 
 import { CSS_FILE_NAME } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
-import { Extractor } from '../extractor/createExtractor'
+import { Extractor, isInsideSnackUI } from '../extractor/createExtractor'
 import { Ternary } from '../extractor/extractStaticTernaries'
 import { ClassNameToStyleObj, PluginOptions } from '../types'
 import { babelParse } from './babelParse'
@@ -129,7 +129,11 @@ export function extractToClassNames(
           // convert media query ternaries into media queries
           if (ternaries) {
             ternaries = ternaries.filter((ternary) => {
-              const result = getMediaQueryTernary(jsxPath, ternary)
+              const result = getMediaQueryTernary(
+                jsxPath,
+                ternary,
+                sourceFileName
+              )
               if (!result) {
                 if (shouldPrintDebug) {
                   console.log('  not media query', result)
@@ -545,7 +549,8 @@ function hoistClassNames(path: any, existing: any, expr: any) {
 
 function getMediaQueryTernary(
   jsxPath: NodePath<t.JSXElement>,
-  ternary: Ternary
+  ternary: Ternary,
+  sourceFileName: string
 ) {
   // const media = useMedia()
   // ... media.sm
@@ -559,7 +564,8 @@ function getMediaQueryTernary(
     if (!jsxPath.scope.hasBinding(name)) return false
     const bindingNode = jsxPath.scope.getBinding(name)?.path?.node
     if (!t.isVariableDeclarator(bindingNode) || !bindingNode.init) return false
-    if (!isValidMediaCall(jsxPath, bindingNode.init)) return false
+    if (!isValidMediaCall(jsxPath, bindingNode.init, sourceFileName))
+      return false
     return { key, bindingName: name }
   }
   // const { sm } = useMedia()
@@ -568,13 +574,18 @@ function getMediaQueryTernary(
     const key = ternary.test.name
     const node = jsxPath.scope.getBinding(ternary.test.name)?.path?.node
     if (!t.isVariableDeclarator(node)) return false
-    if (!node.init || !isValidMediaCall(jsxPath, node.init)) return false
+    if (!node.init || !isValidMediaCall(jsxPath, node.init, sourceFileName))
+      return false
     return { key, bindingName: key }
   }
   return false
 }
 
-function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression) {
+function isValidMediaCall(
+  jsxPath: NodePath<t.JSXElement>,
+  init: t.Expression,
+  sourceFileName: string
+) {
   if (!t.isCallExpression(init)) return false
   if (!t.isIdentifier(init.callee)) return false
   // TODO could support renaming useMedia by looking up import first
@@ -582,7 +593,11 @@ function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression) {
   if (!jsxPath.scope.hasBinding('useMedia')) return false
   const useMediaImport = jsxPath.scope.getBinding('useMedia')?.path.parent
   if (!t.isImportDeclaration(useMediaImport)) return false
-  if (useMediaImport.source.value !== 'snackui') return false
+  if (useMediaImport.source.value !== 'snackui') {
+    if (!isInsideSnackUI(sourceFileName)) {
+      return false
+    }
+  }
   return true
 }
 

@@ -17,7 +17,7 @@ export type StaticConfig = {
   }
 }
 
-export function extendStaticConfig(a: any, config: StaticConfig) {
+export function extendStaticConfig(a: any, config: StaticConfig = {}) {
   if (process.env.TARGET === 'client') {
     return
   }
