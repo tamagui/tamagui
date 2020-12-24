@@ -27,6 +27,8 @@
 
   --ifm-alert-color: black;
 
+  --ifm-navbar-shadow: 0 0 1px rgba(0,0,0,0.2);
+
   --ra-admonition-color: #ecf4f9;
   --ra-admonition-color-dark: #2a98b9;
 
@@ -46,6 +48,18 @@
 
 .markdown > h1 {
   --ifm-h1-font-size: 2.2rem;
+}
+
+.markdown > h2 {
+  --ifm-h2-font-size: 1.8rem;
+}
+
+.markdown > h3 {
+  --ifm-h3-font-size: 1.35rem;
+}
+
+.markdown > h4 {
+  --ifm-h4-font-size: 1.2rem;
 }
 
 @media screen and (max-width: 996px) {
@@ -131,8 +145,13 @@ a:visited {
   width: 612px;
   height: 192px;
   margin: auto;
+  transform: scale(0.75);
   background: url(/img/snackui.svg);
- }
+}
+
+.navbar__title {
+  color: #000;
+}
 
 .navbar .navbar__inner {
   flex-wrap: nowrap;
@@ -272,4 +291,8 @@ details.detailed-explanation p {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.DocSearch-Button-Placeholder {
+  min-width: 130px;
 }

@@ -1,3 +1,7 @@
+.tagLine {
+  font-size: 1.25rem;
+}
+
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
@@ -27,7 +31,8 @@
 .featureTitle {
   text-align: center;
   margin: 1rem 0;
-  font-size: 22px;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .featureImage {

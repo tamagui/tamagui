@@ -10,7 +10,8 @@ module.exports = {
     image: 'img/redux-logo-landscape.png',
     metadatas: [{ name: 'twitter:card', content: 'summary' }],
     prism: {
-      theme: require('./src/js/monokaiTheme.js'),
+      additionalLanguages: ['typescript', 'tsx'],
+      theme: require('prism-react-renderer/themes/dracula'),
     },
     colorMode: {
       disableSwitch: false,
