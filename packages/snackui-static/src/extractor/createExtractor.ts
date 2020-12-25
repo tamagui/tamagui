@@ -62,6 +62,12 @@ export type Extractor = ReturnType<typeof createExtractor>
 export function createExtractor() {
   const bindingCache: Record<string, string | null> = {}
   const themesByFile = {}
+  const shouldAddDebugProp =
+    process.env.TARGET !== 'native' &&
+    process.env.IDENTIFY_TAGS !== 'false' &&
+    (process.env.NODE_ENV === 'development' ||
+      process.env.DEBUG ||
+      process.env.IDENTIFY_TAGS)
 
   return {
     parse: (
@@ -107,21 +113,23 @@ export function createExtractor() {
       /**
        * Step 1: Determine if importing any statically extractable components
        */
-      path.get('body').forEach((bodyPath) => {
-        if (!bodyPath.isImportDeclaration()) return
+      for (const bodyPath of path.get('body')) {
+        if (!bodyPath.isImportDeclaration()) continue
         const importStr = bodyPath.node.source.value
         if (
           importStr === 'snackui' ||
           (isInsideSnackUI(sourceFileName) && importStr[0] === '.')
         ) {
-          bodyPath.node.specifiers.forEach((specifier) => {
+          const isValid = bodyPath.node.specifiers.some((specifier) => {
             const name = specifier.local.name
-            if (validComponents[name] || validHooks[name]) {
-              doesUseValidImport = true
-            }
+            return validComponents[name] || validHooks[name]
           })
+          if (isValid) {
+            doesUseValidImport = true
+            break
+          }
         }
-      })
+      }
 
       if (shouldPrintDebug) {
         console.log(sourceFileName, { doesUseValidImport })
@@ -413,8 +421,10 @@ export function createExtractor() {
           const isAttr = (x: ExtractedAttr): x is ExtractedAttrAttr =>
             x.type === 'attr'
 
+          const getNodeAttrs = () => attrs.filter(isAttr).map((x) => x.value)
+
           // set flattened values
-          node.attributes = attrs.filter(isAttr).map((x) => x.value)
+          node.attributes = getNodeAttrs()
 
           if (couldntParse || shouldDeopt) {
             if (shouldPrintDebug) {
@@ -439,10 +449,12 @@ export function createExtractor() {
             if (evaluateAttribute(idx, path)) {
               attributes.push(path.node)
             } else {
+              attrs = attrs.filter((x) => !isAttr(x) || x.value !== path.node)
               path.remove()
             }
           }
-          node.attributes = attributes
+
+          node.attributes = getNodeAttrs()
 
           function evaluateAttribute(
             idx: number,
@@ -502,11 +514,7 @@ export function createExtractor() {
                   : attemptEvalSafe(value)
               if (styleValue === FAILED_EVAL) {
                 if (shouldPrintDebug) {
-                  console.warn(
-                    '  Failed style expansion!',
-                    name,
-                    attribute?.value
-                  )
+                  console.warn('  Failed style expansion', name)
                 }
                 inlinePropCount++
                 return true
@@ -737,30 +745,27 @@ export function createExtractor() {
                 : '')
             : ''
 
-          // add helpful attr for debugging
-          if (
-            process.env.TARGET !== 'native' &&
-            process.env.IDENTIFY_TAGS !== 'false' &&
-            (process.env.NODE_ENV === 'development' ||
-              process.env.DEBUG ||
-              process.env.IDENTIFY_TAGS)
-          ) {
-            // add name so we can debug it more easily
+          // helpful attrs for DX
+          if (shouldAddDebugProp) {
             const preName = componentName ? `${componentName}:` : ''
             // unshift so spreads/nesting overwrite
-            node.attributes.unshift(
-              t.jsxAttribute(
+            attrs.unshift({
+              type: 'attr',
+              value: t.jsxAttribute(
                 t.jsxIdentifier('data-is'),
                 t.stringLiteral(
                   `${preName}${node.name.name} @ ${filePath}:${lineNumbers}`
                 )
-              )
-            )
+              ),
+            })
           }
 
-          // if all style props have been extracted, component can be
-          // converted to a div or the specified component
-          if (inlinePropCount === 0) {
+          // if all style props have been extracted and no spreads
+          // component can be flattened to div or parent view
+          if (
+            inlinePropCount === 0 &&
+            !node.attributes.some((x) => t.isJSXSpreadAttribute(x))
+          ) {
             // since were removing down to div, we need to push the default styles onto this classname
             if (shouldPrintDebug) {
               console.log('  default styles', originalNodeName, defaultStyle)
@@ -774,6 +779,7 @@ export function createExtractor() {
           }
 
           // second pass, style expansions
+          // TODO integrate with attrs
           let styleExpansionError = false
           if (shouldPrintDebug) {
             console.log('  styleExpansions', styleExpansions)
@@ -836,6 +842,7 @@ export function createExtractor() {
               console.log('bailing optimization due to failed style expansion')
             }
             node.attributes = ogAttributes
+            attrs = ogAttributes.map((value) => ({ type: 'attr', value }))
             return
           }
 
@@ -844,33 +851,6 @@ export function createExtractor() {
               `  >> is extracting, inlinePropCount: ${inlinePropCount}, domNode: ${domNode}`
             )
           }
-
-          // TODO: we need to handle atomic collisions at runtime
-          // for example:
-
-          // const Paragraph = (props) => <Text color="red" {...props} />
-
-          // needs to turn into:
-
-          // const Paragraph = (props) => <Text {...props} className={mergeClassNames(`clr-red`, props.className)} />
-
-          // where mergeClassNames() uses the `uniqueStylePrefix` in styleProps to properly reduce className
-          // down, overriding the user supplied ones
-
-          // if (inlinePropCount) {
-          //   // if only some style props were extracted AND additional props are spread onto the component,
-          //   // add the props back with null values to prevent spread props from incorrectly overwriting the extracted prop value
-          //   for (const key in defaultStyle) {
-          //     if (key in viewStyles) {
-          //       node.attributes.push(
-          //         t.jsxAttribute(
-          //           t.jsxIdentifier(key),
-          //           t.jsxExpressionContainer(t.nullLiteral())
-          //         )
-          //       )
-          //     }
-          //   }
-          // }
 
           if (traversePath.node.closingElement) {
             // this seems strange

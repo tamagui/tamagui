@@ -54,7 +54,6 @@ export * from './views/Title'
 export * from './views/Toast'
 export * from './views/UnorderedList'
 
-export * from './helpers/concatClassName'
 export * from './helpers/getNode'
 export * from './helpers/weakKey'
 export * from './helpers/combineFns'

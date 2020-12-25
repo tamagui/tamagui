@@ -3,10 +3,18 @@ import * as t from '@babel/types'
 
 import { ExtractedAttr, Ternary } from '../types'
 
+export function isPresent<T extends Object>(
+  input: null | undefined | T
+): input is T {
+  return input != null
+}
+
+export function isSimpleSpread(node: t.JSXSpreadAttribute) {
+  return t.isIdentifier(node.argument) || t.isMemberExpression(node.argument)
+}
+
 export const attrGetName = (attr: ExtractedAttr) => {
-  return `${
-    attr.type === 'attr' ? '' : `${attr.type === 'spread' ? '...' : attr.type}`
-  }${
+  return `${attr.type === 'attr' ? '' : `${attr.type}`}${
     attr.type === 'attr'
       ? getNameAttr(attr.value)
       : attr.type === 'ternary'
@@ -16,11 +24,10 @@ export const attrGetName = (attr: ExtractedAttr) => {
 }
 
 const getNameAttr = (attr: t.JSXAttribute | t.JSXSpreadAttribute) => {
-  return 'name' in attr
-    ? attr.name.name
-    : 'name' in attr.argument
-    ? `spread-${attr.argument.name}`
-    : `unknown-${attr.type}`
+  if (t.isJSXSpreadAttribute(attr)) {
+    return `...${attr.argument['name']}`
+  }
+  return 'name' in attr ? attr.name.name : `unknown-${attr['type']}`
 }
 
 export const getNameTernary = (x: Ternary) => {

@@ -61,7 +61,7 @@ export function getStylesAtomic(
 function getAtomicStyle(
   style: ViewStyle,
   pseudo?: { name: string; priority: number }
-) {
+): StyleObject[] {
   if (style == null || typeof style !== 'object') {
     throw new Error(`Wrong style type: "${typeof style}": ${style}`)
   }
@@ -74,35 +74,31 @@ function getAtomicStyle(
   const all = _.cloneDeep(
     atomic(createCompileableStyle(createReactDOMStyle(i18Style(style))))
   )
-  for (const key in all) {
-    const styleObj = all[key]
-    if (pseudo) {
-      const ogId = styleObj.identifier
-      const prefix = pseudo.name.slice(0, 2)
-      styleObj.identifier = `${styleObj.identifier}-${prefix}`
-      const newSelector = [...Array(pseudo.priority)]
-        .map((x) => `.${styleObj.identifier}`)
-        .join('')
-      styleObj.rules = styleObj.rules.map((rule) =>
-        rule.replace(`.${ogId}`, newSelector).replace('{', `:${pseudo.name}{`)
-      )
-    }
-    if (styleObj.rules[0].indexOf('!important') > 0) {
-      styleObj.rules[0] = styleObj.rules[0].replace('!important', '')
-    }
-    styleObj.className = `.${styleObj.identifier}`
-  }
-
   return Object.keys(all).map((key) => {
     const val = all[key]
-    const prefix = getOrCreateStylePrefix(val.property)
+    const prefix = `s-${getOrCreateStylePrefix(val.property)}`
     const hash = val.identifier.replace(/r-([a-z0-9]+)-/i, '')
-    const identifier = `${prefix}-${hash}`
+    // pseudos have a `--` to be easier to find with concatClassNames
+    const psuedoPrefix = pseudo ? `-${pseudo.name.slice(0, 2)}-` : ''
+    const identifier = `${prefix}-${psuedoPrefix}${hash}`
+    const className = pseudo
+      ? [...Array(pseudo.priority)].map((x) => `.${identifier}`).join('')
+      : `.${identifier}`
+    const rules = val.rules.map((rule) => {
+      const valCN = `.${val.identifier}`
+      if (pseudo) {
+        return rule
+          .replace(valCN, className)
+          .replace('{', `:${pseudo.name}{`)
+          .replace('!important', '')
+      }
+      return rule.replace(valCN, className).replace('!important', '')
+    })
     return {
       ...val,
       identifier,
-      className: `.${identifier}`,
-      rules: val.rules.map((rule) => rule.replace(val.identifier, identifier)),
-    }
-  }) as StyleObject[]
+      className,
+      rules,
+    } as StyleObject
+  })
 }

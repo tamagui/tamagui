@@ -103,13 +103,15 @@ export const babelPlugin = declare((api, options: PluginOptions): {
                       t.conditionalExpression(attr.value.test, cons, alt)
                     )
                     break
-                  case 'spread':
-                    stylesExpr.elements.push(
-                      t.memberExpression(
-                        attr.value.identifier,
-                        t.identifier('style')
+                  case 'attr':
+                    if (t.isJSXSpreadAttribute(attr.value)) {
+                      stylesExpr.elements.push(
+                        t.memberExpression(
+                          attr.value.argument,
+                          t.identifier('style')
+                        )
                       )
-                    )
+                    }
                     break
                 }
               }

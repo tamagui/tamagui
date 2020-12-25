@@ -3,6 +3,8 @@ import * as t from '@babel/types'
 import { ViewStyle } from 'react-native'
 import { MediaQueries } from 'snackui'
 
+export type ClassNameObject = t.StringLiteral | t.Expression
+
 export interface CacheObject {
   [key: string]: any
 }
@@ -26,7 +28,7 @@ export type ExtractedAttrAttr = {
 
 export type ExtractedAttr =
   | ExtractedAttrAttr
-  | { type: 'spread'; value: { identifier: any } }
+  | { type: 'spread'; value: t.Identifier | t.MemberExpression }
   | { type: 'ternary'; value: Ternary }
 
 export type ExtractTagProps = {

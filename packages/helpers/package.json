@@ -1,0 +1,11 @@
+{
+  "name": "@snackui/helpers",
+  "version": "0.0.6",
+  "main": "_/index.js",
+  "module": "_/index.js",
+  "tsmain": "src/index",
+  "scripts": {
+    "build": "tsc -b",
+    "watch": "tsc -b --watch --preserveWatchOutput"
+  }
+}

@@ -18,6 +18,7 @@
     "watch:web": "ttsc -p tsconfig.node.json --watch --preserveWatchOutput"
   },
   "dependencies": {
+    "@snackui/helpers": "^0.0.6",
     "@dish/async": "^0.0.1",
     "@dish/fast-compare": "^2.7.6",
     "@dish/proxy-worm": "^0.0.4",
