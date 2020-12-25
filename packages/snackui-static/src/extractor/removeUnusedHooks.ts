@@ -61,7 +61,7 @@ export function removeUnusedHooks(
       if (shouldRemove) {
         declarator.remove()
         if (shouldPrintDebug) {
-          console.log(`  removed unused hook ${id.node['name'] ?? ''}`)
+          console.log(`  removed unused ${id.node['name'] ?? ''}`)
         }
       } else {
         if (shouldPrintDebug) {

@@ -10,9 +10,9 @@ import { defaultMediaQueries, mediaObjectToString } from 'snackui/node'
 
 import { CSS_FILE_NAME } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
-import { Extractor, isInsideSnackUI } from '../extractor/createExtractor'
-import { Ternary } from '../extractor/extractStaticTernaries'
-import { ClassNameToStyleObj, PluginOptions } from '../types'
+import { Extractor } from '../extractor/createExtractor'
+import { isInsideSnackUI } from '../extractor/extractHelpers'
+import { ClassNameToStyleObj, PluginOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
 import { getPropValueFromAttributes } from './getPropValueFromAttributes'
 
@@ -61,6 +61,8 @@ export function extractToClassNames(
     throw new Error(`Couldn't parse`)
   }
 
+  console.log('sourceFileName', sourceFileName)
+
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists = {}
   const mediaQueries = options.mediaQueries ?? defaultMediaQueries
@@ -85,129 +87,120 @@ export function extractToClassNames(
           return isTextView ? 'span' : 'div'
         },
         onExtractTag: ({
+          attrs,
           node,
           attemptEval,
           viewStyles,
-          ternaries,
           jsxPath,
           originalNodeName,
           filePath,
           lineNumbers,
-          spreadInfo,
         }) => {
           didExtract = true
 
-          let classNamePropValue: t.Expression | null = null
-          const classNamePropIndex = node.attributes.findIndex(
-            (attr) =>
-              !t.isJSXSpreadAttribute(attr) &&
-              attr.name &&
-              attr.name.name === 'className'
-          )
-          if (classNamePropIndex > -1) {
-            classNamePropValue = getPropValueFromAttributes(
-              'className',
-              node.attributes
+          const cnPropVal = (() => {
+            let res: t.Expression | null = null
+            const cnPropIdx = node.attributes.findIndex(
+              (attr) =>
+                !t.isJSXSpreadAttribute(attr) &&
+                attr.name &&
+                attr.name.name === 'className'
             )
-            node.attributes.splice(classNamePropIndex, 1)
-          }
+            if (cnPropIdx > -1) {
+              res = getPropValueFromAttributes('className', node.attributes)
+              node.attributes.splice(cnPropIdx, 1)
+            }
+            return res
+          })()
 
           const classNameObjects: ClassNameObject[] = []
-          if (classNamePropValue) {
+          if (cnPropVal) {
             try {
-              const evaluatedValue = attemptEval(classNamePropValue)
+              const evaluatedValue = attemptEval(cnPropVal)
               classNameObjects.push(t.stringLiteral(evaluatedValue))
             } catch (e) {
-              classNameObjects.push(classNamePropValue)
+              classNameObjects.push(cnPropVal)
             }
           }
 
           const stylesByClassName: ClassNameToStyleObj = {}
-          const filteredMediaQueries = new Set<string>()
 
           // convert media query ternaries into media queries
-          if (ternaries) {
-            ternaries = ternaries.filter((ternary) => {
-              const result = getMediaQueryTernary(
-                jsxPath,
-                ternary,
-                sourceFileName
+          attrs = attrs.filter((attr) => {
+            if (attr.type !== 'ternary') {
+              return true
+            }
+            const ternary = attr.value
+            const result = getMediaQueryTernary(
+              jsxPath,
+              ternary,
+              sourceFileName
+            )
+            if (!result) {
+              return true
+            }
+            const { key, bindingName } = result
+            const mq = mediaQueries[key]
+            if (!mq) {
+              console.error(
+                `Media query "${key}" not found: ${Object.keys(mediaQueries)}`
               )
-              if (!result) {
-                if (shouldPrintDebug) {
-                  console.log('  not media query', result)
+              return true
+            }
+            const getStyleObj = (
+              styleObj: ViewStyle | null,
+              negate = false
+            ) => {
+              return styleObj ? { styleObj, negate } : null
+            }
+            const styleOpts = [
+              getStyleObj(ternary.consequent, false),
+              getStyleObj(ternary.alternate, true),
+            ].filter(isPresent)
+            if (shouldPrintDebug && !styleOpts.length) {
+              console.log('  media query, no styles?')
+              return true
+            }
+            for (const { styleObj, negate } of styleOpts) {
+              const styles = getStylesAtomic(styleObj, null, shouldPrintDebug)
+              const mediaStyles = styles.map((style) => {
+                const negKey = negate ? '_not' : ''
+                const identifier = `${style.identifier}_${key}${negKey}`
+                const className = `.${identifier}`
+                const mediaSelector = mediaObjectToString(mediaQueries[key])
+                const screenStr = negate ? ' not' : ''
+                const mediaStr = `@media${screenStr} screen and ${mediaSelector}`
+                const precendencePrefix = mediaKeyPrecendence[key]
+                const styleInner = `${precendencePrefix} ${style.rules[0].replace(
+                  style.className,
+                  className
+                )}`
+                const styleRule = `${mediaStr} { ${styleInner} }`
+                return {
+                  ...style,
+                  identifier,
+                  className,
+                  rules: [styleRule],
                 }
-                // cant evaluate as media query, keep it
-                return true
-              }
-              const { key, bindingName } = result
-              const mediaQuery = mediaQueries[key]
-              if (!mediaQuery) {
-                console.error(
-                  `Media query key "${key}" but not found in: ${Object.keys(
-                    mediaQueries
-                  )}`
-                )
-                return true
-              }
-              const getStyleObj = (
-                styleObj: ViewStyle | null,
-                negate = false
-              ) => {
-                return styleObj ? { styleObj, negate } : null
-              }
-              const styleOpts = [
-                getStyleObj(ternary.consequent, false),
-                getStyleObj(ternary.alternate, true),
-              ].filter(isPresent)
-              if (shouldPrintDebug && !styleOpts.length) {
-                console.log('  media query, no styles?')
-                return true
-              }
-              for (const { styleObj, negate } of styleOpts) {
-                const styles = getStylesAtomic(styleObj, null, shouldPrintDebug)
-                const mediaStyles = styles.map((style) => {
-                  const negKey = negate ? '_not' : ''
-                  const identifier = `${style.identifier}_${key}${negKey}`
-                  const className = `.${identifier}`
-                  const mediaSelector = mediaObjectToString(mediaQueries[key])
-                  const screenStr = negate ? ' not' : ''
-                  const mediaStr = `@media${screenStr} screen and ${mediaSelector}`
-                  const precendencePrefix = mediaKeyPrecendence[key]
-                  const styleInner = `${precendencePrefix} ${style.rules[0].replace(
-                    style.className,
-                    className
-                  )}`
-                  const styleRule = `${mediaStr} { ${styleInner} }`
-                  return {
-                    ...style,
-                    identifier,
-                    className,
-                    rules: [styleRule],
-                  }
-                })
+              })
 
-                // add to output
-                if (shouldPrintDebug) {
-                  console.log('  media style:', mediaStyles)
-                }
-                for (const mediaStyle of mediaStyles) {
-                  stylesByClassName[mediaStyle.identifier] = mediaStyle
-                  classNameObjects.push(t.stringLiteral(mediaStyle.identifier))
-                }
+              // add to output
+              if (shouldPrintDebug) {
+                console.log('  media style:', mediaStyles)
               }
+              for (const mediaStyle of mediaStyles) {
+                stylesByClassName[mediaStyle.identifier] = mediaStyle
+                classNameObjects.push(t.stringLiteral(mediaStyle.identifier))
+              }
+            }
 
-              // filter out
-              ternary.remove()
-              filteredMediaQueries.add(bindingName)
+            // filter out
+            ternary.remove()
 
-              return false
-            })
-          }
+            return false
+          })
 
-          let classNamePropValueForReals = buildClassNamePropValue(
-            classNameObjects
-          )
+          let cnPropValForReals = buildCnPropVal(classNameObjects)
 
           const addStylesAtomic = (style: any) => {
             if (!style || !Object.keys(style).length) {
@@ -271,78 +264,81 @@ export function extractToClassNames(
           }
 
           // build the classname property
-          if (ternaries?.length) {
-            const ternaryExprs = ternaries.map(getTernaryExpression)
-            if (shouldPrintDebug) {
-              console.log('  ternaryExprs', ternaryExprs)
-            }
-            if (classNamePropValueForReals) {
-              classNamePropValueForReals = t.binaryExpression(
+          const ternaryExprs = attrs
+            .filter((x) => x.type === 'ternary')
+            // @ts-expect-error
+            .map((x, i) => getTernaryExpression(x.value, i))
+
+          if (ternaryExprs.length) {
+            if (cnPropValForReals) {
+              cnPropValForReals = t.binaryExpression(
                 '+',
                 // @ts-expect-error
-                buildClassNamePropValue(ternaryExprs),
+                buildCnPropVal(ternaryExprs),
                 t.binaryExpression(
                   '+',
                   t.stringLiteral(' '),
-                  classNamePropValueForReals!
+                  cnPropValForReals!
                 )
               )
             } else {
               // if no spread/className prop, we can optimize all the way
-              classNamePropValueForReals = buildClassNamePropValue(ternaryExprs)
+              cnPropValForReals = buildCnPropVal(ternaryExprs)
             }
           } else {
             if (classNames.length) {
               const classNameProp = t.stringLiteral(classNames.join(' '))
-              if (classNamePropValueForReals) {
-                classNamePropValueForReals = buildClassNamePropValue([
-                  classNamePropValueForReals,
+              if (cnPropValForReals) {
+                cnPropValForReals = buildCnPropVal([
+                  cnPropValForReals,
                   classNameProp,
                 ])
               } else {
-                classNamePropValueForReals = classNameProp
+                cnPropValForReals = classNameProp
               }
             }
           }
 
           // for simple spread, we need to have it add in the spread className if exists
-          if (
-            classNamePropValueForReals &&
-            spreadInfo.isSingleSimple &&
-            spreadInfo.simpleIdentifier
-          ) {
-            classNamePropValueForReals = t.binaryExpression(
-              '+',
-              classNamePropValueForReals,
-              t.binaryExpression(
-                '+',
-                t.stringLiteral(' '),
-                t.logicalExpression(
-                  '||',
-                  t.logicalExpression(
-                    '&&',
-                    spreadInfo.simpleIdentifier,
-                    t.memberExpression(
-                      spreadInfo.simpleIdentifier,
-                      t.identifier('className')
-                    )
-                  ),
-                  t.stringLiteral('')
-                )
-              )
-            )
-          }
+          // todo
+          console.warn('TODO')
+          // if (
+          //   cnPropValForReals &&
+          //   spreadInfo.isSingleSimple &&
+          //   spreadInfo.simpleIdentifier
+          // ) {
+          //   cnPropValForReals = t.binaryExpression(
+          //     '+',
+          //     cnPropValForReals,
+          //     t.binaryExpression(
+          //       '+',
+          //       t.stringLiteral(' '),
+          //       t.logicalExpression(
+          //         '||',
+          //         t.logicalExpression(
+          //           '&&',
+          //           spreadInfo.simpleIdentifier,
+          //           t.memberExpression(
+          //             spreadInfo.simpleIdentifier,
+          //             t.identifier('className')
+          //           )
+          //         ),
+          //         t.stringLiteral('')
+          //       )
+          //     )
+          //   )
+          // }
 
-          if (classNamePropValueForReals) {
-            classNamePropValueForReals = hoistClassNames(
+          if (cnPropValForReals) {
+            cnPropValForReals = hoistClassNames(
               jsxPath,
               existingHoists,
-              classNamePropValueForReals
+              cnPropValForReals
             )
             node.attributes.push(
               t.jsxAttribute(
                 t.jsxIdentifier('className'),
-                t.jsxExpressionContainer(classNamePropValueForReals as any)
+                t.jsxExpressionContainer(cnPropValForReals as any)
               )
             )
           }
@@ -443,7 +439,7 @@ export function extractToClassNames(
   }
 }
 
-function buildClassNamePropValue(classNameObjects: ClassNameObject[]) {
+function buildCnPropVal(classNameObjects: ClassNameObject[]) {
   return classNameObjects.reduce<t.Expression | null>((acc, val) => {
     if (acc == null) {
       if (

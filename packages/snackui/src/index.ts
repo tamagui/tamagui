@@ -54,6 +54,7 @@ export * from './views/Title'
 export * from './views/Toast'
 export * from './views/UnorderedList'
 
+export * from './helpers/concatClassName'
 export * from './helpers/getNode'
 export * from './helpers/weakKey'
 export * from './helpers/combineFns'
@@ -61,3 +62,5 @@ export * from './helpers/prevent'
 export * from './helpers/memoIsEqualDeep'
 export * from './helpers/combineRefs'
 export * from './helpers/extendStaticConfig'
+
+export * from './styleProps'

@@ -113,13 +113,34 @@ export const stylePropsText = {
 
 // unique shortkey for each style key
 // for atomic styles prefixing and collision dedupe
-export const uniqueStylePrefix = {}
+export const uniqueStylePrefix: { [key: string]: string } = {}
+const existing = new Set<string>()
 for (const name in stylePropsText) {
-  let keyLen = 1
-  let key = name.slice(0, keyLen)
-  while (uniqueStylePrefix[key]) {
-    keyLen++
-    key = name.slice(0, keyLen)
+  addStylePrefix(name)
+}
+
+export function getOrCreateStylePrefix(name: string) {
+  return uniqueStylePrefix[name] ?? addStylePrefix(name)
+}
+
+function addStylePrefix(name: string) {
+  let len = 1
+  let key = getNiceKey(name)
+  while (existing.has(key)) {
+    len++
+    key = getNiceKey(name, len)
   }
+  existing.add(key)
   uniqueStylePrefix[name] = key
+  return key
+}
+
+function getNiceKey(name: string, len = 1) {
+  let key = ''
+  for (const [index, char] of name.split('').entries()) {
+    if (index === 0 || char.toUpperCase() === char) {
+      key += name.slice(index, index + len)
+    }
+  }
+  return key
 }
