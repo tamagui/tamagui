@@ -5,20 +5,21 @@ import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet
 import createReactDOMStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createReactDOMStyle'
 import i18Style from 'react-native-web/dist/cjs/exports/StyleSheet/i18nStyle'
 import { getOrCreateStylePrefix } from 'snackui/node'
+import { getNiceKey } from 'snackui/node'
 
 import { StyleObject } from '../types'
 
 export const pseudos = {
-  focusStyle: {
+  focusWithinStyle: {
     name: 'focus-within',
     priority: 4,
   },
-  activeStyle: {
-    name: 'active',
+  focusStyle: {
+    name: 'focus',
     priority: 3,
   },
   pressStyle: {
-    name: 'focus',
+    name: 'active',
     priority: 2,
   },
   hoverStyle: {
@@ -79,7 +80,7 @@ function getAtomicStyle(
     const prefix = `s-${getOrCreateStylePrefix(val.property)}`
     const hash = val.identifier.replace(/r-([a-z0-9]+)-/i, '')
     // pseudos have a `--` to be easier to find with concatClassNames
-    const psuedoPrefix = pseudo ? `-${pseudo.name.slice(0, 2)}-` : ''
+    const psuedoPrefix = pseudo ? `-${getNiceKey(key)}-` : ''
     const identifier = `${prefix}-${psuedoPrefix}${hash}`
     const className = pseudo
       ? [...Array(pseudo.priority)].map((x) => `.${identifier}`).join('')

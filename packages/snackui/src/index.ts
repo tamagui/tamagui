@@ -55,6 +55,7 @@ export * from './views/Toast'
 export * from './views/UnorderedList'
 
 export * from './helpers/getNode'
+export * from './helpers/getNiceKey'
 export * from './helpers/weakKey'
 export * from './helpers/combineFns'
 export * from './helpers/prevent'
@@ -63,3 +64,4 @@ export * from './helpers/combineRefs'
 export * from './helpers/extendStaticConfig'
 
 export * from './styleProps'
+export * from './uniqueStyleKeys'

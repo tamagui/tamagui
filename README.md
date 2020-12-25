@@ -381,6 +381,7 @@ See [the roadmap](roadmap.md) for details:
 - [ ] Support reloading constants/themes during watch
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
 - [ ] Explore using `babel-plugin-minify-dead-code-elimination` instead of internal hook code
+- [ ] SFC (user) extractions, support extracting usages of a user-defined component that just spread props onto simple child thats extractable
 
 
 ## License
