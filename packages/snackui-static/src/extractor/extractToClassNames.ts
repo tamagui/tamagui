@@ -54,14 +54,8 @@ export function extractToClassNames(
   try {
     ast = babelParse(src)
   } catch (err) {
-    console.error(
-      'babel parsing error',
-      sourceFileName,
-      err.message,
-      '\n',
-      err.stack
-    )
-    throw new Error(`Couldn't parse`)
+    console.error('babel parse error:', sourceFileName)
+    throw err
   }
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
@@ -296,57 +290,3 @@ export function extractToClassNames(
     map: result.map,
   }
 }
-
-// const classNameObjects: ClassNameObject[] = []
-// const styles: ClassNameToStyleObj = {}
-// node.attributes = node.attributes.filter((attr) => {
-//   if (
-//     !t.isJSXSpreadAttribute(attr) &&
-//     attr.name &&
-//     attr.name.name === 'className'
-//   ) {
-//     try {
-//       const evaluatedValue = attemptEval(attr)
-//       classNameObjects.push(t.stringLiteral(evaluatedValue))
-//     } catch (e) {
-//       // run without actually doing the funny stuf
-//       const val = getPropValueFromAttributes('className', [attr])
-//       if (!val) throw new Error(`unreachable`)
-//       classNameObjects.push(val)
-//     }
-//     return false
-//   }
-//   return true
-// })
-// let finalClassName = buildClassName(classNameObjects)
-// get extracted classNames
-// const classNames: string[] = []
-// const hasViewStyle = Object.keys(viewStyles).length > 0
-// if (hasViewStyle) {
-//   const styles = addStyles(viewStyles)
-//   for (const style of styles) {
-//     classNames.push(style.identifier)
-//   }
-// }
-// if (ternaryExprs.length) {
-//   if (finalClassName) {
-//     finalClassName = t.binaryExpression(
-//       '+',
-//       // @ts-expect-error
-//       buildClassName(ternaryExprs),
-//       t.binaryExpression('+', t.stringLiteral(' '), finalClassName!)
-//     )
-//   } else {
-//     // if no spread/className prop, we can optimize all the way
-//     finalClassName = buildClassName(ternaryExprs)
-//   }
-// }
-// if (classNames.length) {
-//   finalClassName = (() => {
-//     const next = t.stringLiteral(classNames.join(' '))
-//     if (finalClassName) {
-//       return buildClassName([finalClassName, next])
-//     }
-//     return next
-//   })()
-// }

@@ -2,7 +2,9 @@ import React from 'react'
 
 import { StackProps, VStack } from './Stacks'
 
-export type BlurViewProps = StackProps & {
+export type BlurViewProps = {
+  blurAmount?: number // 0 - 100
+  blurRadius?: number
   fallbackBackgroundColor?: string
   blurType?:
     | 'xlight'
@@ -29,30 +31,26 @@ export type BlurViewProps = StackProps & {
     | 'prominent'
     // tvOS only
     | 'extraDark'
-  blurAmount?: number // 0 - 100
-  blurRadius?: number
   downsampleFactor?: number
-}
+} & StackProps
 
 export function BlurView({
   children,
   borderRadius,
   fallbackBackgroundColor,
+  blurRadius = 20,
   ...props
 }: BlurViewProps) {
   return (
-    <VStack
-      borderRadius={borderRadius}
-      backgroundColor={fallbackBackgroundColor}
-      {...props}
-    >
+    <VStack borderRadius={borderRadius} {...props}>
       <div
+        // fallback for safari but non customizable
         className="backdrop-filter"
         style={{
           position: 'absolute',
           width: '100%',
           height: '100%',
-          backdropFilter: 'blur(20px)',
+          backdropFilter: `blur(${blurRadius}px)`,
           borderRadius,
         }}
       >
