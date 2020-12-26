@@ -1,4 +1,4 @@
-export const stylePropsView = {
+export const stylePropsView = Object.freeze({
   pointerEvents: true,
   userSelect: true,
   cursor: true,
@@ -86,9 +86,9 @@ export const stylePropsView = {
   shadowOffset: true,
   shadowOpacity: true,
   shadowRadius: true,
-}
+})
 
-export const stylePropsTextOnly = {
+export const stylePropsTextOnly = Object.freeze({
   color: true,
   fontFamily: true,
   fontSize: true,
@@ -104,9 +104,11 @@ export const stylePropsTextOnly = {
   textShadowOffset: true,
   textShadowRadius: true,
   textTransform: true,
-}
+})
 
-export const stylePropsText = {
+export const stylePropsText = Object.freeze({
   ...stylePropsView,
   ...stylePropsTextOnly,
-}
+})
+
+export const stylePropsAll = stylePropsText

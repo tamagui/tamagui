@@ -4,9 +4,9 @@ import { atomic } from 'react-native-web/dist/cjs/exports/StyleSheet/compile'
 import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createCompileableStyle'
 import createReactDOMStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createReactDOMStyle'
 import i18Style from 'react-native-web/dist/cjs/exports/StyleSheet/i18nStyle'
-import { getOrCreateStylePrefix } from 'snackui/node'
-import { getNiceKey } from 'snackui/node'
+import { getNiceKey, getOrCreateStylePrefix } from 'snackui/node'
 
+import { CLASS_PREFIX } from '../constants'
 import { StyleObject } from '../types'
 
 export const pseudos = {
@@ -77,7 +77,7 @@ function getAtomicStyle(
   )
   return Object.keys(all).map((key) => {
     const val = all[key]
-    const prefix = `s-${getOrCreateStylePrefix(val.property)}`
+    const prefix = `${CLASS_PREFIX}${getOrCreateStylePrefix(val.property)}`
     const hash = val.identifier.replace(/r-([a-z0-9]+)-/i, '')
     // pseudos have a `--` to be easier to find with concatClassNames
     const psuedoPrefix = pseudo ? `-${getNiceKey(key)}-` : ''

@@ -58,7 +58,7 @@ const getSize = ({
 
 if (process.env.IS_STATIC) {
   Spacer['staticConfig'] = {
-    validStyles: require('../styleProps').stylePropsView,
+    validStyles: require('@snackui/helpers').stylePropsView,
     defaultProps: getStyle(),
     expansionProps: {
       flex: getFlex,

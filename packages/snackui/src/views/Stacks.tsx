@@ -1,3 +1,4 @@
+import { stylePropsView } from '@snackui/helpers'
 import React, {
   RefObject,
   forwardRef,
@@ -19,7 +20,6 @@ import { isWeb } from '../constants'
 import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { useGetCssVariable } from '../hooks/useTheme'
-import { stylePropsView } from '../styleProps'
 import { Spacer, Spacing } from './Spacer'
 
 const fullscreenStyle: StackProps = {
@@ -319,7 +319,7 @@ const createStack = (defaultProps?: ViewStyle) => {
   if (process.env.IS_STATIC) {
     // @ts-ignore
     component.staticConfig = {
-      validStyles: require('../styleProps').stylePropsView,
+      validStyles: require('@snackui/helpers').stylePropsView,
       defaultProps,
       expansionProps: {
         fullscreen: fullscreenStyle,

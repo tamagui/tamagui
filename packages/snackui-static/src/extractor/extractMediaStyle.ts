@@ -4,6 +4,7 @@ import { ViewStyle } from 'react-native'
 import { MediaQueries } from 'snackui'
 import { mediaObjectToString } from 'snackui/node'
 
+import { CLASS_PREFIX } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
 import { StyleObject, Ternary } from '../types'
 import { isInsideSnackUI, isPresent } from './extractHelpers'
@@ -51,8 +52,8 @@ export function extractMediaStyle(
     const mediaStyles = styles.map((style) => {
       const negKey = negate ? '_not' : ''
       const identifier = `${style.identifier.replace(
-        's-',
-        `s-${key}${negKey}-`
+        CLASS_PREFIX,
+        `${CLASS_PREFIX}${key}${negKey}-`
       )}`
       const className = `.${identifier}`
       const mediaSelector = mediaObjectToString(mediaQueries[key])

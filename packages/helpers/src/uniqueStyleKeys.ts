@@ -1,13 +1,14 @@
-import { getNiceKey } from './helpers/getNiceKey'
-import { stylePropsText } from './styleProps'
+import { getNiceKey } from './getNiceKey'
+import { stylePropsAll } from './validStyleProps'
 
 const existing = new Set<string>()
 
 // unique shortkey for each style key
 // for atomic styles prefixing and collision dedupe
 export const uniqueStyleKeys: { [key: string]: string } = {}
+export const uniqueKeyToStyleName: { [key: string]: string } = {}
 
-for (const name in stylePropsText) {
+for (const name in stylePropsAll) {
   addStylePrefix(name)
 }
 
@@ -24,5 +25,6 @@ function addStylePrefix(name: string) {
   }
   existing.add(key)
   uniqueStyleKeys[name] = key
+  uniqueKeyToStyleName[key] = name
   return key
 }

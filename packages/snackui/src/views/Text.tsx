@@ -1,3 +1,4 @@
+import { stylePropsText, stylePropsTextOnly } from '@snackui/helpers'
 import React, { useMemo, useRef } from 'react'
 import {
   Platform,
@@ -5,8 +6,6 @@ import {
   TextProps as ReactTextProps,
   TextStyle,
 } from 'react-native'
-
-import { stylePropsText, stylePropsTextOnly } from '../styleProps'
 
 export type TextProps = Omit<ReactTextProps, 'style'> &
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & {

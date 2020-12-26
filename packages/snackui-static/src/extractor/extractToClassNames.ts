@@ -121,9 +121,13 @@ export function extractToClassNames(
                 if (t.isJSXSpreadAttribute(val)) {
                   if (isSimpleSpread(val)) {
                     finalClassNames.push(
-                      t.memberExpression(
+                      t.logicalExpression(
+                        '&&',
                         val.argument,
-                        t.identifier('className')
+                        t.memberExpression(
+                          val.argument,
+                          t.identifier('className')
+                        )
                       )
                     )
                   }
@@ -192,10 +196,13 @@ export function extractToClassNames(
             let expr = nameExpr
             if (!t.isIdentifier(nameExpr)) {
               ensureImportingConcat(programPath)
-              // make it a safe access
-              // todo add import to snackui
+              const simpleSpreads = attrs.filter(
+                (x) =>
+                  t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
+              )
               expr = t.callExpression(t.identifier(CONCAT_CLASSNAME_IMPORT), [
                 expr,
+                ...simpleSpreads.map((val) => val.value['argument']),
               ])
             }
             node.attributes.push(
