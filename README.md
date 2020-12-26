@@ -373,6 +373,7 @@ See [the roadmap](roadmap.md) for details:
 - [ ] Media Queries test coverage, docs and configuration
 - [ ] [Themes](roadmap.md#themes)
 - [ ] [Scaling](roadmap.md#scaling)
+- [ ] Memory usage investigation
 - [ ] Extraction - advanced traversals (see [plan](roadmap.md#advanced-traversal))
 - [ ] Support `<Stack spacing />`
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
