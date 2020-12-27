@@ -4,7 +4,7 @@ import * as t from '@babel/types'
 import { ExtractedAttr, Ternary } from '../types'
 
 export function isPresent<T extends Object>(
-  input: null | undefined | T
+  input: null | void | undefined | T
 ): input is T {
   return input != null
 }

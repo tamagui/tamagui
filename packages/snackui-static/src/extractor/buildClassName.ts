@@ -56,6 +56,7 @@ export function buildClassName(
         t.logicalExpression('||', val, t.stringLiteral(''))
       )
     }
+
     return t.binaryExpression('+', acc, inner)
   }, null)
 }

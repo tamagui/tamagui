@@ -11,7 +11,7 @@ export function normalizeTernaries(ternaries: Ternary[]) {
   )
 
   if (ternaries.length === 0) {
-    return null
+    return []
   }
 
   const ternariesByKey: { [key: string]: Ternary } = {}
@@ -57,10 +57,6 @@ export function normalizeTernaries(ternaries: Ternary[]) {
   const ternaryExpression = Object.keys(ternariesByKey).map((key) => {
     return ternariesByKey[key]
   })
-
-  if (!ternaryExpression) {
-    return null
-  }
 
   return ternaryExpression
 }

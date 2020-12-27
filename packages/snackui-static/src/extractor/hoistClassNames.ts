@@ -47,7 +47,8 @@ export function hoistClassNames(
     const parent = path.findParent((path) => path.isProgram())
     if (!parent) throw new Error(`no program?`)
     const variable = t.variableDeclaration('const', [
-      t.variableDeclarator(uid, str),
+      // adding a space for extra safety
+      t.variableDeclarator(uid, t.stringLiteral(` ${str.value}`)),
     ])
     // @ts-expect-error
     parent.unshiftContainer('body', variable)

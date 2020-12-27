@@ -5,6 +5,7 @@ import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import invariant from 'invariant'
+import { ViewStyle } from 'react-native'
 import { MediaQueries } from 'snackui'
 import { defaultMediaQueries } from 'snackui/node'
 
@@ -20,6 +21,10 @@ import { extractMediaStyle } from './extractMediaStyle'
 import { hoistClassNames } from './hoistClassNames'
 
 export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
+
+const mergeStyleGroups = [
+  new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset']),
+]
 
 export function extractToClassNames(
   extractor: Extractor,
@@ -89,9 +94,28 @@ export function extractToClassNames(
           let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
           let finalStyles: StyleObject[] = []
 
-          const addStyles = (style: any) => {
+          const mergeInParentStyles = (style: ViewStyle) => {
+            const keys = Object.keys(style)
+            for (const group of mergeStyleGroups) {
+              if (keys.some((key) => group.has(key))) {
+                // ensure all other keys exist on this group
+                for (const groupKey of [...group]) {
+                  if (viewStyles[groupKey]) {
+                    style[groupKey] = style[groupKey] ?? viewStyles[groupKey]
+                  }
+                }
+              }
+            }
+            return style
+          }
+
+          const addStyles = (style: ViewStyle | null) => {
             if (!style) return []
-            const res = getStylesAtomic(style, null, shouldPrintDebug)
+            const res = getStylesAtomic(
+              mergeInParentStyles(style),
+              null,
+              shouldPrintDebug
+            )
             if (res.length) {
               finalStyles = [...finalStyles, ...res]
             }
