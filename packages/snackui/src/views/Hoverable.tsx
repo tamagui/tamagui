@@ -1,5 +1,6 @@
 import React from 'react'
-import { Platform } from 'react-native'
+
+import { isWeb } from '../constants'
 
 export function Hoverable({
   onPressIn,
@@ -16,7 +17,7 @@ export function Hoverable({
   onPressIn?: any
   onPressOut?: any
 }) {
-  if (Platform.OS !== 'web') {
+  if (!isWeb) {
     return children
   }
   return (

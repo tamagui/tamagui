@@ -212,6 +212,8 @@ export function extractToClassNames(
             const names = buildClassName(finalClassNames)
             const nameExpr = hoistClassNames(jsxPath, existingHoists, names)
             let expr = nameExpr
+
+            // if has some spreads, use concat helper
             if (!t.isIdentifier(nameExpr)) {
               ensureImportingConcat(programPath)
               const simpleSpreads = attrs.filter(
@@ -223,6 +225,7 @@ export function extractToClassNames(
                 ...simpleSpreads.map((val) => val.value['argument']),
               ])
             }
+
             node.attributes.push(
               t.jsxAttribute(
                 t.jsxIdentifier('className'),

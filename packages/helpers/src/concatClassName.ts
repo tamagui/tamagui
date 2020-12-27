@@ -4,7 +4,11 @@ export function concatClassName(className: string, ...propObjects: any[]) {
   const used = new Set<string>()
   const names = className.split(' ')
   const final: string[] = []
-  for (const name of names) {
+  const hasPropObjects = propObjects.length
+
+  for (let i = names.length - 1; i >= 0; i--) {
+    const name = names[i]
+    if (name === ' ') continue
     if (name[0] !== '_') {
       // not snack stlye (todo slightly stronger heuristic)
       final.push(name)
@@ -20,7 +24,7 @@ export function concatClassName(className: string, ...propObjects: any[]) {
     const propName = uniqueKeyToStyleName[key]
     // if defined in a prop object, ignore
     // TODO we need to preserve ordering...
-    if (propName && propObjects.length) {
+    if (propName && hasPropObjects) {
       if (propObjects.some((po) => po && propName in po)) {
         continue
       }
@@ -31,6 +35,7 @@ export function concatClassName(className: string, ...propObjects: any[]) {
     }
     final.push(name)
   }
+
   return final.join(' ')
 }
 
