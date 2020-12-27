@@ -52,10 +52,11 @@ export function BlurView({
           height: '100%',
           backdropFilter: `blur(${blurRadius}px)`,
           borderRadius,
+          zIndex: -1,
+          pointerEvents: 'none',
         }}
-      >
-        {children}
-      </div>
+      />
+      {children}
     </VStack>
   )
 }
