@@ -26,6 +26,7 @@ import {
 import { findTopmostFunction } from './findTopmostFunction'
 import { getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
+import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
 
 // used by getStaticBindingsForScope + themeFile
@@ -862,7 +863,39 @@ export function createExtractor() {
             traversePath.node.closingElement.name.name = node.name.name
           }
 
-          // const ternaries = normalizeTernaries(staticTernaries)
+          // combine ternaries where possible
+          // but only combine ternaries that are not separated by spreads
+          // because we need spreads to override
+          attrs = (() => {
+            let finalAttrs: ExtractedAttr[] = []
+            let ternaries: Ternary[] = []
+
+            function addTernaries() {
+              if (!ternaries.length) return
+              const normalized = normalizeTernaries(ternaries)
+              if (!normalized) return
+              finalAttrs = [
+                ...finalAttrs,
+                ...normalized.map((value) => ({
+                  type: 'ternary' as const,
+                  value,
+                })),
+              ]
+            }
+
+            for (const attr of attrs) {
+              if (attr.type === 'ternary') {
+                ternaries.push(attr.value)
+              } else {
+                if (t.isJSXSpreadAttribute(attr.value)) {
+                  addTernaries()
+                }
+                finalAttrs.push(attr)
+              }
+            }
+            addTernaries()
+            return finalAttrs
+          })()
 
           onExtractTag({
             attrs,

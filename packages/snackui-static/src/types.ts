@@ -28,7 +28,6 @@ export type ExtractedAttrAttr = {
 
 export type ExtractedAttr =
   | ExtractedAttrAttr
-  | { type: 'spread'; value: t.Identifier | t.MemberExpression }
   | { type: 'ternary'; value: Ternary }
 
 export type ExtractTagProps = {
