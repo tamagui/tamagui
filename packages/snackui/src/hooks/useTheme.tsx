@@ -25,6 +25,8 @@ import { isWeb } from '../constants'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
+const PREFIX = `theme--`
+
 export interface ThemeObject {
   [key: string]: any
 }
@@ -75,7 +77,7 @@ export const configureThemes = (userThemes: Themes) => {
         inverseValueToVariable[themeName][themeVal] = `var(${variableName})`
         vars += `${variableName}: ${themeVal};`
       }
-      const rule = `.${themeName} { ${vars} }`
+      const rule = `.${PREFIX}${themeName} { ${vars} }`
       tag?.sheet?.insertRule(rule)
     }
   }
@@ -187,19 +189,28 @@ export const ThemeProvider = (props: {
 }
 
 export type ThemeProps = {
-  name: ThemeName
+  name: ThemeName | null
   children?: any
 }
 
 export const Theme = (props: ThemeProps) => {
   const parent = useContext(ActiveThemeContext)
-  const [themeManager, setThemeManager] = useState(() => {
-    const manager = new ActiveThemeManager()
-    manager.setActiveTheme(`${props.name}`)
-    return manager
-  })
+  const [themeManager, setThemeManager] = useState<ActiveThemeManager | null>(
+    () => {
+      if (props.name) {
+        const manager = new ActiveThemeManager()
+        manager.setActiveTheme(`${props.name}`)
+        return manager
+      }
+      return null
+    }
+  )
 
   useLayoutEffect(() => {
+    if (props.name === null) {
+      setThemeManager(null)
+      return
+    }
     if (props.name === parent.name) {
       if (themeManager !== parent) {
         setThemeManager(parent)
@@ -211,15 +222,22 @@ export const Theme = (props: ThemeProps) => {
     }
   }, [props.name])
 
-  const contents = (
+  const contents = themeManager ? (
     <ActiveThemeContext.Provider value={themeManager}>
       {props.children}
     </ActiveThemeContext.Provider>
+  ) : (
+    props.children
   )
 
   if (isWeb) {
     return (
-      <div className={themeManager.name} style={{ display: 'contents' }}>
+      <div
+        className={`theme-parent ${
+          themeManager?.name ? `${PREFIX}${themeManager.name}` : ''
+        }`}
+        style={{ display: 'contents' }}
+      >
         {contents}
       </div>
     )
