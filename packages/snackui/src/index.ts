@@ -1,4 +1,5 @@
 export * from './hooks/useDebounce'
+export * from './hooks/useConstant'
 export * from './hooks/useDebounceEffect'
 export * from './hooks/useForceUpdate'
 export * from './hooks/useGet'
