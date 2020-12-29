@@ -13,6 +13,7 @@
 
 import { isEqual } from '@dish/fast-compare'
 import React, {
+  Suspense,
   createContext,
   useContext,
   useEffect,
