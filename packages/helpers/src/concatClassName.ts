@@ -10,9 +10,9 @@ export function concatClassName(className: string, ...propObjects: any[]) {
 
   for (let i = names.length - 1; i >= 0; i--) {
     const name = names[i]
-    if (!name) continue
+    if (!name || name === ' ') continue
     if (name[0] !== '_') {
-      // not snack stlye (todo slightly stronger heuristic)
+      // not snack style (todo slightly stronger heuristic)
       final.push(name)
       continue
     }
