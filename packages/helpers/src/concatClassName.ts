@@ -1,14 +1,16 @@
 import { uniqueKeyToStyleName } from './uniqueStyleKeys'
 
+const usedPrefixes = new Set<string>()
+
 export function concatClassName(className: string, ...propObjects: any[]) {
-  const used = new Set<string>()
-  const names = className.split(' ')
+  usedPrefixes.clear()
   const final: string[] = []
+  const names = className.split(' ')
   const hasPropObjects = propObjects.length
 
   for (let i = names.length - 1; i >= 0; i--) {
     const name = names[i]
-    if (name === ' ') continue
+    if (!name) continue
     if (name[0] !== '_') {
       // not snack stlye (todo slightly stronger heuristic)
       final.push(name)
@@ -20,8 +22,13 @@ export function concatClassName(className: string, ...propObjects: any[]) {
       continue
     }
     const uid = name.slice(1, splitIndex)
+    // if already used in classname string, ignore
+    if (usedPrefixes.has(uid)) {
+      continue
+    }
     const key = name.slice(1, name.indexOf('-'))
     const propName = uniqueKeyToStyleName[key]
+
     // if defined in a prop object, ignore
     // TODO we need to preserve ordering...
     if (propName && hasPropObjects) {
@@ -29,10 +36,8 @@ export function concatClassName(className: string, ...propObjects: any[]) {
         continue
       }
     }
-    // if already used in classname string, ignore
-    if (used.has(uid)) {
-      continue
-    }
+
+    usedPrefixes.add(uid)
     final.push(name)
   }
 

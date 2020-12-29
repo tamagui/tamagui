@@ -9,6 +9,7 @@ export type ButtonProps = StackProps
 
 // TODO colors, spacing, static extract + colors/spacing
 // TODO sizing, static + sizing
+// TODO auto-chain
 
 export const Button = (props: ButtonProps) => {
   const theme = useTheme()
