@@ -19,6 +19,7 @@ import {
 import { isWeb } from '../constants'
 import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
+import { spacedChildren } from '../helpers/spacedChildren'
 import { useGetCssVariable } from '../hooks/useTheme'
 import { Spacer, Spacing } from './Spacer'
 
@@ -152,30 +153,15 @@ const createStack = (defaultProps?: ViewStyle) => {
       pressIn: false,
     })
 
-    const spacedChildren = useMemo(() => {
-      if (typeof spacing === 'undefined') {
-        return children
-      }
-      const next: any[] = []
-      const childrenList = React.Children.toArray(children)
-      const len = childrenList.length
-      const spacer = (
-        <Spacer
-          size={spacing}
-          direction={
-            defaultProps?.flexDirection === 'row' ? 'horizontal' : 'vertical'
-          }
-        />
-      )
-      for (const [index, child] of childrenList.entries()) {
-        next.push(child)
-        if (index === len - 1) {
-          break
-        }
-        next.push(<React.Fragment key={index}>{spacer}</React.Fragment>)
-      }
-      return next
-    }, [children])
+    const childrenWithSpacing = useMemo(
+      () =>
+        spacedChildren({
+          children,
+          spacing,
+          flexDirection: defaultProps?.flexDirection,
+        }),
+      [spacing, children]
+    )
 
     const ViewComponent = animated ? Animated.View : View
 
@@ -199,7 +185,7 @@ const createStack = (defaultProps?: ViewStyle) => {
           isWeb ? null : fixNativeShadow(styleProps),
         ]}
       >
-        {spacedChildren}
+        {childrenWithSpacing}
       </ViewComponent>
     )
 

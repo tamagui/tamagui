@@ -864,7 +864,7 @@ export function createExtractor() {
                 next.push(attr)
               }
             }
-            if (shouldPrintDebug) console.log('  final add')
+            // add any leftover
             addTernaries()
 
             return next
