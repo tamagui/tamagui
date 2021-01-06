@@ -26,15 +26,11 @@ test('converts a style object to class names', async (t) => {
   t.assert(
     styles.find((x) => x.property === 'borderBottomStyle')?.value === 'solid'
   )
-  t.deepEqual(style1!.rules, [
-    '.r-backgroundColor-1g6456j{background-color:rgba(255,0,0,1.00);}',
-  ])
-  t.deepEqual(style2!.rules, [
-    '.r-transform-1kwkdns{-webkit-transform:rotateY(10deg);transform:rotateY(10deg);}',
-  ])
-  t.deepEqual(style3!.rules, [
-    '.r-boxShadow-rfqnir{box-shadow:0px 0px 10px rgba(255,0,0,1.00);}',
-  ])
+  t.assert(style1!.rules[0].includes('background-color:rgba(255,0,0,1.00)'))
+  t.assert(style2!.rules[0].includes(`transform:rotateY(10deg)`))
+  t.assert(
+    style3!.rules[0].includes(`box-shadow:0px 0px 10px rgba(255,0,0,1.00)`)
+  )
 })
 
 test('expands and resolves shorthand props', async (t) => {

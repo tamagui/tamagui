@@ -1,7 +1,6 @@
+import { stylePropsText } from '@snackui/helpers'
 import { useMemo } from 'react'
 import { TextProps, TextStyle } from 'react-native'
-
-import { stylePropsText } from '../styleProps'
 
 export const useTextStylePropsSplit = (
   props: TextStyle & { [key: string]: any }

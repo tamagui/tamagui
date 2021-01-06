@@ -1,4 +1,4 @@
-export const stylePropsView = {
+export const stylePropsView = Object.freeze({
   pointerEvents: true,
   userSelect: true,
   cursor: true,
@@ -86,9 +86,9 @@ export const stylePropsView = {
   shadowOffset: true,
   shadowOpacity: true,
   shadowRadius: true,
-}
+})
 
-export const stylePropsTextOnly = {
+export const stylePropsTextOnly = Object.freeze({
   color: true,
   fontFamily: true,
   fontSize: true,
@@ -104,22 +104,11 @@ export const stylePropsTextOnly = {
   textShadowOffset: true,
   textShadowRadius: true,
   textTransform: true,
-}
+})
 
-export const stylePropsText = {
+export const stylePropsText = Object.freeze({
   ...stylePropsView,
   ...stylePropsTextOnly,
-}
+})
 
-// unique shortkey for each style key
-// for atomic styles prefixing and collision dedupe
-export const uniqueStylePrefix = {}
-for (const name in stylePropsText) {
-  let keyLen = 1
-  let key = name.slice(0, keyLen)
-  while (uniqueStylePrefix[key]) {
-    keyLen++
-    key = name.slice(0, keyLen)
-  }
-  uniqueStylePrefix[name] = key
-}
+export const stylePropsAll = stylePropsText

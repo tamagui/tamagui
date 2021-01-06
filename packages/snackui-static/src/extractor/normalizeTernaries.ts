@@ -1,23 +1,17 @@
 import generate from '@babel/generator'
-import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import invariant from 'invariant'
 
-export interface Ternary {
-  test: t.Expression
-  remove: Function
-  consequent: Object | null
-  alternate: Object | null
-}
+import { Ternary } from '../types'
 
-export function extractStaticTernaries(ternaries: Ternary[]) {
+export function normalizeTernaries(ternaries: Ternary[]) {
   invariant(
     Array.isArray(ternaries),
     'extractStaticTernaries expects param 1 to be an array of ternaries'
   )
 
   if (ternaries.length === 0) {
-    return null
+    return []
   }
 
   const ternariesByKey: { [key: string]: Ternary } = {}
@@ -38,11 +32,8 @@ export function extractStaticTernaries(ternaries: Ternary[]) {
       ternaryTest = test.argument
       shouldSwap = true
     } else if (t.isBinaryExpression(test)) {
-      if (test.operator === '!==') {
-        ternaryTest = t.binaryExpression('===', test.left, test.right)
-        shouldSwap = true
-      } else if (test.operator === '!=') {
-        ternaryTest = t.binaryExpression('==', test.left, test.right)
+      if (test.operator === '!==' || test.operator === '!=') {
+        ternaryTest = t.binaryExpression(test.operator, test.left, test.right)
         shouldSwap = true
       }
     }
@@ -66,10 +57,6 @@ export function extractStaticTernaries(ternaries: Ternary[]) {
   const ternaryExpression = Object.keys(ternariesByKey).map((key) => {
     return ternariesByKey[key]
   })
-
-  if (!ternaryExpression) {
-    return null
-  }
 
   return ternaryExpression
 }

@@ -94,26 +94,26 @@ export const babelPlugin = declare((api, options: PluginOptions): {
               const baseStyleExpr = addSheetStyle(props.viewStyles)
               const stylesExpr = t.arrayExpression([baseStyleExpr])
 
-              if (props.ternaries) {
-                for (const ternary of props.ternaries) {
-                  const cons = addSheetStyle(ternary.consequent)
-                  const alt = addSheetStyle(ternary.alternate)
-                  stylesExpr.elements.push(
-                    t.conditionalExpression(ternary.test, cons, alt)
-                  )
+              for (const attr of props.attrs) {
+                switch (attr.type) {
+                  case 'ternary':
+                    const cons = addSheetStyle(attr.value.consequent)
+                    const alt = addSheetStyle(attr.value.alternate)
+                    stylesExpr.elements.push(
+                      t.conditionalExpression(attr.value.test, cons, alt)
+                    )
+                    break
+                  case 'attr':
+                    if (t.isJSXSpreadAttribute(attr.value)) {
+                      stylesExpr.elements.push(
+                        t.memberExpression(
+                          attr.value.argument,
+                          t.identifier('style')
+                        )
+                      )
+                    }
+                    break
                 }
-              }
-
-              if (
-                props.spreadInfo.isSingleSimple &&
-                props.spreadInfo.simpleIdentifier
-              ) {
-                stylesExpr.elements.push(
-                  t.memberExpression(
-                    props.spreadInfo.simpleIdentifier,
-                    t.identifier('style')
-                  )
-                )
               }
 
               props.node.attributes.push(

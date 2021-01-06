@@ -1,5 +1,5 @@
 import { debounce } from 'lodash'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 // copied from lodash because otherwise webpack-lodash gets mad
 type DebounceSettings = {
@@ -8,20 +8,29 @@ type DebounceSettings = {
   trailing?: boolean
 }
 
-// pull outside to avoid re-creating every render
-const defaultOptions = { leading: false }
-
-export function useDebounce<A extends (...args: any) => any>(
+export function useDebounce<
+  A extends (...args: any) => any,
+  DebouncedFn extends A & {
+    cancel: () => void
+  }
+>(
   fn: A,
   wait: number,
-  options: DebounceSettings = defaultOptions,
+  options: DebounceSettings = { leading: false },
   mountArgs: any[] = []
-): A & {
-  cancel: () => void
-} {
+): DebouncedFn {
+  const dbEffect = useRef<DebouncedFn | null>(null)
+
+  useEffect(() => {
+    return () => {
+      dbEffect.current?.cancel()
+    }
+  }, [])
+
   return useMemo(() => {
-    return debounce(fn, wait, options) as any
-  }, [options, ...mountArgs])
+    dbEffect.current = (debounce(fn, wait, options) as unknown) as DebouncedFn
+    return dbEffect.current
+  }, [JSON.stringify(options), ...mountArgs])
 }
 
 /**

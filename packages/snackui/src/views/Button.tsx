@@ -1,35 +1,37 @@
+// // debug
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
+import { useTheme } from '../hooks/useTheme'
 import { HStack, StackProps } from './Stacks'
 
 export type ButtonProps = StackProps
 
 // TODO colors, spacing, static extract + colors/spacing
 // TODO sizing, static + sizing
+// TODO auto-chain
 
 export const Button = (props: ButtonProps) => {
-  return <HStack {...defaultProps} {...props} />
-}
-
-const defaultProps: ButtonProps = {
-  alignSelf: 'flex-start',
-  pointerEvents: 'auto',
-  // @ts-ignore
-  cursor: 'pointer',
-  padding: 5,
-  borderRadius: 5,
-  backgroundColor: 'rgba(150,150,150,0.05)',
-  hoverStyle: {
-    backgroundColor: 'rgba(150,150,150,0.1)',
-  },
-  pressStyle: {
-    backgroundColor: 'rgba(150,150,150,0.2)',
-  },
+  const theme = useTheme()
+  return (
+    <HStack
+      backgroundColor={theme.backgroundColorSecondary}
+      alignSelf="flex-start"
+      pointerEvents="auto"
+      cursor="pointer"
+      padding={5}
+      borderRadius={5}
+      hoverStyle={{
+        backgroundColor: theme.backgroundColorTertiary,
+      }}
+      pressStyle={{
+        backgroundColor: theme.backgroundColorTertiary,
+      }}
+      {...props}
+    />
+  )
 }
 
 if (process.env.IS_STATIC) {
-  Button.staticConfig = extendStaticConfig(HStack, {
-    defaultProps,
-  })
+  Button.staticConfig = extendStaticConfig(HStack)
 }

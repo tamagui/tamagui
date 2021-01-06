@@ -373,6 +373,7 @@ See [the roadmap](roadmap.md) for details:
 - [ ] Media Queries test coverage, docs and configuration
 - [ ] [Themes](roadmap.md#themes)
 - [ ] [Scaling](roadmap.md#scaling)
+- [ ] Memory usage investigation
 - [ ] Extraction - advanced traversals (see [plan](roadmap.md#advanced-traversal))
 - [ ] Support `<Stack spacing />`
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
@@ -381,6 +382,7 @@ See [the roadmap](roadmap.md) for details:
 - [ ] Support reloading constants/themes during watch
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
 - [ ] Explore using `babel-plugin-minify-dead-code-elimination` instead of internal hook code
+- [ ] SFC (user) extractions, support extracting usages of a user-defined component that just spread props onto simple child thats extractable
 
 
 ## License

@@ -1,8 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
+
+import { useConstant } from './useConstant'
 
 export function useForceUpdate() {
   const setState = useState(0)[1]
-  return useCallback(() => {
-    setState(Math.random())
-  }, [setState])
+  return useConstant(() => {
+    return () => setState(Math.random())
+  })
 }
