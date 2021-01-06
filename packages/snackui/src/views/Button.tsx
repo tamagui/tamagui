@@ -18,7 +18,8 @@ export const Button = ({ children, ...props }: ButtonProps) => {
     <HStack
       backgroundColor={theme.backgroundColorSecondary}
       alignSelf="flex-start"
-      pointerEvents="auto"
+      justifyContent="center"
+      alignItems="center"
       cursor="pointer"
       paddingVertical={10}
       paddingHorizontal={14}
