@@ -26,11 +26,13 @@ export const Button = ({
 }: ButtonProps) => {
   const theme = useTheme()
   const contents = textProps ? (
-    <Text color={theme.color} {...textProps}>
+    <Text color={theme.color} ellipse {...textProps}>
       {children}
     </Text>
   ) : (
-    <Text color={theme.color}>{children}</Text>
+    <Text color={theme.color} ellipse>
+      {children}
+    </Text>
   )
   return (
     <HStack
