@@ -8,8 +8,8 @@ import { HStack, StackProps } from './Stacks'
 import { Text, TextProps } from './Text'
 
 export type ButtonProps = StackProps & {
-  icon?: any
   textProps?: Omit<TextProps, 'children'>
+  icon?: JSX.Element
 }
 
 // TODO colors, spacing, static extract + colors/spacing
@@ -19,13 +19,13 @@ export type ButtonProps = StackProps & {
 export const Button = ({
   children,
   icon,
-  spacing,
+  spacing = 'sm',
   flexDirection = 'row',
   textProps,
   ...props
 }: ButtonProps) => {
   const theme = useTheme()
-  const contents = textProps ? (
+  const contents = !children ? null : textProps ? (
     <Text color={theme.color} ellipse {...textProps}>
       {children}
     </Text>
@@ -55,7 +55,13 @@ export const Button = ({
       {...props}
     >
       {spacedChildren({
-        children: icon ? [icon, contents] : contents,
+        children:
+          icon && contents
+            ? [
+                <React.Fragment key={0}>{icon}</React.Fragment>,
+                <React.Fragment key={1}>{contents}</React.Fragment>,
+              ]
+            : icon ?? contents,
         spacing,
         flexDirection,
       })}

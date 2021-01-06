@@ -1,8 +1,7 @@
-import React from 'react'
-import { Children } from 'react'
-import { ViewProps, ViewStyle } from 'react-native'
+import React, { Children } from 'react'
+import { ViewStyle } from 'react-native'
 
-import { Spacer, SpacerProps, Spacing } from '../views/Spacer'
+import { Spacer, Spacing } from '../views/Spacer'
 
 export function spacedChildren({
   children,

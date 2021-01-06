@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
   Modal as ModalNative,
   ModalProps as ModalPropsReact,
@@ -97,7 +97,6 @@ export const Modal = (props: ModalProps) => {
               borderRadius={15}
               alignItems="center"
               position="relative"
-              overflow="hidden"
               shadowColor="rgba(0,0,0,0.5)"
               shadowRadius={40}
               onPress={prevent}
