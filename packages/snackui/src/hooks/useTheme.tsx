@@ -12,8 +12,8 @@
 //
 
 import { isEqual } from '@dish/fast-compare'
+import { defaultTo } from 'lodash'
 import React, {
-  Suspense,
   createContext,
   useContext,
   useEffect,
@@ -182,6 +182,18 @@ export const ThemeProvider = (props: {
   if (!hasConfigured) {
     throw new Error(`Missing configureThemes() call, add to your root file`)
   }
+
+  // ensure theme is attached to root body node as well to work with modals by default
+  useLayoutEffect(() => {
+    if (typeof document !== 'undefined') {
+      const cns = getThemeParentClassName(`${props.defaultTheme}`).split(' ')
+      cns.forEach((cn) => document.body.classList.add(cn))
+      return () => {
+        cns.forEach((cn) => document.body.classList.remove(cn))
+      }
+    }
+  }, [])
+
   return (
     <ThemeContext.Provider value={props.themes}>
       <Theme name={props.defaultTheme}>{props.children}</Theme>
@@ -234,9 +246,7 @@ export const Theme = (props: ThemeProps) => {
   if (isWeb) {
     return (
       <div
-        className={`theme-parent ${
-          themeManager?.name ? `${PREFIX}${themeManager.name}` : ''
-        }`}
+        className={getThemeParentClassName(themeManager?.name)}
         style={{ display: 'contents' }}
       >
         {contents}
@@ -245,6 +255,10 @@ export const Theme = (props: ThemeProps) => {
   }
 
   return contents
+}
+
+function getThemeParentClassName(themeName?: string) {
+  return `theme-parent ${themeName ? `${PREFIX}${themeName}` : ''}`
 }
 
 function createStyleTag(): HTMLStyleElement | null {

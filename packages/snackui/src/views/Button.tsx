@@ -1,9 +1,10 @@
-// // debug
+// debug
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { useTheme } from '../hooks/useTheme'
 import { HStack, StackProps } from './Stacks'
+import { Text } from './Text'
 
 export type ButtonProps = StackProps
 
@@ -11,7 +12,7 @@ export type ButtonProps = StackProps
 // TODO sizing, static + sizing
 // TODO auto-chain
 
-export const Button = (props: ButtonProps) => {
+export const Button = ({ children, ...props }: ButtonProps) => {
   const theme = useTheme()
   return (
     <HStack
@@ -19,16 +20,20 @@ export const Button = (props: ButtonProps) => {
       alignSelf="flex-start"
       pointerEvents="auto"
       cursor="pointer"
-      padding={5}
-      borderRadius={5}
+      paddingVertical={10}
+      paddingHorizontal={14}
+      borderRadius={8}
       hoverStyle={{
         backgroundColor: theme.backgroundColorTertiary,
       }}
       pressStyle={{
         backgroundColor: theme.backgroundColorTertiary,
+        transform: [{ scale: 0.96 }],
       }}
       {...props}
-    />
+    >
+      <Text color={theme.color}>{children}</Text>
+    </HStack>
   )
 }
 
