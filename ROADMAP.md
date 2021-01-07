@@ -26,31 +26,11 @@ function Component() {
 }
 ```
 
-## Themes
-
-```tsx
-import { Theme, useTheme } from 'snackui'
-
-// can configure useTheme in one place
-// ProvideThemes at root
-
-function Component() {
-  const theme = useTheme()
-  return (
-    <Theme name="dark">
-      <VStack color={theme.color} />
-    </Theme>
-  )
-}
-```
-
-Has the same features as useMedia in that it will nicely not need any special fallback case when compilation is not possible.
-
-## Scaling
+## Variants
 
 One of the biggest needs in a UI is the ability to scale components to different sizes. This is not like Media Queries in that this simply having different size buttons, cards, and text on the same media/device.
 
-While scaling is similar to Media Queries and Themes in that it's helped by having a standard, single interface, it presents some unique problems.
+While variants are similar to Media Queries and Themes in that it's helped by having a standard, single interface, it presents some unique problems.
 
 One is that it has a unique combinatorial explosion when combined with media queries (if done the same as media queries / themes with a freeform hook). That's hard to overcome: the static extraction would be highly confusing to understand all the cases it covers, and with theme/media already causing some level of combinatorial overhead, scale can't afford to multiply across those.
 
@@ -59,7 +39,7 @@ But the upside of scales is that they are actually better in some ways when they
 Here's the idea:
 
 ```tsx
-const useFontSize = createUseScale({
+const useFontSize = createVariant({
   // you can choose as many/few as you'd like
   sm: 12,
   md: 14,
@@ -117,8 +97,47 @@ Constraints:
 
 Problems:
 
+- Verbose
 - Will require tracing imports for export/import support
 - Not the easiest transform behind the scenes
 - Will generate many styles and large conditional chains
 - Can't be combined with existing className style:
   - `fontSize-[hash]` because it needs to be overriden in media query mode
+
+### Alternate
+
+Aims to work better for grouped things that all scale together. Sacrifices flexiblity, but much less verbose and easier to think of when they are grouped.
+
+```tsx
+const useVariant = createVariant({
+  // you can choose as many/few as you'd like
+  sm: {
+    fontSize: 12,
+    padding: 5,
+  },
+  md: {
+    fontSize: 14,
+    padding: 8,
+  },
+  lg: {
+    fontSize: 16,
+    padding: 12,
+  },
+
+  // optional object for media query combination
+  media: {
+    short: {
+      sm: { ... },
+      md: { ... },
+      lg: { ... }
+    }
+  }
+})
+
+function Component(props: { scale: 'sm' | 'md' | 'lg' }) {
+  const variantProps = useVariant(props.scale)
+  return (
+    <Text {...variantProps} />
+  )
+}
+```
