@@ -22,6 +22,7 @@ export type TextProps = Omit<ReactTextProps, 'style'> &
 const defaultStyle: TextStyle = {
   // fixes transforms not working on web
   display: 'inline-block' as any,
+  // color: 'var(--color)',
 }
 
 const selectableStyle = {
