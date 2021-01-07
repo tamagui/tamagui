@@ -837,7 +837,7 @@ export function createExtractor() {
             let next: ExtractedAttr[] = []
             let ternaries: Ternary[] = []
 
-            function addTernaries() {
+            function combineTernariesAndAddToAttrs() {
               if (!ternaries.length) return
               const normalized = normalizeTernaries(ternaries)
               ternaries = []
@@ -859,13 +859,13 @@ export function createExtractor() {
               } else {
                 if (t.isJSXSpreadAttribute(attr.value)) {
                   if (shouldPrintDebug) console.log(`  spread`)
-                  addTernaries()
+                  combineTernariesAndAddToAttrs()
                 }
                 next.push(attr)
               }
             }
             // add any leftover
-            addTernaries()
+            combineTernariesAndAddToAttrs()
 
             return next
           })()
