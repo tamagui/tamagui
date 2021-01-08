@@ -26,11 +26,11 @@ export const Button = ({
 }: ButtonProps) => {
   const theme = useTheme()
   const contents = !children ? null : textProps ? (
-    <Text color={theme.color} ellipse {...textProps}>
+    <Text color={theme.color} width="100%" ellipse {...textProps}>
       {children}
     </Text>
   ) : (
-    <Text color={theme.color} ellipse>
+    <Text color={theme.color} width="100%" ellipse>
       {children}
     </Text>
   )
