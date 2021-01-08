@@ -696,6 +696,10 @@ export function createExtractor() {
               }
               defaultStyle[key] = defaultProps[key]
             } else {
+              if (styleExpansions.some((x) => x.name === key)) {
+                // if already defined dont overwrite
+                continue
+              }
               defaultStaticProps[key] = defaultProps[key]
               styleExpansions.push({ name: key, value: defaultProps[key] })
             }

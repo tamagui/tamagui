@@ -69,6 +69,6 @@ export const Button = ({
   )
 }
 
-if (process.env.IS_STATIC) {
-  Button.staticConfig = extendStaticConfig(HStack)
-}
+// if (process.env.IS_STATIC) {
+//   Button.staticConfig = extendStaticConfig(HStack)
+// }

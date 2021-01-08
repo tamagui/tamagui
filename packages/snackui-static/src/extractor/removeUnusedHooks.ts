@@ -63,10 +63,6 @@ export function removeUnusedHooks(
         if (shouldPrintDebug) {
           console.log(`  removed unused ${id.node['name'] ?? ''}`)
         }
-      } else {
-        if (shouldPrintDebug) {
-          console.log('  dont remove', id.node['name'])
-        }
       }
     }
   }

@@ -1,4 +1,3 @@
-// // debug
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
@@ -16,6 +15,7 @@ const defaultProps: ParagraphProps = {
   color: 'rgba(0,0,0,0.88)',
   fontWeight: '400',
   selectable: true,
+  size: 'md',
 }
 
 if (process.env.IS_STATIC) {
