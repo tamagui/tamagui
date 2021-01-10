@@ -1,7 +1,7 @@
 import path, { basename } from 'path'
 
 import * as t from '@babel/types'
-import { existsSync } from 'fs-extra'
+import { existsSync, statSync } from 'fs-extra'
 
 import { evaluateAstNode } from './evaluateAstNode'
 import { getSourceModule } from './getSourceModule'
@@ -24,6 +24,14 @@ interface Binding {
   hasValue: boolean
   value: any
 }
+
+const fileCache: {
+  [key: string]: {
+    mtimeMs: number
+    path: string
+    src: Object
+  }
+} = {}
 
 export function getStaticBindingsForScope(
   scope: any,
@@ -67,20 +75,35 @@ export function getStaticBindingsForScope(
 
       if (isOnWhitelist) {
         let src: any
-        const filenames = [
-          moduleName.replace('.js', '.tsx'),
-          moduleName.replace('.js', '.ts'),
-          moduleName,
-        ]
-        for (const file of filenames) {
-          if (existsSync(file)) {
-            src = require(file)
-            break
+        const info = fileCache[moduleName]
+        if (info && statSync(info.path).mtimeMs === info.mtimeMs) {
+          src = info.src
+        } else {
+          const filenames = [
+            moduleName.replace('.js', '.tsx'),
+            moduleName.replace('.js', '.ts'),
+            moduleName,
+          ]
+          let mtimeMs = 0
+          let path = ''
+          for (const file of filenames) {
+            if (existsSync(file)) {
+              console.log('require', file)
+              path = file
+              src = require(file)
+              mtimeMs = statSync(file).mtimeMs
+              break
+            }
           }
-        }
-        if (src === undefined) {
-          console.warn('missing?')
-          return {}
+          if (src === undefined) {
+            console.warn('missing?')
+            return {}
+          }
+          fileCache[moduleName] = {
+            path,
+            src,
+            mtimeMs,
+          }
         }
         if (sourceModule.destructured) {
           if (sourceModule.imported) {
@@ -132,17 +155,15 @@ export function getStaticBindingsForScope(
 
     const cacheKey = `${dec.id.name}_${dec.id.start}-${dec.id.end}`
 
-    if (process.env.NODE_ENV === 'production') {
-      // retrieve value from cache
-      if (bindingCache.hasOwnProperty(cacheKey)) {
-        ret[k] = bindingCache[cacheKey]
-        continue
-      }
-      // retrieve value from cache
-      if (bindingCache.hasOwnProperty(cacheKey)) {
-        ret[k] = bindingCache[cacheKey]
-        continue
-      }
+    // retrieve value from cache
+    if (bindingCache.hasOwnProperty(cacheKey)) {
+      ret[k] = bindingCache[cacheKey]
+      continue
+    }
+    // retrieve value from cache
+    if (bindingCache.hasOwnProperty(cacheKey)) {
+      ret[k] = bindingCache[cacheKey]
+      continue
     }
 
     // skip ObjectExpressions not defined in the root
