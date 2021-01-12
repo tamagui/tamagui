@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { isWeb } from '../constants'
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { getSizedTextProps } from './getSizedTextProps'
 import { SizableTextProps } from './Size'
@@ -12,7 +13,11 @@ export const Paragraph = (props: SizableTextProps) => {
 }
 
 const defaultProps: ParagraphProps = {
-  color: 'rgba(0,0,0,0.88)',
+  // TODO we need to support a more robust extraction system to support this
+  // as a useTheme(). Basically would have to run SnackUI internally on itself
+  // and then figure out the spreads/themes/etc, then use that in the future.
+  // would open up ability to have users components static extract.
+  color: isWeb ? 'var(--color)' : 'rgba(0,0,0,0.88)',
   fontWeight: '400',
   selectable: true,
   size: 'md',
