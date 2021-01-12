@@ -50,13 +50,7 @@ export function Popover(props: PopoverProps) {
       },
       pointerEvents: props.overlayPointerEvents,
     })
-  }
 
-  if (!isMounted) {
-    return props.children
-  }
-
-  if (Platform.OS == 'web') {
     const placement =
       props.anchor ?? props.position === 'top'
         ? 'top-center'
@@ -75,6 +69,10 @@ export function Popover(props: PopoverProps) {
       containerOffset: 16,
       ResizeObserver: window['ResizeObserver'],
     })
+
+    if (!isMounted) {
+      return null
+    }
 
     return (
       <>
@@ -124,6 +122,10 @@ export function Popover(props: PopoverProps) {
           )}
       </>
     )
+  }
+
+  if (!isMounted) {
+    return props.children
   }
 
   if (props.isOpen) {

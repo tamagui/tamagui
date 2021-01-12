@@ -22,42 +22,7 @@ import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { useGetCssVariable } from '../hooks/useTheme'
-import { Spacer, Spacing } from './Spacer'
-
-const fullscreenStyle: StackProps = {
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-}
-
-const disabledStyle: StackProps = {
-  pointerEvents: 'none',
-  userSelect: 'none',
-}
-
-const useViewStylePropsSplit = (props: { [key: string]: any }) => {
-  const getVariable = useGetCssVariable()
-  return useMemo(() => {
-    const styleProps: ViewStyle = {}
-    const viewProps: ViewProps = {}
-    for (const key in props) {
-      if (stylePropsView[key]) {
-        styleProps[key] = getVariable(props[key])
-      } else {
-        viewProps[key] = props[key]
-      }
-    }
-    // temp bugfix - we need to figure out a better way than inversing theme vars
-    if (
-      styleProps.shadowColor !== props.shadowColor &&
-      typeof styleProps.shadowOpacity !== 'undefined'
-    ) {
-      styleProps.shadowColor = props.shadowColor
-    }
-    return { styleProps, viewProps }
-  }, [props])
-}
+import { Spacing } from './Spacer'
 
 export type StackProps = Omit<
   Omit<ViewStyle, 'display'> &
@@ -101,6 +66,41 @@ export type StackProps = Omit<
   // because who tf uses alignContent or backfaceVisibility
   'alignContent' | 'backfaceVisibility'
 >
+
+const fullscreenStyle: StackProps = {
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+}
+
+const disabledStyle: StackProps = {
+  pointerEvents: 'none',
+  userSelect: 'none',
+}
+
+const useViewStylePropsSplit = (props: { [key: string]: any }) => {
+  const getVariable = useGetCssVariable()
+  return useMemo(() => {
+    const styleProps: ViewStyle = {}
+    const viewProps: ViewProps = {}
+    for (const key in props) {
+      if (stylePropsView[key]) {
+        styleProps[key] = getVariable(props[key])
+      } else {
+        viewProps[key] = props[key]
+      }
+    }
+    // temp bugfix - we need to figure out a better way than inversing theme vars
+    if (
+      styleProps.shadowColor !== props.shadowColor &&
+      typeof styleProps.shadowOpacity !== 'undefined'
+    ) {
+      styleProps.shadowColor = props.shadowColor
+    }
+    return { styleProps, viewProps }
+  }, [props])
+}
 
 const mouseUps = new Set<Function>()
 
