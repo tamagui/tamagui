@@ -37,6 +37,7 @@ export const Input = forwardRef((props: InputProps, ref) => {
             lineHeight: styleProps.lineHeight,
             fontWeight: styleProps.fontWeight,
             textAlign: styleProps.textAlign,
+            color: styleProps.color,
           },
         ]}
       />

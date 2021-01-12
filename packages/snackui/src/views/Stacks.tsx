@@ -10,6 +10,7 @@ import React, {
 } from 'react'
 import {
   Animated,
+  GestureResponderEvent,
   TouchableOpacity,
   View,
   ViewProps,
@@ -68,11 +69,11 @@ export type StackProps = Omit<
       hoverStyle?: ViewStyle | null
       pressStyle?: ViewStyle | null
       focusStyle?: ViewStyle | null
-      onHoverIn?: Function
-      onHoverOut?: Function
-      onPress?: Function
-      onPressIn?: Function
-      onPressOut?: Function
+      onHoverIn?: (e: MouseEvent) => any
+      onHoverOut?: (e: MouseEvent) => any
+      onPress?: (e: GestureResponderEvent) => any
+      onPressIn?: (e: GestureResponderEvent) => any
+      onPressOut?: (e: GestureResponderEvent) => any
       spacing?: Spacing
       cursor?: string
       pointerEvents?: string
@@ -211,7 +212,7 @@ const createStack = (defaultProps?: ViewStyle) => {
       const events = {
         onMouseEnter:
           attachHover || attachPress
-            ? () => {
+            ? (e) => {
                 let next: Partial<typeof state> = {}
                 if (attachHover) {
                   next.hover = true
@@ -223,14 +224,14 @@ const createStack = (defaultProps?: ViewStyle) => {
                   set({ ...state, ...next })
                 }
                 if (attachHover) {
-                  onHoverIn?.()
-                  onMouseEnter?.()
+                  onHoverIn?.(e)
+                  onMouseEnter?.(e)
                 }
               }
             : null,
         onMouseLeave:
           attachHover || attachPress
-            ? () => {
+            ? (e) => {
                 let next: Partial<typeof state> = {}
                 mouseUps.add(unPress)
                 if (attachHover) {
@@ -244,8 +245,8 @@ const createStack = (defaultProps?: ViewStyle) => {
                   set({ ...state, ...next })
                 }
                 if (attachHover) {
-                  onHoverOut?.()
-                  onMouseLeave?.()
+                  onHoverOut?.(e)
+                  onMouseLeave?.(e)
                 }
               }
             : null,
