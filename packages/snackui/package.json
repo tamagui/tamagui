@@ -25,8 +25,8 @@
     "@react-native-community/blur": "^3.6.0",
     "expo-linear-gradient": "^8.4.0",
     "lodash": "^4.17.20",
-    "react-feather": "2.0.8",
-    "react-laag": "^1.7.3",
+    "react-feather": "^2.0.8",
+    "react-laag": "^2.0.2",
     "react-native-web": "*",
     "react-storage-hooks": "^4.0.0"
   },

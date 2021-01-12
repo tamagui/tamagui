@@ -9,7 +9,7 @@ export interface CacheObject {
   [key: string]: any
 }
 
-export interface PluginOptions {
+export interface SnackOptions {
   // user options
   themesFile?: string
   evaluateVars?: boolean
@@ -44,7 +44,7 @@ export type ExtractTagProps = {
   filePath: string
 }
 
-export type ExtractorParseProps = PluginOptions & {
+export type ExtractorParseProps = SnackOptions & {
   sourceFileName?: string
   shouldPrintDebug?: boolean
   onExtractTag: (props: ExtractTagProps) => void

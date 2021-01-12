@@ -88,7 +88,6 @@ export function getStaticBindingsForScope(
           let path = ''
           for (const file of filenames) {
             if (existsSync(file)) {
-              console.log('require', file)
               path = file
               src = require(file)
               mtimeMs = statSync(file).mtimeMs

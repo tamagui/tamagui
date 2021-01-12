@@ -3,7 +3,7 @@ import loaderUtils from 'loader-utils'
 
 import { createExtractor } from './extractor/createExtractor'
 import { extractToClassNames } from './extractor/extractToClassNames'
-import { PluginOptions } from './types'
+import { SnackOptions } from './types'
 
 Error.stackTraceLimit = Infinity
 
@@ -17,7 +17,7 @@ export default function GlossWebpackLoader(this: any, content) {
     return content
   }
 
-  const options: PluginOptions = loaderUtils.getOptions(this) || {}
+  const options: SnackOptions = loaderUtils.getOptions(this) || {}
   const rv = extractToClassNames(extractor, content, this.resourcePath, options)
   if (!rv) {
     return content

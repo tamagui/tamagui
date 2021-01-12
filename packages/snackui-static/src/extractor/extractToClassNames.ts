@@ -13,7 +13,7 @@ import { CSS_FILE_NAME } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
-import { ClassNameObject, PluginOptions, StyleObject } from '../types'
+import { ClassNameObject, SnackOptions, StyleObject } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
 import { ensureImportingConcat } from './ensureImportingConcat'
@@ -30,7 +30,7 @@ export function extractToClassNames(
   extractor: Extractor,
   src: string | Buffer,
   sourceFileName: string,
-  options: PluginOptions
+  options: SnackOptions
 ): null | {
   js: string | Buffer
   css: string

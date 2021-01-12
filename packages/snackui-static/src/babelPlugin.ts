@@ -6,7 +6,7 @@ import * as t from '@babel/types'
 
 import { createExtractor } from './extractor/createExtractor'
 import { literalToAst } from './extractor/literalToAst'
-import { PluginOptions } from './types'
+import { SnackOptions } from './types'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -18,7 +18,7 @@ import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 
 const extractor = createExtractor()
 
-export const babelPlugin = declare((api, options: PluginOptions): {
+export const babelPlugin = declare((api, options: SnackOptions): {
   name: string
   visitor: Visitor
 } => {

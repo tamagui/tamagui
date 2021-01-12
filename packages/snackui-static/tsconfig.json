@@ -4,6 +4,7 @@
     "composite": true,
     "baseUrl": ".",
     "module": "CommonJS",
+    "esModuleInterop": true,
     "outDir": "_",
     "rootDir": "src"
   },
