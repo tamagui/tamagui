@@ -1,5 +1,7 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
+import { isWeb } from '../constants'
 import { useForceUpdate } from '../hooks/useForceUpdate'
 import { AnimatedVStack } from './AnimatedStack'
 import { AbsoluteVStack, VStack } from './Stacks'
@@ -64,7 +66,7 @@ export const ToastRoot = memo(function ToastRoot() {
 
   const state = stateRef.current
 
-  return (
+  const contents = (
     <AbsoluteVStack
       pointerEvents="none"
       fullscreen
@@ -98,4 +100,12 @@ export const ToastRoot = memo(function ToastRoot() {
       )}
     </AbsoluteVStack>
   )
+
+  const portalEl = document.getElementById('portals')
+
+  if (isWeb && portalEl) {
+    return createPortal(contents, portalEl)
+  }
+
+  return contents
 })
