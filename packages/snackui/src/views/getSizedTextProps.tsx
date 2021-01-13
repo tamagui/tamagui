@@ -12,7 +12,7 @@ export const getSizedTextProps = ({
 }: SizableTextProps): TextStyle => {
   const sizeAmt = getSize(size)
   // get a little less spaced as we go higher
-  const lineHeightScaleWithSize = -(2 - sizeAmt) * 0.6
+  const lineHeightScaleWithSize = -(2 - sizeAmt) * 0.55
   const lineHeight = Math.round(
     (26 + lineHeightScaleWithSize) * sizeAmt * sizeLineHeight
   )

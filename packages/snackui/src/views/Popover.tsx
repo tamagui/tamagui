@@ -10,6 +10,7 @@ import { Transition, useLayer } from 'react-laag'
 import { Platform } from 'react-native'
 
 import { useOverlay } from '../hooks/useOverlay'
+import { AnimatedVStack } from './AnimatedStack'
 import { Modal } from './Modal'
 import { PopoverProps } from './PopoverProps'
 import { popoverCloseCbs } from './PopoverShared'
@@ -87,25 +88,22 @@ export function Popover(props: PopoverProps) {
         </div>
         {isOpen &&
           renderLayer(
-            <Transition isOpen={isOpen}>
-              {(isOpen, onTransitionEnd) => {
-                return (
-                  <div
-                    {...layerProps}
-                    onTransitionEnd={onTransitionEnd}
-                    style={{
-                      ...layerProps.style,
-                      zIndex: 100000,
-                      pointerEvents: isOpen ? 'auto' : 'none',
-                      marginTop: isOpen ? 0 : 10,
-                      opacity: isOpen ? 1 : 0,
-                      transition: '0.2s ease-in-out',
-                    }}
-                  >
-                    {typeof props.contents === 'function'
-                      ? props.contents(isOpen)
-                      : props.contents}
-                    {/* {!props.noArrow && (
+            <div
+              {...layerProps}
+              style={{
+                ...layerProps.style,
+                zIndex: 100000,
+                pointerEvents: isOpen ? 'auto' : 'none',
+                marginTop: isOpen ? 0 : 10,
+                opacity: isOpen ? 1 : 0,
+                transition: '0.2s ease-in-out',
+              }}
+            >
+              <AnimatedVStack>
+                {typeof props.contents === 'function'
+                  ? props.contents(isOpen)
+                  : props.contents}
+                {/* {!props.noArrow && (
                         <Arrow
                           style={{
                             position: 'absolute',
@@ -115,10 +113,8 @@ export function Popover(props: PopoverProps) {
                           }}
                         />
                       )} */}
-                  </div>
-                )
-              }}
-            </Transition>
+              </AnimatedVStack>
+            </div>
           )}
       </>
     )
