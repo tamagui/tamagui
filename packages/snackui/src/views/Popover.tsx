@@ -6,9 +6,9 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { Transition, useLayer } from 'react-laag'
-import { Platform } from 'react-native'
+import { useLayer } from 'react-laag'
 
+import { isWeb } from '../constants'
 import { useOverlay } from '../hooks/useOverlay'
 import { AnimatedVStack } from './AnimatedStack'
 import { Modal } from './Modal'
@@ -40,7 +40,7 @@ export function Popover(props: PopoverProps) {
     }
   }, [onChangeOpenCb])
 
-  if (Platform.OS == 'web') {
+  if (isWeb) {
     useOverlay({
       isOpen: !!(isOpen && props.overlay !== false),
       onClick: () => {
@@ -120,11 +120,7 @@ export function Popover(props: PopoverProps) {
     )
   }
 
-  if (!isMounted) {
-    return props.children
-  }
-
-  if (props.isOpen) {
+  if (isMounted && props.isOpen) {
     return (
       <>
         {props.children}
@@ -135,7 +131,6 @@ export function Popover(props: PopoverProps) {
     )
   }
 
-  // native: todo
   return props.children
 }
 
