@@ -79,8 +79,9 @@ export const ToastRoot = memo(function ToastRoot() {
         <AnimatedVStack>
           <VStack
             backgroundColor={
+              // TODO theme
               state.type === 'info'
-                ? 'rgba(0,0,0,0.95)'
+                ? 'rgba(240, 240, 0, 0.95)'
                 : state.type === 'success'
                 ? 'rgba(20,180,120,0.95)'
                 : 'rgba(190,60,60, 0.95)'
@@ -92,7 +93,11 @@ export const ToastRoot = memo(function ToastRoot() {
             paddingHorizontal={18}
             paddingVertical={12}
           >
-            <Text color="white" fontSize={18} fontWeight="600">
+            <Text
+              color={state.type === 'info' ? '#000' : '#fff'}
+              fontSize={18}
+              fontWeight="600"
+            >
               {state.text}
             </Text>
           </VStack>
@@ -101,7 +106,7 @@ export const ToastRoot = memo(function ToastRoot() {
     </AbsoluteVStack>
   )
 
-  const portalEl = document.getElementById('portals')
+  const portalEl = document.getElementById('toasts')
 
   if (isWeb && portalEl) {
     return createPortal(contents, portalEl)
