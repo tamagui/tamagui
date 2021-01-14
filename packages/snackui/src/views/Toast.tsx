@@ -18,6 +18,10 @@ let show: (text: string, options?: ToastOptions) => void = (text) => {
 
 export const Toast = {
   show: (text: string, options?: ToastOptions) => show(text, options),
+  error: (text: string, options?: Omit<ToastOptions, 'type'>) =>
+    show(text, { ...options, type: 'error' }),
+  success: (text: string, options?: Omit<ToastOptions, 'type'>) =>
+    show(text, { ...options, type: 'success' }),
 }
 
 if (typeof window !== 'undefined') {
