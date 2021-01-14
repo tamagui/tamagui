@@ -340,6 +340,7 @@ function fixNativeShadow(props: StackProps) {
       res.shadowOffset = defaultShadowOffset
     }
     if (!('shadowOpacity' in props)) {
+      res.shadowOpacity = 1
       const color = String(props.shadowColor).trim()
       res = res || {}
       if (color[0] === 'r' && color[3] === 'a') {
@@ -347,7 +348,7 @@ function fixNativeShadow(props: StackProps) {
           color.match(
             /rgba\(\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\)$/
           ) ?? []
-        if (typeof a !== 'function') {
+        if (typeof a !== 'number') {
           console.warn('non valid rgba', color)
           return res
         }

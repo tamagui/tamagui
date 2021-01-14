@@ -6,8 +6,8 @@
     "skipLibCheck": true
   },
   "references": [
+    // DONT INCLUDE @snackui/node it needs ttsc
     { "path": "packages/snackui" },
-    { "path": "packages/snackui-node" },
     { "path": "packages/snackui-static" },
     { "path": "packages/helpers" },
   ]
