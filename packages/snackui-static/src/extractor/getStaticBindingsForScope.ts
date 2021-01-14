@@ -117,9 +117,6 @@ export function getStaticBindingsForScope(
             ret[k] = src
           }
         }
-        if (shouldPrintDebug) {
-          console.log(' bindings via', moduleName)
-        }
       }
       continue
     }

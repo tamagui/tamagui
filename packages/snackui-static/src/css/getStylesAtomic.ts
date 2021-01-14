@@ -1,10 +1,10 @@
+import { getNiceKey, getOrCreateStylePrefix } from '@snackui/node'
 import _ from 'lodash'
 import { ViewStyle } from 'react-native'
 import { atomic } from 'react-native-web/dist/cjs/exports/StyleSheet/compile'
 import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createCompileableStyle'
 import createReactDOMStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createReactDOMStyle'
 import i18Style from 'react-native-web/dist/cjs/exports/StyleSheet/i18nStyle'
-import { getNiceKey, getOrCreateStylePrefix } from 'snackui/node'
 
 import { CLASS_PREFIX } from '../constants'
 import { StyleObject } from '../types'

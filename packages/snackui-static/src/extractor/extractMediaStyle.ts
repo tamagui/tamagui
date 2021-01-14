@@ -1,8 +1,8 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
+import { mediaObjectToString } from '@snackui/node'
 import { ViewStyle } from 'react-native'
 import { MediaQueries } from 'snackui'
-import { mediaObjectToString } from 'snackui/node'
 
 import { MEDIA_SEP } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'

@@ -1,0 +1,14 @@
+{
+  "name": "@snackui/node",
+  "version": "0.0.6",
+  "main": "index.js",
+  "scripts": {
+    "build": "ttsc",
+    "watch": "ttsc --watch --preserveWatchOutput"
+  },
+  "devDependencies": {
+    "ts-transform-import-path-rewrite": "^0.3.0",
+    "ttypescript": "^1.5.12",
+    "typescript": "*"
+  }
+}

@@ -309,12 +309,12 @@ const createStack = (defaultProps?: ViewStyle) => {
   if (process.env.IS_STATIC) {
     // @ts-ignore
     component.staticConfig = {
-      validStyles: require('@snackui/helpers').stylePropsView,
+      validStyles: stylePropsView,
       defaultProps,
       expansionProps: {
         fullscreen: fullscreenStyle,
         disabled: disabledStyle,
-        shadowColor: isWeb ? null : fixNativeShadow,
+        shadowColor: fixNativeShadow,
         contain: ({ contain }) => ({
           contain,
         }),
@@ -340,16 +340,19 @@ function fixNativeShadow(props: StackProps) {
       res.shadowOffset = defaultShadowOffset
     }
     if (!('shadowOpacity' in props)) {
-      const color = props.shadowColor as string
+      const color = String(props.shadowColor).trim()
       res = res || {}
       if (color[0] === 'r' && color[3] === 'a') {
-        const alphaIndex = color.lastIndexOf(',') + 1
-        const alpha = +color.slice(alphaIndex).replace(')', '')
-        if (isNaN(alpha)) {
-          console.warn('nan', color)
-        } else {
-          res.shadowOpacity = alpha
+        const [_, r, g, b, a] =
+          color.match(
+            /rgba\(\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\)$/
+          ) ?? []
+        if (typeof a !== 'function') {
+          console.warn('non valid rgba', color)
+          return res
         }
+        res.shadowColor = `rgb(${r},${g},${b})`
+        res.shadowOpacity = a
       } else {
         res.shadowOpacity = 1
       }

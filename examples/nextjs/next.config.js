@@ -12,7 +12,7 @@ module.exports = {
       config.module.rules[0].use = [config.module.rules[0].use, snackLoader]
       config.resolve.alias = {
         ...config.resolve.alias,
-        snackui: 'snackui/node',
+        snackui: '@snackui/node',
       }
     } else {
       config.module.rules[0].use.push(snackLoader)

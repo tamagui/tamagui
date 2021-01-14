@@ -3,10 +3,10 @@ import vm from 'vm'
 import generate from '@babel/generator'
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
+import * as AllExports from '@snackui/node'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 import { StaticComponent } from 'snackui'
-import * as AllExports from 'snackui/node'
 
 import { pseudos } from '../css/getStylesAtomic'
 import {

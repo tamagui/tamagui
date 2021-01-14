@@ -1,42 +1,14 @@
 {
+  "files": [],
   "compilerOptions": {
-    "importHelpers": true,
-    "allowJs": false,
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "declarationMap": true,
-    "downlevelIteration": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "preserveSymlinks": true,
-    "incremental": true,
-    "jsx": "react",
-    "skipLibCheck": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmitOnError": false,
-    "noImplicitAny": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveConstEnums": true,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "target": "ES2019",
-    "lib": ["dom", "esnext"],
-    "types": ["node"],
-    "typeRoots": ["./node_modules/@types", "./types"],
-    "composite": true
+    "typeRoots": ["node_modules/@types"],
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
-
-  "exclude": ["_"],
-
-  "typeAcquisition": {
-    "enable": true
-  },
-
-  "references": []
+  "references": [
+    { "path": "packages/snackui" },
+    { "path": "packages/snackui-node" },
+    { "path": "packages/snackui-static" },
+    { "path": "packages/helpers" },
+  ]
 }

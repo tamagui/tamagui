@@ -1,9 +1,9 @@
 {
-  "extends": "./tsconfig",
+  "extends": "../snackui/tsconfig",
   "compilerOptions": {
     "composite": false,
     "incremental": false,
-    "outDir": "dist",
+    "outDir": "_",
     "module": "CommonJS",
     "plugins": [
       {

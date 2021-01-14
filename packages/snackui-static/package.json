@@ -17,6 +17,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@snackui/node": "^0.0.6",
     "@snackui/helpers": "^0.0.6",
     "@expo/match-media": "^0.0.0-beta.2",
     "@babel/core": "^7.12.9",
@@ -31,7 +32,6 @@
     "invariant": "^2.2.4",
     "loader-utils": "^2.0.0",
     "react-native-web": "*",
-    "snackui": "^0.0.6",
     "webpack": "^5.13.0"
   },
   "devDependencies": {
