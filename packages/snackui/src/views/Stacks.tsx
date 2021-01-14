@@ -3,6 +3,7 @@ import React, {
   RefObject,
   forwardRef,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -21,7 +22,7 @@ import { isWeb } from '../constants'
 import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
-import { useGetCssVariable } from '../hooks/useTheme'
+import { ActiveThemeContext, varToVal } from '../hooks/useTheme'
 import { Spacing } from './Spacer'
 
 export type StackProps = Omit<
@@ -80,18 +81,20 @@ const disabledStyle: StackProps = {
 }
 
 const useViewStylePropsSplit = (props: { [key: string]: any }) => {
-  const getVariable = useGetCssVariable()
+  const activeTheme = useContext(ActiveThemeContext)
   return useMemo(() => {
     const styleProps: ViewStyle = {}
     const viewProps: ViewProps = {}
     for (const key in props) {
+      const val = props[key]
       if (stylePropsView[key]) {
-        styleProps[key] = getVariable(props[key])
+        styleProps[key] = activeTheme
+          ? varToVal[activeTheme.name]?.[val] ?? val
+          : val
       } else {
-        viewProps[key] = props[key]
+        viewProps[key] = val
       }
     }
-    // temp bugfix - we need to figure out a better way than inversing theme vars
     if (
       styleProps.shadowColor !== props.shadowColor &&
       typeof styleProps.shadowOpacity !== 'undefined'

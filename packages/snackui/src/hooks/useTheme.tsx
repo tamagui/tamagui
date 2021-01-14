@@ -41,21 +41,9 @@ type ThemeName = keyof Themes
 let hasConfigured = false
 let themes: Themes = {}
 
-// for usage later on in mapping value => variable
-const inverseValueToVariable: {
+export const varToVal: {
   [key: string]: { [subKey: string]: string }
 } = {}
-
-export function useGetCssVariable() {
-  const activeTheme = useContext(ActiveThemeContext)
-  return <A extends string | number>(value: A) => {
-    if (!activeTheme) {
-      return value
-    }
-    const themeVal = inverseValueToVariable[activeTheme.name]?.[value]
-    return themeVal ?? value
-  }
-}
 
 export const configureThemes = (userThemes: Themes) => {
   if (hasConfigured) {
@@ -69,13 +57,12 @@ export const configureThemes = (userThemes: Themes) => {
     const tag = createStyleTag()
     for (const themeName in userThemes) {
       const theme = userThemes[themeName]
-      inverseValueToVariable[themeName] =
-        inverseValueToVariable[themeName] || {}
+      varToVal[themeName] = varToVal[themeName] || {}
       let vars = ''
       for (const themeKey in theme) {
         const themeVal = theme[themeKey]
         const variableName = `--${themeKey}`
-        inverseValueToVariable[themeName][themeVal] = `var(${variableName})`
+        varToVal[themeName][`var(${variableName})`] = themeVal
         vars += `${variableName}: ${themeVal};`
       }
       const rule = `.${PREFIX}${themeName} { ${vars} }`
@@ -117,7 +104,7 @@ class ActiveThemeManager {
 }
 
 const ThemeContext = createContext<Themes>(themes)
-const ActiveThemeContext = createContext<ActiveThemeManager>(
+export const ActiveThemeContext = createContext<ActiveThemeManager>(
   new ActiveThemeManager()
 )
 
