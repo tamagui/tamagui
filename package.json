@@ -28,7 +28,7 @@
     "prettier": "^2.2.1",
     "prettier-plugin-import-sort": "^0.0.6",
     "ts-node": "^9.1.1",
-    "ultra-runner": "^3.7.1"
+    "ultra-runner": "^3.9.0"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

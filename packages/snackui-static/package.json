@@ -3,7 +3,6 @@
   "version": "0.0.6",
   "main": "_/index.js",
   "scripts": {
-    "prebuild": "rm -f tsconfig.tsbuildinfo",
     "build": "tsc -b",
     "watch": "tsc -b --watch --preserveWatchOutput",
     "test": "SNACKUI_COMPILE_PROCESS=1 ava test/* --verbose",

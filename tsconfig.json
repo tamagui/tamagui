@@ -7,8 +7,8 @@
   },
   "references": [
     // DONT INCLUDE @snackui/node it needs ttsc
+    { "path": "packages/helpers" },
     { "path": "packages/snackui" },
     { "path": "packages/snackui-static" },
-    { "path": "packages/helpers" },
   ]
 }
