@@ -330,6 +330,7 @@ const defaultShadowOffset = {
   height: 0,
 }
 
+const matchRgba = /rgba\(\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*\)$/
 function fixNativeShadow(props: StackProps) {
   let res: any
   if ('shadowColor' in props) {
@@ -344,16 +345,13 @@ function fixNativeShadow(props: StackProps) {
       const color = String(props.shadowColor).trim()
       res = res || {}
       if (color[0] === 'r' && color[3] === 'a') {
-        const [_, r, g, b, a] =
-          color.match(
-            /rgba\(\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\s*,\s*([\d\.]{1,3})\)$/
-          ) ?? []
-        if (typeof a !== 'number') {
+        const [_, r, g, b, a] = color.match(matchRgba) ?? []
+        if (typeof a !== 'string') {
           console.warn('non valid rgba', color)
           return res
         }
         res.shadowColor = `rgb(${r},${g},${b})`
-        res.shadowOpacity = a
+        res.shadowOpacity = +a
       } else {
         res.shadowOpacity = 1
       }
