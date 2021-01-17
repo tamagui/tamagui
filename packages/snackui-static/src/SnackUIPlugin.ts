@@ -1,4 +1,4 @@
-import { dirname, join } from 'path'
+import { basename, dirname, join } from 'path'
 
 import { mkdirpSync, readFileSync, writeFileSync } from 'fs-extra'
 import { Compilation, NormalModule } from 'webpack'
@@ -37,10 +37,9 @@ export class SnackUIPlugin extends VirtualModulesPlugin {
   private persistToDiskTm = 0
   private persistToDisk(path: string, content: string) {
     try {
-      if (readFileSync(path, 'utf-8') !== content) {
-        writeFileSync(path, content)
-      }
+      writeFileSync(path, content)
     } catch {
+      mkdirpSync(basename(path))
       writeFileSync(path, content)
     }
   }
