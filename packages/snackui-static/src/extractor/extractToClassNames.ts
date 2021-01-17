@@ -276,7 +276,7 @@ export function extractToClassNames(
 
   if (Object.keys(rules).length) {
     ast.program.body.unshift(
-      t.importDeclaration([], t.stringLiteral('snackui-css/css.css'))
+      t.importDeclaration([], t.stringLiteral('snackui/_/css.css'))
     )
   }
 

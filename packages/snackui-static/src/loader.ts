@@ -1,5 +1,3 @@
-import { dirname } from 'path'
-
 import loaderUtils from 'loader-utils'
 
 import { createExtractor } from './extractor/createExtractor'
@@ -32,6 +30,5 @@ export default function SnackUILoader(this: any, content) {
 
   const { write } = pluginContext
   write(rv.rules)
-
   this.callback(null, rv.js, rv.map)
 }
