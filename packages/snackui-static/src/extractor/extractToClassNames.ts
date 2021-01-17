@@ -32,8 +32,7 @@ export function extractToClassNames(
   options: SnackOptions
 ): null | {
   js: string | Buffer
-  css: string
-  cssFileName: string
+  rules: { [key: string]: string }
   ast: t.File
   map: any // RawSourceMap from 'source-map'
 } {
@@ -267,18 +266,17 @@ export function extractToClassNames(
     return null
   }
 
-  const css = Array.from(cssMap.values())
-    .map((v) => v.commentTexts.map((txt) => `${txt}\n`).join('') + v.css)
-    .join(' ')
-  const extName = path.extname(sourceFileName)
-  const baseName = path.basename(sourceFileName, extName)
-  const cssImportFileName = `./${baseName}${CSS_FILE_NAME}`
-  const sourceDir = path.dirname(sourceFileName)
-  const cssFileName = path.join(sourceDir, cssImportFileName)
+  const rules = Array.from(cssMap.entries()).reduce(
+    (acc, [className, { css }]) => {
+      acc[className] = css
+      return acc
+    },
+    {}
+  )
 
-  if (css !== '') {
+  if (Object.keys(rules).length) {
     ast.program.body.unshift(
-      t.importDeclaration([], t.stringLiteral(cssImportFileName))
+      t.importDeclaration([], t.stringLiteral('snackui-css/css.css'))
     )
   }
 
@@ -305,13 +303,12 @@ export function extractToClassNames(
         .filter((line) => !line.startsWith('//'))
         .join('\n')
     )
-    console.log('\n\noutput css >> ', css)
+    console.log('\n\noutput >> ', Object.values(rules).join('\n'))
   }
 
   return {
     ast,
-    cssFileName,
-    css,
+    rules,
     js: result.code,
     map: result.map,
   }

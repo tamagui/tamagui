@@ -72,5 +72,5 @@ export type ClassNameToStyleObj = {
 }
 
 export interface PluginContext {
-  memoryFS: Volume
+  write: (rules: { [key: string]: string }) => any
 }

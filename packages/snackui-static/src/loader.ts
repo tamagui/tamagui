@@ -4,8 +4,7 @@ import loaderUtils from 'loader-utils'
 
 import { createExtractor } from './extractor/createExtractor'
 import { extractToClassNames } from './extractor/extractToClassNames'
-import { memoryFS } from './patchFs'
-import { SnackOptions } from './types'
+import { PluginContext, SnackOptions } from './types'
 
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
@@ -17,12 +16,22 @@ export default function SnackUILoader(this: any, content) {
   if (content[0] === '/' && content.startsWith('// disable-snackui')) {
     return content
   }
+
+  const pluginContext: PluginContext = this['@snackui/static']
+  if (!pluginContext) {
+    throw new Error(
+      'SnackUIPlugin must be added to the plugins array in your webpack config'
+    )
+  }
+
   const options: SnackOptions = loaderUtils.getOptions(this) || {}
   const rv = extractToClassNames(extractor, content, this.resourcePath, options)
   if (!rv) {
     return content
   }
-  memoryFS.mkdirpSync(dirname(rv.cssFileName))
-  memoryFS.writeFileSync(rv.cssFileName, rv.css)
+
+  const { write } = pluginContext
+  write(rv.rules)
+
   this.callback(null, rv.js, rv.map)
 }
