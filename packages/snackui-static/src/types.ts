@@ -1,6 +1,7 @@
 import { NodePath } from '@babel/core'
 import * as t from '@babel/types'
 import { MediaQueries } from '@snackui/node'
+import { Volume } from 'memfs/lib/volume'
 import { ViewStyle } from 'react-native'
 
 export type ClassNameObject = t.StringLiteral | t.Expression
@@ -68,4 +69,8 @@ export type StyleObject = {
 
 export type ClassNameToStyleObj = {
   [key: string]: StyleObject
+}
+
+export interface PluginContext {
+  memoryFS: Volume
 }
