@@ -33,7 +33,8 @@
     "react-native-web": "*",
     "webpack": "^5.14.0",
     "memfs": "^3.2.0",
-    "unionfs": "^4.4.0"
+    "unionfs": "^4.4.0",
+    "fs-monkey": "^1.0.1"
   },
   "devDependencies": {
     "ts-node": "^9.1.1",
