@@ -275,8 +275,12 @@ export function extractToClassNames(
   )
 
   if (Object.keys(rules).length) {
+    const cssPath = `/tmp/snackui.css`
+    const importPath = `${cssPath}!=!snackui-loader?cssPath=${cssPath}!${posixify(
+      sourceFileName
+    )}`
     ast.program.body.unshift(
-      t.importDeclaration([], t.stringLiteral('snackui/_/css.css'))
+      t.importDeclaration([], t.stringLiteral(importPath))
     )
   }
 
@@ -312,4 +316,8 @@ export function extractToClassNames(
     js: result.code,
     map: result.map,
   }
+}
+
+function posixify(file) {
+  return file.replace(/[/\\]/g, '/')
 }

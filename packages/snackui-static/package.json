@@ -31,11 +31,7 @@
     "invariant": "^2.2.4",
     "loader-utils": "^2.0.0",
     "react-native-web": "*",
-    "webpack": "^5.14.0",
-    "webpack-virtual-modules": "^0.4.2",
-    "memfs": "^3.2.0",
-    "unionfs": "^4.4.0",
-    "fs-monkey": "^1.0.1"
+    "webpack": "^5.14.0"
   },
   "devDependencies": {
     "ts-node": "^9.1.1",

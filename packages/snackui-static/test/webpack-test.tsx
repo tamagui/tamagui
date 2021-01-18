@@ -194,7 +194,7 @@ async function extractStaticApp() {
               loader: 'babel-loader',
             },
             {
-              loader: require.resolve('../loader'),
+              loader: 'snackui-loader',
               options: {
                 evaluateImportsWhitelist: ['constants.js'],
               },
@@ -208,7 +208,6 @@ async function extractStaticApp() {
       ],
     },
     plugins: [
-      new SnackUIPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG),

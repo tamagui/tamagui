@@ -18,6 +18,7 @@ export interface SnackOptions {
   exclude?: RegExp
   mediaQueries?: MediaQueries
   // probably non user options
+  cssPath?: string
   deoptProps?: string[]
   excludeProps?: string[]
 }
@@ -72,5 +73,5 @@ export type ClassNameToStyleObj = {
 }
 
 export interface PluginContext {
-  write: (rules: { [key: string]: string }) => any
+  write: (path: string, rules: { [key: string]: string }) => any
 }

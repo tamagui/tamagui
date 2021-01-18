@@ -1,34 +1,45 @@
-import loaderUtils from 'loader-utils'
+import { getOptions } from 'loader-utils'
 
 import { createExtractor } from './extractor/createExtractor'
 import { extractToClassNames } from './extractor/extractToClassNames'
-import { PluginContext, SnackOptions } from './types'
+import { SnackOptions } from './types'
 
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
 
-export default function SnackUILoader(this: any, content) {
-  if (this.cacheable) {
-    this.cacheable()
+const styles = new Set<string>()
+
+export default function snackLoader(this: any, content: string) {
+  this.cacheable()
+  const callback = this.async()
+  const options: SnackOptions = { ...getOptions(this) }
+
+  if (options.cssPath) {
+    return callback(null, [...styles].join('\n'))
   }
+
   if (content[0] === '/' && content.startsWith('// disable-snackui')) {
-    return content
+    return callback(null, content)
   }
 
-  const pluginContext: PluginContext = this['@snackui/static']
-  if (!pluginContext) {
-    throw new Error(
-      'SnackUIPlugin must be added to the plugins array in your webpack config'
-    )
+  const extracted = extractToClassNames(
+    extractor,
+    content,
+    this.resourcePath,
+    options
+  )
+
+  if (!extracted) {
+    return callback(null, content)
   }
 
-  const options: SnackOptions = loaderUtils.getOptions(this) || {}
-  const rv = extractToClassNames(extractor, content, this.resourcePath, options)
-  if (!rv) {
-    return content
+  // this.addDependency('/tmp/snackui.css')
+
+  if (extracted.rules) {
+    for (const rule in extracted.rules) {
+      styles.add(extracted.rules[rule])
+    }
   }
 
-  const { write } = pluginContext
-  write(rv.rules)
-  this.callback(null, rv.js, rv.map)
+  callback(null, extracted.js, extracted.map)
 }

@@ -1,0 +1,8 @@
+{
+  "name": "snackui-loader",
+  "version": "0.0.6",
+  "main": "index.js",
+  "dependencies": {
+    "@snackui/static": "^0.0.6"
+  }
+}

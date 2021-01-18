@@ -7,28 +7,40 @@ import VirtualModulesPlugin from 'webpack-virtual-modules'
 export class SnackUIPlugin extends VirtualModulesPlugin {
   private pluginName = 'SnackUIPlugin'
   private cssOut = join(dirname(require.resolve('snackui')), 'css.css')
-  cache = new Set()
+
+  // filename => styles
+  cache = new Map<string, Set<string>>()
+  fileCache = new Set<string>()
 
   private compilationPlugin = (compilation: Compilation): void => {
     // load from cache
     try {
       const cached = readFileSync(this.cssOut, 'utf-8')
       if (cached) {
+        this.cache.set('this.fileCache', this.fileCache)
         for (const line of cached.split('\n')) {
-          this.cache.add(line.trim())
+          this.fileCache.add(line.trim())
         }
       }
     } catch {
       // no cache
     }
 
+    compilation.hooks.succeedEntry.tap(this.pluginName, () => {
+      console.log('success')
+    })
+
     NormalModule.getCompilationHooks(compilation).loader.tap(
       this.pluginName,
       (ctx) => {
         ctx['@snackui/static'] = {
-          write: (rules: { [key: string]: string }) => {
+          write: (file: string, rules: { [key: string]: string }) => {
+            if (!this.cache.has(file)) {
+              this.cache.set(file, new Set())
+            }
+            const c = this.cache.get(file)!
             for (const key in rules) {
-              this.cache.add(rules[key])
+              c.add(rules[key])
             }
             this.persist(compilation)
           },
@@ -49,7 +61,9 @@ export class SnackUIPlugin extends VirtualModulesPlugin {
   }
 
   private persist(_compilation: Compilation) {
-    const finalStr = [...this.cache].join('\n')
+    const finalStr = [
+      ...new Set(Array.from(this.cache.values()).flatMap((v) => [...v])),
+    ].join('\n')
     this.writeModule(this.cssOut, finalStr)
 
     // temp until i have the time to figure out webpack cache :/
