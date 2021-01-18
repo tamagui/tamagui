@@ -98,7 +98,6 @@ const useViewStylePropsSplit = (props: { [key: string]: any }) => {
         viewProps[key] = val
       }
     }
-    console.log(styleProps)
     if (
       styleProps.shadowColor !== props.shadowColor &&
       typeof styleProps.shadowOpacity !== 'undefined'
