@@ -41,7 +41,7 @@ type ThemeName = keyof Themes
 let hasConfigured = false
 let themes: Themes = {}
 
-export const varToVal: {
+export const invertStyleVariableToValue: {
   [key: string]: { [subKey: string]: string }
 } = {}
 
@@ -57,12 +57,13 @@ export const configureThemes = (userThemes: Themes) => {
     const tag = createStyleTag()
     for (const themeName in userThemes) {
       const theme = userThemes[themeName]
-      varToVal[themeName] = varToVal[themeName] || {}
+      invertStyleVariableToValue[themeName] =
+        invertStyleVariableToValue[themeName] || {}
       let vars = ''
       for (const themeKey in theme) {
         const themeVal = theme[themeKey]
         const variableName = `--${themeKey}`
-        varToVal[themeName][`var(${variableName})`] = themeVal
+        invertStyleVariableToValue[themeName][`var(${variableName})`] = themeVal
         vars += `${variableName}: ${themeVal};`
       }
       const rule = `.${PREFIX}${themeName} { ${vars} }`

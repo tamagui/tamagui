@@ -22,7 +22,10 @@ import { isWeb } from '../constants'
 import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
-import { ActiveThemeContext, varToVal } from '../hooks/useTheme'
+import {
+  ActiveThemeContext,
+  invertStyleVariableToValue,
+} from '../hooks/useTheme'
 import { Spacing } from './Spacer'
 
 export type StackProps = Omit<
@@ -89,12 +92,13 @@ const useViewStylePropsSplit = (props: { [key: string]: any }) => {
       const val = props[key]
       if (stylePropsView[key]) {
         styleProps[key] = activeTheme
-          ? varToVal[activeTheme.name]?.[val] ?? val
+          ? invertStyleVariableToValue[activeTheme.name]?.[val] ?? val
           : val
       } else {
         viewProps[key] = val
       }
     }
+    console.log(styleProps)
     if (
       styleProps.shadowColor !== props.shadowColor &&
       typeof styleProps.shadowOpacity !== 'undefined'

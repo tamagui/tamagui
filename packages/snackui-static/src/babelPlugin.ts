@@ -47,6 +47,9 @@ export const babelPlugin = declare((api, options: SnackOptions): {
 
           const shouldPrintDebug = firstComment === ' debug'
 
+          // could have a deopt
+          // const themes = options.themesFile ? require(options.themesFile).default : null
+
           function addSheetStyle(style: any) {
             const key = `${Object.keys(sheetStyles).length}`
             sheetStyles[key] = style

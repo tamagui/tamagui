@@ -21,8 +21,8 @@ export type SizableTextProps = TextProps & {
 export const sizes = {
   xxxs: 0.25,
   xxs: 0.5,
-  xs: 0.75,
-  sm: 0.9,
+  xs: 0.7,
+  sm: 0.85,
   md: 1,
   lg: 1.1,
   xl: 1.25,

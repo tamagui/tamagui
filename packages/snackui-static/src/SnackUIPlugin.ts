@@ -11,11 +11,15 @@ export class SnackUIPlugin extends VirtualModulesPlugin {
 
   private compilationPlugin = (compilation: Compilation): void => {
     // load from cache
-    const cached = readFileSync(this.cssOut, 'utf-8')
-    if (cached) {
-      for (const line of cached.split('\n')) {
-        this.cache.add(line.trim())
+    try {
+      const cached = readFileSync(this.cssOut, 'utf-8')
+      if (cached) {
+        for (const line of cached.split('\n')) {
+          this.cache.add(line.trim())
+        }
       }
+    } catch {
+      // no cache
     }
 
     NormalModule.getCompilationHooks(compilation).loader.tap(
