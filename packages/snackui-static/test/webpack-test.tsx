@@ -7,6 +7,7 @@ import { TestRenderer, act, render } from '@dish/react-test-env'
 import React from 'react'
 import webpack from 'webpack'
 
+import { SnackUIPlugin } from '../_'
 import { externalizeModules } from './lib/externalizeModules'
 import { outDir, specDir, test } from './lib/test-constants'
 import { getTestElement } from './lib/testStyles'
@@ -207,6 +208,7 @@ async function extractStaticApp() {
       ],
     },
     plugins: [
+      new SnackUIPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
