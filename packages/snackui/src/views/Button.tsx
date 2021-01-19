@@ -32,11 +32,11 @@ export const Button = ({
   const childrens = noTextWrap ? (
     children
   ) : !children ? null : textProps ? (
-    <Text color={theme.color} width="100%" ellipse {...textProps}>
+    <Text color={theme.color} flex={1} ellipse {...textProps}>
       {children}
     </Text>
   ) : (
-    <Text color={theme.color} width="100%" ellipse>
+    <Text color={theme.color} flex={1} ellipse>
       {children}
     </Text>
   )

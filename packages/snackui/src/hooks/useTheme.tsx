@@ -47,7 +47,8 @@ export const invertStyleVariableToValue: {
 
 export const configureThemes = (userThemes: Themes) => {
   if (hasConfigured) {
-    throw new Error(`Already configured themes once`)
+    console.warn(`Already configured themes once`)
+    return
   }
   hasConfigured = true
   themes = userThemes
