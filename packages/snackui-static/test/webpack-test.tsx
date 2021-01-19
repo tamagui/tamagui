@@ -7,7 +7,6 @@ import { TestRenderer, act, render } from '@dish/react-test-env'
 import React from 'react'
 import webpack from 'webpack'
 
-import { SnackUIPlugin } from '../_'
 import { externalizeModules } from './lib/externalizeModules'
 import { outDir, specDir, test } from './lib/test-constants'
 import { getTestElement } from './lib/testStyles'
