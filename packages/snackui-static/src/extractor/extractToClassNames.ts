@@ -21,6 +21,8 @@ import { hoistClassNames } from './hoistClassNames'
 
 export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
 
+export let deduped = ''
+
 const mergeStyleGroups = [
   new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset']),
 ]
@@ -275,10 +277,15 @@ export function extractToClassNames(
   )
 
   if (Object.keys(rules).length) {
-    const cssPath = `/tmp/snackui.css`
-    const importPath = `${cssPath}!=!snackui-loader?cssPath=${cssPath}!${posixify(
-      sourceFileName
-    )}`
+    const cssPath = `${sourceFileName}.css`
+    let importPath = `${cssPath}!=!snackui-loader?cssPath=${sourceFileName}!${sourceFileName}`
+
+    // in dev mode, dedupe ourselves
+    if (process.env.NODE_ENV === 'development') {
+      deduped = deduped || sourceFileName
+      importPath = `/tmp/snackui.css!=!snackui-loader?cssPath=true!${deduped}`
+    }
+
     ast.program.body.unshift(
       t.importDeclaration([], t.stringLiteral(importPath))
     )

@@ -28,6 +28,7 @@
     "@dish/proxy-worm": "*",
     "babel-literal-to-ast": "^2.1.0",
     "fs-extra": "^9.0.0",
+    "lodash": "^4.17.20",
     "invariant": "^2.2.4",
     "loader-utils": "^2.0.0",
     "react-native-web": "*",
