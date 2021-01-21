@@ -725,9 +725,7 @@ export function createExtractor() {
               type: 'attr',
               value: t.jsxAttribute(
                 t.jsxIdentifier('data-is'),
-                t.stringLiteral(
-                  `${preName}${node.name.name} @ ${filePath}:${lineNumbers}`
-                )
+                t.stringLiteral(`${preName}${node.name.name}:${lineNumbers}`)
               ),
             })
           }
