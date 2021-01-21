@@ -42,7 +42,10 @@ export function useDebounceValue<A>(val: A, amt = 0): A {
 
   useEffect(() => {
     let tm = setTimeout(() => {
-      setState(val)
+      setState((prev) => {
+        if (prev === val) return prev
+        return val
+      })
     }, amt)
 
     return () => {
