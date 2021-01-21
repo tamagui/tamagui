@@ -26,7 +26,12 @@ export default function snackLoader(this: any, content: string) {
       )
       return callback(null, styleStr)
     } else {
-      return callback(null, stylesByFile.get(options.cssPath)?.join('\n'))
+      const out = stylesByFile.get(options.cssPath)?.join('\n')
+      if (!out) {
+        console.error(`VALIDAS`, stylesByFile, options.cssPath)
+        throw new Error()
+      }
+      return callback(null, out)
     }
   }
 
