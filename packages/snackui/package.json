@@ -28,7 +28,7 @@
   "peerDependencies": {
     "react": "*",
     "react-dom": "*",
-    "react-native": "^0.63.4"
+    "react-native": "*"
   },
   "devDependencies": {
     "@types/node": "^14.11.10",

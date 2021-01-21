@@ -11,7 +11,6 @@ const styles = new Set<string>()
 
 export default function snackLoader(this: any, content: string) {
   this.cacheable()
-
   const callback = this.async()
   const options: SnackOptions = { ...getOptions(this) }
 
@@ -19,7 +18,7 @@ export default function snackLoader(this: any, content: string) {
     return callback(null, [...styles].join('\n'))
   }
 
-  if (content.startsWith('// snackui-disable')) {
+  if (content[0] === '/' && content.startsWith('// disable-snackui')) {
     return callback(null, content)
   }
 
@@ -34,7 +33,7 @@ export default function snackLoader(this: any, content: string) {
     return callback(null, content)
   }
 
-  this.addDependency('/tmp/snackui.css')
+  // this.addDependency('/tmp/snackui.css')
 
   if (extracted.rules) {
     for (const rule in extracted.rules) {
