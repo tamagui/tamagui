@@ -130,21 +130,23 @@ export const useMedia = () => {
   state.current.isRendering = true
 
   // track usage
-  const st = state.current
-  st.isRendering = false
-  // delete old
-  for (const key in st.selections) {
-    if (!(key in st.nextSelections)) {
-      mediaQueryListeners[key].delete(forceUpdate)
+  useLayoutEffect(() => {
+    const st = state.current
+    st.isRendering = false
+    // delete old
+    for (const key in st.selections) {
+      if (!(key in st.nextSelections)) {
+        mediaQueryListeners[key].delete(forceUpdate)
+      }
     }
-  }
-  // add new
-  for (const key in st.nextSelections) {
-    if (!(key in st.selections)) {
-      mediaQueryListeners[key] = mediaQueryListeners[key] || new Set()
-      mediaQueryListeners[key].add(forceUpdate)
+    // add new
+    for (const key in st.nextSelections) {
+      if (!(key in st.selections)) {
+        mediaQueryListeners[key] = mediaQueryListeners[key] || new Set()
+        mediaQueryListeners[key].add(forceUpdate)
+      }
     }
-  }
+  })
 
   // unmount
   useLayoutEffect(() => {
