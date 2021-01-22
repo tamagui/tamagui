@@ -21,7 +21,10 @@ import { hoistClassNames } from './hoistClassNames'
 
 export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
 
-export let deduped = ''
+let initialFileName = ''
+export function getInitialFileName() {
+  return initialFileName
+}
 
 const mergeStyleGroups = [
   new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset']),
@@ -31,7 +34,8 @@ export function extractToClassNames(
   extractor: Extractor,
   src: string | Buffer,
   sourceFileName: string,
-  options: SnackOptions
+  options: SnackOptions,
+  shouldPrintDebug: boolean
 ): null | {
   js: string | Buffer
   rules: { [key: string]: string }
@@ -45,13 +49,6 @@ export function extractToClassNames(
     typeof sourceFileName === 'string' && path.isAbsolute(sourceFileName),
     '`sourceFileName` must be an absolute path to a .js file'
   )
-
-  const shouldPrintDebug =
-    (!!process.env.DEBUG &&
-      (process.env.DEBUG_FILE
-        ? sourceFileName.includes(process.env.DEBUG_FILE)
-        : true)) ||
-    (src[0] === '/' && src.startsWith('// debug'))
 
   // Using a map for (officially supported) guaranteed insertion order
   let ast: t.File
@@ -282,8 +279,8 @@ export function extractToClassNames(
 
     // in dev mode, dedupe ourselves
     if (process.env.NODE_ENV === 'development') {
-      deduped = deduped || sourceFileName
-      importPath = `/tmp/snackui.css!=!snackui-loader?cssPath=true!${deduped}`
+      initialFileName = initialFileName || sourceFileName
+      importPath = `/tmp/snackui.css!=!snackui-loader?cssPath=true!${initialFileName}`
     }
 
     ast.program.body.unshift(
