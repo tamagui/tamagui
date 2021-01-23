@@ -83,7 +83,15 @@ export const Modal = (props: ModalProps) => {
         modalRoot = modalRoot.parentElement
       }
       const preventFormFocusBug = (e) => e.stopPropagation()
-      modalRoot.addEventListener('mousedown', preventFormFocusBug, true)
+      const addPreventBug = () => {
+        modalRoot!.addEventListener('mousedown', preventFormFocusBug, true)
+      }
+      const obs = new MutationObserver(addPreventBug)
+      obs.observe(modalRoot, {
+        subtree: true,
+      })
+      addPreventBug()
+
       return () => {
         modalRoot!.removeEventListener('mousedown', preventFormFocusBug, true)
       }
@@ -92,7 +100,7 @@ export const Modal = (props: ModalProps) => {
     return (
       <ModalNative {...modalProps} visible={modalVisible}>
         <AbsoluteVStack
-          ref={modalRef}
+          ref={modalRef as any}
           fullscreen
           pointerEvents={pointerEvents}
           backgroundColor={visible ? overlayBackground : 'transparent'}

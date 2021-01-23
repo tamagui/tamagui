@@ -31,7 +31,7 @@ import { Spacing } from './Spacer'
 export type StackProps = Omit<
   Omit<ViewStyle, 'display'> &
     Omit<ViewProps, 'display'> & {
-      ref?: RefObject<View>
+      ref?: RefObject<View | HTMLElement>
       animated?: boolean
       fullscreen?: boolean
       children?: any
