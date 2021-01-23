@@ -67,40 +67,12 @@ export const Modal = (props: ModalProps) => {
 
   if (isWeb) {
     const pointerEvents = visible ? 'auto' : 'none'
-    const modalVisible = useDebounceValue(visible, visible ? 300 : 0)
-
-    // fix modal bug in react-native-web where can't focus form inputs
-    const modalRef = useRef<HTMLDivElement>()
-
-    useEffect(() => {
-      let modalRoot: HTMLElement | undefined = modalRef.current
-      if (!modalRoot) return
-      while (
-        modalRoot &&
-        modalRoot.parentElement &&
-        modalRoot.parentElement !== document.body
-      ) {
-        modalRoot = modalRoot.parentElement
-      }
-      const preventFormFocusBug = (e) => e.stopPropagation()
-      const addPreventBug = () => {
-        modalRoot!.addEventListener('mousedown', preventFormFocusBug, true)
-      }
-      const obs = new MutationObserver(addPreventBug)
-      obs.observe(modalRoot, {
-        subtree: true,
-      })
-      addPreventBug()
-
-      return () => {
-        modalRoot!.removeEventListener('mousedown', preventFormFocusBug, true)
-      }
-    }, [])
+    const modalVisible = useDebounceValue(visible, visible ? 200 : 0)
 
     return (
       <ModalNative {...modalProps} visible={modalVisible}>
         <AbsoluteVStack
-          ref={modalRef as any}
+          ref={preventFormFocusBug as any}
           fullscreen
           pointerEvents={pointerEvents}
           backgroundColor={visible ? overlayBackground : 'transparent'}
@@ -166,4 +138,14 @@ export const Modal = (props: ModalProps) => {
       </TouchableOpacity>
     </ModalNative>
   )
+}
+
+function preventFormFocusBug(node: any) {
+  console.log('node', node)
+  for (const child of Array.from(document.body.children)) {
+    if (child.contains(node)) {
+      const preventFormFocusBug = (e) => e.stopPropagation()
+      child.addEventListener('mousedown', preventFormFocusBug, true)
+    }
+  }
 }
