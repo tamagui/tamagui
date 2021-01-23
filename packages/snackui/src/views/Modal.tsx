@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
   Modal as ModalNative,
   ModalProps as ModalPropsReact,
@@ -68,9 +68,31 @@ export const Modal = (props: ModalProps) => {
   if (isWeb) {
     const pointerEvents = visible ? 'auto' : 'none'
     const modalVisible = useDebounceValue(visible, visible ? 300 : 0)
+
+    // fix modal bug in react-native-web where can't focus form inputs
+    const modalRef = useRef<HTMLDivElement>()
+
+    useEffect(() => {
+      let modalRoot: HTMLElement | undefined = modalRef.current
+      if (!modalRoot) return
+      while (
+        modalRoot &&
+        modalRoot.parentElement &&
+        modalRoot.parentElement !== document.body
+      ) {
+        modalRoot = modalRoot.parentElement
+      }
+      const preventFormFocusBug = (e) => e.stopPropagation()
+      modalRoot.addEventListener('mousedown', preventFormFocusBug, true)
+      return () => {
+        modalRoot!.removeEventListener('mousedown', preventFormFocusBug, true)
+      }
+    }, [])
+
     return (
       <ModalNative {...modalProps} visible={modalVisible}>
         <AbsoluteVStack
+          ref={modalRef}
           fullscreen
           pointerEvents={pointerEvents}
           backgroundColor={visible ? overlayBackground : 'transparent'}
