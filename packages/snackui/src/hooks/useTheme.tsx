@@ -12,18 +12,17 @@
 //
 
 import { isEqual } from '@dish/fast-compare'
-import { defaultTo } from 'lodash'
 import React, {
   createContext,
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
 
 import { isWeb } from '../constants'
-import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
 const PREFIX = `theme--`
@@ -143,7 +142,7 @@ export const useTheme = () => {
     return manager.onUpdate(state.current.uuid, forceUpdate)
   }, [])
 
-  return useConstant(() => {
+  return useMemo(() => {
     return new Proxy(themes[manager.name], {
       get(_, key) {
         if (typeof key !== 'string') return
@@ -160,7 +159,7 @@ export const useTheme = () => {
         return val
       },
     })
-  })
+  }, [manager.name])
 }
 
 export const ThemeProvider = (props: {
