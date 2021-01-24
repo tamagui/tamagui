@@ -34,21 +34,14 @@ export default function snackLoader(this: any, content: string) {
       const styleStr = [...new Set([...stylesByFile.values()].flat())].join(
         '\n'
       )
-      console.log('csspath', sourcePath)
-      if (shouldPrintDebug) {
-        console.log('Outputting styles', sourcePath, styleStr)
-      }
       return callback(null, styleStr)
     } else {
       const out = stylesByFile.get(options.cssPath)?.join('\n')
       if (!out) {
-        console.error(`invalid styles`, stylesByFile, options.cssPath)
-        throw new Error()
+        console.warn(`invalid styles ${stylesByFile} ${options.cssPath}`)
+      } else {
+        return callback(null, out)
       }
-      if (shouldPrintDebug) {
-        console.log('Outputting styles', sourcePath, out)
-      }
-      return callback(null, out)
     }
   }
 
@@ -56,7 +49,6 @@ export default function snackLoader(this: any, content: string) {
     extname(sourcePath) !== '.tsx' ||
     (startsWithComment && content.startsWith('// disable-snackui'))
   ) {
-    console.log('no go', sourcePath)
     return callback(null, content)
   }
 
@@ -73,8 +65,10 @@ export default function snackLoader(this: any, content: string) {
   }
 
   if (extracted.rules) {
-    const styles = Object.keys(extracted.rules).map((k) => extracted.rules[k])
-    stylesByFile.set(sourcePath, styles)
+    stylesByFile.set(
+      sourcePath,
+      Object.keys(extracted.rules).map((k) => extracted.rules[k])
+    )
 
     if (process.env.NODE_ENV === 'development') {
       // dirty naughty tryick, allows us to build up the concat file over time 😈
@@ -82,7 +76,6 @@ export default function snackLoader(this: any, content: string) {
         sourcePath !== getInitialFileName() ||
         (startsWithComment && content.startsWith('// snack-clear-cache'))
       ) {
-        console.log('force update')
         forceUpdateOnFile(getInitialFileName())
       }
     }
