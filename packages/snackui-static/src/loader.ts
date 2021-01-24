@@ -21,38 +21,44 @@ export default function snackLoader(this: any, content: string) {
   const callback = this.async()
   const options: SnackOptions = { ...getOptions(this) }
   const sourcePath = this.resourcePath
-
-  if (options.cssPath) {
-    if (process.env.NODE_ENV === 'development') {
-      const styleStr = [...new Set([...stylesByFile.values()].flat())].join(
-        '\n'
-      )
-      return callback(null, styleStr)
-    } else {
-      const out = stylesByFile.get(options.cssPath)?.join('\n')
-      if (!out) {
-        console.error(`VALIDAS`, stylesByFile, options.cssPath)
-        throw new Error()
-      }
-      return callback(null, out)
-    }
-  }
-
   const startsWithComment = content[0] === '/' && content[1] === '/'
-
-  if (
-    extname(sourcePath) !== '.tsx' ||
-    (startsWithComment && content.startsWith('// disable-snackui'))
-  ) {
-    return callback(null, content)
-  }
-
   const shouldPrintDebug =
     (!!process.env.DEBUG &&
       (process.env.DEBUG_FILE
         ? sourcePath.includes(process.env.DEBUG_FILE)
         : true)) ||
     (startsWithComment && content.startsWith('// debug'))
+
+  if (options.cssPath) {
+    if (process.env.NODE_ENV === 'development') {
+      const styleStr = [...new Set([...stylesByFile.values()].flat())].join(
+        '\n'
+      )
+      console.log('csspath', sourcePath)
+      if (shouldPrintDebug) {
+        console.log('Outputting styles', sourcePath, styleStr)
+      }
+      return callback(null, styleStr)
+    } else {
+      const out = stylesByFile.get(options.cssPath)?.join('\n')
+      if (!out) {
+        console.error(`invalid styles`, stylesByFile, options.cssPath)
+        throw new Error()
+      }
+      if (shouldPrintDebug) {
+        console.log('Outputting styles', sourcePath, out)
+      }
+      return callback(null, out)
+    }
+  }
+
+  if (
+    extname(sourcePath) !== '.tsx' ||
+    (startsWithComment && content.startsWith('// disable-snackui'))
+  ) {
+    console.log('no go', sourcePath)
+    return callback(null, content)
+  }
 
   const extracted = extractToClassNames(
     extractor,
@@ -76,6 +82,7 @@ export default function snackLoader(this: any, content: string) {
         sourcePath !== getInitialFileName() ||
         (startsWithComment && content.startsWith('// snack-clear-cache'))
       ) {
+        console.log('force update')
         forceUpdateOnFile(getInitialFileName())
       }
     }

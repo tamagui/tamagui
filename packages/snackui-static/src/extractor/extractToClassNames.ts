@@ -275,7 +275,7 @@ export function extractToClassNames(
 
   if (Object.keys(rules).length) {
     const cssPath = `${sourceFileName}.css`
-    let importPath = `${cssPath}!=!snackui-loader?cssPath=${sourceFileName}!${sourceFileName}`
+    let importPath = `${cssPath}!=!snackui-loader?cssPath=${cssPath}!${sourceFileName}`
 
     // in dev mode, dedupe ourselves
     if (process.env.NODE_ENV === 'development') {
@@ -320,8 +320,4 @@ export function extractToClassNames(
     js: result.code,
     map: result.map,
   }
-}
-
-function posixify(file) {
-  return file.replace(/[/\\]/g, '/')
 }
