@@ -1,9 +1,10 @@
 import { extname } from 'path'
 
-import { fstat, readFileSync, writeFileSync } from 'fs-extra'
+import { readFileSync, writeFileSync } from 'fs-extra'
 import { getOptions } from 'loader-utils'
 import { debounce } from 'lodash'
 
+import { shouldInternalDedupe } from './constants'
 import { createExtractor } from './extractor/createExtractor'
 import {
   extractToClassNames,
@@ -31,7 +32,7 @@ export default function snackLoader(this: any, content: string) {
     (startsWithComment && content.startsWith('// debug'))
 
   if (options.cssPath) {
-    if (process.env.NODE_ENV === 'development') {
+    if (shouldInternalDedupe) {
       const styleStr = [...new Set([...stylesByFile.values()])].join('\n')
       return callback(null, styleStr)
     } else {
@@ -80,7 +81,7 @@ export default function snackLoader(this: any, content: string) {
   if (extracted.styles) {
     stylesByFile.set(sourcePath, extracted.styles)
 
-    if (process.env.NODE_ENV === 'development') {
+    if (shouldInternalDedupe) {
       // dirty naughty tryick, allows us to build up the concat file over time 😈
       if (
         sourcePath !== getInitialFileName() ||

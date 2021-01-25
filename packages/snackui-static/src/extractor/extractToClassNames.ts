@@ -9,7 +9,7 @@ import { writeFileSync } from 'fs-extra'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
-import { CSS_FILE_NAME, cacheDir } from '../constants'
+import { CSS_FILE_NAME, cacheDir, shouldInternalDedupe } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
@@ -278,7 +278,7 @@ export function extractToClassNames(
     // add import to styles file
     const displayPath = `${sourceFileName}.css`
     let importPath = ''
-    if (process.env.NODE_ENV === 'development') {
+    if (shouldInternalDedupe) {
       // in dev mode, dedupe ourselves
       initialFileName = initialFileName || sourceFileName
       importPath = `/tmp/snackui.css!=!snackui-loader?cssPath=true!${initialFileName}`
