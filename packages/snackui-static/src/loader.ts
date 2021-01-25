@@ -1,6 +1,6 @@
 import { extname } from 'path'
 
-import { readFileSync, writeFileSync } from 'fs-extra'
+import { fstat, readFileSync, writeFileSync } from 'fs-extra'
 import { getOptions } from 'loader-utils'
 import { debounce } from 'lodash'
 
@@ -14,7 +14,8 @@ import { SnackOptions } from './types'
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
 
-const stylesByFile = new Map<string, string[]>()
+const stylesByFile = new Map<string, string>()
+const stylePathToFilePath = new Map<string, string>()
 
 export default function snackLoader(this: any, content: string) {
   this.cacheable()
@@ -31,14 +32,22 @@ export default function snackLoader(this: any, content: string) {
 
   if (options.cssPath) {
     if (process.env.NODE_ENV === 'development') {
-      const styleStr = [...new Set([...stylesByFile.values()].flat())].join(
-        '\n'
-      )
+      const styleStr = [...new Set([...stylesByFile.values()])].join('\n')
       return callback(null, styleStr)
     } else {
-      const out = stylesByFile.get(options.cssPath)?.join('\n')
+      const out = stylesByFile.get(
+        stylePathToFilePath.get(sourcePath) ?? sourcePath
+      )
       if (!out) {
-        console.warn(`invalid styles ${stylesByFile} ${options.cssPath}`)
+        // once caching in place we can read from fs
+        // try {
+        //   const cached = readFileSync(sourcePath, 'utf-8')
+        //   if (cached) {
+        //   }
+        // } catch(err) {
+        //   return callback(err, null)
+        // }
+        console.warn(`invalid styles ${stylesByFile} ${sourcePath}`)
       } else {
         return callback(null, out)
       }
@@ -64,11 +73,12 @@ export default function snackLoader(this: any, content: string) {
     return callback(null, content)
   }
 
-  if (extracted.rules) {
-    stylesByFile.set(
-      sourcePath,
-      Object.keys(extracted.rules).map((k) => extracted.rules[k])
-    )
+  if (extracted.stylesPath) {
+    stylePathToFilePath.set(extracted.stylesPath, sourcePath)
+  }
+
+  if (extracted.styles) {
+    stylesByFile.set(sourcePath, extracted.styles)
 
     if (process.env.NODE_ENV === 'development') {
       // dirty naughty tryick, allows us to build up the concat file over time 😈

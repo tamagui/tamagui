@@ -1,14 +1,15 @@
-import path from 'path'
+import path, { basename, join } from 'path'
 import util from 'util'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { MediaQueries, defaultMediaQueries } from '@snackui/node'
+import { writeFileSync } from 'fs-extra'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
-import { CSS_FILE_NAME } from '../constants'
+import { CSS_FILE_NAME, cacheDir } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
@@ -38,7 +39,8 @@ export function extractToClassNames(
   shouldPrintDebug: boolean
 ): null | {
   js: string | Buffer
-  rules: { [key: string]: string }
+  styles: string
+  stylesPath?: string
   ast: t.File
   map: any // RawSourceMap from 'source-map'
 } {
@@ -265,22 +267,29 @@ export function extractToClassNames(
     return null
   }
 
-  const rules = Array.from(cssMap.entries()).reduce(
-    (acc, [className, { css }]) => {
-      acc[className] = css
-      return acc
-    },
-    {}
-  )
+  const styles = Array.from(cssMap.values())
+    .map((x) => `${x.commentTexts}\n${x.css}`)
+    .join('\n')
+    .trim()
 
-  if (Object.keys(rules).length) {
-    const cssPath = `${sourceFileName}.css`
-    let importPath = `${cssPath}!=!snackui-loader?cssPath=${sourceFileName}!${sourceFileName}`
+  let stylesPath: string | undefined
 
-    // in dev mode, dedupe ourselves
+  if (styles) {
+    // add import to styles file
+    const displayPath = `${sourceFileName}.css`
+    let importPath = ''
     if (process.env.NODE_ENV === 'development') {
+      // in dev mode, dedupe ourselves
       initialFileName = initialFileName || sourceFileName
       importPath = `/tmp/snackui.css!=!snackui-loader?cssPath=true!${initialFileName}`
+    } else {
+      // otherwise we write out to fs to unique place
+      const cachePath = `${basename(
+        sourceFileName.replaceAll(/[\/\.]/g, '-')
+      )}.css`
+      stylesPath = join(cacheDir, cachePath)
+      writeFileSync(stylesPath, styles)
+      importPath = `${displayPath}!=!snackui-loader?cssPath=true!${stylesPath}`
     }
 
     ast.program.body.unshift(
@@ -304,19 +313,14 @@ export function extractToClassNames(
   )
 
   if (shouldPrintDebug) {
-    console.log(
-      '\n\noutput code >> ',
-      result.code
-        .split('\n')
-        .filter((line) => !line.startsWith('//'))
-        .join('\n')
-    )
-    console.log('\n\noutput >> ', Object.values(rules).join('\n'))
+    console.log('\n\noutput code >> \n', result.code)
+    console.log('\n\noutput styles >> \n', styles)
   }
 
   return {
     ast,
-    rules,
+    styles,
+    stylesPath,
     js: result.code,
     map: result.map,
   }

@@ -1,4 +1,3 @@
-// // debug
 import React from 'react'
 
 import { spacedChildren } from '../helpers/spacedChildren'
@@ -49,7 +48,7 @@ export const Button = ({
       alignItems="center"
       cursor="pointer"
       paddingVertical={10}
-      paddingHorizontal={14}
+      paddingHorizontal={14.2}
       borderRadius={8}
       hoverStyle={{
         backgroundColor: theme.backgroundColorTertiary,
