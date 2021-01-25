@@ -48,7 +48,7 @@ export const Button = ({
       alignItems="center"
       cursor="pointer"
       paddingVertical={10}
-      paddingHorizontal={14.2}
+      paddingHorizontal={14}
       borderRadius={8}
       hoverStyle={{
         backgroundColor: theme.backgroundColorTertiary,
