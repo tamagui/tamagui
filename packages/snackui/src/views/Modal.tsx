@@ -141,7 +141,6 @@ export const Modal = (props: ModalProps) => {
 }
 
 function preventFormFocusBug(node: any) {
-  console.log('node', node)
   for (const child of Array.from(document.body.children)) {
     if (child.contains(node)) {
       const preventFormFocusBug = (e) => e.stopPropagation()
