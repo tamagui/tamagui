@@ -20,8 +20,9 @@ export type TextProps = Omit<ReactTextProps, 'style'> &
   }
 
 const defaultStyle: TextStyle = {
-  // fixes transforms not working on web
-  display: 'inline-block' as any,
+  // inline-block fixed transforms not working on web
+  // but inline is necessary for text nesting (italic, bold etc)
+  display: 'inline' as any,
   // color: 'var(--color)',
 }
 
