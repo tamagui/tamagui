@@ -105,20 +105,27 @@ SnackUI has fairly advanced optimizations, it can extract this entire component 
 
 
 ```tsx
-import { Text, VStack } from 'snackui'
+import { Text, VStack, useTheme, useMedia } from 'snackui'
 import { redColor } from './colors'
 
-// this entire component can be extracted:
+// This entire component will be extracted to just a div + css!
+// SnackUI will even remove the hooks
 
 const height = 10
 
 export function Component(props) {
+  const theme = useTheme()
+  const media = useMedia()
   return (
     <VStack
       // constant values
       height={height}
       // imported constants (using evaluateImportsWhitelist option)
       color={redColor}
+      // theme values
+      borderColor={theme.borderColor}
+      // media queries inline conditional
+      borderWidth={media.sm ? 1 : 2}
       // inline conditionals
       backgroundColor={props.highlight ? 'red' : 'blue'}
       // spread objects
@@ -132,6 +139,12 @@ export function Component(props) {
           hoverStyle: { backgroundColor: 'red' }
         }
       }
+      // media query spread conditional + themes
+      {...media.lg && {
+        hoverStyle: {
+          backgroundColor: theme.backgroundColorAlt
+        }
+      }}
     />
   )
 }
