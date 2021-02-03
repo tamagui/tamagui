@@ -386,21 +386,20 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 See [the roadmap](roadmap.md) for details:
 
+- [x] [Themes](roadmap.md#themes)
+- [ ] Media Queries test coverage, docs and configuration
 - [ ] Docs / docs site
 - [ ] Support extraction of custom components that extend lower level ones
-- [ ] Media Queries test coverage, docs and configuration
-- [ ] [Themes](roadmap.md#themes)
+  - [ ] Support user-defined components that just spread props onto simple child thats extractable
 - [ ] [Scaling](roadmap.md#scaling)
-- [ ] Memory usage investigation
+- [ ] Compiler contains memory leak(s)
 - [ ] Extraction - advanced traversals (see [plan](roadmap.md#advanced-traversal))
-- [ ] Support `<Stack spacing />`
+- [ ] Support `<Stack spacing />` extraction
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
-- [ ] Support a few logical HTML props: onPress, etc
+- [ ] Support compiling away a few directly-translatable HTML props: onPress, etc
 - [ ] Test performance of useMemo calls / splitProps
 - [ ] Support reloading constants/themes during watch
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
-- [ ] Explore using `babel-plugin-minify-dead-code-elimination` instead of internal hook code
-- [ ] SFC (user) extractions, support extracting usages of a user-defined component that just spread props onto simple child thats extractable
 
 
 ## License
