@@ -34,8 +34,13 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
   - Supports hoverStyle, pressStyle, and focusStyle
   - Normalizes tricky styling between native and web
 - **Media Queries**
-  - Universal support for native + web
-  - Simple `useMedia` hook that with advanced optimization and graceful fallback
+  - Supports native + web
+  - Simple `useMedia` hook, compiles away when possible, falls back gracefully
+- **Themes**
+  - Supports native + web
+  - Typed themes, `useTheme` hook
+  - Compiles away when possible, falls back gracefully
+  - Avoids re-rendering by tracking which theme keys used at runtime
 - **Development tools**
   - Shows component name in DOM elements.
   - Add `// debug` to the top of file for detailed optimization info.
