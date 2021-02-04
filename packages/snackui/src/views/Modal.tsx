@@ -96,11 +96,11 @@ export const Modal = (props: ModalProps) => {
           >
             <VStack
               backgroundColor="#fff"
-              borderRadius={15}
+              borderRadius={20}
               alignItems="center"
               position="relative"
-              shadowColor="rgba(0,0,0,0.5)"
-              shadowRadius={40}
+              shadowColor="rgba(0,0,0,0.35)"
+              shadowRadius={100}
               onPress={prevent}
               flex={1}
               pointerEvents={pointerEvents}
