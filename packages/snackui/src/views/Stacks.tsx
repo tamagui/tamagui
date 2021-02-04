@@ -310,7 +310,7 @@ const createStack = (defaultProps?: ViewStyle) => {
   })
 
   if (process.env.IS_STATIC) {
-    // @ts-ignore
+    // @ts-expect-error
     component.staticConfig = {
       validStyles: stylePropsView,
       defaultProps,
