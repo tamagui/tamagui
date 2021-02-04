@@ -90,7 +90,7 @@ export const Modal = (props: ModalProps) => {
               maxHeight,
               velocity,
               pointerEvents,
-              animateState: visible ? 'in' : 'out',
+              animateState: modalVisible ? 'in' : 'out',
               animation,
             }}
           >
