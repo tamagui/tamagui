@@ -55,6 +55,7 @@ export * from './views/Toast'
 export * from './views/UnorderedList'
 
 export * from './helpers/getNode'
+export * from './helpers/themeable'
 export * from './helpers/weakKey'
 export * from './helpers/prevent'
 export * from './helpers/combineRefs'
