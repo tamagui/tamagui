@@ -10,7 +10,6 @@ const defaultProps: StackProps = {
   shadowColor: 'rgba(0,0,0,0.125)',
   shadowRadius: 14,
   shadowOffset: { width: 0, height: 3 },
-  // overflow: 'hidden',
 }
 
 export type BoxProps = StackProps
