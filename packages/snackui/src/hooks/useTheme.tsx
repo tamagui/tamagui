@@ -115,6 +115,10 @@ type UseThemeState = {
   isRendering: boolean
 }
 
+export const useThemeName = () => {
+  return useContext(ActiveThemeContext).name
+}
+
 export const useTheme = () => {
   const forceUpdate = useForceUpdate()
   const manager = useContext(ActiveThemeContext)
