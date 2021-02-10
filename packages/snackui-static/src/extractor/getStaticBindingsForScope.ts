@@ -2,6 +2,7 @@ import path, { basename } from 'path'
 
 import * as t from '@babel/types'
 import { existsSync, statSync } from 'fs-extra'
+import { debounce } from 'lodash'
 
 import { evaluateAstNode } from './evaluateAstNode'
 import { getSourceModule } from './getSourceModule'
@@ -25,13 +26,20 @@ interface Binding {
   value: any
 }
 
-const fileCache: {
-  [key: string]: {
-    mtimeMs: number
-    path: string
-    src: Object
-  }
-} = {}
+// const fileCache: {
+//   [key: string]: {
+//     mtimeMs: number
+//     path: string
+//     src: Object
+//   }
+// } = {}
+
+// const clearCache = debounce(() => {
+//   console.log('clear cache')
+//   Object.keys(require.cache).forEach((id) => {
+//     delete require.cache[id]
+//   })
+// }, 2000)
 
 export function getStaticBindingsForScope(
   scope: any,
@@ -75,35 +83,35 @@ export function getStaticBindingsForScope(
 
       if (isOnWhitelist) {
         let src: any
-        const info = fileCache[moduleName]
-        if (info && statSync(info.path).mtimeMs === info.mtimeMs) {
-          src = info.src
-        } else {
-          const filenames = [
-            moduleName.replace('.js', '.tsx'),
-            moduleName.replace('.js', '.ts'),
-            moduleName,
-          ]
-          let mtimeMs = 0
-          let path = ''
-          for (const file of filenames) {
-            if (existsSync(file)) {
-              path = file
-              src = require(file)
-              mtimeMs = statSync(file).mtimeMs
-              break
-            }
-          }
-          if (src === undefined) {
-            console.warn('missing?')
-            return {}
-          }
-          fileCache[moduleName] = {
-            path,
-            src,
-            mtimeMs,
+        // const info = fileCache[moduleName]
+        // if (info && statSync(info.path).mtimeMs === info.mtimeMs) {
+        //   src = info.src
+        // } else {
+        const filenames = [
+          moduleName.replace('.js', '.tsx'),
+          moduleName.replace('.js', '.ts'),
+          moduleName,
+        ]
+        // let mtimeMs = 0
+        // let path = ''
+        for (const file of filenames) {
+          if (existsSync(file)) {
+            // path = file
+            src = require(file)
+            // mtimeMs = statSync(file).mtimeMs
+            break
           }
         }
+        if (src === undefined) {
+          console.warn('missing?')
+          return {}
+        }
+        // fileCache[moduleName] = {
+        //   path,
+        //   src,
+        //   mtimeMs,
+        // }
+        // }
         if (sourceModule.destructured) {
           if (sourceModule.imported) {
             ret[k] = src[sourceModule.imported]
@@ -111,11 +119,11 @@ export function getStaticBindingsForScope(
         } else {
           // crude esmodule check
           // TODO: make sure this actually works
-          if (src && src.__esModule) {
-            ret[k] = src.default
-          } else {
-            ret[k] = src
-          }
+          // if (src && src.__esModule) {
+          //   ret[k] = src.default
+          // } else {
+          ret[k] = src
+          // }
         }
       }
       continue

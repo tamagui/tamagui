@@ -9,7 +9,7 @@ import { writeFileSync } from 'fs-extra'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
-import { CSS_FILE_NAME, cacheDir, shouldInternalDedupe } from '../constants'
+import { cacheDir, shouldInternalDedupe } from '../constants'
 import { getStylesAtomic } from '../css/getStylesAtomic'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'

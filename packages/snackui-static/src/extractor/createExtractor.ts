@@ -6,6 +6,7 @@ import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { StaticComponent } from '@snackui/node'
 import invariant from 'invariant'
+import { has } from 'lodash'
 import { ViewStyle } from 'react-native'
 
 import { pseudos } from '../css/getStylesAtomic'
@@ -29,14 +30,6 @@ import { getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
-
-// used by getStaticBindingsForScope + themeFile
-require('ts-node').register({
-  transpileOnly: true,
-  compilerOptions: {
-    module: 'CommonJS',
-  },
-})
 
 const FAILED_EVAL = Symbol('failed_style_eval')
 const UNTOUCHED_PROPS = {
@@ -62,6 +55,7 @@ const validComponents: { [key: string]: StaticComponent } = Object.keys(
   }, {})
 
 export type Extractor = ReturnType<typeof createExtractor>
+let hasRegistered = false
 
 export function createExtractor() {
   const bindingCache: Record<string, string | null> = {}
@@ -87,6 +81,23 @@ export function createExtractor() {
         ...props
       }: ExtractorParseProps
     ) => {
+      // lazy load ts-node
+      if (!hasRegistered) {
+        hasRegistered = true
+        // used by getStaticBindingsForScope + themeFile
+        console.log('registering ts-node')
+        require('ts-node/register/transpile-only')
+        // ({
+        //   transpileOnly: true,
+        //   typeCheck: false,
+        //   lazy: true,
+        //   files: [],
+        //   compilerOptions: {
+        //     module: 'CommonJS',
+        //   },
+        // })
+      }
+
       if (themesFile) {
         themesByFile[themesFile] =
           themesByFile[themesFile] || require(themesFile).default
@@ -200,7 +211,6 @@ export function createExtractor() {
                 if (shouldPrintDebug) {
                   console.log('  attemptEval staticNamespace', staticNamespace)
                 }
-                const evalContext = vm.createContext(staticNamespace)
 
                 // called when evaluateAstNode encounters a dynamic-looking prop
                 const evalFn = (n: t.Node) => {
@@ -228,6 +238,7 @@ export function createExtractor() {
                     )
                     return staticNamespace[n.name]
                   }
+                  const evalContext = vm.createContext(staticNamespace)
                   return vm.runInContext(
                     `(${generate(n as any).code})`,
                     evalContext
