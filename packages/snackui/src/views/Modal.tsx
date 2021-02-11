@@ -8,8 +8,9 @@ import {
 import { isWeb } from '../constants'
 import { prevent } from '../helpers/prevent'
 import { useDebounceValue } from '../hooks/useDebounce'
+import { useTheme } from '../hooks/useTheme'
 import { AnimatedStackProps, AnimatedVStack } from './AnimatedStack'
-import { AbsoluteVStack, VStack } from './Stacks'
+import { AbsoluteVStack, StackProps, VStack } from './Stacks'
 
 // TODO if we add `closableButton` prop we can control exit animation nicely
 
@@ -51,6 +52,7 @@ export const Modal = (props: ModalProps) => {
     animation,
     ...rest
   } = props
+
   // only shared between both
   const modalProps = {
     transparent,
@@ -94,20 +96,13 @@ export const Modal = (props: ModalProps) => {
               animation,
             }}
           >
-            <VStack
-              backgroundColor="#fff"
-              borderRadius={20}
-              alignItems="center"
-              position="relative"
-              shadowColor="rgba(0,0,0,0.35)"
-              shadowRadius={100}
+            <ModalPane
               onPress={prevent}
-              flex={1}
               pointerEvents={pointerEvents}
               {...rest}
             >
               {children}
-            </VStack>
+            </ModalPane>
           </AnimatedVStack>
         </AbsoluteVStack>
       </ModalNative>
@@ -137,6 +132,22 @@ export const Modal = (props: ModalProps) => {
         </VStack>
       </TouchableOpacity>
     </ModalNative>
+  )
+}
+
+function ModalPane(props: StackProps) {
+  const theme = useTheme()
+  return (
+    <VStack
+      backgroundColor={theme.backgroundColor}
+      borderRadius={20}
+      alignItems="center"
+      position="relative"
+      shadowColor="rgba(0,0,0,0.35)"
+      shadowRadius={100}
+      flex={1}
+      {...props}
+    />
   )
 }
 
