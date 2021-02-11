@@ -285,7 +285,7 @@ export function extractToClassNames(
     } else {
       // otherwise we write out to fs to unique place
       const cachePath = `${basename(
-        sourceFileName.replaceAll(/[\/\.]/g, '-')
+        sourceFileName.replace(/[\/\.]/g, '-')
       )}.css`
       stylesPath = join(cacheDir, cachePath)
       writeFileSync(stylesPath, styles)

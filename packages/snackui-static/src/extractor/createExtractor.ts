@@ -85,7 +85,6 @@ export function createExtractor() {
       if (!hasRegistered) {
         hasRegistered = true
         // used by getStaticBindingsForScope + themeFile
-        console.log('registering ts-node')
         require('ts-node/register/transpile-only')
         // ({
         //   transpileOnly: true,
