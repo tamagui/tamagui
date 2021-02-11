@@ -55,7 +55,6 @@ const validComponents: { [key: string]: StaticComponent } = Object.keys(
   }, {})
 
 export type Extractor = ReturnType<typeof createExtractor>
-let hasRegistered = false
 
 export function createExtractor() {
   const bindingCache: Record<string, string | null> = {}
@@ -66,6 +65,22 @@ export function createExtractor() {
     (process.env.NODE_ENV === 'development' ||
       process.env.DEBUG ||
       process.env.IDENTIFY_TAGS)
+
+  // register ts-node
+  require('ts-node').register({
+    lazy: true,
+    transpileOnly: true,
+    typeCheck: false,
+    compilerOptions: {
+      target: 'es6',
+      lib: ['esnext', 'dom'],
+      module: 'CommonJS',
+      moduleResolution: 'node',
+      esModuleInterop: true,
+      allowSyntheticDefaultImports: true,
+      allowJs: false,
+    },
+  })
 
   return {
     parse: (
@@ -81,22 +96,6 @@ export function createExtractor() {
         ...props
       }: ExtractorParseProps
     ) => {
-      // lazy load ts-node
-      if (!hasRegistered) {
-        hasRegistered = true
-        // used by getStaticBindingsForScope + themeFile
-        require('ts-node/register/transpile-only')
-        // ({
-        //   transpileOnly: true,
-        //   typeCheck: false,
-        //   lazy: true,
-        //   files: [],
-        //   compilerOptions: {
-        //     module: 'CommonJS',
-        //   },
-        // })
-      }
-
       if (themesFile) {
         themesByFile[themesFile] =
           themesByFile[themesFile] || require(themesFile).default
