@@ -13,6 +13,7 @@ type TestApp = {
 }
 
 export const test = anyTest as TestInterface<{
+  testlineargradient: TestApp
   testmediaquery: TestApp
   test1: TestApp
   test2: TestApp

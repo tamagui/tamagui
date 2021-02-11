@@ -15,7 +15,8 @@ const outFile = 'out-webpack.js'
 const outFileFull = path.join(outDir, outFile)
 
 process.env.NODE_ENV = 'test'
-process.env.IDENTIFY_TAGS = 'true'
+// dont want line numbers output for snapshots
+// process.env.IDENTIFY_TAGS = 'true'
 
 test.before(async (t) => {
   await extractStaticApp()
@@ -33,6 +34,14 @@ test.before(async (t) => {
     })
   }
 })
+
+// TODO fix testability of linear gradient
+// test('extracts gradients', async (t) => {
+//   const { renderer } = t.context.testlineargradient
+//   console.log(renderer.toJSON())
+//   // console.log('out', style.backgroundColor, style.paddingRight)
+//   t.assert(true)
+// })
 
 test('extracts media queries', async (t) => {
   const { TestMediaQuery } = t.context.app

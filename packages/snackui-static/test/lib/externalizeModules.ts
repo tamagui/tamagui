@@ -1,6 +1,6 @@
 import path from 'path'
 
-export function externalizeModules({ context, request }, callback) {
+export const externalizeModules: any = ({ context, request }, callback) => {
   if (request === './cjs/react.development.js') {
     return callback(undefined, 'react')
   }
