@@ -400,6 +400,7 @@ See [the roadmap](roadmap.md) for details:
 - [ ] Test performance of useMemo calls / splitProps
 - [ ] Support reloading constants/themes during watch
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
+- [ ] MaskView with web support
 
 
 ## License

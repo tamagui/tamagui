@@ -40,6 +40,10 @@ export function Popover(props: PopoverProps) {
     }
   }, [onChangeOpenCb])
 
+  if (!isMounted) {
+    return props.children
+  }
+
   if (isWeb) {
     useOverlay({
       isOpen: !!(isOpen && props.overlay !== false),
@@ -70,10 +74,6 @@ export function Popover(props: PopoverProps) {
       containerOffset: 16,
       ResizeObserver: window['ResizeObserver'],
     })
-
-    if (!isMounted) {
-      return null
-    }
 
     return (
       <>
@@ -120,7 +120,7 @@ export function Popover(props: PopoverProps) {
     )
   }
 
-  if (isMounted && props.isOpen) {
+  if (props.isOpen) {
     return (
       <>
         {props.children}
@@ -131,6 +131,7 @@ export function Popover(props: PopoverProps) {
     )
   }
 
+  // not implemented yet
   return props.children
 }
 

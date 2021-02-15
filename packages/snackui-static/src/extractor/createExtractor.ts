@@ -6,7 +6,6 @@ import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { StaticComponent } from '@snackui/node'
 import invariant from 'invariant'
-import { has } from 'lodash'
 import { ViewStyle } from 'react-native'
 
 import { pseudos } from '../css/getStylesAtomic'

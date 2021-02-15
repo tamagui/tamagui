@@ -96,13 +96,8 @@ export default function snackLoader(this: any, content: string) {
   }
 
   if (shouldPrintDebug) {
-    console.log(
-      '  took',
-      Date.now() - start,
-      'ms',
-      'memory change',
-      process.memoryUsage().heapUsed - mem.heapUsed
-    )
+    const memUsed = (process.memoryUsage().heapUsed - mem.heapUsed) / 1024
+    console.log('  took', Date.now() - start, 'ms', 'memory change', memUsed)
   }
 
   callback(null, extracted.js, extracted.map)
