@@ -384,16 +384,16 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 ## Roadmap
 
-See [the roadmap](roadmap.md) for details:
+See [the roadmap](ROADMAP.md) for details:
 
-- [x] [Themes](roadmap.md#themes)
+- [x] Themes
 - [ ] Media Queries test coverage, docs and configuration
 - [ ] Docs / docs site
 - [ ] Support extraction of custom components that extend lower level ones
   - [ ] Support user-defined components that just spread props onto simple child thats extractable
-- [ ] [Scaling](roadmap.md#scaling)
+- [ ] [Scaling](ROADMAP.md#variants)
 - [ ] Compiler contains memory leak(s)
-- [ ] Extraction - advanced traversals (see [plan](roadmap.md#advanced-traversal))
+- [ ] Extraction - advanced traversals (see [plan](ROADMAP.md#advanced-traversal))
 - [ ] Support `<Stack spacing />` extraction
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
 - [ ] Support compiling away a few directly-translatable HTML props: onPress, etc
