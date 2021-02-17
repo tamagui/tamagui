@@ -212,7 +212,7 @@ module.exports = {
 
 react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
 
-- Example [patch for react-native-web experimental](docs/react-native-web+0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
+- Example [patch for react-native-web experimental](/etc/react-native-web%2B0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
 
 ## Documentation
 
