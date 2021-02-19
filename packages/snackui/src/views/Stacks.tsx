@@ -83,29 +83,40 @@ const disabledStyle: StackProps = {
   userSelect: 'none',
 }
 
+// somewhat optimized to avoid object creation
 const useViewStylePropsSplit = (props: { [key: string]: any }) => {
   const activeTheme = useContext(ActiveThemeContext)
+
   return useMemo(() => {
-    const styleProps: ViewStyle = {}
-    const viewProps: ViewProps = {}
+    let styleProps: ViewStyle | null = null
+    let viewProps: ViewProps | null = null
     for (const key in props) {
       const val = props[key]
       if (stylePropsView[key]) {
+        styleProps = styleProps || {}
         styleProps[key] = activeTheme
           ? invertStyleVariableToValue[activeTheme.name]?.[val] ?? val
           : val
-      } else {
-        viewProps[key] = val
       }
     }
-    if (
-      styleProps.shadowColor !== props.shadowColor &&
-      typeof styleProps.shadowOpacity !== 'undefined'
-    ) {
-      styleProps.shadowColor = props.shadowColor
+    if (styleProps) {
+      if (
+        styleProps.shadowColor !== props.shadowColor &&
+        typeof styleProps.shadowOpacity !== 'undefined'
+      ) {
+        styleProps.shadowColor = props.shadowColor
+      }
     }
-    return { styleProps, viewProps }
-  }, [props])
+    // only if we have to, split out props
+    if (styleProps) {
+      viewProps = viewProps || {}
+      for (const key in props) {
+        if (key in styleProps) continue
+        viewProps[key] = props[key]
+      }
+    }
+    return [viewProps || props, styleProps] as const
+  }, [props, activeTheme])
 }
 
 const mouseUps = new Set<Function>()
@@ -142,8 +153,7 @@ const createStack = (defaultProps?: ViewStyle) => {
       onMouseLeave,
     } = props
 
-    const { styleProps, viewProps } = useViewStylePropsSplit(props)
-
+    const [viewProps, styleProps] = useViewStylePropsSplit(props)
     const innerRef = useRef<any>()
     const isMounted = useRef(false)
 
@@ -189,7 +199,7 @@ const createStack = (defaultProps?: ViewStyle) => {
           state.hover ? hoverStyle : null,
           state.press ? pressStyle : null,
           disabled ? disabledStyle : null,
-          isWeb ? null : fixNativeShadow(styleProps),
+          isWeb || !styleProps ? null : fixNativeShadow(styleProps),
         ]}
       >
         {childrenWithSpacing}
@@ -292,12 +302,16 @@ const createStack = (defaultProps?: ViewStyle) => {
                 events.onClick(e)
               }}
               onPressIn={events.onMouseDown as any}
-              style={{
-                zIndex: styleProps.zIndex,
-                width: styleProps.width,
-                height: styleProps.height,
-                position: styleProps.position,
-              }}
+              style={
+                styleProps
+                  ? {
+                      zIndex: styleProps.zIndex,
+                      width: styleProps.width,
+                      height: styleProps.height,
+                      position: styleProps.position,
+                    }
+                  : null
+              }
             >
               {content}
             </TouchableOpacity>
