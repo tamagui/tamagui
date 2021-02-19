@@ -23,7 +23,7 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 ## Features
 
 - **Stack views** with flat, simpler RN TypeScript types
-  - VStack, HStack, ZStack
+  - VStack, HStack
   - Inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
 - **Optimizing compiler** (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
   - Flatten `<View />` / `<Text />` into `<div />` / `<span />`.
@@ -378,27 +378,31 @@ export function Component() {
 
 ## Issues
 
-SnackUI is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. Upcoming fixes:
-
-- [ ] ZStack has incorrect behavior. It doesn't position child elements as Absolute positioned.
+SnackUI is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. The compiler can be wonky in ways and occasional CSS bugs do exist, but generally it's not hard to quickly see if it's a Snack issue, and further, easy to deopt out when it does happen.
 
 ## Roadmap
 
 See [the roadmap](roadmap.md) for details:
 
 - [x] [Themes](roadmap.md#themes)
+- [x] Test performance of useMemo calls / splitProps
 - [ ] Media Queries test coverage, docs and configuration
 - [ ] Docs / docs site
+- [ ] improve props ease of use
+  - [ ] media query shorthands
+    - [ ] maxWidth={{ sm: 10 }}
+    - [ ] maxWidth={{ sm: x ? 10 : 0 }}
+  - [ ] flat transforms to prevent awkward spreads
+    - scale={} x={} y={}
+- [ ] Compiler contains memory leak(s)
 - [ ] Support extraction of custom components that extend lower level ones
   - [ ] Support user-defined components that just spread props onto simple child thats extractable
 - [ ] [Scaling](roadmap.md#scaling)
-- [ ] Compiler contains memory leak(s)
 - [ ] Extraction - advanced traversals (see [plan](roadmap.md#advanced-traversal))
 - [ ] Support `<Stack spacing />` extraction
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
-- [ ] Support compiling away a few directly-translatable HTML props: onPress, etc
-- [ ] Test performance of useMemo calls / splitProps
-- [ ] Support reloading constants/themes during watch
+- [ ] Compile a few directly-translatable HTML props: onPress, etc
+- [ ] Reload constants/themes during watch
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
 - [ ] MaskView with web support
 
