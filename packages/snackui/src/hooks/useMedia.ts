@@ -10,8 +10,6 @@
 //
 //
 
-import '@expo/match-media'
-
 import { useLayoutEffect, useRef } from 'react'
 
 import { useConstant } from './useConstant'
@@ -19,6 +17,10 @@ import { useForceUpdate } from './useForceUpdate'
 
 type MediaQueryObject = { [key: string]: string | number }
 type MediaQueryShort = MediaQueryObject
+
+if (!process.env.IS_STATIC) {
+  require('@expo/match-media')
+}
 
 // temp patch for test environments
 global.matchMedia =
