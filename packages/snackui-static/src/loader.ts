@@ -70,6 +70,7 @@ export default function snackLoader(this: any, content: string) {
     content,
     sourcePath,
     options,
+    this.addDependency,
     shouldPrintDebug
   )
 

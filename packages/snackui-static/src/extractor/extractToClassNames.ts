@@ -36,6 +36,7 @@ export function extractToClassNames(
   src: string | Buffer,
   sourceFileName: string,
   options: SnackOptions,
+  addDependency: (path: string) => void,
   shouldPrintDebug: boolean
 ): null | {
   js: string | Buffer
@@ -267,8 +268,14 @@ export function extractToClassNames(
     return null
   }
 
+  if (shouldPrintDebug) {
+    console.log(' cssmap', cssMap.values())
+  }
+
   const styles = Array.from(cssMap.values())
-    .map((x) => (shouldInternalDedupe ? x.css : `${x.commentTexts}\n${x.css}`))
+    .map((x) =>
+      shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`
+    )
     .join('\n')
     .trim()
 
@@ -289,12 +296,14 @@ export function extractToClassNames(
       )}.css`
       stylesPath = join(cacheDir, cachePath)
       writeFileSync(stylesPath, styles)
-      importPath = `${displayPath}!=!snackui-loader?cssPath=true!${stylesPath}`
+      importPath = `${stylesPath}!=!snackui-loader?cssPath=true!${stylesPath}`
     }
-
     ast.program.body.unshift(
       t.importDeclaration([], t.stringLiteral(importPath))
     )
+    if (!shouldInternalDedupe) {
+      addDependency(importPath)
+    }
   }
 
   const result = generate(
