@@ -10,7 +10,9 @@
 //
 //
 
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import '@expo/match-media'
+
+import { useLayoutEffect, useRef } from 'react'
 
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
@@ -18,15 +20,15 @@ import { useForceUpdate } from './useForceUpdate'
 type MediaQueryObject = { [key: string]: string | number }
 type MediaQueryShort = MediaQueryObject
 
-if (!process.env.IS_STATIC) {
-  require('@expo/match-media')
-}
-
 // temp patch for test environments
 global.matchMedia =
   global.matchMedia ||
-  function () {
-    return { addEventListener() {}, removeEventListener() {}, matches: [] }
+  function matchMediaFallback() {
+    return {
+      addEventListener() {},
+      removeEventListener() {},
+      matches: false,
+    }
   }
 
 export interface MediaQueryState {
@@ -70,11 +72,12 @@ let hasConfigured = false
 
 export type ConfigureMediaQueryOptions = {
   queries: MediaQueries
-  // defaultActive?: MediaQueryKey[]
+  defaultActive?: MediaQueryKey[]
 }
 
 export const configureMedia = ({
   queries = defaultMediaQueries,
+  defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions) => {
   if (hasConfigured) {
     throw new Error(`Already configured mediaQueries once`)
@@ -83,20 +86,27 @@ export const configureMedia = ({
 
   // setup
   for (const key in queries) {
-    const getMatch = () => global.matchMedia(mediaObjectToString(queries[key]))
-    const match = getMatch()
-    mediaState[key] = !!match.matches
-    match.addEventListener('change', () => {
-      const next = !!getMatch().matches
-      if (next === mediaState[key]) return
-      mediaState[key] = next
-      const listeners = mediaQueryListeners[key]
-      if (listeners?.size) {
-        for (const cb of [...listeners]) {
-          cb()
+    try {
+      const str = mediaObjectToString(queries[key])
+      const getMatch = () => window.matchMedia(str)
+      const match = getMatch()
+      mediaState[key] = !!match.matches
+      match.addEventListener('change', () => {
+        const next = !!getMatch().matches
+        if (next === mediaState[key]) return
+        mediaState[key] = next
+        const listeners = mediaQueryListeners[key]
+        if (listeners?.size) {
+          for (const cb of [...listeners]) {
+            cb()
+          }
         }
-      }
-    })
+      })
+    } catch (err) {
+      console.error('Error running media query', err.message)
+      console.error('Error stack:', err.stack)
+      mediaState[key] = defaultActive?.includes(key as any) ?? true
+    }
   }
 }
 
@@ -199,7 +209,9 @@ export const mediaObjectToString = (
   query: string | MediaQueryObject,
   negate?: boolean
 ) => {
-  if (typeof query === 'string') return query
+  if (typeof query === 'string') {
+    return query
+  }
   return Object.entries(query)
     .map(([feature, value]) => {
       feature = camelToHyphen(feature)
