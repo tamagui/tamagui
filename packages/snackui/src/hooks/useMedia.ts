@@ -12,15 +12,12 @@
 
 import { useLayoutEffect, useRef } from 'react'
 
+import { isWeb } from '../constants'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
 type MediaQueryObject = { [key: string]: string | number }
 type MediaQueryShort = MediaQueryObject
-
-if (!process.env.IS_STATIC) {
-  require('@expo/match-media')
-}
 
 // temp patch for test environments
 global.matchMedia =
@@ -72,6 +69,10 @@ export const getMedia = () => mediaState
 
 let hasConfigured = false
 
+const matchMedia = !isWeb
+  ? require('../helpers/matchMedia').matchMedia
+  : window.matchMedia
+
 export type ConfigureMediaQueryOptions = {
   queries: MediaQueries
   defaultActive?: MediaQueryKey[]
@@ -90,7 +91,7 @@ export const configureMedia = ({
   for (const key in queries) {
     try {
       const str = mediaObjectToString(queries[key])
-      const getMatch = () => window.matchMedia(str)
+      const getMatch = () => matchMedia(str)
       const match = getMatch()
       mediaState[key] = !!match.matches
       match.addEventListener('change', () => {
