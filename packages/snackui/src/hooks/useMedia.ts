@@ -12,11 +12,10 @@
 
 import { useLayoutEffect, useRef } from 'react'
 
-import { isWeb } from '../constants'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
-type MediaQueryObject = { [key: string]: string | number }
+type MediaQueryObject = { [key: string]: string | number | string }
 type MediaQueryShort = MediaQueryObject
 
 // temp patch for test environments
@@ -30,25 +29,6 @@ global.matchMedia =
     }
   }
 
-export interface MediaQueryState {
-  xs: boolean
-  notXs: boolean
-  sm: boolean
-  notSm: boolean
-  md: boolean
-  lg: boolean
-  xl: boolean
-  xxl: boolean
-  short: boolean
-  tall: boolean
-}
-
-export type MediaQueryKey = keyof MediaQueryState
-
-export type MediaQueries = {
-  [key in MediaQueryKey]: MediaQueryShort
-}
-
 export const defaultMediaQueries = {
   xs: { maxWidth: 660 },
   notXs: { minWidth: 660 + 1 },
@@ -60,6 +40,18 @@ export const defaultMediaQueries = {
   xxl: { minWidth: 1420 },
   short: { maxHeight: 820 },
   tall: { minHeight: 820 },
+  hoverNone: { hover: 'none' },
+  pointerCoarse: { pointer: 'coarse' },
+}
+
+export type MediaQueryState = {
+  [key in keyof typeof defaultMediaQueries]: boolean
+}
+
+export type MediaQueryKey = keyof MediaQueryState
+
+export type MediaQueries = {
+  [key in MediaQueryKey]: MediaQueryShort
 }
 
 const mediaState: { [key in keyof MediaQueryState]: boolean } = {} as any
@@ -209,16 +201,16 @@ export const useMedia = () => {
 const camelToHyphen = (str: string) =>
   str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).toLowerCase()
 
-export const mediaObjectToString = (
-  query: string | MediaQueryObject,
-  negate?: boolean
-) => {
+export const mediaObjectToString = (query: string | MediaQueryObject) => {
   if (typeof query === 'string') {
     return query
   }
   return Object.entries(query)
     .map(([feature, value]) => {
       feature = camelToHyphen(feature)
+      if (typeof value === 'string') {
+        return `(${feature}: ${value})`
+      }
       if (typeof value === 'number' && /[height|width]$/.test(feature)) {
         value = `${value}px`
       }
