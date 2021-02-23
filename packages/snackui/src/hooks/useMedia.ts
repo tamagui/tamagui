@@ -69,9 +69,10 @@ export const getMedia = () => mediaState
 
 let hasConfigured = false
 
-const matchMedia = !isWeb
-  ? require('../helpers/matchMedia').matchMedia
-  : window.matchMedia
+const matchMedia =
+  process.env.TARGET === 'web'
+    ? window.matchMedia
+    : require('../helpers/matchMedia').matchMedia
 
 export type ConfigureMediaQueryOptions = {
   queries: MediaQueries
