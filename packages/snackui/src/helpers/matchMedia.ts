@@ -1,2 +1,10 @@
 export const matchMedia =
-  typeof window !== 'undefined' ? window.matchMedia : null
+  typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia
+    : function matchMediaFallback() {
+        return {
+          addEventListener() {},
+          removeEventListener() {},
+          matches: false,
+        }
+      }

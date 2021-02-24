@@ -12,22 +12,12 @@
 
 import { useLayoutEffect, useRef } from 'react'
 
+import { matchMedia } from '../helpers/matchMedia'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
 type MediaQueryObject = { [key: string]: string | number | string }
 type MediaQueryShort = MediaQueryObject
-
-// temp patch for test environments
-global.matchMedia =
-  global.matchMedia ||
-  function matchMediaFallback() {
-    return {
-      addEventListener() {},
-      removeEventListener() {},
-      matches: false,
-    }
-  }
 
 export const defaultMediaQueries = {
   xs: { maxWidth: 660 },
@@ -60,11 +50,6 @@ const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 export const getMedia = () => mediaState
 
 let hasConfigured = false
-
-const matchMedia =
-  process.env.TARGET === 'web'
-    ? window.matchMedia
-    : require('../helpers/matchMedia').matchMedia
 
 export type ConfigureMediaQueryOptions = {
   queries: MediaQueries
