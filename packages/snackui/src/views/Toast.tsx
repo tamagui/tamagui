@@ -85,7 +85,7 @@ export const ToastRoot = memo(function ToastRoot() {
             backgroundColor={
               // TODO theme
               state.type === 'info'
-                ? 'rgba(240, 240, 0, 0.95)'
+                ? 'rgba(100, 140, 100, 0.95)'
                 : state.type === 'success'
                 ? 'rgba(20,180,120,0.95)'
                 : 'rgba(190,60,60, 0.95)'
