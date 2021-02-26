@@ -111,11 +111,7 @@ export function extractToClassNames(
 
           const addStyles = (style: ViewStyle | null) => {
             if (!style) return []
-            const res = getStylesAtomic(
-              mergeInParentStyles(style),
-              null,
-              shouldPrintDebug
-            )
+            const res = getStylesAtomic(mergeInParentStyles(style))
             if (res.length) {
               finalStyles = [...finalStyles, ...res]
             }

@@ -36,11 +36,7 @@ const borderDefaults = {
   borderRightWidth: 'borderRightStyle',
 }
 
-export function getStylesAtomic(
-  style: any,
-  classList?: string[] | null,
-  shouldPrintDebug?: boolean
-) {
+export function getStylesAtomic(style: any) {
   const styles: { [key: string]: ViewStyle } = {
     base: {},
   }
@@ -88,10 +84,17 @@ function getAtomicStyle(
     const rules = val.rules.map((rule) => {
       const valCN = `.${val.identifier}`
       if (pseudo) {
-        return rule
+        let val = rule
           .replace(valCN, className)
           .replace('{', `:${pseudo.name}{`)
           .replace('!important', '')
+        if (pseudo.name === 'hover') {
+          // hover styles need to be conditional
+          // perhaps this can be generalized but for now lets just shortcut
+          // and hardcode for hover styles, if we need to later we can
+          val = `@media (hover:hover) { ${val} }`
+        }
+        return val
       }
       return rule.replace(valCN, className).replace('!important', '')
     })

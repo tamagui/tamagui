@@ -22,11 +22,11 @@ export function extractMediaStyle(
     acc[cur] = new Array(mediaKeysLen - i).fill(':root').join('')
     return acc
   }, {})
-  const result = getMediaQueryTernary(ternary, jsxPath, sourceFileName)
-  if (!result) {
+  const mt = getMediaQueryTernary(ternary, jsxPath, sourceFileName)
+  if (!mt) {
     return null
   }
-  const { key, bindingName } = result
+  const { key } = mt
   const mq = mediaQueries[key]
   if (!mq) {
     console.error(
@@ -45,9 +45,9 @@ export function extractMediaStyle(
     console.log('  media query, no styles?')
     return null
   }
-  let all: StyleObject[] = []
+  let result: StyleObject[] = []
   for (const { styleObj, negate } of styleOpts) {
-    const styles = getStylesAtomic(styleObj, null, shouldPrintDebug)
+    const styles = getStylesAtomic(styleObj)
     const mediaStyles = styles.map((style) => {
       const negKey = negate ? '0' : ''
       const ogPrefix = style.identifier.slice(
@@ -82,11 +82,11 @@ export function extractMediaStyle(
     if (shouldPrintDebug) {
       console.log('  media style:', mediaStyles)
     }
-    all = [...all, ...mediaStyles]
+    result = [...result, ...mediaStyles]
   }
   // filter out
   ternary.remove()
-  return all
+  return result
 }
 
 function getMediaQueryTernary(
