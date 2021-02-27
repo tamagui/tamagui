@@ -92,7 +92,9 @@ function getAtomicStyle(
           // hover styles need to be conditional
           // perhaps this can be generalized but for now lets just shortcut
           // and hardcode for hover styles, if we need to later we can
-          val = `@media (hover:hover) { ${val} }`
+          // WEIRD SYNTAX, SEE:
+          //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
+          val = `@media not all and (hover: none) { ${val} }`
         }
         return val
       }
