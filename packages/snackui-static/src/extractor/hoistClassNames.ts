@@ -50,7 +50,7 @@ export function hoistClassNames(
       // adding a space for extra safety
       t.variableDeclarator(uid, t.stringLiteral(` ${str.value}`)),
     ])
-    // @ts-expect-error
+    // @ts-ignore
     parent.unshiftContainer('body', variable)
     return uid
   }

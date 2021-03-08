@@ -4,7 +4,7 @@ import { MediaQueries, mediaObjectToString } from '@snackui/node'
 import { ViewStyle } from 'react-native'
 
 import { MEDIA_SEP } from '../constants'
-import { getStylesAtomic } from '../css/getStylesAtomic'
+import { getStylesAtomic } from '../getStylesAtomic'
 import { StyleObject, Ternary } from '../types'
 import { isInsideSnackUI, isPresent } from './extractHelpers'
 

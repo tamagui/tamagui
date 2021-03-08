@@ -3,13 +3,12 @@
 
   "compilerOptions": {
     "composite": true,
-    "baseUrl": ".",
     "outDir": "_",
-    "rootDir": "./src"
+    "rootDir": "src"
   },
 
   "include": ["src"],
-
+  "exclude": ["src/_types.d.ts"],
   "references": [{
     "path": "../helpers"
   }, {

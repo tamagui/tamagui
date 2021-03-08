@@ -7,28 +7,27 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
-      "examples/*"
+      "packages/*"
     ],
-    "nohoist": [
+    "installConfig.hoistingLimits": [
       "@dish/proxy-worm",
       "@dish/proxy-worm/**"
     ]
   },
   "scripts": {
-    "build": "ultra -r --no-pretty build",
-    "build:watch": "ultra -r --no-pretty watch",
+    "build": "ultra -r --no-pretty --build",
+    "watch": "ultra -r --no-pretty watch",
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish:all": "lerna publish"
   },
-  "devDependencies": {
-    "ava": "^3.14.0",
-    "lerna": "^3.22.1",
+  "dependencies": {
     "prettier": "^2.2.1",
     "prettier-plugin-import-sort": "^0.0.6",
-    "ts-node": "^9.1.1",
-    "ultra-runner": "^3.9.0"
+    "ultra-runner": "^3.10.5"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

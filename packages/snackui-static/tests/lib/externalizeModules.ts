@@ -14,7 +14,9 @@ export const externalizeModules: any = ({ context, request }, callback) => {
         .replace(/.*node_modules\/react-native-web\//, '')
       return callback(undefined, 'commonjs ' + `react-native-web/${out}`)
     }
-    return callback(undefined, 'commonjs ' + request)
+    if (request[0] !== '.') {
+      return callback(undefined, 'commonjs ' + request)
+    }
   }
   callback()
 }

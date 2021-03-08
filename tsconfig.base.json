@@ -4,7 +4,7 @@
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "declarationMap": true,
+    "emitDeclarationOnly": true,
     "downlevelIteration": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -12,31 +12,26 @@
     "preserveSymlinks": true,
     "incremental": true,
     "jsx": "react",
-    "skipLibCheck": true,
-    "module": "esnext",
+    "module": "system",
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitAny": false,
+    "noImplicitReturns": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveConstEnums": true,
     "removeComments": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
     "strict": true,
     "strictNullChecks": true,
-    "target": "ES2019",
-    "lib": ["dom", "esnext"],
+    "target": "es2019",
     "types": ["node"],
-    "typeRoots": ["./node_modules/@types", "./types"],
-    "composite": true
+    "lib": ["dom", "esnext"],
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
-
-  "exclude": ["_"],
-
+  "exclude": ["_", "test/**/*"],
   "typeAcquisition": {
     "enable": true
-  },
-
-  "references": []
+  }
 }

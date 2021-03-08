@@ -8,7 +8,7 @@ import { StaticComponent } from '@snackui/node'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
-import { pseudos } from '../css/getStylesAtomic'
+import { pseudos } from '../getStylesAtomic'
 import {
   ExtractedAttr,
   ExtractedAttrAttr,
@@ -65,20 +65,10 @@ export function createExtractor() {
       process.env.DEBUG ||
       process.env.IDENTIFY_TAGS)
 
-  // register ts-node
-  require('ts-node').register({
-    lazy: true,
-    transpileOnly: true,
-    typeCheck: false,
-    compilerOptions: {
-      target: 'es6',
-      lib: ['esnext', 'dom'],
-      module: 'CommonJS',
-      moduleResolution: 'node',
-      esModuleInterop: true,
-      allowSyntheticDefaultImports: true,
-      allowJs: false,
-    },
+  // ts imports
+  require('esbuild-register/dist/node').register({
+    target: 'es2019',
+    format: 'cjs',
   })
 
   return {

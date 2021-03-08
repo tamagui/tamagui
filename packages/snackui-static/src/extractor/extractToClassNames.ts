@@ -10,9 +10,9 @@ import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
 import { cacheDir, shouldInternalDedupe } from '../constants'
-import { getStylesAtomic } from '../css/getStylesAtomic'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
+import { getStylesAtomic } from '../getStylesAtomic'
 import { ClassNameObject, SnackOptions, StyleObject } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
@@ -279,7 +279,6 @@ export function extractToClassNames(
 
   if (styles) {
     // add import to styles file
-    const displayPath = `${sourceFileName}.css`
     let importPath = ''
     if (shouldInternalDedupe) {
       // in dev mode, dedupe ourselves

@@ -3,12 +3,15 @@
   "version": "0.0.6",
   "main": "index.js",
   "scripts": {
-    "build": "ttsc",
-    "watch": "ttsc --watch --preserveWatchOutput"
+    "build": "SNACKUI_COMPILE_PROCESS=1 ttsc",
+    "watch": "SNACKUI_COMPILE_PROCESS=1 ttsc --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@snackui/helpers": "*"
   },
   "devDependencies": {
     "ts-transform-import-path-rewrite": "^0.3.0",
     "ttypescript": "^1.5.12",
-    "typescript": "*"
+    "typescript": "^4.2.3"
   }
 }

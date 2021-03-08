@@ -7,7 +7,7 @@
     "outDir": "_",
     "rootDir": "./src"
   },
-  "exclude": ["src/_types.d.ts"],
+
   "include": ["src"],
   "references": []
 }

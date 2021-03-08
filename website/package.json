@@ -1,7 +1,9 @@
 {
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build:site": "docusaurus build",
+    "build": "true",
+    "watch": "true",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy"
   },

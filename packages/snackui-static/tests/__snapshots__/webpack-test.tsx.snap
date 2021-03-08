@@ -1,0 +1,277 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`1. extracts to a div for simple views 1`] = `
+<div
+  className=" _bacCol-1g6456j _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-1xz9bc3 _fleBas-auto _fleDir-column _fleGro-1 _fleShr-1 test1"
+>
+  <span
+    className=" _dis-inline"
+  >
+    hello world
+  </span>
+</div>
+`;
+
+exports[`2. extracts className for complex views but keeps other props 1`] = `
+Array [
+  <div
+    className="css-view-1dbjc4n who _oveY-hidden _oveX-hidden _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-14lw9ot"
+    style={
+      Object {
+        "WebkitBoxDirection": "normal",
+        "WebkitBoxOrient": "vertical",
+        "WebkitFlexBasis": "auto",
+        "WebkitFlexDirection": "column",
+        "flexBasis": "auto",
+        "flexDirection": "column",
+        "msFlexDirection": "column",
+        "msFlexPreferredSize": "auto",
+      }
+    }
+  />,
+  <div
+    className="_top--14px _bacCol-14lw9ot ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px"
+  >
+    <span
+      className=" _dis-inline"
+    >
+      hello world
+    </span>
+  </div>,
+]
+`;
+
+exports[`2. extracts className for complex views but keeps other props 2`] = `
+Array [
+  <div
+    className="css-view-1dbjc4n who _oveY-hidden _oveX-hidden _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-14lw9ot"
+    style={
+      Object {
+        "WebkitBoxDirection": "normal",
+        "WebkitBoxOrient": "vertical",
+        "WebkitFlexBasis": "auto",
+        "WebkitFlexDirection": "column",
+        "flexBasis": "auto",
+        "flexDirection": "column",
+        "msFlexDirection": "column",
+        "msFlexPreferredSize": "auto",
+      }
+    }
+  />,
+  <div
+    className="ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-kemksi"
+  >
+    <span
+      className=" _dis-inline"
+    >
+      hello world
+    </span>
+  </div>,
+]
+`;
+
+exports[`3. places className correctly given a single spread 1`] = `
+Array [
+  "css-view-1dbjc4n",
+  "_oveY-hidden",
+  "_oveX-hidden",
+]
+`;
+
+exports[`4. leaves dynamic variables 1`] = `
+Array [
+  "css-view-1dbjc4n",
+  "_hei-200px",
+  "_oveX--r-o-ovX-o-ok-visible",
+  "_oveY--r-o-ovY-i-ip04b4b-visible",
+]
+`;
+
+exports[`4. leaves dynamic variables 2`] = `
+<div
+  className="css-view-1dbjc4n  _hei-200px _oveX--r-o-ovX-o-ok-visible _oveY--r-o-ovY-i-ip04b4b-visible"
+  style={
+    Object {
+      "WebkitBoxDirection": "normal",
+      "WebkitBoxOrient": "vertical",
+      "WebkitFlexBasis": "auto",
+      "WebkitFlexDirection": "column",
+      "flexBasis": "auto",
+      "flexDirection": "column",
+      "msFlexDirection": "column",
+      "msFlexPreferredSize": "auto",
+      "width": "calc(100% + 20px)",
+    }
+  }
+/>
+`;
+
+exports[`5. spread conditional 1`] = `
+<div
+  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+>
+  <div
+    className="_bacCol-57dg7b hello-world _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+  />
+</div>
+`;
+
+exports[`6. spread ternary 1`] = `
+<div
+  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+>
+  <span
+    className=" _dis-inline"
+  >
+    hello world
+  </span>
+</div>
+`;
+
+exports[`6. spread ternary 2`] = `
+<div
+  className="_bacCol-1g6456j _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+>
+  <span
+    className=" _dis-inline"
+  >
+    hello world
+  </span>
+</div>
+`;
+
+exports[`7. ternary + data-is 1`] = `
+<div
+  className=" _fleBas-auto _fleDir-column _maxWid-30 _minWid-500px _padBot-10px _padLef-11px _padRig-11px _wid-66"
+>
+  <div
+    className="_wid-10px _hei-10px _fleDir-column _fleBas-auto"
+  />
+</div>
+`;
+
+exports[`8. styleExpansions 1`] = `
+<div
+  className=" _bot-0px _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px"
+>
+  <div
+    className=" _bacCol-1g6456j _fleBas-auto _fleDir-column _pos-absolute"
+  >
+    <div
+      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px"
+      style={
+        Object {
+          "WebkitBoxDirection": "normal",
+          "WebkitBoxOrient": "vertical",
+          "WebkitFlexBasis": "auto",
+          "WebkitFlexDirection": "column",
+          "flexBasis": "auto",
+          "flexDirection": "column",
+          "msFlexDirection": "column",
+          "msFlexPreferredSize": "auto",
+          "position": "absolute",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`9. combines with classname 1`] = `
+<div
+  className=" _fleBas-auto _fleDir-column _padBot-15px _padTop-15px home-top-dish"
+/>
+`;
+
+exports[`10. extracts Text 1`] = `
+<span
+  className=" _dis-inline _fonSiz-10px"
+>
+  <span
+    className=" _dis-inline _useSel-text"
+  >
+    <div
+      className="css-text-38s1w7 _col-cqee49 _fonWei-600 _fonSiz-15px"
+      dir="auto"
+      onClick={[Function]}
+      style={
+        Object {
+          "display": "inline",
+        }
+      }
+    >
+      hello
+    </div>
+  </span>
+</span>
+`;
+
+exports[`11. combines everything 1`] = `
+Array [
+  "css-view-1dbjc4n",
+  "_borTopCol-48c68v",
+  "_borRigCol-1qev2y0",
+  "_borLefCol-1utlcvg",
+  "_borBotCol-19sur4y",
+  "_hei-0px",
+  "_borTopRigRad-0px",
+  "_borTopLefRad-0px",
+  "_borBotRigRad-0px",
+  "_borBotLefRad-0px",
+  "_pos-relative",
+  "_oveY-hidden",
+  "_oveX-hidden",
+  "_minHei-10px",
+  "_borTopWid-1px",
+  "_borTopSty-solid",
+  "_borRigWid-1px",
+  "_borRigSty-solid",
+  "_borLefWid-1px",
+  "_borLefSty-solid",
+  "_borBotWid-1px",
+  "_borBotSty-solid",
+  "_bacCol-57dg7b",
+  "_aliIte-center",
+]
+`;
+
+exports[`12. ternary multiple on same key 1`] = `
+<div
+  className="_tra- _opa-1 _fleDir-column _fleBas-auto"
+/>
+`;
+
+exports[`14. extracts psuedo styles and evaluates constants 1`] = `
+<div
+  className=" _fleBas-auto _fleDir-column _bacCol--r-b-baCol-1g1g664545656j6j-1g6456j _bacCol--r-b-baCol-5757d7dg7b-57dg7b"
+/>
+`;
+
+exports[`15. extracts spacer (complex expansion) 1`] = `
+Array [
+  <div
+    className=" _fleGro- _fleShr- _minHei-12px _minWid-12px"
+  />,
+  <div
+    className=" _fleGro-1 _fleShr- _minHei-10px _minWid-10px"
+  />,
+]
+`;
+
+exports[`16. deopt when spreading multiple 1`] = `
+<div
+  className="css-view-1dbjc4n _fleShr-1 _fleGro-1 _bacCol-1g6456j"
+  style={
+    Object {
+      "WebkitBoxDirection": "normal",
+      "WebkitBoxOrient": "vertical",
+      "WebkitFlexBasis": "auto",
+      "WebkitFlexDirection": "column",
+      "flexBasis": "auto",
+      "flexDirection": "column",
+      "msFlexDirection": "column",
+      "msFlexPreferredSize": "auto",
+    }
+  }
+/>
+`;

@@ -1,13 +1,9 @@
-import anyTest, { TestInterface } from 'ava'
-
-import { getStylesAtomic } from '../src'
+import { getStylesAtomic } from '../dist'
 
 process.env.NODE_ENV = 'test'
 process.env.IDENTIFY_TAGS = 'true'
 
-const test = anyTest as TestInterface
-
-test('converts a style object to class names', async (t) => {
+test('converts a style object to class names', () => {
   const style = {
     backgroundColor: 'red',
     transform: [{ rotateY: '10deg' }],
@@ -20,34 +16,35 @@ test('converts a style object to class names', async (t) => {
   const style1 = styles.find((x) => x.property === 'backgroundColor')
   const style2 = styles.find((x) => x.property === 'transform')
   const style3 = styles.find((x) => x.property === 'boxShadow')
-  t.assert(!!style1)
-  t.assert(!!style2)
-  t.assert(!!style3)
-  t.assert(
+  expect(!!style1).toBeTruthy()
+  expect(!!style2).toBeTruthy()
+  expect(!!style3).toBeTruthy()
+  expect(
     styles.find((x) => x.property === 'borderBottomStyle')?.value === 'solid'
-  )
-  t.assert(style1!.rules[0].includes('background-color:rgba(255,0,0,1.00)'))
-  t.assert(style2!.rules[0].includes(`transform:rotateY(10deg)`))
-  t.assert(
+  ).toBeTruthy()
+  expect(
+    style1!.rules[0].includes('background-color:rgba(255,0,0,1.00)')
+  ).toBeTruthy()
+  expect(style2!.rules[0].includes(`transform:rotateY(10deg)`)).toBeTruthy()
+  expect(
     style3!.rules[0].includes(`box-shadow:0px 0px 10px rgba(255,0,0,1.00)`)
-  )
+  ).toBeTruthy()
 })
 
-test('expands and resolves shorthand props', async (t) => {
+test('expands and resolves shorthand props', () => {
   const style = {
     padding: 10,
     paddingVertical: 0,
   }
   const [pB, pL, pR, pT] = getStylesAtomic(style)
-  t.is(pT.value, '0px')
-  t.is(pB.value, '0px')
-  t.is(pL.value, '10px')
-  t.is(pR.value, '10px')
-
+  expect(pT.value).toBe('0px')
+  expect(pB.value).toBe('0px')
+  expect(pL.value).toBe('10px')
+  expect(pR.value).toBe('10px')
   const style2 = {
     borderColor: 'yellow',
     borderWidth: 10,
   }
   const styles2 = getStylesAtomic(style2)
-  t.assert(styles2.some((x) => x.property === 'borderRightStyle'))
+  expect(styles2.some((x) => x.property === 'borderRightStyle')).toBeTruthy()
 })

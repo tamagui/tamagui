@@ -6,8 +6,7 @@ import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet
 import createReactDOMStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createReactDOMStyle'
 import i18Style from 'react-native-web/dist/cjs/exports/StyleSheet/i18nStyle'
 
-import { CLASS_PREFIX } from '../constants'
-import { StyleObject } from '../types'
+import { StyleObject } from './types'
 
 export const pseudos = {
   focusWithinStyle: {
@@ -73,8 +72,16 @@ function getAtomicStyle(
   )
   return Object.keys(all).map((key) => {
     const val = all[key]
-    const prefix = `${CLASS_PREFIX}${getOrCreateStylePrefix(val.property)}`
-    const hash = val.identifier.replace(/r-([a-z0-9]+)-/i, '')
+    const prefix = `_${getOrCreateStylePrefix(val.property)}`
+
+    const hash = (() => {
+      let s = `${val.value}`
+      if (s.length < 10 && /^[a-z0-9\-]+$/i.test(s)) return s
+      s = s.replace(/[^a-z0-9]/gi, '').replace(/\s/, '-')
+      if (s.length < 10) return s
+      return `${val.identifier}`.replace(/r-([a-z0-9\-]+)-/i, '')
+    })()
+
     // pseudos have a `--` to be easier to find with concatClassNames
     const psuedoPrefix = pseudo ? `-${getNiceKey(key)}-` : ''
     const identifier = `${prefix}-${psuedoPrefix}${hash}`
@@ -82,10 +89,9 @@ function getAtomicStyle(
       ? [...Array(pseudo.priority)].map((x) => `.${identifier}`).join('')
       : `.${identifier}`
     const rules = val.rules.map((rule) => {
-      const valCN = `.${val.identifier}`
       if (pseudo) {
-        let val = rule
-          .replace(valCN, className)
+        let res = rule
+          .replace(`.${val.identifier}`, className)
           .replace('{', `:${pseudo.name}{`)
           .replace('!important', '')
         if (pseudo.name === 'hover') {
@@ -94,11 +100,13 @@ function getAtomicStyle(
           // and hardcode for hover styles, if we need to later we can
           // WEIRD SYNTAX, SEE:
           //   https://stackoverflow.com/questions/40532204/media-query-for-devices-supporting-hover
-          val = `@media not all and (hover: none) { ${val} }`
+          res = `@media not all and (hover: none) { ${res} }`
         }
-        return val
+        return res
       }
-      return rule.replace(valCN, className).replace('!important', '')
+      return rule
+        .replace(`.${val.identifier}`, className)
+        .replace('!important', '')
     })
     return {
       ...val,
