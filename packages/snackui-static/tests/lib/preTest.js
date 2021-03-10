@@ -1,14 +1,12 @@
-import path from 'path'
-
-import webpack from 'webpack'
-
-import { externalizeModules } from './externalizeModules'
-import { outDir, specDir } from './test-constants'
+const path = require('path')
+const webpack = require('webpack')
+const { externalizeModules } = require('./externalizeModules')
+const { outDir, specDir } = require('./test-constants')
 
 const outFileBabel = 'out-babel.js'
 const outFileWebpack = 'out-webpack.js'
 
-export default async function main() {
+module.exports = async function main() {
   console.log('building test apps...')
   await Promise.all([extractStaticAppBabel(), extractStaticWebpackApp()])
   console.log('done')

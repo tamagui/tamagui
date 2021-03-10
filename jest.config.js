@@ -4,7 +4,7 @@ module.exports = {
     '^.+\\.[jt]sx?$': 'esbuild-jest',
   },
   bail: true,
-  transformIgnorePatterns: ['node_modules/(?!@expo)/'],
+  transformIgnorePatterns: ['node_modules/(?!@expo|react-native-web)'],
   testTimeout: 20000,
   // verbose: true,
 }

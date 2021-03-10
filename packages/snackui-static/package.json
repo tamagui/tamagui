@@ -8,7 +8,7 @@
   "scripts": {
     "build": "esdx",
     "watch": "esdx-watch",
-    "test": "SNACKUI_COMPILE_PROCESS=1 jest --runInBand --forceExit",
+    "test": "SNACKUI_COMPILE_PROCESS=1 jest --forceExit",
     "test:debug": "SNACKUI_COMPILE_PROCESS=1 DEBUG_FILE=extract-specs.tsx DEBUG=1 yarn test",
     "test:watch": "SNACKUI_COMPILE_PROCESS=1 yarn test --watch",
     "test:update-snapshots": "jest --updateSnapshot"

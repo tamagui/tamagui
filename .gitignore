@@ -10,3 +10,4 @@ dist
 tsconfig.tsbuildinfo
 node_modules
 **/_
+**/tests/spec/out
