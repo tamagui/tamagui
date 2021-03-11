@@ -27,12 +27,9 @@
     "@babel/types": "^7.12.7",
     "@dish/babel-preset": "*",
     "@dish/esdx": "*",
-    "@dish/proxy-worm": "*",
     "@dish/react-test-env": "^0.0.7",
     "@dish/testy": "*",
     "@expo/match-media": "^0.1.0",
-    "@snackui/helpers": "^0.1.1",
-    "@snackui/node": "^0.1.1",
     "@types/jest": "*",
     "@types/node": "^14.14.12",
     "@types/react-native": "^0.62.12",
@@ -55,9 +52,13 @@
     "react-dom": "*",
     "react-test-renderer": "^17.0.1",
     "style-loader": "^2.0.0",
-    "tsc-prog": "^2.2.1",
     "typescript": "^4.2.2",
     "webpack": "^5.24.2"
+  },
+  "dependencies": {
+    "@dish/proxy-worm": "*",
+    "@snackui/helpers": "^0.1.1",
+    "@snackui/node": "^0.1.1"
   },
   "peerDependencies": {
     "react-native-web": "*"
