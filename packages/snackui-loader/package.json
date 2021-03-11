@@ -1,6 +1,6 @@
 {
   "name": "snackui-loader",
-  "version": "0.2.0-alpha.1",
+  "version": "0.2.0-alpha.2",
   "main": "dist",
   "types": "src/_types.d.ts",
   "module": "_",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@dish/esdx": "*",
-    "@snackui/static": "^0.2.0-alpha.1",
+    "@snackui/static": "^0.2.0-alpha.2",
     "fs-extra": "^9.1.0",
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.21"
