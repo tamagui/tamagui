@@ -18,18 +18,16 @@
     "build": "ultra -r --no-pretty --build",
     "watch": "ultra -r --no-pretty watch",
     "test": "ultra -r --no-pretty --serial test",
-    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
-    "publish:all": "lerna publish"
+    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true"
   },
   "dependencies": {
+    "esbuild-jest": "^0.5.0",
     "prettier": "^2.2.1",
     "prettier-plugin-import-sort": "^0.0.6",
-    "ultra-runner": "^3.10.5",
-    "esbuild-jest": "^0.5.0"
+    "ultra-runner": "^3.10.5"
   },
   "devDependencies": {
-    "@dish/rollup-plugin-flat-dts": "^1.0.1",
-    "lerna": "^3.22.1"
+    "@dish/rollup-plugin-flat-dts": "^1.0.1"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

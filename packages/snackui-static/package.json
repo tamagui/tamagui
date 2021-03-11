@@ -53,12 +53,14 @@
     "mutationobserver-polyfill": "1.3.0",
     "react": "*",
     "react-dom": "*",
-    "react-native-web": "*",
     "react-test-renderer": "^17.0.1",
     "style-loader": "^2.0.0",
     "tsc-prog": "^2.2.1",
     "typescript": "^4.2.2",
     "webpack": "^5.24.2"
+  },
+  "peerDependencies": {
+    "react-native-web": "*"
   },
   "gitHead": "503b64ff877fbb47382ba34266af192b2de81ffb"
 }

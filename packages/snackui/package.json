@@ -28,8 +28,10 @@
     "react-dom": "*",
     "react-feather": "^2.0.8",
     "react-laag": "^2.0.2",
-    "react-native-web": "*",
     "react-storage-hooks": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react-native-web": "*"
   },
   "devDependencies": {
     "@dish/esdx": "*",
