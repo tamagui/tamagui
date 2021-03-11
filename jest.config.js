@@ -6,5 +6,4 @@ module.exports = {
   bail: true,
   transformIgnorePatterns: ['node_modules/(?!@expo|react-native-web)'],
   testTimeout: 20000,
-  // verbose: true,
 }
