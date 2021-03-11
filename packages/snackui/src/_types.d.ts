@@ -226,13 +226,13 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    type Size = [
+    type WindowSize = [
         number,
         number
     ];
     export function useWindowSize({ adjust, }?: {
-        adjust?: (x: Size) => Size;
-    }): Size;
+        adjust?: (x: WindowSize) => WindowSize;
+    }): WindowSize;
 }
 
 declare module "snackui" {
