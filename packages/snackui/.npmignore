@@ -1,2 +1,2 @@
-src
+src/*
 !src/_types.d.ts
