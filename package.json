@@ -19,7 +19,8 @@
     "watch": "ultra -r --no-pretty watch",
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "publish": "lerna publish"
   },
   "dependencies": {
     "esbuild-jest": "^0.5.0",
@@ -29,6 +30,7 @@
     "react-native-web": "0.0.0-466063b7e"
   },
   "devDependencies": {
+    "lerna": "^4.0.0",
     "patch-package": "^6.4.6",
     "@dish/rollup-plugin-flat-dts": "^1.0.1"
   },
