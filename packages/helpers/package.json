@@ -11,5 +11,9 @@
   },
   "devDependencies": {
     "@dish/esdx": "*"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
 }
