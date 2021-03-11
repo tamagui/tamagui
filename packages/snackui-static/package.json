@@ -1,6 +1,6 @@
 {
   "name": "@snackui/static",
-  "version": "0.2.0-alpha.2",
+  "version": "0.2.0",
   "main": "dist",
   "module": "_",
   "tsmain": "src",
@@ -57,8 +57,8 @@
   },
   "dependencies": {
     "@dish/proxy-worm": "*",
-    "@snackui/helpers": "^0.2.0-alpha.2",
-    "@snackui/node": "^0.2.0-alpha.2"
+    "@snackui/helpers": "^0.2.0",
+    "@snackui/node": "^0.2.0"
   },
   "peerDependencies": {
     "react-native-web": "*"

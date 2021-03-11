@@ -1,6 +1,6 @@
 {
   "name": "@snackui/helpers",
-  "version": "0.2.0-alpha.2",
+  "version": "0.2.0",
   "main": "dist",
   "types": "src/_types.d.ts",
   "module": "_",
