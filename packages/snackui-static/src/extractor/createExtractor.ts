@@ -473,9 +473,9 @@ export function createExtractor() {
 
             const [value, valuePath] = (() => {
               if (t.isJSXExpressionContainer(attribute?.value)) {
-                return [attribute.value.expression, path.get('value')] as const
+                return [attribute.value.expression!, path.get('value')!] as const
               } else {
-                return [attribute.value, path.get('value')] as const
+                return [attribute.value!, path.get('value')!] as const
               }
             })()
             const remove = () => {

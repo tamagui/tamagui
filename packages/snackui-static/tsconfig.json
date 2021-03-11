@@ -11,7 +11,5 @@
     "path": "../helpers"
   }, {
     "path": "../snackui"
-  }, {
-    "path": "../../../packages/react-test-env"
   }]
 }

@@ -23,8 +23,8 @@ test('basic extraction', async () => {
     }
   `)
   const code = output?.code ?? ''
+  console.log('code', code)
   expect(code.includes(`"backgroundColor": "red"`)).toBeTruthy()
-  expect(code.includes(`_StyleSheet.default.create`)).toBeTruthy()
 })
 
 test('basic conditional extraction', async () => {

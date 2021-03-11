@@ -11,9 +11,5 @@
   "exclude": ["src/_types.d.ts"],
   "references": [{
     "path": "../helpers"
-  }, {
-    "path": "../../../packages/async"
-  }, {
-    "path": "../../../packages/fast-compare"
   }]
 }
