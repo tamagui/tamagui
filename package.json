@@ -24,7 +24,8 @@
   "dependencies": {
     "prettier": "^2.2.1",
     "prettier-plugin-import-sort": "^0.0.6",
-    "ultra-runner": "^3.10.5"
+    "ultra-runner": "^3.10.5",
+    "esbuild-jest": "^0.5.0"
   },
   "devDependencies": {
     "lerna": "^3.22.1"
