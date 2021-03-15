@@ -7,9 +7,7 @@ const outFileBabel = 'out-babel.js'
 const outFileWebpack = 'out-webpack.js'
 
 module.exports = async function main() {
-  console.log('building test apps...')
   await Promise.all([extractStaticAppBabel(), extractStaticWebpackApp()])
-  console.log('done')
   process.env.IS_STATIC = undefined
 }
 

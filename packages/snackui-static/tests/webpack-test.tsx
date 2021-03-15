@@ -9,16 +9,18 @@ const app = require('./spec/out/out-webpack')
 let context: any = {}
 
 beforeAll(async () => {
-  for (const key in app) {
-    act(() => {
-      const App = app[key]
-      context[key.toLowerCase()] = {
-        Element: App,
-        renderer: TestRenderer.create(<App conditional={true} />),
-        rendererFalse: TestRenderer.create(<App conditional={false} />),
-      }
-    })
-  }
+  await Promise.all([
+    Object.keys(app).map((key) => {
+      return act(() => {
+        const App = app[key]
+        context[key.toLowerCase()] = {
+          Element: App,
+          renderer: TestRenderer.create(<App conditional={true} />),
+          rendererFalse: TestRenderer.create(<App conditional={false} />),
+        }
+      })
+    }),
+  ])
 })
 
 // TODO fix testability of linear gradient

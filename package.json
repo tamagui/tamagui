@@ -26,13 +26,13 @@
     "esbuild-jest": "^0.5.0",
     "prettier": "^2.2.1",
     "prettier-plugin-import-sort": "^0.0.6",
-    "ultra-runner": "^3.10.5",
-    "react-native-web": "0.0.0-466063b7e"
+    "react-native-web": "0.0.0-466063b7e",
+    "ultra-runner": "^3.10.5"
   },
   "devDependencies": {
+    "@dish/rollup-plugin-flat-dts": "^1.0.1",
     "lerna": "^4.0.0",
-    "patch-package": "^6.4.6",
-    "@dish/rollup-plugin-flat-dts": "^1.0.1"
+    "patch-package": "^6.4.6"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
