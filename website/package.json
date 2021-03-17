@@ -5,13 +5,14 @@
     "build": "true",
     "watch": "true",
     "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy"
+    "deploy": "docusaurus deploy",
+    "postinstall": "rm -r node_modules/react node_modules/react-dom"
   },
   "dependencies": {
     "@docusaurus/core": "^2.0.0-alpha.70",
     "@docusaurus/preset-classic": "^2.0.0-alpha.70",
-    "prism-react-renderer": "^1.1.1",
     "classnames": "2.2.6",
+    "prism-react-renderer": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
