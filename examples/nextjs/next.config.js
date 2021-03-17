@@ -22,7 +22,10 @@ module.exports = {
           oneOf: [
             {
               test: /\.css$/i,
-              use: ['style-loader', 'css-loader'],
+              use: [
+                require.resolve('style-loader'),
+                require.resolve('css-loader'),
+              ],
             },
             ...ogRules,
           ],

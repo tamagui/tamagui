@@ -23,7 +23,7 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 ## Features
 
 - **Stack views** with flat, simpler RN TypeScript types
-  - VStack, HStack, ZStack
+  - VStack, HStack
   - Inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
 - **Optimizing compiler** (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
   - Flatten `<View />` / `<Text />` into `<div />` / `<span />`.
@@ -158,11 +158,11 @@ Add snackui to your project:
 yarn add snackui @snackui/static @snackui/babel-plugin
 ```
 
-You'll likely want to gitignore the outputted style files, though it's not necessary. We originally kept CSS in-memory, but ran into various issues, but would support re-implementing it if anyone knows a cleaner way. In your `.gitignore` add this:
+From here, you can set it two ways: for extraction to CSS on web, you'll need the Webpack plugin. If you don't need that, or are just developing for React Native, then just set up the babel plugin.
 
-```
-*__snack.css
-```
+**Note:** Don't use *both* the Webpack and Babel plugin together as they will conflict.
+
+We hope to add plugins for rollup, esbuild and others soon as it should be relatively straightforward, PR's are welcome.
 
 ### Babel - Native / Simple extraction (experimental)
 
@@ -190,6 +190,8 @@ module.exports = {
             loader: require.resolve('@snackui/static/loader'),
             options: {
               // use this to add files to be statically evaluated
+              // full path or partial path supported
+              // always use the ".js" extension (so colors.ts => colors.js)
               // default:
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
               // exclude files from processing
@@ -212,7 +214,7 @@ module.exports = {
 
 react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
 
-- Example [patch for react-native-web experimental](docs/react-native-web+0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
+- Example [patch for react-native-web experimental](/etc/react-native-web%2B0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
 
 ## Documentation
 
@@ -378,28 +380,34 @@ export function Component() {
 
 ## Issues
 
-SnackUI is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. Upcoming fixes:
-
-- [ ] ZStack has incorrect behavior. It doesn't position child elements as Absolute positioned.
+SnackUI is still early stage. It works well for us, and we've built a fairly large app with it, but it's needs wider testing and a couple more features before it really shines. The compiler can be wonky in ways and occasional CSS bugs do exist, but generally it's not hard to quickly see if it's a Snack issue, and further, easy to deopt out when it does happen.
 
 ## Roadmap
 
 See [the roadmap](ROADMAP.md) for details:
 
-- [x] Themes
+- [x] [Themes](roadmap.md#themes)
+- [x] Test performance of useMemo calls / splitProps
 - [ ] Media Queries test coverage, docs and configuration
 - [ ] Docs / docs site
+- [ ] improve props ease of use
+  - [ ] media query shorthands
+    - [ ] maxWidth={{ sm: 10 }}
+    - [ ] maxWidth={{ sm: x ? 10 : 0 }}
+  - [ ] flat transforms to prevent awkward spreads
+    - scale={} x={} y={}
+- [ ] Compiler contains memory leak(s)
 - [ ] Support extraction of custom components that extend lower level ones
   - [ ] Support user-defined components that just spread props onto simple child thats extractable
-- [ ] [Scaling](ROADMAP.md#variants)
-- [ ] Compiler contains memory leak(s)
+- [ ] [Variants/Scaling](ROADMAP.md#variants)
+- [x] Compiler contains memory leak(s) (mostly fixed with esbuild-loader)
 - [ ] Extraction - advanced traversals (see [plan](ROADMAP.md#advanced-traversal))
 - [ ] Support `<Stack spacing />` extraction
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
-- [ ] Support compiling away a few directly-translatable HTML props: onPress, etc
-- [ ] Test performance of useMemo calls / splitProps
-- [ ] Support reloading constants/themes during watch
+- [ ] Compile a few directly-translatable HTML props: onPress, etc
+- [ ] Reload constants/themes during watch
 - [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
+- [ ] MaskView with web support
 
 
 ## License

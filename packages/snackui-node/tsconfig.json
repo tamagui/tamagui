@@ -3,14 +3,16 @@
   "compilerOptions": {
     "composite": false,
     "incremental": false,
-    "outDir": "_",
+    "emitDeclarationOnly": false,
+    "outDir": "dist",
     "module": "CommonJS",
     "plugins": [
       {
         "transform": "ts-transform-import-path-rewrite",
         "import": "transform",
         "alias": {
-          "^(react-native)$": "@dish/proxy-worm"
+          "^(react-native)$": "@dish/proxy-worm",
+          "^(@dish/async)$": "@dish/proxy-worm"
         },
         "type": "config"
       }

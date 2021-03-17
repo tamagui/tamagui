@@ -2,9 +2,6 @@
   "extends": "../../tsconfig.base",
   "compilerOptions": {
     "composite": true,
-    "baseUrl": ".",
-    "module": "CommonJS",
-    "esModuleInterop": true,
     "outDir": "_",
     "rootDir": "src"
   },
@@ -13,7 +10,5 @@
     "path": "../helpers"
   }, {
     "path": "../snackui"
-  }, {
-    "path": "../../../packages/react-test-env"
   }]
 }

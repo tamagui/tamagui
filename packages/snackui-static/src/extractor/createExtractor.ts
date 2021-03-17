@@ -6,10 +6,9 @@ import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { StaticComponent } from '@snackui/node'
 import invariant from 'invariant'
-import { has } from 'lodash'
 import { ViewStyle } from 'react-native'
 
-import { pseudos } from '../css/getStylesAtomic'
+import { pseudos } from '../getStylesAtomic'
 import {
   ExtractedAttr,
   ExtractedAttrAttr,
@@ -55,7 +54,6 @@ const validComponents: { [key: string]: StaticComponent } = Object.keys(
   }, {})
 
 export type Extractor = ReturnType<typeof createExtractor>
-let hasRegistered = false
 
 export function createExtractor() {
   const bindingCache: Record<string, string | null> = {}
@@ -66,6 +64,12 @@ export function createExtractor() {
     (process.env.NODE_ENV === 'development' ||
       process.env.DEBUG ||
       process.env.IDENTIFY_TAGS)
+
+  // ts imports
+  require('esbuild-register/dist/node').register({
+    target: 'es2019',
+    format: 'cjs',
+  })
 
   return {
     parse: (
@@ -81,22 +85,6 @@ export function createExtractor() {
         ...props
       }: ExtractorParseProps
     ) => {
-      // lazy load ts-node
-      if (!hasRegistered) {
-        hasRegistered = true
-        // used by getStaticBindingsForScope + themeFile
-        require('ts-node/register/transpile-only')
-        // ({
-        //   transpileOnly: true,
-        //   typeCheck: false,
-        //   lazy: true,
-        //   files: [],
-        //   compilerOptions: {
-        //     module: 'CommonJS',
-        //   },
-        // })
-      }
-
       if (themesFile) {
         themesByFile[themesFile] =
           themesByFile[themesFile] || require(themesFile).default
@@ -485,9 +473,9 @@ export function createExtractor() {
 
             const [value, valuePath] = (() => {
               if (t.isJSXExpressionContainer(attribute?.value)) {
-                return [attribute.value.expression, path.get('value')] as const
+                return [attribute.value.expression!, path.get('value')!] as const
               } else {
-                return [attribute.value, path.get('value')] as const
+                return [attribute.value!, path.get('value')!] as const
               }
             })()
             const remove = () => {

@@ -1,5 +1,5 @@
 import { stylePropsText, stylePropsTextOnly } from '@snackui/helpers'
-import React, { useMemo, useRef } from 'react'
+import React, { memo, useMemo, useRef } from 'react'
 import {
   Platform,
   Text as ReactText,
@@ -38,17 +38,18 @@ const ellipseStyle = {
   textOverflow: 'ellipsis',
 }
 
-export const Text = (allProps: TextProps) => {
-  const [props, style] = useTextStyle(allProps)
+export const Text = memo((allProps: TextProps) => {
+  const [props, style] = useTextStyle(allProps, false, true)
   return (
     <ReactText
       {...props}
       style={[isWeb ? defaultStyle : null, style, props['style']]}
     />
   )
-}
+})
 
 if (process.env.IS_STATIC) {
+  // @ts-ignore
   Text.staticConfig = {
     isText: true,
     validStyles: stylePropsText,
@@ -103,52 +104,79 @@ const testProps = {
   },
 }
 
+const emptyObj = Object.freeze({})
+
 export const useTextStyle = (
   allProps: TextProps,
-  onlyTextSpecificStyle?: boolean
+  onlyTextSpecificStyle?: boolean,
+  memo?: boolean
 ) => {
-  return useMemo(() => {
-    const props: TextProps = {}
-    const style: TextStyle = {}
-    const test = onlyTextSpecificStyle ? testProps.specific : testProps.all
-    for (const key in allProps) {
-      if (!isWeb) {
-        if (key === 'ellipse') {
-          props['numberOfLines'] = 1
-          props['lineBreakMode'] = 'clip'
+  const styleKeys = onlyTextSpecificStyle ? testProps.specific : testProps.all
+  if (memo) {
+    return useMemo(() => getTextStyle(allProps, styleKeys), [allProps])
+  }
+  return getTextStyle(allProps, styleKeys)
+}
+
+// somewhat optimized to avoid creating objects unless necessary
+
+const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
+  let props: TextProps | null = null
+  let style: TextStyle | null = null
+
+  for (const key in allProps) {
+    if (styleKeys[key]) {
+      // if should skip
+      if (isWeb) {
+        const val = allProps[key]
+        if (key === 'display' && val === 'inline') {
           continue
         }
+        if (val === 'inherit') {
+          continue
+        }
+      } else {
         if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
           continue
         }
       }
-      const val = allProps[key]
-      if (test[key]) {
-        if (key === 'selectable') {
-          Object.assign(style, selectableStyle as any)
-          continue
-        }
+      // if converting to a prop
+      if (!isWeb) {
         if (key === 'ellipse') {
-          Object.assign(style, ellipseStyle as any)
+          props = props || {}
+          props['numberOfLines'] = 1
+          props['lineBreakMode'] = 'clip'
           continue
         }
-        if (!isWeb) {
-          if (key === 'display' && val === 'inline') {
-            continue
-          }
-          if (val === 'inherit') {
-            continue
-          }
-          if (key === 'fontSize' && val < 12) {
-            style.fontSize = 12
-            continue
-          }
-        }
-        style[key] = val
-      } else {
-        props[key] = val
       }
+      style = style || {}
+      // style values
+      if (key === 'selectable') {
+        Object.assign(style, selectableStyle)
+        continue
+      }
+      if (key === 'ellipse') {
+        Object.assign(style, ellipseStyle)
+        continue
+      }
+      const val = allProps[key]
+      if (!isWeb) {
+        if (key === 'fontSize' && val < 12) {
+          style.fontSize = 12
+          continue
+        }
+      }
+      style[key] = val
     }
-    return [props, style] as const
-  }, [allProps])
+  }
+
+  if (style) {
+    props = props || {}
+    for (const key in allProps) {
+      if (key in style) continue
+      props[key] = allProps[key]
+    }
+  }
+
+  return [props || allProps, style || emptyObj] as const
 }

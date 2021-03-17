@@ -10,43 +10,14 @@
 //
 //
 
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 
+import { matchMedia } from '../helpers/matchMedia'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
-type MediaQueryObject = { [key: string]: string | number }
+type MediaQueryObject = { [key: string]: string | number | string }
 type MediaQueryShort = MediaQueryObject
-
-if (!process.env.IS_STATIC) {
-  require('@expo/match-media')
-}
-
-// temp patch for test environments
-global.matchMedia =
-  global.matchMedia ||
-  function () {
-    return { addEventListener() {}, removeEventListener() {}, matches: [] }
-  }
-
-export interface MediaQueryState {
-  xs: boolean
-  notXs: boolean
-  sm: boolean
-  notSm: boolean
-  md: boolean
-  lg: boolean
-  xl: boolean
-  xxl: boolean
-  short: boolean
-  tall: boolean
-}
-
-export type MediaQueryKey = keyof MediaQueryState
-
-export type MediaQueries = {
-  [key in MediaQueryKey]: MediaQueryShort
-}
 
 export const defaultMediaQueries = {
   xs: { maxWidth: 660 },
@@ -59,6 +30,18 @@ export const defaultMediaQueries = {
   xxl: { minWidth: 1420 },
   short: { maxHeight: 820 },
   tall: { minHeight: 820 },
+  hoverNone: { hover: 'none' },
+  pointerCoarse: { pointer: 'coarse' },
+}
+
+export type MediaQueryState = {
+  [key in keyof typeof defaultMediaQueries]: boolean
+}
+
+export type MediaQueryKey = keyof MediaQueryState
+
+export type MediaQueries = {
+  [key in MediaQueryKey]: MediaQueryShort
 }
 
 const mediaState: { [key in keyof MediaQueryState]: boolean } = {} as any
@@ -70,11 +53,12 @@ let hasConfigured = false
 
 export type ConfigureMediaQueryOptions = {
   queries: MediaQueries
-  // defaultActive?: MediaQueryKey[]
+  defaultActive?: MediaQueryKey[]
 }
 
 export const configureMedia = ({
   queries = defaultMediaQueries,
+  defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions) => {
   if (hasConfigured) {
     throw new Error(`Already configured mediaQueries once`)
@@ -83,20 +67,27 @@ export const configureMedia = ({
 
   // setup
   for (const key in queries) {
-    const getMatch = () => global.matchMedia(mediaObjectToString(queries[key]))
-    const match = getMatch()
-    mediaState[key] = !!match.matches
-    match.addEventListener('change', () => {
-      const next = !!getMatch().matches
-      if (next === mediaState[key]) return
-      mediaState[key] = next
-      const listeners = mediaQueryListeners[key]
-      if (listeners?.size) {
-        for (const cb of [...listeners]) {
-          cb()
+    try {
+      const str = mediaObjectToString(queries[key])
+      const getMatch = () => matchMedia(str)
+      const match = getMatch()
+      mediaState[key] = !!match.matches
+      match.addEventListener('change', () => {
+        const next = !!getMatch().matches
+        if (next === mediaState[key]) return
+        mediaState[key] = next
+        const listeners = mediaQueryListeners[key]
+        if (listeners?.size) {
+          for (const cb of [...listeners]) {
+            cb()
+          }
         }
-      }
-    })
+      })
+    } catch (err) {
+      console.error('Error running media query', err.message)
+      console.error('Error stack:', err.stack)
+      mediaState[key] = defaultActive?.includes(key as any) ?? true
+    }
   }
 }
 
@@ -195,14 +186,16 @@ export const useMedia = () => {
 const camelToHyphen = (str: string) =>
   str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).toLowerCase()
 
-export const mediaObjectToString = (
-  query: string | MediaQueryObject,
-  negate?: boolean
-) => {
-  if (typeof query === 'string') return query
+export const mediaObjectToString = (query: string | MediaQueryObject) => {
+  if (typeof query === 'string') {
+    return query
+  }
   return Object.entries(query)
     .map(([feature, value]) => {
       feature = camelToHyphen(feature)
+      if (typeof value === 'string') {
+        return `(${feature}: ${value})`
+      }
       if (typeof value === 'number' && /[height|width]$/.test(feature)) {
         value = `${value}px`
       }

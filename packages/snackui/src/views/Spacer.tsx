@@ -61,6 +61,7 @@ if (process.env.IS_STATIC) {
     validStyles: require('@snackui/helpers').stylePropsView,
     defaultProps: getStyle(),
     expansionProps: {
+      direction: () => null,
       flex: getFlex,
       size: getSize,
     },

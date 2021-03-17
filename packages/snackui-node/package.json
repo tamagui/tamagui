@@ -1,14 +1,21 @@
 {
   "name": "@snackui/node",
-  "version": "0.0.6",
+  "version": "0.2.0",
   "main": "index.js",
   "scripts": {
-    "build": "ttsc",
-    "watch": "ttsc --watch --preserveWatchOutput"
+    "build": "SNACKUI_COMPILE_PROCESS=1 ttsc",
+    "watch": "SNACKUI_COMPILE_PROCESS=1 ttsc --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@snackui/helpers": "^0.2.0"
   },
   "devDependencies": {
     "ts-transform-import-path-rewrite": "^0.3.0",
     "ttypescript": "^1.5.12",
-    "typescript": "*"
-  }
+    "typescript": "^4.2.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
 }

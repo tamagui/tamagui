@@ -56,8 +56,7 @@ export const Button = themeable(
           backgroundColor: theme.backgroundColorTertiary,
         }}
         pressStyle={{
-          backgroundColor: theme.backgroundColorTertiary,
-          transform: [{ scale: 0.96 }],
+          backgroundColor: theme.backgroundColorSecondary,
         }}
         flexDirection={flexDirection}
         {...props}

@@ -5,10 +5,10 @@ import { Dimensions } from 'react-native'
 import { useForceUpdate } from './useForceUpdate'
 
 /** [width, height] */
-type Size = [number, number]
+type WindowSize = [number, number]
 
 const idFn = (_) => _
-const getWindowSize = (): Size => [
+const getWindowSize = (): WindowSize => [
   Dimensions.get('window').width,
   Dimensions.get('window').height,
 ]
@@ -39,8 +39,8 @@ let store: any | null = null
 export function useWindowSize({
   adjust = idFn,
 }: {
-  adjust?: (x: Size) => Size
-} = {}): Size {
+  adjust?: (x: WindowSize) => WindowSize
+} = {}): WindowSize {
   store = store || new WindowSizeStore()
   const size = store.size
   const forceUpdate = useForceUpdate()

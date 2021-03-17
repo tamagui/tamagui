@@ -7,7 +7,6 @@
     "outDir": "_",
     "rootDir": "./src"
   },
-
   "include": ["src"],
   "references": []
 }

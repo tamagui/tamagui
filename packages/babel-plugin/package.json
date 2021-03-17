@@ -1,13 +1,25 @@
 {
   "name": "@snackui/babel-plugin",
-  "version": "0.0.6",
-  "main": "index.js",
+  "version": "0.2.0",
   "license": "MIT",
+  "types": "types.d.ts",
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@snackui/static": "^0.0.6"
+  "main": "dist",
+  "module": "_",
+  "scripts": {
+    "build": "esdx",
+    "watch": "esdx-watch"
   },
-  "gitHead": "503b64ff877fbb47382ba34266af192b2de81ffb"
+  "devDependencies": {
+    "@babel/generator": "*",
+    "@babel/helper-plugin-utils": "*",
+    "@babel/template": "*",
+    "@babel/traverse": "*",
+    "@babel/types": "*",
+    "@dish/esdx": "^0.0.7",
+    "@snackui/static": "^0.2.0"
+  },
+  "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
 }

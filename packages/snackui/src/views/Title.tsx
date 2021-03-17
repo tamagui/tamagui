@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useTheme } from '../hooks/useTheme'
 import { Paragraph } from './Paragraph'
 import { SizableTextProps, getSize } from './Size'
 
@@ -28,14 +29,18 @@ export const H2 = (props: TitleProps) => (
   <Title accessibilityRole="header" size="md" {...props} />
 )
 
-export const H3 = (props: TitleProps) => (
-  <Title
-    accessibilityRole="header"
-    size="xs"
-    color="rgba(0,0,0,0.7)"
-    {...props}
-  />
-)
+export const H3 = (props: TitleProps) => {
+  const theme = useTheme()
+  return (
+    <Title
+      accessibilityRole="header"
+      size="xs"
+      fontWeight="800"
+      color={theme.colorTertiary}
+      {...props}
+    />
+  )
+}
 
 export const H4 = (props: TitleProps) => (
   <Title

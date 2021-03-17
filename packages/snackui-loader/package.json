@@ -1,8 +1,22 @@
 {
   "name": "snackui-loader",
-  "version": "0.0.6",
-  "main": "index.js",
+  "version": "0.2.0",
+  "main": "dist",
+  "types": "types.d.ts",
+  "module": "_",
+  "scripts": {
+    "build": "esdx",
+    "watch": "esdx-watch"
+  },
   "dependencies": {
-    "@snackui/static": "^0.0.6"
-  }
+    "@dish/esdx": "^0.0.7",
+    "@snackui/static": "^0.2.0",
+    "fs-extra": "^9.1.0",
+    "loader-utils": "^2.0.0",
+    "lodash": "^4.17.21"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
 }

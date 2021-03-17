@@ -1,4 +1,4 @@
-export function getNiceKey(name: string, len = 1) {
+export function getNiceKey(name: string, len = 3) {
   let key = ''
   for (const [index, char] of name.split('').entries()) {
     if (index === 0 || char.toUpperCase() === char) {

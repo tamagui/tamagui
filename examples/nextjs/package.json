@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "npx next dev",
     "build": "true",
+    "watch": "true",
     "start": "npx next start"
   },
   "dependencies": {
     "react": "*",
     "react-dom": "*",
-    "snackui": "*"
+    "snackui": "*",
+    "next": "^9.5.3",
+    "react-native": "^0.63.4"
   },
   "devDependencies": {
     "@snackui/static": "*",
