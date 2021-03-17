@@ -2,7 +2,7 @@
   "name": "@snackui/babel-plugin",
   "version": "0.2.0",
   "license": "MIT",
-  "types": "src/_types.d.ts",
+  "types": "types.d.ts",
   "publishConfig": {
     "access": "public"
   },

@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "main": "dist",
   "module": "_",
-  "types": "src/_types.d.ts",
+  "types": "types.d.ts",
   "scripts": {
     "build": "esdx",
     "watch": "esdx-watch",

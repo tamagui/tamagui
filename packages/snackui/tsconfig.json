@@ -8,7 +8,6 @@
   },
 
   "include": ["src"],
-  "exclude": ["src/_types.d.ts"],
   "references": [{
     "path": "../helpers"
   }]

@@ -2,7 +2,7 @@
   "name": "snackui-loader",
   "version": "0.2.0",
   "main": "dist",
-  "types": "src/_types.d.ts",
+  "types": "types.d.ts",
   "module": "_",
   "scripts": {
     "build": "esdx",
