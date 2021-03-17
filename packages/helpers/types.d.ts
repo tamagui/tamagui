@@ -334,3 +334,4 @@ declare module "@snackui/helpers" {
 declare module "@snackui/helpers" {
     export function concatClassName(className: string, ...propObjects: any[]): string;
 }
+//# sourceMappingURL=types.d.ts.map

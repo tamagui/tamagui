@@ -9,7 +9,7 @@
     "watch": "esdx-watch"
   },
   "devDependencies": {
-    "@dish/esdx": "*"
+    "@dish/esdx": "^0.0.7"
   },
   "publishConfig": {
     "access": "public"

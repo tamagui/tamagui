@@ -270,11 +270,11 @@ declare module "snackui" {
 
 declare module "snackui" {
     import React from "react";
-    export type Spacing = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl" | number | boolean | string;
+    export type Spacing = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | number | boolean | string;
     export type SpacerProps = {
         size?: Spacing;
         flex?: boolean | number;
-        direction?: "vertical" | "horizontal" | "both";
+        direction?: 'vertical' | 'horizontal' | 'both';
     };
     export const Spacer: React.MemoExoticComponent<(props: SpacerProps) => JSX.Element>;
 }
@@ -284,14 +284,14 @@ declare module "snackui" {
     export function spacedChildren({ children, spacing, flexDirection, }: {
         children: any;
         spacing?: Spacing;
-        flexDirection?: ViewStyle["flexDirection"];
+        flexDirection?: ViewStyle['flexDirection'];
     }): any;
 }
 
 declare module "snackui" {
     import { RefObject } from "react";
     import { GestureResponderEvent, View, ViewProps, ViewStyle } from "react-native";
-    export type StackProps = Omit<Omit<ViewStyle, "display"> & Omit<ViewProps, "display"> & {
+    export type StackProps = Omit<Omit<ViewStyle, 'display'> & Omit<ViewProps, 'display'> & {
         ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
         animated?: boolean;
         fullscreen?: boolean;
@@ -310,9 +310,9 @@ declare module "snackui" {
         userSelect?: string;
         className?: string;
         disabled?: boolean;
-        contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
-        display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
-    }, "alignContent" | "backfaceVisibility">;
+        contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
+        display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    }, 'alignContent' | 'backfaceVisibility'>;
     export const AbsoluteVStack: StaticComponent<StackProps>;
     export const HStack: StaticComponent<StackProps>;
     export const VStack: StaticComponent<StackProps>;
@@ -320,9 +320,9 @@ declare module "snackui" {
 
 declare module "snackui" {
     import { PerpectiveTransform, RotateTransform, RotateXTransform, RotateYTransform, RotateZTransform, ScaleTransform, ScaleXTransform, ScaleYTransform, SkewXTransform, SkewYTransform, TranslateXTransform, TranslateYTransform } from "react-native";
-    type AnimatableProps = Partial<Pick<StackProps, "backgroundColor" | "borderColor" | "opacity"> & PerpectiveTransform & RotateTransform & RotateXTransform & RotateYTransform & RotateZTransform & ScaleTransform & ScaleXTransform & ScaleYTransform & TranslateXTransform & TranslateYTransform & SkewXTransform & SkewYTransform>;
+    type AnimatableProps = Partial<Pick<StackProps, 'backgroundColor' | 'borderColor' | 'opacity'> & PerpectiveTransform & RotateTransform & RotateXTransform & RotateYTransform & RotateZTransform & ScaleTransform & ScaleXTransform & ScaleYTransform & TranslateXTransform & TranslateYTransform & SkewXTransform & SkewYTransform>;
     export type AnimatedStackProps = StackProps & {
-        animateState?: "in" | "out";
+        animateState?: 'in' | 'out';
         velocity?: number;
         animation?: {
             from: AnimatableProps;
@@ -337,7 +337,7 @@ declare module "snackui" {
         blurAmount?: number;
         blurRadius?: number;
         fallbackBackgroundColor?: string;
-        blurType?: "xlight" | "light" | "dark" | "chromeMaterial" | "material" | "thickMaterial" | "thinMaterial" | "ultraThinMaterial" | "chromeMaterialDark" | "materialDark" | "thickMaterialDark" | "thinMaterialDark" | "ultraThinMaterialDark" | "chromeMaterialLight" | "materialLight" | "thickMaterialLight" | "thinMaterialLight" | "ultraThinMaterialLight" | "regular" | "prominent" | "extraDark";
+        blurType?: 'xlight' | 'light' | 'dark' | 'chromeMaterial' | 'material' | 'thickMaterial' | 'thinMaterial' | 'ultraThinMaterial' | 'chromeMaterialDark' | 'materialDark' | 'thickMaterialDark' | 'thinMaterialDark' | 'ultraThinMaterialDark' | 'chromeMaterialLight' | 'materialLight' | 'thickMaterialLight' | 'thinMaterialLight' | 'ultraThinMaterialLight' | 'regular' | 'prominent' | 'extraDark';
         downsampleFactor?: number;
     } & StackProps;
     export function BlurView({ children, borderRadius, fallbackBackgroundColor, blurRadius, ...props }: BlurViewProps): JSX.Element;
@@ -369,8 +369,8 @@ declare module "snackui" {
 declare module "snackui" {
     import React from "react";
     import { TextProps as ReactTextProps, TextStyle } from "react-native";
-    export type TextProps = Omit<ReactTextProps, "style"> & Omit<TextStyle, "display" | "backfaceVisibility"> & {
-        display?: TextStyle["display"] | "inherit";
+    export type TextProps = Omit<ReactTextProps, 'style'> & Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
+        display?: TextStyle['display'] | 'inherit';
         ellipse?: boolean;
         selectable?: boolean;
         children?: any;
@@ -388,7 +388,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     export type ButtonProps = StackProps & {
-        textProps?: Omit<TextProps, "children">;
+        textProps?: Omit<TextProps, 'children'>;
         noTextWrap?: boolean;
         theme?: string | null;
         icon?: JSX.Element | null;
@@ -438,11 +438,11 @@ declare module "snackui" {
 declare module "snackui" {
     const _default: {};
     export default _default;
-    type AnchorEnum = "BOTTOM_LEFT" | "BOTTOM_RIGHT" | "BOTTOM_CENTER" | "TOP_LEFT" | "TOP_RIGHT" | "TOP_CENTER" | "LEFT_BOTTOM" | "LEFT_TOP" | "LEFT_CENTER" | "RIGHT_BOTTOM" | "RIGHT_TOP" | "RIGHT_CENTER" | "CENTER";
+    type AnchorEnum = 'BOTTOM_LEFT' | 'BOTTOM_RIGHT' | 'BOTTOM_CENTER' | 'TOP_LEFT' | 'TOP_RIGHT' | 'TOP_CENTER' | 'LEFT_BOTTOM' | 'LEFT_TOP' | 'LEFT_CENTER' | 'RIGHT_BOTTOM' | 'RIGHT_TOP' | 'RIGHT_CENTER' | 'CENTER';
     export type PopoverProps = {
         inline?: boolean;
         anchor?: AnchorEnum;
-        position?: "top" | "left" | "right" | "bottom";
+        position?: 'top' | 'left' | 'right' | 'bottom';
         children: React.ReactElement | null;
         contents: React.ReactElement | ((isOpen: boolean) => React.ReactElement | null) | null;
         isOpen?: boolean;
@@ -450,7 +450,7 @@ declare module "snackui" {
         overlay?: boolean;
         overlayPointerEvents?: boolean;
         onChangeOpen?: (next: boolean) => any;
-        style?: React.HTMLAttributes<HTMLDivElement>["style"];
+        style?: React.HTMLAttributes<HTMLDivElement>['style'];
         mountImmediately?: boolean;
     };
 }
@@ -532,7 +532,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     import { ModalProps as ModalPropsReact } from "react-native";
-    export type ModalProps = ModalPropsReact & Omit<AnimatedStackProps, "animateState"> & {
+    export type ModalProps = ModalPropsReact & Omit<AnimatedStackProps, 'animateState'> & {
         visible?: boolean;
         overlayBackground?: string;
         overlayDismisses?: boolean;
@@ -553,7 +553,7 @@ declare module "snackui" {
 declare module "snackui" {
     import React from "react";
     import { TextInputProps, TextStyle } from "react-native";
-    export type InputProps = Omit<TextInputProps, "style"> & TextStyle & {
+    export type InputProps = Omit<TextInputProps, 'style'> & TextStyle & {
         name?: string;
     };
     export const Input: React.ForwardRefExoticComponent<Omit<TextInputProps, "style"> & TextStyle & {
@@ -562,7 +562,7 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export type TooltipProps = Omit<PopoverProps, "contents"> & {
+    export type TooltipProps = Omit<PopoverProps, 'contents'> & {
         contents: any;
     };
     export const Tooltip: ({ contents, ...props }: TooltipProps) => JSX.Element;
@@ -570,7 +570,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     export type Size = number | SizeName;
-    export type SizeName = "xxxs" | "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
+    export type SizeName = 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
     export type SizableTextProps = TextProps & {
         size?: Size;
         sizeLineHeight?: number;
@@ -660,7 +660,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     import { TextInputProps, TextStyle } from "react-native";
-    export const TextArea: (props: Omit<TextInputProps, "style"> & TextStyle & {
+    export const TextArea: (props: Omit<TextInputProps, 'style'> & TextStyle & {
         name?: string;
     }) => JSX.Element;
 }
@@ -679,7 +679,7 @@ declare module "snackui" {
     import React from "react";
     export type ToastOptions = {
         duration?: number;
-        type?: "info" | "success" | "error";
+        type?: 'info' | 'success' | 'error';
     };
     export const Toast: {
         show: (text: string, options?: ToastOptions | undefined) => void;
@@ -726,7 +726,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     type ValueOf<T> = T[keyof T];
-    export function createUseScale<A, B = Required<Omit<A, "media">>, Val = ValueOf<B>>(scaleProps: A & {
+    export function createUseScale<A, B = Required<Omit<A, 'media'>>, Val = ValueOf<B>>(scaleProps: A & {
         media?: {
             [key in keyof MediaQueryState]?: B;
         };
@@ -748,3 +748,4 @@ declare module "snackui" {
 declare module "snackui" {
     export function Popover(props: PopoverProps): JSX.Element | null;
 }
+//# sourceMappingURL=types.d.ts.map

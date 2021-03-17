@@ -30,14 +30,17 @@
     "ultra-runner": "^3.10.5"
   },
   "devDependencies": {
-    "rollup-plugin-flat-dts": "^1.1.0",
     "lerna": "^4.0.0",
-    "patch-package": "^6.4.6"
+    "patch-package": "^6.4.6",
+    "rollup-plugin-flat-dts": "^1.1.0"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {
       "style": "module",
       "parser": "typescript"
     }
+  },
+  "resolutions": {
+    "snackui-monorepo": "portal:/Users/n8/dish/snackui"
   }
 }

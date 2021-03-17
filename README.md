@@ -158,11 +158,11 @@ Add snackui to your project:
 yarn add snackui @snackui/static @snackui/babel-plugin
 ```
 
-You'll likely want to gitignore the outputted style files, though it's not necessary. We originally kept CSS in-memory, but ran into various issues, but would support re-implementing it if anyone knows a cleaner way. In your `.gitignore` add this:
+From here, you can set it two ways: for extraction to CSS on web, you'll need the Webpack plugin. If you don't need that, or are just developing for React Native, then just set up the babel plugin.
 
-```
-*__snack.css
-```
+**Note:** Don't use *both* the Webpack and Babel plugin together as they will conflict.
+
+We hope to add plugins for rollup, esbuild and others soon as it should be relatively straightforward, PR's are welcome.
 
 ### Babel - Native / Simple extraction (experimental)
 
@@ -190,6 +190,8 @@ module.exports = {
             loader: require.resolve('@snackui/static/loader'),
             options: {
               // use this to add files to be statically evaluated
+              // full path or partial path supported
+              // always use the ".js" extension (so colors.ts => colors.js)
               // default:
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
               // exclude files from processing

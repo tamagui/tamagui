@@ -27,11 +27,11 @@ declare module "@snackui/static" {
         excludeProps?: string[];
     }
     export type ExtractedAttrAttr = {
-        type: "attr";
+        type: 'attr';
         value: t.JSXAttribute | t.JSXSpreadAttribute;
     };
     export type ExtractedAttr = ExtractedAttrAttr | {
-        type: "ternary";
+        type: 'ternary';
         value: Ternary;
     };
     export type ExtractTagProps = {
@@ -216,7 +216,7 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
-    module "@babel/types" {
+    module '@babel/types' {
         function toIdentifier(input: string): string;
     }
     export function generateUid(scope: any, name: string): string;
@@ -226,3 +226,4 @@ declare module "@snackui/static" {
     import * as t from "@babel/types";
     export function getPropValueFromAttributes(propName: string, attrs: (t.JSXAttribute | t.JSXSpreadAttribute)[]): t.Expression | null;
 }
+//# sourceMappingURL=types.d.ts.map
