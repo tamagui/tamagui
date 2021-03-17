@@ -707,24 +707,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    type Listener = (context: MediaQueryList) => any;
-    export default class MediaQueryList {
-        private query;
-        private listeners;
-        private orientation;
-        private unsubscribe;
-        constructor(query: string);
-        private resize;
-        _unmount(): void;
-        addListener(listener: Listener): void;
-        removeListener(listener: Listener): void;
-        get matches(): boolean;
-        private updateListeners;
-    }
-    export const matchMedia: (query: string) => MediaQueryList;
-}
-
-declare module "snackui" {
     type ValueOf<T> = T[keyof T];
     export function createUseScale<A, B = Required<Omit<A, 'media'>>, Val = ValueOf<B>>(scaleProps: A & {
         media?: {
@@ -734,18 +716,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export function BlurView({ blurType, blurAmount, fallbackBackgroundColor, downsampleFactor, children, borderRadius, ...props }: BlurViewProps): JSX.Element;
-}
-
-declare module "snackui" {
-    export { LinearGradient } from "expo-linear-gradient";
-}
-
-declare module "snackui" {
     export const ListItem: () => JSX.Element;
-}
-
-declare module "snackui" {
-    export function Popover(props: PopoverProps): JSX.Element | null;
 }
 //# sourceMappingURL=types.d.ts.map
