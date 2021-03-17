@@ -386,7 +386,7 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 See [the roadmap](ROADMAP.md) for details:
 
-- [x] [Themes](roadmap.md#themes)
+- [x] Themes
 - [x] Test performance of useMemo calls / splitProps
 - [ ] Media Queries test coverage, docs and configuration
 - [ ] Docs / docs site
