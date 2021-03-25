@@ -15,8 +15,7 @@ type Listener = (context: MediaQueryList) => any
 export default class MediaQueryList /* extends MediaQueryList */ {
   private listeners: Listener[] = []
 
-  private orientation: ScreenOrientation.Orientation =
-    ScreenOrientation.Orientation.PORTRAIT_UP
+  private orientation: ScreenOrientation.Orientation = ScreenOrientation.Orientation.PORTRAIT_UP
 
   private unsubscribe: Subscription | null = null
 

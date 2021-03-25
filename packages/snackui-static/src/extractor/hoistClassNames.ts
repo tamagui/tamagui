@@ -19,25 +19,13 @@ export function hoistClassNames(
     return identifier
   }
   if (t.isBinaryExpression(expr)) {
-    return t.binaryExpression(
-      expr.operator,
-      hoist(expr.left),
-      hoist(expr.right)
-    )
+    return t.binaryExpression(expr.operator, hoist(expr.left), hoist(expr.right))
   }
   if (t.isLogicalExpression(expr)) {
-    return t.logicalExpression(
-      expr.operator,
-      hoist(expr.left),
-      hoist(expr.right)
-    )
+    return t.logicalExpression(expr.operator, hoist(expr.left), hoist(expr.right))
   }
   if (t.isConditionalExpression(expr)) {
-    return t.conditionalExpression(
-      expr.test,
-      hoist(expr.consequent),
-      hoist(expr.alternate)
-    )
+    return t.conditionalExpression(expr.test, hoist(expr.consequent), hoist(expr.alternate))
   }
   return expr
 

@@ -25,10 +25,7 @@ export function literalToAst(literal: any) {
             return typeof literal[k] !== 'undefined'
           })
           .map((k) => {
-            return t.objectProperty(
-              t.stringLiteral(k),
-              literalToAst(literal[k])
-            )
+            return t.objectProperty(t.stringLiteral(k), literalToAst(literal[k]))
           })
       )
   }

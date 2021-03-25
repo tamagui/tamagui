@@ -20,16 +20,9 @@ function Examples() {
 function Example(props: { alternate?: boolean; children?: any }) {
   const theme = useTheme()
   return (
-    <HStack
-      alignItems="center"
-      padding={10}
-      flex={1}
-      backgroundColor={theme.backgroundColor}
-    >
+    <HStack alignItems="center" padding={10} flex={1} backgroundColor={theme.backgroundColor}>
       <Text color={theme.color}>Hello&nbsp;</Text>
-      <Text color={props.alternate ? theme.altColor : theme.color}>
-        from SnackUI
-      </Text>
+      <Text color={props.alternate ? theme.altColor : theme.color}>from SnackUI</Text>
       {props.children}
     </HStack>
   )

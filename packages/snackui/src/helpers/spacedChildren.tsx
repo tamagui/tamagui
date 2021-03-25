@@ -22,9 +22,7 @@ export function spacedChildren({
     <SpacerNoOpt
       size={spacing}
       direction={
-        flexDirection === 'row' || flexDirection === 'row-reverse'
-          ? 'horizontal'
-          : 'vertical'
+        flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
       }
     />
   )

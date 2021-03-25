@@ -1,9 +1,6 @@
 import * as t from '@babel/types'
 
-export function evaluateAstNode(
-  exprNode: t.Node,
-  evalFn?: (node: t.Node) => any
-): any {
+export function evaluateAstNode(exprNode: t.Node, evalFn?: (node: t.Node) => any): any {
   // null === boolean true (at least in our use cases for jsx eval)
   if (exprNode === null) {
     return true
@@ -29,10 +26,7 @@ export function evaluateAstNode(
         key = evaluateAstNode(value.key, evalFn)
       } else if (t.isIdentifier(value.key)) {
         key = value.key.name
-      } else if (
-        t.isStringLiteral(value.key) ||
-        t.isNumericLiteral(value.key)
-      ) {
+      } else if (t.isStringLiteral(value.key) || t.isNumericLiteral(value.key)) {
         key = value.key.value
       } else {
         throw new Error('Unsupported key type: ' + value.key.type)
@@ -86,11 +80,7 @@ export function evaluateAstNode(
     return null
   }
 
-  if (
-    t.isNumericLiteral(exprNode) ||
-    t.isStringLiteral(exprNode) ||
-    t.isBooleanLiteral(exprNode)
-  ) {
+  if (t.isNumericLiteral(exprNode) || t.isStringLiteral(exprNode) || t.isBooleanLiteral(exprNode)) {
     // In the interest of representing the "evaluated" prop
     // as the user intended, we support negative null. Why not.
     return exprNode.value
@@ -98,25 +88,13 @@ export function evaluateAstNode(
 
   if (t.isBinaryExpression(exprNode)) {
     if (exprNode.operator === '+') {
-      return (
-        evaluateAstNode(exprNode.left, evalFn) +
-        evaluateAstNode(exprNode.right, evalFn)
-      )
+      return evaluateAstNode(exprNode.left, evalFn) + evaluateAstNode(exprNode.right, evalFn)
     } else if (exprNode.operator === '-') {
-      return (
-        evaluateAstNode(exprNode.left, evalFn) -
-        evaluateAstNode(exprNode.right, evalFn)
-      )
+      return evaluateAstNode(exprNode.left, evalFn) - evaluateAstNode(exprNode.right, evalFn)
     } else if (exprNode.operator === '*') {
-      return (
-        evaluateAstNode(exprNode.left, evalFn) *
-        evaluateAstNode(exprNode.right, evalFn)
-      )
+      return evaluateAstNode(exprNode.left, evalFn) * evaluateAstNode(exprNode.right, evalFn)
     } else if (exprNode.operator === '/') {
-      return (
-        evaluateAstNode(exprNode.left, evalFn) /
-        evaluateAstNode(exprNode.right, evalFn)
-      )
+      return evaluateAstNode(exprNode.left, evalFn) / evaluateAstNode(exprNode.right, evalFn)
     }
   }
 

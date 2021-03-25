@@ -2,16 +2,7 @@ import { TextProps } from './Text'
 
 export type Size = number | SizeName
 
-export type SizeName =
-  | 'xxxs'
-  | 'xxs'
-  | 'xs'
-  | 'sm'
-  | 'md'
-  | 'lg'
-  | 'xl'
-  | 'xxl'
-  | 'xxxl'
+export type SizeName = 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl'
 
 export type SizableTextProps = TextProps & {
   size?: Size

@@ -3,9 +3,7 @@ import * as t from '@babel/types'
 
 import { ExtractedAttr, Ternary } from '../types'
 
-export function isPresent<T extends Object>(
-  input: null | void | undefined | T
-): input is T {
+export function isPresent<T extends Object>(input: null | void | undefined | T): input is T {
   return input != null
 }
 
@@ -89,5 +87,4 @@ export function isValidThemeHook(
   return true
 }
 
-export const isInsideSnackUI = (srcName: string) =>
-  srcName.includes('/snackui/')
+export const isInsideSnackUI = (srcName: string) => srcName.includes('/snackui/')

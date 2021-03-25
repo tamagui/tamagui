@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  Modal as ModalNative,
-  ModalProps as ModalPropsReact,
-  TouchableOpacity,
-} from 'react-native'
+import { Modal as ModalNative, ModalProps as ModalPropsReact, TouchableOpacity } from 'react-native'
 
 import { isWeb } from '../constants'
 import { prevent } from '../helpers/prevent'
@@ -96,11 +92,7 @@ export const Modal = (props: ModalProps) => {
               animation,
             }}
           >
-            <ModalPane
-              onPress={prevent}
-              pointerEvents={pointerEvents}
-              {...rest}
-            >
+            <ModalPane onPress={prevent} pointerEvents={pointerEvents} {...rest}>
               {children}
             </ModalPane>
           </AnimatedVStack>

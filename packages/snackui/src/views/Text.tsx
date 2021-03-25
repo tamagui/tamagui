@@ -1,11 +1,6 @@
 import { stylePropsText, stylePropsTextOnly } from '@snackui/helpers'
 import React, { memo, useMemo, useRef } from 'react'
-import {
-  Platform,
-  Text as ReactText,
-  TextProps as ReactTextProps,
-  TextStyle,
-} from 'react-native'
+import { Platform, Text as ReactText, TextProps as ReactTextProps, TextStyle } from 'react-native'
 
 export type TextProps = Omit<ReactTextProps, 'style'> &
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
@@ -40,12 +35,7 @@ const ellipseStyle = {
 
 export const Text = memo((allProps: TextProps) => {
   const [props, style] = useTextStyle(allProps, false, true)
-  return (
-    <ReactText
-      {...props}
-      style={[isWeb ? defaultStyle : null, style, props['style']]}
-    />
-  )
+  return <ReactText {...props} style={[isWeb ? defaultStyle : null, style, props['style']]} />
 })
 
 if (process.env.IS_STATIC) {

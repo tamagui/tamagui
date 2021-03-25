@@ -19,16 +19,10 @@ test('converts a style object to class names', () => {
   expect(!!style1).toBeTruthy()
   expect(!!style2).toBeTruthy()
   expect(!!style3).toBeTruthy()
-  expect(
-    styles.find((x) => x.property === 'borderBottomStyle')?.value === 'solid'
-  ).toBeTruthy()
-  expect(
-    style1!.rules[0].includes('background-color:rgba(255,0,0,1.00)')
-  ).toBeTruthy()
+  expect(styles.find((x) => x.property === 'borderBottomStyle')?.value === 'solid').toBeTruthy()
+  expect(style1!.rules[0].includes('background-color:rgba(255,0,0,1.00)')).toBeTruthy()
   expect(style2!.rules[0].includes(`transform:rotateY(10deg)`)).toBeTruthy()
-  expect(
-    style3!.rules[0].includes(`box-shadow:0px 0px 10px rgba(255,0,0,1.00)`)
-  ).toBeTruthy()
+  expect(style3!.rules[0].includes(`box-shadow:0px 0px 10px rgba(255,0,0,1.00)`)).toBeTruthy()
 })
 
 test('expands and resolves shorthand props', () => {

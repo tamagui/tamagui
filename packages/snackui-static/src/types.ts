@@ -27,17 +27,12 @@ export type ExtractedAttrAttr = {
   value: t.JSXAttribute | t.JSXSpreadAttribute
 }
 
-export type ExtractedAttr =
-  | ExtractedAttrAttr
-  | { type: 'ternary'; value: Ternary }
+export type ExtractedAttr = ExtractedAttrAttr | { type: 'ternary'; value: Ternary }
 
 export type ExtractTagProps = {
   attrs: ExtractedAttr[]
   node: t.JSXOpeningElement
-  attemptEval: (
-    exprNode: t.Node,
-    evalFn?: ((node: t.Node) => any) | undefined
-  ) => any
+  attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any
   viewStyles: ViewStyle
   jsxPath: NodePath<t.JSXElement>
   originalNodeName: string

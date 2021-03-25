@@ -57,8 +57,7 @@ export const configureThemes = (userThemes: Themes) => {
     const tag = createStyleTag()
     for (const themeName in userThemes) {
       const theme = userThemes[themeName]
-      invertStyleVariableToValue[themeName] =
-        invertStyleVariableToValue[themeName] || {}
+      invertStyleVariableToValue[themeName] = invertStyleVariableToValue[themeName] || {}
       let vars = ''
       for (const themeKey in theme) {
         const themeVal = theme[themeKey]
@@ -105,9 +104,7 @@ class ActiveThemeManager {
 }
 
 const ThemeContext = createContext<Themes>(themes)
-export const ActiveThemeContext = createContext<ActiveThemeManager>(
-  new ActiveThemeManager()
-)
+export const ActiveThemeContext = createContext<ActiveThemeManager>(new ActiveThemeManager())
 
 type UseThemeState = {
   uuid: Object
@@ -153,9 +150,7 @@ export const useTheme = () => {
         const activeTheme = themes[manager.name]
         const val = activeTheme[key]
         if (!val) {
-          throw new Error(
-            `No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`
-          )
+          throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
         }
         if (state.current.isRendering) {
           state.current.keys.add(key)
@@ -200,16 +195,14 @@ export type ThemeProps = {
 
 export const Theme = (props: ThemeProps) => {
   const parent = useContext(ActiveThemeContext)
-  const [themeManager, setThemeManager] = useState<ActiveThemeManager | null>(
-    () => {
-      if (props.name) {
-        const manager = new ActiveThemeManager()
-        manager.setActiveTheme(`${props.name}`)
-        return manager
-      }
-      return null
+  const [themeManager, setThemeManager] = useState<ActiveThemeManager | null>(() => {
+    if (props.name) {
+      const manager = new ActiveThemeManager()
+      manager.setActiveTheme(`${props.name}`)
+      return manager
     }
-  )
+    return null
+  })
 
   useLayoutEffect(() => {
     if (props.name === null) {
@@ -228,19 +221,14 @@ export const Theme = (props: ThemeProps) => {
   }, [props.name])
 
   const contents = themeManager ? (
-    <ActiveThemeContext.Provider value={themeManager}>
-      {props.children}
-    </ActiveThemeContext.Provider>
+    <ActiveThemeContext.Provider value={themeManager}>{props.children}</ActiveThemeContext.Provider>
   ) : (
     props.children
   )
 
   if (isWeb) {
     return (
-      <div
-        className={getThemeParentClassName(themeManager?.name)}
-        style={{ display: 'contents' }}
-      >
+      <div className={getThemeParentClassName(themeManager?.name)} style={{ display: 'contents' }}>
         {contents}
       </div>
     )

@@ -164,9 +164,7 @@ export const useMedia = () => {
         }
         if (!(key in mediaState)) {
           throw new Error(
-            `No media query configured "${String(key)}" in: ${Object.keys(
-              mediaState
-            )}`
+            `No media query configured "${String(key)}" in: ${Object.keys(mediaState)}`
           )
         }
         if (!st.isUnmounted) {

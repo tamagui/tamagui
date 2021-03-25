@@ -27,9 +27,7 @@ export function getInitialFileName() {
   return initialFileName
 }
 
-const mergeStyleGroups = [
-  new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset']),
-]
+const mergeStyleGroups = [new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset'])]
 
 export function extractToClassNames(
   extractor: Extractor,
@@ -121,10 +119,7 @@ export function extractToClassNames(
           if (viewStyles) {
             const styles = addStyles(viewStyles)
             for (const style of styles) {
-              finalClassNames = [
-                ...finalClassNames,
-                t.stringLiteral(style.identifier),
-              ]
+              finalClassNames = [...finalClassNames, t.stringLiteral(style.identifier)]
             }
           }
 
@@ -138,10 +133,7 @@ export function extractToClassNames(
                       t.logicalExpression(
                         '&&',
                         val.argument,
-                        t.memberExpression(
-                          val.argument,
-                          t.identifier('className')
-                        )
+                        t.memberExpression(val.argument, t.identifier('className'))
                       )
                     )
                   }
@@ -213,8 +205,7 @@ export function extractToClassNames(
             if (!t.isIdentifier(nameExpr)) {
               ensureImportingConcat(programPath)
               const simpleSpreads = attrs.filter(
-                (x) =>
-                  t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
+                (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
               )
               expr = t.callExpression(t.identifier(CONCAT_CLASSNAME_IMPORT), [
                 expr,
@@ -223,19 +214,11 @@ export function extractToClassNames(
             }
 
             node.attributes.push(
-              t.jsxAttribute(
-                t.jsxIdentifier('className'),
-                t.jsxExpressionContainer(expr)
-              )
+              t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(expr))
             )
           }
 
-          const comment = util.format(
-            '/* %s:%s (%s) */',
-            filePath,
-            lineNumbers,
-            originalNodeName
-          )
+          const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
 
           for (const { className, rules } of finalStyles) {
             if (cssMap.has(className)) {
@@ -269,9 +252,7 @@ export function extractToClassNames(
   }
 
   const styles = Array.from(cssMap.values())
-    .map((x) =>
-      shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`
-    )
+    .map((x) => (shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`))
     .join('\n')
     .trim()
 
@@ -286,16 +267,12 @@ export function extractToClassNames(
       importPath = `/tmp/snackui.css!=!snackui-loader?cssPath=true!${initialFileName}`
     } else {
       // otherwise we write out to fs to unique place
-      const cachePath = `${basename(
-        sourceFileName.replace(/[\/\.]/g, '-')
-      )}.css`
+      const cachePath = `${basename(sourceFileName.replace(/[\/\.]/g, '-'))}.css`
       stylesPath = join(cacheDir, cachePath)
       writeFileSync(stylesPath, styles)
       importPath = `${stylesPath}!=!snackui-loader?cssPath=true!${stylesPath}`
     }
-    ast.program.body.unshift(
-      t.importDeclaration([], t.stringLiteral(importPath))
-    )
+    ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
     if (!shouldInternalDedupe) {
       addDependency(importPath)
     }

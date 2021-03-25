@@ -19,9 +19,7 @@ const tableRowDefaultProps: StackProps = {
 
 export type TableRowProps = StackProps
 
-export const TableRow = (props: TableRowProps) => (
-  <HStack {...tableRowDefaultProps} {...props} />
-)
+export const TableRow = (props: TableRowProps) => <HStack {...tableRowDefaultProps} {...props} />
 
 if (process.env.IS_STATIC) {
   TableRow.staticConfig = extendStaticConfig(HStack, {
@@ -46,13 +44,7 @@ export function TableCell({
   ...props
 }: TableCellProps) {
   return (
-    <HStack
-      padding={4}
-      flex={1}
-      alignSelf="stretch"
-      alignItems="center"
-      {...props}
-    >
+    <HStack padding={4} flex={1} alignSelf="stretch" alignItems="center" {...props}>
       {typeof children === 'string' ? (
         <Text
           color={color}

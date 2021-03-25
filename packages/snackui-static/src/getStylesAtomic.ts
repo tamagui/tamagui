@@ -67,9 +67,7 @@ function getAtomicStyle(
       style[borderDefaults[key]] = style[borderDefaults[key]] ?? 'solid'
     }
   }
-  const all = _.cloneDeep(
-    atomic(createCompileableStyle(createReactDOMStyle(i18Style(style))))
-  )
+  const all = _.cloneDeep(atomic(createCompileableStyle(createReactDOMStyle(i18Style(style)))))
   return Object.keys(all).map((key) => {
     const val = all[key]
     const prefix = `_${getOrCreateStylePrefix(val.property)}`
@@ -104,9 +102,7 @@ function getAtomicStyle(
         }
         return res
       }
-      return rule
-        .replace(`.${val.identifier}`, className)
-        .replace('!important', '')
+      return rule.replace(`.${val.identifier}`, className).replace('!important', '')
     })
     return {
       ...val,

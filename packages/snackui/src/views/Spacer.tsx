@@ -43,10 +43,7 @@ const getFlex = ({ flex }: SpacerProps = defaultProps): ViewStyle => {
   }
 }
 
-const getSize = ({
-  size = 'md',
-  direction = 'both',
-} = defaultProps): ViewStyle => {
+const getSize = ({ size = 'md', direction = 'both' } = defaultProps): ViewStyle => {
   const sizePx = spaceToPx(size)
   const width = direction == 'vertical' ? 1 : sizePx
   const height = direction == 'horizontal' ? 1 : sizePx

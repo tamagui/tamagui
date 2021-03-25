@@ -30,12 +30,7 @@ export const LoadingItem = ({
 }) => {
   const scale = size === 'sm' ? 0.5 : size === 'lg' ? 1.75 : 1
   return (
-    <VStack
-      overflow="hidden"
-      className="shine"
-      padding={20}
-      spacing={10 * scale}
-    >
+    <VStack overflow="hidden" className="shine" padding={20} spacing={10 * scale}>
       <HStack
         width={`${seed * 12}%`}
         height={28 * scale}

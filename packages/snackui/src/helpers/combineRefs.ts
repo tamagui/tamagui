@@ -28,14 +28,10 @@ const composedRefCache = new WeakMap<
   WeakMap<NonNullRef<unknown>, NonNullRef<unknown>>
 >()
 
-function composeTwoRefs<T>(
-  ref1: OptionalRef<T>,
-  ref2: OptionalRef<T>
-): OptionalRef<T> {
+function composeTwoRefs<T>(ref1: OptionalRef<T>, ref2: OptionalRef<T>): OptionalRef<T> {
   if (ref1 && ref2) {
     const ref1Cache =
-      composedRefCache.get(ref1) ||
-      new WeakMap<NonNullRef<unknown>, NonNullRef<unknown>>()
+      composedRefCache.get(ref1) || new WeakMap<NonNullRef<unknown>, NonNullRef<unknown>>()
     composedRefCache.set(ref1, ref1Cache)
 
     const composedRef =

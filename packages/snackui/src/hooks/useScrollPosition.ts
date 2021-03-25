@@ -1,10 +1,10 @@
 import { debounce } from 'lodash'
 import { useEffect } from 'react'
 
-export function useScrollPosition<
-  A extends HTMLDivElement,
-  T extends React.RefObject<A>
->(ref: T, cb: (ref: A | null) => any) {
+export function useScrollPosition<A extends HTMLDivElement, T extends React.RefObject<A>>(
+  ref: T,
+  cb: (ref: A | null) => any
+) {
   useEffect(() => {
     const node = ref.current
     const scrollParent = getScrollParent(node)
@@ -41,8 +41,7 @@ function getScrollParent(element: HTMLElement | null, includeHidden?: boolean) {
     if (excludeStaticParent && style.position === 'static') {
       continue
     }
-    if (overflowRegex.test(style.overflow + style.overflowY + style.overflowX))
-      return parent
+    if (overflowRegex.test(style.overflow + style.overflowY + style.overflowX)) return parent
   }
 
   return window

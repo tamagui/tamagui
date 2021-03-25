@@ -29,9 +29,7 @@ export function extractMediaStyle(
   const { key } = mt
   const mq = mediaQueries[key]
   if (!mq) {
-    console.error(
-      `Media query "${key}" not found: ${Object.keys(mediaQueries)}`
-    )
+    console.error(`Media query "${key}" not found: ${Object.keys(mediaQueries)}`)
     return null
   }
   const getStyleObj = (styleObj: ViewStyle | null, negate = false) => {
@@ -50,10 +48,7 @@ export function extractMediaStyle(
     const styles = getStylesAtomic(styleObj)
     const mediaStyles = styles.map((style) => {
       const negKey = negate ? '0' : ''
-      const ogPrefix = style.identifier.slice(
-        0,
-        style.identifier.indexOf('-') + 1
-      )
+      const ogPrefix = style.identifier.slice(0, style.identifier.indexOf('-') + 1)
       // adds an extra separator before and after to detect later in concatClassName
       // so it goes from: "_f-[hash]"
       // to: "_f-_sm_not_[hash]"
@@ -106,8 +101,7 @@ function getMediaQueryTernary(
     if (!jsxPath.scope.hasBinding(name)) return false
     const bindingNode = jsxPath.scope.getBinding(name)?.path?.node
     if (!t.isVariableDeclarator(bindingNode) || !bindingNode.init) return false
-    if (!isValidMediaCall(jsxPath, bindingNode.init, sourceFileName))
-      return false
+    if (!isValidMediaCall(jsxPath, bindingNode.init, sourceFileName)) return false
     return { key, bindingName: name }
   }
   // const { sm } = useMedia()
@@ -116,8 +110,7 @@ function getMediaQueryTernary(
     const key = ternary.test.name
     const node = jsxPath.scope.getBinding(ternary.test.name)?.path?.node
     if (!t.isVariableDeclarator(node)) return false
-    if (!node.init || !isValidMediaCall(jsxPath, node.init, sourceFileName))
-      return false
+    if (!node.init || !isValidMediaCall(jsxPath, node.init, sourceFileName)) return false
     return { key, bindingName: key }
   }
   return false

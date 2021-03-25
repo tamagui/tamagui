@@ -22,10 +22,7 @@ import { isWeb } from '../constants'
 import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
-import {
-  ActiveThemeContext,
-  invertStyleVariableToValue,
-} from '../hooks/useTheme'
+import { ActiveThemeContext, invertStyleVariableToValue } from '../hooks/useTheme'
 import { Spacing } from './Spacer'
 
 export type StackProps = Omit<
@@ -50,22 +47,8 @@ export type StackProps = Omit<
       className?: string
       // stronger version of pointer-events: none;
       disabled?: boolean
-      contain?:
-        | 'none'
-        | 'strict'
-        | 'content'
-        | 'size'
-        | 'layout'
-        | 'paint'
-        | string
-      display?:
-        | 'inherit'
-        | 'none'
-        | 'inline'
-        | 'block'
-        | 'contents'
-        | 'flex'
-        | 'inline-flex'
+      contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
+      display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
     },
   // because who tf uses alignContent or backfaceVisibility
   'alignContent' | 'backfaceVisibility'
@@ -188,9 +171,7 @@ const createStack = (defaultProps?: ViewStyle) => {
         {...viewProps}
         // @ts-ignore
         className={className}
-        pointerEvents={
-          !isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents
-        }
+        pointerEvents={!isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents}
         style={[
           defaultProps,
           fullscreen ? fullscreenStyle : null,
@@ -207,13 +188,7 @@ const createStack = (defaultProps?: ViewStyle) => {
     )
 
     const attachPress = !!(pressStyle || onPress)
-    const attachHover = !!(
-      hoverStyle ||
-      onHoverIn ||
-      onHoverOut ||
-      onMouseEnter ||
-      onMouseLeave
-    )
+    const attachHover = !!(hoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     const unPress = useCallback(() => {
       if (!isMounted.current) return

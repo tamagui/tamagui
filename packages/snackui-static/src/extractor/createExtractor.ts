@@ -9,12 +9,7 @@ import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
 import { pseudos } from '../getStylesAtomic'
-import {
-  ExtractedAttr,
-  ExtractedAttrAttr,
-  ExtractorParseProps,
-  Ternary,
-} from '../types'
+import { ExtractedAttr, ExtractedAttrAttr, ExtractorParseProps, Ternary } from '../types'
 import { evaluateAstNode } from './evaluateAstNode'
 import {
   attrGetName,
@@ -44,9 +39,7 @@ const validHooks = {
   useTheme: true,
 }
 
-const validComponents: { [key: string]: StaticComponent } = Object.keys(
-  AllExports
-)
+const validComponents: { [key: string]: StaticComponent } = Object.keys(AllExports)
   .filter((key) => !!AllExports[key]?.staticConfig)
   .reduce((obj, name) => {
     obj[name] = AllExports[name]
@@ -61,9 +54,7 @@ export function createExtractor() {
   const shouldAddDebugProp =
     process.env.TARGET !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
-    (process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG ||
-      process.env.IDENTIFY_TAGS)
+    (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
 
   // ts imports
   require('esbuild-register/dist/node').register({
@@ -86,13 +77,10 @@ export function createExtractor() {
       }: ExtractorParseProps
     ) => {
       if (themesFile) {
-        themesByFile[themesFile] =
-          themesByFile[themesFile] || require(themesFile).default
+        themesByFile[themesFile] = themesByFile[themesFile] || require(themesFile).default
       }
       const themes = themesFile ? themesByFile[themesFile] : null
-      const themeKeys = new Set(
-        themes ? Object.keys(themes[Object.keys(themes)[0]]) : []
-      )
+      const themeKeys = new Set(themes ? Object.keys(themes[Object.keys(themes)[0]]) : [])
       const deoptProps = new Set(props.deoptProps ?? [])
       const excludeProps = new Set(props.excludeProps ?? [])
       const isExcludedProp = (name: string) => {
@@ -118,10 +106,7 @@ export function createExtractor() {
       for (const bodyPath of path.get('body')) {
         if (!bodyPath.isImportDeclaration()) continue
         const importStr = bodyPath.node.source.value
-        if (
-          importStr === 'snackui' ||
-          (isInsideSnackUI(sourceFileName) && importStr[0] === '.')
-        ) {
+        if (importStr === 'snackui' || (isInsideSnackUI(sourceFileName) && importStr[0] === '.')) {
           const isValid = bodyPath.node.specifiers.some((specifier) => {
             const name = specifier.local.name
             return validComponents[name] || validHooks[name]
@@ -173,11 +158,7 @@ export function createExtractor() {
           }
 
           const isStaticAttributeName = (name: string) => {
-            return (
-              !!validStyles[name] ||
-              !!staticConfig?.expansionProps?.[name] ||
-              !!pseudos[name]
-            )
+            return !!validStyles[name] || !!staticConfig?.expansionProps?.[name] || !!pseudos[name]
           }
 
           // Generate scope object at this level
@@ -210,9 +191,7 @@ export function createExtractor() {
                     ) {
                       const key = n.property.name
                       if (!themeKeys.has(key)) {
-                        throw new Error(
-                          `Accessing non-existent theme key: ${key}`
-                        )
+                        throw new Error(`Accessing non-existent theme key: ${key}`)
                       }
                       return `var(--${key})`
                     }
@@ -226,10 +205,7 @@ export function createExtractor() {
                     return staticNamespace[n.name]
                   }
                   const evalContext = vm.createContext(staticNamespace)
-                  return vm.runInContext(
-                    `(${generate(n as any).code})`,
-                    evalContext
-                  )
+                  return vm.runInContext(`(${generate(n as any).code})`, evalContext)
                 }
 
                 return (n: t.Node) => {
@@ -376,9 +352,7 @@ export function createExtractor() {
                 // <VStack {...isSmall ? { color: 'red } : { color: 'blue }}
                 if (t.isConditionalExpression(attribute.argument)) {
                   const { alternate, consequent, test } = attribute.argument
-                  const aStyle = isStyleObject(alternate)
-                    ? attemptEvalSafe(alternate)
-                    : FAILED_EVAL
+                  const aStyle = isStyleObject(alternate) ? attemptEvalSafe(alternate) : FAILED_EVAL
                   const cStyle = isStyleObject(consequent)
                     ? attemptEvalSafe(consequent)
                     : FAILED_EVAL
@@ -400,10 +374,7 @@ export function createExtractor() {
                       consequent: cons,
                     }
                     if (shouldPrintDebug) {
-                      console.log(
-                        ' conditionalExpression',
-                        getNameTernary(ternary)
-                      )
+                      console.log(' conditionalExpression', getNameTernary(ternary))
                     }
                     return {
                       type: 'ternary',
@@ -418,9 +389,7 @@ export function createExtractor() {
                   attribute.argument.operator === '&&'
                 ) {
                   if (isStyleObject(attribute.argument.right)) {
-                    const spreadStyle = attemptEvalSafe(
-                      attribute.argument.right
-                    )
+                    const spreadStyle = attemptEvalSafe(attribute.argument.right)
                     if (spreadStyle === FAILED_EVAL) {
                       // didFailSpread = true
                     } else {
@@ -428,8 +397,7 @@ export function createExtractor() {
                         shouldDeopt = true
                         return null
                       }
-                      const test = (attribute.argument as t.LogicalExpression)
-                        .left
+                      const test = (attribute.argument as t.LogicalExpression).left
                       const testValue = attemptEvalSafe(test)
                       if (testValue === FAILED_EVAL) {
                         // its fine we just cant extract all the way
@@ -479,18 +447,12 @@ export function createExtractor() {
               }
             })()
             const remove = () => {
-              Array.isArray(valuePath)
-                ? valuePath.map((p) => p.remove())
-                : valuePath.remove()
+              Array.isArray(valuePath) ? valuePath.map((p) => p.remove()) : valuePath.remove()
             }
 
             // handle expansions
             const expansion = staticConfig?.expansionProps?.[name]
-            if (
-              expansion &&
-              !t.isBinaryExpression(value) &&
-              !t.isConditionalExpression(value)
-            ) {
+            if (expansion && !t.isBinaryExpression(value) && !t.isConditionalExpression(value)) {
               const styleValue =
                 value === null
                   ? // handle boolean jsx props
@@ -553,11 +515,7 @@ export function createExtractor() {
               const lVal = attemptEvalSafe(left)
               const rVal = attemptEvalSafe(right)
               if (shouldPrintDebug) {
-                console.log(
-                  `  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(
-                    rVal
-                  )}`
-                )
+                console.log(`  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(rVal)}`)
               }
               if (lVal !== FAILED_EVAL && t.isConditionalExpression(right)) {
                 const ternary = addBinaryConditional(operator, left, right)
@@ -597,12 +555,8 @@ export function createExtractor() {
               cond: t.ConditionalExpression
             ): ExtractedAttr | null {
               if (getStaticConditional(cond)) {
-                const alt = attemptEval(
-                  t.binaryExpression(operator, staticExpr, cond.alternate)
-                )
-                const cons = attemptEval(
-                  t.binaryExpression(operator, staticExpr, cond.consequent)
-                )
+                const alt = attemptEval(t.binaryExpression(operator, staticExpr, cond.alternate))
+                const cons = attemptEval(t.binaryExpression(operator, staticExpr, cond.consequent))
                 if (shouldPrintDebug) {
                   console.log('  binaryConditional', cond.test, cons, alt)
                 }
@@ -710,9 +664,7 @@ export function createExtractor() {
           const filePath = sourceFileName.replace(process.cwd(), '.')
           const lineNumbers = node.loc
             ? node.loc.start.line +
-              (node.loc.start.line !== node.loc.end.line
-                ? `-${node.loc.end.line}`
-                : '')
+              (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
             : ''
 
           // helpful attrs for DX
@@ -723,19 +675,14 @@ export function createExtractor() {
               type: 'attr',
               value: t.jsxAttribute(
                 t.jsxIdentifier('data-is'),
-                t.stringLiteral(
-                  `${preName}${node.name.name} @ ${filePath}:${lineNumbers}`
-                )
+                t.stringLiteral(`${preName}${node.name.name} @ ${filePath}:${lineNumbers}`)
               ),
             })
           }
 
           // if all style props have been extracted and no spreads
           // component can be flattened to div or parent view
-          if (
-            inlinePropCount === 0 &&
-            !node.attributes.some((x) => t.isJSXSpreadAttribute(x))
-          ) {
+          if (inlinePropCount === 0 && !node.attributes.some((x) => t.isJSXSpreadAttribute(x))) {
             // since were removing down to div, we need to push the default styles onto this classname
             if (shouldPrintDebug) {
               console.log('  default styles', originalNodeName, defaultStyle)
@@ -824,9 +771,7 @@ export function createExtractor() {
 
           if (traversePath.node.closingElement) {
             // this seems strange
-            if (
-              t.isJSXMemberExpression(traversePath.node.closingElement.name)
-            ) {
+            if (t.isJSXMemberExpression(traversePath.node.closingElement.name)) {
               return
             }
             traversePath.node.closingElement.name.name = node.name.name

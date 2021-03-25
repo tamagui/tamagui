@@ -16,9 +16,7 @@ export function ensureImportingConcat(path: NodePath<t.Program>) {
   )
 
   if (!imported) {
-    path.node.body.push(
-      t.importDeclaration([importSpecifier], t.stringLiteral(importConcatPkg))
-    )
+    path.node.body.push(t.importDeclaration([importSpecifier], t.stringLiteral(importConcatPkg)))
     return
   }
 

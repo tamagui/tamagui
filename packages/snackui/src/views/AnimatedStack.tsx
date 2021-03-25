@@ -78,9 +78,7 @@ export const AnimatedVStack = ({
     return (
       <VStack
         {...props}
-        className={`${props.className ?? ''} animate-in ${
-          isMounted ? 'animate-in-mounted' : ''
-        }`}
+        className={`${props.className ?? ''} animate-in ${isMounted ? 'animate-in-mounted' : ''}`}
       >
         {children}
       </VStack>

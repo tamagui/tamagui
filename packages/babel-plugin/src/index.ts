@@ -69,12 +69,7 @@ export default declare(function snackBabelPlugin(
             sourceFileName,
             shouldPrintDebug,
             evaluateImportsWhitelist: ['constants.js', 'colors.js'],
-            deoptProps: [
-              'hoverStyle',
-              'pressStyle',
-              'focusStyle',
-              'pointerEvents',
-            ],
+            deoptProps: ['hoverStyle', 'pressStyle', 'focusStyle', 'pointerEvents'],
             excludeProps: [
               'display',
               'userSelect',
@@ -89,9 +84,7 @@ export default declare(function snackBabelPlugin(
                 hasImportedView = true
                 root.unshiftContainer('body', importNativeView())
               }
-              return props.isTextView
-                ? '__ReactNativeText'
-                : '__ReactNativeView'
+              return props.isTextView ? '__ReactNativeText' : '__ReactNativeView'
             },
             onExtractTag(props) {
               assertValidTag(props.node)
@@ -104,17 +97,12 @@ export default declare(function snackBabelPlugin(
                   case 'ternary':
                     const cons = addSheetStyle(attr.value.consequent)
                     const alt = addSheetStyle(attr.value.alternate)
-                    stylesExpr.elements.push(
-                      t.conditionalExpression(attr.value.test, cons, alt)
-                    )
+                    stylesExpr.elements.push(t.conditionalExpression(attr.value.test, cons, alt))
                     break
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
                       stylesExpr.elements.push(
-                        t.memberExpression(
-                          attr.value.argument,
-                          t.identifier('style')
-                        )
+                        t.memberExpression(attr.value.argument, t.identifier('style'))
                       )
                     }
                     break
@@ -122,10 +110,7 @@ export default declare(function snackBabelPlugin(
               }
 
               props.node.attributes.push(
-                t.jsxAttribute(
-                  t.jsxIdentifier('style'),
-                  t.jsxExpressionContainer(stylesExpr)
-                )
+                t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
               )
             },
           })
@@ -140,9 +125,7 @@ export default declare(function snackBabelPlugin(
           root.unshiftContainer('body', importStyleSheet())
 
           const sheetObject = literalToAst(sheetStyles)
-          const sheetOuter = template(
-            `const SHEET = ReactNativeStyleSheet.create(null)`
-          )({
+          const sheetOuter = template(`const SHEET = ReactNativeStyleSheet.create(null)`)({
             SHEET: sheetIdentifier.name,
           }) as any
 
@@ -161,11 +144,7 @@ export default declare(function snackBabelPlugin(
 })
 
 function assertValidTag(node: t.JSXOpeningElement) {
-  if (
-    node.attributes.find(
-      (x) => x.type === 'JSXAttribute' && x.name.name === 'style'
-    )
-  ) {
+  if (node.attributes.find((x) => x.type === 'JSXAttribute' && x.name.name === 'style')) {
     // we can just deopt here instead and log warning
     // need to make onExtractTag have a special catch error or similar
     throw new Error(`Cannot pass style attribute to extracted style`)

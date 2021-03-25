@@ -27,9 +27,7 @@ export default function snackLoader(this: any, content: string) {
   const startsWithComment = content[0] === '/' && content[1] === '/'
   const shouldPrintDebug =
     (!!process.env.DEBUG &&
-      (process.env.DEBUG_FILE
-        ? sourcePath.includes(process.env.DEBUG_FILE)
-        : true)) ||
+      (process.env.DEBUG_FILE ? sourcePath.includes(process.env.DEBUG_FILE) : true)) ||
     (startsWithComment && content.startsWith('// debug'))
 
   if (options.cssPath) {
@@ -37,9 +35,7 @@ export default function snackLoader(this: any, content: string) {
       const styleStr = [...new Set([...stylesByFile.values()])].join('\n')
       return callback(null, styleStr)
     } else {
-      const out = stylesByFile.get(
-        stylePathToFilePath.get(sourcePath) ?? sourcePath
-      )
+      const out = stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
       if (!out) {
         // once caching in place we can read from fs
         // try {

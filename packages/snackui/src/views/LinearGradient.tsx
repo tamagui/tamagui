@@ -43,9 +43,7 @@ export type LinearGradientProps = {
   end?: LinearGradientPoint | null
 } & React.ComponentProps<typeof View>
 
-type LinearGradientComponent = (
-  props: LinearGradientProps
-) => JSX.Element | null
+type LinearGradientComponent = (props: LinearGradientProps) => JSX.Element | null
 let exp: LinearGradientComponent = () => null
 
 // we dont export it in the snackui-static process

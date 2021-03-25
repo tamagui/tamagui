@@ -10,10 +10,7 @@ export type StaticConfig = {
   validStyles?: { [key: string]: boolean }
   defaultProps?: any
   expansionProps?: {
-    [key: string]:
-      | ViewStyle
-      | TextStyle
-      | ((props: any) => ViewStyle | TextStyle)
+    [key: string]: ViewStyle | TextStyle | ((props: any) => ViewStyle | TextStyle)
   }
 }
 

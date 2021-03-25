@@ -1,10 +1,7 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
-export function removeUnusedHooks(
-  compFn: NodePath<any>,
-  shouldPrintDebug: boolean
-) {
+export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boolean) {
   compFn.scope.crawl()
   // check the top level statements
   let bodyStatements = compFn?.get('body')

@@ -136,9 +136,7 @@ export function getStaticBindingsForScope(
     }
 
     // pick out the right variable declarator
-    const dec = parent.declarations.find(
-      (d) => t.isIdentifier(d.id) && d.id.name === k
-    )
+    const dec = parent.declarations.find((d) => t.isIdentifier(d.id) && d.id.name === k)
 
     // if init is not set, there's nothing to evaluate
     // TODO: handle spread syntax
@@ -171,10 +169,7 @@ export function getStaticBindingsForScope(
     }
 
     // skip ObjectExpressions not defined in the root
-    if (
-      t.isObjectExpression(dec.init) &&
-      parentPath.parentPath.type !== 'Program'
-    ) {
+    if (t.isObjectExpression(dec.init) && parentPath.parentPath.type !== 'Program') {
       continue
     }
 

@@ -11,23 +11,13 @@ export type TitleProps = SizableTextProps
 export const Title = (props: TitleProps) => {
   const size = getSize(props.size ?? 'md') * 1.5
   return (
-    <Paragraph
-      fontWeight="300"
-      {...props}
-      marginVertical={0}
-      size={size}
-      sizeLineHeight={0.7}
-    />
+    <Paragraph fontWeight="300" {...props} marginVertical={0} size={size} sizeLineHeight={0.7} />
   )
 }
 
-export const H1 = (props: TitleProps) => (
-  <Title accessibilityRole="header" size="xl" {...props} />
-)
+export const H1 = (props: TitleProps) => <Title accessibilityRole="header" size="xl" {...props} />
 
-export const H2 = (props: TitleProps) => (
-  <Title accessibilityRole="header" size="md" {...props} />
-)
+export const H2 = (props: TitleProps) => <Title accessibilityRole="header" size="md" {...props} />
 
 export const H3 = (props: TitleProps) => {
   const theme = useTheme()
@@ -53,10 +43,5 @@ export const H4 = (props: TitleProps) => (
 )
 
 export const H5 = (props: TitleProps) => (
-  <Title
-    accessibilityRole="header"
-    size="xxs"
-    color="rgba(0,0,0,0.7)"
-    {...props}
-  />
+  <Title accessibilityRole="header" size="xxs" color="rgba(0,0,0,0.7)" {...props} />
 )

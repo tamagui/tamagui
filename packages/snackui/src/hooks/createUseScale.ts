@@ -2,11 +2,7 @@ import { MediaQueryState, useMedia } from './useMedia'
 
 type ValueOf<T> = T[keyof T]
 
-export function createUseScale<
-  A,
-  B = Required<Omit<A, 'media'>>,
-  Val = ValueOf<B>
->(
+export function createUseScale<A, B = Required<Omit<A, 'media'>>, Val = ValueOf<B>>(
   scaleProps: A & {
     media?: { [key in keyof MediaQueryState]?: B }
   }

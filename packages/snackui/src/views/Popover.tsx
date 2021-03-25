@@ -7,13 +7,7 @@ import { PopoverProps } from './PopoverProps'
 import { usePopover } from './usePopover'
 
 export function Popover(props: PopoverProps) {
-  const {
-    isOpen,
-    isControlled,
-    sendClose,
-    onChangeOpenCb,
-    isMounted,
-  } = usePopover(props)
+  const { isOpen, isControlled, sendClose, onChangeOpenCb, isMounted } = usePopover(props)
 
   useOverlay({
     isOpen: !!(isOpen && props.overlay !== false),
@@ -53,9 +47,7 @@ export function Popover(props: PopoverProps) {
     <>
       <div
         {...triggerProps}
-        className={`see-through-measurable ${
-          props.inline ? 'inline-flex' : ''
-        }`}
+        className={`see-through-measurable ${props.inline ? 'inline-flex' : ''}`}
         style={props.style}
       >
         {props.children}
@@ -74,9 +66,7 @@ export function Popover(props: PopoverProps) {
             }}
           >
             <AnimatedVStack>
-              {typeof props.contents === 'function'
-                ? props.contents(isOpen)
-                : props.contents}
+              {typeof props.contents === 'function' ? props.contents(isOpen) : props.contents}
             </AnimatedVStack>
           </div>
         )}
