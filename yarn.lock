@@ -2417,7 +2417,7 @@ __metadata:
     babel-literal-to-ast: ^2.1.0
     babel-loader: ^8.2.2
     css-loader: ^5.0.1
-    esbuild: ^0.8.56
+    esbuild: ^0.11.5
     esbuild-register: ^2.2.0
     find-cache-dir: ^3.3.1
     fs-extra: ^9.0.0
@@ -5130,6 +5130,15 @@ __metadata:
   peerDependencies:
     esbuild: ">=0.8.31"
   checksum: b6523b9cb4092cb3fe0d340dd00375bd84f00c1cecccbab2a9a6488ca2503d0a6dd7d018f1495238e492ce11b01cc5677e11c8e3284d8cfa4a67cb1a16e8db4f
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:^0.11.5":
+  version: 0.11.5
+  resolution: "esbuild@npm:0.11.5"
+  bin:
+    esbuild: bin/esbuild
+  checksum: d4fdb966101ce44c9ecf9c847d82b28c368a8a43f2ef604036c1702ecc176677d4e757ee682997d3c972d9fa5024c8683cf15cd993176feae3ee7e6a0a61c189
   languageName: node
   linkType: hard
 
@@ -11003,7 +11012,7 @@ __metadata:
     "@unimodules/core": ^7.0.0
     "@unimodules/react-native-adapter": ^6.1.0
     css-mediaquery: ^0.1.2
-    esbuild: ^0.8.56
+    esbuild: ^0.11.5
     expo-linear-gradient: ^9.0.0
     expo-screen-orientation: 3.0.0
     lodash: ^4.17.20
