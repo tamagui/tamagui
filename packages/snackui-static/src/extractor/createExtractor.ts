@@ -1,3 +1,4 @@
+import { join } from 'path'
 import vm from 'vm'
 
 import generate from '@babel/generator'
@@ -5,6 +6,7 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { StaticComponent } from '@snackui/node'
+import { statSync } from 'fs-extra'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
@@ -48,6 +50,9 @@ const validComponents: { [key: string]: StaticComponent } = Object.keys(AllExpor
 
 export type Extractor = ReturnType<typeof createExtractor>
 
+let hasWarnedThemes = false
+let lastThemeMTime = 0
+
 export function createExtractor() {
   const bindingCache: Record<string, string | null> = {}
   const themesByFile = {}
@@ -73,11 +78,30 @@ export function createExtractor() {
         sourceFileName = '',
         onExtractTag,
         getFlattenedNode,
+        disableThemes = false,
         ...props
       }: ExtractorParseProps
     ) => {
-      if (themesFile) {
-        themesByFile[themesFile] = themesByFile[themesFile] || require(themesFile).default
+      if (!themesFile && !disableThemes) {
+        console.log(
+          '  Warning: no themesFile option provided to SnackUI, all themes will run inline (slower).'
+        )
+      }
+      if (!disableThemes && themesFile) {
+        if (themesFile[0] !== '/') {
+          themesFile = join(process.cwd(), themesFile)
+        }
+        // re-require theme if updated
+        const hasChangedThemesFile =
+          statSync(themesFile).mtime.getUTCMilliseconds() !== lastThemeMTime
+        if (hasChangedThemesFile) {
+          delete require.cache[themesFile]
+        }
+        const theme =
+          hasChangedThemesFile || !themesByFile[themesFile]
+            ? require(themesFile).default
+            : themesByFile[themesFile]
+        themesByFile[themesFile] = theme
       }
       const themes = themesFile ? themesByFile[themesFile] : null
       const themeKeys = new Set(themes ? Object.keys(themes[Object.keys(themes)[0]]) : [])
@@ -177,7 +201,13 @@ export function createExtractor() {
             ? evaluateAstNode
             : (() => {
                 if (shouldPrintDebug) {
-                  console.log('  attemptEval staticNamespace', staticNamespace)
+                  if (!disableThemes && !themes && !hasWarnedThemes) {
+                    hasWarnedThemes = true
+                    console.log(
+                      '  ⚠️ SnackUI: warning! no themesFile option given, themes will fallback'
+                    )
+                  }
+                  console.log('  attemptEval staticNamespace', { staticNamespace })
                 }
 
                 // called when evaluateAstNode encounters a dynamic-looking prop
@@ -326,7 +356,13 @@ export function createExtractor() {
           attrs = traversePath
             .get('openingElement')
             .get('attributes')
-            .map((path, idx) => evaluateAttribute(idx, path) ?? path.remove())
+            .map((path, idx) => {
+              const res = evaluateAttribute(idx, path)
+              if (!res) {
+                path.remove()
+              }
+              return res
+            })
             .filter(isPresent)
 
           // now update to new values
@@ -339,6 +375,7 @@ export function createExtractor() {
             idx: number,
             path: NodePath<t.JSXAttribute | t.JSXSpreadAttribute>
           ): ExtractedAttr | null {
+            let didFailSpread = false
             const attribute = path.node
             const attr: ExtractedAttr = { type: 'attr', value: attribute }
             if (
@@ -391,7 +428,7 @@ export function createExtractor() {
                   if (isStyleObject(attribute.argument.right)) {
                     const spreadStyle = attemptEvalSafe(attribute.argument.right)
                     if (spreadStyle === FAILED_EVAL) {
-                      // didFailSpread = true
+                      didFailSpread = true
                     } else {
                       if (hasDeopt(spreadStyle)) {
                         shouldDeopt = true
@@ -427,6 +464,11 @@ export function createExtractor() {
                 }
                 inlinePropCount++
               }
+
+              if (didFailSpread) {
+                return null
+              }
+
               return attr
             }
 
@@ -446,6 +488,7 @@ export function createExtractor() {
                 return [attribute.value!, path.get('value')!] as const
               }
             })()
+
             const remove = () => {
               Array.isArray(valuePath) ? valuePath.map((p) => p.remove()) : valuePath.remove()
             }

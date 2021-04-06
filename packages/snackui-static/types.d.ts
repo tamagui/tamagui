@@ -51,6 +51,7 @@ declare module "@snackui/static" {
         getFlattenedNode: (props: {
             isTextView: boolean;
         }) => string;
+        disableThemes?: boolean;
     };
     export interface Ternary {
         test: t.Expression;
@@ -160,7 +161,7 @@ declare module "@snackui/static" {
     import * as t from "@babel/types";
     export type Extractor = ReturnType<typeof createExtractor>;
     export function createExtractor(): {
-        parse: (path: NodePath<t.Program>, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourceFileName, onExtractTag, getFlattenedNode, ...props }: ExtractorParseProps) => null | undefined;
+        parse: (path: NodePath<t.Program>, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourceFileName, onExtractTag, getFlattenedNode, disableThemes, ...props }: ExtractorParseProps) => null | undefined;
     };
 }
 

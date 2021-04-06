@@ -45,6 +45,7 @@ export type ExtractorParseProps = SnackOptions & {
   shouldPrintDebug?: boolean
   onExtractTag: (props: ExtractTagProps) => void
   getFlattenedNode: (props: { isTextView: boolean }) => string
+  disableThemes?: boolean
 }
 
 export interface Ternary {

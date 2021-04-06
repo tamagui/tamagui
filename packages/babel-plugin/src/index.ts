@@ -33,7 +33,6 @@ export default declare(function snackBabelPlugin(
       Program: {
         enter(this: any, root, state) {
           const sourceFileName = this.file.opts.filename
-
           if (options.exclude?.test(sourceFileName)) {
             return
           }
@@ -41,16 +40,12 @@ export default declare(function snackBabelPlugin(
           let hasImportedView = false
           let sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
-          const firstComment = root.node.body[0]?.leadingComments?.[0]?.value
-
+          const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim()
           if (firstComment === 'disable-snackui') {
             return
           }
 
-          const shouldPrintDebug = firstComment === ' debug'
-
-          // could have a deopt
-          // const themes = options.themesFile ? require(options.themesFile).default : null
+          const shouldPrintDebug = firstComment?.trim() === 'debug'
 
           function addSheetStyle(style: any) {
             const key = `${Object.keys(sheetStyles).length}`
@@ -65,8 +60,13 @@ export default declare(function snackBabelPlugin(
             })['expression'] as t.MemberExpression
           }
 
+          if (options.themesFile) {
+            console.warn(
+              `⚠️ No need to pass themesFile to native apps, themes always run at runtime`
+            )
+          }
+
           extractor.parse(root, {
-            sourceFileName,
             shouldPrintDebug,
             evaluateImportsWhitelist: ['constants.js', 'colors.js'],
             deoptProps: ['hoverStyle', 'pressStyle', 'focusStyle', 'pointerEvents'],
@@ -79,6 +79,8 @@ export default declare(function snackBabelPlugin(
               'contain',
             ],
             ...options,
+            sourceFileName,
+            disableThemes: true,
             getFlattenedNode(props) {
               if (!hasImportedView) {
                 hasImportedView = true
@@ -97,10 +99,12 @@ export default declare(function snackBabelPlugin(
                   case 'ternary':
                     const cons = addSheetStyle(attr.value.consequent)
                     const alt = addSheetStyle(attr.value.alternate)
+                    console.log('ternary is', cons, alt)
                     stylesExpr.elements.push(t.conditionalExpression(attr.value.test, cons, alt))
                     break
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
+                      console.log('spreading', attr)
                       stylesExpr.elements.push(
                         t.memberExpression(attr.value.argument, t.identifier('style'))
                       )
