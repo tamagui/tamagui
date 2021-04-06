@@ -475,6 +475,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dish/esbuild-register@npm:^0.0.0":
+  version: 0.0.0
+  resolution: "@dish/esbuild-register@npm:0.0.0"
+  dependencies:
+    esbuild: ^0.11.5
+    jsonc-parser: ^3.0.0
+  checksum: 7288e6a0e5e14b6027799d88dd92da1155321da3074e92c348c2d1bc7bf66f96a6558b9cb7c95125ddb49cf4c8001eda2702b53c8152b9c5f426c6fc6af996e8
+  languageName: node
+  linkType: hard
+
 "@dish/esdx@npm:^0.0.2":
   version: 0.0.2
   resolution: "@dish/esdx@npm:0.0.2"
@@ -2403,6 +2413,7 @@ __metadata:
     "@babel/traverse": ^7.12.9
     "@babel/types": ^7.12.7
     "@dish/babel-preset": ^0.0.2
+    "@dish/esbuild-register": ^0.0.0
     "@dish/esdx": ^0.0.7
     "@dish/proxy-worm": "*"
     "@dish/react-test-env": ^0.0.7
@@ -2418,7 +2429,6 @@ __metadata:
     babel-loader: ^8.2.2
     css-loader: ^5.0.1
     esbuild: ^0.11.5
-    esbuild-register: ^2.2.0
     find-cache-dir: ^3.3.1
     fs-extra: ^9.0.0
     invariant: ^2.2.4
@@ -5119,17 +5129,6 @@ __metadata:
   peerDependencies:
     esbuild: ">=0.8.50"
   checksum: 6fdd02b3774ccc75580f2105bfd09c8b8b39ffeb127c61eddc1bbd87c60660cdc39ca9ed6addaa7776819a95ee1bf5bd20428f30844989d68863de5563961827
-  languageName: node
-  linkType: hard
-
-"esbuild-register@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "esbuild-register@npm:2.2.0"
-  dependencies:
-    jsonc-parser: ^3.0.0
-  peerDependencies:
-    esbuild: ">=0.8.31"
-  checksum: b6523b9cb4092cb3fe0d340dd00375bd84f00c1cecccbab2a9a6488ca2503d0a6dd7d018f1495238e492ce11b01cc5677e11c8e3284d8cfa4a67cb1a16e8db4f
   languageName: node
   linkType: hard
 

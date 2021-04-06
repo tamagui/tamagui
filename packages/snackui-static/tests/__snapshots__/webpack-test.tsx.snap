@@ -3,9 +3,11 @@
 exports[`1. extracts to a div for simple views 1`] = `
 <div
   className=" _bacCol-1g6456j _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-1xz9bc3 _fleBas-auto _fleDir-column _fleGro-1 _fleShr-1 test1"
+  data-is="Test1:VStack @ ./tests/spec/extract-specs.tsx:42-49"
 >
   <span
     className=" _dis-inline"
+    data-is="Text @ ./tests/spec/extract-specs.tsx:14"
   >
     hello world
   </span>
@@ -31,9 +33,11 @@ Array [
   />,
   <div
     className="_top--14px _bacCol-14lw9ot ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px"
+    data-is="Test2:Box @ ./tests/spec/extract-specs.tsx:60-69"
   >
     <span
       className=" _dis-inline"
+      data-is="Text @ ./tests/spec/extract-specs.tsx:14"
     >
       hello world
     </span>
@@ -60,9 +64,11 @@ Array [
   />,
   <div
     className="ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-kemksi"
+    data-is="Test2:Box @ ./tests/spec/extract-specs.tsx:60-69"
   >
     <span
       className=" _dis-inline"
+      data-is="Text @ ./tests/spec/extract-specs.tsx:14"
     >
       hello world
     </span>
@@ -109,9 +115,11 @@ exports[`4. leaves dynamic variables 2`] = `
 exports[`5. spread conditional 1`] = `
 <div
   className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+  data-is="Test5:VStack @ ./tests/spec/extract-specs.tsx:101-106"
 >
   <div
     className="_bacCol-57dg7b hello-world _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+    data-is="Test5:VStack @ ./tests/spec/extract-specs.tsx:108-114"
   />
 </div>
 `;
@@ -119,9 +127,11 @@ exports[`5. spread conditional 1`] = `
 exports[`6. spread ternary 1`] = `
 <div
   className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+  data-is="Test6:VStack @ ./tests/spec/extract-specs.tsx:122-131"
 >
   <span
     className=" _dis-inline"
+    data-is="Text @ ./tests/spec/extract-specs.tsx:14"
   >
     hello world
   </span>
@@ -131,9 +141,11 @@ exports[`6. spread ternary 1`] = `
 exports[`6. spread ternary 2`] = `
 <div
   className="_bacCol-1g6456j _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+  data-is="Test6:VStack @ ./tests/spec/extract-specs.tsx:122-131"
 >
   <span
     className=" _dis-inline"
+    data-is="Text @ ./tests/spec/extract-specs.tsx:14"
   >
     hello world
   </span>
@@ -143,9 +155,11 @@ exports[`6. spread ternary 2`] = `
 exports[`7. ternary + data-is 1`] = `
 <div
   className=" _fleBas-auto _fleDir-column _maxWid-30 _minWid-500px _padBot-10px _padLef-11px _padRig-11px _wid-66"
+  data-is="Test7:VStack @ ./tests/spec/extract-specs.tsx:143-149"
 >
   <div
     className="_wid-10px _hei-10px _fleDir-column _fleBas-auto"
+    data-is="Test7:VStack @ ./tests/spec/extract-specs.tsx:150"
   />
 </div>
 `;
@@ -153,9 +167,11 @@ exports[`7. ternary + data-is 1`] = `
 exports[`8. styleExpansions 1`] = `
 <div
   className=" _bot-0px _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px"
+  data-is="Test8:AbsoluteVStack @ ./tests/spec/extract-specs.tsx:158"
 >
   <div
     className=" _bacCol-1g6456j _fleBas-auto _fleDir-column _pos-absolute"
+    data-is="Test8:AbsoluteVStack @ ./tests/spec/extract-specs.tsx:159"
   >
     <div
       className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px"
@@ -180,15 +196,18 @@ exports[`8. styleExpansions 1`] = `
 exports[`9. combines with classname 1`] = `
 <div
   className=" _fleBas-auto _fleDir-column _padBot-15px _padTop-15px home-top-dish"
+  data-is="Test9:VStack @ ./tests/spec/extract-specs.tsx:168"
 />
 `;
 
 exports[`10. extracts Text 1`] = `
 <span
   className=" _dis-inline _fonSiz-10px"
+  data-is="Test10:Text @ ./tests/spec/extract-specs.tsx:174"
 >
   <span
     className=" _dis-inline _useSel-text"
+    data-is="Test10:Text @ ./tests/spec/extract-specs.tsx:175"
   >
     <div
       className="css-text-38s1w7 _col-cqee49 _fonWei-600 _fonSiz-15px"
@@ -238,12 +257,14 @@ Array [
 exports[`12. ternary multiple on same key 1`] = `
 <div
   className="_tra- _opa-1 _fleDir-column _fleBas-auto"
+  data-is="Test12:VStack @ ./tests/spec/extract-specs.tsx:208-211"
 />
 `;
 
 exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 <div
   className=" _fleBas-auto _fleDir-column _bacCol--r-b-baCol-1g1g664545656j6j-1g6456j _bacCol--r-b-baCol-5757d7dg7b-57dg7b"
+  data-is="Test14:VStack @ ./tests/spec/extract-specs.tsx:235-242"
 />
 `;
 
@@ -251,9 +272,11 @@ exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
   <div
     className=" _fleGro- _fleShr- _minHei-12px _minWid-12px"
+    data-is="Test15:Spacer @ ./tests/spec/extract-specs.tsx:250"
   />,
   <div
     className=" _fleGro-1 _fleShr- _minHei-10px _minWid-10px"
+    data-is="Test15:Spacer @ ./tests/spec/extract-specs.tsx:251"
   />,
 ]
 `;

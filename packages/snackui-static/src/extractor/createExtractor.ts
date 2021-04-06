@@ -57,7 +57,7 @@ export function createExtractor() {
     (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
 
   // ts imports
-  require('esbuild-register/dist/node').register({
+  require('@dish/esbuild-register/dist/node').register({
     target: 'es2019',
     format: 'cjs',
   })
@@ -695,41 +695,44 @@ export function createExtractor() {
             node.name.name = domNode
           }
 
+          function getStyleExpansion(currentProps: any, name: string, value?: any) {
+            const expansion = staticConfig?.expansionProps?.[name]
+            if (typeof expansion === 'function') {
+              if (shouldPrintDebug) {
+                console.log('  expanding', name, value)
+              }
+              try {
+                return expansion({ ...currentProps, [name]: value })
+              } catch (err) {
+                console.error('Error running expansion', err)
+                styleExpansionError = true
+                return {}
+              }
+            }
+            if (expansion) {
+              return expansion
+            }
+          }
+
           // second pass, style expansions
           // TODO integrate with attrs
           let styleExpansionError = false
           if (shouldPrintDebug) {
             console.log('  styleExpansions', styleExpansions)
           }
+
+          const fullProps = {
+            ...defaultStaticProps,
+            ...viewStyles,
+          }
+
           if (styleExpansions.length) {
             // first build fullStyles to pass in
-            const fullProps = {
-              ...defaultStaticProps,
-              ...viewStyles,
-            }
             for (const { name, value } of styleExpansions) {
               fullProps[name] = value
             }
-            function getStyleExpansion(name: string, value?: any) {
-              const expansion = staticConfig?.expansionProps?.[name]
-              if (typeof expansion === 'function') {
-                if (shouldPrintDebug) {
-                  console.log('  expanding', name, value)
-                }
-                try {
-                  return expansion({ ...fullProps, [name]: value })
-                } catch (err) {
-                  console.error('Error running expansion', err)
-                  styleExpansionError = true
-                  return {}
-                }
-              }
-              if (expansion) {
-                return expansion
-              }
-            }
             for (const { name, value } of styleExpansions) {
-              const expandedStyle = getStyleExpansion(name, value)
+              const expandedStyle = getStyleExpansion(fullProps, name, value)
               if (shouldPrintDebug) {
                 console.log('  expanded', {
                   styleExpansionError,
@@ -740,6 +743,7 @@ export function createExtractor() {
                 break
               }
               if (expandedStyle) {
+                // this seems a bit weird, need to revisit and at least document
                 if (excludeProps.size) {
                   for (const key of [...excludeProps]) {
                     delete expandedStyle[key]
@@ -788,16 +792,36 @@ export function createExtractor() {
               if (!ternaries.length) return
               const normalized = normalizeTernaries(ternaries)
               ternaries = []
-              if (shouldPrintDebug) {
-                console.log(`  normalized ternaries`, normalized)
+
+              function applyStyleExpansions(styleObject: Object) {
+                const res = { ...styleObject }
+                for (const key in styleObject) {
+                  // run expansions
+                  const expandedStyle = getStyleExpansion(fullProps, key, styleObject[key])
+                  if (expandedStyle) {
+                    delete res[key]
+                    Object.assign(res, expandedStyle)
+                  }
+                }
+                return res
               }
-              next = [
-                ...next,
-                ...normalized.map((value) => ({
+
+              const normalizedExpanded = normalized.map(({ alternate, consequent, ...rest }) => {
+                return {
                   type: 'ternary' as const,
-                  value,
-                })),
-              ]
+                  value: {
+                    ...rest,
+                    alternate: alternate ? applyStyleExpansions(alternate) : null,
+                    consequent: consequent ? applyStyleExpansions(consequent) : null,
+                  },
+                }
+              })
+
+              if (shouldPrintDebug) {
+                console.log(`  noramlized ternaries`, ...normalizedExpanded.map((x) => x.value))
+              }
+
+              next = [...next, ...normalizedExpanded]
             }
 
             for (const attr of attrs) {
