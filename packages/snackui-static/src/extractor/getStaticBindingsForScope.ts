@@ -103,7 +103,7 @@ export function getStaticBindingsForScope(
           }
         }
         if (src === undefined) {
-          console.warn('missing?')
+          console.log(`⚠️ missing file ${moduleName}?`)
           return {}
         }
         // fileCache[moduleName] = {

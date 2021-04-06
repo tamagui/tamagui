@@ -99,12 +99,10 @@ export default declare(function snackBabelPlugin(
                   case 'ternary':
                     const cons = addSheetStyle(attr.value.consequent)
                     const alt = addSheetStyle(attr.value.alternate)
-                    console.log('ternary is', cons, alt)
                     stylesExpr.elements.push(t.conditionalExpression(attr.value.test, cons, alt))
                     break
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
-                      console.log('spreading', attr)
                       stylesExpr.elements.push(
                         t.memberExpression(attr.value.argument, t.identifier('style'))
                       )
