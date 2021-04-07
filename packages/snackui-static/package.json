@@ -25,7 +25,7 @@
     "@babel/traverse": "^7.12.9",
     "@babel/types": "^7.12.7",
     "@dish/babel-preset": "^0.0.2",
-    "@dish/esbuild-register": "^0.0.0",
+    "@dish/esbuild-register": "^0.1.0",
     "@dish/esdx": "^0.0.7",
     "@dish/react-test-env": "^0.0.7",
     "@dish/testy": "*",

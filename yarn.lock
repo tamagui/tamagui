@@ -475,13 +475,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dish/esbuild-register@npm:^0.0.0":
-  version: 0.0.0
-  resolution: "@dish/esbuild-register@npm:0.0.0"
+"@dish/esbuild-register@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@dish/esbuild-register@npm:0.1.0"
   dependencies:
     esbuild: ^0.11.5
     jsonc-parser: ^3.0.0
-  checksum: 7288e6a0e5e14b6027799d88dd92da1155321da3074e92c348c2d1bc7bf66f96a6558b9cb7c95125ddb49cf4c8001eda2702b53c8152b9c5f426c6fc6af996e8
+  checksum: fa02c2c487b8ed43cdb2bf5ead441a47cc3e6e9c16ca38884ae8ae9aa5e4f6ba3b876e9c191e3063ced7a2e4ed92428ce0f45466013094c138b1735b239dc30e
   languageName: node
   linkType: hard
 
@@ -2413,7 +2413,7 @@ __metadata:
     "@babel/traverse": ^7.12.9
     "@babel/types": ^7.12.7
     "@dish/babel-preset": ^0.0.2
-    "@dish/esbuild-register": ^0.0.0
+    "@dish/esbuild-register": ^0.1.0
     "@dish/esdx": ^0.0.7
     "@dish/proxy-worm": "*"
     "@dish/react-test-env": ^0.0.7
@@ -9507,9 +9507,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"patch-package@npm:^6.4.6":
-  version: 6.4.6
-  resolution: "patch-package@npm:6.4.6"
+"patch-package@npm:^6.4.7":
+  version: 6.4.7
+  resolution: "patch-package@npm:6.4.7"
   dependencies:
     "@yarnpkg/lockfile": ^1.1.0
     chalk: ^2.4.2
@@ -9526,7 +9526,7 @@ __metadata:
     tmp: ^0.0.33
   bin:
     patch-package: index.js
-  checksum: ebd288155fc113215671be35952a7d0e0c37f36c299f444c6c323b9cfc2d4039d85330ea024243c3e623fc67de00b6e90e6ec3a2117ed7e366ac65479a1b598e
+  checksum: ff118d6b994f69957e8c695dd7d9a4bae4c43f25609427b287cd4414957eaec3efc87e9a44010fe1b5a64bdbd37ac6534e6e38d82deb3afb0ac66772e14e7a62
   languageName: node
   linkType: hard
 
@@ -10986,7 +10986,7 @@ __metadata:
   dependencies:
     esbuild-jest: ^0.5.0
     lerna: ^4.0.0
-    patch-package: ^6.4.6
+    patch-package: ^6.4.7
     prettier: ^2.2.1
     prettier-plugin-import-sort: ^0.0.6
     react-native-web: 0.0.0-466063b7e
