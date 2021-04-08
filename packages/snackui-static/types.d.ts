@@ -186,7 +186,7 @@ declare module "@snackui/static" {
     import { NodePath } from "@babel/traverse";
     import * as t from "@babel/types";
     import { MediaQueries } from "@snackui/node";
-    export function extractMediaStyle(ternary: Ternary, jsxPath: NodePath<t.JSXElement>, mediaQueries: MediaQueries, sourceFileName: string, shouldPrintDebug?: boolean): StyleObject[] | null;
+    export function extractMediaStyle(ternary: Ternary, jsxPath: NodePath<t.JSXElement>, mediaQueries: MediaQueries, sourceFileName: string, importance?: number, shouldPrintDebug?: boolean): StyleObject[] | null;
     export function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression, sourceFileName: string): boolean;
 }
 

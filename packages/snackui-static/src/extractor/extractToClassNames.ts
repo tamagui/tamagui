@@ -123,6 +123,7 @@ export function extractToClassNames(
             }
           }
 
+          let lastMediaImportance = 0
           for (const attr of attrs) {
             switch (attr.type) {
               case 'attr':
@@ -157,9 +158,11 @@ export function extractToClassNames(
                   jsxPath,
                   mediaQueries,
                   sourceFileName,
+                  lastMediaImportance,
                   shouldPrintDebug
                 )
                 if (mediaStyles) {
+                  lastMediaImportance++
                   finalStyles = [...finalStyles, ...mediaStyles]
                   finalClassNames = [
                     ...finalClassNames,

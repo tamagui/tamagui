@@ -13,13 +13,13 @@ export function extractMediaStyle(
   jsxPath: NodePath<t.JSXElement>,
   mediaQueries: MediaQueries,
   sourceFileName: string,
+  importance = 0,
   shouldPrintDebug = false
 ) {
   // for now order first strongest
   const mediaKeys = Object.keys(mediaQueries)
-  const mediaKeysLen = mediaKeys.length
   const mediaKeyPrecendence = mediaKeys.reduce((acc, cur, i) => {
-    acc[cur] = new Array(mediaKeysLen - i).fill(':root').join('')
+    acc[cur] = new Array(importance + 1).fill(':root').join('')
     return acc
   }, {})
   const mt = getMediaQueryTernary(ternary, jsxPath, sourceFileName)
