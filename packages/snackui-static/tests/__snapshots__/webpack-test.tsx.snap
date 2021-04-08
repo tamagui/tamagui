@@ -2,7 +2,7 @@
 
 exports[`1. extracts to a div for simple views 1`] = `
 <div
-  className=" _bacCol-1g6456j _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-1xz9bc3 _fleBas-auto _fleDir-column _fleGro-1 _fleShr-1 test1"
+  className=" _bacCol-1g6456j _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-1xz9bc3 _dis-flex _fleBas-auto _fleDir-column _fleGro-1 _fleShr-1 test1"
   data-is="Test1:VStack @ ./tests/spec/extract-specs.tsx:42-49"
 >
   <span
@@ -24,6 +24,7 @@ Array [
         "WebkitBoxOrient": "vertical",
         "WebkitFlexBasis": "auto",
         "WebkitFlexDirection": "column",
+        "display": "flex",
         "flexBasis": "auto",
         "flexDirection": "column",
         "msFlexDirection": "column",
@@ -32,7 +33,7 @@ Array [
     }
   />,
   <div
-    className="_top--14px _bacCol-14lw9ot ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px"
+    className="_top--14px _bacCol-14lw9ot ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px"
     data-is="Test2:Box @ ./tests/spec/extract-specs.tsx:60-69"
   >
     <span
@@ -55,6 +56,7 @@ Array [
         "WebkitBoxOrient": "vertical",
         "WebkitFlexBasis": "auto",
         "WebkitFlexDirection": "column",
+        "display": "flex",
         "flexBasis": "auto",
         "flexDirection": "column",
         "msFlexDirection": "column",
@@ -63,7 +65,7 @@ Array [
     }
   />,
   <div
-    className="ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-kemksi"
+    className="ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-kemksi"
     data-is="Test2:Box @ ./tests/spec/extract-specs.tsx:60-69"
   >
     <span
@@ -102,6 +104,7 @@ exports[`4. leaves dynamic variables 2`] = `
       "WebkitBoxOrient": "vertical",
       "WebkitFlexBasis": "auto",
       "WebkitFlexDirection": "column",
+      "display": "flex",
       "flexBasis": "auto",
       "flexDirection": "column",
       "msFlexDirection": "column",
@@ -114,11 +117,11 @@ exports[`4. leaves dynamic variables 2`] = `
 
 exports[`5. spread conditional 1`] = `
 <div
-  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
   data-is="Test5:VStack @ ./tests/spec/extract-specs.tsx:101-106"
 >
   <div
-    className="_bacCol-57dg7b hello-world _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+    className="_bacCol-57dg7b hello-world _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
     data-is="Test5:VStack @ ./tests/spec/extract-specs.tsx:108-114"
   />
 </div>
@@ -126,7 +129,7 @@ exports[`5. spread conditional 1`] = `
 
 exports[`6. spread ternary 1`] = `
 <div
-  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
   data-is="Test6:VStack @ ./tests/spec/extract-specs.tsx:122-131"
 >
   <span
@@ -140,7 +143,7 @@ exports[`6. spread ternary 1`] = `
 
 exports[`6. spread ternary 2`] = `
 <div
-  className="_bacCol-1g6456j _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto"
+  className="_bacCol-1g6456j _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
   data-is="Test6:VStack @ ./tests/spec/extract-specs.tsx:122-131"
 >
   <span
@@ -154,11 +157,26 @@ exports[`6. spread ternary 2`] = `
 
 exports[`7. ternary + data-is 1`] = `
 <div
-  className=" _fleBas-auto _fleDir-column _maxWid-30 _minWid-500px _padBot-10px _padLef-11px _padRig-11px _wid-66"
-  data-is="Test7:VStack @ ./tests/spec/extract-specs.tsx:143-149"
+  className="css-view-1dbjc4n _wid-66 _minWid-500px _maxWid-30"
+  style={
+    Object {
+      "WebkitBoxDirection": "normal",
+      "WebkitBoxOrient": "vertical",
+      "WebkitFlexBasis": "auto",
+      "WebkitFlexDirection": "column",
+      "display": "flex",
+      "flexBasis": "auto",
+      "flexDirection": "column",
+      "msFlexDirection": "column",
+      "msFlexPreferredSize": "auto",
+      "paddingBottom": "10px",
+      "paddingLeft": "11px",
+      "paddingRight": "11px",
+    }
+  }
 >
   <div
-    className="_wid-10px _hei-10px _fleDir-column _fleBas-auto"
+    className="_wid-10px _hei-10px _fleDir-column _fleBas-auto _dis-flex"
     data-is="Test7:VStack @ ./tests/spec/extract-specs.tsx:150"
   />
 </div>
@@ -166,21 +184,37 @@ exports[`7. ternary + data-is 1`] = `
 
 exports[`8. styleExpansions 1`] = `
 <div
-  className=" _bot-0px _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px"
+  className=" _bot-0px _dis-flex _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px"
   data-is="Test8:AbsoluteVStack @ ./tests/spec/extract-specs.tsx:158"
 >
   <div
-    className=" _bacCol-1g6456j _fleBas-auto _fleDir-column _pos-absolute"
-    data-is="Test8:AbsoluteVStack @ ./tests/spec/extract-specs.tsx:159"
+    className="css-view-1dbjc4n"
+    style={
+      Object {
+        "WebkitBoxDirection": "normal",
+        "WebkitBoxOrient": "vertical",
+        "WebkitFlexBasis": "auto",
+        "WebkitFlexDirection": "column",
+        "backgroundColor": "rgba(255,0,0,1.00)",
+        "display": "flex",
+        "flexBasis": "auto",
+        "flexDirection": "column",
+        "msFlexDirection": "column",
+        "msFlexPreferredSize": "auto",
+        "position": "absolute",
+      }
+    }
   >
     <div
-      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px"
+      className="css-view-1dbjc4n _top-0px _rig-0px _pos-relative _lef-0px _bot-0px"
       style={
         Object {
           "WebkitBoxDirection": "normal",
           "WebkitBoxOrient": "vertical",
           "WebkitFlexBasis": "auto",
           "WebkitFlexDirection": "column",
+          "backgroundColor": "rgba(255,255,255,1.00)",
+          "display": "flex",
           "flexBasis": "auto",
           "flexDirection": "column",
           "msFlexDirection": "column",
@@ -195,7 +229,7 @@ exports[`8. styleExpansions 1`] = `
 
 exports[`9. combines with classname 1`] = `
 <div
-  className=" _fleBas-auto _fleDir-column _padBot-15px _padTop-15px home-top-dish"
+  className=" _dis-flex _fleBas-auto _fleDir-column _padBot-15px _padTop-15px home-top-dish"
   data-is="Test9:VStack @ ./tests/spec/extract-specs.tsx:168"
 />
 `;
@@ -240,7 +274,6 @@ Array [
   "_pos-relative",
   "_oveY-hidden",
   "_oveX-hidden",
-  "_minHei-10px",
   "_borTopWid-1px",
   "_borTopSty-solid",
   "_borRigWid-1px",
@@ -256,15 +289,27 @@ Array [
 
 exports[`12. ternary multiple on same key 1`] = `
 <div
-  className="_tra- _opa-1 _fleDir-column _fleBas-auto"
+  className="_tra- _opa-1 _fleDir-column _fleBas-auto _dis-flex"
   data-is="Test12:VStack @ ./tests/spec/extract-specs.tsx:208-211"
 />
 `;
 
 exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 <div
-  className=" _fleBas-auto _fleDir-column _bacCol--r-b-baCol-1g1g664545656j6j-1g6456j _bacCol--r-b-baCol-5757d7dg7b-57dg7b"
-  data-is="Test14:VStack @ ./tests/spec/extract-specs.tsx:235-242"
+  className="css-view-1dbjc4n  _bacCol--r-b-baCol-1g1g664545656j6j-1g6456j"
+  style={
+    Object {
+      "WebkitBoxDirection": "normal",
+      "WebkitBoxOrient": "vertical",
+      "WebkitFlexBasis": "auto",
+      "WebkitFlexDirection": "column",
+      "display": "flex",
+      "flexBasis": "auto",
+      "flexDirection": "column",
+      "msFlexDirection": "column",
+      "msFlexPreferredSize": "auto",
+    }
+  }
 />
 `;
 
@@ -290,6 +335,7 @@ exports[`16. deopt when spreading multiple 1`] = `
       "WebkitBoxOrient": "vertical",
       "WebkitFlexBasis": "auto",
       "WebkitFlexDirection": "column",
+      "display": "flex",
       "flexBasis": "auto",
       "flexDirection": "column",
       "msFlexDirection": "column",

@@ -22,7 +22,7 @@ import React, {
   useState,
 } from 'react'
 
-import { isWeb } from '../constants'
+import { isWeb } from '../platform'
 import { useForceUpdate } from './useForceUpdate'
 
 const PREFIX = `theme--`

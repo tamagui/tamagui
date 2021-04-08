@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { isWeb } from '../constants'
+import { isWeb } from '../platform'
 
 export function Hoverable({
   onPressIn,

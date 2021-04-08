@@ -1,11 +1,16 @@
-import path, { basename } from 'path'
+import path from 'path'
 
 import * as t from '@babel/types'
-import { existsSync, statSync } from 'fs-extra'
-import { debounce } from 'lodash'
+import { defaultMediaQueries } from '@snackui/node'
+import { existsSync } from 'fs-extra'
 
 import { evaluateAstNode } from './evaluateAstNode'
 import { getSourceModule } from './getSourceModule'
+
+// TODO we can make this a bit more dynamic
+const snackuiConstants = {
+  defaultMediaQueries,
+}
 
 interface Binding {
   identifier: any
@@ -65,8 +70,8 @@ export function getStaticBindingsForScope(
       if (!sourceModule.sourceModule) {
         continue
       }
-      let moduleName = sourceModule.sourceModule
 
+      let moduleName = sourceModule.sourceModule
       // if modulePath is an absolute or relative path
       if (moduleName.startsWith('.') || moduleName.startsWith('/')) {
         // if moduleName doesn't end with an extension, add .js
@@ -75,6 +80,10 @@ export function getStaticBindingsForScope(
         }
         // get absolute path
         moduleName = path.resolve(sourceDir, moduleName)
+      }
+
+      if (moduleName === 'snackui') {
+        return snackuiConstants
       }
 
       const isOnWhitelist = whitelist.some((test) => moduleName.endsWith(test))

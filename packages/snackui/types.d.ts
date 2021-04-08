@@ -1,8 +1,44 @@
 /// <reference lib="dom" />
 /// <reference lib="esnext" />
 declare module "snackui" {
-    export const isWeb: boolean;
-    export const isWebIOS: false;
+    export const defaultMediaQueries: {
+        xs: {
+            maxWidth: number;
+        };
+        notXs: {
+            minWidth: number;
+        };
+        sm: {
+            maxWidth: number;
+        };
+        notSm: {
+            minWidth: number;
+        };
+        md: {
+            minWidth: number;
+        };
+        lg: {
+            minWidth: number;
+        };
+        xl: {
+            minWidth: number;
+        };
+        xxl: {
+            minWidth: number;
+        };
+        short: {
+            maxHeight: number;
+        };
+        tall: {
+            minHeight: number;
+        };
+        hoverNone: {
+            hover: string;
+        };
+        pointerCoarse: {
+            pointer: string;
+        };
+    };
 }
 
 declare module "snackui" {
@@ -56,44 +92,6 @@ declare module "snackui" {
         [key: string]: string | number | string;
     };
     type MediaQueryShort = MediaQueryObject;
-    export const defaultMediaQueries: {
-        xs: {
-            maxWidth: number;
-        };
-        notXs: {
-            minWidth: number;
-        };
-        sm: {
-            maxWidth: number;
-        };
-        notSm: {
-            minWidth: number;
-        };
-        md: {
-            minWidth: number;
-        };
-        lg: {
-            minWidth: number;
-        };
-        xl: {
-            minWidth: number;
-        };
-        xxl: {
-            minWidth: number;
-        };
-        short: {
-            maxHeight: number;
-        };
-        tall: {
-            minHeight: number;
-        };
-        hoverNone: {
-            hover: string;
-        };
-        pointerCoarse: {
-            pointer: string;
-        };
-    };
     export type MediaQueryState = {
         [key in keyof typeof defaultMediaQueries]: boolean;
     };
@@ -178,6 +176,11 @@ declare module "snackui" {
 
 declare module "snackui" {
     export function useScrollPosition<A extends HTMLDivElement, T extends React.RefObject<A>>(ref: T, cb: (ref: A | null) => any): void;
+}
+
+declare module "snackui" {
+    export const isWeb: boolean;
+    export const isWebIOS: false;
 }
 
 declare module "snackui" {

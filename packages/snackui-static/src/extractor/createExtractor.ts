@@ -465,9 +465,10 @@ export function createExtractor() {
                 inlinePropCount++
               }
 
-              if (didFailSpread) {
-                return null
-              }
+              // dont remove here or failed expressions will be totally absent
+              // if (didFailSpread) {
+              //   return null
+              // }
 
               return attr
             }

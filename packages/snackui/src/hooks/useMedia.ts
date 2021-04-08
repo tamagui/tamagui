@@ -12,27 +12,13 @@
 
 import { useLayoutEffect, useRef } from 'react'
 
+import { defaultMediaQueries } from '../constants'
 import { matchMedia } from '../helpers/matchMedia'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
 type MediaQueryObject = { [key: string]: string | number | string }
 type MediaQueryShort = MediaQueryObject
-
-export const defaultMediaQueries = {
-  xs: { maxWidth: 660 },
-  notXs: { minWidth: 660 + 1 },
-  sm: { maxWidth: 860 },
-  notSm: { minWidth: 860 + 1 },
-  md: { minWidth: 960 },
-  lg: { minWidth: 1120 },
-  xl: { minWidth: 1280 },
-  xxl: { minWidth: 1420 },
-  short: { maxHeight: 820 },
-  tall: { minHeight: 820 },
-  hoverNone: { hover: 'none' },
-  pointerCoarse: { pointer: 'coarse' },
-}
 
 export type MediaQueryState = {
   [key in keyof typeof defaultMediaQueries]: boolean

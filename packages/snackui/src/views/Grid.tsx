@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { isWeb } from '../constants'
+import { isWeb } from '../platform'
 import { HStack } from './Stacks'
 
 export type GridProps = {

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { isWeb } from '../constants'
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
+import { isWeb } from '../platform'
 import { getSizedTextProps } from './getSizedTextProps'
 import { SizableTextProps } from './Size'
 import { Text } from './Text'

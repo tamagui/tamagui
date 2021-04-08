@@ -18,11 +18,11 @@ import {
   ViewStyle,
 } from 'react-native'
 
-import { isWeb } from '../constants'
 import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { ActiveThemeContext, invertStyleVariableToValue } from '../hooks/useTheme'
+import { isWeb } from '../platform'
 import { Spacing } from './Spacer'
 
 export type StackProps = Omit<
@@ -356,14 +356,17 @@ export const AbsoluteVStack = createStack({
   position: 'absolute',
   flexDirection: 'column',
   flexBasis: 'auto',
+  display: 'flex',
 })
 
 export const HStack = createStack({
   flexDirection: 'row',
   flexBasis: 'auto',
+  display: 'flex',
 })
 
 export const VStack = createStack({
   flexDirection: 'column',
   flexBasis: 'auto',
+  display: 'flex',
 })

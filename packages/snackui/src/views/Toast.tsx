@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-import { isWeb } from '../constants'
 import { useForceUpdate } from '../hooks/useForceUpdate'
+import { isWeb } from '../platform'
 import { AnimatedVStack } from './AnimatedStack'
 import { AbsoluteVStack, VStack } from './Stacks'
 import { Text } from './Text'
