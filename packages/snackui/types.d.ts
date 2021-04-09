@@ -373,6 +373,9 @@ declare module "snackui" {
     import React from "react";
     import { TextProps as ReactTextProps, TextStyle } from "react-native";
     export type TextProps = Omit<ReactTextProps, 'style'> & Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
+        hoverStyle?: TextStyle | null;
+        pressStyle?: TextStyle | null;
+        focusStyle?: TextStyle | null;
         display?: TextStyle['display'] | 'inherit';
         ellipse?: boolean;
         selectable?: boolean;
