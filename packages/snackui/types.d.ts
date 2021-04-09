@@ -573,12 +573,14 @@ declare module "snackui" {
 
 declare module "snackui" {
     export type Size = number | SizeName;
-    export type SizeName = 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
+    export type SizeName = 'xxxxxxs' | 'xxxxxs' | 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl' | 'xxxxxl' | 'xxxxxxl';
     export type SizableTextProps = TextProps & {
         size?: Size;
         sizeLineHeight?: number;
     };
     export const sizes: {
+        xxxxxxs: number;
+        xxxxxs: number;
         xxxxs: number;
         xxxs: number;
         xxs: number;
@@ -590,6 +592,8 @@ declare module "snackui" {
         xxl: number;
         xxxl: number;
         xxxxl: number;
+        xxxxxl: number;
+        xxxxxxl: number;
     };
     export const getSize: (size: Size) => number;
 }
