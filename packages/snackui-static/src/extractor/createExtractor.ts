@@ -82,10 +82,12 @@ export function createExtractor() {
         ...props
       }: ExtractorParseProps
     ) => {
-      if (!themesFile && !disableThemes) {
-        console.log(
-          '  Warning: no themesFile option provided to SnackUI, all themes will run inline (slower).'
-        )
+      if (process.env.NODE_ENV === 'development') {
+        if (!themesFile && !disableThemes) {
+          console.log(
+            '  Warning: no themesFile option provided to SnackUI, all themes will run inline (slower).'
+          )
+        }
       }
       if (!disableThemes && themesFile) {
         if (themesFile[0] !== '/') {
