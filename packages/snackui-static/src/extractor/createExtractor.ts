@@ -62,7 +62,7 @@ export function createExtractor() {
     (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
 
   // ts imports
-  require('@dish/esbuild-register/dist/node').register({
+  require('esbuild-register/dist/node').register({
     target: 'es2019',
     format: 'cjs',
   })
