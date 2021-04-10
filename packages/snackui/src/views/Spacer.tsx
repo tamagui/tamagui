@@ -1,18 +1,9 @@
 import React, { memo } from 'react'
 import { View, ViewStyle } from 'react-native'
 
-export type Spacing =
-  | 'xxs'
-  | 'xs'
-  | 'sm'
-  | 'md'
-  | 'lg'
-  | 'xl'
-  | 'xxl'
-  | 'xxxl'
-  | number
-  | boolean
-  | string
+import { Size } from './Size'
+
+export type Spacing = Size | boolean | string
 
 export type SpacerProps = {
   size?: Spacing
@@ -66,15 +57,37 @@ if (process.env.IS_STATIC) {
 }
 
 function spaceToPx(space: Spacing) {
-  if (space == 'xxs') return 2
-  if (space == 'xs') return 4
-  if (space == 'sm') return 8
-  if (space === 'md' || space === true) return 12
-  if (space == 'lg') return 16
-  if (space == 'xl') return 24
-  if (space == 'xxl') return 36
-  if (space == 'xxxl') return 48
-  if (typeof space === 'number') return space
-  if (typeof space === 'string') return space
+  switch (space) {
+    case 'xxxxxs':
+      return 0.25
+    case 'xxxxs':
+      return 0.5
+    case 'xxxs':
+      return 1
+    case 'xxs':
+      return 2
+    case 'xs':
+      return 4
+    case 'sm':
+      return 8
+    case true:
+    case 'md':
+      return 12
+    case 'lg':
+      return 16
+    case 'xl':
+      return 24
+    case 'xxl':
+      return 36
+    case 'xxxl':
+      return 48
+    case 'xxxxl':
+      return 96
+    case 'xxxxxl':
+      return 192
+    default:
+      if (typeof space === 'number') return space
+      if (typeof space === 'string') return space
+  }
   return 0
 }

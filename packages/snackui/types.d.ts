@@ -273,7 +273,57 @@ declare module "snackui" {
 
 declare module "snackui" {
     import React from "react";
-    export type Spacing = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | number | boolean | string;
+    import { TextProps as ReactTextProps, TextStyle } from "react-native";
+    export type TextProps = Omit<ReactTextProps, 'style'> & Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
+        hoverStyle?: TextStyle | null;
+        pressStyle?: TextStyle | null;
+        focusStyle?: TextStyle | null;
+        display?: TextStyle['display'] | 'inherit';
+        ellipse?: boolean;
+        selectable?: boolean;
+        children?: any;
+        className?: string;
+        pointerEvents?: string;
+        cursor?: string;
+        userSelect?: string;
+    };
+    export const Text: React.MemoExoticComponent<(allProps: TextProps) => JSX.Element>;
+    export const useTextStyle: (allProps: TextProps, onlyTextSpecificStyle?: boolean | undefined, memo?: boolean | undefined) => readonly [
+        TextProps,
+        Readonly<{}>
+    ];
+}
+
+declare module "snackui" {
+    export type Size = number | SizeName;
+    export type SizeName = 'xxxxxxs' | 'xxxxxs' | 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl' | 'xxxxxl' | 'xxxxxxl';
+    export type SizableTextProps = TextProps & {
+        size?: Size;
+        sizeLineHeight?: number;
+    };
+    export const sizes: {
+        xxxxxxs: number;
+        xxxxxs: number;
+        xxxxs: number;
+        xxxs: number;
+        xxs: number;
+        xs: number;
+        sm: number;
+        md: number;
+        lg: number;
+        xl: number;
+        xxl: number;
+        xxxl: number;
+        xxxxl: number;
+        xxxxxl: number;
+        xxxxxxl: number;
+    };
+    export const getSize: (size: Size) => number;
+}
+
+declare module "snackui" {
+    import React from "react";
+    export type Spacing = Size | boolean | string;
     export type SpacerProps = {
         size?: Spacing;
         flex?: boolean | number;
@@ -367,29 +417,6 @@ declare module "snackui" {
             theme?: any;
         } = {}>(component: (props: P) => R): (props: P) => R;
     }
-}
-
-declare module "snackui" {
-    import React from "react";
-    import { TextProps as ReactTextProps, TextStyle } from "react-native";
-    export type TextProps = Omit<ReactTextProps, 'style'> & Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
-        hoverStyle?: TextStyle | null;
-        pressStyle?: TextStyle | null;
-        focusStyle?: TextStyle | null;
-        display?: TextStyle['display'] | 'inherit';
-        ellipse?: boolean;
-        selectable?: boolean;
-        children?: any;
-        className?: string;
-        pointerEvents?: string;
-        cursor?: string;
-        userSelect?: string;
-    };
-    export const Text: React.MemoExoticComponent<(allProps: TextProps) => JSX.Element>;
-    export const useTextStyle: (allProps: TextProps, onlyTextSpecificStyle?: boolean | undefined, memo?: boolean | undefined) => readonly [
-        TextProps,
-        Readonly<{}>
-    ];
 }
 
 declare module "snackui" {
@@ -572,33 +599,6 @@ declare module "snackui" {
         contents: any;
     };
     export const Tooltip: ({ contents, ...props }: TooltipProps) => JSX.Element;
-}
-
-declare module "snackui" {
-    export type Size = number | SizeName;
-    export type SizeName = 'xxxxxxs' | 'xxxxxs' | 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl' | 'xxxxxl' | 'xxxxxxl';
-    export type SizableTextProps = TextProps & {
-        size?: Size;
-        sizeLineHeight?: number;
-    };
-    export const sizes: {
-        xxxxxxs: number;
-        xxxxxs: number;
-        xxxxs: number;
-        xxxs: number;
-        xxs: number;
-        xs: number;
-        sm: number;
-        md: number;
-        lg: number;
-        xl: number;
-        xxl: number;
-        xxxl: number;
-        xxxxl: number;
-        xxxxxl: number;
-        xxxxxxl: number;
-    };
-    export const getSize: (size: Size) => number;
 }
 
 declare module "snackui" {
