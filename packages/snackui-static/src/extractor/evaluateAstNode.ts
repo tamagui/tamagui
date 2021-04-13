@@ -1,6 +1,10 @@
 import * as t from '@babel/types'
 
-export function evaluateAstNode(exprNode: t.Node, evalFn?: (node: t.Node) => any): any {
+export function evaluateAstNode(
+  exprNode: t.Node,
+  evalFn?: (node: t.Node) => any,
+  shouldPrintDebug?: boolean
+): any {
   // null === boolean true (at least in our use cases for jsx eval)
   if (exprNode === null) {
     return true
@@ -97,9 +101,6 @@ export function evaluateAstNode(exprNode: t.Node, evalFn?: (node: t.Node) => any
       return evaluateAstNode(exprNode.left, evalFn) / evaluateAstNode(exprNode.right, evalFn)
     }
   }
-
-  // TODO: member expression?
-  // console.log('what failed', exprNode)
 
   // if we've made it this far, the value has to be evaluated
   if (typeof evalFn !== 'function') {

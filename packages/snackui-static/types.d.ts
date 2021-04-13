@@ -100,7 +100,7 @@ declare module "@snackui/static" {
 
 declare module "@snackui/static" {
     import * as t from "@babel/types";
-    export function evaluateAstNode(exprNode: t.Node, evalFn?: (node: t.Node) => any): any;
+    export function evaluateAstNode(exprNode: t.Node, evalFn?: (node: t.Node) => any, shouldPrintDebug?: boolean): any;
 }
 
 declare module "@snackui/static" {

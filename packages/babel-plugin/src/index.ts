@@ -119,12 +119,9 @@ export default declare(function snackBabelPlugin(
                         stylesExpr.elements.push(
                           t.memberExpression(attr.value.argument, t.identifier('style'))
                         )
-                      } else {
-                        finalAttrs.push(attr.value)
                       }
-                    } else {
-                      finalAttrs.push(attr.value)
                     }
+                    finalAttrs.push(attr.value)
                     break
                 }
               }

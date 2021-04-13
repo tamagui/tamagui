@@ -129,16 +129,13 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
         if (val === 'inherit') {
           continue
         }
-        if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
-          continue
-        }
-      }
-      // if converting to a prop
-      if (!isWeb) {
         if (key === 'ellipse') {
           props = props || {}
           props['numberOfLines'] = 1
           props['lineBreakMode'] = 'clip'
+          continue
+        }
+        if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
           continue
         }
       }

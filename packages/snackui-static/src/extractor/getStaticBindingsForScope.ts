@@ -47,10 +47,14 @@ export function getStaticBindingsForScope(
   const bindings: Record<string, Binding> = scope.getAllBindings() as any
   const ret: Record<string, any> = {}
 
-  const program = scope.getProgramParent().block as t.Program
+  if (shouldPrintDebug) {
+    // prettier-ignore
+    console.log('  scope bindings', Object.keys(bindings).map(x => bindings[x].identifier?.name).join(', '))
+  }
 
   // on react native at least it doesnt find some bindings? not sure why
   // lets add in whitelisted imports if they exist
+  const program = scope.getProgramParent().block as t.Program
   for (const node of program.body) {
     if (t.isImportDeclaration(node)) {
       const importPath = node.source.value
@@ -77,10 +81,6 @@ export function getStaticBindingsForScope(
     }
   }
 
-  if (shouldPrintDebug) {
-    console.log('import bindings', ret)
-  }
-
   if (!bindingCache) {
     throw new Error('bindingCache is a required param')
   }
@@ -90,7 +90,6 @@ export function getStaticBindingsForScope(
 
     // check to see if the item is a module
     const sourceModule = getSourceModule(k, binding)
-
     if (sourceModule) {
       if (!sourceModule.sourceModule) {
         continue
@@ -163,18 +162,15 @@ export function getStaticBindingsForScope(
       continue
     }
 
-    // skip ObjectExpressions not defined in the root
-    if (t.isObjectExpression(dec.init) && parentPath.parentPath.type !== 'Program') {
-      continue
-    }
-
     // evaluate
     try {
-      ret[k] = evaluateAstNode(dec.init)
+      ret[k] = evaluateAstNode(dec.init, undefined, shouldPrintDebug)
       bindingCache[cacheKey] = ret[k]
       continue
     } catch (e) {
-      // console.error('evaluateAstNode could not eval dec.init:', e);
+      if (shouldPrintDebug) {
+        console.error('evaluateAstNode could not eval dec.init:', cacheKey, e.message)
+      }
     }
   }
 

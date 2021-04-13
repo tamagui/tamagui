@@ -143,6 +143,11 @@ export const useTheme = () => {
     return manager.onUpdate(state.current.uuid, forceUpdate)
   }, [])
 
+  if (!themes[manager.name]) {
+    console.log('Error getting theme in', themes)
+    throw new Error(`No theme ${manager.name}`)
+  }
+
   return useMemo(() => {
     return new Proxy(themes[manager.name], {
       get(_, key) {

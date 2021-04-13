@@ -54,7 +54,6 @@ let hasWarnedThemes = false
 let lastThemeMTime = 0
 
 export function createExtractor() {
-  const bindingCache: Record<string, string | null> = {}
   const themesByFile = {}
   const shouldAddDebugProp =
     process.env.TARGET !== 'native' &&
@@ -155,6 +154,9 @@ export function createExtractor() {
       let couldntParse = false
       const modifiedComponents = new Set<NodePath<any>>()
 
+      // only keeping a cache around per-file, reset it if it changes
+      const bindingCache: Record<string, string | null> = {}
+
       /**
        * Step 2: Statically extract from JSX < /> nodes
        */
@@ -229,15 +231,15 @@ export function createExtractor() {
                     }
                   }
                   // variable
-                  if (t.isIdentifier(n)) {
-                    invariant(
-                      staticNamespace.hasOwnProperty(n.name),
-                      `identifier not in staticNamespace: "${n.name}"`
-                    )
+                  if (t.isIdentifier(n) && staticNamespace.hasOwnProperty(n.name)) {
                     return staticNamespace[n.name]
                   }
                   const evalContext = vm.createContext(staticNamespace)
-                  return vm.runInContext(`(${generate(n as any).code})`, evalContext)
+                  const code = `(${generate(n as any).code})`
+                  // if (shouldPrintDebug) {
+                  //   console.log('evaluating', { n, code, evalContext })
+                  // }
+                  return vm.runInContext(code, evalContext)
                 }
 
                 return (n: t.Node) => {
@@ -298,7 +300,7 @@ export function createExtractor() {
           traversePath
             .get('openingElement')
             .get('attributes')
-            .forEach((path, idx) => {
+            .forEach((path) => {
               const attr = path.node
               if (!t.isJSXSpreadAttribute(attr)) {
                 flattenedAttrs.push(attr)

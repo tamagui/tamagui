@@ -2412,7 +2412,7 @@ __metadata:
     "@snackui/node": ^0.3.0
     "@types/jest": "*"
     "@types/node": ^14.14.12
-    "@types/react-native": ^0.62.12
+    "@types/react-native": ^0.64.2
     "@types/webpack": ^4.41.26
     babel-literal-to-ast: ^2.1.0
     babel-loader: ^8.2.2
@@ -2711,6 +2711,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: f7857efc2d8185c802a15f6e036c8d98a5c99824feb19ff757dee9afa6ceac757adf771d7ecd0c0082b0306b2adc28077fea97ecc84030737e97561328726a09
+  languageName: node
+  linkType: hard
+
+"@types/react-native@npm:^0.64.2":
+  version: 0.64.2
+  resolution: "@types/react-native@npm:0.64.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: 6536667ffc06fc87580be381146ef393b5e695ce6d176df46bf1dcda2470625480113bf13352b5ad2df833f6e888ab8a2564a225e825a2888056e565750f060c
   languageName: node
   linkType: hard
 
