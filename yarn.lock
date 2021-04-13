@@ -475,16 +475,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dish/esbuild-register@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@dish/esbuild-register@npm:0.1.0"
-  dependencies:
-    esbuild: ^0.11.5
-    jsonc-parser: ^3.0.0
-  checksum: fa02c2c487b8ed43cdb2bf5ead441a47cc3e6e9c16ca38884ae8ae9aa5e4f6ba3b876e9c191e3063ced7a2e4ed92428ce0f45466013094c138b1735b239dc30e
-  languageName: node
-  linkType: hard
-
 "@dish/esdx@npm:^0.0.2":
   version: 0.0.2
   resolution: "@dish/esdx@npm:0.0.2"
@@ -2413,7 +2403,6 @@ __metadata:
     "@babel/traverse": ^7.12.9
     "@babel/types": ^7.12.7
     "@dish/babel-preset": ^0.0.2
-    "@dish/esbuild-register": ^0.1.0
     "@dish/esdx": ^0.0.7
     "@dish/proxy-worm": "*"
     "@dish/react-test-env": ^0.0.7
@@ -2429,6 +2418,7 @@ __metadata:
     babel-loader: ^8.2.2
     css-loader: ^5.0.1
     esbuild: ^0.11.5
+    esbuild-register: ^2.4.0
     find-cache-dir: ^3.3.1
     fs-extra: ^9.0.0
     invariant: ^2.2.4
@@ -4493,13 +4483,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"create-react-class@npm:^15.6.2":
+"create-react-class@npm:^15.7.0":
   version: 15.7.0
   resolution: "create-react-class@npm:15.7.0"
   dependencies:
     loose-envify: ^1.3.1
     object-assign: ^4.1.1
   checksum: b961a66896ff89ad5451e6cf6a686c03716ecb50f7c61b24864cda5aa18d52ce817b94bbeace3e126b19a1cc926c75f34c0777a6f4004fc947221836b13d4479
+  languageName: node
+  linkType: hard
+
+"cross-fetch@npm:^3.0.4":
+  version: 3.1.4
+  resolution: "cross-fetch@npm:3.1.4"
+  dependencies:
+    node-fetch: 2.6.1
+  checksum: 47b33bc773d53f19805eeac914e7d76e022a1aee3b7a55277fae3d3d1a0cff354b92c4ec6c5d99aeef3e5757c2719e94c37879ba846c33de892e68a655758b61
   languageName: node
   linkType: hard
 
@@ -5132,6 +5131,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esbuild-register@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "esbuild-register@npm:2.4.0"
+  dependencies:
+    esbuild: ^0.11.5
+    jsonc-parser: ^3.0.0
+  checksum: 7875c5f92d1785e7df964292c23f6f1e493801474fff2c620d890d88ac6841cb236c65410ff8fd78e4e9be0b18b445c6b7f7fa674fe96b781d589ce58a8ffe83
+  languageName: node
+  linkType: hard
+
 "esbuild@npm:^0.11.5":
   version: 0.11.5
   resolution: "esbuild@npm:0.11.5"
@@ -5508,7 +5517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fbjs@npm:1.0.0, fbjs@npm:^1.0.0":
+"fbjs@npm:1.0.0":
   version: 1.0.0
   resolution: "fbjs@npm:1.0.0"
   dependencies:
@@ -5521,6 +5530,21 @@ __metadata:
     setimmediate: ^1.0.5
     ua-parser-js: ^0.7.18
   checksum: 8fbb6828cfb087b08f0ba088c62335dbc73f6da92ecf39bb61c1b045cb730803cb193484bd5e4409d4a78a1d723abbe030b0723c03b598a35fd7165d2ef2f006
+  languageName: node
+  linkType: hard
+
+"fbjs@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "fbjs@npm:3.0.0"
+  dependencies:
+    cross-fetch: ^3.0.4
+    fbjs-css-vars: ^1.0.0
+    loose-envify: ^1.0.0
+    object-assign: ^4.1.0
+    promise: ^7.1.1
+    setimmediate: ^1.0.5
+    ua-parser-js: ^0.7.18
+  checksum: f112f440b2e1a7a44f8cc1cb0a0a90ce733b291df6f47919b4c3066c33a83e9078d1e841b5ef24da26c59cdef8a4d171332e7a99ea39403221b34ae4ca90b93f
   languageName: node
   linkType: hard
 
@@ -6353,7 +6377,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hyphenate-style-name@npm:^1.0.2, hyphenate-style-name@npm:^1.0.3":
+"hyphenate-style-name@npm:^1.0.2, hyphenate-style-name@npm:^1.0.4":
   version: 1.0.4
   resolution: "hyphenate-style-name@npm:1.0.4"
   checksum: 4cfeb47e98eab9c25e6dece20da772cc914a9f8e5ee794cf8db105b0649dd64a61d8ee8ff32acf23ae0ac181db8fcbe4a6abb2f7de48ae52b42a85bbf1aacb86
@@ -6580,12 +6604,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inline-style-prefixer@npm:^5.1.0":
-  version: 5.1.2
-  resolution: "inline-style-prefixer@npm:5.1.2"
+"inline-style-prefixer@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "inline-style-prefixer@npm:6.0.0"
   dependencies:
     css-in-js-utils: ^2.0.0
-  checksum: 175c4bc3d1ba599558d3ddc526c6ba4471df8869ab374181c724cbf8015bfe4399fa2b54cbfbfa6b72b6e0c1f1fc07ea8b4dee1c2f4cacc27929ee2c6280e6c8
+  checksum: c7067ab95748b51d83004bdbb08964130893341e1026d42f7e519a0ca50c005e755887179bd7010bf0e57ac167c11c91be4b6984a4ba44e41e78125a72f58a58
   languageName: node
   linkType: hard
 
@@ -8711,6 +8735,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:2.6.1, node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "node-fetch@npm:2.6.1"
+  checksum: cbb171635e538162b977eac5dfe7a1e07a9a02e991924377a6435502291e2f823d306b95aabc455caebf4a118ccf836868462bc70ccc3095af02bb9da61fda37
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^1.0.1":
   version: 1.7.3
   resolution: "node-fetch@npm:1.7.3"
@@ -8718,13 +8749,6 @@ __metadata:
     encoding: ^0.1.11
     is-stream: ^1.0.1
   checksum: d04afb2e328ffb974a5ac4800fe5714d7419243d72f089a6a2383d3b93368c61ae88954a4866c476c0d7f95d7af414c1b9a885e051971061efe4054d526e23ed
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1":
-  version: 2.6.1
-  resolution: "node-fetch@npm:2.6.1"
-  checksum: cbb171635e538162b977eac5dfe7a1e07a9a02e991924377a6435502291e2f823d306b95aabc455caebf4a118ccf836868462bc70ccc3095af02bb9da61fda37
   languageName: node
   linkType: hard
 
@@ -10094,23 +10118,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:0.0.0-466063b7e":
-  version: 0.0.0-466063b7e
-  resolution: "react-native-web@npm:0.0.0-466063b7e"
+"react-native-web@npm:^0.15.6":
+  version: 0.15.6
+  resolution: "react-native-web@npm:0.15.6"
   dependencies:
     array-find-index: ^1.0.2
-    create-react-class: ^15.6.2
+    create-react-class: ^15.7.0
     deep-assign: ^3.0.0
-    fbjs: ^1.0.0
-    hyphenate-style-name: ^1.0.3
-    inline-style-prefixer: ^5.1.0
+    fbjs: ^3.0.0
+    hyphenate-style-name: ^1.0.4
+    inline-style-prefixer: ^6.0.0
     normalize-css-color: ^1.0.2
     prop-types: ^15.6.0
     react-timer-mixin: ^0.13.4
   peerDependencies:
-    react: ">=16.5.1"
-    react-dom: ">=16.5.1"
-  checksum: 3d958d9a6556d3f6a42a9ce83932e697d3189507e84303875a5582d47409e23abc58a317f03c6082f7d82b239ed540857c4e02891b483ad949514930a03791d9
+    react: ">=17.0.1"
+    react-dom: ">=17.0.1"
+  checksum: 4dc4d90a0434b7a6857e36e20bae7d961d956d310579604cf58d040c2d73d8ebebfbb975b60fe16315f7965c2bdcbfa527883924bc9e4c85e64abb95c213881d
   languageName: node
   linkType: hard
 
@@ -10989,7 +11013,7 @@ __metadata:
     patch-package: ^6.4.7
     prettier: ^2.2.1
     prettier-plugin-import-sort: ^0.0.6
-    react-native-web: 0.0.0-466063b7e
+    react-native-web: ^0.15.6
     rollup-plugin-flat-dts: ^1.1.0
     ultra-runner: ^3.10.5
   languageName: unknown

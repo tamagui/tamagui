@@ -255,7 +255,9 @@ export function extractToClassNames(
   }
 
   const styles = Array.from(cssMap.values())
-    .map((x) => (shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`))
+    .map((x) => {
+      return shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`
+    })
     .join('\n')
     .trim()
 

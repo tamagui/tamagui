@@ -12,6 +12,7 @@ import React, {
 import {
   Animated,
   GestureResponderEvent,
+  Pressable,
   TouchableOpacity,
   View,
   ViewProps,
@@ -271,7 +272,7 @@ const createStack = (defaultProps?: ViewStyle) => {
       } else {
         if (pointerEvents !== 'none' && !!(onPress || onPressOut)) {
           content = (
-            <TouchableOpacity
+            <Pressable
               onPress={(e) => {
                 // @ts-ignore
                 events.onClick(e)
@@ -289,7 +290,7 @@ const createStack = (defaultProps?: ViewStyle) => {
               }
             >
               {content}
-            </TouchableOpacity>
+            </Pressable>
           )
         }
       }

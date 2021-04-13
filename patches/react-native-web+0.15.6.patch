@@ -1,0 +1,57 @@
+diff --git a/node_modules/react-native-web/dist/exports/Text/index.js b/node_modules/react-native-web/dist/exports/Text/index.js
+index 5805d3e..3445b04 100644
+--- a/node_modules/react-native-web/dist/exports/Text/index.js
++++ b/node_modules/react-native-web/dist/exports/Text/index.js
+@@ -64,7 +64,7 @@ forwardRef(function (props, forwardedRef) {
+       selectable = props.selectable;
+   var hasTextAncestor = useContext(TextAncestorContext);
+   var hostRef = useRef(null);
+-  var classList = [classes.text, hasTextAncestor === true && classes.textHasAncestor, numberOfLines === 1 && classes.textOneLine, numberOfLines != null && numberOfLines > 1 && classes.textMultiLine];
++  var classList = [props.className, classes.text, hasTextAncestor === true && classes.textHasAncestor, numberOfLines === 1 && classes.textOneLine, numberOfLines != null && numberOfLines > 1 && classes.textMultiLine];
+   var style = [props.style, numberOfLines != null && numberOfLines > 1 && {
+     WebkitLineClamp: numberOfLines
+   }, selectable === true && styles.selectable, selectable === false && styles.notSelectable, onPress && styles.pressable];
+diff --git a/node_modules/react-native-web/dist/exports/View/index.js b/node_modules/react-native-web/dist/exports/View/index.js
+index bc6b39a..caba32c 100644
+--- a/node_modules/react-native-web/dist/exports/View/index.js
++++ b/node_modules/react-native-web/dist/exports/View/index.js
+@@ -91,7 +91,7 @@ forwardRef(function (props, forwardedRef) {
+   });
+   var style = StyleSheet.compose(hasTextAncestor && styles.inline, props.style);
+   var supportedProps = pickProps(props);
+-  supportedProps.classList = classList;
++  supportedProps.classList = [...classList, props.className];
+   supportedProps.style = style;
+ 
+   if (props.href != null && hrefAttrs != null) {
+diff --git a/node_modules/react-native-web/src/modules/createDOMProps/index.js b/node_modules/react-native-web/src/modules/createDOMProps/index.js
+index ae53dfd..7636257 100644
+--- a/node_modules/react-native-web/src/modules/createDOMProps/index.js
++++ b/node_modules/react-native-web/src/modules/createDOMProps/index.js
+@@ -397,6 +397,10 @@ const createDOMProps = (elementType, props) => {
+     domProps.className = className;
+   }
+ 
++  if (props.className) {
++    domProps.className = !domProps.className ? props.className : `${domProps.className} ${props.className}`
++  }
++
+   if (style) {
+     domProps.style = style;
+   }
+diff --git a/node_modules/react-native-web/src/modules/normalizeColor/index.js b/node_modules/react-native-web/src/modules/normalizeColor/index.js
+index add2cb1..f02bcae 100644
+--- a/node_modules/react-native-web/src/modules/normalizeColor/index.js
++++ b/node_modules/react-native-web/src/modules/normalizeColor/index.js
+@@ -13,8 +13,9 @@ import processColor from '../../exports/processColor';
+ const normalizeColor = (color?: number | string, opacity?: number = 1) => {
+   if (color == null) return;
+ 
+-  if (typeof color === 'string' && isWebColor(color)) {
+-    return color;
++  if (typeof color === 'string') {
++    if (isWebColor(color)) return color;
++    if (color[0] === '-') return color; // support css vars
+   }
+ 
+   const colorInt = processColor(color);
