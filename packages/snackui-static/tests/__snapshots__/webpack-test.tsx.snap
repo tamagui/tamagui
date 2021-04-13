@@ -2,7 +2,7 @@
 
 exports[`1. extracts to a div for simple views 1`] = `
 <div
-  className=" _bacCol-1g6456j _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-1xz9bc3 _dis-flex _fleBas-auto _fleDir-column _fleGro-1 _fleShr-1 test1"
+  className=" _bacCol-1g6456j _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-1xz9bc3 _dis-flex _fle-1 _fleBas-auto _fleDir-column test1"
 >
   <span
     className=" _dis-inline"
@@ -227,7 +227,7 @@ exports[`10. extracts Text 1`] = `
     className=" _dis-inline _useSel-text"
   >
     <div
-      className="css-text-38s1w7 _col-cqee49 _fonWei-600 _fonSiz-15px"
+      className="_col-cqee49 _fonWei-600 _fonSiz-15px css-text-901oao"
       dir="auto"
       onClick={[Function]}
       style={
@@ -298,17 +298,17 @@ exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
   <div
-    className=" _fleGro- _fleShr- _minHei-12px _minWid-12px"
+    className=" _fle- _fleShr- _minHei-12px _minWid-12px"
   />,
   <div
-    className=" _fleGro-1 _fleShr- _minHei-10px _minWid-10px"
+    className=" _fle-1 _fleShr- _minHei-10px _minWid-10px"
   />,
 ]
 `;
 
 exports[`16. deopt when spreading multiple 1`] = `
 <div
-  className="css-view-1dbjc4n _fleShr-1 _fleGro-1 _bacCol-1g6456j"
+  className="css-view-1dbjc4n _fle-1 _bacCol-1g6456j"
   style={
     Object {
       "WebkitBoxDirection": "normal",
