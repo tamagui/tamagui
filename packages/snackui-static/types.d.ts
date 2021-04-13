@@ -140,7 +140,9 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
-    export function getStaticBindingsForScope(scope: any, whitelist: string[] | undefined, sourceFileName: string, bindingCache: Record<string, string | null>, shouldPrintDebug: boolean): Record<string, any>;
+    import { NodePath } from "@babel/traverse";
+    import * as t from "@babel/types";
+    export function getStaticBindingsForScope(scope: NodePath<t.JSXElement>['scope'], whitelist: string[] | undefined, sourceFileName: string, bindingCache: Record<string, string | null>, shouldPrintDebug: boolean): Record<string, any>;
 }
 
 declare module "@snackui/static" {
@@ -173,7 +175,7 @@ declare module "@snackui/static" {
 
 declare module "@snackui/static" {
     import * as t from "@babel/types";
-    export function buildClassName(classNameObjects: ClassNameObject[]): t.Expression | t.StringLiteral;
+    export function buildClassName(classNameObjects: ClassNameObject[]): t.Expression | t.StringLiteral | null;
 }
 
 declare module "@snackui/static" {

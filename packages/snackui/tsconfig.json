@@ -7,8 +7,5 @@
     "rootDir": "src"
   },
 
-  "include": ["src"],
-  "references": [{
-    "path": "../helpers"
-  }]
+  "include": ["src"]
 }

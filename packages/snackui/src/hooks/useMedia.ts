@@ -57,6 +57,10 @@ export const configureMedia = ({
       const str = mediaObjectToString(queries[key])
       const getMatch = () => matchMedia(str)
       const match = getMatch()
+      if (!match) {
+        console.warn('⚠️ No match (seeing this in RN sometimes)', str)
+        continue
+      }
       mediaState[key] = !!match.matches
       match.addEventListener('change', () => {
         const next = !!getMatch().matches

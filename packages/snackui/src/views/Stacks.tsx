@@ -273,6 +273,7 @@ const createStack = (defaultProps?: ViewStyle) => {
         if (pointerEvents !== 'none' && !!(onPress || onPressOut)) {
           content = (
             <Pressable
+              hitSlop={10}
               onPress={(e) => {
                 // @ts-ignore
                 events.onClick(e)

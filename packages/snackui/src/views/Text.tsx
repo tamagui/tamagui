@@ -119,16 +119,16 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
 
   for (const key in allProps) {
     if (styleKeys[key]) {
+      const val = allProps[key]
       // if should skip
       if (isWeb) {
-        const val = allProps[key]
         if (key === 'display' && val === 'inline') {
           continue
         }
+      } else {
         if (val === 'inherit') {
           continue
         }
-      } else {
         if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
           continue
         }
@@ -152,7 +152,6 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
         Object.assign(style, ellipseStyle)
         continue
       }
-      const val = allProps[key]
       if (!isWeb) {
         if (key === 'fontSize' && val < 12) {
           style.fontSize = 12

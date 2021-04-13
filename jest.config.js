@@ -1,4 +1,5 @@
 module.exports = {
+  watchman: false,
   testMatch: ['**/tests/*.[jt]s?(x)'],
   transform: {
     '^.+\\.[jt]sx?$': 'esbuild-jest',

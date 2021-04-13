@@ -201,11 +201,11 @@ export function extractToClassNames(
           if (finalClassNames.length) {
             // inserts the _cn variable and uses it for className
             const names = buildClassName(finalClassNames)
-            const nameExpr = hoistClassNames(jsxPath, existingHoists, names)
+            const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
             let expr = nameExpr
 
             // if has some spreads, use concat helper
-            if (!t.isIdentifier(nameExpr)) {
+            if (nameExpr && !t.isIdentifier(nameExpr)) {
               ensureImportingConcat(programPath)
               const simpleSpreads = attrs.filter(
                 (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)

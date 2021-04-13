@@ -4,8 +4,7 @@ import { ClassNameObject } from '../types'
 
 export function buildClassName(
   classNameObjects: ClassNameObject[]
-): t.Expression | t.StringLiteral {
-  // @ts-expect-error
+): t.Expression | t.StringLiteral | null {
   return classNameObjects.reduce<t.Expression | null>((acc, val) => {
     if (acc == null) {
       if (

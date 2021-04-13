@@ -1,11 +1,13 @@
 process.env.SNACKUI_COMPILE_PROCESS = '1'
 
+import { basename } from 'path'
+
 import generator from '@babel/generator'
 import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
-import { SnackOptions, createExtractor, literalToAst } from '@snackui/static'
+import { SnackOptions, createExtractor, isSimpleSpread, literalToAst } from '@snackui/static'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -47,8 +49,16 @@ export default declare(function snackBabelPlugin(
 
           const shouldPrintDebug = firstComment?.trim() === 'debug'
 
-          function addSheetStyle(style: any) {
-            const key = `${Object.keys(sheetStyles).length}`
+          function addSheetStyle(style: any, node: t.JSXOpeningElement) {
+            const styleIndex = `${Object.keys(sheetStyles).length}`
+            let key = styleIndex
+            if (process.env.NODE_ENV === 'development') {
+              const lineNumbers = node.loc
+                ? node.loc.start.line +
+                  (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
+                : ''
+              key = `${styleIndex}:${basename(sourceFileName)}:${lineNumbers}`
+            }
             sheetStyles[key] = style
             return readStyleExpr(key)
           }
@@ -91,26 +101,35 @@ export default declare(function snackBabelPlugin(
             onExtractTag(props) {
               assertValidTag(props.node)
 
-              const baseStyleExpr = addSheetStyle(props.viewStyles)
+              const baseStyleExpr = addSheetStyle(props.viewStyles, props.node)
               const stylesExpr = t.arrayExpression([baseStyleExpr])
+
+              let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 
               for (const attr of props.attrs) {
                 switch (attr.type) {
                   case 'ternary':
-                    const cons = addSheetStyle(attr.value.consequent)
-                    const alt = addSheetStyle(attr.value.alternate)
+                    const cons = addSheetStyle(attr.value.consequent, props.node)
+                    const alt = addSheetStyle(attr.value.alternate, props.node)
                     stylesExpr.elements.push(t.conditionalExpression(attr.value.test, cons, alt))
                     break
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
-                      stylesExpr.elements.push(
-                        t.memberExpression(attr.value.argument, t.identifier('style'))
-                      )
+                      if (isSimpleSpread(attr.value)) {
+                        stylesExpr.elements.push(
+                          t.memberExpression(attr.value.argument, t.identifier('style'))
+                        )
+                      } else {
+                        finalAttrs.push(attr.value)
+                      }
+                    } else {
+                      finalAttrs.push(attr.value)
                     }
                     break
                 }
               }
 
+              props.node.attributes = finalAttrs
               props.node.attributes.push(
                 t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
               )

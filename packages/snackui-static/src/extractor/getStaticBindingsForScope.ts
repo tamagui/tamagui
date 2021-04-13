@@ -1,5 +1,6 @@
-import path from 'path'
+import { dirname, extname, resolve } from 'path'
 
+import { Binding, NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import { defaultMediaQueries } from '@snackui/node'
 import { existsSync } from 'fs-extra'
@@ -12,50 +13,73 @@ const snackuiConstants = {
   defaultMediaQueries,
 }
 
-interface Binding {
-  identifier: any
-  scope: any
-  path: any
-  // this list is incomplete
-  kind: 'module' | 'let' | 'const' | 'var' | 'param' | 'hoisted' | 'local'
+const isLocalImport = (path: string) => path.startsWith('.') || path.startsWith('/')
 
-  constantViolations: any[]
-  constant: boolean
-
-  referencePaths: any[] // NodePath[]
-  referenced: boolean
-  references: number
-
-  hasDeoptedValue: boolean
-  hasValue: boolean
-  value: any
+function resolveImportPath(sourceFileName: string, path: string) {
+  const sourceDir = dirname(sourceFileName)
+  if (isLocalImport(path)) {
+    if (extname(path) === '') {
+      path += '.js'
+    }
+    return resolve(sourceDir, path)
+  }
+  return path
 }
 
-// const fileCache: {
-//   [key: string]: {
-//     mtimeMs: number
-//     path: string
-//     src: Object
-//   }
-// } = {}
-
-// const clearCache = debounce(() => {
-//   console.log('clear cache')
-//   Object.keys(require.cache).forEach((id) => {
-//     delete require.cache[id]
-//   })
-// }, 2000)
+function importModule(path: string) {
+  const filenames = [path.replace('.js', '.tsx'), path.replace('.js', '.ts'), path]
+  for (const file of filenames) {
+    if (existsSync(file)) {
+      // TODO we can clear this when we see updates on it later on
+      return require(file)
+    }
+  }
+  return null
+}
 
 export function getStaticBindingsForScope(
-  scope: any,
+  scope: NodePath<t.JSXElement>['scope'],
   whitelist: string[] = [],
   sourceFileName: string,
   bindingCache: Record<string, string | null>,
   shouldPrintDebug: boolean
 ): Record<string, any> {
-  const bindings: Record<string, Binding> = scope.getAllBindings()
+  const bindings: Record<string, Binding> = scope.getAllBindings() as any
   const ret: Record<string, any> = {}
-  const sourceDir = path.dirname(sourceFileName)
+
+  const program = scope.getProgramParent().block as t.Program
+
+  // on react native at least it doesnt find some bindings? not sure why
+  // lets add in whitelisted imports if they exist
+  for (const node of program.body) {
+    if (t.isImportDeclaration(node)) {
+      const importPath = node.source.value
+      if (!node.specifiers.length) continue
+      if (!isLocalImport(importPath)) {
+        if (importPath === 'snackui') {
+          Object.assign(ret, snackuiConstants)
+        }
+        continue
+      }
+      const moduleName = resolveImportPath(sourceFileName, importPath)
+      const isOnWhitelist = whitelist.some((test) => moduleName.endsWith(test))
+      if (!isOnWhitelist) continue
+      const src = importModule(moduleName)
+      if (!src) continue
+      for (const specifier of node.specifiers) {
+        if (t.isImportSpecifier(specifier) && t.isIdentifier(specifier.imported)) {
+          if (typeof src[specifier.imported.name] !== 'undefined') {
+            const val = src[specifier.local.name]
+            ret[specifier.local.name] = val
+          }
+        }
+      }
+    }
+  }
+
+  if (shouldPrintDebug) {
+    console.log('import bindings', ret)
+  }
 
   if (!bindingCache) {
     throw new Error('bindingCache is a required param')
@@ -66,61 +90,23 @@ export function getStaticBindingsForScope(
 
     // check to see if the item is a module
     const sourceModule = getSourceModule(k, binding)
+
     if (sourceModule) {
       if (!sourceModule.sourceModule) {
         continue
       }
 
-      let moduleName = sourceModule.sourceModule
-      // if modulePath is an absolute or relative path
-      if (moduleName.startsWith('.') || moduleName.startsWith('/')) {
-        // if moduleName doesn't end with an extension, add .js
-        if (path.extname(moduleName) === '') {
-          moduleName += '.js'
-        }
-        // get absolute path
-        moduleName = path.resolve(sourceDir, moduleName)
-      }
-
-      if (moduleName === 'snackui') {
-        return snackuiConstants
-      }
-
+      const moduleName = resolveImportPath(sourceFileName, sourceModule.sourceModule)
       const isOnWhitelist = whitelist.some((test) => moduleName.endsWith(test))
 
       // TODO we could cache this at the file level.. and check if its been touched since
 
       if (isOnWhitelist) {
-        let src: any
-        // const info = fileCache[moduleName]
-        // if (info && statSync(info.path).mtimeMs === info.mtimeMs) {
-        //   src = info.src
-        // } else {
-        const filenames = [
-          moduleName.replace('.js', '.tsx'),
-          moduleName.replace('.js', '.ts'),
-          moduleName,
-        ]
-        // let mtimeMs = 0
-        // let path = ''
-        for (const file of filenames) {
-          if (existsSync(file)) {
-            // path = file
-            src = require(file)
-            // mtimeMs = statSync(file).mtimeMs
-            break
-          }
-        }
-        if (src === undefined) {
+        const src = importModule(moduleName)
+        if (!src) {
           console.log(`⚠️ missing file ${moduleName}?`)
           return {}
         }
-        // fileCache[moduleName] = {
-        //   path,
-        //   src,
-        //   mtimeMs,
-        // }
-        // }
         if (sourceModule.destructured) {
           if (sourceModule.imported) {
             ret[k] = src[sourceModule.imported]

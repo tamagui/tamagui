@@ -1,4 +1,5 @@
 import React from 'react'
+import { TouchableOpacity } from 'react-native'
 
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
@@ -43,36 +44,38 @@ export const Button = themeable(
     )
 
     return (
-      <HStack
-        backgroundColor={theme.backgroundColorSecondary}
-        alignSelf="flex-start"
-        justifyContent="center"
-        alignItems="center"
-        cursor="pointer"
-        paddingVertical={10}
-        paddingHorizontal={14}
-        borderRadius={8}
-        hoverStyle={{
-          backgroundColor: theme.backgroundColorTertiary,
-        }}
-        pressStyle={{
-          backgroundColor: theme.backgroundColorSecondary,
-        }}
-        flexDirection={flexDirection}
-        {...props}
-      >
-        {spacedChildren({
-          children:
-            icon && childrens
-              ? [
-                  <React.Fragment key={0}>{icon}</React.Fragment>,
-                  <React.Fragment key={1}>{childrens}</React.Fragment>,
-                ]
-              : icon ?? childrens,
-          spacing,
-          flexDirection,
-        })}
-      </HStack>
+      <TouchableOpacity>
+        <HStack
+          backgroundColor={theme.backgroundColorSecondary}
+          alignSelf="flex-start"
+          justifyContent="center"
+          alignItems="center"
+          cursor="pointer"
+          paddingVertical={10}
+          paddingHorizontal={14}
+          borderRadius={8}
+          hoverStyle={{
+            backgroundColor: theme.backgroundColorTertiary,
+          }}
+          pressStyle={{
+            backgroundColor: theme.backgroundColorSecondary,
+          }}
+          flexDirection={flexDirection}
+          {...props}
+        >
+          {spacedChildren({
+            children:
+              icon && childrens
+                ? [
+                    <React.Fragment key={0}>{icon}</React.Fragment>,
+                    <React.Fragment key={1}>{childrens}</React.Fragment>,
+                  ]
+                : icon ?? childrens,
+            spacing,
+            flexDirection,
+          })}
+        </HStack>
+      </TouchableOpacity>
     )
   }
 )

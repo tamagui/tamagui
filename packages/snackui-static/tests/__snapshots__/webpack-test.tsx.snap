@@ -145,23 +145,7 @@ exports[`6. spread ternary 2`] = `
 
 exports[`7. ternary + data-is 1`] = `
 <div
-  className="css-view-1dbjc4n _wid-66 _minWid-500px _maxWid-30"
-  style={
-    Object {
-      "WebkitBoxDirection": "normal",
-      "WebkitBoxOrient": "vertical",
-      "WebkitFlexBasis": "auto",
-      "WebkitFlexDirection": "column",
-      "display": "flex",
-      "flexBasis": "auto",
-      "flexDirection": "column",
-      "msFlexDirection": "column",
-      "msFlexPreferredSize": "auto",
-      "paddingBottom": "10px",
-      "paddingLeft": "11px",
-      "paddingRight": "11px",
-    }
-  }
+  className=" _dis-flex _fleBas-auto _fleDir-column _maxWid-30 _minWid-500px _padBot-10px _padLef-11px _padRig-11px _wid-66"
 >
   <div
     className="_wid-10px _hei-10px _fleDir-column _fleBas-auto _dis-flex"
@@ -174,32 +158,16 @@ exports[`8. styleExpansions 1`] = `
   className=" _bot-0px _dis-flex _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px"
 >
   <div
-    className="css-view-1dbjc4n"
-    style={
-      Object {
-        "WebkitBoxDirection": "normal",
-        "WebkitBoxOrient": "vertical",
-        "WebkitFlexBasis": "auto",
-        "WebkitFlexDirection": "column",
-        "backgroundColor": "rgba(255,0,0,1.00)",
-        "display": "flex",
-        "flexBasis": "auto",
-        "flexDirection": "column",
-        "msFlexDirection": "column",
-        "msFlexPreferredSize": "auto",
-        "position": "absolute",
-      }
-    }
+    className=" _bacCol-1g6456j _dis-flex _fleBas-auto _fleDir-column _pos-absolute"
   >
     <div
-      className="css-view-1dbjc4n _top-0px _rig-0px _pos-relative _lef-0px _bot-0px"
+      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px"
       style={
         Object {
           "WebkitBoxDirection": "normal",
           "WebkitBoxOrient": "vertical",
           "WebkitFlexBasis": "auto",
           "WebkitFlexDirection": "column",
-          "backgroundColor": "rgba(255,255,255,1.00)",
           "display": "flex",
           "flexBasis": "auto",
           "flexDirection": "column",
@@ -257,6 +225,7 @@ Array [
   "_pos-relative",
   "_oveY-hidden",
   "_oveX-hidden",
+  "_minHei-10px",
   "_borTopWid-1px",
   "_borTopSty-solid",
   "_borRigWid-1px",
@@ -278,20 +247,7 @@ exports[`12. ternary multiple on same key 1`] = `
 
 exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 <div
-  className="css-view-1dbjc4n  _bacCol--r-b-baCol-1g1g664545656j6j-1g6456j"
-  style={
-    Object {
-      "WebkitBoxDirection": "normal",
-      "WebkitBoxOrient": "vertical",
-      "WebkitFlexBasis": "auto",
-      "WebkitFlexDirection": "column",
-      "display": "flex",
-      "flexBasis": "auto",
-      "flexDirection": "column",
-      "msFlexDirection": "column",
-      "msFlexPreferredSize": "auto",
-    }
-  }
+  className=" _dis-flex _fleBas-auto _fleDir-column _bacCol--r-b-baCol-1g1g664545656j6j-1g6456j _bacCol--r-b-baCol-5757d7dg7b-57dg7b"
 />
 `;
 

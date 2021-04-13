@@ -209,7 +209,7 @@ export function createExtractor() {
                       '  ⚠️ SnackUI: warning! no themesFile option given, themes will fallback'
                     )
                   }
-                  console.log('  attemptEval staticNamespace', { staticNamespace })
+                  console.log('  attemptEval staticNamespace', staticNamespace)
                 }
 
                 // called when evaluateAstNode encounters a dynamic-looking prop
