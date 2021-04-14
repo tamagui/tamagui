@@ -608,15 +608,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     export type ParagraphProps = SizableTextProps;
-    export const Paragraph: {
-        (props: SizableTextProps): JSX.Element;
-        staticConfig: {
-            isText: any;
-            validStyles: any;
-            defaultProps: any;
-            expansionProps: any;
-        } | undefined;
-    };
+    export const Paragraph: (props: SizableTextProps) => JSX.Element;
 }
 
 declare module "snackui" {
