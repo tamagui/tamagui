@@ -34,11 +34,11 @@ export const Button = themeable(
     const childrens = noTextWrap ? (
       children
     ) : !children ? null : textProps ? (
-      <Text color={theme.color} flex={1} ellipse {...textProps}>
+      <Text color={theme.color} flexGrow={1} flexShrink={0} ellipse {...textProps}>
         {children}
       </Text>
     ) : (
-      <Text color={theme.color} flex={1} ellipse>
+      <Text color={theme.color} flexGrow={1} flexShrink={0} ellipse>
         {children}
       </Text>
     )
