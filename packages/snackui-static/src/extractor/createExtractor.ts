@@ -128,15 +128,19 @@ export function createExtractor() {
       /**
        * Step 1: Determine if importing any statically extractable components
        */
+      const isInternalImport = (importStr: string) =>
+        isInsideSnackUI(sourceFileName) && importStr[0] === '.'
+
       for (const bodyPath of path.get('body')) {
         if (!bodyPath.isImportDeclaration()) continue
-        const importStr = bodyPath.node.source.value
-        if (importStr === 'snackui' || (isInsideSnackUI(sourceFileName) && importStr[0] === '.')) {
-          const isValid = bodyPath.node.specifiers.some((specifier) => {
-            const name = specifier.local.name
-            return validComponents[name] || validHooks[name]
-          })
-          if (isValid) {
+        const from = bodyPath.node.source.value
+        if (from === 'snackui' || isInternalImport(from)) {
+          if (
+            bodyPath.node.specifiers.some((specifier) => {
+              const name = specifier.local.name
+              return validComponents[name] || validHooks[name]
+            })
+          ) {
             doesUseValidImport = true
             break
           }
@@ -170,6 +174,22 @@ export function createExtractor() {
           if (!t.isJSXIdentifier(node.name)) {
             return
           }
+
+          // validate its a proper import from snackui (or internally inside snackui)
+          const binding = traversePath.scope.getBinding(node.name.name)
+          if (binding) {
+            if (!t.isImportDeclaration(binding.path.parent)) {
+              return
+            }
+            const source = binding.path.parent.source
+            if (source.value !== 'snackui' && !isInternalImport(source.value)) {
+              return
+            }
+            if (!validComponents[binding.identifier.name]) {
+              return
+            }
+          }
+
           const component = validComponents[node.name.name]
           if (!component || !component.staticConfig) {
             return

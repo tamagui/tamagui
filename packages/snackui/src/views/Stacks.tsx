@@ -176,8 +176,8 @@ const createStack = (defaultProps?: ViewStyle) => {
         style={[
           defaultProps,
           fullscreen ? fullscreenStyle : null,
-          styleProps,
           style,
+          styleProps,
           state.hover ? hoverStyle : null,
           state.press ? pressStyle : null,
           disabled ? disabledStyle : null,
