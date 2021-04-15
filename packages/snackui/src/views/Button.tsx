@@ -54,6 +54,7 @@ export const Button = themeable(
           alignItems="center"
           cursor="pointer"
           paddingVertical={10}
+          flexWrap="nowrap"
           paddingHorizontal={14}
           borderRadius={8}
           hoverStyle={{

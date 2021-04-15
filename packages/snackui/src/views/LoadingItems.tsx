@@ -34,7 +34,7 @@ export const LoadingItem = ({
       <HStack
         width={`${seed * 12}%`}
         height={28 * scale}
-        backgroundColor="rgba(150,0.085)"
+        backgroundColor="rgba(150,150,150,0.085)"
         borderRadius={7}
       />
       <VStack spacing={6 * scale}>
@@ -44,7 +44,7 @@ export const LoadingItem = ({
             width={`${seed * (15 - (2 - index > -1 ? index : -index) * 4)}%`}
             height={20 * scale}
             maxWidth="100%"
-            backgroundColor="rgba(150,0.015)"
+            backgroundColor="rgba(150,150,150,0.015)"
             borderRadius={5}
           />
         ))}
