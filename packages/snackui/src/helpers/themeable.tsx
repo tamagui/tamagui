@@ -10,14 +10,11 @@ export const themeable: ThemeableHOC = function graphql<
     (props: P): R
     displayName: string
   } = function WithTheme(props) {
+    const el = React.createElement(Component, props) as R
     if (props.theme) {
-      return (
-        <Theme name={props.theme}>
-          <Component {...props} />
-        </Theme>
-      ) as R
+      return (<Theme name={props.theme}>{el}</Theme>) as R
     }
-    return (<Component {...props} />) as R
+    return el
   }
 
   withTheme.displayName = `Themed(${

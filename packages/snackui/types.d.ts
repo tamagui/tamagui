@@ -454,10 +454,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export function isHoverEnabled(): boolean;
-}
-
-declare module "snackui" {
     export function Hoverable({ onPressIn, onPressOut, onHoverIn, onHoverOut, onHoverMove, children, }: {
         children?: any;
         onHoverIn?: any;
