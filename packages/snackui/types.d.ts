@@ -399,14 +399,6 @@ declare module "snackui" {
 declare module "snackui" {
     export type BoxProps = StackProps;
     export function Box(props: BoxProps): JSX.Element;
-    export namespace Box {
-        var staticConfig: {
-            isText: any;
-            validStyles: any;
-            defaultProps: any;
-            expansionProps: any;
-        } | undefined;
-    }
 }
 
 declare module "snackui" {

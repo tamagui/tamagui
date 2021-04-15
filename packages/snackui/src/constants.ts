@@ -3,7 +3,7 @@ export const defaultMediaQueries = {
   notXs: { minWidth: 660 + 1 },
   sm: { maxWidth: 860 },
   notSm: { minWidth: 860 + 1 },
-  md: { minWidth: 960 },
+  md: { minWidth: 980 },
   lg: { minWidth: 1120 },
   xl: { minWidth: 1280 },
   xxl: { minWidth: 1420 },
