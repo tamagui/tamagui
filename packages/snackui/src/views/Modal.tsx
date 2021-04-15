@@ -49,8 +49,10 @@ export const Modal = (props: ModalProps) => {
     ...rest
   } = props
 
+  const theme = useTheme()
+
   // only shared between both
-  const modalProps = {
+  const modalProps: ModalPropsReact = {
     transparent,
     visible,
     onRequestClose,
@@ -68,7 +70,10 @@ export const Modal = (props: ModalProps) => {
     const modalVisible = useDebounceValue(visible, visible ? 200 : 0)
 
     return (
-      <ModalNative {...modalProps} visible={modalVisible}>
+      <ModalNative {...modalProps} visible={modalVisible} onDismiss={() => {
+        console.log('DISMISS')
+        onDismiss?.()
+      }}>
         <AbsoluteVStack
           ref={preventFormFocusBug as any}
           fullscreen
@@ -76,7 +81,7 @@ export const Modal = (props: ModalProps) => {
           backgroundColor={visible ? overlayBackground : 'transparent'}
           alignItems="center"
           justifyContent="center"
-          onPress={overlayDismisses ? onRequestClose : undefined}
+          onPressOut={overlayDismisses ? onRequestClose : undefined}
         >
           <AnimatedVStack
             {...{
@@ -103,26 +108,9 @@ export const Modal = (props: ModalProps) => {
 
   return (
     <ModalNative animationType={animationType} {...modalProps}>
-      {/* fix for native: https://github.com/facebook/react-native/issues/26892 */}
-      <TouchableOpacity
-        activeOpacity={1}
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          left: 0,
-          bottom: 0,
-        }}
-        onPressOut={(e) => {
-          if (e.nativeEvent?.locationY) {
-            onRequestClose?.()
-          }
-        }}
-      >
-        <VStack flex={1} {...rest} backgroundColor="green">
+        <VStack flex={1} {...rest} backgroundColor={theme.backgroundColor}>
           {children}
         </VStack>
-      </TouchableOpacity>
     </ModalNative>
   )
 }

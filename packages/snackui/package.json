@@ -22,7 +22,7 @@
     "@unimodules/react-native-adapter": "^6.1.0",
     "css-mediaquery": "^0.1.2",
     "expo-linear-gradient": "^9.0.0",
-    "expo-screen-orientation": "3.0.0",
+    "expo-screen-orientation": "^3.1.0",
     "lodash": "^4.17.20",
     "react": "*",
     "react-dom": "*",
