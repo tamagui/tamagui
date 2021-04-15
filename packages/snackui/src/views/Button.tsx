@@ -12,6 +12,7 @@ export type ButtonProps = StackProps & {
   noTextWrap?: boolean
   theme?: string | null
   icon?: JSX.Element | null
+  active?: boolean
 }
 
 // TODO colors, spacing, static extract + colors/spacing
@@ -27,6 +28,7 @@ export const Button = themeable(
     textProps,
     noTextWrap,
     theme: themeName,
+    active,
     ...props
   }: ButtonProps) => {
     const theme = useTheme()
@@ -34,11 +36,11 @@ export const Button = themeable(
     const childrens = noTextWrap ? (
       children
     ) : !children ? null : textProps ? (
-      <Text color={theme.color} flexGrow={1} flexShrink={0} ellipse {...textProps}>
+      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse {...textProps}>
         {children}
       </Text>
     ) : (
-      <Text color={theme.color} flexGrow={1} flexShrink={0} ellipse>
+      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse>
         {children}
       </Text>
     )
@@ -61,6 +63,9 @@ export const Button = themeable(
             backgroundColor: theme.backgroundColorSecondary,
           }}
           flexDirection={flexDirection}
+          {...active && {
+            backgroundColor: theme.backgroundColorTertiary
+          }}
           {...props}
         >
           {spacedChildren({
