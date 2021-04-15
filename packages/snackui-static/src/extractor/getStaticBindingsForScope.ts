@@ -103,7 +103,9 @@ export function getStaticBindingsForScope(
       if (isOnWhitelist) {
         const src = importModule(moduleName)
         if (!src) {
-          console.log(`⚠️ missing file ${moduleName}?`)
+          console.log(
+            `⚠️ missing file ${moduleName} via ${sourceFileName} import ${sourceModule.sourceModule}?`
+          )
           return {}
         }
         if (sourceModule.destructured) {

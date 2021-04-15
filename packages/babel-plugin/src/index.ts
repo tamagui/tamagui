@@ -34,7 +34,14 @@ export default declare(function snackBabelPlugin(
     visitor: {
       Program: {
         enter(this: any, root, state) {
-          const sourceFileName = this.file.opts.filename
+          let sourceFileName = this.file.opts.filename
+
+          // this filename comes back incorrect in react-native, it adds /ios/ for some reason
+          // adding a fix here, but it's a bit tentative...
+          if (process.env.SOURCE_ROOT?.endsWith('ios')) {
+            sourceFileName = sourceFileName.replace('/ios', '')
+          }
+
           if (options.exclude?.test(sourceFileName)) {
             return
           }
