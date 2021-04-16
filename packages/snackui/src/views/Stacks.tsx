@@ -13,7 +13,7 @@ import {
   Animated,
   GestureResponderEvent,
   Pressable,
-  TouchableOpacity,
+  StyleSheet,
   View,
   ViewProps,
   ViewStyle,
@@ -112,7 +112,18 @@ if (typeof document !== 'undefined') {
   })
 }
 
-const createStack = (defaultProps?: ViewStyle) => {
+const createStack = ({
+  defaultProps,
+  defaultStyle,
+}: {
+  defaultProps?: ViewStyle
+  defaultStyle?: any
+}) => {
+  // we can replace this with something more snack-y soon
+  const sheet = StyleSheet.create({
+    style: defaultStyle,
+  })
+
   const component = forwardRef<View, StackProps>((props, ref) => {
     const {
       children,
@@ -129,7 +140,6 @@ const createStack = (defaultProps?: ViewStyle) => {
       onHoverIn,
       onHoverOut,
       spacing,
-      className,
       disabled,
       // @ts-ignore
       onMouseEnter,
@@ -159,7 +169,7 @@ const createStack = (defaultProps?: ViewStyle) => {
         spacedChildren({
           children,
           spacing,
-          flexDirection: defaultProps?.flexDirection,
+          flexDirection: defaultStyle?.flexDirection,
         }),
       [spacing, children]
     )
@@ -170,11 +180,9 @@ const createStack = (defaultProps?: ViewStyle) => {
       <ViewComponent
         ref={combineRefs(innerRef, ref) as any}
         {...viewProps}
-        // @ts-ignore
-        className={className}
         pointerEvents={!isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents}
         style={[
-          defaultProps,
+          sheet.style,
           fullscreen ? fullscreenStyle : null,
           style,
           styleProps,
@@ -304,7 +312,10 @@ const createStack = (defaultProps?: ViewStyle) => {
     // @ts-expect-error
     component.staticConfig = {
       validStyles: stylePropsView,
-      defaultProps,
+      defaultProps: {
+        ...defaultProps,
+        ...defaultStyle,
+      },
       expansionProps: {
         fullscreen: fullscreenStyle,
         disabled: disabledStyle,
@@ -355,20 +366,26 @@ function fixNativeShadow(props: StackProps) {
 }
 
 export const AbsoluteVStack = createStack({
-  position: 'absolute',
-  flexDirection: 'column',
-  flexBasis: 'auto',
-  display: 'flex',
+  defaultStyle: {
+    position: 'absolute',
+    flexDirection: 'column',
+    flexBasis: 'auto',
+    display: 'flex',
+  },
 })
 
 export const HStack = createStack({
-  flexDirection: 'row',
-  flexBasis: 'auto',
-  display: 'flex',
+  defaultStyle: {
+    flexDirection: 'row',
+    flexBasis: 'auto',
+    display: 'flex',
+  },
 })
 
 export const VStack = createStack({
-  flexDirection: 'column',
-  flexBasis: 'auto',
-  display: 'flex',
+  defaultStyle: {
+    flexDirection: 'column',
+    flexBasis: 'auto',
+    display: 'flex',
+  },
 })

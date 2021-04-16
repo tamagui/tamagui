@@ -15,23 +15,25 @@ exports[`1. extracts to a div for simple views 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _oveY-hidden _oveX-hidden _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-14lw9ot"
+    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
-        "WebkitBoxDirection": "normal",
-        "WebkitBoxOrient": "vertical",
-        "WebkitFlexBasis": "auto",
-        "WebkitFlexDirection": "column",
-        "display": "flex",
-        "flexBasis": "auto",
-        "flexDirection": "column",
-        "msFlexDirection": "column",
-        "msFlexPreferredSize": "auto",
+        "backgroundColor": "rgba(255,255,255,1.00)",
+        "overflowX": "hidden",
+        "overflowY": "hidden",
       }
     }
   />,
   <div
-    className="_top--14px _bacCol-14lw9ot ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px"
+    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    style={
+      Object {
+        "backgroundColor": "rgba(255,255,255,1.00)",
+        "paddingBottom": "2px",
+        "paddingTop": "2px",
+        "top": "-14px",
+      }
+    }
   >
     <span
       className=" _dis-inline"
@@ -45,23 +47,25 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _oveY-hidden _oveX-hidden _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-14lw9ot"
+    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
-        "WebkitBoxDirection": "normal",
-        "WebkitBoxOrient": "vertical",
-        "WebkitFlexBasis": "auto",
-        "WebkitFlexDirection": "column",
-        "display": "flex",
-        "flexBasis": "auto",
-        "flexDirection": "column",
-        "msFlexDirection": "column",
-        "msFlexPreferredSize": "auto",
+        "backgroundColor": "rgba(255,255,255,1.00)",
+        "overflowX": "hidden",
+        "overflowY": "hidden",
       }
     }
   />,
   <div
-    className="ease-in-out-top _top-0px _padTop-2px _padRig-5px _padLef-5px _padBot-2px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px _bacCol-kemksi"
+    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    style={
+      Object {
+        "backgroundColor": "rgba(0,0,0,1.00)",
+        "paddingBottom": "2px",
+        "paddingTop": "2px",
+        "top": "0px",
+      }
+    }
   >
     <span
       className=" _dis-inline"
@@ -77,6 +81,9 @@ Array [
   "css-view-1dbjc4n",
   "_oveY-hidden",
   "_oveX-hidden",
+  "r-display-6koalj",
+  "r-flexBasis-1mlwlqe",
+  "r-flexDirection-eqz5dr",
 ]
 `;
 
@@ -86,23 +93,17 @@ Array [
   "_hei-200px",
   "_oveX--r-o-ovX-o-ok-visible",
   "_oveY--r-o-ovY-i-ip04b4b-visible",
+  "r-display-6koalj",
+  "r-flexBasis-1mlwlqe",
+  "r-flexDirection-eqz5dr",
 ]
 `;
 
 exports[`4. leaves dynamic variables 2`] = `
 <div
-  className="css-view-1dbjc4n  _hei-200px _oveX--r-o-ovX-o-ok-visible _oveY--r-o-ovY-i-ip04b4b-visible"
+  className="css-view-1dbjc4n  _hei-200px _oveX--r-o-ovX-o-ok-visible _oveY--r-o-ovY-i-ip04b4b-visible r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
   style={
     Object {
-      "WebkitBoxDirection": "normal",
-      "WebkitBoxOrient": "vertical",
-      "WebkitFlexBasis": "auto",
-      "WebkitFlexDirection": "column",
-      "display": "flex",
-      "flexBasis": "auto",
-      "flexDirection": "column",
-      "msFlexDirection": "column",
-      "msFlexPreferredSize": "auto",
       "width": "calc(100% + 20px)",
     }
   }
@@ -161,21 +162,7 @@ exports[`8. styleExpansions 1`] = `
     className=" _bacCol-1g6456j _dis-flex _fleBas-auto _fleDir-column _pos-absolute"
   >
     <div
-      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px"
-      style={
-        Object {
-          "WebkitBoxDirection": "normal",
-          "WebkitBoxOrient": "vertical",
-          "WebkitFlexBasis": "auto",
-          "WebkitFlexDirection": "column",
-          "display": "flex",
-          "flexBasis": "auto",
-          "flexDirection": "column",
-          "msFlexDirection": "column",
-          "msFlexPreferredSize": "auto",
-          "position": "absolute",
-        }
-      }
+      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-position-u8s1d"
     />
   </div>
 </div>
@@ -236,6 +223,9 @@ Array [
   "_borBotSty-solid",
   "_bacCol-57dg7b",
   "_aliIte-center",
+  "r-display-6koalj",
+  "r-flexBasis-1mlwlqe",
+  "r-flexDirection-eqz5dr",
 ]
 `;
 
@@ -264,19 +254,6 @@ Array [
 
 exports[`16. deopt when spreading multiple 1`] = `
 <div
-  className="css-view-1dbjc4n _fle-1 _bacCol-1g6456j"
-  style={
-    Object {
-      "WebkitBoxDirection": "normal",
-      "WebkitBoxOrient": "vertical",
-      "WebkitFlexBasis": "auto",
-      "WebkitFlexDirection": "column",
-      "display": "flex",
-      "flexBasis": "auto",
-      "flexDirection": "column",
-      "msFlexDirection": "column",
-      "msFlexPreferredSize": "auto",
-    }
-  }
+  className="css-view-1dbjc4n _fle-1 _bacCol-1g6456j r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
 />
 `;

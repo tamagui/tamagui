@@ -38,7 +38,12 @@ export interface Themes {
 type ThemeName = keyof Themes
 
 let hasConfigured = false
-let themes: Themes = {}
+let themes: Themes = {
+  light: {
+    backgroundColor: '#fff',
+    color: '#000',
+  },
+}
 
 export const invertStyleVariableToValue: {
   [key: string]: { [subKey: string]: string }
@@ -72,7 +77,7 @@ export const configureThemes = (userThemes: Themes) => {
 }
 
 class ActiveThemeManager {
-  name = ''
+  name = 'light'
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
 
@@ -143,13 +148,10 @@ export const useTheme = () => {
     return manager.onUpdate(state.current.uuid, forceUpdate)
   }, [])
 
-  if (!themes[manager.name]) {
-    console.log('Error getting theme in', themes)
-    throw new Error(`No theme ${manager.name}`)
-  }
+  const theme = themes[manager.name] ?? themes.light
 
   return useMemo(() => {
-    return new Proxy(themes[manager.name], {
+    return new Proxy(theme, {
       get(_, key) {
         if (typeof key !== 'string') return
         const activeTheme = themes[manager.name]
