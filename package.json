@@ -22,6 +22,9 @@
     "postinstall": "patch-package",
     "publish": "lerna publish"
   },
+  "resolutions": {
+    "esbuild": "0.11.5"
+  },
   "dependencies": {
     "esbuild-jest": "^0.5.0",
     "prettier": "^2.2.1",
@@ -39,8 +42,5 @@
       "style": "module",
       "parser": "typescript"
     }
-  },
-  "resolutions": {
-    "snackui-monorepo": "portal:/Users/n8/dish/snackui"
   }
 }
