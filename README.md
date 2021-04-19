@@ -396,6 +396,7 @@ See [the roadmap](ROADMAP.md) for details:
     - [ ] maxWidth={{ sm: x ? 10 : 0 }}
   - [ ] flat transforms to prevent awkward spreads
     - scale={} x={} y={}
+- [ ] Button size
 - [ ] Support extraction of custom components that extend lower level ones
   - [ ] Support user-defined components that just spread props onto simple child thats extractable
 - [ ] [Variants/Scaling](ROADMAP.md#variants)
