@@ -70,10 +70,7 @@ export const Modal = (props: ModalProps) => {
     const modalVisible = useDebounceValue(visible, visible ? 200 : 0)
 
     return (
-      <ModalNative {...modalProps} visible={modalVisible} onDismiss={() => {
-        console.log('DISMISS')
-        onDismiss?.()
-      }}>
+      <ModalNative {...modalProps} visible={modalVisible}>
         <AbsoluteVStack
           ref={preventFormFocusBug as any}
           fullscreen
@@ -82,6 +79,7 @@ export const Modal = (props: ModalProps) => {
           alignItems="center"
           justifyContent="center"
           onPressOut={overlayDismisses ? onRequestClose : undefined}
+          onPress={onDismiss}
         >
           <AnimatedVStack
             {...{
