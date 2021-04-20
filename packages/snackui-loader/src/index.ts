@@ -34,22 +34,13 @@ export default function snackLoader(this: any, content: string) {
     if (shouldInternalDedupe) {
       const styleStr = [...new Set([...stylesByFile.values()])].join('\n')
       return callback(null, styleStr)
-    } else {
-      const out = stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
-      if (!out) {
-        // once caching in place we can read from fs
-        // try {
-        //   const cached = readFileSync(sourcePath, 'utf-8')
-        //   if (cached) {
-        //   }
-        // } catch(err) {
-        //   return callback(err, null)
-        // }
-        console.warn(`invalid styles ${stylesByFile} ${sourcePath}`)
-      } else {
-        return callback(null, out)
-      }
     }
+    const out = stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
+    if (!out) {
+      console.warn(`invalid styles ${stylesByFile} ${sourcePath}`)
+      return
+    }
+    return callback(null, out)
   }
 
   if (

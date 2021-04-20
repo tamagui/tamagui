@@ -46,6 +46,9 @@ export function extractToClassNames(
   if (typeof src !== 'string') {
     throw new Error('`src` must be a string of javascript')
   }
+  if (!sourceFileName.endsWith('sx')) {
+    return null
+  }
   invariant(
     typeof sourceFileName === 'string' && path.isAbsolute(sourceFileName),
     '`sourceFileName` must be an absolute path to a .js file'
@@ -293,7 +296,7 @@ export function extractToClassNames(
       quotes: 'single',
       retainLines: false,
       sourceFileName,
-      sourceMaps: true,
+      sourceMaps: false,
     },
     src
   )
@@ -302,6 +305,7 @@ export function extractToClassNames(
     console.log('\n\noutput code >> \n', result.code)
     console.log('\n\noutput styles >> \n', styles)
   }
+
 
   return {
     ast,
