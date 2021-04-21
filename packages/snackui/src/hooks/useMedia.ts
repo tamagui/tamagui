@@ -54,18 +54,16 @@ export const configureMedia = ({
 
   // setup
   for (const key in queries) {
+    const str = mediaObjectToString(queries[key])
     try {
-      const str = mediaObjectToString(queries[key])
       const getMatch = () => matchMedia(str)
       const match = getMatch()
       if (!match || typeof match.addListener !== 'function') {
-        // default to sm
-        mediaState[key] = key === 'sm'
-        console.warn('⚠️ No match (seeing this in RN sometimes)', str, match, matchMedia)
-        continue
+        // caught below
+        throw new Error('⚠️ No match (seeing this in RN sometimes)')
       }
       mediaState[key] = !!match.matches
-      match.addListener('change', () => {
+      match.addListener(() => {
         const next = !!getMatch().matches
         if (next === mediaState[key]) return
         mediaState[key] = next
@@ -77,9 +75,9 @@ export const configureMedia = ({
         }
       })
     } catch (err) {
-      console.error('Error running media query', err.message)
-      console.error('Error stack:', err.stack)
-      mediaState[key] = defaultActive?.includes(key as any) ?? true
+      console.error('Error running media query', str, err.message, err.stack)
+      const isDefaultActive = defaultActive?.includes(key as any) ?? true
+      mediaState[key] = isDefaultActive
     }
   }
 }

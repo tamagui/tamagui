@@ -176,21 +176,23 @@ const createStack = ({
 
     const ViewComponent = animated ? Animated.View : View
 
+    const styles = [
+      sheet.style,
+      fullscreen ? fullscreenStyle : null,
+      style,
+      styleProps,
+      state.hover ? hoverStyle : null,
+      state.press ? pressStyle : null,
+      disabled ? disabledStyle : null,
+      isWeb || !styleProps ? null : fixNativeShadow(styleProps),
+    ]
+
     let content = (
       <ViewComponent
         ref={combineRefs(innerRef, ref) as any}
         {...viewProps}
         pointerEvents={!isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents}
-        style={[
-          sheet.style,
-          fullscreen ? fullscreenStyle : null,
-          style,
-          styleProps,
-          state.hover ? hoverStyle : null,
-          state.press ? pressStyle : null,
-          disabled ? disabledStyle : null,
-          isWeb || !styleProps ? null : fixNativeShadow(styleProps),
-        ]}
+        style={styles}
       >
         {childrenWithSpacing}
       </ViewComponent>
