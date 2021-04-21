@@ -15,7 +15,7 @@ exports[`1. extracts to a div for simple views 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -25,7 +25,7 @@ Array [
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -47,7 +47,7 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -57,7 +57,7 @@ Array [
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _fleDir-column _fleBas-auto _dis-flex _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,1.00)",
@@ -81,9 +81,6 @@ Array [
   "css-view-1dbjc4n",
   "_oveY-hidden",
   "_oveX-hidden",
-  "_fleDir-column",
-  "_fleBas-auto",
-  "_dis-flex",
   "r-display-6koalj",
   "r-flexBasis-1mlwlqe",
   "r-flexDirection-eqz5dr",
@@ -93,9 +90,6 @@ Array [
 exports[`4. leaves dynamic variables 1`] = `
 Array [
   "css-view-1dbjc4n",
-  "_dis-flex",
-  "_fleBas-auto",
-  "_fleDir-column",
   "_hei-200px",
   "_oveX--r-o-ovX-o-ok-visible",
   "_oveY--r-o-ovY-i-ip04b4b-visible",
@@ -107,7 +101,7 @@ Array [
 
 exports[`4. leaves dynamic variables 2`] = `
 <div
-  className="css-view-1dbjc4n  _dis-flex _fleBas-auto _fleDir-column _hei-200px _oveX--r-o-ovX-o-ok-visible _oveY--r-o-ovY-i-ip04b4b-visible r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+  className="css-view-1dbjc4n  _hei-200px _oveX--r-o-ovX-o-ok-visible _oveY--r-o-ovY-i-ip04b4b-visible r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
   style={
     Object {
       "width": "calc(100% + 20px)",
@@ -168,7 +162,7 @@ exports[`8. styleExpansions 1`] = `
     className=" _bacCol-1g6456j _dis-flex _fleBas-auto _fleDir-column _pos-absolute"
   >
     <div
-      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _dis-flex _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-position-u8s1d"
+      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-position-u8s1d"
     />
   </div>
 </div>
@@ -188,7 +182,7 @@ exports[`10. extracts Text 1`] = `
     className=" _dis-inline _useSel-text"
   >
     <div
-      className="_col-cqee49 _fonWei-600 _fonSiz-15px _dis-inline css-text-901oao"
+      className="_col-cqee49 _fonWei-600 _fonSiz-15px css-text-901oao"
       dir="auto"
       onClick={[Function]}
       style={
@@ -219,9 +213,6 @@ Array [
   "_oveY-hidden",
   "_oveX-hidden",
   "_minHei-10px",
-  "_fleDir-column",
-  "_fleBas-auto",
-  "_dis-flex",
   "_borTopWid-1px",
   "_borTopSty-solid",
   "_borRigWid-1px",
@@ -263,6 +254,6 @@ Array [
 
 exports[`16. deopt when spreading multiple 1`] = `
 <div
-  className="css-view-1dbjc4n _fle-1 _bacCol-1g6456j _fleDir-column _fleBas-auto _dis-flex r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+  className="css-view-1dbjc4n _fle-1 _bacCol-1g6456j r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
 />
 `;
