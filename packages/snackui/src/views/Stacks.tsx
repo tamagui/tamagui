@@ -35,7 +35,7 @@ export type StackProps = Omit<
       children?: any
       hoverStyle?: ViewStyle | null
       pressStyle?: ViewStyle | null
-      focusStyle?: ViewStyle | null
+      // focusStyle?: ViewStyle | null
       onHoverIn?: (e: MouseEvent) => any
       onHoverOut?: (e: MouseEvent) => any
       onPress?: (e: GestureResponderEvent) => any
@@ -119,7 +119,6 @@ const createStack = ({
   defaultProps?: ViewStyle
   defaultStyle?: any
 }) => {
-  // we can replace this with something more snack-y soon
   const sheet = StyleSheet.create({
     style: defaultStyle,
   })
@@ -136,7 +135,7 @@ const createStack = ({
       onPressIn,
       onPressOut,
       hoverStyle = null,
-      focusStyle, // TODO
+      // focusStyle, // TODO
       onHoverIn,
       onHoverOut,
       spacing,
@@ -152,6 +151,7 @@ const createStack = ({
     const isMounted = useRef(false)
 
     useEffect(() => {
+      isMounted.current = true
       return () => {
         mouseUps.delete(unPress)
         isMounted.current = false
@@ -197,7 +197,8 @@ const createStack = ({
     )
 
     const attachPress = !!(pressStyle || onPress)
-    const attachHover = !!(hoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+    const attachHover =
+      isWeb && !!(hoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     const unPress = useCallback(() => {
       if (!isMounted.current) return
@@ -264,11 +265,7 @@ const createStack = ({
         onClick: attachPress
           ? (e) => {
               e.preventDefault()
-              set({
-                ...state,
-                press: false,
-                pressIn: false,
-              })
+              unPress()
               onPressOut?.(e)
               onPress?.(e)
             }
@@ -278,15 +275,13 @@ const createStack = ({
       if (isWeb) {
         content = React.cloneElement(content, events)
       } else {
-        if (pointerEvents !== 'none' && !!(onPress || onPressOut)) {
+        if (pointerEvents !== 'none' && !!(onPress || onPressOut || pressStyle)) {
           content = (
             <Pressable
               hitSlop={10}
-              onPress={(e) => {
-                // @ts-ignore
-                events.onClick(e)
-              }}
-              onPressIn={events.onMouseDown as any}
+              onPress={events.onClick}
+              onPressOut={unPress}
+              onPressIn={events.onMouseDown}
               style={
                 styleProps
                   ? {

@@ -106,9 +106,9 @@ export const Modal = (props: ModalProps) => {
 
   return (
     <ModalNative animationType={animationType} {...modalProps}>
-        <VStack flex={1} {...rest} backgroundColor={theme.backgroundColor}>
-          {children}
-        </VStack>
+      <VStack flex={1} {...rest} backgroundColor={theme.backgroundColor}>
+        {children}
+      </VStack>
     </ModalNative>
   )
 }

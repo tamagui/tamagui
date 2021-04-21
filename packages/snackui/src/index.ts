@@ -49,6 +49,7 @@ export * from './views/Title'
 export * from './views/Toast'
 export * from './views/UnorderedList'
 
+export { matchMedia } from './helpers/matchMedia'
 export * from './helpers/getNode'
 export * from './helpers/themeable'
 export * from './helpers/weakKey'

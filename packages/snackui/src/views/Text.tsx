@@ -118,6 +118,9 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
   let style: TextStyle | null = null
 
   for (const key in allProps) {
+    if (!isWeb && key in webOnlySpecificStyleKeys) {
+      continue
+    }
     if (styleKeys[key]) {
       const val = allProps[key]
       // if should skip

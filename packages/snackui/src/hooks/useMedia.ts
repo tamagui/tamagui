@@ -13,6 +13,7 @@
 import { useLayoutEffect, useRef } from 'react'
 
 import { defaultMediaQueries } from '../constants'
+import { matchMedia } from '../helpers/matchMedia'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
@@ -46,7 +47,8 @@ export const configureMedia = ({
   defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions) => {
   if (hasConfigured) {
-    throw new Error(`Already configured mediaQueries once`)
+    console.warn(`Already configured mediaQueries once`)
+    return
   }
   hasConfigured = true
 
@@ -56,14 +58,14 @@ export const configureMedia = ({
       const str = mediaObjectToString(queries[key])
       const getMatch = () => matchMedia(str)
       const match = getMatch()
-      if (!match || typeof match.addEventListener !== 'function') {
+      if (!match || typeof match.addListener !== 'function') {
         // default to sm
         mediaState[key] = key === 'sm'
-        console.warn('⚠️ No match (seeing this in RN sometimes)', str)
+        console.warn('⚠️ No match (seeing this in RN sometimes)', str, match, matchMedia)
         continue
       }
       mediaState[key] = !!match.matches
-      match.addEventListener('change', () => {
+      match.addListener('change', () => {
         const next = !!getMatch().matches
         if (next === mediaState[key]) return
         mediaState[key] = next

@@ -80,6 +80,10 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    export const matchMedia: (((query: string) => MediaQueryList) & typeof globalThis.matchMedia) | (() => any);
+}
+
+declare module "snackui" {
     type MediaQueryObject = {
         [key: string]: string | number | string;
     };
@@ -343,7 +347,6 @@ declare module "snackui" {
         children?: any;
         hoverStyle?: ViewStyle | null;
         pressStyle?: ViewStyle | null;
-        focusStyle?: ViewStyle | null;
         onHoverIn?: (e: MouseEvent) => any;
         onHoverOut?: (e: MouseEvent) => any;
         onPress?: (e: GestureResponderEvent) => any;
