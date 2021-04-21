@@ -13,7 +13,6 @@
 import { useLayoutEffect, useRef } from 'react'
 
 import { defaultMediaQueries } from '../constants'
-import { matchMedia } from '../helpers/matchMedia'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
@@ -57,7 +56,9 @@ export const configureMedia = ({
       const str = mediaObjectToString(queries[key])
       const getMatch = () => matchMedia(str)
       const match = getMatch()
-      if (!match) {
+      if (!match || typeof match.addEventListener !== 'function') {
+        // default to sm
+        mediaState[key] = key === 'sm'
         console.warn('⚠️ No match (seeing this in RN sometimes)', str)
         continue
       }

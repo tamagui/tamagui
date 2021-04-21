@@ -80,14 +80,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export const matchMedia: (((query: string) => MediaQueryList) & typeof globalThis.matchMedia) | (() => {
-        addEventListener(): void;
-        removeEventListener(): void;
-        matches: boolean;
-    });
-}
-
-declare module "snackui" {
     type MediaQueryObject = {
         [key: string]: string | number | string;
     };
