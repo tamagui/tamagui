@@ -80,7 +80,7 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export const matchMedia: (((query: string) => MediaQueryList) & typeof globalThis.matchMedia) | (() => any);
+    export const matchMedia: any;
 }
 
 declare module "snackui" {
