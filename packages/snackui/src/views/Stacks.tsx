@@ -207,7 +207,8 @@ const createStack = ({
 
     if (attachHover || attachPress || onPressOut || onPressIn) {
       const events = {
-        onMouseEnter:
+        ...!isWeb && {
+          onMouseEnter:
           attachHover || attachPress
             ? (e) => {
                 let next: Partial<typeof state> = {}
@@ -247,6 +248,7 @@ const createStack = ({
                 }
               }
             : null,
+        },
         onMouseDown: attachPress
           ? (e) => {
               set({
