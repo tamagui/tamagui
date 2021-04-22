@@ -1,11 +1,10 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
-
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
 import { HStack, StackProps } from './Stacks'
 import { Text, TextProps } from './Text'
+
 
 export type ButtonProps = StackProps & {
   textProps?: Omit<TextProps, 'children'>
@@ -18,6 +17,10 @@ export type ButtonProps = StackProps & {
 // TODO colors, spacing, static extract + colors/spacing
 // TODO sizing, static + sizing
 // TODO auto-chain
+
+// NOTE can't use TouchableOpacity, it captures and stops propagation of click events
+// which is really important for composability.
+// we could maybe add a "touchOpacity" boolean or similar for switching to opacity mode
 
 export const Button = themeable(
   ({
@@ -46,42 +49,40 @@ export const Button = themeable(
     )
 
     return (
-      <TouchableOpacity>
-        <HStack
-          backgroundColor={theme.backgroundColorSecondary}
-          alignSelf="flex-start"
-          justifyContent="center"
-          alignItems="center"
-          cursor="pointer"
-          paddingVertical={10}
-          flexWrap="nowrap"
-          paddingHorizontal={14}
-          borderRadius={8}
-          hoverStyle={{
-            backgroundColor: theme.backgroundColorTertiary,
-          }}
-          pressStyle={{
-            backgroundColor: theme.backgroundColorSecondary,
-          }}
-          flexDirection={flexDirection}
-          {...active && {
-            backgroundColor: theme.backgroundColorTertiary
-          }}
-          {...props}
-        >
-          {spacedChildren({
-            children:
-              icon && childrens
-                ? [
-                    <React.Fragment key={0}>{icon}</React.Fragment>,
-                    <React.Fragment key={1}>{childrens}</React.Fragment>,
-                  ]
-                : icon ?? childrens,
-            spacing,
-            flexDirection,
-          })}
-        </HStack>
-      </TouchableOpacity>
+      <HStack
+        backgroundColor={theme.backgroundColorSecondary}
+        alignSelf="flex-start"
+        justifyContent="center"
+        alignItems="center"
+        cursor="pointer"
+        paddingVertical={10}
+        flexWrap="nowrap"
+        paddingHorizontal={14}
+        borderRadius={8}
+        hoverStyle={{
+          backgroundColor: theme.backgroundColorTertiary,
+        }}
+        pressStyle={{
+          backgroundColor: theme.backgroundColorQuartenary,
+        }}
+        flexDirection={flexDirection}
+        {...active && {
+          backgroundColor: theme.backgroundColorTertiary
+        }}
+        {...props}
+      >
+        {spacedChildren({
+          children:
+            icon && childrens
+              ? [
+                  <React.Fragment key={0}>{icon}</React.Fragment>,
+                  <React.Fragment key={1}>{childrens}</React.Fragment>,
+                ]
+              : icon ?? childrens,
+          spacing,
+          flexDirection,
+        })}
+      </HStack>
     )
   }
 )
