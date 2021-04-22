@@ -13,7 +13,7 @@ export type ToastOptions = {
 }
 
 let show: (text: string, options?: ToastOptions) => void = (text) => {
-  console.warn('NO SHOW', text)
+  console.warn('Note:', text)
 }
 
 export const Toast = {
