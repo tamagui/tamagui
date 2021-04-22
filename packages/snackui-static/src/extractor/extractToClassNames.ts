@@ -1,5 +1,6 @@
-import path, { basename, join } from 'path'
-import util from 'util'
+import { basename, join } from 'path'
+import * as path from 'path'
+import * as util from 'util'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
@@ -53,6 +54,10 @@ export function extractToClassNames(
     typeof sourceFileName === 'string' && path.isAbsolute(sourceFileName),
     '`sourceFileName` must be an absolute path to a .js file'
   )
+
+  const shouldLogTiming = shouldPrintDebug || options.logTimings
+  const start = Date.now()
+  const mem = shouldLogTiming ? process.memoryUsage() : null
 
   // Using a map for (officially supported) guaranteed insertion order
   let ast: t.File
@@ -306,6 +311,12 @@ export function extractToClassNames(
     console.log('\n\noutput styles >> \n', styles)
   }
 
+  if (shouldLogTiming && mem) {
+    const memUsed =
+      Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
+    // prettier-ignore
+    console.log('  🍑 ', Date.now() - start, 'ms', memUsed, 'MB mem', basename(sourceFileName), '[SnackUI]')
+  }
 
   return {
     ast,

@@ -50,9 +50,6 @@ export default function snackLoader(this: any, content: string) {
     return callback(null, content)
   }
 
-  const start = Date.now()
-  const mem = process.memoryUsage()
-
   const extracted = extractToClassNames(
     extractor,
     content,
@@ -82,11 +79,6 @@ export default function snackLoader(this: any, content: string) {
         forceUpdateOnFile(getInitialFileName())
       }
     }
-  }
-
-  if (shouldPrintDebug) {
-    const memUsed = (process.memoryUsage().heapUsed - mem.heapUsed) / 1024
-    console.log('  took', Date.now() - start, 'ms', 'memory change', memUsed)
   }
 
   callback(null, extracted.js, extracted.map)

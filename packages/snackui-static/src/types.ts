@@ -16,6 +16,7 @@ export interface SnackOptions {
   evaluateImportsWhitelist?: string[]
   exclude?: RegExp
   mediaQueries?: MediaQueries
+  logTimings?: boolean
   // probably non user options
   cssPath?: string
   deoptProps?: string[]

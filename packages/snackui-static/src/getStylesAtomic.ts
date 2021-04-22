@@ -92,6 +92,8 @@ function getAtomicStyle(
           .replace(`.${val.identifier}`, className)
           .replace('{', `:${pseudo.name}{`)
           .replace('!important', '')
+          // always important, to override inline styles, we check if its prioritized in concatClassName
+          .replace(';', ` !important;`)
         if (pseudo.name === 'hover') {
           // hover styles need to be conditional
           // perhaps this can be generalized but for now lets just shortcut

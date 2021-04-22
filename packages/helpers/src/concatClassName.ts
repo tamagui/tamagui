@@ -1,7 +1,7 @@
 import { uniqueKeyToStyleName } from './uniqueStyleKeys'
 
 // synced to static-ui constants
-const MEDIA_SEP = '_'
+const MEDIA_SEP = '-'
 
 export function concatClassName(className: string, ...propObjects: any[]) {
   const usedPrefixes = new Set<string>()
@@ -21,7 +21,7 @@ export function concatClassName(className: string, ...propObjects: any[]) {
       final.push(name)
       continue
     }
-    const splitIndex = name.lastIndexOf('-')
+    const splitIndex = name.indexOf('-')
     if (splitIndex < 1) {
       final.push(name)
       continue
@@ -33,6 +33,7 @@ export function concatClassName(className: string, ...propObjects: any[]) {
     //   THEN we continue to accept medias within that key
     //   UNTIL we see a NON media, then we STOP ACCEPTING further media queries
     const isMediaQuery = name[splitIndex + 1] === MEDIA_SEP
+
     if (isMediaQuery) {
       if (usedPrefixes.has(uid)) {
         continue
@@ -40,11 +41,12 @@ export function concatClassName(className: string, ...propObjects: any[]) {
       mediaAllowed = mediaAllowed || new Set()
       mediaAllowed.add(uid)
     } else {
-      // we found a non-media on a used media key, time to stop allowing
-      if (mediaAllowed?.has(uid)) {
-        mediaAllowed.delete(uid)
-        usedPrefixes.add(uid)
-      }
+      // disabling, testing
+      // // we found a non-media on a used media key, time to stop allowing
+      // if (mediaAllowed && mediaAllowed.has(uid)) {
+      //   mediaAllowed.delete(uid)
+      //   usedPrefixes.add(uid)
+      // }
       if (usedPrefixes.has(uid)) {
         continue
       }
@@ -54,7 +56,7 @@ export function concatClassName(className: string, ...propObjects: any[]) {
 
     // if defined in a prop object, ignore
     // TODO we need to preserve ordering...
-    if (propName && hasPropObjects) {
+    if (!isMediaQuery && propName && hasPropObjects) {
       if (propObjects.some((po) => po && propName in po)) {
         continue
       }

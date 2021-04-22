@@ -22,6 +22,7 @@ declare module "@snackui/static" {
         evaluateImportsWhitelist?: string[];
         exclude?: RegExp;
         mediaQueries?: MediaQueries;
+        logTimings?: boolean;
         cssPath?: string;
         deoptProps?: string[];
         excludeProps?: string[];
