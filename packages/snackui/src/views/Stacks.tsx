@@ -164,16 +164,6 @@ const createStack = ({
       pressIn: false,
     })
 
-    const childrenWithSpacing = useMemo(
-      () =>
-        spacedChildren({
-          children,
-          spacing,
-          flexDirection: defaultStyle?.flexDirection,
-        }),
-      [spacing, children]
-    )
-
     const ViewComponent = animated ? Animated.View : View
 
     const styles = [
@@ -194,7 +184,11 @@ const createStack = ({
         pointerEvents={!isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents}
         style={styles}
       >
-        {childrenWithSpacing}
+        {spacedChildren({
+          children,
+          spacing,
+          flexDirection: defaultStyle?.flexDirection,
+        })}
       </ViewComponent>
     )
 
@@ -255,7 +249,6 @@ const createStack = ({
             : null,
         onMouseDown: attachPress
           ? (e) => {
-              e.preventDefault()
               set({
                 ...state,
                 press: true,
@@ -275,7 +268,8 @@ const createStack = ({
       }
 
       if (isWeb) {
-        content = React.cloneElement(content, events)
+        // @ts-expect-error
+        content = <div {...events} className="display-contents">{content}</div>
       } else {
         if (pointerEvents !== 'none' && !!(onPress || onPressOut || pressStyle)) {
           content = (
