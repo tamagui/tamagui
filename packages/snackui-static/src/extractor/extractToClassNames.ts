@@ -294,14 +294,11 @@ export function extractToClassNames(
   const result = generate(
     ast,
     {
-      compact: 'auto',
       concise: false,
       filename: sourceFileName,
-      // @ts-ignore
-      quotes: 'single',
       retainLines: false,
       sourceFileName,
-      sourceMaps: false,
+      sourceMaps: true,
     },
     src
   )
