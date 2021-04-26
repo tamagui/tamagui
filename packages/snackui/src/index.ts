@@ -48,6 +48,7 @@ export * from './views/TextArea'
 export * from './views/Title'
 export * from './views/Toast'
 export * from './views/UnorderedList'
+export * from './views/TouchableOpacity'
 
 export { matchMedia } from './helpers/matchMedia'
 export * from './helpers/getNode'

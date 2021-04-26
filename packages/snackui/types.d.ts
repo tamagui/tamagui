@@ -681,6 +681,11 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    import { PressableProps } from "react-native";
+    export const TouchableOpacity: (props: PressableProps) => JSX.Element;
+}
+
+declare module "snackui" {
     export const getNode: (refCurrent: any) => HTMLElement | null;
 }
 

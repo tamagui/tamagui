@@ -207,48 +207,48 @@ const createStack = ({
 
     if (attachHover || attachPress || onPressOut || onPressIn) {
       const events = {
-        ...!isWeb && {
+        ...(!isWeb && {
           onMouseEnter:
-          attachHover || attachPress
-            ? (e) => {
-                let next: Partial<typeof state> = {}
-                if (attachHover) {
-                  next.hover = true
+            attachHover || attachPress
+              ? (e) => {
+                  let next: Partial<typeof state> = {}
+                  if (attachHover) {
+                    next.hover = true
+                  }
+                  if (state.pressIn) {
+                    next.press = true
+                  }
+                  if (Object.keys(next).length) {
+                    set({ ...state, ...next })
+                  }
+                  if (attachHover) {
+                    onHoverIn?.(e)
+                    onMouseEnter?.(e)
+                  }
                 }
-                if (state.pressIn) {
-                  next.press = true
+              : undefined,
+          onMouseLeave:
+            attachHover || attachPress
+              ? (e) => {
+                  let next: Partial<typeof state> = {}
+                  mouseUps.add(unPress)
+                  if (attachHover) {
+                    next.hover = false
+                  }
+                  if (state.pressIn) {
+                    next.press = false
+                    next.pressIn = false
+                  }
+                  if (Object.keys(next).length) {
+                    set({ ...state, ...next })
+                  }
+                  if (attachHover) {
+                    onHoverOut?.(e)
+                    onMouseLeave?.(e)
+                  }
                 }
-                if (Object.keys(next).length) {
-                  set({ ...state, ...next })
-                }
-                if (attachHover) {
-                  onHoverIn?.(e)
-                  onMouseEnter?.(e)
-                }
-              }
-            : null,
-        onMouseLeave:
-          attachHover || attachPress
-            ? (e) => {
-                let next: Partial<typeof state> = {}
-                mouseUps.add(unPress)
-                if (attachHover) {
-                  next.hover = false
-                }
-                if (state.pressIn) {
-                  next.press = false
-                  next.pressIn = false
-                }
-                if (Object.keys(next).length) {
-                  set({ ...state, ...next })
-                }
-                if (attachHover) {
-                  onHoverOut?.(e)
-                  onMouseLeave?.(e)
-                }
-              }
-            : null,
-        },
+              : undefined,
+        }),
         onMouseDown: attachPress
           ? (e) => {
               set({
@@ -258,7 +258,7 @@ const createStack = ({
               })
               onPressIn?.(e)
             }
-          : onPressIn,
+          : (onPressIn as any),
         onClick: attachPress
           ? (e) => {
               e.preventDefault()
@@ -266,12 +266,15 @@ const createStack = ({
               onPressOut?.(e)
               onPress?.(e)
             }
-          : onPressOut,
+          : (onPressOut as any),
       }
 
       if (isWeb) {
-        // @ts-expect-error
-        content = <div {...events} className="display-contents">{content}</div>
+        content = (
+          <div {...events} className="display-contents">
+            {content}
+          </div>
+        )
       } else {
         if (pointerEvents !== 'none' && !!(onPress || onPressOut || pressStyle)) {
           content = (
