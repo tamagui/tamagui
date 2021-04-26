@@ -12,7 +12,7 @@ export const TouchableOpacity = (props: PressableProps) => {
       <Pressable
         {...props}
         onPressIn={combineFns(() => setIsPressed(true), props.onPressIn)}
-        onPressOut={combineFns(() => setIsPressed(false), props.onPressOut)}
+        onPress={combineFns(() => setIsPressed(false), props.onPress)}
       />
     </VStack>
   )

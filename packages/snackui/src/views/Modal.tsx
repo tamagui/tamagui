@@ -22,7 +22,7 @@ export const Modal = (props: ModalProps) => {
     // modal specific props
     visible = true,
     animationType = 'slide', // keep this only for native for now
-    transparent = true,
+    transparent,
     onRequestClose,
     onShow,
     // ios specific
