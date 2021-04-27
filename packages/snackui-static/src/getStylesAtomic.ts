@@ -54,6 +54,8 @@ export function getStylesAtomic(style: any) {
     .flat()
 }
 
+const importantRegex = /\!important*/g
+
 function getAtomicStyle(
   style: ViewStyle,
   pseudo?: { name: string; priority: number }
@@ -90,6 +92,7 @@ function getAtomicStyle(
         let res = rule
           .replace(`.${val.identifier}`, `${psuedoPrefixSelect} ${className}`)
           .replace('{', `:${pseudo.name}{`)
+          .replace(importantRegex, '')
 
         if (pseudo.name === 'hover') {
           // hover styles need to be conditional
