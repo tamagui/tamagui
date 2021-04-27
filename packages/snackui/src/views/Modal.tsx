@@ -22,11 +22,11 @@ export const Modal = (props: ModalProps) => {
     // modal specific props
     visible = true,
     animationType = 'slide', // keep this only for native for now
-    transparent,
     onRequestClose,
     onShow,
     // ios specific
     presentationStyle,
+    transparent = isWeb,
     supportedOrientations,
     onDismiss,
     onOrientationChange,
