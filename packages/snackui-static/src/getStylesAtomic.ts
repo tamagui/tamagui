@@ -83,17 +83,14 @@ function getAtomicStyle(
     // pseudos have a `--` to be easier to find with concatClassNames
     const psuedoPrefix = pseudo ? `-${getNiceKey(key)}-` : ''
     const identifier = `${prefix}-${psuedoPrefix}${hash}`
-    const className = pseudo
-      ? [...Array(pseudo.priority)].map((x) => `.${identifier}`).join('')
-      : `.${identifier}`
+    const className = `.${identifier}`
     const rules = val.rules.map((rule) => {
       if (pseudo) {
+        const psuedoPrefixSelect = [...Array(pseudo.priority)].map(() => ':root').join('') + ' '
         let res = rule
-          .replace(`.${val.identifier}`, className)
+          .replace(`.${val.identifier}`, `${psuedoPrefixSelect} ${className}`)
           .replace('{', `:${pseudo.name}{`)
-          .replace('!important', '')
-          // always important, to override inline styles, we check if its prioritized in concatClassName
-          .replace(';', ` !important;`)
+
         if (pseudo.name === 'hover') {
           // hover styles need to be conditional
           // perhaps this can be generalized but for now lets just shortcut
@@ -104,7 +101,7 @@ function getAtomicStyle(
         }
         return res
       }
-      return rule.replace(`.${val.identifier}`, className).replace('!important', '')
+      return rule.replace(`.${val.identifier}`, className)
     })
     return {
       ...val,
