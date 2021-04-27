@@ -58,8 +58,8 @@ export function extractMediaStyle(
       )}`
       const className = `.${identifier}`
       const mediaSelector = mediaObjectToString(mediaQueries[key])
-      const screenStr = negate ? ' not' : ''
-      const mediaStr = `@media${screenStr} screen and ${mediaSelector}`
+      const screenStr = negate ? ' not all' : ' screen'
+      const mediaStr = `@media${screenStr} and ${mediaSelector}`
       const precendencePrefix = mediaKeyPrecendence[key]
       const styleInner = `${precendencePrefix} ${style.rules[0].replace(
         style.identifier,
