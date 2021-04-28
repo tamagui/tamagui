@@ -264,7 +264,8 @@ export function extractToClassNames(
 
   const styles = Array.from(cssMap.values())
     .map((x) => {
-      return shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`
+      // remove comments
+      return x.css //shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`
     })
     .join('\n')
     .trim()
@@ -284,11 +285,9 @@ export function extractToClassNames(
       stylesPath = join(cacheDir, cachePath)
       writeFileSync(stylesPath, styles)
       importPath = `${stylesPath}!=!snackui-loader?cssPath=true!${stylesPath}`
-    }
-    ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
-    if (!shouldInternalDedupe) {
       addDependency(importPath)
     }
+    ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
   }
 
   const result = generate(

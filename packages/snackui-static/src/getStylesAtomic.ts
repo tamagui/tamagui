@@ -92,7 +92,6 @@ function getAtomicStyle(
         let res = rule
           .replace(`.${val.identifier}`, `${psuedoPrefixSelect} ${className}`)
           .replace('{', `:${pseudo.name}{`)
-          .replace(importantRegex, '')
 
         if (pseudo.name === 'hover') {
           // hover styles need to be conditional
@@ -104,7 +103,7 @@ function getAtomicStyle(
         }
         return res
       }
-      return rule.replace(`.${val.identifier}`, className)
+      return rule.replace(`.${val.identifier}`, className).replace(importantRegex, '')
     })
     return {
       ...val,
