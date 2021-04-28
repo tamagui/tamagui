@@ -70,6 +70,7 @@ const disabledStyle: StackProps = {
 // somewhat optimized to avoid object creation
 const useViewStylePropsSplit = (props: { [key: string]: any }) => {
   const activeTheme = useContext(ActiveThemeContext)
+  const activeThemeInvert = invertStyleVariableToValue[activeTheme.name]
 
   return useMemo(() => {
     let styleProps: ViewStyle | null = null
@@ -78,9 +79,7 @@ const useViewStylePropsSplit = (props: { [key: string]: any }) => {
       const val = props[key]
       if (stylePropsView[key]) {
         styleProps = styleProps || {}
-        styleProps[key] = activeTheme
-          ? invertStyleVariableToValue[activeTheme.name]?.[val] ?? val
-          : val
+        styleProps[key] = activeTheme && activeThemeInvert ? activeThemeInvert[val] ?? val : val
       }
     }
     if (styleProps) {
