@@ -80,25 +80,22 @@ const useViewStylePropsSplit = (props: { [key: string]: any }) => {
       if (stylePropsView[key]) {
         styleProps = styleProps || {}
         styleProps[key] = activeTheme && activeThemeInvert ? activeThemeInvert[val] ?? val : val
-      }
-    }
-    if (styleProps) {
-      if (
-        styleProps.shadowColor !== props.shadowColor &&
-        typeof styleProps.shadowOpacity !== 'undefined'
-      ) {
-        styleProps.shadowColor = props.shadowColor
-      }
-    }
-    // only if we have to, split out props
-    if (styleProps) {
-      viewProps = viewProps || {}
-      for (const key in props) {
-        if (key in styleProps) continue
+      } else {
+        viewProps = viewProps || {}
         viewProps[key] = props[key]
       }
     }
-    return [viewProps || props, styleProps] as const
+    if (styleProps) {
+      fixNativeShadow(styleProps, true)
+      // still necessary?
+      // if (
+      //   styleProps.shadowColor !== props.shadowColor &&
+      //   typeof styleProps.shadowOpacity !== 'undefined'
+      // ) {
+      //   styleProps.shadowColor = props.shadowColor
+      // }
+    }
+    return [viewProps, styleProps] as const
   }, [props, activeTheme])
 }
 
@@ -169,15 +166,11 @@ const createStack = ({
       sheet.style,
       fullscreen ? fullscreenStyle : null,
       style,
-      isWeb ? styleProps : fixNativeShadow(styleProps),
+      styleProps,
       state.hover ? hoverStyle : null,
       state.press ? pressStyle : null,
       disabled ? disabledStyle : null,
     ]
-
-    if (props['debug']) {
-      console.log('styles are', props, styles)
-    }
 
     let content = (
       <ViewComponent
@@ -335,31 +328,31 @@ const defaultShadowOffset = {
 
 const matchRgba = /rgba\(\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*\)$/
 
-function fixNativeShadow(styles: ViewStyle | null) {
-  if (!styles) {
-    return null
-  }
-  if ('shadowColor' in styles) {
-    if (!('shadowOffset' in styles)) {
-      styles.shadowOffset = defaultShadowOffset
+// used by both expansion and inline, be careful
+function fixNativeShadow(props: StackProps, merge = false) {
+  let res = merge ? props : {}
+  if ('shadowColor' in props) {
+    res.shadowColor = props.shadowColor
+    if (!('shadowOffset' in props)) {
+      res.shadowOffset = defaultShadowOffset
     }
-    if (!('shadowOpacity' in styles)) {
-      styles.shadowOpacity = 1
-      const color = String(styles.shadowColor).trim()
+    if (!('shadowOpacity' in props)) {
+      res.shadowOpacity = 1
+      const color = String(res.shadowColor).trim()
       if (color[0] === 'r' && color[3] === 'a') {
         const [_, r, g, b, a] = color.match(matchRgba) ?? []
         if (typeof a !== 'string') {
           console.warn('non valid rgba', color)
-          return styles
+          return props
         }
-        styles.shadowColor = `rgb(${r},${g},${b})`
-        styles.shadowOpacity = +a
+        res.shadowColor = `rgb(${r},${g},${b})`
+        res.shadowOpacity = +a
       } else {
-        styles.shadowOpacity = 1
+        res.shadowOpacity = 1
       }
     }
   }
-  return styles
+  return res
 }
 
 export const AbsoluteVStack = createStack({

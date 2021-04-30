@@ -802,7 +802,7 @@ export function createExtractor() {
             for (const { name, value } of styleExpansions) {
               const expandedStyle = getStyleExpansion(fullProps, name, value)
               if (shouldPrintDebug) {
-                console.log('  expanded', {
+                console.log('  expanded', name, {
                   styleExpansionError,
                   expandedStyle,
                 })
@@ -817,6 +817,7 @@ export function createExtractor() {
                     delete expandedStyle[key]
                   }
                 }
+                delete viewStyles[name]
                 Object.assign(viewStyles, expandedStyle)
               }
             }
