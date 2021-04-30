@@ -169,12 +169,15 @@ const createStack = ({
       sheet.style,
       fullscreen ? fullscreenStyle : null,
       style,
-      styleProps,
+      isWeb ? styleProps : fixNativeShadow(styleProps),
       state.hover ? hoverStyle : null,
       state.press ? pressStyle : null,
       disabled ? disabledStyle : null,
-      isWeb || !styleProps ? null : fixNativeShadow(styleProps),
     ]
+
+    if (props['debug']) {
+      console.log('styles are', props, styles)
+    }
 
     let content = (
       <ViewComponent
@@ -331,33 +334,32 @@ const defaultShadowOffset = {
 }
 
 const matchRgba = /rgba\(\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*\)$/
-function fixNativeShadow(props: StackProps) {
-  let res: any
-  if ('shadowColor' in props) {
-    res = {
-      shadowColor: props.shadowColor,
+
+function fixNativeShadow(styles: ViewStyle | null) {
+  if (!styles) {
+    return null
+  }
+  if ('shadowColor' in styles) {
+    if (!('shadowOffset' in styles)) {
+      styles.shadowOffset = defaultShadowOffset
     }
-    if (!('shadowOffset' in props)) {
-      res.shadowOffset = defaultShadowOffset
-    }
-    if (!('shadowOpacity' in props)) {
-      res.shadowOpacity = 1
-      const color = String(props.shadowColor).trim()
-      res = res || {}
+    if (!('shadowOpacity' in styles)) {
+      styles.shadowOpacity = 1
+      const color = String(styles.shadowColor).trim()
       if (color[0] === 'r' && color[3] === 'a') {
         const [_, r, g, b, a] = color.match(matchRgba) ?? []
         if (typeof a !== 'string') {
           console.warn('non valid rgba', color)
-          return res
+          return styles
         }
-        res.shadowColor = `rgb(${r},${g},${b})`
-        res.shadowOpacity = +a
+        styles.shadowColor = `rgb(${r},${g},${b})`
+        styles.shadowOpacity = +a
       } else {
-        res.shadowOpacity = 1
+        styles.shadowOpacity = 1
       }
     }
   }
-  return res
+  return styles
 }
 
 export const AbsoluteVStack = createStack({
