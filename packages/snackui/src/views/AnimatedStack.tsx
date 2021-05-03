@@ -63,7 +63,7 @@ export type AnimatedStackProps = StackProps & {
 export const AnimatedVStack = ({
   animateState = 'in',
   animation = defaultAnimation,
-  velocity,
+  velocity = 5,
   children,
   ...props
 }: AnimatedStackProps) => {
