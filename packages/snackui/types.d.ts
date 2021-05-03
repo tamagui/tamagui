@@ -177,6 +177,8 @@ declare module "snackui" {
 declare module "snackui" {
     export const isWeb: boolean;
     export const isWebIOS: false;
+    export const supportsTouchWeb: boolean;
+    export const isTouchDevice: boolean;
 }
 
 declare module "snackui" {

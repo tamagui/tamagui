@@ -23,7 +23,7 @@ import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { ActiveThemeContext, invertStyleVariableToValue } from '../hooks/useTheme'
-import { isWeb } from '../platform'
+import { isTouchDevice, isWeb } from '../platform'
 import { Spacing } from './Spacer'
 
 export type StackProps = Omit<
@@ -202,7 +202,7 @@ const createStack = ({
 
     if (attachHover || attachPress || onPressOut || onPressIn) {
       const events = {
-        ...(!isWeb && {
+        ...(!isTouchDevice && {
           onMouseEnter:
             attachHover || attachPress
               ? (e) => {
@@ -216,10 +216,8 @@ const createStack = ({
                   if (Object.keys(next).length) {
                     set({ ...state, ...next })
                   }
-                  if (attachHover) {
-                    onHoverIn?.(e)
-                    onMouseEnter?.(e)
-                  }
+                  onHoverIn?.(e)
+                  onMouseEnter?.(e)
                 }
               : undefined,
           onMouseLeave:
@@ -237,10 +235,8 @@ const createStack = ({
                   if (Object.keys(next).length) {
                     set({ ...state, ...next })
                   }
-                  if (attachHover) {
-                    onHoverOut?.(e)
-                    onMouseLeave?.(e)
-                  }
+                  onHoverOut?.(e)
+                  onMouseLeave?.(e)
                 }
               : undefined,
         }),
