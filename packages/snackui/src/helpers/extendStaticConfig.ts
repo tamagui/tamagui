@@ -13,6 +13,7 @@ export function extendStaticConfig(a: any, config: StaticConfig = {}) {
   }
   return {
     isText: config.isText ?? a.staticConfig.isText,
+    neverFlatten: config.neverFlatten ?? a.staticConfig.neverFlatten,
     validStyles: {
       ...a.staticConfig.validStyles,
       ...config.validStyles,

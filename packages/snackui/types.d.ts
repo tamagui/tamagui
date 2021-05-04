@@ -268,6 +268,7 @@ declare module "snackui" {
     };
     export function extendStaticConfig(a: any, config?: StaticConfig): {
         isText: any;
+        neverFlatten: any;
         validStyles: any;
         defaultProps: any;
         expansionProps: any;
@@ -601,7 +602,16 @@ declare module "snackui" {
 
 declare module "snackui" {
     export type ParagraphProps = SizableTextProps;
-    export const Paragraph: (props: SizableTextProps) => JSX.Element;
+    export const Paragraph: {
+        (props: SizableTextProps): JSX.Element;
+        staticConfig: {
+            isText: any;
+            neverFlatten: any;
+            validStyles: any;
+            defaultProps: any;
+            expansionProps: any;
+        } | undefined;
+    };
 }
 
 declare module "snackui" {
@@ -614,6 +624,7 @@ declare module "snackui" {
         (props: StackProps): JSX.Element;
         staticConfig: {
             isText: any;
+            neverFlatten: any;
             validStyles: any;
             defaultProps: any;
             expansionProps: any;
@@ -624,6 +635,7 @@ declare module "snackui" {
         (props: TableRowProps): JSX.Element;
         staticConfig: {
             isText: any;
+            neverFlatten: any;
             validStyles: any;
             defaultProps: any;
             expansionProps: any;
@@ -636,6 +648,7 @@ declare module "snackui" {
         (props: TableHeadRowProps): JSX.Element;
         staticConfig: {
             isText: any;
+            neverFlatten: any;
             validStyles: any;
             defaultProps: any;
             expansionProps: any;
@@ -646,6 +659,7 @@ declare module "snackui" {
         (props: TableHeadTextProps): JSX.Element;
         staticConfig: {
             isText: any;
+            neverFlatten: any;
             validStyles: any;
             defaultProps: any;
             expansionProps: any;

@@ -230,7 +230,7 @@ export function createExtractor() {
                       '  ⚠️ SnackUI: warning! no themesFile option given, themes will fallback'
                     )
                   }
-                  console.log('  attemptEval staticNamespace', staticNamespace)
+                  console.log('  attemptEval staticNamespace', Object.keys(staticNamespace))
                 }
 
                 // called when evaluateAstNode encounters a dynamic-looking prop
@@ -899,7 +899,7 @@ export function createExtractor() {
               })
 
               if (shouldPrintDebug) {
-                console.log(`  noramlized ternaries`, ...normalizedExpanded.map((x) => x.value))
+                console.log(`  noramlized ternaries`, normalizedExpanded.length)
               }
 
               next = [...next, ...normalizedExpanded]

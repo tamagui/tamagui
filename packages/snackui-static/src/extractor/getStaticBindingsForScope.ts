@@ -49,7 +49,7 @@ export function getStaticBindingsForScope(
 
   if (shouldPrintDebug) {
     // prettier-ignore
-    console.log('  scope bindings', Object.keys(bindings).map(x => bindings[x].identifier?.name).join(', '))
+    console.log('  scope bindings', Object.keys(bindings).length)
   }
 
   // on react native at least it doesnt find some bindings? not sure why
