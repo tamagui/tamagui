@@ -74,25 +74,19 @@ const webOnlyStyleKeys = {
   cursor: true,
 }
 
-const textSpecificProps = {
-  allowFontScaling: true,
-  ellipsizeMode: true,
-  lineBreakMode: true,
-  numberOfLines: true,
-  maxFontSizeMultiplier: true,
-}
-
-const testProps = {
+const styleProps = {
   all: {
-    ...textSpecificProps,
     ...stylePropsText,
-    ...webOnlySpecificStyleKeys,
-    ...webOnlyStyleKeys,
+    ...(isWeb && {
+      ...webOnlySpecificStyleKeys,
+      ...webOnlyStyleKeys,
+    }),
   },
   specific: {
-    ...webOnlyStyleKeys,
-    ...webOnlySpecificStyleKeys,
-    ...textSpecificProps,
+    ...(isWeb && {
+      ...webOnlyStyleKeys,
+      ...webOnlySpecificStyleKeys,
+    }),
     ...stylePropsTextOnly,
   },
 }
@@ -104,7 +98,7 @@ export const useTextStyle = (
   onlyTextSpecificStyle?: boolean,
   memo?: boolean
 ) => {
-  const styleKeys = onlyTextSpecificStyle ? testProps.specific : testProps.all
+  const styleKeys = onlyTextSpecificStyle ? styleProps.specific : styleProps.all
   if (memo) {
     return useMemo(() => getTextStyle(allProps, styleKeys), [allProps])
   }
@@ -121,7 +115,7 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
     if (!isWeb && key in webOnlySpecificStyleKeys) {
       continue
     }
-    if (styleKeys[key]) {
+    if (key in styleKeys) {
       const val = allProps[key]
       // if should skip
       if (isWeb) {
@@ -159,16 +153,11 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
         }
       }
       style[key] = val
-    }
-  }
-
-  if (style) {
-    props = props || {}
-    for (const key in allProps) {
-      if (key in style) continue
+    } else {
+      props = props || {}
       props[key] = allProps[key]
     }
   }
 
-  return [props || allProps, style || emptyObj] as const
+  return [props || emptyObj, style || emptyObj] as const
 }

@@ -287,7 +287,7 @@ declare module "snackui" {
     };
     export const Text: React.MemoExoticComponent<(allProps: TextProps) => JSX.Element>;
     export const useTextStyle: (allProps: TextProps, onlyTextSpecificStyle?: boolean | undefined, memo?: boolean | undefined) => readonly [
-        TextProps,
+        Readonly<{}>,
         Readonly<{}>
     ];
 }
