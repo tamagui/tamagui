@@ -61,9 +61,11 @@ export const Button = themeable(
         paddingHorizontal={14}
         flexDirection="row"
         borderRadius={8}
+        shadowColor={elevation ? theme.shadowColor : undefined}
         {...(elevation && {
-          shadowColor: theme.shadowColor,
-          ...getElevation({ elevation }),
+          shadowRadius: 3 * elevation,
+          shadowOffset: { width: 0, height: 2 * elevation },
+          shadowOpacity: 0.18 * elevation,
         })}
         hoverStyle={{
           backgroundColor: theme.backgroundColorTertiary,
@@ -91,12 +93,6 @@ export const Button = themeable(
     )
   }
 )
-
-const getElevation = ({ elevation }: { elevation: number }) => ({
-  shadowRadius: 5 * elevation,
-  shadowOffset: { width: 0, height: 2.5 * elevation },
-  shadowOpacity: 0.2 * elevation
-})
 
 if (process.env.IS_STATIC) {
   // @ts-ignore
