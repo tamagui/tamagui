@@ -74,7 +74,13 @@ function getAtomicStyle(
   return Object.keys(all).map((key) => {
     const val = all[key]
     const prefix = `_${getOrCreateStylePrefix(val.property)}`
-    const hash = simpleHash(val.identifier)
+    const hash = (() => {
+      let s = `${val.value}`
+      if (s.length < 10 && /^[a-z0-9\-]+$/i.test(s)) return s
+      s = s.replace(/[^a-z0-9]/gi, '').replace(/\s/, '-')
+      if (s.length < 10) return s
+      return simpleHash(val.identifier)
+    })()
 
     // pseudos have a `--` to be easier to find with concatClassNames
     const psuedoPrefix = pseudo ? `-${pseudo.name}-` : ''

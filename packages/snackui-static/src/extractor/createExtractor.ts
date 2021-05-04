@@ -803,25 +803,34 @@ export function createExtractor() {
               fullProps[name] = value
             }
             for (const { name, value } of styleExpansions) {
-              const expandedStyle = getStyleExpansion(fullProps, name, value)
+              const expanded = getStyleExpansion(fullProps, name, value)
               if (shouldPrintDebug) {
                 console.log('  expanded', name, {
                   styleExpansionError,
-                  expandedStyle,
+                  expanded,
                 })
               }
               if (styleExpansionError) {
                 break
               }
-              if (expandedStyle) {
-                // this seems a bit weird, need to revisit and at least document
-                if (excludeProps.size) {
-                  for (const key of [...excludeProps]) {
-                    delete expandedStyle[key]
+              const style = {}
+              if (expanded) {
+                for (const key in expanded) {
+                  if (key === name || excludeProps.has(key)) {
+                    continue
                   }
+                  if (key in validStyles) {
+                    style[key] = expanded[key]
+                    continue
+                  }
+                  node.attributes.push(
+                    t.jSXAttribute(
+                      t.jsxIdentifier(key),
+                      t.jsxExpressionContainer(literalToAst(value))
+                    )
+                  )
                 }
-                delete viewStyles[name]
-                Object.assign(viewStyles, expandedStyle)
+                Object.assign(viewStyles, style)
               }
             }
           }

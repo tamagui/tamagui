@@ -2,7 +2,6 @@ import React, { Children } from 'react'
 import { View, ViewStyle } from 'react-native'
 
 import { Spacing, getSpacerStyle } from '../views/Spacer'
-import { VStack } from '../views/Stacks'
 
 export function spacedChildren({
   children,
@@ -34,9 +33,6 @@ export function spacedChildren({
       break
     }
     next.push(<React.Fragment key={index}>{spacer}</React.Fragment>)
-  }
-  if (childrenList.includes('Delivery')) {
-    debugger
   }
   return next
 }

@@ -36,10 +36,20 @@ const ellipseStyle = {
   textOverflow: 'ellipsis',
 }
 
+const ellipsePropsNative = {
+  numberOfLines: 1,
+  lineBreakMode: 'clip',
+}
+
+const getEllipse = (props: TextProps) => {
+  return process.env.TARGET === 'native' ? ellipsePropsNative : ellipseStyle
+}
+
 export const Text = memo((allProps: TextProps) => {
   const [props, style] = useTextStyle(allProps, false, true)
   return <ReactText {...props} style={[isWeb ? defaultStyle : null, style, props['style']]} />
 })
+
 
 if (process.env.IS_STATIC) {
   // @ts-ignore
@@ -49,7 +59,7 @@ if (process.env.IS_STATIC) {
     defaultProps: defaultStyle,
     expansionProps: {
       selectable: selectableStyle,
-      ellipse: ellipseStyle,
+      ellipse: getEllipse,
     },
   }
 }
@@ -128,8 +138,7 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextS
         }
         if (key === 'ellipse') {
           props = props || {}
-          props['numberOfLines'] = 1
-          props['lineBreakMode'] = 'clip'
+          Object.assign(props, ellipsePropsNative)
           continue
         }
         if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
