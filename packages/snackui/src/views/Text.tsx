@@ -1,6 +1,8 @@
 import { stylePropsText, stylePropsTextOnly } from '@snackui/helpers'
-import React, { memo, useMemo, useRef } from 'react'
-import { Platform, Text as ReactText, TextProps as ReactTextProps, TextStyle } from 'react-native'
+import React, { memo, useMemo } from 'react'
+import { Text as ReactText, TextProps as ReactTextProps, TextStyle } from 'react-native'
+
+import { isWeb } from '../platform'
 
 export type TextProps = Omit<ReactTextProps, 'style'> &
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
@@ -50,28 +52,13 @@ export const Text = memo((allProps: TextProps) => {
   return <ReactText {...props} style={[isWeb ? defaultStyle : null, style, props['style']]} />
 })
 
-
-if (process.env.IS_STATIC) {
-  // @ts-ignore
-  Text.staticConfig = {
-    isText: true,
-    validStyles: stylePropsText,
-    defaultProps: defaultStyle,
-    expansionProps: {
-      selectable: selectableStyle,
-      ellipse: getEllipse,
-    },
-  }
-}
-
-const isWeb = Platform.OS === 'web'
-
 const webOnlySpecificStyleKeys = {
   userSelect: true,
   textOverflow: true,
   whiteSpace: true,
   wordWrap: true,
   selectable: true,
+  cursor: true,
 }
 
 const webOnlyProps = {
@@ -81,15 +68,14 @@ const webOnlyProps = {
 const webOnlyStyleKeys = {
   hoverStyle: true,
   pressStyle: true,
-  cursor: true,
 }
 
 const styleProps = {
   all: {
     ...stylePropsText,
     ...(isWeb && {
-      ...webOnlySpecificStyleKeys,
       ...webOnlyStyleKeys,
+      ...webOnlySpecificStyleKeys,
     }),
   },
   specific: {
@@ -99,6 +85,22 @@ const styleProps = {
     }),
     ...stylePropsTextOnly,
   },
+}
+
+if (process.env.IS_STATIC) {
+  // @ts-ignore
+  Text.staticConfig = {
+    isText: true,
+    validStyles: {
+      ...stylePropsText,
+      ...webOnlySpecificStyleKeys,
+    },
+    defaultProps: defaultStyle,
+    expansionProps: {
+      selectable: selectableStyle,
+      ellipse: getEllipse,
+    },
+  }
 }
 
 const emptyObj = Object.freeze({})

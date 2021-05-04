@@ -753,25 +753,6 @@ export function createExtractor() {
             })
           }
 
-          // if all style props have been extracted and no spreads
-          // component can be flattened to div or parent view
-          if (
-            inlinePropCount === 0 &&
-            !node.attributes.some((x) => t.isJSXSpreadAttribute(x)) &&
-            !staticConfig.neverFlatten
-          ) {
-            // since were removing down to div, we need to push the default styles onto this classname
-            if (shouldPrintDebug) {
-              console.log('  [🔨] flatten node', originalNodeName, Object.keys(viewStyles))
-            }
-            viewStyles = {
-              ...defaultStyle,
-              ...viewStyles,
-            }
-            // change to div
-            node.name.name = domNode
-          }
-
           function getStyleExpansion(currentProps: any, name: string, value?: any) {
             const expansion = staticConfig?.expansionProps?.[name]
             if (typeof expansion === 'function') {
@@ -809,10 +790,8 @@ export function createExtractor() {
             for (const { name, value } of styleExpansions) {
               const expanded = getStyleExpansion(fullProps, name, value)
               if (shouldPrintDebug) {
-                console.log('  expanded', name, {
-                  styleExpansionError,
-                  expanded,
-                })
+                if (styleExpansionError) console.log(' error!')
+                else console.log('  expanded', expanded)
               }
               if (styleExpansionError) {
                 break
@@ -826,6 +805,9 @@ export function createExtractor() {
                   if (key in validStyles) {
                     style[key] = expanded[key]
                   } else {
+                    if (shouldPrintDebug) {
+                      console.log('  key not a valid style, leaving on attributes', key)
+                    }
                     node.attributes.push(
                       t.jSXAttribute(
                         t.jsxIdentifier(key),
@@ -850,6 +832,25 @@ export function createExtractor() {
             node.attributes = ogAttributes
             attrs = ogAttributes.map((value) => ({ type: 'attr', value }))
             return
+          }
+
+          // if all style props have been extracted and no spreads
+          // component can be flattened to div or parent view
+          if (
+            inlinePropCount === 0 &&
+            !node.attributes.some((x) => t.isJSXSpreadAttribute(x)) &&
+            !staticConfig.neverFlatten
+          ) {
+            // since were removing down to div, we need to push the default styles onto this classname
+            if (shouldPrintDebug) {
+              console.log('  [🔨] flatten node', originalNodeName, Object.keys(viewStyles))
+            }
+            viewStyles = {
+              ...defaultStyle,
+              ...viewStyles,
+            }
+            // change to div
+            node.name.name = domNode
           }
 
           if (shouldPrintDebug) {
