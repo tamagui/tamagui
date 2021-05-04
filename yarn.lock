@@ -2368,11 +2368,11 @@ __metadata:
     "@babel/traverse": "*"
     "@babel/types": "*"
     "@dish/esdx": ^0.0.9
-    "@snackui/static": ^0.4.0
+    "@snackui/static": ^0.4.1
   languageName: unknown
   linkType: soft
 
-"@snackui/helpers@^0.4.0, @snackui/helpers@workspace:packages/helpers":
+"@snackui/helpers@^0.4.1, @snackui/helpers@workspace:packages/helpers":
   version: 0.0.0-use.local
   resolution: "@snackui/helpers@workspace:packages/helpers"
   dependencies:
@@ -2380,18 +2380,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snackui/node@^0.4.0, @snackui/node@workspace:packages/snackui-node":
+"@snackui/node@^0.4.1, @snackui/node@workspace:packages/snackui-node":
   version: 0.0.0-use.local
   resolution: "@snackui/node@workspace:packages/snackui-node"
   dependencies:
-    "@snackui/helpers": ^0.4.0
+    "@snackui/helpers": ^0.4.1
     ts-transform-import-path-rewrite: ^0.3.0
     ttypescript: ^1.5.12
     typescript: ^4.2.3
   languageName: unknown
   linkType: soft
 
-"@snackui/static@^0.4.0, @snackui/static@workspace:packages/snackui-static":
+"@snackui/static@^0.4.1, @snackui/static@workspace:packages/snackui-static":
   version: 0.0.0-use.local
   resolution: "@snackui/static@workspace:packages/snackui-static"
   dependencies:
@@ -2408,8 +2408,8 @@ __metadata:
     "@dish/react-test-env": ^0.0.7
     "@dish/testy": "*"
     "@expo/match-media": ^0.1.0
-    "@snackui/helpers": ^0.4.0
-    "@snackui/node": ^0.4.0
+    "@snackui/helpers": ^0.4.1
+    "@snackui/node": ^0.4.1
     "@types/jest": "*"
     "@types/node": ^14.14.12
     "@types/react-native": ^0.64.2
@@ -2433,7 +2433,7 @@ __metadata:
     react-test-renderer: ^17.0.1
     style-loader: ^2.0.0
     typescript: ^4.2.2
-    webpack: ^5.24.2
+    webpack: ^5.36.2
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -2559,10 +2559,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:*, @types/estree@npm:^0.0.46":
+"@types/estree@npm:*":
   version: 0.0.46
   resolution: "@types/estree@npm:0.0.46"
   checksum: 69fcf647706f5b6a475ec2f9aacf73b40866f577eef6c6f33de95cc3b4897381c2a8257646f13cd5d91fffc5debfe6289b6864ba29ad349ae68703f8b993c9f6
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:^0.0.47":
+  version: 0.0.47
+  resolution: "@types/estree@npm:0.0.47"
+  checksum: 28cba548c7b61855f4ff0c20146512e71fb578253e3cb24baf1acf660c626a8a271f99848e8a8c4e0e87f177cfce28e8d1fcecb65a4aad4a92ba48fd73179289
   languageName: node
   linkType: hard
 
@@ -3078,12 +3085,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.0.4, acorn@npm:^8.0.5":
+"acorn@npm:^8.0.5":
   version: 8.1.0
   resolution: "acorn@npm:8.1.0"
   bin:
     acorn: bin/acorn
   checksum: 99ccf30832b00ff7e19dff353479fd303c5a82c4ae0a5c5904a6c03316658b89bbdca40f5d8473e6aedd988a404190abd7b431dbd3160df4c09a10398b84bf1c
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.2.1":
+  version: 8.2.4
+  resolution: "acorn@npm:8.2.4"
+  bin:
+    acorn: bin/acorn
+  checksum: 6879266ea9ba4ece99afb4ab4f3ac6eaa3cf866cee40651ca90cde0b1fd5c6954d2006c54877c83287d5d38700327cbd6bda028b6fbb1daa346c7034f18147c2
   languageName: node
   linkType: hard
 
@@ -5027,13 +5043,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.7.0":
-  version: 5.7.0
-  resolution: "enhanced-resolve@npm:5.7.0"
+"enhanced-resolve@npm:^5.8.0":
+  version: 5.8.0
+  resolution: "enhanced-resolve@npm:5.8.0"
   dependencies:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
-  checksum: 545cfa659e9cdccf1240bccbbd1791db7ec589979d71b35df5aeaf872dd8d13fab379ad73fa960f4cb32963b85492792c0fb0866f484043740014824ae6088b9
+  checksum: a3e1131c9ba0dd6f8276f068ddac4e6469d824ee8132f748e2734722b9f25360f4cb5a7fbec1cab8cd56815a6762e0bb1b8d088cbdf2a276d30d573ac5528bbb
   languageName: node
   linkType: hard
 
@@ -10997,7 +11013,7 @@ __metadata:
   resolution: "snackui-loader@workspace:packages/snackui-loader"
   dependencies:
     "@dish/esdx": ^0.0.9
-    "@snackui/static": ^0.4.0
+    "@snackui/static": ^0.4.1
     fs-extra: ^9.1.0
     loader-utils: ^2.0.0
     lodash: ^4.17.21
@@ -11028,7 +11044,7 @@ __metadata:
     "@dish/fast-compare": ^2.7.6
     "@dish/proxy-worm": ^0.0.4
     "@react-native-community/blur": ^3.6.0
-    "@snackui/helpers": ^0.4.0
+    "@snackui/helpers": ^0.4.1
     "@types/node": ^14.11.10
     "@types/react": ^16.9.35
     "@types/react-dom": ^16.9.8
@@ -12461,19 +12477,19 @@ typescript@^4.2.4:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.24.2":
-  version: 5.24.4
-  resolution: "webpack@npm:5.24.4"
+"webpack@npm:^5.36.2":
+  version: 5.36.2
+  resolution: "webpack@npm:5.36.2"
   dependencies:
     "@types/eslint-scope": ^3.7.0
-    "@types/estree": ^0.0.46
+    "@types/estree": ^0.0.47
     "@webassemblyjs/ast": 1.11.0
     "@webassemblyjs/wasm-edit": 1.11.0
     "@webassemblyjs/wasm-parser": 1.11.0
-    acorn: ^8.0.4
+    acorn: ^8.2.1
     browserslist: ^4.14.5
     chrome-trace-event: ^1.0.2
-    enhanced-resolve: ^5.7.0
+    enhanced-resolve: ^5.8.0
     es-module-lexer: ^0.4.0
     eslint-scope: ^5.1.1
     events: ^3.2.0
@@ -12493,7 +12509,7 @@ typescript@^4.2.4:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: d7a9ab34014de5d51de2b6079ff926d290eba59c00be05fb2a9e9263b8b2981db4776eb9668dc4177471ad1bba6b49e887c7ab1991edc4df7bbc9dbea4da6691
+  checksum: 221f75148a40809ce4c8c2f51e3510d716a75ba086ddd18f4d8313f2f18f18efce74b55bfee58223b8ae2d8bcab035d07d2a8f5690c3f3f6a4ce59d015879179
   languageName: node
   linkType: hard
 
