@@ -156,6 +156,9 @@ export const useTheme = () => {
       get(_, key) {
         if (typeof key !== 'string') return
         const activeTheme = themes[manager.name]
+        if (!activeTheme) {
+          throw new Error(`No theme! ${manager.name} in ${Object.keys(themes)}`)
+        }
         const val = activeTheme[key]
         if (!val) {
           throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
