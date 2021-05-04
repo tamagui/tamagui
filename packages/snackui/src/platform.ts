@@ -8,5 +8,7 @@ export const isWebIOS =
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
   !window.MSStream
 
+export const isChrome = typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent || '')
+
 export const supportsTouchWeb = typeof window !== 'undefined' && 'ontouchstart' in window
 export const isTouchDevice = !isWeb || supportsTouchWeb

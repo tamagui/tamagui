@@ -258,9 +258,9 @@ export function extractToClassNames(
     return null
   }
 
-  if (shouldPrintDebug) {
-    console.log(' cssmap', cssMap.values())
-  }
+  // if (shouldPrintDebug) {
+  //   console.log(' cssmap', cssMap.values())
+  // }
 
   const styles = Array.from(cssMap.values())
     .map((x) => {
@@ -303,8 +303,8 @@ export function extractToClassNames(
   )
 
   if (shouldPrintDebug) {
-    console.log('\n\noutput code >> \n', result.code)
-    console.log('\n\noutput styles >> \n', styles)
+    console.log('\n\n -------- output code ------- \n\n', result.code)
+    console.log('\n\n -------- output style -------- \n\n', styles)
   }
 
   if (shouldLogTiming && mem) {

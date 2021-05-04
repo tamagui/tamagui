@@ -6,6 +6,7 @@ import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet
 import createReactDOMStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createReactDOMStyle'
 import i18Style from 'react-native-web/dist/cjs/exports/StyleSheet/i18nStyle'
 
+import { simpleHash } from './simpleHash'
 import { StyleObject } from './types'
 
 export const pseudos = {
@@ -73,17 +74,10 @@ function getAtomicStyle(
   return Object.keys(all).map((key) => {
     const val = all[key]
     const prefix = `_${getOrCreateStylePrefix(val.property)}`
-
-    const hash = (() => {
-      let s = `${val.value}`
-      if (s.length < 10 && /^[a-z0-9\-]+$/i.test(s)) return s
-      s = s.replace(/[^a-z0-9]/gi, '').replace(/\s/, '-')
-      if (s.length < 10) return s
-      return `${val.identifier}`.replace(/r-([a-z0-9\-]+)-/i, '')
-    })()
+    const hash = simpleHash(val.identifier)
 
     // pseudos have a `--` to be easier to find with concatClassNames
-    const psuedoPrefix = pseudo ? `-${getNiceKey(key)}-` : ''
+    const psuedoPrefix = pseudo ? `-${pseudo.name}-` : ''
     const identifier = `${prefix}-${psuedoPrefix}${hash}`
     const className = `.${identifier}`
     const rules = val.rules.map((rule) => {

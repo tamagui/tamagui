@@ -42,6 +42,14 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    export const isWeb: boolean;
+    export const isWebIOS: false;
+    export const isChrome: boolean;
+    export const supportsTouchWeb: boolean;
+    export const isTouchDevice: boolean;
+}
+
+declare module "snackui" {
     type DebounceSettings = {
         leading?: boolean;
         maxWait?: number;
@@ -175,13 +183,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export const isWeb: boolean;
-    export const isWebIOS: false;
-    export const supportsTouchWeb: boolean;
-    export const isTouchDevice: boolean;
-}
-
-declare module "snackui" {
     import React from "react";
     export interface ThemeObject {
         [key: string]: any;
@@ -248,10 +249,8 @@ declare module "snackui" {
 
 declare module "snackui" {
     import { TextStyle, ViewStyle } from "react-native";
-    export type StaticComponent<A = any> = ((props: A) => JSX.Element) & {
-        staticConfig: StaticConfig;
-    };
     export type StaticConfig = {
+        neverFlatten?: boolean;
         isText?: boolean;
         validStyles?: {
             [key: string]: boolean;
@@ -260,6 +259,12 @@ declare module "snackui" {
         expansionProps?: {
             [key: string]: ViewStyle | TextStyle | ((props: any) => ViewStyle | TextStyle);
         };
+    };
+}
+
+declare module "snackui" {
+    export type StaticComponent<A = any> = ((props: A) => JSX.Element) & {
+        staticConfig: StaticConfig;
     };
     export function extendStaticConfig(a: any, config?: StaticConfig): {
         isText: any;
@@ -286,9 +291,9 @@ declare module "snackui" {
         userSelect?: string;
     };
     export const Text: React.MemoExoticComponent<(allProps: TextProps) => JSX.Element>;
-    export const useTextStyle: (allProps: TextProps, onlyTextSpecificStyle?: boolean | undefined, memo?: boolean | undefined) => readonly [
-        Readonly<{}>,
-        Readonly<{}>
+    export const useTextStyle: (allProps: TextProps, onlyTextSpecificStyle?: boolean | undefined, memo?: boolean | undefined) => [
+        TextProps,
+        TextStyle
     ];
 }
 

@@ -8,6 +8,10 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
+    export const simpleHash: (str: string) => string;
+}
+
+declare module "@snackui/static" {
     import { NodePath } from "@babel/core";
     import * as t from "@babel/types";
     import { MediaQueries } from "@snackui/node";

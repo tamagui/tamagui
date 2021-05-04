@@ -107,7 +107,7 @@ export const useTextStyle = (
 
 // somewhat optimized to avoid creating objects unless necessary
 
-const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
+const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextStyle] => {
   let props: TextProps | null = null
   let style: TextStyle | null = null
 
@@ -159,5 +159,5 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object) => {
     }
   }
 
-  return [props || emptyObj, style || emptyObj] as const
+  return [props || emptyObj, style || emptyObj] as any
 }

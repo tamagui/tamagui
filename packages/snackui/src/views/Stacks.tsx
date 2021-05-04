@@ -87,13 +87,6 @@ const useViewStylePropsSplit = (props: { [key: string]: any }) => {
     }
     if (styleProps) {
       fixNativeShadow(styleProps, true)
-      // still necessary?
-      // if (
-      //   styleProps.shadowColor !== props.shadowColor &&
-      //   typeof styleProps.shadowOpacity !== 'undefined'
-      // ) {
-      //   styleProps.shadowColor = props.shadowColor
-      // }
     }
     return [viewProps, styleProps] as const
   }, [props, activeTheme])

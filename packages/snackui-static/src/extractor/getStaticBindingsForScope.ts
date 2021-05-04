@@ -171,7 +171,7 @@ export function getStaticBindingsForScope(
       continue
     } catch (e) {
       if (shouldPrintDebug) {
-        console.error('evaluateAstNode could not eval dec.init:', cacheKey, e.message)
+        console.error('[🐇] cant eval, skipping', cacheKey) //, e.message)
       }
     }
   }

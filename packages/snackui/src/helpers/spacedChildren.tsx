@@ -1,7 +1,7 @@
 import React, { Children } from 'react'
 import { ViewStyle } from 'react-native'
 
-import { Spacer as SpacerNoOpt, Spacing } from '../views/Spacer'
+import { Spacer, Spacing } from '../views/Spacer'
 
 export function spacedChildren({
   children,
@@ -12,14 +12,14 @@ export function spacedChildren({
   spacing?: Spacing
   flexDirection?: ViewStyle['flexDirection']
 }) {
-  if (typeof spacing === 'undefined') {
+  if (!spacing) {
     return children
   }
   const next: any[] = []
   const childrenList = Children.toArray(children)
   const len = childrenList.length
   const spacer = (
-    <SpacerNoOpt
+    <Spacer
       size={spacing}
       direction={
         flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'

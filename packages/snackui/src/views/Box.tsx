@@ -12,7 +12,7 @@ export function Box(props: BoxProps) {
       backgroundColor={theme.backgroundColor}
       padding={5}
       borderRadius={12}
-      shadowColor="rgba(0,0,0,0.125)"
+      shadowColor={theme.shadowColor}
       shadowRadius={14}
       shadowOffset={{ width: 0, height: 3 }}
       {...props}

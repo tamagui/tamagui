@@ -1,10 +1,12 @@
+// debug
 import React from 'react'
+
+import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
 import { HStack, StackProps } from './Stacks'
 import { Text, TextProps } from './Text'
-
 
 export type ButtonProps = StackProps & {
   textProps?: Omit<TextProps, 'children'>
@@ -27,10 +29,10 @@ export const Button = themeable(
     children,
     icon,
     spacing = 'sm',
-    flexDirection = 'row',
     textProps,
     noTextWrap,
     theme: themeName,
+    elevation,
     active,
     ...props
   }: ButtonProps) => {
@@ -58,17 +60,21 @@ export const Button = themeable(
         paddingVertical={10}
         flexWrap="nowrap"
         paddingHorizontal={14}
+        flexDirection="row"
         borderRadius={8}
+        {...(elevation && {
+          shadowColor: theme.shadowColor,
+          ...getElevation({ elevation }),
+        })}
         hoverStyle={{
           backgroundColor: theme.backgroundColorTertiary,
         }}
         pressStyle={{
           backgroundColor: theme.backgroundColorQuartenary,
         }}
-        flexDirection={flexDirection}
-        {...active && {
-          backgroundColor: theme.backgroundColorTertiary
-        }}
+        {...(active && {
+          backgroundColor: theme.backgroundColorTertiary,
+        })}
         {...props}
       >
         {spacedChildren({
@@ -80,13 +86,21 @@ export const Button = themeable(
                 ]
               : icon ?? childrens,
           spacing,
-          flexDirection,
+          flexDirection: props.flexDirection,
         })}
       </HStack>
     )
   }
 )
 
-// if (process.env.IS_STATIC) {
-//   Button.staticConfig = extendStaticConfig(HStack)
-// }
+const getElevation = ({ elevation }: { elevation: number }) => ({
+  shadowRadius: 10 * elevation,
+  shadowOffset: { width: 0, height: 2 },
+})
+
+if (process.env.IS_STATIC) {
+  // @ts-ignore
+  Button.staticConfig = extendStaticConfig(HStack, {
+    neverFlatten: true,
+  })
+}

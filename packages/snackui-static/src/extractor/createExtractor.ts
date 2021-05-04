@@ -5,7 +5,6 @@ import generate from '@babel/generator'
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
-import { StaticComponent } from '@snackui/node'
 import { statSync } from 'fs-extra'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
@@ -41,7 +40,7 @@ const validHooks = {
   useTheme: true,
 }
 
-const validComponents: { [key: string]: StaticComponent } = Object.keys(AllExports)
+const validComponents: { [key: string]: any } = Object.keys(AllExports)
   .filter((key) => !!AllExports[key]?.staticConfig)
   .reduce((obj, name) => {
     obj[name] = AllExports[name]
@@ -750,10 +749,14 @@ export function createExtractor() {
 
           // if all style props have been extracted and no spreads
           // component can be flattened to div or parent view
-          if (inlinePropCount === 0 && !node.attributes.some((x) => t.isJSXSpreadAttribute(x))) {
+          if (
+            inlinePropCount === 0 &&
+            !node.attributes.some((x) => t.isJSXSpreadAttribute(x)) &&
+            !staticConfig.neverFlatten
+          ) {
             // since were removing down to div, we need to push the default styles onto this classname
             if (shouldPrintDebug) {
-              console.log('  default styles', originalNodeName, defaultStyle)
+              console.log('  [🔨] flatten node', originalNodeName, Object.keys(viewStyles))
             }
             viewStyles = {
               ...defaultStyle,

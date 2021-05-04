@@ -1,17 +1,7 @@
-import { TextStyle, ViewStyle } from 'react-native'
+import { StaticConfig } from './StaticConfig'
 
 export type StaticComponent<A = any> = ((props: A) => JSX.Element) & {
   staticConfig: StaticConfig
-}
-
-// duplicate of ui-static, we need shared types..
-export type StaticConfig = {
-  isText?: boolean
-  validStyles?: { [key: string]: boolean }
-  defaultProps?: any
-  expansionProps?: {
-    [key: string]: ViewStyle | TextStyle | ((props: any) => ViewStyle | TextStyle)
-  }
 }
 
 export function extendStaticConfig(a: any, config: StaticConfig = {}) {
