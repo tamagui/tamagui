@@ -50,7 +50,7 @@ export default declare(function snackBabelPlugin(
           let sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim()
-          if (firstComment === 'disable-snackui') {
+          if (firstComment === 'snackui-ignore') {
             return
           }
 

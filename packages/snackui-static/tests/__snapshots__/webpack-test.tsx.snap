@@ -2,10 +2,10 @@
 
 exports[`1. extracts to a div for simple views 1`] = `
 <div
-  className=" _bacCol-1g6456j _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-1xz9bc3 _dis-flex _fle-1 _fleBas-auto _fleDir-column test1"
+  className=" _bacCol-19sdxe _borBotLefRad-6dbucr _borBotRigRad-1aj2mxs _borTopLefRad-4h0qql _borTopRigRad-147yzfv _boxSha-e8nksv _dis-1t5hiln _fle-xfkqa _fleBas-1yot9qu _fleDir-137l0rb test1"
 >
   <span
-    className=" _dis-inline"
+    className=" _dis-1kxx03"
   >
     hello world
   </span>
@@ -15,20 +15,22 @@ exports[`1. extracts to a div for simple views 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _padTop-bzn8fa _padRig-pifj49 _padLef-786xko _padBot-vxs88 _boxSha-xgwarg _borTopRigRad-1wp9zbv _borTopLefRad-16k0qju _borBotRigRad-kvqeen _borBotLefRad-zbbbcf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
+        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
         "overflowX": "hidden",
         "overflowY": "hidden",
       }
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n ease-in-out-top _padTop-bzn8fa _padRig-pifj49 _padLef-786xko _padBot-vxs88 _boxSha-xgwarg _borTopRigRad-1wp9zbv _borTopLefRad-16k0qju _borBotRigRad-kvqeen _borBotLefRad-zbbbcf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
+        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
         "paddingBottom": "2px",
         "paddingTop": "2px",
         "top": "-14px",
@@ -36,7 +38,7 @@ Array [
     }
   >
     <span
-      className=" _dis-inline"
+      className=" _dis-1kxx03"
     >
       hello world
     </span>
@@ -47,20 +49,22 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _padTop-bzn8fa _padRig-pifj49 _padLef-786xko _padBot-vxs88 _boxSha-xgwarg _borTopRigRad-1wp9zbv _borTopLefRad-16k0qju _borBotRigRad-kvqeen _borBotLefRad-zbbbcf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
+        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
         "overflowX": "hidden",
         "overflowY": "hidden",
       }
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-1tpz28 _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n ease-in-out-top _padTop-bzn8fa _padRig-pifj49 _padLef-786xko _padBot-vxs88 _boxSha-xgwarg _borTopRigRad-1wp9zbv _borTopLefRad-16k0qju _borBotRigRad-kvqeen _borBotLefRad-zbbbcf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,1.00)",
+        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
         "paddingBottom": "2px",
         "paddingTop": "2px",
         "top": "0px",
@@ -68,7 +72,7 @@ Array [
     }
   >
     <span
-      className=" _dis-inline"
+      className=" _dis-1kxx03"
     >
       hello world
     </span>
@@ -79,8 +83,8 @@ Array [
 exports[`3. places className correctly given a single spread 1`] = `
 Array [
   "css-view-1dbjc4n",
-  "_oveY-hidden",
-  "_oveX-hidden",
+  "_oveY-5fy05z",
+  "_oveX-fhm3zh",
   "r-display-6koalj",
   "r-flexBasis-1mlwlqe",
   "r-flexDirection-eqz5dr",
@@ -90,9 +94,9 @@ Array [
 exports[`4. leaves dynamic variables 1`] = `
 Array [
   "css-view-1dbjc4n",
-  "_hei-200px",
-  "_oveX--r-o-ovX-o-ok-visible",
-  "_oveY--r-o-ovY-i-ip04b4b-visible",
+  "_hei-1xd8dko",
+  "_oveX--hover-1hnj4fx",
+  "_oveY--hover-8o456b",
   "r-display-6koalj",
   "r-flexBasis-1mlwlqe",
   "r-flexDirection-eqz5dr",
@@ -101,7 +105,7 @@ Array [
 
 exports[`4. leaves dynamic variables 2`] = `
 <div
-  className="css-view-1dbjc4n  _hei-200px _oveX--r-o-ovX-o-ok-visible _oveY--r-o-ovY-i-ip04b4b-visible r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+  className="css-view-1dbjc4n  _hei-1xd8dko _oveX--hover-1hnj4fx _oveY--hover-8o456b r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
   style={
     Object {
       "width": "calc(100% + 20px)",
@@ -112,20 +116,20 @@ exports[`4. leaves dynamic variables 2`] = `
 
 exports[`5. spread conditional 1`] = `
 <div
-  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+  className="_bacCol-183yn7 _oveY-5fy05z _oveX-fhm3zh _fleDir-137l0rb _fleBas-1yot9qu _dis-1t5hiln"
 >
   <div
-    className="_bacCol-57dg7b hello-world _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+    className="_bacCol-183yn7 hello-world _oveY-5fy05z _oveX-fhm3zh _fleDir-137l0rb _fleBas-1yot9qu _dis-1t5hiln"
   />
 </div>
 `;
 
 exports[`6. spread ternary 1`] = `
 <div
-  className="_bacCol-57dg7b _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+  className="_bacCol-183yn7 _oveY-5fy05z _oveX-fhm3zh _fleDir-137l0rb _fleBas-1yot9qu _dis-1t5hiln"
 >
   <span
-    className=" _dis-inline"
+    className=" _dis-1kxx03"
   >
     hello world
   </span>
@@ -134,10 +138,10 @@ exports[`6. spread ternary 1`] = `
 
 exports[`6. spread ternary 2`] = `
 <div
-  className="_bacCol-1g6456j _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+  className="_bacCol-19sdxe _oveY-5fy05z _oveX-fhm3zh _fleDir-137l0rb _fleBas-1yot9qu _dis-1t5hiln"
 >
   <span
-    className=" _dis-inline"
+    className=" _dis-1kxx03"
   >
     hello world
   </span>
@@ -146,23 +150,23 @@ exports[`6. spread ternary 2`] = `
 
 exports[`7. ternary + data-is 1`] = `
 <div
-  className=" _dis-flex _fleBas-auto _fleDir-column _maxWid-30 _minWid-500px _padBot-10px _padLef-11px _padRig-11px _wid-66"
+  className=" _dis-1t5hiln _fleBas-1yot9qu _fleDir-137l0rb _maxWid-1ycawwn _minWid-8nu6af _padBot-2o52vu _padLef-1twkdzm _padRig-wf1rmn _wid-iq520"
 >
   <div
-    className="_wid-10px _hei-10px _fleDir-column _fleBas-auto _dis-flex"
+    className="_wid-19g3skm _hei-1gkqrua _fleDir-137l0rb _fleBas-1yot9qu _dis-1t5hiln"
   />
 </div>
 `;
 
 exports[`8. styleExpansions 1`] = `
 <div
-  className=" _bot-0px _dis-flex _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px"
+  className=" _bot-jemzgi _dis-1t5hiln _fleBas-1yot9qu _fleDir-137l0rb _lef-5eh3mh _pos-1cd7xcj _rig-1fpqt2t _top-3jo2cn"
 >
   <div
-    className=" _bacCol-1g6456j _dis-flex _fleBas-auto _fleDir-column _pos-absolute"
+    className=" _bacCol-19sdxe _dis-1t5hiln _fleBas-1yot9qu _fleDir-137l0rb _pos-172fg7u"
   >
     <div
-      className="css-view-1dbjc4n  _bacCol-14lw9ot _bot-0px _lef-0px _pos-relative _rig-0px _top-0px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-position-u8s1d"
+      className="css-view-1dbjc4n  _bacCol-1d0hial _bot-jemzgi _lef-5eh3mh _pos-1cd7xcj _rig-1fpqt2t _top-3jo2cn r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-position-u8s1d"
     />
   </div>
 </div>
@@ -170,19 +174,19 @@ exports[`8. styleExpansions 1`] = `
 
 exports[`9. combines with classname 1`] = `
 <div
-  className=" _dis-flex _fleBas-auto _fleDir-column _padBot-15px _padTop-15px home-top-dish"
+  className=" _dis-1t5hiln _fleBas-1yot9qu _fleDir-137l0rb _padBot-1dckud4 _padTop-7p05t7 home-top-dish"
 />
 `;
 
 exports[`10. extracts Text 1`] = `
 <span
-  className=" _dis-inline _fonSiz-10px"
+  className=" _dis-1kxx03 _fonSiz-1r3hmks"
 >
   <span
-    className=" _dis-inline _useSel-text"
+    className=" _dis-1kxx03 _useSel-149r848"
   >
     <div
-      className="_col-cqee49 _fonWei-600 _fonSiz-15px css-text-901oao"
+      className="_col-18s66rc _fonWei-1e5fjgk _fonSiz-oq711f css-text-901oao"
       dir="auto"
       onClick={[Function]}
       style={
@@ -200,29 +204,29 @@ exports[`10. extracts Text 1`] = `
 exports[`11. combines everything 1`] = `
 Array [
   "css-view-1dbjc4n",
-  "_borTopCol-48c68v",
-  "_borRigCol-1qev2y0",
-  "_borLefCol-1utlcvg",
-  "_borBotCol-19sur4y",
-  "_hei-0px",
-  "_borTopRigRad-0px",
-  "_borTopLefRad-0px",
-  "_borBotRigRad-0px",
-  "_borBotLefRad-0px",
-  "_pos-relative",
-  "_oveY-hidden",
-  "_oveX-hidden",
-  "_minHei-10px",
-  "_borTopWid-1px",
-  "_borTopSty-solid",
-  "_borRigWid-1px",
-  "_borRigSty-solid",
-  "_borLefWid-1px",
-  "_borLefSty-solid",
-  "_borBotWid-1px",
-  "_borBotSty-solid",
-  "_bacCol-57dg7b",
-  "_aliIte-center",
+  "_borTopCol-dic8vh",
+  "_borRigCol-1n8flkp",
+  "_borLefCol-wse84g",
+  "_borBotCol-1qvh775",
+  "_hei-1w8hlxl",
+  "_borTopRigRad-nt9njv",
+  "_borTopLefRad-1aj7be0",
+  "_borBotRigRad-t90ciw",
+  "_borBotLefRad-1465ezg",
+  "_pos-1cd7xcj",
+  "_oveY-5fy05z",
+  "_oveX-fhm3zh",
+  "_minHei-14jhmuj",
+  "_borTopWid-116bu6u",
+  "_borTopSty-1l1zs75",
+  "_borRigWid-ebtqkj",
+  "_borRigSty-1amxggv",
+  "_borLefWid-cqtxzd",
+  "_borLefSty-1c5qq7j",
+  "_borBotWid-9o8q5o",
+  "_borBotSty-17ef7e3",
+  "_bacCol-183yn7",
+  "_aliIte-walpst",
   "r-display-6koalj",
   "r-flexBasis-1mlwlqe",
   "r-flexDirection-eqz5dr",
@@ -231,29 +235,29 @@ Array [
 
 exports[`12. ternary multiple on same key 1`] = `
 <div
-  className="_tra- _opa-1 _fleDir-column _fleBas-auto _dis-flex"
+  className="_tra-1uwuzj6 _opa-cy31dm _fleDir-137l0rb _fleBas-1yot9qu _dis-1t5hiln"
 />
 `;
 
 exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 <div
-  className=" _dis-flex _fleBas-auto _fleDir-column _bacCol--r-b-baCol-1g1g664545656j6j-1g6456j _bacCol--r-b-baCol-5757d7dg7b-57dg7b"
+  className=" _dis-1t5hiln _fleBas-1yot9qu _fleDir-137l0rb _bacCol--hover-19sdxe _bacCol--active-183yn7"
 />
 `;
 
 exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
   <div
-    className=" _fle- _fleShr- _minHei-12px _minWid-12px"
+    className=" _fle-nioih2 _fleShr-xrfyjv _minHei-yipka2 _minWid-12scp4x"
   />,
   <div
-    className=" _fle-1 _fleShr- _minHei-10px _minWid-10px"
+    className=" _fle-xfkqa _fleShr-xrfyjv _minHei-14jhmuj _minWid-11ylsht"
   />,
 ]
 `;
 
 exports[`16. deopt when spreading multiple 1`] = `
 <div
-  className="css-view-1dbjc4n _fle-1 _bacCol-1g6456j r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+  className="css-view-1dbjc4n _fle-xfkqa _bacCol-19sdxe r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
 />
 `;

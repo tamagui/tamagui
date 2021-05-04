@@ -45,7 +45,7 @@ export default function snackLoader(this: any, content: string) {
 
   if (
     extname(sourcePath) !== '.tsx' ||
-    (startsWithComment && content.startsWith('// disable-snackui'))
+    (startsWithComment && content.startsWith('// snackui-ignore'))
   ) {
     return callback(null, content)
   }
