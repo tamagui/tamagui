@@ -93,8 +93,9 @@ export const Button = themeable(
 )
 
 const getElevation = ({ elevation }: { elevation: number }) => ({
-  shadowRadius: 10 * elevation,
-  shadowOffset: { width: 0, height: 2 },
+  shadowRadius: 5 * elevation,
+  shadowOffset: { width: 0, height: 2.5 * elevation },
+  shadowOpacity: 0.2 * elevation
 })
 
 if (process.env.IS_STATIC) {
