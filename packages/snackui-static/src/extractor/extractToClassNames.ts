@@ -73,7 +73,8 @@ export function extractToClassNames(
   const existingHoists: { [key: string]: t.Identifier } = {}
   const mediaQueries: MediaQueries = options.mediaQueries ?? defaultMediaQueries
 
-  let didExtract = false
+  let flattened = 0
+  let optimized = 0
 
   traverse(ast, {
     Program(programPath) {
@@ -82,6 +83,7 @@ export function extractToClassNames(
         shouldPrintDebug,
         ...options,
         getFlattenedNode: ({ isTextView }) => {
+          flattened++
           return isTextView ? 'span' : 'div'
         },
         onExtractTag: ({
@@ -94,7 +96,7 @@ export function extractToClassNames(
           filePath,
           lineNumbers,
         }) => {
-          didExtract = true
+          optimized++
 
           let finalClassNames: ClassNameObject[] = []
           let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
@@ -254,7 +256,7 @@ export function extractToClassNames(
     },
   })
 
-  if (!didExtract) {
+  if (!optimized) {
     return null
   }
 
@@ -311,7 +313,7 @@ export function extractToClassNames(
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log('  🍑 ', Date.now() - start, 'ms', memUsed, 'MB mem', basename(sourceFileName), '[SnackUI]')
+    console.log(`  🍑 (${Date.now() - start}ms) ${optimized} optimized, ${flattened} flattened - used ${memUsed}MB memory -- ${basename(sourceFileName)} [SnackUI]`)
   }
 
   return {
