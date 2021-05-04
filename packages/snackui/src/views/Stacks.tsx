@@ -79,7 +79,7 @@ const useViewStylePropsSplit = (props: { [key: string]: any }) => {
       const val = props[key]
       if (stylePropsView[key]) {
         styleProps = styleProps || {}
-        styleProps[key] = activeTheme && activeThemeInvert ? activeThemeInvert[val] ?? val : val
+        styleProps[key] = activeThemeInvert?.[val] ?? val
       } else {
         viewProps = viewProps || {}
         viewProps[key] = props[key]
@@ -299,7 +299,9 @@ const createStack = ({
       expansionProps: {
         fullscreen: fullscreenStyle,
         disabled: disabledStyle,
-        shadowColor: fixNativeShadow,
+        ...(!isWeb && {
+          shadowColor: fixNativeShadow,
+        }),
         contain: ({ contain }) => ({
           contain,
         }),

@@ -780,9 +780,7 @@ export function createExtractor() {
                 return {}
               }
             }
-            if (expansion) {
-              return expansion
-            }
+            return expansion
           }
 
           // second pass, style expansions
@@ -813,22 +811,22 @@ export function createExtractor() {
               if (styleExpansionError) {
                 break
               }
-              const style = {}
               if (expanded) {
+                const style = {}
                 for (const key in expanded) {
                   if (key === name || excludeProps.has(key)) {
                     continue
                   }
                   if (key in validStyles) {
                     style[key] = expanded[key]
-                    continue
-                  }
-                  node.attributes.push(
-                    t.jSXAttribute(
-                      t.jsxIdentifier(key),
-                      t.jsxExpressionContainer(literalToAst(value))
+                  } else {
+                    node.attributes.push(
+                      t.jSXAttribute(
+                        t.jsxIdentifier(key),
+                        t.jsxExpressionContainer(literalToAst(value))
+                      )
                     )
-                  )
+                  }
                 }
                 Object.assign(viewStyles, style)
               }

@@ -485,21 +485,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dish/esdx@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "@dish/esdx@npm:0.0.7"
+"@dish/esdx@npm:^0.0.9":
+  version: 0.0.9
+  resolution: "@dish/esdx@npm:0.0.9"
   dependencies:
     chokidar-cli: ^2.1.0
-    esbuild: ^0.8.56
+    esbuild: ^0.11.5
     execa: ^5.0.0
     fast-glob: ^3.2.5
     fs-extra: ^9.1.0
     rollup-plugin-flat-dts: ^1.1.0
-    typescript: ^4.2.3
+    typescript: ^4.2.4
   bin:
     esdx: esdx.js
     esdx-watch: esdx-watch.js
-  checksum: 8ab7df6f06b99d09a0196858a2de4341d3d09949cf5d66c84cc0ffa0e6253160b3a9364d366e07aaeac0e11e13280e41a2b634526105cee624066a119f0681c9
+  checksum: 6271bc877e2c405a43fc17cf1fd53ae2705643131b2c89d96723eb473786016c2bdde567dc70bc67798b50779addf50d02b4eb534eb767a75c3520047ffa416c
   languageName: node
   linkType: hard
 
@@ -2367,31 +2367,31 @@ __metadata:
     "@babel/template": "*"
     "@babel/traverse": "*"
     "@babel/types": "*"
-    "@dish/esdx": ^0.0.7
-    "@snackui/static": ^0.3.1
+    "@dish/esdx": ^0.0.9
+    "@snackui/static": ^0.4.0
   languageName: unknown
   linkType: soft
 
-"@snackui/helpers@^0.3.1, @snackui/helpers@workspace:packages/helpers":
+"@snackui/helpers@^0.4.0, @snackui/helpers@workspace:packages/helpers":
   version: 0.0.0-use.local
   resolution: "@snackui/helpers@workspace:packages/helpers"
   dependencies:
-    "@dish/esdx": ^0.0.7
+    "@dish/esdx": ^0.0.9
   languageName: unknown
   linkType: soft
 
-"@snackui/node@^0.3.1, @snackui/node@workspace:packages/snackui-node":
+"@snackui/node@^0.4.0, @snackui/node@workspace:packages/snackui-node":
   version: 0.0.0-use.local
   resolution: "@snackui/node@workspace:packages/snackui-node"
   dependencies:
-    "@snackui/helpers": ^0.3.1
+    "@snackui/helpers": ^0.4.0
     ts-transform-import-path-rewrite: ^0.3.0
     ttypescript: ^1.5.12
     typescript: ^4.2.3
   languageName: unknown
   linkType: soft
 
-"@snackui/static@^0.3.1, @snackui/static@workspace:packages/snackui-static":
+"@snackui/static@^0.4.0, @snackui/static@workspace:packages/snackui-static":
   version: 0.0.0-use.local
   resolution: "@snackui/static@workspace:packages/snackui-static"
   dependencies:
@@ -2403,13 +2403,13 @@ __metadata:
     "@babel/traverse": ^7.12.9
     "@babel/types": ^7.12.7
     "@dish/babel-preset": ^0.0.2
-    "@dish/esdx": ^0.0.7
+    "@dish/esdx": ^0.0.9
     "@dish/proxy-worm": "*"
     "@dish/react-test-env": ^0.0.7
     "@dish/testy": "*"
     "@expo/match-media": ^0.1.0
-    "@snackui/helpers": ^0.3.1
-    "@snackui/node": ^0.3.1
+    "@snackui/helpers": ^0.4.0
+    "@snackui/node": ^0.4.0
     "@types/jest": "*"
     "@types/node": ^14.14.12
     "@types/react-native": ^0.64.2
@@ -10996,8 +10996,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "snackui-loader@workspace:packages/snackui-loader"
   dependencies:
-    "@dish/esdx": ^0.0.7
-    "@snackui/static": ^0.3.1
+    "@dish/esdx": ^0.0.9
+    "@snackui/static": ^0.4.0
     fs-extra: ^9.1.0
     loader-utils: ^2.0.0
     lodash: ^4.17.21
@@ -11024,11 +11024,11 @@ __metadata:
   resolution: "snackui@workspace:packages/snackui"
   dependencies:
     "@dish/async": ^0.0.1
-    "@dish/esdx": ^0.0.7
+    "@dish/esdx": ^0.0.9
     "@dish/fast-compare": ^2.7.6
     "@dish/proxy-worm": ^0.0.4
     "@react-native-community/blur": ^3.6.0
-    "@snackui/helpers": ^0.3.1
+    "@snackui/helpers": ^0.4.0
     "@types/node": ^14.11.10
     "@types/react": ^16.9.35
     "@types/react-dom": ^16.9.8
@@ -12065,6 +12065,16 @@ typescript@^3.2.4:
   languageName: node
   linkType: hard
 
+typescript@^4.2.4:
+  version: 4.2.4
+  resolution: "typescript@npm:4.2.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: edaede2fa77f56b7fba80ee624a2368ab1216e75b0434d968ccb47ab0a5e2f6d94f848b3b111c1237dd71e988cd376af26370dcdad3b94355c76e759f0dd0a1e
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@*#builtin<compat/typescript>, typescript@patch:typescript@4#builtin<compat/typescript>, typescript@patch:typescript@^4.2.2#builtin<compat/typescript>, typescript@patch:typescript@^4.2.3#builtin<compat/typescript>":
   version: 4.2.3
   resolution: "typescript@patch:typescript@npm%3A4.2.3#builtin<compat/typescript>::version=4.2.3&hash=a45b0e"
@@ -12082,6 +12092,16 @@ typescript@^3.2.4:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 05a113f2ec0d0fc3263335c230d2eb7b94d851e51b5766f63b88b611127d08782ce41132eb32b9d3d434de8340f698f7ec2f72ebb4d33c3b2976b27de1f47ace
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.2.4#builtin<compat/typescript>":
+  version: 4.2.4
+  resolution: "typescript@patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 3be44317593182e8ce494c114e7ad9b0bb2553a22f3085cc6da4f0a36912c20850daa9be4c898af2ab6fc8b12f430c1c9e46ac715721867cd38643f2350d3ef9
   languageName: node
   linkType: hard
 
