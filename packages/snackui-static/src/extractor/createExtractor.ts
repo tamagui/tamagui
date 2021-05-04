@@ -217,6 +217,10 @@ export function createExtractor() {
             shouldPrintDebug
           )
 
+          if (shouldPrintDebug) {
+            console.log('  staticNamespace', Object.keys(staticNamespace))
+          }
+
           //
           // evaluator
           //
@@ -230,7 +234,6 @@ export function createExtractor() {
                       '  ⚠️ SnackUI: warning! no themesFile option given, themes will fallback'
                     )
                   }
-                  console.log('  attemptEval staticNamespace', Object.keys(staticNamespace))
                 }
 
                 // called when evaluateAstNode encounters a dynamic-looking prop
@@ -243,6 +246,9 @@ export function createExtractor() {
                       isValidThemeHook(traversePath, n, sourceFileName)
                     ) {
                       const key = n.property.name
+                      if (shouldPrintDebug) {
+                        console.log('  found theme prop', key)
+                      }
                       if (!themeKeys.has(key)) {
                         throw new Error(`Accessing non-existent theme key: ${key}`)
                       }
@@ -939,7 +945,7 @@ export function createExtractor() {
       if (modifiedComponents.size) {
         const all = Array.from(modifiedComponents)
         if (shouldPrintDebug) {
-          console.log('  checking', all.length, 'components for dead hooks')
+          console.log('  [🪝] hook check', all.length)
         }
         for (const comp of all) {
           removeUnusedHooks(comp, shouldPrintDebug)

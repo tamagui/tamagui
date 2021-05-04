@@ -70,7 +70,9 @@ export function isValidThemeHook(
   sourceFileName: string
 ) {
   if (!t.isIdentifier(n.object) || !t.isIdentifier(n.property)) return false
-  const binding = jsxPath.scope.bindings[n.object.name]
+  const bindings = jsxPath.scope.getAllBindings()
+  const binding = bindings[n.object.name]
+  if (!binding?.path) return false
   if (!binding.path.isVariableDeclarator()) return false
   const init = binding.path.node.init
   if (!t.isCallExpression(init)) return false

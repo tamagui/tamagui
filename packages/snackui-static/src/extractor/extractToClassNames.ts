@@ -242,7 +242,7 @@ export function extractToClassNames(
               }
             } else if (rules.length) {
               if (rules.length > 1) {
-                console.log('  ', { rules })
+                console.log('  rules error', { rules })
                 throw new Error(`Shouldn't have more than one rule`)
               }
               cssMap.set(className, {

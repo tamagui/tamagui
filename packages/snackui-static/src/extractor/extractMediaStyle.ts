@@ -73,10 +73,11 @@ export function extractMediaStyle(
         rules: [styleRule],
       }
     })
-    // add to output
     if (shouldPrintDebug) {
-      console.log('  media style:', mediaStyles)
+      // prettier-ignore
+      console.log('  media styles:', mediaStyles.map(x => x.identifier))
     }
+    // add to output
     result = [...result, ...mediaStyles]
   }
   // filter out
@@ -98,8 +99,10 @@ function getMediaQueryTernary(
   ) {
     const name = ternary.test.object.name
     const key = ternary.test.property.name
-    if (!jsxPath.scope.hasBinding(name)) return false
-    const bindingNode = jsxPath.scope.getBinding(name)?.path?.node
+    const bindings = jsxPath.scope.getAllBindings()
+    const binding = bindings[name]
+    if (!binding) return false
+    const bindingNode = binding.path?.node
     if (!t.isVariableDeclarator(bindingNode) || !bindingNode.init) return false
     if (!isValidMediaCall(jsxPath, bindingNode.init, sourceFileName)) return false
     return { key, bindingName: name }
@@ -125,8 +128,10 @@ export function isValidMediaCall(
   if (!t.isIdentifier(init.callee)) return false
   // TODO could support renaming useMedia by looking up import first
   if (init.callee.name !== 'useMedia') return false
-  if (!jsxPath.scope.hasBinding('useMedia')) return false
-  const useMediaImport = jsxPath.scope.getBinding('useMedia')?.path.parent
+  const bindings = jsxPath.scope.getAllBindings()
+  const mediaBinding = bindings['useMedia']
+  if (!mediaBinding) return false
+  const useMediaImport = mediaBinding.path.parent
   if (!t.isImportDeclaration(useMediaImport)) return false
   if (useMediaImport.source.value !== 'snackui') {
     if (!isInsideSnackUI(sourceFileName)) {

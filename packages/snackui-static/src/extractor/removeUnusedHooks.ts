@@ -58,7 +58,7 @@ export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boole
       if (shouldRemove) {
         declarator.remove()
         if (shouldPrintDebug) {
-          console.log(`  removed unused ${id.node['name'] ?? ''}`)
+          console.log(`  [🪝] removed ${id.node['name'] ?? ''}`)
         }
       }
     }
