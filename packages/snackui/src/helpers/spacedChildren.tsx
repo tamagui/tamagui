@@ -1,8 +1,8 @@
-// snackui-ignore
 import React, { Children } from 'react'
-import { ViewStyle } from 'react-native'
+import { View, ViewStyle } from 'react-native'
 
-import { Spacer, Spacing } from '../views/Spacer'
+import { Spacing, getSpacerStyle } from '../views/Spacer'
+import { VStack } from '../views/Stacks'
 
 export function spacedChildren({
   children,
@@ -20,11 +20,12 @@ export function spacedChildren({
   const childrenList = Children.toArray(children)
   const len = childrenList.length
   const spacer = (
-    <Spacer
-      size={spacing}
-      direction={
-        flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
-      }
+    <View
+      style={getSpacerStyle({
+        size: spacing,
+        direction:
+          flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical',
+      })}
     />
   )
   for (const [index, child] of childrenList.entries()) {
@@ -33,6 +34,9 @@ export function spacedChildren({
       break
     }
     next.push(<React.Fragment key={index}>{spacer}</React.Fragment>)
+  }
+  if (childrenList.includes('Delivery')) {
+    debugger
   }
   return next
 }

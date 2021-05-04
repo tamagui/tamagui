@@ -85,7 +85,7 @@ export const Button = themeable(
                 ]
               : icon ?? childrens,
           spacing,
-          flexDirection: props.flexDirection,
+          flexDirection: props.flexDirection || 'row',
         })}
       </HStack>
     )

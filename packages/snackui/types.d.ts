@@ -326,6 +326,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     import React from "react";
+    import { ViewStyle } from "react-native";
     export type Spacing = Size | boolean | string;
     export type SpacerProps = {
         size?: Spacing;
@@ -333,6 +334,7 @@ declare module "snackui" {
         direction?: 'vertical' | 'horizontal' | 'both';
     };
     export const Spacer: React.MemoExoticComponent<(props: SpacerProps) => JSX.Element>;
+    export const getSpacerStyle: (props?: SpacerProps) => ViewStyle;
 }
 
 declare module "snackui" {

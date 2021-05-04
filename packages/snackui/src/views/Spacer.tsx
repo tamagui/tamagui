@@ -17,10 +17,10 @@ const defaultProps: SpacerProps = {
 }
 
 export const Spacer = memo((props: SpacerProps) => {
-  return <View style={getStyle(props)} />
+  return <View style={getSpacerStyle(props)} />
 })
 
-const getStyle = (props: SpacerProps = defaultProps): ViewStyle => {
+export const getSpacerStyle = (props: SpacerProps = defaultProps): ViewStyle => {
   return {
     flexShrink: 0,
     ...getFlex(props),
@@ -47,7 +47,7 @@ const getSize = ({ size = 'md', direction = 'both' } = defaultProps): ViewStyle 
 if (process.env.IS_STATIC) {
   Spacer['staticConfig'] = {
     validStyles: require('@snackui/helpers').stylePropsView,
-    defaultProps: getStyle(),
+    defaultProps: getSpacerStyle(),
     expansionProps: {
       direction: () => null,
       flex: getFlex,
