@@ -1,4 +1,4 @@
-import { getNiceKey, getOrCreateStylePrefix } from '@snackui/node'
+import { getOrCreateStylePrefix } from '@snackui/node'
 import _ from 'lodash'
 import { ViewStyle } from 'react-native'
 import { atomic } from 'react-native-web/dist/cjs/exports/StyleSheet/compile'
@@ -75,7 +75,10 @@ function getAtomicStyle(
     const val = all[key]
     const prefix = `_${getOrCreateStylePrefix(val.property)}`
     const hash = (() => {
-      let s = `${val.value}`.replace(/[^a-z0-9]/gi, '_').replace(/\s/, '-')
+      let s = `${val.value}`
+        .replace(/[%]/g, 'pct')
+        .replace(/[^a-z0-9]/gi, 'z')
+        .replace(/\s/, '-')
       if (s.length < 16) return s
       return simpleHash(val.identifier)
     })()

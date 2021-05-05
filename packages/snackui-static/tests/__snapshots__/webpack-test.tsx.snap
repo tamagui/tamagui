@@ -2,10 +2,10 @@
 
 exports[`1. extracts to a div for simple views 1`] = `
 <div
-  className=" _bacCol-19sdxe _borBotLefRad-100px _borBotRigRad-100px _borTopLefRad-100px _borTopRigRad-100px _boxSha-e8nksv _dis-flex _fle-1 _fleBas-auto _fleDir-column test1"
+  className=" _baCo-19sdxe _boBoLeRa-100px _boBoRiRa-100px _boToLeRa-100px _boToRiRa-100px _boSh-e8nksv _di-flex _fl-1 _flBa-auto _flDi-column test1"
 >
   <span
-    className=" _dis-inline"
+    className=" _di-inline"
   >
     hello world
   </span>
@@ -15,7 +15,7 @@ exports[`1. extracts to a div for simple views 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-xgwarg _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -26,7 +26,7 @@ Array [
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-xgwarg _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n ease-in-out-top _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -38,7 +38,7 @@ Array [
     }
   >
     <span
-      className=" _dis-inline"
+      className=" _di-inline"
     >
       hello world
     </span>
@@ -49,7 +49,7 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-xgwarg _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -60,7 +60,7 @@ Array [
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _padTop-5px _padRig-5px _padLef-5px _padBot-5px _boxSha-xgwarg _borTopRigRad-12px _borTopLefRad-12px _borBotRigRad-12px _borBotLefRad-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n ease-in-out-top _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(0,0,0,1.00)",
@@ -72,7 +72,7 @@ Array [
     }
   >
     <span
-      className=" _dis-inline"
+      className=" _di-inline"
     >
       hello world
     </span>
@@ -83,8 +83,8 @@ Array [
 exports[`3. places className correctly given a single spread 1`] = `
 Array [
   "css-view-1dbjc4n",
-  "_oveY-hidden",
-  "_oveX-hidden",
+  "_ovY-hidden",
+  "_ovX-hidden",
   "r-display-6koalj",
   "r-flexBasis-1mlwlqe",
   "r-flexDirection-eqz5dr",
@@ -94,9 +94,9 @@ Array [
 exports[`4. leaves dynamic variables 1`] = `
 Array [
   "css-view-1dbjc4n",
-  "_hei-200px",
-  "_oveX--hover-visible",
-  "_oveY--hover-visible",
+  "_he-200px",
+  "_ovX--hover-visible",
+  "_ovY--hover-visible",
   "r-display-6koalj",
   "r-flexBasis-1mlwlqe",
   "r-flexDirection-eqz5dr",
@@ -105,7 +105,7 @@ Array [
 
 exports[`4. leaves dynamic variables 2`] = `
 <div
-  className="css-view-1dbjc4n  _hei-200px _oveX--hover-visible _oveY--hover-visible r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+  className="css-view-1dbjc4n  _he-200px _ovX--hover-visible _ovY--hover-visible r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
   style={
     Object {
       "width": "calc(100% + 20px)",
@@ -116,20 +116,20 @@ exports[`4. leaves dynamic variables 2`] = `
 
 exports[`5. spread conditional 1`] = `
 <div
-  className="_bacCol-183yn7 _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+  className="_baCo-183yn7 _ovY-hidden _ovX-hidden _flDi-column _flBa-auto _di-flex"
 >
   <div
-    className="_bacCol-183yn7 hello-world _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+    className="_baCo-183yn7 hello-world _ovY-hidden _ovX-hidden _flDi-column _flBa-auto _di-flex"
   />
 </div>
 `;
 
 exports[`6. spread ternary 1`] = `
 <div
-  className="_bacCol-183yn7 _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+  className="_baCo-183yn7 _ovY-hidden _ovX-hidden _flDi-column _flBa-auto _di-flex"
 >
   <span
-    className=" _dis-inline"
+    className=" _di-inline"
   >
     hello world
   </span>
@@ -138,10 +138,10 @@ exports[`6. spread ternary 1`] = `
 
 exports[`6. spread ternary 2`] = `
 <div
-  className="_bacCol-19sdxe _oveY-hidden _oveX-hidden _fleDir-column _fleBas-auto _dis-flex"
+  className="_baCo-19sdxe _ovY-hidden _ovX-hidden _flDi-column _flBa-auto _di-flex"
 >
   <span
-    className=" _dis-inline"
+    className=" _di-inline"
   >
     hello world
   </span>
@@ -150,23 +150,23 @@ exports[`6. spread ternary 2`] = `
 
 exports[`7. ternary + data-is 1`] = `
 <div
-  className=" _dis-flex _fleBas-auto _fleDir-column _maxWid-30 _minWid-500px _padBot-10px _padLef-11px _padRig-11px _wid-66"
+  className=" _di-flex _flBa-auto _flDi-column _maWi-30pct _miWi-500px _paBo-10px _paLe-11px _paRi-11px _wi-66pct"
 >
   <div
-    className="_wid-10px _hei-10px _fleDir-column _fleBas-auto _dis-flex"
+    className="_wi-10px _he-10px _flDi-column _flBa-auto _di-flex"
   />
 </div>
 `;
 
 exports[`8. styleExpansions 1`] = `
 <div
-  className=" _bot-0px _dis-flex _fleBas-auto _fleDir-column _lef-0px _pos-relative _rig-0px _top-0px"
+  className=" _bo-0px _di-flex _flBa-auto _flDi-column _le-0px _po-relative _ri-0px _to-0px"
 >
   <div
-    className=" _bacCol-19sdxe _dis-flex _fleBas-auto _fleDir-column _pos-absolute"
+    className=" _baCo-19sdxe _di-flex _flBa-auto _flDi-column _po-absolute"
   >
     <div
-      className="css-view-1dbjc4n  _bacCol-1d0hial _bot-0px _lef-0px _pos-relative _rig-0px _top-0px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-position-u8s1d"
+      className="css-view-1dbjc4n  _baCo-1d0hial _bo-0px _le-0px _po-relative _ri-0px _to-0px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-position-u8s1d"
     />
   </div>
 </div>
@@ -174,19 +174,19 @@ exports[`8. styleExpansions 1`] = `
 
 exports[`9. combines with classname 1`] = `
 <div
-  className=" _dis-flex _fleBas-auto _fleDir-column _padBot-15px _padTop-15px home-top-dish"
+  className=" _di-flex _flBa-auto _flDi-column _paBo-15px _paTo-15px home-top-dish"
 />
 `;
 
 exports[`10. extracts Text 1`] = `
 <span
-  className=" _dis-inline _fonSiz-10px"
+  className=" _di-inline _foSi-10px"
 >
   <span
-    className=" _dis-inline _useSel-text"
+    className=" _di-inline _usSe-text"
   >
     <div
-      className="_col-18s66rc _fonWei-600 _fonSiz-15px css-text-901oao"
+      className="_co-18s66rc _foWe-600 _foSi-15px css-text-901oao"
       dir="auto"
       onClick={[Function]}
     >
@@ -199,29 +199,29 @@ exports[`10. extracts Text 1`] = `
 exports[`11. combines everything 1`] = `
 Array [
   "css-view-1dbjc4n",
-  "_borTopCol-dic8vh",
-  "_borRigCol-1n8flkp",
-  "_borLefCol-wse84g",
-  "_borBotCol-1qvh775",
-  "_hei-0px",
-  "_borTopRigRad-0px",
-  "_borTopLefRad-0px",
-  "_borBotRigRad-0px",
-  "_borBotLefRad-0px",
-  "_pos-relative",
-  "_oveY-hidden",
-  "_oveX-hidden",
-  "_minHei-10px",
-  "_borTopWid-1px",
-  "_borTopSty-solid",
-  "_borRigWid-1px",
-  "_borRigSty-solid",
-  "_borLefWid-1px",
-  "_borLefSty-solid",
-  "_borBotWid-1px",
-  "_borBotSty-solid",
-  "_bacCol-183yn7",
-  "_aliIte-center",
+  "_boToCo-dic8vh",
+  "_boRiCo-1n8flkp",
+  "_boLeCo-wse84g",
+  "_boBoCo-1qvh775",
+  "_he-0px",
+  "_boToRiRa-0px",
+  "_boToLeRa-0px",
+  "_boBoRiRa-0px",
+  "_boBoLeRa-0px",
+  "_po-relative",
+  "_ovY-hidden",
+  "_ovX-hidden",
+  "_miHe-10px",
+  "_boToWi-1px",
+  "_boToSt-solid",
+  "_boRiWi-1px",
+  "_boRiSt-solid",
+  "_boLeWi-1px",
+  "_boLeSt-solid",
+  "_boBoWi-1px",
+  "_boBoSt-solid",
+  "_baCo-183yn7",
+  "_alIt-center",
   "r-display-6koalj",
   "r-flexBasis-1mlwlqe",
   "r-flexDirection-eqz5dr",
@@ -230,29 +230,29 @@ Array [
 
 exports[`12. ternary multiple on same key 1`] = `
 <div
-  className="_tra- _opa-1 _fleDir-column _fleBas-auto _dis-flex"
+  className="_tr- _op-1 _flDi-column _flBa-auto _di-flex"
 />
 `;
 
 exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 <div
-  className=" _dis-flex _fleBas-auto _fleDir-column _bacCol--hover-19sdxe _bacCol--active-183yn7"
+  className=" _di-flex _flBa-auto _flDi-column _baCo--hover-19sdxe _baCo--active-183yn7"
 />
 `;
 
 exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
   <div
-    className=" _fle- _fleShr- _minHei-12px _minWid-12px"
+    className=" _fl-zz _flSh-zz _miHe-12px _miWi-12px"
   />,
   <div
-    className=" _fle- _fleShr- _minHei-10px _minWid-10px"
+    className=" _fl-zz _flSh-zz _miHe-10px _miWi-10px"
   />,
 ]
 `;
 
 exports[`16. deopt when spreading multiple 1`] = `
 <div
-  className="css-view-1dbjc4n _fle-1 _bacCol-19sdxe r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+  className="css-view-1dbjc4n _fl-1 _baCo-19sdxe r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
 />
 `;
