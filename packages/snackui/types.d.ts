@@ -422,6 +422,7 @@ declare module "snackui" {
         noTextWrap?: boolean;
         theme?: string | null;
         icon?: JSX.Element | null;
+        iconAfter?: JSX.Element | null;
         active?: boolean;
     };
     export const Button: (props: ButtonProps) => JSX.Element;

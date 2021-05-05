@@ -12,6 +12,7 @@ export type ButtonProps = StackProps & {
   noTextWrap?: boolean
   theme?: string | null
   icon?: JSX.Element | null
+  iconAfter?: JSX.Element | null
   active?: boolean
 }
 
@@ -27,6 +28,7 @@ export const Button = themeable(
   ({
     children,
     icon,
+    iconAfter,
     spacing = 'sm',
     textProps,
     noTextWrap,
@@ -80,10 +82,11 @@ export const Button = themeable(
       >
         {spacedChildren({
           children:
-            icon && childrens
+            (icon || iconAfter) && childrens
               ? [
-                  <React.Fragment key={0}>{icon}</React.Fragment>,
+                  icon ? <React.Fragment key={0}>{icon}</React.Fragment> : null,
                   <React.Fragment key={1}>{childrens}</React.Fragment>,
+                  iconAfter ? <React.Fragment key={2}>{iconAfter}</React.Fragment> : null,
                 ]
               : icon ?? childrens,
           spacing,
