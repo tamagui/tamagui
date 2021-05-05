@@ -136,14 +136,18 @@ const createStack = ({
     } = props
 
     const [viewProps, styleProps] = useViewStylePropsSplit(props)
-    const innerRef = useRef<any>()
-    const isMounted = useRef(false)
+    // hasEverHadEvents prevents repareting if you remove onPress or similar...
+    const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
+    if (!internal.current) {
+      internal.current = {
+        isMounted: true,
+      }
+    }
 
     useEffect(() => {
-      isMounted.current = true
       return () => {
         mouseUps.delete(unPress)
-        isMounted.current = false
+        internal.current!.isMounted = false
       }
     }, [])
 
@@ -153,7 +157,7 @@ const createStack = ({
       pressIn: false,
     })
 
-    const ViewComponent = animated ? Animated.View : View
+    const ViewComponent = 'animated' in props ? Animated.View : View
 
     const styles = [
       sheet.style,
@@ -167,7 +171,7 @@ const createStack = ({
 
     let content = (
       <ViewComponent
-        ref={combineRefs(innerRef, ref) as any}
+        ref={ref}
         {...viewProps}
         pointerEvents={!isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents}
         style={styles}
@@ -180,12 +184,24 @@ const createStack = ({
       </ViewComponent>
     )
 
+    // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
+    // while avoiding reparenting...
+    // once proper reparenting is supported, we can remove this and use that...
+    const shouldAttach =
+      'pressStyle' in props ||
+      'onPress' in props ||
+      (isWeb &&
+        ('hoverStyle' in props ||
+          'onHoverIn' in props ||
+          'onHoverOut' in props ||
+          'onMouseEnter' in props ||
+          'onMouseLeave' in props))
     const attachPress = !!(pressStyle || onPress)
     const attachHover =
       isWeb && !!(hoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     const unPress = useCallback(() => {
-      if (!isMounted.current) return
+      if (!internal.current!.isMounted) return
       set((x) => ({
         ...x,
         press: false,
@@ -193,7 +209,8 @@ const createStack = ({
       }))
     }, [])
 
-    if (attachHover || attachPress || onPressOut || onPressIn) {
+    if (shouldAttach || internal.current.hasEverHadEvents) {
+      internal.current.hasEverHadEvents = true
       const events = {
         ...(!isTouchDevice && {
           onMouseEnter:

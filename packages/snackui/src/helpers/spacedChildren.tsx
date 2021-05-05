@@ -18,6 +18,9 @@ export function spacedChildren({
   const next: any[] = []
   const childrenList = Children.toArray(children)
   const len = childrenList.length
+  if (len === 1) {
+    return children
+  }
   const spacer = (
     <View
       style={getSpacerStyle({
