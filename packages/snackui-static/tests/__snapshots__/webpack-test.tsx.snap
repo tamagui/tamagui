@@ -189,11 +189,6 @@ exports[`10. extracts Text 1`] = `
       className="_col-18s66rc _fonWei-600 _fonSiz-15px css-text-901oao"
       dir="auto"
       onClick={[Function]}
-      style={
-        Object {
-          "display": "inline",
-        }
-      }
     >
       hello
     </div>
