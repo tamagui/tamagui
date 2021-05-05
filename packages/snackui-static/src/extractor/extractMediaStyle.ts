@@ -58,14 +58,18 @@ export function extractMediaStyle(
       )}`
       const className = `.${identifier}`
       const mediaSelector = mediaObjectToString(mediaQueries[key])
-      const screenStr = negate ? ' not all' : ' screen'
-      const mediaStr = `@media${screenStr} and ${mediaSelector}`
+      const screenStr = negate ? 'not all' : 'screen'
+      const mediaQuery = `${screenStr} and ${mediaSelector}`
       const precendencePrefix = mediaKeyPrecendence[key]
-      const styleInner = `${precendencePrefix} ${style.rules[0].replace(
-        style.identifier,
-        identifier
-      )}`
-      const styleRule = `${mediaStr} { ${styleInner} }`
+      const styleInner = style.rules[0].replace(style.identifier, identifier)
+      // combines media queries if they already exist
+      let styleRule = ''
+      if (styleInner.includes('@media')) {
+        // combine
+        styleRule = styleInner.replace('{', `, ${mediaQuery} {`)
+      } else {
+        styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
+      }
       return {
         ...style,
         identifier,
