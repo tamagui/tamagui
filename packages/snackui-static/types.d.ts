@@ -4,7 +4,6 @@ declare module "@snackui/static" {
     export const CSS_FILE_NAME = "__snack.css";
     export const MEDIA_SEP = "_";
     export const cacheDir: any;
-    export const shouldInternalDedupe: boolean;
 }
 
 declare module "@snackui/static" {

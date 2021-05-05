@@ -2,16 +2,8 @@ process.env.SNACKUI_COMPILE_PROCESS = '1'
 
 import { extname } from 'path'
 
-import {
-  SnackOptions,
-  createExtractor,
-  extractToClassNames,
-  getInitialFileName,
-  shouldInternalDedupe,
-} from '@snackui/static'
-import { readFileSync, writeFileSync } from 'fs-extra'
+import { SnackOptions, createExtractor, extractToClassNames } from '@snackui/static'
 import { getOptions } from 'loader-utils'
-import { debounce } from 'lodash'
 
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
@@ -31,10 +23,6 @@ export default function snackLoader(this: any, content: string) {
     (startsWithComment && content.startsWith('// debug'))
 
   if (options.cssPath) {
-    if (shouldInternalDedupe) {
-      const styleStr = [...new Set([...stylesByFile.values()])].join('\n')
-      return callback(null, styleStr)
-    }
     const out = stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
     if (!out) {
       console.warn(`invalid styles ${stylesByFile} ${sourcePath}`)
@@ -69,21 +57,7 @@ export default function snackLoader(this: any, content: string) {
 
   if (extracted.styles) {
     stylesByFile.set(sourcePath, extracted.styles)
-
-    if (shouldInternalDedupe) {
-      // dirty naughty tryick, allows us to build up the concat file over time 😈
-      if (
-        sourcePath !== getInitialFileName() ||
-        (startsWithComment && content.startsWith('// snack-clear-cache'))
-      ) {
-        forceUpdateOnFile(getInitialFileName())
-      }
-    }
   }
 
   callback(null, extracted.js, extracted.map)
 }
-
-const forceUpdateOnFile = debounce((path: string) => {
-  writeFileSync(path, readFileSync(path))
-})

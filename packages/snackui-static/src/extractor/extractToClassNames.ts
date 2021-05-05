@@ -1,16 +1,14 @@
-import { basename, join } from 'path'
 import * as path from 'path'
+import { basename } from 'path'
 import * as util from 'util'
 
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { MediaQueries, defaultMediaQueries } from '@snackui/node'
-import { writeFileSync } from 'fs-extra'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
 
-import { cacheDir, shouldInternalDedupe } from '../constants'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
 import { getStylesAtomic } from '../getStylesAtomic'
@@ -22,6 +20,7 @@ import { extractMediaStyle } from './extractMediaStyle'
 import { hoistClassNames } from './hoistClassNames'
 
 export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
+let index = 0
 
 let initialFileName = ''
 export function getInitialFileName() {
@@ -133,7 +132,8 @@ export function extractToClassNames(
             }
           }
 
-          let lastMediaImportance = 0
+          // 1 to start above any :hover styles
+          let lastMediaImportance = 1
           for (const attr of attrs) {
             switch (attr.type) {
               case 'attr':
@@ -260,10 +260,6 @@ export function extractToClassNames(
     return null
   }
 
-  // if (shouldPrintDebug) {
-  //   console.log(' cssmap', cssMap.values())
-  // }
-
   const styles = Array.from(cssMap.values())
     .map((x) => {
       // remove comments
@@ -272,23 +268,11 @@ export function extractToClassNames(
     .join('\n')
     .trim()
 
-  let stylesPath: string | undefined
-
   if (styles) {
     // add import to styles file
-    let importPath = ''
-    if (shouldInternalDedupe) {
-      // in dev mode, dedupe ourselves
-      initialFileName = initialFileName || sourceFileName
-      importPath = `/tmp/snackui.css!=!snackui-loader?cssPath=true!${initialFileName}`
-    } else {
-      // otherwise we write out to fs to unique place
-      const cachePath = `${basename(sourceFileName.replace(/[\/\.]/g, '-'))}.css`
-      stylesPath = join(cacheDir, cachePath)
-      writeFileSync(stylesPath, styles)
-      importPath = `${stylesPath}!=!snackui-loader?cssPath=true!${stylesPath}`
-      addDependency(importPath)
-    }
+    // otherwise we write out to fs to unique place
+    const cssPath = `${sourceFileName}.${index++}.css`
+    const importPath = `${cssPath}!=!snackui-loader?cssPath=${cssPath}!${sourceFileName}`
     ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
   }
 
@@ -319,7 +303,6 @@ export function extractToClassNames(
   return {
     ast,
     styles,
-    stylesPath,
     js: result.code,
     map: result.map,
   }

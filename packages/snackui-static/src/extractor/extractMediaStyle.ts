@@ -66,7 +66,7 @@ export function extractMediaStyle(
       let styleRule = ''
       if (styleInner.includes('@media')) {
         // combine
-        styleRule = styleInner.replace('{', `, ${mediaQuery} {`)
+        styleRule = styleInner.replace('{', ` and ${mediaQuery} {`)
       } else {
         styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
       }
@@ -79,7 +79,7 @@ export function extractMediaStyle(
     })
     if (shouldPrintDebug) {
       // prettier-ignore
-      console.log('  media styles:', mediaStyles.map(x => x.identifier))
+      console.log('  media styles:', importance, mediaStyles.map(x => x.identifier))
     }
     // add to output
     result = [...result, ...mediaStyles]

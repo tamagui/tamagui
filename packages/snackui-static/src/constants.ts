@@ -8,5 +8,3 @@ export const MEDIA_SEP = '_'
 
 // ensure cache dir
 export const cacheDir = findCacheDir({ name: 'snackui', create: true })
-
-export const shouldInternalDedupe = process.env.NODE_ENV !== 'production'
