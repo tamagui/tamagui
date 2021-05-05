@@ -1,6 +1,6 @@
 {
   "name": "@snackui/static",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "main": "dist",
   "module": "_",
   "types": "types.d.ts",
