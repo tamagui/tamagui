@@ -75,10 +75,8 @@ function getAtomicStyle(
     const val = all[key]
     const prefix = `_${getOrCreateStylePrefix(val.property)}`
     const hash = (() => {
-      const s = `${val.value}`.replace(/[^a-z0-9]/gi, '').replace(/\s/, '-')
-      if (s.length < 14) {
-        return s
-      }
+      let s = `${val.value}`.replace(/[^a-z0-9]/gi, '_').replace(/\s/, '-')
+      if (s.length < 16) return s
       return simpleHash(val.identifier)
     })()
 
