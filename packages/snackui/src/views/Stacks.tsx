@@ -184,21 +184,26 @@ const createStack = ({
       </ViewComponent>
     )
 
+    const attachPress = !!(pressStyle || onPress || onPressOut || onPressIn)
+    const attachHover =
+      isWeb && !!(hoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
     // while avoiding reparenting...
     // once proper reparenting is supported, we can remove this and use that...
     const shouldAttach =
+      attachPress ||
+      attachHover ||
       'pressStyle' in props ||
       'onPress' in props ||
+      'onPressIn' in props ||
+      'onPressOut' in props ||
       (isWeb &&
         ('hoverStyle' in props ||
           'onHoverIn' in props ||
           'onHoverOut' in props ||
           'onMouseEnter' in props ||
           'onMouseLeave' in props))
-    const attachPress = !!(pressStyle || onPress)
-    const attachHover =
-      isWeb && !!(hoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     const unPress = useCallback(() => {
       if (!internal.current!.isMounted) return
