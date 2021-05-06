@@ -25,6 +25,7 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
 
   const ref = React.useRef<HTMLElement>(null)
   React.useLayoutEffect(() => {
+    console.log('what', ref.current)
     if (!ref.current) {
       return
     }
@@ -49,6 +50,13 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
       })
     })
     ro.observe(ref.current)
+    //
+    const next = {
+      width: ref.current.clientWidth,
+      height: ref.current.clientHeight,
+    }
+    setLayout(next as any)
+    props.onLayout?.(next as any)
     return () => {
       ro.disconnect()
     }
@@ -72,7 +80,7 @@ export function LinearGradient({
   const layoutProps = useLayout()
   const { width = 1, height = 1 } = layoutProps.layout ?? {}
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const getControlPoints = (): NativeLinearGradientPoint[] => {
       let correctedStart: NativeLinearGradientPoint = [0, 0]
       if (Array.isArray(start)) {
@@ -96,7 +104,7 @@ export function LinearGradient({
     setPseudoAngle(90 + (Math.atan2(py, px) * 180) / Math.PI)
   }, [width, height, start, end])
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const nextGradientColors = colors.map((color, index): string => {
       const hexColor = normalizeColor(color)
       let output = hexColor
