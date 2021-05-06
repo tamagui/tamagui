@@ -16,6 +16,8 @@ let index = 0
 export default function snackLoader(this: any, source: string) {
   this.cacheable()
   const callback = this.async()
+
+  const threaded = this.emitFile === undefined
   const options: SnackOptions = { ...getOptions(this) }
   const sourcePath = `${this.resourcePath}`
   const startsWithComment = source[0] === '/' && source[1] === '/'
@@ -24,10 +26,12 @@ export default function snackLoader(this: any, source: string) {
       (process.env.DEBUG_FILE ? sourcePath.includes(process.env.DEBUG_FILE) : true)) ||
     (startsWithComment && source.startsWith('// debug'))
 
-  if (options.cssPath) {
-    const out = stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
+  if (options.cssPath || options.cssData) {
+    const out = options.cssData
+      ? Buffer.from(options.cssData, 'base64').toString('utf-8')
+      : stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
     if (!out) {
-      console.warn(`invalid styles ${stylesByFile} ${sourcePath}`)
+      console.warn(`invalid styles ${stylesByFile.keys} ${sourcePath}`)
       return
     }
     return callback(null, out)
@@ -40,17 +44,13 @@ export default function snackLoader(this: any, source: string) {
     return callback(null, source)
   }
 
-  const remReq = getRemainingRequest(this)
-  const cssPath = `${sourcePath}.${index++}.css`
-  const importPath = `${cssPath}!=!snackui-loader?cssPath=${cssPath}!${remReq}`
-  if (shouldPrintDebug) {
-    console.log('importPath', importPath)
-  }
-  const extracted = extractToClassNames({
+  const cssPath = threaded ? `${sourcePath}.css` : `${sourcePath}.${index++}.css`
+  const extracted = extractToClassNames.call(this, {
     extractor,
     source,
+    threaded,
     sourcePath,
-    importPath,
+    cssPath,
     options,
     shouldPrintDebug,
   })
@@ -59,12 +59,13 @@ export default function snackLoader(this: any, source: string) {
     return callback(null, source)
   }
 
-  if (extracted.stylesPath) {
-    stylePathToFilePath.set(extracted.stylesPath, sourcePath)
-  }
-
-  if (extracted.styles) {
-    stylesByFile.set(sourcePath, extracted.styles)
+  if (!threaded) {
+    if (extracted.stylesPath) {
+      stylePathToFilePath.set(extracted.stylesPath, sourcePath)
+    }
+    if (extracted.styles) {
+      stylesByFile.set(sourcePath, extracted.styles)
+    }
   }
 
   callback(null, extracted.js, extracted.map)

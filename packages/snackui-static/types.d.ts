@@ -27,6 +27,7 @@ declare module "@snackui/static" {
         mediaQueries?: MediaQueries;
         logTimings?: boolean;
         cssPath?: string;
+        cssData?: any;
         deoptProps?: string[];
         excludeProps?: string[];
     }
@@ -208,13 +209,14 @@ declare module "@snackui/static" {
     import * as t from "@babel/types";
     export const CONCAT_CLASSNAME_IMPORT = "concatClassName";
     export function getInitialFileName(): string;
-    export function extractToClassNames({ extractor, source, sourcePath, options, shouldPrintDebug, importPath, }: {
+    export function extractToClassNames(this: any, { extractor, source, sourcePath, options, shouldPrintDebug, threaded, cssPath, }: {
         extractor: Extractor;
         source: string | Buffer;
         sourcePath: string;
         options: SnackOptions;
         shouldPrintDebug: boolean;
-        importPath: string;
+        cssPath: string;
+        threaded?: boolean;
     }): null | {
         js: string | Buffer;
         styles: string;

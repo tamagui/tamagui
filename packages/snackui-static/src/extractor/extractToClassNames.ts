@@ -7,6 +7,7 @@ import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { MediaQueries, defaultMediaQueries } from '@snackui/node'
 import invariant from 'invariant'
+import { getOptions, getRemainingRequest } from 'loader-utils'
 import { ViewStyle } from 'react-native'
 
 import { Extractor } from '../extractor/createExtractor'
@@ -29,21 +30,26 @@ export function getInitialFileName() {
 
 const mergeStyleGroups = [new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset'])]
 
-export function extractToClassNames({
-  extractor,
-  source,
-  sourcePath,
-  options,
-  shouldPrintDebug,
-  importPath,
-}: {
-  extractor: Extractor
-  source: string | Buffer
-  sourcePath: string
-  options: SnackOptions
-  shouldPrintDebug: boolean
-  importPath: string
-}): null | {
+export function extractToClassNames(
+  this: any,
+  {
+    extractor,
+    source,
+    sourcePath,
+    options,
+    shouldPrintDebug,
+    threaded,
+    cssPath,
+  }: {
+    extractor: Extractor
+    source: string | Buffer
+    sourcePath: string
+    options: SnackOptions
+    shouldPrintDebug: boolean
+    cssPath: string
+    threaded?: boolean
+  }
+): null | {
   js: string | Buffer
   styles: string
   stylesPath?: string
@@ -276,6 +282,11 @@ export function extractToClassNames({
     .trim()
 
   if (styles) {
+    const cssQuery = threaded
+      ? `cssData=${Buffer.from(styles).toString('base64')}`
+      : `cssPath=${cssPath}`
+    const remReq = getRemainingRequest(this)
+    const importPath = `${cssPath}!=!snackui-loader?${cssQuery}!${remReq}`
     ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
   }
 
@@ -300,7 +311,7 @@ export function extractToClassNames({
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log(`  🍑 (${Date.now() - start}ms) ${optimized} optimized, ${flattened} flattened - used ${memUsed}MB memory -- ${basename(sourcePath)} [SnackUI]`)
+    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - start}ms) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
   }
 
   return {

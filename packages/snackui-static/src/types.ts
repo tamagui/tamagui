@@ -19,6 +19,7 @@ export interface SnackOptions {
   logTimings?: boolean
   // probably non user options
   cssPath?: string
+  cssData?: any
   deoptProps?: string[]
   excludeProps?: string[]
 }
