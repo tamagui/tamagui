@@ -238,16 +238,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    import { Ref } from "react";
-    type OptionalRef<T> = Ref<T> | undefined;
-    export function combineRefs<T>(...refs: [
-        OptionalRef<T>,
-        OptionalRef<T>,
-        ...Array<OptionalRef<T>>
-    ]): Ref<T>;
-}
-
-declare module "snackui" {
     import { TextStyle, ViewStyle } from "react-native";
     export type StaticConfig = {
         neverFlatten?: boolean;
@@ -526,23 +516,34 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    import React from "react";
-    import { View } from "react-native";
-    export type LinearGradientPoint = {
-        x: number;
-        y: number;
-    } | [
+    export const normalizeColor: (color?: string | number | undefined, opacity?: number) => void | string;
+}
+
+declare module "snackui" {
+    import * as React from "react";
+    import { LayoutRectangle, View } from "react-native";
+    export type NativeLinearGradientProps = React.ComponentProps<typeof View> & React.PropsWithChildren<{
+        colors: (number | string)[];
+        locations?: number[] | null;
+        start?: NativeLinearGradientPoint | null;
+        end?: NativeLinearGradientPoint | null;
+    }>;
+    export type NativeLinearGradientPoint = [
         number,
         number
     ];
-    export type LinearGradientProps = {
-        colors: string[];
-        locations?: number[] | null;
-        start?: LinearGradientPoint | null;
-        end?: LinearGradientPoint | null;
-    } & React.ComponentProps<typeof View>;
-    type LinearGradientComponent = (props: LinearGradientProps) => JSX.Element | null;
-    export const LinearGradient: LinearGradientComponent;
+    export const useLayout: (props?: {
+        onLayout?: ((rect: LayoutRectangle) => void) | undefined;
+    }) => {
+        layout: LayoutRectangle | null;
+        onLayout: React.Dispatch<React.SetStateAction<LayoutRectangle | null>>;
+        ref?: undefined;
+    } | {
+        layout: LayoutRectangle | null;
+        ref: React.RefObject<HTMLElement>;
+        onLayout?: undefined;
+    };
+    export function LinearGradient({ colors, locations, start, end, ...props }: NativeLinearGradientProps): React.ReactElement;
 }
 
 declare module "snackui" {
@@ -566,6 +567,16 @@ declare module "snackui" {
         overlayDismisses?: boolean;
     };
     export const Modal: (props: ModalProps) => JSX.Element;
+}
+
+declare module "snackui" {
+    import { Ref } from "react";
+    type OptionalRef<T> = Ref<T> | undefined;
+    export function combineRefs<T>(...refs: [
+        OptionalRef<T>,
+        OptionalRef<T>,
+        ...Array<OptionalRef<T>>
+    ]): Ref<T>;
 }
 
 declare module "snackui" {

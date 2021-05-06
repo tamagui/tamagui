@@ -19,12 +19,13 @@ import {
   ViewStyle,
 } from 'react-native'
 
-import { combineRefs } from '../helpers/combineRefs'
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { ActiveThemeContext, invertStyleVariableToValue } from '../hooks/useTheme'
 import { isTouchDevice, isWeb } from '../platform'
 import { Spacing } from './Spacer'
+
+const displayContentsStyle = { display: 'contents' }
 
 export type StackProps = Omit<
   Omit<ViewStyle, 'display'> &
@@ -277,7 +278,7 @@ const createStack = ({
 
       if (isWeb) {
         content = (
-          <div {...events} className="display-contents">
+          <div {...events} style={displayContentsStyle}>
             {content}
           </div>
         )

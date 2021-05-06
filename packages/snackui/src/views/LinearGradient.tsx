@@ -1,75 +1,130 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { View } from 'react-native'
+import * as React from 'react'
+import { LayoutRectangle, View } from 'react-native'
 
-export type LinearGradientPoint =
-  | {
-      x: number
-      y: number
+import { isWeb } from '../platform'
+import { normalizeColor } from './normalizeColor'
+
+export type NativeLinearGradientProps = React.ComponentProps<typeof View> &
+  React.PropsWithChildren<{
+    colors: (number | string)[]
+    locations?: number[] | null
+    start?: NativeLinearGradientPoint | null
+    end?: NativeLinearGradientPoint | null
+  }>
+
+export type NativeLinearGradientPoint = [number, number]
+
+export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } = {}) => {
+  const [layout, setLayout] = React.useState<LayoutRectangle | null>(null)
+  if (!isWeb) {
+    return {
+      layout,
+      onLayout: setLayout,
     }
-  | [number, number]
+  }
 
-export type LinearGradientProps = {
-  colors: string[]
-  /**
-   * An array that contains `number`s ranging from 0 to 1, inclusive, and is the same length as the `colors` property.
-   * Each number indicates a color-stop location where each respective color should be located.
-   *
-   * For example, `[0.5, 0.8]` would render:
-   * - the first color, solid, from the beginning of the gradient view to 50% through (the middle);
-   * - a gradient from the first color to the second from the 50% point to the 80% point; and
-   * - the second color, solid, from the 80% point to the end of the gradient view.
-   *
-   * The color-stop locations must be ascending from least to greatest.
-   */
-  locations?: number[] | null
-  /**
-   * An object `{ x: number; y: number }` or array `[x, y]` that represents the point
-   * at which the gradient starts, as a fraction of the overall size of the gradient ranging from 0 to 1, inclusive.
-   *
-   * For example, `{ x: 0.1, y: 0.2 }` means that the gradient will start `10%` from the left and `20%` from the top.
-   *
-   * **On web**, this only changes the angle of the gradient because CSS gradients don't support changing the starting position.
-   */
-  start?: LinearGradientPoint | null
-  /**
-   * An object `{ x: number; y: number }` or array `[x, y]` that represents the point
-   * at which the gradient ends, as a fraction of the overall size of the gradient ranging from 0 to 1, inclusive.
-   *
-   * For example, `{ x: 0.1, y: 0.2 }` means that the gradient will end `10%` from the left and `20%` from the bottom.
-   *
-   * **On web**, this only changes the angle of the gradient because CSS gradients don't support changing the end position.
-   */
-  end?: LinearGradientPoint | null
-} & React.ComponentProps<typeof View>
+  const ref = React.useRef<HTMLElement>(null)
+  React.useLayoutEffect(() => {
+    if (!ref.current) {
+      return
+    }
+    const ro = new ResizeObserver(([first] = []) => {
+      if (!first) return
+      // setLayout(first.contentRect)
+      setLayout((prev) => {
+        let next
+        if (!prev) {
+          next = first.contentRect
+        } else {
+          const { x, y, width, height } = first.contentRect
+          // don't set new layout state unless the layout has actually changed
+          if (x !== prev.x || y !== prev.y || width !== prev.width || height !== prev.height) {
+            next = { x, y, width, height }
+          }
+        }
+        if (next) {
+          props.onLayout?.(next)
+        }
+        return prev
+      })
+    })
+    ro.observe(ref.current)
+    return () => {
+      ro.disconnect()
+    }
+  }, [ref.current])
 
-type LinearGradientComponent = (props: LinearGradientProps) => JSX.Element | null
-let exp: LinearGradientComponent = () => null
-
-// we dont export it in the snackui-static process
-// expo-linear-gradient is a flow file :/
-// TODO compile it ourselves for now so we can test
-
-if (!process.env.SNACKUI_COMPILE_PROCESS) {
-  exp = require('expo-linear-gradient').LinearGradient
+  return {
+    layout,
+    ref,
+  }
 }
 
-export const LinearGradient = exp
+export function LinearGradient({
+  colors,
+  locations,
+  start,
+  end,
+  ...props
+}: NativeLinearGradientProps): React.ReactElement {
+  const [gradientColors, setGradientColors] = React.useState<string[]>([])
+  const [pseudoAngle, setPseudoAngle] = React.useState<number>(0)
+  const layoutProps = useLayout()
+  const { width = 1, height = 1 } = layoutProps.layout ?? {}
 
-// TODO revisit this, need a way to test so need to have this support native...
-// if (process.env.IS_STATIC) {
-//   // @ts-expect-error
-//   LinearGradient.staticConfig = {
-//     extract: (props, config) => {
-//       if (config.env === 'web') {
-//         const node = document.createElement('div')
-//         render(<LinearGradient {...props} />, node)
-//         // read styles from dom node...
-//         console.log('what is', node)
-//         return {
-//           styles: {},
-//         }
-//       }
-//     },
-//   }
-// }
+  React.useEffect(() => {
+    const getControlPoints = (): NativeLinearGradientPoint[] => {
+      let correctedStart: NativeLinearGradientPoint = [0, 0]
+      if (Array.isArray(start)) {
+        correctedStart = [start[0] != null ? start[0] : 0.0, start[1] != null ? start[1] : 0.0]
+      }
+      let correctedEnd: NativeLinearGradientPoint = [0.0, 1.0]
+      if (Array.isArray(end)) {
+        correctedEnd = [end[0] != null ? end[0] : 0.0, end[1] != null ? end[1] : 1.0]
+      }
+      return [correctedStart, correctedEnd]
+    }
+
+    const [start_, end_] = getControlPoints()
+    start_[0] *= width
+    end_[0] *= width
+    start_[1] *= height
+    end_[1] *= height
+    const py = end_[1] - start_[1]
+    const px = end_[0] - start_[0]
+
+    setPseudoAngle(90 + (Math.atan2(py, px) * 180) / Math.PI)
+  }, [width, height, start, end])
+
+  React.useEffect(() => {
+    const nextGradientColors = colors.map((color, index): string => {
+      const hexColor = normalizeColor(color)
+      let output = hexColor
+      if (locations && locations[index]) {
+        const location = Math.max(0, Math.min(1, locations[index]))
+        // Convert 0...1 to 0...100
+        const percentage = location * 100
+        output += ` ${percentage}%`
+      }
+      return output || ''
+    })
+
+    setGradientColors(nextGradientColors)
+  }, [colors, locations])
+
+  const colorStyle = gradientColors.join(',')
+  const backgroundImage = `linear-gradient(${pseudoAngle}deg, ${colorStyle})`
+  // TODO(Bacon): In the future we could consider adding `backgroundRepeat: "no-repeat"`. For more
+  // browser support.
+  return (
+    <View
+      {...props}
+      {...layoutProps}
+      style={[
+        props.style,
+        // @ts-ignore: [ts] Property 'backgroundImage' does not exist on type 'ViewStyle'.
+        { backgroundImage },
+      ]}
+    />
+  )
+}
