@@ -1,8 +1,8 @@
 import { fullyIdle, series } from '@dish/async'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import { PopoverProps } from './PopoverProps'
-import { popoverCloseCbs } from './PopoverShared'
+import { PopoverProps } from '../views/PopoverProps'
+import { popoverCloseCbs } from '../views/PopoverShared'
 
 export const usePopover = (props: PopoverProps) => {
   const isOpen = props.isOpen ?? false

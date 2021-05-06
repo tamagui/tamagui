@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { usePopover } from '../hooks/usePopover'
 import { Modal } from './Modal'
 import { PopoverProps } from './PopoverProps'
-import { usePopover } from './usePopover'
 
 // not implemented beyond controlled
 

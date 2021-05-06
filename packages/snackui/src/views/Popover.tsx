@@ -1,10 +1,10 @@
 import React from 'react'
 import { useLayer } from 'react-laag'
+
 import { useOverlay } from '../hooks/useOverlay'
+import { usePopover } from '../hooks/usePopover'
 import { AnimatedVStack } from './AnimatedStack'
 import { PopoverProps } from './PopoverProps'
-import { usePopover } from './usePopover'
-
 
 export function Popover(props: PopoverProps) {
   const { isOpen, isControlled, sendClose, onChangeOpenCb, isMounted } = usePopover(props)
