@@ -73,7 +73,7 @@ export function createExtractor() {
         evaluateVars = true,
         themesFile,
         shouldPrintDebug = false,
-        sourceFileName = '',
+        sourcePath = '',
         onExtractTag,
         getFlattenedNode,
         disableThemes = false,
@@ -120,7 +120,7 @@ export function createExtractor() {
 
       let doesUseValidImport = false
 
-      if (sourceFileName === '') {
+      if (sourcePath === '') {
         throw new Error(`Must provide a source file name`)
       }
 
@@ -128,7 +128,7 @@ export function createExtractor() {
        * Step 1: Determine if importing any statically extractable components
        */
       const isInternalImport = (importStr: string) =>
-        isInsideSnackUI(sourceFileName) && importStr[0] === '.'
+        isInsideSnackUI(sourcePath) && importStr[0] === '.'
 
       for (const bodyPath of path.get('body')) {
         if (!bodyPath.isImportDeclaration()) continue
@@ -147,7 +147,7 @@ export function createExtractor() {
       }
 
       if (shouldPrintDebug) {
-        console.log(sourceFileName, { doesUseValidImport })
+        console.log(sourcePath, { doesUseValidImport })
       }
 
       if (!doesUseValidImport) {
@@ -212,7 +212,7 @@ export function createExtractor() {
           const staticNamespace = getStaticBindingsForScope(
             traversePath.scope,
             evaluateImportsWhitelist,
-            sourceFileName,
+            sourcePath,
             bindingCache,
             shouldPrintDebug
           )
@@ -243,7 +243,7 @@ export function createExtractor() {
                     if (
                       t.isMemberExpression(n) &&
                       t.isIdentifier(n.property) &&
-                      isValidThemeHook(traversePath, n, sourceFileName)
+                      isValidThemeHook(traversePath, n, sourcePath)
                     ) {
                       const key = n.property.name
                       if (shouldPrintDebug) {
@@ -734,7 +734,7 @@ export function createExtractor() {
             console.log('  finish extract', { inlinePropCount })
           }
 
-          const filePath = sourceFileName.replace(process.cwd(), '.')
+          const filePath = sourcePath.replace(process.cwd(), '.')
           const lineNumbers = node.loc
             ? node.loc.start.line +
               (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')

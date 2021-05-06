@@ -12,7 +12,7 @@ export function extractMediaStyle(
   ternary: Ternary,
   jsxPath: NodePath<t.JSXElement>,
   mediaQueries: MediaQueries,
-  sourceFileName: string,
+  sourcePath: string,
   importance = 0,
   shouldPrintDebug = false
 ) {
@@ -22,7 +22,7 @@ export function extractMediaStyle(
     acc[cur] = new Array(importance + 1).fill(':root').join('')
     return acc
   }, {})
-  const mt = getMediaQueryTernary(ternary, jsxPath, sourceFileName)
+  const mt = getMediaQueryTernary(ternary, jsxPath, sourcePath)
   if (!mt) {
     return null
   }
@@ -92,7 +92,7 @@ export function extractMediaStyle(
 function getMediaQueryTernary(
   ternary: Ternary,
   jsxPath: NodePath<t.JSXElement>,
-  sourceFileName: string
+  sourcePath: string
 ) {
   // const media = useMedia()
   // ... media.sm
@@ -108,7 +108,7 @@ function getMediaQueryTernary(
     if (!binding) return false
     const bindingNode = binding.path?.node
     if (!t.isVariableDeclarator(bindingNode) || !bindingNode.init) return false
-    if (!isValidMediaCall(jsxPath, bindingNode.init, sourceFileName)) return false
+    if (!isValidMediaCall(jsxPath, bindingNode.init, sourcePath)) return false
     return { key, bindingName: name }
   }
   // const { sm } = useMedia()
@@ -117,7 +117,7 @@ function getMediaQueryTernary(
     const key = ternary.test.name
     const node = jsxPath.scope.getBinding(ternary.test.name)?.path?.node
     if (!t.isVariableDeclarator(node)) return false
-    if (!node.init || !isValidMediaCall(jsxPath, node.init, sourceFileName)) return false
+    if (!node.init || !isValidMediaCall(jsxPath, node.init, sourcePath)) return false
     return { key, bindingName: key }
   }
   return false
@@ -126,7 +126,7 @@ function getMediaQueryTernary(
 export function isValidMediaCall(
   jsxPath: NodePath<t.JSXElement>,
   init: t.Expression,
-  sourceFileName: string
+  sourcePath: string
 ) {
   if (!t.isCallExpression(init)) return false
   if (!t.isIdentifier(init.callee)) return false
@@ -138,7 +138,7 @@ export function isValidMediaCall(
   const useMediaImport = mediaBinding.path.parent
   if (!t.isImportDeclaration(useMediaImport)) return false
   if (useMediaImport.source.value !== 'snackui') {
-    if (!isInsideSnackUI(sourceFileName)) {
+    if (!isInsideSnackUI(sourcePath)) {
       return false
     }
   }

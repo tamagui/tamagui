@@ -34,15 +34,15 @@ export default declare(function snackBabelPlugin(
     visitor: {
       Program: {
         enter(this: any, root, state) {
-          let sourceFileName = this.file.opts.filename
+          let sourcePath = this.file.opts.filename
 
           // this filename comes back incorrect in react-native, it adds /ios/ for some reason
           // adding a fix here, but it's a bit tentative...
           if (process.env.SOURCE_ROOT?.endsWith('ios')) {
-            sourceFileName = sourceFileName.replace('/ios', '')
+            sourcePath = sourcePath.replace('/ios', '')
           }
 
-          if (options.exclude?.test(sourceFileName)) {
+          if (options.exclude?.test(sourcePath)) {
             return
           }
 
@@ -64,7 +64,7 @@ export default declare(function snackBabelPlugin(
                 ? node.loc.start.line +
                   (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
                 : ''
-              key = `${styleIndex}:${basename(sourceFileName)}:${lineNumbers}`
+              key = `${styleIndex}:${basename(sourcePath)}:${lineNumbers}`
             }
             sheetStyles[key] = style
             return readStyleExpr(key)
@@ -96,7 +96,7 @@ export default declare(function snackBabelPlugin(
               'contain',
             ],
             ...options,
-            sourceFileName,
+            sourcePath,
             disableThemes: true,
             getFlattenedNode(props) {
               if (!hasImportedView) {

@@ -49,7 +49,7 @@ declare module "@snackui/static" {
         filePath: string;
     };
     export type ExtractorParseProps = SnackOptions & {
-        sourceFileName?: string;
+        sourcePath?: string;
         shouldPrintDebug?: boolean;
         onExtractTag: (props: ExtractTagProps) => void;
         getFlattenedNode: (props: {
@@ -115,7 +115,7 @@ declare module "@snackui/static" {
     export const attrGetName: (attr: ExtractedAttr) => string;
     export const getNameTernary: (x: Ternary) => string;
     export function findComponentName(scope: any): string | undefined;
-    export function isValidThemeHook(jsxPath: NodePath<t.JSXElement>, n: t.MemberExpression, sourceFileName: string): boolean;
+    export function isValidThemeHook(jsxPath: NodePath<t.JSXElement>, n: t.MemberExpression, sourcePath: string): boolean;
     export const isInsideSnackUI: (srcName: string) => boolean;
 }
 
@@ -146,7 +146,7 @@ declare module "@snackui/static" {
 declare module "@snackui/static" {
     import { NodePath } from "@babel/traverse";
     import * as t from "@babel/types";
-    export function getStaticBindingsForScope(scope: NodePath<t.JSXElement>['scope'], whitelist: string[] | undefined, sourceFileName: string, bindingCache: Record<string, string | null>, shouldPrintDebug: boolean): Record<string, any>;
+    export function getStaticBindingsForScope(scope: NodePath<t.JSXElement>['scope'], whitelist: string[] | undefined, sourcePath: string, bindingCache: Record<string, string | null>, shouldPrintDebug: boolean): Record<string, any>;
 }
 
 declare module "@snackui/static" {
@@ -167,7 +167,7 @@ declare module "@snackui/static" {
     import * as t from "@babel/types";
     export type Extractor = ReturnType<typeof createExtractor>;
     export function createExtractor(): {
-        parse: (path: NodePath<t.Program>, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourceFileName, onExtractTag, getFlattenedNode, disableThemes, ...props }: ExtractorParseProps) => null | undefined;
+        parse: (path: NodePath<t.Program>, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableThemes, ...props }: ExtractorParseProps) => null | undefined;
     };
 }
 
@@ -192,8 +192,8 @@ declare module "@snackui/static" {
     import { NodePath } from "@babel/traverse";
     import * as t from "@babel/types";
     import { MediaQueries } from "@snackui/node";
-    export function extractMediaStyle(ternary: Ternary, jsxPath: NodePath<t.JSXElement>, mediaQueries: MediaQueries, sourceFileName: string, importance?: number, shouldPrintDebug?: boolean): StyleObject[] | null;
-    export function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression, sourceFileName: string): boolean;
+    export function extractMediaStyle(ternary: Ternary, jsxPath: NodePath<t.JSXElement>, mediaQueries: MediaQueries, sourcePath: string, importance?: number, shouldPrintDebug?: boolean): StyleObject[] | null;
+    export function isValidMediaCall(jsxPath: NodePath<t.JSXElement>, init: t.Expression, sourcePath: string): boolean;
 }
 
 declare module "@snackui/static" {
@@ -208,7 +208,14 @@ declare module "@snackui/static" {
     import * as t from "@babel/types";
     export const CONCAT_CLASSNAME_IMPORT = "concatClassName";
     export function getInitialFileName(): string;
-    export function extractToClassNames(extractor: Extractor, src: string | Buffer, sourceFileName: string, options: SnackOptions, addDependency: (path: string) => void, shouldPrintDebug: boolean): null | {
+    export function extractToClassNames({ extractor, source, sourcePath, options, shouldPrintDebug, importPath, }: {
+        extractor: Extractor;
+        source: string | Buffer;
+        sourcePath: string;
+        options: SnackOptions;
+        shouldPrintDebug: boolean;
+        importPath: string;
+    }): null | {
         js: string | Buffer;
         styles: string;
         stylesPath?: string;

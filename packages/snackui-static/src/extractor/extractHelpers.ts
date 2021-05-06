@@ -67,7 +67,7 @@ export function findComponentName(scope) {
 export function isValidThemeHook(
   jsxPath: NodePath<t.JSXElement>,
   n: t.MemberExpression,
-  sourceFileName: string
+  sourcePath: string
 ) {
   if (!t.isIdentifier(n.object) || !t.isIdentifier(n.property)) return false
   const bindings = jsxPath.scope.getAllBindings()
@@ -82,7 +82,7 @@ export function isValidThemeHook(
   const importNode = binding.scope.getBinding('useTheme')?.path.parent
   if (!t.isImportDeclaration(importNode)) return false
   if (importNode.source.value !== 'snackui') {
-    if (!isInsideSnackUI(sourceFileName)) {
+    if (!isInsideSnackUI(sourcePath)) {
       return false
     }
   }

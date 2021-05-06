@@ -15,8 +15,8 @@ const snackuiConstants = {
 
 const isLocalImport = (path: string) => path.startsWith('.') || path.startsWith('/')
 
-function resolveImportPath(sourceFileName: string, path: string) {
-  const sourceDir = dirname(sourceFileName)
+function resolveImportPath(sourcePath: string, path: string) {
+  const sourceDir = dirname(sourcePath)
   if (isLocalImport(path)) {
     if (extname(path) === '') {
       path += '.js'
@@ -40,7 +40,7 @@ function importModule(path: string) {
 export function getStaticBindingsForScope(
   scope: NodePath<t.JSXElement>['scope'],
   whitelist: string[] = [],
-  sourceFileName: string,
+  sourcePath: string,
   bindingCache: Record<string, string | null>,
   shouldPrintDebug: boolean
 ): Record<string, any> {
@@ -65,7 +65,7 @@ export function getStaticBindingsForScope(
         }
         continue
       }
-      const moduleName = resolveImportPath(sourceFileName, importPath)
+      const moduleName = resolveImportPath(sourcePath, importPath)
       const isOnWhitelist = whitelist.some((test) => moduleName.endsWith(test))
       if (!isOnWhitelist) continue
       const src = importModule(moduleName)
@@ -95,7 +95,7 @@ export function getStaticBindingsForScope(
         continue
       }
 
-      const moduleName = resolveImportPath(sourceFileName, sourceModule.sourceModule)
+      const moduleName = resolveImportPath(sourcePath, sourceModule.sourceModule)
       const isOnWhitelist = whitelist.some((test) => moduleName.endsWith(test))
 
       // TODO we could cache this at the file level.. and check if its been touched since
@@ -104,7 +104,7 @@ export function getStaticBindingsForScope(
         const src = importModule(moduleName)
         if (!src) {
           console.log(
-            `⚠️ missing file ${moduleName} via ${sourceFileName} import ${sourceModule.sourceModule}?`
+            `⚠️ missing file ${moduleName} via ${sourcePath} import ${sourceModule.sourceModule}?`
           )
           return {}
         }

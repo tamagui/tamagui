@@ -3,7 +3,7 @@ process.env.SNACKUI_COMPILE_PROCESS = '1'
 import { extname } from 'path'
 
 import { SnackOptions, createExtractor, extractToClassNames } from '@snackui/static'
-import { getOptions } from 'loader-utils'
+import { getOptions, getRemainingRequest } from 'loader-utils'
 
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
@@ -11,16 +11,18 @@ const extractor = createExtractor()
 const stylesByFile = new Map<string, string>()
 const stylePathToFilePath = new Map<string, string>()
 
-export default function snackLoader(this: any, content: string) {
+let index = 0
+
+export default function snackLoader(this: any, source: string) {
   this.cacheable()
   const callback = this.async()
   const options: SnackOptions = { ...getOptions(this) }
-  const sourcePath = this.resourcePath
-  const startsWithComment = content[0] === '/' && content[1] === '/'
+  const sourcePath = `${this.resourcePath}`
+  const startsWithComment = source[0] === '/' && source[1] === '/'
   const shouldPrintDebug =
     (!!process.env.DEBUG &&
       (process.env.DEBUG_FILE ? sourcePath.includes(process.env.DEBUG_FILE) : true)) ||
-    (startsWithComment && content.startsWith('// debug'))
+    (startsWithComment && source.startsWith('// debug'))
 
   if (options.cssPath) {
     const out = stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
@@ -33,22 +35,28 @@ export default function snackLoader(this: any, content: string) {
 
   if (
     extname(sourcePath) !== '.tsx' ||
-    (startsWithComment && content.startsWith('// snackui-ignore'))
+    (startsWithComment && source.startsWith('// snackui-ignore'))
   ) {
-    return callback(null, content)
+    return callback(null, source)
   }
 
-  const extracted = extractToClassNames(
+  const remReq = getRemainingRequest(this)
+  const cssPath = `${sourcePath}.${index++}.css`
+  const importPath = `${cssPath}!=!snackui-loader?cssPath=${cssPath}!${remReq}`
+  if (shouldPrintDebug) {
+    console.log('importPath', importPath)
+  }
+  const extracted = extractToClassNames({
     extractor,
-    content,
+    source,
     sourcePath,
+    importPath,
     options,
-    this.addDependency,
-    shouldPrintDebug
-  )
+    shouldPrintDebug,
+  })
 
   if (!extracted) {
-    return callback(null, content)
+    return callback(null, source)
   }
 
   if (extracted.stylesPath) {

@@ -29,29 +29,36 @@ export function getInitialFileName() {
 
 const mergeStyleGroups = [new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset'])]
 
-export function extractToClassNames(
-  extractor: Extractor,
-  src: string | Buffer,
-  sourceFileName: string,
-  options: SnackOptions,
-  addDependency: (path: string) => void,
+export function extractToClassNames({
+  extractor,
+  source,
+  sourcePath,
+  options,
+  shouldPrintDebug,
+  importPath,
+}: {
+  extractor: Extractor
+  source: string | Buffer
+  sourcePath: string
+  options: SnackOptions
   shouldPrintDebug: boolean
-): null | {
+  importPath: string
+}): null | {
   js: string | Buffer
   styles: string
   stylesPath?: string
   ast: t.File
   map: any // RawSourceMap from 'source-map'
 } {
-  if (typeof src !== 'string') {
-    throw new Error('`src` must be a string of javascript')
+  if (typeof source !== 'string') {
+    throw new Error('`source` must be a string of javascript')
   }
-  if (!sourceFileName.endsWith('sx')) {
+  if (!sourcePath.endsWith('sx')) {
     return null
   }
   invariant(
-    typeof sourceFileName === 'string' && path.isAbsolute(sourceFileName),
-    '`sourceFileName` must be an absolute path to a .js file'
+    typeof sourcePath === 'string' && path.isAbsolute(sourcePath),
+    '`sourcePath` must be an absolute path to a .js file'
   )
 
   const shouldLogTiming = shouldPrintDebug || options.logTimings
@@ -62,9 +69,9 @@ export function extractToClassNames(
   let ast: t.File
 
   try {
-    ast = babelParse(src)
+    ast = babelParse(source)
   } catch (err) {
-    console.error('babel parse error:', sourceFileName)
+    console.error('babel parse error:', sourcePath)
     throw err
   }
 
@@ -78,7 +85,7 @@ export function extractToClassNames(
   traverse(ast, {
     Program(programPath) {
       extractor.parse(programPath, {
-        sourceFileName,
+        sourcePath,
         shouldPrintDebug,
         ...options,
         getFlattenedNode: ({ isTextView }) => {
@@ -167,7 +174,7 @@ export function extractToClassNames(
                   attr.value,
                   jsxPath,
                   mediaQueries,
-                  sourceFileName,
+                  sourcePath,
                   lastMediaImportance,
                   shouldPrintDebug
                 )
@@ -269,10 +276,6 @@ export function extractToClassNames(
     .trim()
 
   if (styles) {
-    // add import to styles file
-    // otherwise we write out to fs to unique place
-    const cssPath = `${sourceFileName}.${index++}.css`
-    const importPath = `${cssPath}!=!snackui-loader?cssPath=${cssPath}!${sourceFileName}`
     ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
   }
 
@@ -280,12 +283,12 @@ export function extractToClassNames(
     ast,
     {
       concise: false,
-      filename: sourceFileName,
+      filename: sourcePath,
       retainLines: false,
-      sourceFileName,
+      sourceFileName: sourcePath,
       sourceMaps: true,
     },
-    src
+    source
   )
 
   if (shouldPrintDebug) {
@@ -297,7 +300,7 @@ export function extractToClassNames(
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log(`  🍑 (${Date.now() - start}ms) ${optimized} optimized, ${flattened} flattened - used ${memUsed}MB memory -- ${basename(sourceFileName)} [SnackUI]`)
+    console.log(`  🍑 (${Date.now() - start}ms) ${optimized} optimized, ${flattened} flattened - used ${memUsed}MB memory -- ${basename(sourcePath)} [SnackUI]`)
   }
 
   return {

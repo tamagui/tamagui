@@ -42,7 +42,7 @@ export type ExtractTagProps = {
 }
 
 export type ExtractorParseProps = SnackOptions & {
-  sourceFileName?: string
+  sourcePath?: string
   shouldPrintDebug?: boolean
   onExtractTag: (props: ExtractTagProps) => void
   getFlattenedNode: (props: { isTextView: boolean }) => string
