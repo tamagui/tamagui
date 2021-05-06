@@ -25,7 +25,6 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
 
   const ref = React.useRef<HTMLElement>(null)
   React.useLayoutEffect(() => {
-    console.log('what', ref.current)
     if (!ref.current) {
       return
     }
