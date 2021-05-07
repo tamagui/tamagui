@@ -5,7 +5,35 @@ declare module "@snackui/helpers" {
 }
 
 declare module "@snackui/helpers" {
+    export const stylePropsTransform: {
+        x: boolean;
+        y: boolean;
+        perspective: boolean;
+        scale: boolean;
+        scaleX: boolean;
+        scaleY: boolean;
+        skewX: boolean;
+        skewY: boolean;
+        matrix: boolean;
+        rotate: boolean;
+        rotateY: boolean;
+        rotateX: boolean;
+        rotateZ: boolean;
+    };
     export const stylePropsView: Readonly<{
+        x: boolean;
+        y: boolean;
+        perspective: boolean;
+        scale: boolean;
+        scaleX: boolean;
+        scaleY: boolean;
+        skewX: boolean;
+        skewY: boolean;
+        matrix: boolean;
+        rotate: boolean;
+        rotateY: boolean;
+        rotateX: boolean;
+        rotateZ: boolean;
         pointerEvents: boolean;
         userSelect: boolean;
         cursor: boolean;
@@ -35,12 +63,6 @@ declare module "@snackui/helpers" {
         borderWidth: boolean;
         opacity: boolean;
         transform: boolean;
-        transformMatrix: boolean;
-        rotation: boolean;
-        scaleX: boolean;
-        scaleY: boolean;
-        translateX: boolean;
-        translateY: boolean;
         alignContent: boolean;
         alignItems: boolean;
         alignSelf: boolean;
@@ -127,6 +149,19 @@ declare module "@snackui/helpers" {
         textShadowOffset: boolean;
         textShadowRadius: boolean;
         textTransform: boolean;
+        x: boolean;
+        y: boolean;
+        perspective: boolean;
+        scale: boolean;
+        scaleX: boolean;
+        scaleY: boolean;
+        skewX: boolean;
+        skewY: boolean;
+        matrix: boolean;
+        rotate: boolean;
+        rotateY: boolean;
+        rotateX: boolean;
+        rotateZ: boolean;
         pointerEvents: boolean;
         userSelect: boolean;
         cursor: boolean;
@@ -156,12 +191,6 @@ declare module "@snackui/helpers" {
         borderWidth: boolean;
         opacity: boolean;
         transform: boolean;
-        transformMatrix: boolean;
-        rotation: boolean;
-        scaleX: boolean;
-        scaleY: boolean;
-        translateX: boolean;
-        translateY: boolean;
         alignContent: boolean;
         alignItems: boolean;
         alignSelf: boolean;
@@ -231,6 +260,19 @@ declare module "@snackui/helpers" {
         textShadowOffset: boolean;
         textShadowRadius: boolean;
         textTransform: boolean;
+        x: boolean;
+        y: boolean;
+        perspective: boolean;
+        scale: boolean;
+        scaleX: boolean;
+        scaleY: boolean;
+        skewX: boolean;
+        skewY: boolean;
+        matrix: boolean;
+        rotate: boolean;
+        rotateY: boolean;
+        rotateX: boolean;
+        rotateZ: boolean;
         pointerEvents: boolean;
         userSelect: boolean;
         cursor: boolean;
@@ -260,12 +302,6 @@ declare module "@snackui/helpers" {
         borderWidth: boolean;
         opacity: boolean;
         transform: boolean;
-        transformMatrix: boolean;
-        rotation: boolean;
-        scaleX: boolean;
-        scaleY: boolean;
-        translateX: boolean;
-        translateY: boolean;
         alignContent: boolean;
         alignItems: boolean;
         alignSelf: boolean;

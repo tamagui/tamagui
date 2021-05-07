@@ -1,14 +1,20 @@
-import { stylePropsText, stylePropsTextOnly } from '@snackui/helpers'
+import { stylePropsText, stylePropsTextOnly, stylePropsTransform } from '@snackui/helpers'
 import React, { memo, useMemo } from 'react'
 import { Text as ReactText, TextProps as ReactTextProps, TextStyle } from 'react-native'
 
 import { isWeb } from '../platform'
+import { TransformStyleProps, mergeTransform } from './Stacks'
+
+// TODO merge this with stacks and just make it a stack basically that renders to a Text ultimately,
+// should save a lot of code overhead and bugs, and fix pseudo styles
+
+type EnhancedTextStyle = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps
 
 export type TextProps = Omit<ReactTextProps, 'style'> &
-  Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
-    hoverStyle?: TextStyle | null
-    pressStyle?: TextStyle | null
-    focusStyle?: TextStyle | null
+  EnhancedTextStyle & {
+    hoverStyle?: EnhancedTextStyle | null
+    pressStyle?: EnhancedTextStyle | null
+    focusStyle?: EnhancedTextStyle | null
     display?: TextStyle['display'] | 'inherit'
     ellipse?: boolean
     selectable?: boolean
@@ -87,24 +93,6 @@ const styleProps = {
   },
 }
 
-if (process.env.IS_STATIC) {
-  // @ts-ignore
-  Text.staticConfig = {
-    isText: true,
-    validStyles: {
-      ...stylePropsText,
-      ...webOnlySpecificStyleKeys,
-    },
-    defaultProps: defaultStyle,
-    expansionProps: {
-      selectable: selectableStyle,
-      ellipse: getEllipse,
-    },
-  }
-}
-
-const emptyObj = Object.freeze({})
-
 export const useTextStyle = (
   allProps: TextProps,
   onlyTextSpecificStyle?: boolean,
@@ -120,9 +108,8 @@ export const useTextStyle = (
 // somewhat optimized to avoid creating objects unless necessary
 
 const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextStyle] => {
-  let props: TextProps | null = null
-  let style: TextStyle | null = null
-
+  let props: TextProps = {}
+  let style: TextStyle = {}
   for (const key in allProps) {
     if (!isWeb && key in webOnlySpecificStyleKeys) {
       continue
@@ -139,7 +126,6 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextS
           continue
         }
         if (key === 'ellipse') {
-          props = props || {}
           Object.assign(props, ellipsePropsNative)
           continue
         }
@@ -147,7 +133,10 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextS
           continue
         }
       }
-      style = style || {}
+      if (key in stylePropsTransform) {
+        mergeTransform(styleProps, key, val)
+        continue
+      }
       // style values
       if (key === 'selectable') {
         Object.assign(style, selectableStyle)
@@ -165,10 +154,25 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextS
       }
       style[key] = val
     } else {
-      props = props || {}
       props[key] = allProps[key]
     }
   }
+  return [props, style]
+}
 
-  return [props || emptyObj, style || emptyObj] as any
+if (process.env.IS_STATIC) {
+  // @ts-ignore
+  Text.staticConfig = {
+    isText: true,
+    postProcessStyles: (styles) => getTextStyle(styles, styleProps.all)[1],
+    validStyles: {
+      ...stylePropsText,
+      ...webOnlySpecificStyleKeys,
+    },
+    defaultProps: defaultStyle,
+    expansionProps: {
+      selectable: selectableStyle,
+      ellipse: getEllipse,
+    },
+  }
 }

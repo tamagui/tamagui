@@ -1,4 +1,4 @@
-import { stylePropsView } from '@snackui/helpers'
+import { stylePropsTransform, stylePropsView } from '@snackui/helpers'
 import React, {
   RefObject,
   forwardRef,
@@ -27,15 +27,33 @@ import { Spacing } from './Spacer'
 
 const displayContentsStyle = { display: 'contents' }
 
+export type TransformStyleProps = {
+  x?: number
+  y?: number
+  perspective?: number
+  scale?: number
+  scaleX?: number
+  scaleY?: number
+  skewX?: string
+  skewY?: string
+  matrix?: number[]
+  rotate?: string
+  rotateY?: string
+  rotateX?: string
+  rotateZ?: string
+}
+
+type EnhancedStyleProps = Omit<ViewStyle, 'display'> & TransformStyleProps
+
 export type StackProps = Omit<
-  Omit<ViewStyle, 'display'> &
+  EnhancedStyleProps &
     Omit<ViewProps, 'display'> & {
       ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)
       animated?: boolean
       fullscreen?: boolean
       children?: any
-      hoverStyle?: ViewStyle | null
-      pressStyle?: ViewStyle | null
+      hoverStyle?: EnhancedStyleProps | null
+      pressStyle?: EnhancedStyleProps | null
       // focusStyle?: ViewStyle | null
       onHoverIn?: (e: MouseEvent) => any
       onHoverOut?: (e: MouseEvent) => any
@@ -52,8 +70,8 @@ export type StackProps = Omit<
       contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
       display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
     },
-  // because who tf uses alignContent or backfaceVisibility
-  'alignContent' | 'backfaceVisibility'
+  // because who tf uses backfaceVisibility
+  'backfaceVisibility'
 >
 
 const fullscreenStyle: StackProps = {
@@ -68,29 +86,61 @@ const disabledStyle: StackProps = {
   userSelect: 'none',
 }
 
-// somewhat optimized to avoid object creation
 const useViewStylePropsSplit = (props: { [key: string]: any }) => {
   const activeTheme = useContext(ActiveThemeContext)
-  const activeThemeInvert = invertStyleVariableToValue[activeTheme.name]
-
+  const themeVal = invertStyleVariableToValue[activeTheme.name]
   return useMemo(() => {
-    let styleProps: ViewStyle | null = null
-    let viewProps: ViewProps | null = null
-    for (const key in props) {
-      const val = props[key]
-      if (stylePropsView[key]) {
-        styleProps = styleProps || {}
-        styleProps[key] = activeThemeInvert?.[val] ?? val
-      } else {
-        viewProps = viewProps || {}
-        viewProps[key] = props[key]
-      }
-    }
-    if (styleProps) {
-      fixNativeShadow(styleProps, true)
-    }
-    return [viewProps, styleProps] as const
+    return getStackStyle(props, themeVal)
   }, [props, activeTheme])
+}
+
+const mapTransformKeys = {
+  x: 'translateX',
+  y: 'translateY',
+}
+
+export const mergeTransform = (styleProps: any, key: string, val: any) => {
+  styleProps.transform = styleProps.transform || []
+  styleProps.transform.push({ [mapTransformKeys[key] || key]: val })
+  if (key in styleProps) {
+    delete styleProps[key]
+  }
+}
+
+const getStackStyle = (props: { [key: string]: any }, themeVal?: { [key: string]: string }) => {
+  let styleProps: ViewStyle & { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } = {}
+  let viewProps: ViewProps = {}
+  for (const key in props) {
+    const val = props[key]
+    if (key in stylePropsTransform) {
+      mergeTransform(styleProps, key, val)
+      continue
+    }
+    if (key in stylePropsView) {
+      if (key == 'transform') {
+        styleProps.transform = styleProps.transform ? [...styleProps.transform, ...val] : val
+      } else {
+        styleProps[key] = themeVal?.[val] ?? val
+      }
+      continue
+    }
+    if (val && (key === 'hoverStyle' || key === 'pressStyle')) {
+      styleProps[key] = val
+      fixNativeShadow(val, true)
+      for (const subKey in val) {
+        if (subKey in stylePropsTransform) {
+          mergeTransform(val, subKey, val[subKey])
+          continue
+        }
+      }
+      continue
+    }
+    viewProps[key] = props[key]
+  }
+  if (styleProps) {
+    fixNativeShadow(styleProps, true)
+  }
+  return [viewProps, styleProps] as const
 }
 
 const mouseUps = new Set<Function>()
@@ -116,16 +166,12 @@ const createStack = ({
   const component = forwardRef<View, StackProps>((props, ref) => {
     const {
       children,
-      animated,
       fullscreen,
       pointerEvents,
       style = null,
-      pressStyle = null,
       onPress,
       onPressIn,
       onPressOut,
-      hoverStyle = null,
-      // focusStyle, // TODO
       onHoverIn,
       onHoverOut,
       spacing,
@@ -136,7 +182,7 @@ const createStack = ({
       onMouseLeave,
     } = props
 
-    const [viewProps, styleProps] = useViewStylePropsSplit(props)
+    const [viewProps, { hoverStyle, pressStyle, ...styleProps }] = useViewStylePropsSplit(props)
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
     if (!internal.current) {
@@ -163,8 +209,11 @@ const createStack = ({
     const styles = [
       sheet.style,
       fullscreen ? fullscreenStyle : null,
-      style,
       styleProps,
+      // in extraction logic, style always gets placed after props, so preserve the order here
+      // if we want to do this *right*, in useViewStylePropsSplit it should track where style key appears,
+      // and actually return two objects: stylePropsBefore, style, stylePropsAfter
+      style,
       state.hover ? hoverStyle : null,
       state.press ? pressStyle : null,
       disabled ? disabledStyle : null,
@@ -314,6 +363,7 @@ const createStack = ({
   if (process.env.IS_STATIC) {
     // @ts-expect-error
     component.staticConfig = {
+      postProcessStyles: (styles) => getStackStyle(styles)[1],
       validStyles: stylePropsView,
       defaultProps: {
         ...defaultProps,

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { useTheme } from '../hooks/useTheme'
 import { StackProps, VStack } from './Stacks'
 
@@ -18,4 +19,11 @@ export function Box(props: BoxProps) {
       {...props}
     />
   )
+}
+
+if (process.env.IS_STATIC) {
+  // @ts-ignore
+  Box.staticConfig = extendStaticConfig(VStack, {
+    neverFlatten: true,
+  })
 }

@@ -44,7 +44,7 @@ beforeAll(async () => {
 //
 // testStyles(test)
 
-test('1. extracts to a div for simple views', () => {
+test('1. extracts to a div for simple views, flat transforms', () => {
   const { test1 } = context
   const out = test1.renderer.toJSON()!
   expect(out).toMatchSnapshot()

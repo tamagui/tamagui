@@ -73,3 +73,24 @@ test('basic conditional extraction', async () => {
   expect(code.includes(`_sheet["0"], x ? _sheet["1"] : _sheet["2"]`)).toBeTruthy()
   expect(code.includes(`_sheet["3"], x ? _sheet["4"] : _sheet["5"]`)).toBeTruthy()
 })
+
+test('flat transform props', async () => {
+  const output = extractBabel(`
+    import { VStack } from 'snackui'
+    export function Test(isLoading) {
+      return (
+        <VStack
+          scale={isLoading ? 1 : 2}
+          x={10}
+          y={20}
+          rotate="10deg"
+        />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code.includes(`  "scale": 2`)).toBeTruthy()
+  expect(code.includes(`  "translateX": 10`)).toBeTruthy()
+  expect(code.includes(`  "translateY": 20`)).toBeTruthy()
+  expect(code.includes(`  "rotate": "10deg"`)).toBeTruthy()
+})

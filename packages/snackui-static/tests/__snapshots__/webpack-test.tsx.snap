@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`1. extracts to a div for simple views 1`] = `
+exports[`1. extracts to a div for simple views, flat transforms 1`] = `
 <div
-  className=" _baCo-19sdxe _boBoLeRa-100px _boBoRiRa-100px _boToLeRa-100px _boToRiRa-100px _boSh-e8nksv _di-flex _fl-1 _flBa-auto _flDi-column test1"
+  className=" _baCo-19sdxe _boBoLeRa-100px _boBoRiRa-100px _boToLeRa-100px _boToRiRa-100px _boSh-e8nksv _di-flex _fl-1 _flBa-auto _flDi-column _tr--hover-scalez2z test1"
 >
   <span
     className=" _di-inline"
@@ -15,25 +15,20 @@ exports[`1. extracts to a div for simple views 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _ovY-hidden _ovX-hidden _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
         "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
-        "overflowX": "hidden",
-        "overflowY": "hidden",
       }
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n _paBo-2px _paTo-2px ease-in-out-top _baCo-1d0hial _to-z14px _paRi-5px _paLe-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
         "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
-        "paddingBottom": "2px",
-        "paddingTop": "2px",
-        "top": "-14px",
       }
     }
   >
@@ -49,25 +44,20 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="css-view-1dbjc4n who _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n who _ovY-hidden _ovX-hidden _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
         "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
-        "overflowX": "hidden",
-        "overflowY": "hidden",
       }
     }
   />,
   <div
-    className="css-view-1dbjc4n ease-in-out-top _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
+    className="css-view-1dbjc4n _baCo-rhzyip _paBo-2px _paTo-2px _to-0px ease-in-out-top _paRi-5px _paLe-5px _boSh-xgwarg _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr"
     style={
       Object {
-        "backgroundColor": "rgba(0,0,0,1.00)",
+        "backgroundColor": "rgba(255,255,255,1.00)",
         "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
-        "paddingBottom": "2px",
-        "paddingTop": "2px",
-        "top": "0px",
       }
     }
   >
@@ -180,10 +170,10 @@ exports[`9. combines with classname 1`] = `
 
 exports[`10. extracts Text 1`] = `
 <span
-  className=" _di-inline _foSi-10px"
+  className=" _di-inline _foSi-12px"
 >
   <span
-    className=" _di-inline _usSe-text"
+    className=" _di-inline"
   >
     <div
       className="_co-18s66rc _foWe-600 _foSi-15px css-text-901oao"

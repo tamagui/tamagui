@@ -295,6 +295,9 @@ declare module "snackui" {
     export type StaticConfig = {
         neverFlatten?: boolean;
         isText?: boolean;
+        postProcessStyles?: (styles: {
+            [key: string]: any;
+        }) => any;
         validStyles?: {
             [key: string]: boolean;
         };
@@ -309,22 +312,19 @@ declare module "snackui" {
     export type StaticComponent<A = any> = ((props: A) => JSX.Element) & {
         staticConfig: StaticConfig;
     };
-    export function extendStaticConfig(a: any, config?: StaticConfig): {
-        isText: any;
-        neverFlatten: any;
-        validStyles: any;
-        defaultProps: any;
-        expansionProps: any;
-    } | undefined;
+    export function extendStaticConfig(a: {
+        staticConfig?: StaticConfig;
+    } | any, config?: StaticConfig): StaticConfig | null;
 }
 
 declare module "snackui" {
     import React from "react";
     import { TextProps as ReactTextProps, TextStyle } from "react-native";
-    export type TextProps = Omit<ReactTextProps, 'style'> & Omit<TextStyle, 'display' | 'backfaceVisibility'> & {
-        hoverStyle?: TextStyle | null;
-        pressStyle?: TextStyle | null;
-        focusStyle?: TextStyle | null;
+    type EnhancedTextStyle = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps;
+    export type TextProps = Omit<ReactTextProps, 'style'> & EnhancedTextStyle & {
+        hoverStyle?: EnhancedTextStyle | null;
+        pressStyle?: EnhancedTextStyle | null;
+        focusStyle?: EnhancedTextStyle | null;
         display?: TextStyle['display'] | 'inherit';
         ellipse?: boolean;
         selectable?: boolean;
@@ -393,13 +393,29 @@ declare module "snackui" {
 declare module "snackui" {
     import { RefObject } from "react";
     import { GestureResponderEvent, View, ViewProps, ViewStyle } from "react-native";
-    export type StackProps = Omit<Omit<ViewStyle, 'display'> & Omit<ViewProps, 'display'> & {
+    export type TransformStyleProps = {
+        x?: number;
+        y?: number;
+        perspective?: number;
+        scale?: number;
+        scaleX?: number;
+        scaleY?: number;
+        skewX?: string;
+        skewY?: string;
+        matrix?: number[];
+        rotate?: string;
+        rotateY?: string;
+        rotateX?: string;
+        rotateZ?: string;
+    };
+    type EnhancedStyleProps = Omit<ViewStyle, 'display'> & TransformStyleProps;
+    export type StackProps = Omit<EnhancedStyleProps & Omit<ViewProps, 'display'> & {
         ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
         animated?: boolean;
         fullscreen?: boolean;
         children?: any;
-        hoverStyle?: ViewStyle | null;
-        pressStyle?: ViewStyle | null;
+        hoverStyle?: EnhancedStyleProps | null;
+        pressStyle?: EnhancedStyleProps | null;
         onHoverIn?: (e: MouseEvent) => any;
         onHoverOut?: (e: MouseEvent) => any;
         onPress?: (e: GestureResponderEvent) => any;
@@ -413,7 +429,8 @@ declare module "snackui" {
         disabled?: boolean;
         contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
         display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
-    }, 'alignContent' | 'backfaceVisibility'>;
+    }, 'backfaceVisibility'>;
+    export const mergeTransform: (styleProps: any, key: string, val: any) => void;
     export const AbsoluteVStack: StaticComponent<StackProps>;
     export const HStack: StaticComponent<StackProps>;
     export const VStack: StaticComponent<StackProps>;
@@ -447,6 +464,9 @@ declare module "snackui" {
 declare module "snackui" {
     export type BoxProps = StackProps;
     export function Box(props: BoxProps): JSX.Element;
+    export namespace Box {
+        var staticConfig: import("helpers/StaticConfig").StaticConfig | null;
+    }
 }
 
 declare module "snackui" {
@@ -624,13 +644,7 @@ declare module "snackui" {
     export type ParagraphProps = SizableTextProps;
     export const Paragraph: {
         (props: SizableTextProps): JSX.Element;
-        staticConfig: {
-            isText: any;
-            neverFlatten: any;
-            validStyles: any;
-            defaultProps: any;
-            expansionProps: any;
-        } | undefined;
+        staticConfig: import("helpers/StaticConfig").StaticConfig | null;
     };
 }
 
@@ -642,48 +656,24 @@ declare module "snackui" {
     export type TableProps = StackProps;
     export const Table: {
         (props: StackProps): JSX.Element;
-        staticConfig: {
-            isText: any;
-            neverFlatten: any;
-            validStyles: any;
-            defaultProps: any;
-            expansionProps: any;
-        } | undefined;
+        staticConfig: import("helpers/StaticConfig").StaticConfig | null;
     };
     export type TableRowProps = StackProps;
     export const TableRow: {
         (props: TableRowProps): JSX.Element;
-        staticConfig: {
-            isText: any;
-            neverFlatten: any;
-            validStyles: any;
-            defaultProps: any;
-            expansionProps: any;
-        } | undefined;
+        staticConfig: import("helpers/StaticConfig").StaticConfig | null;
     };
     export type TableCellProps = StackProps & TextProps;
     export function TableCell({ color, fontSize, fontWeight, fontStyle, fontFamily, textAlign, fontVariant, selectable, ellipse, children, lineHeight, ...props }: TableCellProps): JSX.Element;
     export type TableHeadRowProps = StackProps;
     export const TableHeadRow: {
         (props: TableHeadRowProps): JSX.Element;
-        staticConfig: {
-            isText: any;
-            neverFlatten: any;
-            validStyles: any;
-            defaultProps: any;
-            expansionProps: any;
-        } | undefined;
+        staticConfig: import("helpers/StaticConfig").StaticConfig | null;
     };
     export type TableHeadTextProps = TextProps;
     export const TableHeadText: {
         (props: TableHeadTextProps): JSX.Element;
-        staticConfig: {
-            isText: any;
-            neverFlatten: any;
-            validStyles: any;
-            defaultProps: any;
-            expansionProps: any;
-        } | undefined;
+        staticConfig: import("helpers/StaticConfig").StaticConfig | null;
     };
 }
 

@@ -6,8 +6,8 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { statSync } from 'fs-extra'
-import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
+import { StaticConfig } from 'snackui'
 
 import { pseudos } from '../getStylesAtomic'
 import { ExtractedAttr, ExtractedAttrAttr, ExtractorParseProps, Ternary } from '../types'
@@ -189,14 +189,14 @@ export function createExtractor() {
             }
           }
 
-          const component = validComponents[node.name.name]
+          const component = validComponents[node.name.name] as { staticConfig?: StaticConfig }
           if (!component || !component.staticConfig) {
             return
           }
 
           const { staticConfig } = component
           const originalNodeName = node.name.name
-          const isTextView = staticConfig.isText ?? false
+          const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
           const domNode = getFlattenedNode({ isTextView })
 
@@ -306,9 +306,13 @@ export function createExtractor() {
           const hasDeopt = (obj: Object) => {
             return Object.keys(obj).some(isDeoptedProp)
           }
-          const omitExcludeStyles = (obj: Object) => {
+
+          const postProcessStyles = (obj: Object) => {
             if (!excludeProps.size) {
               return obj
+            }
+            if (staticConfig.postProcessStyles) {
+              obj = staticConfig.postProcessStyles(obj)
             }
             const res = {}
             for (const key in obj) {
@@ -429,8 +433,8 @@ export function createExtractor() {
                   }
 
                   if (aStyle !== FAILED_EVAL && cStyle !== FAILED_EVAL) {
-                    const alt = omitExcludeStyles(aStyle)
-                    const cons = omitExcludeStyles(cStyle)
+                    const alt = postProcessStyles(aStyle)
+                    const cons = postProcessStyles(cStyle)
                     const ternary: Ternary = {
                       test,
                       remove() {
@@ -472,7 +476,7 @@ export function createExtractor() {
                         // if its value it evaluates to nada
                         return null
                       }
-                      const cons = omitExcludeStyles(spreadStyle)
+                      const cons = postProcessStyles(spreadStyle)
                       return {
                         type: 'ternary',
                         value: {
@@ -821,6 +825,10 @@ export function createExtractor() {
             }
           }
 
+          if (staticConfig.postProcessStyles) {
+            viewStyles = staticConfig.postProcessStyles(viewStyles)
+          }
+
           if (shouldPrintDebug) {
             console.log('  viewStyles', inlinePropCount, viewStyles)
           }
@@ -879,8 +887,11 @@ export function createExtractor() {
               const normalized = normalizeTernaries(ternaries)
               ternaries = []
 
-              function applyStyleExpansions(styleObject: Object) {
-                const res = { ...styleObject }
+              function postProcess(styleObject: Object) {
+                let res = { ...styleObject }
+                if (staticConfig.postProcessStyles) {
+                  res = staticConfig.postProcessStyles(res)
+                }
                 for (const key in styleObject) {
                   // run expansions
                   const expandedStyle = getStyleExpansion(fullProps, key, styleObject[key])
@@ -897,8 +908,8 @@ export function createExtractor() {
                   type: 'ternary' as const,
                   value: {
                     ...rest,
-                    alternate: alternate ? applyStyleExpansions(alternate) : null,
-                    consequent: consequent ? applyStyleExpansions(consequent) : null,
+                    alternate: alternate ? postProcess(alternate) : null,
+                    consequent: consequent ? postProcess(consequent) : null,
                   },
                 }
               })

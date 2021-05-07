@@ -46,6 +46,9 @@ export function Test1() {
       backgroundColor="red"
       shadowRadius={10}
       shadowColor="#000"
+      hoverStyle={{
+        scale: 2,
+      }}
     >
       {child}
     </VStack>

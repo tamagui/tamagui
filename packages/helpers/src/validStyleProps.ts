@@ -1,3 +1,20 @@
+// flat transform props
+export const stylePropsTransform = {
+  x: true,
+  y: true,
+  perspective: true,
+  scale: true,
+  scaleX: true,
+  scaleY: true,
+  skewX: true,
+  skewY: true,
+  matrix: true,
+  rotate: true,
+  rotateY: true,
+  rotateX: true,
+  rotateZ: true,
+}
+
 export const stylePropsView = Object.freeze({
   pointerEvents: true,
   userSelect: true,
@@ -28,12 +45,6 @@ export const stylePropsView = Object.freeze({
   borderWidth: true,
   opacity: true,
   transform: true,
-  transformMatrix: true,
-  rotation: true,
-  scaleX: true,
-  scaleY: true,
-  translateX: true,
-  translateY: true,
   alignContent: true,
   alignItems: true,
   alignSelf: true,
@@ -86,6 +97,7 @@ export const stylePropsView = Object.freeze({
   shadowOffset: true,
   shadowOpacity: true,
   shadowRadius: true,
+  ...stylePropsTransform,
 })
 
 export const stylePropsTextOnly = Object.freeze({

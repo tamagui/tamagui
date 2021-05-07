@@ -13,6 +13,7 @@ export function concatClassName(className: string, ...propObjects: any[]) {
   const final: string[] = []
   const names = className.split(' ')
   const hasPropObjects = propObjects.length
+
   for (let i = names.length - 1; i >= 0; i--) {
     const name = names[i]
     if (!name || name === ' ') continue
