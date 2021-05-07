@@ -1,9 +1,10 @@
-import * as React from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { LayoutRectangle } from 'react-native'
+
 import { isWeb } from '../platform'
 
 export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } = {}) => {
-  const [layout, setLayout] = React.useState<LayoutRectangle | null>(null)
+  const [layout, setLayout] = useState<LayoutRectangle | null>(null)
   if (!isWeb) {
     return {
       layout,
@@ -11,14 +12,14 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
     }
   }
 
-  const ref = React.useRef<HTMLElement>(null)
-  React.useLayoutEffect(() => {
+  const ref = useRef<HTMLElement>(null)
+
+  useLayoutEffect(() => {
     if (!ref.current) {
       return
     }
     const ro = new ResizeObserver(([first] = []) => {
-      if (!first)
-        return
+      if (!first) return
       // setLayout(first.contentRect)
       setLayout((prev) => {
         let next
@@ -33,6 +34,7 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
         }
         if (next) {
           props.onLayout?.(next)
+          return next
         }
         return prev
       })

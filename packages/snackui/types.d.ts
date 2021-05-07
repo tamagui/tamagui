@@ -211,17 +211,16 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    import * as React from "react";
     import { LayoutRectangle } from "react-native";
     export const useLayout: (props?: {
         onLayout?: ((rect: LayoutRectangle) => void) | undefined;
     }) => {
         layout: LayoutRectangle | null;
-        onLayout: React.Dispatch<React.SetStateAction<LayoutRectangle | null>>;
+        onLayout: import("react").Dispatch<import("react").SetStateAction<LayoutRectangle | null>>;
         ref?: undefined;
     } | {
         layout: LayoutRectangle | null;
-        ref: React.RefObject<HTMLElement>;
+        ref: import("react").RefObject<HTMLElement>;
         onLayout?: undefined;
     };
 }
