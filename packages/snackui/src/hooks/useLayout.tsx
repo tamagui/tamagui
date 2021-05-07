@@ -18,15 +18,14 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
     if (!ref.current) {
       return
     }
-    const ro = new ResizeObserver(([first] = []) => {
-      if (!first) return
-      // setLayout(first.contentRect)
+
+    const update = (rect) => {
       setLayout((prev) => {
         let next
         if (!prev) {
-          next = first.contentRect
+          next = rect
         } else {
-          const { x, y, width, height } = first.contentRect
+          const { x, y, width, height } = rect
           // don't set new layout state unless the layout has actually changed
           if (x !== prev.x || y !== prev.y || width !== prev.width || height !== prev.height) {
             next = { x, y, width, height }
@@ -38,17 +37,28 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
         }
         return prev
       })
+    }
+
+    const ro = new ResizeObserver(([{ contentRect }] = []) => {
+      update(contentRect)
     })
     ro.observe(ref.current)
+
+    const io = new IntersectionObserver(([{ boundingClientRect }]) => {
+      update(boundingClientRect)
+    })
+    io.observe(ref.current)
+
     //
-    const next = {
-      width: ref.current.clientWidth,
-      height: ref.current.clientHeight,
-    }
-    setLayout(next as any)
-    props.onLayout?.(next as any)
+    // const next = {
+    //   width: ref.current.clientWidth,
+    //   height: ref.current.clientHeight,
+    // }
+    // setLayout(next as any)
+    // props.onLayout?.(next as any)
     return () => {
       ro.disconnect()
+      io.disconnect()
     }
   }, [ref.current])
 
