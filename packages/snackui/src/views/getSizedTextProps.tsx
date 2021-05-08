@@ -1,9 +1,13 @@
 import { TextProps } from 'snackui/src/views/Text'
-import { getSize, SizableTextProps } from './Size'
+
+import { SizableTextProps, getSize } from './Size'
 
 // doing this in a lengthy manner because we need to preserve order
 
-export const getSizedTextProps = (props: SizableTextProps, defaults: SizableTextProps): any => {
+export const getSizedTextProps = (
+  props: SizableTextProps,
+  defaults: SizableTextProps = {}
+): any => {
   const sizeAmt = getSize(props.size ?? 1)
   const next: TextProps = {}
   for (const key in defaults) {
@@ -19,7 +23,9 @@ export const getSizedTextProps = (props: SizableTextProps, defaults: SizableText
     }
     if (key === 'sizeLineHeight') {
       const lineHeightScaleWithSize = -(2 - sizeAmt) * 0.55
-      next.lineHeight = Math.round((26 + lineHeightScaleWithSize) * sizeAmt * (props.sizeLineHeight ?? 1))
+      next.lineHeight = Math.round(
+        (26 + lineHeightScaleWithSize) * sizeAmt * (props.sizeLineHeight ?? 1)
+      )
       next.marginVertical = -next.lineHeight * 0.08
       continue
     }

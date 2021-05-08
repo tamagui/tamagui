@@ -649,7 +649,7 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export const getSizedTextProps: (props: SizableTextProps) => any;
+    export const getSizedTextProps: (props: SizableTextProps, defaults?: SizableTextProps) => any;
 }
 
 declare module "snackui" {
