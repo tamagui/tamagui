@@ -1,4 +1,3 @@
-// debug
 import React from 'react'
 
 import { useTheme } from '../hooks/useTheme'
@@ -15,9 +14,9 @@ export const Title = (props: TitleProps) => {
     <Paragraph
       fontWeight="300"
       marginVertical={0}
+      sizeLineHeight={0.7}
       {...props}
       size={size}
-      sizeLineHeight={props.sizeLineHeight ?? 0.7}
     />
   )
 }

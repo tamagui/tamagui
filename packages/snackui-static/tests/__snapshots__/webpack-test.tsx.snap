@@ -185,12 +185,12 @@ exports[`10. extracts Text 1`] = `
   className=" _di-inline _foSi-12px"
 >
   <div
-    className="css-text-901oao"
+    className="css-text-901oao r-display-1471scf r-userSelect-1xnzce8"
     dir="auto"
     onClick={[Function]}
   >
     <span
-      className="_foWe-600 _foSi-15px _di-inline _col-18s66rc css-text-901oao css-textHasAncestor-16my406"
+      className="_foWe-600 _foSi-15px _di-inline _col-18s66rc css-text-901oao css-textHasAncestor-16my406 r-display-1471scf"
       onClick={[Function]}
     >
       hello

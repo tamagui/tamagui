@@ -27,7 +27,7 @@ declare module "@snackui/static" {
         logTimings?: boolean;
         cssPath?: string;
         cssData?: any;
-        deoptProps?: string[];
+        deoptProps?: Set<string>;
         excludeProps?: string[];
     }
     export type ExtractedAttrAttr = {

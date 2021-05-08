@@ -5,8 +5,10 @@ import { TextStyle, ViewStyle } from 'react-native'
 export type StaticConfig = {
   neverFlatten?: boolean
   isText?: boolean
-  postProcessStyles?: (styles: { [key: string]: any }) => any
+  preProcessProps?: any
+  postProcessStyles?: any
   validStyles?: { [key: string]: boolean }
   validPropsExtra?: { [key: string]: boolean }
   defaultProps?: any
+  deoptProps?: Set<string>
 }

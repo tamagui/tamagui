@@ -20,7 +20,7 @@ export interface SnackOptions {
   // probably non user options
   cssPath?: string
   cssData?: any
-  deoptProps?: string[]
+  deoptProps?: Set<string>
   excludeProps?: string[]
 }
 

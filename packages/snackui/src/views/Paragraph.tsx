@@ -16,13 +16,19 @@ const defaultProps: ParagraphProps = {
 
 export const Paragraph = (props: SizableTextProps) => {
   const theme = useTheme()
-  return <Text {...defaultProps} color={theme.color} {...getSizedTextProps(props)} {...props} />
+  const finalProps = getSizedTextProps({ ...defaultProps, ...props })
+  if (props['children'] === 'San Francisco') {
+    console.log('got', props, finalProps)
+  }
+  return <Text color={theme.color} {...finalProps} />
 }
 
 if (process.env.IS_STATIC) {
   // @ts-ignore
   Paragraph.staticConfig = extendStaticConfig(Text, {
     defaultProps,
+    postProcessStyles: getSizedTextProps,
+    // preProcessProps: getSizedTextProps,
     neverFlatten: true,
   })
 }

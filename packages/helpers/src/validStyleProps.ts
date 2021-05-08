@@ -125,3 +125,9 @@ export const stylePropsText = Object.freeze({
 })
 
 export const stylePropsAll = stylePropsText
+
+export const validStyles = {
+  hoverStyle: true,
+  pressStyle: true,
+  ...stylePropsView,
+}

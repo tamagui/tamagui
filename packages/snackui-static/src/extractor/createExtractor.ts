@@ -97,18 +97,6 @@ export function createExtractor() {
         themes = changed || !themes ? require(themesFile).default : themes
       }
       const themeKeys = new Set(themes ? Object.keys(themes[Object.keys(themes)[0]]) : [])
-      const deoptProps = new Set(props.deoptProps ?? [])
-      const excludeProps = new Set(props.excludeProps ?? [])
-      const isExcludedProp = (name: string) => {
-        const res = excludeProps.has(name)
-        if (res && shouldPrintDebug) console.log(`  excluding ${name}`)
-        return res
-      }
-      const isDeoptedProp = (name: string) => {
-        const res = deoptProps.has(name)
-        if (res && shouldPrintDebug) console.log(`  deopting ${name}`)
-        return res
-      }
 
       let doesUseValidImport = false
 
@@ -196,6 +184,23 @@ export function createExtractor() {
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
           const flatNode = getFlattenedNode({ isTextView })
+
+          const deoptProps = new Set([
+            ...(props.deoptProps ?? []),
+            ...(staticConfig.deoptProps ?? []),
+          ])
+          const excludeProps = new Set(props.excludeProps ?? [])
+          const isExcludedProp = (name: string) => {
+            const res = excludeProps.has(name)
+            if (res && shouldPrintDebug) console.log(`  excluding ${name}`)
+            return res
+          }
+
+          const isDeoptedProp = (name: string) => {
+            const res = deoptProps.has(name)
+            if (res && shouldPrintDebug) console.log(`  deopting ${name}`)
+            return res
+          }
 
           if (shouldPrintDebug) {
             console.log(`\n<${originalNodeName} />`)

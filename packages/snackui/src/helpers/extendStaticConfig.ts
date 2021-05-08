@@ -17,9 +17,18 @@ export function extendStaticConfig(
   return {
     isText: config.isText || a.staticConfig.isText || false,
     neverFlatten: config.neverFlatten ?? a.staticConfig.neverFlatten,
+    preProcessProps: !a.staticConfig.preProcessProps
+      ? config.preProcessProps
+      : (props) => {
+          return {
+            ...a.staticConfig.preProcessProps(props),
+            ...config.preProcessProps?.(props),
+          }
+        },
     postProcessStyles: (styles) => {
-      a.staticConfig.postProcessStyles(styles)
-      config.postProcessStyles?.(styles)
+      return a.staticConfig.postProcessStyles(
+        config.postProcessStyles ? config.postProcessStyles(styles) : styles
+      )
     },
     validStyles: {
       ...a.staticConfig.validStyles,

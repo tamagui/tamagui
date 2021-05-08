@@ -1,6 +1,214 @@
 /// <reference lib="dom" />
 /// <reference lib="esnext" />
 declare module "snackui" {
+    export type StaticConfig = {
+        neverFlatten?: boolean;
+        isText?: boolean;
+        preProcessProps?: any;
+        postProcessStyles?: any;
+        validStyles?: {
+            [key: string]: boolean;
+        };
+        validPropsExtra?: {
+            [key: string]: boolean;
+        };
+        defaultProps?: any;
+        deoptProps?: Set<string>;
+    };
+}
+
+declare module "snackui" {
+    export type StaticComponent<A = any> = ((props: A) => JSX.Element) & {
+        staticConfig: StaticConfig;
+    };
+    export function extendStaticConfig(a: {
+        staticConfig?: StaticConfig;
+    } | any, config?: StaticConfig): StaticConfig | null;
+}
+
+declare module "snackui" {
+    import { ViewStyle } from "react-native";
+    export function spacedChildren({ children, spacing, flexDirection, }: {
+        children: any;
+        spacing?: Spacing;
+        flexDirection?: ViewStyle['flexDirection'];
+    }): any;
+}
+
+declare module "snackui" {
+    export const defaultThemes: any;
+}
+
+declare module "snackui" {
+    export const isWeb: boolean;
+    export const isWebIOS: false;
+    export const isChrome: boolean;
+    export const supportsTouchWeb: boolean;
+    export const isTouchDevice: boolean;
+}
+
+declare module "snackui" {
+    export function useConstant<T>(fn: () => T): T;
+}
+
+declare module "snackui" {
+    export function useForceUpdate(): Function;
+}
+
+declare module "snackui" {
+    import React from "react";
+    export interface ThemeObject {
+        [key: string]: any;
+    }
+    export interface Themes {
+        [key: string]: ThemeObject;
+    }
+    type ThemeName = keyof Themes;
+    export let hasConfigured: boolean;
+    export const invertStyleVariableToValue: {
+        [key: string]: {
+            [subKey: string]: string;
+        };
+    };
+    let themes: Themes;
+    export const getThemes: () => Themes;
+    export const configureThemes: (userThemes?: Themes) => void;
+    export type ThemeProps = {
+        name: ThemeName | null;
+        children?: any;
+    };
+    export const Theme: (props: ThemeProps) => any;
+    class ThemeManager {
+        name: string | null;
+        keys: Map<any, Set<string>>;
+        listeners: Map<any, Function>;
+        callbacks: Set<Function>;
+        setActiveTheme(name: string | null): void;
+        track(uuid: any, keys: Set<string>): void;
+        update(): void;
+        onChangeTheme(cb: (name: string | null) => void): () => void;
+        onUpdate(uuid: any, cb: Function): () => void;
+    }
+    export const ThemeManagerContext: React.Context<ThemeManager>;
+    export const useThemeName: () => string;
+    export const useTheme: () => ThemeObject;
+    export const ThemeProvider: (props: {
+        themes: Themes;
+        defaultTheme: ThemeName;
+        children?: any;
+    }) => JSX.Element;
+}
+
+declare module "snackui" {
+    export function createComponent<A extends any = StackProps>(componentProps: Partial<StaticConfig>): StaticComponent<A>;
+}
+
+declare module "snackui" {
+    import { TextProps as ReactTextProps, TextStyle } from "react-native";
+    type EnhancedTextStyle = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps;
+    export type TextProps = Omit<ReactTextProps, 'style'> & EnhancedTextStyle & {
+        hoverStyle?: EnhancedTextStyle | null;
+        pressStyle?: EnhancedTextStyle | null;
+        focusStyle?: EnhancedTextStyle | null;
+        display?: TextStyle['display'] | 'inherit';
+        ellipse?: boolean;
+        selectable?: boolean;
+        children?: any;
+        className?: string;
+        pointerEvents?: string;
+        cursor?: string;
+        userSelect?: string;
+    };
+    export const Text: import("index").StaticComponent<TextProps>;
+    export function useTextProps(allProps: TextProps, textOnly?: boolean): [
+        TextProps,
+        TextStyle
+    ];
+}
+
+declare module "snackui" {
+    export type Size = number | SizeName;
+    export type SizeName = 'xxxxxxs' | 'xxxxxs' | 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl' | 'xxxxxl' | 'xxxxxxl';
+    export type SizableTextProps = TextProps & {
+        size?: Size;
+        sizeLineHeight?: number;
+    };
+    export const sizes: {
+        xxxxxxs: number;
+        xxxxxs: number;
+        xxxxs: number;
+        xxxs: number;
+        xxs: number;
+        xs: number;
+        sm: number;
+        md: number;
+        lg: number;
+        xl: number;
+        xxl: number;
+        xxxl: number;
+        xxxxl: number;
+        xxxxxl: number;
+        xxxxxxl: number;
+    };
+    export const getSize: (size: Size) => number;
+}
+
+declare module "snackui" {
+    import React from "react";
+    import { ViewStyle } from "react-native";
+    export type Spacing = Size | boolean | string;
+    export type SpacerProps = {
+        size?: Spacing;
+        flex?: boolean | number;
+        direction?: 'vertical' | 'horizontal' | 'both';
+    };
+    export const Spacer: React.MemoExoticComponent<(props: SpacerProps) => JSX.Element>;
+    export const getSpacerStyle: (props: SpacerProps) => ViewStyle;
+}
+
+declare module "snackui" {
+    import { RefObject } from "react";
+    import { GestureResponderEvent, View, ViewProps, ViewStyle } from "react-native";
+    type EnhancedStyleProps = Omit<ViewStyle, 'display'> & TransformStyleProps;
+    export type StackProps = Omit<EnhancedStyleProps & Omit<ViewProps, 'display'> & {
+        ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
+        animated?: boolean;
+        fullscreen?: boolean;
+        children?: any;
+        hoverStyle?: EnhancedStyleProps | null;
+        pressStyle?: EnhancedStyleProps | null;
+        onHoverIn?: (e: MouseEvent) => any;
+        onHoverOut?: (e: MouseEvent) => any;
+        onPress?: (e: GestureResponderEvent) => any;
+        onPressIn?: (e: GestureResponderEvent) => any;
+        onPressOut?: (e: GestureResponderEvent) => any;
+        spacing?: Spacing;
+        cursor?: string;
+        pointerEvents?: string;
+        userSelect?: string;
+        className?: string;
+        disabled?: boolean;
+        contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
+        display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    }, 'backfaceVisibility'>;
+    export type TransformStyleProps = {
+        x?: number;
+        y?: number;
+        perspective?: number;
+        scale?: number;
+        scaleX?: number;
+        scaleY?: number;
+        skewX?: string;
+        skewY?: string;
+        matrix?: number[];
+        rotate?: string;
+        rotateY?: string;
+        rotateX?: string;
+        rotateZ?: string;
+    };
+}
+
+declare module "snackui" {
     export const defaultMediaQueries: {
         xs: {
             maxWidth: number;
@@ -42,18 +250,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export const defaultThemes: any;
-}
-
-declare module "snackui" {
-    export const isWeb: boolean;
-    export const isWebIOS: false;
-    export const isChrome: boolean;
-    export const supportsTouchWeb: boolean;
-    export const isTouchDevice: boolean;
-}
-
-declare module "snackui" {
     type DebounceSettings = {
         leading?: boolean;
         maxWait?: number;
@@ -66,15 +262,7 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export function useConstant<T>(fn: () => T): T;
-}
-
-declare module "snackui" {
     export const useDebounceEffect: (effect: Function, amount: number, args: any[]) => void;
-}
-
-declare module "snackui" {
-    export function useForceUpdate(): Function;
 }
 
 declare module "snackui" {
@@ -241,50 +429,6 @@ declare module "snackui" {
 
 declare module "snackui" {
     import React from "react";
-    export interface ThemeObject {
-        [key: string]: any;
-    }
-    export interface Themes {
-        [key: string]: ThemeObject;
-    }
-    type ThemeName = keyof Themes;
-    export let hasConfigured: boolean;
-    export const invertStyleVariableToValue: {
-        [key: string]: {
-            [subKey: string]: string;
-        };
-    };
-    let themes: Themes;
-    export const getThemes: () => Themes;
-    export const configureThemes: (userThemes?: Themes) => void;
-    export type ThemeProps = {
-        name: ThemeName | null;
-        children?: any;
-    };
-    export const Theme: (props: ThemeProps) => any;
-    class ThemeManager {
-        name: string | null;
-        keys: Map<any, Set<string>>;
-        listeners: Map<any, Function>;
-        callbacks: Set<Function>;
-        setActiveTheme(name: string | null): void;
-        track(uuid: any, keys: Set<string>): void;
-        update(): void;
-        onChangeTheme(cb: (name: string | null) => void): () => void;
-        onUpdate(uuid: any, cb: Function): () => void;
-    }
-    export const ThemeManagerContext: React.Context<ThemeManager>;
-    export const useThemeName: () => string;
-    export const useTheme: () => ThemeObject;
-    export const ThemeProvider: (props: {
-        themes: Themes;
-        defaultTheme: ThemeName;
-        children?: any;
-    }) => JSX.Element;
-}
-
-declare module "snackui" {
-    import React from "react";
     export const useLazyEffect: typeof React.useEffect;
 }
 
@@ -299,149 +443,10 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export type StaticConfig = {
-        neverFlatten?: boolean;
-        isText?: boolean;
-        postProcessStyles?: (styles: {
-            [key: string]: any;
-        }) => any;
-        validStyles?: {
-            [key: string]: boolean;
-        };
-        validPropsExtra?: {
-            [key: string]: boolean;
-        };
-        defaultProps?: any;
-    };
-}
-
-declare module "snackui" {
-    export type StaticComponent<A = any> = ((props: A) => JSX.Element) & {
-        staticConfig: StaticConfig;
-    };
-    export function extendStaticConfig(a: {
-        staticConfig?: StaticConfig;
-    } | any, config?: StaticConfig): StaticConfig | null;
-}
-
-declare module "snackui" {
-    import React from "react";
-    import { TextProps as ReactTextProps, TextStyle } from "react-native";
-    type EnhancedTextStyle = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps;
-    export type TextProps = Omit<ReactTextProps, 'style'> & EnhancedTextStyle & {
-        hoverStyle?: EnhancedTextStyle | null;
-        pressStyle?: EnhancedTextStyle | null;
-        focusStyle?: EnhancedTextStyle | null;
-        display?: TextStyle['display'] | 'inherit';
-        ellipse?: boolean;
-        selectable?: boolean;
-        children?: any;
-        className?: string;
-        pointerEvents?: string;
-        cursor?: string;
-        userSelect?: string;
-    };
-    export const Text: React.MemoExoticComponent<(allProps: TextProps) => JSX.Element>;
-    export const useTextStyle: (allProps: TextProps, onlyTextSpecificStyle?: boolean | undefined, memo?: boolean | undefined) => [
-        TextProps,
-        TextStyle
-    ];
-}
-
-declare module "snackui" {
-    export type Size = number | SizeName;
-    export type SizeName = 'xxxxxxs' | 'xxxxxs' | 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl' | 'xxxxxl' | 'xxxxxxl';
-    export type SizableTextProps = TextProps & {
-        size?: Size;
-        sizeLineHeight?: number;
-    };
-    export const sizes: {
-        xxxxxxs: number;
-        xxxxxs: number;
-        xxxxs: number;
-        xxxs: number;
-        xxs: number;
-        xs: number;
-        sm: number;
-        md: number;
-        lg: number;
-        xl: number;
-        xxl: number;
-        xxxl: number;
-        xxxxl: number;
-        xxxxxl: number;
-        xxxxxxl: number;
-    };
-    export const getSize: (size: Size) => number;
-}
-
-declare module "snackui" {
-    import React from "react";
-    import { ViewStyle } from "react-native";
-    export type Spacing = Size | boolean | string;
-    export type SpacerProps = {
-        size?: Spacing;
-        flex?: boolean | number;
-        direction?: 'vertical' | 'horizontal' | 'both';
-    };
-    export const Spacer: React.MemoExoticComponent<(props: SpacerProps) => JSX.Element>;
-    export const getSpacerStyle: (props: SpacerProps) => ViewStyle;
-}
-
-declare module "snackui" {
-    import { ViewStyle } from "react-native";
-    export function spacedChildren({ children, spacing, flexDirection, }: {
-        children: any;
-        spacing?: Spacing;
-        flexDirection?: ViewStyle['flexDirection'];
-    }): any;
-}
-
-declare module "snackui" {
-    import { RefObject } from "react";
-    import { GestureResponderEvent, View, ViewProps, ViewStyle } from "react-native";
-    export type TransformStyleProps = {
-        x?: number;
-        y?: number;
-        perspective?: number;
-        scale?: number;
-        scaleX?: number;
-        scaleY?: number;
-        skewX?: string;
-        skewY?: string;
-        matrix?: number[];
-        rotate?: string;
-        rotateY?: string;
-        rotateX?: string;
-        rotateZ?: string;
-    };
-    type EnhancedStyleProps = Omit<ViewStyle, 'display'> & TransformStyleProps;
-    export type StackProps = Omit<EnhancedStyleProps & Omit<ViewProps, 'display'> & {
-        ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
-        animated?: boolean;
-        fullscreen?: boolean;
-        children?: any;
-        hoverStyle?: EnhancedStyleProps | null;
-        pressStyle?: EnhancedStyleProps | null;
-        onHoverIn?: (e: MouseEvent) => any;
-        onHoverOut?: (e: MouseEvent) => any;
-        onPress?: (e: GestureResponderEvent) => any;
-        onPressIn?: (e: GestureResponderEvent) => any;
-        onPressOut?: (e: GestureResponderEvent) => any;
-        spacing?: Spacing;
-        cursor?: string;
-        pointerEvents?: string;
-        userSelect?: string;
-        className?: string;
-        disabled?: boolean;
-        contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
-        display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
-    }, 'backfaceVisibility'>;
-    export const mergeTransform: (obj: ViewStyle, key: string, val: any) => void;
-    export const HStack: StaticComponent<StackProps>;
-    export const VStack: StaticComponent<StackProps>;
-    export const AbsoluteVStack: StaticComponent<StackProps>;
-    export const AbsoluteHStack: StaticComponent<StackProps>;
+    export const HStack: import("index").StaticComponent<import("StackProps").StackProps>;
+    export const VStack: import("index").StaticComponent<import("StackProps").StackProps>;
+    export const AbsoluteVStack: import("index").StaticComponent<import("StackProps").StackProps>;
+    export const AbsoluteHStack: import("index").StaticComponent<import("StackProps").StackProps>;
 }
 
 declare module "snackui" {
@@ -644,8 +649,7 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    import { TextStyle } from "react-native";
-    export const getSizedTextProps: ({ size, sizeLineHeight, }: SizableTextProps) => TextStyle;
+    export const getSizedTextProps: ({ size, sizeLineHeight, ...rest }: SizableTextProps) => any;
 }
 
 declare module "snackui" {
@@ -718,7 +722,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     export const UnorderedList: (props: StackProps) => JSX.Element;
-    export const UnorderedListItem: ({ children, ...props }: SizableTextProps) => JSX.Element;
+    export const UnorderedListItem: (props: SizableTextProps) => JSX.Element;
 }
 
 declare module "snackui" {

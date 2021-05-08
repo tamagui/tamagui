@@ -9,8 +9,8 @@ export const UnorderedList = (props: StackProps) => {
   return <VStack paddingLeft={20} {...props} />
 }
 
-export const UnorderedListItem = ({ children, ...props }: SizableTextProps) => {
-  const { fontSize = 14, lineHeight } = getSizedTextProps(props)
+export const UnorderedListItem = (props: SizableTextProps) => {
+  const { fontSize = 14, lineHeight, ...rest } = getSizedTextProps(props)
   return (
     <HStack marginVertical={4}>
       <Text {...props} fontSize={fontSize * 2} lineHeight={fontSize * 1.333}>{`\u2022`}</Text>
@@ -19,10 +19,8 @@ export const UnorderedListItem = ({ children, ...props }: SizableTextProps) => {
         paddingLeft={fontSize * 0.5}
         fontSize={fontSize}
         lineHeight={lineHeight}
-        {...props}
-      >
-        {children}
-      </Text>
+        {...rest}
+      />
     </HStack>
   )
 }
