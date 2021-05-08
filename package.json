@@ -20,6 +20,7 @@
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "postinstall": "patch-package",
+    "version": "changeset version",
     "publish": "lerna publish"
   },
   "resolutions": {
@@ -33,6 +34,7 @@
     "ultra-runner": "^3.10.5"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.16.0",
     "lerna": "^4.0.0",
     "patch-package": "^6.4.7",
     "rollup-plugin-flat-dts": "^1.1.0"
