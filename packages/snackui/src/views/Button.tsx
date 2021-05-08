@@ -1,3 +1,4 @@
+// debug
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
@@ -18,7 +19,6 @@ export type ButtonProps = StackProps & {
 
 // TODO colors, spacing, static extract + colors/spacing
 // TODO sizing, static + sizing
-// TODO auto-chain
 
 // NOTE can't use TouchableOpacity, it captures and stops propagation of click events
 // which is really important for composability.

@@ -158,19 +158,11 @@ Add snackui to your project:
 yarn add snackui @snackui/static @snackui/babel-plugin
 ```
 
-From here, you can set it two ways: for extraction to CSS on web, you'll need the Webpack plugin. If you don't need that, or are just developing for React Native, then just set up the babel plugin.
+From here, you can set it two ways: for extraction to CSS on web, you'll need the Webpack plugin. If you don't need that (using a different bundler), or for React Native, then you'll want the babel plugin.
 
 **Note:** Don't use *both* the Webpack and Babel plugin together as they will conflict.
 
 We hope to add plugins for rollup, esbuild and others soon as it should be relatively straightforward, PR's are welcome.
-
-### Babel - Native / Simple extraction (experimental)
-
-This is useful for Native apps or if you're not using Webpack.
-
-For a simpler setup you can just add `@snackui/babel-plugin` as a babel plugin to your babel config to get extraction just to StyleSheet.create(). This isn't as performant as going to CSS, but works with anything that supports babel.
-
-You can technically just use the babel plugin, but if you want much better flattening and CSS extraction, read on.
 
 ### Webpack - CSS extraction
 
@@ -216,7 +208,47 @@ react-native-web is currently taking a hard stance against supporting className 
 
 - Example [patch for react-native-web experimental](/etc/react-native-web%2B0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
 
+### Babel
+
+This is useful for Native apps or if not using Webpack.
+
+Just add `@snackui/babel-plugin` as a babel plugin to your babel config. Instead of optimizing to CSS it extracts styles to StyleSheet.create(). This isn't as performant as going to CSS, but works with anything that supports babel.
+
+#### Extra performance for React Native
+
+To get further optimization, add the following to your `metro.config.js`, which will allow SnackUI to "optimize itself". Basically, a few internal SnackUI views like Button can be optimized, but won't be by default as metro won't look for the SnackUI typescript files. To support this, just add `tsmain` to resolverMainFields, which snackui defines:
+
+```
+module.exports = {
+  ...config,
+  resolver: {
+    resolverMainFields: ['react-native', 'tsmain', 'browser', 'main'],
+  },
+}
+```
+
 ## Documentation
+
+### Extra props
+
+SnackUI keeps things "close to the metal", we basically support all React Native StyleSheet props on the base stack views as they normally function. We've made one change though as of 0.6.0, which is to allow for flat transform props, much like [CSS Individual Transform Properties](https://webkit.org/blog/11420/css-individual-transform-properties/?utm_campaign=CSS%2BLayout%2BNews&utm_medium=email&utm_source=CSS_Layout_News_283).
+
+So you can use all of the following:
+
+```tsx
+import { VStack } from 'snackui'
+
+export function Component(props) {
+  return (
+    <VStack
+      x={100} // translateX
+      y={50}  // translateY
+      scale={2}
+      rotate="180deg"
+    />
+  )
+}
+```
 
 ### Media Queries
 
