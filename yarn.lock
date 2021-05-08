@@ -2368,11 +2368,11 @@ __metadata:
     "@babel/traverse": "*"
     "@babel/types": "*"
     "@dish/esdx": ^0.0.9
-    "@snackui/static": ^0.4.1
+    "@snackui/static": ^0.5.1
   languageName: unknown
   linkType: soft
 
-"@snackui/helpers@^0.4.1, @snackui/helpers@workspace:packages/helpers":
+"@snackui/helpers@^0.5.1, @snackui/helpers@workspace:packages/helpers":
   version: 0.0.0-use.local
   resolution: "@snackui/helpers@workspace:packages/helpers"
   dependencies:
@@ -2380,18 +2380,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snackui/node@^0.4.1, @snackui/node@workspace:packages/snackui-node":
+"@snackui/node@^0.5.1, @snackui/node@workspace:packages/snackui-node":
   version: 0.0.0-use.local
   resolution: "@snackui/node@workspace:packages/snackui-node"
   dependencies:
-    "@snackui/helpers": ^0.4.1
+    "@snackui/helpers": ^0.5.1
     ts-transform-import-path-rewrite: ^0.3.0
     ttypescript: ^1.5.12
     typescript: ^4.2.3
   languageName: unknown
   linkType: soft
 
-"@snackui/static@^0.4.1, @snackui/static@workspace:packages/snackui-static":
+"@snackui/static@^0.5.1, @snackui/static@workspace:packages/snackui-static":
   version: 0.0.0-use.local
   resolution: "@snackui/static@workspace:packages/snackui-static"
   dependencies:
@@ -2408,8 +2408,8 @@ __metadata:
     "@dish/react-test-env": ^0.0.7
     "@dish/testy": "*"
     "@expo/match-media": ^0.1.0
-    "@snackui/helpers": ^0.4.1
-    "@snackui/node": ^0.4.1
+    "@snackui/helpers": ^0.5.1
+    "@snackui/node": ^0.5.1
     "@types/jest": "*"
     "@types/node": ^14.14.12
     "@types/react-native": ^0.64.2
@@ -5378,13 +5378,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "expo-linear-gradient@npm:9.0.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 70b786b878683cad922ce428332dfe061602719e7b9c2832b8dcc35dabd1c7e25cdb6f62283c3177615d77c2d116b1408167d2cbcf3de6a9991271aefecf9a65
+"expo-linear-gradient@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "expo-linear-gradient@npm:9.1.0"
+  checksum: f781c2e74256ba48e36ddaee88e0023e37a986b79cc33f5ef4c9c8d18a251ad5e51faaa02969d27304dfe4e9341711f7f16781a1b45f73208b114d575d7385c3
   languageName: node
   linkType: hard
 
@@ -8876,7 +8873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"normalize-css-color@npm:^1.0.2":
+"normalize-css-color@npm:*, normalize-css-color@npm:^1.0.2":
   version: 1.0.2
   resolution: "normalize-css-color@npm:1.0.2"
   checksum: bfb8f5332196e22dc05d7bb5e396ecb8a911f2b2578622fa1960af593b889ed397858fb50a38234cf7bd6bbb66fa8ff8f889de94a6b7232dc2f048ce8b9ed302
@@ -11013,7 +11010,7 @@ __metadata:
   resolution: "snackui-loader@workspace:packages/snackui-loader"
   dependencies:
     "@dish/esdx": ^0.0.9
-    "@snackui/static": ^0.4.1
+    "@snackui/static": ^0.5.1
     fs-extra: ^9.1.0
     loader-utils: ^2.0.0
     lodash: ^4.17.21
@@ -11044,7 +11041,7 @@ __metadata:
     "@dish/fast-compare": ^2.7.6
     "@dish/proxy-worm": ^0.0.4
     "@react-native-community/blur": ^3.6.0
-    "@snackui/helpers": ^0.4.1
+    "@snackui/helpers": ^0.5.1
     "@types/node": ^14.11.10
     "@types/react": ^16.9.35
     "@types/react-dom": ^16.9.8
@@ -11052,9 +11049,10 @@ __metadata:
     "@unimodules/react-native-adapter": ^6.1.0
     css-mediaquery: ^0.1.2
     esbuild: ^0.11.5
-    expo-linear-gradient: ^9.0.0
+    expo-linear-gradient: ^9.1.0
     expo-screen-orientation: ^3.1.0
     lodash: ^4.17.20
+    normalize-css-color: "*"
     react: "*"
     react-dom: "*"
     react-feather: ^2.0.8

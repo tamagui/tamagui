@@ -21,7 +21,14 @@ import {
 
 import { StaticComponent } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
-import { ActiveThemeContext, invertStyleVariableToValue } from '../hooks/useTheme'
+import {
+  ThemeManagerContext,
+  configureThemes,
+  getThemes,
+  invertStyleVariableToValue,
+  useTheme,
+  useThemeName,
+} from '../hooks/useTheme'
 import { isTouchDevice, isWeb } from '../platform'
 import { Spacing } from './Spacer'
 
@@ -86,14 +93,6 @@ const disabledStyle: StackProps = {
   userSelect: 'none',
 }
 
-const useParseProps = (props: { [key: string]: any }) => {
-  const activeTheme = useContext(ActiveThemeContext)
-  const themeVal = invertStyleVariableToValue[activeTheme.name]
-  return useMemo(() => {
-    return getSplitStyles(props, themeVal)
-  }, [props, activeTheme])
-}
-
 const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
@@ -112,7 +111,8 @@ export const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
 
 const getSplitStyles = (
   props: { [key: string]: any },
-  themeVarToVal?: { [key: string]: string }
+  // convert from var to theme value
+  varToVal?: (key: string) => string
 ) => {
   let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
   let viewProps: ViewProps = {}
@@ -122,6 +122,7 @@ const getSplitStyles = (
     let val = props[key]
     if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
       if (cur) {
+        // process last
         fixNativeShadow(cur, true)
         style.push(cur)
         cur = null
@@ -135,7 +136,7 @@ const getSplitStyles = (
       continue
     }
     // apply theme
-    val = themeVarToVal?.[val] ?? val
+    val = varToVal?.(val) ?? val
     // transforms
     if (key in stylePropsTransform) {
       cur = cur || {}
@@ -154,11 +155,12 @@ const getSplitStyles = (
       const pseudoStyle: ViewStyle = {}
       psuedos[key] = pseudoStyle
       for (const subKey in val) {
+        const sval = varToVal?.(val[subKey]) ?? val[subKey]
         if (subKey in stylePropsTransform) {
-          mergeTransform(pseudoStyle, subKey, val[subKey])
+          mergeTransform(pseudoStyle, subKey, sval)
           continue
         } else {
-          pseudoStyle[subKey] = val[subKey]
+          pseudoStyle[subKey] = sval
         }
       }
       fixNativeShadow(pseudoStyle, true)
@@ -171,6 +173,9 @@ const getSplitStyles = (
   if (cur) {
     fixNativeShadow(cur, true)
     style.push(cur)
+  }
+  if (props['debug']) {
+    console.log(' debug Stack:', { props, viewProps, style })
   }
   return {
     viewProps,
@@ -189,6 +194,7 @@ if (typeof document !== 'undefined') {
 }
 
 const createStack = (defaultProps: ViewStyle) => {
+  configureThemes()
   const sheet = StyleSheet.create({
     defaultStyle: defaultProps,
   })
@@ -210,8 +216,28 @@ const createStack = (defaultProps: ViewStyle) => {
       // @ts-ignore
       onMouseLeave,
     } = props
+    const manager = useContext(ThemeManagerContext)
+    const [state, set] = useState(() => ({
+      hover: false,
+      press: false,
+      pressIn: false,
+      theme: manager.name,
+    }))
 
-    const { viewProps, psuedos, style } = useParseProps(props)
+    const isTracking = useRef(false)
+    const varToVal = useCallback(
+      (variable: string) => {
+        isTracking.current = true
+        const invert = invertStyleVariableToValue[state.theme || 'light']
+        return invert?.[variable]
+      },
+      [state.theme]
+    )
+
+    const { viewProps, psuedos, style } = useMemo(() => {
+      return getSplitStyles(props, varToVal)
+    }, [props])
+
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
     if (!internal.current) {
@@ -221,17 +247,19 @@ const createStack = (defaultProps: ViewStyle) => {
     }
 
     useEffect(() => {
+      internal.current!.isMounted = true
+      const dispose = manager?.onChangeTheme((name) => {
+        if (isTracking.current) {
+          set((x) => ({ ...x, theme: name }))
+        }
+      })
       return () => {
+        dispose()
         mouseUps.delete(unPress)
+        isTracking.current = false
         internal.current!.isMounted = false
       }
-    }, [])
-
-    const [state, set] = useState({
-      hover: false,
-      press: false,
-      pressIn: false,
-    })
+    }, [manager])
 
     const ViewComponent = animated ? Animated.View : View
 

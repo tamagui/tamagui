@@ -248,23 +248,32 @@ declare module "snackui" {
         [key: string]: ThemeObject;
     }
     type ThemeName = keyof Themes;
+    export let hasConfigured: boolean;
     export const invertStyleVariableToValue: {
         [key: string]: {
             [subKey: string]: string;
         };
     };
     let themes: Themes;
-    export const configureThemes: (userThemes: Themes) => void;
-    class ActiveThemeManager {
-        name: string;
+    export const getThemes: () => Themes;
+    export const configureThemes: (userThemes?: Themes) => void;
+    export type ThemeProps = {
+        name: ThemeName | null;
+        children?: any;
+    };
+    export const Theme: (props: ThemeProps) => any;
+    class ThemeManager {
+        name: string | null;
         keys: Map<any, Set<string>>;
         listeners: Map<any, Function>;
-        setActiveTheme(name: string): void;
+        callbacks: Set<Function>;
+        setActiveTheme(name: string | null): void;
         track(uuid: any, keys: Set<string>): void;
         update(): void;
+        onChangeTheme(cb: (name: string | null) => void): () => void;
         onUpdate(uuid: any, cb: Function): () => void;
     }
-    export const ActiveThemeContext: React.Context<ActiveThemeManager>;
+    export const ThemeManagerContext: React.Context<ThemeManager>;
     export const useThemeName: () => string;
     export const useTheme: () => ThemeObject;
     export const ThemeProvider: (props: {
@@ -272,11 +281,6 @@ declare module "snackui" {
         defaultTheme: ThemeName;
         children?: any;
     }) => JSX.Element;
-    export type ThemeProps = {
-        name: ThemeName | null;
-        children?: any;
-    };
-    export const Theme: (props: ThemeProps) => any;
 }
 
 declare module "snackui" {

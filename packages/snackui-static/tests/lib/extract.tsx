@@ -1,16 +1,8 @@
 import * as babel from '@babel/core'
 
-export function extractBabel(code: string) {
-  return babel.transformSync(code, {
+export async function extractBabel(code: string) {
+  return await babel.transformAsync(code, {
+    configFile: 'babel.config.test.js',
     filename: 'test.tsx',
-    plugins: [
-      require('@snackui/babel-plugin'),
-      [
-        '@babel/plugin-syntax-typescript',
-        {
-          isTSX: true,
-        },
-      ],
-    ],
   })
 }

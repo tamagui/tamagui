@@ -1,4 +1,3 @@
-// debug
 import * as React from 'react'
 import { AbsoluteVStack, Box, Spacer, Text, VStack, useMedia } from 'snackui'
 

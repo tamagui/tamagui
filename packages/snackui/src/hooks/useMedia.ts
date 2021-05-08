@@ -148,15 +148,9 @@ export const useMedia = () => {
   return useConstant(() => {
     const st = state.current
     return new Proxy(mediaState, {
-      get(target, key) {
-        if (!mediaState) return
-        if (typeof key !== 'string') {
-          return Reflect.get(target, key)
-        }
+      get(target, key: string) {
         if (!(key in mediaState)) {
-          throw new Error(
-            `No media query configured "${String(key)}" in: ${Object.keys(mediaState)}`
-          )
+          return Reflect.get(target, key)
         }
         if (!st.isUnmounted) {
           if (st.isRendering) {

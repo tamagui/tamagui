@@ -162,7 +162,7 @@ export function createExtractor() {
           const componentName = findComponentName(traversePath.scope)
           const closingElement = traversePath.node.closingElement
 
-          if (!closingElement || t.isJSXMemberExpression(closingElement.name)) {
+          if (t.isJSXMemberExpression(closingElement?.name)) {
             return
           }
 
@@ -734,7 +734,15 @@ export function createExtractor() {
                   if (isExcludedProp(key)) delete res[key]
                 }
               }
-              return staticConfig.postProcessStyles?.(res) ?? res
+              const next = staticConfig.postProcessStyles?.(res) ?? res
+              if (staticConfig.validStyles) {
+                for (const key in next) {
+                  if (!staticConfig.validStyles[key]) {
+                    delete next[key]
+                  }
+                }
+              }
+              return next
             }
             for (const attr of attrs) {
               try {
@@ -746,7 +754,7 @@ export function createExtractor() {
                   case 'style':
                     attr.value = get({ ...staticConfig.defaultProps, ...attr.value })
                     if (shouldPrintDebug) {
-                      console.log('    style\n', JSON.stringify(attr.value, null, 2))
+                      console.log('     > style\n', JSON.stringify(attr.value, null, 2))
                     }
                     break
                 }
@@ -766,21 +774,20 @@ export function createExtractor() {
           }
 
           // flatten!
-          if (
-            !shouldDeopt &&
-            inlinePropCount === 0 &&
-            !node.attributes.some((x) => t.isJSXSpreadAttribute(x)) &&
-            !staticConfig.neverFlatten
-          ) {
+          const hasSpread = node.attributes.some((x) => t.isJSXSpreadAttribute(x))
+          if (!shouldDeopt && inlinePropCount === 0 && !hasSpread && !staticConfig.neverFlatten) {
             if (shouldPrintDebug) {
               console.log('  [✅] fully flattened node', originalNodeName, flatNode)
             }
             isFlattened = true
             node.name.name = flatNode
-            closingElement.name.name = flatNode
+            if (closingElement) {
+              closingElement.name.name = flatNode
+            }
           } else {
             if (shouldPrintDebug) {
-              console.log('  [❊] ', inlinePropCount, 'props un-flattened')
+              // prettier-ignore
+              console.log('  [❊] ',inlinePropCount,'props un-flattened',shouldDeopt ? ' deopted' : '',hasSpread ? ' spread' : '',staticConfig.neverFlatten ? ' neverFlatten' : '')
             }
           }
 

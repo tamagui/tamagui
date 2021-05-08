@@ -91,6 +91,7 @@ export default declare(function snackBabelPlugin(
               'className',
               'display',
               'userSelect',
+              'selectable',
               'whiteSpace',
               'textOverflow',
               'cursor',
@@ -113,14 +114,14 @@ export default declare(function snackBabelPlugin(
 
               let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 
-              for (const [index, attr] of props.attrs.entries()) {
-                function addStyle(expr: any) {
+              for (const attr of props.attrs) {
+                function addStyle(expr: any, key: string) {
                   if (props.isFlattened) {
                     stylesExpr.elements.push(expr)
                   } else {
                     finalAttrs.push(
                       t.jsxAttribute(
-                        t.jsxIdentifier(`_style${index}`),
+                        t.jsxIdentifier(`_style${key}`),
                         t.jsxExpressionContainer(expr)
                       )
                     )
@@ -130,13 +131,14 @@ export default declare(function snackBabelPlugin(
                 switch (attr.type) {
                   case 'style':
                     const ident = addSheetStyle(attr.value, props.node)
-                    addStyle(ident)
+                    addStyle(ident, simpleHash(JSON.stringify(attr.value)))
                     break
                   case 'ternary':
-                    const cons = addSheetStyle(attr.value.consequent, props.node)
-                    const alt = addSheetStyle(attr.value.alternate, props.node)
+                    const { consequent, alternate } = attr.value
+                    const cons = addSheetStyle(consequent, props.node)
+                    const alt = addSheetStyle(alternate, props.node)
                     const styleExpr = t.conditionalExpression(attr.value.test, cons, alt)
-                    addStyle(styleExpr)
+                    addStyle(styleExpr, simpleHash(JSON.stringify({ consequent, alternate })))
                     break
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
@@ -195,4 +197,14 @@ function assertValidTag(node: t.JSXOpeningElement) {
     // need to make onExtractTag have a special catch error or similar
     throw new Error(`Cannot pass style attribute to extracted style`)
   }
+}
+
+const simpleHash = (str: string) => {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash &= hash // Convert to 32bit integer
+  }
+  return new Uint32Array([hash])[0].toString(36)
 }

@@ -24,6 +24,7 @@ import React, {
 
 import { defaultThemes } from '../defaultThemes'
 import { isWeb } from '../platform'
+import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
 const PREFIX = `theme--`
@@ -38,7 +39,7 @@ export interface Themes {
 
 type ThemeName = keyof Themes
 
-let hasConfigured = false
+export let hasConfigured = false
 
 export const invertStyleVariableToValue: {
   [key: string]: { [subKey: string]: string }
@@ -46,53 +47,119 @@ export const invertStyleVariableToValue: {
 
 let themes: Themes = defaultThemes
 
-export const configureThemes = (userThemes: Themes) => {
+export const getThemes = () => themes
+
+export const configureThemes = (userThemes: Themes = defaultThemes) => {
   if (hasConfigured) {
-    console.warn(`Already configured themes once`)
+    // console.warn(`Already configured themes once`)
     return
   }
-  hasConfigured = true
+  hasConfigured = userThemes !== defaultThemes
   themes = userThemes
 
-  if (isWeb) {
-    // insert css variables
-    const tag = createStyleTag()
-    for (const themeName in userThemes) {
-      const theme = userThemes[themeName]
-      invertStyleVariableToValue[themeName] = invertStyleVariableToValue[themeName] || {}
-      let vars = ''
-      for (const themeKey in theme) {
-        const themeVal = theme[themeKey]
-        const variableName = `--${themeKey}`
-        invertStyleVariableToValue[themeName][`var(${variableName})`] = themeVal
-        vars += `${variableName}: ${themeVal};`
-      }
-      const rule = `.${PREFIX}${themeName} { ${vars} }`
-      tag?.sheet?.insertRule(rule)
+  // insert css variables
+  const tag = createStyleTag()
+  for (const themeName in userThemes) {
+    const theme = userThemes[themeName]
+    invertStyleVariableToValue[themeName] = invertStyleVariableToValue[themeName] || {}
+    let vars = ''
+    for (const themeKey in theme) {
+      const themeVal = theme[themeKey]
+      const variableName = `--${themeKey}`
+      invertStyleVariableToValue[themeName][`var(${variableName})`] = themeVal
+      vars += `${variableName}: ${themeVal};`
     }
+    const rule = `.${PREFIX}${themeName} { ${vars} }`
+    tag?.sheet?.insertRule(rule)
   }
 }
 
-class ActiveThemeManager {
-  name = 'light'
+export type ThemeProps = {
+  name: ThemeName | null
+  children?: any
+}
+
+export const Theme = (props: ThemeProps) => {
+  const name = (props.name as string) || null
+  const parent = useContext(ThemeManagerContext)
+  const themeManager = useConstant<ThemeManager>(() => {
+    const manager = new ThemeManager()
+    try {
+      return manager
+    } finally {
+      if (name) {
+        manager.setActiveTheme(name)
+      }
+    }
+  })
+
+  useLayoutEffect(() => {
+    themeManager.setActiveTheme(name ?? parent.name)
+    if (!name) {
+      return parent.onChangeTheme((next) => {
+        if (!name && next) {
+          themeManager.setActiveTheme(next)
+        }
+      })
+    }
+  }, [name])
+
+  const contents = themeManager ? (
+    <ThemeManagerContext.Provider value={themeManager}>
+      {props.children}
+    </ThemeManagerContext.Provider>
+  ) : (
+    props.children
+  )
+
+  if (isWeb) {
+    return (
+      <div className={getThemeParentClassName(name)} style={{ display: 'contents' }}>
+        {contents}
+      </div>
+    )
+  }
+
+  return contents
+}
+
+function getThemeParentClassName(themeName?: string | null) {
+  return `theme-parent ${themeName ? `${PREFIX}${themeName}` : ''}`
+}
+
+class ThemeManager {
+  name: string | null = 'light'
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
+  callbacks = new Set<Function>()
 
-  setActiveTheme(name: string) {
+  setActiveTheme(name: string | null) {
     if (name === this.name) return
     this.name = name
     this.update()
   }
 
   track(uuid: any, keys: Set<string>) {
+    if (!this.name) return
     this.keys.set(uuid, keys)
   }
 
   update() {
+    if (!this.name) {
+      this.keys.clear()
+    }
     for (const [uuid, keys] of this.keys.entries()) {
       if (keys.size) {
-        this.listeners.get(uuid)!()
+        this.listeners.get(uuid)?.()
       }
+    }
+    this.callbacks.forEach((cb) => cb(this.name))
+  }
+
+  onChangeTheme(cb: (name: string | null) => void) {
+    this.callbacks.add(cb)
+    return () => {
+      this.callbacks.delete(cb)
     }
   }
 
@@ -106,7 +173,7 @@ class ActiveThemeManager {
 }
 
 const ThemeContext = createContext<Themes>(themes)
-export const ActiveThemeContext = createContext<ActiveThemeManager>(new ActiveThemeManager())
+export const ThemeManagerContext = createContext<ThemeManager>(new ThemeManager())
 
 type UseThemeState = {
   uuid: Object
@@ -115,12 +182,26 @@ type UseThemeState = {
 }
 
 export const useThemeName = () => {
-  return useContext(ActiveThemeContext).name
+  const parent = useContext(ThemeManagerContext)
+  const [name, setName] = useState(parent.name)
+
+  useEffect(() => {
+    return parent.onChangeTheme((next) => {
+      console.log('got name')
+      setName((prev) => {
+        console.log('gogo', prev, next)
+        if (prev === next) return prev
+        return next
+      })
+    })
+  }, [parent])
+
+  return name || 'light'
 }
 
 export const useTheme = () => {
   const forceUpdate = useForceUpdate()
-  const manager = useContext(ActiveThemeContext)
+  const manager = useContext(ThemeManagerContext)
   const themes = useContext(ThemeContext)
   const state = useRef() as React.MutableRefObject<UseThemeState>
   if (!state.current) {
@@ -145,27 +226,35 @@ export const useTheme = () => {
     return manager.onUpdate(state.current.uuid, forceUpdate)
   }, [])
 
-  const theme = themes[manager.name] ?? themes.light
+  const theme = (manager.name ? themes[manager.name] : themes.light) ?? themes.light
 
-  return useMemo(() => {
-    return new Proxy(theme, {
-      get(_, key) {
-        if (typeof key !== 'string') return
-        const activeTheme = themes[manager.name]
-        if (!activeTheme) {
-          throw new Error(`No theme! ${manager.name} in ${Object.keys(themes)}`)
-        }
-        const val = activeTheme[key]
-        if (!val) {
-          throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
-        }
-        if (state.current.isRendering) {
-          state.current.keys.add(key)
-        }
-        return val
-      },
-    })
-  }, [manager.name])
+  return useMemo(
+    () => {
+      return new Proxy(theme, {
+        get(_, key: string) {
+          const name = manager.name
+          if (!name) {
+            return Reflect.get(_, key)
+          }
+          const activeTheme = themes[name]
+          if (process.env.NODE_ENV === 'development' && !activeTheme) {
+            throw new Error(`No theme! ${name} in ${Object.keys(themes)}`)
+          }
+          const val = activeTheme[key]
+          if (process.env.NODE_ENV === 'development' && !val) {
+            throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
+          }
+          if (state.current.isRendering) {
+            state.current.keys.add(key)
+          }
+          return val
+        },
+      })
+    },
+    [
+      /* if concurrent mode wanted put manager.name here */
+    ]
+  )
 }
 
 export const ThemeProvider = (props: {
@@ -193,59 +282,6 @@ export const ThemeProvider = (props: {
       <Theme name={props.defaultTheme}>{props.children}</Theme>
     </ThemeContext.Provider>
   )
-}
-
-export type ThemeProps = {
-  name: ThemeName | null
-  children?: any
-}
-
-export const Theme = (props: ThemeProps) => {
-  const parent = useContext(ActiveThemeContext)
-  const [themeManager, setThemeManager] = useState<ActiveThemeManager | null>(() => {
-    if (props.name) {
-      const manager = new ActiveThemeManager()
-      manager.setActiveTheme(`${props.name}`)
-      return manager
-    }
-    return null
-  })
-
-  useLayoutEffect(() => {
-    if (props.name === null) {
-      setThemeManager(null)
-      return
-    }
-    if (props.name === parent.name) {
-      if (themeManager !== parent) {
-        setThemeManager(parent)
-      }
-    } else {
-      const next = new ActiveThemeManager()
-      next.setActiveTheme(`${props.name}`)
-      setThemeManager(next)
-    }
-  }, [props.name])
-
-  const contents = themeManager ? (
-    <ActiveThemeContext.Provider value={themeManager}>{props.children}</ActiveThemeContext.Provider>
-  ) : (
-    props.children
-  )
-
-  if (isWeb) {
-    return (
-      <div className={getThemeParentClassName(themeManager?.name)} style={{ display: 'contents' }}>
-        {contents}
-      </div>
-    )
-  }
-
-  return contents
-}
-
-function getThemeParentClassName(themeName?: string) {
-  return `theme-parent ${themeName ? `${PREFIX}${themeName}` : ''}`
 }
 
 function createStyleTag(): HTMLStyleElement | null {
