@@ -21,7 +21,7 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "postinstall": "patch-package",
     "version": "changeset version",
-    "publish": "lerna publish"
+    "publish": "ultra -r --no-pretty yarn npm publish"
   },
   "resolutions": {
     "esbuild": "0.11.5"
