@@ -98,17 +98,19 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         continue
       }
       // is style
-      if (validStyleProps[key] || key === 'hoverStyle' || key === 'pressStyle') {
-        // apply theme
-        val = varToVal?.(val) ?? val
-        // transforms
-        if (key in stylePropsTransform) {
-          cur = cur || {}
-          mergeTransform(cur, key, val)
-          continue
+      const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
+      if (validStyleProps[key] || isPseudo) {
+        if (!isPseudo) {
+          // apply theme
+          val = varToVal?.(val) ?? val
+          // transforms
+          if (key in stylePropsTransform) {
+            cur = cur || {}
+            mergeTransform(cur, key, val)
+            continue
+          }
         }
-        // psuedos
-        if (val && (key === 'hoverStyle' || key === 'pressStyle')) {
+        if (isPseudo && val) {
           psuedos = psuedos || {}
           const pseudoStyle: ViewStyle = {}
           for (const subKey in val) {

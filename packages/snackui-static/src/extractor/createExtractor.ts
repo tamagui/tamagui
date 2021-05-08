@@ -239,10 +239,10 @@ export function createExtractor() {
                   ) {
                     const key = n.property.name
                     if (shouldPrintDebug) {
-                      console.log('  found theme prop', key)
+                      console.log('    > found theme prop', key)
                     }
                     if (!themeKeys.has(key)) {
-                      throw new Error(`Accessing non-existent theme key: ${key}`)
+                      throw new Error(`    > accessing non-existent theme key: ${key}`)
                     }
                     return `var(--${key})`
                   }
@@ -748,15 +748,15 @@ export function createExtractor() {
                 }
               }
               const next = staticConfig.postProcessStyles?.(res) ?? res
-              if (shouldPrintDebug) {
-                console.log('in', res, 'out', next)
-              }
               if (staticConfig.validStyles) {
                 for (const key in next) {
                   if (!staticConfig.validStyles[key]) {
                     delete next[key]
                   }
                 }
+              }
+              if (shouldPrintDebug) {
+                console.log('in', res, 'out', next)
               }
               return next
             }
@@ -776,7 +776,7 @@ export function createExtractor() {
                     const props = { ...staticConfig.defaultProps, ...attr.value }
                     attr.value = get(props)
                     if (shouldPrintDebug) {
-                      console.log('     => style ', attrStr(attr))
+                      console.log('     => style ', attr.value)
                     }
                     break
                 }

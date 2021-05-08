@@ -39,6 +39,7 @@ declare module "@snackui/helpers" {
         cursor: boolean;
         backfaceVisibility: boolean;
         backgroundColor: boolean;
+        boxSizing: boolean;
         borderBottomColor: boolean;
         borderBottomEndRadius: boolean;
         borderBottomLeftRadius: boolean;
@@ -168,6 +169,7 @@ declare module "@snackui/helpers" {
         cursor: boolean;
         backfaceVisibility: boolean;
         backgroundColor: boolean;
+        boxSizing: boolean;
         borderBottomColor: boolean;
         borderBottomEndRadius: boolean;
         borderBottomLeftRadius: boolean;
@@ -280,6 +282,7 @@ declare module "@snackui/helpers" {
         cursor: boolean;
         backfaceVisibility: boolean;
         backgroundColor: boolean;
+        boxSizing: boolean;
         borderBottomColor: boolean;
         borderBottomEndRadius: boolean;
         borderBottomLeftRadius: boolean;
@@ -377,6 +380,7 @@ declare module "@snackui/helpers" {
         cursor: boolean;
         backfaceVisibility: boolean;
         backgroundColor: boolean;
+        boxSizing: boolean;
         borderBottomColor: boolean;
         borderBottomEndRadius: boolean;
         borderBottomLeftRadius: boolean;
@@ -456,6 +460,7 @@ declare module "@snackui/helpers" {
         contain: boolean;
         hoverStyle: boolean;
         pressStyle: boolean;
+        focusStyle: boolean;
     };
 }
 

@@ -4,14 +4,16 @@ export { StackProps } from '../StackProps'
 
 export const HStack = createComponent({
   defaultProps: {
+    boxSizing: 'border-box',
     display: 'flex',
-    flexDirection: 'row',
     flexBasis: 'auto',
+    flexDirection: 'row',
   },
 })
 
 export const VStack = createComponent({
   defaultProps: {
+    boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
     flexBasis: 'auto',
@@ -20,6 +22,7 @@ export const VStack = createComponent({
 
 export const AbsoluteVStack = createComponent({
   defaultProps: {
+    boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
     flexBasis: 'auto',
@@ -29,6 +32,7 @@ export const AbsoluteVStack = createComponent({
 
 export const AbsoluteHStack = createComponent({
   defaultProps: {
+    boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'row',
     flexBasis: 'auto',

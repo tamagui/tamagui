@@ -21,6 +21,7 @@ export const stylePropsView = Object.freeze({
   cursor: true,
   backfaceVisibility: true,
   backgroundColor: true,
+  boxSizing: true,
   borderBottomColor: true,
   borderBottomEndRadius: true,
   borderBottomLeftRadius: true,
@@ -129,5 +130,6 @@ export const stylePropsAll = stylePropsText
 export const validStyles = {
   hoverStyle: true,
   pressStyle: true,
+  focusStyle: true,
   ...stylePropsView,
 }
