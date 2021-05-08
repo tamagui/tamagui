@@ -116,8 +116,8 @@ declare module "@snackui/static" {
     import * as t from "@babel/types";
     export function isPresent<T extends Object>(input: null | void | undefined | T): input is T;
     export function isSimpleSpread(node: t.JSXSpreadAttribute): boolean;
-    export const attrGetName: (attr: ExtractedAttr) => string | t.JSXIdentifier;
-    export const getNameTernary: (x: Ternary) => string;
+    export const attrStr: (attr: ExtractedAttr) => string | t.JSXIdentifier;
+    export const ternaryStr: (x: Ternary) => string;
     export function findComponentName(scope: any): string | undefined;
     export function isValidThemeHook(jsxPath: NodePath<t.JSXElement>, n: t.MemberExpression, sourcePath: string): boolean;
     export const isInsideSnackUI: (srcName: string) => boolean;

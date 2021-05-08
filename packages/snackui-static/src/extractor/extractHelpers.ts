@@ -11,11 +11,11 @@ export function isSimpleSpread(node: t.JSXSpreadAttribute) {
   return t.isIdentifier(node.argument) || t.isMemberExpression(node.argument)
 }
 
-export const attrGetName = (attr: ExtractedAttr) => {
+export const attrStr = (attr: ExtractedAttr) => {
   return attr.type === 'attr'
     ? getNameAttr(attr.value)
     : attr.type === 'ternary'
-    ? `...${getNameTernary(attr.value)}`
+    ? `...${ternaryStr(attr.value)}`
     : `${attr.type}(${Object.keys(attr.value).length})`
 }
 
@@ -26,7 +26,7 @@ const getNameAttr = (attr: t.JSXAttribute | t.JSXSpreadAttribute) => {
   return 'name' in attr ? attr.name.name : `unknown-${attr['type']}`
 }
 
-export const getNameTernary = (x: Ternary) => {
+export const ternaryStr = (x: Ternary) => {
   return [
     'ternary:',
     t.isIdentifier(x.test)
@@ -34,13 +34,17 @@ export const getNameTernary = (x: Ternary) => {
       : t.isMemberExpression(x.test)
       ? [x.test.object['name'], x.test.property['name']]
       : x.test,
-    ' ? ',
-    x.consequent ? '✅' : '⚫️',
-    x.alternate ? ': ✅' : ': ⚫️',
+    x.consequent ? `  ? ${flatObj(x.consequent)}` : '  ? ⚫️',
+    x.alternate ? `  : ${flatObj(x.alternate)}` : '  : ⚫️',
   ]
     .flat()
     .join('')
 }
+
+const flatObj = (obj: any) =>
+  Object.entries(obj)
+    .map(([k, v]) => `${k}:${v}`)
+    .join(', ')
 
 export function findComponentName(scope) {
   let componentName = ''

@@ -12,12 +12,12 @@ import { pseudos } from '../getStylesAtomic'
 import { ExtractedAttr, ExtractedAttrAttr, ExtractorParseProps, Ternary } from '../types'
 import { evaluateAstNode } from './evaluateAstNode'
 import {
-  attrGetName,
+  attrStr,
   findComponentName,
-  getNameTernary,
   isInsideSnackUI,
   isPresent,
   isValidThemeHook,
+  ternaryStr,
 } from './extractHelpers'
 import { findTopmostFunction } from './findTopmostFunction'
 import { getStaticBindingsForScope } from './getStaticBindingsForScope'
@@ -267,9 +267,6 @@ export function createExtractor() {
             try {
               return attemptEval(n)
             } catch (err) {
-              if (shouldPrintDebug) {
-                console.log('    eval failed', err.message)
-              }
               return FAILED_EVAL
             }
           }
@@ -369,7 +366,7 @@ export function createExtractor() {
 
           // see if we can filter them
           if (shouldPrintDebug) {
-            console.log('  attrs (before):', attrs.map(attrGetName).join(', '))
+            console.log('  attrs (before)\n    - ', attrs.map(attrStr).join('\n    - '))
           }
 
           // now update to new values
@@ -413,7 +410,7 @@ export function createExtractor() {
                       consequent: cons,
                     }
                     if (shouldPrintDebug) {
-                      console.log(' conditionalExpression', getNameTernary(ternary))
+                      console.log(' conditionalExpression', ternaryStr(ternary))
                     }
                     return {
                       type: 'ternary',
@@ -692,21 +689,26 @@ export function createExtractor() {
               }
               if ((!next || next.type !== 'ternary') && ternaries.length) {
                 // finish, process
+                const normalized = normalizeTernaries(ternaries).map(
+                  ({ alternate, consequent, ...rest }) => {
+                    return {
+                      type: 'ternary' as const,
+                      value: {
+                        ...rest,
+                        alternate: alternate || null,
+                        consequent: consequent || null,
+                      },
+                    }
+                  }
+                )
                 try {
-                  return [
-                    ...out,
-                    ...normalizeTernaries(ternaries).map(({ alternate, consequent, ...rest }) => {
-                      return {
-                        type: 'ternary' as const,
-                        value: {
-                          ...rest,
-                          alternate: alternate || null,
-                          consequent: consequent || null,
-                        },
-                      }
-                    }),
-                  ]
+                  return [...out, ...normalized]
                 } finally {
+                  if (shouldPrintDebug) {
+                    console.log(
+                      `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
+                    )
+                  }
                   ternaries = []
                 }
               }
@@ -732,6 +734,10 @@ export function createExtractor() {
             return acc
           }, [])
 
+          if (shouldPrintDebug) {
+            console.log('     - attrs (combined)\n  ', attrs.map(attrStr).join('\n    - '))
+          }
+
           // post process
           if (staticConfig.postProcessStyles) {
             const get = (res: Object | null) => {
@@ -742,6 +748,9 @@ export function createExtractor() {
                 }
               }
               const next = staticConfig.postProcessStyles?.(res) ?? res
+              if (shouldPrintDebug) {
+                console.log('in', res, 'out', next)
+              }
               if (staticConfig.validStyles) {
                 for (const key in next) {
                   if (!staticConfig.validStyles[key]) {
@@ -755,15 +764,19 @@ export function createExtractor() {
               try {
                 switch (attr.type) {
                   case 'ternary':
-                    attr.value.alternate = get(attr.value.alternate)
-                    attr.value.consequent = get(attr.value.consequent)
+                    const a = get(attr.value.alternate)
+                    const c = get(attr.value.consequent)
+                    attr.value.alternate = a
+                    attr.value.consequent = c
+                    if (shouldPrintDebug) {
+                      console.log('     => tern ', attrStr(attr))
+                    }
                     break
                   case 'style':
                     const props = { ...staticConfig.defaultProps, ...attr.value }
                     attr.value = get(props)
                     if (shouldPrintDebug) {
-                      // prettier-ignore
-                      console.log('     > style\n', JSON.stringify(attr.value, null, 2), staticConfig.defaultProps)
+                      console.log('     => style ', attrStr(attr))
                     }
                     break
                 }
@@ -779,7 +792,7 @@ export function createExtractor() {
           }
 
           if (shouldPrintDebug) {
-            console.log('  attrs (after):', attrs.map(attrGetName).join(', '))
+            console.log('   - attrs (after)\n', attrs.map(attrStr).join('\n    - '))
           }
 
           // flatten!

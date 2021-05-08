@@ -98,7 +98,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         continue
       }
       // is style
-      if (key in validStyleProps) {
+      if (validStyleProps[key] || key === 'hoverStyle' || key === 'pressStyle') {
         // apply theme
         val = varToVal?.(val) ?? val
         // transforms
@@ -111,7 +111,6 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         if (val && (key === 'hoverStyle' || key === 'pressStyle')) {
           psuedos = psuedos || {}
           const pseudoStyle: ViewStyle = {}
-          psuedos[key] = pseudoStyle
           for (const subKey in val) {
             const sval = varToVal?.(val[subKey]) ?? val[subKey]
             if (subKey in stylePropsTransform) {
@@ -122,6 +121,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
             }
           }
           fixNativeShadow(pseudoStyle, true)
+          psuedos[key] = pseudoStyle
           continue
         }
         cur = cur || {}
@@ -136,15 +136,15 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       fixNativeShadow(cur, true)
       style.push(cur)
     }
-    if (process.env.NODE_ENV === 'development') {
-      if (props['debug']) {
-        try {
-          console.log(' processed styles:', JSON.stringify({ props, viewProps, style }, null, 2))
-        } catch {
-          console.log(' processed styles:', { props, viewProps, style })
-        }
-      }
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   if (props['debug']) {
+    //     try {
+    //       console.log(' processed styles:', JSON.stringify({ props, viewProps, style }, null, 2))
+    //     } catch {
+    //       console.log(' processed styles:', { props, viewProps, style })
+    //     }
+    //   }
+    // }
     return {
       viewProps,
       style,
