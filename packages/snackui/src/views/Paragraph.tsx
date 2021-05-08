@@ -16,7 +16,7 @@ const defaultProps: ParagraphProps = {
 
 export const Paragraph = (props: SizableTextProps) => {
   const theme = useTheme()
-  const finalProps = getSizedTextProps({ ...defaultProps, ...props })
+  const finalProps = getSizedTextProps(props, defaultProps)
   return <Text color={theme.color} {...finalProps} />
 }
 

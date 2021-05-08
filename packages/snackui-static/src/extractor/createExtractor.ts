@@ -474,6 +474,8 @@ export function createExtractor() {
             if (isExcludedProp(name)) {
               return null
             }
+
+            // can still optimize the object... see hoverStyle on native
             if (isDeoptedProp(name)) {
               inlinePropCount++
               return attr

@@ -97,35 +97,35 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         Object.assign(cur, fullscreenStyle)
         continue
       }
-      // apply theme
-      val = varToVal?.(val) ?? val
-      // transforms
-      if (key in stylePropsTransform) {
-        cur = cur || {}
-        mergeTransform(cur, key, val)
-        continue
-      }
-      // regular styles
+      // is style
       if (key in validStyleProps) {
+        // apply theme
+        val = varToVal?.(val) ?? val
+        // transforms
+        if (key in stylePropsTransform) {
+          cur = cur || {}
+          mergeTransform(cur, key, val)
+          continue
+        }
+        // psuedos
+        if (val && (key === 'hoverStyle' || key === 'pressStyle')) {
+          psuedos = psuedos || {}
+          const pseudoStyle: ViewStyle = {}
+          psuedos[key] = pseudoStyle
+          for (const subKey in val) {
+            const sval = varToVal?.(val[subKey]) ?? val[subKey]
+            if (subKey in stylePropsTransform) {
+              mergeTransform(pseudoStyle, subKey, sval)
+              continue
+            } else {
+              pseudoStyle[subKey] = sval
+            }
+          }
+          fixNativeShadow(pseudoStyle, true)
+          continue
+        }
         cur = cur || {}
         cur[key] = val
-        continue
-      }
-      // psuedos
-      if (val && (key === 'hoverStyle' || key === 'pressStyle')) {
-        psuedos = psuedos || {}
-        const pseudoStyle: ViewStyle = {}
-        psuedos[key] = pseudoStyle
-        for (const subKey in val) {
-          const sval = varToVal?.(val[subKey]) ?? val[subKey]
-          if (subKey in stylePropsTransform) {
-            mergeTransform(pseudoStyle, subKey, sval)
-            continue
-          } else {
-            pseudoStyle[subKey] = sval
-          }
-        }
-        fixNativeShadow(pseudoStyle, true)
         continue
       }
       // if no match, prop
@@ -136,8 +136,14 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       fixNativeShadow(cur, true)
       style.push(cur)
     }
-    if (props['debug']) {
-      console.log(' 🍑 debug:', { props, viewProps, style })
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug']) {
+        try {
+          console.log(' processed styles:', JSON.stringify({ props, viewProps, style }, null, 2))
+        } catch {
+          console.log(' processed styles:', { props, viewProps, style })
+        }
+      }
     }
     return {
       viewProps,
@@ -229,7 +235,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        console.log(' 🍑 debug', { props, styles })
+        console.log(' 🍑 debug\n  🔵 props: ', props, '\n  🔵 styles: ', styles)
       }
     }
 
@@ -408,7 +414,7 @@ const matchRgba = /rgba\(\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s
 // used by both expansion and inline, be careful
 function fixNativeShadow(props: StackProps, merge = false) {
   let res = merge ? props : {}
-  if ('shadowColor' in props) {
+  if (props.shadowColor) {
     res.shadowColor = props.shadowColor
     if (!('shadowOffset' in props)) {
       res.shadowOffset = defaultShadowOffset
