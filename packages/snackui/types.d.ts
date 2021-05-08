@@ -40,7 +40,10 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    import { useEffect } from "react";
     export const isWeb: boolean;
+    export const isSSR: boolean;
+    export const useIsomorphicLayoutEffect: typeof useEffect;
     export const isWebIOS: false;
     export const isChrome: boolean;
     export const supportsTouchWeb: boolean;
@@ -583,8 +586,8 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    import * as React from "react";
-    export function LinearGradient({ colors, locations, start, end, ...props }: NativeLinearGradientProps): React.ReactElement;
+    import { ReactElement } from "react";
+    export function LinearGradient({ colors, locations, start, end, ...props }: NativeLinearGradientProps): ReactElement;
 }
 
 declare module "snackui" {

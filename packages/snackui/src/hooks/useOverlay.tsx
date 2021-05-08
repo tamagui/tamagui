@@ -1,5 +1,6 @@
-import { useLayoutEffect } from 'react'
 import { Platform } from 'react-native'
+
+import { useIsomorphicLayoutEffect } from '../platform'
 
 export const useOverlay = ({
   zIndex = 100000 - 1,
@@ -16,7 +17,7 @@ export const useOverlay = ({
     return
   }
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!isOpen) return
     const node = document.querySelector('#root')
     if (node) {

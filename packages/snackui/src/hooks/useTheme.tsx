@@ -12,18 +12,10 @@
 //
 
 import { isEqual } from '@dish/fast-compare'
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { defaultThemes } from '../defaultThemes'
-import { isWeb } from '../platform'
+import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
@@ -93,7 +85,7 @@ export const Theme = (props: ThemeProps) => {
     }
   })
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     themeManager.setActiveTheme(name ?? parent.name)
     if (!name) {
       return parent.onChangeTheme((next) => {
@@ -214,7 +206,7 @@ export const useTheme = () => {
   state.current.isRendering = true
 
   // track usage
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const st = state.current
     st.isRendering = false
     if (!isEqual(st.keys, manager.keys.get(st.uuid))) {
@@ -267,7 +259,7 @@ export const ThemeProvider = (props: {
   }
 
   // ensure theme is attached to root body node as well to work with modals by default
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof document !== 'undefined') {
       const cns = getThemeParentClassName(`${props.defaultTheme}`).split(' ')
       cns.forEach((cn) => document.body.classList.add(cn))

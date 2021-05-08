@@ -10,10 +10,11 @@
 //
 //
 
-import { useLayoutEffect, useRef } from 'react'
+import { useRef } from 'react'
 
 import { defaultMediaQueries } from '../constants'
 import { matchMedia } from '../helpers/matchMedia'
+import { useIsomorphicLayoutEffect } from '../platform'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
@@ -112,7 +113,7 @@ export const useMedia = () => {
   state.current.isRendering = true
 
   // track usage
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const st = state.current
     st.isRendering = false
     // delete old
@@ -131,7 +132,7 @@ export const useMedia = () => {
   })
 
   // unmount
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     return () => {
       const st = state.current
       st.isUnmounted = true

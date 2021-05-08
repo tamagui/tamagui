@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   Animated,
   PerpectiveTransform,
@@ -16,7 +16,7 @@ import {
 } from 'react-native'
 
 import { useConstant } from '../hooks/useConstant'
-import { isWeb } from '../platform'
+import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { StackProps, VStack } from './Stacks'
 
 const defaultAnimation = {
@@ -111,7 +111,7 @@ export const AnimatedVStack = ({
     return { transform, ...styleProps }
   }, [animateState])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     Animated.spring(driver, {
       useNativeDriver: true,
       velocity,

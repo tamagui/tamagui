@@ -1,9 +1,9 @@
-import React, { forwardRef, useLayoutEffect, useRef } from 'react'
+import React, { forwardRef, useRef } from 'react'
 import { StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
 
 import { combineRefs } from '../helpers/combineRefs'
 import { useTextStylePropsSplit } from '../hooks/useTextStylePropsSplit'
-import { isWeb } from '../platform'
+import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { InteractiveContainer } from './InteractiveContainer'
 
 // TODO make this extractable / take flat style props
@@ -18,7 +18,7 @@ export const Input = forwardRef((props: InputProps, ref) => {
   const textRef = useRef<HTMLInputElement>()
 
   if (isWeb) {
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (props.name) {
         textRef.current?.setAttribute('name', props.name)
       }

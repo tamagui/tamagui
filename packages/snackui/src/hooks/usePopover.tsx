@@ -1,6 +1,7 @@
 import { fullyIdle, series } from '@dish/async'
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { useIsomorphicLayoutEffect } from '../platform'
 import { PopoverProps } from '../views/PopoverProps'
 import { popoverCloseCbs } from '../views/PopoverShared'
 
@@ -19,7 +20,7 @@ export const usePopover = (props: PopoverProps) => {
     return series([fullyIdle, () => setIsMounted(true)])
   }, [])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (onChangeOpenCb) {
       popoverCloseCbs.add(onChangeOpenCb)
       return () => {

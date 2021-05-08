@@ -1,6 +1,13 @@
-// dont import things
+// dont import things (why?)
 
-export const isWeb = process.env.TARGET === 'web'
+import { useEffect, useLayoutEffect } from 'react'
+import { Platform } from 'react-native'
+
+export const isWeb = process.env.TARGET === 'web' || Platform.OS === 'web'
+export const isSSR = isWeb && typeof window === 'undefined'
+
+export const useIsomorphicLayoutEffect = isSSR ? useEffect : useLayoutEffect
+
 export const isWebIOS =
   isWeb &&
   typeof window !== 'undefined' &&

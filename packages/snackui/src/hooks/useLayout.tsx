@@ -1,7 +1,7 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { LayoutRectangle } from 'react-native'
 
-import { isWeb } from '../platform'
+import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 
 export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } = {}) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null)
@@ -14,10 +14,8 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
 
   const ref = useRef<HTMLElement>(null)
 
-  useLayoutEffect(() => {
-    if (!ref.current) {
-      return
-    }
+  useIsomorphicLayoutEffect(() => {
+    if (!ref.current) return
 
     const update = (rect) => {
       setLayout((prev) => {
@@ -49,18 +47,11 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
     })
     io.observe(ref.current)
 
-    //
-    // const next = {
-    //   width: ref.current.clientWidth,
-    //   height: ref.current.clientHeight,
-    // }
-    // setLayout(next as any)
-    // props.onLayout?.(next as any)
     return () => {
       ro.disconnect()
       io.disconnect()
     }
-  }, [ref.current])
+  }, [ref])
 
   return {
     layout,

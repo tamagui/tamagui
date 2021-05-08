@@ -1,7 +1,9 @@
-import * as React from 'react'
+import React from 'react'
+import { ReactElement, useState } from 'react'
 import { View } from 'react-native'
 
 import { useLayout } from '../hooks/useLayout'
+import { useIsomorphicLayoutEffect } from '../platform'
 import { NativeLinearGradientPoint, NativeLinearGradientProps } from './NativeLinearGradientProps'
 import { normalizeColor } from './normalizeColor'
 
@@ -11,13 +13,13 @@ export function LinearGradient({
   start,
   end,
   ...props
-}: NativeLinearGradientProps): React.ReactElement {
-  const [gradientColors, setGradientColors] = React.useState<string[]>([])
-  const [pseudoAngle, setPseudoAngle] = React.useState<number>(0)
+}: NativeLinearGradientProps): ReactElement {
+  const [gradientColors, setGradientColors] = useState<string[]>([])
+  const [pseudoAngle, setPseudoAngle] = useState<number>(0)
   const layoutProps = useLayout()
   const { width = 1, height = 1 } = layoutProps.layout ?? {}
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const getControlPoints = (): NativeLinearGradientPoint[] => {
       let correctedStart: NativeLinearGradientPoint = [0, 0]
       if (Array.isArray(start)) {
@@ -41,7 +43,7 @@ export function LinearGradient({
     setPseudoAngle(90 + (Math.atan2(py, px) * 180) / Math.PI)
   }, [width, height, start, end])
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const nextGradientColors = colors.map((color, index): string => {
       const hexColor = normalizeColor(color)
       let output = hexColor
