@@ -1,6 +1,11 @@
 /// <reference lib="dom" />
 /// <reference lib="esnext" />
 declare module "snackui-loader" {
-    export default function snackLoader(this: any, source: string): any;
+    const _default: any;
+    export default _default;
+}
+
+declare module "snackui-loader" {
+    export function loader(this: any, source: string): any;
 }
 //# sourceMappingURL=types.d.ts.map

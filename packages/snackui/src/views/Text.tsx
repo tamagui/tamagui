@@ -41,11 +41,13 @@ const validStylesText = {
 
 export const Text = createComponent<TextProps>({
   isText: true,
-  defaultProps: isWeb ? {
-    // inline-block fixed transforms not working on web
-    // but inline is necessary for text nesting (italic, bold etc)
-    display: 'inline' as any,
-  } : {},
+  defaultProps: isWeb
+    ? {
+        // inline-block fixed transforms not working on web
+        // but inline is necessary for text nesting (italic, bold etc)
+        display: 'inline' as any,
+      }
+    : {},
   deoptProps: new Set(isWeb ? [''] : ['ellipse']),
   preProcessProps,
   postProcessStyles,
@@ -92,7 +94,8 @@ const ellipsePropsNative = {
 }
 
 function postProcessStyles(allProps: TextProps): TextStyle {
-  return useTextProps(allProps)[1]
+  const res = useTextProps(allProps)[1]
+  return res
 }
 
 export function useTextProps(allProps: TextProps, textOnly = false): [TextProps, TextStyle] {
@@ -104,13 +107,8 @@ export function useTextProps(allProps: TextProps, textOnly = false): [TextProps,
       continue
     }
     const val = allProps[key]
-    if (key in validProps) {
-      // if should skip
-      if (isWeb) {
-        if (key === 'display' && val === 'inline') {
-          continue
-        }
-      } else {
+    if (validProps[key]) {
+      if (!isWeb) {
         if (val === 'inherit') {
           continue
         }
@@ -118,7 +116,7 @@ export function useTextProps(allProps: TextProps, textOnly = false): [TextProps,
           continue
         }
       }
-      // style values
+      // expansions
       if (key === 'selectable') {
         Object.assign(style, selectableStyle)
         continue
@@ -126,12 +124,6 @@ export function useTextProps(allProps: TextProps, textOnly = false): [TextProps,
       if (key === 'ellipse') {
         Object.assign(style, ellipseStyle)
         continue
-      }
-      if (!isWeb) {
-        if (key === 'fontSize' && val < 12) {
-          style.fontSize = 12
-          continue
-        }
       }
       style[key] = val
       continue

@@ -182,12 +182,17 @@ exports[`9. combines with classname 1`] = `
 
 exports[`10. extracts Text 1`] = `
 <span
-  className=" _di-inline _foSi-12px"
+  className=" _di-inline _foSi-10px"
 >
   <div
-    className="css-text-901oao r-display-1471scf r-userSelect-1xnzce8"
+    className="css-text-901oao r-display-1471scf"
     dir="auto"
     onClick={[Function]}
+    style={
+      Object {
+        "selectable": true,
+      }
+    }
   >
     <span
       className="_foWe-600 _foSi-15px _di-inline _col-18s66rc css-text-901oao css-textHasAncestor-16my406 r-display-1471scf"

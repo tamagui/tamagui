@@ -369,8 +369,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
   })
 
   if (process.env.IS_STATIC) {
-    // @ts-expect-error
-    component.staticConfig = {
+    const config: StaticConfig = {
       validStyles,
       ...componentProps,
       postProcessStyles: (inStyles) => {
@@ -393,6 +392,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         fullscreen: true,
       },
     }
+    component['staticConfig'] = config
   }
 
   return (component as any) as StaticComponent<A>

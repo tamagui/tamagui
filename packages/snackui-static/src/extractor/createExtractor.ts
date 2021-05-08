@@ -757,9 +757,11 @@ export function createExtractor() {
                     attr.value.consequent = get(attr.value.consequent)
                     break
                   case 'style':
-                    attr.value = get({ ...staticConfig.defaultProps, ...attr.value })
+                    const props = { ...staticConfig.defaultProps, ...attr.value }
+                    attr.value = get(props)
                     if (shouldPrintDebug) {
-                      console.log('     > style\n', JSON.stringify(attr.value, null, 2))
+                      // prettier-ignore
+                      console.log('     > style\n', JSON.stringify(attr.value, null, 2), staticConfig.defaultProps)
                     }
                     break
                 }

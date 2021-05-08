@@ -17,6 +17,8 @@ const importStyleSheet = template(`
 import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 `)
 
+process.env.TARGET = process.env.TARGET || 'native'
+
 const extractor = createExtractor()
 
 export default declare(function snackBabelPlugin(

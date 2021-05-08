@@ -17,9 +17,6 @@ const defaultProps: ParagraphProps = {
 export const Paragraph = (props: SizableTextProps) => {
   const theme = useTheme()
   const finalProps = getSizedTextProps({ ...defaultProps, ...props })
-  if (props['children'] === 'San Francisco') {
-    console.log('got', props, finalProps)
-  }
   return <Text color={theme.color} {...finalProps} />
 }
 
