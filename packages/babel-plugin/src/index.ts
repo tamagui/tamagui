@@ -109,8 +109,7 @@ export default declare(function snackBabelPlugin(
             onExtractTag(props) {
               assertValidTag(props.node)
 
-              const baseStyleExpr = addSheetStyle(props.viewStyles, props.node)
-              const stylesExpr = t.arrayExpression([baseStyleExpr])
+              const stylesExpr = t.arrayExpression([])
 
               let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 

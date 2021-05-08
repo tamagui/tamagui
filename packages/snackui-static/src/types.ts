@@ -40,7 +40,6 @@ export type ExtractTagProps = {
   attrs: ExtractedAttr[]
   node: t.JSXOpeningElement
   attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any
-  viewStyles: ViewStyle
   jsxPath: NodePath<t.JSXElement>
   originalNodeName: string
   lineNumbers: string

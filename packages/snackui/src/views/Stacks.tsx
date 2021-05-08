@@ -110,7 +110,10 @@ export const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
   obj.transform = transform
 }
 
-const getSplitStyles = (props: { [key: string]: any }, themeVal?: { [key: string]: string }) => {
+const getSplitStyles = (
+  props: { [key: string]: any },
+  themeVarToVal?: { [key: string]: string }
+) => {
   let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
   let viewProps: ViewProps = {}
   let style: any[] = []
@@ -119,6 +122,7 @@ const getSplitStyles = (props: { [key: string]: any }, themeVal?: { [key: string
     let val = props[key]
     if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
       if (cur) {
+        fixNativeShadow(cur, true)
         style.push(cur)
         cur = null
       }
@@ -131,7 +135,7 @@ const getSplitStyles = (props: { [key: string]: any }, themeVal?: { [key: string
       continue
     }
     // apply theme
-    val = themeVal?.[val] ?? val
+    val = themeVarToVal?.[val] ?? val
     // transforms
     if (key in stylePropsTransform) {
       cur = cur || {}
@@ -154,23 +158,18 @@ const getSplitStyles = (props: { [key: string]: any }, themeVal?: { [key: string
           mergeTransform(pseudoStyle, subKey, val[subKey])
           continue
         } else {
-          pseudoStyle[subKey] = val
-          if (subKey === 'shadowColor') {
-            fixNativeShadow(pseudoStyle, true)
-          }
+          pseudoStyle[subKey] = val[subKey]
         }
       }
+      fixNativeShadow(pseudoStyle, true)
       continue
     }
     // if no match, prop
     viewProps[key] = val
-    // native shadow fix
-    if (val && key === 'shadowColor') {
-      fixNativeShadow(viewProps, true)
-    }
   }
   // push last style
   if (cur) {
+    fixNativeShadow(cur, true)
     style.push(cur)
   }
   return {
@@ -189,15 +188,9 @@ if (typeof document !== 'undefined') {
   })
 }
 
-const createStack = ({
-  defaultProps,
-  defaultStyle,
-}: {
-  defaultProps?: ViewStyle
-  defaultStyle?: any
-}) => {
+const createStack = (defaultProps: ViewStyle) => {
   const sheet = StyleSheet.create({
-    style: defaultStyle,
+    defaultStyle: defaultProps,
   })
 
   const component = forwardRef<View, StackProps>((props, ref) => {
@@ -243,7 +236,7 @@ const createStack = ({
     const ViewComponent = animated ? Animated.View : View
 
     const styles = [
-      sheet.style,
+      sheet.defaultStyle,
       style,
       psuedos && state.hover ? psuedos.hoverStyle || null : null,
       psuedos && state.press ? psuedos.pressStyle || null : null,
@@ -261,12 +254,13 @@ const createStack = ({
         ref={ref}
         {...viewProps}
         pointerEvents={!isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents}
+        // @ts-expect-error were passing in display and others for web only
         style={styles}
       >
         {spacedChildren({
           children,
           spacing,
-          flexDirection: defaultStyle?.flexDirection,
+          flexDirection: defaultProps?.flexDirection,
         })}
       </ViewComponent>
     )
@@ -393,29 +387,21 @@ const createStack = ({
   if (process.env.IS_STATIC) {
     // @ts-expect-error
     component.staticConfig = {
+      defaultProps,
       postProcessStyles: (inStyles) => {
         const { style, psuedos } = getSplitStyles(inStyles)
-        const flatStyle = style.reduce((acc, value) => {
-          Object.assign(acc, value)
-          return acc
-        }, {})
-        Object.assign(flatStyle, psuedos)
-        return flatStyle
+        return {
+          ...style.reduce((acc, value) => {
+            Object.assign(acc, value)
+            return acc
+          }, {}),
+          ...psuedos,
+        }
       },
       validStyles: stylePropsView,
-      defaultProps: {
-        ...defaultProps,
-        ...defaultStyle,
-      },
-      expansionProps: {
-        fullscreen: fullscreenStyle,
-        disabled: disabledStyle,
-        ...(!isWeb && {
-          shadowColor: fixNativeShadow,
-        }),
-        contain: ({ contain }) => ({
-          contain,
-        }),
+      validPropsExtra: {
+        disabled: true,
+        fullscreen: true,
       },
     }
   }
@@ -457,27 +443,28 @@ function fixNativeShadow(props: StackProps, merge = false) {
   return res
 }
 
-export const AbsoluteVStack = createStack({
-  defaultStyle: {
-    position: 'absolute',
-    flexDirection: 'column',
-    flexBasis: 'auto',
-    display: 'flex',
-  },
-})
-
 export const HStack = createStack({
-  defaultStyle: {
-    flexDirection: 'row',
-    flexBasis: 'auto',
-    display: 'flex',
-  },
+  display: 'flex',
+  flexDirection: 'row',
+  flexBasis: 'auto',
 })
 
 export const VStack = createStack({
-  defaultStyle: {
-    flexDirection: 'column',
-    flexBasis: 'auto',
-    display: 'flex',
-  },
+  display: 'flex',
+  flexDirection: 'column',
+  flexBasis: 'auto',
+})
+
+export const AbsoluteVStack = createStack({
+  display: 'flex',
+  flexDirection: 'column',
+  flexBasis: 'auto',
+  position: 'absolute',
+})
+
+export const AbsoluteHStack = createStack({
+  display: 'flex',
+  flexDirection: 'row',
+  flexBasis: 'auto',
+  position: 'absolute',
 })

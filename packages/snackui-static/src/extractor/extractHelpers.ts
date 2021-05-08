@@ -12,13 +12,11 @@ export function isSimpleSpread(node: t.JSXSpreadAttribute) {
 }
 
 export const attrGetName = (attr: ExtractedAttr) => {
-  return `${attr.type === 'attr' ? '' : `${attr.type}`}${
-    attr.type === 'attr'
-      ? getNameAttr(attr.value)
-      : attr.type === 'ternary'
-      ? getNameTernary(attr.value)
-      : '...'
-  }`
+  return attr.type === 'attr'
+    ? getNameAttr(attr.value)
+    : attr.type === 'ternary'
+    ? `...${getNameTernary(attr.value)}`
+    : `${attr.type}(${Object.keys(attr.value).length})`
 }
 
 const getNameAttr = (attr: t.JSXAttribute | t.JSXSpreadAttribute) => {
@@ -30,16 +28,18 @@ const getNameAttr = (attr: t.JSXAttribute | t.JSXSpreadAttribute) => {
 
 export const getNameTernary = (x: Ternary) => {
   return [
+    'ternary:',
     t.isIdentifier(x.test)
       ? x.test.name
       : t.isMemberExpression(x.test)
       ? [x.test.object['name'], x.test.property['name']]
       : x.test,
-    x.consequent,
-    x.alternate,
+    ' ? ',
+    x.consequent ? '✅' : '⚫️',
+    x.alternate ? ': ✅' : ': ⚫️',
   ]
     .flat()
-    .join('_')
+    .join('')
 }
 
 export function findComponentName(scope) {

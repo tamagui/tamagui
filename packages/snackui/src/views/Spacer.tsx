@@ -1,3 +1,4 @@
+import { stylePropsView } from '@snackui/helpers'
 import React, { memo } from 'react'
 import { View, ViewStyle } from 'react-native'
 
@@ -20,7 +21,7 @@ export const Spacer = memo((props: SpacerProps) => {
   return <View style={getSpacerStyle(props)} />
 })
 
-export const getSpacerStyle = (props: SpacerProps = defaultProps): ViewStyle => {
+export const getSpacerStyle = (props: SpacerProps): ViewStyle => {
   return {
     flexShrink: 0,
     ...getFlex(props),
@@ -45,14 +46,12 @@ const getSize = ({ size = 'md', direction = 'both' } = defaultProps): ViewStyle 
 }
 
 if (process.env.IS_STATIC) {
-  Spacer['staticConfig'] = {
-    validStyles: require('@snackui/helpers').stylePropsView,
-    defaultProps: getSpacerStyle(),
-    expansionProps: {
-      direction: () => null,
-      flex: getFlex,
-      size: getSize,
-    },
+  // @ts-ignore
+  Spacer.staticConfig = {
+    validStyles: stylePropsView,
+    validPropsExtra: { size: true, direction: true },
+    defaultProps,
+    postProcessStyles: getSpacerStyle,
   }
 }
 

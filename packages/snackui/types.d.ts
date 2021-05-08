@@ -295,7 +295,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    import { TextStyle, ViewStyle } from "react-native";
     export type StaticConfig = {
         neverFlatten?: boolean;
         isText?: boolean;
@@ -305,10 +304,10 @@ declare module "snackui" {
         validStyles?: {
             [key: string]: boolean;
         };
-        defaultProps?: any;
-        expansionProps?: {
-            [key: string]: ViewStyle | TextStyle | ((props: any) => ViewStyle | TextStyle);
+        validPropsExtra?: {
+            [key: string]: boolean;
         };
+        defaultProps?: any;
     };
 }
 
@@ -382,7 +381,7 @@ declare module "snackui" {
         direction?: 'vertical' | 'horizontal' | 'both';
     };
     export const Spacer: React.MemoExoticComponent<(props: SpacerProps) => JSX.Element>;
-    export const getSpacerStyle: (props?: SpacerProps) => ViewStyle;
+    export const getSpacerStyle: (props: SpacerProps) => ViewStyle;
 }
 
 declare module "snackui" {
@@ -435,9 +434,10 @@ declare module "snackui" {
         display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
     }, 'backfaceVisibility'>;
     export const mergeTransform: (obj: ViewStyle, key: string, val: any) => void;
-    export const AbsoluteVStack: StaticComponent<StackProps>;
     export const HStack: StaticComponent<StackProps>;
     export const VStack: StaticComponent<StackProps>;
+    export const AbsoluteVStack: StaticComponent<StackProps>;
+    export const AbsoluteHStack: StaticComponent<StackProps>;
 }
 
 declare module "snackui" {

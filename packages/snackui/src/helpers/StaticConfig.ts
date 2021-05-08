@@ -7,8 +7,6 @@ export type StaticConfig = {
   isText?: boolean
   postProcessStyles?: (styles: { [key: string]: any }) => any
   validStyles?: { [key: string]: boolean }
+  validPropsExtra?: { [key: string]: boolean }
   defaultProps?: any
-  expansionProps?: {
-    [key: string]: ViewStyle | TextStyle | ((props: any) => ViewStyle | TextStyle)
-  }
 }

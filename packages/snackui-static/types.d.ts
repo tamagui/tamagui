@@ -14,7 +14,6 @@ declare module "@snackui/static" {
     import { NodePath } from "@babel/core";
     import * as t from "@babel/types";
     import { MediaQueries } from "@snackui/node";
-    import { ViewStyle } from "react-native";
     export type ClassNameObject = t.StringLiteral | t.Expression;
     export interface CacheObject {
         [key: string]: any;
@@ -47,7 +46,6 @@ declare module "@snackui/static" {
         attrs: ExtractedAttr[];
         node: t.JSXOpeningElement;
         attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any;
-        viewStyles: ViewStyle;
         jsxPath: NodePath<t.JSXElement>;
         originalNodeName: string;
         lineNumbers: string;
@@ -118,7 +116,7 @@ declare module "@snackui/static" {
     import * as t from "@babel/types";
     export function isPresent<T extends Object>(input: null | void | undefined | T): input is T;
     export function isSimpleSpread(node: t.JSXSpreadAttribute): boolean;
-    export const attrGetName: (attr: ExtractedAttr) => string;
+    export const attrGetName: (attr: ExtractedAttr) => string | t.JSXIdentifier;
     export const getNameTernary: (x: Ternary) => string;
     export function findComponentName(scope: any): string | undefined;
     export function isValidThemeHook(jsxPath: NodePath<t.JSXElement>, n: t.MemberExpression, sourcePath: string): boolean;

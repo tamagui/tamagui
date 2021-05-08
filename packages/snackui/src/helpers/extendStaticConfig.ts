@@ -17,18 +17,21 @@ export function extendStaticConfig(
   return {
     isText: config.isText || a.staticConfig.isText || false,
     neverFlatten: config.neverFlatten ?? a.staticConfig.neverFlatten,
-    postProcessStyles: config.postProcessStyles ?? a.staticConfig.postProcessStyles,
+    postProcessStyles: (styles) => {
+      a.staticConfig.postProcessStyles(styles)
+      config.postProcessStyles?.(styles)
+    },
     validStyles: {
       ...a.staticConfig.validStyles,
       ...config.validStyles,
     },
+    validPropsExtra: {
+      ...a.staticConfig.validPropsExtra,
+      ...config.validPropsExtra,
+    },
     defaultProps: {
       ...a.staticConfig.defaultProps,
       ...config.defaultProps,
-    },
-    expansionProps: {
-      ...a.staticConfig.expansionProps,
-      ...config.expansionProps,
     },
   }
 }

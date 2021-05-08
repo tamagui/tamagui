@@ -97,6 +97,7 @@ export const stylePropsView = Object.freeze({
   shadowOffset: true,
   shadowOpacity: true,
   shadowRadius: true,
+  contain: true,
   ...stylePropsTransform,
 })
 

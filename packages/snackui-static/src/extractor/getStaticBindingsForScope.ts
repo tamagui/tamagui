@@ -49,7 +49,8 @@ export function getStaticBindingsForScope(
 
   if (shouldPrintDebug) {
     // prettier-ignore
-    console.log('  scope bindings', Object.keys(bindings).map(x => bindings[x].identifier?.name).join(', '))
+    console.log('  ', Object.keys(bindings).length, 'variables in scope')
+    // .map(x => bindings[x].identifier?.name).join(', ')
   }
 
   // on react native at least it doesnt find some bindings? not sure why
@@ -170,9 +171,10 @@ export function getStaticBindingsForScope(
       bindingCache[cacheKey] = ret[k]
       continue
     } catch (e) {
-      if (shouldPrintDebug) {
-        console.error('[🐇] cant eval, skipping', cacheKey) //, e.message)
-      }
+      // skip
+      // if (shouldPrintDebug) {
+      //   console.error('[🐇] cant eval, skipping', cacheKey) //, e.message)
+      // }
     }
   }
 

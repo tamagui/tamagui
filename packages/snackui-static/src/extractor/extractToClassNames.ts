@@ -13,7 +13,13 @@ import { ViewStyle } from 'react-native'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
 import { getStylesAtomic } from '../getStylesAtomic'
-import { ClassNameObject, SnackOptions, StyleObject } from '../types'
+import {
+  ClassNameObject,
+  ExtractedAttr,
+  ExtractedAttrStyle,
+  SnackOptions,
+  StyleObject,
+} from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
 import { ensureImportingConcat } from './ensureImportingConcat'
@@ -28,7 +34,12 @@ export function getInitialFileName() {
   return initialFileName
 }
 
-const mergeStyleGroups = [new Set(['shadowOpacity', 'shadowRadius', 'shadowColor', 'shadowOffset'])]
+const mergeStyleGroups = {
+  shadowOpacity: true,
+  shadowRadius: true,
+  shadowColor: true,
+  shadowOffset: true,
+}
 
 export function extractToClassNames(
   this: any,
@@ -102,7 +113,6 @@ export function extractToClassNames(
           attrs,
           node,
           attemptEval,
-          viewStyles,
           jsxPath,
           originalNodeName,
           filePath,
@@ -114,16 +124,22 @@ export function extractToClassNames(
           let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
           let finalStyles: StyleObject[] = []
 
-          const mergeInParentStyles = (style: ViewStyle) => {
+          const viewStyles = {}
+          for (const attr of attrs) {
+            if (attr.type === 'style') {
+              Object.assign(viewStyles, attr.value)
+            }
+          }
+
+          const ensureNeededPrevStyle = (style: ViewStyle) => {
+            // ensure all group keys are merged
             const keys = Object.keys(style)
-            for (const group of mergeStyleGroups) {
-              if (keys.some((key) => group.has(key))) {
-                // ensure all other keys exist on this group
-                for (const groupKey of [...group]) {
-                  if (viewStyles[groupKey]) {
-                    style[groupKey] = style[groupKey] ?? viewStyles[groupKey]
-                  }
-                }
+            if (!keys.some((key) => mergeStyleGroups[key])) {
+              return style
+            }
+            for (const k of Object.keys(mergeStyleGroups)) {
+              if (k in viewStyles) {
+                style[k] = style[k] ?? viewStyles[k]
               }
             }
             return style
@@ -131,18 +147,11 @@ export function extractToClassNames(
 
           const addStyles = (style: ViewStyle | null) => {
             if (!style) return []
-            const res = getStylesAtomic(mergeInParentStyles(style))
+            const res = getStylesAtomic(ensureNeededPrevStyle(style))
             if (res.length) {
               finalStyles = [...finalStyles, ...res]
             }
             return res
-          }
-
-          if (viewStyles) {
-            const styles = addStyles(viewStyles)
-            for (const style of styles) {
-              finalClassNames = [...finalClassNames, t.stringLiteral(style.identifier)]
-            }
           }
 
           // 1 to start above any :hover styles
@@ -150,7 +159,10 @@ export function extractToClassNames(
           for (const attr of attrs) {
             switch (attr.type) {
               case 'style':
-                addStyles(attr.value)
+                const styles = addStyles(attr.value)
+                for (const style of styles) {
+                  finalClassNames = [...finalClassNames, t.stringLiteral(style.identifier)]
+                }
                 break
               case 'attr':
                 const val = attr.value

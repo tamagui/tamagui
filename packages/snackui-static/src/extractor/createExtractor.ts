@@ -6,7 +6,6 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { statSync } from 'fs-extra'
-import { ViewStyle } from 'react-native'
 import { StaticConfig } from 'snackui'
 
 import { pseudos } from '../getStylesAtomic'
@@ -161,6 +160,11 @@ export function createExtractor() {
           const node = traversePath.node.openingElement
           const ogAttributes = node.attributes
           const componentName = findComponentName(traversePath.scope)
+          const closingElement = traversePath.node.closingElement
+
+          if (!closingElement || t.isJSXMemberExpression(closingElement.name)) {
+            return
+          }
 
           // skip non-identifier opening elements (member expressions, etc.)
           if (!t.isJSXIdentifier(node.name)) {
@@ -191,14 +195,14 @@ export function createExtractor() {
           const originalNodeName = node.name.name
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
-          const domNode = getFlattenedNode({ isTextView })
+          const flatNode = getFlattenedNode({ isTextView })
 
           if (shouldPrintDebug) {
             console.log(`\n<${originalNodeName} />`)
           }
 
           const isStaticAttributeName = (name: string) => {
-            return !!validStyles[name] || !!staticConfig?.expansionProps?.[name] || !!pseudos[name]
+            return !!validStyles[name] || staticConfig.validPropsExtra?.[name] || !!pseudos[name]
           }
 
           // Generate scope object at this level
@@ -211,7 +215,7 @@ export function createExtractor() {
           )
 
           if (shouldPrintDebug) {
-            console.log('  staticNamespace', Object.keys(staticNamespace))
+            console.log('  staticNamespace', Object.keys(staticNamespace).join(', '))
           }
 
           //
@@ -259,7 +263,7 @@ export function createExtractor() {
               return attemptEval(n)
             } catch (err) {
               if (shouldPrintDebug) {
-                console.log('  attemptEvalSafe failed', err.message)
+                console.log('    eval failed', err.message)
               }
               return FAILED_EVAL
             }
@@ -269,24 +273,7 @@ export function createExtractor() {
           //  SPREADS SETUP
           //
 
-          const fullProps = {}
-          let viewStyles: ViewStyle = {}
-
-          // parse default props
-          const { defaultProps } = staticConfig
-          if (defaultProps) {
-            for (const key in defaultProps) {
-              if (isExcludedProp(key)) {
-                continue
-              }
-              if (validStyles[key]) {
-                viewStyles[key] = defaultProps[key]
-              }
-              fullProps[key] = defaultProps[key]
-            }
-          }
-
-          const isStyleObject = (obj: t.Node): obj is t.ObjectExpression => {
+          const isExtractable = (obj: t.Node): obj is t.ObjectExpression => {
             return (
               t.isObjectExpression(obj) &&
               obj.properties.every((prop) => {
@@ -305,23 +292,6 @@ export function createExtractor() {
 
           const hasDeopt = (obj: Object) => {
             return Object.keys(obj).some(isDeoptedProp)
-          }
-
-          const postProcessStyles = (obj: Object) => {
-            if (!excludeProps.size) {
-              return obj
-            }
-            if (staticConfig.postProcessStyles) {
-              obj = staticConfig.postProcessStyles(obj)
-            }
-            const res = {}
-            for (const key in obj) {
-              if (isExcludedProp(key)) {
-                continue
-              }
-              res[key] = obj[key]
-            }
-            return res
           }
 
           // flatten any evaluatable spreads
@@ -378,65 +348,6 @@ export function createExtractor() {
           let shouldDeopt = false
           let inlinePropCount = 0
           let isFlattened = false
-          let styleExpansionError = false
-          let didFailSpread = false
-
-          function getStyleExpansion(currentProps: any, name: string, value?: any) {
-            const expansion = staticConfig?.expansionProps?.[name]
-            if (typeof expansion === 'function') {
-              if (shouldPrintDebug) {
-                console.log('  expanding', name, value)
-              }
-              try {
-                return expansion({ ...currentProps, [name]: value })
-              } catch (err) {
-                styleExpansionError = true
-                console.error('Error running expansion', err)
-                return null
-              }
-            }
-            return expansion
-          }
-
-          function getStyleExpanded(name: string, value: any): ExtractedAttr[] | null {
-            const expanded = getStyleExpansion(fullProps, name, value)
-            if (shouldPrintDebug) {
-              console.log('  expanded', name, expanded)
-            }
-            if (!expanded) {
-              return null
-            }
-            const style: { [key: string]: any } = {}
-            const attrs: ExtractedAttrAttr[] = []
-            for (const key in expanded) {
-              if (key === name || excludeProps.has(key)) {
-                continue
-              }
-              if (validStyles[key]) {
-                style[key] = expanded[key]
-                viewStyles[key] = expanded[key]
-                fullProps[key] = expanded[key]
-              } else {
-                if (shouldPrintDebug) {
-                  console.log('  key not a valid style, leaving on attributes', key)
-                }
-                fullProps[key] = value
-                attrs.push({
-                  type: 'attr',
-                  value: t.jSXAttribute(
-                    t.jsxIdentifier(key),
-                    t.jsxExpressionContainer(literalToAst(value))
-                  ),
-                })
-              }
-            }
-            return [{ type: 'style', value: style }, ...attrs]
-          }
-
-          // see if we can filter them
-          if (shouldPrintDebug) {
-            console.log('  attrs (before):', attrs.map(attrGetName).join(', '))
-          }
 
           // iterate and parse out any ternaries / styles
           attrs = traversePath
@@ -451,12 +362,13 @@ export function createExtractor() {
             })
             .filter(isPresent)
 
+          // see if we can filter them
+          if (shouldPrintDebug) {
+            console.log('  attrs (before):', attrs.map(attrGetName).join(', '))
+          }
+
           // now update to new values
           node.attributes = attrs.filter(isAttr).map((x) => x.value)
-
-          if (shouldPrintDebug) {
-            console.log('  attrs (after):', attrs.map(attrGetName).join(', '))
-          }
 
           function evaluateAttribute(
             path: NodePath<t.JSXAttribute | t.JSXSpreadAttribute>
@@ -474,8 +386,8 @@ export function createExtractor() {
                 // <VStack {...isSmall ? { color: 'red } : { color: 'blue }}
                 if (t.isConditionalExpression(attribute.argument)) {
                   const { alternate, consequent, test } = attribute.argument
-                  const aStyle = isStyleObject(alternate) ? attemptEvalSafe(alternate) : FAILED_EVAL
-                  const cStyle = isStyleObject(consequent)
+                  const aStyle = isExtractable(alternate) ? attemptEvalSafe(alternate) : FAILED_EVAL
+                  const cStyle = isExtractable(consequent)
                     ? attemptEvalSafe(consequent)
                     : FAILED_EVAL
 
@@ -485,8 +397,8 @@ export function createExtractor() {
                   }
 
                   if (aStyle !== FAILED_EVAL && cStyle !== FAILED_EVAL) {
-                    const alt = postProcessStyles(aStyle)
-                    const cons = postProcessStyles(cStyle)
+                    const alt = aStyle
+                    const cons = cStyle
                     const ternary: Ternary = {
                       test,
                       remove() {
@@ -510,7 +422,7 @@ export function createExtractor() {
                   t.isLogicalExpression(attribute.argument) &&
                   attribute.argument.operator === '&&'
                 ) {
-                  if (isStyleObject(attribute.argument.right)) {
+                  if (isExtractable(attribute.argument.right)) {
                     const spreadStyle = attemptEvalSafe(attribute.argument.right)
                     if (spreadStyle === FAILED_EVAL) {
                       // no optimize
@@ -529,7 +441,6 @@ export function createExtractor() {
                         // if its value it evaluates to nada
                         return null
                       }
-                      const cons = postProcessStyles(spreadStyle)
                       return {
                         type: 'ternary',
                         value: {
@@ -537,7 +448,7 @@ export function createExtractor() {
                           remove() {
                             path.remove()
                           },
-                          consequent: cons,
+                          consequent: spreadStyle,
                           alternate: null,
                         },
                       }
@@ -575,25 +486,6 @@ export function createExtractor() {
               Array.isArray(valuePath) ? valuePath.map((p) => p.remove()) : valuePath.remove()
             }
 
-            // handle expansions
-            const expansion = staticConfig.expansionProps?.[name]
-            if (expansion && !t.isBinaryExpression(value) && !t.isConditionalExpression(value)) {
-              const styleValue =
-                value === null
-                  ? // handle boolean jsx props
-                    true
-                  : attemptEvalSafe(value)
-              if (styleValue === FAILED_EVAL) {
-                if (shouldPrintDebug) {
-                  console.warn('  Failed style expansion', name)
-                }
-                inlinePropCount++
-                return attr
-              } else {
-                return getStyleExpanded(name, styleValue)
-              }
-            }
-
             // value == null means boolean (true)
             if (value === null) {
               inlinePropCount++
@@ -616,13 +508,11 @@ export function createExtractor() {
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
             if (shouldPrintDebug) {
-              console.log('  attr', name, styleValue)
+              console.log('     >', name, styleValue)
             }
 
             // FAILED = dynamic or ternary, keep going
             if (styleValue !== FAILED_EVAL) {
-              viewStyles[name] = styleValue
-              fullProps[name] = styleValue
               return {
                 type: 'style',
                 value: { [name]: styleValue },
@@ -672,8 +562,13 @@ export function createExtractor() {
             }
             // if we've made it this far, the prop stays inline
             inlinePropCount++
+
+            //
+            // RETURN ATTR
+            //
             return attr
 
+            // attr helpers:
             function addBinaryConditional(
               operator: any,
               staticExpr: any,
@@ -705,7 +600,7 @@ export function createExtractor() {
                   const cVal = attemptEval(value.consequent)
                   if (shouldPrintDebug) {
                     const type = value.test.type
-                    console.log('  staticConditional', type, cVal, aVal)
+                    console.log('      static ternary', type, cVal, aVal)
                   }
                   return {
                     test: value.test,
@@ -715,7 +610,7 @@ export function createExtractor() {
                   }
                 } catch (err) {
                   if (shouldPrintDebug) {
-                    console.log('  cant static eval conditional', err.message)
+                    console.log('       cant eval ternary', err.message)
                   }
                 }
               }
@@ -761,17 +656,13 @@ export function createExtractor() {
             modifiedComponents.add(parentFn)
           }
 
-          if (shouldPrintDebug) {
-            console.log('  finish extract', { inlinePropCount })
-          }
-
           const filePath = sourcePath.replace(process.cwd(), '.')
           const lineNumbers = node.loc
             ? node.loc.start.line +
               (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
             : ''
 
-          // helpful attrs for DX
+          // add data-is
           if (shouldAddDebugProp) {
             const preName = componentName ? `${componentName}:` : ''
             // unshift so spreads/nesting overwrite
@@ -784,116 +675,114 @@ export function createExtractor() {
             })
           }
 
+          // combine ternaries
+          let ternaries: Ternary[] = []
+          attrs = attrs
+            .reduce<(ExtractedAttr | ExtractedAttr[])[]>((out, cur) => {
+              const next = attrs[attrs.indexOf(cur) + 1]
+              if (cur.type === 'ternary') {
+                ternaries.push(cur.value)
+              }
+              if ((!next || next.type !== 'ternary') && ternaries.length) {
+                // finish, process
+                try {
+                  return [
+                    ...out,
+                    ...normalizeTernaries(ternaries).map(({ alternate, consequent, ...rest }) => {
+                      return {
+                        type: 'ternary' as const,
+                        value: {
+                          ...rest,
+                          alternate: alternate || null,
+                          consequent: consequent || null,
+                        },
+                      }
+                    }),
+                  ]
+                } finally {
+                  ternaries = []
+                }
+              }
+              if (cur.type === 'ternary') {
+                return out
+              }
+              out.push(cur)
+              return out
+            }, [])
+            .flat()
+
+          // combine styles
+          let prev: ExtractedAttr | null = null
+          attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
+            if (cur.type === 'style') {
+              if (prev?.type === 'style') {
+                Object.assign(prev.value, cur.value)
+                return acc
+              }
+            }
+            acc.push(cur)
+            prev = cur
+            return acc
+          }, [])
+
+          // post process
           if (staticConfig.postProcessStyles) {
-            viewStyles = staticConfig.postProcessStyles(viewStyles)
+            const get = (res: Object | null) => {
+              if (!res) return
+              if (!!excludeProps.size) {
+                for (const key in res) {
+                  if (isExcludedProp(key)) delete res[key]
+                }
+              }
+              return staticConfig.postProcessStyles?.(res) ?? res
+            }
+            for (const attr of attrs) {
+              try {
+                switch (attr.type) {
+                  case 'ternary':
+                    attr.value.alternate = get(attr.value.alternate)
+                    attr.value.consequent = get(attr.value.consequent)
+                    break
+                  case 'style':
+                    attr.value = get({ ...staticConfig.defaultProps, ...attr.value })
+                    if (shouldPrintDebug) {
+                      console.log('    style\n', JSON.stringify(attr.value, null, 2))
+                    }
+                    break
+                }
+              } catch (err) {
+                // any error de-opt
+                if (shouldPrintDebug) {
+                  console.log(' postprocessing error, deopt', err)
+                  node.attributes = ogAttributes
+                  return node
+                }
+              }
+            }
           }
 
           if (shouldPrintDebug) {
-            console.log('  viewStyles', inlinePropCount, viewStyles)
+            console.log('  attrs (after):', attrs.map(attrGetName).join(', '))
           }
 
-          if (styleExpansionError) {
-            if (shouldPrintDebug) {
-              console.log('bailing optimization: style expansion error')
-            }
-            node.attributes = ogAttributes
-            attrs = ogAttributes.map((value) => ({ type: 'attr', value }))
-            return
-          }
-
-          // if all style props have been extracted and no spreads
-          // component can be flattened to div or parent view
+          // flatten!
           if (
             !shouldDeopt &&
             inlinePropCount === 0 &&
             !node.attributes.some((x) => t.isJSXSpreadAttribute(x)) &&
             !staticConfig.neverFlatten
           ) {
-            // since were removing down to div, we need to push the default styles onto this classname
             if (shouldPrintDebug) {
-              console.log('  [🔨] flatten node', originalNodeName, Object.keys(viewStyles))
+              console.log('  [✅] fully flattened node', originalNodeName, flatNode)
             }
             isFlattened = true
-            // change to div
-            node.name.name = domNode
-          }
-
-          if (shouldPrintDebug) {
-            console.log(
-              `  >> is extracting, inlinePropCount: ${inlinePropCount}, domNode: ${domNode}`
-            )
-          }
-
-          if (traversePath.node.closingElement) {
-            // this seems strange
-            if (t.isJSXMemberExpression(traversePath.node.closingElement.name)) {
-              return
+            node.name.name = flatNode
+            closingElement.name.name = flatNode
+          } else {
+            if (shouldPrintDebug) {
+              console.log('  [❊] ', inlinePropCount, 'props un-flattened')
             }
-            traversePath.node.closingElement.name.name = node.name.name
           }
-
-          // combine ternaries where possible
-          // but only combine ternaries that are not separated by spreads
-          // because we need spreads to override
-          attrs = (() => {
-            let next: ExtractedAttr[] = []
-            let ternaries: Ternary[] = []
-
-            function combineTernariesAndAddToAttrs() {
-              if (!ternaries.length) return
-              const normalized = normalizeTernaries(ternaries)
-              ternaries = []
-
-              function postProcess(styleObject: Object) {
-                let res = { ...styleObject }
-                if (staticConfig.postProcessStyles) {
-                  res = staticConfig.postProcessStyles(res)
-                }
-                for (const key in styleObject) {
-                  // run expansions
-                  const expandedStyle = getStyleExpansion(fullProps, key, styleObject[key])
-                  if (expandedStyle) {
-                    delete res[key]
-                    Object.assign(res, expandedStyle)
-                  }
-                }
-                return res
-              }
-
-              const normalizedExpanded = normalized.map(({ alternate, consequent, ...rest }) => {
-                return {
-                  type: 'ternary' as const,
-                  value: {
-                    ...rest,
-                    alternate: alternate ? postProcess(alternate) : null,
-                    consequent: consequent ? postProcess(consequent) : null,
-                  },
-                }
-              })
-
-              if (shouldPrintDebug) {
-                console.log(`  noramlized ternaries`, normalizedExpanded.length)
-              }
-
-              next = [...next, ...normalizedExpanded]
-            }
-
-            for (const attr of attrs) {
-              if (attr.type === 'ternary') {
-                ternaries.push(attr.value)
-              } else {
-                if (t.isJSXSpreadAttribute(attr.value)) {
-                  if (shouldPrintDebug) console.log(`  spread`)
-                  combineTernariesAndAddToAttrs()
-                }
-                next.push(attr)
-              }
-            }
-            // add any leftover
-            combineTernariesAndAddToAttrs()
-
-            return next
-          })()
 
           onExtractTag({
             attrs,
@@ -903,7 +792,6 @@ export function createExtractor() {
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,
-            viewStyles,
             isFlattened,
           })
         },

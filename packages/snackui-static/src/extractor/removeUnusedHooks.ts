@@ -1,6 +1,11 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
+const hooks = {
+  useMedia: true,
+  useTheme: true,
+}
+
 export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boolean) {
   compFn.scope.crawl()
   // check the top level statements
@@ -38,6 +43,11 @@ export function removeUnusedHooks(compFn: NodePath<any>, shouldPrintDebug: boole
         continue
       }
       const shouldRemove = (() => {
+        const isHook =
+          t.isCallExpression(init) && t.isIdentifier(init.callee) && hooks[init.callee.name]
+        if (!isHook) {
+          return false
+        }
         if (t.isIdentifier(id.node)) {
           // remove "const media = useMedia()"
           const name = id.node.name

@@ -56,7 +56,14 @@ export const Text = memo((allProps: TextProps) => {
   const [props, style] = useTextStyle(allProps, false, true)
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      console.log(' 🍑 debug:\n  allProps', allProps, '\n  propsStyle', props['style'], '\n  style', JSON.stringify(style))
+      console.log(
+        ' 🍑 debug:\n  allProps',
+        allProps,
+        '\n  propsStyle',
+        props['style'],
+        '\n  style',
+        JSON.stringify(style)
+      )
     }
   }
   return <ReactText {...props} style={[isWeb ? defaultStyle : null, props['style'], style]} />
@@ -173,13 +180,10 @@ if (process.env.IS_STATIC) {
     isText: true,
     postProcessStyles: (styles) => getTextStyle(styles, styleProps.all)[1],
     validStyles: {
+      ellipse: true,
       ...stylePropsText,
       ...webOnlySpecificStyleKeys,
     },
     defaultProps: defaultStyle,
-    expansionProps: {
-      selectable: selectableStyle,
-      ellipse: getEllipse,
-    },
   }
 }

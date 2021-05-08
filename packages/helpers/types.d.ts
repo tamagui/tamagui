@@ -115,6 +115,7 @@ declare module "@snackui/helpers" {
         shadowOffset: boolean;
         shadowOpacity: boolean;
         shadowRadius: boolean;
+        contain: boolean;
     }>;
     export const stylePropsTextOnly: Readonly<{
         color: boolean;
@@ -243,6 +244,7 @@ declare module "@snackui/helpers" {
         shadowOffset: boolean;
         shadowOpacity: boolean;
         shadowRadius: boolean;
+        contain: boolean;
     }>;
     export const stylePropsAll: Readonly<{
         color: boolean;
@@ -354,6 +356,7 @@ declare module "@snackui/helpers" {
         shadowOffset: boolean;
         shadowOpacity: boolean;
         shadowRadius: boolean;
+        contain: boolean;
     }>;
 }
 
