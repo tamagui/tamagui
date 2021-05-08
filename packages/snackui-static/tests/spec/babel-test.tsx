@@ -94,3 +94,33 @@ test('flat transform props', async () => {
   expect(code.includes(`  "translateY": 20`)).toBeTruthy()
   expect(code.includes(`  "rotate": "10deg"`)).toBeTruthy()
 })
+
+test('handles style order merge properly', async () => {
+  const output = extractBabel(`
+    import { VStack } from 'snackui'
+    export function Test(props) {
+      return (
+        <VStack
+          scale={props.isLoading ? 1 : 2}
+          x={10}
+          {...props}
+          rotate="10deg"
+        />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  const expectedLinesInOrder = [
+    `_style0: _sheet["1"],`,
+    `_style1: props.isLoading ? _sheet["2"] : _sheet["3"],`,
+    '...props,',
+    '_style3: _sheet["4"]',
+  ]
+  let lastIndex = 0
+  for (const line of expectedLinesInOrder) {
+    const index = code.indexOf(line)
+    expect(index).toBeGreaterThan(0)
+    expect(index).toBeGreaterThan(lastIndex)
+    lastIndex = index
+  }
+})

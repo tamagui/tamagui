@@ -29,7 +29,6 @@ const defaultStyle: TextStyle = {
   // inline-block fixed transforms not working on web
   // but inline is necessary for text nesting (italic, bold etc)
   display: 'inline' as any,
-  // color: 'var(--color)',
 }
 
 const selectableStyle = {
@@ -55,7 +54,12 @@ const getEllipse = (props: TextProps) => {
 
 export const Text = memo((allProps: TextProps) => {
   const [props, style] = useTextStyle(allProps, false, true)
-  return <ReactText {...props} style={[isWeb ? defaultStyle : null, style, props['style']]} />
+  if (process.env.NODE_ENV === 'development') {
+    if (props['debug']) {
+      console.log(' 🍑 debug:\n  allProps', allProps, '\n  propsStyle', props['style'], '\n  style', JSON.stringify(style))
+    }
+  }
+  return <ReactText {...props} style={[isWeb ? defaultStyle : null, props['style'], style]} />
 })
 
 const webOnlySpecificStyleKeys = {
@@ -115,6 +119,9 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextS
       continue
     }
     if (key in styleKeys) {
+      if (key === 'style') {
+        continue
+      }
       const val = allProps[key]
       // if should skip
       if (isWeb) {
@@ -134,7 +141,7 @@ const getTextStyle = (allProps: TextProps, styleKeys: Object): [TextProps, TextS
         }
       }
       if (key in stylePropsTransform) {
-        mergeTransform(styleProps, key, val)
+        mergeTransform(style, key, val)
         continue
       }
       // style values

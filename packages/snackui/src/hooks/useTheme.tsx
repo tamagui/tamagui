@@ -22,6 +22,7 @@ import React, {
   useState,
 } from 'react'
 
+import { defaultThemes } from '../defaultThemes'
 import { isWeb } from '../platform'
 import { useForceUpdate } from './useForceUpdate'
 
@@ -38,17 +39,12 @@ export interface Themes {
 type ThemeName = keyof Themes
 
 let hasConfigured = false
-let themes: Themes = {
-  light: {
-    backgroundColor: '#fff',
-    shadowColor: 'rgba(0,0,0,0.2)',
-    color: '#000',
-  },
-}
 
 export const invertStyleVariableToValue: {
   [key: string]: { [subKey: string]: string }
 } = {}
+
+let themes: Themes = defaultThemes
 
 export const configureThemes = (userThemes: Themes) => {
   if (hasConfigured) {

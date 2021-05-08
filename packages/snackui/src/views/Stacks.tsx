@@ -86,11 +86,11 @@ const disabledStyle: StackProps = {
   userSelect: 'none',
 }
 
-const useViewStylePropsSplit = (props: { [key: string]: any }) => {
+const useParseProps = (props: { [key: string]: any }) => {
   const activeTheme = useContext(ActiveThemeContext)
   const themeVal = invertStyleVariableToValue[activeTheme.name]
   return useMemo(() => {
-    return getStackStyle(props, themeVal)
+    return getSplitStyles(props, themeVal)
   }, [props, activeTheme])
 }
 
@@ -99,48 +99,85 @@ const mapTransformKeys = {
   y: 'translateY',
 }
 
-export const mergeTransform = (styleProps: any, key: string, val: any) => {
-  styleProps.transform = styleProps.transform || []
-  styleProps.transform.push({ [mapTransformKeys[key] || key]: val })
-  if (key in styleProps) {
-    delete styleProps[key]
-  }
+export const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
+  const transform = obj.transform
+    ? Array.isArray(obj.transform)
+      ? obj.transform
+      : [obj.transform]
+    : []
+  // @ts-expect-error
+  transform.push({ [mapTransformKeys[key] || key]: val })
+  obj.transform = transform
 }
 
-const getStackStyle = (props: { [key: string]: any }, themeVal?: { [key: string]: string }) => {
-  let styleProps: ViewStyle & { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } = {}
+const getSplitStyles = (props: { [key: string]: any }, themeVal?: { [key: string]: string }) => {
+  let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
   let viewProps: ViewProps = {}
+  let style: any[] = []
+  let cur: ViewStyle | null = null
   for (const key in props) {
-    const val = props[key]
-    if (key in stylePropsTransform) {
-      mergeTransform(styleProps, key, val)
-      continue
-    }
-    if (key in stylePropsView) {
-      if (key == 'transform') {
-        styleProps.transform = styleProps.transform ? [...styleProps.transform, ...val] : val
-      } else {
-        styleProps[key] = themeVal?.[val] ?? val
+    let val = props[key]
+    if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
+      if (cur) {
+        style.push(cur)
+        cur = null
       }
+      style.push(val)
       continue
     }
+    if (key === 'fullscreen') {
+      cur = cur || {}
+      Object.assign(cur, fullscreenStyle)
+      continue
+    }
+    // apply theme
+    val = themeVal?.[val] ?? val
+    // transforms
+    if (key in stylePropsTransform) {
+      cur = cur || {}
+      mergeTransform(cur, key, val)
+      continue
+    }
+    // regular styles
+    if (key in stylePropsView) {
+      cur = cur || {}
+      cur[key] = val
+      continue
+    }
+    // psuedos
     if (val && (key === 'hoverStyle' || key === 'pressStyle')) {
-      styleProps[key] = val
-      fixNativeShadow(val, true)
+      psuedos = psuedos || {}
+      const pseudoStyle: ViewStyle = {}
+      psuedos[key] = pseudoStyle
       for (const subKey in val) {
         if (subKey in stylePropsTransform) {
-          mergeTransform(val, subKey, val[subKey])
+          mergeTransform(pseudoStyle, subKey, val[subKey])
           continue
+        } else {
+          pseudoStyle[subKey] = val
+          if (subKey === 'shadowColor') {
+            fixNativeShadow(pseudoStyle, true)
+          }
         }
       }
       continue
     }
-    viewProps[key] = props[key]
+    // if no match, prop
+    viewProps[key] = val
+    // native shadow fix
+    if (val && key === 'shadowColor') {
+      fixNativeShadow(viewProps, true)
+    }
   }
-  if (styleProps) {
-    fixNativeShadow(styleProps, true)
+  // push last style
+  if (cur) {
+    style.push(cur)
   }
-  return [viewProps, styleProps] as const
+  return {
+    viewProps,
+    style,
+    psuedos,
+  }
 }
 
 const mouseUps = new Set<Function>()
@@ -165,10 +202,9 @@ const createStack = ({
 
   const component = forwardRef<View, StackProps>((props, ref) => {
     const {
+      animated,
       children,
-      fullscreen,
       pointerEvents,
-      style = null,
       onPress,
       onPressIn,
       onPressOut,
@@ -182,7 +218,7 @@ const createStack = ({
       onMouseLeave,
     } = props
 
-    const [viewProps, { hoverStyle, pressStyle, ...styleProps }] = useViewStylePropsSplit(props)
+    const { viewProps, psuedos, style } = useParseProps(props)
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
     if (!internal.current) {
@@ -204,20 +240,21 @@ const createStack = ({
       pressIn: false,
     })
 
-    const ViewComponent = 'animated' in props ? Animated.View : View
+    const ViewComponent = animated ? Animated.View : View
 
     const styles = [
       sheet.style,
-      fullscreen ? fullscreenStyle : null,
-      styleProps,
-      // in extraction logic, style always gets placed after props, so preserve the order here
-      // if we want to do this *right*, in useViewStylePropsSplit it should track where style key appears,
-      // and actually return two objects: stylePropsBefore, style, stylePropsAfter
       style,
-      state.hover ? hoverStyle : null,
-      state.press ? pressStyle : null,
+      psuedos && state.hover ? psuedos.hoverStyle || null : null,
+      psuedos && state.press ? psuedos.pressStyle || null : null,
       disabled ? disabledStyle : null,
     ]
+
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug']) {
+        console.log(' 🍑 debug', { props, styles })
+      }
+    }
 
     let content = (
       <ViewComponent
@@ -234,9 +271,10 @@ const createStack = ({
       </ViewComponent>
     )
 
-    const attachPress = !!(pressStyle || onPress || onPressOut || onPressIn)
+    const attachPress = !!((psuedos && psuedos.pressStyle) || onPress || onPressOut || onPressIn)
     const attachHover =
-      isWeb && !!(hoverStyle || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+      isWeb &&
+      !!((psuedos && psuedos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
     // while avoiding reparenting...
@@ -326,29 +364,21 @@ const createStack = ({
       }
 
       if (isWeb) {
-        content = (
-          <div {...events} style={displayContentsStyle}>
-            {content}
-          </div>
-        )
+        if (shouldAttach || internal.current.hasEverHadEvents) {
+          content = (
+            <div {...events} style={displayContentsStyle}>
+              {content}
+            </div>
+          )
+        }
       } else {
-        if (pointerEvents !== 'none' && !!(onPress || onPressOut || pressStyle)) {
+        if (pointerEvents !== 'none' && !!(onPress || onPressOut || psuedos?.pressStyle)) {
           content = (
             <Pressable
               hitSlop={10}
               onPress={events.onClick}
               onPressOut={unPress}
               onPressIn={events.onMouseDown}
-              style={
-                styleProps
-                  ? {
-                      zIndex: styleProps.zIndex,
-                      width: styleProps.width,
-                      height: styleProps.height,
-                      position: styleProps.position,
-                    }
-                  : null
-              }
             >
               {content}
             </Pressable>
@@ -363,7 +393,15 @@ const createStack = ({
   if (process.env.IS_STATIC) {
     // @ts-expect-error
     component.staticConfig = {
-      postProcessStyles: (styles) => getStackStyle(styles)[1],
+      postProcessStyles: (inStyles) => {
+        const { style, psuedos } = getSplitStyles(inStyles)
+        const flatStyle = style.reduce((acc, value) => {
+          Object.assign(acc, value)
+          return acc
+        }, {})
+        Object.assign(flatStyle, psuedos)
+        return flatStyle
+      },
       validStyles: stylePropsView,
       defaultProps: {
         ...defaultProps,

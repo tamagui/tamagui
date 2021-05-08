@@ -42,6 +42,10 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    export const defaultThemes: any;
+}
+
+declare module "snackui" {
     export const isWeb: boolean;
     export const isWebIOS: false;
     export const isChrome: boolean;
@@ -244,12 +248,12 @@ declare module "snackui" {
         [key: string]: ThemeObject;
     }
     type ThemeName = keyof Themes;
-    let themes: Themes;
     export const invertStyleVariableToValue: {
         [key: string]: {
             [subKey: string]: string;
         };
     };
+    let themes: Themes;
     export const configureThemes: (userThemes: Themes) => void;
     class ActiveThemeManager {
         name: string;
@@ -430,7 +434,7 @@ declare module "snackui" {
         contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
         display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
     }, 'backfaceVisibility'>;
-    export const mergeTransform: (styleProps: any, key: string, val: any) => void;
+    export const mergeTransform: (obj: ViewStyle, key: string, val: any) => void;
     export const AbsoluteVStack: StaticComponent<StackProps>;
     export const HStack: StaticComponent<StackProps>;
     export const VStack: StaticComponent<StackProps>;

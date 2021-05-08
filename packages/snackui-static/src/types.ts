@@ -29,7 +29,12 @@ export type ExtractedAttrAttr = {
   value: t.JSXAttribute | t.JSXSpreadAttribute
 }
 
-export type ExtractedAttr = ExtractedAttrAttr | { type: 'ternary'; value: Ternary }
+export type ExtractedAttrStyle = { type: 'style'; value: Object }
+
+export type ExtractedAttr =
+  | ExtractedAttrAttr
+  | { type: 'ternary'; value: Ternary }
+  | ExtractedAttrStyle
 
 export type ExtractTagProps = {
   attrs: ExtractedAttr[]
@@ -40,6 +45,7 @@ export type ExtractTagProps = {
   originalNodeName: string
   lineNumbers: string
   filePath: string
+  isFlattened: boolean
 }
 
 export type ExtractorParseProps = SnackOptions & {

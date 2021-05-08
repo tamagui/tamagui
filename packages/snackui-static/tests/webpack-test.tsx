@@ -23,22 +23,6 @@ beforeAll(async () => {
   ])
 })
 
-// TODO fix testability of linear gradient
-// test('extracts gradients', () => {
-//   const { renderer } = context.testlineargradient
-//   console.log(renderer.toJSON())
-//   // console.log('out', style.backgroundColor, style.paddingRight)
-//   t.assert(true)
-// })
-
-// test('extracts media queries', async () => {
-//   const { TestMediaQuery } = context.app
-//   const { style } = await getTestElement(TestMediaQuery)
-//   // TODO not picking up media queries
-//   console.log('out', style.backgroundColor, style.paddingRight)
-//   expect(true)
-// })
-
 //
 // test styles
 //

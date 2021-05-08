@@ -11,7 +11,13 @@ export type TitleProps = SizableTextProps
 export const Title = (props: TitleProps) => {
   const size = getSize(props.size ?? 'md') * 1.5
   return (
-    <Paragraph fontWeight="300" {...props} marginVertical={0} size={size} sizeLineHeight={0.7} />
+    <Paragraph
+      fontWeight="300"
+      marginVertical={0}
+      {...props}
+      size={size}
+      sizeLineHeight={props.sizeLineHeight ?? 0.7}
+    />
   )
 }
 

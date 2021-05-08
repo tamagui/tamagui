@@ -49,11 +49,11 @@ const validComponents: { [key: string]: any } = Object.keys(AllExports)
 
 export type Extractor = ReturnType<typeof createExtractor>
 
-let hasWarnedThemes = false
 let lastThemeMTime = 0
+let hasWarnedOnce = false
 
 export function createExtractor() {
-  const themesByFile = {}
+  let themes
   const shouldAddDebugProp =
     process.env.TARGET !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
@@ -80,11 +80,10 @@ export function createExtractor() {
         ...props
       }: ExtractorParseProps
     ) => {
-      if (process.env.NODE_ENV === 'development') {
-        if (!themesFile && !disableThemes) {
-          console.log(
-            '  Warning: no themesFile option provided to SnackUI, all themes will run inline (slower).'
-          )
+      if (process.env.NODE_ENV !== 'production') {
+        if (!themesFile && !disableThemes && !hasWarnedOnce) {
+          hasWarnedOnce = true
+          console.log('SnackUI: no themesFile option provided to SnackUI, using default theme')
         }
       }
       if (!disableThemes && themesFile) {
@@ -92,18 +91,12 @@ export function createExtractor() {
           themesFile = join(process.cwd(), themesFile)
         }
         // re-require theme if updated
-        const hasChangedThemesFile =
-          statSync(themesFile).mtime.getUTCMilliseconds() !== lastThemeMTime
-        if (hasChangedThemesFile) {
+        const changed = statSync(themesFile).mtime.getUTCMilliseconds() !== lastThemeMTime
+        if (changed) {
           delete require.cache[themesFile]
         }
-        const theme =
-          hasChangedThemesFile || !themesByFile[themesFile]
-            ? require(themesFile).default
-            : themesByFile[themesFile]
-        themesByFile[themesFile] = theme
+        themes = changed || !themes ? require(themesFile).default : themes
       }
-      const themes = themesFile ? themesByFile[themesFile] : null
       const themeKeys = new Set(themes ? Object.keys(themes[Object.keys(themes)[0]]) : [])
       const deoptProps = new Set(props.deoptProps ?? [])
       const excludeProps = new Set(props.excludeProps ?? [])
@@ -227,33 +220,22 @@ export function createExtractor() {
           const attemptEval = !evaluateVars
             ? evaluateAstNode
             : (() => {
-                if (shouldPrintDebug) {
-                  if (!disableThemes && !themes && !hasWarnedThemes) {
-                    hasWarnedThemes = true
-                    console.log(
-                      '  ⚠️ SnackUI: warning! no themesFile option given, themes will fallback'
-                    )
-                  }
-                }
-
                 // called when evaluateAstNode encounters a dynamic-looking prop
                 const evalFn = (n: t.Node) => {
                   // themes
-                  if (themes) {
-                    if (
-                      t.isMemberExpression(n) &&
-                      t.isIdentifier(n.property) &&
-                      isValidThemeHook(traversePath, n, sourcePath)
-                    ) {
-                      const key = n.property.name
-                      if (shouldPrintDebug) {
-                        console.log('  found theme prop', key)
-                      }
-                      if (!themeKeys.has(key)) {
-                        throw new Error(`Accessing non-existent theme key: ${key}`)
-                      }
-                      return `var(--${key})`
+                  if (
+                    t.isMemberExpression(n) &&
+                    t.isIdentifier(n.property) &&
+                    isValidThemeHook(traversePath, n, sourcePath)
+                  ) {
+                    const key = n.property.name
+                    if (shouldPrintDebug) {
+                      console.log('  found theme prop', key)
                     }
+                    if (!themeKeys.has(key)) {
+                      throw new Error(`Accessing non-existent theme key: ${key}`)
+                    }
+                    return `var(--${key})`
                   }
                   // variable
                   if (t.isIdentifier(n) && staticNamespace.hasOwnProperty(n.name)) {
@@ -286,7 +268,24 @@ export function createExtractor() {
           //
           //  SPREADS SETUP
           //
-          const styleExpansions: { name: string; value: any }[] = []
+
+          const fullProps = {}
+          let viewStyles: ViewStyle = {}
+
+          // parse default props
+          const { defaultProps } = staticConfig
+          if (defaultProps) {
+            for (const key in defaultProps) {
+              if (isExcludedProp(key)) {
+                continue
+              }
+              if (validStyles[key]) {
+                viewStyles[key] = defaultProps[key]
+              }
+              fullProps[key] = defaultProps[key]
+            }
+          }
+
           const isStyleObject = (obj: t.Node): obj is t.ObjectExpression => {
             return (
               t.isObjectExpression(obj) &&
@@ -303,6 +302,7 @@ export function createExtractor() {
               })
             )
           }
+
           const hasDeopt = (obj: Object) => {
             return Object.keys(obj).some(isDeoptedProp)
           }
@@ -350,7 +350,6 @@ export function createExtractor() {
                       const value = arg[k]
                       // this is a null prop:
                       if (!value && typeof value === 'object') {
-                        console.log('IS NULL - bug???', value)
                         continue
                       }
                       flattenedAttrs.push(
@@ -377,8 +376,62 @@ export function createExtractor() {
 
           let attrs: ExtractedAttr[] = []
           let shouldDeopt = false
-          let viewStyles: ViewStyle = {}
           let inlinePropCount = 0
+          let isFlattened = false
+          let styleExpansionError = false
+          let didFailSpread = false
+
+          function getStyleExpansion(currentProps: any, name: string, value?: any) {
+            const expansion = staticConfig?.expansionProps?.[name]
+            if (typeof expansion === 'function') {
+              if (shouldPrintDebug) {
+                console.log('  expanding', name, value)
+              }
+              try {
+                return expansion({ ...currentProps, [name]: value })
+              } catch (err) {
+                styleExpansionError = true
+                console.error('Error running expansion', err)
+                return null
+              }
+            }
+            return expansion
+          }
+
+          function getStyleExpanded(name: string, value: any): ExtractedAttr[] | null {
+            const expanded = getStyleExpansion(fullProps, name, value)
+            if (shouldPrintDebug) {
+              console.log('  expanded', name, expanded)
+            }
+            if (!expanded) {
+              return null
+            }
+            const style: { [key: string]: any } = {}
+            const attrs: ExtractedAttrAttr[] = []
+            for (const key in expanded) {
+              if (key === name || excludeProps.has(key)) {
+                continue
+              }
+              if (validStyles[key]) {
+                style[key] = expanded[key]
+                viewStyles[key] = expanded[key]
+                fullProps[key] = expanded[key]
+              } else {
+                if (shouldPrintDebug) {
+                  console.log('  key not a valid style, leaving on attributes', key)
+                }
+                fullProps[key] = value
+                attrs.push({
+                  type: 'attr',
+                  value: t.jSXAttribute(
+                    t.jsxIdentifier(key),
+                    t.jsxExpressionContainer(literalToAst(value))
+                  ),
+                })
+              }
+            }
+            return [{ type: 'style', value: style }, ...attrs]
+          }
 
           // see if we can filter them
           if (shouldPrintDebug) {
@@ -389,8 +442,8 @@ export function createExtractor() {
           attrs = traversePath
             .get('openingElement')
             .get('attributes')
-            .map((path, idx) => {
-              const res = evaluateAttribute(idx, path)
+            .flatMap((path) => {
+              const res = evaluateAttribute(path)
               if (!res) {
                 path.remove()
               }
@@ -400,15 +453,14 @@ export function createExtractor() {
 
           // now update to new values
           node.attributes = attrs.filter(isAttr).map((x) => x.value)
+
           if (shouldPrintDebug) {
             console.log('  attrs (after):', attrs.map(attrGetName).join(', '))
           }
 
           function evaluateAttribute(
-            idx: number,
             path: NodePath<t.JSXAttribute | t.JSXSpreadAttribute>
-          ): ExtractedAttr | null {
-            let didFailSpread = false
+          ): ExtractedAttr | ExtractedAttr[] | null {
             const attribute = path.node
             const attr: ExtractedAttr = { type: 'attr', value: attribute }
             if (
@@ -461,7 +513,8 @@ export function createExtractor() {
                   if (isStyleObject(attribute.argument.right)) {
                     const spreadStyle = attemptEvalSafe(attribute.argument.right)
                     if (spreadStyle === FAILED_EVAL) {
-                      didFailSpread = true
+                      // no optimize
+                      return attr
                     } else {
                       if (hasDeopt(spreadStyle)) {
                         shouldDeopt = true
@@ -498,17 +551,12 @@ export function createExtractor() {
                 inlinePropCount++
               }
 
-              // dont remove here or failed expressions will be totally absent
-              // if (didFailSpread) {
-              //   return null
-              // }
-
               return attr
             }
 
             const name = attribute.name.name
             if (isExcludedProp(name)) {
-              return attr
+              return null
             }
             if (isDeoptedProp(name)) {
               inlinePropCount++
@@ -528,7 +576,7 @@ export function createExtractor() {
             }
 
             // handle expansions
-            const expansion = staticConfig?.expansionProps?.[name]
+            const expansion = staticConfig.expansionProps?.[name]
             if (expansion && !t.isBinaryExpression(value) && !t.isConditionalExpression(value)) {
               const styleValue =
                 value === null
@@ -542,17 +590,12 @@ export function createExtractor() {
                 inlinePropCount++
                 return attr
               } else {
-                styleExpansions.push({ name, value: styleValue })
-                return null
+                return getStyleExpanded(name, styleValue)
               }
             }
 
             // value == null means boolean (true)
             if (value === null) {
-              // ? not sure, but may be able to optimize here
-              if (shouldPrintDebug) {
-                console.log('  CAN WE JUST KEEP THIS BOOLENA????', attr)
-              }
               inlinePropCount++
               return attr
             }
@@ -575,10 +618,15 @@ export function createExtractor() {
             if (shouldPrintDebug) {
               console.log('  attr', name, styleValue)
             }
+
             // FAILED = dynamic or ternary, keep going
             if (styleValue !== FAILED_EVAL) {
               viewStyles[name] = styleValue
-              return null
+              fullProps[name] = styleValue
+              return {
+                type: 'style',
+                value: { [name]: styleValue },
+              }
             }
 
             // ternaries!
@@ -699,7 +747,7 @@ export function createExtractor() {
             }
           } // END function evaluateAttribute
 
-          if (couldntParse || shouldDeopt) {
+          if (couldntParse) {
             if (shouldPrintDebug) {
               console.log(`  cancel:`, { couldntParse, shouldDeopt })
             }
@@ -711,27 +759,6 @@ export function createExtractor() {
           const parentFn = findTopmostFunction(traversePath)
           if (parentFn) {
             modifiedComponents.add(parentFn)
-          }
-
-          const defaultProps = component.staticConfig?.defaultProps ?? {}
-          const defaultStyle = {}
-          const defaultStaticProps = {}
-
-          // get our expansion props vs our style props
-          for (const key in defaultProps) {
-            if (validStyles[key]) {
-              if (isExcludedProp(key)) {
-                continue
-              }
-              defaultStyle[key] = defaultProps[key]
-            } else {
-              if (styleExpansions.some((x) => x.name === key)) {
-                // if already defined dont overwrite
-                continue
-              }
-              defaultStaticProps[key] = defaultProps[key]
-              styleExpansions.push({ name: key, value: defaultProps[key] })
-            }
           }
 
           if (shouldPrintDebug) {
@@ -757,74 +784,6 @@ export function createExtractor() {
             })
           }
 
-          function getStyleExpansion(currentProps: any, name: string, value?: any) {
-            const expansion = staticConfig?.expansionProps?.[name]
-            if (typeof expansion === 'function') {
-              if (shouldPrintDebug) {
-                console.log('  expanding', name, value)
-              }
-              try {
-                return expansion({ ...currentProps, [name]: value })
-              } catch (err) {
-                console.error('Error running expansion', err)
-                styleExpansionError = true
-                return {}
-              }
-            }
-            return expansion
-          }
-
-          // second pass, style expansions
-          // TODO integrate with attrs
-          let styleExpansionError = false
-          if (shouldPrintDebug) {
-            console.log('  styleExpansions', styleExpansions)
-          }
-
-          const fullProps = {
-            ...defaultStaticProps,
-            ...viewStyles,
-          }
-
-          if (styleExpansions.length) {
-            // first build fullStyles to pass in
-            for (const { name, value } of styleExpansions) {
-              fullProps[name] = value
-            }
-            for (const { name, value } of styleExpansions) {
-              const expanded = getStyleExpansion(fullProps, name, value)
-              if (shouldPrintDebug) {
-                if (styleExpansionError) console.log(' error!')
-                else console.log('  expanded', expanded)
-              }
-              if (styleExpansionError) {
-                break
-              }
-              if (expanded) {
-                const style = {}
-                for (const key in expanded) {
-                  if (key === name || excludeProps.has(key)) {
-                    continue
-                  }
-                  if (key in validStyles) {
-                    style[key] = expanded[key]
-                  } else {
-                    if (shouldPrintDebug) {
-                      console.log('  key not a valid style, leaving on attributes', key)
-                    }
-                    node.attributes.push(
-                      t.jSXAttribute(
-                        t.jsxIdentifier(key),
-                        t.jsxExpressionContainer(literalToAst(value))
-                      )
-                    )
-                  }
-                }
-                Object.assign(viewStyles, style)
-              }
-            }
-          }
-
           if (staticConfig.postProcessStyles) {
             viewStyles = staticConfig.postProcessStyles(viewStyles)
           }
@@ -835,7 +794,7 @@ export function createExtractor() {
 
           if (styleExpansionError) {
             if (shouldPrintDebug) {
-              console.log('bailing optimization due to failed style expansion')
+              console.log('bailing optimization: style expansion error')
             }
             node.attributes = ogAttributes
             attrs = ogAttributes.map((value) => ({ type: 'attr', value }))
@@ -845,6 +804,7 @@ export function createExtractor() {
           // if all style props have been extracted and no spreads
           // component can be flattened to div or parent view
           if (
+            !shouldDeopt &&
             inlinePropCount === 0 &&
             !node.attributes.some((x) => t.isJSXSpreadAttribute(x)) &&
             !staticConfig.neverFlatten
@@ -853,10 +813,7 @@ export function createExtractor() {
             if (shouldPrintDebug) {
               console.log('  [🔨] flatten node', originalNodeName, Object.keys(viewStyles))
             }
-            viewStyles = {
-              ...defaultStyle,
-              ...viewStyles,
-            }
+            isFlattened = true
             // change to div
             node.name.name = domNode
           }
@@ -947,6 +904,7 @@ export function createExtractor() {
             jsxPath: traversePath,
             originalNodeName,
             viewStyles,
+            isFlattened,
           })
         },
       })

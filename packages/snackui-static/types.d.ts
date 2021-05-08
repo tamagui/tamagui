@@ -35,10 +35,14 @@ declare module "@snackui/static" {
         type: 'attr';
         value: t.JSXAttribute | t.JSXSpreadAttribute;
     };
+    export type ExtractedAttrStyle = {
+        type: 'style';
+        value: Object;
+    };
     export type ExtractedAttr = ExtractedAttrAttr | {
         type: 'ternary';
         value: Ternary;
-    };
+    } | ExtractedAttrStyle;
     export type ExtractTagProps = {
         attrs: ExtractedAttr[];
         node: t.JSXOpeningElement;
@@ -48,6 +52,7 @@ declare module "@snackui/static" {
         originalNodeName: string;
         lineNumbers: string;
         filePath: string;
+        isFlattened: boolean;
     };
     export type ExtractorParseProps = SnackOptions & {
         sourcePath?: string;
@@ -151,7 +156,8 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
-    export function literalToAst(literal: any): any;
+    import * as t from "@babel/types";
+    export function literalToAst(literal: any): t.Expression;
 }
 
 declare module "@snackui/static" {

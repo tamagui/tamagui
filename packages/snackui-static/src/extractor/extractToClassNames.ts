@@ -149,6 +149,9 @@ export function extractToClassNames(
           let lastMediaImportance = 1
           for (const attr of attrs) {
             switch (attr.type) {
+              case 'style':
+                addStyles(attr.value)
+                break
               case 'attr':
                 const val = attr.value
                 if (t.isJSXSpreadAttribute(val)) {

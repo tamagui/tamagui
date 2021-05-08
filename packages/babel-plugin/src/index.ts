@@ -88,6 +88,7 @@ export default declare(function snackBabelPlugin(
             evaluateImportsWhitelist: ['constants.js', 'colors.js'],
             deoptProps: ['hoverStyle', 'pressStyle', 'focusStyle', 'pointerEvents'],
             excludeProps: [
+              'className',
               'display',
               'userSelect',
               'whiteSpace',
@@ -113,12 +114,30 @@ export default declare(function snackBabelPlugin(
 
               let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 
-              for (const attr of props.attrs) {
+              for (const [index, attr] of props.attrs.entries()) {
+                function addStyle(expr: any) {
+                  if (props.isFlattened) {
+                    stylesExpr.elements.push(expr)
+                  } else {
+                    finalAttrs.push(
+                      t.jsxAttribute(
+                        t.jsxIdentifier(`_style${index}`),
+                        t.jsxExpressionContainer(expr)
+                      )
+                    )
+                  }
+                }
+
                 switch (attr.type) {
+                  case 'style':
+                    const ident = addSheetStyle(attr.value, props.node)
+                    addStyle(ident)
+                    break
                   case 'ternary':
                     const cons = addSheetStyle(attr.value.consequent, props.node)
                     const alt = addSheetStyle(attr.value.alternate, props.node)
-                    stylesExpr.elements.push(t.conditionalExpression(attr.value.test, cons, alt))
+                    const styleExpr = t.conditionalExpression(attr.value.test, cons, alt)
+                    addStyle(styleExpr)
                     break
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
@@ -134,9 +153,12 @@ export default declare(function snackBabelPlugin(
               }
 
               props.node.attributes = finalAttrs
-              props.node.attributes.push(
-                t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
-              )
+
+              if (props.isFlattened) {
+                props.node.attributes.push(
+                  t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
+                )
+              }
             },
           })
 

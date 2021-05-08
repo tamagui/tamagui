@@ -1,6 +1,6 @@
 import * as t from '@babel/types'
 
-export function literalToAst(literal: any) {
+export function literalToAst(literal: any): t.Expression {
   if (literal === null) {
     return t.nullLiteral()
   }

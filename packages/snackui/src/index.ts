@@ -1,5 +1,6 @@
 export * from './platform'
 export * from './constants'
+export * from './defaultThemes'
 
 export * from './hooks/useDebounce'
 export * from './hooks/useConstant'
