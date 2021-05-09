@@ -1,3 +1,4 @@
+import { debounce } from 'lodash'
 import { useRef, useState } from 'react'
 import { LayoutRectangle } from 'react-native'
 
@@ -14,28 +15,41 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
 
   const ref = useRef<HTMLElement>(null)
 
+  const s = useRef(false)
   useIsomorphicLayoutEffect(() => {
     if (!ref.current) return
-
-    const update = (rect) => {
-      setLayout((prev) => {
-        let next
-        if (!prev) {
-          next = rect
-        } else {
-          const { x, y, width, height } = rect
-          // don't set new layout state unless the layout has actually changed
-          if (x !== prev.x || y !== prev.y || width !== prev.width || height !== prev.height) {
-            next = { x, y, width, height }
-          }
-        }
-        if (next) {
-          props.onLayout?.(next)
-          return next
-        }
-        return prev
-      })
+    if (!s.current) s.current = true
+    else {
+      console.log('re-run effect')
     }
+
+    const update = debounce(
+      (rect) => {
+        setLayout((prev) => {
+          let next
+          if (!prev) {
+            next = rect
+          } else {
+            const width = Math.round(rect.width)
+            const height = Math.round(rect.height)
+            // don't set new layout state unless the layout has actually changed
+            if (width !== prev.width || height !== prev.height) {
+              next = { width, height }
+            }
+          }
+          if (next) {
+            console.log('set layout')
+            props.onLayout?.(next)
+            return next
+          }
+          return prev
+        })
+      },
+      0,
+      {
+        leading: true,
+      }
+    )
 
     const ro = new ResizeObserver(([{ contentRect }] = []) => {
       update(contentRect)
@@ -48,6 +62,7 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
     io.observe(ref.current)
 
     return () => {
+      update.cancel()
       ro.disconnect()
       io.disconnect()
     }
