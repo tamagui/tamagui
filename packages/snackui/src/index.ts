@@ -1,3 +1,4 @@
+export * from './themeTypes'
 export * from './platform'
 export * from './constants'
 export * from './defaultThemes'

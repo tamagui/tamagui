@@ -51,6 +51,16 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    export interface ThemeObject {
+        [key: string]: any;
+    }
+    export interface Themes {
+        [key: string]: ThemeObject;
+    }
+    export type ThemeName = keyof Themes;
+}
+
+declare module "snackui" {
     export function useConstant<T>(fn: () => T): T;
 }
 
@@ -60,13 +70,6 @@ declare module "snackui" {
 
 declare module "snackui" {
     import React from "react";
-    export interface ThemeObject {
-        [key: string]: any;
-    }
-    export interface Themes {
-        [key: string]: ThemeObject;
-    }
-    type ThemeName = keyof Themes;
     export let hasConfigured: boolean;
     export const invertStyleVariableToValue: {
         [key: string]: {
@@ -94,7 +97,7 @@ declare module "snackui" {
     }
     export const ThemeManagerContext: React.Context<ThemeManager>;
     export const useThemeName: () => string;
-    export const useTheme: () => ThemeObject;
+    export const useTheme: () => import("themeTypes").ThemeObject;
     export const ThemeProvider: (props: {
         themes: Themes;
         defaultTheme: ThemeName;

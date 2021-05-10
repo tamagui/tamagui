@@ -16,20 +16,11 @@ import React, { createContext, useContext, useEffect, useMemo, useRef, useState 
 
 import { defaultThemes } from '../defaultThemes'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
+import { ThemeName, Themes } from '../themeTypes'
 import { useConstant } from './useConstant'
 import { useForceUpdate } from './useForceUpdate'
 
 const PREFIX = `theme--`
-
-export interface ThemeObject {
-  [key: string]: any
-}
-
-export interface Themes {
-  [key: string]: ThemeObject
-}
-
-type ThemeName = keyof Themes
 
 export let hasConfigured = false
 
