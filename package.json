@@ -2,6 +2,9 @@
   "name": "snackui-monorepo",
   "private": true,
   "version": "0.0.0",
+  "repository": {
+    "url": "https://github.com/snackui/snackui"
+  },
   "engines": {
     "node": ">=10 <=15"
   },
