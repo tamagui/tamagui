@@ -313,7 +313,7 @@ export function extractToClassNames(
       filename: sourcePath,
       retainLines: true,
       sourceFileName: sourcePath,
-      sourceMaps: false,
+      sourceMaps: process.env.NODE_ENV === 'development',
     },
     source
   )
