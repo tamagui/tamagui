@@ -2,6 +2,8 @@ import { getStylesAtomic } from '../dist'
 
 process.env.NODE_ENV = 'test'
 process.env.IDENTIFY_TAGS = 'true'
+process.env.TARGET = 'web'
+process.env.IS_STATIC = ''
 
 test('converts a style object to class names', () => {
   const style = {

@@ -47,6 +47,7 @@ export default declare(function snackBabelPlugin(
           let sourcePath = this.file.opts.filename
 
           if (sourcePath.includes('react-native-web/dist/exports/View')) {
+            console.log('  🍑 patching react-native-web (babel)')
             // includes the exports we need
             // @ts-expect-error
             root.node.body.push(importRNW())

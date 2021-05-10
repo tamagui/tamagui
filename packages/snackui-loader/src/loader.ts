@@ -41,6 +41,7 @@ export function loader(this: any, source: string) {
   ) {
     // patch react-native-web
     if (sourcePath.includes('react-native-web/dist/exports/View')) {
+      console.log('  🍑 patching react-native-web (webpack)')
       // includes the exports we need
       return callback(null, `${source}${rnwPatch}`)
     }

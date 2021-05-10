@@ -26,9 +26,8 @@ import { ThemeManagerContext, invertStyleVariableToValue } from './hooks/useThem
 import { isTouchDevice, isWeb } from './platform'
 import { StackProps } from './StackProps'
 
-const rnw: any = process.env.IS_STATIC
-  ? null
-  : require('react-native-web/dist/exports/View').internal
+const loadRNW = !process.env.IS_STATIC && isWeb
+const rnw: any = loadRNW ? require('react-native-web/dist/exports/View').internal : null
 
 const mouseUps = new Set<Function>()
 
@@ -368,7 +367,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
               hitSlop={10}
               onPress={events.onClick}
               onPressOut={unPress}
-              onPressIn={events.onMouseDown}
+              onPressIn={events.onMouseDown as any}
             >
               {content}
             </Pressable>

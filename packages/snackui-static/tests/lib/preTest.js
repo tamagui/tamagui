@@ -60,6 +60,7 @@ async function extractStaticAppBabel() {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
+        'process.env.TARGET': JSON.stringify('web'),
         'process.env.SNACKUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
     ],
@@ -103,7 +104,7 @@ async function extractStaticWebpackApp() {
       rules: [
         {
           test: /\.[jt]sx?$/,
-          exclude: /node_modules/,
+          exclude: /node_modules\/(?!react-native-web)/g,
           use: [
             {
               loader: 'babel-loader',
@@ -128,6 +129,7 @@ async function extractStaticWebpackApp() {
     plugins: [
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'process.env.TARGET': JSON.stringify('web'),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
         'process.env.SNACKUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
