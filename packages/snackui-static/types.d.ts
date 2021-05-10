@@ -45,6 +45,7 @@ declare module "@snackui/static" {
         node: t.JSXOpeningElement;
         attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any;
         jsxPath: NodePath<t.JSXElement>;
+        programPath: NodePath<t.Program>;
         originalNodeName: string;
         lineNumbers: string;
         filePath: string;
@@ -166,10 +167,11 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
+    import { NodePath } from "@babel/traverse";
     import * as t from "@babel/types";
     export type Extractor = ReturnType<typeof createExtractor>;
     export function createExtractor(): {
-        parse: (ast: t.File, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableThemes, ...props }: ExtractorParseProps) => null | undefined;
+        parse: (fileOrPath: NodePath<t.Program> | t.File, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableThemes, ...props }: ExtractorParseProps) => null | undefined;
     };
 }
 
@@ -185,8 +187,9 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
+    import { NodePath } from "@babel/traverse";
     import * as t from "@babel/types";
-    export function ensureImportingConcat(program: t.Program): void;
+    export function ensureImportingConcat(path: NodePath<t.Program>): void;
 }
 
 declare module "@snackui/static" {

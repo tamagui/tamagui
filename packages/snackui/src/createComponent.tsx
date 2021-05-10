@@ -18,7 +18,7 @@ import {
   ViewProps,
   ViewStyle,
 } from 'react-native'
-import { unstable_createElement } from 'react-native-web'
+import { unstable_createElement, useReponderEvents } from 'react-native-web'
 
 import { StaticComponent } from './helpers/extendStaticConfig'
 import { spacedChildren } from './helpers/spacedChildren'
@@ -26,6 +26,8 @@ import { StaticConfig } from './helpers/StaticConfig'
 import { ThemeManagerContext, invertStyleVariableToValue } from './hooks/useTheme'
 import { isTouchDevice, isWeb } from './platform'
 import { StackProps } from './StackProps'
+
+console.log('useReponderEvents', useReponderEvents)
 
 const displayContentsStyle = { display: 'contents' }
 

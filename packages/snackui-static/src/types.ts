@@ -40,6 +40,7 @@ export type ExtractTagProps = {
   node: t.JSXOpeningElement
   attemptEval: (exprNode: t.Node, evalFn?: ((node: t.Node) => any) | undefined) => any
   jsxPath: NodePath<t.JSXElement>
+  programPath: NodePath<t.Program>
   originalNodeName: string
   lineNumbers: string
   filePath: string

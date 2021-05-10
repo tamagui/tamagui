@@ -3,7 +3,6 @@ import { basename } from 'path'
 import * as util from 'util'
 
 import generate from '@babel/generator'
-import traverse from '@babel/traverse'
 import * as t from '@babel/types'
 import { MediaQueries, defaultMediaQueries } from '@snackui/node'
 import invariant from 'invariant'
@@ -97,197 +96,189 @@ export function extractToClassNames(
   let flattened = 0
   let optimized = 0
 
-  traverse(ast, {
-    Program(programPath) {
-      extractor.parse(programPath, {
-        sourcePath,
-        shouldPrintDebug,
-        ...options,
-        getFlattenedNode: ({ isTextView }) => {
-          flattened++
-          return isTextView ? 'span' : 'div'
-        },
-        onExtractTag: ({
-          attrs,
-          node,
-          attemptEval,
-          jsxPath,
-          originalNodeName,
-          filePath,
-          lineNumbers,
-        }) => {
-          optimized++
+  extractor.parse(ast, {
+    sourcePath,
+    shouldPrintDebug,
+    ...options,
+    getFlattenedNode: ({ isTextView }) => {
+      flattened++
+      return isTextView ? 'span' : 'div'
+    },
+    onExtractTag: ({
+      attrs,
+      node,
+      attemptEval,
+      jsxPath,
+      originalNodeName,
+      filePath,
+      lineNumbers,
+      programPath,
+    }) => {
+      optimized++
 
-          let finalClassNames: ClassNameObject[] = []
-          let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
-          let finalStyles: StyleObject[] = []
+      let finalClassNames: ClassNameObject[] = []
+      let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
+      let finalStyles: StyleObject[] = []
 
-          const viewStyles = {}
-          for (const attr of attrs) {
-            if (attr.type === 'style') {
-              Object.assign(viewStyles, attr.value)
-            }
+      const viewStyles = {}
+      for (const attr of attrs) {
+        if (attr.type === 'style') {
+          Object.assign(viewStyles, attr.value)
+        }
+      }
+
+      const ensureNeededPrevStyle = (style: ViewStyle) => {
+        // ensure all group keys are merged
+        const keys = Object.keys(style)
+        if (!keys.some((key) => mergeStyleGroups[key])) {
+          return style
+        }
+        for (const k of Object.keys(mergeStyleGroups)) {
+          if (k in viewStyles) {
+            style[k] = style[k] ?? viewStyles[k]
           }
+        }
+        return style
+      }
 
-          const ensureNeededPrevStyle = (style: ViewStyle) => {
-            // ensure all group keys are merged
-            const keys = Object.keys(style)
-            if (!keys.some((key) => mergeStyleGroups[key])) {
-              return style
-            }
-            for (const k of Object.keys(mergeStyleGroups)) {
-              if (k in viewStyles) {
-                style[k] = style[k] ?? viewStyles[k]
-              }
-            }
-            return style
-          }
+      const addStyles = (style: ViewStyle | null) => {
+        if (!style) return []
+        const res = getStylesAtomic(ensureNeededPrevStyle(style))
+        if (res.length) {
+          finalStyles = [...finalStyles, ...res]
+        }
+        return res
+      }
 
-          const addStyles = (style: ViewStyle | null) => {
-            if (!style) return []
-            const res = getStylesAtomic(ensureNeededPrevStyle(style))
-            if (res.length) {
-              finalStyles = [...finalStyles, ...res]
+      // 1 to start above any :hover styles
+      let lastMediaImportance = 1
+      for (const attr of attrs) {
+        switch (attr.type) {
+          case 'style':
+            const styles = addStyles(attr.value)
+            for (const style of styles) {
+              finalClassNames = [...finalClassNames, t.stringLiteral(style.identifier)]
             }
-            return res
-          }
-
-          // 1 to start above any :hover styles
-          let lastMediaImportance = 1
-          for (const attr of attrs) {
-            switch (attr.type) {
-              case 'style':
-                const styles = addStyles(attr.value)
-                for (const style of styles) {
-                  finalClassNames = [...finalClassNames, t.stringLiteral(style.identifier)]
-                }
-                break
-              case 'attr':
-                const val = attr.value
-                if (t.isJSXSpreadAttribute(val)) {
-                  if (isSimpleSpread(val)) {
-                    finalClassNames.push(
-                      t.logicalExpression(
-                        '&&',
-                        val.argument,
-                        t.memberExpression(val.argument, t.identifier('className'))
-                      )
-                    )
-                  }
-                } else if (val.name.name === 'className') {
-                  const value = val.value
-                  if (value) {
-                    try {
-                      const evaluatedValue = attemptEval(value)
-                      finalClassNames.push(t.stringLiteral(evaluatedValue))
-                    } catch (e) {
-                      finalClassNames.push(value['expression'])
-                    }
-                  }
-                  continue
-                }
-                finalAttrs.push(val)
-                break
-              case 'ternary':
-                const mediaStyles = extractMediaStyle(
-                  attr.value,
-                  jsxPath,
-                  mediaQueries,
-                  sourcePath,
-                  lastMediaImportance,
-                  shouldPrintDebug
+            break
+          case 'attr':
+            const val = attr.value
+            if (t.isJSXSpreadAttribute(val)) {
+              if (isSimpleSpread(val)) {
+                finalClassNames.push(
+                  t.logicalExpression(
+                    '&&',
+                    val.argument,
+                    t.memberExpression(val.argument, t.identifier('className'))
+                  )
                 )
-                if (mediaStyles) {
-                  lastMediaImportance++
-                  finalStyles = [...finalStyles, ...mediaStyles]
-                  finalClassNames = [
-                    ...finalClassNames,
-                    ...mediaStyles.map((x) => t.stringLiteral(x.identifier)),
-                  ]
-                  continue
+              }
+            } else if (val.name.name === 'className') {
+              const value = val.value
+              if (value) {
+                try {
+                  const evaluatedValue = attemptEval(value)
+                  finalClassNames.push(t.stringLiteral(evaluatedValue))
+                } catch (e) {
+                  finalClassNames.push(value['expression'])
                 }
-                const ternary = attr.value
-                const consInfo = addStyles(ternary.consequent)
-                const altInfo = addStyles(ternary.alternate)
-                const cCN = consInfo.map((x) => x.identifier).join(' ')
-                const aCN = altInfo.map((x) => x.identifier).join(' ')
-                if (consInfo.length && altInfo.length) {
-                  finalClassNames.push(
-                    t.conditionalExpression(
-                      ternary.test,
-                      t.stringLiteral(cCN),
-                      t.stringLiteral(aCN)
-                    )
-                  )
-                } else {
-                  finalClassNames.push(
-                    t.conditionalExpression(
-                      ternary.test,
-                      t.stringLiteral(' ' + cCN),
-                      t.stringLiteral(' ' + aCN)
-                    )
-                  )
-                }
-                break
+              }
+              continue
             }
-          }
-
-          node.attributes = finalAttrs
-
-          if (finalClassNames.length) {
-            // inserts the _cn variable and uses it for className
-            const names = buildClassName(finalClassNames)
-            const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
-            let expr = nameExpr
-
-            // if has some spreads, use concat helper
-            if (nameExpr && !t.isIdentifier(nameExpr)) {
-              ensureImportingConcat(programPath)
-              const simpleSpreads = attrs.filter(
-                (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
-              )
-              expr = t.callExpression(t.identifier(CONCAT_CLASSNAME_IMPORT), [
-                expr,
-                ...simpleSpreads.map((val) => val.value['argument']),
-              ])
-            }
-
-            node.attributes.push(
-              t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(expr))
+            finalAttrs.push(val)
+            break
+          case 'ternary':
+            const mediaStyles = extractMediaStyle(
+              attr.value,
+              jsxPath,
+              mediaQueries,
+              sourcePath,
+              lastMediaImportance,
+              shouldPrintDebug
             )
-          }
-
-          const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
-
-          for (const { className, rules } of finalStyles) {
-            if (cssMap.has(className)) {
-              if (comment) {
-                const val = cssMap.get(className)!
-                val.commentTexts.push(comment)
-                cssMap.set(className, val)
-              }
-            } else if (rules.length) {
-              if (rules.length > 1) {
-                console.log('  rules error', { rules })
-                throw new Error(`Shouldn't have more than one rule`)
-              }
-              cssMap.set(className, {
-                css: rules[0],
-                commentTexts: [comment],
-              })
+            if (mediaStyles) {
+              lastMediaImportance++
+              finalStyles = [...finalStyles, ...mediaStyles]
+              finalClassNames = [
+                ...finalClassNames,
+                ...mediaStyles.map((x) => t.stringLiteral(x.identifier)),
+              ]
+              continue
             }
+            const ternary = attr.value
+            const consInfo = addStyles(ternary.consequent)
+            const altInfo = addStyles(ternary.alternate)
+            const cCN = consInfo.map((x) => x.identifier).join(' ')
+            const aCN = altInfo.map((x) => x.identifier).join(' ')
+            if (consInfo.length && altInfo.length) {
+              finalClassNames.push(
+                t.conditionalExpression(ternary.test, t.stringLiteral(cCN), t.stringLiteral(aCN))
+              )
+            } else {
+              finalClassNames.push(
+                t.conditionalExpression(
+                  ternary.test,
+                  t.stringLiteral(' ' + cCN),
+                  t.stringLiteral(' ' + aCN)
+                )
+              )
+            }
+            break
+        }
+      }
+
+      node.attributes = finalAttrs
+
+      if (finalClassNames.length) {
+        // inserts the _cn variable and uses it for className
+        const names = buildClassName(finalClassNames)
+        const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
+        let expr = nameExpr
+
+        // if has some spreads, use concat helper
+        if (nameExpr && !t.isIdentifier(nameExpr)) {
+          ensureImportingConcat(programPath)
+          const simpleSpreads = attrs.filter(
+            (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
+          )
+          expr = t.callExpression(t.identifier(CONCAT_CLASSNAME_IMPORT), [
+            expr,
+            ...simpleSpreads.map((val) => val.value['argument']),
+          ])
+        }
+
+        node.attributes.push(
+          t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(expr))
+        )
+      }
+
+      const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
+
+      for (const { className, rules } of finalStyles) {
+        if (cssMap.has(className)) {
+          if (comment) {
+            const val = cssMap.get(className)!
+            val.commentTexts.push(comment)
+            cssMap.set(className, val)
           }
-        },
-      })
+        } else if (rules.length) {
+          if (rules.length > 1) {
+            console.log('  rules error', { rules })
+            throw new Error(`Shouldn't have more than one rule`)
+          }
+          cssMap.set(className, {
+            css: rules[0],
+            commentTexts: [comment],
+          })
+        }
+      }
     },
   })
-
-  const traverseTime = Date.now() - since
-  since = Date.now()
 
   if (!optimized) {
     return null
   }
+
+  since = Date.now()
 
   const styles = Array.from(cssMap.values())
     .map((x) => {
@@ -326,10 +317,11 @@ export function extractToClassNames(
   }
 
   if (shouldLogTiming && mem) {
+    // console.log(`${parseTime} / ${traverseTime} / ${generateTime}`)
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - start}ms total - ${parseTime} / ${traverseTime} / ${generateTime}) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
+    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - start}ms) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
   }
 
   return {

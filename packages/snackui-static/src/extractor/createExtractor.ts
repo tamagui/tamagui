@@ -2,10 +2,12 @@ import { join } from 'path'
 import vm from 'vm'
 
 import generate from '@babel/generator'
+import traverse, { Visitor } from '@babel/traverse'
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { statSync } from 'fs-extra'
+// @ts-ignore
 import { StaticConfig } from 'snackui'
 
 import { pseudos } from '../getStylesAtomic'
@@ -64,9 +66,11 @@ export function createExtractor() {
     format: 'cjs',
   })
 
+  let hasParsedFileLast = 0
+
   return {
     parse: (
-      path: NodePath<t.Program>,
+      fileOrPath: NodePath<t.Program> | t.File,
       {
         evaluateImportsWhitelist = ['constants.js'],
         evaluateVars = true,
@@ -79,6 +83,13 @@ export function createExtractor() {
         ...props
       }: ExtractorParseProps
     ) => {
+      const shouldReCheckTheme = Date.now() - hasParsedFileLast > 600
+      hasParsedFileLast = Date.now()
+
+      if (sourcePath === '') {
+        throw new Error(`Must provide a source file name`)
+      }
+
       if (process.env.NODE_ENV !== 'production') {
         if (!themesFile && !disableThemes && !hasWarnedOnce) {
           hasWarnedOnce = true
@@ -89,20 +100,15 @@ export function createExtractor() {
         if (themesFile[0] !== '/') {
           themesFile = join(process.cwd(), themesFile)
         }
-        // re-require theme if updated
-        const changed = statSync(themesFile).mtime.getUTCMilliseconds() !== lastThemeMTime
-        if (changed) {
+        if (!themes || shouldReCheckTheme) {
           delete require.cache[themesFile]
+          themes = require(themesFile).default
         }
-        themes = changed || !themes ? require(themesFile).default : themes
       }
       const themeKeys = new Set(themes ? Object.keys(themes[Object.keys(themes)[0]]) : [])
 
       let doesUseValidImport = false
-
-      if (sourcePath === '') {
-        throw new Error(`Must provide a source file name`)
-      }
+      const body = fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
       /**
        * Step 1: Determine if importing any statically extractable components
@@ -110,12 +116,13 @@ export function createExtractor() {
       const isInternalImport = (importStr: string) =>
         isInsideSnackUI(sourcePath) && importStr[0] === '.'
 
-      for (const bodyPath of path.get('body')) {
-        if (!bodyPath.isImportDeclaration()) continue
-        const from = bodyPath.node.source.value
+      for (const bodyPath of body) {
+        if (bodyPath.type !== 'ImportDeclaration') continue
+        const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as any
+        const from = node.source.value
         if (from === 'snackui' || isInternalImport(from)) {
           if (
-            bodyPath.node.specifiers.some((specifier) => {
+            node.specifiers.some((specifier) => {
               const name = specifier.local.name
               return validComponents[name] || validHooks[name]
             })
@@ -140,10 +147,21 @@ export function createExtractor() {
       // only keeping a cache around per-file, reset it if it changes
       const bindingCache: Record<string, string | null> = {}
 
+      const callTraverse = (a: Visitor<{}>) => {
+        return fileOrPath.type === 'File' ? traverse(fileOrPath, a) : fileOrPath.traverse(a)
+      }
+
       /**
        * Step 2: Statically extract from JSX < /> nodes
        */
-      path.traverse({
+      let programPath: NodePath<t.Program>
+
+      callTraverse({
+        Program: {
+          enter(path) {
+            programPath = path
+          },
+        },
         JSXElement(traversePath) {
           const node = traversePath.node.openingElement
           const ogAttributes = node.attributes
@@ -822,6 +840,7 @@ export function createExtractor() {
             jsxPath: traversePath,
             originalNodeName,
             isFlattened,
+            programPath,
           })
         },
       })
