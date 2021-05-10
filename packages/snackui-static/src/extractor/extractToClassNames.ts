@@ -1,21 +1,19 @@
+import * as path from 'path'
+import { basename } from 'path'
+import * as util from 'util'
+
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import { defaultMediaQueries, MediaQueries } from '@snackui/node'
+import { MediaQueries, defaultMediaQueries } from '@snackui/node'
 import invariant from 'invariant'
 import { getRemainingRequest } from 'loader-utils'
-import * as path from 'path'
-import { basename } from 'path'
 import { ViewStyle } from 'react-native'
-import * as util from 'util'
+
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
 import { getStylesAtomic } from '../getStylesAtomic'
-import {
-  ClassNameObject,
-  SnackOptions,
-  StyleObject
-} from '../types'
+import { ClassNameObject, SnackOptions, StyleObject } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
 import { ensureImportingConcat } from './ensureImportingConcat'
@@ -331,7 +329,7 @@ export function extractToClassNames(
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - since}ms total - ${parseTime} / ${traverseTime} / ${generateTime}) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
+    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - start}ms total - ${parseTime} / ${traverseTime} / ${generateTime}) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
   }
 
   return {
