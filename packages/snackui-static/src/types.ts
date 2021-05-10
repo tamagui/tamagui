@@ -1,7 +1,6 @@
 import { NodePath } from '@babel/core'
 import * as t from '@babel/types'
 import { MediaQueries } from '@snackui/node'
-import { ViewStyle } from 'react-native'
 
 export type ClassNameObject = t.StringLiteral | t.Expression
 

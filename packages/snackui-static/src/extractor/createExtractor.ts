@@ -1,3 +1,4 @@
+import traverse from '@babel/traverse'
 import { join } from 'path'
 import vm from 'vm'
 
@@ -6,6 +7,7 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { statSync } from 'fs-extra'
+// @ts-ignore
 import { StaticConfig } from 'snackui'
 
 import { pseudos } from '../getStylesAtomic'
@@ -66,7 +68,7 @@ export function createExtractor() {
 
   return {
     parse: (
-      path: NodePath<t.Program>,
+      ast: t.File,
       {
         evaluateImportsWhitelist = ['constants.js'],
         evaluateVars = true,
@@ -110,12 +112,12 @@ export function createExtractor() {
       const isInternalImport = (importStr: string) =>
         isInsideSnackUI(sourcePath) && importStr[0] === '.'
 
-      for (const bodyPath of path.get('body')) {
-        if (!bodyPath.isImportDeclaration()) continue
-        const from = bodyPath.node.source.value
+      for (const statement of ast.program.body) {
+        if (statement?.type !== 'ImportDeclaration') continue
+        const from = statement.source.value
         if (from === 'snackui' || isInternalImport(from)) {
           if (
-            bodyPath.node.specifiers.some((specifier) => {
+            statement.specifiers.some((specifier) => {
               const name = specifier.local.name
               return validComponents[name] || validHooks[name]
             })
@@ -143,7 +145,7 @@ export function createExtractor() {
       /**
        * Step 2: Statically extract from JSX < /> nodes
        */
-      path.traverse({
+      traverse(ast, {
         JSXElement(traversePath) {
           const node = traversePath.node.openingElement
           const ogAttributes = node.attributes

@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-/// <reference lib="esnext" />
 declare module "@snackui/static" {
     export const CSS_FILE_NAME = "__snack.css";
     export const MEDIA_SEP = "_";
@@ -168,11 +166,10 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
-    import { NodePath } from "@babel/traverse";
     import * as t from "@babel/types";
     export type Extractor = ReturnType<typeof createExtractor>;
     export function createExtractor(): {
-        parse: (path: NodePath<t.Program>, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableThemes, ...props }: ExtractorParseProps) => null | undefined;
+        parse: (ast: t.File, { evaluateImportsWhitelist, evaluateVars, themesFile, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableThemes, ...props }: ExtractorParseProps) => null | undefined;
     };
 }
 
@@ -188,9 +185,8 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
-    import { NodePath } from "@babel/traverse";
     import * as t from "@babel/types";
-    export function ensureImportingConcat(path: NodePath<t.Program>): void;
+    export function ensureImportingConcat(program: t.Program): void;
 }
 
 declare module "@snackui/static" {
