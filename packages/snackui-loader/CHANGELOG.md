@@ -1,5 +1,16 @@
 # snackui-loader
 
+## 0.9.0
+
+### Minor Changes
+
+- 0.8.0
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - @snackui/static@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes

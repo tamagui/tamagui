@@ -20,7 +20,8 @@
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "postinstall": "patch-package",
-    "version": "changeset version",
+    "changeset:add": "npx -p @changesets/cli -p @changesets/changelog-github changeset add",
+    "changeset:version": "npx -p @changesets/cli -p @changesets/changelog-github changeset version",
     "publish": "ultra -r --no-pretty yarn npm publish"
   },
   "resolutions": {
