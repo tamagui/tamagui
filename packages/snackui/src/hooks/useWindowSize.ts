@@ -1,6 +1,7 @@
 import { Dimensions } from 'react-native'
 
 import { useIsomorphicLayoutEffect } from '../platform'
+import { debounce } from './useDebounce'
 import { useForceUpdate } from './useForceUpdate'
 
 type WindowSize = [number, number]
@@ -15,7 +16,7 @@ class WindowSizeStore {
   listeners = new Set<Function>()
   size = getWindowSize()
 
-  update() {
+  update = () => {
     this.size = getWindowSize()
     this.listeners.forEach((x) => x())
   }
@@ -25,9 +26,9 @@ let store: WindowSizeStore | null = null
 
 function createStore() {
   if (!store) {
+    console.log('create store')
     store = new WindowSizeStore()
-    Dimensions.addEventListener('change', store.update)
-    Dimensions.removeEventListener('change', store.update)
+    Dimensions.addEventListener('change', debounce(store.update))
   }
 }
 

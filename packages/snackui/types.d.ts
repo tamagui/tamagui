@@ -260,10 +260,11 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    export function debounce<A extends Function>(func: A, wait?: number, immediate?: boolean): A & {
+        cancel: Function;
+    };
     type DebounceSettings = {
         leading?: boolean;
-        maxWait?: number;
-        trailing?: boolean;
     };
     export function useDebounce<A extends (...args: any) => any, DebouncedFn extends A & {
         cancel: () => void;
