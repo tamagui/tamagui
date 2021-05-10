@@ -1,5 +1,11 @@
 # @snackui/babel-plugin
 
+## 0.10.0
+
+### Minor Changes
+
+- 0.10.0
+
 ## 0.9.0
 
 ### Minor Changes

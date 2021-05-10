@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-/// <reference lib="esnext" />
 declare module "snackui-loader" {
     const _default: any;
     export default _default;

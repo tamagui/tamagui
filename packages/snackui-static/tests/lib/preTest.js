@@ -106,7 +106,10 @@ async function extractStaticWebpackApp() {
           exclude: /node_modules/,
           use: [
             {
-              loader: require.resolve('babel-loader'),
+              loader: 'babel-loader',
+              options: {
+                presets: ['@dish/babel-preset'],
+              },
             },
             {
               loader: require.resolve('snackui-loader'),
