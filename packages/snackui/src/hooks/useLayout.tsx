@@ -1,29 +1,27 @@
 import { useRef, useState } from 'react'
-import { LayoutRectangle } from 'react-native'
-
+import { LayoutChangeEvent, LayoutRectangle } from 'react-native'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { debounce } from './useDebounce'
 
+
 export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } = {}) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null)
+  
   if (!isWeb) {
     return {
       layout,
-      onLayout: setLayout,
+      onLayout: (e: LayoutChangeEvent) => setLayout(e.nativeEvent.layout),
     }
   }
 
   const ref = useRef<HTMLElement>(null)
 
-  const s = useRef(false)
   useIsomorphicLayoutEffect(() => {
-    if (!ref.current) return
-    if (!s.current) s.current = true
-    else {
-      console.log('re-run effect')
-    }
+    const node = ref.current
+    if (!node) return
+    let hasUpdatedOnce = false
 
-    const update = debounce(
+    const updateImmediate = 
       (rect) => {
         setLayout((prev) => {
           let next
@@ -38,29 +36,49 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
             }
           }
           if (next) {
-            console.log('set layout')
             props.onLayout?.(next)
             return next
           }
           return prev
         })
-      },
+      }
+    const updateDbc = debounce(
+      updateImmediate,
       0,
       true
     )
+    const update = (a) => {
+      if (!hasUpdatedOnce) {
+        hasUpdatedOnce = true
+        updateImmediate(a)
+        return
+      }
+      updateDbc(a) 
+    }
 
     const ro = new ResizeObserver(([{ contentRect }] = []) => {
+      clearTimeout(tm)
       update(contentRect)
     })
-    ro.observe(ref.current)
+    ro.observe(node)
 
     const io = new IntersectionObserver(([{ boundingClientRect }]) => {
+      clearTimeout(tm)
       update(boundingClientRect)
     })
-    io.observe(ref.current)
+    io.observe(node)
+
+    let tm = setTimeout(() => {
+      // if hasnt fired by now, send first one
+      update({
+        width: node.clientWidth,
+        height: node.clientHeight
+      })
+    })
 
     return () => {
-      update.cancel()
+      clearTimeout(tm)
+      updateDbc.cancel()
       ro.disconnect()
       io.disconnect()
     }
