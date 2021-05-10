@@ -1,5 +1,6 @@
 import { stylePropsTransform, stylePropsView, validStyles } from '@snackui/helpers'
 import React, {
+  createElement,
   forwardRef,
   useCallback,
   useContext,
@@ -17,6 +18,7 @@ import {
   ViewProps,
   ViewStyle,
 } from 'react-native'
+import { unstable_createElement } from 'react-native-web'
 
 import { StaticComponent } from './helpers/extendStaticConfig'
 import { spacedChildren } from './helpers/spacedChildren'
@@ -239,20 +241,21 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       }
     }
 
-    let content = (
-      // @ts-ignore
-      <ViewComponent
-        ref={ref}
-        {...viewProps}
-        pointerEvents={!isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents}
-        style={styles}
-      >
-        {spacedChildren({
-          children,
-          spacing,
-          flexDirection: componentProps.defaultProps?.flexDirection,
-        })}
-      </ViewComponent>
+    const createEl = animated ? unstable_createElement : createElement
+
+    let content = createEl(
+      ViewComponent,
+      {
+        ref,
+        ...viewProps,
+        pointerEvents: !isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents,
+        style: styles,
+      },
+      spacedChildren({
+        children,
+        spacing,
+        flexDirection: componentProps.defaultProps?.flexDirection,
+      })
     )
 
     const attachPress = !!((psuedos && psuedos.pressStyle) || onPress || onPressOut || onPressIn)
