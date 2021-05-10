@@ -1,5 +1,17 @@
 # @snackui/static
 
+## 0.8.0
+
+### Minor Changes
+
+- 0.8.0 Remove lodash, various cleanup
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - @snackui/helpers@0.8.0
+  - @snackui/node@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes

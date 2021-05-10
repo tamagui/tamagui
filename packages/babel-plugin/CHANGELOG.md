@@ -1,5 +1,11 @@
 # @snackui/babel-plugin
 
+## 0.8.0
+
+### Minor Changes
+
+- 0.8.0 Remove lodash, various cleanup
+
 ## 0.7.0
 
 ### Minor Changes
