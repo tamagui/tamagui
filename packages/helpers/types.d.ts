@@ -1,5 +1,3 @@
-/// <reference lib="dom" />
-/// <reference lib="esnext" />
 declare module "@snackui/helpers" {
     export function getNiceKey(name: string, len?: number): string;
 }
