@@ -76,6 +76,7 @@ export function extractToClassNames(
 
   const shouldLogTiming = shouldPrintDebug || options.logTimings
   const start = Date.now()
+  let since = Date.now()
   const mem = shouldLogTiming ? process.memoryUsage() : null
 
   // Using a map for (officially supported) guaranteed insertion order
@@ -87,6 +88,9 @@ export function extractToClassNames(
     console.error('babel parse error:', sourcePath)
     throw err
   }
+
+  const parseTime = Date.now() - since
+  since = Date.now()
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists: { [key: string]: t.Identifier } = {}
@@ -280,6 +284,9 @@ export function extractToClassNames(
     },
   })
 
+  const traverseTime = Date.now() - since
+  since = Date.now()
+
   if (!optimized) {
     return null
   }
@@ -308,10 +315,12 @@ export function extractToClassNames(
       filename: sourcePath,
       retainLines: false,
       sourceFileName: sourcePath,
-      sourceMaps: true,
+      sourceMaps: false,
     },
     source
   )
+
+  const generateTime = Date.now() - since
 
   if (shouldPrintDebug) {
     console.log('\n\n -------- output code ------- \n\n', result.code)
@@ -322,7 +331,7 @@ export function extractToClassNames(
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - start}ms) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
+    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - since}ms total - ${parseTime} / ${traverseTime} / ${generateTime}) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
   }
 
   return {
