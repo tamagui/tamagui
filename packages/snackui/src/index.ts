@@ -25,6 +25,7 @@ export * from './hooks/useRefMounted'
 export * from './hooks/useScrollPosition'
 export * from './hooks/useTheme'
 export * from './hooks/useLazyEffect'
+export * from './hooks/useWindowSize'
 // export * from './hooks/createUseScale'
 
 export * from './views/AnimatedStack'
