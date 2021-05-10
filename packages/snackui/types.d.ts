@@ -498,14 +498,14 @@ declare module "snackui" {
 declare module "snackui" {
     import { LayoutChangeEvent, LayoutRectangle } from "react-native";
     export const useLayout: (props?: {
-        onLayout?: ((rect: LayoutRectangle) => void) | undefined;
+        onLayout?: ((rect: LayoutChangeEvent) => void) | undefined;
     }) => {
         layout: LayoutRectangle | null;
-        onLayout: (e: LayoutChangeEvent) => void;
+        onLayout: ((rect: LayoutChangeEvent) => void) | undefined;
         ref?: undefined;
     } | {
         layout: LayoutRectangle | null;
-        ref: import("react").RefObject<HTMLElement>;
+        ref: import("react").MutableRefObject<any>;
         onLayout?: undefined;
     };
 }

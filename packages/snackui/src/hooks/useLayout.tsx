@@ -4,17 +4,17 @@ import { LayoutChangeEvent, LayoutRectangle } from 'react-native'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { debounce } from './useDebounce'
 
-export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } = {}) => {
+export const useLayout = (props: { onLayout?: (rect: LayoutChangeEvent) => void } = {}) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null)
 
   if (!isWeb) {
     return {
       layout,
-      onLayout: (e: LayoutChangeEvent) => setLayout(e.nativeEvent.layout),
+      onLayout: props.onLayout,
     }
   }
 
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<any>(null)
 
   useIsomorphicLayoutEffect(() => {
     const node = ref.current
@@ -35,7 +35,8 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
           }
         }
         if (next) {
-          props.onLayout?.(next)
+          // @ts-expect-error
+          props.onLayout?.({ nativeEvent: { layout: next } })
           return next
         }
         return prev
