@@ -1,5 +1,11 @@
 # @snackui/babel-plugin
 
+## 0.12.0
+
+### Minor Changes
+
+- 0.12.0 - useLayout normalize props'
+
 ## 0.11.0
 
 ### Minor Changes

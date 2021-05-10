@@ -1,5 +1,16 @@
 # snackui
 
+## 0.12.0
+
+### Minor Changes
+
+- 0.12.0 - useLayout normalize props'
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - @snackui/helpers@0.12.0
+
 ## 0.11.0
 
 ### Minor Changes
