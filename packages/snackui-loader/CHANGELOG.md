@@ -1,5 +1,16 @@
 # snackui-loader
 
+## 0.11.0
+
+### Minor Changes
+
+- 0.11.0 - No need for patching anymore
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - @snackui/static@0.11.0
+
 ## 0.10.0
 
 ### Minor Changes

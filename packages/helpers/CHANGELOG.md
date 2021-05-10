@@ -1,5 +1,11 @@
 # @snackui/helpers
 
+## 0.11.0
+
+### Minor Changes
+
+- 0.11.0 - No need for patching anymore
+
 ## 0.10.0
 
 ### Minor Changes
