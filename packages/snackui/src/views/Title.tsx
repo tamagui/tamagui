@@ -2,7 +2,8 @@ import React from 'react'
 
 import { useTheme } from '../hooks/useTheme'
 import { Paragraph } from './Paragraph'
-import { SizableTextProps, getSize } from './Size'
+import { SizableTextProps } from './SizableTextProps'
+import { getSize } from './Size'
 
 export type TitleProps = SizableTextProps
 
@@ -11,13 +12,7 @@ export type TitleProps = SizableTextProps
 export const Title = (props: TitleProps) => {
   const size = getSize(props.size ?? 'md') * 1.5
   return (
-    <Paragraph
-      fontWeight="300"
-      marginVertical={0}
-      sizeLineHeight={0.7}
-      {...props}
-      size={size}
-    />
+    <Paragraph fontWeight="300" marginVertical={0} sizeLineHeight={0.7} {...props} size={size} />
   )
 }
 

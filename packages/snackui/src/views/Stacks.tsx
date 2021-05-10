@@ -1,7 +1,5 @@
 import { createComponent } from '../createComponent'
 
-export { StackProps } from '../StackProps'
-
 export const HStack = createComponent({
   defaultProps: {
     boxSizing: 'border-box',

@@ -3,7 +3,7 @@ import React from 'react'
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { useTheme } from '../hooks/useTheme'
 import { getSizedTextProps } from './getSizedTextProps'
-import { SizableTextProps } from './Size'
+import { SizableTextProps } from './SizableTextProps'
 import { Text } from './Text'
 
 export type ParagraphProps = SizableTextProps

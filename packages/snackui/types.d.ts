@@ -1,5 +1,125 @@
-/// <reference lib="dom" />
-/// <reference lib="esnext" />
+declare module "snackui" {
+    export type Size = number | SizeName;
+    export type SizeName = 'xxxxxxs' | 'xxxxxs' | 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl' | 'xxxxxl' | 'xxxxxxl';
+    export const sizes: {
+        xxxxxxs: number;
+        xxxxxs: number;
+        xxxxs: number;
+        xxxs: number;
+        xxs: number;
+        xs: number;
+        sm: number;
+        md: number;
+        lg: number;
+        xl: number;
+        xxl: number;
+        xxxl: number;
+        xxxxl: number;
+        xxxxxl: number;
+        xxxxxxl: number;
+    };
+    export const getSize: (size: Size) => number;
+}
+
+declare module "snackui" {
+    import React from "react";
+    import { ViewStyle } from "react-native";
+    export type Spacing = Size | boolean | string;
+    export type SpacerProps = {
+        size?: Spacing;
+        flex?: boolean | number;
+        direction?: 'vertical' | 'horizontal' | 'both';
+    };
+    export const Spacer: React.MemoExoticComponent<(props: SpacerProps) => JSX.Element>;
+    export const getSpacerStyle: (props: SpacerProps) => ViewStyle;
+}
+
+declare module "snackui" {
+    import { RefObject } from "react";
+    import { GestureResponderEvent, View, ViewProps, ViewStyle } from "react-native";
+    export type EnhancedStyleProps = Omit<ViewStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & {
+        cursor?: string;
+        contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
+        display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
+    };
+    export type StackProps = EnhancedStyleProps & Omit<ViewProps, 'display'> & {
+        ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
+        animated?: boolean;
+        fullscreen?: boolean;
+        children?: any;
+        hoverStyle?: EnhancedStyleProps | null;
+        pressStyle?: EnhancedStyleProps | null;
+        onHoverIn?: (e: MouseEvent) => any;
+        onHoverOut?: (e: MouseEvent) => any;
+        onPress?: (e: GestureResponderEvent) => any;
+        onPressIn?: (e: GestureResponderEvent) => any;
+        onPressOut?: (e: GestureResponderEvent) => any;
+        onMouseEnter?: (e: GestureResponderEvent) => any;
+        onMouseLeave?: (e: GestureResponderEvent) => any;
+        spacing?: Spacing;
+        pointerEvents?: string;
+        userSelect?: string;
+        className?: string;
+        disabled?: boolean;
+    };
+    export type TransformStyleProps = {
+        x?: number;
+        y?: number;
+        perspective?: number;
+        scale?: number;
+        scaleX?: number;
+        scaleY?: number;
+        skewX?: string;
+        skewY?: string;
+        matrix?: number[];
+        rotate?: string;
+        rotateY?: string;
+        rotateX?: string;
+        rotateZ?: string;
+    };
+}
+
+declare module "snackui" {
+    export const defaultMediaQueries: {
+        xs: {
+            maxWidth: number;
+        };
+        notXs: {
+            minWidth: number;
+        };
+        sm: {
+            maxWidth: number;
+        };
+        notSm: {
+            minWidth: number;
+        };
+        md: {
+            minWidth: number;
+        };
+        lg: {
+            minWidth: number;
+        };
+        xl: {
+            minWidth: number;
+        };
+        xxl: {
+            minWidth: number;
+        };
+        short: {
+            maxHeight: number;
+        };
+        tall: {
+            minHeight: number;
+        };
+        hoverNone: {
+            hover: string;
+        };
+        pointerCoarse: {
+            pointer: string;
+        };
+    };
+}
+
 declare module "snackui" {
     export type StaticConfig = {
         neverFlatten?: boolean;
@@ -133,125 +253,9 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export type Size = number | SizeName;
-    export type SizeName = 'xxxxxxs' | 'xxxxxs' | 'xxxxs' | 'xxxs' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl' | 'xxxxxl' | 'xxxxxxl';
     export type SizableTextProps = TextProps & {
         size?: Size;
         sizeLineHeight?: number;
-    };
-    export const sizes: {
-        xxxxxxs: number;
-        xxxxxs: number;
-        xxxxs: number;
-        xxxs: number;
-        xxs: number;
-        xs: number;
-        sm: number;
-        md: number;
-        lg: number;
-        xl: number;
-        xxl: number;
-        xxxl: number;
-        xxxxl: number;
-        xxxxxl: number;
-        xxxxxxl: number;
-    };
-    export const getSize: (size: Size) => number;
-}
-
-declare module "snackui" {
-    import React from "react";
-    import { ViewStyle } from "react-native";
-    export type Spacing = Size | boolean | string;
-    export type SpacerProps = {
-        size?: Spacing;
-        flex?: boolean | number;
-        direction?: 'vertical' | 'horizontal' | 'both';
-    };
-    export const Spacer: React.MemoExoticComponent<(props: SpacerProps) => JSX.Element>;
-    export const getSpacerStyle: (props: SpacerProps) => ViewStyle;
-}
-
-declare module "snackui" {
-    import { RefObject } from "react";
-    import { GestureResponderEvent, View, ViewProps, ViewStyle } from "react-native";
-    type EnhancedStyleProps = Omit<ViewStyle, 'display'> & TransformStyleProps;
-    export type StackProps = Omit<EnhancedStyleProps & Omit<ViewProps, 'display'> & {
-        ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
-        animated?: boolean;
-        fullscreen?: boolean;
-        children?: any;
-        hoverStyle?: EnhancedStyleProps | null;
-        pressStyle?: EnhancedStyleProps | null;
-        onHoverIn?: (e: MouseEvent) => any;
-        onHoverOut?: (e: MouseEvent) => any;
-        onPress?: (e: GestureResponderEvent) => any;
-        onPressIn?: (e: GestureResponderEvent) => any;
-        onPressOut?: (e: GestureResponderEvent) => any;
-        spacing?: Spacing;
-        cursor?: string;
-        pointerEvents?: string;
-        userSelect?: string;
-        className?: string;
-        disabled?: boolean;
-        contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
-        display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex';
-    }, 'backfaceVisibility'>;
-    export type TransformStyleProps = {
-        x?: number;
-        y?: number;
-        perspective?: number;
-        scale?: number;
-        scaleX?: number;
-        scaleY?: number;
-        skewX?: string;
-        skewY?: string;
-        matrix?: number[];
-        rotate?: string;
-        rotateY?: string;
-        rotateX?: string;
-        rotateZ?: string;
-    };
-}
-
-declare module "snackui" {
-    export const defaultMediaQueries: {
-        xs: {
-            maxWidth: number;
-        };
-        notXs: {
-            minWidth: number;
-        };
-        sm: {
-            maxWidth: number;
-        };
-        notSm: {
-            minWidth: number;
-        };
-        md: {
-            minWidth: number;
-        };
-        lg: {
-            minWidth: number;
-        };
-        xl: {
-            minWidth: number;
-        };
-        xxl: {
-            minWidth: number;
-        };
-        short: {
-            maxHeight: number;
-        };
-        tall: {
-            minHeight: number;
-        };
-        hoverNone: {
-            hover: string;
-        };
-        pointerCoarse: {
-            pointer: string;
-        };
     };
 }
 

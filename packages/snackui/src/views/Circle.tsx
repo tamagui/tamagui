@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { StackProps, VStack } from './Stacks'
+import { StackProps } from '../StackProps'
+import { VStack } from './Stacks'
 
 export type CircleProps = StackProps & {
   size: number

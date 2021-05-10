@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
-import { HStack, StackProps, VStack } from './Stacks'
+import { StackProps } from '../StackProps'
+import { HStack, VStack } from './Stacks'
 import { Text, TextProps } from './Text'
 
 export type TableProps = StackProps

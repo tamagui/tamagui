@@ -166,9 +166,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       onHoverOut,
       spacing,
       disabled,
-      // @ts-ignore
       onMouseEnter,
-      // @ts-ignore
       onMouseLeave,
     } = props
     const manager = useContext(ThemeManagerContext)

@@ -17,7 +17,8 @@ import {
 
 import { useConstant } from '../hooks/useConstant'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
-import { StackProps, VStack } from './Stacks'
+import { StackProps } from '../StackProps'
+import { VStack } from './Stacks'
 
 const defaultAnimation = {
   from: {

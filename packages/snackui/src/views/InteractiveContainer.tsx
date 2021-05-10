@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { useTheme } from '../hooks/useTheme'
-import { HStack, StackProps } from './Stacks'
+import { StackProps } from '../StackProps'
+import { HStack } from './Stacks'
 
 export const InteractiveContainer = (props: StackProps) => {
   const theme = useTheme()

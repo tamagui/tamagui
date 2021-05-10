@@ -1,5 +1,3 @@
-import { TextProps } from './Text'
-
 export type Size = number | SizeName
 
 export type SizeName =
@@ -18,11 +16,6 @@ export type SizeName =
   | 'xxxxl'
   | 'xxxxxl'
   | 'xxxxxxl'
-
-export type SizableTextProps = TextProps & {
-  size?: Size
-  sizeLineHeight?: number
-}
 
 export const sizes = {
   xxxxxxs: 0.0375,

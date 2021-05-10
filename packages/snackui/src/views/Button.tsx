@@ -4,7 +4,8 @@ import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
-import { HStack, StackProps } from './Stacks'
+import { StackProps } from '../StackProps'
+import { HStack } from './Stacks'
 import { Text, TextProps } from './Text'
 
 export type ButtonProps = StackProps & {

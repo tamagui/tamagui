@@ -1,3 +1,6 @@
+export * from './StackProps'
+export * from './views/SizableTextProps'
+
 export * from './themeTypes'
 export * from './platform'
 export * from './constants'

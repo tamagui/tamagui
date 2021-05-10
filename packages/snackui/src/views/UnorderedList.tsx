@@ -1,8 +1,9 @@
 import React from 'react'
 
+import { StackProps } from '../StackProps'
 import { getSizedTextProps } from './getSizedTextProps'
-import { SizableTextProps } from './Size'
-import { HStack, StackProps, VStack } from './Stacks'
+import { SizableTextProps } from './SizableTextProps'
+import { HStack, VStack } from './Stacks'
 import { Text } from './Text'
 
 export const UnorderedList = (props: StackProps) => {

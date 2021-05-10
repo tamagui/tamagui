@@ -1,7 +1,8 @@
 import React, { memo } from 'react'
 import { View } from 'react-native'
 
-import { HStack, StackProps, VStack } from './Stacks'
+import { StackProps } from '../StackProps'
+import { HStack, VStack } from './Stacks'
 
 export const Divider = memo(
   ({

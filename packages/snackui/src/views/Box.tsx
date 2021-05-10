@@ -2,7 +2,8 @@ import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { useTheme } from '../hooks/useTheme'
-import { StackProps, VStack } from './Stacks'
+import { StackProps } from '../StackProps'
+import { VStack } from './Stacks'
 
 export type BoxProps = StackProps
 

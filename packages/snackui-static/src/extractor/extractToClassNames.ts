@@ -1,24 +1,20 @@
-import * as path from 'path'
-import { basename } from 'path'
-import * as util from 'util'
-
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import { MediaQueries, defaultMediaQueries } from '@snackui/node'
+import { defaultMediaQueries, MediaQueries } from '@snackui/node'
 import invariant from 'invariant'
-import { getOptions, getRemainingRequest } from 'loader-utils'
+import { getRemainingRequest } from 'loader-utils'
+import * as path from 'path'
+import { basename } from 'path'
 import { ViewStyle } from 'react-native'
-
+import * as util from 'util'
 import { Extractor } from '../extractor/createExtractor'
 import { isSimpleSpread } from '../extractor/extractHelpers'
 import { getStylesAtomic } from '../getStylesAtomic'
 import {
   ClassNameObject,
-  ExtractedAttr,
-  ExtractedAttrStyle,
   SnackOptions,
-  StyleObject,
+  StyleObject
 } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
