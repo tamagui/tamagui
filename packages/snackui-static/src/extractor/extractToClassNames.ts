@@ -20,7 +20,6 @@ import { extractMediaStyle } from './extractMediaStyle'
 import { hoistClassNames } from './hoistClassNames'
 
 export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
-let index = 0
 
 let initialFileName = ''
 export function getInitialFileName() {
@@ -113,6 +112,10 @@ export function extractToClassNames(
       let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
       let finalStyles: StyleObject[] = []
 
+      if (shouldPrintDebug) {
+        console.log('attrs', attrs)
+      }
+
       const viewStyles = {}
       for (const attr of attrs) {
         if (attr.type === 'style') {
@@ -149,9 +152,8 @@ export function extractToClassNames(
         switch (attr.type) {
           case 'style':
             const styles = addStyles(attr.value)
-            for (const style of styles) {
-              finalClassNames = [...finalClassNames, t.stringLiteral(style.identifier)]
-            }
+            const newClassNames = styles.map((x) => x.identifier).join(' ')
+            finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
             break
           case 'attr':
             const val = attr.value

@@ -498,6 +498,7 @@ declare module "snackui" {
 declare module "snackui" {
     import { LayoutChangeEvent, LayoutRectangle } from "react-native";
     export const useLayout: (props?: {
+        stateless?: boolean | undefined;
         onLayout?: ((rect: LayoutChangeEvent) => void) | undefined;
     }) => {
         layout: LayoutRectangle | null;

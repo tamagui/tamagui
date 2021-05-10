@@ -773,9 +773,6 @@ export function createExtractor() {
                   }
                 }
               }
-              if (shouldPrintDebug) {
-                console.log('in', res, 'out', next)
-              }
               return next
             }
             for (const attr of attrs) {

@@ -4,7 +4,7 @@ import { LayoutChangeEvent, LayoutRectangle } from 'react-native'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { debounce } from './useDebounce'
 
-export const useLayout = (props: { onLayout?: (rect: LayoutChangeEvent) => void } = {}) => {
+export const useLayout = (props: { stateless?: boolean; onLayout?: (rect: LayoutChangeEvent) => void } = {}) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null)
 
   if (!isWeb) {
@@ -20,28 +20,40 @@ export const useLayout = (props: { onLayout?: (rect: LayoutChangeEvent) => void 
     const node = ref.current
     if (!node) return
     let hasUpdatedOnce = false
+    let last = null
+
+    const getNext = (prev, rect) => {
+      let next
+      if (!prev) {
+        next = rect
+      } else {
+        const width = Math.max(1, Math.round(rect.width))
+        const height = Math.max(1, Math.round(rect.height))
+        // don't set new layout state unless the layout has actually changed
+        if (width !== prev.width || height !== prev.height) {
+          next = { width, height }
+        }
+      }
+      if (next) {
+        // @ts-expect-error
+        props.onLayout?.({ nativeEvent: { layout: next } })
+        last = next
+        return next
+      }
+      return prev
+    }
 
     const updateImmediate = (rect) => {
-      setLayout((prev) => {
-        let next
-        if (!prev) {
-          next = rect
-        } else {
-          const width = Math.max(1, Math.round(rect.width))
-          const height = Math.max(1, Math.round(rect.height))
-          // don't set new layout state unless the layout has actually changed
-          if (width !== prev.width || height !== prev.height) {
-            next = { width, height }
-          }
-        }
-        if (next) {
+      if (!props.stateless) {
+        setLayout(p => getNext(p, rect))
+      } else {
+        if (getNext(last, rect)) {
           // @ts-expect-error
           props.onLayout?.({ nativeEvent: { layout: next } })
-          return next
         }
-        return prev
-      })
+      }
     }
+    
     const updateDbc = debounce(updateImmediate, 0, true)
     const update = (a) => {
       if (!a.width && !a.height) {
