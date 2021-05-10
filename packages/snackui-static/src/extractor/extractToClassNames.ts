@@ -326,7 +326,7 @@ export function extractToClassNames(
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - since}ms total - ${parseTime} / ${traverseTime} / ${generateTime}) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
+    console.log(`  🍑 ${basename(sourcePath).padStart(40)} (${Date.now() - start}ms - ${parseTime}/${traverseTime}/${generateTime}) (${optimized} optimized ${flattened} flattened) ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
   }
 
   return {

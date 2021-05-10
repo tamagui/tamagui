@@ -6,6 +6,11 @@ import { CONCAT_CLASSNAME_IMPORT } from './extractToClassNames'
 const importConcatPkg = '@snackui/helpers'
 
 export function ensureImportingConcat(program: t.Program) {
+  if (program['__isImportingConcat']) {
+    return
+  }
+  program['__isImportingConcat'] = true
+  
   const imported: NodePath<t.ImportDeclaration> | undefined = program.body.find(
     (x) => x.type === 'ImportDeclaration' && x.source.value === importConcatPkg
   ) as any
@@ -19,7 +24,7 @@ export function ensureImportingConcat(program: t.Program) {
     return
   }
 
-  const specifiers = imported.node.specifiers
+  const specifiers = imported.node?.specifiers ?? []
   const alreadyImported = specifiers.some(
     (x) =>
       t.isImportSpecifier(x) &&
