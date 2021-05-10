@@ -7,7 +7,13 @@ import { declare } from '@babel/helper-plugin-utils'
 import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
-import { SnackOptions, createExtractor, isSimpleSpread, literalToAst } from '@snackui/static'
+import {
+  SnackOptions,
+  createExtractor,
+  isSimpleSpread,
+  literalToAst,
+  rnwPatch,
+} from '@snackui/static'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -16,6 +22,8 @@ import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-nati
 const importStyleSheet = template(`
 import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 `)
+
+const importRNW = template(rnwPatch)
 
 process.env.TARGET = process.env.TARGET || 'native'
 
@@ -31,12 +39,19 @@ export default declare(function snackBabelPlugin(
   api.assertVersion(7)
 
   return {
-    name: 'snackui-stylesheet',
+    name: 'snackui',
 
     visitor: {
       Program: {
         enter(this: any, root, state) {
           let sourcePath = this.file.opts.filename
+
+          if (sourcePath.includes('react-native-web/dist/exports/View')) {
+            // includes the exports we need
+            // @ts-expect-error
+            root.node.body.push(importRNW())
+            return
+          }
 
           // this filename comes back incorrect in react-native, it adds /ios/ for some reason
           // adding a fix here, but it's a bit tentative...

@@ -1,39 +1,42 @@
 import { createComponent } from '../createComponent'
+import { isWeb } from '../platform'
+
+const defaults = {
+  ...(isWeb && {
+    alignItems: 'stretch',
+    flexShrink: 0,
+    display: 'flex',
+    flexBasis: 'auto',
+    boxSizing: 'border-box',
+  }),
+}
 
 export const HStack = createComponent({
   defaultProps: {
-    boxSizing: 'border-box',
-    display: 'flex',
-    flexBasis: 'auto',
+    ...defaults,
     flexDirection: 'row',
   },
 })
 
 export const VStack = createComponent({
   defaultProps: {
-    boxSizing: 'border-box',
-    display: 'flex',
+    ...defaults,
     flexDirection: 'column',
-    flexBasis: 'auto',
   },
 })
 
 export const AbsoluteVStack = createComponent({
   defaultProps: {
-    boxSizing: 'border-box',
-    display: 'flex',
+    ...defaults,
     flexDirection: 'column',
-    flexBasis: 'auto',
     position: 'absolute',
   },
 })
 
 export const AbsoluteHStack = createComponent({
   defaultProps: {
-    boxSizing: 'border-box',
-    display: 'flex',
+    ...defaults,
     flexDirection: 'row',
-    flexBasis: 'auto',
     position: 'absolute',
   },
 })

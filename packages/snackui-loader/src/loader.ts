@@ -1,6 +1,6 @@
 import { extname } from 'path'
 
-import { SnackOptions, createExtractor, extractToClassNames } from '@snackui/static'
+import { SnackOptions, createExtractor, extractToClassNames, rnwPatch } from '@snackui/static'
 import { getOptions, getRemainingRequest } from 'loader-utils'
 
 Error.stackTraceLimit = Infinity
@@ -39,6 +39,11 @@ export function loader(this: any, source: string) {
     extname(sourcePath) !== '.tsx' ||
     (startsWithComment && source.startsWith('// snackui-ignore'))
   ) {
+    // patch react-native-web
+    if (sourcePath.includes('react-native-web/dist/exports/View')) {
+      // includes the exports we need
+      return callback(null, `${source}${rnwPatch}`)
+    }
     return callback(null, source)
   }
 

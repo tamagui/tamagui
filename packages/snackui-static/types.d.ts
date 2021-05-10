@@ -230,6 +230,10 @@ declare module "@snackui/static" {
 }
 
 declare module "@snackui/static" {
+    export const rnwPatch = "\nexport const internal = {\n  css,\n  TextAncestorContext,\n  forwardPropsList,\n  pick,\n  useElementLayout,\n  useMergeRefs,\n  usePlatformMethods,\n  useResponderEvents,\n  createElement,\n}      \n";
+}
+
+declare module "@snackui/static" {
     import * as t from "@babel/types";
     export function accessSafe(obj: t.Expression, member: string): t.LogicalExpression;
 }

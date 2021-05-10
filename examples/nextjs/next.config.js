@@ -1,5 +1,5 @@
 const snackLoader = {
-  loader: require.resolve('@snackui/static/loader'),
+  loader: require.resolve('snackui-loader'),
   options: {
     evaluateImportsWhitelist: ['constants.js', 'colors.js'],
     themesFile: require.resolve('./theme/exampleThemes.ts'),
@@ -22,10 +22,7 @@ module.exports = {
           oneOf: [
             {
               test: /\.css$/i,
-              use: [
-                require.resolve('style-loader'),
-                require.resolve('css-loader'),
-              ],
+              use: [require.resolve('style-loader'), require.resolve('css-loader')],
             },
             ...ogRules,
           ],
@@ -36,8 +33,7 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       'react-native': 'react-native-web',
-      'react-native-web/src/modules/normalizeColor':
-        'react-native-web/dist/modules/normalizeColor',
+      'react-native-web/src/modules/normalizeColor': 'react-native-web/dist/modules/normalizeColor',
     }
 
     return config

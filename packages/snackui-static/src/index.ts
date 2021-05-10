@@ -7,3 +7,17 @@ export { literalToAst } from './extractor/literalToAst'
 export * from './constants'
 export * from './extractor/extractToClassNames'
 export * from './extractor/extractHelpers'
+
+export const rnwPatch = `
+export const internal = {
+  css,
+  TextAncestorContext,
+  forwardPropsList,
+  pick,
+  useElementLayout,
+  useMergeRefs,
+  usePlatformMethods,
+  useResponderEvents,
+  createElement,
+}      
+`

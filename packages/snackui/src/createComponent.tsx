@@ -1,6 +1,5 @@
 import { stylePropsTransform, stylePropsView, validStyles } from '@snackui/helpers'
 import React, {
-  createElement,
   forwardRef,
   useCallback,
   useContext,
@@ -18,8 +17,8 @@ import {
   ViewProps,
   ViewStyle,
 } from 'react-native'
-import { unstable_createElement, useReponderEvents } from 'react-native-web'
 
+import { fixNativeShadow } from './fixNativeShadow'
 import { StaticComponent } from './helpers/extendStaticConfig'
 import { spacedChildren } from './helpers/spacedChildren'
 import { StaticConfig } from './helpers/StaticConfig'
@@ -27,37 +26,9 @@ import { ThemeManagerContext, invertStyleVariableToValue } from './hooks/useThem
 import { isTouchDevice, isWeb } from './platform'
 import { StackProps } from './StackProps'
 
-console.log('useReponderEvents', useReponderEvents)
-
-const displayContentsStyle = { display: 'contents' }
-
-const fullscreenStyle: StackProps = {
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-}
-
-const disabledStyle: StackProps = {
-  pointerEvents: 'none',
-  userSelect: 'none',
-}
-
-const mapTransformKeys = {
-  x: 'translateX',
-  y: 'translateY',
-}
-
-const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
-  const transform = obj.transform
-    ? Array.isArray(obj.transform)
-      ? obj.transform
-      : [obj.transform]
-    : []
-  // @ts-expect-error
-  transform.push({ [mapTransformKeys[key] || key]: val })
-  obj.transform = transform
-}
+const rnw: any = process.env.IS_STATIC
+  ? null
+  : require('react-native-web/dist/exports/View').internal
 
 const mouseUps = new Set<Function>()
 
@@ -71,94 +42,17 @@ if (typeof document !== 'undefined') {
 export function createComponent<A extends any = StackProps>(componentProps: Partial<StaticConfig>) {
   const sheet = StyleSheet.create({
     defaultStyle: componentProps.defaultProps,
+    inline: isWeb
+      ? {
+          display: 'inline-flex' as any,
+        }
+      : {},
   })
 
   const validStyleProps = componentProps.validStyles ?? stylePropsView
+  const TextAncestorContext = rnw?.TextAncestorContext
 
-  const getSplitStyles = (
-    props: { [key: string]: any },
-    // convert from var to theme value
-    varToVal?: (key: string) => string
-  ) => {
-    let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
-    let viewProps: ViewProps = {}
-    let style: any[] = []
-    let cur: ViewStyle | null = null
-    for (const key in props) {
-      let val = props[key]
-      if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
-        if (cur) {
-          // process last
-          fixNativeShadow(cur, true)
-          style.push(cur)
-          cur = null
-        }
-        style.push(val)
-        continue
-      }
-      if (key === 'fullscreen') {
-        cur = cur || {}
-        Object.assign(cur, fullscreenStyle)
-        continue
-      }
-      // is style
-      const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
-      if (validStyleProps[key] || isPseudo) {
-        if (!isPseudo) {
-          // apply theme
-          val = varToVal?.(val) ?? val
-          // transforms
-          if (key in stylePropsTransform) {
-            cur = cur || {}
-            mergeTransform(cur, key, val)
-            continue
-          }
-        }
-        if (isPseudo && val) {
-          psuedos = psuedos || {}
-          const pseudoStyle: ViewStyle = {}
-          for (const subKey in val) {
-            const sval = varToVal?.(val[subKey]) ?? val[subKey]
-            if (subKey in stylePropsTransform) {
-              mergeTransform(pseudoStyle, subKey, sval)
-              continue
-            } else {
-              pseudoStyle[subKey] = sval
-            }
-          }
-          fixNativeShadow(pseudoStyle, true)
-          psuedos[key] = pseudoStyle
-          continue
-        }
-        cur = cur || {}
-        cur[key] = val
-        continue
-      }
-      // if no match, prop
-      viewProps[key] = val
-    }
-    // push last style
-    if (cur) {
-      fixNativeShadow(cur, true)
-      style.push(cur)
-    }
-    // if (process.env.NODE_ENV === 'development') {
-    //   if (props['debug']) {
-    //     try {
-    //       console.log(' processed styles:', JSON.stringify({ props, viewProps, style }, null, 2))
-    //     } catch {
-    //       console.log(' processed styles:', { props, viewProps, style })
-    //     }
-    //   }
-    // }
-    return {
-      viewProps,
-      style,
-      psuedos,
-    }
-  }
-
-  const component = forwardRef<View, A>((props: StackProps, ref) => {
+  const component = forwardRef<View, A>((props: StackProps, forwardedRef) => {
     const {
       animated,
       children,
@@ -172,7 +66,25 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       disabled,
       onMouseEnter,
       onMouseLeave,
+      hrefAttrs,
+      onMoveShouldSetResponder,
+      onMoveShouldSetResponderCapture,
+      onResponderEnd,
+      onResponderGrant,
+      onResponderMove,
+      onResponderReject,
+      onResponderRelease,
+      onResponderStart,
+      onResponderTerminate,
+      onResponderTerminationRequest,
+      onScrollShouldSetResponder,
+      onScrollShouldSetResponderCapture,
+      onSelectionChangeShouldSetResponder,
+      onSelectionChangeShouldSetResponderCapture,
+      onStartShouldSetResponder,
+      onStartShouldSetResponderCapture,
     } = props
+
     const manager = useContext(ThemeManagerContext)
     const [state, set] = useState(() => ({
       hover: false,
@@ -180,6 +92,38 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       pressIn: false,
       theme: manager.name,
     }))
+
+    if (process.env.NODE_ENV !== 'production' && !componentProps.isText && isWeb) {
+      React.Children.toArray(props.children).forEach((item) => {
+        if (typeof item === 'string') {
+          console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
+        }
+      })
+    }
+
+    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
+    const hostRef = useRef(null)
+
+    if (isWeb) {
+      rnw.useResponderEvents(hostRef, {
+        onMoveShouldSetResponder,
+        onMoveShouldSetResponderCapture,
+        onResponderEnd,
+        onResponderGrant,
+        onResponderMove,
+        onResponderReject,
+        onResponderRelease,
+        onResponderStart,
+        onResponderTerminate,
+        onResponderTerminationRequest,
+        onScrollShouldSetResponder,
+        onScrollShouldSetResponderCapture,
+        onSelectionChangeShouldSetResponder,
+        onSelectionChangeShouldSetResponderCapture,
+        onStartShouldSetResponder,
+        onStartShouldSetResponderCapture,
+      })
+    }
 
     const isTracking = useRef(false)
     const varToVal = useCallback(
@@ -224,13 +168,31 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     const ViewComponent = componentProps.isText
       ? animated
         ? Animated.Text
+        : isWeb
+        ? hasTextAncestor
+          ? 'span'
+          : 'div'
         : ReactText
       : animated
       ? Animated.View
+      : isWeb
+      ? 'div'
       : View
+
+    const numberOfLines = props['numberOfLines']
+    const selectable = props['selectable']
 
     const styles = [
       sheet.defaultStyle,
+      hasTextAncestor ? sheet.inline : null,
+      ...(isWeb && componentProps.isText
+        ? [
+            numberOfLines != null && numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
+            selectable === true && textStyles.selectable,
+            selectable === false && textStyles.notSelectable,
+            onPress && textStyles.pressable,
+          ]
+        : []),
       style,
       psuedos && state.hover ? psuedos.hoverStyle || null : null,
       psuedos && state.press ? psuedos.pressStyle || null : null,
@@ -243,22 +205,61 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       }
     }
 
-    const createEl = animated ? unstable_createElement : createElement
+    const supportedProps: any = {
+      ...viewProps,
+      ...(isWeb && {
+        className: null,
+        classList: componentProps.isText
+          ? [
+              cssText.text,
+              hasTextAncestor === true && cssText.textHasAncestor,
+              numberOfLines === 1 && cssText.textOneLine,
+              numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
+              props.className,
+            ]
+          : [cssView.view, props.className],
+      }),
+      pointerEvents: !isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents,
+      style: styles,
+    }
+
+    if (isWeb) {
+      const platformMethodsRef = rnw.usePlatformMethods(supportedProps)
+      rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+
+      if (props.href != null && hrefAttrs != null) {
+        const { download, rel, target } = hrefAttrs
+        if (download != null) {
+          supportedProps.download = download
+        }
+        if (rel != null) {
+          supportedProps.rel = rel
+        }
+        if (typeof target === 'string') {
+          supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
+        }
+      }
+    }
+
+    const createEl = isWeb ? rnw.createElement : React.createElement
 
     let content = createEl(
       ViewComponent,
-      {
-        ref,
-        ...viewProps,
-        pointerEvents: !isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents,
-        style: styles,
-      },
+      supportedProps,
       spacedChildren({
         children,
         spacing,
         flexDirection: componentProps.defaultProps?.flexDirection,
       })
     )
+
+    if (isWeb) {
+      if (componentProps.isText && !hasTextAncestor) {
+        content = (
+          <TextAncestorContext.Provider value={true}>{content}</TextAncestorContext.Provider>
+        )
+      }
+    }
 
     const attachPress = !!((psuedos && psuedos.pressStyle) || onPress || onPressOut || onPressIn)
     const attachHover =
@@ -379,6 +380,91 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     return content
   })
 
+  const getSplitStyles = (
+    props: { [key: string]: any },
+    // convert from var to theme value
+    varToVal?: (key: string) => string
+  ) => {
+    let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
+    let viewProps: ViewProps = {}
+    let style: any[] = []
+    let cur: ViewStyle | null = null
+    for (const key in props) {
+      let val = props[key]
+      if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
+        if (cur) {
+          // process last
+          fixNativeShadow(cur, true)
+          style.push(cur)
+          cur = null
+        }
+        style.push(val)
+        continue
+      }
+      if (key === 'fullscreen') {
+        cur = cur || {}
+        Object.assign(cur, fullscreenStyle)
+        continue
+      }
+      // is style
+      const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
+      if (validStyleProps[key] || isPseudo) {
+        if (!isPseudo) {
+          // apply theme
+          val = varToVal?.(val) ?? val
+          // transforms
+          if (key in stylePropsTransform) {
+            cur = cur || {}
+            mergeTransform(cur, key, val)
+            continue
+          }
+        }
+        if (isPseudo && val) {
+          psuedos = psuedos || {}
+          const pseudoStyle: ViewStyle = {}
+          for (const subKey in val) {
+            const sval = varToVal?.(val[subKey]) ?? val[subKey]
+            if (subKey in stylePropsTransform) {
+              mergeTransform(pseudoStyle, subKey, sval)
+              continue
+            } else {
+              pseudoStyle[subKey] = sval
+            }
+          }
+          fixNativeShadow(pseudoStyle, true)
+          psuedos[key] = pseudoStyle
+          continue
+        }
+        cur = cur || {}
+        cur[key] = val
+        continue
+      }
+      if (!isWeb || key in rnw.forwardPropsList) {
+        // if no match, prop
+        viewProps[key] = val
+      }
+    }
+    // push last style
+    if (cur) {
+      fixNativeShadow(cur, true)
+      style.push(cur)
+    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   if (props['debug']) {
+    //     try {
+    //       console.log(' processed styles:', JSON.stringify({ props, viewProps, style }, null, 2))
+    //     } catch {
+    //       console.log(' processed styles:', { props, viewProps, style })
+    //     }
+    //   }
+    // }
+    return {
+      viewProps,
+      style,
+      psuedos,
+    }
+  }
+
   if (process.env.IS_STATIC) {
     const config: StaticConfig = {
       validStyles,
@@ -409,36 +495,90 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
   return (component as any) as StaticComponent<A>
 }
 
-const defaultShadowOffset = {
-  width: 0,
-  height: 0,
+const cssView = isWeb
+  ? rnw?.css.create({
+      view: {
+        // why necessary?
+        margin: 0,
+      },
+    })
+  : {}
+
+const cssText = isWeb
+  ? rnw?.css.create({
+      text: {
+        color: 'black',
+        display: 'inline',
+        font: '14px System',
+        margin: 0,
+        padding: 0,
+        whiteSpace: 'pre-wrap',
+        wordWrap: 'break-word',
+      },
+      textHasAncestor: {
+        color: 'inherit',
+        font: 'inherit',
+        whiteSpace: 'inherit',
+      },
+      textOneLine: {
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      },
+      textMultiLine: {
+        display: '-webkit-box',
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        WebkitBoxOrient: 'vertical',
+      },
+    })
+  : {}
+
+const displayContentsStyle = { display: 'contents' }
+
+const fullscreenStyle: StackProps = {
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
 }
 
-const matchRgba = /rgba\(\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*\)$/
-
-// used by both expansion and inline, be careful
-function fixNativeShadow(props: StackProps, merge = false) {
-  let res = merge ? props : {}
-  if (props.shadowColor) {
-    res.shadowColor = props.shadowColor
-    if (!('shadowOffset' in props)) {
-      res.shadowOffset = defaultShadowOffset
-    }
-    if (!('shadowOpacity' in props)) {
-      res.shadowOpacity = 1
-      const color = String(res.shadowColor).trim()
-      if (color[0] === 'r' && color[3] === 'a') {
-        const [_, r, g, b, a] = color.match(matchRgba) ?? []
-        if (typeof a !== 'string') {
-          console.warn('non valid rgba', color)
-          return props
-        }
-        res.shadowColor = `rgb(${r},${g},${b})`
-        res.shadowOpacity = +a
-      } else {
-        res.shadowOpacity = 1
-      }
-    }
-  }
-  return res
+const disabledStyle: StackProps = {
+  pointerEvents: 'none',
+  userSelect: 'none',
 }
+
+const mapTransformKeys = {
+  x: 'translateX',
+  y: 'translateY',
+}
+
+const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
+  const transform = obj.transform
+    ? Array.isArray(obj.transform)
+      ? obj.transform
+      : [obj.transform]
+    : []
+  // @ts-expect-error
+  transform.push({ [mapTransformKeys[key] || key]: val })
+  obj.transform = transform
+}
+
+const textStyles = isWeb
+  ? StyleSheet.create({
+      notSelectable: {
+        // @ts-ignore
+        userSelect: 'none',
+      },
+      selectable: {
+        // @ts-ignore
+        userSelect: 'text',
+      },
+      pressable: {
+        // @ts-ignore
+        cursor: 'pointer',
+      },
+    })
+  : {}

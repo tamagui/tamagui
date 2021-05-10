@@ -179,16 +179,15 @@ module.exports = {
             loader: 'babel-loader',
           },
           {
-            loader: require.resolve('@snackui/static/loader'),
+            loader: require.resolve('snackui-loader'),
             options: {
               // use this to add files to be statically evaluated
               // full path or partial path supported
               // always use the ".js" extension (so colors.ts => colors.js)
               // default:
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
-              // exclude files from processing
-              // default null
-              exclude: /node_modules/,
+              // snackui need access to react-native-web
+              exclude: /node_modules/(?!@react-native-web)/,
               // attempts to statically follow variables to compile
               // default true
               evaluateVars: true
@@ -204,9 +203,7 @@ module.exports = {
 
 #### Caveat
 
-react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We've opened an issue, but received pushback. We are going to try and work with them to see if there's a way they can enable a workaround now that we've published SnackUI. You'll have to use `patch-package` to restore className support for now.
-
-- Example [patch for react-native-web experimental](/etc/react-native-web%2B0.0.0-466063b7e.patch) (includes a extra patch for faster Text styles)
+react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We implemented some custom logic in our babel loader that patches react-native-web to support this. You need to be sure you allow either snackui-loader or @snackui/babel (depeneding on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules/(?!@react-native-web)/` instead.
 
 ### Babel
 
@@ -322,7 +319,7 @@ module: {
           loader: 'babel-loader',
         },
         {
-          loader: require.resolve('@snackui/static/loader'),
+          loader: require.resolve('snackui-loader'),
           options: {
             evaluateImportsWhitelist: ['constants.js', 'colors.js'],
             themesFile: require.resolve('./themes.ts'),

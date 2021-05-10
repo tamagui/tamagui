@@ -46,14 +46,13 @@ module.exports = {
             loader: 'babel-loader',
           },
           {
-            loader: require.resolve('@snackui/static/loader'),
+            loader: require.resolve('snackui-loader'),
             options: {
               // use this to add files to be statically evaluated
               // default:
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
-              // exclude files from processing
-              // default null
-              exclude: /node_modules/,
+              // snackui need access to react-native-web
+              exclude: /node_modules/(?!@react-native-web)/,
               // attempts to statically follow variables to compile
               // default true
               evaluateVars: true

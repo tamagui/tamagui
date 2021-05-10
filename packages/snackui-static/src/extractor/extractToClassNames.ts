@@ -63,9 +63,6 @@ export function extractToClassNames(
   if (typeof source !== 'string') {
     throw new Error('`source` must be a string of javascript')
   }
-  if (!sourcePath.endsWith('sx')) {
-    return null
-  }
   invariant(
     typeof sourcePath === 'string' && path.isAbsolute(sourcePath),
     '`sourcePath` must be an absolute path to a .js file'
@@ -73,7 +70,6 @@ export function extractToClassNames(
 
   const shouldLogTiming = shouldPrintDebug || options.logTimings
   const start = Date.now()
-  let since = Date.now()
   const mem = shouldLogTiming ? process.memoryUsage() : null
 
   // Using a map for (officially supported) guaranteed insertion order
@@ -85,9 +81,6 @@ export function extractToClassNames(
     console.error('babel parse error:', sourcePath)
     throw err
   }
-
-  const parseTime = Date.now() - since
-  since = Date.now()
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists: { [key: string]: t.Identifier } = {}
@@ -278,8 +271,6 @@ export function extractToClassNames(
     return null
   }
 
-  since = Date.now()
-
   const styles = Array.from(cssMap.values())
     .map((x) => {
       // remove comments
@@ -308,8 +299,6 @@ export function extractToClassNames(
     },
     source
   )
-
-  const generateTime = Date.now() - since
 
   if (shouldPrintDebug) {
     console.log('\n\n -------- output code ------- \n\n', result.code)
