@@ -1,8 +1,8 @@
-import { debounce } from 'lodash'
 import { useRef, useState } from 'react'
 import { LayoutRectangle } from 'react-native'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
+import { debounce } from './useDebounce'
 
 export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } = {}) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null)
@@ -46,9 +46,7 @@ export const useLayout = (props: { onLayout?: (rect: LayoutRectangle) => void } 
         })
       },
       0,
-      {
-        leading: true,
-      }
+      true
     )
 
     const ro = new ResizeObserver(([{ contentRect }] = []) => {

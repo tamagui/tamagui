@@ -1,5 +1,4 @@
 import { getOrCreateStylePrefix } from '@snackui/node'
-import _ from 'lodash'
 import { ViewStyle } from 'react-native'
 import { atomic } from 'react-native-web/dist/cjs/exports/StyleSheet/compile'
 import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createCompileableStyle'
@@ -70,7 +69,7 @@ function getAtomicStyle(
       style[borderDefaults[key]] = style[borderDefaults[key]] ?? 'solid'
     }
   }
-  const all = _.cloneDeep(atomic(createCompileableStyle(createReactDOMStyle(i18Style(style)))))
+  const all = { ...atomic(createCompileableStyle(createReactDOMStyle(i18Style(style)))) }
   return Object.keys(all).map((key) => {
     const val = all[key]
     const prefix = `_${getOrCreateStylePrefix(val.property)}`

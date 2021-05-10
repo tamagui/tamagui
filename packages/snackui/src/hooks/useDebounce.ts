@@ -1,12 +1,41 @@
-import { debounce } from 'lodash'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-// copied from lodash because otherwise webpack-lodash gets mad
+export function debounce<A extends Function>(
+  func: A,
+  wait?: number,
+  immediate?: boolean
+): A & {
+  cancel: Function
+} {
+  var timeout
+  var isCancelled
+  function debounced() {
+    // @ts-ignore
+    var context = this,
+      args = arguments
+    clearTimeout(timeout)
+    timeout = setTimeout(function () {
+      timeout = null
+      if (!immediate && !isCancelled) {
+        func.apply(context, args)
+      }
+      isCancelled = false
+    }, wait)
+    if (immediate && !timeout) {
+      func.apply(context, args)
+    }
+  }
+  debounced.cancel = () => {
+    isCancelled = true
+  }
+  return debounced as any
+}
+
 type DebounceSettings = {
   leading?: boolean
-  maxWait?: number
-  trailing?: boolean
 }
+
+const defaultOpts = { leading: false }
 
 export function useDebounce<
   A extends (...args: any) => any,
@@ -16,7 +45,7 @@ export function useDebounce<
 >(
   fn: A,
   wait: number,
-  options: DebounceSettings = { leading: false },
+  options: DebounceSettings = defaultOpts,
   mountArgs: any[] = []
 ): DebouncedFn {
   const dbEffect = useRef<DebouncedFn | null>(null)
@@ -28,7 +57,7 @@ export function useDebounce<
   }, [])
 
   return useMemo(() => {
-    dbEffect.current = (debounce(fn, wait, options) as unknown) as DebouncedFn
+    dbEffect.current = (debounce(fn, wait, options.leading) as unknown) as DebouncedFn
     return dbEffect.current
   }, [JSON.stringify(options), ...mountArgs])
 }

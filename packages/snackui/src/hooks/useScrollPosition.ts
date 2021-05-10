@@ -1,5 +1,6 @@
-import { debounce } from 'lodash'
 import { useEffect } from 'react'
+
+import { debounce } from './useDebounce'
 
 export function useScrollPosition<A extends HTMLDivElement, T extends React.RefObject<A>>(
   ref: T,

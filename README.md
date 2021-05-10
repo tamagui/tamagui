@@ -14,7 +14,7 @@
   <a href="#license">License</a>
 </p>
 
-SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web. SnackUI is light; it doesn't prescribe much beyond basic views, hooks, and an optimizing compiler.
+SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web. SnackUI is light (15Kb gzipped, up to ~26Kb with Popover/Tooltip); it doesn't prescribe much beyond basic views, hooks, and an optimizing compiler.
 
 <div align="center">
   <img margin="auto" width="706px" src="https://raw.githubusercontent.com/snackui/snackui/master/website/static/img/diagram.png" alt="Illustration of <HStack spacing='md' /> <VStack spacing='lg' />">
