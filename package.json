@@ -37,6 +37,7 @@
     "ultra-runner": "^3.10.5"
   },
   "devDependencies": {
+    "conventional-changelog-cli": "^2.1.1",
     "lerna": "^4.0.0",
     "patch-package": "^6.4.7",
     "rollup-plugin-flat-dts": "^1.1.0"
