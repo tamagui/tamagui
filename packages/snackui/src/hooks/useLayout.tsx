@@ -4,7 +4,9 @@ import { LayoutChangeEvent, LayoutRectangle } from 'react-native'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { debounce } from './useDebounce'
 
-export const useLayout = (props: { stateless?: boolean; onLayout?: (rect: LayoutChangeEvent) => void } = {}) => {
+export const useLayout = (
+  props: { stateless?: boolean; onLayout?: (rect: LayoutChangeEvent) => void } = {}
+) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null)
 
   if (!isWeb) {
@@ -20,9 +22,9 @@ export const useLayout = (props: { stateless?: boolean; onLayout?: (rect: Layout
     const node = ref.current
     if (!node) return
     let hasUpdatedOnce = false
-    let last = null
+    let last: LayoutRectangle | null = null
 
-    const getNext = (prev, rect) => {
+    const getNext = (prev: LayoutRectangle | null, rect: LayoutRectangle) => {
       let next
       if (!prev) {
         next = rect
@@ -35,6 +37,7 @@ export const useLayout = (props: { stateless?: boolean; onLayout?: (rect: Layout
         }
       }
       if (next) {
+        // console.log('layout change', last?.width == next.width, last?.height == next.height)
         // @ts-expect-error
         props.onLayout?.({ nativeEvent: { layout: next } })
         last = next
@@ -43,9 +46,9 @@ export const useLayout = (props: { stateless?: boolean; onLayout?: (rect: Layout
       return prev
     }
 
-    const updateImmediate = (rect) => {
+    const updateImmediate = (rect: LayoutRectangle) => {
       if (!props.stateless) {
-        setLayout(p => getNext(p, rect))
+        setLayout((p) => getNext(p, rect))
       } else {
         if (getNext(last, rect)) {
           // @ts-expect-error
@@ -53,7 +56,7 @@ export const useLayout = (props: { stateless?: boolean; onLayout?: (rect: Layout
         }
       }
     }
-    
+
     const updateDbc = debounce(updateImmediate, 0, true)
     const update = (a) => {
       if (!a.width && !a.height) {
