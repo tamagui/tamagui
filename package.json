@@ -24,7 +24,7 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "postinstall": "patch-package",
     "version": "lerna version  --conventional-commits --create-release github",
-    "publish": "ultra -r --no-pretty yarn npm publish"
+    "publish": "lerna publish --conventional-commits --create-release github"
   },
   "resolutions": {
     "esbuild": "0.11.20"
