@@ -36,8 +36,8 @@ export const useLayout = (
         next = { width, height }
       }
       if (next) {
-        // prettier-ignore
-        console.log('layout change', last?.width == next.width, last?.height == next.height, last, next)
+        // // prettier-ignore
+        // console.log('layout change', last?.width == next.width, last?.height == next.height, last, next)
         // @ts-expect-error
         props.onLayout?.({ nativeEvent: { layout: next } })
         last = next
