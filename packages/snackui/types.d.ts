@@ -602,7 +602,10 @@ declare module "snackui" {
     export type CircleProps = StackProps & {
         size: number;
     };
-    export const Circle: ({ size, ...props }: CircleProps) => JSX.Element;
+    export const Circle: {
+        (props: CircleProps): JSX.Element;
+        staticConfig: import("helpers/StaticConfig").StaticConfig | null;
+    };
 }
 
 declare module "snackui" {
