@@ -28,16 +28,16 @@ export const useLayout = (
       let next
       if (!prev) {
         next = rect
-      } else {
-        const width = Math.max(1, Math.round(rect.width))
-        const height = Math.max(1, Math.round(rect.height))
-        // don't set new layout state unless the layout has actually changed
-        if (width !== prev.width || height !== prev.height) {
-          next = { width, height }
-        }
+      }
+      const width = Math.max(1, Math.round(rect.width))
+      const height = Math.max(1, Math.round(rect.height))
+      // don't set new layout state unless the layout has actually changed
+      if (!prev || width !== prev.width || height !== prev.height) {
+        next = { width, height }
       }
       if (next) {
-        // console.log('layout change', last?.width == next.width, last?.height == next.height)
+        // prettier-ignore
+        console.log('layout change', last?.width == next.width, last?.height == next.height, last, next)
         // @ts-expect-error
         props.onLayout?.({ nativeEvent: { layout: next } })
         last = next
