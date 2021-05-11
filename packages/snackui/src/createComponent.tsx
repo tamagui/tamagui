@@ -329,6 +329,13 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     const events = useMemo(() => {
       if (!shouldAttach) return null
       return {
+        ...(!isWeb && {
+          // non web
+          onPressOut: (e) => {
+            unPress()
+            onPressOut?.(e)
+          },
+        }),
         ...(isWeb &&
           !isTouchDevice && {
             onMouseEnter:
@@ -378,11 +385,6 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
               onPressIn?.(e)
             }
           : (onPressIn as any),
-        // non web
-        onPressOut: (e) => {
-          unPress()
-          onPressOut?.(e)
-        },
         onClick: attachPress
           ? (e) => {
               e.preventDefault()
@@ -404,10 +406,6 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         onPress,
       })
       Object.assign(supportedProps, pressProps)
-    }
-
-    if (props['debug']) {
-      console.log('adding press', supportedProps)
     }
 
     let content = createEl(
