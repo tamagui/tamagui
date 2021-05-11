@@ -43,7 +43,7 @@ export function BlurView({
   ...props
 }: BlurViewProps) {
   return (
-    <VStack borderRadius={borderRadius} {...props}>
+    <VStack position="relative" borderRadius={borderRadius} {...props}>
       <div
         // fallback for safari but non customizable
         className="backdrop-filter"

@@ -49,7 +49,7 @@ export const useLayout = (
       } else {
         if (getNext(last, rect)) {
           // @ts-expect-error
-          props.onLayout?.({ nativeEvent: { layout: next } })
+          props.onLayout?.({ nativeEvent: { layout: rect } })
         }
       }
     }

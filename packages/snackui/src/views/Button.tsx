@@ -1,10 +1,11 @@
+// debug 123
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
-import { StackProps } from '../StackProps'
+import { EnhancedStyleProps, StackProps } from '../StackProps'
 import { HStack } from './Stacks'
 import { Text, TextProps } from './Text'
 
@@ -23,6 +24,18 @@ export type ButtonProps = StackProps & {
 // NOTE can't use TouchableOpacity, it captures and stops propagation of click events
 // which is really important for composability.
 // we could maybe add a "touchOpacity" boolean or similar for switching to opacity mode
+
+const defaultStyle: EnhancedStyleProps = {
+  alignSelf: 'flex-start',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer',
+  paddingVertical: 10,
+  flexWrap: 'nowrap',
+  paddingHorizontal: 14,
+  flexDirection: 'row',
+  borderRadius: 8,
+}
 
 export const Button = themeable(
   ({
@@ -54,15 +67,7 @@ export const Button = themeable(
     return (
       <HStack
         backgroundColor={theme.backgroundColorSecondary}
-        alignSelf="flex-start"
-        justifyContent="center"
-        alignItems="center"
-        cursor="pointer"
-        paddingVertical={10}
-        flexWrap="nowrap"
-        paddingHorizontal={14}
-        flexDirection="row"
-        borderRadius={8}
+        {...defaultStyle}
         shadowColor={elevation ? theme.shadowColor : undefined}
         {...(elevation && {
           shadowRadius: 3 * elevation,
@@ -101,5 +106,6 @@ if (process.env.IS_STATIC) {
   // @ts-ignore
   Button.staticConfig = extendStaticConfig(HStack, {
     neverFlatten: true,
+    defaultProps: defaultStyle,
   })
 }
