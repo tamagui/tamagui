@@ -26,7 +26,6 @@ let store: WindowSizeStore | null = null
 
 function createStore() {
   if (!store) {
-    console.log('create store')
     store = new WindowSizeStore()
     Dimensions.addEventListener('change', debounce(store.update))
   }

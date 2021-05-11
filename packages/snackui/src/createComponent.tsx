@@ -438,7 +438,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         cur[key] = val
         continue
       }
-      if (!isWeb || key in rnw.forwardPropsList) {
+      if (!isWeb || key in rnw.forwardPropsList || (key[0] === 'd' && key.startsWith('data-'))) {
         // if no match, prop
         viewProps[key] = val
       }
