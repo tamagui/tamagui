@@ -63,13 +63,16 @@ function getAtomicStyle(
   if (style == null || typeof style !== 'object') {
     throw new Error(`Wrong style type: "${typeof style}": ${style}`)
   }
+
   // why is this diff from react-native-web!? need to figure out
   for (const key in borderDefaults) {
     if (key in style) {
       style[borderDefaults[key]] = style[borderDefaults[key]] ?? 'solid'
     }
   }
+
   const all = { ...atomic(createCompileableStyle(createReactDOMStyle(i18Style(style)))) }
+
   return Object.keys(all).map((key) => {
     const val = all[key]
     const prefix = `_${getOrCreateStylePrefix(val.property)}`

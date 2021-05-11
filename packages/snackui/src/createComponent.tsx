@@ -154,7 +154,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       (variable: string) => {
         isTracking.current = true
         const invert = invertStyleVariableToValue[state.theme || 'light']
-        return invert?.[variable]
+        return invert?.[variable] ?? variable
       },
       [state.theme]
     )
@@ -434,10 +434,12 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     return content
   })
 
+  const defaultVarToVal = (x: any) => x
+
   const getSplitStyles = (
     props: { [key: string]: any },
     // convert from var to theme value
-    varToVal?: (key: string) => string
+    varToVal: (key: string) => string = defaultVarToVal
   ) => {
     let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
     let viewProps: ViewProps = {}
@@ -461,6 +463,16 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         Object.assign(cur, fullscreenStyle)
         continue
       }
+      // expand flex so it merged with flexShrink etc properly
+      if (key === 'flex') {
+        cur = cur || {}
+        // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+        Object.assign(cur, {
+          flexGrow: val,
+          flexShrink: 1,
+        })
+        continue
+      }
       if (!isWeb && key === 'pointerEvents') {
         viewProps[key] = val
         continue
@@ -468,21 +480,12 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       // is style
       const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
       if (validStyleProps[key] || isPseudo) {
-        if (!isPseudo) {
-          // apply theme
-          val = varToVal?.(val) ?? val
-          // transforms
-          if (key in stylePropsTransform) {
-            cur = cur || {}
-            mergeTransform(cur, key, val)
-            continue
-          }
-        }
-        if (isPseudo && val) {
+        if (isPseudo) {
+          if (!val) continue
           psuedos = psuedos || {}
           const pseudoStyle: ViewStyle = {}
           for (const subKey in val) {
-            const sval = varToVal?.(val[subKey]) ?? val[subKey]
+            const sval = varToVal(val[subKey])
             if (subKey in stylePropsTransform) {
               mergeTransform(pseudoStyle, subKey, sval)
               continue
@@ -492,6 +495,14 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
           }
           fixNativeShadow(pseudoStyle, true)
           psuedos[key] = pseudoStyle
+          continue
+        }
+        // get value from theme
+        val = varToVal(val)
+        // transforms
+        if (key in stylePropsTransform) {
+          cur = cur || {}
+          mergeTransform(cur, key, val)
           continue
         }
         cur = cur || {}
