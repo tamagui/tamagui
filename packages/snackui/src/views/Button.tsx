@@ -1,4 +1,3 @@
-// debug 123
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
