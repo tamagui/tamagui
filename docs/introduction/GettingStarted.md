@@ -14,7 +14,7 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 Add snackui to your project:
 
 ```bash
-yarn add snackui @snackui/static @snackui/babel-plugin
+yarn add snackui snackui-loader @snackui/babel-plugin
 ```
 
 You'll likely want to gitignore the outputted style files, though it's not necessary. We originally kept CSS in-memory, but ran into various issues, but would support re-implementing it if anyone knows a cleaner way. In your `.gitignore` add this:

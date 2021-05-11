@@ -155,7 +155,7 @@ export function Component(props) {
 Add snackui to your project:
 
 ```bash
-yarn add snackui @snackui/static @snackui/babel-plugin
+yarn add snackui snackui-loader @snackui/babel-plugin
 ```
 
 From here, you can set it two ways: for extraction to CSS on web, you'll need the Webpack plugin. If you don't need that (using a different bundler), or for React Native, then you'll want the babel plugin.
