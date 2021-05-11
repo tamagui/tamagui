@@ -25,7 +25,7 @@
     "postinstall": "patch-package",
     "version:minor": "lerna version minor --conventional-commits",
     "version:patch": "lerna version patch --conventional-commits",
-    "publish": "lerna publish --conventional-commits --create-release github"
+    "publish": "ultra -r --no-pretty yarn npm publish"
   },
   "resolutions": {
     "esbuild": "0.11.20"
