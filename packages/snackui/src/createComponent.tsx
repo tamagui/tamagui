@@ -381,7 +381,6 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
                 press: true,
                 pressIn: true,
               })
-              console.log('pressed in...')
               onPressIn?.(e)
             }
           : (onPressIn as any),

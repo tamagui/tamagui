@@ -1,4 +1,5 @@
 import React from 'react'
+import { isStringChild } from 'snackui/src/helpers/isStringChild'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
@@ -50,8 +51,8 @@ export const Button = themeable(
     ...props
   }: ButtonProps) => {
     const theme = useTheme()
-
-    const childrens = noTextWrap ? (
+    const stringChildren = isStringChild(children)
+    const childrens = noTextWrap || !stringChildren ? (
       children
     ) : !children ? null : textProps ? (
       <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse {...textProps}>

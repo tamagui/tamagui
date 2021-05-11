@@ -836,6 +836,10 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    export function isStringChild(node: any): boolean;
+}
+
+declare module "snackui" {
     export * from "@snackui/helpers";
 }
 

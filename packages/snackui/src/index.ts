@@ -64,6 +64,7 @@ export * from './helpers/getNode'
 export * from './helpers/themeable'
 export * from './helpers/weakKey'
 export * from './helpers/prevent'
+export * from './helpers/isStringChild'
 export * from './helpers/combineRefs'
 export * from './helpers/extendStaticConfig'
 
