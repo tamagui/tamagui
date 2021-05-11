@@ -113,10 +113,6 @@ export function extractToClassNames(
       let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
       let finalStyles: StyleObject[] = []
 
-      if (shouldPrintDebug) {
-        console.log('attrs', attrs)
-      }
-
       const viewStyles = {}
       for (const attr of attrs) {
         if (attr.type === 'style') {
@@ -299,9 +295,9 @@ export function extractToClassNames(
     {
       concise: false,
       filename: sourcePath,
-      retainLines: true,
+      retainLines: false,
       sourceFileName: sourcePath,
-      sourceMaps: process.env.NODE_ENV === 'development',
+      sourceMaps: true,
     },
     source
   )

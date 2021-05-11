@@ -1,13 +1,5 @@
 import { stylePropsTransform, stylePropsView, validStyles } from '@snackui/helpers'
-import React, {
-  forwardRef,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Pressable,
@@ -28,6 +20,7 @@ import { StackProps } from './StackProps'
 
 const loadRNW = !process.env.IS_STATIC && isWeb
 const rnw: any = loadRNW ? require('react-native-web/dist/exports/View').internal : null
+const forwardPropsList = rnw?.forwardPropsList
 
 const mouseUps = new Set<Function>()
 
@@ -92,6 +85,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       theme: manager.name,
     }))
 
+    // from react-native-web
     if (process.env.NODE_ENV !== 'production' && !componentProps.isText && isWeb) {
       React.Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
@@ -100,10 +94,12 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       })
     }
 
+    // from react-native-web
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
 
     if (isWeb) {
+      // from react-native-web
       rnw.useResponderEvents(hostRef, {
         onMoveShouldSetResponder,
         onMoveShouldSetResponderCapture,
@@ -134,12 +130,10 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       [state.theme]
     )
 
-    const { viewProps, psuedos, style } = useMemo(() => {
-      return getSplitStyles(
-        componentProps.preProcessProps ? componentProps.preProcessProps(props) : props,
-        varToVal
-      )
-    }, [props])
+    const { viewProps, psuedos, style } = getSplitStyles(
+      componentProps.preProcessProps ? componentProps.preProcessProps(props) : props,
+      varToVal
+    )
 
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
@@ -184,6 +178,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     const styles = [
       sheet.defaultStyle,
       hasTextAncestor ? sheet.inline : null,
+      // from react-native-web
       ...(isWeb && componentProps.isText
         ? [
             numberOfLines != null && numberOfLines > 1 && { WebkitLineClamp: numberOfLines },
@@ -207,6 +202,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     const supportedProps: any = {
       ...viewProps,
       ...(isWeb && {
+        // from react-native-web
         className: null,
         classList: componentProps.isText
           ? [
@@ -223,9 +219,9 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     }
 
     if (isWeb) {
+      // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(supportedProps)
       rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
-
       if (props.href != null && hrefAttrs != null) {
         const { download, rel, target } = hrefAttrs
         if (download != null) {
@@ -252,12 +248,9 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       })
     )
 
-    if (isWeb) {
-      if (componentProps.isText && !hasTextAncestor) {
-        content = (
-          <TextAncestorContext.Provider value={true}>{content}</TextAncestorContext.Provider>
-        )
-      }
+    if (isWeb && componentProps.isText && !hasTextAncestor) {
+      // from react-native-web
+      content = <TextAncestorContext.Provider value={true}>{content}</TextAncestorContext.Provider>
     }
 
     const attachPress = !!((psuedos && psuedos.pressStyle) || onPress || onPressOut || onPressIn)
@@ -438,7 +431,12 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         cur[key] = val
         continue
       }
-      if (!isWeb || key in rnw.forwardPropsList || (key[0] === 'd' && key.startsWith('data-'))) {
+      if (
+        !isWeb ||
+        // dont need to validate when in static mode itll validate client-side
+        (!forwardPropsList ? true : key in forwardPropsList) ||
+        (key[0] === 'd' && key.startsWith('data-'))
+      ) {
         // if no match, prop
         viewProps[key] = val
       }

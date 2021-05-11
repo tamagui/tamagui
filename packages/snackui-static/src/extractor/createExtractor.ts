@@ -7,6 +7,7 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
 import { statSync } from 'fs-extra'
+import { difference, pick } from 'lodash'
 // @ts-ignore
 import { StaticConfig } from 'snackui'
 
@@ -50,7 +51,6 @@ const validComponents: { [key: string]: any } = Object.keys(AllExports)
 
 export type Extractor = ReturnType<typeof createExtractor>
 
-let lastThemeMTime = 0
 let hasWarnedOnce = false
 
 export function createExtractor() {
@@ -757,61 +757,86 @@ export function createExtractor() {
           }
 
           // post process
-          if (staticConfig.postProcessStyles) {
-            const get = (res: Object | null) => {
-              if (!res) return
-              if (!!excludeProps.size) {
-                for (const key in res) {
-                  if (isExcludedProp(key)) delete res[key]
-                }
+          const get = (res: Object | null) => {
+            if (!res) return
+            if (!!excludeProps.size) {
+              for (const key in res) {
+                if (isExcludedProp(key)) delete res[key]
               }
-              const next = staticConfig.postProcessStyles?.(res) ?? res
-              if (staticConfig.validStyles) {
-                for (const key in next) {
-                  if (!staticConfig.validStyles[key]) {
-                    delete next[key]
-                  }
-                }
-              }
-              return next
             }
+            const next = staticConfig.postProcessStyles?.(res) ?? res
+            if (staticConfig.validStyles) {
+              for (const key in next) {
+                if (!staticConfig.validStyles[key]) {
+                  delete next[key]
+                }
+              }
+            }
+            return next
+          }
 
-            const allPrevStyles = {}
-            for (const attr of attrs) {
-              try {
-                switch (attr.type) {
-                  case 'ternary':
-                    const a = get(attr.value.alternate)
-                    const c = get(attr.value.consequent)
-                    attr.value.alternate = a
-                    attr.value.consequent = c
-                    if (shouldPrintDebug) {
-                      console.log('     => tern ', attrStr(attr))
-                    }
-                    break
-                  case 'style':
-                    const props = { ...staticConfig.defaultProps, ...attr.value }
-                    const next = get(props)
-                    attr.value = {}
-                    for (const key in next) {
-                      // avoid duplicate styles while still allowing for all props to go into postProcess
-                      if (!(key in allPrevStyles)) {
-                        attr.value[key] = next[key]
-                      }
-                    }
-                    Object.assign(allPrevStyles, attr.value)
-                    if (shouldPrintDebug) {
-                      console.log('     => style ', attr.value)
-                    }
-                    break
-                }
-              } catch (err) {
-                // any error de-opt
-                if (shouldPrintDebug) {
-                  console.log(' postprocessing error, deopt', err)
-                  node.attributes = ogAttributes
-                  return node
-                }
+          const completeStyles = {
+            ...Object.keys(attrs).reduce((acc, key) => {
+              const cur = attrs[key]
+              if (cur.type === 'style') {
+                Object.assign(acc, cur.value)
+              }
+              return acc
+            }, {}),
+          }
+          const completeStylesProcessed = get({
+            ...staticConfig.defaultProps,
+            ...completeStyles,
+          })
+          // any extra styles added in postprocess should be added to first group as they wont be overriden
+          const stylesToAddToInitialGroup = difference(
+            Object.keys(completeStylesProcessed),
+            Object.keys(completeStyles)
+          )
+          if (stylesToAddToInitialGroup.length) {
+            const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
+            const firstGroup = attrs.find((x) => x.type === 'style')
+            if (shouldPrintDebug) {
+              // prettier-ignore
+              console.log('stylesToAddToInitialGroup', stylesToAddToInitialGroup, { toAdd, firstGroup })
+            }
+            if (!firstGroup) {
+              attrs.unshift({ type: 'style', value: toAdd })
+            } else {
+              Object.assign(firstGroup.value, toAdd)
+            }
+          }
+
+          for (const attr of attrs) {
+            try {
+              switch (attr.type) {
+                case 'ternary':
+                  const a = get(attr.value.alternate)
+                  const c = get(attr.value.consequent)
+                  attr.value.alternate = a
+                  attr.value.consequent = c
+                  if (shouldPrintDebug) {
+                    console.log('     => tern ', attrStr(attr))
+                  }
+                  break
+                case 'style':
+                  const next = {}
+                  for (const key in attr.value) {
+                    next[key] = completeStylesProcessed[key]
+                  }
+                  if (shouldPrintDebug) {
+                    // prettier-ignore
+                    console.log('     => style ', attr.value, '=>', next)
+                  }
+                  attr.value = next
+                  break
+              }
+            } catch (err) {
+              // any error de-opt
+              if (shouldPrintDebug) {
+                console.log(' postprocessing error, deopt', err)
+                node.attributes = ogAttributes
+                return node
               }
             }
           }

@@ -4,7 +4,9 @@ exports[`1. extracts to a div for simple views, flat transforms 1`] = `
 <div
   className=" test1 _tr--hover-scalez2z _flSh-zz _flDi-column _flBa-auto _fl-1 _di-flex _boSi-borderzbox _boSh-e8nksv _boToRiRa-100px _boToLeRa-100px _boBoRiRa-100px _boBoLeRa-100px _baCo-19sdxe _alIt-stretch"
 >
-  <span>
+  <span
+    className=" _di-inline"
+  >
     hello world
   </span>
 </div>
@@ -30,7 +32,9 @@ Array [
       }
     }
   >
-    <span>
+    <span
+      className=" _di-inline"
+    >
       hello world
     </span>
   </div>,
@@ -57,7 +61,9 @@ Array [
       }
     }
   >
-    <span>
+    <span
+      className=" _di-inline"
+    >
       hello world
     </span>
   </div>,
@@ -130,7 +136,9 @@ exports[`6. spread ternary 1`] = `
 <div
   className="_baCo-183yn7 _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden"
 >
-  <span>
+  <span
+    className=" _di-inline"
+  >
     hello world
   </span>
 </div>
@@ -140,7 +148,9 @@ exports[`6. spread ternary 2`] = `
 <div
   className="_baCo-19sdxe _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden"
 >
-  <span>
+  <span
+    className=" _di-inline"
+  >
     hello world
   </span>
 </div>
@@ -151,7 +161,7 @@ exports[`7. ternary + data-is 1`] = `
   className=" _wi-66pct _paRi-11px _paLe-11px _paBo-10px _miWi-500px _maWi-30pct _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch"
 >
   <div
-    className="_wi-10px _he-10px"
+    className="_wi-10px _he-10px _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz"
   />
 </div>
 `;
@@ -197,7 +207,7 @@ exports[`10. extracts Text 1`] = `
   className=" _foSi-10px _di-inline"
 >
   <div
-    className="css-text-1u9zv9r r-display-1471scf r-userSelect-1xnzce8"
+    className="css-text-1u9zv9r  _di-inline r-display-1471scf r-userSelect-1xnzce8"
     style={
       Object {
         "selectable": true,
@@ -217,6 +227,7 @@ exports[`11. combines everything 1`] = `
 Array [
   "css-view-mht2lk",
   "_baCo-183yn7",
+  "_alIt-center",
   "_miHe-10px",
   "_ovX-hidden",
   "_ovY-hidden",
@@ -225,7 +236,6 @@ Array [
   "_boRiCo-1n8flkp",
   "_boLeCo-wse84g",
   "_boBoCo-1qvh775",
-  "_alIt-stretch",
   "_boBoSt-solid",
   "_boBoWi-1px",
   "_boLeSt-solid",
@@ -255,7 +265,7 @@ Array [
 
 exports[`12. ternary multiple on same key 1`] = `
 <div
-  className="_tr- _op-1"
+  className="_tr- _op-1 _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz"
 />
 `;
 
@@ -267,7 +277,9 @@ exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 
 exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
-  <div />,
+  <div
+    className=" _miWi-12px _miHe-12px _flSh-zz _fl-zz"
+  />,
   <div
     className=" _miWi-10px _miHe-10px _flSh-zz _fl-1"
   />,

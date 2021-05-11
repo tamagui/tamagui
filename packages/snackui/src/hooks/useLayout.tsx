@@ -26,9 +26,6 @@ export const useLayout = (
 
     const getNext = (prev: LayoutRectangle | null, rect: LayoutRectangle) => {
       let next
-      if (!prev) {
-        next = rect
-      }
       const width = Math.max(1, Math.round(rect.width))
       const height = Math.max(1, Math.round(rect.height))
       // don't set new layout state unless the layout has actually changed
@@ -83,7 +80,6 @@ export const useLayout = (
 
     // let tm = setTimeout(() => {
     //   // if hasnt fired by now, send first one
-    //   console.log(node)
     //   update(node.getBoundingClientRect())
     // })
 

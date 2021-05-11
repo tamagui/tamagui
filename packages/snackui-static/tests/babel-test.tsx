@@ -73,8 +73,8 @@ test('basic conditional extraction', async () => {
     }
   `)
   const code = output?.code ?? ''
-  expect(code.includes(`x ? _sheet["0"] : _sheet["1"]`)).toBeTruthy()
-  expect(code.includes(`x ? _sheet["2"] : _sheet["3"]`)).toBeTruthy()
+  expect(code.includes(`_sheet["0"], x ? _sheet["1"] : _sheet["2"]`)).toBeTruthy()
+  expect(code.includes(`_sheet["3"], x ? _sheet["4"] : _sheet["5"]`)).toBeTruthy()
 })
 
 test('flat transform props', async () => {
