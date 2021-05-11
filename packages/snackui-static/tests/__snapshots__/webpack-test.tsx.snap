@@ -2,7 +2,7 @@
 
 exports[`1. extracts to a div for simple views, flat transforms 1`] = `
 <div
-  className=" test1 _alIt-stretch _baCo-19sdxe _boBoLeRa-100px _boBoRiRa-100px _boToLeRa-100px _boToRiRa-100px _boSh-e8nksv _boSi-borderzbox _di-flex _fl-1 _flBa-auto _flDi-column _flSh-zz _tr--hover-scalez2z"
+  className=" test1 _tr--hover-scalez2z _flSh-zz _flDi-column _flBa-auto _fl-1 _di-flex _boSi-borderzbox _boSh-e8nksv _boToRiRa-100px _boToLeRa-100px _boBoRiRa-100px _boBoLeRa-100px _baCo-19sdxe _alIt-stretch"
 >
   <span>
     hello world
@@ -13,7 +13,7 @@ exports[`1. extracts to a div for simple views, flat transforms 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="css-view-mht2lk _ovY-hidden _ovX-hidden _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch who _boSh-xgwarg _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
+    className="css-view-mht2lk _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden who _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paBo-5px _paLe-5px _paRi-5px _paTo-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -22,7 +22,7 @@ Array [
     }
   />,
   <div
-    className="css-view-mht2lk ease-in-out-top _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _paBo-2px _paTo-2px _baCo-1d0hial _to-z14px _boSh-xgwarg _paRi-5px _paLe-5px _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
+    className="css-view-mht2lk ease-in-out-top _paTo-2px _paBo-2px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch _baCo-1d0hial _to-z14px _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paLe-5px _paRi-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -40,7 +40,7 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="css-view-mht2lk _ovY-hidden _ovX-hidden _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch who _boSh-xgwarg _paTo-5px _paRi-5px _paLe-5px _paBo-5px _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
+    className="css-view-mht2lk _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden who _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paBo-5px _paLe-5px _paRi-5px _paTo-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -49,7 +49,7 @@ Array [
     }
   />,
   <div
-    className="css-view-mht2lk ease-in-out-top _alIt-stretch _baCo-rhzyip _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _paBo-2px _paTo-2px _to-0px _boSh-xgwarg _paRi-5px _paLe-5px _boToRiRa-12px _boToLeRa-12px _boBoRiRa-12px _boBoLeRa-12px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
+    className="css-view-mht2lk ease-in-out-top _to-0px _paTo-2px _paBo-2px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _baCo-rhzyip _alIt-stretch _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paLe-5px _paRi-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
@@ -67,14 +67,14 @@ Array [
 exports[`3. places className correctly given a single spread 1`] = `
 Array [
   "css-view-mht2lk",
-  "_ovY-hidden",
-  "_ovX-hidden",
-  "_flSh-zz",
-  "_flDi-column",
-  "_flBa-auto",
-  "_di-flex",
-  "_boSi-borderzbox",
   "_alIt-stretch",
+  "_boSi-borderzbox",
+  "_di-flex",
+  "_flBa-auto",
+  "_flDi-column",
+  "_flSh-zz",
+  "_ovX-hidden",
+  "_ovY-hidden",
   "r-alignItems-1oszu61",
   "r-boxSizing-deolkf",
   "r-display-6koalj",
@@ -87,15 +87,15 @@ Array [
 exports[`4. leaves dynamic variables 1`] = `
 Array [
   "css-view-mht2lk",
-  "_alIt-stretch",
-  "_boSi-borderzbox",
-  "_di-flex",
-  "_flBa-auto",
-  "_flDi-column",
-  "_flSh-zz",
   "_he-200px",
-  "_ovX--hover-visible",
+  "_flSh-zz",
+  "_flDi-column",
+  "_flBa-auto",
+  "_di-flex",
+  "_boSi-borderzbox",
+  "_alIt-stretch",
   "_ovY--hover-visible",
+  "_ovX--hover-visible",
   "r-alignItems-1oszu61",
   "r-boxSizing-deolkf",
   "r-display-6koalj",
@@ -107,7 +107,7 @@ Array [
 
 exports[`4. leaves dynamic variables 2`] = `
 <div
-  className="css-view-mht2lk  _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _he-200px _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX--hover-visible _ovY--hover-visible r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
+  className="css-view-mht2lk  _he-200px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch _ovY--hover-visible _ovX--hover-visible r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
   style={
     Object {
       "width": "calc(100% + 20px)",
@@ -118,17 +118,17 @@ exports[`4. leaves dynamic variables 2`] = `
 
 exports[`5. spread conditional 1`] = `
 <div
-  className="_baCo-183yn7 _ovY-hidden _ovX-hidden _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch"
+  className="_baCo-183yn7 _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden"
 >
   <div
-    className="_baCo-183yn7 _ovY-hidden _ovX-hidden _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch hello-world"
+    className="_baCo-183yn7 _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden hello-world"
   />
 </div>
 `;
 
 exports[`6. spread ternary 1`] = `
 <div
-  className="_baCo-183yn7 _ovY-hidden _ovX-hidden _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch"
+  className="_baCo-183yn7 _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden"
 >
   <span>
     hello world
@@ -138,7 +138,7 @@ exports[`6. spread ternary 1`] = `
 
 exports[`6. spread ternary 2`] = `
 <div
-  className="_baCo-19sdxe _ovY-hidden _ovX-hidden _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch"
+  className="_baCo-19sdxe _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden"
 >
   <span>
     hello world
@@ -148,7 +148,7 @@ exports[`6. spread ternary 2`] = `
 
 exports[`7. ternary + data-is 1`] = `
 <div
-  className=" _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _maWi-30pct _miWi-500px _paBo-10px _paLe-11px _paRi-11px _wi-66pct"
+  className=" _wi-66pct _paRi-11px _paLe-11px _paBo-10px _miWi-500px _maWi-30pct _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch"
 >
   <div
     className="_wi-10px _he-10px"
@@ -158,7 +158,7 @@ exports[`7. ternary + data-is 1`] = `
 
 exports[`8. styleExpansions 1`] = `
 <div
-  className="css-view-mht2lk  _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _po-relative r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
+  className="css-view-mht2lk  _po-relative _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
   style={
     Object {
       "bottom": "0px",
@@ -169,10 +169,10 @@ exports[`8. styleExpansions 1`] = `
   }
 >
   <div
-    className=" _alIt-stretch _baCo-19sdxe _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _po-absolute"
+    className=" _po-absolute _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _baCo-19sdxe _alIt-stretch"
   >
     <div
-      className="css-view-mht2lk  _alIt-stretch _baCo-1d0hial _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _po-relative r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
+      className="css-view-mht2lk  _po-relative _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _baCo-1d0hial _alIt-stretch r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
       style={
         Object {
           "bottom": "0px",
@@ -188,13 +188,13 @@ exports[`8. styleExpansions 1`] = `
 
 exports[`9. combines with classname 1`] = `
 <div
-  className=" _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _paBo-15px _paTo-15px home-top-dish"
+  className=" _paTo-15px _paBo-15px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch home-top-dish"
 />
 `;
 
 exports[`10. extracts Text 1`] = `
 <span
-  className=" _di-inline _foSi-10px"
+  className=" _foSi-10px _di-inline"
 >
   <div
     className="css-text-1u9zv9r r-display-1471scf r-userSelect-1xnzce8"
@@ -205,7 +205,7 @@ exports[`10. extracts Text 1`] = `
     }
   >
     <span
-      className="css-text-1u9zv9r css-textHasAncestor-16my406 _foWe-600 _foSi-15px _di-inline _col-18s66rc r-display-xoduu5"
+      className="css-text-1u9zv9r css-textHasAncestor-16my406 _di-inline _foSi-15px _foWe-600 _col-18s66rc r-display-xoduu5"
     >
       hello
     </span>
@@ -216,29 +216,29 @@ exports[`10. extracts Text 1`] = `
 exports[`11. combines everything 1`] = `
 Array [
   "css-view-mht2lk",
-  "_flSh-zz",
-  "_flDi-column",
-  "_flBa-auto",
-  "_di-flex",
-  "_boSi-borderzbox",
   "_baCo-183yn7",
-  "_alIt-stretch",
-  "_po-relative",
-  "_ovY-hidden",
-  "_ovX-hidden",
   "_miHe-10px",
+  "_ovX-hidden",
+  "_ovY-hidden",
+  "_po-relative",
   "_boToCo-dic8vh",
   "_boRiCo-1n8flkp",
   "_boLeCo-wse84g",
   "_boBoCo-1qvh775",
-  "_boToWi-1px",
-  "_boToSt-solid",
-  "_boRiWi-1px",
-  "_boRiSt-solid",
-  "_boLeWi-1px",
-  "_boLeSt-solid",
-  "_boBoWi-1px",
+  "_alIt-stretch",
   "_boBoSt-solid",
+  "_boBoWi-1px",
+  "_boLeSt-solid",
+  "_boLeWi-1px",
+  "_boRiSt-solid",
+  "_boRiWi-1px",
+  "_boToSt-solid",
+  "_boToWi-1px",
+  "_boSi-borderzbox",
+  "_di-flex",
+  "_flBa-auto",
+  "_flDi-column",
+  "_flSh-zz",
   "_he-0px",
   "_boToRiRa-0px",
   "_boToLeRa-0px",
@@ -261,7 +261,7 @@ exports[`12. ternary multiple on same key 1`] = `
 
 exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 <div
-  className=" _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _baCo--hover-19sdxe _baCo--active-183yn7"
+  className=" _baCo--active-183yn7 _baCo--hover-19sdxe _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch"
 />
 `;
 
@@ -269,13 +269,13 @@ exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
   <div />,
   <div
-    className=" _fl-1 _flSh-zz _miHe-10px _miWi-10px"
+    className=" _miWi-10px _miHe-10px _flSh-zz _fl-1"
   />,
 ]
 `;
 
 exports[`16. deopt when spreading multiple 1`] = `
 <div
-  className="css-view-mht2lk _baCo-19sdxe _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch _fl-1 r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
+  className="css-view-mht2lk _baCo-19sdxe _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _fl-1 r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
 />
 `;
