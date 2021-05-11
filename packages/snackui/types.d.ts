@@ -577,6 +577,10 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    export function isStringChild(node: any): boolean;
+}
+
+declare module "snackui" {
     import { ReactElement } from "react";
     export const themeable: ThemeableHOC;
     export interface ThemeableHOC {
@@ -833,10 +837,6 @@ declare module "snackui" {
 
 declare module "snackui" {
     export const weakKey: (obj: any) => any;
-}
-
-declare module "snackui" {
-    export function isStringChild(node: any): boolean;
 }
 
 declare module "snackui" {

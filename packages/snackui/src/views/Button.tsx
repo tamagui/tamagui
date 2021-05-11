@@ -1,7 +1,7 @@
 import React from 'react'
-import { isStringChild } from 'snackui/src/helpers/isStringChild'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
+import { isStringChild } from '../helpers/isStringChild'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
@@ -52,17 +52,18 @@ export const Button = themeable(
   }: ButtonProps) => {
     const theme = useTheme()
     const stringChildren = isStringChild(children)
-    const childrens = noTextWrap || !stringChildren ? (
-      children
-    ) : !children ? null : textProps ? (
-      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse {...textProps}>
-        {children}
-      </Text>
-    ) : (
-      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse>
-        {children}
-      </Text>
-    )
+    const childrens =
+      noTextWrap || !stringChildren ? (
+        children
+      ) : !children ? null : textProps ? (
+        <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse {...textProps}>
+          {children}
+        </Text>
+      ) : (
+        <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse>
+          {children}
+        </Text>
+      )
 
     return (
       <HStack
