@@ -775,6 +775,8 @@ export function createExtractor() {
               }
               return next
             }
+
+            const allPrevStyles = {}
             for (const attr of attrs) {
               try {
                 switch (attr.type) {
@@ -789,7 +791,15 @@ export function createExtractor() {
                     break
                   case 'style':
                     const props = { ...staticConfig.defaultProps, ...attr.value }
-                    attr.value = get(props)
+                    const next = get(props)
+                    attr.value = {}
+                    for (const key in next) {
+                      // avoid duplicate styles while still allowing for all props to go into postProcess
+                      if (!(key in allPrevStyles)) {
+                        attr.value[key] = next[key]
+                      }
+                    }
+                    Object.assign(allPrevStyles, attr.value)
                     if (shouldPrintDebug) {
                       console.log('     => style ', attr.value)
                     }

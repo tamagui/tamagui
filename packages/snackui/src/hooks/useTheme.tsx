@@ -170,9 +170,7 @@ export const useThemeName = () => {
 
   useEffect(() => {
     return parent.onChangeTheme((next) => {
-      console.log('got name')
       setName((prev) => {
-        console.log('gogo', prev, next)
         if (prev === next) return prev
         return next
       })

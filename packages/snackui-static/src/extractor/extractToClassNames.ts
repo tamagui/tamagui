@@ -4,6 +4,7 @@ import * as util from 'util'
 
 import generate from '@babel/generator'
 import * as t from '@babel/types'
+import { concatClassName } from '@snackui/helpers'
 import { MediaQueries, defaultMediaQueries } from '@snackui/node'
 import invariant from 'invariant'
 import { getRemainingRequest } from 'loader-utils'
@@ -129,7 +130,7 @@ export function extractToClassNames(
         if (!keys.some((key) => mergeStyleGroups[key])) {
           return style
         }
-        for (const k of Object.keys(mergeStyleGroups)) {
+        for (const k in mergeStyleGroups) {
           if (k in viewStyles) {
             style[k] = style[k] ?? viewStyles[k]
           }
@@ -152,7 +153,10 @@ export function extractToClassNames(
         switch (attr.type) {
           case 'style':
             const styles = addStyles(attr.value)
-            const newClassNames = styles.map((x) => x.identifier).join(' ')
+            const newClassNames = concatClassName(styles.map((x) => x.identifier).join(' '))
+            if (shouldPrintDebug) {
+              console.log('  classnames', newClassNames)
+            }
             finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
             break
           case 'attr':

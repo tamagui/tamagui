@@ -51,5 +51,6 @@ export function concatClassName(className: string, ...propObjects: any[]) {
     }
     final.push(name)
   }
+
   return final.join(' ')
 }
