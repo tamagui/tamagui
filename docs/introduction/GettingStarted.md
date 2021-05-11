@@ -51,8 +51,8 @@ module.exports = {
               // use this to add files to be statically evaluated
               // default:
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
-              // snackui need access to react-native-web
-              exclude: /node_modules/(?!@react-native-web)/,
+              // snackui needs access to react-native-web
+              exclude: /node_modules\/(?!react-native-web)/,
               // attempts to statically follow variables to compile
               // default true
               evaluateVars: true

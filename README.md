@@ -186,8 +186,8 @@ module.exports = {
               // always use the ".js" extension (so colors.ts => colors.js)
               // default:
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
-              // snackui need access to react-native-web
-              exclude: /node_modules/(?!@react-native-web)/,
+              // snackui needs access to react-native-web
+              exclude: /node_modules\/(?!react-native-web)/,
               // attempts to statically follow variables to compile
               // default true
               evaluateVars: true
