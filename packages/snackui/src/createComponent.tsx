@@ -1,8 +1,18 @@
+import { isEqual } from '@dish/fast-compare'
 import { stylePropsTransform, stylePropsView, validStyles } from '@snackui/helpers'
-import React, { forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import {
   Animated,
   Pressable,
+  PressableProps,
   Text as ReactText,
   StyleSheet,
   View,
@@ -31,6 +41,23 @@ if (typeof document !== 'undefined') {
   })
 }
 
+const setIfChanged = (setter: any, next: Object) => {
+  setter((prev) => {
+    const n = { ...prev, ...next }
+    if (isEqual(prev, n)) {
+      return prev
+    }
+    return n
+  })
+}
+
+const getPressable = Pressable['type']['render']
+const usePressable = (props: PressableProps) => {
+  const out = getPressable(props)
+  const { children, style, ...pressableProps } = out.props
+  return [pressableProps, style] as const
+}
+
 export function createComponent<A extends any = StackProps>(componentProps: Partial<StaticConfig>) {
   const sheet = StyleSheet.create({
     defaultStyle: componentProps.defaultProps,
@@ -46,6 +73,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
 
   const component = forwardRef<View, A>((props: StackProps, forwardedRef) => {
     const {
+      hitSlop,
       animated,
       children,
       pointerEvents,
@@ -78,12 +106,13 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     } = props
 
     const manager = useContext(ThemeManagerContext)
-    const [state, set] = useState(() => ({
+    const [state, set_] = useState(() => ({
       hover: false,
       press: false,
       pressIn: false,
       theme: manager.name,
     }))
+    const set = setIfChanged.bind(null, set_)
 
     // from react-native-web
     if (process.env.NODE_ENV !== 'production' && !componentProps.isText && isWeb) {
@@ -147,7 +176,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       internal.current!.isMounted = true
       const dispose = manager?.onChangeTheme((name) => {
         if (isTracking.current) {
-          set((x) => ({ ...x, theme: name }))
+          set({ theme: name })
         }
       })
       return () => {
@@ -195,15 +224,16 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        console.log(' 🍑 debug\n  🔵 props: ', props, '\n  🔵 styles: ', styles)
+        // prettier-ignore
+        console.log(' 🍑 debug\n  🔵 props in: ', props, '\n  🔵 props out: ', viewProps, '\n  🔵 styles: ', styles)
       }
     }
 
     const supportedProps: any = {
       ...viewProps,
       ...(isWeb && {
-        // from react-native-web
         className: null,
+        // from react-native-web
         classList: componentProps.isText
           ? [
               cssText.text,
@@ -214,14 +244,18 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
             ]
           : [cssView.view, props.className],
       }),
-      pointerEvents: !isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents,
       style: styles,
+    }
+
+    if (pointerEvents) {
+      supportedProps.pointerEvents = !isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents
     }
 
     if (isWeb) {
       // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(supportedProps)
-      rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+      const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+      supportedProps.ref = setRef
       if (props.href != null && hrefAttrs != null) {
         const { download, rel, target } = hrefAttrs
         if (download != null) {
@@ -234,24 +268,27 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
           supportedProps.target = target.charAt(0) !== '_' ? '_' + target : target
         }
       }
+    } else {
+      if (forwardedRef) {
+        supportedProps.ref = forwardedRef
+      }
     }
 
     const createEl = isWeb ? rnw.createElement : React.createElement
 
-    let content = createEl(
-      ViewComponent,
-      supportedProps,
-      spacedChildren({
-        children,
-        spacing,
-        flexDirection: componentProps.defaultProps?.flexDirection,
-      })
-    )
-
-    if (isWeb && componentProps.isText && !hasTextAncestor) {
-      // from react-native-web
-      content = <TextAncestorContext.Provider value={true}>{content}</TextAncestorContext.Provider>
-    }
+    //
+    // TODO
+    //
+    // all these press events can be moved into a component that optionally renders if shouldAttach is true
+    // and then calls back with props. this would do a few things:
+    //   1. isolate logic for all pseudo press/hover stuff into one area more nicely
+    //   2. a lot less hooks would be rendered on average
+    //   3. should then let us use usePressability on web (should make ViewComponent a View if string)
+    //
+    //
+    // see how framer motion does this:
+    //   https://github.com/framer/motion/blob/1d1eb5fd2bc712658a83a7881a3adb68ac56a242/src/motion/features/use-features.tsx#L16
+    //
 
     const attachPress = !!((psuedos && psuedos.pressStyle) || onPress || onPressOut || onPressIn)
     const attachHover =
@@ -262,6 +299,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     // while avoiding reparenting...
     // once proper reparenting is supported, we can remove this and use that...
     const shouldAttach =
+      internal.current.hasEverHadEvents ||
       attachPress ||
       attachHover ||
       'pressStyle' in props ||
@@ -275,66 +313,76 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
           'onMouseEnter' in props ||
           'onMouseLeave' in props))
 
+    // never remove events as we wrap in a div (for now, may be able to remove..)
+    if (shouldAttach) {
+      internal.current.hasEverHadEvents = true
+    }
+
     const unPress = useCallback(() => {
       if (!internal.current!.isMounted) return
-      set((x) => ({
-        ...x,
+      set({
         press: false,
         pressIn: false,
-      }))
+      })
     }, [])
 
-    if (shouldAttach || internal.current.hasEverHadEvents) {
-      internal.current.hasEverHadEvents = true
-      const events = {
-        ...(!isTouchDevice && {
-          onMouseEnter:
-            attachHover || attachPress
-              ? (e) => {
-                  let next: Partial<typeof state> = {}
-                  if (attachHover) {
-                    next.hover = true
+    const events = useMemo(() => {
+      if (!shouldAttach) return null
+      return {
+        ...(isWeb &&
+          !isTouchDevice && {
+            onMouseEnter:
+              attachHover || attachPress
+                ? (e) => {
+                    let next: Partial<typeof state> = {}
+                    if (attachHover) {
+                      next.hover = true
+                    }
+                    if (state.pressIn) {
+                      next.press = true
+                    }
+                    if (Object.keys(next).length) {
+                      set(next)
+                    }
+                    onHoverIn?.(e)
+                    onMouseEnter?.(e)
                   }
-                  if (state.pressIn) {
-                    next.press = true
+                : undefined,
+            onMouseLeave:
+              attachHover || attachPress
+                ? (e) => {
+                    let next: Partial<typeof state> = {}
+                    mouseUps.add(unPress)
+                    if (attachHover) {
+                      next.hover = false
+                    }
+                    if (state.pressIn) {
+                      next.press = false
+                      next.pressIn = false
+                    }
+                    if (Object.keys(next).length) {
+                      set(next)
+                    }
+                    onHoverOut?.(e)
+                    onMouseLeave?.(e)
                   }
-                  if (Object.keys(next).length) {
-                    set({ ...state, ...next })
-                  }
-                  onHoverIn?.(e)
-                  onMouseEnter?.(e)
-                }
-              : undefined,
-          onMouseLeave:
-            attachHover || attachPress
-              ? (e) => {
-                  let next: Partial<typeof state> = {}
-                  mouseUps.add(unPress)
-                  if (attachHover) {
-                    next.hover = false
-                  }
-                  if (state.pressIn) {
-                    next.press = false
-                    next.pressIn = false
-                  }
-                  if (Object.keys(next).length) {
-                    set({ ...state, ...next })
-                  }
-                  onHoverOut?.(e)
-                  onMouseLeave?.(e)
-                }
-              : undefined,
-        }),
+                : undefined,
+          }),
         onMouseDown: attachPress
           ? (e) => {
               set({
-                ...state,
                 press: true,
                 pressIn: true,
               })
+              console.log('pressed in...')
               onPressIn?.(e)
             }
           : (onPressIn as any),
+        // non web
+        onPressOut: (e) => {
+          unPress()
+          onPressOut?.(e)
+        },
         onClick: attachPress
           ? (e) => {
               e.preventDefault()
@@ -344,29 +392,45 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
             }
           : (onPressOut as any),
       }
+    }, [shouldAttach, onHoverIn, onMouseEnter, onHoverOut, onMouseLeave, onPressIn, onPressOut])
 
-      if (isWeb) {
-        if (shouldAttach || internal.current.hasEverHadEvents) {
-          content = (
-            <div {...events} style={displayContentsStyle}>
-              {content}
-            </div>
-          )
-        }
-      } else {
-        if (pointerEvents !== 'none' && !!(onPress || onPressOut || psuedos?.pressStyle)) {
-          content = (
-            <Pressable
-              hitSlop={10}
-              onPress={events.onClick}
-              onPressOut={unPress}
-              onPressIn={events.onMouseDown as any}
-            >
-              {content}
-            </Pressable>
-          )
-        }
-      }
+    if (!isWeb && events) {
+      // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
+      const [pressProps] = usePressable({
+        disabled,
+        hitSlop,
+        onPressIn: events.onMouseDown,
+        onPressOut: events.onPressOut,
+        onPress,
+      })
+      Object.assign(supportedProps, pressProps)
+    }
+
+    if (props['debug']) {
+      console.log('adding press', supportedProps)
+    }
+
+    let content = createEl(
+      ViewComponent,
+      supportedProps,
+      spacedChildren({
+        children,
+        spacing,
+        flexDirection: componentProps.defaultProps?.flexDirection,
+      })
+    )
+
+    if (isWeb && shouldAttach) {
+      content = (
+        <div {...events} style={displayContentsStyle}>
+          {content}
+        </div>
+      )
+    }
+
+    if (isWeb && componentProps.isText && !hasTextAncestor) {
+      // from react-native-web
+      content = <TextAncestorContext.Provider value={true}>{content}</TextAncestorContext.Provider>
     }
 
     return content
@@ -390,12 +454,17 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
           style.push(cur)
           cur = null
         }
+        fixNativeShadow(val, true)
         style.push(val)
         continue
       }
       if (key === 'fullscreen') {
         cur = cur || {}
         Object.assign(cur, fullscreenStyle)
+        continue
+      }
+      if (!isWeb && key === 'pointerEvents') {
+        viewProps[key] = val
         continue
       }
       // is style
