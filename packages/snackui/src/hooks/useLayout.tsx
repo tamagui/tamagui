@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { LayoutChangeEvent, LayoutRectangle } from 'react-native'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
-import { debounce } from './useDebounce'
 
 export const useLayout = (
   props: { stateless?: boolean; onLayout?: (rect: LayoutChangeEvent) => void } = {}
@@ -21,15 +20,15 @@ export const useLayout = (
   useIsomorphicLayoutEffect(() => {
     const node = ref.current
     if (!node) return
-    let hasUpdatedOnce = false
+    // let hasUpdatedOnce = false
     let last: LayoutRectangle | null = null
 
-    const getNextAndCallback = (prev: LayoutRectangle | null, rect: LayoutRectangle) => {
+    const getNextAndCallback = (rect: LayoutRectangle) => {
       let next
       const width = Math.max(1, Math.round(rect.width))
       const height = Math.max(1, Math.round(rect.height))
       // don't set new layout state unless the layout has actually changed
-      if (!prev || width !== prev.width || height !== prev.height) {
+      if (!last || width !== last.width || height !== last.height) {
         next = { width, height }
       }
       if (next) {
@@ -38,29 +37,15 @@ export const useLayout = (
         last = next
         return next
       }
-      return prev
+      return last
     }
 
-    const updateImmediate = (rect: LayoutRectangle) => {
+    const update = (rect: LayoutRectangle) => {
       if (props.stateless) {
-        getNextAndCallback(last, rect)
+        getNextAndCallback(rect)
       } else {
-        setLayout((p) => getNextAndCallback(p, rect))
+        setLayout((p) => getNextAndCallback(rect))
       }
-    }
-
-    const updateDbc = debounce(updateImmediate, 0, true)
-    const update = (a) => {
-      if (!a.width && !a.height) {
-        return
-      }
-      // clearTimeout(tm)
-      if (!hasUpdatedOnce) {
-        hasUpdatedOnce = true
-        updateImmediate(a)
-        return
-      }
-      updateDbc(a)
     }
 
     const ro = new ResizeObserver(([{ contentRect }] = []) => {
@@ -68,21 +53,8 @@ export const useLayout = (
     })
     ro.observe(node)
 
-    const io = new IntersectionObserver(([{ boundingClientRect }]) => {
-      update(boundingClientRect)
-    })
-    io.observe(node)
-
-    // let tm = setTimeout(() => {
-    //   // if hasnt fired by now, send first one
-    //   update(node.getBoundingClientRect())
-    // })
-
     return () => {
-      // clearTimeout(tm)
-      updateDbc.cancel()
       ro.disconnect()
-      io.disconnect()
     }
   }, [ref])
 
