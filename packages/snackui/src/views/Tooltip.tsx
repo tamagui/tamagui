@@ -1,6 +1,6 @@
 import React from 'react'
-import { isTouchDevice, isWeb } from 'snackui/src/platform'
 
+import { isTouchDevice } from '../platform'
 import { Box } from './Box'
 import { HoverablePopover } from './HoverablePopover'
 import { PopoverProps } from './PopoverProps'
@@ -16,13 +16,14 @@ export const Tooltip = ({ contents, ...props }: TooltipProps) => {
     <HoverablePopover
       noArrow
       delay={200}
-      contents={
-        open => open ? 
-        <Box backgroundColor="#000" paddingHorizontal={9} borderRadius={1000}>
-          <Text fontSize={13} color="#fff">
-            {contents}
-          </Text>
-        </Box> : null
+      contents={(open) =>
+        open ? (
+          <Box backgroundColor="#000" paddingHorizontal={9} borderRadius={1000}>
+            <Text fontSize={13} color="#fff">
+              {contents}
+            </Text>
+          </Box>
+        ) : null
       }
       {...props}
     />

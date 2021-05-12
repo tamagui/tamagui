@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { isTouchDevice } from 'snackui/src/platform'
 
 import { useDebounce } from '../hooks/useDebounce'
+import { isTouchDevice } from '../platform'
 import { Hoverable } from './Hoverable'
 import { Popover } from './Popover'
 import { PopoverProps } from './PopoverProps'
