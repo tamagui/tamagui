@@ -22,7 +22,6 @@
     "watch": "ultra -r --no-pretty watch",
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
-    "postinstall": "patch-package",
     "version:minor": "lerna version minor --conventional-commits",
     "version:patch": "lerna version patch --conventional-commits",
     "publish": "ultra -r --no-pretty npm publish"
@@ -40,7 +39,6 @@
   "devDependencies": {
     "conventional-changelog-cli": "^2.1.1",
     "lerna": "^4.0.0",
-    "patch-package": "^6.4.7",
     "rollup-plugin-flat-dts": "^1.1.0"
   },
   "importSort": {
