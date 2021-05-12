@@ -201,9 +201,9 @@ module.exports = {
 }
 ```
 
-#### Caveat
+#### Note
 
-react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We implemented some custom logic in our babel loader that patches react-native-web to support this. You need to be sure you allow either snackui-loader or @snackui/babel (depeneding on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules/(?!@react-native-web)/` instead.
+react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We implemented some custom logic in our babel loader that patches react-native-web to support this. You need to be sure you allow either snackui-loader or @snackui/babel (depending on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules\/(?!react-native-web)/` instead.
 
 ### Babel
 
@@ -213,7 +213,7 @@ Just add `@snackui/babel-plugin` as a babel plugin to your babel config. Instead
 
 #### Extra performance for React Native
 
-To get further optimization, add the following to your `metro.config.js`, which will allow SnackUI to "optimize itself". Basically, a few internal SnackUI views like Button can be optimized, but won't be by default as metro won't look for the SnackUI typescript files. To support this, just add `tsmain` to resolverMainFields, which snackui defines:
+To get a little more speed, add the following to your `metro.config.js`, which will allow SnackUI to "optimize itself". Basically, a few internal SnackUI views like Button can be optimized, but won't be by default as metro won't look for the SnackUI typescript files. To support this, just add `tsmain` to resolverMainFields, which snackui defines:
 
 ```
 module.exports = {
@@ -230,7 +230,7 @@ module.exports = {
 
 SnackUI keeps things "close to the metal", we basically support all React Native StyleSheet props on the base stack views as they normally function. We've made one change though as of 0.6.0, which is to allow for flat transform props, much like [CSS Individual Transform Properties](https://webkit.org/blog/11420/css-individual-transform-properties/?utm_campaign=CSS%2BLayout%2BNews&utm_medium=email&utm_source=CSS_Layout_News_283).
 
-So you can use all of the following:
+Here's an example of flat transforms:
 
 ```tsx
 import { VStack } from 'snackui'
@@ -242,6 +242,7 @@ export function Component(props) {
       y={50}  // translateY
       scale={2}
       rotate="180deg"
+      perspective="1000"
     />
   )
 }
@@ -249,7 +250,7 @@ export function Component(props) {
 
 ### Media Queries
 
-**Beta**. Early support for media queries has landed via the hook `useMedia`. It's designed to work much the same as the advanced conditional statements do above. If SnackUI extracts all media query statements, it will remove the hook for you.
+Early support for media queries has landed via the hook `useMedia`. It's designed to work much the same as the advanced conditional statements do above. If SnackUI extracts all media query statements, it will remove the hook for you.
 
 Customizing the queries isn't supported quite yet, but planned to work without syntax changes. You'll have to make do with the defaults for the beta.
 
@@ -277,7 +278,7 @@ On native media queries are not extracted and left to parse at runtime.
 
 ### Themes
 
-**Beta**. Early support for themes has also landed via the hook `useTheme`.
+Early support for themes has also landed via the hook `useTheme`.
 
 First, set up your themes in its own file:
 
@@ -423,7 +424,7 @@ See [the roadmap](ROADMAP.md) for details:
   - [ ] media query shorthands
     - [ ] maxWidth={{ sm: 10 }}
     - [ ] maxWidth={{ sm: x ? 10 : 0 }}
-  - [ ] flat transforms to prevent awkward spreads
+  - [x] flat transforms to prevent awkward spreads
     - scale={} x={} y={}
 - [ ] Button size
 - [ ] Support extraction of custom components that extend lower level ones
@@ -434,8 +435,8 @@ See [the roadmap](ROADMAP.md) for details:
 - [ ] Support `<Stack spacing />` extraction
 - [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
 - [ ] Compile a few directly-translatable HTML props: onPress, etc
-- [ ] Reload constants/themes during watch
-- [ ] Extract default styles to StyleSheet.create() for better fallback runtime speed
+- [x] Reload constants/themes during watch
+- [x] Extract default styles to StyleSheet.create() for better fallback runtime speed
 - [ ] MaskView with web support
 
 
