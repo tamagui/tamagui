@@ -1,38 +1,39 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+type DebounceSettings = {
+  leading?: boolean
+}
+
 export function debounce<A extends Function>(
   func: A,
   wait?: number,
-  immediate?: boolean
+  leading?: boolean
 ): A & {
   cancel: Function
 } {
-  var timeout
-  var isCancelled
+  let timeout: any
+  let isCancelled
   function debounced() {
+    isCancelled = false
     // @ts-ignore
-    var context = this,
-      args = arguments
+    let context = this
+    let args = arguments
+    if (leading && !timeout) {
+      func.apply(context, args)
+    }
     clearTimeout(timeout)
     timeout = setTimeout(function () {
       timeout = null
-      if (!immediate && !isCancelled) {
+      if (!leading && !isCancelled) {
         func.apply(context, args)
       }
       isCancelled = false
     }, wait)
-    if (immediate && !timeout) {
-      func.apply(context, args)
-    }
   }
   debounced.cancel = () => {
     isCancelled = true
   }
   return debounced as any
-}
-
-type DebounceSettings = {
-  leading?: boolean
 }
 
 const defaultOpts = { leading: false }
@@ -59,7 +60,7 @@ export function useDebounce<
   return useMemo(() => {
     dbEffect.current = (debounce(fn, wait, options.leading) as unknown) as DebouncedFn
     return dbEffect.current
-  }, [JSON.stringify(options), ...mountArgs])
+  }, [options.leading, ...mountArgs])
 }
 
 /**

@@ -22,7 +22,7 @@ export function Hoverable({
   }
   return (
     <span
-      className="see-through"
+      className="see-through hoverable"
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
       onMouseMove={onHoverMove}

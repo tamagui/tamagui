@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 
+import { Spacer } from './Spacer'
 import { HStack, VStack } from './Stacks'
 
 export const LoadingItems = () => (
@@ -28,27 +29,28 @@ export const LoadingItem = ({
   size?: 'sm' | 'md' | 'lg'
   lines?: number
 }) => {
-  const scale = size === 'sm' ? 0.5 : size === 'lg' ? 1.75 : 1
   return (
-    <VStack overflow="hidden" className="shine" padding={20} spacing={10 * scale}>
+    <VStack overflow="hidden" padding={20}>
       <HStack
         width={`${seed * 12}%`}
-        height={28 * scale}
+        height={size === 'sm' ? 14 : size === 'lg' ? 36 : 28}
         backgroundColor="rgba(150,150,150,0.085)"
         borderRadius={7}
       />
-      <VStack spacing={6 * scale}>
-        {new Array(lines).fill(0).map((_, index) => (
+      <Spacer size={size === 'sm' ? 6 : size === 'lg' ? 16 : 12} />
+      {new Array(lines).fill(0).map((_, index) => (
+        <React.Fragment key={index}>
           <HStack
-            key={index}
+            className="shine"
             width={`${seed * (15 - (2 - index > -1 ? index : -index) * 4)}%`}
-            height={20 * scale}
+            height={size === 'sm' ? 14 : size === 'lg' ? 22 : 16}
             maxWidth="100%"
             backgroundColor="rgba(150,150,150,0.015)"
             borderRadius={5}
           />
-        ))}
-      </VStack>
+          <Spacer size={size === 'sm' ? 6 : 12} />
+        </React.Fragment>
+      ))}
     </VStack>
   )
 }

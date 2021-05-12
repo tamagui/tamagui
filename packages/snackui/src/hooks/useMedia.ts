@@ -34,21 +34,26 @@ export type MediaQueries = {
 const mediaState: { [key in keyof MediaQueryState]: boolean } = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
-export const getMedia = () => mediaState
+export const getMedia = () => {
+  if (!hasConfigured) {
+    configureMedia()
+  }
+  return mediaState
+}
 
 let hasConfigured = false
 
 export type ConfigureMediaQueryOptions = {
-  queries: MediaQueries
+  queries?: MediaQueries
   defaultActive?: MediaQueryKey[]
 }
 
 export const configureMedia = ({
   queries = defaultMediaQueries,
   defaultActive = ['sm', 'xs'],
-}: ConfigureMediaQueryOptions) => {
+}: ConfigureMediaQueryOptions = {}) => {
   if (hasConfigured) {
-    console.warn(`Already configured mediaQueries once`)
+    console.warn(`Already configured mediaQueries once (you may have called getMedia() before configureMedia())`)
     return
   }
   hasConfigured = true

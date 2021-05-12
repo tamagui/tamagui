@@ -342,11 +342,11 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export function debounce<A extends Function>(func: A, wait?: number, immediate?: boolean): A & {
-        cancel: Function;
-    };
     type DebounceSettings = {
         leading?: boolean;
+    };
+    export function debounce<A extends Function>(func: A, wait?: number, leading?: boolean): A & {
+        cancel: Function;
     };
     export function useDebounce<A extends (...args: any) => any, DebouncedFn extends A & {
         cancel: () => void;
@@ -403,10 +403,10 @@ declare module "snackui" {
         pointerCoarse: boolean;
     };
     export type ConfigureMediaQueryOptions = {
-        queries: MediaQueries;
+        queries?: MediaQueries;
         defaultActive?: MediaQueryKey[];
     };
-    export const configureMedia: ({ queries, defaultActive, }: ConfigureMediaQueryOptions) => void;
+    export const configureMedia: ({ queries, defaultActive, }?: ConfigureMediaQueryOptions) => void;
     export const useMedia: () => {
         xs: boolean;
         notXs: boolean;
@@ -577,10 +577,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export function isStringChild(node: any): boolean;
-}
-
-declare module "snackui" {
     import { ReactElement } from "react";
     export const themeable: ThemeableHOC;
     export interface ThemeableHOC {
@@ -648,7 +644,7 @@ declare module "snackui" {
     export const HoverablePopover: ({ children, allowHoverOnContent, contents, delay, ...props }: PopoverProps & {
         delay?: number | undefined;
         allowHoverOnContent?: boolean | undefined;
-    }) => JSX.Element;
+    }) => JSX.Element | null;
 }
 
 declare module "snackui" {
@@ -746,7 +742,7 @@ declare module "snackui" {
     export type TooltipProps = Omit<PopoverProps, 'contents'> & {
         contents: any;
     };
-    export const Tooltip: ({ contents, ...props }: TooltipProps) => JSX.Element;
+    export const Tooltip: ({ contents, ...props }: TooltipProps) => JSX.Element | null;
 }
 
 declare module "snackui" {
@@ -837,6 +833,10 @@ declare module "snackui" {
 
 declare module "snackui" {
     export const weakKey: (obj: any) => any;
+}
+
+declare module "snackui" {
+    export function isStringChild(node: any): boolean;
 }
 
 declare module "snackui" {

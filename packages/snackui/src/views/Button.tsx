@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
-import { isStringChild } from '../helpers/isStringChild'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
@@ -25,7 +24,7 @@ export type ButtonProps = StackProps & {
 // which is really important for composability.
 // we could maybe add a "touchOpacity" boolean or similar for switching to opacity mode
 
-const defaultStyle: EnhancedStyleProps = {
+const defaultStyle: StackProps = {
   alignSelf: 'flex-start',
   justifyContent: 'center',
   alignItems: 'center',
@@ -51,19 +50,17 @@ export const Button = themeable(
     ...props
   }: ButtonProps) => {
     const theme = useTheme()
-    const stringChildren = isStringChild(children)
-    const childrens =
-      noTextWrap || !stringChildren ? (
-        children
-      ) : !children ? null : textProps ? (
-        <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse {...textProps}>
-          {children}
-        </Text>
-      ) : (
-        <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse>
-          {children}
-        </Text>
-      )
+    const childrens = noTextWrap ? (
+      children
+    ) : !children ? null : textProps ? (
+      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse {...textProps}>
+        {children}
+      </Text>
+    ) : (
+      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse>
+        {children}
+      </Text>
+    )
 
     return (
       <HStack

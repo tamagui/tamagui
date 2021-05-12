@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { isTouchDevice } from 'snackui/src/platform'
 
 import { useDebounce } from '../hooks/useDebounce'
 import { Hoverable } from './Hoverable'
@@ -15,6 +16,9 @@ export const HoverablePopover = ({
   delay?: number
   allowHoverOnContent?: boolean
 }) => {
+  if (isTouchDevice) {
+    return null
+  }
   const [isHovering, set] = useState(false)
   delay = delay ?? (allowHoverOnContent ? 250 : 0)
   const setIsntHoveringSlow = useDebounce(() => set(false), delay / 2)
