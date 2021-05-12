@@ -175,21 +175,21 @@ module.exports = {
       {
         test: /\.[jt]sx?$/,
         use: [
+          // as of 0.14 snackui works with thread-loader (optional)
+          'thread-loader',
+          'babel-loader',
           {
-            loader: 'babel-loader',
-          },
-          {
-            loader: require.resolve('snackui-loader'),
+            loader: 'snackui-loader',
+            // snackui needs access to react-native-web
+            exclude: /node_modules\/(?!react-native-web)/,
+            // showing default values (besides exclude)
             options: {
               // use this to add files to be statically evaluated
               // full path or partial path supported
               // always use the ".js" extension (so colors.ts => colors.js)
               // default:
               evaluateImportsWhitelist: ['constants.js', 'colors.js'],
-              // snackui needs access to react-native-web
-              exclude: /node_modules\/(?!react-native-web)/,
               // attempts to statically follow variables to compile
-              // default true
               evaluateVars: true
 
             },
@@ -204,6 +204,45 @@ module.exports = {
 #### Note
 
 react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We implemented some custom logic in our babel loader that patches react-native-web to support this. You need to be sure you allow either snackui-loader or @snackui/babel (depending on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules\/(?!react-native-web)/` instead.
+
+#### Deduping CSS
+
+Using webpack 5, mini-css-extract-plugin, and css-minimizer-webpack-plugin you should dedupe the styles output. To create a single master CSS file with all styles dedupe, you can do something like the following. This works in dev mode with hot reloading as well.
+
+```js
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+
+module.exports  = {
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: `styles`,
+          type: 'css/mini-extract',
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    }
+  },
+  minimizer: [
+    new CssMinimizerPlugin()
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, require.resolve('css-loader')],
+      },
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: isProduction ? '[name].[contenthash].css' : '[name].css',
+    }),
+  ]
+}
+```
 
 ### Babel
 

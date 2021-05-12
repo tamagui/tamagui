@@ -24,7 +24,7 @@ export const useLayout = (
     let hasUpdatedOnce = false
     let last: LayoutRectangle | null = null
 
-    const getNext = (prev: LayoutRectangle | null, rect: LayoutRectangle) => {
+    const getNextAndCallback = (prev: LayoutRectangle | null, rect: LayoutRectangle) => {
       let next
       const width = Math.max(1, Math.round(rect.width))
       const height = Math.max(1, Math.round(rect.height))
@@ -33,6 +33,7 @@ export const useLayout = (
         next = { width, height }
       }
       if (next) {
+        console.log('update', next)
         // // prettier-ignore
         // console.log('layout change', last?.width == next.width, last?.height == next.height, last, next)
         // @ts-expect-error
@@ -44,13 +45,10 @@ export const useLayout = (
     }
 
     const updateImmediate = (rect: LayoutRectangle) => {
-      if (!props.stateless) {
-        setLayout((p) => getNext(p, rect))
+      if (props.stateless) {
+        getNextAndCallback(last, rect)
       } else {
-        if (getNext(last, rect)) {
-          // @ts-expect-error
-          props.onLayout?.({ nativeEvent: { layout: rect } })
-        }
+        setLayout((p) => getNextAndCallback(p, rect))
       }
     }
 

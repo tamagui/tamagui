@@ -1,7 +1,7 @@
 import { extname } from 'path'
 
 import { SnackOptions, createExtractor, extractToClassNames, rnwPatch } from '@snackui/static'
-import { getOptions, getRemainingRequest } from 'loader-utils'
+import { getOptions } from 'loader-utils'
 
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
