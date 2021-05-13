@@ -76,13 +76,13 @@ export default declare(function snackBabelPlugin(
 
           function addSheetStyle(style: any, node: t.JSXOpeningElement) {
             const styleIndex = `${Object.keys(sheetStyles).length}`
-            let key = styleIndex
+            let key = `${styleIndex}:${basename(sourcePath)}`
             if (process.env.NODE_ENV === 'development') {
               const lineNumbers = node.loc
                 ? node.loc.start.line +
                   (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
                 : ''
-              key = `${styleIndex}:${basename(sourcePath)}:${lineNumbers}`
+              key += `:${lineNumbers}`
             }
             sheetStyles[key] = style
             return readStyleExpr(key)

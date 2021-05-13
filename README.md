@@ -201,9 +201,19 @@ module.exports = {
 }
 ```
 
-#### Note
+#### Notes
 
-react-native-web is currently taking a hard stance against supporting className and removed support for it in v0.14. We implemented some custom logic in our babel loader that patches react-native-web to support this. You need to be sure you allow either snackui-loader or @snackui/babel (depending on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules\/(?!react-native-web)/` instead.
+react-native-web is taking a hard stance against supporting className and removed support for it in v0.14. They also don't export any of the internal hooks necessary. To work around this we implemented logic in the snackui loaders that patch it to export the hooks. You need to be sure you allow either snackui-loader or @snackui/babel (depending on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules\/(?!react-native-web)/` instead.
+
+To prevent issues with side effects, be sure to add `sideEffects: false` to your webpack css rule, something like:
+
+```js
+{
+  test: /\.css$/i,
+  use: [MiniCssExtractPlugin.loader, require.resolve('css-loader')],
+  sideEffects: true,
+}
+```
 
 #### Deduping CSS
 
