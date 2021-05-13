@@ -10,7 +10,7 @@ export type TooltipProps = Omit<PopoverProps, 'contents'> & { contents: any }
 
 export const Tooltip = ({ contents, ...props }: TooltipProps) => {
   if (isTouchDevice) {
-    return null
+    return props.children
   }
   return (
     <HoverablePopover
