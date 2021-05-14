@@ -103,6 +103,8 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       onSelectionChangeShouldSetResponderCapture,
       onStartShouldSetResponder,
       onStartShouldSetResponderCapture,
+      onMouseDown,
+      onClick,
     } = props
 
     const manager = useContext(ThemeManagerContext)
@@ -326,94 +328,90 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       })
     }, [])
 
-    const events = useMemo(() => {
-      if (!shouldAttach) return null
-      return {
-        ...(!isWeb && {
-          // non web
-          onPressOut: (e) => {
-            unPress()
-            onPressOut?.(e)
-          },
-        }),
-        ...(isWeb &&
-          !isTouchDevice && {
-            onMouseEnter:
-              attachHover || attachPress
-                ? (e) => {
-                    let next: Partial<typeof state> = {}
-                    if (attachHover) {
-                      next.hover = true
-                    }
-                    if (state.pressIn) {
-                      next.press = true
-                    }
-                    if (Object.keys(next).length) {
-                      set(next)
-                    }
-                    onHoverIn?.(e)
-                    onMouseEnter?.(e)
-                  }
-                : undefined,
-            onMouseLeave:
-              attachHover || attachPress
-                ? (e) => {
-                    let next: Partial<typeof state> = {}
-                    mouseUps.add(unPress)
-                    if (attachHover) {
-                      next.hover = false
-                    }
-                    if (state.pressIn) {
-                      next.press = false
-                      next.pressIn = false
-                    }
-                    if (Object.keys(next).length) {
-                      set(next)
-                    }
-                    onHoverOut?.(e)
-                    onMouseLeave?.(e)
-                  }
-                : undefined,
-          }),
-        onMouseDown: attachPress
-          ? (e) => {
-              set({
-                press: true,
-                pressIn: true,
-              })
-              onPressIn?.(e)
-            }
-          : (onPressIn as any),
-        onClick: attachPress
-          ? (e) => {
-              e.preventDefault()
+    const events = shouldAttach
+      ? {
+          ...(!isWeb && {
+            // non web
+            onPressOut: (e) => {
               unPress()
               onPressOut?.(e)
-              onPress?.(e)
-            }
-          : (onPressOut as any),
-      }
-    }, [
-      shouldAttach,
-      onHoverIn,
-      onMouseEnter,
-      onHoverOut,
-      onMouseLeave,
-      onPress,
-      onPressIn,
-      onPressOut,
-    ])
+            },
+          }),
+          ...(isWeb &&
+            !isTouchDevice && {
+              onMouseEnter:
+                attachHover || attachPress
+                  ? (e) => {
+                      let next: Partial<typeof state> = {}
+                      if (attachHover) {
+                        next.hover = true
+                      }
+                      if (state.pressIn) {
+                        next.press = true
+                      }
+                      if (Object.keys(next).length) {
+                        set(next)
+                      }
+                      onHoverIn?.(e)
+                      onMouseEnter?.(e)
+                    }
+                  : undefined,
+              onMouseLeave:
+                attachHover || attachPress
+                  ? (e) => {
+                      let next: Partial<typeof state> = {}
+                      mouseUps.add(unPress)
+                      if (attachHover) {
+                        next.hover = false
+                      }
+                      if (state.pressIn) {
+                        next.press = false
+                        next.pressIn = false
+                      }
+                      if (Object.keys(next).length) {
+                        set(next)
+                      }
+                      onHoverOut?.(e)
+                      onMouseLeave?.(e)
+                    }
+                  : undefined,
+            }),
+          onMouseDown: attachPress
+            ? (e) => {
+                set({
+                  press: true,
+                  pressIn: true,
+                })
+                onPressIn?.(e)
+                onMouseDown?.(e)
+              }
+            : (onPressIn as any),
+          onClick: attachPress
+            ? (e) => {
+                e.preventDefault()
+                unPress()
+                onPressOut?.(e)
+                onPress?.(e)
+                onClick?.(e)
+              }
+            : (onPressOut as any),
+        }
+      : null
 
-    if (!isWeb && events) {
-      // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
-      const [pressProps] = usePressable({
-        disabled,
-        hitSlop,
-        onPressIn: events.onMouseDown,
-        onPressOut: events.onPressOut,
-        onPress,
-      })
-      Object.assign(supportedProps, pressProps)
+    if (events) {
+      if (typeof ViewComponent !== 'string') {
+        // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
+        const [pressProps] = usePressable({
+          disabled,
+          hitSlop,
+          onPressIn: events.onMouseDown,
+          onPressOut: events.onPressOut,
+          onPress,
+        })
+        Object.assign(supportedProps, pressProps)
+      } else {
+        Object.assign(supportedProps, events)
+      }
     }
 
     let content = createEl(
@@ -425,14 +423,6 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         flexDirection: componentProps.defaultProps?.flexDirection,
       })
     )
-
-    if (isWeb && shouldAttach) {
-      content = (
-        <div {...events} style={displayContentsStyle}>
-          {content}
-        </div>
-      )
-    }
 
     if (isWeb && componentProps.isText && !hasTextAncestor) {
       // from react-native-web
