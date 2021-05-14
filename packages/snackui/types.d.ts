@@ -730,11 +730,12 @@ declare module "snackui" {
 declare module "snackui" {
     import React from "react";
     import { TextInputProps, TextStyle } from "react-native";
-    export type InputProps = Omit<TextInputProps, 'style'> & TextStyle & {
-        name?: string;
+    type AutocompleteType = 'cc-csc' | 'cc-exp' | 'cc-exp-month' | 'cc-exp-year' | 'cc-number' | 'email' | 'name' | 'password' | 'postal-code' | 'street-address' | 'tel' | 'username' | 'off';
+    export type InputProps = Omit<TextInputProps, 'style' | 'name'> & Omit<TextStyle, 'name'> & {
+        name?: AutocompleteType;
     };
-    export const Input: React.ForwardRefExoticComponent<Omit<TextInputProps, "style"> & TextStyle & {
-        name?: string | undefined;
+    export const Input: React.ForwardRefExoticComponent<Omit<TextInputProps, "style" | "name"> & Omit<TextStyle, "name"> & {
+        name?: AutocompleteType | undefined;
     } & React.RefAttributes<unknown>>;
 }
 

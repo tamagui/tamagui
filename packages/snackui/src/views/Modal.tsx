@@ -1,6 +1,5 @@
 import React from 'react'
-import { Modal as ModalNative, ModalProps as ModalPropsReact, TouchableOpacity } from 'react-native'
-
+import { Modal as ModalNative, ModalProps as ModalPropsReact } from 'react-native'
 import { prevent } from '../helpers/prevent'
 import { useDebounceValue } from '../hooks/useDebounce'
 import { useTheme } from '../hooks/useTheme'
@@ -8,6 +7,7 @@ import { isWeb } from '../platform'
 import { StackProps } from '../StackProps'
 import { AnimatedStackProps, AnimatedVStack } from './AnimatedStack'
 import { AbsoluteVStack, VStack } from './Stacks'
+
 
 // TODO if we add `closableButton` prop we can control exit animation nicely
 
@@ -119,11 +119,11 @@ function ModalPane(props: StackProps) {
   return (
     <VStack
       backgroundColor={theme.backgroundColor}
-      borderRadius={20}
+      borderRadius={26}
       alignItems="center"
       position="relative"
-      shadowColor="rgba(0,0,0,0.35)"
-      shadowRadius={100}
+      shadowColor={theme.shadowColor}
+      shadowRadius={180}
       flex={1}
       {...props}
     />

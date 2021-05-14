@@ -8,9 +8,24 @@ import { InteractiveContainer } from './InteractiveContainer'
 
 // TODO make this extractable / take flat style props
 
-export type InputProps = Omit<TextInputProps, 'style'> &
-  TextStyle & {
-    name?: string
+type AutocompleteType =
+  | 'cc-csc'
+  | 'cc-exp'
+  | 'cc-exp-month'
+  | 'cc-exp-year'
+  | 'cc-number'
+  | 'email'
+  | 'name'
+  | 'password'
+  | 'postal-code'
+  | 'street-address'
+  | 'tel'
+  | 'username'
+  | 'off'
+  
+export type InputProps = Omit<TextInputProps, 'style' | 'name'> &
+  Omit<TextStyle, 'name'> & {
+    name?: AutocompleteType
   }
 
 export const Input = forwardRef((props: InputProps, ref) => {

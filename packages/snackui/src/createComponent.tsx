@@ -393,7 +393,16 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
             }
           : (onPressOut as any),
       }
-    }, [shouldAttach, onHoverIn, onMouseEnter, onHoverOut, onMouseLeave, onPressIn, onPressOut])
+    }, [
+      shouldAttach,
+      onHoverIn,
+      onMouseEnter,
+      onHoverOut,
+      onMouseLeave,
+      onPress,
+      onPressIn,
+      onPressOut,
+    ])
 
     if (!isWeb && events) {
       // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
@@ -566,7 +575,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     component['staticConfig'] = config
   }
 
-  return (component as any) as StaticComponent<A>
+  return component as any as StaticComponent<A>
 }
 
 const cssView = isWeb

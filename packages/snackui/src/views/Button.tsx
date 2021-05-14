@@ -5,7 +5,7 @@ import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
 import { isWeb } from '../platform'
-import { EnhancedStyleProps, StackProps } from '../StackProps'
+import { StackProps } from '../StackProps'
 import { HStack } from './Stacks'
 import { Text, TextProps } from './Text'
 
@@ -55,11 +55,18 @@ export const Button = themeable(
       children
     ) : !children ? null : textProps ? (
       // flex shrink = 1, flex grow = 0 makes buttons shrink properly in native
-      <Text color={theme.colorSecondary} flexGrow={0} flexShrink={1} ellipse {...textProps}>
+      <Text
+        color={theme.colorSecondary}
+        fontSize={16}
+        flexGrow={0}
+        flexShrink={1}
+        ellipse
+        {...textProps}
+      >
         {children}
       </Text>
     ) : (
-      <Text color={theme.colorSecondary} flexGrow={0} flexShrink={1} ellipse>
+      <Text color={theme.colorSecondary} fontSize={16} flexGrow={0} flexShrink={1} ellipse>
         {children}
       </Text>
     )
