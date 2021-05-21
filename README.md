@@ -465,27 +465,18 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 See [the roadmap](ROADMAP.md) for details:
 
-- [x] Themes
-- [x] Test performance of useMemo calls / splitProps
+- [ ] ZStack
+- [ ] [more universal popover](https://github.com/intergalacticspacehighway/react-native-popper#react-native-popper)
 - [ ] Media Queries test coverage, docs and configuration
 - [ ] Docs / docs site
-- [ ] improve props ease of use
-  - [ ] media query shorthands
-    - [ ] maxWidth={{ sm: 10 }}
-    - [ ] maxWidth={{ sm: x ? 10 : 0 }}
-  - [x] flat transforms to prevent awkward spreads
-    - scale={} x={} y={}
-- [ ] Button size
+- [ ] media query shorthands
+  - [ ] maxWidth={{ sm: 10 }}
+  - [ ] maxWidth={{ sm: x ? 10 : 0 }}
 - [ ] Support extraction of custom components that extend lower level ones
   - [ ] Support user-defined components that just spread props onto simple child thats extractable
 - [ ] [Variants/Scaling](ROADMAP.md#variants)
-- [x] Compiler contains memory leak(s) (mostly fixed with esbuild-loader)
 - [ ] Extraction - advanced traversals (see [plan](ROADMAP.md#advanced-traversal))
 - [ ] Support `<Stack spacing />` extraction
-- [ ] Support `<Input />`, `<Spacer flex />`, `<LinearGradient />`, maybe `<Image />`
-- [ ] Compile a few directly-translatable HTML props: onPress, etc
-- [x] Reload constants/themes during watch
-- [x] Extract default styles to StyleSheet.create() for better fallback runtime speed
 - [ ] MaskView with web support
 
 
