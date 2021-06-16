@@ -12,6 +12,9 @@
     "test:watch": "NODE_ENV=test SNACKUI_COMPILE_PROCESS=1 yarn test --watch",
     "test:update-snapshots": "NODE_ENV=test jest --updateSnapshot"
   },
+  "tests": {
+    "parallel": true
+  },
   "publishConfig": {
     "access": "public"
   },
