@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-<h4 align="center">The smart SwiftUI-inspired UI kit for React Native & Web.</h4>
+<h4 align="center">The faster style system for React Native & Web.</h4>
 
 <p align="center">
   <a href="#setup">Setup</a> •
@@ -14,7 +14,7 @@
   <a href="#license">License</a>
 </p>
 
-SnackUI is a UI kit for react native and react native web that builds on the ideas of [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. It's a great way to build cross platform app UI's on React that scale well - with smaller bundle sizes and faster rendering performance than StyleSheet.create() on the web. SnackUI is light (15Kb gzipped, up to ~26Kb with Popover/Tooltip); it doesn't prescribe much beyond basic views, hooks, and an optimizing compiler.
+Style system for React Native and React Native Web building on ideas from [JSXStyle](https://github.com/jsxstyle/jsxstyle) and SwiftUI. Optimizes your inline styles into atomic CSS or StyleSheet.create(), and supports media queries and themes whether on web or native the same.  Outputs smaller bundle sizes and improves rendering performance. SnackUI is light (~10Kb gzipped for base views up to ~26Kb with Popover/Tooltip).
 
 <div align="center">
   <img margin="auto" width="706px" src="https://raw.githubusercontent.com/snackui/snackui/master/website/static/img/diagram.png" alt="Illustration of <HStack spacing='md' /> <VStack spacing='lg' />">
@@ -22,30 +22,27 @@ SnackUI is a UI kit for react native and react native web that builds on the ide
 
 ## Features
 
-- **Stack views** with flat, simpler RN TypeScript types
-  - VStack, HStack
+- **Stack views** with flat style props, TypeScript types
   - Inspired by [SwiftUI stack views](https://learnappmaking.com/stacks-vstack-hstack-swiftui-how-to/)
 - **Optimizing compiler** (forked from [JSXStyle](https://github.com/jsxstyle/jsxstyle))
-  - Flatten `<View />` / `<Text />` into `<div />` / `<span />`.
-  - Extract inline styles to optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
-  - Support constant imports.
-  - Support conditionals like `color={isLarge ? 'red' : 'blue'}` and `<Text {...isLarge && { color: 'red' }} />`
+  - Flattens `<View />` / `<Text />` into `<div />` / `<span />`.
+  - Extracts inline styles to optimized [atomic CSS](https://css-tricks.com/lets-define-exactly-atomic-css/) stylesheets similar to [Facebook's internal style library](https://twitter.com/Daniel15/status/1160980442041896961).
+  - Optimizes imports, conditionals, spreads and more
 - **Pseudo styles**
   - Supports hoverStyle, pressStyle, and focusStyle
-  - Normalizes tricky styling between native and web
+  - Normalizes native and web
 - **Media Queries**
   - Supports native + web
-  - Simple `useMedia` hook, compiles away when possible, falls back gracefully
+  - Typed `useMedia` hook compiles away when possible, falls back gracefully
 - **Themes**
   - Supports native + web
-  - Typed themes, `useTheme` hook
-  - Compiles away when possible, falls back gracefully
-  - Avoids re-rendering by tracking which theme keys used at runtime
+  - Typed `useTheme` hook compiles away when possible, falls back gracefully
+  - Granular re-renders by tracking used theme keys
 - **Development tools**
-  - Shows component name in DOM elements.
-  - Add `// debug` to the top of file for detailed optimization info.
+  - Output component name/line numbers in DOM
+  - `// debug` pragma outputs detailed optimization info.
 
-SnackUI views flatten all style props onto the base props so there's no separate `style` prop to use, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle), SnackUI has all the same upsides listed there.
+SnackUI flattens style props so there's no separate `style` object, if you want to read reasoning on why, [see why JSXStyle does it](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle).
 
 ## Example
 
@@ -97,11 +94,11 @@ const sheet = StyleSheet.create({
 })
 ```
 
-Why do this? Beyond the joy and [many benefits](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle) of Stack views with inline styling, react-native-web views like `<View />` and `<Text />` aren't free. [Read the source of Text](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/Text/index.js) for example. When you're rendering a large page with many text and view elements, snackui saves React from having to process all of that logic on every render, for every Text and View.
+Why do this? Beyond the joy and [many benefits](https://github.com/jsxstyle/jsxstyle#why-write-styles-inline-with-jsxstyle) of Stack views with inline styling, react-native-web views like `<View />` and `<Text />` aren't free. [Read the source of Text](https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/exports/Text/index.js) for example. When you're rendering a large page with many text and view elements, SnackUI saves React from having to process all of that logic on every render, for every Text and View.
 
 ### Supported extractions
 
-SnackUI has fairly advanced optimizations, it can extract this entire component to CSS and flatten the VStack into a div:
+All the following code would be fully extracted to CSS, in cases where it can like this one, SnackUI flattes this VStack into a div:
 
 
 ```tsx
@@ -152,21 +149,19 @@ export function Component(props) {
 
 ## Setup
 
-Add snackui to your project:
+Add to your project:
 
 ```bash
 yarn add snackui snackui-loader @snackui/babel-plugin
 ```
 
-From here, you can set it two ways: for extraction to CSS on web, you'll need the Webpack plugin. If you don't need that (using a different bundler), or for React Native, then you'll want the babel plugin.
+For extraction to CSS on web, you'll need the Webpack plugin. If you don't need that (using a different bundler) or for React Native, use the babel plugin.
 
 **Note:** Don't use *both* the Webpack and Babel plugin together as they will conflict.
 
-We hope to add plugins for rollup, esbuild and others soon as it should be relatively straightforward, PR's are welcome.
-
 ### Webpack - CSS extraction
 
-To extract to CSS, SnackUI supports Webpack for now (v4 and v5). Add the loader to your webpack config after `babel-loader`. Note, **don't use the babel plugin if you are doing this**, you only need the loader for Webpack.
+Only Webpack supported for now. Add the loader to your webpack config after `babel-loader`. Note, **make sure you don't also add the @snackui/babel-plugin to your babel config**, you only need the loader for Webpack.
 
 ```js
 module.exports = {
@@ -177,6 +172,7 @@ module.exports = {
         use: [
           // as of 0.14 snackui works with thread-loader (optional)
           'thread-loader',
+          // optional, can use esbuild or none depending on need
           'babel-loader',
           {
             loader: 'snackui-loader',
@@ -203,7 +199,7 @@ module.exports = {
 
 #### Notes
 
-react-native-web is taking a hard stance against supporting className and removed support for it in v0.14. They also don't export any of the internal hooks necessary. To work around this we implemented logic in the snackui loaders that patch it to export the hooks. You need to be sure you allow either snackui-loader or @snackui/babel (depending on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules\/(?!react-native-web)/` instead.
+react-native-web is taking a stance against supporting className and removed support for it in v0.14. They also don't export any of the internal hooks necessary. To work around this we implemented logic in the snackui loaders that patch it to export the hooks. You need to be sure you allow either snackui-loader or @snackui/babel (depending on how you set it up) to ensure it is allowed to access react-native-web. Usually this just means not excluding `/node_modules/` or doing something like `/node_modules\/(?!react-native-web)/` instead.
 
 To prevent issues with side effects, be sure to add `sideEffects: false` to your webpack css rule, something like:
 
@@ -215,7 +211,7 @@ To prevent issues with side effects, be sure to add `sideEffects: false` to your
 }
 ```
 
-#### Deduping CSS
+#### Deduping CSS (Production)
 
 Using webpack 5, mini-css-extract-plugin, and css-minimizer-webpack-plugin you should dedupe the styles output. To create a single master CSS file with all styles dedupe, you can do something like the following. This works in dev mode with hot reloading as well.
 
@@ -262,7 +258,7 @@ Just add `@snackui/babel-plugin` as a babel plugin to your babel config. Instead
 
 #### Extra performance for React Native
 
-To get a little more speed, add the following to your `metro.config.js`, which will allow SnackUI to "optimize itself". Basically, a few internal SnackUI views like Button can be optimized, but won't be by default as metro won't look for the SnackUI typescript files. To support this, just add `tsmain` to resolverMainFields, which snackui defines:
+To get a little more speed, add the following to your `metro.config.js`, which will allow SnackUI to "optimize itself". Basically, a few internal SnackUI views like Button can be optimized, but won't be by default as metro won't look for the SnackUI typescript files. To support this, just add `tsmain` to resolverMainFields like so:
 
 ```
 module.exports = {
@@ -455,7 +451,7 @@ export function Component() {
 - **More setup**: Need to configure a webpack plugin and babel plugin
 - **Is Beta**: Will run into edge cases and bugs
 - **Testing**: No testing library helpers as of yet
-- **Requires checking output**: Because we're analyzing somewhat complex statements to optimize, you'll have to keep an eye on the output to ensure it actually extracted. You can do so with the `// debug` pragma.
+- **Must sanity check output**: Because we're analyzing somewhat complex statements to optimize, you'll have to keep an eye on the output to ensure it actually extracted. You can do so with the `// debug` pragma.
 
 ## Issues
 
@@ -478,7 +474,6 @@ See [the roadmap](ROADMAP.md) for details:
 - [ ] Extraction - advanced traversals (see [plan](ROADMAP.md#advanced-traversal))
 - [ ] Support `<Stack spacing />` extraction
 - [ ] MaskView with web support
-
 
 ## License
 
