@@ -35,7 +35,7 @@ export const LoadingItem = ({
         width={`${seed * 12}%`}
         height={size === 'sm' ? 14 : size === 'lg' ? 36 : 28}
         backgroundColor="rgba(150,150,150,0.085)"
-        borderRadius={7}
+        borderRadius={16}
       />
       <Spacer size={size === 'sm' ? 6 : size === 'lg' ? 16 : 12} />
       {new Array(lines).fill(0).map((_, index) => (
@@ -46,7 +46,7 @@ export const LoadingItem = ({
             height={size === 'sm' ? 14 : size === 'lg' ? 22 : 16}
             maxWidth="100%"
             backgroundColor="rgba(150,150,150,0.015)"
-            borderRadius={5}
+            borderRadius={10}
           />
           <Spacer size={size === 'sm' ? 6 : 12} />
         </React.Fragment>
