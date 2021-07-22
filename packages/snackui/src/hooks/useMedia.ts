@@ -53,7 +53,9 @@ export const configureMedia = ({
   defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions = {}) => {
   if (hasConfigured) {
-    console.warn(`Already configured mediaQueries once (you may have called getMedia() before configureMedia())`)
+    console.warn(
+      `Already configured mediaQueries once (you may have called getMedia() before configureMedia())`
+    )
     return
   }
   hasConfigured = true
