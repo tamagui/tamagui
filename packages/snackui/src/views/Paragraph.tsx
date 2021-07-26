@@ -11,6 +11,7 @@ export type ParagraphProps = SizableTextProps
 const defaultProps: ParagraphProps = {
   fontWeight: '400',
   selectable: true,
+  sizeLineHeight: 1,
   size: 'md',
 }
 
