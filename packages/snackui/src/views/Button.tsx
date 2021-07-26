@@ -4,7 +4,8 @@ import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
 import { themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
-import { EnhancedStyleProps, StackProps } from '../StackProps'
+import { isWeb } from '../platform'
+import { StackProps } from '../StackProps'
 import { HStack } from './Stacks'
 import { Text, TextProps } from './Text'
 
@@ -53,17 +54,27 @@ export const Button = themeable(
     const childrens = noTextWrap ? (
       children
     ) : !children ? null : textProps ? (
-      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse {...textProps}>
+      // flex shrink = 1, flex grow = 0 makes buttons shrink properly in native
+      <Text
+        color={theme.colorSecondary}
+        fontSize={16}
+        flexGrow={0}
+        flexShrink={1}
+        ellipse
+        {...textProps}
+      >
         {children}
       </Text>
     ) : (
-      <Text color={theme.colorSecondary} flexGrow={1} flexShrink={0} ellipse>
+      <Text color={theme.colorSecondary} fontSize={16} flexGrow={0} flexShrink={1} ellipse>
         {children}
       </Text>
     )
 
     return (
       <HStack
+        hitSlop={isWeb ? undefined : defaultHitSlop}
+        flexShrink={1}
         backgroundColor={theme.backgroundColorSecondary}
         {...defaultStyle}
         shadowColor={elevation ? theme.shadowColor : undefined}
@@ -99,6 +110,13 @@ export const Button = themeable(
     )
   }
 )
+
+const defaultHitSlop = {
+  top: 5,
+  left: 5,
+  right: 5,
+  bottom: 5,
+}
 
 if (process.env.IS_STATIC) {
   // @ts-ignore

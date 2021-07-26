@@ -218,12 +218,19 @@ export const useTheme = () => {
             return Reflect.get(_, key)
           }
           const activeTheme = themes[name]
-          if (process.env.NODE_ENV === 'development' && !activeTheme) {
-            throw new Error(`No theme! ${name} in ${Object.keys(themes)}`)
-          }
           const val = activeTheme[key]
-          if (process.env.NODE_ENV === 'development' && !val) {
-            throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
+          if (!val) {
+            if (process.env.NODE_ENV === 'development') {
+              if (typeof key === 'string') {
+                if (!activeTheme) {
+                  throw new Error(`No theme! ${name} in ${Object.keys(themes)}`)
+                }
+                if (!val) {
+                  throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
+                }
+              }
+            }
+            return Reflect.get(_, key)
           }
           if (state.current.isRendering) {
             state.current.keys.add(key)

@@ -1,6 +1,6 @@
 {
   "name": "@snackui/babel-plugin",
-  "version": "0.15.3",
+  "version": "0.15.4",
   "license": "MIT",
   "types": "types.d.ts",
   "publishConfig": {
@@ -19,7 +19,7 @@
     "@babel/traverse": "*",
     "@babel/types": "*",
     "@dish/esdx": "^0.0.9",
-    "@snackui/static": "^0.15.3"
+    "@snackui/static": "^0.15.4"
   },
   "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
 }

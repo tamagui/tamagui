@@ -2,11 +2,9 @@ import { join } from 'path'
 import vm from 'vm'
 
 import generate from '@babel/generator'
-import traverse, { Visitor } from '@babel/traverse'
-import { NodePath } from '@babel/traverse'
+import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import * as AllExports from '@snackui/node'
-import { statSync } from 'fs-extra'
 import { difference, pick } from 'lodash'
 // @ts-ignore
 import { StaticConfig } from 'snackui'
@@ -684,19 +682,6 @@ export function createExtractor() {
               (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
             : ''
 
-          // add data-is
-          if (shouldAddDebugProp) {
-            const preName = componentName ? `${componentName}:` : ''
-            // unshift so spreads/nesting overwrite
-            attrs.unshift({
-              type: 'attr',
-              value: t.jsxAttribute(
-                t.jsxIdentifier('data-is'),
-                t.stringLiteral(`${preName}${node.name.name} @ ${filePath}:${lineNumbers}`)
-              ),
-            })
-          }
-
           // combine ternaries
           let ternaries: Ternary[] = []
           attrs = attrs
@@ -757,7 +742,7 @@ export function createExtractor() {
           }
 
           // post process
-          const get = (res: Object | null) => {
+          const getStyles = (res: Object | null) => {
             if (!res) return
             if (!!excludeProps.size) {
               for (const key in res) {
@@ -775,23 +760,40 @@ export function createExtractor() {
             return next
           }
 
-          const completeStyles = {
-            ...Object.keys(attrs).reduce((acc, key) => {
-              const cur = attrs[key]
+          // evaluates all static attributes into a simple object
+          const completeStaticProps = {
+            ...Object.keys(attrs).reduce((acc, index) => {
+              const cur = attrs[index] as ExtractedAttr
               if (cur.type === 'style') {
                 Object.assign(acc, cur.value)
+              }
+              if (cur.type === 'attr') {
+                if (t.isJSXSpreadAttribute(cur.value)) {
+                  return acc
+                }
+                if (!t.isJSXIdentifier(cur.value.name)) {
+                  return acc
+                }
+                try {
+                  const key = cur.value.name.name
+                  const value = evaluateAstNode(cur.value.value)
+                  acc[key] = value
+                } catch (err) {
+                  // ok, skip - not static
+                }
               }
               return acc
             }, {}),
           }
-          const completeStylesProcessed = get({
+
+          const completeStylesProcessed = getStyles({
             ...staticConfig.defaultProps,
-            ...completeStyles,
+            ...completeStaticProps,
           })
           // any extra styles added in postprocess should be added to first group as they wont be overriden
           const stylesToAddToInitialGroup = difference(
             Object.keys(completeStylesProcessed),
-            Object.keys(completeStyles)
+            Object.keys(completeStaticProps)
           )
           if (stylesToAddToInitialGroup.length) {
             const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
@@ -807,12 +809,16 @@ export function createExtractor() {
             }
           }
 
+          if (shouldPrintDebug) {
+            console.log('completeStaticProps', completeStaticProps)
+          }
+
           for (const attr of attrs) {
             try {
               switch (attr.type) {
                 case 'ternary':
-                  const a = get(attr.value.alternate)
-                  const c = get(attr.value.consequent)
+                  const a = getStyles(attr.value.alternate)
+                  const c = getStyles(attr.value.consequent)
                   attr.value.alternate = a
                   attr.value.consequent = c
                   if (shouldPrintDebug) {
@@ -843,6 +849,19 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             console.log('   - attrs (after)\n', attrs.map(attrStr).join('\n    - '))
+          }
+
+          // add data-is
+          if (shouldAddDebugProp) {
+            const preName = componentName ? `${componentName}:` : ''
+            // unshift so spreads/nesting overwrite
+            attrs.unshift({
+              type: 'attr',
+              value: t.jsxAttribute(
+                t.jsxIdentifier('data-is'),
+                t.stringLiteral(`${preName}${node.name.name} @ ${filePath}:${lineNumbers}`)
+              ),
+            })
           }
 
           // flatten!

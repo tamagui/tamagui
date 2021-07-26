@@ -168,7 +168,7 @@ exports[`7. ternary + data-is 1`] = `
 
 exports[`8. styleExpansions 1`] = `
 <div
-  className="css-view-mht2lk  _po-relative _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
+  className="css-view-mht2lk  _to-0px _ri-0px _po-relative _le-0px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _bo-0px _alIt-stretch r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
   style={
     Object {
       "bottom": "0px",
@@ -182,7 +182,7 @@ exports[`8. styleExpansions 1`] = `
     className=" _po-absolute _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _baCo-19sdxe _alIt-stretch"
   >
     <div
-      className="css-view-mht2lk  _po-relative _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _baCo-1d0hial _alIt-stretch r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
+      className="css-view-mht2lk  _to-0px _ri-0px _po-relative _le-0px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _bo-0px _baCo-1d0hial _alIt-stretch r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx r-position-u8s1d"
       style={
         Object {
           "bottom": "0px",
@@ -207,7 +207,7 @@ exports[`10. extracts Text 1`] = `
   className=" _foSi-10px _di-inline"
 >
   <div
-    className="css-text-1u9zv9r  _di-inline r-display-1471scf r-userSelect-1xnzce8"
+    className="css-text-1u9zv9r  _usSe-text _di-inline r-display-1471scf r-userSelect-1xnzce8"
     style={
       Object {
         "selectable": true,

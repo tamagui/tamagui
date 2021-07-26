@@ -1,13 +1,21 @@
 import * as t from '@babel/types'
 
 export function evaluateAstNode(
-  exprNode: t.Node,
+  exprNode: t.Node | undefined | null,
   evalFn?: (node: t.Node) => any,
   shouldPrintDebug?: boolean
 ): any {
+  if (exprNode === undefined) {
+    return undefined
+  }
+
   // null === boolean true (at least in our use cases for jsx eval)
   if (exprNode === null) {
     return true
+  }
+
+  if (t.isJSXExpressionContainer(exprNode)) {
+    return evaluateAstNode(exprNode.expression)
   }
 
   // loop through ObjectExpression keys
