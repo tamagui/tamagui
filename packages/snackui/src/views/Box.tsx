@@ -14,7 +14,7 @@ export function Box(props: BoxProps) {
       backgroundColor={theme.backgroundColor}
       padding={5}
       borderRadius={12}
-      shadowColor={theme.shadowColor}
+      shadowColor={theme.shadowColorLighter}
       shadowRadius={14}
       shadowOffset={{ width: 0, height: 3 }}
       {...props}

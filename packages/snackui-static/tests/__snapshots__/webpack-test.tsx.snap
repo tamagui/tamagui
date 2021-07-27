@@ -19,7 +19,6 @@ Array [
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
-        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
       }
     }
   />,
@@ -28,7 +27,6 @@ Array [
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
-        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
       }
     }
   >
@@ -48,7 +46,6 @@ Array [
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
-        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
       }
     }
   />,
@@ -57,7 +54,6 @@ Array [
     style={
       Object {
         "backgroundColor": "rgba(255,255,255,1.00)",
-        "boxShadow": "0px 0px 0px rgba(0,0,0,0.20)",
       }
     }
   >
