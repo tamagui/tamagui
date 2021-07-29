@@ -114,7 +114,7 @@ export const AnimatedVStack = ({
 
   useIsomorphicLayoutEffect(() => {
     Animated.spring(driver, {
-      useNativeDriver: true,
+      useNativeDriver: !isWeb,
       velocity,
       toValue: animateState === 'in' ? 1 : 0,
     }).start()
