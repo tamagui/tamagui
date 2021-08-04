@@ -97,7 +97,7 @@ export const ToastRoot = memo(function ToastRoot() {
             paddingHorizontal={18}
             paddingVertical={12}
           >
-            <Text color={state.type === 'info' ? '#000' : '#fff'} fontSize={18} fontWeight="600">
+            <Text color="#fff" fontSize={18} fontWeight="600">
               {state.text}
             </Text>
           </VStack>
