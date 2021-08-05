@@ -27,7 +27,7 @@
     "react": "*",
     "react-dom": "*",
     "react-feather": "^2.0.8",
-    "react-laag": "^2.0.2",
+    "react-laag": "2.0.3",
     "react-storage-hooks": "^4.0.0"
   },
   "peerDependencies": {
