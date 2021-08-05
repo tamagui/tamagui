@@ -60,9 +60,7 @@ export function Popover(props: PopoverProps) {
               ...layerProps.style,
               zIndex: 100000,
               pointerEvents: isOpen ? 'auto' : 'none',
-              marginTop: isOpen ? 0 : 10,
               opacity: isOpen ? 1 : 0,
-              transition: '0.2s ease-in-out',
             }}
           >
             <AnimatedVStack>
