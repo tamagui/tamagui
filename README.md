@@ -461,6 +461,7 @@ SnackUI is still early stage. It works well for us, and we've built a fairly lar
 
 See [the roadmap](ROADMAP.md) for details:
 
+- [ ] Theme change HMR
 - [ ] ZStack
 - [ ] [more universal popover](https://github.com/intergalacticspacehighway/react-native-popper#react-native-popper)
 - [ ] Media Queries test coverage, docs and configuration
