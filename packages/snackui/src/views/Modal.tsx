@@ -3,7 +3,7 @@ import { Modal as ModalNative, ModalProps as ModalPropsReact } from 'react-nativ
 
 import { prevent } from '../helpers/prevent'
 import { useDebounceValue } from '../hooks/useDebounce'
-import { useTheme } from '../hooks/useTheme'
+import { Theme, useTheme, useThemeName } from '../hooks/useTheme'
 import { isWeb } from '../platform'
 import { StackProps } from '../StackProps'
 import { AnimatedStackProps, AnimatedVStack } from './AnimatedStack'
@@ -66,50 +66,56 @@ export const Modal = (props: ModalProps) => {
     statusBarTranslucent,
   }
 
+  const themeName = useThemeName()
+
   if (isWeb) {
     const pointerEvents = visible ? 'auto' : 'none'
     const modalVisible = useDebounceValue(visible, visible ? 200 : 0)
 
     return (
       <ModalNative {...modalProps} visible={modalVisible}>
-        <AbsoluteVStack
-          ref={preventFormFocusBug as any}
-          fullscreen
-          pointerEvents={pointerEvents}
-          backgroundColor={visible ? overlayBackground : 'transparent'}
-          alignItems="center"
-          justifyContent="center"
-          onPressOut={overlayDismisses ? onRequestClose : undefined}
-          onPress={onDismiss}
-        >
-          <AnimatedVStack
-            {...{
-              height,
-              width,
-              minHeight,
-              minWidth,
-              maxWidth,
-              maxHeight,
-              velocity,
-              pointerEvents,
-              animateState: modalVisible ? 'in' : 'out',
-              animation,
-            }}
+        <Theme name={themeName}>
+          <AbsoluteVStack
+            ref={preventFormFocusBug as any}
+            fullscreen
+            pointerEvents={pointerEvents}
+            backgroundColor={visible ? overlayBackground : 'transparent'}
+            alignItems="center"
+            justifyContent="center"
+            onPressOut={overlayDismisses ? onRequestClose : undefined}
+            onPress={onDismiss}
           >
-            <ModalPane onPress={prevent} pointerEvents={pointerEvents} {...rest}>
-              {children}
-            </ModalPane>
-          </AnimatedVStack>
-        </AbsoluteVStack>
+            <AnimatedVStack
+              {...{
+                height,
+                width,
+                minHeight,
+                minWidth,
+                maxWidth,
+                maxHeight,
+                velocity,
+                pointerEvents,
+                animateState: modalVisible ? 'in' : 'out',
+                animation,
+              }}
+            >
+              <ModalPane onPress={prevent} pointerEvents={pointerEvents} {...rest}>
+                {children}
+              </ModalPane>
+            </AnimatedVStack>
+          </AbsoluteVStack>
+        </Theme>
       </ModalNative>
     )
   }
 
   return (
     <ModalNative animationType={animationType} {...modalProps}>
-      <VStack flex={1} {...rest} backgroundColor={theme.backgroundColor}>
-        {children}
-      </VStack>
+      <Theme name={themeName}>
+        <VStack flex={1} {...rest} backgroundColor={theme.backgroundColor}>
+          {children}
+        </VStack>
+      </Theme>
     </ModalNative>
   )
 }
