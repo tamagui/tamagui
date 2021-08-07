@@ -1,14 +1,6 @@
 import { isEqual } from '@dish/fast-compare'
 import { stylePropsTransform, stylePropsView, validStyles } from '@snackui/helpers'
-import React, {
-  forwardRef,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Pressable,
@@ -219,8 +211,8 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
           ]
         : []),
       style,
-      psuedos && state.hover ? psuedos.hoverStyle || null : null,
-      psuedos && state.press ? psuedos.pressStyle || null : null,
+      !disabled && psuedos && state.hover ? psuedos.hoverStyle || null : null,
+      !disabled && psuedos && state.press ? psuedos.pressStyle || null : null,
       disabled ? disabledStyle : null,
     ]
 

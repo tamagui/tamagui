@@ -48,6 +48,7 @@ export const Button = themeable(
     theme: themeName,
     elevation,
     active,
+    disabled,
     ...props
   }: ButtonProps) => {
     const theme = useTheme()
@@ -83,14 +84,19 @@ export const Button = themeable(
           shadowOffset: { width: 0, height: 2 * elevation },
           shadowOpacity: 0.18 * elevation,
         })}
-        hoverStyle={{
+        hoverStyle={disabled ? null : {
           backgroundColor: theme.backgroundColorTertiary,
         }}
-        pressStyle={{
+        pressStyle={disabled ? null : {
           backgroundColor: theme.backgroundColorQuartenary,
         }}
         {...(active && {
           backgroundColor: theme.backgroundColorTertiary,
+        })}
+        {...(disabled && {
+          debug: true,
+          pointerEvents: 'none',
+          opacity: 0.5,
         })}
         {...props}
       >
