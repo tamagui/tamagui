@@ -1,7 +1,6 @@
-import { TextProps } from 'snackui/src/views/Text'
-
 import { SizableTextProps } from './SizableTextProps'
 import { getSize } from './Size'
+import { TextProps } from './Text'
 
 // doing this in a lengthy manner because we need to preserve order
 

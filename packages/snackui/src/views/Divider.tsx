@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 import { View } from 'react-native'
+import { useTheme } from '../hooks/useTheme'
 
 import { StackProps } from '../StackProps'
 import { HStack, VStack } from './Stacks'
@@ -12,7 +13,6 @@ export const Divider = memo(
     width,
     opacity,
     flexLine = 10,
-    backgroundColor,
     noGap,
     ...rest
   }: Omit<StackProps, 'flex'> & {
@@ -21,6 +21,7 @@ export const Divider = memo(
     vertical?: boolean
     noGap?: boolean
   }) => {
+    const theme = useTheme()
     return (
       <HStack
         flexDirection={vertical ? 'column' : 'row'}
@@ -30,13 +31,14 @@ export const Divider = memo(
         {...rest}
       >
         {!noGap && <VStack flex={1} />}
-        <View
-          style={{
+        <VStack
+          backgroundColor={theme.backgroundColor}
+          opacity={1}
+          flex={flexLine}
+          {...{
             [vertical ? 'width' : 'height']: 1,
-            flex: flexLine,
-            backgroundColor: backgroundColor ?? 'rgba(150,150,150,0.1)',
-            opacity: opacity ?? 1,
           }}
+          {...rest}
         />
         {!noGap && <VStack flex={1} />}
       </HStack>

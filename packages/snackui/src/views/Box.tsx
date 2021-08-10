@@ -11,7 +11,7 @@ export function Box(props: BoxProps) {
   const theme = useTheme()
   return (
     <VStack
-      backgroundColor={theme.backgroundColor}
+      backgroundColor={theme.cardBackgroundColor}
       padding={5}
       borderRadius={12}
       shadowColor={theme.shadowColorLighter}

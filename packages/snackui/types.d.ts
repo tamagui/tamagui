@@ -616,7 +616,7 @@ declare module "snackui" {
 
 declare module "snackui" {
     import React from "react";
-    export const Divider: React.MemoExoticComponent<({ flex, vertical, height, width, opacity, flexLine, backgroundColor, noGap, ...rest }: Omit<StackProps, "flex"> & {
+    export const Divider: React.MemoExoticComponent<({ flex, vertical, height, width, opacity, flexLine, noGap, ...rest }: Omit<StackProps, "flex"> & {
         flexLine?: number | undefined;
         flex?: boolean | undefined;
         vertical?: boolean | undefined;
