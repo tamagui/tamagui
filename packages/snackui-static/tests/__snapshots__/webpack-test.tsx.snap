@@ -15,20 +15,10 @@ exports[`1. extracts to a div for simple views, flat transforms 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="css-view-mht2lk _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden who _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paBo-5px _paLe-5px _paRi-5px _paTo-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
-    style={
-      Object {
-        "backgroundColor": "rgba(255,255,255,1.00)",
-      }
-    }
+    className="css-view-mht2lk _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden who _boSh-xgwarg _boBoLeRa-8px _boBoRiRa-8px _boToLeRa-8px _boToRiRa-8px _paBo-5px _paLe-5px _paRi-5px _paTo-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
   />,
   <div
-    className="css-view-mht2lk ease-in-out-top _paTo-2px _paBo-2px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch _baCo-1d0hial _to-z14px _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paLe-5px _paRi-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
-    style={
-      Object {
-        "backgroundColor": "rgba(255,255,255,1.00)",
-      }
-    }
+    className="css-view-mht2lk ease-in-out-top _paTo-2px _paBo-2px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _alIt-stretch _baCo-1d0hial _to-z14px _boSh-xgwarg _boBoLeRa-8px _boBoRiRa-8px _boToLeRa-8px _boToRiRa-8px _paLe-5px _paRi-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
   >
     <span
       className=" _di-inline"
@@ -42,20 +32,10 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="css-view-mht2lk _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden who _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paBo-5px _paLe-5px _paRi-5px _paTo-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
-    style={
-      Object {
-        "backgroundColor": "rgba(255,255,255,1.00)",
-      }
-    }
+    className="css-view-mht2lk _alIt-stretch _boSi-borderzbox _di-flex _flBa-auto _flDi-column _flSh-zz _ovX-hidden _ovY-hidden who _boSh-xgwarg _boBoLeRa-8px _boBoRiRa-8px _boToLeRa-8px _boToRiRa-8px _paBo-5px _paLe-5px _paRi-5px _paTo-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
   />,
   <div
-    className="css-view-mht2lk ease-in-out-top _to-0px _paTo-2px _paBo-2px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _baCo-rhzyip _alIt-stretch _boSh-xgwarg _boBoLeRa-12px _boBoRiRa-12px _boToLeRa-12px _boToRiRa-12px _paLe-5px _paRi-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
-    style={
-      Object {
-        "backgroundColor": "rgba(255,255,255,1.00)",
-      }
-    }
+    className="css-view-mht2lk ease-in-out-top _to-0px _paTo-2px _paBo-2px _flSh-zz _flDi-column _flBa-auto _di-flex _boSi-borderzbox _baCo-rhzyip _alIt-stretch _boSh-xgwarg _boBoLeRa-8px _boBoRiRa-8px _boToLeRa-8px _boToRiRa-8px _paLe-5px _paRi-5px r-alignItems-1oszu61 r-boxSizing-deolkf r-display-6koalj r-flexBasis-1mlwlqe r-flexDirection-eqz5dr r-flexShrink-1q142lx"
   >
     <span
       className=" _di-inline"
