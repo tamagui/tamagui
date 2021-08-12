@@ -26,7 +26,7 @@ export type ButtonProps = StackProps & {
 // we could maybe add a "touchOpacity" boolean or similar for switching to opacity mode
 
 const defaultStyle: StackProps = {
-  alignSelf: 'flex-start',
+  // alignSelf: 'flex-start',
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',
@@ -58,7 +58,7 @@ export const Button = themeable(
       // flex shrink = 1, flex grow = 0 makes buttons shrink properly in native
       <Text
         color={theme.colorSecondary}
-        fontSize={16}
+        fontSize={15}
         flexGrow={0}
         flexShrink={1}
         ellipse
@@ -67,7 +67,7 @@ export const Button = themeable(
         {children}
       </Text>
     ) : (
-      <Text color={theme.colorSecondary} fontSize={16} flexGrow={0} flexShrink={1} ellipse>
+      <Text color={theme.colorSecondary} fontSize={15} flexGrow={0} flexShrink={1} ellipse>
         {children}
       </Text>
     )
