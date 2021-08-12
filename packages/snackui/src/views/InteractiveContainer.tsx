@@ -8,7 +8,7 @@ export const InteractiveContainer = (props: StackProps) => {
   const theme = useTheme()
   return (
     <HStack
-      borderRadius={100}
+      borderRadius={16}
       borderWidth={1}
       borderColor={theme.borderColor}
       hoverStyle={{
