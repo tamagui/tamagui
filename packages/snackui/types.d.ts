@@ -348,7 +348,7 @@ declare module "snackui" {
     export function debounce<A extends Function>(func: A, wait?: number, leading?: boolean): A & {
         cancel: Function;
     };
-    export function useDebounce<A extends (...args: any) => any, DebouncedFn extends A & {
+    export function useDebounce<A extends (...args: any) => any | undefined | null, DebouncedFn extends A & {
         cancel: () => void;
     }>(fn: A, wait: number, options?: DebounceSettings, mountArgs?: any[]): DebouncedFn;
     export function useDebounceValue<A>(val: A, amt?: number): A;

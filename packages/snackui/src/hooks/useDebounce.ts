@@ -39,7 +39,7 @@ export function debounce<A extends Function>(
 const defaultOpts = { leading: false }
 
 export function useDebounce<
-  A extends (...args: any) => any,
+  A extends (...args: any) => any | undefined | null,
   DebouncedFn extends A & {
     cancel: () => void
   }
