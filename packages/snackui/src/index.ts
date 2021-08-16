@@ -3,7 +3,7 @@ export * from './views/SizableTextProps'
 
 export * from './themeTypes'
 export * from './platform'
-export * from './constants'
+export { defaultMediaQueries } from './constants'
 export * from './defaultThemes'
 export * from './createComponent'
 

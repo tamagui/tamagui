@@ -1,6 +1,7 @@
-import { stylePropsTextOnly, validStyles } from '@snackui/helpers'
+import { stylePropsTextOnly } from '@snackui/helpers'
 import { TextProps as ReactTextProps, TextStyle } from 'react-native'
 
+import { validStylesText, webOnlySpecificStyleKeys } from '../constants'
 import { createComponent } from '../createComponent'
 import { isWeb } from '../platform'
 import { TransformStyleProps } from '../StackProps'
@@ -22,23 +23,6 @@ export type TextProps = Omit<ReactTextProps, 'style'> &
     userSelect?: string
     debug?: boolean
   }
-
-const webOnlySpecificStyleKeys = {
-  userSelect: true,
-  textOverflow: true,
-  whiteSpace: true,
-  wordWrap: true,
-  selectable: true,
-  cursor: true,
-}
-
-const validStylesText = {
-  ...validStyles,
-  ...stylePropsTextOnly,
-  ...(isWeb && {
-    ...webOnlySpecificStyleKeys,
-  }),
-}
 
 export const Text = createComponent<TextProps>({
   isText: true,
@@ -97,12 +81,11 @@ const ellipsePropsNative = {
 }
 
 function postProcessStyles(allProps: TextProps): TextStyle {
-  const res = useTextProps(allProps)[1]
-  return res
+  return useTextProps(allProps)[1]
 }
 
 export function useTextProps(allProps: TextProps, textOnly = false): [TextProps, TextStyle] {
-  const validProps = textOnly ? stylePropsTextOnly : validStylesText
+  const validStyles = textOnly ? stylePropsTextOnly : validStylesText
   let props: TextProps = {}
   let style: TextStyle = {}
   for (const key in allProps) {
@@ -110,7 +93,7 @@ export function useTextProps(allProps: TextProps, textOnly = false): [TextProps,
       continue
     }
     const val = allProps[key]
-    if (validProps[key]) {
+    if (validStyles[key]) {
       if (!isWeb) {
         if (val === 'inherit') {
           continue
@@ -132,6 +115,11 @@ export function useTextProps(allProps: TextProps, textOnly = false): [TextProps,
       continue
     }
     props[key] = val
+  }
+  if (process.env.NODE_ENV === 'development') {
+    if (allProps['debug']) {
+      console.log('Text.debug', { allProps, props, style })
+    }
   }
   return [props, style]
 }

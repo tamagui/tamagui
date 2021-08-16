@@ -26,7 +26,6 @@ export type ButtonProps = StackProps & {
 // we could maybe add a "touchOpacity" boolean or similar for switching to opacity mode
 
 const defaultStyle: StackProps = {
-  // alignSelf: 'flex-start',
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',

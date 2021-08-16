@@ -1,3 +1,7 @@
+import { stylePropsTextOnly, validStyles } from '@snackui/helpers'
+
+import { isWeb } from './platform'
+
 export const defaultMediaQueries = {
   xs: { maxWidth: 660 },
   notXs: { minWidth: 660 + 1 },
@@ -11,4 +15,21 @@ export const defaultMediaQueries = {
   tall: { minHeight: 820 },
   hoverNone: { hover: 'none' },
   pointerCoarse: { pointer: 'coarse' },
+}
+
+export const webOnlySpecificStyleKeys = {
+  userSelect: true,
+  textOverflow: true,
+  whiteSpace: true,
+  wordWrap: true,
+  selectable: true,
+  cursor: true,
+}
+
+export const validStylesText = {
+  ...validStyles,
+  ...stylePropsTextOnly,
+  ...(isWeb && {
+    ...webOnlySpecificStyleKeys,
+  }),
 }

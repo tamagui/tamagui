@@ -180,10 +180,10 @@ exports[`9. combines with classname 1`] = `
 
 exports[`10. extracts Text 1`] = `
 <span
-  className=" _di-inline"
+  className=" _foSi-10px _di-inline"
 >
   <div
-    className="css-text-1u9zv9r snack-text  _di-inline r-display-1471scf r-userSelect-1xnzce8"
+    className="css-text-1u9zv9r snack-text  _usSe-text _di-inline r-display-1471scf r-userSelect-1xnzce8"
     style={
       Object {
         "selectable": true,
@@ -191,7 +191,7 @@ exports[`10. extracts Text 1`] = `
     }
   >
     <span
-      className="css-text-1u9zv9r css-textHasAncestor-16my406 snack-text _di-inline r-display-xoduu5"
+      className="css-text-1u9zv9r css-textHasAncestor-16my406 snack-text _di-inline _foSi-15px _foWe-600 _col-18s66rc r-display-xoduu5"
     >
       hello
     </span>

@@ -742,14 +742,17 @@ export function createExtractor() {
           }
 
           // post process
-          const getStyles = (res: Object | null) => {
-            if (!res) return
+          const getStyles = (styles: Object | null) => {
+            if (!styles) return
             if (!!excludeProps.size) {
-              for (const key in res) {
-                if (isExcludedProp(key)) delete res[key]
+              for (const key in styles) {
+                if (isExcludedProp(key)) delete styles[key]
               }
             }
-            const next = staticConfig.postProcessStyles?.(res) ?? res
+            const next = staticConfig.postProcessStyles?.(styles) ?? styles
+            if (shouldPrintDebug) {
+              console.log('    getStyles in', styles, '=>', next, { excludeProps })
+            }
             if (staticConfig.validStyles) {
               for (const key in next) {
                 if (!staticConfig.validStyles[key]) {
@@ -832,7 +835,7 @@ export function createExtractor() {
                   }
                   if (shouldPrintDebug) {
                     // prettier-ignore
-                    console.log('     => style ', attr.value, '=>', next)
+                    console.log('     => style ', attr.value, '=>', next, { completeStylesProcessed })
                   }
                   attr.value = next
                   break

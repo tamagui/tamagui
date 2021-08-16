@@ -154,6 +154,17 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    import { useEffect } from "react";
+    export const isWeb: boolean;
+    export const isSSR: boolean;
+    export const useIsomorphicLayoutEffect: typeof useEffect;
+    export const isWebIOS: false;
+    export const isChrome: boolean;
+    export const supportsTouchWeb: boolean;
+    export const isTouchDevice: boolean;
+}
+
+declare module "snackui" {
     export const defaultMediaQueries: {
         xs: {
             maxWidth: number;
@@ -191,6 +202,134 @@ declare module "snackui" {
         pointerCoarse: {
             pointer: string;
         };
+    };
+    export const webOnlySpecificStyleKeys: {
+        userSelect: boolean;
+        textOverflow: boolean;
+        whiteSpace: boolean;
+        wordWrap: boolean;
+        selectable: boolean;
+        cursor: boolean;
+    };
+    export const validStylesText: {
+        userSelect: boolean;
+        textOverflow?: boolean | undefined;
+        whiteSpace?: boolean | undefined;
+        wordWrap?: boolean | undefined;
+        selectable?: boolean | undefined;
+        cursor: boolean;
+        color: boolean;
+        fontFamily: boolean;
+        fontSize: boolean;
+        fontStyle: boolean;
+        fontWeight: boolean;
+        letterSpacing: boolean;
+        lineHeight: boolean;
+        textAlign: boolean;
+        textDecorationLine: boolean;
+        textDecorationStyle: boolean;
+        textDecorationColor: boolean;
+        textShadowColor: boolean;
+        textShadowOffset: boolean;
+        textShadowRadius: boolean;
+        textTransform: boolean;
+        x: boolean;
+        y: boolean;
+        perspective: boolean;
+        scale: boolean;
+        scaleX: boolean;
+        scaleY: boolean;
+        skewX: boolean;
+        skewY: boolean;
+        matrix: boolean;
+        rotate: boolean;
+        rotateY: boolean;
+        rotateX: boolean;
+        rotateZ: boolean;
+        pointerEvents: boolean;
+        backfaceVisibility: boolean;
+        backgroundColor: boolean;
+        boxSizing: boolean;
+        borderBottomColor: boolean;
+        borderBottomEndRadius: boolean;
+        borderBottomLeftRadius: boolean;
+        borderBottomRightRadius: boolean;
+        borderBottomStartRadius: boolean;
+        borderBottomWidth: boolean;
+        borderColor: boolean;
+        borderEndColor: boolean;
+        borderLeftColor: boolean;
+        borderLeftWidth: boolean;
+        borderRadius: boolean;
+        borderRightColor: boolean;
+        borderRightWidth: boolean;
+        borderStartColor: boolean;
+        borderStyle: boolean;
+        borderTopColor: boolean;
+        borderTopEndRadius: boolean;
+        borderTopLeftRadius: boolean;
+        borderTopRightRadius: boolean;
+        borderTopStartRadius: boolean;
+        borderTopWidth: boolean;
+        borderWidth: boolean;
+        opacity: boolean;
+        transform: boolean;
+        alignContent: boolean;
+        alignItems: boolean;
+        alignSelf: boolean;
+        aspectRatio: boolean;
+        borderEndWidth: boolean;
+        borderStartWidth: boolean;
+        bottom: boolean;
+        display: boolean;
+        end: boolean;
+        flex: boolean;
+        flexBasis: boolean;
+        flexDirection: boolean;
+        flexGrow: boolean;
+        flexShrink: boolean;
+        flexWrap: boolean;
+        height: boolean;
+        justifyContent: boolean;
+        left: boolean;
+        margin: boolean;
+        marginBottom: boolean;
+        marginEnd: boolean;
+        marginHorizontal: boolean;
+        marginLeft: boolean;
+        marginRight: boolean;
+        marginStart: boolean;
+        marginTop: boolean;
+        marginVertical: boolean;
+        maxHeight: boolean;
+        maxWidth: boolean;
+        minHeight: boolean;
+        minWidth: boolean;
+        overflow: boolean;
+        padding: boolean;
+        paddingBottom: boolean;
+        paddingEnd: boolean;
+        paddingHorizontal: boolean;
+        paddingLeft: boolean;
+        paddingRight: boolean;
+        paddingStart: boolean;
+        paddingTop: boolean;
+        paddingVertical: boolean;
+        position: boolean;
+        right: boolean;
+        start: boolean;
+        top: boolean;
+        width: boolean;
+        zIndex: boolean;
+        direction: boolean;
+        shadowColor: boolean;
+        shadowOffset: boolean;
+        shadowOpacity: boolean;
+        shadowRadius: boolean;
+        contain: boolean;
+        hoverStyle: boolean;
+        pressStyle: boolean;
+        focusStyle: boolean;
     };
 }
 
@@ -239,17 +378,6 @@ declare module "snackui" {
 
 declare module "snackui" {
     export const defaultThemes: any;
-}
-
-declare module "snackui" {
-    import { useEffect } from "react";
-    export const isWeb: boolean;
-    export const isSSR: boolean;
-    export const useIsomorphicLayoutEffect: typeof useEffect;
-    export const isWebIOS: false;
-    export const isChrome: boolean;
-    export const supportsTouchWeb: boolean;
-    export const isTouchDevice: boolean;
 }
 
 declare module "snackui" {

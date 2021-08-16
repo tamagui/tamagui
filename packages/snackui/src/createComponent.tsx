@@ -12,6 +12,7 @@ import {
   ViewStyle,
 } from 'react-native'
 
+import { validStylesText } from './constants'
 import { fixNativeShadow } from './fixNativeShadow'
 import { StaticComponent } from './helpers/extendStaticConfig'
 import { spacedChildren } from './helpers/spacedChildren'
@@ -427,10 +428,16 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       validStyles,
       ...componentProps,
       postProcessStyles: (inStyles) => {
-        const { style, psuedos } = getSplitStyles(inStyles)
+        const { style, psuedos } = getSplitStyles(
+          inStyles,
+          componentProps.isText ? validStylesText : validStyles
+        )
+        // flattening pseudos
         const next = {
           ...style.reduce((acc, value) => {
-            Object.assign(acc, value)
+            if (value) {
+              Object.assign(acc, value)
+            }
             return acc
           }, {}),
           ...psuedos,
