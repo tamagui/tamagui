@@ -326,6 +326,7 @@ declare module "snackui" {
         pointerEvents?: string;
         cursor?: string;
         userSelect?: string;
+        debug?: boolean;
     };
     export const Text: import("index").StaticComponent<TextProps>;
     export function useTextProps(allProps: TextProps, textOnly?: boolean): [

@@ -153,10 +153,8 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       [state.theme]
     )
 
-    const { viewProps, psuedos, style } = getSplitStyles(
-      componentProps.preProcessProps ? componentProps.preProcessProps(props) : props,
-      varToVal
-    )
+    const processedProps = componentProps.preProcessProps?.(props) ?? props
+    const { viewProps, psuedos, style } = getSplitStyles(processedProps, validStyleProps, varToVal)
 
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
@@ -216,13 +214,6 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       disabled ? disabledStyle : null,
     ]
 
-    if (process.env.NODE_ENV === 'development') {
-      if (props['debug']) {
-        // prettier-ignore
-        console.log(' 🍑 debug\n  🔵 props in: ', props, '\n  🔵 props out: ', viewProps, '\n  🔵 styles: ', styles)
-      }
-    }
-
     const supportedProps: any = {
       ...viewProps,
       ...(isWeb && {
@@ -234,9 +225,9 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
               hasTextAncestor === true && cssText.textHasAncestor,
               numberOfLines === 1 && cssText.textOneLine,
               numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
-              props.className,
+              processedProps.className,
             ]
-          : [cssView.view, props.className],
+          : [cssView.view, processedProps.className],
       }),
       style: styles,
     }
@@ -265,6 +256,13 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     } else {
       if (forwardedRef) {
         supportedProps.ref = forwardedRef
+      }
+    }
+
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug']) {
+        // prettier-ignore
+        console.log(' 🍑 debug\n  🔵 props in: ', props, '\n  🔵 props out: ', viewProps, '\n  🔵 other: ', { supportedProps, styles, psuedos, processedProps }, componentProps.preProcessProps)
       }
     }
 
@@ -424,112 +422,6 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     return content
   })
 
-  const defaultVarToVal = (x: any) => x
-
-  const getSplitStyles = (
-    props: { [key: string]: any },
-    // convert from var to theme value
-    varToVal: (key: string) => string = defaultVarToVal
-  ) => {
-    let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
-    let viewProps: ViewProps = {}
-    let style: any[] = []
-    let cur: ViewStyle | null = null
-    for (const key in props) {
-      let val = props[key]
-      if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
-        if (cur) {
-          // process last
-          fixNativeShadow(cur, true)
-          style.push(cur)
-          cur = null
-        }
-        fixNativeShadow(val, true)
-        style.push(val)
-        continue
-      }
-      if (key === 'fullscreen') {
-        cur = cur || {}
-        Object.assign(cur, fullscreenStyle)
-        continue
-      }
-      // expand flex so it merged with flexShrink etc properly
-      if (key === 'flex') {
-        cur = cur || {}
-        // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-        Object.assign(cur, {
-          flexGrow: val,
-          flexShrink: 1,
-        })
-        continue
-      }
-      if (!isWeb && key === 'pointerEvents') {
-        viewProps[key] = val
-        continue
-      }
-      // is style
-      const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
-      if (validStyleProps[key] || isPseudo) {
-        if (isPseudo) {
-          if (!val) continue
-          psuedos = psuedos || {}
-          const pseudoStyle: ViewStyle = {}
-          for (const subKey in val) {
-            const sval = varToVal(val[subKey])
-            if (subKey in stylePropsTransform) {
-              mergeTransform(pseudoStyle, subKey, sval)
-              continue
-            } else {
-              pseudoStyle[subKey] = sval
-            }
-          }
-          fixNativeShadow(pseudoStyle, true)
-          psuedos[key] = pseudoStyle
-          continue
-        }
-        // get value from theme
-        val = varToVal(val)
-        // transforms
-        if (key in stylePropsTransform) {
-          cur = cur || {}
-          mergeTransform(cur, key, val)
-          continue
-        }
-        cur = cur || {}
-        cur[key] = val
-        continue
-      }
-      if (
-        !isWeb ||
-        // dont need to validate when in static mode itll validate client-side
-        (!forwardPropsList ? true : key in forwardPropsList) ||
-        (key[0] === 'd' && key.startsWith('data-'))
-      ) {
-        // if no match, prop
-        viewProps[key] = val
-      }
-    }
-    // push last style
-    if (cur) {
-      fixNativeShadow(cur, true)
-      style.push(cur)
-    }
-    // if (process.env.NODE_ENV === 'development') {
-    //   if (props['debug']) {
-    //     try {
-    //       console.log(' processed styles:', JSON.stringify({ props, viewProps, style }, null, 2))
-    //     } catch {
-    //       console.log(' processed styles:', { props, viewProps, style })
-    //     }
-    //   }
-    // }
-    return {
-      viewProps,
-      style,
-      psuedos,
-    }
-  }
-
   if (process.env.IS_STATIC) {
     const config: StaticConfig = {
       validStyles,
@@ -647,3 +539,110 @@ const textStyles = isWeb
       },
     })
   : {}
+
+const defaultVarToVal = (x: any) => x
+
+const getSplitStyles = (
+  props: { [key: string]: any },
+  validStyleProps: Object = validStyles,
+  // convert from var to theme value
+  varToVal: (key: string) => string = defaultVarToVal
+) => {
+  let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
+  let viewProps: ViewProps = {}
+  let style: any[] = []
+  let cur: ViewStyle | null = null
+  for (const key in props) {
+    let val = props[key]
+    if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
+      if (cur) {
+        // process last
+        fixNativeShadow(cur, true)
+        style.push(cur)
+        cur = null
+      }
+      fixNativeShadow(val, true)
+      style.push(val)
+      continue
+    }
+    if (key === 'fullscreen') {
+      cur = cur || {}
+      Object.assign(cur, fullscreenStyle)
+      continue
+    }
+    // expand flex so it merged with flexShrink etc properly
+    if (key === 'flex') {
+      cur = cur || {}
+      // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+      Object.assign(cur, {
+        flexGrow: val,
+        flexShrink: 1,
+      })
+      continue
+    }
+    if (!isWeb && key === 'pointerEvents') {
+      viewProps[key] = val
+      continue
+    }
+    // is style
+    const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
+    if (validStyleProps[key] || isPseudo) {
+      if (isPseudo) {
+        if (!val) continue
+        psuedos = psuedos || {}
+        const pseudoStyle: ViewStyle = {}
+        for (const subKey in val) {
+          const sval = varToVal(val[subKey])
+          if (subKey in stylePropsTransform) {
+            mergeTransform(pseudoStyle, subKey, sval)
+            continue
+          } else {
+            pseudoStyle[subKey] = sval
+          }
+        }
+        fixNativeShadow(pseudoStyle, true)
+        psuedos[key] = pseudoStyle
+        continue
+      }
+      // get value from theme
+      val = varToVal(val)
+      // transforms
+      if (key in stylePropsTransform) {
+        cur = cur || {}
+        mergeTransform(cur, key, val)
+        continue
+      }
+      cur = cur || {}
+      cur[key] = val
+      continue
+    }
+    if (
+      !isWeb ||
+      // dont need to validate when in static mode itll validate client-side
+      (!forwardPropsList ? true : key in forwardPropsList) ||
+      (key[0] === 'd' && key.startsWith('data-'))
+    ) {
+      // if no match, prop
+      viewProps[key] = val
+    }
+  }
+  // push last style
+  if (cur) {
+    fixNativeShadow(cur, true)
+    style.push(cur)
+  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   if (props['debug']) {
+  //     try {
+  //       console.log(' processed styles:', JSON.stringify({ props, viewProps, style }, null, 2))
+  //     } catch {
+  //       console.log(' processed styles:', { props, viewProps, style })
+  //     }
+  //   }
+  // }
+  return {
+    viewProps,
+    style,
+    psuedos,
+  }
+}

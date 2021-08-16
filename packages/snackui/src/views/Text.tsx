@@ -20,6 +20,7 @@ export type TextProps = Omit<ReactTextProps, 'style'> &
     pointerEvents?: string
     cursor?: string
     userSelect?: string
+    debug?: boolean
   }
 
 const webOnlySpecificStyleKeys = {
@@ -57,14 +58,16 @@ export const Text = createComponent<TextProps>({
   validStyles: validStylesText,
 })
 
-function preProcessProps(props: any) {
-  if (props.ellipse) {
-    return {
-      ...props,
-      ...(process.env.TARGET === 'native' ? ellipsePropsNative : ellipseStyle),
-    }
+function preProcessProps(props: TextProps) {
+  return {
+    ...props,
+    ...(props.ellipse
+      ? process.env.TARGET === 'native'
+        ? ellipsePropsNative
+        : ellipseStyle
+      : null),
+    className: 'snack-text' + (props.className ? ` ${props.className}` : ''),
   }
-  return props
 }
 
 const webOnlyProps = {
