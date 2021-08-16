@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { View } from 'react-native'
-import { useTheme } from '../hooks/useTheme'
 
+import { useTheme } from '../hooks/useTheme'
 import { StackProps } from '../StackProps'
 import { HStack, VStack } from './Stacks'
 
@@ -26,18 +26,22 @@ export const Divider = memo(
       <HStack
         flexDirection={vertical ? 'column' : 'row'}
         flex={flex === true ? 1 : 0}
-        width={width ?? (vertical ? 1 : flex ? 'auto' : '100%')}
-        height={height ?? (!vertical ? 1 : flex ? 'auto' : '100%')}
+        width={vertical ? 1 : flex ? 'auto' : '100%'}
+        height={!vertical ? 1 : flex ? 'auto' : '100%'}
+        {...(width && { width })}
+        {...(height && { height })}
         {...rest}
       >
         {!noGap && <VStack flex={1} />}
         <VStack
-          backgroundColor={theme.backgroundColor}
+          backgroundColor={theme.backgroundColorSecondary}
           opacity={1}
           flex={flexLine}
-          {...{
-            [vertical ? 'width' : 'height']: 1,
-          }}
+          height={1}
+          {...(vertical && {
+            height: 'auto',
+            width: 1,
+          })}
           {...rest}
         />
         {!noGap && <VStack flex={1} />}
