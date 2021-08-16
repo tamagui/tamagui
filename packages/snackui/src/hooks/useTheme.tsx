@@ -222,11 +222,18 @@ export const useTheme = () => {
           if (!val) {
             if (process.env.NODE_ENV === 'development') {
               if (typeof key === 'string') {
-                if (!activeTheme) {
-                  throw new Error(`No theme! ${name} in ${Object.keys(themes)}`)
-                }
-                if (!val) {
-                  throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
+                try {
+                  if (!activeTheme) {
+                    throw new Error(`No theme! ${name} in ${Object.keys(themes)}`)
+                  }
+                  if (!val) {
+                    throw new Error(
+                      `No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`
+                    )
+                  }
+                } catch (err: any) {
+                  // no need to destroy rendering ever
+                  console.error(err.message, err.stack)
                 }
               }
             }

@@ -30,7 +30,7 @@ export const LoadingItem = ({
   lines?: number
 }) => {
   return (
-    <VStack overflow="hidden" padding={16}>
+    <VStack width="100%" overflow="hidden" padding={16}>
       <HStack
         width={`${seed * 12}%`}
         height={size === 'sm' ? 14 : size === 'lg' ? 36 : 28}
