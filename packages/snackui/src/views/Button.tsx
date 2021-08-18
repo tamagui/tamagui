@@ -16,6 +16,8 @@ export type ButtonProps = StackProps & {
   icon?: JSX.Element | null
   iconAfter?: JSX.Element | null
   active?: boolean
+  chromeless?: boolean
+  transparent?: boolean
 }
 
 // TODO colors, spacing, static extract + colors/spacing
@@ -48,6 +50,8 @@ export const Button = themeable(
     elevation,
     active,
     disabled,
+    chromeless,
+    transparent,
     ...props
   }: ButtonProps) => {
     const theme = useTheme()
@@ -103,6 +107,14 @@ export const Button = themeable(
         {...(disabled && {
           pointerEvents: 'none',
           opacity: 0.5,
+        })}
+        {...(chromeless && {
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+          shadowColor: 'transparent',
+        })}
+        {...(transparent && {
+          backgroundColor: 'transparent',
         })}
         {...props}
       >

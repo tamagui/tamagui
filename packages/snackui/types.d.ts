@@ -723,6 +723,8 @@ declare module "snackui" {
         icon?: JSX.Element | null;
         iconAfter?: JSX.Element | null;
         active?: boolean;
+        chromeless?: boolean;
+        transparent?: boolean;
     };
     export const Button: (props: ButtonProps) => JSX.Element;
 }
