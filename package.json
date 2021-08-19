@@ -22,8 +22,8 @@
     "watch": "ultra -r --no-pretty watch",
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
-    "version:minor": "lerna version minor --conventional-commits",
-    "version:patch": "lerna version patch --conventional-commits",
+    "version:minor": "npx lerna version minor --no-changelog --no-git-tag-version --no-push",
+    "version:patch": "npx lerna version patch --no-changelog --no-git-tag-version --no-push",
     "publish": "ultra -r --no-pretty npm publish"
   },
   "resolutions": {
