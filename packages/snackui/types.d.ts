@@ -882,7 +882,9 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
+    import React from "react";
     export type ParagraphProps = SizableTextProps;
+    export const ParagraphContext: React.Context<boolean>;
     export const Paragraph: {
         (props: SizableTextProps): JSX.Element;
         staticConfig: import("helpers/StaticConfig").StaticConfig | null;

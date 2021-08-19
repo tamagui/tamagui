@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createContext } from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { useTheme } from '../hooks/useTheme'
@@ -14,10 +14,16 @@ const defaultProps: ParagraphProps = {
   size: 'md',
 }
 
+export const ParagraphContext = createContext(false)
+
 export const Paragraph = (props: SizableTextProps) => {
   const theme = useTheme()
   const finalProps = getSizedTextProps(props, defaultProps)
-  return <Text color={theme.color} {...finalProps} />
+  return (
+    <ParagraphContext.Provider value={true}>
+      <Text color={theme.color} {...finalProps} />
+    </ParagraphContext.Provider>
+  )
 }
 
 if (process.env.IS_STATIC) {
