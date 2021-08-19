@@ -22,7 +22,7 @@ type AutocompleteType =
   | 'tel'
   | 'username'
   | 'off'
-  
+
 export type InputProps = Omit<TextInputProps, 'style' | 'name'> &
   Omit<TextStyle, 'name'> & {
     name?: AutocompleteType
@@ -65,7 +65,7 @@ const sheet = StyleSheet.create({
     width: '100%',
     height: '100%',
     paddingHorizontal: 14,
-    paddingVertical: 10,
+    paddingVertical: 12,
     fontSize: 16,
     color: 'rgb(100, 100, 100)',
   },
