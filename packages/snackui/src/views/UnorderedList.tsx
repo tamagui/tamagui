@@ -1,5 +1,5 @@
 import React from 'react'
-import { Paragraph } from 'snackui/src'
+import { Paragraph } from './Paragraph'
 import { StackProps } from '../StackProps'
 import { getSizedTextProps } from './getSizedTextProps'
 import { SizableTextProps } from './SizableTextProps'
