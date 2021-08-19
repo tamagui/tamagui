@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/getdish/dish/compare/v0.3.2...v0.16.0) (2021-08-19)
+
+**Note:** Version bump only for package @snackui/node
+
+
+
+
+
 ## [0.15.4](https://github.com/getdish/dish/compare/v0.3.2...v0.15.4) (2021-07-26)
 
 **Note:** Version bump only for package @snackui/node
