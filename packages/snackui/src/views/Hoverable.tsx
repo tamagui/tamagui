@@ -2,6 +2,17 @@ import React from 'react'
 
 import { isWeb } from '../platform'
 
+type SpanProps = React.DOMAttributes<HTMLSpanElement>
+
+export type HoverableProps = {
+  children?: any
+  onHoverIn?: SpanProps['onMouseEnter']
+  onHoverOut?: SpanProps['onMouseLeave']
+  onHoverMove?: SpanProps['onMouseMove']
+  onPressIn?: SpanProps['onMouseDown']
+  onPressOut?: SpanProps['onClick']
+}
+
 export function Hoverable({
   onPressIn,
   onPressOut,
@@ -9,14 +20,7 @@ export function Hoverable({
   onHoverOut,
   onHoverMove,
   children,
-}: {
-  children?: any
-  onHoverIn?: any
-  onHoverOut?: any
-  onHoverMove?: any
-  onPressIn?: any
-  onPressOut?: any
-}) {
+}: HoverableProps) {
   if (!isWeb) {
     return children
   }
