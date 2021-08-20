@@ -6,6 +6,7 @@ import generate from '@babel/generator'
 import * as t from '@babel/types'
 import { concatClassName } from '@snackui/helpers'
 import { MediaQueries, defaultMediaQueries } from '@snackui/node'
+// import * as SWC from '@swc/core'
 import invariant from 'invariant'
 import { getRemainingRequest } from 'loader-utils'
 import { ViewStyle } from 'react-native'
@@ -22,11 +23,6 @@ import { hoistClassNames } from './hoistClassNames'
 
 export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
 
-let initialFileName = ''
-export function getInitialFileName() {
-  return initialFileName
-}
-
 const mergeStyleGroups = {
   shadowOpacity: true,
   shadowRadius: true,
@@ -34,26 +30,25 @@ const mergeStyleGroups = {
   shadowOffset: true,
 }
 
-export function extractToClassNames(
-  this: any,
-  {
-    extractor,
-    source,
-    sourcePath,
-    options,
-    shouldPrintDebug,
-    threaded,
-    cssPath,
-  }: {
-    extractor: Extractor
-    source: string | Buffer
-    sourcePath: string
-    options: SnackOptions
-    shouldPrintDebug: boolean
-    cssPath: string
-    threaded?: boolean
-  }
-): null | {
+export function extractToClassNames({
+  loader,
+  extractor,
+  source,
+  sourcePath,
+  options,
+  shouldPrintDebug,
+  threaded,
+  cssPath,
+}: {
+  loader: any
+  extractor: Extractor
+  source: string | Buffer
+  sourcePath: string
+  options: SnackOptions
+  shouldPrintDebug: boolean
+  cssPath: string
+  threaded?: boolean
+}): null | {
   js: string | Buffer
   styles: string
   stylesPath?: string
@@ -76,6 +71,7 @@ export function extractToClassNames(
   let ast: t.File
 
   try {
+    // @ts-ignore
     ast = babelParse(source)
   } catch (err) {
     console.error('babel parse error:', sourcePath)
@@ -285,7 +281,7 @@ export function extractToClassNames(
     const cssQuery = threaded
       ? `cssData=${Buffer.from(styles).toString('base64')}`
       : `cssPath=${cssPath}`
-    const remReq = getRemainingRequest(this)
+    const remReq = getRemainingRequest(loader)
     const importPath = `${cssPath}!=!snackui-loader?${cssQuery}!${remReq}`
     ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
   }

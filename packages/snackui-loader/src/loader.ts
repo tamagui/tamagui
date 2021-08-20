@@ -49,7 +49,8 @@ export function loader(this: any, source: string) {
   }
 
   const cssPath = threaded ? `${sourcePath}.css` : `${sourcePath}.${index++}.css`
-  const extracted = extractToClassNames.call(this, {
+  const extracted = extractToClassNames({
+    loader: this,
     extractor,
     source,
     threaded,
