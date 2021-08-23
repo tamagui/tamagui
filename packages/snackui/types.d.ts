@@ -583,10 +583,6 @@ declare module "snackui" {
 }
 
 declare module "snackui" {
-    export function usePrevious<A>(value: A): A;
-}
-
-declare module "snackui" {
     const _default: {};
     export default _default;
     type AnchorEnum = 'BOTTOM_LEFT' | 'BOTTOM_RIGHT' | 'BOTTOM_CENTER' | 'TOP_LEFT' | 'TOP_RIGHT' | 'TOP_CENTER' | 'LEFT_BOTTOM' | 'LEFT_TOP' | 'LEFT_CENTER' | 'RIGHT_BOTTOM' | 'RIGHT_TOP' | 'RIGHT_CENTER' | 'CENTER';
@@ -638,12 +634,6 @@ declare module "snackui" {
         ref: import("react").MutableRefObject<any>;
         onLayout?: undefined;
     };
-}
-
-declare module "snackui" {
-    import { RefObject } from "react";
-    const useRefMounted: () => RefObject<boolean>;
-    export default useRefMounted;
 }
 
 declare module "snackui" {
