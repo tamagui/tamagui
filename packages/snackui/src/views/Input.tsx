@@ -5,6 +5,7 @@ import { combineRefs } from '../helpers/combineRefs'
 import { useTextStylePropsSplit } from '../hooks/useTextStylePropsSplit'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { InteractiveContainer } from './InteractiveContainer'
+import { useTheme } from '..'
 
 // TODO make this extractable / take flat style props
 
@@ -29,6 +30,7 @@ export type InputProps = Omit<TextInputProps, 'style' | 'name'> &
   }
 
 export const Input = forwardRef((props: InputProps, ref) => {
+  const theme = useTheme()
   const { textProps, styleProps } = useTextStylePropsSplit(props)
   const textRef = useRef<HTMLInputElement>()
 
@@ -52,7 +54,7 @@ export const Input = forwardRef((props: InputProps, ref) => {
             lineHeight: styleProps.lineHeight,
             fontWeight: styleProps.fontWeight,
             textAlign: styleProps.textAlign,
-            color: styleProps.color,
+            color: styleProps.color ?? theme.color,
           },
         ]}
       />
