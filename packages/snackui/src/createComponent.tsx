@@ -98,6 +98,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       onStartShouldSetResponderCapture,
       onMouseDown,
       onClick,
+      onLayout,
     } = props
 
     const manager = useContext(ThemeManagerContext)
@@ -183,6 +184,8 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     const ViewComponent = componentProps.isText
       ? animated
         ? Animated.Text
+        : onLayout
+        ? ReactText
         : isWeb
         ? hasTextAncestor
           ? 'span'
@@ -191,7 +194,9 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       : animated
       ? Animated.View
       : isWeb
-      ? 'div'
+      ? onLayout
+        ? View
+        : 'div'
       : View
 
     const numberOfLines = props['numberOfLines']
@@ -500,8 +505,6 @@ const cssText = isWeb
     })
   : {}
 
-const displayContentsStyle = { display: 'contents' }
-
 const fullscreenStyle: StackProps = {
   top: 0,
   left: 0,
@@ -555,9 +558,9 @@ const getSplitStyles = (
   // convert from var to theme value
   varToVal: (key: string) => string = defaultVarToVal
 ) => {
+  const viewProps: ViewProps = {}
+  const style: any[] = []
   let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
-  let viewProps: ViewProps = {}
-  let style: any[] = []
   let cur: ViewStyle | null = null
   for (const key in props) {
     let val = props[key]
@@ -623,8 +626,10 @@ const getSplitStyles = (
       cur[key] = val
       continue
     }
+
     if (
       !isWeb ||
+      key === 'onLayout' ||
       // dont need to validate when in static mode itll validate client-side
       (!forwardPropsList ? true : key in forwardPropsList) ||
       (key[0] === 'd' && key.startsWith('data-'))

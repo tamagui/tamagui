@@ -10,9 +10,9 @@ export type EnhancedStyleProps = Omit<ViewStyle, 'display' | 'backfaceVisibility
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
   }
 
-export type StackProps = Omit<RNWInternalProps, 'onLayout'> &
+export type StackProps = RNWInternalProps &
   EnhancedStyleProps &
-  Omit<ViewProps, 'display' | 'onLayout'> & {
+  Omit<ViewProps, 'display'> & {
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)
     animated?: boolean
     fullscreen?: boolean
