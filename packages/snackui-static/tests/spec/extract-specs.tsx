@@ -79,7 +79,7 @@ export function Test2(props: TestProps) {
 // single spread at end
 export function Test3(props: any) {
   return (
-    <VStack onLayout={() => {}} overflow="hidden" {...props}>
+    <VStack overflow="hidden" {...props}>
       {child}
     </VStack>
   )
