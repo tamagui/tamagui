@@ -15,5 +15,6 @@ export function setThemeInversions(next: StringRecord) {
 
 export const ThemeInverse = (props: { children: any }) => {
   const themeName = useThemeName()
-  return <Theme name={inversions[themeName] || null}>{props.children}</Theme>
+  const name = inversions[themeName] || null
+  return <Theme name={name}>{props.children}</Theme>
 }

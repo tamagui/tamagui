@@ -11,23 +11,23 @@ export type ThemeableProps = {
 export const themeable: ThemeableHOC = function graphql<
   R extends ReactElement<any, any> | null,
   P extends ThemeableProps = {}
->(Component: (props: P) => R) {
+>(component: (props: P) => R) {
   const withTheme: {
     (props: P): R
     displayName: string
-  } = function WithTheme(props) {
-    const el = React.createElement(Component, props) as R
-    if (props.themeInverse) {
+  } = function WithTheme({ themeInverse, ...rest }) {
+    const el = React.createElement(component, rest as any) as R
+    if (themeInverse) {
       return (<ThemeInverse>{el}</ThemeInverse>) as R
     }
-    if (props.theme) {
-      return (<Theme name={props.theme}>{el}</Theme>) as R
+    if (rest.theme) {
+      return (<Theme name={rest.theme}>{el}</Theme>) as R
     }
     return el
   }
 
   withTheme.displayName = `Themed(${
-    (Component as any)?.displayName || (Component as any)?.name || 'Anonymous'
+    (component as any)?.displayName || (component as any)?.name || 'Anonymous'
   })`
 
   return withTheme
