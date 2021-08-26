@@ -2,23 +2,23 @@ import React from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
-import { themeable } from '../helpers/themeable'
+import { ThemeableProps, themeable } from '../helpers/themeable'
 import { useTheme } from '../hooks/useTheme'
 import { isWeb } from '../platform'
 import { StackProps } from '../StackProps'
 import { HStack } from './Stacks'
 import { Text, TextProps } from './Text'
 
-export type ButtonProps = StackProps & {
-  textProps?: Omit<TextProps, 'children'>
-  noTextWrap?: boolean
-  theme?: string | null
-  icon?: JSX.Element | null
-  iconAfter?: JSX.Element | null
-  active?: boolean
-  chromeless?: boolean
-  transparent?: boolean
-}
+export type ButtonProps = StackProps &
+  ThemeableProps & {
+    textProps?: Omit<TextProps, 'children'>
+    noTextWrap?: boolean
+    icon?: JSX.Element | null
+    iconAfter?: JSX.Element | null
+    active?: boolean
+    chromeless?: boolean
+    transparent?: boolean
+  }
 
 // TODO colors, spacing, static extract + colors/spacing
 // TODO sizing, static + sizing
@@ -46,12 +46,12 @@ export const Button = themeable(
     spacing = 'sm',
     textProps,
     noTextWrap,
-    theme: themeName,
     elevation,
     active,
     disabled,
     chromeless,
     transparent,
+    theme: themeName,
     ...props
   }: ButtonProps) => {
     const theme = useTheme()
