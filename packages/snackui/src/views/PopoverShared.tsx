@@ -11,7 +11,8 @@ export const closeAllPopovers = () => {
 }
 
 const handleKeyDown = (e) => {
-  if (e.keyCode == 27) {
+  console.log('down', e.key, popoverCloseCbs.size, popoverCloseCbs)
+  if (e.key == 'Escape') {
     // esc
     if (popoverCloseCbs.size) {
       const [first] = [...popoverCloseCbs]
