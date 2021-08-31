@@ -11,11 +11,12 @@ import { AbsoluteVStack, VStack } from './Stacks'
 
 // TODO if we add `closableButton` prop we can control exit animation nicely
 
-export type ModalProps = ModalPropsReact &
+export type ModalProps = Omit<ModalPropsReact, 'children'> &
   Omit<AnimatedStackProps, 'animateState'> & {
     visible?: boolean
     overlayBackground?: string
     overlayDismisses?: boolean
+    children?: any | ((isOpen?: boolean) => any)
   }
 
 export const Modal = (props: ModalProps) => {
@@ -67,7 +68,8 @@ export const Modal = (props: ModalProps) => {
   }
 
   const themeName = useThemeName()
-
+  const finalChildren = typeof children === 'function' ? children(visible) : children
+  
   if (isWeb) {
     const pointerEvents = visible ? 'auto' : 'none'
     const modalVisible = useDebounceValue(visible, visible ? 200 : 0)
@@ -100,7 +102,7 @@ export const Modal = (props: ModalProps) => {
               }}
             >
               <ModalPane onPress={prevent} pointerEvents={pointerEvents} {...rest}>
-                {children}
+                {finalChildren}
               </ModalPane>
             </AnimatedVStack>
           </AbsoluteVStack>
@@ -113,7 +115,7 @@ export const Modal = (props: ModalProps) => {
     <ModalNative animationType={animationType} {...modalProps}>
       <Theme name={themeName}>
         <VStack flex={1} {...rest} backgroundColor={theme.backgroundColor}>
-          {children}
+          {finalChildren}
         </VStack>
       </Theme>
     </ModalNative>
