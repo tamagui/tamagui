@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 
 import { useDebounce } from '../hooks/useDebounce'
 import { isTouchDevice } from '../platform'
@@ -6,19 +6,27 @@ import { Hoverable } from './Hoverable'
 import { Popover } from './Popover'
 import { PopoverProps } from './PopoverProps'
 
-export const HoverablePopover = ({
+export type HoverablePopoverRef = {
+  close: () => void
+}
+
+type HoverablePopoverProps = PopoverProps & {
+  delay?: number
+  allowHoverOnContent?: boolean
+}
+
+export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopoverProps>(({
   children,
   allowHoverOnContent,
   contents,
   delay,
   ...props
-}: PopoverProps & {
-  delay?: number
-  allowHoverOnContent?: boolean
-}) => {
+}, ref) => {
+  // TODO: make this optionally or default a tap action 
   if (isTouchDevice) {
     return null
   }
+
   const [isHovering, set] = useState(false)
   delay = delay ?? (allowHoverOnContent ? 250 : 0)
   const setIsntHoveringSlow = useDebounce(() => set(false), delay / 2)
@@ -27,6 +35,13 @@ export const HoverablePopover = ({
     setIsHoveringSlow.cancel()
     setIsntHoveringSlow.cancel()
   }
+
+  useImperativeHandle(ref, () => ({
+    close: () => {
+      set(false)
+    }
+  }))
+
   const setIsntHovering = () => {
     cancelAll()
     setIsntHoveringSlow()
@@ -65,4 +80,4 @@ export const HoverablePopover = ({
       </Hoverable>
     </Popover>
   )
-}
+})

@@ -50,6 +50,7 @@ export function loader(this: any, source: string) {
 
   const cssPath = threaded ? `${sourcePath}.css` : `${sourcePath}.${index++}.css`
   const extracted = extractToClassNames({
+    // @ts-ignore
     loader: this,
     extractor,
     source,

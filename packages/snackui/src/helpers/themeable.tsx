@@ -21,7 +21,7 @@ export const themeable: ThemeableHOC = function graphql<
       return (<ThemeInverse>{el}</ThemeInverse>) as R
     }
     if (rest.theme) {
-      return (<Theme name={rest.theme}>{el}</Theme>) as R
+      return (<Theme name={rest.theme || null}>{el}</Theme>) as R
     }
     return el
   }

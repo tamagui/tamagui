@@ -23,7 +23,7 @@ import { VStack } from './Stacks'
 const defaultAnimation = {
   from: {
     opacity: 0,
-    translateY: 30,
+    translateY: 12,
   },
   to: {
     opacity: 1,
@@ -64,7 +64,7 @@ export type AnimatedStackProps = StackProps & {
 export const AnimatedVStack = ({
   animateState = 'in',
   animation = defaultAnimation,
-  velocity = 5,
+  velocity = 6,
   children,
   ...props
 }: AnimatedStackProps) => {
@@ -114,7 +114,7 @@ export const AnimatedVStack = ({
 
   useIsomorphicLayoutEffect(() => {
     Animated.spring(driver, {
-      useNativeDriver: !isWeb,
+      useNativeDriver: true,
       velocity,
       toValue: animateState === 'in' ? 1 : 0,
     }).start()

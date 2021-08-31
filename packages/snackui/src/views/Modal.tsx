@@ -127,11 +127,12 @@ function ModalPane(props: StackProps) {
   return (
     <VStack
       backgroundColor={theme.backgroundColor}
-      borderRadius={26}
+      borderRadius={12}
       alignItems="center"
       position="relative"
       shadowColor={theme.shadowColor}
-      shadowRadius={180}
+      shadowRadius={20}
+      shadowOffset={{ height: 10, width: 0 }}
       flex={1}
       maxHeight="100%"
       {...props}
