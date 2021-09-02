@@ -10,74 +10,70 @@ export type HoverablePopoverRef = {
   close: () => void
 }
 
-type HoverablePopoverProps = PopoverProps & {
+export type HoverablePopoverProps = PopoverProps & {
   delay?: number
   allowHoverOnContent?: boolean
 }
 
-export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopoverProps>(({
-  children,
-  allowHoverOnContent,
-  contents,
-  delay,
-  ...props
-}, ref) => {
-  // TODO: make this optionally or default a tap action 
-  if (isTouchDevice) {
-    return null
-  }
-
-  const [isHovering, set] = useState(false)
-  delay = delay ?? (allowHoverOnContent ? 250 : 0)
-  const setIsntHoveringSlow = useDebounce(() => set(false), delay / 2)
-  const setIsHoveringSlow = useDebounce(() => set(true), delay)
-  const cancelAll = () => {
-    setIsHoveringSlow.cancel()
-    setIsntHoveringSlow.cancel()
-  }
-
-  useImperativeHandle(ref, () => ({
-    close: () => {
-      set(false)
+export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopoverProps>(
+  ({ children, allowHoverOnContent, contents, delay, ...props }, ref) => {
+    // TODO: make this optionally or default a tap action
+    if (isTouchDevice) {
+      return null
     }
-  }))
 
-  const setIsntHovering = () => {
-    cancelAll()
-    setIsntHoveringSlow()
-  }
-  const setIsHovering = () => {
-    cancelAll()
-    setIsHoveringSlow()
-  }
+    const [isHovering, set] = useState(false)
+    delay = delay ?? (allowHoverOnContent ? 250 : 0)
+    const setIsntHoveringSlow = useDebounce(() => set(false), delay / 2)
+    const setIsHoveringSlow = useDebounce(() => set(true), delay)
+    const cancelAll = () => {
+      setIsHoveringSlow.cancel()
+      setIsntHoveringSlow.cancel()
+    }
 
-  const popoverContent = allowHoverOnContent ? (
-    typeof contents === 'function' ? (
-      (isOpen) => (
+    useImperativeHandle(ref, () => ({
+      close: () => {
+        set(false)
+      },
+    }))
+
+    const setIsntHovering = () => {
+      cancelAll()
+      setIsntHoveringSlow()
+    }
+    const setIsHovering = () => {
+      cancelAll()
+      setIsHoveringSlow()
+    }
+
+    const popoverContent = allowHoverOnContent ? (
+      typeof contents === 'function' ? (
+        (isOpen) => (
+          <Hoverable onHoverIn={setIsHovering} onHoverOut={setIsntHovering}>
+            {contents(isOpen)}
+          </Hoverable>
+        )
+      ) : (
         <Hoverable onHoverIn={setIsHovering} onHoverOut={setIsntHovering}>
-          {contents(isOpen)}
+          {contents}
         </Hoverable>
       )
     ) : (
-      <Hoverable onHoverIn={setIsHovering} onHoverOut={setIsntHovering}>
-        {contents}
-      </Hoverable>
+      contents
     )
-  ) : (
-    contents
-  )
 
-  return (
-    <Popover
-      isOpen={isHovering}
-      overlayPointerEvents={false}
-      overlay={false}
-      contents={popoverContent}
-      {...props}
-    >
-      <Hoverable onHoverIn={setIsHovering} onHoverOut={setIsntHovering}>
-        {children}
-      </Hoverable>
-    </Popover>
-  )
-})
+    return (
+      <Popover
+        isOpen={isHovering}
+        overlayPointerEvents={false}
+        overlay={false}
+        contents={popoverContent}
+        {...props}
+      >
+        <Hoverable onHoverIn={setIsHovering} onHoverOut={setIsntHovering}>
+          {children}
+        </Hoverable>
+      </Popover>
+    )
+  }
+)
