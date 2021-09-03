@@ -75,6 +75,8 @@ export const Button = themeable(
       </Text>
     )
 
+    const elevationLog = Math.max(1, 1 + Math.log(elevation || 0))
+
     return (
       <HStack
         hitSlop={isWeb ? undefined : defaultHitSlop}
@@ -83,9 +85,9 @@ export const Button = themeable(
         {...defaultStyle}
         shadowColor={elevation ? theme.shadowColor : undefined}
         {...(elevation && {
-          shadowRadius: 3 * elevation,
-          shadowOffset: { width: 0, height: 2 * elevation },
-          shadowOpacity: 0.18 * elevation,
+          shadowRadius: 3 * elevationLog,
+          shadowOffset: { width: 0, height: 1.5 * elevationLog + 1 },
+          shadowOpacity: 0.14 * elevationLog,
         })}
         hoverStyle={
           disabled
