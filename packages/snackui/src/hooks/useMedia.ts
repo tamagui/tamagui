@@ -82,7 +82,7 @@ export const configureMedia = ({
           }
         }
       })
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error running media query', str, err.message, err.stack)
       const isDefaultActive = defaultActive?.includes(key as any) ?? true
       mediaState[key] = isDefaultActive
