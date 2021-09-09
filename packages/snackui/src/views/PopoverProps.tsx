@@ -1,4 +1,4 @@
-import { AnimatedStackProps } from '..'
+import { AnimatedStackProps } from '../views/AnimatedStack'
 
 // force this file to stick around for webpack...
 export default {}
