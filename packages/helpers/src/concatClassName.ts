@@ -33,7 +33,8 @@ export function concatClassName(className: string, ...propObjects: any[]) {
     const isMediaQuery = nextChar === MEDIA_SEP
     const isPsuedoQuery = nextChar === PSUEDO_SEP
     const styleKey = name.slice(1, splitIndex)
-    const mediaKey = isMediaQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
+    const mediaKey =
+      isMediaQuery || isPsuedoQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
     const uid = mediaKey ? styleKey + mediaKey : styleKey
     if (!isMediaQuery && !isPsuedoQuery) {
       if (usedPrefixes.has(uid)) {
