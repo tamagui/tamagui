@@ -66,31 +66,18 @@ export const AnimatedVStack = ({
   animation = defaultAnimation,
   velocity = 6,
   children,
+  animated,
   ...props
 }: AnimatedStackProps) => {
-  // weird, simple, hacky fast animation for default case
-  if (isWeb && animation === defaultAnimation) {
-    const [isMounted, setIsMounted] = useState(false)
-
-    useEffect(() => {
-      setIsMounted(true)
-    }, [])
-
-    return (
-      <VStack
-        {...props}
-        className={`${props.className ?? ''} animate-in ${isMounted ? 'animate-in-mounted' : ''}`}
-      >
-        {children}
-      </VStack>
-    )
-  }
-
   const driver = useConstant(() => {
     return new Animated.Value(0)
   })
 
   const animatedProps = useMemo(() => {
+    if (!animated) {
+      return null
+    }
+
     const styleProps = {}
     const transform: any[] = []
 
@@ -110,20 +97,23 @@ export const AnimatedVStack = ({
       }
     }
     return { transform, ...styleProps }
-  }, [animateState])
+  }, [animated, animateState])
 
   useIsomorphicLayoutEffect(() => {
+    if (!animated) {
+      return
+    }
     Animated.spring(driver, {
       useNativeDriver: true,
       velocity,
       toValue: animateState === 'in' ? 1 : 0,
     }).start()
-  }, [animateState])
+  }, [animated, animateState])
 
   const childrenMemo = useMemo(() => children, [children])
 
   return (
-    <VStack animated {...props} {...animatedProps}>
+    <VStack animated={animated} {...props} {...animatedProps}>
       {childrenMemo}
     </VStack>
   )

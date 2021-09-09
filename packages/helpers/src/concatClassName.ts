@@ -1,7 +1,9 @@
 import { uniqueKeyToStyleName } from './uniqueStyleKeys'
 
 // synced to static-ui constants
-const MEDIA_SEP = '-'
+const MEDIA_SEP = '_'
+const PSUEDO_SEP = '-'
+
 const pseudoInvert = {
   hover: 'hoverStyle',
   focus: 'focusStyle',
@@ -23,18 +25,22 @@ export function concatClassName(className: string, ...propObjects: any[]) {
       continue
     }
     const splitIndex = name.indexOf('-')
-    const isMediaQuery = name[splitIndex + 1] === MEDIA_SEP
     if (splitIndex < 1) {
       final.push(name)
       continue
     }
+    const nextChar = name[splitIndex + 1]
+    const isMediaQuery = nextChar === MEDIA_SEP
+    const isPsuedoQuery = nextChar === PSUEDO_SEP
     const styleKey = name.slice(1, splitIndex)
     const mediaKey = isMediaQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
     const uid = mediaKey ? styleKey + mediaKey : styleKey
-    if (usedPrefixes.has(uid)) {
-      continue
+    if (!isMediaQuery && !isPsuedoQuery) {
+      if (usedPrefixes.has(uid)) {
+        continue
+      }
+      usedPrefixes.add(uid)
     }
-    usedPrefixes.add(uid)
     const propName = uniqueKeyToStyleName[styleKey]
     if (propName && hasPropObjects) {
       if (

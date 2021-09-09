@@ -51,7 +51,7 @@ export function extractMediaStyle(
       const ogPrefix = style.identifier.slice(0, style.identifier.indexOf('-') + 1)
       // adds an extra separator before and after to detect later in concatClassName
       // so it goes from: "_f-[hash]"
-      // to: "_f-_sm_not_[hash]"
+      // to: "_f-_sm0_[hash]" or "_f-_sm_[hash]"
       const identifier = `${style.identifier.replace(
         ogPrefix,
         `${ogPrefix}${MEDIA_SEP}${key}${negKey}${MEDIA_SEP}`

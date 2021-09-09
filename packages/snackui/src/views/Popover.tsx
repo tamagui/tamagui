@@ -63,7 +63,11 @@ export function Popover(props: PopoverProps) {
               opacity: isOpen ? 1 : 0,
             }}
           >
-            <AnimatedVStack>
+            <AnimatedVStack
+              animation={props.animation}
+              animateState={props.animateState}
+              animated={props.animated}
+            >
               {typeof props.contents === 'function' ? props.contents(isOpen) : props.contents}
             </AnimatedVStack>
           </div>

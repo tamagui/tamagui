@@ -1,3 +1,5 @@
+import { AnimatedStackProps } from '..'
+
 // force this file to stick around for webpack...
 export default {}
 
@@ -17,6 +19,9 @@ type AnchorEnum =
   | 'CENTER'
 
 export type PopoverProps = {
+  animation?: AnimatedStackProps['animation']
+  animateState?: AnimatedStackProps['animateState']
+  animated?: AnimatedStackProps['animated']
   inline?: boolean
   anchor?: AnchorEnum
   position?: 'top' | 'left' | 'right' | 'bottom'
