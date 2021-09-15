@@ -8,6 +8,9 @@ export const getSizedTextProps = (
   props: SizableTextProps,
   defaults: SizableTextProps = {}
 ): any => {
+  if (props.fontSize) {
+    return props
+  }  
   const sizeAmt = getSize(props.size ?? 1)
   const next: TextProps = {}
   for (const key in defaults) {

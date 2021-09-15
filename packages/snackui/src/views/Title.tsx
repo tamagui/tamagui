@@ -10,7 +10,7 @@ export type TitleProps = SizableTextProps
 // TODO can static extract once paragraph works
 
 export const Title = (props: TitleProps) => {
-  const size = getSize(props.size ?? 'md') * 1.5
+  const size = props.fontSize ? null : getSize(props.size ?? 'md') * 1.5
   return (
     <Paragraph fontWeight="300" marginVertical={0} sizeLineHeight={0.7} {...props} size={size} />
   )
