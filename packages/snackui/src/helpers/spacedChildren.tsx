@@ -35,7 +35,8 @@ export function spacedChildren({
     if (index === len - 1) {
       break
     }
-    next.push(<React.Fragment key={index}>{spacer}</React.Fragment>)
+    const key = `${child?.['key'] ?? index}`
+    next.push(<React.Fragment key={key + '_spacer'}>{spacer}</React.Fragment>)
   }
   return next
 }

@@ -19,7 +19,7 @@ export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopover
   ({ children, allowHoverOnContent, contents, delay, ...props }, ref) => {
     // TODO: make this optionally or default a tap action
     if (isTouchDevice) {
-      return null
+      return children
     }
 
     const [isHovering, set] = useState(false)
