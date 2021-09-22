@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Modal as ModalNative, ModalProps as ModalPropsReact } from 'react-native'
 
 import { prevent } from '../helpers/prevent'
@@ -8,6 +8,7 @@ import { isWeb } from '../platform'
 import { StackProps } from '../StackProps'
 import { AnimatedStackProps, AnimatedVStack } from './AnimatedStack'
 import { AbsoluteVStack, VStack } from './Stacks'
+import { isTouchDevice } from '..'
 
 // TODO if we add `closableButton` prop we can control exit animation nicely
 
@@ -69,10 +70,36 @@ export const Modal = (props: ModalProps) => {
 
   const themeName = useThemeName()
   const finalChildren = typeof children === 'function' ? children(visible) : children
-  
+
   if (isWeb) {
     const pointerEvents = visible ? 'auto' : 'none'
     const modalVisible = useDebounceValue(visible, visible ? 200 : 0)
+
+    useLayoutEffect(() => {
+      if (visible) {
+        document.body.classList.add('modal-open')
+        return () => {
+          document.body.classList.remove('modal-open')
+        }
+      }
+    }, [visible])
+
+    // this fixes page getting stuck at top, at the expense of a flicker
+    if (isTouchDevice) {
+      useLayoutEffect(() => {
+        if (visible) {
+          return () => {
+            const og = document.body.style.display
+            setTimeout(() => {
+              document.body.style.display = 'none'
+              setTimeout(() => {
+                document.body.style.display = og
+              }, 0)
+            })
+          }
+        }
+      }, [visible])
+    }
 
     return (
       <ModalNative {...modalProps} visible={modalVisible}>
