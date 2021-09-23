@@ -12,11 +12,14 @@ export type ToastOptions = {
   type?: 'info' | 'success' | 'error'
 }
 
+let clear = () => {}
+
 let show: (text: string, options?: ToastOptions) => void = (text) => {
   console.warn('Note:', text)
 }
 
 export const Toast = {
+  clear,
   show: (text: string, options?: ToastOptions) => show(text, options),
   error: (text: string, options?: Omit<ToastOptions, 'type'>) =>
     show(text, { ...options, type: 'error' }),
@@ -46,6 +49,10 @@ export const ToastRoot = memo(function ToastRoot() {
       clearTimeout(stateRef.current.timeout ?? 0)
     }
   }, [])
+
+  clear = () => {
+    setState({ show: false, text: '' })
+  }
 
   show = useCallback(
     (text: string, { duration = 3000, type = 'info' }: ToastOptions = {}) => {
