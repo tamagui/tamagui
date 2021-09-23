@@ -2,15 +2,15 @@
   "name": "@snackui/babel-plugin",
   "version": "0.16.1",
   "license": "MIT",
-  "types": "types.d.ts",
+  "types": "types",
   "publishConfig": {
     "access": "public"
   },
   "main": "dist",
   "module": "_",
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx-watch"
+    "build": "esdx legacy",
+    "watch": "esdx-watch legacy"
   },
   "devDependencies": {
     "@babel/generator": "*",

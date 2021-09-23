@@ -4,13 +4,13 @@
   "sideEffects": [
     "*.css"
   ],
-  "types": "src",
+  "types": "types",
   "main": "dist",
   "module": "_",
   "tsmain": "src",
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx-watch"
+    "build": "esdx legacy",
+    "watch": "esdx-watch legacy"
   },
   "dependencies": {
     "@dish/async": "^0.0.1",
