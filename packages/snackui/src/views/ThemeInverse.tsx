@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Theme, useThemeName } from '../hooks/useTheme'
+import { Theme, useThemeName, useDefaultThemeName } from '../hooks/useTheme'
 
 type StringRecord = { [key: string]: string }
 
@@ -15,6 +15,7 @@ export function setThemeInversions(next: StringRecord) {
 
 export const ThemeInverse = (props: { children: any }) => {
   const themeName = useThemeName()
-  const name = inversions[themeName] || null
+  const defaultTheme = useDefaultThemeName()
+  const name = inversions[themeName] || inversions[defaultTheme] || null
   return <Theme name={name}>{props.children}</Theme>
 }

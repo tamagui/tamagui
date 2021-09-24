@@ -252,6 +252,13 @@ export const useTheme = () => {
   )
 }
 
+const GET_DEFAULT = Symbol('_DEFAULT_THEME_KEY')
+
+export const useDefaultThemeName = () => {
+  // @ts-ignore
+  return useContext(ThemeContext)[GET_DEFAULT] as ThemeName
+}
+
 export const ThemeProvider = (props: {
   themes: Themes
   defaultTheme: ThemeName
@@ -272,8 +279,19 @@ export const ThemeProvider = (props: {
     }
   }, [])
 
+  const themes = useMemo(
+    () =>
+      new Proxy(props.themes, {
+        get(target, key) {
+          if (key === GET_DEFAULT) return props.defaultTheme
+          return Reflect.get(target, key)
+        },
+      }),
+    [props.themes]
+  )
+
   return (
-    <ThemeContext.Provider value={props.themes}>
+    <ThemeContext.Provider value={themes}>
       <Theme name={props.defaultTheme}>{props.children}</Theme>
     </ThemeContext.Provider>
   )
