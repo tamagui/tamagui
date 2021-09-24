@@ -239,7 +239,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     }
 
     if (pointerEvents) {
-      supportedProps.pointerEvents = !isWeb && pointerEvents === 'none' ? 'box-none' : pointerEvents
+      supportedProps.pointerEvents = pointerEvents
     }
 
     if (isWeb) {
