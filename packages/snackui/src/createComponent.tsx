@@ -215,7 +215,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
           ]
         : []),
       style,
-      !disabled && psuedos && state.hover ? psuedos.hoverStyle || null : null,
+      !isTouchDevice && !disabled && psuedos && state.hover ? psuedos.hoverStyle || null : null,
       !disabled && psuedos && state.press ? psuedos.pressStyle || null : null,
       disabled ? disabledStyle : null,
     ]
@@ -291,6 +291,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
     const attachPress = !!((psuedos && psuedos.pressStyle) || onPress || onPressOut || onPressIn)
     const attachHover =
       isWeb &&
+      !isTouchDevice &&
       !!((psuedos && psuedos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
