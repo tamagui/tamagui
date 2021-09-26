@@ -6,7 +6,7 @@
     "url": "https://github.com/snackui/snackui"
   },
   "engines": {
-    "node": ">=10 <=15"
+    "node": ">=10 <=17"
   },
   "workspaces": {
     "packages": [
