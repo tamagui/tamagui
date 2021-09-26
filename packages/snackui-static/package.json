@@ -1,6 +1,6 @@
 {
   "name": "@snackui/static",
-  "version": "0.16.1",
+  "version": "0.17.0",
   "main": "dist",
   "module": "_",
   "scripts": {
@@ -58,8 +58,8 @@
   },
   "dependencies": {
     "@dish/proxy-worm": "*",
-    "@snackui/helpers": "^0.16.1",
-    "@snackui/node": "^0.16.1"
+    "@snackui/helpers": "^0.17.0",
+    "@snackui/node": "^0.17.0"
   },
   "peerDependencies": {
     "react-native-web": "*"
