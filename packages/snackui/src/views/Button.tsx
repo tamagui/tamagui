@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { spacedChildren } from '../helpers/spacedChildren'
@@ -38,7 +38,7 @@ const defaultStyle: StackProps = {
   borderRadius: 8,
 }
 
-export const Button = themeable(
+export const Button = themeable(forwardRef(
   ({
     children,
     icon,
@@ -53,7 +53,7 @@ export const Button = themeable(
     transparent,
     theme: themeName,
     ...props
-  }: ButtonProps) => {
+  }: ButtonProps, ref) => {
     const theme = useTheme()
     const childrens = noTextWrap ? (
       children
@@ -79,6 +79,7 @@ export const Button = themeable(
 
     return (
       <HStack
+        ref={ref}
         hitSlop={isWeb ? undefined : defaultHitSlop}
         flexShrink={1}
         backgroundColor={theme.backgroundColorSecondary}
@@ -135,7 +136,7 @@ export const Button = themeable(
       </HStack>
     )
   }
-)
+))
 
 const defaultHitSlop = {
   top: 5,

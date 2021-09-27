@@ -259,11 +259,13 @@ export const useDefaultThemeName = () => {
   return useContext(ThemeContext)[GET_DEFAULT] as ThemeName
 }
 
-export const ThemeProvider = (props: {
+export type ThemeProviderProps = {
   themes: Themes
   defaultTheme: ThemeName
   children?: any
-}) => {
+}
+
+export const ThemeProvider = (props: ThemeProviderProps) => {
   if (!hasConfigured) {
     throw new Error(`Missing configureThemes() call, add to your root file`)
   }

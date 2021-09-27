@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, forwardRef } from 'react'
 
 import { extendStaticConfig } from '../helpers/extendStaticConfig'
 import { useTheme } from '../hooks/useTheme'
@@ -16,15 +16,15 @@ const defaultProps: ParagraphProps = {
 
 export const ParagraphContext = createContext(false)
 
-export const Paragraph = (props: SizableTextProps) => {
+export const Paragraph = forwardRef((props: SizableTextProps, ref) => {
   const theme = useTheme()
   const finalProps = getSizedTextProps(props, defaultProps)
   return (
     <ParagraphContext.Provider value={true}>
-      <Text color={theme.color} {...finalProps} />
+      <Text ref={ref} color={theme.color} {...finalProps} />
     </ParagraphContext.Provider>
   )
-}
+})
 
 if (process.env.IS_STATIC) {
   // @ts-ignore

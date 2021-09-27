@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { forwardRef, ReactElement } from 'react'
 
 import { Theme } from '../hooks/useTheme'
 import { ThemeInverse } from '../views/ThemeInverse'
@@ -12,11 +12,8 @@ export const themeable: ThemeableHOC = function graphql<
   R extends ReactElement<any, any> | null,
   P extends ThemeableProps = {}
 >(component: (props: P) => R) {
-  const withTheme: {
-    (props: P): R
-    displayName: string
-  } = function WithTheme({ themeInverse, ...rest }) {
-    const el = React.createElement(component, rest as any) as R
+  const withThemeComponent = forwardRef(function WithTheme({ themeInverse, ...rest }: P, ref) {
+    const el = React.createElement(component, { ...rest, ref } as any) as R
     if (themeInverse) {
       return (<ThemeInverse>{el}</ThemeInverse>) as R
     }
@@ -25,7 +22,12 @@ export const themeable: ThemeableHOC = function graphql<
       return (<Theme name={rest.theme || null}>{el}</Theme>) as R
     }
     return el
-  }
+  })
+  
+  const withTheme: {
+    (props: P): R
+    displayName: string
+  } = withThemeComponent as any
 
   withTheme.displayName = `Themed(${
     (component as any)?.displayName || (component as any)?.name || 'Anonymous'

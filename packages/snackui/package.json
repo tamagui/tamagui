@@ -15,19 +15,17 @@
     "@dish/async": "^0.0.1",
     "@dish/fast-compare": "^2.7.6",
     "@dish/proxy-worm": "^0.0.4",
+    "@react-aria/utils": "^3.9.0",
+    "@react-native-aria/focus": "^0.2.5",
+    "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
     "@snackui/helpers": "^0.17.0",
-    "@unimodules/core": "^7.0.0",
-    "@unimodules/react-native-adapter": "^6.1.0",
-    "css-mediaquery": "^0.1.2",
     "expo-linear-gradient": "^9.1.0",
-    "expo-screen-orientation": "^3.2.1",
     "normalize-css-color": "*",
     "react": "*",
     "react-dom": "*",
-    "react-feather": "^2.0.8",
     "react-laag": "2.0.3",
-    "react-storage-hooks": "^4.0.0"
+    "react-native-safe-area-context": "^3.3.2"
   },
   "peerDependencies": {
     "react-native-web": "*"

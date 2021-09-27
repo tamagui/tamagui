@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 import { isWeb } from '../platform'
 
@@ -13,27 +13,26 @@ export type HoverableProps = {
   onPressOut?: SpanProps['onClick']
 }
 
-export function Hoverable({
-  onPressIn,
-  onPressOut,
-  onHoverIn,
-  onHoverOut,
-  onHoverMove,
-  children,
-}: HoverableProps) {
-  if (!isWeb) {
-    return children
+export const Hoverable = forwardRef(
+  (
+    { onPressIn, onPressOut, onHoverIn, onHoverOut, onHoverMove, children }: HoverableProps,
+    ref
+  ) => {
+    if (!isWeb) {
+      return children
+    }
+    return (
+      <span
+        ref={ref}
+        className="see-through hoverable"
+        onMouseEnter={onHoverIn}
+        onMouseLeave={onHoverOut}
+        onMouseMove={onHoverMove}
+        onMouseDown={onPressIn}
+        onClick={onPressOut}
+      >
+        {children}
+      </span>
+    )
   }
-  return (
-    <span
-      className="see-through hoverable"
-      onMouseEnter={onHoverIn}
-      onMouseLeave={onHoverOut}
-      onMouseMove={onHoverMove}
-      onMouseDown={onPressIn}
-      onClick={onPressOut}
-    >
-      {children}
-    </span>
-  )
-}
+)
