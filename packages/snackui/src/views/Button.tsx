@@ -79,7 +79,7 @@ export const Button = themeable(forwardRef(
 
     return (
       <HStack
-        ref={ref}
+        ref={ref as any}
         hitSlop={isWeb ? undefined : defaultHitSlop}
         flexShrink={1}
         backgroundColor={theme.backgroundColorSecondary}

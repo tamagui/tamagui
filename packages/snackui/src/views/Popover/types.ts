@@ -22,7 +22,7 @@
 
 import type { MutableRefObject } from 'react'
 import React from 'react'
-import type { ColorValue } from 'react-native'
+import type { ColorValue, GestureResponderEvent } from 'react-native'
 
 import { StackProps } from '../../StackProps'
 
@@ -76,7 +76,7 @@ export interface IPopoverProps {
   trigger: (
     props: {
       ref: any
-      onPress: Function
+      onPress: (e?: GestureResponderEvent) => any
       [key: string]: any
     },
     state: { open: boolean }
