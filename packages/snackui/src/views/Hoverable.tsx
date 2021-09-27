@@ -23,7 +23,7 @@ export const Hoverable = forwardRef(
     }
     return (
       <span
-        ref={ref}
+        ref={ref as any}
         className="see-through hoverable"
         onMouseEnter={onHoverIn}
         onMouseLeave={onHoverOut}

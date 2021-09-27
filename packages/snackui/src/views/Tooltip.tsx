@@ -1,13 +1,11 @@
 import React from 'react'
-
+import { HoverablePopoverProps, Popover } from '..'
 import { isTouchDevice } from '../platform'
 import { Box } from './Box'
 import { HoverablePopover } from './HoverablePopover'
-import { IPopoverProps } from './Popover/types'
 import { Text } from './Text'
-import { Popover } from '..'
 
-export type TooltipProps = IPopoverProps
+export type TooltipProps = HoverablePopoverProps
 
 export const Tooltip = (props: TooltipProps) => {
   if (isTouchDevice) {

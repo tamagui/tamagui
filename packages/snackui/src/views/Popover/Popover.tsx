@@ -28,6 +28,7 @@ import { StyleSheet, View } from 'react-native'
 import { useControllableState } from '../../hooks/useControllableState'
 import { Overlay } from '../Overlay'
 import { Popper } from '../Popper'
+import { AbsoluteVStack } from '../Stacks'
 import { PresenceTransition } from '../Transitions/PresenceTransition'
 import { PopoverArrow } from './PopoverArrow'
 import { PopoverContent } from './PopoverContent'
@@ -110,7 +111,12 @@ const PopoverMain = memo(
               style={StyleSheet.absoluteFill}
             >
               <Popper onClose={handleClose} triggerRef={triggerRef} {...props}>
-                {/* <Backdrop onPress={handleClose} bg="transparent" /> */}
+                {/* <AbsoluteVStack
+                  fullscreen
+                  pointerEvents="auto"
+                  backgroundColor="rgba(0,0,0,0.1)"
+                  onPress={handleClose}
+                /> */}
                 <PopoverContext.Provider
                   value={{
                     onClose: handleClose,

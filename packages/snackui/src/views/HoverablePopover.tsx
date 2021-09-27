@@ -11,7 +11,7 @@ export type HoverablePopoverRef = {
   close: () => void
 }
 
-export type HoverablePopoverProps = IPopoverProps & {
+export type HoverablePopoverProps = Omit<IPopoverProps> & {
   delay?: number
   fallbackToPress?: boolean
   allowHoverOnContent?: boolean
@@ -19,7 +19,6 @@ export type HoverablePopoverProps = IPopoverProps & {
 
 export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopoverProps>(
   (props, ref) => {
-    const { trigger } = props
     const [isHovering, set] = useState(false)
     const delay = props.delay ?? (props.allowHoverOnContent ? 250 : 0)
     const setIsntHoveringSlow = useDebounce(() => set(false), delay / 2)
@@ -36,7 +35,7 @@ export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopover
     }))
 
     if (isTouchDevice && !props.fallbackToPress) {
-      return props.trigger({} as any, { open: false })
+      return props.trigger({}, { open: false })
     }
 
     const setIsntHovering = () => {
@@ -48,37 +47,56 @@ export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopover
       setIsHoveringSlow()
     }
 
-    const InteractiveComponent = (componentProps: any) => {
-      if (isTouchDevice) {
-        if (props.fallbackToPress) {
-          return (
-            <Pressable onPressIn={setIsHovering} onPressOut={setIsntHovering} {...componentProps} />
-          )
-        }
-        return null
-      } else {
-        return (
-          <Hoverable onHoverIn={setIsHovering} onHoverOut={setIsntHovering} {...componentProps} />
-        )
-      }
-    }
-
     return (
       <Popover
         isOpen={isHovering}
         {...props}
-        trigger={(props, state) => (
-          <InteractiveComponent>{trigger(props, state)}</InteractiveComponent>
+        trigger={(triggerProps, state) => (
+          <HoverOrPress
+            onActive={setIsHovering}
+            onInactive={setIsntHovering}
+            fallbackToPress={props.fallbackToPress}
+          >
+            {props.trigger(triggerProps, state)}
+          </HoverOrPress>
         )}
       >
-        {isTouchDevice && props.fallbackToPress ? (
-          props.children
-        ) : props.allowHoverOnContent ? (
-          <InteractiveComponent>{props.children}</InteractiveComponent>
-        ) : (
-          props.children
-        )}
+        <Popover.Content>
+          {isTouchDevice && props.fallbackToPress ? (
+            props.children
+          ) : props.allowHoverOnContent ? (
+            <HoverOrPress onActive={setIsHovering} onInactive={setIsntHovering}>
+              {props.children}
+            </HoverOrPress>
+          ) : (
+            props.children
+          )}
+        </Popover.Content>
       </Popover>
     )
   }
 )
+
+const HoverOrPress = (props: {
+  fallbackToPress?: boolean
+  onActive?: () => void
+  onInactive?: () => void
+  children?: any
+}) => {
+  if (isTouchDevice) {
+    if (!props.fallbackToPress) {
+      return props.children
+    }
+    return (
+      <Pressable onPressIn={props.onActive} onPressOut={props.onInactive}>
+        {props.children}
+      </Pressable>
+    )
+  } else {
+    return (
+      <Hoverable onHoverIn={props.onActive} onHoverOut={props.onInactive}>
+        {props.children}
+      </Hoverable>
+    )
+  }
+}
