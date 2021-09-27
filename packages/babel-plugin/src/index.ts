@@ -213,7 +213,7 @@ function assertValidTag(node: t.JSXOpeningElement) {
   if (node.attributes.find((x) => x.type === 'JSXAttribute' && x.name.name === 'style')) {
     // we can just deopt here instead and log warning
     // need to make onExtractTag have a special catch error or similar
-    throw new Error(`Cannot pass style attribute to extracted style`)
+    console.warn(`⚠️ Cannot pass style attribute to extracted style`)
   }
 }
 

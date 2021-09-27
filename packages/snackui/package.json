@@ -24,7 +24,6 @@
     "normalize-css-color": "*",
     "react": "*",
     "react-dom": "*",
-    "react-laag": "2.0.3",
     "react-native-safe-area-context": "^3.3.2"
   },
   "peerDependencies": {
