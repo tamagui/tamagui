@@ -59,16 +59,6 @@ export const PopoverContent = React.forwardRef((props: IPopoverContentProps, ref
     callback: onClose,
   })
 
-  let arrowElement = null
-  const restChildren: any = []
-  React.Children.forEach(props.children, (child) => {
-    if (child.type.displayName === 'PopperArrow') {
-      arrowElement = child
-    } else {
-      restChildren.push(child)
-    }
-  })
-
   const accessibilityProps =
     Platform.OS === 'web'
       ? ({
@@ -80,10 +70,7 @@ export const PopoverContent = React.forwardRef((props: IPopoverContentProps, ref
 
   return (
     <Popper.Content nativeID={popoverContentId} {...accessibilityProps} ref={ref}>
-      <VStack {...props}>
-        {arrowElement}
-        {restChildren}
-      </VStack>
+      <VStack {...props}>{props.children}</VStack>
     </Popper.Content>
   )
 })

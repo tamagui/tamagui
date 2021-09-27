@@ -51,27 +51,36 @@ export const HoverablePopover = forwardRef<HoverablePopoverRef, HoverablePopover
       <Popover
         isOpen={isActive}
         {...props}
-        trigger={(triggerProps, state) => (
-          <HoverOrToggle
-            onActive={setOn}
-            onInactive={setOff}
-            fallbackToPress={props.fallbackToPress}
-          >
-            {props.trigger(triggerProps, state)}
-          </HoverOrToggle>
-        )}
-      >
-        <Popover.Content>
-          {isTouchDevice && props.fallbackToPress ? (
-            props.children
-          ) : props.allowHoverOnContent ? (
-            <HoverOrToggle onActive={setOn} onInactive={setOff}>
-              {props.children}
+        trigger={(triggerProps, state) => {
+          return (
+            <HoverOrToggle
+              onActive={setOn}
+              onInactive={setOff}
+              fallbackToPress={props.fallbackToPress}
+            >
+              {props.trigger(triggerProps, state)}
             </HoverOrToggle>
-          ) : (
-            props.children
-          )}
-        </Popover.Content>
+          )
+        }}
+      >
+        {(openProps) => {
+          const children =
+            // @ts-ignore
+            typeof props.children === 'function' ? props.children(openProps) : props.children
+          return (
+            <Popover.Content>
+              {isTouchDevice && props.fallbackToPress ? (
+                children
+              ) : props.allowHoverOnContent ? (
+                <HoverOrToggle onActive={setOn} onInactive={setOff}>
+                  {children}
+                </HoverOrToggle>
+              ) : (
+                children
+              )}
+            </Popover.Content>
+          )
+        }}
       </Popover>
     )
   }
@@ -90,13 +99,15 @@ const HoverOrToggle = (props: {
       return props.children
     }
     return (
-      <Pressable onPress={() => {
-        setIsOn(x => {
-          const  next = !x
-          next ? props.onActive?.() : props.onInactive?.()
-          return next
-        })
-      }}>
+      <Pressable
+        onPress={() => {
+          setIsOn((x) => {
+            const next = !x
+            next ? props.onActive?.() : props.onInactive?.()
+            return next
+          })
+        }}
+      >
         {props.children}
       </Pressable>
     )
