@@ -628,7 +628,7 @@ export function createExtractor() {
                     consequent: { [name]: cVal },
                     alternate: { [name]: aVal },
                   }
-                } catch (err) {
+                } catch (err: any) {
                   if (shouldPrintDebug) {
                     console.log('       cant eval ternary', err.message)
                   }
