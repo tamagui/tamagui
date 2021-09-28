@@ -5,10 +5,10 @@ import { prevent } from '../helpers/prevent'
 import { useDebounceValue } from '../hooks/useDebounce'
 import { Theme, useTheme, useThemeName } from '../hooks/useTheme'
 import { isWeb } from '../platform'
+import { isTouchDevice } from '../platform'
 import { StackProps } from '../StackProps'
 import { AnimatedStackProps, AnimatedVStack } from './AnimatedStack'
 import { AbsoluteVStack, VStack } from './Stacks'
-import { isTouchDevice } from '..'
 
 // TODO if we add `closableButton` prop we can control exit animation nicely
 

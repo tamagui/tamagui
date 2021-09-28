@@ -3,9 +3,9 @@ import { StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
 
 import { combineRefs } from '../helpers/combineRefs'
 import { useTextStylePropsSplit } from '../hooks/useTextStylePropsSplit'
+import { useTheme } from '../hooks/useTheme'
 import { isWeb, useIsomorphicLayoutEffect } from '../platform'
 import { InteractiveContainer } from './InteractiveContainer'
-import { useTheme } from '..'
 
 // TODO make this extractable / take flat style props
 
