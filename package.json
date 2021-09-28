@@ -29,6 +29,11 @@
     "publish": "ultra -r --no-pretty npm publish"
   },
   "resolutions": {
+    "react": "0.0.0-experimental-b1a1cb116-20210924",
+    "react-dom": "0.0.0-experimental-b1a1cb116-20210924",
+    "react-refresh": "0.0.0-experimental-b1a1cb116-20210924",
+    "react-test-renderer": "0.0.0-experimental-b1a1cb116-20210924",
+    "@testing-library/react": "13.0.0-alpha.1",
     "esbuild": "0.11.20"
   },
   "dependencies": {

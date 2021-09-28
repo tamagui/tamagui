@@ -28,7 +28,7 @@
     "@babel/types": "^7.15.6",
     "@dish/babel-preset": "^0.0.6",
     "@dish/esdx": "^0.2.0",
-    "@dish/react-test-env": "^0.0.8",
+    "@dish/react-test-env": "^0.0.9",
     "@dish/testy": "*",
     "@expo/match-media": "^0.1.0",
     "@types/jest": "*",
@@ -52,7 +52,7 @@
     "react": "*",
     "react-dom": "*",
     "react-test-renderer": "^17.0.1",
-    "style-loader": "^2.0.0",
+    "style-loader": "^3.3.0",
     "typescript": "^4.2.2",
     "webpack": "^5.51.1"
   },
