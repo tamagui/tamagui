@@ -20,6 +20,8 @@
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
     "@snackui/helpers": "^0.17.0",
+    "@unimodules/core": "^7.1.2",
+    "@unimodules/react-native-adapter": "^6.3.9",
     "expo-linear-gradient": "^9.1.0",
     "normalize-css-color": "*",
     "react": "*",
