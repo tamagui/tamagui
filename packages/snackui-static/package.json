@@ -28,7 +28,7 @@
     "@babel/types": "^7.15.6",
     "@dish/babel-preset": "^0.0.2",
     "@dish/esdx": "^0.2.0",
-    "@dish/react-test-env": "^0.0.7",
+    "@dish/react-test-env": "^0.0.8",
     "@dish/testy": "*",
     "@expo/match-media": "^0.1.0",
     "@types/jest": "*",
