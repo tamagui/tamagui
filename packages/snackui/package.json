@@ -26,7 +26,7 @@
     "normalize-css-color": "*",
     "react": "*",
     "react-dom": "*",
-    "react-native-safe-area-context": "^3.3.2"
+    "react-native-safe-area-context": "^3.3.0"
   },
   "peerDependencies": {
     "react-native-web": "*"
