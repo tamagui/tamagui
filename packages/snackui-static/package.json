@@ -39,7 +39,6 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.4",
     "esbuild": "^0.11.20",
-    "esbuild-register": "^2.6.0",
     "find-cache-dir": "^3.3.1",
     "fs-extra": "^9.0.0",
     "invariant": "^2.2.4",
@@ -57,6 +56,7 @@
     "webpack": "^5.51.1"
   },
   "dependencies": {
+    "esbuild-register": "^2.6.0",
     "@dish/proxy-worm": "*",
     "@snackui/helpers": "^0.18.1",
     "@snackui/node": "^0.18.1"
