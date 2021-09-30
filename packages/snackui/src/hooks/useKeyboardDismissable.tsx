@@ -90,7 +90,9 @@ export function useBackHandler({ enabled, callback }: IParams) {
     }
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', backHandler)
-      window.removeEventListener('keydown', keyHandler)
+      if (isWeb) {
+        window.removeEventListener('keydown', keyHandler)
+      }
     }
   }, [enabled, callback])
 }
