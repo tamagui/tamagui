@@ -1,13 +1,13 @@
 {
   "name": "@snackui/node",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "main": "index.js",
   "scripts": {
     "build": "SNACKUI_COMPILE_PROCESS=1 ttsc",
     "watch": "SNACKUI_COMPILE_PROCESS=1 ttsc --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@snackui/helpers": "^0.18.0"
+    "@snackui/helpers": "^0.18.1"
   },
   "devDependencies": {
     "ts-transform-import-path-rewrite": "^0.3.0",
