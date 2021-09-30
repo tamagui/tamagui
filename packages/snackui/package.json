@@ -1,6 +1,6 @@
 {
   "name": "snackui",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "sideEffects": [
     "*.css"
   ],
@@ -19,7 +19,7 @@
     "@react-native-aria/focus": "^0.2.5",
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
-    "@snackui/helpers": "^0.17.0",
+    "@snackui/helpers": "^0.18.0",
     "@unimodules/core": "^7.1.2",
     "@unimodules/react-native-adapter": "^6.3.9",
     "expo-linear-gradient": "^9.1.0",
