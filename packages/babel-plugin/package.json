@@ -17,7 +17,7 @@
     "@babel/template": "*",
     "@babel/traverse": "*",
     "@babel/types": "*",
-    "@dish/esdx": "^0.2.0",
+    "@dish/esdx": "^0.3.0",
     "@snackui/static": "^0.18.0"
   },
   "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"

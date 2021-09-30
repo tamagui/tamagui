@@ -8,7 +8,7 @@
     "watch": "esdx-watch legacy"
   },
   "dependencies": {
-    "@dish/esdx": "^0.2.0",
+    "@dish/esdx": "^0.3.0",
     "@snackui/static": "^0.18.0",
     "fs-extra": "^9.1.0",
     "loader-utils": "^2.0.0",
