@@ -1,6 +1,6 @@
 {
   "name": "@snackui/babel-plugin",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -18,7 +18,7 @@
     "@babel/traverse": "*",
     "@babel/types": "*",
     "@dish/esdx": "^0.3.0",
-    "@snackui/static": "^0.18.1"
+    "@snackui/static": "^0.18.2"
   },
   "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
 }

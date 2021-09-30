@@ -1,6 +1,6 @@
 {
   "name": "@snackui/static",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "main": "dist",
   "module": "_",
   "scripts": {
@@ -56,10 +56,10 @@
     "webpack": "^5.51.1"
   },
   "dependencies": {
-    "esbuild-register": "^2.6.0",
     "@dish/proxy-worm": "*",
     "@snackui/helpers": "^0.18.1",
-    "@snackui/node": "^0.18.1"
+    "@snackui/node": "^0.18.1",
+    "esbuild-register": "^2.6.0"
   },
   "peerDependencies": {
     "react-native-web": "*"
