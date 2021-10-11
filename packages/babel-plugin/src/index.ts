@@ -118,18 +118,16 @@ export default declare(function snackBabelPlugin(
             ...options,
             sourcePath,
             disableThemes: true,
-            getFlattenedNode(props) {
+            getFlattenedNode({ isTextView }) {
               if (!hasImportedView) {
                 hasImportedView = true
                 root.unshiftContainer('body', importNativeView())
               }
-              return props.isTextView ? '__ReactNativeText' : '__ReactNativeView'
+              return isTextView ? '__ReactNativeText' : '__ReactNativeView'
             },
             onExtractTag(props) {
               assertValidTag(props.node)
-
               const stylesExpr = t.arrayExpression([])
-
               let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 
               for (const attr of props.attrs) {
@@ -145,7 +143,6 @@ export default declare(function snackBabelPlugin(
                     )
                   }
                 }
-
                 switch (attr.type) {
                   case 'style':
                     const ident = addSheetStyle(attr.value, props.node)
@@ -172,7 +169,6 @@ export default declare(function snackBabelPlugin(
               }
 
               props.node.attributes = finalAttrs
-
               if (props.isFlattened) {
                 props.node.attributes.push(
                   t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
@@ -197,9 +193,7 @@ export default declare(function snackBabelPlugin(
 
           // replace the null with our object
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
-
           root.unshiftContainer('body', sheetOuter)
-
           if (shouldPrintDebug) {
             console.log('>>', generator(root.parent).code)
           }

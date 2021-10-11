@@ -1,14 +1,15 @@
-import { StackProps } from './StackProps'
+import { BaseComponentProps } from './StackProps'
 
 export const defaultShadowOffset = {
   width: 0,
   height: 0,
 }
 
-const matchRgba = /rgba\(\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*\)$/
+const matchRgba =
+  /rgba\(\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*,\s*([\d\.]{1,})\s*\)$/
 
 // used by both expansion and inline, be careful
-export function fixNativeShadow(props: StackProps, merge = false) {
+export function fixNativeShadow(props: BaseComponentProps, merge = false) {
   let res = merge ? props : {}
   if (props.shadowColor) {
     res.shadowColor = props.shadowColor

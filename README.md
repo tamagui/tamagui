@@ -139,7 +139,7 @@ export function Component(props) {
       // media query spread conditional + themes
       {...media.lg && {
         hoverStyle: {
-          backgroundColor: theme.backgroundColorAlt
+          backgroundColor: theme.bg2
         }
       }}
     />

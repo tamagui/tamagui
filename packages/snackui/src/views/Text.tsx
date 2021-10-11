@@ -1,8 +1,8 @@
-import { stylePropsTextOnly } from '@snackui/helpers'
 import { TextProps as ReactTextProps, TextStyle } from 'react-native'
 
 import { validStylesText, webOnlySpecificStyleKeys } from '../constants'
 import { createComponent } from '../createComponent'
+import { PropMapper } from '../helpers/PropMapper'
 import { isWeb } from '../platform'
 import { TransformStyleProps } from '../StackProps'
 
@@ -24,6 +24,38 @@ export type TextProps = Omit<ReactTextProps, 'style'> &
     debug?: boolean
   }
 
+export const textPropMapper: PropMapper = (key: string, val: any) {
+  if (!isWeb && key in webOnlySpecificStyleKeys) {
+    return false
+  }
+  if (key === 'ellipse') {
+    if (process.env.TARGET === 'native') {
+      return [[key, ellipsePropsNative]]
+    } else {
+      return [[key, ellipseStyle]]
+    }
+  }
+  if (validStylesText[key]) {
+    if (!isWeb) {
+      if (val === 'inherit') {
+        return false
+      }
+      if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
+        return false
+      }
+    }
+    // expansions
+    if (key === 'selectable') {
+      return [[key, selectableStyle]]
+    }
+    if (key === 'ellipse') {
+      return [[key, ellipseStyle]]
+    }
+    return true
+  }
+  return false
+}
+
 export const Text = createComponent<TextProps>({
   isText: true,
   defaultProps: isWeb
@@ -34,25 +66,17 @@ export const Text = createComponent<TextProps>({
       }
     : {},
   deoptProps: new Set(isWeb ? [''] : ['ellipse']),
-  preProcessProps,
-  postProcessStyles,
+  preProcessProps(props: TextProps) {
+    props.className = 'snack-text' + (props.className ? ` ${props.className}` : '')
+    return props
+  },
+  propMapper: textPropMapper,
+  // postProcessStyles,
   validPropsExtra: {
     ellipse: true,
   },
   validStyles: validStylesText,
 })
-
-function preProcessProps(props: TextProps) {
-  return {
-    ...props,
-    ...(props.ellipse
-      ? process.env.TARGET === 'native'
-        ? ellipsePropsNative
-        : ellipseStyle
-      : null),
-    className: 'snack-text' + (props.className ? ` ${props.className}` : ''),
-  }
-}
 
 const webOnlyProps = {
   className: true,
@@ -78,48 +102,4 @@ const ellipseStyle = {
 const ellipsePropsNative = {
   numberOfLines: 1,
   lineBreakMode: 'clip',
-}
-
-function postProcessStyles(allProps: TextProps): TextStyle {
-  return useTextProps(allProps)[1]
-}
-
-export function useTextProps(allProps: TextProps, textOnly = false): [TextProps, TextStyle] {
-  const validStyles = textOnly ? stylePropsTextOnly : validStylesText
-  let props: TextProps = {}
-  let style: TextStyle = {}
-  for (const key in allProps) {
-    if (!isWeb && key in webOnlySpecificStyleKeys) {
-      continue
-    }
-    const val = allProps[key]
-    if (validStyles[key]) {
-      if (!isWeb) {
-        if (val === 'inherit') {
-          continue
-        }
-        if (webOnlyStyleKeys[key] || webOnlyProps[key]) {
-          continue
-        }
-      }
-      // expansions
-      if (key === 'selectable') {
-        Object.assign(style, selectableStyle)
-        continue
-      }
-      if (key === 'ellipse') {
-        Object.assign(style, ellipseStyle)
-        continue
-      }
-      style[key] = val
-      continue
-    }
-    props[key] = val
-  }
-  if (process.env.NODE_ENV === 'development') {
-    if (allProps['debug']) {
-      console.log('Text.debug', { allProps, props, style })
-    }
-  }
-  return [props, style]
 }

@@ -65,27 +65,33 @@ export type ThemeProps = {
 export const Theme = (props: ThemeProps) => {
   const name = (props.name as string) || null
   const parent = useContext(ThemeManagerContext)
+  const themes = useContext(ThemeContext)
   const themeManager = useConstant<ThemeManager>(() => {
     const manager = new ThemeManager()
     try {
       return manager
     } finally {
       if (name) {
-        manager.setActiveTheme(name)
+        manager.setActiveTheme(name, themes[name])
       }
     }
   })
 
   useIsomorphicLayoutEffect(() => {
-    themeManager.setActiveTheme(name ?? parent.name)
+    const fullName = name || parent.name || ''
+    themeManager.setActiveTheme(fullName, themes[fullName])
     if (!name) {
       return parent.onChangeTheme((next) => {
         if (!name && next) {
-          themeManager.setActiveTheme(next)
+          themeManager.setActiveTheme(next, themes[next])
         }
       })
     }
-  }, [name])
+  }, [themes, name])
+
+  if (!name) {
+    return props.children
+  }
 
   const contents = themeManager ? (
     <ThemeManagerContext.Provider value={themeManager}>
@@ -97,7 +103,11 @@ export const Theme = (props: ThemeProps) => {
 
   if (isWeb) {
     return (
-      <div className={getThemeParentClassName(name)} style={{ display: 'contents' }}>
+      <div
+        className={getThemeParentClassName(name)}
+        // in order to provide currentColor, set color by default
+        style={{ display: 'contents', color: themes[name]?.color }}
+      >
         {contents}
       </div>
     )
@@ -110,15 +120,17 @@ function getThemeParentClassName(themeName?: string | null) {
   return `theme-parent ${themeName ? `${PREFIX}${themeName}` : ''}`
 }
 
-class ThemeManager {
+export class ThemeManager {
   name: string | null = 'light'
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
   callbacks = new Set<Function>()
+  theme = null
 
-  setActiveTheme(name: string | null) {
+  setActiveTheme(name: string | null, theme?: any) {
     if (name === this.name) return
     this.name = name
+    this.theme = theme
     this.update()
   }
 
@@ -167,7 +179,6 @@ type UseThemeState = {
 export const useThemeName = () => {
   const parent = useContext(ThemeManagerContext)
   const [name, setName] = useState(parent.name)
-
   useEffect(() => {
     return parent.onChangeTheme((next) => {
       setName((prev) => {
@@ -176,7 +187,6 @@ export const useThemeName = () => {
       })
     })
   }, [parent])
-
   return name || 'light'
 }
 

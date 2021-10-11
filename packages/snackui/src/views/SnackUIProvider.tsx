@@ -1,5 +1,5 @@
 import { OverlayProvider } from '@react-native-aria/overlays'
-import React, { Suspense } from 'react'
+import React, { Suspense, useLayoutEffect } from 'react'
 import { Platform } from 'react-native'
 import {
   Metrics,
@@ -7,7 +7,7 @@ import {
   initialWindowMetrics as defaultInitialWindowMetrics,
 } from 'react-native-safe-area-context'
 
-import { ThemeProvider, ThemeProviderProps } from '../hooks/useTheme'
+import { ThemeProvider, ThemeProviderProps, configureThemes } from '../hooks/useTheme'
 
 export type SnackUIProviderProps = ThemeProviderProps & {
   initialWindowMetrics?: any
@@ -29,15 +29,12 @@ export const SnackUIProvider = ({
   fallback,
   children,
 }: SnackUIProviderProps) => {
+  configureThemes(themes)
   return (
     <OverlayProvider>
-      <SafeAreaProvider
-        initialMetrics={initialWindowMetrics ?? defaultMetrics}
-      >
+      <SafeAreaProvider initialMetrics={initialWindowMetrics ?? defaultMetrics}>
         <ThemeProvider defaultTheme={defaultTheme} themes={themes}>
-          <Suspense fallback={fallback || null}>
-            {children}
-          </Suspense>
+          <Suspense fallback={fallback || null}>{children}</Suspense>
         </ThemeProvider>
       </SafeAreaProvider>
     </OverlayProvider>

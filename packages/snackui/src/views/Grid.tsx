@@ -37,7 +37,7 @@ export function Grid({ children, itemMinWidth = 200, gap }: GridProps) {
 
         // index key bad
         return (
-          <HStack key={i} flex={1} minWidth={itemMinWidth}>
+          <HStack key={i} flex={1} minWidth={itemMinWidth} marginRight={gap} marginBottom={gap}>
             {child}
           </HStack>
         )

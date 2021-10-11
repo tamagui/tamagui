@@ -199,7 +199,20 @@ export function createExtractor() {
           const originalNodeName = node.name.name
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
-          const flatNode = getFlattenedNode({ isTextView })
+          let as = isTextView ? 'span' : 'div'
+          // find as="a" as="main" etc dom indicators
+          traversePath
+            .get('openingElement')
+            .get('attributes')
+            .forEach((path) => {
+              const attr = path.node
+              if (t.isJSXSpreadAttribute(attr)) return
+              if (attr.name.name !== 'as') return
+              const val = attr.value
+              if (!t.isStringLiteral(val)) return
+              as = val.value
+            })
+          const flatNode = getFlattenedNode({ isTextView, as })
 
           const deoptProps = new Set([
             ...(props.deoptProps ?? []),

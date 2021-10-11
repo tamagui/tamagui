@@ -55,38 +55,41 @@ if (process.env.IS_STATIC) {
   }
 }
 
+export const spacingValues = {
+  $0: 0,
+  $1: 5,
+  $2: 10,
+  $3: 15,
+  $4: 20,
+  $5: 25,
+  $6: 35,
+  $7: 45,
+  $8: 60,
+  $9: 80,
+  $10: 100,
+}
+
+export const spacingValuesWithLegacy = {
+  ...spacingValues,
+  xxxxxs: 0.25,
+  xxxxs: 0.5,
+  xxxs: 1,
+  xxs: 2,
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 36,
+  xxxl: 48,
+  xxxxl: 96,
+  xxxxxl: 192,
+}
+
 function spaceToPx(space: Spacing) {
-  switch (space) {
-    case 'xxxxxs':
-      return 0.25
-    case 'xxxxs':
-      return 0.5
-    case 'xxxs':
-      return 1
-    case 'xxs':
-      return 2
-    case 'xs':
-      return 4
-    case 'sm':
-      return 8
-    case true:
-    case 'md':
-      return 12
-    case 'lg':
-      return 16
-    case 'xl':
-      return 24
-    case 'xxl':
-      return 36
-    case 'xxxl':
-      return 48
-    case 'xxxxl':
-      return 96
-    case 'xxxxxl':
-      return 192
-    default:
-      if (typeof space === 'number') return space
-      if (typeof space === 'string') return space
-  }
-  return 0
+  return space === false
+    ? 0
+    : space === true
+    ? spacingValuesWithLegacy.md
+    : spacingValuesWithLegacy[space]
 }

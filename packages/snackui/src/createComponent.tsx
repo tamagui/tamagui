@@ -19,7 +19,8 @@ import { spacedChildren } from './helpers/spacedChildren'
 import { StaticConfig } from './helpers/StaticConfig'
 import { ThemeManagerContext, invertStyleVariableToValue } from './hooks/useTheme'
 import { isTouchDevice, isWeb } from './platform'
-import { StackProps } from './StackProps'
+import { BaseComponentProps } from './StackProps'
+import { spacingValues, spacingValuesWithLegacy } from './views/Spacer'
 
 const loadRNW = !process.env.IS_STATIC && isWeb
 const rnw: any = loadRNW ? require('react-native-web/dist/exports/View').internal : null
@@ -51,21 +52,25 @@ const usePressable = (props: PressableProps) => {
   return [pressableProps, style] as const
 }
 
-export function createComponent<A extends any = StackProps>(componentProps: Partial<StaticConfig>) {
+const defaultValueMap = (value: any) => {
+  if (spacingValuesWithLegacy[value]) {
+    return spacingValuesWithLegacy[value]
+  }
+  return value
+}
+
+export function createComponent<A extends any = BaseComponentProps>(
+  componentProps: Partial<StaticConfig>
+) {
   const sheet = StyleSheet.create({
     defaultStyle: componentProps.defaultProps,
-    inline: isWeb
-      ? {
-          display: 'inline-flex' as any,
-        }
-      : {},
   })
-
   const validStyleProps = componentProps.validStyles ?? stylePropsView
   const TextAncestorContext = rnw?.TextAncestorContext
 
-  const component = forwardRef<View, A>((props: StackProps, forwardedRef) => {
+  const component = forwardRef<View, A>((props: BaseComponentProps, forwardedRef) => {
     const {
+      tag,
       hitSlop,
       animated,
       children,
@@ -147,16 +152,30 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
 
     const isTracking = useRef(false)
     const varToVal = useCallback(
-      (variable: string) => {
+      (value: string) => {
         isTracking.current = true
+        if (spacingValues[value]) {
+          return spacingValues[value]
+        }
         const invert = invertStyleVariableToValue[state.theme || 'light']
-        return invert?.[variable] ?? variable
+        if (typeof invert[value] !== 'undefined') {
+          return invert[value]
+        }
+        if (value && manager.theme && typeof manager.theme[value] !== 'undefined') {
+          return manager.theme[value]
+        }
+        return value
       },
       [state.theme]
     )
 
     const processedProps = componentProps.preProcessProps?.(props) ?? props
-    const { viewProps, psuedos, style } = getSplitStyles(processedProps, validStyleProps, varToVal)
+    const { viewProps, psuedos, style } = getSplitStyles(
+      processedProps,
+      validStyleProps,
+      varToVal,
+      componentProps.propMapper
+    )
 
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
@@ -189,14 +208,14 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
         : isWeb
         ? hasTextAncestor
           ? 'span'
-          : 'div'
+          : tag || 'div'
         : ReactText
       : animated
       ? Animated.View
       : isWeb
       ? onLayout
         ? View
-        : 'div'
+        : tag || 'div'
       : View
 
     const numberOfLines = props['numberOfLines']
@@ -204,7 +223,7 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
 
     const styles = [
       sheet.defaultStyle,
-      hasTextAncestor ? sheet.inline : null,
+      hasTextAncestor ? viewStyles.inline : null,
       // from react-native-web
       ...(isWeb && componentProps.isText
         ? [
@@ -436,10 +455,13 @@ export function createComponent<A extends any = StackProps>(componentProps: Part
       postProcessStyles: (inStyles) => {
         const { style, psuedos } = getSplitStyles(
           inStyles,
-          componentProps.isText ? validStylesText : validStyles
+          componentProps.isText ? validStylesText : validStyles,
+          null,
+          componentProps.propMapper
         )
         // flattening pseudos
         const next = {
+          // todo remove reduce
           ...style.reduce((acc, value) => {
             if (value) {
               Object.assign(acc, value)
@@ -506,14 +528,14 @@ const cssText = isWeb
     })
   : {}
 
-const fullscreenStyle: StackProps = {
+const fullscreenStyle: BaseComponentProps = {
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
 }
 
-const disabledStyle: StackProps = {
+const disabledStyle: BaseComponentProps = {
   pointerEvents: 'none',
   userSelect: 'none',
 }
@@ -534,6 +556,14 @@ const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
   obj.transform = transform
 }
 
+const viewStyles = StyleSheet.create({
+  inline: isWeb
+    ? {
+        display: 'inline-flex' as any,
+      }
+    : {},
+})
+
 const textStyles = isWeb
   ? StyleSheet.create({
       notSelectable: {
@@ -551,92 +581,109 @@ const textStyles = isWeb
     })
   : {}
 
-const defaultVarToVal = (x: any) => x
+const defaultPropMap = (key: string, value: any) => true
 
 const getSplitStyles = (
   props: { [key: string]: any },
   validStyleProps: Object = validStyles,
-  // convert from var to theme value
-  varToVal: (key: string) => string = defaultVarToVal
+  valueMap: any = defaultValueMap,
+  propMapper: StaticConfig['propMapper'] = defaultPropMap
 ) => {
   const viewProps: ViewProps = {}
   const style: any[] = []
   let psuedos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
   let cur: ViewStyle | null = null
-  for (const key in props) {
-    let val = props[key]
-    if (key === 'style' || (key[0] === '_' && key.startsWith('_style'))) {
-      if (cur) {
-        // process last
-        fixNativeShadow(cur, true)
-        style.push(cur)
-        cur = null
-      }
-      fixNativeShadow(val, true)
-      style.push(val)
-      continue
-    }
-    if (key === 'fullscreen') {
-      cur = cur || {}
-      Object.assign(cur, fullscreenStyle)
-      continue
-    }
-    // expand flex so it merged with flexShrink etc properly
-    if (key === 'flex') {
-      cur = cur || {}
-      // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-      Object.assign(cur, {
-        flexGrow: val,
-        flexShrink: 1,
-      })
-      continue
-    }
-    if (!isWeb && key === 'pointerEvents') {
-      viewProps[key] = val
-      continue
-    }
-    // is style
-    const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
-    if (validStyleProps[key] || isPseudo) {
-      if (isPseudo) {
-        if (!val) continue
-        psuedos = psuedos || {}
-        const pseudoStyle: ViewStyle = {}
-        for (const subKey in val) {
-          const sval = varToVal(val[subKey])
-          if (subKey in stylePropsTransform) {
-            mergeTransform(pseudoStyle, subKey, sval)
-            continue
-          } else {
-            pseudoStyle[subKey] = sval
-          }
+  if (props['mx']) {
+    console.log('process', props)
+  }
+  for (const keyInit in props) {
+    const valInit = props[keyInit]
+    const out = propMapper(keyInit, valInit, props)
+    if (out === false) continue
+    const keep = out === true || !out
+    const expanded = keep ? [[keyInit, valInit]] : out
+    console.log('out', expanded, out)
+    for (const [key, valInit] of expanded) {
+      const val = valueMap ? valueMap(valInit) : valInit
+      const keyFirstChar = key[0]
+      if (key === 'style' || (keyFirstChar === '_' && key.startsWith('_style'))) {
+        if (cur) {
+          // process last
+          fixNativeShadow(cur, true)
+          style.push(cur)
+          cur = null
         }
-        fixNativeShadow(pseudoStyle, true)
-        psuedos[key] = pseudoStyle
+        fixNativeShadow(val, true)
+        style.push(val)
         continue
       }
-      // get value from theme
-      val = varToVal(val)
-      // transforms
-      if (key in stylePropsTransform) {
+      if (key === 'fullscreen') {
         cur = cur || {}
-        mergeTransform(cur, key, val)
+        Object.assign(cur, fullscreenStyle)
         continue
       }
-      cur = cur || {}
-      cur[key] = val
-      continue
-    }
+      // expand flex so it merged with flexShrink etc properly
+      if (key === 'flex') {
+        cur = cur || {}
+        // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+        Object.assign(cur, {
+          flexGrow: val,
+          flexShrink: 1,
+        })
+        continue
+      }
+      if (!isWeb && key === 'pointerEvents') {
+        viewProps[key] = val
+        continue
+      }
+      // is style
+      const isPseudo = key === 'hoverStyle' || key === 'pressStyle' || key === 'focusStyle'
+      if (validStyleProps[key] || isPseudo) {
+        if (isPseudo) {
+          if (!val) continue
+          psuedos = psuedos || {}
+          const pseudoStyle: ViewStyle = {}
+          for (const subKeyInit in val) {
+            const subValInit = val[subKeyInit]
+            const out = propMapper(subKeyInit, subValInit, props)
+            if (out === false) continue
+            const keep = out === true || !out
+            const values = keep ? [subKeyInit, subValInit] : out
+            for (const [skey, valInit] of values) {
+              const sval = valueMap(valInit)
+              if (skey in stylePropsTransform) {
+                mergeTransform(pseudoStyle, skey, sval)
+                continue
+              } else {
+                pseudoStyle[skey] = sval
+              }
+            }
+          }
+          fixNativeShadow(pseudoStyle, true)
+          psuedos[key] = pseudoStyle
+          continue
+        }
+        // transforms
+        if (key in stylePropsTransform) {
+          cur = cur || {}
+          mergeTransform(cur, key, val)
+          continue
+        }
+        cur = cur || {}
+        cur[key] = val
+        continue
+      }
 
-    if (
-      !isWeb ||
-      key === 'onLayout' ||
-      // dont need to validate when in static mode itll validate client-side
-      (!forwardPropsList ? true : key in forwardPropsList) ||
-      (key[0] === 'd' && key.startsWith('data-'))
-    ) {
-      // if no match, prop
-      viewProps[key] = val
+      if (
+        !isWeb ||
+        key === 'onLayout' ||
+        // dont need to validate when in static mode itll validate client-side
+        (!forwardPropsList ? true : key in forwardPropsList) ||
+        (keyFirstChar === 'd' && key.startsWith('data-'))
+      ) {
+        // if no match, prop
+        viewProps[key] = val
+      }
     }
   }
   // push last style
