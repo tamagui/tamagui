@@ -51,7 +51,7 @@ export type ExtractorParseProps = SnackOptions & {
   sourcePath?: string
   shouldPrintDebug?: boolean
   onExtractTag: (props: ExtractTagProps) => void
-  getFlattenedNode: (props: { isTextView: boolean }) => string
+  getFlattenedNode: (props: { isTextView: boolean; as: string }) => string
   disableThemes?: boolean
 }
 

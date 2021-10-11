@@ -141,7 +141,7 @@ export const Modal = (props: ModalProps) => {
   return (
     <ModalNative animationType={animationType} {...modalProps}>
       <Theme name={themeName}>
-        <VStack flex={1} {...rest} backgroundColor={theme.backgroundColor}>
+        <VStack flex={1} {...rest} backgroundColor={theme.bg}>
           {finalChildren}
         </VStack>
       </Theme>
@@ -153,7 +153,7 @@ function ModalPane(props: StackProps) {
   const theme = useTheme()
   return (
     <VStack
-      backgroundColor={theme.backgroundColor}
+      backgroundColor={theme.bg}
       borderRadius={12}
       alignItems="center"
       position="relative"

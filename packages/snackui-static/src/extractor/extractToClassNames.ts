@@ -89,9 +89,9 @@ export function extractToClassNames({
     sourcePath,
     shouldPrintDebug,
     ...options,
-    getFlattenedNode: ({ isTextView }) => {
+    getFlattenedNode: ({ as }) => {
       flattened++
-      return isTextView ? 'span' : 'div'
+      return as
     },
     onExtractTag: ({
       attrs,

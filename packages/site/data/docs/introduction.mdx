@@ -1,0 +1,131 @@
+---
+title: Introduction
+description: The what and the why of Stitches.
+---
+
+<Image alt="Stitches logo with a purple and blue gradient" src="/docs-intro.png" />
+
+Stitches is a lightweight, performant styling library with a focus on component architecture and developer experience.
+
+---
+
+## Performance
+
+### Near-Zero Runtime
+
+At Modulz, performance is paramount. So when designing Stitches, performance was a top priority.
+
+Stitches avoids unnecessary prop interpolations at runtime, making it significantly more performant than other styling libraries.
+
+Both `@stitches/core` and `@stitches/react` libraries weigh in at ~6kb gzipped.
+
+### Server-Side Rendering
+
+Many UI libraries document that responsive variants don't work with server-side rendering. Since popular frameworks like [Next.js](https://nextjs.org/) and [Gatsby](https://www.gatsbyjs.com/) have begun prioritising SSR, we wanted a solution that works well.
+
+Stitches supports cross-browser [server-side rendering](/docs/server-side-rendering), even for responsive styles and variants.
+
+## Key Features
+
+### Variants
+
+Stitches introduces [variants](/docs/variants) as a first-class citizen, so you can design composable component APIs.
+
+You can define a single variant, multiple variants, and even [compound variants](/docs/variants#compound-variants) which allow you to define styles based on a combination of variants.
+
+Variants can be applied conditionally or responsively.
+
+### Tokens
+
+One of the most exciting features is the ability to define your own [tokens](/docs/tokens) and seamlessly apply them as CSS values. CSS Properties are automatically mapped to token scales. Tokens can even be used in shorthand CSS properties.
+
+### Theming
+
+Stitches provides a simple [theming](/docs/theming) experience out of the box. Create as many themes as you need, and apply them wherever you want. Each theme generates a CSS class name which overrides the default tokens.
+
+```jsx
+const darkTheme = createTheme({
+  colors: {
+    hiContrast: 'hsl(206,2%,93%)',
+    loContrast: 'hsl(206,8%,8%)',
+
+    gray100: 'hsl(206,8%,12%)',
+    gray200: 'hsl(206,7%,14%)',
+    gray300: 'hsl(206,7%,15%)',
+    gray400: 'hsl(206,7%,24%)',
+    gray500: 'hsl(206,7%,30%)',
+    gray600: 'hsl(206,5%,53%)',
+  },
+  space: {},
+  fonts: {},
+});
+```
+
+### Utils
+
+[Utils](/docs/utils) allow you to create your own custom CSS Properties, with your own API.
+
+Use utils to create powerful combinations of properties, property aliases and to introduce restrictions when needed.
+
+```jsx
+export const { styled, css } = createStitches({
+  utils: {
+    marginX: (value) => ({
+      marginLeft: value,
+      marginRight: value,
+    }),
+    marginY: (value) => ({
+      marginTop: value,
+      marginBottom: value,
+    }),
+  },
+});
+```
+
+### Responsive Variants
+
+Stitches lets you configure [breakpoints](/docs/responsive-styles) and apply variants responsively using the `css` prop. CSS at-rules can also be used inline if needed.
+
+```jsx
+export const { styled, css } = createStitches({
+  media: {
+    bp1: '(min-width: 640px)',
+    bp2: '(min-width: 768px)',
+    bp3: '(min-width: 1024px)',
+    bp4: '(min-width: 1280px)',
+  },
+});
+```
+
+### Overrides
+
+Stitches provides a `css` prop for overriding styles on any Stitches component. You can use this prop to define layout concerns and/or [overrides](/docs/overriding-styles). Tokens and breakpoints also work in the `css` prop.
+
+```jsx
+<Button css={{ backgroundColor: 'red' }}>Button</Button>
+```
+
+Stitches also provides a polymorphic `as` prop for defining which tag a component renders.
+
+```jsx
+<Text as="h1">Heading</Text>
+<Text as="p">Paragraph</Text>
+```
+
+### Developer Experience
+
+One of our main goals is to provide the best possible developer experience. Stitches provides a fully-typed API, so when using TypeScript, CSS properties, values, and breakpoints will be auto-completed for you.
+
+Also, when using the `as` prop, the prop suggestions will update.
+
+---
+
+## Community
+
+We're excited to see the community adopt Stitches, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
+
+- [Discord](https://discord.com/invite/H4eG3Mk)
+- [Twitter](https://twitter.com/stitchesjs)
+- [GitHub Discussions](https://github.com/modulz/stitches/discussions)
+- [GitHub](https://github.com/modulz/stitches)
+

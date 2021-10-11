@@ -34,7 +34,7 @@ export const Divider = memo(
       >
         {!noGap && <VStack flex={1} />}
         <VStack
-          backgroundColor={theme.backgroundColorSecondary}
+          backgroundColor={theme.bg2}
           opacity={1}
           flex={flexLine}
           height={1}

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
   Animated,
   PerpectiveTransform,
@@ -16,7 +16,7 @@ import {
 } from 'react-native'
 
 import { useConstant } from '../hooks/useConstant'
-import { isWeb, useIsomorphicLayoutEffect } from '../platform'
+import { useIsomorphicLayoutEffect } from '../platform'
 import { StackProps } from '../StackProps'
 import { VStack } from './Stacks'
 

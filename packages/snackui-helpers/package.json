@@ -1,0 +1,17 @@
+{
+  "name": "@snackui/helpers",
+  "version": "0.18.3",
+  "main": "dist",
+  "module": "_",
+  "scripts": {
+    "build": "esdx legacy",
+    "watch": "esdx-watch legacy"
+  },
+  "devDependencies": {
+    "@dish/esdx": "^0.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
+}

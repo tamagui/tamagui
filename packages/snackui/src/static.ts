@@ -11,6 +11,7 @@ export * from './views/Paragraph'
 export * from './views/Spacer'
 export * from './views/Stacks'
 export * from './views/Text'
-export * from './views/Title'
+export * from './views/Headings'
+export * from './views/Layouts'
 
 export * from '@snackui/helpers'

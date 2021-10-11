@@ -1,6 +1,7 @@
 import { RefObject } from 'react'
 import { GestureResponderEvent, View, ViewProps, ViewStyle } from 'react-native'
 
+import { MediaQueryKey } from './hooks/useMedia'
 import { Spacing } from './views/Spacer'
 
 export type EnhancedStyleProps = Omit<ViewStyle, 'display' | 'backfaceVisibility'> &
@@ -10,9 +11,54 @@ export type EnhancedStyleProps = Omit<ViewStyle, 'display' | 'backfaceVisibility
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
   }
 
-export type StackProps = RNWInternalProps &
+export type StackProps = BaseComponentProps & ShorthandViewStyleProps
+
+export type ShorthandViewStyleProps = {
+  p?: ViewStyle['padding']
+  pt?: ViewStyle['paddingTop']
+  pb?: ViewStyle['paddingBottom']
+  pl?: ViewStyle['paddingLeft']
+  pr?: ViewStyle['paddingRight']
+  px?: ViewStyle['paddingHorizontal']
+  py?: ViewStyle['paddingVertical']
+  m?: ViewStyle['margin']
+  mt?: ViewStyle['marginTop']
+  mb?: ViewStyle['marginBottom']
+  ml?: ViewStyle['marginLeft']
+  mr?: ViewStyle['marginRight']
+  mx?: ViewStyle['marginHorizontal']
+  my?: ViewStyle['marginVertical']
+
+  f?: ViewStyle['flex']
+  fd?: ViewStyle['flexDirection']
+  fw?: ViewStyle['flexWrap']
+  fg?: ViewStyle['flexGrow']
+  fs?: ViewStyle['flexShrink']
+  fb?: ViewStyle['flexBasis']
+
+  ai?: ViewStyle['alignItems']
+  ac?: ViewStyle['alignContent']
+  jc?: ViewStyle['justifyContent']
+  as?: ViewStyle['alignSelf']
+
+  bc?: ViewStyle['backgroundColor']
+
+  br?: ViewStyle['borderRadius']
+  btrr?: ViewStyle['borderTopRightRadius']
+  bbrr?: ViewStyle['borderBottomRightRadius']
+  bblr?: ViewStyle['borderBottomLeftRadius']
+  btlr?: ViewStyle['borderTopLeftRadius']
+
+  pe?: RNWInternalProps['pointerEvents']
+}
+
+export type BaseComponentProps = RNWInternalProps &
   EnhancedStyleProps &
   Omit<ViewProps, 'display'> & {
+    tag?: string
+    media?: {
+      [key in MediaQueryKey]: EnhancedStyleProps
+    }
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)
     animated?: boolean
     fullscreen?: boolean
@@ -49,7 +95,7 @@ export type TransformStyleProps = {
   rotateZ?: string
 }
 
-type RNWInternalProps = {
+export type RNWInternalProps = {
   accessibilityState?: {
     busy?: boolean
     checked?: boolean | 'mixed'

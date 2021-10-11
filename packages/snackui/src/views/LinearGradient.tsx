@@ -2,10 +2,10 @@ import React from 'react'
 import { ReactElement, useState } from 'react'
 import { View } from 'react-native'
 
+import { normalizeColor } from '../helpers/normalizeColor'
 import { useLayout } from '../hooks/useLayout'
 import { useIsomorphicLayoutEffect } from '../platform'
 import { NativeLinearGradientPoint, NativeLinearGradientProps } from './NativeLinearGradientProps'
-import { normalizeColor } from './normalizeColor'
 
 export function LinearGradient({
   colors,
