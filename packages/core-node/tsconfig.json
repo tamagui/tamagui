@@ -1,0 +1,24 @@
+{
+  "extends": "../core/tsconfig",
+  "compilerOptions": {
+    "rootDir": "../",
+    "incremental": false,
+    "emitDeclarationOnly": false,
+    "jsx": "react",
+    "outDir": "dist",
+    "module": "es2020",
+    "target": "es2020",
+    "plugins": [
+      {
+        "transform": "ts-transform-import-path-rewrite",
+        "import": "transform",
+        "alias": {
+          "^(react-native)$": "@tamagui/fake-react-native",
+          "@react-native-aria/overlays": "@tamagui/fake-react-native",
+          "react-native-safe-area-context": "@tamagui/fake-react-native"
+        },
+        "type": "config"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "env": {
+    "targets": {
+      "node": "15"
+    }
+  },
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "decorators": true,
+      "dynamicImport": true
+    }
+  }
+}

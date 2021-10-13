@@ -1,26 +1,45 @@
 {
+  "extends": "../../tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
+    // for jumping to things properly in vscode
+    "baseUrl": "../..",
     "paths": {
-      "@components/*": ["components/*"],
-      "@lib/*": ["lib/*"],
-      "@data/*": ["data/*"],
-      "react-native": ["react-native-web"]
+      "@tamagui/*": ["packages/*/src"],
+      "tamagui": ["packages/tamagui/src"],
+      "@components/*": [
+        "packages/site/components/*"
+      ],
+      "@lib/*": [
+        "packages/site/lib/*"
+      ],
+      "@data/*": [
+        "packages/site/data/*"
+      ],
+      "react-native": [
+        "react-native-web"
+      ]
     },
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "strict": false,
-    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
     "noEmit": true,
-    "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "resolveJsonModule": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "data/docs/core/use-media.msx"  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,148 +1,70 @@
-import { VStack, Box, Title, Grid, Text, Paragraph } from 'snackui'
+import React from 'react'
+import { Grid, H2, H4, Paragraph, YStack } from 'tamagui'
 
-const Code = (props) => <code {...props} />
+import { Code } from './Code'
 
 export function FeaturesGrid() {
   return (
-    <VStack size={{ '@initial': '2', '@bp1': '3' }}>
-      <VStack>
-        <Title fontWeight="800" size="xl" textAlign="center" marginBottom="$2">
-          Features
-        </Title>
-        <Paragraph size="lg" textAlign="center" marginBottom="$8">
-          A fully-featured styling library.
-        </Paragraph>
+    <YStack maxWidth={790} mx="auto" spacing="$4" ai="stretch">
+      <H2 fontWeight="800" ta="center">
+        Features
+      </H2>
+      <Paragraph size="$6" color="$color3" ta="center">
+        A full featured styling library.
+      </Paragraph>
 
-        <Grid
-          gap={10}
-          // css={{
-          //   gap: '$6',
-          //   gridTemplateColumns: '1fr',
-          //   '@bp2': {
-          //     gap: '$8',
-          //     gridTemplateColumns: '1fr 1fr',
-          //   },
-          // }}
-        >
-          <Box>
-            <Title
-              fontWeight="800"
-              size="5"
-              as="h4"
-              css={{ lineHeight: 1, fontWeight: 500, mb: '$2' }}
-            >
-              Performant
-            </Title>
-            <Paragraph
-              as="p"
-              size={{ '@initial': '4', '@bp2': '4' }}
-              css={{ lineHeight: '27px', color: '$slate11' }}
-            >
-              Peaches avoids unnecessary prop interpolations at runtime, making it more performant
-              than other styling libraries.
+      <YStack pt="$6">
+        <Grid gap={25} itemMinWidth={250}>
+          <YStack padding="$4" spacing>
+            <H4 letterSpacing={-1}>Complete</H4>
+            <Paragraph color="$color3">
+              Write typed styles inline with themes, constants, shorthand props and media queries,
+              plus a full-featured set of accessible components that work together out of the box.
             </Paragraph>
-          </Box>
+          </YStack>
 
-          <Box>
-            <Title
-              fontWeight="800"
-              size="5"
-              as="h4"
-              css={{ lineHeight: 1, fontWeight: 500, mb: '$2' }}
-            >
-              Server-side rendering
-            </Title>
+          <YStack ai="flex-start" spacing p="$4">
+            <H4 letterSpacing={-1}>Performant</H4>
+            <Paragraph color="$color3">
+              Tamagui avoids much more JS parsing at runtime than other libraries, even with
+              conditional logic in your render + flattens your tree, making it more performant than
+              other styling libraries.
+            </Paragraph>
+          </YStack>
 
-            <Paragraph
-              as="p"
-              size={{ '@initial': '4', '@bp2': '4' }}
-              css={{ lineHeight: '27px', color: '$slate11' }}
-            >
-              Peaches supports cross-browser server-side rendering, even for responsive styles and
+          <YStack ai="flex-start" spacing p="$4">
+            <H4 letterSpacing={-1}>Server-side rendering</H4>
+            <Paragraph color="$color3">
+              Tamagui supports cross-browser server-side rendering, even for responsive styles and
               variants.
             </Paragraph>
-          </Box>
+          </YStack>
 
-          <Box>
-            <Title
-              fontWeight="800"
-              size="5"
-              as="h4"
-              css={{ lineHeight: 1, fontWeight: 500, mb: '$2' }}
-            >
-              Developer experience
-            </Title>
-
-            <Paragraph
-              as="p"
-              size={{ '@initial': '4', '@bp2': '4' }}
-              css={{ lineHeight: '27px', color: '$slate11' }}
-            >
-              With a fully-typed API, token-aware properties, and custom utils.
+          <YStack ai="flex-start" spacing p="$4">
+            <H4 letterSpacing={-1}>Developer experience</H4>
+            <Paragraph color="$color3">
+              A fully-typed API, token-aware properties, debug props and pragrma, and custom
+              shorthands.
             </Paragraph>
-          </Box>
+          </YStack>
 
-          <Box>
-            <Title
-              fontWeight="800"
-              size="5"
-              as="h4"
-              css={{ lineHeight: 1, fontWeight: 500, mb: '$2' }}
-            >
-              Critical Path CSS
-            </Title>
-
-            <Paragraph
-              as="p"
-              size={{ '@initial': '4', '@bp2': '4' }}
-              css={{ lineHeight: '27px', color: '$slate11' }}
-            >
-              Only inject the styles which are actually used, so your users don't download
-              unnecessary CSS.
+          <YStack ai="flex-start" spacing p="$4">
+            <H4 letterSpacing={-1}>Fast dynamic styles</H4>
+            <Paragraph color="$color3">
+              Write inline styles that don't affect render performance with a compiler that analyzes
+              ternaries, object spreads and more.
             </Paragraph>
-          </Box>
+          </YStack>
 
-          <Box>
-            <Title
-              fontWeight="800"
-              size="5"
-              as="h4"
-              css={{ lineHeight: 1, fontWeight: 500, mb: '$2' }}
-            >
-              Override component tags
-            </Title>
-
-            <Paragraph
-              as="p"
-              size={{ '@initial': '4', '@bp2': '4' }}
-              css={{ lineHeight: '27px', color: '$slate11' }}
-            >
-              A polymorphic <Code>as</Code> prop is included in components returned from the{' '}
-              <Code>styled</Code> function.
+          <YStack ai="flex-start" spacing p="$4">
+            <H4 letterSpacing={-1}>Critical Path CSS</H4>
+            <Paragraph color="$color3">
+              Only inject the styles which are actually used, so users don't download unnecessary
+              CSS.
             </Paragraph>
-          </Box>
-
-          <Box>
-            <Title
-              fontWeight="800"
-              size="5"
-              as="h4"
-              css={{ lineHeight: 1, fontWeight: 500, mb: '$2' }}
-            >
-              Override component styles
-            </Title>
-
-            <Paragraph
-              as="p"
-              size={{ '@initial': '4', '@bp2': '4' }}
-              css={{ lineHeight: '27px', color: '$slate11' }}
-            >
-              Provides a <Code>css</Code> prop, which allows style overrides to be applied in the
-              consumption layer.
-            </Paragraph>
-          </Box>
+          </YStack>
         </Grid>
-      </VStack>
-    </VStack>
+      </YStack>
+    </YStack>
   )
 }

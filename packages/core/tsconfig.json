@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "rootDir": "../..",
+    "jsx": "preserve"
+  },
+  "include": ["src"]
+}

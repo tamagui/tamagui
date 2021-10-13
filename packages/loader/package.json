@@ -1,0 +1,29 @@
+{
+  "name": "tamagui-loader",
+  "version": "0.18.3",
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "typings": "types.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "esdx",
+    "watch": "esdx --watch"
+  },
+  "dependencies": {
+    "@tamagui/static": "^0.18.3",
+    "fs-extra": "^9.1.0",
+    "loader-utils": "^2.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@tamagui/esdx": "^0.6.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
+}

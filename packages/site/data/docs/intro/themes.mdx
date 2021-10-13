@@ -1,0 +1,81 @@
+---
+title: Themes
+description: How to create and use themes in Tamagui.
+---
+
+Themes in Tamagui are powerful because they can compose off each other nicely. They are meant to be fairly small, with tokens doing much of the heavy lifting.
+
+Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color1`, `color2`, `bg1`, and `bg2`. We also have a set of light and dark colors, which we define onto their respective `dark` and `light` base themes.
+
+Tamagui lets you access themes and tokens both in the same way. Let's start with an example of inline styling with a subset of the configuration:
+
+```jsx
+import { createTokens, createTamagui, YStack, Theme } from 'tamagui'
+
+const tokens = createTokens({
+  color: {
+    darkRed: '#550000'
+    lightRed: '#ff0000'
+  }
+})
+
+const { Provider } = createTamagui({
+  tokens,
+  themes: {
+    dark: {
+      red: tokens.color.darkRed,
+    },
+    light: {
+      red: tokens.color.lightRed,
+    }
+  }
+})
+
+export const App = () => (
+  <Provider defaultTheme="light">
+    <YStack backgroundColor="$red" />
+    <Theme name="dark">
+      <YStack backgroundColor="$red" />
+    </Theme>
+  </Provider>
+)
+```
+
+In this example we've set up darkRed and lightRed variables and a a dark and light theme that use those variables. Tamagui will handle defining:
+
+```css
+:root {
+  --colors-dark-red: #550000;
+  --colors-light-red: #ff0000;
+}
+
+.theme--dark {
+  --red: var(--colors-dark-red);
+}
+
+.theme--light {
+  --red: var(--colors-light-red);
+}
+```
+
+Which will automatically apply at runtime, or can be gathered for use in SSR using `Tamagui.getCSS()`.
+
+Finally, the compiler on web will extract your views roughly as so:
+
+```jsx
+export const App = () => (
+  <Provider defaultTheme="light">
+    <div className="baCo-2nesi3" />
+    <Theme name="dark">
+      <div className="baCo-2nesi3" />
+    </Theme>
+  </Provider>
+)
+
+// CSS output:
+//  .color-2nesi3 { background-color: var(--red); }
+```
+
+### Subset themes
+
+One of the real powers of Tamagui is theme nesting, which we'll explain below, but which is important to understand. If you define a theme with the name in the form `[name]-[parentName]`, Tamagui handles `<Theme name="[name]" />` as though it's valid.

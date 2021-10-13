@@ -1,0 +1,173 @@
+---
+title: Design Systems Guide
+description: How to set up a package of your own components that get optimized.
+---
+
+<Notice>
+  A great reference for this guide is reading the source of the
+  [tamagui](https://github.com/tamagui/tamagui/tree/master/packages/tamagui) package itself.
+</Notice>
+
+Tamagui allows you to build our your own set of components that are optimized with the compiler whenever they are used in your app.
+
+By default, if you just use `styled()` in your app, Tamagui **won't** be able to optimize those components. This is because the compiler needs to be know about those components at build-time.
+
+Let's break down how to set this up in more detail.
+
+## Step 1: Create a package
+
+Your design system needs to live in it's own npm module, which can be private to just your app. That way you can later direct the compiler to look for that package.
+
+Design systems can extend off each other. In fact `tamagui` extends off `@tamagui/core`, which contains simple base level components.
+
+So, for example, if you'd like to use the Tamagui `XStack`, `YStack`, `Button` and `Paragraph` in your design system, you would add `tamagui` to your design system's package.json.
+
+If you want to build more from scratch, then use `@tamagui/core` and only import either the `Stack` or `Text` view. For the purpose of this guide, we'll just extend `@tamagui/core`.
+
+Let's name our package `@ourapp/components`:
+
+```json
+{
+  "name": "@ourapp/components",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "module:jsx": "_jsx",
+  "typings": "types.d.ts",
+  "sideEffects": ["*.css"],
+  "dependencies": {
+    "@tamagui/core": "1.0.0-alpha.1"
+  },
+  "scripts": {
+    "build": "esdx --jsx",
+    "watch": "esdx --jsx --watch"
+  },
+  "devDependencies": {
+    "@tamagui/esdx": "^0.6.1"
+  }
+}
+```
+
+There are a few things to note here:
+
+- We're using `@tamagui/esdx` to build this package, which is a small script built around `esbuild` and `rollup-plugin-flat-dts` that makes sure you output your components _with JSX preserved_ into `./_jsx`.
+- We then set `module:jsx`, which then needs to be added to your webpack `resolve.mainFields`.
+  - The Next.js plugin handles this for you automatically.
+- `sideEffects` is important: otherwise webpack will remove the generated CSS in production.
+
+## Step 2: Define and export components
+
+Now you'll want to create and export the components you'd like. You can re-export components from `tamagui` or `@tamagui/core` as well. Let's create a Circle component
+
+`Circle.tsx`:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const Circle = styled(Stack, {
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: 100_000_000,
+  overflow: 'hidden',
+
+  variants: {
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+})
+```
+
+And then export from `index.tsx`:
+
+```jsx
+export * from './Circle'
+```
+
+## Step 3: Set up your build
+
+Now in your app, add `@ourapp/components` to your package.json, and update your tamagui build configuration.
+
+### Webpack
+
+In your `webpack.config.js`:
+
+```js
+{
+  loader: 'tamagui-loader',
+  options: {
+    config: './tamagui.config.ts',
+    components: ['@ourapp/components'],
+  },
+}
+```
+
+### Next.js
+
+In your `next.config.js`:
+
+```js
+export default withPlugins(
+  withTamagui({
+    config: './tamagui.config.ts',
+    components: ['@ourapp/components'],
+  })
+)
+```
+
+### React Native
+
+In your `babel.config.js`:
+
+```js
+export default {
+  plugins: [
+    [
+      '@snackui/babel-plugin',
+      {
+        exclude: /node_modules/,
+        config: './tamagui.config.ts',
+        components: ['@ourapp/components']
+      },
+    ],
+  ],
+}
+```
+
+## Step 4: Test it out
+
+In your app, you should now be able to import and use your Circle component. Using the debug pragma, you can also verify the extraction is working. Make sure the build settings `logTimings: true` and `disableExtraction: false` are set so you can see the compiler at work:
+
+Anywhere in your app:
+
+```jsx
+import { Circle } from '@ourapp/components'
+
+export default () => (
+  <Circle size="$large" />
+)
+```
+
+When it compiles you should see something like:
+
+```bash
+🥚                  app.tsx  16ms ׁ·    1 optimized · 1 flattened
+```
+
+To get more information on any extraction, use the `// debug` pragma:
+
+```jsx
+// debug
+// ^ the above pragma will direct Tamagui to output a lot of information on the extraction
+import { Circle } from '@ourapp/components'
+
+export default () => (
+  <Circle size="$large" />
+)
+```
+
+You should see much more log output with details on how it extracted, including the final CSS and JS.

@@ -8,12 +8,12 @@ import template from '@babel/template'
 import { Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
-  SnackOptions,
+  TamaguiOptions,
   createExtractor,
   isSimpleSpread,
   literalToAst,
-  rnwPatch,
-} from '@snackui/static'
+  patchReactNativeWeb,
+} from '@tamagui/static'
 
 const importNativeView = template(`
 import { View as __ReactNativeView, Text as __ReactNativeText } from 'react-native';
@@ -23,36 +23,30 @@ const importStyleSheet = template(`
 import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 `)
 
-const importRNW = template(rnwPatch)
-
 process.env.TARGET = process.env.TARGET || 'native'
 
 const extractor = createExtractor()
 
 export default declare(function snackBabelPlugin(
   api,
-  options: SnackOptions
+  options: TamaguiOptions
 ): {
   name: string
   visitor: Visitor
 } {
   api.assertVersion(7)
 
+  if (!process.env.TAMAGUI_DISABLE_RNW_PATCH) {
+    patchReactNativeWeb()
+  }
+
   return {
-    name: 'snackui',
+    name: 'tamagui',
 
     visitor: {
       Program: {
         enter(this: any, root, state) {
           let sourcePath = this.file.opts.filename
-
-          if (sourcePath.includes('react-native-web/dist/exports/View')) {
-            console.log('  🍑 patching react-native-web (babel)')
-            // includes the exports we need
-            // @ts-expect-error
-            root.node.body.push(importRNW())
-            return
-          }
 
           // this filename comes back incorrect in react-native, it adds /ios/ for some reason
           // adding a fix here, but it's a bit tentative...
@@ -68,7 +62,7 @@ export default declare(function snackBabelPlugin(
           let sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim()
-          if (firstComment === 'snackui-ignore') {
+          if (firstComment?.includes('tamagui-ignore')) {
             return
           }
 
@@ -79,8 +73,7 @@ export default declare(function snackBabelPlugin(
             let key = `${styleIndex}`
             if (process.env.NODE_ENV === 'development') {
               const lineNumbers = node.loc
-                ? node.loc.start.line +
-                  (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
+                ? node.loc.start.line + (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
                 : ''
               key += `:${basename(sourcePath)}:${lineNumbers}`
             }
@@ -95,15 +88,9 @@ export default declare(function snackBabelPlugin(
             })['expression'] as t.MemberExpression
           }
 
-          if (options.themesFile) {
-            console.warn(
-              `⚠️ No need to pass themesFile to native apps, themes always run at runtime`
-            )
-          }
-
           extractor.parse(root, {
             shouldPrintDebug,
-            evaluateImportsWhitelist: ['constants.js', 'colors.js'],
+            importsWhitelist: ['constants.js', 'colors.js'],
             deoptProps: new Set(['hoverStyle', 'pressStyle', 'focusStyle', 'pointerEvents']),
             excludeProps: [
               'className',
@@ -117,7 +104,6 @@ export default declare(function snackBabelPlugin(
             ],
             ...options,
             sourcePath,
-            disableThemes: true,
             getFlattenedNode({ isTextView }) {
               if (!hasImportedView) {
                 hasImportedView = true
@@ -136,10 +122,7 @@ export default declare(function snackBabelPlugin(
                     stylesExpr.elements.push(expr)
                   } else {
                     finalAttrs.push(
-                      t.jsxAttribute(
-                        t.jsxIdentifier(`_style${key}`),
-                        t.jsxExpressionContainer(expr)
-                      )
+                      t.jsxAttribute(t.jsxIdentifier(`_style${key}`), t.jsxExpressionContainer(expr))
                     )
                   }
                 }
@@ -158,9 +141,7 @@ export default declare(function snackBabelPlugin(
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
                       if (isSimpleSpread(attr.value)) {
-                        stylesExpr.elements.push(
-                          t.memberExpression(attr.value.argument, t.identifier('style'))
-                        )
+                        stylesExpr.elements.push(t.memberExpression(attr.value.argument, t.identifier('style')))
                       }
                     }
                     finalAttrs.push(attr.value)

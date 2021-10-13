@@ -1,0 +1,50 @@
+import { styled } from '@tamagui/core'
+
+import { Paragraph } from './Paragraph'
+
+export const Title = styled(Paragraph, {
+  fontFamily: '$title',
+  fontWeight: '700',
+  fontSize: '$8',
+})
+
+export const H1 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$10',
+})
+
+export const H2 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$9',
+})
+
+export const H3 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$6',
+  fontWeight: '600',
+})
+
+export const H4 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$5',
+})
+
+export const H5 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$4',
+  color: '$color2',
+  fontWeight: '600',
+})
+
+export const H6 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$4',
+  color: '$color3',
+  fontWeight: '600',
+})

@@ -1,0 +1,87 @@
+---
+title: Text
+description: Text, Sized Text and Paragraph show one way to build a design system.
+name: text
+---
+
+# Text
+
+<Description>Text, Sized Text and Paragraph show one way to build a design system.</Description>
+
+<HeroContainer>
+  <TextDemo />
+</HeroContainer>
+
+```jsx hero template=Text
+
+```
+
+<Highlights
+  features={[
+    'Supports all react-native-web props and Tamagui styling props.',
+    'Media query styles, hoverStyle, pressStyle.',
+    'Paragraph uses themes and functional variants for a nicer default.',
+  ]}
+/>
+
+## Usage
+
+Text in Tamagui matches to Text in react-native-web, just with the added [Tamagui Props](/docs/intro/props).
+
+It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
+
+```jsx
+import { YStack, XStack, Text } from 'tamagui'
+
+export default () => (
+  <>
+    <Text
+      // can add theme values
+      color="$white"
+      fontFamily="$body"
+      // or just use direct values
+      fontSize={20}
+      hoverStyle={{
+        color: '$color2',
+      }}
+    >
+      Lorem ipsum
+    </Text>
+  </>
+)
+```
+
+## SizableText
+
+Seeing how SizableText and Paragraph are defined is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
+
+```jsx
+import { Text, styled } from '@tamagui/core'
+
+export const SizableText = styled(Text, {
+  variants: {
+    size: {
+      '...size': (val, { tokens }) => {
+        return {
+          fontSize: tokens.fontSize[val] ?? val,
+          lineHeight: tokens.lineHeight[val] ?? val,
+        }
+      },
+    },
+  },
+})
+```
+
+SizableText simply adds a single `size` property to maniplulate both fontSize and lineHeight, using the [Functional Variants]() feature. Then Paragraph extends that and ensures it defaults to values from your theme - fontSize, lineHeight, color and fontFamily.
+
+## Paragraph
+
+Finally Paragraph extends `SizableText` and simply sets some default values from your theme:
+
+```jsx
+export const Paragraph = styled(SizableText, {
+  fontFamily: '$body',
+  color: '$color',
+  size: '$4',
+})
+```
