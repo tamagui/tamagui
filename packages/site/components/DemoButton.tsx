@@ -1,6 +1,5 @@
-// import { styled } from '@modulz/design-system';
-
-import { Button } from "snackui";
+import React from 'react'
+import { Button } from 'tamagui'
 
 // export const StyledButton = styled('button', {
 //   appearance: 'none',
@@ -86,4 +85,4 @@ import { Button } from "snackui";
 //   },
 // });
 
-export const DemoButton = (props) => <Button children="Button" {...props} />;
+export const DemoButton = (props) => <Button {...props}>Button</Button>

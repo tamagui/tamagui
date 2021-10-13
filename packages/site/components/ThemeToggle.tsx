@@ -1,13 +1,11 @@
-import React from 'react';
-import { Button } from 'snackui';
-// import { useTheme } from 'next-themes';
+import { useTheme } from '@components/NextTheme'
+import React from 'react'
+import { Button, ButtonProps } from 'tamagui'
 
-export const ThemeToggle = (props) => {
-  const { theme, setTheme } = {}; //useTheme();
-
+export const ThemeToggle = (props: ButtonProps) => {
+  const { theme, setTheme } = useTheme()
   return (
     <Button
-      variant="ghost"
       onClick={() => (theme === 'dark' ? setTheme('light') : setTheme('dark'))}
       {...props}
       aria-label="toggle a light and dark color scheme"
@@ -48,5 +46,5 @@ export const ThemeToggle = (props) => {
         />
       </svg>
     </Button>
-  );
-};
+  )
+}

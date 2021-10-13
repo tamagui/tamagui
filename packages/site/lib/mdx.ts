@@ -1,58 +1,75 @@
-import fs from 'fs';
-import path from 'path';
-import glob from 'glob';
-import matter from 'gray-matter';
-import readingTime from 'reading-time';
-import { bundleMDX } from 'mdx-bundler';
-import rehypeHighlightCode from '@lib/rehype-highlight-code';
-import rehypeMetaAttribute from '@lib/rehype-meta-attribute';
-import remarkSlug from 'remark-slug';
+import fs from 'fs'
+import path from 'path'
 
-import type { Frontmatter } from 'types/frontmatter';
+import compareVersions from 'compare-versions'
+import glob from 'glob'
+import matter from 'gray-matter'
+// TODO error on docs pages with esbuild
+import { bundleMDX } from 'mdx-bundler'
+import readingTime from 'reading-time'
+import remarkSlug from 'remark-slug'
 
-const ROOT_PATH = process.cwd();
-export const DATA_PATH = path.join(ROOT_PATH, 'data');
+import { Frontmatter } from '../types/frontmatter'
+import rehypeHighlightCode from './rehype-highlight-code'
+import rehypeMetaAttribute from './rehype-meta-attribute'
+import remarkHeroTemplate from './remark-hero-template'
+
+const ROOT_PATH = process.cwd()
+export const DATA_PATH = path.join(ROOT_PATH, 'data')
 
 // the front matter and content of all mdx files based on `docsPaths`
 export const getAllFrontmatter = (fromPath) => {
-  const PATH = path.join(DATA_PATH, fromPath);
-  const paths = glob.sync(`${PATH}/**/*.mdx`);
+  const PATH = path.join(DATA_PATH, fromPath)
+  const paths = glob.sync(`${PATH}/**/*.mdx`)
+  return paths
+    .map((filePath) => {
+      const source = fs.readFileSync(path.join(filePath), 'utf8')
+      const { data, content } = matter(source)
 
-  return paths.map((filePath) => {
-    const source = fs.readFileSync(path.join(filePath), 'utf8');
-    const { data, content } = matter(source);
-
-    return {
-      ...(data as Frontmatter),
-      slug: path.basename(filePath).replace('.mdx', ''), // file name without extension
-      wordCount: content.split(/\s+/g).length,
-      readingTime: readingTime(content),
-    } as Frontmatter;
-  });
-};
+      return {
+        ...(data as Frontmatter),
+        slug: filePath.replace(`${DATA_PATH}/`, '').replace('.mdx', ''),
+        readingTime: readingTime(content),
+      } as Frontmatter
+    })
+    .sort((a, b) => Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || '')))
+}
 
 export const getMdxBySlug = async (basePath, slug) => {
-  const source = fs.readFileSync(path.join(DATA_PATH, basePath, `${slug}.mdx`), 'utf8');
+  let mdxPath = slug
+  if (!mdxPath.includes('/') && basePath.includes('components')) {
+    const versions = getAllVersionsFromPath(`docs/components/${slug}`)
+    mdxPath += `/${versions[0]}`
+  }
+  const source = fs.readFileSync(path.join(DATA_PATH, basePath, `${mdxPath}.mdx`), 'utf8')
   const { frontmatter, code } = await bundleMDX(source, {
-    xdmOptions(input, options) {
-      options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkSlug];
+    xdmOptions(options) {
+      // @ts-ignore
+      options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkSlug, remarkHeroTemplate]
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         rehypeMetaAttribute,
         rehypeHighlightCode,
-      ];
-
-      return options;
+      ]
+      return options
     },
-  });
-
+  })
   return {
     frontmatter: {
       ...(frontmatter as Frontmatter),
       slug,
-      wordCount: code.split(/\s+/g).length,
       readingTime: readingTime(code),
     } as Frontmatter,
     code,
-  };
-};
+  }
+}
+
+export function getAllVersionsFromPath(fromPath: string) {
+  const PATH = path.join(DATA_PATH, fromPath)
+  if (!fs.existsSync(PATH)) return []
+  return fs
+    .readdirSync(PATH)
+    .map((fileName) => fileName.replace('.mdx', ''))
+    .sort(compareVersions)
+    .reverse()
+}

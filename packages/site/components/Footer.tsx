@@ -1,196 +1,97 @@
+import { TamaguiLogo } from '@components/TamaguiLogo'
 import React from 'react'
-import NextLink from 'next/link'
-import { Box, VStack, Grid, Text, Divider, Paragraph } from 'snackui'
-import { PeachesLogo } from '@components/PeachesLogo'
-import { ExternalIcon } from './ExternalIcon'
+import { H4, Paragraph, Separator, Text, XStack, YStack } from 'tamagui'
 
-const Link = Paragraph
+import { ContainerLarge } from './Container'
+import { ExternalIcon } from './ExternalIcon'
+import { Link } from './Link'
 
 export const Footer = () => {
   return (
-    <Box>
-      <VStack justifyContent="center">
-        <Divider />
-      </VStack>
-      <VStack flex={3}>
-        <Grid
-        // css={{
-        //   gridTemplateColumns: 'repeat(1, 1fr)',
-        //   gap: '$6',
-        //   '& ul': { listStyle: 'none', margin: '0', padding: '0' },
-        //   '@bp2': {
-        //     gridTemplateColumns: 'repeat(4, 1fr)',
-        //     gap: '$3',
-        //   },
-        // }}
+    <ContainerLarge>
+      <YStack mt="$4" justifyContent="center">
+        <Separator />
+      </YStack>
+      <XStack py="$8" $sm={{ flexDirection: 'column', ai: 'center' }}>
+        <YStack
+          $sm={{ ai: 'center' }}
+          py="$5"
+          flex={2}
+          ai="flex-start"
+          mt="$1"
+          pb="$6"
+          px="$4"
+          spacing="$2"
         >
-          <VStack
-            alignItems="center"
-            // css={{
-            //   alignItems: 'center',
-            //   '@bp2': {
-            //     flexDirection: 'column',
-            //     alignItems: 'start',
-            //   },
-            // }}
-          >
-            <NextLink href="/" passHref>
-              <Box
-                as="a"
-                css={{
-                  color: '$hiContrast',
-                  display: 'inline-flex',
-                  '&:focus': {
-                    boxShadow: 'none',
-                  },
-                }}
-              >
-                <span
-                  style={{
-                    position: 'absolute',
-                    width: 1,
-                    height: 1,
-                    padding: 0,
-                    margin: -1,
-                    overflow: 'hidden',
-                    clip: 'rect(0, 0, 0, 0)',
-                    whiteSpace: 'nowrap',
-                    border: 0,
-                  }}
-                >
-                  homepage
-                </span>
-                <PeachesLogo />
-              </Box>
-            </NextLink>
-            <Paragraph>
-              by <NextLink href="https://twitter.com/natebirdman">nate</NextLink>.
-            </Paragraph>
-          </VStack>
-          <Box>
-            <Paragraph>Overview</Paragraph>
-            <ul>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/introduction" passHref>
-                    <Text variant="subtle">Introduction</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/tutorials" passHref>
-                    <Text variant="subtle">Tutorials</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/api" passHref>
-                    <Text variant="subtle">API</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/frequently-asked-questions" passHref>
-                    <Text variant="subtle">FAQ</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-            </ul>
-          </Box>
-          <Box>
-            <Paragraph>Docs</Paragraph>
-            <ul>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/installation" passHref>
-                    <Text variant="subtle">Installation</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/styling" passHref>
-                    <Text variant="subtle">Styling</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/variants" passHref>
-                    <Text variant="subtle">Variants</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/docs/tokens" passHref>
-                    <Text variant="subtle">Configuration</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-            </ul>
-          </Box>
-          <Box>
-            <Text size="3" css={{ fontWeight: 500, lineHeight: '20px' }}>
-              Community
+          <Link href="/" marginBottom={20}>
+            <Text
+              className="clip-invisible"
+              position="absolute"
+              width={1}
+              height={1}
+              padding={0}
+              margin={-1}
+              overflow="hidden"
+            >
+              homepage
             </Text>
-            <ul>
-              <li>
-                <Paragraph size="3">
-                  <NextLink href="/blog" passHref>
-                    <Text variant="subtle">Blog</Text>
-                  </NextLink>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <Link
-                    variant="subtle"
-                    href="https://github.com/snackui/snackui"
-                    css={{ display: 'inline-flex', alignItems: 'center' }}
-                  >
-                    GitHub
-                    <VStack as="span" css={{ ml: '$1', color: '$slate8' }}>
-                      <ExternalIcon />
-                    </VStack>
-                  </Link>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <Link
-                    variant="subtle"
-                    href="https://twitter.com/peachesjs"
-                    css={{ display: 'inline-flex', alignItems: 'center' }}
-                  >
-                    Twitter
-                    <VStack as="span" css={{ ml: '$1', color: '$slate8' }}>
-                      <ExternalIcon />
-                    </VStack>
-                  </Link>
-                </Paragraph>
-              </li>
-              <li>
-                <Paragraph size="3">
-                  <Link
-                    variant="subtle"
-                    href="https://discord.com/invite/H4eG3Mk"
-                    css={{ display: 'inline-flex', alignItems: 'center' }}
-                  >
-                    Discord
-                    <VStack as="span" css={{ ml: '$1', color: '$slate8' }}>
-                      <ExternalIcon />
-                    </VStack>
-                  </Link>
-                </Paragraph>
-              </li>
-            </ul>
-          </Box>
-        </Grid>
-      </VStack>
-    </Box>
+            <TamaguiLogo showWords />
+          </Link>
+          <Paragraph size="$2" color="$color3">
+            by{' '}
+            <Link size="$2" href="https://twitter.com/natebirdman">
+              nate
+            </Link>
+            .
+          </Paragraph>
+          <Paragraph size="$2" color="$color4">
+            site forked from{' '}
+            <Link size="$2" href="https://github.com/modulz">
+              modulz
+            </Link>
+            .
+          </Paragraph>
+        </YStack>
+
+        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} spacing>
+          <H4 size="$5">Overview</H4>
+          <Link href="/docs/intro/introduction">Introduction</Link>
+          <Link href="/docs/intro/configuration">Configuration</Link>
+          <Link href="/docs/guides/design-systems">Guides</Link>
+          {/* <Link href="/docs/api">API</Link>
+          <Link href="/docs/frequently-asked-questions">FAQ</Link> */}
+        </YStack>
+
+        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} spacing>
+          <H4 size="$5">Docs</H4>
+          <Link href="/docs/intro/installation">Installation</Link>
+          <Link href="/docs/intro/themes">Themes</Link>
+          <Link href="/docs/core/styled">Variants</Link>
+        </YStack>
+
+        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} spacing>
+          <H4 size="$5">Community</H4>
+          {/* <Link href="/blog">Blog</Link> */}
+          <XStack spacing="$1" ai="center">
+            <Link ai="center" href="https://github.com/tamagui/tamagui">
+              GitHub
+            </Link>
+            <ExternalIcon />
+          </XStack>
+          <XStack spacing="$1" ai="center">
+            <Link ai="center" href="https://twitter.com/tamagui_dev">
+              Twitter
+            </Link>
+            <ExternalIcon />
+          </XStack>
+          <XStack spacing="$1" ai="center">
+            <Link ai="center" href="https://discord.gg/uUtvv6GM">
+              Discord
+            </Link>
+            <ExternalIcon />
+          </XStack>
+        </YStack>
+      </XStack>
+    </ContainerLarge>
   )
 }

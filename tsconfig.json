@@ -1,13 +1,41 @@
 {
-  "files": [],
   "compilerOptions": {
-    "typeRoots": ["node_modules/@types"],
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true
+    // THIS MUST BE AT ROOT, if you set baseurl in sub-package it breaks intellisense jump to
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "dist",
+    "importHelpers": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "preserveSymlinks": true,
+    "incremental": true,
+    "jsx": "react",
+    "module": "system",
+    "moduleResolution": "node",
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strictNullChecks": true,
+    "target": "es2020",
+    "types": ["node", "react"],
+    "lib": ["dom", "esnext"],
+    "paths": {
+      "@tamagui/*": ["packages/*/src"]
+    },
   },
-  "references": [
-    { "path": "packages/helpers" },
-    { "path": "packages/snackui" },
-    { "path": "packages/snackui-static" }
-  ]
+  "exclude": ["_", "test/**/*"],
+  "typeAcquisition": {
+    "enable": true
+  },
 }

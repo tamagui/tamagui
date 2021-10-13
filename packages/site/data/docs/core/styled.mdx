@@ -1,0 +1,129 @@
+---
+title: styled()
+description: Extend and build custom and optimizable components.
+---
+
+<Notice>
+  For custom styled() components to be optimized by the compiler, you'll need to place them in a
+  node module and update your build configuration. See the [Design Systems
+  guide](/docs/guides/design-systems).
+</Notice>
+
+Create a new component by extending an existing one:
+
+```jsx
+import { styled, Stack } from 'tamagui'
+
+export const Circle = styled(Stack, {
+  borderRadius: 100_000_000,
+})
+```
+
+Usage:
+
+```jsx
+<Circle x={10} y={10} backgroundColor="red" />
+```
+
+The `styled` function only accepts Tamagui components or components that accept the `className` property, for now. Because react-native-web components explicitly don't accept `className`, components like TextArea are currently not working with Tamagui. We're working to expand this support in an upcoming release.
+
+You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
+
+## Variants
+
+Let's add some variants:
+
+```jsx
+import { styled, Stack } from 'tamagui'
+
+export const Circle = styled(Stack, {
+  borderRadius: 100_000_000,
+
+  variants: {
+    pin: {
+      top: {
+        position: 'absolute',
+        top: 0,
+      },
+    },
+
+    centered: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+})
+
+```
+
+We can use these like so:
+
+```jsx
+<Circle pin="top" centered size="$lg" />
+```
+
+Notice here we're showing off a few different styles of variants. We'll expand on them below:
+
+### Boolean Variants
+
+The special key `true` will map to a boolean property. So the `centered` prop will be typed to accept true or false, and when true it will apply it's styles.
+
+### Spread Variants
+
+Spread variants are special variants that let you collect values from any of your top level token categories. So valid values are `color`, `size`, `space`, `font`, `fontSize`, `lineHeight`, `radius`, `letterSpacing`, or `zIndex`. They must be prefixed with `...` as that is how we determine their usage at runtime and compile-time. Enforcing this structure means that we can infer the types and provide full Typescript autocomplete for spread variants.
+
+So if we set up our tokens like this:
+
+```jsx
+createTamagui({
+  tokens: createTokens({
+    size {
+      sm: 5,
+      md: 15,
+      lg: 25,
+    },
+    // ...
+  })
+})
+```
+
+Spread variants save you from having to define hardcoded styles for every key (`sm`, `md`, `lg`) in your token object. We can write:
+
+```jsx
+<Circle size="$lg" />
+```
+
+And our spread variant function will receive two arguments: the first is the value of the token given (`"$lg"`), and the second is an object with `{ theme, tokens }`.
+
+- `theme` is of type ThemeParsed, it's the current active theme but the keys all start with `$`.
+- `tokens` is of type TokensParsed, it's the tokens from `createTokens`, but the keys all start with `$`.
+
+That way you can just access them naturally:
+
+```jsx
+{
+  size: {
+    '...size': (size, { tokens }) => {
+      // size === '$lg'
+      // tokens.size.$lg === 25
+      return {
+        width: tokens.size[size] ?? size,
+        height: tokens.size[size] ?? size,
+      }
+    },
+  },
+}
+```
+
+And you'll get a compiled Circle with a width of 25 and height of 25.

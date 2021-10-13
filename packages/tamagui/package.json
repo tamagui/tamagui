@@ -1,0 +1,44 @@
+{
+  "name": "tamagui",
+  "version": "0.18.3",
+  "sideEffects": [
+    "*.css"
+  ],
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "typings": "types.d.ts",
+  "module:jsx": "_jsx",
+  "files": [
+    "_jsx",
+    "dist"
+  ],
+  "scripts": {
+    "build": "esdx --jsx",
+    "watch": "esdx --jsx --watch"
+  },
+  "dependencies": {
+    "@react-aria/ssr": "^3.1.0",
+    "@react-aria/utils": "^3.9.0",
+    "@react-native-aria/focus": "^0.2.5",
+    "@react-native-aria/overlays": "^0.3.2",
+    "@react-native-community/blur": "^3.6.0",
+    "@tamagui/core": "*",
+    "@tamagui/fake-react-native": "^0.0.4",
+    "@tamagui/helpers": "^0.18.3",
+    "expo-linear-gradient": "^9.1.0",
+    "normalize-css-color": "*",
+    "react": "*",
+    "react-dom": "*",
+    "react-native-safe-area-context": "^3.3.0"
+  },
+  "peerDependencies": {
+    "react-native-web": "*"
+  },
+  "devDependencies": {
+    "@tamagui/esdx": "^0.6.1",
+    "@types/node": "^14.11.10",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8"
+  }
+}

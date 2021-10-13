@@ -1,0 +1,237 @@
+---
+title: Installation
+description: How to get Tamagui set up.
+---
+
+Tamagui is a full-featured UI kit built on top of `@tamagui/core`.
+
+The instructions here are for using `tamagui`: a more complete set of components designed to build entire apps out of the box. It's tree-shakeable so only adds to your bundle what you use.
+
+If you'd rather build your own design system on top of core, [see the Design Systems guide](/docs/guides/design-systems).
+
+### Install Tamagui
+
+```bash
+yarn add tamagui
+```
+
+For the web, Tamagui currently only supports full CSS extraction with Webpack:
+
+```bash
+yarn add tamagui-loader
+```
+
+And for React Native you'll want the babel plugin that optimizes to StyleSheet.create:
+
+```bash
+yarn add @tamagui/babel-plugin
+```
+
+### Set up your build
+
+For more information on the options, see the [compiler options](#compiler-options). Whether using Webpack or Next.js, **be sure to not use the Tamagui babel plugin in your web build!** They are either-or: the babel plugin only for React Native, and tamagui-loader or next plugin only for web.
+
+#### Webpack
+
+Add `tamagui-loader` and set up your `webpack.config.js`:
+
+```js
+{
+  module: {
+    rules: [
+      {
+        test: /\.[jt]sx?$/,
+        // be sure to include tamagui
+        include: /tamagui/,
+        use: [
+          // optionally thread-loader for significantly faster compile!
+          'thread-loader',
+
+          // works nicely alongside esbuild
+          'esbuild-loader',
+
+          {
+            loader: 'tamagui-loader',
+            options: {
+              config: './tamagui.config.ts',
+              components: ['tamagui'],
+              importsWhitelist: ['constants.js', 'colors.js'],
+              logTimings: true,
+              disableExtraction: process.env.NODE_ENV === 'development',
+            },
+          },
+        ]
+      }
+    ]
+  }
+}
+```
+
+#### Next.js
+
+Add `@tamagui/next-plugin` and configure your `next.config.js`:
+
+```js
+const withPlugins = require('next-compose-plugins')
+const { withTamagui } = require('@tamagui/next-plugin')
+
+export default withPlugins(
+  withTamagui({
+    config: './tamagui.config.ts',
+    components: ['tamagui'],
+    importsWhitelist: ['constants.js', 'colors.js'],
+    logTimings: true,
+    disableExtraction: process.env.NODE_ENV === 'development',
+  })
+)
+```
+
+#### React Native
+
+Simply add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
+
+```js
+module.exports = {
+  plugins: [
+    '@tamagui/babel-plugin',
+  ]
+}
+```
+
+### Compiler options
+
+The webpack loader and next.js plugin accept the same configuration options:
+
+<PropsTable
+  data={[
+    {
+      name: 'config',
+      required: true,
+      type: 'string',
+      typeSimple: 'enum',
+      description:
+        'Relative path to your tamagui.config.ts file which should export default the result from createTamagui.',
+    },
+    {
+      name: 'components',
+      required: false,
+      type: 'string[]',
+      typeSimple: 'enum',
+      default: "['tamagui']",
+      description:
+        'Array of npm modules containing Tamagui components which youll be using in your app. For example:  if you are using the base Tamagui components. This directs the compiler to load and optimize.',
+    },
+    {
+      name: 'importsWhitelist',
+      required: false,
+      type: 'string[]',
+      typeSimple: 'enum',
+      description:
+        "Array of whitelisted file paths (always end in .js) which the compiler may parse at build-time. This usually is  like ['constants.js', 'colors.js'], enabling extraction of any constant in those files",
+    },
+    {
+      name: 'logTimings',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: true,
+      description:
+        'Tamagui outputs information for each file it compiles on how long it took to run, how many components it optimized, and how many it flattened. Set to false to disable these logs.',
+    },
+    {
+      name: 'disableExtraction',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: false,
+      description:
+        'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the tamagui configuration itself.',
+    },
+  ]}
+/>
+
+### Set up your theme
+
+You'll want to create a `tamagui.config.js` (or ts) file at the root of your project that passes in a theme. For more documentation see [Themes](/docs/intro/themes).
+
+```ts
+import { createTamagui } from 'tamagui'
+
+const config = createTamagui({
+  defaultTheme: 'light',
+  shorthands: {
+    px: 'paddingHorizontal',
+  },
+  themes: {
+    light: {
+      bg: '#fff',
+      color: '#000'
+    }
+  },
+  tokens: {
+    // ... see Themes docus
+  },
+  media: {
+    xs: { maxWidth: 660 },
+    gtXs: { minWidth: 660 + 1 },
+    sm: { maxWidth: 860 },
+    gtSm: { minWidth: 860 + 1 },
+    md: { minWidth: 980 },
+    gtMd: { minWidth: 980 + 1 },
+    short: { maxHeight: 820 },
+    tall: { minHeight: 820 },
+    hoverNone: { hover: 'none' },
+    pointerCoarse: { pointer: 'coarse' },
+  },
+})
+
+type Conf = typeof config
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends Conf {}
+}
+
+export default config
+```
+
+The `createTamagui` function receives a configuration object:
+
+- `tokens`: Use `createTokens` to generate variables in your theme and app.
+- `theme`: Define your design [theme](/docs/intro/themes), which map to CSS properties.
+- `media`: Define reusable responsive [media queries](/docs/use-media).
+- `shorthands`: Define any props you want to expand to style values, keys being the shorthand and values being the expanded style prop.
+
+### Add Provider
+
+Import and use the Tamagui `Provider` component at the top component in your app.
+
+```jsx line=5-7
+import Tamagui from './tamagui.config'
+
+export default function App() {
+  return (
+    <Tamagui.Provider>
+      {/* The rest of your app here */}
+    </Tamagui.Provider>
+  )
+}
+
+```
+
+### Use any views
+
+You're now ready to use Tamagui, you can import any components and use them
+
+<Preview>
+  <DemoButton />
+</Preview>
+
+```jsx class=preview line=5
+import { Button } from 'tamagui'
+
+export default function Demo() {
+  return (
+    <Button>Button</Button>
+  )
+}
+```

@@ -1,18 +1,18 @@
-import { Box } from 'snackui';
+import React from 'react'
+import { StackProps, YStack } from 'tamagui'
 
-export const Preview = ({ css, ...props }) => (
-  <Box
-    {...props}
+export const Preview = (props: StackProps) => (
+  <YStack
     data-preview
-    css={{
-      margin: 0,
-      overflow: 'auto',
-      boxShadow: '0 0 0 1px $colors$slate7',
-      borderTopLeftRadius: '$3',
-      borderTopRightRadius: '$3',
-      padding: '$3',
-      position: 'relative',
-      ...css,
-    }}
+    margin={0}
+    overflow="auto"
+    borderWidth={1}
+    borderColor="$borderColor"
+    borderTopLeftRadius="$3"
+    borderTopRightRadius="$3"
+    padding="$3"
+    position="relative"
+    ai="flex-start"
+    {...props}
   />
-);
+)

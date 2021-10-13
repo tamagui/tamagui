@@ -1,0 +1,54 @@
+import { components } from '@components/MDXComponents'
+import { QuickNav } from '@components/QuickNav'
+import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
+import { getMDXComponent } from 'mdx-bundler/client'
+import React from 'react'
+import { H1, Paragraph } from 'tamagui'
+import type { Frontmatter } from 'types/frontmatter'
+
+type Doc = {
+  frontmatter: Frontmatter
+  code: any
+}
+
+export default function DocIntroPage({ frontmatter, code }: Doc) {
+  if (!frontmatter) {
+    return null
+  }
+  const Component = React.useMemo(() => getMDXComponent(code), [code])
+  return (
+    <>
+      <TitleAndMetaTags title={`${frontmatter.title} — Tamagui`} />
+      <H1 letterSpacing={-1} fontWeight="700" mb="$2">
+        {frontmatter.title}
+      </H1>
+      <Paragraph size="$7" my="$2" mb="$2" color="$color3">
+        {frontmatter.description}
+      </Paragraph>
+      <Component components={components as any} />
+      <QuickNav />
+    </>
+  )
+}
+
+export async function getStaticPaths() {
+  const frontmatters = getAllFrontmatter('docs/intro')
+  const paths = frontmatters.map(({ slug }) => ({
+    params: { slug: slug.replace('docs/intro/', '') },
+  }))
+  return {
+    paths,
+    fallback: false,
+  }
+}
+
+export async function getStaticProps(context) {
+  const { frontmatter, code } = await getMdxBySlug('docs/intro', context.params.slug)
+  return {
+    props: {
+      frontmatter,
+      code,
+    },
+  }
+}

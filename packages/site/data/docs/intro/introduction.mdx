@@ -1,0 +1,120 @@
+---
+title: Introduction
+description: The how and why of Tamagui
+---
+
+Tamagui is a light layer above React Native / React Native Web, it augments rather than replaces it. Tamagui's goal is simple: letting you share much more code between your web and native apps. It does that by improving a few things:
+
+- `Responsive styles` (aka media queries) that don't run in JS
+- `Themes` that also avoid running JS
+- `Inline styles` with no performance impact
+- `Compile-time extraction` to CSS to avoid the startup cost of StyleSheet.create
+
+Today, sharing responsive styling in React requires hooks. The same goes for themes. On the web, you'd much rather rely on [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties), which are designed for this purpose and are very fast.
+
+Tamagui provides `useMedia` and `useTheme` hooks as well as equivalent typed inline style syntax that compile-time optimize to media queries and CSS variables. It's compiler also extracts all inline styles, as well as a variety of common logic like ternaries or object spreads that interact with styles.
+
+The Tamagui compiler even flattens what would have been a `View` or `Text` into a plain `div` or `span` when possible, flattening your tree, another win for render performance.
+
+<Image alt="Tamagui logo with a purple and blue gradient" src="/docs-intro.svg" />
+
+### react-native + react-native-web ❤️
+
+Work with your two favorite libraries. Tamagui improves their performance by introducing the compiler - especially with media queries, themes, and dynamic styles.
+
+### Fast, universal hooks for media + themes
+
+Hooks `useTheme` and `useMedia` work just how you'd expect them to. But they compile to clean CSS media queries and CSS variables.
+
+### Faster Runtime
+
+Not just no prop interpolation on the base views you define, but no prop interpolation on inline styles and dynamic styles. Even with complex logical styling you get less runtime, light CSS output, and flatter component trees. CSS media queries and variables are dramatically faster than JS ones.
+
+### Less Runtime
+
+Less JS to parse, especially when doing logic in your render function. Ternaries, object spreads, and more get extracted. Strictly style components (with no un-parseable props) are flattened to `div` or `span`, saving tree depth and hook calls.
+
+### Server-Side Rendering
+
+Tamagui supports cross-browser [server-side rendering](/docs/server-side-rendering), even for responsive styles and variants.
+
+## Key Features
+
+### Variants
+
+[Variants](/docs/core/styled) as a first-class citizen, so you can design composable component APIs. Define a single variant, multiple variants, and even [Spread Variants](/docs/core/styled#spread-variants) which allow you to return dynamic styles, even at compile-time.
+
+### Tokens
+
+Define your own [tokens](/docs/intro/configuration) and seamlessly apply them as CSS values. CSS Properties are automatically mapped to token scales. Tokens can even be used in shorthand CSS properties.
+
+### Theming
+
+Tamagui provides a simple [theming](/docs/theming) experience out of the box. Create as many themes as you need, and apply them wherever you want. Each theme generates a CSS class name which overrides the default tokens.
+
+```jsx
+const darkTheme = createTheme({
+  colors: {
+    hiContrast: 'hsl(206,2%,93%)',
+    loContrast: 'hsl(206,8%,8%)',
+
+    gray100: 'hsl(206,8%,12%)',
+    gray200: 'hsl(206,7%,14%)',
+    gray300: 'hsl(206,7%,15%)',
+    gray400: 'hsl(206,7%,24%)',
+    gray500: 'hsl(206,7%,30%)',
+    gray600: 'hsl(206,5%,53%)',
+  },
+  space: {},
+  fonts: {},
+});
+```
+
+### Shorthands
+
+[Shorthands](/docs/utils) allow you to map shorthand properties to their longer cousins. This lets you create Tailwinds-like quick properties to style. These work with TypeScript as well, and are designed so you can bring them with you across different tamagui component kits.
+
+```jsx
+createTamagui({
+  shorthands: {
+    m: 'margin',
+    mx: 'marginHorizontal'
+  },
+});
+```
+
+### Media Queries
+
+Tamagui lets you configure [media queries](/docs/responsive-styles) and apply variants responsively using `$` props.
+
+```jsx
+createTamagui({
+  media: {
+    // TODO
+  },
+});
+```
+
+### Developer Experience
+
+Tamagui provides a fully-typed API so all your TypeScript style properties, values, media queries and shorthands will be auto-completed for you. It provides a `// debug` pragrma and `debug` prop that both allow easy introspection into whats happening at compile and runtime.
+
+---
+
+## Community
+
+We're excited to see the community adopt Tamagui, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
+
+- [Discord](https://discord.gg/uUtvv6GM)
+- [Twitter](https://twitter.com/tamagui_dev)
+- [GitHub Discussions](https://github.com/tamagui/tamagui/discussions)
+- [GitHub](https://github.com/tamagui/tamagui)
+
+---
+
+## Credits
+
+A big thanks to:
+
+- [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original forked repo.
+- [Modulz](https://github.com/modulz) for the bones of the website.

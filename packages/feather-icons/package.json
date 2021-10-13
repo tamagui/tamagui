@@ -1,0 +1,35 @@
+{
+  "name": "@tamagui/feather-icons",
+  "version": "0.0.1",
+  "description": "React Native components for Feather icons - native and web",
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "typings": "types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "esdx",
+    "watch": "esdx --watch",
+    "generate": "node ./bin/build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "react-native-svg": "^12.1.1"
+  },
+  "devDependencies": {
+    "@tamagui/esdx": "*",
+    "camelcase": "^6.0.0",
+    "cheerio": "^1.0.0-rc.5",
+    "feather-icons": "^4.28.0",
+    "glob": "^7.1.6",
+    "prettier": "*",
+    "prettier-plugin-import-sort": "^0.0.6",
+    "prop-types": "^15.7.2",
+    "uppercamelcase": "^3.0.0"
+  }
+}

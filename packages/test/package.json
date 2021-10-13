@@ -1,0 +1,19 @@
+{
+  "name": "@tamagui/test",
+  "version": "0.18.3",
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "typings": "types.d.ts",
+  "scripts": {
+    "build": "true",
+    "watch": "true"
+  },
+  "dependencies": {
+    "@tamagui/core": "*",
+    "@tamagui/helpers": "^0.18.3"
+  },
+  "peerDependencies": {
+    "react-native-web": "*"
+  }
+}

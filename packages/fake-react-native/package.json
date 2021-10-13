@@ -1,0 +1,12 @@
+{
+  "name": "@tamagui/fake-react-native",
+  "version": "0.0.4",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "true",
+    "watch": "true"
+  }
+}

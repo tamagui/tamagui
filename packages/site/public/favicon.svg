@@ -1,21 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" view-box="0 0 35 35" fill="none">
-<style>
-  path, circle {
-    stroke: hsl(200 7% 8.4%);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    path, circle {
-  	  stroke: hsl(240 3% 93%);
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <style>
+    rect {
+      fill: #000;
     }
-  }
+    @media (prefers-color-scheme: dark) {
+      rect {
+        fill: #fff;
+      }
+    }
 </style>
-<circle cx="17.5" cy="17.5" r="14.5" stroke-width="2" />
-<path d="M12.8184 31.3218L31.8709 20.3218" />
-<path d="M3.31836 14.8674L22.3709 3.86743" />
-<path d="M8.65332 29.1077L25.9738 19.1077" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M9.21582 16.0815L26.5363 6.08154" stroke-linecap="round" />
-<path d="M13.2334 14.2297L22.5099 21.1077" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M16.6973 12.2302L25.9736 19.1078" stroke-linecap="round" stroke-linejoin="round" />
-<path d="M9.21582 16.0815L19.0459 23.1078" stroke-linecap="round" stroke-linejoin="round" />
+
+    <g id="favicon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="tamagui-icon-copy" transform="translate(16.000000, 16.000000) scale(-1, 1) translate(-16.000000, -16.000000) translate(1.000000, 2.000000)" fill="#141414">
+            <g id="guy">
+                <rect x="10" y="0" width="2" height="2"></rect>
+                <rect x="12" y="0" width="2" height="2"></rect>
+                <rect x="14" y="0" width="2" height="2"></rect>
+                <rect x="16" y="0" width="2" height="2"></rect>
+                <rect x="18" y="0" width="2" height="2"></rect>
+                <rect x="20" y="0" width="2" height="2"></rect>
+                <rect x="22" y="2" width="2" height="2"></rect>
+                <rect x="24" y="4" width="2" height="2"></rect>
+                <rect x="26" y="6" width="2" height="2"></rect>
+                <rect x="26" y="8" width="2" height="2"></rect>
+                <rect x="26" y="10" width="2" height="2"></rect>
+                <rect x="26" y="12" width="2" height="2"></rect>
+                <rect x="28" y="14" width="2" height="2"></rect>
+                <rect x="28" y="16" width="2" height="2"></rect>
+                <rect x="28" y="18" width="2" height="2"></rect>
+                <rect x="26" y="20" width="2" height="2"></rect>
+                <rect x="24" y="22" width="2" height="2"></rect>
+                <rect x="22" y="24" width="2" height="2"></rect>
+                <rect x="20" y="26" width="2" height="2"></rect>
+                <rect x="18" y="26" width="2" height="2"></rect>
+                <rect x="16" y="24" width="2" height="2"></rect>
+                <rect x="14" y="24" width="2" height="2"></rect>
+                <rect x="14" y="26" width="2" height="2"></rect>
+                <rect x="12" y="26" width="2" height="2"></rect>
+                <rect x="10" y="24" width="2" height="2"></rect>
+                <rect x="10" y="22" width="2" height="2"></rect>
+                <rect x="8" y="20" width="2" height="2"></rect>
+                <rect x="6" y="16" width="2" height="2"></rect>
+                <rect x="6" y="18" width="2" height="2"></rect>
+                <rect x="6" y="14" width="2" height="2"></rect>
+                <rect x="4" y="12" width="2" height="2"></rect>
+                <rect x="2" y="12" width="2" height="2"></rect>
+                <rect x="0" y="10" width="2" height="2"></rect>
+                <rect x="2" y="8" width="2" height="2"></rect>
+                <rect x="4" y="8" width="2" height="2"></rect>
+                <rect x="6" y="8" width="2" height="2"></rect>
+                <rect x="0" y="6" width="2" height="2"></rect>
+                <rect x="0" y="8" width="2" height="2"></rect>
+                <rect x="2" y="4" width="2" height="2"></rect>
+                <rect x="2" y="4" width="2" height="2"></rect>
+                <rect x="4" y="4" width="2" height="2"></rect>
+                <rect x="8" y="2" width="2" height="2"></rect>
+                <rect x="10" y="4" width="2" height="2"></rect>
+                <rect x="16" y="6" width="2" height="2"></rect>
+                <rect x="16" y="14" width="2" height="2"></rect>
+                <rect x="16" y="16" width="2" height="2"></rect>
+                <rect x="18" y="18" width="2" height="2"></rect>
+                <rect x="20" y="16" width="2" height="2"></rect>
+                <rect x="20" y="14" width="2" height="2"></rect>
+                <rect x="6" y="4" width="2" height="2"></rect>
+            </g>
+        </g>
+    </g>
 </svg>

@@ -1,42 +1,45 @@
 export const docsRoutes = [
   {
-    label: 'Overview',
-    pages: [
-      { title: 'Introduction', slug: 'docs/introduction' },
-      { title: 'Tutorials', slug: 'docs/tutorials' },
-      { title: 'API', slug: 'docs/api' },
-      { title: 'Frequently asked questions', slug: 'docs/frequently-asked-questions' },
-      { title: 'Benchmarks', slug: 'docs/benchmarks' },
-      { title: 'TypeScript', slug: 'docs/typescript' },
-    ],
-  },
-
-  {
     label: 'Getting Started',
     pages: [
-      { title: 'Installation', slug: 'docs/installation' },
-      { title: 'Styling', slug: 'docs/styling' },
-      { title: 'Variants', slug: 'docs/variants' },
-      { title: 'Responsive styles', slug: 'docs/responsive-styles' },
-      { title: 'Overriding styles', slug: 'docs/overriding-styles' },
-      { title: 'Composing components', slug: 'docs/composing-components' },
-      { title: 'Framework agnostic API', slug: 'docs/framework-agnostic' },
+      { title: 'Introduction', slug: 'docs/intro/introduction' },
+      { title: 'Installation', slug: 'docs/intro/installation' },
+      { title: 'Configuration', slug: 'docs/intro/configuration' },
+      { title: 'Themes', slug: 'docs/intro/themes' },
+      { title: 'Props', slug: 'docs/intro/props' },
     ],
   },
 
   {
-    label: 'Configuration',
+    label: 'Tamagui',
     pages: [
-      { title: 'Theme tokens', slug: 'docs/tokens' },
-      { title: 'Custom theming', slug: 'docs/theming' },
-      { title: 'Breakpoints', slug: 'docs/breakpoints' },
-      { title: 'Utils', slug: 'docs/utils' },
-      { title: 'Server-side rendering', slug: 'docs/server-side-rendering' },
+      { title: 'Stacks', slug: 'docs/components/stacks' },
+      { title: 'Text', slug: 'docs/components/text' },
+      { title: 'Button', slug: 'docs/components/button' },
+      { title: 'Linear Gradient', slug: 'docs/components/linear-gradient' },
+      { title: 'Headings', slug: 'docs/components/headings' },
+      { title: 'Form & Inputs', slug: 'docs/components/forms', pending: true },
+      { title: 'Popover', slug: 'docs/components/popover', pending: true },
+      { title: 'Tooltip', slug: 'docs/components/tooltip', pending: true },
+      // { title: 'Grid', slug: 'docs/components/grid' },
     ],
   },
-];
 
-export const allDocsRoutes = docsRoutes.reduce((acc, curr) => {
-  acc = [...acc, ...curr.pages];
-  return acc;
-}, []);
+  {
+    label: 'Core',
+    pages: [
+      { title: 'styled', slug: 'docs/core/styled' },
+      { title: 'Stack & Text', slug: 'docs/core/stack-and-text' },
+      { title: 'Theme', slug: 'docs/core/theme' },
+      { title: 'useMedia', slug: 'docs/core/use-media' },
+      { title: 'useTheme', slug: 'docs/core/use-theme' },
+    ],
+  },
+
+  {
+    label: 'Guides',
+    pages: [{ title: 'Design Systems', slug: 'docs/guides/design-systems' }],
+  },
+]
+
+export const allDocsRoutes = docsRoutes.flatMap((x) => x.pages)

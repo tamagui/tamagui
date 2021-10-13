@@ -1,0 +1,84 @@
+---
+title: Headings
+description: Heading components that mimic HTML equivalents.
+name: html
+---
+
+# Headings
+
+<Description>Heading components that mimic HTML equivalents.</Description>
+
+The headings all extend from the base Title component:
+
+```jsx
+export const Title = styled(Paragraph, {
+  fontFamily: '$title',
+  fontWeight: '700',
+  fontSize: '$8',
+})
+```
+
+## H1
+
+```jsx
+export const H1 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$10',
+})
+```
+
+## H2
+
+```jsx
+export const H2 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$9',
+})
+```
+
+## H3
+
+```jsx
+export const H3 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$6',
+  fontWeight: '600',
+})
+```
+
+## H4
+
+```jsx
+export const H4 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$5',
+})
+```
+
+## H5
+
+```jsx
+export const H5 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$4',
+  color: '$color2',
+  fontWeight: '600',
+})
+```
+
+## H6
+
+```jsx
+export const H6 = styled(Title, {
+  fontFamily: '$title',
+  accessibilityRole: 'header',
+  fontSize: '$4',
+  color: '$color3',
+  fontWeight: '600',
+})
+```

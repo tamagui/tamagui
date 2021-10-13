@@ -1,75 +1,88 @@
-import { PeachesLogo } from '@components/PeachesLogo'
+import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
 import NextLink from 'next/link'
-import { Box, HStack, Paragraph } from 'snackui'
+import React from 'react'
+import { Paragraph, Text, XStack, YStack } from 'tamagui'
 
 export function Header() {
   return (
-    <HStack
-      paddingVertical={10}
-      paddingHorizontal={10}
-      justifyContent="space-between"
+    <XStack
+      ai="center"
       position="relative"
-      zIndex={1}
-      as="header"
+      tag="header"
+      py="$4"
+      px="$4"
+      jc="space-between"
+      p="relative"
+      zi={1}
     >
       <NextLink href="/" passHref>
-        <Box
-          as="a"
-          css={{
-            color: '$hiContrast',
-            display: 'inline-flex',
-            '&:focus': {
-              boxShadow: 'none',
-            },
-          }}
-        >
-          <span
-            style={{
-              position: 'absolute',
-              width: 1,
-              height: 1,
-              padding: 0,
-              margin: -1,
-              overflow: 'hidden',
-              clip: 'rect(0, 0, 0, 0)',
-              whiteSpace: 'nowrap',
-              border: 0,
-            }}
+        <YStack my={-20}>
+          <Text
+            className="clip-invisible"
+            display="flex"
+            position="absolute"
+            width={1}
+            height={1}
+            padding={0}
+            color="$color2"
+            margin={-1}
+            overflow="hidden"
+            whiteSpace="nowrap"
+            borderWidth={0}
           >
-            Peaches homepage
-          </span>
-          <PeachesLogo />
-        </Box>
+            Tamagui homepage
+          </Text>
+
+          <TamaguiLogo />
+        </YStack>
       </NextLink>
-      <HStack as="nav" alignItems="center" spacing>
-        <NextLink href="/docs/installation" passHref>
-          <Paragraph>Docs</Paragraph>
+
+      <XStack
+        position="absolute"
+        $sm={{
+          display: 'none',
+        }}
+        zIndex={-1}
+        jc="center"
+        fullscreen
+        pointerEvents="none"
+        ai="center"
+      >
+        <LogoWords />
+      </XStack>
+
+      <XStack pointerEvents="auto" tag="nav" ai="center" spacing="$5">
+        <NextLink href="/docs/intro/installation" passHref>
+          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
+            Docs
+          </Paragraph>
         </NextLink>
-        <NextLink href="/blog" passHref>
-          <Paragraph>Blog</Paragraph>
+        {/* <NextLink href="/blog" passHref>
+          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }}>Blog</Paragraph>
+        </NextLink> */}
+        <NextLink href="https://github.com/tamagui/tamagui" passHref>
+          <Paragraph
+            size="$3"
+            opacity={0.5}
+            hoverStyle={{ opacity: 1 }}
+            tag="a"
+            $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -10 }}
+          >
+            GitHub
+          </Paragraph>
         </NextLink>
         <NextLink
-          href="https://github.com/snackui/snackui"
-          variant="subtle"
-          css={{
-            mr: '$5',
-            display: 'none',
-            '@bp1': { display: 'block' },
-            '@bp2': { mr: '$7' },
-          }}
+          href="https://discord.gg/uUtvv6GM"
+          passHref
+          // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
         >
-          <Paragraph>GitHub</Paragraph>
-        </NextLink>
-        <NextLink
-          href="https://discord.com/invite/H4eG3Mk"
-          variant="subtle"
-          css={{ mr: '$5', '@bp2': { mr: '$7' } }}
-        >
-          <Paragraph>Discord</Paragraph>
+          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
+            Discord
+          </Paragraph>
         </NextLink>
         <ThemeToggle />
-      </HStack>
-    </HStack>
+      </XStack>
+    </XStack>
   )
 }
