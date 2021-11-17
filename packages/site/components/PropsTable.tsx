@@ -74,7 +74,7 @@ export function PropsTable({
         </tr>
       </thead>
       <tbody>
-        {data.map(({ name, type, typeSimple, required, default: defaultValue, description }, i) => (
+        {data.map(({ name, type, required, default: defaultValue, description }, i) => (
           <React.Fragment key={`${name}-${i}`}>
             <tr>
               <TD>

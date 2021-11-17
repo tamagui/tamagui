@@ -3,9 +3,9 @@
   "version": "0.18.3",
   "main": "index.js",
   "scripts": {
-    "build": "SNACKUI_COMPILE_PROCESS=1 ttsc && yarn build:dist-to-cjs",
+    "build": "TAMAGUI_COMPILE_PROCESS=1 ttsc && yarn build:dist-to-cjs",
     "build:dist-to-cjs": "./build-cjs.sh",
-    "watch": "SNACKUI_COMPILE_PROCESS=1 ttsc --watch --preserveWatchOutput && yarn watch:dist-to-cjs",
+    "watch": "TAMAGUI_COMPILE_PROCESS=1 ttsc --watch --preserveWatchOutput && yarn watch:dist-to-cjs",
     "watch:dist-to-cjs": "./build-cjs.sh --watch"
   },
   "ultra": {

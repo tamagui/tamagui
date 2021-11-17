@@ -61,7 +61,7 @@ async function extractStaticAppBabel() {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
         'process.env.TARGET': JSON.stringify('web'),
-        'process.env.SNACKUI_COMPILE_PROCESS': JSON.stringify(1),
+        'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
     ],
   })
@@ -131,7 +131,7 @@ async function extractStaticWebpackApp() {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.TARGET': JSON.stringify('web'),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
-        'process.env.SNACKUI_COMPILE_PROCESS': JSON.stringify(1),
+        'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
     ],
   })
