@@ -4,6 +4,7 @@ import {
   stylePropsText,
   stylePropsTransform,
   validStyles,
+  validStylesPseudo,
 } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
@@ -72,9 +73,7 @@ export const getSplitStyles = (
     }
 
     // pseudo
-    const isPseudo =
-      keyInit === 'hoverStyle' || keyInit === 'pressStyle' || keyInit === 'focusStyle'
-    if (isPseudo) {
+    if (validStylesPseudo[keyInit]) {
       if (!valInit) continue
       pseudos = pseudos || {}
       pseudos[keyInit] = getSubStyle(valInit, staticConfig, theme)
@@ -138,7 +137,7 @@ export const getSplitStyles = (
 
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      console.log(' style debug:', { props, viewProps, style }, getMedia())
+      console.log(' 🥚 style debug:', { props, viewProps, style }, getMedia())
     }
   }
 
@@ -194,12 +193,13 @@ const mapTransformKeys = {
 }
 
 const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
-  const transform = obj.transform
+  const transform: any[] = obj.transform
     ? Array.isArray(obj.transform)
       ? obj.transform
       : [obj.transform]
     : []
-  // @ts-expect-error
   transform.push({ [mapTransformKeys[key] || key]: val })
+  delete obj[key]
   obj.transform = transform
+  console.log('setting', key, val, obj)
 }

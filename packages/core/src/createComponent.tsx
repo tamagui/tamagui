@@ -222,7 +222,7 @@ export function createComponent<A extends Object = DefaultProps>(
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('className', { style, styles, stylesClassNames, classList, classListFlat, className })
+          console.log('🥚 className', { style, styles, stylesClassNames, classListFlat: classListFlat.split(' '), className })
         }
       }
       viewProps.className = className
@@ -430,10 +430,14 @@ export function createComponent<A extends Object = DefaultProps>(
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         viewProps['debug'] = true
-        console.log(' 🥚  props in: ', props)
-        console.log(' 🥚 props out: ', viewProps)
+        console.log('🥚 props in:', props)
+        console.log('🥚 props out:', viewProps)
         // prettier-ignore
-        console.log(' 🥚     other: ', { ViewComponent, viewProps, styles, pseudos, content, spacedChildrenEl, staticConfig, tamaguiConfig })
+        console.log('🥚 etc:', { ViewComponent, viewProps, styles, pseudos, content, spacedChildrenEl })
+        // only on browser because node expands it huge
+        if (typeof window !== 'undefined') {
+          console.log('🥚 component info', { staticConfig, tamaguiConfig })
+        }
       }
     }
 
