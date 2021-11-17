@@ -8,7 +8,7 @@ type x = GetProps<typeof Card>['spacing']
 
 export function Community() {
   return (
-    <ContainerLarge spacing="$4">
+    <ContainerLarge spacing="$4" py="$4">
       <H2 ta="center">Community</H2>
       <Paragraph size="$6" color="$color3" ta="center">
         Join the community on these platforms

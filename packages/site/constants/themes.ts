@@ -43,8 +43,8 @@ const dark = {
   color2: tokens.color.gray11Dark,
   color3: tokens.color.gray10Dark,
   color4: tokens.color.gray9Dark,
-  shadowColor: tokens.color.grayA9Dark,
-  shadowColor2: tokens.color.grayA11Dark,
+  shadowColor: '#00000055',
+  shadowColor2: '#00000099',
   ...darkColors,
 }
 
@@ -67,6 +67,7 @@ for (const key of colorKeys) {
     bg3: colorValues[`${colorName}4`],
     bg4: colorValues[`${colorName}5`],
     borderColor: colorValues[`${colorName}2`],
+    borderColor2: colorValues[`${colorName}4`],
   }
 }
 
