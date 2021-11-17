@@ -14,6 +14,29 @@ export function HeroExample() {
     <ContainerLarge position="relative">
       <YStack
         position="absolute"
+        zIndex={-1}
+        pointerEvents="none"
+        opacity={0.3}
+        top="-20vh"
+        right="20%"
+        width="80vw"
+        height="80vw"
+        scale={4}
+        maxHeight={720}
+        maxWidth={720}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            background: 'blue',
+            background: `radial-gradient(circle closest-side, var(--blue3), transparent)`,
+          }}
+        />
+      </YStack>
+
+      <YStack
+        position="absolute"
         zIndex={0}
         pointerEvents="none"
         opacity={0.1}
