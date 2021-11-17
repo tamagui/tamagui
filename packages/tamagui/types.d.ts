@@ -375,6 +375,11 @@ export declare const stylePropsAll: Readonly<{
 	shadowRadius: boolean;
 	contain: boolean;
 }>;
+export declare const validStylesPseudo: {
+	hoverStyle: boolean;
+	pressStyle: boolean;
+	focusStyle: boolean;
+};
 export declare const validStyles: {
 	x: boolean;
 	y: boolean;

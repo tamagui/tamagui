@@ -199,7 +199,5 @@ const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
       : [obj.transform]
     : []
   transform.push({ [mapTransformKeys[key] || key]: val })
-  delete obj[key]
   obj.transform = transform
-  console.log('setting', key, val, obj)
 }

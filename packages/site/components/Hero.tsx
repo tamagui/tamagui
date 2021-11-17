@@ -1,25 +1,10 @@
 // //! debug
 
-// import { H3, Paragraph, Text, YStack, useMedia } from 'tamagui'
+// import React from 'react'
+// import { H3, H4, Paragraph, Text, YStack, useMedia } from 'tamagui'
 
 // export function Hero() {
-//   return (
-//     <YStack
-//       // className="testme"
-//       debug
-//       position="absolute"
-//       zIndex={-1}
-//       pointerEvents="none"
-//       opacity={0.2}
-//       top="-40vh"
-//       right="-40%"
-//       width="80vw"
-//       height="80vw"
-//       scale={4}
-//       maxHeight={720}
-//       maxWidth={720}
-//     ></YStack>
-//   )
+//   return <H4 size="$1">Input</H4>
 // }
 
 import { ArrowRight, Check, Compass, Copy, Cpu, ExternalLink, Layers } from '@tamagui/feather-icons'
@@ -42,9 +27,9 @@ export function Hero() {
           <Header />
 
           <ContainerLarge mb={-20}>
-            <YStack spacing="$8" position="relative" pt="$0" $gtSm={{ pt: '$8' }}>
-              <YStack spacing="$7">
-                <YStack ai="flex-start" $gtSm={{ ai: 'center' }} spacing="$5">
+            <YStack spacing="$7" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
+              <YStack spacing="$6">
+                <YStack ai="flex-start" $gtSm={{ ai: 'center' }} spacing="$6">
                   <Title
                     size="$7"
                     letterSpacing={-1}
@@ -58,11 +43,11 @@ export function Hero() {
                     }}
                     $gtMd={{
                       size: '$10',
-                      px: 90,
+                      px: 50,
                       my: -10,
                     }}
                   >
-                    Universal React design systems that optimize to every platform
+                    Universal React design systems that optimize for every platform
                     {/* <Tooltip contents="Web, iOS & Android">
               <span
                 className="test-hero"
@@ -84,8 +69,11 @@ export function Hero() {
                     px={0}
                     maxWidth={550}
                     $gtSm={{
-                      px: 120,
+                      px: 50,
                       maxWidth: 900,
+                    }}
+                    $gtMd={{
+                      px: 90,
                     }}
                   >
                     <Paragraph
@@ -99,7 +87,7 @@ export function Hero() {
                       }}
                     >
                       React Native & Web interfaces with an optimizing compiler for themes, media
-                      queries and typed inline styles — share&nbsp;more code, get better
+                      queries and&nbsp;typed&nbsp;inline styles — share&nbsp;more code, get better
                       performance.
                     </Paragraph>
                   </YStack>
@@ -144,7 +132,7 @@ export function Hero() {
                 backgroundColor="$bg2"
               >
                 {/* TODO user defined constants + $mono */}
-                <Paragraph color="$color2" fontSize={14} fontFamily="$mono">
+                <Paragraph color="$color" fontSize={14} fontFamily="$mono">
                   npm install tamagui
                 </Paragraph>
                 <YStack width={60} />
