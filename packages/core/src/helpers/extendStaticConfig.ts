@@ -87,7 +87,7 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
               const fVal = val[0] === '$' ? getToken(fKey, val, conf) : val
               res[fKey] = fVal
             } else {
-              console.log('???', { val, res })
+              // nullish values can't be tokens
             }
           }
         }
