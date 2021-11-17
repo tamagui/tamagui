@@ -2,7 +2,7 @@ import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core'
 import * as CoreNode from '@tamagui/core-node'
-import { pseudos } from '@tamagui/helpers'
+import { pseudos, stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
 
 import { ExtractedAttr, ExtractedAttrAttr, ExtractorParseProps, Ternary } from '../types'
@@ -912,9 +912,6 @@ export function createExtractor() {
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
             if (cur.type === 'style') {
               if (prev?.type === 'style') {
-                if (shouldPrintDebug) {
-                  console.log('   🔀 merging style')
-                }
                 Object.assign(prev.value, cur.value)
                 return acc
               }
@@ -925,7 +922,7 @@ export function createExtractor() {
           }, [])
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (combined styles):  ', attrs.map(attrStr).join(', '))
+            console.log('  - attrs (combined 🔀):  ', attrs.map(attrStr).join(', '))
           }
 
           // post process
@@ -980,6 +977,7 @@ export function createExtractor() {
             Object.keys(completeStylesProcessed),
             Object.keys(completeStaticProps)
           )
+
           if (stylesToAddToInitialGroup.length) {
             const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
             const firstGroup = attrs.find((x) => x.type === 'style')
@@ -1016,7 +1014,12 @@ export function createExtractor() {
                 case 'style':
                   const next = {}
                   for (const key in attr.value) {
-                    next[key] = completeStylesProcessed[key] ?? attr.value[key]
+                    if (key in stylePropsTransform) {
+                      // TODO this logic needs to be a bit more right, because could have spread in between transforms...
+                      next['transform'] = completeStylesProcessed['transform']
+                    } else {
+                      next[key] = completeStylesProcessed[key] ?? attr.value[key]
+                    }
                   }
                   attr.value = next
                   break

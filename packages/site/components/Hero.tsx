@@ -3,39 +3,22 @@
 // import { H3, Paragraph, Text, YStack, useMedia } from 'tamagui'
 
 // export function Hero() {
-//   const media = useMedia()
-//   const y = Math.random()
-
 //   return (
 //     <YStack
+//       // className="testme"
 //       debug
-//       maxWidth="100%"
-//       flex={1}
-//       py="$5"
-//       $gtSm={{
-//         pt: '$8',
-//         pb: '$9',
-//         pl: 250,
-//         pr: 0,
-//       }}
-//       $gtLg={{
-//         pr: 250,
-//       }}
-//     >
-//       <Text
-//         bc="$blue1"
-//         cursor="help"
-//         textDecorationColor="$orange6"
-//         textDecorationLine="underline"
-//         textDecorationDistance={5}
-//         textDecorationStyle="dotted"
-//         color="$color2"
-//         p={2}
-//         mx={-1}
-//       >
-//         optimizing
-//       </Text>
-//     </YStack>
+//       position="absolute"
+//       zIndex={-1}
+//       pointerEvents="none"
+//       opacity={0.2}
+//       top="-40vh"
+//       right="-40%"
+//       width="80vw"
+//       height="80vw"
+//       scale={4}
+//       maxHeight={720}
+//       maxWidth={720}
+//     ></YStack>
 //   )
 // }
 
@@ -45,7 +28,6 @@ import NextLink from 'next/link'
 import React from 'react'
 import { Button, H3, Paragraph, Text, Title, Tooltip, XStack, YStack } from 'tamagui'
 
-import { Code } from './Code'
 import { ContainerLarge } from './Container'
 import { IconStack } from './IconStack'
 
@@ -55,6 +37,8 @@ export function Hero() {
   return (
     <ContainerLarge spacing="$7" position="relative" pt="$0" $gtSm={{ pt: '$3' }}>
       <YStack
+        // className="testme"
+        debug
         position="absolute"
         zIndex={-1}
         pointerEvents="none"
@@ -68,10 +52,12 @@ export function Hero() {
         maxWidth={720}
       >
         <div
+          className="testme"
           style={{
             width: '100%',
             height: '100%',
-            background: `radial-gradient(circle closest-side, var(--pink5), transparent)`,
+            background: 'blue',
+            // background: `radial-gradient(circle closest-side, var(--pink5), transparent)`,
           }}
         />
       </YStack>
@@ -108,7 +94,7 @@ export function Hero() {
                   font: 'inherit',
                 }}
               >
-                
+
               </span>
             </Tooltip> */}
           </Title>
