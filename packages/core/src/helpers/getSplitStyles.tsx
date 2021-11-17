@@ -21,11 +21,14 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
-  theme: ThemeObject
+  theme: ThemeObject,
+  isSplittingDefaultProps?: boolean
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: Record<string, any> = {}
   const style: any[] = []
+  const blacklistProps = isSplittingDefaultProps ? blacklistDefaultProps : blacklistFinalProps
+
   let pseudos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
   let cur: ViewStyle | null = null
   let classNames: string[] | null = null
@@ -171,15 +174,18 @@ const getSubStyle = (
   return styleOut
 }
 
-// temp
-const blacklistProps = {
+const blacklistDefaultProps = {
+  ...validStyles,
+  ...stylePropsText,
+}
+
+const blacklistFinalProps = {
+  ...blacklistDefaultProps,
   tag: true,
   debug: true,
   onPress: true,
   spacing: true,
   hitSlop: true,
-  ...validStyles,
-  ...stylePropsText,
 }
 
 const mapTransformKeys = {

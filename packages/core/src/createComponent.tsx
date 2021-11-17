@@ -445,23 +445,25 @@ export function createComponent<A extends Object = DefaultProps>(
     )
   })
 
+  // Once configuration is run and all components are registered
+  // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
     tamaguiConfig = conf
-    const next = getSplitStyles(
-      staticConfig.defaultProps,
-      staticConfig,
-      // @ts-ignore TODO
-      conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-    )
+    const initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
+    const next = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, true)
     if (next.classNames) {
       defaultsClassName += next.classNames + ' '
     }
     defaultsClassName += addStylesUsingClassname([next.style, next.pseudos])
-
     // @ts-ignore
     component.defaultProps = {
       ...next.viewProps,
       ...component.defaultProps,
+    }
+    if (process.env.NODE_ENV === 'development') {
+      if (staticConfig.defaultProps?.debug) {
+        console.log('tamagui debug component:', next, defaultsClassName, component.defaultProps)
+      }
     }
   })
 

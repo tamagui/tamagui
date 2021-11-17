@@ -1,4 +1,4 @@
-process.env.SNACKUI_COMPILE_PROCESS = '1'
+process.env.TAMAGUI_COMPILE_PROCESS = '1'
 
 export { TamaguiOptions } from './types'
 export { createExtractor } from './extractor/createExtractor'

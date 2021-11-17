@@ -1,4 +1,4 @@
-process.env.SNACKUI_COMPILE_PROCESS = '1'
+process.env.TAMAGUI_COMPILE_PROCESS = '1'
 
 import { basename } from 'path'
 
@@ -73,7 +73,8 @@ export default declare(function snackBabelPlugin(
             let key = `${styleIndex}`
             if (process.env.NODE_ENV === 'development') {
               const lineNumbers = node.loc
-                ? node.loc.start.line + (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
+                ? node.loc.start.line +
+                  (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
                 : ''
               key += `:${basename(sourcePath)}:${lineNumbers}`
             }
@@ -122,7 +123,10 @@ export default declare(function snackBabelPlugin(
                     stylesExpr.elements.push(expr)
                   } else {
                     finalAttrs.push(
-                      t.jsxAttribute(t.jsxIdentifier(`_style${key}`), t.jsxExpressionContainer(expr))
+                      t.jsxAttribute(
+                        t.jsxIdentifier(`_style${key}`),
+                        t.jsxExpressionContainer(expr)
+                      )
                     )
                   }
                 }
@@ -141,7 +145,9 @@ export default declare(function snackBabelPlugin(
                   case 'attr':
                     if (t.isJSXSpreadAttribute(attr.value)) {
                       if (isSimpleSpread(attr.value)) {
-                        stylesExpr.elements.push(t.memberExpression(attr.value.argument, t.identifier('style')))
+                        stylesExpr.elements.push(
+                          t.memberExpression(attr.value.argument, t.identifier('style'))
+                        )
                       }
                     }
                     finalAttrs.push(attr.value)
