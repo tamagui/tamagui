@@ -18,7 +18,7 @@ const transform = withPlugins(
       components: ['tamagui'],
       importsWhitelist: ['constants.js', 'colors.js'],
       logTimings: true,
-      disableExtraction: false, //process.env.NODE_ENV === 'development',
+      disableExtraction: process.env.NODE_ENV === 'development',
     }),
     // for github pages
     (config) => {

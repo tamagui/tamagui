@@ -1,7 +1,5 @@
-- tag in styled() causing ssr issue maybe not setting tag
+- site google analytics
 - escape hatch for html props `htmlProps` ?
-- transpile / prod build
-- get styled() size: working
 - optimize regular styled() usage
 - add: dev mode can add data-is to properties if you want
 - pressStyle test
@@ -13,14 +11,9 @@
 - onLayout
 - as={T} generic?
 - as={Animated.Text}
-- implement variants
 - make styled() accept any component (see Input.tsx)
 - fix // TODO comments
 - // TODO this ternary is being compiled backwards!
-- all html tags (pre, code, etc)
-- defaults (font size)
-pread, color] | { x, y, spread, color }
-- in app custom usage through pointing to a file
 - gzip stuff on site
 - blog
 - document process.env.TARGET
@@ -28,11 +21,8 @@ pread, color] | { x, y, spread, color }
 - use new react insert stylesheet hook
 - [perf] no need to concat classname at compile className={} if not flattening because it happens in createComponent
 - media based hoverStyle/pressStyle may need runtime equivalent!
-- sizeFont / sizeLineHeight could actually be solution to multiple
-- to build faster
 - babel add displayname
 - font weight tokens
 - a way for font token size/weight/etc to be per-font
-- document theme `pink-light` and `pink-dark` helper
 - Button text props would be nice flattened onto it and only supporting the specific text props (that way can extract)
 - Button needs size={} which adjusts: padding, spacing, text size (icon size?)
