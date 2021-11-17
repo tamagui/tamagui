@@ -81,49 +81,101 @@ The special key `true` will map to a boolean property. So the `centered` prop wi
 
 ### Spread Variants
 
-Spread variants are special variants that let you collect values from any of your top level token categories. So valid values are `color`, `size`, `space`, `font`, `fontSize`, `lineHeight`, `radius`, `letterSpacing`, or `zIndex`. They must be prefixed with `...` as that is how we determine their usage at runtime and compile-time. Enforcing this structure means that we can infer the types and provide full Typescript autocomplete for spread variants.
-
-So if we set up our tokens like this:
+When you write variants, you have to be explicit so Typescript and the runtime know exactly which props you accept. This can be especially cumbersome when you want to "gather" all the values of a specific token. For example, without spread variants, if you wanted to have a `pad` property that accepted all the keys from `tokens.size`, you'd have to write this:
 
 ```jsx
-createTamagui({
-  tokens: createTokens({
-    size {
-      sm: 5,
-      md: 15,
-      lg: 25,
-    },
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
     // ...
-  })
+  }
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(Stack, {
+  variants: {
+    pad: {
+      sm: {
+        padding: tokens.size.sm,
+      },
+      md: {
+        padding: tokens.size.md,
+      },
+      lg: {
+        padding: tokens.size.lg,
+      },
+      // ...
+    }
+  }
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+This is verbose, and only gets more verbose if you add more sizes. It would require always updating every component every time you change the tokens.
+
+Spread variants solve this problem. Instead, we can write:
+
+```jsx
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
+    // ...
+  }
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(Stack, {
+  variants: {
+    pad: {
+      '...size': (val, { tokens }) => ({
+        padding: tokens.size[val]
+      }),
+    }
+  }
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+Spread variants save you from having to define hardcoded styles for every key (`sm`, `md`, `lg`) in your token object. They collect values from any of your top level token categories. So you can only use `...color`, `...size`, `...space`, `...font`, `...fontSize`, `...lineHeight`, `...radius`, `...letterSpacing`, or `...zIndex`. They must be prefixed with `...` as that is how they are typed properly and assembled for runtime.
+
+The Spread variant function will receive two arguments: the first is the value given to the property (`"$lg"`), and the second is an object with `{ theme, tokens }`.
+
+- `theme` of type ThemeParsed, the current active theme but the keys all start with `$`.
+- `tokens` of type TokensParsed, the tokens from `createTokens`, but the keys all start with `$`.
+
+Because you can expand them to any number of styles, they can save a ton of code:
+
+```jsx
+const MyButton = styled(Stack, {
+  variants: {
+    square: {
+      '...size': (size, { tokens }) => {
+        // size === '$lg'
+        // tokens.size.$lg === 25
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  }
 })
 ```
-
-Spread variants save you from having to define hardcoded styles for every key (`sm`, `md`, `lg`) in your token object. We can write:
-
-```jsx
-<Circle size="$lg" />
-```
-
-And our spread variant function will receive two arguments: the first is the value of the token given (`"$lg"`), and the second is an object with `{ theme, tokens }`.
-
-- `theme` is of type ThemeParsed, it's the current active theme but the keys all start with `$`.
-- `tokens` is of type TokensParsed, it's the tokens from `createTokens`, but the keys all start with `$`.
-
-That way you can just access them naturally:
-
-```jsx
-{
-  size: {
-    '...size': (size, { tokens }) => {
-      // size === '$lg'
-      // tokens.size.$lg === 25
-      return {
-        width: tokens.size[size] ?? size,
-        height: tokens.size[size] ?? size,
-      }
-    },
-  },
-}
-```
-
-And you'll get a compiled Circle with a width of 25 and height of 25.
