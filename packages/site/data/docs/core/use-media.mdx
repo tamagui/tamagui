@@ -26,6 +26,8 @@ export default createTamagui({
 
 > Note: Choose the naming convention you prefer. We use `sm`, `md`, `lg` and `gtSm` etc.
 
+Behind the scenes, we convert this object syntax into media query syntax with a simple loop over your object, turning camelCase into hyphen-case, and adding `@media()` around it. On native, we use the excellent `@expo/match-media`.
+
 ## Usage
 
 Now in any component you may import and use `useMedia` or `$` prefixed media prop styles.
