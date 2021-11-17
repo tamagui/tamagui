@@ -472,7 +472,7 @@ import { YStack, useMedia, useTheme } from 'tamagui'
 
 const App = () => {
   return <div className={_cn} />
-};`,
+}`,
           language: 'jsx',
         },
         {

@@ -260,7 +260,7 @@ export const components = {
   blockquote: ({ children, ...props }) => {
     return (
       <YStack
-        my="$5"
+        mt="$5"
         pl="$4"
         ml="$3"
         borderLeftWidth={1}
@@ -268,7 +268,7 @@ export const components = {
         jc="center"
         {...props}
       >
-        <Paragraph whiteSpace="revert" size="$6" color="$color4">
+        <Paragraph whiteSpace="revert" size="$5" color="$color4">
           {React.Children.toArray(children).map((x) => (x?.props?.children ? x.props.children : x))}
         </Paragraph>
       </YStack>
