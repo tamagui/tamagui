@@ -62,7 +62,7 @@ export function QuickNav() {
           aria-labelledby="site-quick-nav-heading"
           px="$5"
           display={headings.length === 0 ? 'none' : 'block'}
-          spacing
+          space
         >
           <H4 size="$3" mb="$3" id="site-quick-nav-heading">
             Quick nav

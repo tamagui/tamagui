@@ -2,7 +2,7 @@ import React from 'react'
 import { XStack, YStack } from 'tamagui'
 
 export const TamaguiLogo = ({ showWords }: { showWords?: boolean }) => (
-  <XStack ai="center" jc="center" spacing="$5">
+  <XStack ai="center" jc="center" space="$5">
     <LogoIcon downscale={showWords ? 2 : 1.5} />
     {showWords && (
       <YStack mb={-4}>

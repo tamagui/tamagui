@@ -29,7 +29,7 @@ export const Button = InteractiveFrame.extractable(
           children,
           icon,
           iconAfter,
-          spacing = '$1',
+          space = '$1',
           textProps,
           noTextWrap,
           elevation,
@@ -39,7 +39,7 @@ export const Button = InteractiveFrame.extractable(
         ref
       ) => {
         return (
-          <InteractiveFrame spacing={spacing} ref={ref as any} {...props}>
+          <InteractiveFrame space={space} ref={ref as any} {...props}>
             {icon}
             {noTextWrap ? (
               children

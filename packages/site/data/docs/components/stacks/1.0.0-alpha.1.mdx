@@ -21,7 +21,7 @@ name: stacks
 <Highlights
   features={[
     'Vertical and horizontal stacks that optimize.',
-    'Spacing property to add space between elements.',
+    'Space property to add space between elements.',
     'Supports all the same properties as React Native <View />.',
   ]}
 />
@@ -36,7 +36,7 @@ In this example you'd show three `YStack` elements spaced out.
 import { YStack, XStack } from 'tamagui'
 
 export default () => (
-  <XStack spacing>
+  <XStack space>
     <YStack />
     <YStack />
     <YStack />
@@ -67,7 +67,7 @@ export default () => (
       flexWrap: 'nowrap'
     }}
   >
-    <YStack spacing="$3">
+    <YStack space="$3">
       <Text>Hello</Text>
       <Text>World</Text>
     </YStack>

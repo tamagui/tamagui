@@ -3,7 +3,7 @@ import { LinearGradient, XStack } from 'tamagui'
 
 export function LinearGradientDemo() {
   return (
-    <XStack als="center" spacing>
+    <XStack als="center" space>
       <LinearGradient
         colors={['red', 'yellow']}
         start={[0, 1]}

@@ -9,7 +9,7 @@ import { FrontmatterContext } from './MDXComponents'
 
 // TODO
 const Select = (props) => <select {...props} />
-// TODO this can work with spacing to not cause interruptions! nice
+// TODO this can work with space to not cause interruptions! nice
 const VisuallyHidden = (props) => <div style={{ display: 'none' }} {...props} />
 
 export function Highlights({ features }) {
@@ -36,7 +36,7 @@ export function Highlights({ features }) {
           Features
         </H2>
 
-        <YStack tag="ul" p={0} m={0} spacing>
+        <YStack tag="ul" p={0} m={0} space>
           {features.map((feature, i) => (
             <XStack tag="li" key={i}>
               <Text color="$green9">
@@ -44,14 +44,14 @@ export function Highlights({ features }) {
                   <Check size={12} color="var(--color)" />
                 </YStack>
               </Text>
-              <Paragraph color="$color2">{feature}</Paragraph>
+              <Paragraph color="$gray11">{feature}</Paragraph>
             </XStack>
           ))}
         </YStack>
       </YStack>
 
-      <YStack spacing="$2" tag="nav" aria-labelledby="site-component-info-header">
-        {/* TODO once it works with spacing */}
+      <YStack space="$2" tag="nav" aria-labelledby="site-component-info-header">
+        {/* TODO once it works with space */}
         {/* <VisuallyHidden asChild>
           <h2 id="site-component-info-heading">Component Reference Links</h2>
         </VisuallyHidden> */}
@@ -90,19 +90,19 @@ export function Highlights({ features }) {
 
         <Separator />
 
-        <YStack py="$2" spacing="$1">
+        <YStack py="$2" space="$1">
           <YStack>
             <Link
               // /${publishedName}/src
               href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views`}
               target="_blank"
             >
-              <XStack ai="center">
+              <XStack ai="center" space="$1">
                 <Paragraph size="$1" color="inherit">
                   View source
                 </Paragraph>
-                <YStack ml="$1">
-                  <ExternalLink size={12} color="var(--color)" />
+                <YStack opacity={0.5} ml="$1">
+                  <ExternalLink size={12} color="var(--color2)" />
                 </YStack>
               </XStack>
             </Link>
@@ -113,24 +113,24 @@ export function Highlights({ features }) {
               href={`https://www.npmjs.com/package/tamagui`}
               target="_blank"
             >
-              <XStack ai="center">
+              <XStack ai="center" space="$1">
                 <Paragraph size="$1" color="inherit">
                   View on npm
                 </Paragraph>
-                <YStack ml="$1">
-                  <ExternalLink size={12} color="var(--color)" />
+                <YStack opacity={0.5} ml="$1">
+                  <ExternalLink size={12} color="var(--color2)" />
                 </YStack>
               </XStack>
             </Link>
           </YStack>
           <YStack>
             <Link href="https://github.com/tamagui/tamagui/issues/new/choose" target="_blank">
-              <XStack ai="center">
+              <XStack ai="center" space="$1">
                 <Paragraph size="$1" color="inherit">
                   Report an issue
                 </Paragraph>
-                <YStack ml="$1">
-                  <ExternalLink size={12} color="var(--color)" />
+                <YStack opacity={0.5} ml="$1">
+                  <ExternalLink size={12} color="var(--color2)" />
                 </YStack>
               </XStack>
             </Link>

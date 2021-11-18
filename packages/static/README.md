@@ -1,11 +1,11 @@
-- onPress extraction + media query extraction have most speed up
+- onPress extraction
 - bug with props after spread not applying, make them deopt:
   - <YStack {...baseStyle} cursor="default" /> wont be right rn
 - have seen bugs with <Spacer flex /> and <YStack fullscreen />
 - make pressStyle override hoverStyle always
 - activeStyle may be desirable...
 - <Image /> // harder than seems RN does some werid stuff with cover/etc
-- spacing
+- space
   - SmallButton good example case of constant
 - hoverStyle/pressStyle (spread + constant too - TagButton, DishView)
   - final step is hoverStyle={{ color: x, ...parent.hoverStyle, }}

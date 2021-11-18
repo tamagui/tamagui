@@ -88,7 +88,7 @@ export function HeroExample() {
         />
       </YStack>
 
-      <YStack zi={1} spacing="$6">
+      <YStack zi={1} space="$6">
         <H2 als="center">Examples</H2>
 
         <InteractiveContainer mt={-5} als="center">
@@ -109,7 +109,7 @@ export function HeroExample() {
         </InteractiveContainer>
 
         <XStack jc="space-between">
-          <YStack flex={1} maxWidth="49%" spacing="$4">
+          <YStack flex={1} maxWidth="49%" space="$4">
             <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
               {activeExample.input.description}
             </Paragraph>
@@ -145,7 +145,7 @@ export function HeroExample() {
               <FastForward size={20} color="var(--color)" />
             </IconStack>
           </YStack>
-          <YStack flex={1} maxWidth="49%" spacing="$4">
+          <YStack flex={1} maxWidth="49%" space="$4">
             <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
               {activeExample.output.description}
             </Paragraph>

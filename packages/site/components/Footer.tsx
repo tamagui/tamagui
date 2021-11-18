@@ -21,7 +21,7 @@ export const Footer = () => {
           mt="$1"
           pb="$6"
           px="$4"
-          spacing="$2"
+          space="$2"
         >
           <Link href="/" marginBottom={20}>
             <Text
@@ -53,7 +53,7 @@ export const Footer = () => {
           </Paragraph>
         </YStack>
 
-        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} spacing>
+        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
           <H4 size="$5">Overview</H4>
           <Link href="/docs/intro/introduction">Introduction</Link>
           <Link href="/docs/intro/configuration">Configuration</Link>
@@ -62,29 +62,29 @@ export const Footer = () => {
           <Link href="/docs/frequently-asked-questions">FAQ</Link> */}
         </YStack>
 
-        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} spacing>
+        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
           <H4 size="$5">Docs</H4>
           <Link href="/docs/intro/installation">Installation</Link>
           <Link href="/docs/intro/themes">Themes</Link>
           <Link href="/docs/core/styled">Variants</Link>
         </YStack>
 
-        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} spacing>
+        <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
           <H4 size="$5">Community</H4>
           {/* <Link href="/blog">Blog</Link> */}
-          <XStack spacing="$1" ai="center">
+          <XStack space="$1" ai="center">
             <Link ai="center" href="https://github.com/tamagui/tamagui">
               GitHub
             </Link>
             <ExternalIcon />
           </XStack>
-          <XStack spacing="$1" ai="center">
+          <XStack space="$1" ai="center">
             <Link ai="center" href="https://twitter.com/tamagui_dev">
               Twitter
             </Link>
             <ExternalIcon />
           </XStack>
-          <XStack spacing="$1" ai="center">
+          <XStack space="$1" ai="center">
             <Link ai="center" href="https://discord.gg/uUtvv6GM">
               Discord
             </Link>

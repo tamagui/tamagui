@@ -4,11 +4,9 @@ import { EnsureFlexed, GetProps, Grid, H2, H4, Paragraph, XStack, YStack } from 
 import { Card } from './Card'
 import { ContainerLarge } from './Container'
 
-type x = GetProps<typeof Card>['spacing']
-
 export function Community() {
   return (
-    <ContainerLarge spacing="$4" py="$4">
+    <ContainerLarge space="$4" py="$4">
       <H2 ta="center">Community</H2>
       <Paragraph size="$6" color="$color3" ta="center">
         Join the community on these platforms
@@ -17,11 +15,11 @@ export function Community() {
       <YStack maxWidth="100%" fs={0} als="center" pt="$2" pb="$6">
         <EnsureFlexed />
 
-        <XStack spacing="$4" $sm={{ flexDirection: 'column' }}>
+        <XStack space="$4" $sm={{ flexDirection: 'column' }}>
           <Card
             width="33.33%"
             $sm={{ width: 'auto' }}
-            spacing
+            space
             tag="a"
             href="https://twitter.com/tamagui_dev"
             target="_blank"
@@ -57,7 +55,7 @@ export function Community() {
           <Card
             width="33.33%"
             $sm={{ width: 'auto' }}
-            spacing
+            space
             tag="a"
             href="https://discord.gg/uUtvv6GM"
             target="_blank"
@@ -86,7 +84,7 @@ export function Community() {
           <Card
             width="33.33%"
             $sm={{ width: 'auto' }}
-            spacing
+            space
             tag="a"
             href="https://github.com/tamagui/tamagui"
             target="_blank"

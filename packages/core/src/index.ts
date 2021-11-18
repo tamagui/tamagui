@@ -1,5 +1,6 @@
 export * from './createComponent'
 export * from './createShorthands'
+export * from './createTheme'
 export * from './createTamagui'
 export { createTokens } from './createTokens'
 export * from './createVariable'

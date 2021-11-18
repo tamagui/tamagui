@@ -27,9 +27,9 @@ export function Hero() {
           <Header />
 
           <ContainerLarge mb={-20}>
-            <YStack spacing="$8" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
-              <YStack spacing="$7">
-                <YStack ai="flex-start" $gtSm={{ ai: 'center' }} spacing="$6">
+            <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
+              <YStack space="$7">
+                <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$6">
                   <Title
                     size="$7"
                     letterSpacing={-1}
@@ -93,7 +93,7 @@ export function Hero() {
                   </YStack>
                 </YStack>
 
-                <XStack jc="center" spacing>
+                <XStack jc="center" space>
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
                       // TODO check why hoverStyle not overriding
@@ -176,7 +176,7 @@ export function Hero() {
           flex={1}
           overflow="hidden"
           maxWidth="100%"
-          spacing="$6"
+          space="$6"
           flexWrap="nowrap"
           $sm={{ flexDirection: 'column' }}
         >

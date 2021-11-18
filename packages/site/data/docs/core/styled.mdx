@@ -154,7 +154,7 @@ const MyButton = styled(Stack, {
 <MyButton pad="$lg" />
 ```
 
-Spread variants save you from having to define hardcoded styles for every key (`sm`, `md`, `lg`) in your token object. They collect values from any of your top level token categories. So you can only use `...color`, `...size`, `...space`, `...font`, `...fontSize`, `...lineHeight`, `...radius`, `...letterSpacing`, or `...zIndex`. They must be prefixed with `...` as that is how they are typed properly and assembled for runtime.
+Spread variants save you from having to define hardcoded styles for every key (`sm`, `md`, `lg`) in your token object. They collect values from any of your top level token categories. So you can only use `...color`, `...size`, `...space`, `...font`, `...fontSize`, `...lineHeight`, `...radius`, `...letterSpace`, or `...zIndex`. They must be prefixed with `...` as that is how they are typed properly and assembled for runtime.
 
 The Spread variant function will receive two arguments: the first is the value given to the property (`"$lg"`), and the second is an object with `{ theme, tokens }`.
 

@@ -26,12 +26,12 @@ export declare type ThemeProviderProps = {
 };
 export declare const GET_DEFAULT_THEME = "___TGUI";
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
-export declare type StylesBase = Omit<ViewStyle, "display" | "backfaceVisibility"> & TransformStyleProps & {
+export declare type TamaguiStylesBase = Omit<ViewStyle, "display" | "backfaceVisibility"> & TransformStyleProps & {
 	cursor?: string;
 	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
 	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
 };
-export declare type StyleKeys = keyof StylesBase;
+export declare type StyleKeys = keyof TamaguiStylesBase;
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {
@@ -98,7 +98,7 @@ export interface CreateTokens<Val extends number | string | Variable = number | 
 	lineHeight: {
 		[key in TextKeys]: Val;
 	};
-	letterSpacing: {
+	letterSpace: {
 		[key in TextKeys]: Val;
 	};
 	color: {
@@ -151,14 +151,16 @@ export declare type TransformStyleProps = {
 	rotateZ?: string;
 };
 export declare type ShortKeysView = keyof Shorthands;
+export declare type ColorableKeys = "color" | "backgroundColor" | "borderColor" | "borderTopColor" | "borderBottomColor" | "borderLeftColor" | "borderRightColor" | "shadowColor";
+export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
-	[K in keyof T]: Omit<T[K], string> | UnionableString | Variable | ThemeKeyVariables;
+	[K in keyof T]: K extends ColorableKeys ? ThemeValue<T[K]> | ThemeKeyVariables : ThemeValue<T[K]>;
 };
-export declare type EnhancedStackStyleProps = WithThemeValues<StylesBase>;
+export declare type TamaguiThemedStackStyleProps = WithThemeValues<TamaguiStylesBase>;
 export declare type ShorthandStyleProps = {
-	[key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof EnhancedStackStyleProps ? EnhancedStackStyleProps[Shorthands[ShortKeysView]] | null : {};
+	[key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof TamaguiThemedStackStyleProps ? TamaguiThemedStackStyleProps[Shorthands[ShortKeysView]] | null : {};
 };
-export declare type StackStylePropsBase = EnhancedStackStyleProps | ShorthandStyleProps;
+export declare type StackStylePropsBase = TamaguiThemedStackStyleProps | ShorthandStyleProps;
 export declare type StackStyleProps = StackStylePropsBase & {
 	hoverStyle?: StackStylePropsBase | null;
 	pressStyle?: StackStylePropsBase | null;
@@ -176,7 +178,7 @@ export declare type StackProps = Omit<RNWInternalProps, "children"> & MediaProps
 	onPressOut?: (e: GestureResponderEvent) => any;
 	onMouseEnter?: (e: GestureResponderEvent) => any;
 	onMouseLeave?: (e: GestureResponderEvent) => any;
-	spacing?: Tokens["space"][keyof Tokens["space"]] | boolean | string | number;
+	space?: Tokens["space"][keyof Tokens["space"]] | boolean | string | number;
 	pointerEvents?: string;
 	userSelect?: string;
 	className?: string;
@@ -322,12 +324,17 @@ export declare const mouseUps: Set<Function>;
 export declare type DefaultProps = {};
 export declare function createComponent<A extends Object = DefaultProps>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<A, void, StaticConfigParsed, any>;
 export declare const Spacer: StaticComponent<DefaultProps, void, StaticConfigParsed, any>;
-export declare function spacedChildren({ children, spacing, flexDirection, }: {
+export declare function spacedChildren({ children, space, flexDirection, }: {
 	children: any;
-	spacing?: any;
+	space?: any;
 	flexDirection?: ViewStyle["flexDirection"];
 }): any;
 export declare function createShorthands<A extends Record<string, string>>(shorthands: A): A;
+export declare const createTheme: <Theme extends {
+	[key: string]: string | Variable;
+}>(theme: Theme) => {
+	[key in keyof Theme]: Variable;
+};
 export declare type CreateTamaguiProps = TamaguiProviderProps & Omit<GenericTamaguiConfig, "themes"> & {
 	themes: {
 		[key: string]: {
@@ -366,7 +373,7 @@ export declare type MakeTokens<T> = T extends {
 	font: infer A;
 	fontSize: infer B;
 	lineHeight: infer C;
-	letterSpacing: infer D;
+	letterSpace: infer D;
 	color: infer E;
 	space: infer F;
 	size: infer G;
@@ -382,7 +389,7 @@ export declare type MakeTokens<T> = T extends {
 	lineHeight: {
 		[key in keyof C]: Variable;
 	};
-	letterSpacing: {
+	letterSpace: {
 		[key in keyof D]: Variable;
 	};
 	color: {
