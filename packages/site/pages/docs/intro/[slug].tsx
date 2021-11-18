@@ -20,7 +20,7 @@ export default function DocIntroPage({ frontmatter, code }: Doc) {
   return (
     <>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui`} />
-      <H1 letterSpacing={-1} fontWeight="700" mb="$2">
+      <H1 letterSpacing={-1} fontWeight="700">
         {frontmatter.title}
       </H1>
       <Paragraph size="$7" my="$2" mb="$2" color="$color3">

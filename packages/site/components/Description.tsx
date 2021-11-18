@@ -6,7 +6,7 @@ export const Description = ({ children, ...props }) => {
   // https://github.com/wooorm/xdm/issues/47
   const childText = typeof children === 'string' ? children : children.props.children
   return (
-    <Paragraph size="$7" color="$color3" tag="p" mb="$2" mt="$2" {...props}>
+    <Paragraph size="$7" color="$color3" tag="p" mb="$2" mt="0" {...props}>
       {childText}
     </Paragraph>
   )

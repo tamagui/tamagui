@@ -39,7 +39,7 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
   }
 }
 
-const THEME_CLASS_PREFIX = `theme--`
+const PREFIX = `theme--`
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
@@ -84,7 +84,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           return isVariable(v) ? `--${themeKey}:var(--${v.name});` : `--${themeKey}:${v};`
         }
         vars += getVariableCSS(val)
-
         // TODO sanity check is necessary
         // make everything a variable that gets put into css
         if (!isVariable(val)) {
@@ -98,11 +97,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       const [themeClassName, parentName] = themeName.includes('-')
         ? themeName.split('-')
         : [themeName, '']
-
-      const cssRule = `${
-        parentName ? `.${THEME_CLASS_PREFIX}${parentName} ` : ''
-      }.${THEME_CLASS_PREFIX}${themeClassName} {\n${vars}\n}`
-
+      // tiny hack for now assuming light/dark are typical parentName
+      const oppositeName = parentName === 'dark' ? 'light' : 'dark'
+      const cssParentSel = parentName ? `.${PREFIX}${parentName}` : ''
+      const cssChildSel = `.${PREFIX}${themeClassName}`
+      const cssSel = `${cssParentSel} ${cssChildSel}`
+      // we need to force specificity
+      const cssRule = `${cssSel}, .${PREFIX}${oppositeName} ${cssSel} {\n${vars}\n}`
       cssRules.push(cssRule)
     }
 
@@ -157,7 +158,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 }
 
 export function getThemeParentClassName(themeName?: string | null) {
-  return `theme-parent ${themeName ? `${THEME_CLASS_PREFIX}${themeName}` : ''}`
+  return `theme-parent ${themeName ? `${PREFIX}${themeName}` : ''}`
 }
 
 // insertSheet() {

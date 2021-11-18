@@ -81,11 +81,7 @@ export default () => {
 }
 ```
 
-As long as **all** of your usages of useMedia are extractable, Tamagui will actually generate your CSS and then fully remove the hook from the output code. You can check this by adding `// debug` to the top of your component. You'll see output somewhat like this:
-
-```bash
-# TODO
-```
+As long as **all** of your usages of useMedia are extractable, Tamagui will actually generate your CSS and then fully remove the hook from the output code. You can check this by adding `// debug` to the top of your component.
 
 Of course, you may sometimes use `useMedia` for other purposes than styling. In fact, that's the nice part about Tamagui - if it can't extract, it always falls back to runtime gracefully.
 
