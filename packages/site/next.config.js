@@ -7,6 +7,7 @@ const withOptimizedImages = require('next-optimized-images')
 Error.stackTraceLimit = Infinity
 
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
+process.env.TAMAGUI_TARGET = 'web'
 
 const transform = withPlugins(
   [
@@ -18,7 +19,7 @@ const transform = withPlugins(
       components: ['tamagui'],
       importsWhitelist: ['constants.js', 'colors.js'],
       logTimings: true,
-      disableExtraction: process.env.NODE_ENV === 'development',
+      disableExtraction: false, //process.env.NODE_ENV === 'development',
     }),
     // for github pages
     (config) => {

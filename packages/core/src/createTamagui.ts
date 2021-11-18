@@ -55,6 +55,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultActive: config.mediaQueryDefaultActive,
   })
 
+  // TODO can avoid some of this CSS creation on native
   const themeConfig = (() => {
     let cssRules: string[] = []
 

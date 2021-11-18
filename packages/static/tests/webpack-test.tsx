@@ -4,7 +4,7 @@ import '@expo/match-media'
 import { TestRenderer, act, render } from '@dish/testy'
 import React from 'react'
 
-process.env.TARGET = 'web'
+process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
 
 const app = require('./spec/out/out-webpack')

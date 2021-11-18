@@ -16,12 +16,8 @@ export const stylePropsTransform = {
 }
 
 export const stylePropsView = Object.freeze({
-  pointerEvents: true,
-  userSelect: true,
-  cursor: true,
   backfaceVisibility: true,
   backgroundColor: true,
-  boxSizing: true,
   borderBottomColor: true,
   borderBottomEndRadius: true,
   borderBottomLeftRadius: true,
@@ -98,8 +94,16 @@ export const stylePropsView = Object.freeze({
   shadowOffset: true,
   shadowOpacity: true,
   shadowRadius: true,
-  contain: true,
   ...stylePropsTransform,
+
+  // allow a few web only ones
+  ...(process.env.TAMAGUI_TARGET === 'web' && {
+    userSelect: true,
+    cursor: true,
+    contain: true,
+    pointerEvents: true,
+    boxSizing: true,
+  }),
 })
 
 export const stylePropsTextOnly = Object.freeze({
@@ -119,11 +123,14 @@ export const stylePropsTextOnly = Object.freeze({
   textShadowRadius: true,
   textTransform: true,
 
-  // ours
-  whiteSpace: true,
-  wordWrap: true,
-  textOverflow: true,
-  textDecorationDistance: true,
+  // allow a few web only ones
+  // TODO
+  ...(process.env.TAMAGUI_TARGET === 'web' && {
+    whiteSpace: true,
+    wordWrap: true,
+    textOverflow: true,
+    textDecorationDistance: true,
+  }),
 })
 
 export const stylePropsText = Object.freeze({

@@ -26,9 +26,8 @@ export function FeaturesGrid() {
           <YStack ai="flex-start" spacing p="$4">
             <H4 letterSpacing={-1}>Performant</H4>
             <Paragraph color="$color3">
-              Tamagui avoids much more JS parsing at runtime than other libraries, even with
-              conditional logic in your render + flattens your tree, making it more performant than
-              other styling libraries.
+              Tamagui avoids more JS parsing at runtime, even with conditional logic in your render.
+              It even flattens your tree when possible.
             </Paragraph>
           </YStack>
 

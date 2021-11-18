@@ -6,10 +6,12 @@ export * from './createVariable'
 export * from './styled'
 export * from './types'
 
+export * from './constants/pseudos'
 export * from './constants/constants'
 export * from './constants/platform'
 export * from './constants/rnw'
 
+export * from './helpers/getStylesAtomic'
 export * from './helpers/matchMedia'
 export * from './helpers/themeable'
 

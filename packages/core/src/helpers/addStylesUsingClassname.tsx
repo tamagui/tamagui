@@ -1,5 +1,4 @@
-import { getStylesAtomic } from '@tamagui/helpers'
-
+import { getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule } from './insertStyleRule'
 
 let added = {}

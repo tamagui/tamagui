@@ -17,6 +17,11 @@ export declare const stylePropsTransform: {
 	rotateZ: boolean;
 };
 export declare const stylePropsView: Readonly<{
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -30,12 +35,8 @@ export declare const stylePropsView: Readonly<{
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -112,9 +113,12 @@ export declare const stylePropsView: Readonly<{
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 }>;
 export declare const stylePropsTextOnly: Readonly<{
+	whiteSpace?: boolean | undefined;
+	wordWrap?: boolean | undefined;
+	textOverflow?: boolean | undefined;
+	textDecorationDistance?: boolean | undefined;
 	color: boolean;
 	fontFamily: boolean;
 	fontSize: boolean;
@@ -130,12 +134,12 @@ export declare const stylePropsTextOnly: Readonly<{
 	textShadowOffset: boolean;
 	textShadowRadius: boolean;
 	textTransform: boolean;
-	whiteSpace: boolean;
-	wordWrap: boolean;
-	textOverflow: boolean;
-	textDecorationDistance: boolean;
 }>;
 export declare const stylePropsText: Readonly<{
+	whiteSpace?: boolean | undefined;
+	wordWrap?: boolean | undefined;
+	textOverflow?: boolean | undefined;
+	textDecorationDistance?: boolean | undefined;
 	color: boolean;
 	fontFamily: boolean;
 	fontSize: boolean;
@@ -151,10 +155,11 @@ export declare const stylePropsText: Readonly<{
 	textShadowOffset: boolean;
 	textShadowRadius: boolean;
 	textTransform: boolean;
-	whiteSpace: boolean;
-	wordWrap: boolean;
-	textOverflow: boolean;
-	textDecorationDistance: boolean;
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -168,12 +173,8 @@ export declare const stylePropsText: Readonly<{
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -250,9 +251,12 @@ export declare const stylePropsText: Readonly<{
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 }>;
 export declare const stylePropsAll: Readonly<{
+	whiteSpace?: boolean | undefined;
+	wordWrap?: boolean | undefined;
+	textOverflow?: boolean | undefined;
+	textDecorationDistance?: boolean | undefined;
 	color: boolean;
 	fontFamily: boolean;
 	fontSize: boolean;
@@ -268,10 +272,11 @@ export declare const stylePropsAll: Readonly<{
 	textShadowOffset: boolean;
 	textShadowRadius: boolean;
 	textTransform: boolean;
-	whiteSpace: boolean;
-	wordWrap: boolean;
-	textOverflow: boolean;
-	textDecorationDistance: boolean;
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -285,12 +290,8 @@ export declare const stylePropsAll: Readonly<{
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -367,7 +368,6 @@ export declare const stylePropsAll: Readonly<{
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 }>;
 export declare const validStylesPseudo: {
 	hoverStyle: boolean;
@@ -375,6 +375,11 @@ export declare const validStylesPseudo: {
 	focusStyle: boolean;
 };
 export declare const validStyles: {
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -388,12 +393,8 @@ export declare const validStyles: {
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -470,7 +471,6 @@ export declare const validStyles: {
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 	hoverStyle: boolean;
 	pressStyle: boolean;
 	focusStyle: boolean;
@@ -482,21 +482,6 @@ export declare type StyleObject = {
 	identifier: string;
 	rules: string[];
 };
-export declare const pseudos: {
-	focusStyle: {
-		name: string;
-		priority: number;
-	};
-	pressStyle: {
-		name: string;
-		priority: number;
-	};
-	hoverStyle: {
-		name: string;
-		priority: number;
-	};
-};
-export declare function getStylesAtomic(style: any, avoidCollection?: boolean): StyleObject[];
 export declare const AllRules: Set<unknown>;
 export declare const getStyleRules: () => Set<unknown>;
 

@@ -1,25 +1,14 @@
-import type { ViewStyle } from 'react-native'
-import { atomic } from 'react-native-web/dist/cjs/exports/StyleSheet/compile'
-import createCompileableStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createCompileableStyle'
-import createReactDOMStyle from 'react-native-web/dist/cjs/exports/StyleSheet/createReactDOMStyle'
-import i18Style from 'react-native-web/dist/cjs/exports/StyleSheet/i18nStyle'
+import { AllRules, StyleObject } from '@tamagui/helpers'
+import { ViewStyle } from 'react-native'
 
-import { AllRules } from './AllRules'
-import { StyleObject } from './types'
+import { pseudos } from '../constants/pseudos'
+import { rnw } from '../constants/rnw'
 
-export const pseudos = {
-  focusStyle: {
-    name: 'focus',
-    priority: 3,
-  },
-  pressStyle: {
-    name: 'active',
-    priority: 2,
-  },
-  hoverStyle: {
-    name: 'hover',
-    priority: 1,
-  },
+const generateStyle = (style: any) => {
+  const { atomic, createCompileableStyle, createReactDOMStyle, i18Style } = rnw
+  return {
+    ...atomic(createCompileableStyle(createReactDOMStyle(i18Style(style)))),
+  }
 }
 
 const borderDefaults = {
@@ -67,11 +56,7 @@ function getAtomicStyle(
     }
   }
 
-  const all = {
-    // TODO man, rnw has a ton of function calls etc here
-    ...atomic(createCompileableStyle(createReactDOMStyle(i18Style(style)))),
-  }
-
+  const all = generateStyle(style)
   return Object.keys(all).map((key) => {
     const val = all[key]
     const hash = val.identifier.slice(`${val.identifier}`.lastIndexOf('-') + 1)

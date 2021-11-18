@@ -1,6 +1,4 @@
-// import * as Collapsible from '@radix-ui/react-collapsible'
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
-// import { getParameters } from 'codesandbox/lib/api/define'
 import copy from 'copy-to-clipboard'
 import React, { forwardRef, useContext, useEffect, useRef, useState } from 'react'
 import { Button, Text, YStack } from 'tamagui'
@@ -142,47 +140,3 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     </YStack>
   )
 })
-
-// const makeCodeSandboxParams = (name, code) => {
-//   const css =
-//     '*{box-sizing:border-box;margin:0;padding:0;}body{font-family:system-ui;width:100vw;height:100vh;background-image:linear-gradient(330deg, hsl(272,53%,50%) 0%, hsl(226,68%,56%) 100%);display:flex;align-items:flex-start;justify-content:center;}body>div{padding-top:120px}svg{display:block;}'
-
-//   const parameters = getParameters({
-//     files: {
-//       'package.json': {
-//         content: {
-//           dependencies: {
-//             react: 'latest',
-//             'react-dom': 'latest',
-//             '@stitches/react': 'latest',
-//             '@radix-ui/colors': 'latest',
-//             '@radix-ui/react-icons': 'latest',
-//             [`@radix-ui/react-${name}`]: 'latest',
-//           },
-//         } as any,
-//         isBinary: false,
-//       },
-//       'App.js': {
-//         content: code,
-//         isBinary: false,
-//       },
-//       'index.js': {
-//         content: `import React from 'react';
-// import ReactDOM from 'react-dom';
-
-// import App from './App';
-// import './styles.css';
-
-// ReactDOM.render(<div><App /></div>, document.getElementById('root'));`,
-//         isBinary: false,
-//       },
-//       'styles.css': {
-//         content: css,
-//         isBinary: false,
-//       },
-//     },
-//     template: 'create-react-app',
-//   })
-
-//   return parameters
-// }

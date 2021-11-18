@@ -23,7 +23,7 @@ const importStyleSheet = template(`
 import { StyleSheet as ReactNativeStyleSheet } from 'react-native';
 `)
 
-process.env.TARGET = process.env.TARGET || 'native'
+process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'native'
 
 const extractor = createExtractor()
 

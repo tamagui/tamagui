@@ -69,6 +69,10 @@ const forwardedPropsObj = `{
 `
 
 const moduleExports = `
+export { atomic } from './exports/StyleSheet/compile'
+export { default as createCompileableStyle } from './exports/StyleSheet/createCompileableStyle'
+export { default as createReactDOMStyle } from './exports/StyleSheet/createReactDOMStyle'
+export { default as i18Style } from './exports/StyleSheet/i18nStyle'
 export { default as createDOMProps } from './modules/createDOMProps'
 export { default as AccessibilityUtil } from './modules/AccessibilityUtil'
 export { default as createElement } from './exports/createElement'
@@ -84,6 +88,11 @@ export const forwardedProps = ${forwardedPropsObj}
 `
 
 const cjsExports = `
+console.log('wut', require('./exports/StyleSheet/compile'))
+exports.atomic = require('./exports/StyleSheet/compile').atomic
+exports.createCompileableStyle = require('./exports/StyleSheet/createCompileableStyle')
+exports.createReactDOMStyle = require('./exports/StyleSheet/createReactDOMStyle')
+exports.i18Style = require('./exports/StyleSheet/i18nStyle')
 exports.createDOMProps = require('./modules/createDOMProps')
 exports.AccessibilityUtil = require('./modules/AccessibilityUtil')
 exports.createElement = require('./exports/createElement')

@@ -2,7 +2,7 @@ import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core'
 import * as CoreNode from '@tamagui/core-node'
-import { pseudos, stylePropsTransform } from '@tamagui/helpers'
+import { stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
 
 import { ExtractedAttr, ExtractedAttrAttr, ExtractorParseProps, Ternary } from '../types'
@@ -16,7 +16,7 @@ import { loadTamagui } from './loadTamagui'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
 
-const { mediaQueryConfig, postProcessStyles, createTamagui } = CoreNode
+const { mediaQueryConfig, postProcessStyles, pseudos } = CoreNode
 
 export const FAILED_EVAL = Symbol('failed_style_eval')
 const UNTOUCHED_PROPS = {
@@ -40,7 +40,7 @@ export function createExtractor() {
   const shouldAddDebugProp =
     // really basic disable this for next.js because it messes with ssr
     !process.env.npm_package_dependencies_next &&
-    process.env.TARGET !== 'native' &&
+    process.env.TAMAGUI_TARGET !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
     (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
 
@@ -939,7 +939,7 @@ export function createExtractor() {
             //     return spacingValuesWithLegacy[value]
             //   }
             //   // on web we can extract fully to CSS variables
-            //   if (process.env.TARGET !== 'native' && typeof value === 'string' && value[0] === '$') {
+            //   if (process.env.TAMAGUI_TARGET !== 'native' && typeof value === 'string' && value[0] === '$') {
             //     return `var(--${value.slice(1)})`
             //   }
             //   return defaultValueMap(value)

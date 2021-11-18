@@ -8,8 +8,11 @@ export * from './constants/constants'
 export * from './hooks/useMedia'
 export * from './hooks/useTheme'
 
+export * from './helpers/getStylesAtomic'
 export * from './helpers/getSplitStyles'
 export * from '@tamagui/helpers'
+
+export * from './constants/pseudos'
 
 // -- below exports are only bundled compile-time --
 

@@ -1,4 +1,4 @@
-import * as RadixColors from '@radix-ui/colors'
+import * as RadixColors from '@tamagui/colors'
 
 import { tokens } from './testConstants'
 

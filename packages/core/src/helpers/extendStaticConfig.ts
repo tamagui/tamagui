@@ -8,9 +8,6 @@ export function extendStaticConfig(
   Component?: StaticComponent | React.Component<any>,
   config: StaticConfig = {}
 ): StaticConfigParsed | null {
-  if (process.env.TARGET === 'client') {
-    return null
-  }
   const a = (Component || {}) as any
   if (!a.staticConfig) {
     // if no static config, we are extending an external component

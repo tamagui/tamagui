@@ -1,4 +1,4 @@
-import * as Colors from '@radix-ui/colors'
+import * as Colors from '@tamagui/colors'
 
 // nice and flat
 

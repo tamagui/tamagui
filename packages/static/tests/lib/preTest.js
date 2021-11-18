@@ -60,7 +60,7 @@ async function extractStaticAppBabel() {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
-        'process.env.TARGET': JSON.stringify('web'),
+        'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
         'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
     ],
@@ -129,7 +129,7 @@ async function extractStaticWebpackApp() {
     plugins: [
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        'process.env.TARGET': JSON.stringify('web'),
+        'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
         'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
       }),

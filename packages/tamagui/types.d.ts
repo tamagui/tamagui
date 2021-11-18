@@ -23,6 +23,11 @@ export declare const stylePropsTransform: {
 	rotateZ: boolean;
 };
 export declare const stylePropsView: Readonly<{
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -36,12 +41,8 @@ export declare const stylePropsView: Readonly<{
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -118,9 +119,12 @@ export declare const stylePropsView: Readonly<{
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 }>;
 export declare const stylePropsTextOnly: Readonly<{
+	whiteSpace?: boolean | undefined;
+	wordWrap?: boolean | undefined;
+	textOverflow?: boolean | undefined;
+	textDecorationDistance?: boolean | undefined;
 	color: boolean;
 	fontFamily: boolean;
 	fontSize: boolean;
@@ -136,12 +140,12 @@ export declare const stylePropsTextOnly: Readonly<{
 	textShadowOffset: boolean;
 	textShadowRadius: boolean;
 	textTransform: boolean;
-	whiteSpace: boolean;
-	wordWrap: boolean;
-	textOverflow: boolean;
-	textDecorationDistance: boolean;
 }>;
 export declare const stylePropsText: Readonly<{
+	whiteSpace?: boolean | undefined;
+	wordWrap?: boolean | undefined;
+	textOverflow?: boolean | undefined;
+	textDecorationDistance?: boolean | undefined;
 	color: boolean;
 	fontFamily: boolean;
 	fontSize: boolean;
@@ -157,10 +161,11 @@ export declare const stylePropsText: Readonly<{
 	textShadowOffset: boolean;
 	textShadowRadius: boolean;
 	textTransform: boolean;
-	whiteSpace: boolean;
-	wordWrap: boolean;
-	textOverflow: boolean;
-	textDecorationDistance: boolean;
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -174,12 +179,8 @@ export declare const stylePropsText: Readonly<{
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -256,9 +257,12 @@ export declare const stylePropsText: Readonly<{
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 }>;
 export declare const stylePropsAll: Readonly<{
+	whiteSpace?: boolean | undefined;
+	wordWrap?: boolean | undefined;
+	textOverflow?: boolean | undefined;
+	textDecorationDistance?: boolean | undefined;
 	color: boolean;
 	fontFamily: boolean;
 	fontSize: boolean;
@@ -274,10 +278,11 @@ export declare const stylePropsAll: Readonly<{
 	textShadowOffset: boolean;
 	textShadowRadius: boolean;
 	textTransform: boolean;
-	whiteSpace: boolean;
-	wordWrap: boolean;
-	textOverflow: boolean;
-	textDecorationDistance: boolean;
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -291,12 +296,8 @@ export declare const stylePropsAll: Readonly<{
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -373,7 +374,6 @@ export declare const stylePropsAll: Readonly<{
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 }>;
 export declare const validStylesPseudo: {
 	hoverStyle: boolean;
@@ -381,6 +381,11 @@ export declare const validStylesPseudo: {
 	focusStyle: boolean;
 };
 export declare const validStyles: {
+	userSelect?: boolean | undefined;
+	cursor?: boolean | undefined;
+	contain?: boolean | undefined;
+	pointerEvents?: boolean | undefined;
+	boxSizing?: boolean | undefined;
 	x: boolean;
 	y: boolean;
 	scale: boolean;
@@ -394,12 +399,8 @@ export declare const validStyles: {
 	rotateY: boolean;
 	rotateX: boolean;
 	rotateZ: boolean;
-	pointerEvents: boolean;
-	userSelect: boolean;
-	cursor: boolean;
 	backfaceVisibility: boolean;
 	backgroundColor: boolean;
-	boxSizing: boolean;
 	borderBottomColor: boolean;
 	borderBottomEndRadius: boolean;
 	borderBottomLeftRadius: boolean;
@@ -476,7 +477,6 @@ export declare const validStyles: {
 	shadowOffset: boolean;
 	shadowOpacity: boolean;
 	shadowRadius: boolean;
-	contain: boolean;
 	hoverStyle: boolean;
 	pressStyle: boolean;
 	focusStyle: boolean;
@@ -488,27 +488,12 @@ export declare type StyleObject = {
 	identifier: string;
 	rules: string[];
 };
-export declare const pseudos: {
-	focusStyle: {
-		name: string;
-		priority: number;
-	};
-	pressStyle: {
-		name: string;
-		priority: number;
-	};
-	hoverStyle: {
-		name: string;
-		priority: number;
-	};
-};
-export declare function getStylesAtomic(style: any, avoidCollection?: boolean): StyleObject[];
 export declare const AllRules: Set<unknown>;
 export declare const getStyleRules: () => Set<unknown>;
 export declare class Variable {
-	val: string;
 	name: string;
-	variable: string;
+	val: string | number;
+	variable: string | number;
 	constructor({ val, name }: VariableIn);
 }
 export declare type VariableIn = {
@@ -917,6 +902,20 @@ export declare function styled<A extends StaticComponent | React.Component<any>,
 }), StyledVariants extends void ? {} : {
 	[key in keyof StyledVariants]?: (keyof StyledVariants[keyof StyledVariants] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] : unknown : keyof StyledVariants[keyof StyledVariants] extends "true" ? boolean : keyof StyledVariants[keyof StyledVariants]) | undefined;
 }, StaticConfigParsed, any>;
+export declare const pseudos: {
+	focusStyle: {
+		name: string;
+		priority: number;
+	};
+	pressStyle: {
+		name: string;
+		priority: number;
+	};
+	hoverStyle: {
+		name: string;
+		priority: number;
+	};
+};
 export declare const stackDefaultStyles: {
 	display?: string | undefined;
 	flexBasis?: string | undefined;
@@ -927,11 +926,12 @@ export declare const stackDefaultStyles: {
 export declare const isWeb: boolean;
 export declare const isSSR: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;
-export declare const isWebIOS: boolean;
 export declare const isChrome: boolean;
 export declare const supportsTouchWeb: boolean;
 export declare const isTouchDevice: boolean;
+export declare const isWebIOS: boolean;
 export declare const rnw: any | null;
+export declare function getStylesAtomic(style: any, avoidCollection?: boolean): StyleObject[];
 export declare const matchMedia: any;
 export declare type ThemeableProps = {
 	theme?: string | null;
@@ -1107,7 +1107,7 @@ export declare type ButtonProps = InteractiveFrameProps & ThemeableProps & {
 	icon?: JSX.Element | null;
 	iconAfter?: JSX.Element | null;
 };
-export declare const Button: (props: Pick<ButtonProps, "hoverStyle" | "pressStyle" | "pointerEvents" | "userSelect" | "cursor" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "contain" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | "testID" | "elevation" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "spacing" | "tag" | "disabled" | "theme" | "themeInverse" | "animated" | "fullscreen" | (`$${string}` & string) | "icon" | "iconAfter" | "textProps" | "noTextWrap"> & React.RefAttributes<unknown>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+export declare const Button: (props: Pick<ButtonProps, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "userSelect" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | "testID" | "elevation" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "spacing" | "tag" | "disabled" | "theme" | "themeInverse" | "animated" | "fullscreen" | (`$${string}` & string) | "icon" | "iconAfter" | "textProps" | "noTextWrap"> & React.RefAttributes<unknown>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
 export declare const Circle: import("@tamagui/core").StaticComponent<import("@tamagui/core").StackProps & {
 	size?: string | number | undefined;
 }, {
@@ -1284,8 +1284,8 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
 	[x: string]: string | number | undefined;
 }, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type ParagraphProps = PropTypes<typeof Paragraph>;
-declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<import("@tamagui/core").StackProps, "hoverStyle" | "pressStyle" | "pointerEvents" | "userSelect" | "cursor" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "contain" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | "testID" | "elevation" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "spacing" | "tag" | "disabled" | "animated" | "fullscreen" | (`$${string}` & string)> & React.RefAttributes<unknown>>;
-declare const PopoverContent: React.ForwardRefExoticComponent<Pick<import("@tamagui/core").StackProps, "hoverStyle" | "pressStyle" | "pointerEvents" | "userSelect" | "cursor" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "contain" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | "testID" | "elevation" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "spacing" | "tag" | "disabled" | "animated" | "fullscreen" | (`$${string}` & string)> & React.RefAttributes<unknown>>;
+declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<import("@tamagui/core").StackProps, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "userSelect" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | "testID" | "elevation" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "spacing" | "tag" | "disabled" | "animated" | "fullscreen" | (`$${string}` & string)> & React.RefAttributes<unknown>>;
+declare const PopoverContent: React.ForwardRefExoticComponent<Pick<import("@tamagui/core").StackProps, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "userSelect" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | "testID" | "elevation" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "spacing" | "tag" | "disabled" | "animated" | "fullscreen" | (`$${string}` & string)> & React.RefAttributes<unknown>>;
 export interface PopoverI extends React.FunctionComponent<IPopoverProps> {
 	Arrow: typeof PopoverArrow;
 	Content: typeof PopoverContent;

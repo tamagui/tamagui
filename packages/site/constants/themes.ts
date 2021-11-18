@@ -1,4 +1,4 @@
-import * as RadixColors from '@radix-ui/colors'
+import * as RadixColors from '@tamagui/colors'
 
 import { tokens } from './tokens'
 
@@ -56,18 +56,19 @@ for (const key of colorKeys) {
   const colorValues = RadixColors[key]
   const isDark = key.endsWith('Dark')
   const nameKey = isDark ? key.replace('Dark', '-dark') : `${key}-light`
+  const offset = isDark ? -1 : 0
   // @ts-ignore
   colorThemes[nameKey] = {
     color: colorValues[`${colorName}12`],
     color2: colorValues[`${colorName}11`],
     color3: colorValues[`${colorName}10`],
     color4: colorValues[`${colorName}9`],
-    bg: colorValues[`${colorName}2`],
-    bg2: colorValues[`${colorName}3`],
-    bg3: colorValues[`${colorName}4`],
-    bg4: colorValues[`${colorName}5`],
-    borderColor: colorValues[`${colorName}2`],
-    borderColor2: colorValues[`${colorName}4`],
+    bg: colorValues[`${colorName}${2 + offset}`],
+    bg2: colorValues[`${colorName}${3 + offset}`],
+    bg3: colorValues[`${colorName}${4 + offset}`],
+    bg4: colorValues[`${colorName}${5 + offset}`],
+    borderColor: colorValues[`${colorName}${4 + offset}`],
+    borderColor2: colorValues[`${colorName}${5 + offset}`],
   }
 }
 
