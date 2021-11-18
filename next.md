@@ -1,3 +1,14 @@
+- [number] (test Text numberOfLines)
+- get both expo + next.js loading
+- create small kitchen sink in expo to test
+- fix kitchen sink
+  - media query
+  - hover/press
+  - themes
+  - shorthands
+  - change theme
+
+
 - site google analytics
 - escape hatch for html props `htmlProps` ?
 - optimize regular styled() usage
@@ -16,7 +27,7 @@
 - // TODO this ternary is being compiled backwards!
 - gzip stuff on site
 - blog
-- document process.env.TARGET
+- document process.env.TAMAGUI_TARGET
   - instead of isWeb/isNative checks in places be set to the "strategy" isStyleSheet vs isCSS ?
 - use new react insert stylesheet hook
 - [perf] no need to concat classname at compile className={} if not flattening because it happens in createComponent

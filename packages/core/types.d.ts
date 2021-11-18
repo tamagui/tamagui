@@ -7,9 +7,9 @@
 /// <reference types="scheduler" />
 
 export declare class Variable {
-	val: string;
 	name: string;
-	variable: string;
+	val: string | number;
+	variable: string | number;
 	constructor({ val, name }: VariableIn);
 }
 export declare type VariableIn = {
@@ -418,6 +418,20 @@ export declare function styled<A extends StaticComponent | React.Component<any>,
 }), StyledVariants extends void ? {} : {
 	[key in keyof StyledVariants]?: (keyof StyledVariants[keyof StyledVariants] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] : unknown : keyof StyledVariants[keyof StyledVariants] extends "true" ? boolean : keyof StyledVariants[keyof StyledVariants]) | undefined;
 }, StaticConfigParsed, any>;
+export declare const pseudos: {
+	focusStyle: {
+		name: string;
+		priority: number;
+	};
+	pressStyle: {
+		name: string;
+		priority: number;
+	};
+	hoverStyle: {
+		name: string;
+		priority: number;
+	};
+};
 export declare const stackDefaultStyles: {
 	display?: string | undefined;
 	flexBasis?: string | undefined;
@@ -428,11 +442,19 @@ export declare const stackDefaultStyles: {
 export declare const isWeb: boolean;
 export declare const isSSR: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;
-export declare const isWebIOS: boolean;
 export declare const isChrome: boolean;
 export declare const supportsTouchWeb: boolean;
 export declare const isTouchDevice: boolean;
-export declare const rnw: any | null;
+export declare const isWebIOS: boolean;
+export declare const rnw: Record<string, any>;
+export declare type StyleObject = {
+	property: string;
+	value: string;
+	className: string;
+	identifier: string;
+	rules: string[];
+};
+export declare function getStylesAtomic(style: any, avoidCollection?: boolean): StyleObject[];
 export declare const matchMedia: any;
 export declare type ThemeableProps = {
 	theme?: string | null;

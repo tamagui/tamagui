@@ -60,9 +60,9 @@ export interface Ternary {
 	alternate: Object | null;
 }
 declare class Variable {
-	val: string;
 	name: string;
-	variable: string;
+	val: string | number;
+	variable: string | number;
 	constructor({ val, name }: VariableIn);
 }
 export declare type VariableIn = {

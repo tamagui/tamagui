@@ -16,6 +16,9 @@
   "devDependencies": {
     "@tamagui/esdx": "^0.6.1"
   },
+  "peerDependencies": {
+    "react-native": "*"
+  },
   "publishConfig": {
     "access": "public"
   },

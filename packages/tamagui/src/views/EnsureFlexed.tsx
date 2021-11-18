@@ -8,6 +8,6 @@ export const EnsureFlexed = styled(Text, {
   height: 0,
   display: 'flex',
   fontSize: 200,
-  children: `wwwwwwwwwwwwwwwwwwwwwwwwwwwww`,
+  children: `wwwwwwwwwwwwwwwwwww`,
   pointerEvents: 'none',
 })

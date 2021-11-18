@@ -27,8 +27,8 @@ export function Hero() {
           <Header />
 
           <ContainerLarge mb={-20}>
-            <YStack spacing="$7" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
-              <YStack spacing="$6">
+            <YStack spacing="$8" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
+              <YStack spacing="$7">
                 <YStack ai="flex-start" $gtSm={{ ai: 'center' }} spacing="$6">
                   <Title
                     size="$7"
@@ -96,9 +96,14 @@ export function Hero() {
                 <XStack jc="center" spacing>
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
+                      // TODO check why hoverStyle not overriding
+                      // backgroundColor="$bg3"
+                      // hoverStyle={{
+                      //   backgroundColor: '$bg4',
+                      // }}
                       textProps={{ fontWeight: '700' }}
                       borderRadius={1000}
-                      iconAfter={<ArrowRight color="currentColor" size={12} />}
+                      iconAfter={<ArrowRight color="var(--color3)" size={12} />}
                       tag="a"
                     >
                       Documentation
@@ -112,7 +117,11 @@ export function Hero() {
                     rel="noopener noreferrer"
                     borderRadius={1000}
                     iconAfter={
-                      <ExternalLink color="currentColor" style={{ opacity: 0.5 }} size={12} />
+                      <ExternalLink
+                        color="var(--color2)"
+                        style={{ marginLeft: 4, opacity: 0.5 }}
+                        size={12}
+                      />
                     }
                   >
                     GitHub
@@ -122,13 +131,12 @@ export function Hero() {
 
               <XStack
                 borderWidth={1}
-                borderColor="$borderColor2"
+                borderColor="$borderColor"
                 px="$5"
-                py="$1"
                 height={48}
                 ai="center"
                 als="center"
-                br={100}
+                br="$6"
                 backgroundColor="$bg2"
               >
                 {/* TODO user defined constants + $mono */}

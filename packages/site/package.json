@@ -9,7 +9,7 @@
     "next:start": "next start"
   },
   "dependencies": {
-    "@radix-ui/colors": "^0.1.7",
+    "@tamagui/colors": "*",
     "@tamagui/feather-icons": "*",
     "compare-versions": "^4.0.1",
     "copy-to-clipboard": "^3.3.1",

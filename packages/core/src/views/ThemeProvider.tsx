@@ -33,17 +33,17 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
     }
   }, [])
 
+  const themeContext = useMemo(() => {
+    return new Proxy(props.themes, {
+      get(target, key) {
+        if (key === GET_DEFAULT_THEME) return props.defaultTheme
+        return Reflect.get(target, key)
+      },
+    })
+  }, [props.themes])
+
   return (
-    <ThemeContext.Provider
-      value={useMemo(() => {
-        return new Proxy(props.themes, {
-          get(target, key) {
-            if (key === GET_DEFAULT_THEME) return props.defaultTheme
-            return Reflect.get(target, key)
-          },
-        })
-      }, [props.themes])}
-    >
+    <ThemeContext.Provider value={themeContext}>
       <Theme name={props.defaultTheme} disableThemeClass={props.disableRootThemeClass}>
         {props.children}
       </Theme>

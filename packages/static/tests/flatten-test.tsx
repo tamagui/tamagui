@@ -5,7 +5,7 @@ import React from 'react'
 import { extractBabel } from './lib/extract'
 
 Error.stackTraceLimit = Infinity
-process.env.TARGET = 'web'
+process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
 
 window['React'] = React

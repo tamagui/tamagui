@@ -1,11 +1,15 @@
+import { isWeb } from './constants/platform'
+
 export class Variable {
-  val: string
   name: string
-  variable: string
+  val: string | number
+  variable: string | number
+
   constructor({ val, name }: VariableIn) {
-    this.val = typeof val === 'string' ? val : `${val}px`
+    // converting to px breaks rn
+    this.val = val //typeof val === 'string' ? val : `${val}px`
     this.name = name
-    this.variable = `var(--${name})`
+    this.variable = isWeb ? `var(--${name})` : this.val
   }
 }
 

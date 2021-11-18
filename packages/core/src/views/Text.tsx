@@ -3,25 +3,26 @@ import { createComponent } from '../createComponent'
 import { stylePropsTextOnly, validStyles } from '../static'
 import { TextProps } from '../types'
 
+const ellipseStyle = {
+  maxWidth: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}
+
 export const Text = createComponent<TextProps>({
   isText: true,
   defaultProps: {
-    // TODO align with rnw... there are no good solutions here
-    display: isWeb ? 'inline' : 'flex',
+    display: isWeb ? 'inline' : 'inline-flex',
     boxSizing: 'border-box',
     fontFamily: 'System',
     wordWrap: 'break-word',
   },
   variants: {
     numberOfLines: {
+      1: ellipseStyle,
       // TODO imply fn, test 1, could do types `>1` `<2`
-      number: (lines) => (lines > 1 ? { WebkitLineClamp: 1 } : null),
-      1: {
-        maxWidth: '100%',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-      },
+      '[number]': (lines) => (lines > 1 ? { WebkitLineClamp: 1 } : null),
     },
 
     selectable: {
@@ -41,13 +42,7 @@ export const Text = createComponent<TextProps>({
 
     ellipse: {
       true: isWeb
-        ? {
-            display: 'inline-block',
-            maxWidth: '100%',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }
+        ? ellipseStyle
         : {
             numberOfLines: 1,
             lineBreakMode: 'clip',

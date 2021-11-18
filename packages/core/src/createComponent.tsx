@@ -10,7 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { View, ViewStyle } from 'react-native'
+import { Text, View, ViewStyle } from 'react-native'
 
 import { stackDefaultStyles } from './constants/constants'
 import { isTouchDevice, isWeb } from './constants/platform'
@@ -53,6 +53,9 @@ export function createComponent<A extends Object = DefaultProps>(
   // split out default styles vs props so we can assign it to component.defaultProps
   let defaultProps = null as any
   let tamaguiConfig: TamaguiInternalConfig
+
+  // web uses className, native uses style
+  let defaultsStyle: any
   let defaultsClassName = ''
 
   // see onConfiguredOnce below which attaches a name then to this component
@@ -123,8 +126,7 @@ export function createComponent<A extends Object = DefaultProps>(
       })
     }
 
-    // from react-native-web
-    const hasTextAncestor = useContext(TextAncestorContext)
+    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
 
     if (isWeb) {
@@ -194,29 +196,30 @@ export function createComponent<A extends Object = DefaultProps>(
     // styles
     const isHovering = !isTouchDevice && !disabled && pseudos && state.hover
     const isPressing = !disabled && pseudos && state.press
+
     const styles = [
       // parity w react-native-web, only for text in text
       // TODO this should be able to be done w css to replicate after extraction:
       //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
-      isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
+      // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
       style,
       isHovering ? pseudos.hoverStyle || null : null,
       isPressing ? pseudos.pressStyle || null : null,
     ]
-    const stylesClassNames = addStylesUsingClassname(styles)
-    const classList = staticConfig.isText
-      ? [
-          defaultsClassName,
-          // hasTextAncestor === true && cssText.textHasAncestor,
-          // TODO MOVE TO VARIANTS [number] [any]
-          // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
-          classNames,
-          stylesClassNames,
-          props.className,
-        ]
-      : [defaultsClassName, props.className, classNames, stylesClassNames]
 
     if (isWeb) {
+      const stylesClassNames = addStylesUsingClassname(styles)
+      const classList = staticConfig.isText
+        ? [
+            defaultsClassName,
+            // hasTextAncestor === true && cssText.textHasAncestor,
+            // TODO MOVE TO VARIANTS [number] [any]
+            // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
+            classNames,
+            stylesClassNames,
+            props.className,
+          ]
+        : [defaultsClassName, props.className, classNames, stylesClassNames]
       const classListFlat = classList.flat(1).filter(Boolean).join(' ')
       const className = concatClassName(classListFlat)
       if (process.env.NODE_ENV === 'development') {
@@ -227,8 +230,7 @@ export function createComponent<A extends Object = DefaultProps>(
       }
       viewProps.className = className
     } else {
-      // TODO
-      viewProps.style = classList
+      viewProps.style = styles
     }
 
     if (pointerEvents) {
@@ -435,7 +437,7 @@ export function createComponent<A extends Object = DefaultProps>(
         // prettier-ignore
         console.log('🥚 etc:', { ViewComponent, viewProps, styles, pseudos, content, spacedChildrenEl })
         // only on browser because node expands it huge
-        if (typeof window !== 'undefined') {
+        if (isWeb) {
           console.log('🥚 component info', { staticConfig, tamaguiConfig })
         }
       }
@@ -455,10 +457,14 @@ export function createComponent<A extends Object = DefaultProps>(
     tamaguiConfig = conf
     const initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
     const next = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, true)
-    if (next.classNames) {
-      defaultsClassName += next.classNames + ' '
+    if (isWeb) {
+      if (next.classNames) {
+        defaultsClassName += next.classNames + ' '
+      }
+      defaultsClassName += addStylesUsingClassname([next.style, next.pseudos])
+    } else {
+      console.log('we need to account for default styles for media queries', next)
     }
-    defaultsClassName += addStylesUsingClassname([next.style, next.pseudos])
     // @ts-ignore
     component.defaultProps = {
       ...next.viewProps,
