@@ -33,7 +33,6 @@ export const useTint = () => {
 
 export const ColorToggle = (props: ButtonProps) => {
   const [tint, setTint] = useTint()
-  console.log('tint, ', tint)
   const nextIndex = (colors.indexOf(tint) + 1) % colors.length
   const next = colors[nextIndex]
   return (

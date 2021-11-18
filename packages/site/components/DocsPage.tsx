@@ -50,7 +50,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <DocsPageTheme>
+    <DocsPageTheme key={isOpen}>
       <YStack
         $gtSm={{
           flexDirection: 'row',
@@ -106,8 +106,13 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   display: 'none',
                 }}
               >
-                <Button onClick={() => setIsOpen(!isOpen)} theme={isOpen ? 'active' : undefined}>
-                  <Menu size={16} color="var(--color)" />
+                <Button
+                  onPress={() => {
+                    setIsOpen((x) => !x)
+                  }}
+                  theme={isOpen ? 'active' : undefined}
+                >
+                  <Menu size={12} color="var(--color)" />
                 </Button>
               </YStack>
             </XStack>
