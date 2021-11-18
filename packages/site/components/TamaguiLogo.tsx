@@ -89,12 +89,12 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <g transform="translate(-150.000000, -210.000000)">
             <g transform="translate(150.000000, 210.000000)">
-              <g transform="translate(30.000000, 30.000000)" fill="currentColor">
+              <g transform="translate(30.000000, 30.000000)" fill="var(--color)">
                 {/* <path d="M300,0 L300,30 L364,30 L364,60 L420,60 L420,150 L364,150 L364,180 L300,180 L300,300 L270,300 L270,360 L60,360 L60,300 L0,300 L0,60 L60,60 L60,0 L300,0 Z"></path> */}
               </g>
               <g
                 transform="translate(225.000000, 210.000000) scale(-1, 1) translate(-225.000000, -210.000000) "
-                fill="currentColor"
+                fill="var(--color)"
               >
                 <g>
                   <rect fill="var(--red10)" x="150" y="0" width="20" height="20"></rect>

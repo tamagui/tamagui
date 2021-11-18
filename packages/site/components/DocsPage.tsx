@@ -102,7 +102,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               }}
             >
               <Button onClick={() => setIsOpen(!isOpen)} theme={isOpen ? 'active' : undefined}>
-                <Menu size={16} color="currentColor" />
+                <Menu size={16} color="var(--color)" />
               </Button>
             </YStack>
           </XStack>

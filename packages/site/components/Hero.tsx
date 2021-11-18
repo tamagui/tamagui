@@ -151,9 +151,9 @@ export function Hero() {
                     // TODO broken in latest
                     icon={
                       hasCopied ? (
-                        <Check size={16} color="currentColor" />
+                        <Check size={16} color="var(--color2)" />
                       ) : (
-                        <Copy size={16} color="currentColor" />
+                        <Copy size={16} color="var(--color2)" />
                       )
                     }
                     aria-label="Copy the install snippet to Clipboard"
