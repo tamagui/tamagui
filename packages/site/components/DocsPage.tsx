@@ -95,7 +95,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 </YStack>
               </NextLink>
 
-              <XStack spacing="$1" ml="auto">
+              <XStack space="$1" ml="auto">
                 <ColorToggle />
                 <ThemeToggle chromeless />
               </XStack>
@@ -181,7 +181,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
           <DocsPageContainer>
             {(previous || next) && (
-              <XStack aria-label="Pagination navigation" my="$9" jc="space-between" spacing>
+              <XStack aria-label="Pagination navigation" my="$9" jc="space-between" space>
                 {previous && (
                   <NextLink href={`/${previous.slug}`} passHref>
                     <YStack

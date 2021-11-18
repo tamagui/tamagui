@@ -187,7 +187,7 @@ const blacklistFinalProps = {
   tag: true,
   debug: true,
   onPress: true,
-  spacing: true,
+  space: true,
   hitSlop: true,
 }
 

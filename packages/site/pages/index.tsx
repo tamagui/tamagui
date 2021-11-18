@@ -13,9 +13,9 @@ export default function Home() {
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <YStack>
-        <YStack spacing="$8">
+        <YStack space="$8">
           <Hero />
-          <YStack spacing="$8" $sm={{ display: 'none' }}>
+          <YStack space="$8" $sm={{ display: 'none' }}>
             <Divider />
             <HeroExample />
           </YStack>

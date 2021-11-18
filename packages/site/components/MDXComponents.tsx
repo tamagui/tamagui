@@ -372,7 +372,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & StackProps) =>
     data-id={id}
     display="inline-flex"
     ai="center"
-    spacing
+    space
     {...props}
     // css={{
     //   textDecoration: 'none',

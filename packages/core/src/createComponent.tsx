@@ -71,7 +71,7 @@ export function createComponent<A extends Object = DefaultProps>(
       onPressOut,
       onHoverIn,
       onHoverOut,
-      spacing,
+      space,
       disabled,
       onMouseEnter,
       onMouseLeave,
@@ -399,7 +399,7 @@ export function createComponent<A extends Object = DefaultProps>(
 
     const spacedChildrenEl = spacedChildren({
       children,
-      spacing,
+      space,
       flexDirection: props.flexDirection || defaultProps?.flexDirection,
     })
 
@@ -523,14 +523,14 @@ export const Spacer = createComponent({
 
 export function spacedChildren({
   children,
-  spacing,
+  space,
   flexDirection,
 }: {
   children: any
-  spacing?: any
+  space?: any
   flexDirection?: ViewStyle['flexDirection']
 }) {
-  if (!spacing) {
+  if (!space) {
     return children
   }
   const childrenList = Children.toArray(children)
@@ -555,7 +555,7 @@ export function spacedChildren({
         direction={
           flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
         }
-        size={spacing}
+        size={space}
       />
     )
   }

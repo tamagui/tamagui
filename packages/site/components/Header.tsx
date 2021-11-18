@@ -52,7 +52,7 @@ export function Header() {
         <LogoWords />
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav" ai="center" spacing="$5">
+      <XStack pointerEvents="auto" tag="nav" ai="center" space="$5">
         <NextLink href="/docs/intro/installation" passHref>
           <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
             Docs

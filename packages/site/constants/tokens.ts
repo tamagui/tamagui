@@ -62,7 +62,7 @@ const lineHeight = {
 }
 
 export const tokens = createTokens({
-  letterSpacing: {
+  letterSpace: {
     '-2': -2,
     '-1': -1,
     0: 0,

@@ -78,7 +78,7 @@ export function PropsTable({
           <React.Fragment key={`${name}-${i}`}>
             <tr>
               <TD>
-                <XStack ai="center" spacing>
+                <XStack ai="center" space>
                   <Code colored>
                     {name}
                     {required ? '*' : null}

@@ -35,7 +35,7 @@ type MakeTokens<T> = T extends {
   font: infer A
   fontSize: infer B
   lineHeight: infer C
-  letterSpacing: infer D
+  letterSpace: infer D
   color: infer E
   space: infer F
   size: infer G
@@ -52,7 +52,7 @@ type MakeTokens<T> = T extends {
       lineHeight: {
         [key in keyof C]: Variable
       }
-      letterSpacing: {
+      letterSpace: {
         [key in keyof D]: Variable
       }
       color: {

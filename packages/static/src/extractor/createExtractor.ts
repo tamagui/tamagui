@@ -934,17 +934,6 @@ export function createExtractor() {
               }
             }
 
-            // const staticStyleValueMapper = (value: any) => {
-            //   if (spacingValuesWithLegacy[value]) {
-            //     return spacingValuesWithLegacy[value]
-            //   }
-            //   // on web we can extract fully to CSS variables
-            //   if (process.env.TAMAGUI_TARGET !== 'native' && typeof value === 'string' && value[0] === '$') {
-            //     return `var(--${value.slice(1)})`
-            //   }
-            //   return defaultValueMap(value)
-            // }
-
             const out = postProcessStyles(props, staticConfig, defaultTheme)
             const next = out?.style ?? props
             if (shouldPrintDebug) {

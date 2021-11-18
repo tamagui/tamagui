@@ -8,14 +8,14 @@ import { ThemeProviderProps } from './views/ThemeProvider'
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
-type StylesBase = Omit<ViewStyle, 'display' | 'backfaceVisibility'> &
+export type TamaguiStylesBase = Omit<ViewStyle, 'display' | 'backfaceVisibility'> &
   TransformStyleProps & {
     cursor?: string
     contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
     display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
   }
 
-type StyleKeys = keyof StylesBase
+type StyleKeys = keyof TamaguiStylesBase
 
 type GenericTokens = CreateTokens
 type GenericThemes = {
@@ -131,7 +131,7 @@ export interface CreateTokens<
   font: { [key in TextKeys]: Val }
   fontSize: { [key in TextKeys]: Val }
   lineHeight: { [key in TextKeys]: Val }
-  letterSpacing: { [key in TextKeys]: Val }
+  letterSpace: { [key in TextKeys]: Val }
   color: { [key: string]: Val }
   space: { [key: string]: Val }
   size: { [key: string]: Val }
@@ -183,19 +183,34 @@ export type TransformStyleProps = {
 
 type ShortKeysView = keyof Shorthands
 
+type ColorableKeys =
+  | 'color'
+  | 'backgroundColor'
+  | 'borderColor'
+  | 'borderTopColor'
+  | 'borderBottomColor'
+  | 'borderLeftColor'
+  | 'borderRightColor'
+  | 'shadowColor'
+
+type ThemeValue<A> = Omit<A, string> | UnionableString | Variable
+
 export type WithThemeValues<T extends object> = {
-  [K in keyof T]: Omit<T[K], string> | UnionableString | Variable | ThemeKeyVariables
+  [K in keyof T]: K extends ColorableKeys ? ThemeValue<T[K]> | ThemeKeyVariables : ThemeValue<T[K]>
 }
 
-type EnhancedStackStyleProps = WithThemeValues<StylesBase>
+export type TamaguiThemedStackStyleProps = WithThemeValues<TamaguiStylesBase>
+
+type x = TamaguiStylesBase['borderColor']
+type y = TamaguiThemedStackStyleProps['borderColor']
 
 export type ShorthandStyleProps = {
-  [key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof EnhancedStackStyleProps
-    ? EnhancedStackStyleProps[Shorthands[ShortKeysView]] | null
+  [key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof TamaguiThemedStackStyleProps
+    ? TamaguiThemedStackStyleProps[Shorthands[ShortKeysView]] | null
     : {}
 }
-type StackStylePropsBase = EnhancedStackStyleProps | ShorthandStyleProps
-type StackStyleProps = StackStylePropsBase & {
+type StackStylePropsBase = TamaguiThemedStackStyleProps | ShorthandStyleProps
+export type StackStyleProps = StackStylePropsBase & {
   hoverStyle?: StackStylePropsBase | null
   pressStyle?: StackStylePropsBase | null
 }
@@ -215,7 +230,7 @@ export type StackProps = Omit<RNWInternalProps, 'children'> &
     onPressOut?: (e: GestureResponderEvent) => any
     onMouseEnter?: (e: GestureResponderEvent) => any
     onMouseLeave?: (e: GestureResponderEvent) => any
-    spacing?: Tokens['space'][keyof Tokens['space']] | boolean | string | number
+    space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number
     pointerEvents?: string
     userSelect?: string
     className?: string

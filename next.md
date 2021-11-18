@@ -36,4 +36,6 @@
 - font weight tokens
 - a way for font token size/weight/etc to be per-font
 - Button text props would be nice flattened onto it and only supporting the specific text props (that way can extract)
-- Button needs size={} which adjusts: padding, spacing, text size (icon size?)
+- Button needs size={} which adjusts: padding, space, text size (icon size?)
+
+- make colors tree shakeable

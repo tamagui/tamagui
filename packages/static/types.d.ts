@@ -131,7 +131,7 @@ export interface CreateTokens<Val extends number | string | Variable = number | 
 	lineHeight: {
 		[key in TextKeys]: Val;
 	};
-	letterSpacing: {
+	letterSpace: {
 		[key in TextKeys]: Val;
 	};
 	color: {
