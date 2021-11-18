@@ -32,7 +32,7 @@ export function Highlights({ features }) {
           mr: '$5',
         }}
       >
-        <H2 size="$6" mb="$4">
+        <H2 fontFamily="$body" size="$6" mb="$4">
           Features
         </H2>
 
