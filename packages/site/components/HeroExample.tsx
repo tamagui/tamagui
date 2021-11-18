@@ -371,7 +371,7 @@ const App = () => (
     },
     output: {
       description:
-        'Instead of large objects, your render function now just concats a single className string.',
+        'Custom defined media queries output to clean CSS that runs much faster (try resizing this site).',
       outputs: [
         {
           code: `const _cn = " _alignItems-1oszu61 _backgroundColor-1g6456j _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor--hover-57dg7b _backgroundColor-_gtSm_1542mo4 _backgroundColor-_gtSm_-active-98uye2"
@@ -401,7 +401,7 @@ const App = () => <div className={_cn} />`,
     name: 'Shorthands',
     input: {
       description:
-        'Inline styles work well with shorthands (think Tailwind) to prevent long lines. Define your own, fully typed.',
+        'Fully typed shorthands you can set up yourself work with all the features of Tamagui.',
       examples: [
         {
           language: 'jsx',
@@ -431,7 +431,7 @@ const App = () => (
     },
     output: {
       description:
-        'The compiler optimizes all objects into className + atomic CSS, flattening Stack and Text views into div and span.',
+        'Shorthands work with the compiler support of media queries, psuedo styling and conditional logic.',
       outputs: [
         {
           code: `const _cn2 = " _boxSizing-deolkf _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p _wordWrap-qvutc0"
@@ -472,7 +472,7 @@ const App = () => (
     name: 'Hooks',
     input: {
       description:
-        'Use theme and media queries naturally as hooks. The compiler optimizes purely style values away.',
+        'Theme and media query hooks, fully typed that work the same across native and web.',
       examples: [
         {
           language: 'jsx',
@@ -496,7 +496,8 @@ const App = () => {
       ],
     },
     output: {
-      description: 'The compiler optimizes everything away to CSS.',
+      description:
+        'If all hooks are used purely for styling, the compiler will remove the hook call entirely.',
       outputs: [
         {
           code: `const _cn = " _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0"
