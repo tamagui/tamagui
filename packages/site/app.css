@@ -152,7 +152,7 @@ ul, ol, li, pre { margin: 0; }
 }
 
 .token.tag, .token.class-name, .token.selector, .token.selector .class, .token.function {
-  color: var(--violet12);
+  color: var(--violet11);
 }
 
 .token.attr-value, .token.class, .token.string, .token.number, .token.unit, .token.color {
@@ -160,7 +160,7 @@ ul, ol, li, pre { margin: 0; }
 }
 
 .token.attr-name, .token.keyword, .token.rule, .token.operator, .token.pseudo-class, .token.important {
-  color: var(--pink11);
+  color: var(--green11);
 }
 
 .token.punctuation, .token.module, .token.property {

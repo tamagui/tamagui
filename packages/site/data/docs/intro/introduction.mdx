@@ -50,50 +50,15 @@ Define your own [tokens](/docs/intro/configuration) and seamlessly apply them as
 
 ### Theming
 
-Tamagui provides a simple [theming](/docs/theming) experience out of the box. Create as many themes as you need, and apply them wherever you want. Each theme generates a CSS class name which overrides the default tokens.
-
-```jsx
-const darkTheme = createTheme({
-  colors: {
-    hiContrast: 'hsl(206,2%,93%)',
-    loContrast: 'hsl(206,8%,8%)',
-
-    gray100: 'hsl(206,8%,12%)',
-    gray200: 'hsl(206,7%,14%)',
-    gray300: 'hsl(206,7%,15%)',
-    gray400: 'hsl(206,7%,24%)',
-    gray500: 'hsl(206,7%,30%)',
-    gray600: 'hsl(206,5%,53%)',
-  },
-  space: {},
-  fonts: {},
-});
-```
+Tamagui provides a simple [theming](/docs/intro/themes) experience out of the box. Create as many themes as you need, and apply them wherever you want. Each theme generates a CSS class name which overrides the default tokens.
 
 ### Shorthands
 
-[Shorthands](/docs/utils) allow you to map shorthand properties to their longer cousins. This lets you create Tailwinds-like quick properties to style. These work with TypeScript as well, and are designed so you can bring them with you across different tamagui component kits.
-
-```jsx
-createTamagui({
-  shorthands: {
-    m: 'margin',
-    mx: 'marginHorizontal'
-  },
-});
-```
+[Shorthands](/docs/intro/configuration#shorthands) allow you to map shorthand properties to their longer cousins. This lets you create Tailwinds-like quick properties to style. These work with TypeScript as well, and are designed so you can bring them with you across different tamagui component kits.
 
 ### Media Queries
 
-Tamagui lets you configure [media queries](/docs/responsive-styles) and apply variants responsively using `$` props.
-
-```jsx
-createTamagui({
-  media: {
-    // TODO
-  },
-});
-```
+Tamagui lets you configure [media queries](/docs/core/use-media) and apply variants responsively using `$` props.
 
 ### Developer Experience
 
