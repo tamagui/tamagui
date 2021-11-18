@@ -104,7 +104,7 @@ export const components = {
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <Link size={10} color="currentColor" />
+              <Link size={10} color="var(--color)" />
             </>
           ) : null}
         </Text>
@@ -389,7 +389,7 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & StackProps) =>
   >
     {children}
     <YStack tag="span" opacity={0.3}>
-      <Link size={12} color="currentColor" aria-hidden />
+      <Link size={12} color="var(--color)" aria-hidden />
     </YStack>
   </XStack>
 )

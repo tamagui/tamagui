@@ -94,7 +94,7 @@ export function PropsTable({
                 ) : (
                   <YStack>
                     {/*  as={AccessibleIcon} label="No default value" */}
-                    <Minus size={12} opacity={0.5} color="currentColor" />
+                    <Minus size={12} opacity={0.5} color="var(--color)" />
                   </YStack>
                 )}
               </TD>

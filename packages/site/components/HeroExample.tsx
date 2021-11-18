@@ -133,7 +133,7 @@ export function HeroExample() {
                     <YStack als="center" my="$-4" zIndex={1000}>
                       <Text color="$pink10">
                         <IconStack mb={0}>
-                          <Plus size={20} color="currentColor" />
+                          <Plus size={20} color="var(--color)" />
                         </IconStack>
                       </Text>
                     </YStack>
@@ -146,7 +146,7 @@ export function HeroExample() {
             <Text color="$pink10">
               {/* TODO */}
               <IconStack mb={0}>
-                <FastForward size={20} color="currentColor" />
+                <FastForward size={20} color="var(--color)" />
               </IconStack>
             </Text>
           </YStack>
@@ -175,7 +175,7 @@ export function HeroExample() {
                       <YStack als="center" my="$-4" zIndex={1000}>
                         <Text color="$pink10">
                           <IconStack mb={0}>
-                            <Plus size={20} color="currentColor" />
+                            <Plus size={20} color="var(--color)" />
                           </IconStack>
                         </Text>
                       </YStack>

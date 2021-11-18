@@ -41,7 +41,7 @@ export function Highlights({ features }) {
             <XStack tag="li" key={i}>
               <Text color="$green9">
                 <YStack w={25} h={25} ai="center" jc="center" bc="$green3" br={100} mr="$3">
-                  <Check size={12} color="currentColor" />
+                  <Check size={12} color="var(--color)" />
                 </YStack>
               </Text>
               <Paragraph color="$color2">{feature}</Paragraph>
@@ -102,7 +102,7 @@ export function Highlights({ features }) {
                   View source
                 </Paragraph>
                 <YStack ml="$1">
-                  <ExternalLink size={12} color="currentColor" />
+                  <ExternalLink size={12} color="var(--color)" />
                 </YStack>
               </XStack>
             </Link>
@@ -118,7 +118,7 @@ export function Highlights({ features }) {
                   View on npm
                 </Paragraph>
                 <YStack ml="$1">
-                  <ExternalLink size={12} color="currentColor" />
+                  <ExternalLink size={12} color="var(--color)" />
                 </YStack>
               </XStack>
             </Link>
@@ -130,7 +130,7 @@ export function Highlights({ features }) {
                   Report an issue
                 </Paragraph>
                 <YStack ml="$1">
-                  <ExternalLink size={12} color="currentColor" />
+                  <ExternalLink size={12} color="var(--color)" />
                 </YStack>
               </XStack>
             </Link>
@@ -145,7 +145,7 @@ export function Highlights({ features }) {
                   </Paragraph>
                   <YStack ml="$1">
                     <Text color="$color3">
-                      <ExternalLink size={12} color="currentColor" />
+                      <ExternalLink size={12} color="var(--color)" />
                     </Text>
                   </YStack>
                 </XStack>
