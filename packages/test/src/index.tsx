@@ -1,4 +1,5 @@
 import {
+  ShorthandStyleProps,
   Shorthands,
   Stack,
   StackProps,
@@ -16,13 +17,17 @@ import {
 import { shorthands, tokens } from './testConstants'
 import { themes } from './testThemes'
 
+type abc = TamaguiThemedStackStyleProps & ShorthandStyleProps
+type asd2 = abc['borderColor']
+
 type x2 = Shorthands['bc']
 type x = Shorthands['p']
 type x3 = Shorthands['s']
 type y = Shorthands['asdasd']
-type x333 = StackStyleProps
-type x222 = TamaguiStylesBase['borderColor']
+type asd = ShorthandStyleProps['bc']
 type x22222 = TamaguiThemedStackStyleProps['borderColor']
+type x333 = StackStyleProps['borderColor']
+type x222 = TamaguiStylesBase['borderColor']
 type x22 = StackProps['borderColor']
 type sz = ThemeKeyVariables
 type asdsad = keyof TamaguiConfig['themes']
@@ -94,7 +99,8 @@ export const x = () => {
     <>
       <YStack
         p={10}
-        scale="$2"
+        scale={10}
+        width="$1"
         x="$2"
         y="$s"
         borderColor="$red"
@@ -105,7 +111,7 @@ export const x = () => {
         <div />
         <div />
       </YStack>
-      <ZStack bg="ok wut" aok="err">
+      <ZStack bc="$bg" bg="ok wut" aok="err">
         <div />
         <div />
       </ZStack>
