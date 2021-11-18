@@ -17,6 +17,8 @@ const stylePathToFilePath = new Map<string, string>()
 let index = 0
 let hasLogged = false
 
+process.env.TAMAGUI_TARGET = 'web'
+
 export function loader(this: any, source: string) {
   this.cacheable()
   const callback = this.async()

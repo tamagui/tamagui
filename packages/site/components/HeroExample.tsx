@@ -1,6 +1,17 @@
 import { FastForward, Plus } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
-import { Button, H2, H4, InteractiveContainer, Paragraph, Text, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H2,
+  H4,
+  InteractiveContainer,
+  Paragraph,
+  Stack,
+  Text,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { CodeDemo } from './CodeDemo'
 import { ContainerLarge } from './Container'
@@ -16,12 +27,12 @@ export function HeroExample() {
         position="absolute"
         zIndex={-1}
         pointerEvents="none"
-        opacity={0.3}
+        opacity={0.1}
         top="-20vh"
         right="20%"
         width="80vw"
         height="80vw"
-        scale={4}
+        scale={2}
         maxHeight={720}
         maxWidth={720}
       >
@@ -29,13 +40,12 @@ export function HeroExample() {
           style={{
             width: '100%',
             height: '100%',
-            background: 'blue',
-            background: `radial-gradient(circle closest-side, var(--blue3), transparent)`,
+            background: `radial-gradient(circle closest-side, var(--pink4), transparent)`,
           }}
         />
       </YStack>
 
-      <YStack
+      {/* <YStack
         position="absolute"
         zIndex={0}
         pointerEvents="none"
@@ -55,7 +65,7 @@ export function HeroExample() {
             background: `radial-gradient(circle closest-side, var(--purple5), transparent)`,
           }}
         />
-      </YStack>
+      </YStack> */}
       <YStack
         position="absolute"
         zi={0}
@@ -110,13 +120,15 @@ export function HeroExample() {
             <YStack>
               {activeExample.input.examples.map((example, i) => (
                 <React.Fragment key={example.code}>
-                  <CodeDemo
-                    language={example.language}
-                    mode="interactive"
-                    line="3-20"
-                    maxHeight={500}
-                    value={example.code}
-                  />
+                  <HoverableStack>
+                    <CodeDemo
+                      language={example.language}
+                      mode="interactive"
+                      line="3-20"
+                      maxHeight={500}
+                      value={example.code}
+                    />
+                  </HoverableStack>
                   {i < activeExample.input.examples.length - 1 && (
                     <YStack als="center" my="$-4" zIndex={1000}>
                       <Text color="$pink10">
@@ -150,13 +162,15 @@ export function HeroExample() {
                 const hasMore = activeExample.output.outputs.length - 1 > i
                 return (
                   <React.Fragment key={`${activeIndex}${i}`}>
-                    <CodeDemo
-                      language={example.language as any}
-                      mode="interactive"
-                      line="3-20"
-                      maxHeight={500}
-                      value={example.code}
-                    />
+                    <HoverableStack>
+                      <CodeDemo
+                        language={example.language as any}
+                        mode="interactive"
+                        line="3-20"
+                        maxHeight={500}
+                        value={example.code}
+                      />
+                    </HoverableStack>
                     {hasMore && (
                       <YStack als="center" my="$-4" zIndex={1000}>
                         <Text color="$pink10">
@@ -176,6 +190,8 @@ export function HeroExample() {
     </ContainerLarge>
   )
 }
+
+const HoverableStack = (props) => <YStack opacity={0.75} hoverStyle={{ opacity: 1 }} {...props} />
 
 const examples = [
   {

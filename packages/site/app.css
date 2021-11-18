@@ -47,13 +47,13 @@ a {
 p a, span a {
   text-decoration: underline;
   /* text-decoration-style: dashed; */
-  color: var(--red11);
-  text-decoration-color: var(--red6);
+  color: var(--blue11);
+  text-decoration-color: var(--blue6);
   text-underline-offset: 5px;
 }
 
 p a:hover, span a:hover {
-  color: var(--red12);
+  color: var(--blue12);
 }
 
 /* display block > display inline-flex bug */
@@ -152,7 +152,7 @@ ul, ol, li, pre { margin: 0; }
 }
 
 .token.tag, .token.class-name, .token.selector, .token.selector .class, .token.function {
-  color: var(--orange11);
+  color: var(--violet12);
 }
 
 .token.attr-value, .token.class, .token.string, .token.number, .token.unit, .token.color {
@@ -160,7 +160,7 @@ ul, ol, li, pre { margin: 0; }
 }
 
 .token.attr-name, .token.keyword, .token.rule, .token.operator, .token.pseudo-class, .token.important {
-  color: var(--green11);
+  color: var(--pink11);
 }
 
 .token.punctuation, .token.module, .token.property {
@@ -219,6 +219,12 @@ ul, ol, li, pre { margin: 0; }
   --word-bg: var(--purple7);
   transition: all 100ms ease;
   cursor: pointer;
+}
+
+.highlight-line {
+  white-space: pre;
+  /* safari fix weird wrapping */
+  word-wrap: initial;
 }
 
 .highlight-line, .highlight-line * {

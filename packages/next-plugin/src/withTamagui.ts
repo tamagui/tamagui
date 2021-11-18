@@ -3,10 +3,9 @@ import path from 'path'
 
 import { TamaguiOptions } from '@tamagui/static'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import webpack from 'webpack'
 
 export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
-  ensureReactNativeWebShim()
-
   return {
     webpack: (webpackConfig, options) => {
       const { config, dev, isServer } = options
@@ -24,6 +23,12 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         react: require.resolve('react'),
         'react-dom': require.resolve('react-dom'),
       }
+
+      webpackConfig.plugins.push(
+        new webpack.DefinePlugin({
+          'process.env.TAMAGUI_TARGET': '"web"',
+        })
+      )
 
       if (process.env.IGNORE_TS_CONFIG_PATHS) {
         console.log('ignoring tsconfig paths, they mess up transpile')
@@ -192,33 +197,4 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
       return webpackConfig
     },
   }
-}
-
-function ensureReactNativeWebShim() {
-  const dirs = [
-    path.join(require.resolve('tamagui'), '..', '..'),
-    path.join(require.resolve('@tamagui/core'), '..', '..'),
-  ]
-  for (const dir of dirs) {
-    const fakeReactNative = path.join(dir, 'node_modules', 'react-native.js')
-    // monorepo dev support.. for now
-    const parentFakeDir = path.join(dir, '..', '..', 'node_modules')
-    const files = new Set(
-      [
-        fakeReactNative,
-        fs.existsSync(parentFakeDir) ? path.join(parentFakeDir, 'react-native.js') : null,
-      ].filter(isPresent)
-    )
-
-    files.forEach((file) => {
-      if (!fs.existsSync(file)) {
-        // console.log('inserting react-native-web shim', file)
-        fs.writeFileSync(fakeReactNative, 'module.exports = require("react-native-web")')
-      }
-    })
-  }
-}
-
-function isPresent<T extends Object>(input: null | void | undefined | T): input is T {
-  return input != null
 }

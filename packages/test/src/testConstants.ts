@@ -1,5 +1,5 @@
-import * as Colors from '@radix-ui/colors'
-import { createShorthands, createTokens } from '@tamagui/core'
+import * as Colors from '@tamagui/colors'
+import { createTokens } from '@tamagui/core'
 
 export const shorthands = {
   ac: 'alignContent',

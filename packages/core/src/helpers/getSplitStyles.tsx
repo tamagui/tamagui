@@ -1,6 +1,5 @@
 import {
   AllRules,
-  getStylesAtomic,
   stylePropsText,
   stylePropsTransform,
   validStyles,
@@ -9,10 +8,11 @@ import {
 import { ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
-import { getMedia, mediaQueryConfig } from '../hooks/useMedia'
+import { mediaQueryConfig } from '../hooks/useMedia'
 import { StaticConfigParsed, ThemeObject } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
+import { getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule } from './insertStyleRule'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
@@ -60,13 +60,17 @@ export const getSplitStyles = (
         }
       }
       for (const style of mediaStyles) {
-        const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
-        classNames = classNames || []
-        classNames.push(out.identifier)
-        AllRules.add(out.styleRule)
-        insertStyleRule(out.styleRule)
-        if (process.env.NODE_ENV === 'development' && props['debug']) {
-          console.log('mediaProp', style.identifier, out, mediaProps, mediaStyle, mediaStyles)
+        if (isWeb) {
+          const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
+          classNames = classNames || []
+          classNames.push(out.identifier)
+          AllRules.add(out.styleRule)
+          insertStyleRule(out.styleRule)
+          if (process.env.NODE_ENV === 'development' && props['debug']) {
+            console.log('mediaProp', style.identifier, out, mediaProps, mediaStyle, mediaStyles)
+          }
+        } else {
+          console.log('TODO native media style logic')
         }
       }
       continue
@@ -137,7 +141,7 @@ export const getSplitStyles = (
 
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      console.log(' 🥚 style debug:', { props, viewProps, style }, getMedia())
+      console.log(' 🥚 style debug:', { props, viewProps, style })
     }
   }
 

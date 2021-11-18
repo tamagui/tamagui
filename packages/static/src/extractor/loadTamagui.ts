@@ -20,7 +20,11 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   const Mod = require('module')
   const og = Mod.prototype.require
   Mod.prototype.require = function (path: string) {
-    if (path.startsWith('react-native')) {
+    if (
+      path.startsWith('react-native') &&
+      // allow our rnw.tsx imports through
+      !path.startsWith('react-native-web/dist/cjs/exports')
+    ) {
       return proxyWorm
     }
     return og.apply(this, arguments)

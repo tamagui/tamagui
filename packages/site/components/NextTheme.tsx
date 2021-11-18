@@ -111,7 +111,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       name = value?.[resolved] || resolved
     }
 
-    console.log('huh', name)
     onChangeTheme?.(name)
 
     if (updateDOM) {

@@ -5,7 +5,7 @@ import * as React from 'react'
 import { extractBabel } from './lib/extract'
 import { getTestElement, getTestElements } from './lib/testStyles'
 
-process.env.TARGET = 'web'
+process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
 
 const app = require('./spec/out/out-babel')

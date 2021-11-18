@@ -1,8 +1,8 @@
-import { getStylesAtomic } from '@tamagui/helpers'
+import { getStylesAtomic } from '@tamagui/core'
 
 process.env.NODE_ENV = 'test'
 process.env.IDENTIFY_TAGS = 'true'
-process.env.TARGET = 'web'
+process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
 
 test('converts a style object to class names', () => {

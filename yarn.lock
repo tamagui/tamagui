@@ -3666,13 +3666,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/colors@npm:^0.1.7":
-  version: 0.1.7
-  resolution: "@radix-ui/colors@npm:0.1.7"
-  checksum: dacc1cfee70aada164a107903cf5aa5154e53120022f6013d95f2cf1cc440251a3d2e46d485639fd9beb248b0e4362543b000d93f6cff63c305bd87883497619
-  languageName: node
-  linkType: hard
-
 "@react-aria/focus@npm:^3.2.3":
   version: 3.5.0
   resolution: "@react-aria/focus@npm:3.5.0"
@@ -3956,6 +3949,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/colors@*, @tamagui/colors@workspace:packages/colors":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/colors@workspace:packages/colors"
+  dependencies:
+    "@tamagui/esdx": ^0.6.1
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/core-node@^0.18.3, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
@@ -4029,6 +4030,8 @@ __metadata:
   resolution: "@tamagui/helpers@workspace:packages/helpers"
   dependencies:
     "@tamagui/esdx": ^0.6.1
+  peerDependencies:
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -4054,7 +4057,7 @@ __metadata:
     "@babel/plugin-proposal-optional-chaining": ^7.14.5
     "@expo/webpack-config": ^0.16.2
     "@mdx-js/loader": ^1.6.22
-    "@radix-ui/colors": ^0.1.7
+    "@tamagui/colors": "*"
     "@tamagui/feather-icons": "*"
     "@tamagui/next-plugin": "*"
     compare-versions: ^4.0.1
@@ -14153,7 +14156,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdx-bundler@npm:7.0.0":
+"mdx-bundler@npm:^7.0.0":
   version: 7.0.0
   resolution: "mdx-bundler@npm:7.0.0"
   dependencies:
@@ -14168,24 +14171,6 @@ __metadata:
   peerDependencies:
     esbuild: 0.11.x || 0.12.x || 0.13.x
   checksum: a6e2aed54e2d9b78ddf0bbd0cfda84dfe84946a14e3ea0e6b22a3c8c611f1c88267866580dc8403e10909d855f719bb014934dba8ca3c1b739d2d679aa96442a
-  languageName: node
-  linkType: hard
-
-"mdx-bundler@patch:mdx-bundler@7.0.0#patches/mdx-bundler.patch::locator=tamagui-monorepo%40workspace%3A.":
-  version: 7.0.0
-  resolution: "mdx-bundler@patch:mdx-bundler@npm%3A7.0.0#patches/mdx-bundler.patch::version=7.0.0&hash=f6ec3b&locator=tamagui-monorepo%40workspace%3A."
-  dependencies:
-    "@babel/runtime": ^7.15.4
-    "@esbuild-plugins/node-resolve": ^0.1.4
-    "@fal-works/esbuild-plugin-global-externals": ^2.1.2
-    gray-matter: ^4.0.3
-    remark-frontmatter: ^4.0.1
-    remark-mdx-frontmatter: ^1.0.1
-    uuid: ^8.3.2
-    xdm: ^3.2.0
-  peerDependencies:
-    esbuild: 0.11.x || 0.12.x || 0.13.x
-  checksum: 6f45ac514ad3efd02afd04597c9c9a24dd90de00fe44c11a813832d9f4f7deb607d955ce0b3e669dbb62afb9381aba749117fe224a671f0691abfe442bbaf368
   languageName: node
   linkType: hard
 
@@ -17954,16 +17939,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.0.0-alpha-a44a7a2a3-20211111":
-  version: 18.0.0-alpha-a44a7a2a3-20211111
-  resolution: "react-dom@npm:18.0.0-alpha-a44a7a2a3-20211111"
+"react-dom@npm:18.0.0-beta-f320ef88f-20211116":
+  version: 18.0.0-beta-f320ef88f-20211116
+  resolution: "react-dom@npm:18.0.0-beta-f320ef88f-20211116"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
-    scheduler: 0.21.0-alpha-a44a7a2a3-20211111
+    scheduler: 0.21.0-beta-f320ef88f-20211116
   peerDependencies:
-    react: 18.0.0-alpha-a44a7a2a3-20211111
-  checksum: 61e992e2586027874fcd0a97b945dc6aa486b50614bb8b1ff0d195a3d9432361c1546a43eef6e22f54888383dc1493dcefef1d011446ec855ed727b6c8363775
+    react: 18.0.0-beta-f320ef88f-20211116
+  checksum: f6717f3596bd2dad69574a9b8cb4a4c367b63fa10173470d4967b19a6ee6933b2611acd55d4e8465c4ca911fcccd9e778fe5f209f327f8aa14d33277c802aeb7
   languageName: node
   linkType: hard
 
@@ -17990,10 +17975,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:18.0.0-alpha-a44a7a2a3-20211111":
-  version: 18.0.0-alpha-a44a7a2a3-20211111
-  resolution: "react-is@npm:18.0.0-alpha-a44a7a2a3-20211111"
-  checksum: 266c24d1741674cf4cf52a32c8c2cefee64914e455c24465374db2d95a0b1fab624b00a73c3c19512f31ee81581f04de559d0607162f758087de7aed347d6017
+"react-is@npm:18.0.0-beta-f320ef88f-20211116":
+  version: 18.0.0-beta-f320ef88f-20211116
+  resolution: "react-is@npm:18.0.0-beta-f320ef88f-20211116"
+  checksum: 227b6f6098c2955aa36abd82e74fcffd9e8ec4679c0bc67ee8ce35a1e08adb9b38a67893083d9cfdf3b735d77b4c32b4775872a232bc16f0a1d6cddfb8be1bf7
   languageName: node
   linkType: hard
 
@@ -18147,27 +18132,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-test-renderer@npm:18.0.0-alpha-a44a7a2a3-20211111":
-  version: 18.0.0-alpha-a44a7a2a3-20211111
-  resolution: "react-test-renderer@npm:18.0.0-alpha-a44a7a2a3-20211111"
+"react-test-renderer@npm:18.0.0-beta-f320ef88f-20211116":
+  version: 18.0.0-beta-f320ef88f-20211116
+  resolution: "react-test-renderer@npm:18.0.0-beta-f320ef88f-20211116"
   dependencies:
     object-assign: ^4.1.1
-    react-is: 18.0.0-alpha-a44a7a2a3-20211111
+    react-is: 18.0.0-beta-f320ef88f-20211116
     react-shallow-renderer: ^16.13.1
-    scheduler: 0.21.0-alpha-a44a7a2a3-20211111
+    scheduler: 0.21.0-beta-f320ef88f-20211116
   peerDependencies:
-    react: 18.0.0-alpha-a44a7a2a3-20211111
-  checksum: 9298e2b52ca3c69755541b1968fdf7f1b75b839eac2745b2c22ae6706ab8f98cfcb353a6be2193294a555d2fe011b2f28b1e45417d7c9779dc5c0ad247a28a1d
+    react: 18.0.0-beta-f320ef88f-20211116
+  checksum: 5b22f3f8dce431368895f54e175532de3df89db3b6b6a7120f534ef85dba95f085c399710e1312d736698b2e331fffd769eb448a4102ac22e8c80a364aaf22df
   languageName: node
   linkType: hard
 
-"react@npm:18.0.0-alpha-a44a7a2a3-20211111":
-  version: 18.0.0-alpha-a44a7a2a3-20211111
-  resolution: "react@npm:18.0.0-alpha-a44a7a2a3-20211111"
+"react@npm:18.0.0-beta-f320ef88f-20211116":
+  version: 18.0.0-beta-f320ef88f-20211116
+  resolution: "react@npm:18.0.0-beta-f320ef88f-20211116"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
-  checksum: 88712df29f45b1eca0a6c03368395ba80aba1042edd06da721d602d4ea9f507f1e67905868758022e4a582fc93951b0e15dc3828342be2a04bae302276aeb313
+  checksum: a3d400ff28d0c5e1f7259b562778f5d9aaccd54454cb7e282eebb65cfad00effbaf8c1e87e7b53d1f5205877fb83c233b65815cded9259751fcc7a53dd5ecd54
   languageName: node
   linkType: hard
 
@@ -19053,13 +19038,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:0.21.0-alpha-a44a7a2a3-20211111":
-  version: 0.21.0-alpha-a44a7a2a3-20211111
-  resolution: "scheduler@npm:0.21.0-alpha-a44a7a2a3-20211111"
+"scheduler@npm:0.21.0-beta-f320ef88f-20211116":
+  version: 0.21.0-beta-f320ef88f-20211116
+  resolution: "scheduler@npm:0.21.0-beta-f320ef88f-20211116"
   dependencies:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
-  checksum: 748691e0c095aff0a3b9188b9260491c47532726eea5ee67fce7be3168cf0026931f4d789b5992268f66186dfefb0bb6efb817e78f242721a199c8c3207c9bcc
+  checksum: 9586346cc511b1a2f9071e30c666d26c01b15717e81828eb645b6e5cbdb820a8c48d5c546e2e3c7ec0f0e158541a552d7c701c668f92b5f85ab2eb0afa442fa2
   languageName: node
   linkType: hard
 
@@ -21109,23 +21094,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.5.1-rc":
-  version: 4.5.1-rc
-  resolution: "typescript@npm:4.5.1-rc"
+"typescript@npm:4.5.2":
+  version: 4.5.2
+  resolution: "typescript@npm:4.5.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 6b4ceb7b6751eae2dbfa56e59d2411dd3da793d86b9bb2c07ae8a01fed3acd696216870841825ab549c7bb1732fb7ed8b38b5befc1ee332807261aee98136783
+  checksum: 74f9ce65d532bdf5d0214b3f60cf37992180023388c87a11ee6f838a803067ef0b63c600fa501b0deb07f989257dce1e244c9635ed79feca40bbccf6e0aa1ebc
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.5.1-rc#~builtin<compat/typescript>":
-  version: 4.5.1-rc
-  resolution: "typescript@patch:typescript@npm%3A4.5.1-rc#~builtin<compat/typescript>::version=4.5.1-rc&hash=ddd1e8"
+"typescript@patch:typescript@npm%3A4.5.2#~builtin<compat/typescript>":
+  version: 4.5.2
+  resolution: "typescript@patch:typescript@npm%3A4.5.2#~builtin<compat/typescript>::version=4.5.2&hash=ddd1e8"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5f9a2e06bd77ea452846c86d2ca8243c0cdf1a2003755e956a90d8b073e8f9836e56eabd436e51e364cf88883bd536297de9dd15a39ab3d252d1844c4e2a3eca
+  checksum: 24a439e062a05e3285a4f0e8a40644116ecdca89f3e908bed01e5a01b9aee747e3bcf0e85fe9e017e5ebf0c0863437c39479f2616f55a244c2d82d37022cdc4f
   languageName: node
   linkType: hard
 
