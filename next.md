@@ -1,3 +1,4 @@
+- fix parent variant types
 - [number] (test Text numberOfLines)
 - get both expo + next.js loading
 - create small kitchen sink in expo to test

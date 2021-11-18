@@ -151,16 +151,15 @@ export declare type TransformStyleProps = {
 	rotateZ?: string;
 };
 export declare type ShortKeysView = keyof Shorthands;
-export declare type ColorableKeys = "color" | "backgroundColor" | "borderColor" | "borderTopColor" | "borderBottomColor" | "borderLeftColor" | "borderRightColor" | "shadowColor";
 export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
-	[K in keyof T]: K extends ColorableKeys ? ThemeValue<T[K]> | ThemeKeyVariables : ThemeValue<T[K]>;
+	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${keyof Tokens["fontSize"]}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${keyof Tokens["lineHeight"]}` : {});
 };
 export declare type TamaguiThemedStackStyleProps = WithThemeValues<TamaguiStylesBase>;
 export declare type ShorthandStyleProps = {
 	[key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof TamaguiThemedStackStyleProps ? TamaguiThemedStackStyleProps[Shorthands[ShortKeysView]] | null : {};
 };
-export declare type StackStylePropsBase = TamaguiThemedStackStyleProps | ShorthandStyleProps;
+export declare type StackStylePropsBase = TamaguiThemedStackStyleProps & ShorthandStyleProps;
 export declare type StackStyleProps = StackStylePropsBase & {
 	hoverStyle?: StackStylePropsBase | null;
 	pressStyle?: StackStylePropsBase | null;
@@ -320,6 +319,14 @@ export declare type StaticConfig = {
 		[key: string]: boolean;
 	};
 };
+export declare type ColorableKeys = "color" | "backgroundColor" | "borderColor" | "borderTopColor" | "borderBottomColor" | "borderLeftColor" | "borderRightColor" | "shadowColor";
+export declare type SizeKeys = "width" | "height" | "minWidth" | "minHeight" | "maxWidth" | "maxHeight";
+export declare type FontKeys = "fontFamily";
+export declare type FontSizeKeys = "fontSize";
+export declare type LineHeightKeys = "lineHeight";
+export declare type ZIndexKeys = "zIndex";
+export declare type ColorKeys = "color" | "backgroundColor" | "borderColor" | "borderBottomColor" | "borderTopColor" | "borderLeftColor" | "borderRightColor";
+export declare type SpaceKeys = "padding" | "paddingHorizontal" | "paddingVertical" | "paddingLeft" | "paddingTop" | "paddingBottom" | "paddingLeft" | "paddingRight" | "paddingEnd" | "paddingStart" | "margin" | "marginHorizontal" | "marginVertical" | "marginLeft" | "marginTop" | "marginBottom" | "marginLeft" | "marginRight" | "marginEnd" | "marginStart" | "x" | "y" | "scale" | "scaleX" | "scaleY" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderLeftWidth" | "borderRadius" | "borderRightWidth" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderEndWidth" | "borderStartWidth" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "left" | "top" | "right" | "bottom" | "shadowOffset";
 export declare const mouseUps: Set<Function>;
 export declare type DefaultProps = {};
 export declare function createComponent<A extends Object = DefaultProps>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<A, void, StaticConfigParsed, any>;

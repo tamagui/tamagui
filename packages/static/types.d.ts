@@ -75,12 +75,12 @@ export declare type ThemeProviderProps = {
 	disableRootThemeClass?: boolean;
 	children?: any;
 };
-export declare type StylesBase = Omit<ViewStyle, "display" | "backfaceVisibility"> & TransformStyleProps & {
+export declare type TamaguiStylesBase = Omit<ViewStyle, "display" | "backfaceVisibility"> & TransformStyleProps & {
 	cursor?: string;
 	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
 	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
 };
-export declare type StyleKeys = keyof StylesBase;
+export declare type StyleKeys = keyof TamaguiStylesBase;
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {

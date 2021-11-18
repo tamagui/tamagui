@@ -183,37 +183,45 @@ export type TransformStyleProps = {
 
 type ShortKeysView = keyof Shorthands
 
-type ColorableKeys =
-  | 'color'
-  | 'backgroundColor'
-  | 'borderColor'
-  | 'borderTopColor'
-  | 'borderBottomColor'
-  | 'borderLeftColor'
-  | 'borderRightColor'
-  | 'shadowColor'
-
 type ThemeValue<A> = Omit<A, string> | UnionableString | Variable
 
 export type WithThemeValues<T extends object> = {
-  [K in keyof T]: K extends ColorableKeys ? ThemeValue<T[K]> | ThemeKeyVariables : ThemeValue<T[K]>
+  [K in keyof T]:
+    | ThemeValue<T[K]>
+    | (K extends ColorableKeys
+        ? ThemeKeyVariables
+        : K extends SizeKeys
+        ? `$${keyof Tokens['size']}`
+        : K extends FontKeys
+        ? `$${keyof Tokens['font']}`
+        : K extends FontSizeKeys
+        ? `$${keyof Tokens['fontSize']}`
+        : K extends SpaceKeys
+        ? `$${keyof Tokens['space']}`
+        : K extends ColorKeys
+        ? `$${keyof Tokens['color']}`
+        : K extends ZIndexKeys
+        ? `$${keyof Tokens['zIndex']}`
+        : K extends LineHeightKeys
+        ? `$${keyof Tokens['lineHeight']}`
+        : {})
 }
 
 export type TamaguiThemedStackStyleProps = WithThemeValues<TamaguiStylesBase>
-
-type x = TamaguiStylesBase['borderColor']
-type y = TamaguiThemedStackStyleProps['borderColor']
 
 export type ShorthandStyleProps = {
   [key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof TamaguiThemedStackStyleProps
     ? TamaguiThemedStackStyleProps[Shorthands[ShortKeysView]] | null
     : {}
 }
-type StackStylePropsBase = TamaguiThemedStackStyleProps | ShorthandStyleProps
+
+type StackStylePropsBase = TamaguiThemedStackStyleProps & ShorthandStyleProps
+
 export type StackStyleProps = StackStylePropsBase & {
   hoverStyle?: StackStylePropsBase | null
   pressStyle?: StackStylePropsBase | null
 }
+
 export type StackProps = Omit<RNWInternalProps, 'children'> &
   MediaProps<StackStyleProps> &
   StackStyleProps &
@@ -429,3 +437,84 @@ export type StaticConfig = {
    */
   ensureOverriddenProp?: { [key: string]: boolean }
 }
+
+type ColorableKeys =
+  | 'color'
+  | 'backgroundColor'
+  | 'borderColor'
+  | 'borderTopColor'
+  | 'borderBottomColor'
+  | 'borderLeftColor'
+  | 'borderRightColor'
+  | 'shadowColor'
+
+type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight'
+
+type FontKeys = 'fontFamily'
+
+type FontSizeKeys = 'fontSize'
+
+type LineHeightKeys = 'lineHeight'
+
+type ZIndexKeys = 'zIndex'
+
+type ColorKeys =
+  | 'color'
+  | 'backgroundColor'
+  | 'borderColor'
+  | 'borderBottomColor'
+  | 'borderTopColor'
+  | 'borderLeftColor'
+  | 'borderRightColor'
+
+type SpaceKeys =
+  | 'padding'
+  | 'paddingHorizontal'
+  | 'paddingVertical'
+  | 'paddingLeft'
+  | 'paddingTop'
+  | 'paddingBottom'
+  | 'paddingLeft'
+  | 'paddingRight'
+  | 'paddingEnd'
+  | 'paddingStart'
+  | 'margin'
+  | 'marginHorizontal'
+  | 'marginVertical'
+  | 'marginLeft'
+  | 'marginTop'
+  | 'marginBottom'
+  | 'marginLeft'
+  | 'marginRight'
+  | 'marginEnd'
+  | 'marginStart'
+  | 'x'
+  | 'y'
+  | 'scale'
+  | 'scaleX'
+  | 'scaleY'
+  | 'borderTopEndRadius'
+  | 'borderTopLeftRadius'
+  | 'borderTopRightRadius'
+  | 'borderTopStartRadius'
+  | 'borderBottomEndRadius'
+  | 'borderBottomLeftRadius'
+  | 'borderBottomRightRadius'
+  | 'borderBottomStartRadius'
+  | 'borderBottomWidth'
+  | 'borderLeftWidth'
+  | 'borderRadius'
+  | 'borderRightWidth'
+  | 'borderTopEndRadius'
+  | 'borderTopLeftRadius'
+  | 'borderTopRightRadius'
+  | 'borderEndWidth'
+  | 'borderStartWidth'
+  | 'borderTopStartRadius'
+  | 'borderTopWidth'
+  | 'borderWidth'
+  | 'left'
+  | 'top'
+  | 'right'
+  | 'bottom'
+  | 'shadowOffset'

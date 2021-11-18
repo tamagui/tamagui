@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, ButtonProps, Circle, YStack } from 'tamagui'
 
 const colors = ['pink', 'blue', 'green', 'red', 'orange', 'violet', 'purple']
-const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
-const tint = tintVal ? +tintVal : 0
+// no localstorage because its not important to remember and causes a flicker
+// const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
+// const tint = tintVal ? +tintVal 0
+const tint = 0
 const listeners = new Set<Function>()
 
 export const useTint = () => {
@@ -22,7 +24,7 @@ export const useTint = () => {
     color,
     (next: string) => {
       const i = colors.indexOf(next as any)
-      localStorage.setItem('tint', `${i}`)
+      // localStorage.setItem('tint', `${i}`)
       setColorI(i)
       listeners.forEach((x) => x(i))
     },
