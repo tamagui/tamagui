@@ -11,6 +11,7 @@ export const ThemeToggle = (props: ButtonProps) => {
       aria-label="toggle a light and dark color scheme"
     >
       <svg
+        style={{ marginBottom: -1 }}
         xmlns="http://www.w3.org/2000/svg"
         width="15"
         height="15"
