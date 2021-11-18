@@ -5,16 +5,15 @@ description: The how and why of Tamagui
 
 Tamagui is a light layer above React Native / React Native Web, it augments rather than replaces it. Tamagui's goal is simple: letting you share much more code between your web and native apps. It does that by improving a few things:
 
-- `Responsive styles` (aka media queries) that don't run in JS
-- `Themes` that also avoid running JS
-- `Inline styles` with no performance impact
-- `Compile-time extraction` to CSS to avoid the startup cost of StyleSheet.create
+- **Responsive styles** — media queries that avoid JS when possible
+- **Themes** — that also avoid running JS
+- **Inline styles** — that extract at compile-time out of render
 
-Today, sharing responsive styling in React requires hooks. The same goes for themes. On the web, you'd much rather rely on [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties), which are designed for this purpose and are very fast.
+Today, you can't really share code between Native and Web without resorting to doing media queries, themes and styles generally in JavaScript. But on the web, this is especially slow.
 
-Tamagui provides `useMedia` and `useTheme` hooks as well as equivalent typed inline style syntax that compile-time optimize to media queries and CSS variables. It's compiler also extracts all inline styles, as well as a variety of common logic like ternaries or object spreads that interact with styles.
+Many of these components could be easily shared if not for this limitation. So Tamagui works backwards from ideal syntax - both an inline style syntax as well as hooks - and then on the web generates [CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) when possible, which are designed for this purpose and are very fast.
 
-The Tamagui compiler even flattens what would have been a `View` or `Text` into a plain `div` or `span` when possible, flattening your tree, another win for render performance.
+The Tamagui compiler goes further and flattens what would have been a `View` or `Text` into a plain `div` or `span`, flattening your tree.
 
 <Image alt="Tamagui logo with a purple and blue gradient" src="/docs-intro.svg" />
 

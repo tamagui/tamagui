@@ -930,7 +930,7 @@ export declare const isChrome: boolean;
 export declare const supportsTouchWeb: boolean;
 export declare const isTouchDevice: boolean;
 export declare const isWebIOS: boolean;
-export declare const rnw: any | null;
+export declare const rnw: Record<string, any>;
 export declare function getStylesAtomic(style: any, avoidCollection?: boolean): StyleObject[];
 export declare const matchMedia: any;
 export declare type ThemeableProps = {

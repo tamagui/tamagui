@@ -22,7 +22,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
   return (
     <>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui Core`} />
-      <H1 letterSpacing={-1} fontWeight="700" mb="$2">
+      <H1 letterSpacing={-1} fontWeight="700">
         {frontmatter.title}
       </H1>
       <Description>{frontmatter.description}</Description>

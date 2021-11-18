@@ -16,7 +16,7 @@ const darkColors = Object.fromEntries(
 
 const light = {
   bg: '#fff',
-  bg2: tokens.color.gray2,
+  bg2: tokens.color.gray3,
   bg3: tokens.color.gray4,
   bg4: tokens.color.gray5,
   bgTransparent: tokens.color.grayA1,
@@ -32,10 +32,10 @@ const light = {
 }
 
 const dark = {
-  bg: '#171717',
-  bg2: tokens.color.gray2Dark,
-  bg3: tokens.color.gray3Dark,
-  bg4: tokens.color.gray4Dark,
+  bg: '#151515',
+  bg2: tokens.color.gray3Dark,
+  bg3: tokens.color.gray4Dark,
+  bg4: tokens.color.gray5Dark,
   bgTransparent: tokens.color.grayA1Dark,
   borderColor: tokens.color.gray3Dark,
   borderColor2: tokens.color.gray4Dark,
@@ -76,6 +76,22 @@ export const themes = {
   dark,
   light,
   ...colorThemes,
-  'active-light': colorThemes['pink-light'],
-  'active-dark': colorThemes['pink-dark'],
+  'active-light': {
+    ...colorThemes['blue-dark'],
+    bg: tokens.color.blue9,
+    bg2: tokens.color.blue10,
+    bg3: tokens.color.blue11,
+    bg4: tokens.color.blue12,
+    color: '#fff',
+    color2: '#fff',
+  },
+  'active-dark': {
+    ...colorThemes['blue-light'],
+    bg: tokens.color.blue12,
+    bg2: tokens.color.blue11,
+    bg3: tokens.color.blue10,
+    bg4: tokens.color.blue9,
+    color: '#fff',
+    color2: '#fff',
+  },
 } as const

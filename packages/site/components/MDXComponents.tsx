@@ -85,14 +85,14 @@ export const components = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading id={id} mt="$5" mb="$2">
+    <LinkHeading id={id} mt="$6" mb="$0">
       <H3 {...props} id={id} data-heading letterSpacing={-1}>
         {children}
       </H3>
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mb="$2" mt="$3" lineHeight={27} {...props} />,
+  h4: (props) => <H4 mb="$1" mt="$4" lineHeight={27} {...props} />,
 
   p: (props) => <Paragraph className="paragraph" display="block" {...props} mb="$2" mt="$2" />,
 
