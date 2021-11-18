@@ -155,9 +155,9 @@ export const components = {
         // inline
         <Paragraph
           fontFamily="Monospace"
-          color="$pink11"
+          color="$color2"
           br="$1"
-          backgroundColor="$pink2"
+          backgroundColor="$bg3"
           lineHeight={18}
           px="$1"
           py={3}

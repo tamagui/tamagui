@@ -7,8 +7,9 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, StackProps, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, StackProps, Theme, XStack, YStack } from 'tamagui'
 
+import { ColorToggle, useTint } from './ColorToggle'
 import { Container } from './Container'
 import { ExternalIcon } from './ExternalIcon'
 import { Link } from './Link'
@@ -49,205 +50,215 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <YStack
-      $gtSm={{
-        flexDirection: 'row',
-      }}
-    >
+    <DocsPageTheme>
       <YStack
-        width="100%"
-        maxHeight="auto"
-        borderColor="$borderColor"
-        borderRightWidth={1}
-        overflow="hidden"
         $gtSm={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          width: 230,
-          borderRightWidth: 1,
-          borderRightColor: '$borderColor',
+          flexDirection: 'row',
         }}
       >
-        <ScrollView>
-          <XStack ai="center" p="$4">
-            <NextLink href="/" passHref>
-              <YStack tag="a">
-                <span
-                  className="clip-invisible"
-                  style={{
-                    position: 'absolute',
-                    width: 1,
-                    height: 1,
-                    padding: 0,
-                    margin: -1,
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    border: 0,
-                  }}
-                >
-                  Homepage
-                </span>
-                <LogoIcon downscale={2} />
-              </YStack>
-            </NextLink>
+        <YStack
+          width="100%"
+          maxHeight="auto"
+          borderColor="$borderColor"
+          borderRightWidth={1}
+          overflow="hidden"
+          $gtSm={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            width: 230,
+            borderRightWidth: 1,
+            borderRightColor: '$borderColor',
+          }}
+        >
+          <ScrollView>
+            <XStack ai="center" p="$4">
+              <NextLink href="/" passHref>
+                <YStack tag="a">
+                  <span
+                    className="clip-invisible"
+                    style={{
+                      position: 'absolute',
+                      width: 1,
+                      height: 1,
+                      padding: 0,
+                      margin: -1,
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      border: 0,
+                    }}
+                  >
+                    Homepage
+                  </span>
+                  <LogoIcon downscale={2} />
+                </YStack>
+              </NextLink>
 
-            <ThemeToggle ml="auto" />
+              <XStack spacing="$1" ml="auto">
+                <ColorToggle />
+                <ThemeToggle chromeless />
+              </XStack>
+
+              <YStack
+                ml="$2"
+                $gtSm={{
+                  display: 'none',
+                }}
+              >
+                <Button onClick={() => setIsOpen(!isOpen)} theme={isOpen ? 'active' : undefined}>
+                  <Menu size={16} color="var(--color)" />
+                </Button>
+              </YStack>
+            </XStack>
 
             <YStack
-              ml="$2"
+              display={isOpen ? 'flex' : 'none'}
               $gtSm={{
-                display: 'none',
+                display: 'block',
               }}
             >
-              <Button onClick={() => setIsOpen(!isOpen)} theme={isOpen ? 'active' : undefined}>
-                <Menu size={16} color="var(--color)" />
-              </Button>
-            </YStack>
-          </XStack>
+              {docsRoutes.map((section, i) => (
+                <YStack key={`${section.label}${i}`} mb="$4">
+                  <NavHeading>{section.label}</NavHeading>
+                  {section.pages.map((page) => {
+                    return (
+                      <DocsRouteNavItem
+                        key={page.slug}
+                        href={`/${page.slug}`}
+                        active={currentPath === `/${page.slug}`}
+                        pending={page.pending}
+                      >
+                        {page.title}
+                      </DocsRouteNavItem>
+                    )
+                  })}
+                </YStack>
+              ))}
 
-          <YStack
-            display={isOpen ? 'flex' : 'none'}
-            $gtSm={{
-              display: 'block',
-            }}
-          >
-            {docsRoutes.map((section, i) => (
-              <YStack key={`${section.label}${i}`} mb="$4">
-                <NavHeading>{section.label}</NavHeading>
-                {section.pages.map((page) => {
-                  return (
-                    <DocsRouteNavItem
-                      key={page.slug}
-                      href={`/${page.slug}`}
-                      active={currentPath === `/${page.slug}`}
-                      pending={page.pending}
-                    >
-                      {page.title}
-                    </DocsRouteNavItem>
-                  )
-                })}
+              <YStack mb="$4">
+                <NavHeading>Community</NavHeading>
+                {/* <DocsRouteNavItem href="/blog">Blog</DocsRouteNavItem> */}
+                <DocsRouteNavItem href="https://github.com/tamagui/tamagui">
+                  GitHub
+                  <ExternalIcon />
+                </DocsRouteNavItem>
+                <DocsRouteNavItem href="https://twitter.com/tamagui_dev">
+                  Twitter
+                  <ExternalIcon />
+                </DocsRouteNavItem>
+                <DocsRouteNavItem href="https://discord.gg/uUtvv6GM">
+                  Discord
+                  <ExternalIcon />
+                </DocsRouteNavItem>
               </YStack>
-            ))}
 
-            <YStack mb="$4">
-              <NavHeading>Community</NavHeading>
-              {/* <DocsRouteNavItem href="/blog">Blog</DocsRouteNavItem> */}
-              <DocsRouteNavItem href="https://github.com/tamagui/tamagui">
-                GitHub
-                <ExternalIcon />
-              </DocsRouteNavItem>
-              <DocsRouteNavItem href="https://twitter.com/tamagui_dev">
-                Twitter
-                <ExternalIcon />
-              </DocsRouteNavItem>
-              <DocsRouteNavItem href="https://discord.gg/uUtvv6GM">
-                Discord
-                <ExternalIcon />
-              </DocsRouteNavItem>
+              <YStack
+                height="$5"
+                $gtSm={{
+                  height: '$8',
+                }}
+              />
             </YStack>
+          </ScrollView>
+        </YStack>
 
-            <YStack
-              height="$5"
-              $gtSm={{
-                height: '$8',
-              }}
-            />
-          </YStack>
-        </ScrollView>
-      </YStack>
+        <YStack
+          maxWidth="100%"
+          flex={1}
+          py="$5"
+          $gtSm={{
+            pt: '$9',
+            pb: '$9',
+            pl: 250,
+            pr: 0,
+          }}
+          $gtLg={{
+            pr: 250,
+          }}
+        >
+          <DocsPageContainer>{children}</DocsPageContainer>
 
-      <YStack
-        maxWidth="100%"
-        flex={1}
-        py="$5"
-        $gtSm={{
-          pt: '$9',
-          pb: '$9',
-          pl: 250,
-          pr: 0,
-        }}
-        $gtLg={{
-          pr: 250,
-        }}
-      >
-        <DocsPageContainer>{children}</DocsPageContainer>
-
-        <DocsPageContainer>
-          {(previous || next) && (
-            <XStack aria-label="Pagination navigation" my="$9" jc="space-between" spacing>
-              {previous && (
-                <NextLink href={`/${previous.slug}`} passHref>
-                  <YStack
-                    hoverStyle={{
-                      backgroundColor: '$bg2',
-                    }}
-                    flex={1}
-                    width="50%"
-                    p="$3"
-                    borderRadius="$2"
-                    borderWidth={1}
-                    borderColor="$borderColor"
-                    tag="a"
-                    aria-label={`Previous page: ${previous.title}`}
-                    ai="flex-start"
-                  >
-                    <YStack mb="$2">
-                      <Paragraph color="$color2" size="$6">
-                        Previous
+          <DocsPageContainer>
+            {(previous || next) && (
+              <XStack aria-label="Pagination navigation" my="$9" jc="space-between" spacing>
+                {previous && (
+                  <NextLink href={`/${previous.slug}`} passHref>
+                    <YStack
+                      hoverStyle={{
+                        backgroundColor: '$bg2',
+                      }}
+                      flex={1}
+                      width="50%"
+                      p="$3"
+                      borderRadius="$2"
+                      borderWidth={1}
+                      borderColor="$borderColor"
+                      tag="a"
+                      aria-label={`Previous page: ${previous.title}`}
+                      ai="flex-start"
+                    >
+                      <YStack mb="$2">
+                        <Paragraph color="$color2" size="$6">
+                          Previous
+                        </Paragraph>
+                      </YStack>
+                      <Paragraph size="$3" fontWeight="800">
+                        {previous.title}
                       </Paragraph>
                     </YStack>
-                    <Paragraph size="$3" fontWeight="800">
-                      {previous.title}
-                    </Paragraph>
-                  </YStack>
-                </NextLink>
-              )}
-              {next && (
-                <NextLink href={`/${next.slug}`} passHref>
-                  <YStack
-                    hoverStyle={{
-                      backgroundColor: '$bg2',
-                    }}
-                    width="50%"
-                    flex={1}
-                    p="$3"
-                    borderRadius="$2"
-                    borderWidth={1}
-                    borderColor="$borderColor"
-                    tag="a"
-                    aria-label={`Previous page: ${next.title}`}
-                    ai="flex-end"
-                  >
-                    <YStack mb="$2">
-                      <Paragraph color="$color2" size="$6">
-                        Next
+                  </NextLink>
+                )}
+                {next && (
+                  <NextLink href={`/${next.slug}`} passHref>
+                    <YStack
+                      hoverStyle={{
+                        backgroundColor: '$bg2',
+                      }}
+                      width="50%"
+                      flex={1}
+                      p="$3"
+                      borderRadius="$2"
+                      borderWidth={1}
+                      borderColor="$borderColor"
+                      tag="a"
+                      aria-label={`Previous page: ${next.title}`}
+                      ai="flex-end"
+                    >
+                      <YStack mb="$2">
+                        <Paragraph color="$color2" size="$6">
+                          Next
+                        </Paragraph>
+                      </YStack>
+                      <Paragraph size="$3" fontWeight="800">
+                        {next.title}
                       </Paragraph>
                     </YStack>
-                    <Paragraph size="$3" fontWeight="800">
-                      {next.title}
-                    </Paragraph>
-                  </YStack>
-                </NextLink>
-              )}
-            </XStack>
-          )}
-        </DocsPageContainer>
+                  </NextLink>
+                )}
+              </XStack>
+            )}
+          </DocsPageContainer>
 
-        <DocsPageContainer my="$3">
-          <Link
-            href={editUrl}
-            title="Edit this page on GitHub."
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Edit this page on GitHub.
-          </Link>
-        </DocsPageContainer>
+          <DocsPageContainer my="$3">
+            <Link
+              href={editUrl}
+              title="Edit this page on GitHub."
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Edit this page on GitHub.
+            </Link>
+          </DocsPageContainer>
+        </YStack>
       </YStack>
-    </YStack>
+    </DocsPageTheme>
   )
+}
+
+const DocsPageTheme = (props) => {
+  const [tint] = useTint()
+  return <Theme name={tint}>{React.useMemo(() => props.children, [])}</Theme>
 }
 
 type NavItemProps = {
@@ -272,14 +283,17 @@ function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItem
         px="$5"
         opacity={pending ? 0.5 : 1}
         hoverStyle={{
-          backgroundColor: '$pink2',
+          backgroundColor: '$bg3',
+        }}
+        pressStyle={{
+          backgroundColor: '$bg2',
         }}
         userSelect="none"
         minHeight="$6"
         {...(active && {
-          backgroundColor: '$pink3',
+          backgroundColor: '$bg3',
           hoverStyle: {
-            backgroundColor: '$pink3',
+            backgroundColor: '$bg3',
           },
         })}
         // transition={'background-color 50ms linear'
@@ -289,9 +303,9 @@ function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItem
       >
         <Paragraph
           size="$2"
-          color="$color3"
+          color="$color4"
           {...(active && {
-            color: '$pink9',
+            color: '$color2',
           })}
         >
           {children}

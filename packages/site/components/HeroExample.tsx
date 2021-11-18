@@ -114,7 +114,7 @@ export function HeroExample() {
               {activeExample.input.description}
             </Paragraph>
 
-            <H4 size="$1" bc="$pink3" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
+            <H4 size="$1" bc="$bg2" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
               Input
             </H4>
             <YStack>
@@ -131,11 +131,9 @@ export function HeroExample() {
                   </HoverableStack>
                   {i < activeExample.input.examples.length - 1 && (
                     <YStack als="center" my="$-4" zIndex={1000}>
-                      <Text color="$pink10">
-                        <IconStack mb={0}>
-                          <Plus size={20} color="var(--color)" />
-                        </IconStack>
-                      </Text>
+                      <IconStack mb={0}>
+                        <Plus size={20} color="var(--color)" />
+                      </IconStack>
                     </YStack>
                   )}
                 </React.Fragment>
@@ -143,18 +141,15 @@ export function HeroExample() {
             </YStack>
           </YStack>
           <YStack mt={180} mx={-15} zIndex={1000}>
-            <Text color="$pink10">
-              {/* TODO */}
-              <IconStack mb={0}>
-                <FastForward size={20} color="var(--color)" />
-              </IconStack>
-            </Text>
+            <IconStack mb={0}>
+              <FastForward size={20} color="var(--color)" />
+            </IconStack>
           </YStack>
           <YStack flex={1} maxWidth="49%" spacing="$4">
             <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
               {activeExample.output.description}
             </Paragraph>
-            <H4 size="$1" bc="$pink3" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
+            <H4 size="$1" bc="$bg2" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
               Output
             </H4>
             <YStack>
@@ -173,11 +168,9 @@ export function HeroExample() {
                     </HoverableStack>
                     {hasMore && (
                       <YStack als="center" my="$-4" zIndex={1000}>
-                        <Text color="$pink10">
-                          <IconStack mb={0}>
-                            <Plus size={20} color="var(--color)" />
-                          </IconStack>
-                        </Text>
+                        <IconStack mb={0}>
+                          <Plus size={20} color="var(--color)" />
+                        </IconStack>
                       </YStack>
                     )}
                   </React.Fragment>

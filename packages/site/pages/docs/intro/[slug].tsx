@@ -7,6 +7,8 @@ import React from 'react'
 import { H1, Paragraph } from 'tamagui'
 import type { Frontmatter } from 'types/frontmatter'
 
+import { Description } from '../../../components/Description'
+
 type Doc = {
   frontmatter: Frontmatter
   code: any
@@ -23,9 +25,7 @@ export default function DocIntroPage({ frontmatter, code }: Doc) {
       <H1 letterSpacing={-1} fontWeight="700">
         {frontmatter.title}
       </H1>
-      <Paragraph size="$7" my="$2" mb="$2" color="$color3">
-        {frontmatter.description}
-      </Paragraph>
+      <Description>{frontmatter.description}</Description>
       <Component components={components as any} />
       <QuickNav />
     </>

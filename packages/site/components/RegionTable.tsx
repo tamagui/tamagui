@@ -12,7 +12,7 @@ export function RegionTable(props: StackProps) {
       bc="$bg2"
       borderRadius="$2"
       borderWidth={1}
-      borderColor="$pink3"
+      borderColor="$borderColor2"
       overflow="hidden"
       p="$2"
       mb="$4"
