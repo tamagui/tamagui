@@ -2,15 +2,13 @@ import { Check, ExternalLink } from '@tamagui/feather-icons'
 import { useRouter } from 'next/router'
 import React from 'react'
 // import { Select } from '@components/Select'
-import { H2, Paragraph, Separator, Text, XStack, YStack } from 'tamagui'
+import { H2, Paragraph, Separator, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { Link } from './Link'
 import { FrontmatterContext } from './MDXComponents'
 
 // TODO
 const Select = (props) => <select {...props} />
-// TODO this can work with space to not cause interruptions! nice
-const VisuallyHidden = (props) => <div style={{ display: 'none' }} {...props} />
 
 export function Highlights({ features }) {
   const router = useRouter()
@@ -51,10 +49,9 @@ export function Highlights({ features }) {
       </YStack>
 
       <YStack space="$2" tag="nav" aria-labelledby="site-component-info-header">
-        {/* TODO once it works with space */}
-        {/* <VisuallyHidden asChild>
+        <VisuallyHidden>
           <h2 id="site-component-info-heading">Component Reference Links</h2>
-        </VisuallyHidden> */}
+        </VisuallyHidden>
 
         <Separator />
 

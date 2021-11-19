@@ -32,5 +32,6 @@ export * from './views/EnsureFlexed'
 export * from './views/Tooltip'
 export * from './views/TouchableOpacity'
 export * from './views/Transitions'
+export * from './views/VisuallyHidden'
 
 export * from './helpers/prevent'

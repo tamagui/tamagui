@@ -18,7 +18,6 @@ export function extendStaticConfig(
 
   return parseStaticConfig({
     ...a.staticConfig,
-    // dont extend veriants? may want to but need to do typings... in styled()
     variants: {
       ...a.staticConfig.variants,
       ...config.variants,
@@ -26,10 +25,12 @@ export function extendStaticConfig(
     isText: config.isText || a.staticConfig.isText || false,
     neverFlatten: config.neverFlatten ?? a.staticConfig.neverFlatten,
     ensureOverriddenProp: config.ensureOverriddenProp ?? a.staticConfig.ensureOverriddenProp,
-    validStyles: {
-      ...a.staticConfig.validStyles,
-      ...config.validStyles,
-    },
+    validStyles: config.validStyles
+      ? {
+          ...a.staticConfig.validStyles,
+          ...config.validStyles,
+        }
+      : a.staticConfig.validStyles,
     validPropsExtra: {
       ...a.staticConfig.validPropsExtra,
       ...config.validPropsExtra,
