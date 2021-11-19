@@ -57,6 +57,7 @@ export function createComponent<A extends Object = DefaultProps>(
   // web uses className, native uses style
   let defaultsStyle: any
   let defaultsClassName = ''
+  let initialTheme: any
 
   // see onConfiguredOnce below which attaches a name then to this component
 
@@ -156,7 +157,7 @@ export function createComponent<A extends Object = DefaultProps>(
     const { viewProps, pseudos, style, classNames } = getSplitStyles(
       props,
       staticConfig,
-      manager.theme as any
+      (manager.theme as any) || initialTheme
     )
 
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
@@ -447,7 +448,7 @@ export function createComponent<A extends Object = DefaultProps>(
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
     tamaguiConfig = conf
-    const initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
+    initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
     const next = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, true)
     if (isWeb) {
       if (next.classNames) {

@@ -37,8 +37,7 @@
   },
   "devDependencies": {
     "@tamagui/esdx": "^1.0.0-alpha.0",
-    "@types/node": "^14.11.10",
-    "@types/react": "^16.9.35",
-    "@types/react-dom": "^16.9.8"
+    "@types/node": "^16.11.9",
+    "@types/react": "^17.0.35"
   }
 }
