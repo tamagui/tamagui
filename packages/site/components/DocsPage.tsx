@@ -173,7 +173,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           flex={1}
           py="$5"
           $gtSm={{
-            pt: '$9',
+            pt: 67,
             pb: '$9',
             pl: 250,
             pr: 0,

@@ -88,7 +88,6 @@ export const forwardedProps = ${forwardedPropsObj}
 `
 
 const cjsExports = `
-console.log('wut', require('./exports/StyleSheet/compile'))
 exports.atomic = require('./exports/StyleSheet/compile').atomic
 exports.createCompileableStyle = require('./exports/StyleSheet/createCompileableStyle')
 exports.createReactDOMStyle = require('./exports/StyleSheet/createReactDOMStyle')

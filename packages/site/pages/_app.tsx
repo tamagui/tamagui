@@ -16,7 +16,6 @@ export default function App(props: AppProps) {
   const classes = typeof document !== 'undefined' ? [...document.documentElement.classList] : []
   const isDark = classes.includes('theme--dark')
   const [theme, setTheme] = useState(isDark ? 'dark' : 'light')
-  console.log('necessary?', theme)
 
   // cant do system them because next SSR
   return (

@@ -50,7 +50,7 @@ const lineHeight = {
   1: fontSize[0] * 1.4,
   2: fontSize[1] * 1.55,
   3: fontSize[2] * 1.65,
-  4: fontSize[3] * 1.8,
+  4: fontSize[3] * 1.75,
   5: fontSize[4] * 1.85,
   6: fontSize[5] * 1.9,
   7: fontSize[6] * 1.95,

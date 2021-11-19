@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
-import { H4, YStack } from 'tamagui'
+import { H4, Spacer, YStack } from 'tamagui'
 
 import { Link, LinkProps } from './Link'
 
@@ -11,7 +11,7 @@ const QuickNavLink = (props: LinkProps) => (
     fontSize="$2"
     opacity={0.5}
     color="$color"
-    py="$1"
+    py={3}
     hoverStyle={{
       opacity: 1,
     }}
@@ -53,7 +53,7 @@ export function QuickNav() {
         zIndex: 1,
         position: 'fixed',
         right: 0,
-        top: '$9',
+        top: 90,
       }}
     >
       <ScrollView>
@@ -62,12 +62,12 @@ export function QuickNav() {
           aria-labelledby="site-quick-nav-heading"
           px="$5"
           display={headings.length === 0 ? 'none' : 'block'}
-          space
         >
-          <H4 size="$3" mb="$3" id="site-quick-nav-heading">
+          <H4 size="$3" mb="$4" id="site-quick-nav-heading">
             Quick nav
           </H4>
-          <ul style={{ margin: 0, padding: 0 }}>
+
+          <ul style={{ marginTop: 10, margin: 0, padding: 0 }}>
             {/* loading ... {headings.length === 0 && (
               <YStack tag="li">
                 <QuickNavLink>
