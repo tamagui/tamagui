@@ -34,6 +34,9 @@ export function Hero() {
                     size="$7"
                     letterSpacing={-1}
                     fontWeight="700"
+                    $sm={{
+                      maxWidth: 550,
+                    }}
                     $gtSm={{
                       // TODO $12 not working?
                       size: '$9',
@@ -47,22 +50,8 @@ export function Hero() {
                       my: -10,
                     }}
                   >
-                    Universal React design systems that optimize for every platform
-                    {/* <Tooltip contents="Web, iOS & Android">
-              <span
-                className="test-hero"
-                style={{
-                  textDecoration: 'underline',
-                  textDecorationThickness: 3,
-                  textDecorationColor: 'var(--blue7)',
-                  textDecorationStyle: 'dotted',
-                  cursor: 'help',
-                  font: 'inherit',
-                }}
-              >
-
-              </span>
-            </Tooltip> */}
+                    <span className="universal">Universal</span> React interfaces that optimize for
+                    every platform
                   </Title>
 
                   <YStack
@@ -86,7 +75,7 @@ export function Hero() {
                         ta: 'center',
                       }}
                     >
-                      React Native & Web interfaces with an optimizing compiler for themes, media
+                      React Native <em>and</em> Web UI + an optimizing compiler for themes, media
                       queries and&nbsp;typed&nbsp;inline styles — share&nbsp;more code, get better
                       performance.
                     </Paragraph>

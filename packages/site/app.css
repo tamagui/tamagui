@@ -122,6 +122,12 @@ ul, ol, li, pre { margin: 0; }
 .s1 { transition-duration: 1s; }
 .s2 { transition-duration: 2s; }
 
+.universal {
+  background: -webkit-linear-gradient(-190deg, var(--red9), var(--orange9), var(--yellow9), var(--green9), var(--blue9), var(--violet9), var(--pink9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* code highlighting */
 
 /* //   $$background: $loContrast;
