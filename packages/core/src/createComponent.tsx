@@ -485,7 +485,7 @@ export function createComponent<A extends Object = DefaultProps>(
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 
-export const Spacer = createComponent({
+export const Spacer = createComponent<{ size?: number; flex?: boolean | number }>({
   defaultProps: stackDefaultStyles,
   variants: {
     size: {

@@ -327,7 +327,10 @@ export declare type SpaceKeys = "padding" | "paddingHorizontal" | "paddingVertic
 export declare const mouseUps: Set<Function>;
 export declare type DefaultProps = {};
 export declare function createComponent<A extends Object = DefaultProps>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<A, void, StaticConfigParsed, any>;
-export declare const Spacer: StaticComponent<DefaultProps, void, StaticConfigParsed, any>;
+export declare const Spacer: StaticComponent<{
+	size?: number | undefined;
+	flex?: number | boolean | undefined;
+}, void, StaticConfigParsed, any>;
 export declare function spacedChildren({ children, space, flexDirection, }: {
 	children: any;
 	space?: any;
