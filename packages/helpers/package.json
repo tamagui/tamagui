@@ -14,7 +14,7 @@
     "watch": "esdx --watch"
   },
   "devDependencies": {
-    "@tamagui/esdx": "^0.6.1"
+    "@tamagui/esdx": "*"
   },
   "peerDependencies": {
     "react-native": "*"

@@ -37,7 +37,7 @@
     "@dish/testy": "*",
     "@expo/match-media": "^0.1.0",
     "@tamagui/core": "*",
-    "@tamagui/esdx": "^0.6.1",
+    "@tamagui/esdx": "*",
     "@types/jest": "*",
     "@types/node": "^14.14.12",
     "@types/react-native": "^0.64.2",
