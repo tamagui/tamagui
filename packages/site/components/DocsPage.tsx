@@ -144,17 +144,14 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               <YStack mb="$4">
                 <NavHeading>Community</NavHeading>
                 {/* <DocsRouteNavItem href="/blog">Blog</DocsRouteNavItem> */}
-                <DocsRouteNavItem href="https://github.com/tamagui/tamagui">
+                <DocsRouteNavItem href="https://github.com/tamagui/tamagui" external>
                   GitHub
-                  <ExternalIcon />
                 </DocsRouteNavItem>
-                <DocsRouteNavItem href="https://twitter.com/tamagui_dev">
+                <DocsRouteNavItem href="https://twitter.com/tamagui_dev" external>
                   Twitter
-                  <ExternalIcon />
                 </DocsRouteNavItem>
-                <DocsRouteNavItem href="https://discord.gg/uUtvv6GM">
+                <DocsRouteNavItem href="https://discord.gg/uUtvv6GM" external>
                   Discord
-                  <ExternalIcon />
                 </DocsRouteNavItem>
               </YStack>
 
@@ -271,9 +268,10 @@ type NavItemProps = {
   active?: boolean
   href: string
   pending?: boolean
+  external?: boolean
 }
 
-function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItemProps) {
+function DocsRouteNavItem({ children, active, href, pending, external, ...props }: NavItemProps) {
   const isExternal = href.startsWith('http')
 
   return (
@@ -295,16 +293,14 @@ function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItem
         }}
         userSelect="none"
         minHeight="$6"
+        space
+        pointerEvents={pending ? 'none' : 'auto'}
         {...(active && {
           backgroundColor: '$bg3',
           hoverStyle: {
             backgroundColor: '$bg3',
           },
         })}
-        // transition={'background-color 50ms linear'
-        // '&:hover': {
-        //   backgroundColor: active ? '$violet5' : '$violet4',
-        // }}
       >
         <Paragraph
           size="$2"
@@ -315,6 +311,7 @@ function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItem
         >
           {children}
         </Paragraph>
+        {!!external && <ExternalIcon />}
         {!!pending ? (
           <>
             <XStack flex={1} />

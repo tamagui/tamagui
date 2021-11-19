@@ -17,7 +17,6 @@
   - instead of any variant: { size: (x: typed) => {} } could be inferred? fully dynamic basically
 - createComponent move most hooks into dynamic loaded features, see useFeatures
   - pressable, responderEvents, layout, press events, usePlatformMethods
-- createComponent test re-renders with theme changes
 - onLayout
 - as={T} generic?
 - as={Animated.Text}

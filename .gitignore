@@ -2,7 +2,7 @@
 **/types/**/*.d.ts
 **/types/**/*.d.ts.map
 
-.yarn
+.yarn/cache
 .ultra.cache.json
 tmp
 *.tsbuildinfo

@@ -25,7 +25,10 @@ jobs:
           node-version: 16.x
 
       - name: install yarn
-        run: npm i yarn@latest -g
+        run: |
+          npm i yarn@latest -g
+          yarn set version latest
+          yarn --version
 
       - uses: c-hive/gha-yarn-cache@v2
 
