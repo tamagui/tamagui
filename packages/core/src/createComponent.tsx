@@ -260,20 +260,6 @@ export function createComponent<A extends Object = DefaultProps>(
       }
     }
 
-    //
-    // TODO
-    //
-    // all these press events can be moved into a component that optionally renders if shouldAttach is true
-    // and then calls back with props. this would do a few things:
-    //   1. isolate logic for all pseudo press/hover stuff into one area more nicely
-    //   2. a lot less hooks would be rendered on average
-    //   3. should then let us use usePressability on web (should make ViewComponent a View if string)
-    //
-    //
-    // see how framer motion does this:
-    //   https://github.com/framer/motion/blob/1d1eb5fd2bc712658a83a7881a3adb68ac56a242/src/motion/features/use-features.tsx#L16
-    //
-
     const attachPress = !!((pseudos && pseudos.pressStyle) || onPress || onPressOut || onPressIn)
     const attachHover =
       isWeb &&
@@ -543,11 +529,19 @@ export function spacedChildren({
     if (child === null || child === undefined) {
       continue
     }
+
     const key = `${child?.['key'] ?? index}`
     next.push(<Fragment key={key}>{child}</Fragment>)
+
+    // allows for custom visually hidden components that dont insert spacing
+    if (child?.['type']?.['isVisuallyHidden']) {
+      continue
+    }
+
     if (index === len - 1) {
       break
     }
+
     next.push(
       <Spacer
         key={`${key}_spacer`}
