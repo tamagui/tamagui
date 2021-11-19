@@ -38,7 +38,13 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
       <Container>
         <YStack ai="flex-start">
           <NextLink href="/blog" passHref>
-            <Button chromeless icon={<ArrowLeft size={12} />} tag="a" space="$2" ml="$-6">
+            <Button
+              chromeless
+              icon={<ArrowLeft color="var(--color3)" size={12} />}
+              tag="a"
+              space="$2"
+              ml="$-6"
+            >
               Blog
             </Button>
           </NextLink>

@@ -2,7 +2,7 @@ import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
 import NextLink from 'next/link'
 import React from 'react'
-import { Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
@@ -20,7 +20,7 @@ export function Header() {
       zi={1}
     >
       <NextLink href="/" passHref>
-        <YStack my={-20}>
+        <YStack cursor="pointer" tag="a" my={-20}>
           <VisuallyHidden>
             <Text>Tamagui homepage</Text>
           </VisuallyHidden>

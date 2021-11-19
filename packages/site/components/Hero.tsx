@@ -58,11 +58,11 @@ export function Hero() {
                     px={0}
                     maxWidth={550}
                     $gtSm={{
-                      px: 50,
+                      px: 80,
                       maxWidth: 900,
                     }}
                     $gtMd={{
-                      px: 90,
+                      px: 110,
                     }}
                   >
                     <Paragraph
@@ -75,8 +75,8 @@ export function Hero() {
                         ta: 'center',
                       }}
                     >
-                      React Native <em>and</em> Web UI + an optimizing compiler for themes, media
-                      queries and&nbsp;typed&nbsp;inline styles — share&nbsp;more code, get better
+                      React Native <em>and</em> Web UI kit + optimizing compiler with themes, media
+                      queries and&nbsp;typed&nbsp;inline styles — share&nbsp;more code with better
                       performance.
                     </Paragraph>
                   </YStack>
@@ -101,7 +101,10 @@ export function Hero() {
                   </NextLink>
                   <Button
                     chromeless
-                    themeInverse
+                    opacity={0.65}
+                    hoverStyle={{
+                      opacity: 1,
+                    }}
                     tag="a"
                     href="https://github.com/tamagui/tamagui"
                     target="_blank"
@@ -117,6 +120,14 @@ export function Hero() {
                   >
                     GitHub
                   </Button>
+
+                  <YStack $sm={{ display: 'none' }}>
+                    <NextLink href="/blog/introducing-tamagui" passHref>
+                      <Button theme="orange" br="$6">
+                        Alpha
+                      </Button>
+                    </NextLink>
+                  </YStack>
                 </XStack>
                 {/* </Theme> */}
               </YStack>
@@ -168,7 +179,7 @@ export function Hero() {
           flex={1}
           overflow="hidden"
           maxWidth="100%"
-          space="$6"
+          space="$8"
           flexWrap="nowrap"
           $sm={{ flexDirection: 'column' }}
         >
