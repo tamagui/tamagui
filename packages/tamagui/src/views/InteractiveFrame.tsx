@@ -42,6 +42,7 @@ export const InteractiveFrame = styled(XStack, {
         return {
           paddingHorizontal: px,
           paddingVertical: py,
+          borderRadius: py * 0.75,
         }
       },
     },
