@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const chokidar = require('chokidar')
 const exec = require('execa')
 const fs = require('fs-extra')
 const esbuild = require('esbuild')
@@ -177,6 +176,7 @@ if (watch) {
         }
       }
 
+      const chokidar = require('chokidar')
       chokidar
         // prevent infinite loop but cause race condition if you just build directly
         .watch(dir, {

@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha.0",
   "main": "index.js",
   "scripts": {
-    "build": "TAMAGUI_COMPILE_PROCESS=1 ttsc && yarn build:dist-to-cjs",
+    "build": "TAMAGUI_COMPILE_PROCESS=1 ttsc --skipLibCheck --skipDefaultLibCheck && yarn build:dist-to-cjs",
     "build:dist-to-cjs": "./build-cjs.sh",
     "watch": "TAMAGUI_COMPILE_PROCESS=1 ttsc --watch --preserveWatchOutput && yarn watch:dist-to-cjs",
     "watch:dist-to-cjs": "./build-cjs.sh --watch"
@@ -17,6 +17,8 @@
     "@tamagui/helpers": "^1.0.0-alpha.0"
   },
   "devDependencies": {
+    "@types/node": "*",
+    "@types/react": "*",
     "chokidar-cli": "^3.0.0",
     "esbuild": "^0.13.12",
     "ts-transform-import-path-rewrite": "^0.3.0",

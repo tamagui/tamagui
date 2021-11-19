@@ -27,18 +27,19 @@ jobs:
       - name: install yarn
         run: |
           npm i yarn -g
-          yarn set version latest
-          yarn --version
+          yarn set version stable
 
       # - uses: c-hive/gha-yarn-cache@v2
 
       - name: Install Dependencies
-        run: yarn install
+        run: |
+          yarn install
+          ls -la node_modules
 
-      - name: Build
+      - name: Build JS
         run: yarn build:js
 
-      - name: Build site
+      - name: Build Site
         run: |
           yarn --cwd packages/site next:build
           yarn --cwd packages/site next:export

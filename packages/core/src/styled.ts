@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
 import { StaticComponent, TamaguiConfig, Themes, Tokens } from './types'

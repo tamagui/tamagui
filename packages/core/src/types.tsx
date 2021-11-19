@@ -1,4 +1,4 @@
-import { RefObject } from 'react'
+import React, { RefObject } from 'react'
 import { TextProps as ReactTextProps, TextStyle } from 'react-native'
 import { GestureResponderEvent, View, ViewProps, ViewStyle } from 'react-native'
 
@@ -102,7 +102,7 @@ export type TamaguiInternalConfig<
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia
 > = CreateTamaguiConfig<A, B, C, D> & {
-  Provider: (props: TamaguiProviderProps) => JSX.Element
+  Provider: (props: TamaguiProviderProps) => any
   // with $ prefixes for fast lookups (one time cost at startup vs every render)
   themeParsed: { [key: string]: Variable }
   tokensParsed: CreateTokens<Variable>
