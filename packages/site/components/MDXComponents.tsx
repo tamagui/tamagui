@@ -1,4 +1,4 @@
-import { AlertCircle, AlertOctagon, AlertTriangle, Link } from '@tamagui/feather-icons'
+import { AlertCircle, AlertOctagon, AlertTriangle, HelpCircle, Link } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
@@ -69,19 +69,20 @@ export const components = {
           borderWidth={1}
           borderColor="$borderColor"
           p="$5"
+          py="$4"
           bc="$bg"
           br="$2"
-          mb="$4"
+          mb="$2"
           mt="$2"
           space="$3"
           {...props}
         >
           {/* TODO could unwrapText to get proper coloring */}
-          <Paragraph mt={-6} mb={-3} className="paragraph-parent" size="$4">
+          <Paragraph py="$1" color="$color2" mt={-3} mb={-3} className="paragraph-parent" size="$3">
             {children}
           </Paragraph>
-          <YStack my={-5} w={30} h={30} ai="center" jc="center" bc="$bg4" br={100}>
-            <AlertTriangle size={18} color="var(--yellow11)" />
+          <YStack ml="auto" mt={-2} w={30} h={30} ai="center" jc="center" bc="$bg4" br={100}>
+            <HelpCircle size={18} color="var(--yellow11)" />
           </YStack>
         </XStack>
       </Theme>
