@@ -4,7 +4,7 @@ import { H4, styled } from 'tamagui'
 
 export const NavHeading = styled(H4, {
   size: '$2',
-  px: '$5',
+  px: '$4',
   py: '$1',
   mb: '$2',
   my: '$2',

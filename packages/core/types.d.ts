@@ -74,7 +74,7 @@ export declare type ThemeName = keyof Themes;
 export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeKeyVariables = `$${ThemeKeys}`;
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia> = CreateTamaguiConfig<A, B, C, D> & {
-	Provider: (props: TamaguiProviderProps) => JSX.Element;
+	Provider: (props: TamaguiProviderProps) => any;
 	themeParsed: {
 		[key: string]: Variable;
 	};

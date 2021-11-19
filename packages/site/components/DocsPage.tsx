@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, StackProps, Theme, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, StackProps, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { ColorToggle, useTint } from './ColorToggle'
 import { Container } from './Container'
@@ -50,7 +50,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   }, [])
 
   return (
-    <DocsPageTheme key={isOpen}>
+    <DocsPageTheme key={`${isOpen}${currentPageId}`}>
       <YStack
         $gtSm={{
           flexDirection: 'row',
@@ -74,26 +74,12 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         >
           <ScrollView>
             <XStack ai="center" p="$4">
-              <NextLink href="/" passHref>
-                <YStack tag="a">
-                  <span
-                    className="clip-invisible"
-                    style={{
-                      position: 'absolute',
-                      width: 1,
-                      height: 1,
-                      padding: 0,
-                      margin: -1,
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                      border: 0,
-                    }}
-                  >
-                    Homepage
-                  </span>
-                  <LogoIcon downscale={2} />
-                </YStack>
-              </NextLink>
+              <Link href="/">
+                <VisuallyHidden>
+                  <Text>Homepage</Text>
+                </VisuallyHidden>
+                <LogoIcon downscale={2} />
+              </Link>
 
               <XStack space="$1" ml="auto">
                 <ColorToggle />
@@ -280,10 +266,9 @@ function DocsRouteNavItem({ children, active, href, pending, external, ...props 
         {...props}
         {...(isExternal ? { href, target: '_blank', rel: 'noopener noreferrer' } : {})}
         tag="a"
-        display="flex"
         ai="center"
         py="$1"
-        px="$5"
+        px="$4"
         opacity={pending ? 0.5 : 1}
         hoverStyle={{
           backgroundColor: '$bg3',
@@ -293,7 +278,6 @@ function DocsRouteNavItem({ children, active, href, pending, external, ...props 
         }}
         userSelect="none"
         minHeight="$6"
-        space
         pointerEvents={pending ? 'none' : 'auto'}
         {...(active && {
           backgroundColor: '$bg3',

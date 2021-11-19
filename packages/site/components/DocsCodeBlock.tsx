@@ -105,11 +105,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       )}
 
       {(!isCollapsed || !isCollapsible) && (
-        // TODO this ternary is being compiled backwards!
-        <YStack
-          position="relative"
-          //  {...(isCollapsible ? { top: '$2' } : { my: '$2' })}
-        >
+        <YStack position="relative">
           <Pre
             ref={preRef}
             data-invert-line-highlight={isHighlightingLines}
