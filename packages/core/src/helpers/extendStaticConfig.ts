@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { getTamaguiConfig } from '../createTamagui'
 import { Variable } from '../createVariable'
 import { StaticComponent, StaticConfig, StaticConfigParsed, TamaguiInternalConfig } from '../types'
