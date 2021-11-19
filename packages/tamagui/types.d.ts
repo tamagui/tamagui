@@ -811,7 +811,10 @@ export declare type SpaceKeys = "padding" | "paddingHorizontal" | "paddingVertic
 export declare const mouseUps: Set<Function>;
 export declare type DefaultProps = {};
 export declare function createComponent<A extends Object = DefaultProps>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<A, void, StaticConfigParsed, any>;
-export declare const Spacer: StaticComponent<DefaultProps, void, StaticConfigParsed, any>;
+export declare const Spacer: StaticComponent<{
+	size?: number | undefined;
+	flex?: number | boolean | undefined;
+}, void, StaticConfigParsed, any>;
 export declare function spacedChildren({ children, space, flexDirection, }: {
 	children: any;
 	space?: any;
@@ -910,9 +913,7 @@ export declare function styled<A extends StaticComponent | React.Component<any>,
 	variants?: StyledVariants;
 }): StaticComponent<GetProps<A> & (StyledVariants extends void ? {} : {
 	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
-}), StyledVariants extends void ? {} : {
-	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
-}, StaticConfigParsed, any>;
+}), any, StaticConfigParsed, any>;
 export declare const pseudos: {
 	focusStyle: {
 		name: string;
@@ -1119,9 +1120,7 @@ export declare const Box: import("@tamagui/core").StaticComponent<Omit<import("@
 	elevation?: `$${string}` | `$${number}` | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 declare const InteractiveFrame: import("@tamagui/core").StaticComponent<(Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1150,9 +1149,7 @@ declare const InteractiveFrame: import("@tamagui/core").StaticComponent<(Omit<im
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type InteractiveFrameProps = GetProps<typeof InteractiveFrame>;
 export declare type ButtonProps = InteractiveFrameProps & ThemeableProps & {
 	textProps?: Omit<TextProps, "children">;
@@ -1184,9 +1181,7 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<import
 	disabled?: boolean | undefined;
 } & {
 	size?: `$${string}` | `$${number}` | undefined;
-}, {
-	size?: `$${string}` | `$${number}` | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Separator: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1210,9 +1205,7 @@ export declare const Separator: import("@tamagui/core").StaticComponent<Omit<imp
 	disabled?: boolean | undefined;
 } & {
 	vertical?: boolean | undefined;
-}, {
-	vertical?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Form: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1236,15 +1229,9 @@ export declare const Form: import("@tamagui/core").StaticComponent<Omit<import("
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Input: import("@tamagui/core").StaticComponent<any, {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const TextArea: import("@tamagui/core").StaticComponent<any, {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Input: import("@tamagui/core").StaticComponent<any, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const TextArea: import("@tamagui/core").StaticComponent<any, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type GridProps = {
 	children?: any;
 	itemMinWidth?: number;
@@ -1324,9 +1311,7 @@ export declare const InteractiveContainer: import("@tamagui/core").StaticCompone
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Section: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1350,9 +1335,7 @@ export declare const Section: import("@tamagui/core").StaticComponent<Omit<impor
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Article: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1376,9 +1359,7 @@ export declare const Article: import("@tamagui/core").StaticComponent<Omit<impor
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Main: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1402,9 +1383,7 @@ export declare const Main: import("@tamagui/core").StaticComponent<Omit<import("
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Header: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1428,9 +1407,7 @@ export declare const Header: import("@tamagui/core").StaticComponent<Omit<import
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Aside: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1454,9 +1431,7 @@ export declare const Aside: import("@tamagui/core").StaticComponent<Omit<import(
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Footer: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1480,9 +1455,7 @@ export declare const Footer: import("@tamagui/core").StaticComponent<Omit<import
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Nav: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1506,9 +1479,7 @@ export declare const Nav: import("@tamagui/core").StaticComponent<Omit<import("@
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type NativeLinearGradientProps = React.ComponentProps<typeof View> & React.PropsWithChildren<{
 	colors: (number | string)[];
 	locations?: number[] | null;
@@ -1553,9 +1524,7 @@ export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<i
 	elevation?: `$${string}` | `$${number}` | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1572,9 +1541,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
 	textDecorationDistance?: number | undefined;
 } & {
 	size?: `$${string}` | `$${number}` | undefined;
-}, {
-	size?: `$${string}` | `$${number}` | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1593,9 +1560,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
 	size?: `$${string}` | `$${number}` | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type ParagraphProps = PropTypes<typeof Paragraph>;
 declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1673,10 +1638,7 @@ export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import
 } & {
 	fullscreen?: boolean | undefined;
 	elevation?: `$${string}` | `$${number}` | undefined;
-}, {
-	fullscreen?: boolean | undefined;
-	elevation?: `$${string}` | `$${number}` | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1703,9 +1665,7 @@ export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import
 	elevation?: `$${string}` | `$${number}` | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Table: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1729,9 +1689,7 @@ export declare const Table: import("@tamagui/core").StaticComponent<Omit<import(
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const TableRow: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1755,9 +1713,7 @@ export declare const TableRow: import("@tamagui/core").StaticComponent<Omit<impo
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const TableHead: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1781,9 +1737,7 @@ export declare const TableHead: import("@tamagui/core").StaticComponent<Omit<imp
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const TableHeadCell: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
 	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1807,9 +1761,7 @@ export declare const TableHeadCell: import("@tamagui/core").StaticComponent<Omit
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const TableHeadText: import("@tamagui/core").StaticComponent<Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1826,9 +1778,7 @@ export declare const TableHeadText: import("@tamagui/core").StaticComponent<Omit
 	textDecorationDistance?: number | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type TableCellProps = StackProps & TextProps;
 export declare const TableCell: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
 	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
@@ -1853,9 +1803,7 @@ export declare const TableCell: import("@tamagui/core").StaticComponent<Omit<imp
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const Title: import("@tamagui/core").StaticComponent<(Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1876,9 +1824,7 @@ export declare const Title: import("@tamagui/core").StaticComponent<(Omit<import
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const H1: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1901,9 +1847,7 @@ export declare const H1: import("@tamagui/core").StaticComponent<((Omit<import("
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const H2: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1926,9 +1870,7 @@ export declare const H2: import("@tamagui/core").StaticComponent<((Omit<import("
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const H3: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1951,9 +1893,7 @@ export declare const H3: import("@tamagui/core").StaticComponent<((Omit<import("
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const H4: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -1976,9 +1916,7 @@ export declare const H4: import("@tamagui/core").StaticComponent<((Omit<import("
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const H5: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -2001,9 +1939,7 @@ export declare const H5: import("@tamagui/core").StaticComponent<((Omit<import("
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const H6: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
 	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
 	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
@@ -2026,9 +1962,7 @@ export declare const H6: import("@tamagui/core").StaticComponent<((Omit<import("
 	[x: string]: string | number | undefined;
 })) & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type ToastOptions = {
 	duration?: number;
 	type?: "info" | "success" | "error";
@@ -2056,9 +1990,7 @@ export declare const EnsureFlexed: import("@tamagui/core").StaticComponent<Omit<
 	textDecorationDistance?: number | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type TooltipProps = Omit<HoverablePopoverProps, "trigger"> & {
 	contents?: string | any;
 	tooltipFrameProps?: Omit<StackProps, "children">;
@@ -2156,9 +2088,7 @@ export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omi
 	disabled?: boolean | undefined;
 } & ({} | {
 	[x: string]: string | number | undefined;
-}), {} | {
-	[x: string]: string | number | undefined;
-}, import("@tamagui/core").StaticConfigParsed, any>;
+}), any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const prevent: (e: any) => any[];
 export * from "@tamagui/helpers";
 export * from "@tamagui/core";

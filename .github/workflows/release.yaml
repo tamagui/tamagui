@@ -26,11 +26,11 @@ jobs:
 
       - name: install yarn
         run: |
-          npm i yarn@latest -g
+          npm i yarn -g
           yarn set version latest
           yarn --version
 
-      - uses: c-hive/gha-yarn-cache@v2
+      # - uses: c-hive/gha-yarn-cache@v2
 
       - name: Install Dependencies
         run: yarn install
