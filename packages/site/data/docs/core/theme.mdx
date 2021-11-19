@@ -85,3 +85,15 @@ export default () => {
 ```
 
 Notice we just use the name `pink`. Because theres no `pink` theme, the Theme component will automatically check if theres a theme that matches the pattern `[givenThemeName]-[parentThemeName]`, in this case `pink-dark`. This is really useful for things like having an `active` or `error` theme that match your parent theme styles.
+
+## Theme Inverse
+
+The `ThemeInverse` component is handy for flipping from light to dark without having to do manual logic with context.
+
+<HeroContainer>
+  <ThemeInverseDemo />
+</HeroContainer>
+
+```jsx hero template=ThemeInverse
+
+```
