@@ -1,29 +1,29 @@
-import React from 'react';
-import { Router } from 'next/router';
+import { Router } from 'next/router'
+import React from 'react'
 
 type WindowWithAnalytics = Window &
   typeof globalThis & {
-    gtag: any;
-  };
+    gtag: any
+  }
 
-const trackingID = 'UA-176995559-1';
+const trackingID = 'G-X86623DM17'
 
 export const useAnalytics = () => {
   React.useEffect(() => {
     const handleRouteChange = (url) => {
       if (process.env.NODE_ENV === 'production') {
-        (window as WindowWithAnalytics).gtag('config', trackingID, {
+        ;(window as WindowWithAnalytics).gtag('config', trackingID, {
           page_location: url,
           page_title: document.title,
-        });
+        })
       }
-    };
-    Router.events.on('routeChangeComplete', handleRouteChange);
-    return () => Router.events.off('routeChangeComplete', handleRouteChange);
-  }, []);
-};
+    }
+    Router.events.on('routeChangeComplete', handleRouteChange)
+    return () => Router.events.off('routeChangeComplete', handleRouteChange)
+  }, [])
+}
 
-export const gtagUrl = `https://www.googletagmanager.com/gtag/js?id=${trackingID}`;
+export const gtagUrl = `https://www.googletagmanager.com/gtag/js?id=${trackingID}`
 
 export function renderSnippet() {
   if (process.env.NODE_ENV === 'production') {
@@ -32,6 +32,6 @@ export function renderSnippet() {
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', '${trackingID}');
-    `;
+    `
   }
 }
