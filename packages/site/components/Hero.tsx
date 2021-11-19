@@ -82,6 +82,7 @@ export function Hero() {
                   </YStack>
                 </YStack>
 
+                {/* <Theme name="purple"> */}
                 <XStack jc="center" space>
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
@@ -100,6 +101,7 @@ export function Hero() {
                   </NextLink>
                   <Button
                     chromeless
+                    themeInverse
                     tag="a"
                     href="https://github.com/tamagui/tamagui"
                     target="_blank"
@@ -116,6 +118,7 @@ export function Hero() {
                     GitHub
                   </Button>
                 </XStack>
+                {/* </Theme> */}
               </YStack>
 
               <XStack
@@ -170,9 +173,11 @@ export function Hero() {
           $sm={{ flexDirection: 'column' }}
         >
           <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
-            <IconStack>
-              <Cpu size={20} color="var(--blue9)" />
-            </IconStack>
+            <Theme name="purple">
+              <IconStack>
+                <Cpu size={20} color="var(--color2)" />
+              </IconStack>
+            </Theme>
             <H3 size="$4" mb="$2">
               Performant
             </H3>
@@ -183,9 +188,11 @@ export function Hero() {
           </YStack>
 
           <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
-            <IconStack>
-              <Compass size={20} color="var(--blue9)" />
-            </IconStack>
+            <Theme name="green">
+              <IconStack>
+                <Compass size={20} color="var(--color2)" />
+              </IconStack>
+            </Theme>
             <H3 size="$4" mb="$2">
               Compatible
             </H3>
@@ -200,9 +207,11 @@ export function Hero() {
           </YStack>
 
           <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
-            <IconStack>
-              <Layers size={20} color="var(--blue9)" />
-            </IconStack>
+            <Theme name="pink">
+              <IconStack>
+                <Layers size={20} color="var(--color2)" />
+              </IconStack>
+            </Theme>
             <H3 size="$4" mb="$2">
               Intuitive
             </H3>
@@ -214,7 +223,7 @@ export function Hero() {
 
           {/* <YStack flexShrink={1}>
     <IconStack>
-      <FastForward size={20} color="var(--blue9)" />
+      <FastForward size={20} color="var(--color2)" />
     </IconStack>
     <H3 mb="$2">Native</H3>
     <Paragraph size="$3" color="$color3">

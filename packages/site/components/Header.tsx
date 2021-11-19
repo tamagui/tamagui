@@ -61,7 +61,7 @@ export function Header() {
             <VisuallyHidden>
               <Text>Github</Text>
             </VisuallyHidden>
-            <GithubIcon width={25} />
+            <GithubIcon width={23} />
           </YStack>
         </NextLink>
 
@@ -80,7 +80,7 @@ export function Header() {
             <VisuallyHidden>
               <Text>Discord</Text>
             </VisuallyHidden>
-            <DiscordIcon width={25} />
+            <DiscordIcon plain width={23} />
           </YStack>
         </NextLink>
         <ThemeToggle />
