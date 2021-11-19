@@ -3827,6 +3827,7 @@ __metadata:
     compare-versions: ^4.0.1
     copy-to-clipboard: ^3.3.1
     css-minimizer-webpack-plugin: ^3.1.1
+    date-fns: ^2.26.0
     glob: ^7.1.6
     gray-matter: ^4.0.2
     hast-util-to-html: ^7.1.2
@@ -7661,6 +7662,13 @@ __metadata:
     whatwg-mimetype: ^2.3.0
     whatwg-url: ^8.0.0
   checksum: 97caf828aac25e25e04ba6869db0f99c75e6859bb5b424ada28d3e7841941ebf08ddff3c1b1bb4585986bd507a5d54c2a716853ea6cb98af877400e637393e71
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^2.26.0":
+  version: 2.26.0
+  resolution: "date-fns@npm:2.26.0"
+  checksum: 49ad59bc788134a6552ef4e4af0d18792001c1ca0070d543de4f36aba5761058b6e6a57b8ca51dd3b0f07f3bd55376b8bc69602bd7940648ba3869c5253c6ae8
   languageName: node
   linkType: hard
 

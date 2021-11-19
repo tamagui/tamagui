@@ -11,6 +11,8 @@ export const Separator = styled(Stack, {
       true: {
         height: 'auto',
         width: 1,
+        alignSelf: 'stretch',
+        flex: 0,
       },
     },
   },

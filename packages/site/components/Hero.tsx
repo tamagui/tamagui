@@ -187,7 +187,7 @@ export function Hero() {
             <H3 size="$4" mb="$2">
               Performant
             </H3>
-            <Paragraph size="$3" color="$color4">
+            <Paragraph size="$3" color="$color3">
               Compiles inline styles to atomic CSS, media query styles and hooks into CSS, and theme
               hooks & tokens into CSS variables, even with conditional logic.
             </Paragraph>
@@ -200,7 +200,7 @@ export function Hero() {
             <H3 size="$4" mb="$2">
               Compatible
             </H3>
-            <Paragraph size="$3" color="$color4">
+            <Paragraph size="$3" color="$color3">
               Augments{' '}
               <Text tag="a" href="https://necolas.github.io/react-native-web/">
                 react-native-web
@@ -217,7 +217,7 @@ export function Hero() {
             <H3 size="$4" mb="$2">
               Intuitive
             </H3>
-            <Paragraph size="$3" color="$color4">
+            <Paragraph size="$3" color="$color3">
               Supports the incredible DX advances in design systems of late: themes, tokens,
               shorthands, media queries, and typed inline styles that just work.
             </Paragraph>

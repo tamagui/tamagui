@@ -8,10 +8,10 @@ export const Container = (props: StackProps) => {
       px="$4"
       width="100%"
       $gtSm={{
-        maxWidth: 780,
+        maxWidth: 720,
       }}
       $gtMd={{
-        maxWidth: 780,
+        maxWidth: 720,
       }}
       {...props}
     />

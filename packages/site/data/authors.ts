@@ -1,5 +1,5 @@
 export const authors = {
-  pedro: {
+  nate: {
     name: 'Nate Wienert',
     twitter: 'natebirdman',
     avatar: '',
