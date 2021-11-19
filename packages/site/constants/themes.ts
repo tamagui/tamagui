@@ -68,6 +68,7 @@ for (const key of colorKeys) {
     bg2: colorValues[`${colorName}${3 + offset}`],
     bg3: colorValues[`${colorName}${4 + offset}`],
     bg4: colorValues[`${colorName}${5 + offset}`],
+    bgTransparent: colorValues[`${colorName}${1 + offset}`],
     borderColor: colorValues[`${colorName}${4 + offset}`],
     borderColor2: colorValues[`${colorName}${5 + offset}`],
   }

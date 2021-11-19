@@ -269,12 +269,14 @@ function DocsRouteNavItem({ children, active, href, pending, external, ...props 
         ai="center"
         py="$1"
         px="$4"
-        opacity={pending ? 0.5 : 1}
+        opacity={pending ? 0.5 : 0.75}
         hoverStyle={{
-          backgroundColor: '$bg3',
+          backgroundColor: '$bg2',
+          opacity: 1,
         }}
         pressStyle={{
-          backgroundColor: '$bg2',
+          backgroundColor: '$bgTransparent',
+          opacity: 1,
         }}
         userSelect="none"
         minHeight="$6"
@@ -288,7 +290,7 @@ function DocsRouteNavItem({ children, active, href, pending, external, ...props 
       >
         <Paragraph
           size="$2"
-          color="$color4"
+          color="$color"
           {...(active && {
             color: '$color2',
           })}
