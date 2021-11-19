@@ -4,12 +4,15 @@ import {
   Stack,
   StackProps,
   StackStyleProps,
+  StaticComponent,
   TamaguiConfig,
   TamaguiStylesBase,
   TamaguiThemedStackStyleProps,
   ThemeKeyVariables,
   ThemeKeys,
   ThemeObject,
+  Themes,
+  Tokens,
   createTamagui,
   styled,
 } from '@tamagui/core'
@@ -67,29 +70,15 @@ export default config
 
 const YStack = styled(Stack, {
   variants: {
+    lala: {
+      test: {
+        x: 10,
+      },
+    },
     bg: {
       'ok wut': {
         backgroundColor: 'red',
       },
-    },
-  },
-})
-
-const ZStack = styled(Stack, {
-  variants: {
-    bg: {
-      alternate: {
-        backgroundColor: 'blue',
-      },
-    },
-    spread: {
-      '...size': (val) => ({ width: val }),
-    },
-    typed: {
-      '[number]': (val) => ({ height: val }),
-    },
-    specific: {
-      1: { height: 1 },
     },
   },
 })
@@ -111,10 +100,77 @@ export const x = () => {
         <div />
         <div />
       </YStack>
-      <ZStack bc="$bg" bg="ok wut" aok="err">
+      <ZStack spread="$10" bc="$bg" bg="alternate" aok="err" specific={1}>
         <div />
         <div />
       </ZStack>
     </>
   )
 }
+
+const ZStack = test(YStack, {
+  variants: {
+    bg: {
+      alternate: {
+        backgroundColor: 'blue',
+      },
+    },
+    spread: {
+      '...size': (val) => ({ width: val }),
+    },
+    // typed: {
+    //   '[number]': (val) => ({ height: val }),
+    // },
+    specific: {
+      1: { height: 1 },
+    },
+  },
+})
+
+export function test<
+  A extends StaticComponent | React.Component<any>,
+  StyledVariants extends void | {
+    [key: string]: {
+      [key: string]:
+        | Partial<GetProps<A>>
+        | ((
+            val: any,
+            config: {
+              tokens: TamaguiConfig['tokens']
+              theme: Themes extends { [key: string]: infer B } ? B : unknown
+            }
+          ) => Partial<GetProps<A>>)
+    }
+  }
+>(
+  Component: A,
+  options?: GetProps<A> & {
+    variants?: StyledVariants
+  }
+) {
+  // const config = extendStaticConfig(Component, staticConfigProps)
+  const component = 1 as any //createComponent(config!) // error is good here its on init
+  // type ParentVariants = A extends StaticComponent<any, infer Variants> ? Variants : {}
+
+  type VariantProps = StyledVariants extends void
+    ? {}
+    : {
+        [Key in keyof StyledVariants]?: keyof StyledVariants[Key] extends `...${infer VariantSpread}`
+          ? VariantSpread extends keyof Tokens
+            ? keyof Tokens[VariantSpread] extends string | number
+              ? `$${keyof Tokens[VariantSpread]}`
+              : unknown
+            : unknown
+          : keyof StyledVariants[Key] extends 'true'
+          ? boolean
+          : keyof StyledVariants[Key]
+      }
+
+  return component as StaticComponent<GetProps<A> & VariantProps, VariantProps>
+}
+
+export type GetProps<A> = A extends StaticComponent<infer Props>
+  ? Props
+  : A extends React.Component<infer Props>
+  ? Props
+  : {}

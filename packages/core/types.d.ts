@@ -428,9 +428,9 @@ export declare function styled<A extends StaticComponent | React.Component<any>,
 }>(Component: A, options?: GetProps<A> & {
 	variants?: StyledVariants;
 }): StaticComponent<GetProps<A> & (StyledVariants extends void ? {} : {
-	[key in keyof StyledVariants]?: (keyof StyledVariants[keyof StyledVariants] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] : unknown : keyof StyledVariants[keyof StyledVariants] extends "true" ? boolean : keyof StyledVariants[keyof StyledVariants]) | undefined;
+	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
 }), StyledVariants extends void ? {} : {
-	[key in keyof StyledVariants]?: (keyof StyledVariants[keyof StyledVariants] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] : unknown : keyof StyledVariants[keyof StyledVariants] extends "true" ? boolean : keyof StyledVariants[keyof StyledVariants]) | undefined;
+	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
 }, StaticConfigParsed, any>;
 export declare const pseudos: {
 	focusStyle: {

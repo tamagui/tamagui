@@ -41,18 +41,19 @@ export function styled<
 
   type ParentVariants = A extends StaticComponent<any, infer Variants> ? Variants : {}
 
-  type VariantProps = StyledVariants extends void //ParentVariants &
+  type VariantProps = StyledVariants extends void
     ? {}
     : {
         // ensure variants actually defined
-        [key in keyof StyledVariants]?: keyof StyledVariants[keyof StyledVariants] extends  //   : //   ? boolean // keyof Variants[keyof Variants] extends 'true'
-        `...${infer VariantSpread}`
+        [Key in keyof StyledVariants]?: keyof StyledVariants[Key] extends `...${infer VariantSpread}`
           ? VariantSpread extends keyof Tokens
-            ? keyof Tokens[VariantSpread]
+            ? keyof Tokens[VariantSpread] extends string | number
+              ? `$${keyof Tokens[VariantSpread]}`
+              : unknown
             : unknown
-          : keyof StyledVariants[keyof StyledVariants] extends 'true'
+          : keyof StyledVariants[Key] extends 'true'
           ? boolean
-          : keyof StyledVariants[keyof StyledVariants]
+          : keyof StyledVariants[Key]
       }
 
   return component as StaticComponent<
