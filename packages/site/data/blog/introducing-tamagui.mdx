@@ -1,7 +1,7 @@
 ---
 title: Introducing Tamagui
 publishedAt: '2020-09-01'
-description: A better base layer for building apps that span across many platforms
+description: A better base layer for building cross-platform apps
 by: nate
 # relatedIds:
 #   - 'tamagui-alpha'
@@ -15,17 +15,27 @@ Tamagui takes the next steps towards truly universal styling for React apps.
 
 It was born to allow us to **share more code between native and web**, and do so with all the modern styling features we've grown love from themes to variants to typed inline styles.
 
-We love inline styles, and being able to share components across platforms. But today, both have problems: they sacrifice performance, oftentimes dramatically so. On native, it's due to inline or dynamic styling requiring a lot of extra JavaScript at runtime. On web, it's the same, but even worse as you aren't using the platform-native primitives like CSS media queries and themes.
+We love inline styles and sharing components across platforms. Today, both have problems: they sacrifice performance, oftentimes dramatically so. On native, it's due to inline or dynamic styling requiring a lot of extra JavaScript at runtime. On web, it's that, but the additional lack of using platform-native primitives like CSS media queries and themes.
 
-Tamagui attempts to solve these problems. It's three things:
+Tamagui tackles these problems. It's three things:
 
-- A **design system library** that provides fast primitives for inline styles _as well as_ hooks - even for media queries and themes - that work the same on native as they do web.
-- A **UI kit** that builds on that library with easy to use universal components.
-- An **optimizing compiler** that outputs faster code, tailored to each platform.
+### Design System Builder
+
+`@tamagui/core` provides fast primitives for inline styles _as well as_ hooks - even for media queries and themes - that work the same on native as they do web.
+
+### Universal UI Kit
+
+A batteries-included UI Kit that builds on core with easy to use universal components.
+
+### Optimizing compiler
+
+Works with both, outputs faster code, flatter trees, and optimized styling for each platform.
 
 ---
 
-We built Tamagui hand-in-hand with a large app that needed to have a great experience on both web and native. As a small team, being able to share as much code as possible between the platforms has many upsides.
+## Why
+
+We're building Tamagui hand-in-hand with an app that needs to have a great experience on both web and native. As a small team, being able to share as much code as possible between the platforms has many upsides.
 
 Tamagui began as a fork of [JSXStyle](https://github.com/jsxstyle/jsxstyle), rebuilt to support [React Native Web](https://necolas.github.io/react-native-web/). We added basic support for [useMedia](/docs/core/useMedia) first, which let us share responsive components between web and native. Eventually, [useTheme](/docs/core/useMedia) was added when we added a dark mode.
 
@@ -38,6 +48,8 @@ So, over the last month, I set out to modernize Tamagui. And I'm happy to announ
 A big thanks is owed to the creators of both JSXStyle (for the compiler) and [Stitches](https://stitches.dev) (for inspiration on tokens and variants, and the bones of this website).
 
 ---
+
+## Going forward
 
 Tamagui is an ambitious project and still early in its life, but we've been using it for a couple years now and feel its ready to get out into the world.
 

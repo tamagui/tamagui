@@ -1,5 +1,6 @@
 import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
+import { ExternalLink } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import React from 'react'
 import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
@@ -56,33 +57,14 @@ export function Header() {
           </Paragraph>
         </NextLink>
 
-        <NextLink href="https://github.com/tamagui/tamagui" passHref>
-          <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
-            <VisuallyHidden>
-              <Text>Github</Text>
-            </VisuallyHidden>
-            <GithubIcon width={23} />
+        <NextLink href="/blog/introducing-tamagui" passHref>
+          <YStack tag="a" mx={-5} $sm={{ display: 'none' }}>
+            <Button theme="orange" br="$6">
+              Alpha
+            </Button>
           </YStack>
         </NextLink>
 
-        <NextLink
-          href="https://discord.gg/uUtvv6GM"
-          passHref
-          // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
-        >
-          <YStack
-            $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
-            opacity={0.65}
-            hoverStyle={{ opacity: 1 }}
-            tag="a"
-            target="_blank"
-          >
-            <VisuallyHidden>
-              <Text>Discord</Text>
-            </VisuallyHidden>
-            <DiscordIcon plain width={23} />
-          </YStack>
-        </NextLink>
         <ThemeToggle />
       </XStack>
     </XStack>
