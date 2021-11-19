@@ -64,8 +64,8 @@ export function Hero() {
                       my: -10,
                     }}
                   >
-                    <span className="universal">Universal</span> React interfaces that optimize for
-                    every platform
+                    <span className="universal">Universal</span> React design systems that optimize
+                    to every platform
                   </Title>
 
                   <YStack
