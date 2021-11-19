@@ -13643,7 +13643,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdx-bundler@npm:^7.0.0":
+"mdx-bundler@npm:7.0.0":
   version: 7.0.0
   resolution: "mdx-bundler@npm:7.0.0"
   dependencies:
@@ -13658,6 +13658,24 @@ __metadata:
   peerDependencies:
     esbuild: 0.11.x || 0.12.x || 0.13.x
   checksum: a6e2aed54e2d9b78ddf0bbd0cfda84dfe84946a14e3ea0e6b22a3c8c611f1c88267866580dc8403e10909d855f719bb014934dba8ca3c1b739d2d679aa96442a
+  languageName: node
+  linkType: hard
+
+"mdx-bundler@patch:mdx-bundler@7.0.0#patches/mdx-bundler.patch::locator=tamagui-monorepo%40workspace%3A.":
+  version: 7.0.0
+  resolution: "mdx-bundler@patch:mdx-bundler@npm%3A7.0.0#patches/mdx-bundler.patch::version=7.0.0&hash=f6ec3b&locator=tamagui-monorepo%40workspace%3A."
+  dependencies:
+    "@babel/runtime": ^7.15.4
+    "@esbuild-plugins/node-resolve": ^0.1.4
+    "@fal-works/esbuild-plugin-global-externals": ^2.1.2
+    gray-matter: ^4.0.3
+    remark-frontmatter: ^4.0.1
+    remark-mdx-frontmatter: ^1.0.1
+    uuid: ^8.3.2
+    xdm: ^3.2.0
+  peerDependencies:
+    esbuild: 0.11.x || 0.12.x || 0.13.x
+  checksum: 6f45ac514ad3efd02afd04597c9c9a24dd90de00fe44c11a813832d9f4f7deb607d955ce0b3e669dbb62afb9381aba749117fe224a671f0691abfe442bbaf368
   languageName: node
   linkType: hard
 

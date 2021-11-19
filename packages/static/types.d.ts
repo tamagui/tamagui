@@ -2,7 +2,6 @@
 
 /// <reference types="babel__traverse" />
 /// <reference types="node" />
-/// <reference types="react-native" />
 
 import * as t from '@babel/types';
 
@@ -75,12 +74,6 @@ export declare type ThemeProviderProps = {
 	disableRootThemeClass?: boolean;
 	children?: any;
 };
-export declare type TamaguiStylesBase = Omit<ViewStyle, "display" | "backfaceVisibility"> & TransformStyleProps & {
-	cursor?: string;
-	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
-	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
-};
-export declare type StyleKeys = keyof TamaguiStylesBase;
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {
@@ -98,9 +91,7 @@ export declare type GenericThemes = {
 		shadowColor2: string | Variable;
 	};
 };
-export declare type GenericShorthands<VK extends string = string> = {
-	[key in VK]: StyleKeys;
-};
+export declare type GenericShorthands = {};
 export declare type GenericMedia<K extends string = string> = {
 	[key in K]: {
 		[key: string]: number | string;
@@ -150,21 +141,6 @@ export interface CreateTokens<Val extends number | string | Variable = number | 
 		[key: string]: Val;
 	};
 }
-export declare type TransformStyleProps = {
-	x?: number;
-	y?: number;
-	perspective?: number;
-	scale?: number;
-	scaleX?: number;
-	scaleY?: number;
-	skewX?: string;
-	skewY?: string;
-	matrix?: number[];
-	rotate?: string;
-	rotateY?: string;
-	rotateX?: string;
-	rotateZ?: string;
-};
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, "children">> & {
 	initialWindowMetrics?: any;
 	fallback?: any;
@@ -187,7 +163,7 @@ export declare function createExtractor(): {
 			shadowColor: string | import("@tamagui/core").Variable;
 			shadowColor2: string | import("@tamagui/core").Variable;
 		};
-	}, import("@tamagui/core").GenericShorthands<string>, {
+	}, {}, {
 		[x: string]: {
 			[key: string]: string | number;
 		};

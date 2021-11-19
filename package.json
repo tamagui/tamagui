@@ -24,6 +24,7 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true"
   },
   "resolutions": {
+    "mdx-bundler": "patch:mdx-bundler@7.0.0#patches/mdx-bundler.patch",
     "react-native": "0.0.0",
     "@types/node": "16.11.6",
     "@types/react-native": "0.66.3",
