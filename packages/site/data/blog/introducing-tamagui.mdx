@@ -9,17 +9,17 @@ by: nate
 
 <Image title="Layout tools image" src="/blog/introducing-tamagui/hero.png" size="hero" />
 
-Tamagui makes a few baby steps forward for styling React apps.
+Tamagui takes the next steps towards truly universal styling for React apps.
 
-It was born to allow us to share more code between native and web, and do so with all the modern styling features we've grown love from themes to typed inline styles.
+It was born to allow us to **share more code between native and web**, and do so with all the modern styling features we've grown love from themes to variants to typed inline styles.
 
-Unfortunately, both inline styles and sharing code across platforms have problems — both sacrifice performance, oftentimes dramatically so, as they require running significantly more JavaScript in critically important areas. Plus, they don't output to platform-friendly (and fast) primitives like CSS media queries and themes.
+We love inline styles, and being able to share components across platforms. But today, both have problems: they sacrifice performance, oftentimes dramatically so. On native, it's due to inline or dynamic styling requiring a lot of extra JavaScript at runtime. On web, it's the same, but even worse as you aren't using the platform-native primitives like CSS media queries and themes.
 
-Tamagui was born to resolve this. It's really three things:
+Tamagui attempts to solve these problems. It's three things:
 
-- A **design system utility library** with props and hooks for media queries and themes that work the same across native and web.
-- A higher-level **UI kit** built on top of that library.
-- A **smart optimizing compiler** that outputs faster code, tailored to each platform.
+- A **design system library** that provides fast primitives for inline styles _as well as_ hooks - even for media queries and themes - that work the same on native as they do web.
+- A **UI kit** that builds on that library with easy to use universal components.
+- An **optimizing compiler** that outputs faster code, tailored to each platform.
 
 ---
 
