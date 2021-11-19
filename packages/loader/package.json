@@ -20,7 +20,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@tamagui/esdx": "^0.6.1"
+    "@tamagui/esdx": "*"
   },
   "publishConfig": {
     "access": "public"

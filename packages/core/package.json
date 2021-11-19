@@ -19,7 +19,7 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/esdx": "^0.6.1",
+    "@tamagui/esdx": "*",
     "esbuild": "^0.11.20",
     "typescript": "^4.4.4"
   },

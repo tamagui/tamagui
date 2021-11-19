@@ -17,15 +17,11 @@
     "build": "yarn build:js && yarn build:types",
     "build:js": "SKIP_TYPES=1 ultra -r --no-pretty --concurrency 100 --rebuild",
     "build:types": "SKIP_JS=1 ultra -r --no-pretty --concurrency 100 --rebuild",
-    "changeset": "changeset --",
-    "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
     "watch": "ultra -r --no-pretty --concurrency 100 watch",
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "ultra -r --no-pretty --serial test",
-    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
-    "ci:version": "changeset version && ultra -r --no-pretty yarn upgrade @tamagui",
-    "ci:release": "ultra -r --no-pretty npm publish"
+    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true"
   },
   "resolutions": {
     "react-native": "0.0.0",
@@ -46,9 +42,6 @@
     "@testing-library/react": "13.0.0-alpha.1"
   },
   "devDependencies": {
-    "@changesets/assemble-release-plan": "^5.0.2",
-    "@changesets/cli": "^2.18.0",
-    "changesets-github-release": "^0.0.4",
     "esbuild": "^0.13.12",
     "esbuild-jest": "^0.5.0",
     "import-sort-style-module": "^6.0.0",
