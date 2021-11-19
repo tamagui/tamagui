@@ -1,4 +1,4 @@
-import { AlertCircle, Link } from '@tamagui/feather-icons'
+import { AlertCircle, AlertOctagon, AlertTriangle, Link } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
@@ -14,6 +14,7 @@ import {
   Separator,
   StackProps,
   Text,
+  Theme,
   XStack,
   YStack,
 } from 'tamagui'
@@ -62,31 +63,43 @@ export const components = {
 
   Notice: ({ children, ...props }) => {
     return (
-      <XStack px="$4" py="$5" bc="$yellow2" br="$2" mb="$4" mt="$2" {...props}>
-        <YStack my={-5} w={30} h={30} ai="center" jc="center" bc="$yellow5" br={100} mr="$3">
-          <AlertCircle size={16} color="var(--yellow10)" />
-        </YStack>
-        {/* TODO could unwrapText to get proper coloring */}
-        <Paragraph mt={-6} mb={-3} className="paragraph-parent" size="$4" color="$yellow12">
-          {children}
-        </Paragraph>
-      </XStack>
+      <Theme name="yellow">
+        <XStack
+          borderWidth={1}
+          borderColor="$borderColor"
+          p="$5"
+          bc="$bg"
+          br="$2"
+          mb="$4"
+          mt="$2"
+          space="$3"
+          {...props}
+        >
+          {/* TODO could unwrapText to get proper coloring */}
+          <Paragraph mt={-6} mb={-3} className="paragraph-parent" size="$4">
+            {children}
+          </Paragraph>
+          <YStack my={-5} w={30} h={30} ai="center" jc="center" bc="$bg4" br={100}>
+            <AlertTriangle size={18} color="var(--yellow11)" />
+          </YStack>
+        </XStack>
+      </Theme>
     )
   },
 
-  h1: (props) => <H1 letterSpacing={-1} {...props} mb="$2" />,
+  h1: (props) => <H1 letterSpacing={-1} mb="$2" {...props} />,
 
   h2: ({ children, id, ...props }) => (
-    <LinkHeading id={id} mt="$6">
-      <H2 size="$8" letterSpacing={-0.5} {...props} id={id} data-heading>
+    <LinkHeading mt="$4" id={id}>
+      <H2 size="$8" letterSpacing={-0.5} id={id} data-heading {...props}>
         {children}
       </H2>
     </LinkHeading>
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading id={id} mt="$6">
-      <H3 {...props} fontFamily="$body" id={id} data-heading>
+    <LinkHeading mt="$5" id={id}>
+      <H3 fontFamily="$body" id={id} data-heading {...props}>
         {children}
       </H3>
     </LinkHeading>
