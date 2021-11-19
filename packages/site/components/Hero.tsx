@@ -202,7 +202,7 @@ export function Hero() {
             </H3>
             <Paragraph size="$3" color="$color4">
               Augments{' '}
-              <Text tag="a" href="http://google.com">
+              <Text tag="a" href="https://necolas.github.io/react-native-web/">
                 react-native-web
               </Text>
               , reducing overhead for faster running apps. Build your own design system or use our

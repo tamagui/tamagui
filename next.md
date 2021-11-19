@@ -9,8 +9,6 @@
   - shorthands
   - change theme
 
-
-- site google analytics
 - escape hatch for html props `htmlProps` ?
 - optimize regular styled() usage
 - add: dev mode can add data-is to properties if you want
