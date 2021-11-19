@@ -114,7 +114,6 @@ export const AnimatedStack = ({
   const childrenMemo = useMemo(() => children, [children])
 
   return (
-    // @ts-ignore
     <Stack animated={animated} {...props} {...animatedProps}>
       {childrenMemo}
     </Stack>

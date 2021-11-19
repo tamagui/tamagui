@@ -14,8 +14,6 @@ import { prevent } from '../helpers/prevent'
 import { useDebounceValue } from '../hooks/useDebounce'
 import { YStack } from './Stacks'
 
-// TODO if we add `closableButton` prop we can control exit animation nicely
-
 export type ModalProps = Omit<ModalPropsReact, 'children'> &
   AnimatedStackProps & {
     visible?: boolean
@@ -131,9 +129,9 @@ export const Modal = (props: ModalProps) => {
                 animation,
               }}
             >
-              <ModalPane onPress={prevent} pointerEvents={pointerEvents} {...rest}>
+              <ModalYStack onPress={prevent} pointerEvents={pointerEvents} {...rest}>
                 {finalChildren}
-              </ModalPane>
+              </ModalYStack>
             </AnimatedStack>
           </YStack>
         </Theme>
@@ -152,8 +150,7 @@ export const Modal = (props: ModalProps) => {
   )
 }
 
-// could be Box
-const ModalPane = styled(YStack, {
+export const ModalYStack = styled(YStack, {
   backgroundColor: '$bg',
   borderRadius: 12,
   alignItems: 'center',

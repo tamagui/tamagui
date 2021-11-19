@@ -45,6 +45,7 @@ export function BlurView({
   ...props
 }: BlurViewProps) {
   return (
+    // @ts-ignore
     <YStack position="relative" borderRadius={borderRadius} {...props}>
       <div
         // fallback for safari but non customizable

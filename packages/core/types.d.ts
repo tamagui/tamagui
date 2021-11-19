@@ -26,12 +26,11 @@ export declare type ThemeProviderProps = {
 };
 export declare const GET_DEFAULT_THEME = "___TGUI";
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
-export declare type TamaguiStylesBase = Omit<ViewStyle, "display" | "backfaceVisibility"> & TransformStyleProps & {
+export declare type TamaguiStylesBase = Omit<ViewStyle, "display" | "backfaceVisibility" | "elevation"> & TransformStyleProps & {
 	cursor?: string;
 	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
 	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
 };
-export declare type StyleKeys = keyof TamaguiStylesBase;
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {
@@ -49,9 +48,7 @@ export declare type GenericThemes = {
 		shadowColor2: string | Variable;
 	};
 };
-export declare type GenericShorthands<VK extends string = string> = {
-	[key in VK]: StyleKeys;
-};
+export declare type GenericShorthands = {};
 export declare type GenericMedia<K extends string = string> = {
 	[key in K]: {
 		[key: string]: number | string;
@@ -366,7 +363,7 @@ export declare const getTamaguiConfig: () => TamaguiInternalConfig<CreateTokens,
 		shadowColor: string | Variable;
 		shadowColor2: string | Variable;
 	};
-}, GenericShorthands, {
+}, {}, {
 	[x: string]: {
 		[key: string]: string | number;
 	};
