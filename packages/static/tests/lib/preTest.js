@@ -9,7 +9,7 @@ const outFileWebpack = 'out-webpack.js'
 module.exports = async function main() {
   await Promise.all([
     //
-    // extractStaticAppBabel(),
+    extractStaticAppBabel(),
     extractStaticWebpackApp(),
   ])
   process.env.IS_STATIC = undefined
@@ -115,6 +115,8 @@ async function extractStaticWebpackApp() {
             {
               loader: require.resolve('tamagui-loader'),
               options: {
+                config: './tests/lib/tamagui.config.js',
+                components: ['tamagui'],
                 importsWhitelist: ['constants.js'],
               },
             },

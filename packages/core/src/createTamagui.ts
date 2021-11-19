@@ -134,6 +134,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   const next: TamaguiInternalConfig = {
+    // @ts-ignore
+    shorthands: {},
     ...config,
     Provider: createTamaguiProvider({
       defaultTheme: 'light',
