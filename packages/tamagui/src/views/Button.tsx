@@ -1,13 +1,11 @@
-import { Text, TextProps, ThemeableProps, themeable } from '@tamagui/core'
+import { TextProps, ThemeableProps, themeable } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 
 import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
+import { SizableText } from './Paragraph'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['keep']
-
-// TODO wrap with paragraph not text
-// TODO size="" that affects text as well...
 
 export type ButtonProps = InteractiveFrameProps &
   ThemeableProps & {
@@ -16,10 +14,6 @@ export type ButtonProps = InteractiveFrameProps &
     icon?: JSX.Element | null
     iconAfter?: JSX.Element | null
   }
-
-// NOTE can't use TouchableOpacity, it captures and stops propagation of click events
-// which is really important for composability.
-// we could maybe add a "touchOpacity" boolean or similar for switching to opacity mode
 
 export const Button = InteractiveFrame.extractable(
   themeable(
@@ -34,31 +28,33 @@ export const Button = InteractiveFrame.extractable(
           noTextWrap,
           elevation,
           theme: themeName,
+          // TODO
+          size,
           ...props
         }: ButtonProps,
         ref
       ) => {
         return (
-          <InteractiveFrame space={space} ref={ref as any} {...props}>
+          <InteractiveFrame size={size} space={space} ref={ref as any} {...props}>
             {icon}
             {noTextWrap ? (
               children
             ) : !children ? null : textProps ? (
               // flex shrink = 1, flex grow = 0 makes buttons shrink properly in native
-              <Text
+              <SizableText
                 color="$color2"
-                fontSize="$4"
                 flexGrow={0}
                 flexShrink={1}
                 ellipse
+                size={size}
                 {...textProps}
               >
                 {children}
-              </Text>
+              </SizableText>
             ) : (
-              <Text color="$color2" fontSize="$4" flexGrow={0} flexShrink={1} ellipse>
+              <SizableText size={size} color="$color2" flexGrow={0} flexShrink={1} ellipse>
                 {children}
-              </Text>
+              </SizableText>
             )}
             {iconAfter}
           </InteractiveFrame>

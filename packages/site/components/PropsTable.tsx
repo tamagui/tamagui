@@ -1,7 +1,7 @@
 // import { AccessibleIcon } from '@tamagui/feather-icons'
 import { Minus } from '@tamagui/feather-icons'
 import React from 'react'
-import { Paragraph, XStack, YStack, styled } from 'tamagui'
+import { Paragraph, Theme, XStack, YStack, styled } from 'tamagui'
 
 import { Code } from './Code'
 import { RegionTable } from './RegionTable'
@@ -102,11 +102,13 @@ export function PropsTable({
             {description && (
               <tr>
                 <td colSpan={2}>
-                  <YStack p="$2">
-                    <Paragraph size="$2" color="$color2">
-                      {description}
-                    </Paragraph>
-                  </YStack>
+                  <Theme name="gray">
+                    <YStack p="$2">
+                      <Paragraph size="$2" color="$color2">
+                        {description}
+                      </Paragraph>
+                    </YStack>
+                  </Theme>
                 </td>
               </tr>
             )}

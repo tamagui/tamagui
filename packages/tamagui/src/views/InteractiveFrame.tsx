@@ -1,4 +1,4 @@
-import { GetProps } from '@tamagui/core'
+import { GetProps, Variable } from '@tamagui/core'
 import { styled } from '@tamagui/core'
 
 import { XStack } from './Stacks'
@@ -36,10 +36,12 @@ export const InteractiveFrame = styled(XStack, {
     size: {
       '...size': (val, { tokens }) => {
         const sizeIndex = Object.keys(tokens.size).indexOf(val)
-        const oneSmaller = tokens.size[sizeIndex - 1] ?? tokens.size[val] ?? val
+        const size = tokens.size[sizeIndex] ?? tokens.size[val] ?? val
+        const px = Math.round(+(size instanceof Variable ? size.val : size) * 0.7)
+        const py = Math.round(+(size instanceof Variable ? size.val : size) * 0.3)
         return {
-          paddingHorizontal: tokens.size[val] ?? val,
-          paddingVertical: oneSmaller,
+          paddingHorizontal: px,
+          paddingVertical: py,
         }
       },
     },
@@ -53,16 +55,19 @@ export const InteractiveFrame = styled(XStack, {
         },
       },
     },
+
     active: {
       true: {
         backgroundColor: '$bg3',
       },
     },
+
     transparent: {
       true: {
         backgroundColor: 'transparent',
       },
     },
+
     chromeless: {
       true: {
         backgroundColor: 'transparent',

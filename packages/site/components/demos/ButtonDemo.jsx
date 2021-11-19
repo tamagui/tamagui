@@ -5,23 +5,26 @@ export function ButtonDemo() {
   return (
     <XStack space>
       <Theme name="dark">
-        <Buttons />
+        <Buttons ai="flex-end" />
       </Theme>
       <Theme name="light">
-        <Buttons />
+        <Buttons ai="flex-start" />
       </Theme>
     </XStack>
   )
 }
 
-function Buttons() {
+function Buttons(props) {
   return (
-    <YStack bc="$bg" p="$3" br="$3" space>
+    <YStack elevation="$6" w={160} bc="$bg" p="$2" br="$2" space="$1" {...props}>
       <Button>Plain</Button>
       <Button theme="active">Active</Button>
       <Theme name="yellow">
-        <Button>Yellow</Button>
+        <Button size="$6">Large</Button>
       </Theme>
+      <Button size="$3">Small</Button>
+      <Button disabled>Disabled</Button>
+      <Button chromeless>Chromeless</Button>
     </YStack>
   )
 }

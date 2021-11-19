@@ -18,9 +18,10 @@ name: text
 
 <Highlights
   features={[
-    'Accepts a theme prop to easily render custom buttons.',
-    'Places icons and wraps text.',
-    'Default styles for: disabled, active, chromeless.',
+    'Accepts theme and themeInverse props.',
+    'Accepts size props to scale up and down.',
+    'Places icons and ensures text is styled.',
+    'Custom styles for disabled, active, chromeless.',
   ]}
 />
 
@@ -44,6 +45,12 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
 
 <PropsTable
   data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'string | tokens.size',
+      description: `Set a size, number or one of the size token values.`,
+    },
     {
       name: 'theme',
       required: false,
