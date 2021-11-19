@@ -17,7 +17,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           'react-native-web/dist/cjs/modules/normalizeColor'
         ),
         // fix mdx-bundler issue importing .js specifically
-        'react/jsx-runtime.js': require.resolve('react/jsx-runtime'),
+        // 'react/jsx-runtime.js': require.resolve('react/jsx-runtime'),
         'react/jsx-runtime': require.resolve('react/jsx-runtime'),
         'react/jsx-dev-runtime': require.resolve('react/jsx-dev-runtime'),
         react: require.resolve('react'),
