@@ -39,7 +39,7 @@ export function styled<
   const config = extendStaticConfig(Component, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
 
-  type ParentVariants = A extends StaticComponent<any, infer Variants> ? Variants : {}
+  // type ParentVariants = A extends StaticComponent<any, infer Variants> ? Variants : {}
 
   type VariantProps = StyledVariants extends void
     ? {}
@@ -57,8 +57,9 @@ export function styled<
       }
 
   return component as StaticComponent<
-    GetProps<A> & VariantProps,
-    VariantProps
+    GetProps<A> & VariantProps
+    // adding this one causes infinite type recursion after a couple styled() exntesions
+    // VariantProps
     // typeof config,
     // ParentVariants
   >

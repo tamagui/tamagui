@@ -67,7 +67,7 @@ export function QuickNav() {
             Quick nav
           </H4>
 
-          <ul style={{ marginTop: 10, margin: 0, padding: 0 }}>
+          <ul style={{ paddingTop: 10, margin: 0, padding: 0 }}>
             {/* loading ... {headings.length === 0 && (
               <YStack tag="li">
                 <QuickNavLink>

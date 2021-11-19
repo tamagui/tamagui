@@ -429,9 +429,7 @@ export declare function styled<A extends StaticComponent | React.Component<any>,
 	variants?: StyledVariants;
 }): StaticComponent<GetProps<A> & (StyledVariants extends void ? {} : {
 	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
-}), StyledVariants extends void ? {} : {
-	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
-}, StaticConfigParsed, any>;
+}), any, StaticConfigParsed, any>;
 export declare const pseudos: {
 	focusStyle: {
 		name: string;
