@@ -18,7 +18,7 @@ const ROOT_PATH = process.cwd()
 export const DATA_PATH = path.join(ROOT_PATH, 'data')
 
 // the front matter and content of all mdx files based on `docsPaths`
-export const getAllFrontmatter = (fromPath) => {
+export const getAllFrontmatter = (fromPath: string) => {
   const PATH = path.join(DATA_PATH, fromPath)
   const paths = glob.sync(`${PATH}/**/*.mdx`)
   return paths

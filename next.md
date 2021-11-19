@@ -1,3 +1,5 @@
+- basic styled() extraction => work liek props => <YStack />
+- space => gap?
 - fix parent variant types
 - [number] (test Text numberOfLines)
 - get both expo + next.js loading

@@ -53,6 +53,12 @@ export function Header() {
       </XStack>
 
       <XStack pointerEvents="auto" tag="nav" ai="center" space="$5">
+        <NextLink href="/blog" passHref>
+          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
+            Blog
+          </Paragraph>
+        </NextLink>
+
         <NextLink href="/docs/intro/installation" passHref>
           <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
             Docs
@@ -77,7 +83,13 @@ export function Header() {
           passHref
           // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
         >
-          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
+          <Paragraph
+            $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -10 }}
+            size="$3"
+            opacity={0.5}
+            hoverStyle={{ opacity: 1 }}
+            tag="a"
+          >
             Discord
           </Paragraph>
         </NextLink>

@@ -1,17 +1,6 @@
 import { FastForward, Plus } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
-import {
-  Button,
-  H2,
-  H4,
-  InteractiveContainer,
-  Paragraph,
-  Stack,
-  Text,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H2, H4, InteractiveContainer, Paragraph, XStack, YStack } from 'tamagui'
 
 import { CodeDemo } from './CodeDemo'
 import { ContainerLarge } from './Container'
@@ -91,7 +80,7 @@ export function HeroExample() {
       <YStack zi={1} space="$6">
         <H2 als="center">Examples</H2>
 
-        <InteractiveContainer mt={-5} als="center">
+        <InteractiveContainer mt={-15} als="center">
           {examples.map((example, i) => {
             return (
               <Button

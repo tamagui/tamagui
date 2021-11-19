@@ -17,6 +17,7 @@ import {
   Theme,
   XStack,
   YStack,
+  styled,
 } from 'tamagui'
 
 import { Frontmatter } from '../types/frontmatter'
@@ -226,15 +227,15 @@ export const components = {
 
   Image: ({ children, size, ...props }) => (
     <YStack tag="figure" mx={0} mb="$3">
-      {/* <OffsetBox size={size}> */}
-      <img
-        {...props}
-        style={{
-          maxWidth: '100%',
-          verticalAlign: 'middle',
-        }}
-      />
-      {/* </OffsetBox> */}
+      <OffsetBox size={size}>
+        <img
+          {...props}
+          style={{
+            maxWidth: '100%',
+            verticalAlign: 'middle',
+          }}
+        />
+      </OffsetBox>
       <Text tag="figcaption" lineHeight={23} color="$color3" mt="$2">
         {children}
       </Text>
@@ -354,26 +355,9 @@ export const components = {
   },
 }
 
-const OffsetBox = Box
-// styled('div', {
-//   variants: {
-//     size: {
-//       wide: {
-//         mx: '-$5',
-//         '@bp4': { mx: '-$8' },
-//       },
-//       hero: {
-//         mx: '-35px',
-//         '@bp2': {
-//           mx: '-90px',
-//         },
-//         '@bp3': {
-//           mx: '-166px',
-//         },
-//       },
-//     },
-//   },
-// });
+const OffsetBox = (props: StackProps) => {
+  return <YStack $gtSm={{ mx: '$-5' }} $gtMd={{ mx: '$-10' }} {...props} />
+}
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & StackProps) => (
   <XStack
