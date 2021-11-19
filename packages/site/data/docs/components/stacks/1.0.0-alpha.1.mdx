@@ -74,3 +74,28 @@ export default () => (
   </XStack>
 )
 ```
+
+## Props
+
+Beyond the [Tamagui Props](/docs/intro/props), stacks have two variants
+
+<PropsTable
+  data={[
+    {
+      name: 'fullscreen',
+      required: false,
+      type: 'boolean',
+      description: <span>Sets position: absolute, top: 0, left: 0, right: 0, bottom: 0.</span>,
+    },
+    {
+      name: 'elevation',
+      required: false,
+      type: 'number | tokens.size',
+      description: (
+        <span>
+          Sets a natural looking shadow that expands out and away as the size gets bigger.
+        </span>
+      ),
+    },
+  ]}
+/>

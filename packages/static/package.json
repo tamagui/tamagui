@@ -10,8 +10,8 @@
     "src"
   ],
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx --watch",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "test": "NODE_ENV=test TAMAGUI_COMPILE_PROCESS=1 jest --forceExit",
     "test:debug": "NODE_ENV=test TAMAGUI_COMPILE_PROCESS=1 DEBUG_FILE=extract-specs.tsx DEBUG=1 yarn test",
     "test:watch": "NODE_ENV=test TAMAGUI_COMPILE_PROCESS=1 yarn test --watch",
@@ -36,10 +36,10 @@
     "@dish/react-test-env": "^0.0.9",
     "@dish/testy": "*",
     "@expo/match-media": "^0.1.0",
+    "@tamagui/build": "^1.0.0-alpha.0",
     "@tamagui/core": "^1.0.0-alpha.0",
-    "@tamagui/esdx": "^1.0.0-alpha.0",
     "@types/jest": "*",
-    "@types/node": "^14.14.12",
+    "@types/node": "^16.11.9",
     "@types/react-native": "^0.64.2",
     "@types/webpack": "^4.41.26",
     "babel-literal-to-ast": "^2.1.0",

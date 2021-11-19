@@ -81,7 +81,7 @@ async function build() {
                     platform: 'neutral',
                   })
                   .then(() => {
-                    console.log('built commonjs')
+                    console.log(' >-> commonjs')
                   })
               : null,
             // dont bundle for tree shaking
@@ -100,7 +100,7 @@ async function build() {
                     platform: 'neutral',
                   })
                   .then(() => {
-                    console.log('built esm')
+                    console.log(' >-> esm')
                   })
               : null,
             jsx
@@ -120,7 +120,7 @@ async function build() {
                     platform: 'neutral',
                   })
                   .then(() => {
-                    console.log('built jsx')
+                    console.log(' >-> jsx')
                   })
               : null,
           ]),

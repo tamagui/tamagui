@@ -34,7 +34,6 @@ jobs:
       - name: Install Dependencies
         run: |
           yarn install
-          ls -la node_modules
 
       - name: Build JS
         run: yarn build:js

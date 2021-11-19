@@ -10,8 +10,8 @@
     "src"
   ],
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx --watch"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
   },
   "dependencies": {
     "@tamagui/static": "^1.0.0-alpha.0",
@@ -20,7 +20,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@tamagui/esdx": "^1.0.0-alpha.0"
+    "@tamagui/build": "^1.0.0-alpha.0"
   },
   "publishConfig": {
     "access": "public"

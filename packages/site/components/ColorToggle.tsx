@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonProps, Circle, YStack } from 'tamagui'
 
-const colors = ['pink', 'blue', 'green', 'red', 'orange', 'violet', 'purple']
+const colors = ['blue', 'pink', 'green', 'red', 'orange', 'violet', 'purple']
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
 // const tint = tintVal ? +tintVal 0

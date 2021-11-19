@@ -26,8 +26,8 @@ const light = {
   color2: tokens.color.gray11,
   color3: tokens.color.gray10,
   color4: tokens.color.gray6,
-  shadowColor: tokens.color.grayA4,
-  shadowColor2: tokens.color.grayA6,
+  shadowColor: tokens.color.grayA9,
+  shadowColor2: tokens.color.grayA10,
   ...lightColors,
 }
 
@@ -43,8 +43,8 @@ const dark = {
   color2: tokens.color.gray11Dark,
   color3: tokens.color.gray10Dark,
   color4: tokens.color.gray6Dark,
-  shadowColor: '#00000055',
-  shadowColor2: '#00000099',
+  shadowColor: tokens.color.grayA10,
+  shadowColor2: tokens.color.grayA11,
   ...darkColors,
 }
 

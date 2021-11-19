@@ -152,7 +152,7 @@ ul, ol, li, pre { margin: 0; }
 }
 
 .token.tag, .token.class-name, .token.selector, .token.selector .class, .token.function {
-  color: var(--violet11);
+  color: var(--color2);
 }
 
 .token.attr-value, .token.class, .token.string, .token.number, .token.unit, .token.color {
@@ -164,7 +164,7 @@ ul, ol, li, pre { margin: 0; }
 }
 
 .token.punctuation, .token.module, .token.property {
-  color: var(--purple11);
+  color: var(--pink11);
 }
 
 .token.comment {

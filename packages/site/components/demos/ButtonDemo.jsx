@@ -17,10 +17,10 @@ export function ButtonDemo() {
 function Buttons() {
   return (
     <YStack bc="$bg" p="$3" br="$3" space>
-      <Button>Dark</Button>
-      <Button theme="active">Active dark</Button>
+      <Button>Plain</Button>
+      <Button theme="active">Active</Button>
       <Theme name="yellow">
-        <Button>Yellow dark</Button>
+        <Button>Yellow</Button>
       </Theme>
     </YStack>
   )

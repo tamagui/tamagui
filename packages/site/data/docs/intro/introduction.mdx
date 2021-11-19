@@ -9,17 +9,15 @@ Tamagui is a light layer above React Native / React Native Web, it augments rath
 - **Themes** — that also avoid running JS
 - **Inline styles** — that extract at compile-time out of render
 
-Today, you can't really share code between Native and Web without resorting to doing media queries, themes and styles generally in JavaScript. But on the web, this is especially slow.
+Today, you can't share code between Native and Web without resorting to doing media queries, themes and styles in JavaScript, which slows critical areas down and makes things generally clunky enough that it makes sense to write them separately.
 
-Many of these components could be easily shared if not for this limitation. So Tamagui works backwards from ideal syntax - both an inline style syntax as well as hooks - and then on the web generates [CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) when possible, which are designed for this purpose and are very fast.
-
-The Tamagui compiler goes further and flattens what would have been a `View` or `Text` into a plain `div` or `span`, flattening your tree.
+Tamagui works backwards from ideal syntax - both inline styles and hooks - and then on the web generates [CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) when possible. On native it extracts everything to StyleSheet.create. This makes everything fast. The compiler goes further and flattens what would have been a `View` or `Text` into a plain `div` or `span` when possible, further helping performance.
 
 <Image alt="Tamagui logo with a purple and blue gradient" src="/docs-intro.svg" />
 
 ### React Native ❤️
 
-Work with your two favorite libraries: `react-native` and `react-native-web`. Tamagui improves their typical performance by introducing the compiler - especially with media queries, themes, and dynamic styles.
+Work with your favorite libraries: `react-native` and `react-native-web`. Tamagui improves typical performance with an optimizing compiler - especially with media queries, themes, and dynamic styles.
 
 ### Themed, Responsive
 
@@ -27,7 +25,7 @@ Hooks `useTheme` and `useMedia` and inline theme and media styling work just how
 
 ### Faster Runtime
 
-Not just no prop interpolation on the base views you define, but no prop interpolation on inline styles and dynamic styles. Even with complex logical styling you get less runtime, light CSS output, and flatter component trees. CSS media queries and variables are dramatically faster than JS ones.
+Not just 0 prop interpolation, but 0 prop interpolation on inline styles and dynamic styles. Even with complex logical styling you get less runtime, light CSS output, and flatter component trees. Plus CSS media queries and CSS variables run much faster than JS ones.
 
 ### Less Runtime
 
@@ -47,7 +45,7 @@ Tamagui supports cross-browser server-side rendering ([see how we do it with nex
 
 Define your own [tokens](/docs/intro/configuration) and seamlessly apply them as CSS values. CSS Properties are automatically mapped to token scales. Tokens can even be used in shorthand CSS properties.
 
-### Theming
+### Themes
 
 Tamagui provides a simple [theming](/docs/intro/themes) experience out of the box. Create as many themes as you need, and apply them wherever you want. Each theme generates a CSS class name which overrides the default tokens.
 
@@ -55,7 +53,7 @@ Tamagui provides a simple [theming](/docs/intro/themes) experience out of the bo
 
 [Shorthands](/docs/intro/configuration#shorthands) allow you to map shorthand properties to their longer cousins. This lets you create Tailwinds-like quick properties to style. These work with TypeScript as well, and are designed so you can bring them with you across different tamagui component kits.
 
-### Media Queries
+### Responsive
 
 Tamagui lets you configure [media queries](/docs/core/use-media) and apply variants responsively using `$` props.
 
