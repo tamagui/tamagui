@@ -13,27 +13,45 @@ by: nate
 
 Tamagui takes the next steps towards truly universal styling for React apps.
 
-It was born to allow us to **share more code between native and web**, and do so with all the modern styling features we've grown love from themes to variants to typed inline styles.
+It was born to allow **sharing more code between native and web components** — with all the [modern styling features we've grown love](/docs/intro/introduction).
 
-We love inline styles and sharing components across platforms. Today, both have problems: they sacrifice performance, oftentimes dramatically so. On native, it's due to inline or dynamic styling requiring a lot of extra JavaScript at runtime. On web, it's that, but the additional lack of using platform-native primitives like CSS media queries and themes.
+Until today, sharing code between native and web has had some big downsides, especially with inline styling, responsive styling and themes.
 
-Tamagui tackles these problems. It's three things:
+The biggest downside is a large performance hit if you leave styles inline or use hooks for themes/responsivity. It ends up running much more time- and memory-hungry operations in JavaScript — on the web, critically, on the same thead as the rest of your UI. This causes major issues with jank, and limitations rendering deeper trees.
 
-### Design System Builder
+Tamagui tackles these problems with an optimizing compiler. It enables:
 
-`@tamagui/core` provides fast primitives for inline styles _as well as_ hooks - even for media queries and themes - that work the same on native as they do web.
+### Inline styles without overhead
 
-### Universal UI Kit
+An optimizing compiler extracts almost all styles you write, even if they're inside conditional ternaries or spread objects. It pulls them out of your JS bundle and into atomic CSS.
 
-A batteries-included UI Kit that builds on core with easy to use universal components.
+### Fast responsive styles
 
-### Optimizing compiler
+Use hooks and inline responsive styling props without worry, again even with ternaries or other logical operations interspersed, and get clean CSS media queries extracted. On native, your render function will have less work while still allowing you to enjoy the terser style syntax and `useMedia` hook.
 
-Works with both, outputs faster code, flatter trees, and optimized styling for each platform.
+### Native themes
+
+Use powerful themes that extract on the web to CSS variables, leaving your tree clear of large amounts of objects.
 
 ---
 
-## Why
+Tamagui is three things:
+
+### Core: Create your Design System
+
+[@tamagui/core](/docs/core/styled) provides fast primitives for inline styles _as well as_ hooks - even for media queries and themes - that work the same on native as they do web.
+
+### Tamagui: Universal UI Kit
+
+[tamagui](/docs/components/stacks) is a batteries-included UI Kit that builds on core with easy-to-use universal components.
+
+### Static: Optimizing compiler
+
+`@tamagui/static` works with both of the above (with webpack and babel). It outputs faster code, flattens your trees, and tunes your styles perfectly to each platform.
+
+---
+
+## History
 
 We're building Tamagui hand-in-hand with an app that needs to have a great experience on both web and native. As a small team, being able to share as much code as possible between the platforms has many upsides.
 
