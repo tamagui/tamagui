@@ -11,9 +11,23 @@ import { ArrowRight, Check, Compass, Copy, Cpu, ExternalLink, Layers } from '@ta
 import copy from 'copy-to-clipboard'
 import NextLink from 'next/link'
 import React from 'react'
-import { Button, H3, Paragraph, Spacer, Text, Theme, Title, Tooltip, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H3,
+  Paragraph,
+  Spacer,
+  Text,
+  Theme,
+  Title,
+  Tooltip,
+  VisuallyHidden,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { ContainerLarge } from './Container'
+import { DiscordIcon } from './DiscordIcon'
+import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
 import { IconStack } from './IconStack'
 
@@ -83,9 +97,10 @@ export function Hero() {
                 </YStack>
 
                 {/* <Theme name="purple"> */}
-                <XStack jc="center" space>
+                <XStack ai="center" jc="center" space="$6">
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
+                      // theme="green"
                       // TODO check why hoverStyle not overriding
                       // backgroundColor="$bg3"
                       // hoverStyle={{
@@ -99,35 +114,34 @@ export function Hero() {
                       Documentation
                     </Button>
                   </NextLink>
-                  <Button
-                    chromeless
-                    opacity={0.65}
-                    hoverStyle={{
-                      opacity: 1,
-                    }}
-                    tag="a"
-                    href="https://github.com/tamagui/tamagui"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    borderRadius={1000}
-                    iconAfter={
-                      <ExternalLink
-                        color="var(--color2)"
-                        style={{ marginLeft: 4, opacity: 0.5 }}
-                        size={12}
-                      />
-                    }
-                  >
-                    GitHub
-                  </Button>
 
-                  <YStack $sm={{ display: 'none' }}>
-                    <NextLink href="/blog/introducing-tamagui" passHref>
-                      <Button theme="orange" br="$6">
-                        Alpha
-                      </Button>
-                    </NextLink>
-                  </YStack>
+                  <NextLink href="https://github.com/tamagui/tamagui" passHref>
+                    <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+                      <VisuallyHidden>
+                        <Text>Github</Text>
+                      </VisuallyHidden>
+                      <GithubIcon width={23} />
+                    </YStack>
+                  </NextLink>
+
+                  <NextLink
+                    href="https://discord.gg/uUtvv6GM"
+                    passHref
+                    // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
+                  >
+                    <YStack
+                      $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
+                      opacity={0.65}
+                      hoverStyle={{ opacity: 1 }}
+                      tag="a"
+                      target="_blank"
+                    >
+                      <VisuallyHidden>
+                        <Text>Discord</Text>
+                      </VisuallyHidden>
+                      <DiscordIcon plain width={23} />
+                    </YStack>
+                  </NextLink>
                 </XStack>
                 {/* </Theme> */}
               </YStack>
