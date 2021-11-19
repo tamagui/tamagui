@@ -86,6 +86,8 @@ export default () => {
 
 Notice we just use the name `pink`. Because theres no `pink` theme, the Theme component will automatically check if theres a theme that matches the pattern `[givenThemeName]-[parentThemeName]`, in this case `pink-dark`. This is really useful for things like having an `active` or `error` theme that match your parent theme styles.
 
+---
+
 ## Theme Inverse
 
 The `ThemeInverse` component is handy for flipping from light to dark without having to do manual logic with context.
@@ -97,3 +99,14 @@ The `ThemeInverse` component is handy for flipping from light to dark without ha
 ```jsx hero template=ThemeInverse
 
 ```
+
+---
+
+## themeable()
+
+The `themable` helper function is a "higher order component" that wraps any React component definition and adds two props:
+
+- `theme` for changing the theme on that component and its children
+- `themeInverse` which wraps the component with `<ThemeInverse>`
+
+It's used for example on [Button](/docs/component/button).
