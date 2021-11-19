@@ -80,7 +80,7 @@ export function HeroExample() {
       <YStack zi={1} space="$6">
         <H2 als="center">Examples</H2>
 
-        <InteractiveContainer mt={-15} als="center">
+        <InteractiveContainer mt={-10} als="center">
           {examples.map((example, i) => {
             return (
               <Button

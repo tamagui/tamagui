@@ -88,7 +88,9 @@ export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 // themes
-export type ThemeName = keyof Themes
+export type ThemeName = keyof Themes extends `${infer Prefix}-light`
+  ? Prefix | keyof Themes
+  : keyof Themes
 export type ThemeKeys = keyof ThemeObject
 export type ThemeKeyVariables = `$${ThemeKeys}`
 // export type Spaces = TamaguiConfig['tokens']['spaces'][keyof TamaguiConfig['tokens']['spaces']]

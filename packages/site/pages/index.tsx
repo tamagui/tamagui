@@ -15,7 +15,7 @@ export default function Home() {
       <YStack>
         <YStack space="$8">
           <Hero />
-          <YStack space="$8" $sm={{ display: 'none' }}>
+          <YStack space="$7" $sm={{ display: 'none' }}>
             <Divider />
             <HeroExample />
           </YStack>
