@@ -38,18 +38,18 @@ Let's name our package `@ourapp/components`:
     "@tamagui/core": "1.0.0-alpha.1"
   },
   "scripts": {
-    "build": "esdx --jsx",
-    "watch": "esdx --jsx --watch"
+    "build": "tamagui-build --jsx",
+    "watch": "tamagui-build --jsx --watch"
   },
   "devDependencies": {
-    "@tamagui/esdx": "*"
+    "@tamagui/build": "*"
   }
 }
 ```
 
 There are a few things to note here:
 
-- We're using `@tamagui/esdx` to build this package, which is a small script built around `esbuild` and `rollup-plugin-flat-dts` that makes sure you output your components _with JSX preserved_ into `./_jsx`.
+- We're using `@tamagui/build` to build this package, which is a small script built around `esbuild` and `rollup-plugin-flat-dts` that makes sure you output your components _with JSX preserved_ into `./_jsx`.
 - We then set `module:jsx`, which then needs to be added to your webpack `resolve.mainFields`.
   - The Next.js plugin handles this for you automatically.
 - `sideEffects` is important: otherwise webpack will remove the generated CSS in production.

@@ -355,8 +355,16 @@ export const components = {
   },
 }
 
-const OffsetBox = (props: StackProps) => {
-  return <YStack $gtSm={{ mx: '$-5' }} $gtMd={{ mx: '$-10' }} {...props} />
+const OffsetBox = (props: StackProps & { size?: 'hero' }) => {
+  return (
+    <YStack
+      {...(props.size === 'hero' && {
+        $gtSm: { mx: '$-5' },
+        $gtMd: { mx: '$-10' },
+      })}
+      {...props}
+    />
+  )
 }
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & StackProps) => (

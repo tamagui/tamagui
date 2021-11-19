@@ -2,7 +2,10 @@ import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
 import NextLink from 'next/link'
 import React from 'react'
-import { Paragraph, Text, XStack, YStack } from 'tamagui'
+import { Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+
+import { DiscordIcon } from './DiscordIcon'
+import { GithubIcon } from './GithubIcon'
 
 export function Header() {
   return (
@@ -18,21 +21,9 @@ export function Header() {
     >
       <NextLink href="/" passHref>
         <YStack my={-20}>
-          <Text
-            className="clip-invisible"
-            display="flex"
-            position="absolute"
-            width={1}
-            height={1}
-            padding={0}
-            color="$color2"
-            margin={-1}
-            overflow="hidden"
-            whiteSpace="nowrap"
-            borderWidth={0}
-          >
-            Tamagui homepage
-          </Text>
+          <VisuallyHidden>
+            <Text>Tamagui homepage</Text>
+          </VisuallyHidden>
 
           <TamaguiLogo />
         </YStack>
@@ -52,46 +43,45 @@ export function Header() {
         <LogoWords />
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav" ai="center" space="$5">
+      <XStack pointerEvents="auto" tag="nav" ai="center" space="$6">
+        <NextLink href="/docs/intro/installation" passHref>
+          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
+            Docs
+          </Paragraph>
+        </NextLink>
+
         <NextLink href="/blog" passHref>
           <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
             Blog
           </Paragraph>
         </NextLink>
 
-        <NextLink href="/docs/intro/installation" passHref>
-          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
-            Docs
-          </Paragraph>
-        </NextLink>
-        {/* <NextLink href="/blog" passHref>
-          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }}>Blog</Paragraph>
-        </NextLink> */}
         <NextLink href="https://github.com/tamagui/tamagui" passHref>
-          <Paragraph
-            size="$3"
-            opacity={0.5}
-            hoverStyle={{ opacity: 1 }}
-            tag="a"
-            $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -10 }}
-          >
-            GitHub
-          </Paragraph>
+          <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+            <VisuallyHidden>
+              <Text>Github</Text>
+            </VisuallyHidden>
+            <GithubIcon width={25} />
+          </YStack>
         </NextLink>
+
         <NextLink
           href="https://discord.gg/uUtvv6GM"
           passHref
           // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
         >
-          <Paragraph
-            $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -10 }}
-            size="$3"
-            opacity={0.5}
+          <YStack
+            $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
+            opacity={0.65}
             hoverStyle={{ opacity: 1 }}
             tag="a"
+            target="_blank"
           >
-            Discord
-          </Paragraph>
+            <VisuallyHidden>
+              <Text>Discord</Text>
+            </VisuallyHidden>
+            <DiscordIcon width={25} />
+          </YStack>
         </NextLink>
         <ThemeToggle />
       </XStack>

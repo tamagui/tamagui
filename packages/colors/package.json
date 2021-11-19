@@ -6,11 +6,11 @@
   "module": "dist/index.js",
   "typings": "types.d.ts",
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx --watch"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
   },
   "devDependencies": {
-    "@tamagui/esdx": "^1.0.0-alpha.0"
+    "@tamagui/build": "^1.0.0-alpha.0"
   },
   "engines": {
     "node": ">=16"

@@ -14,8 +14,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx --watch"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
   },
   "devDependencies": {
     "@babel/generator": "*",
@@ -23,7 +23,7 @@
     "@babel/template": "*",
     "@babel/traverse": "*",
     "@babel/types": "*",
-    "@tamagui/esdx": "^1.0.0-alpha.0",
+    "@tamagui/build": "^1.0.0-alpha.0",
     "@tamagui/static": "^1.0.0-alpha.0"
   },
   "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"

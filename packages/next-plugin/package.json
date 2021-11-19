@@ -10,12 +10,12 @@
     "src"
   ],
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx --watch"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
   },
   "license": "MIT",
   "devDependencies": {
-    "@tamagui/esdx": "^1.0.0-alpha.0",
+    "@tamagui/build": "^1.0.0-alpha.0",
     "@tamagui/static": "^1.0.0-alpha.0",
     "css-minimizer-webpack-plugin": "^3.1.3",
     "esbuild-loader": "^2.16.0",

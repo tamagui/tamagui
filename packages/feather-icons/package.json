@@ -11,8 +11,8 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "esdx",
-    "watch": "esdx --watch",
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
     "generate": "node ./bin/build"
   },
   "license": "MIT",
@@ -22,7 +22,7 @@
     "react-native-svg": "^12.1.1"
   },
   "devDependencies": {
-    "@tamagui/esdx": "^1.0.0-alpha.0",
+    "@tamagui/build": "^1.0.0-alpha.0",
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
     "feather-icons": "^4.28.0",
