@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "0.18.3",
+  "version": "1.0.0-alpha.0",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -14,7 +14,7 @@
     "watch": "esdx --watch"
   },
   "devDependencies": {
-    "@tamagui/esdx": "*"
+    "@tamagui/esdx": "^1.0.0-alpha.0"
   },
   "peerDependencies": {
     "react-native": "*"

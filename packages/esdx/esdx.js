@@ -12,6 +12,7 @@ const skipJS = process.env.SKIP_JS || false
 const skipTypes = process.argv.includes('skip-types') || process.env.SKIP_TYPES
 const jsx = process.argv.includes('--jsx')
 const watch = process.argv.includes('--watch')
+const legacy = process.argv.includes('legacy')
 
 const pkg = fs.readJSONSync('./package.json')
 const pkgSource = pkg.source || 'src/index.ts'
@@ -32,31 +33,27 @@ async function build() {
   async function buildTsc() {
     if (process.env.JS_ONLY || skipTypes) return
     try {
-      await exec(
-        'npx',
-        // was going super slow... --no-check for now..?
-        ['dts-bundle-generator', watch ? '--no-check' : [], '-o', 'types.d.ts', pkgSource].flat()
-      )
+      if (legacy) {
+        await exec('npx', [
+          'tsc',
+          '--declaration',
+          '--emitDeclarationOnly',
+          '--declarationMap',
+          '--declarationDir',
+          'types',
+        ])
+      } else {
+        await exec(
+          'npx',
+          // was going super slow... --no-check for now..?
+          ['dts-bundle-generator', watch ? '--no-check' : [], '-o', 'types.d.ts', pkgSource].flat()
+        )
+      }
     } catch (err) {
       console.log('Errors during tsc build, may be ok')
       console.log(err.message.replace(ignoreSkipLibCheckOutputRNNodeConflicting, ''))
     }
   }
-
-  // prevent lots of builds when all watching
-  // const buildInfoPath = `./dist/.buildinfo`
-  // try {
-  //   const prev = await fs.readJSON(buildInfoPath)
-  //   if (prev && typeof prev.at === 'number') {
-  //     if (Date.now() - prev.at < 100) {
-  //       console.log('just built, skip')
-  //     }
-  //     return
-  //   }
-  // } catch (err) {
-  //   console.log('err', err)
-  // }
-  // await fs.writeJSON(buildInfoPath, { at: Date.now() })
 
   const externalPlugin = createExternalPlugin({
     skipNodeModulesBundle: true,

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "0.18.3",
+  "version": "1.0.0-alpha.0",
   "main": "index.js",
   "scripts": {
     "build": "TAMAGUI_COMPILE_PROCESS=1 ttsc && yarn build:dist-to-cjs",
@@ -14,7 +14,7 @@
     ]
   },
   "dependencies": {
-    "@tamagui/helpers": "^0.18.3"
+    "@tamagui/helpers": "^1.0.0-alpha.0"
   },
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
