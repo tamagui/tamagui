@@ -8,7 +8,7 @@ import { ThemeProviderProps } from './views/ThemeProvider'
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
-export type TamaguiStylesBase = Omit<ViewStyle, 'display' | 'backfaceVisibility'> &
+export type TamaguiStylesBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
   TransformStyleProps & {
     cursor?: string
     contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
@@ -37,10 +37,7 @@ type GenericThemes = {
     shadowColor2: string | Variable
   }
 }
-export type GenericShorthands<VK extends string = string> = {
-  [key in VK]: StyleKeys
-  // text: { [key in TK]: StyleKeys }
-}
+type GenericShorthands = {}
 type GenericMedia<K extends string = string> = {
   // name => media shorthand name (camelCase) => value
   [key in K]: {
@@ -244,8 +241,6 @@ export type StackProps = Omit<RNWInternalProps, 'children'> &
     className?: string
     disabled?: boolean
   }
-
-// type x = StackProps['children']
 
 //
 // Text props

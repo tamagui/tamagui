@@ -8,8 +8,6 @@ export const VisuallyHidden = styled(Stack, {
   zIndex: -10000,
   overflow: 'hidden',
   opacity: 0.0001,
-  whiteSpace: 'nowrap',
-  wordWrap: 'normal',
   pointerEvents: 'none',
 })
 

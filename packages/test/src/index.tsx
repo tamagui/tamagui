@@ -83,7 +83,7 @@ const YStack = styled(Stack, {
   },
 })
 
-export const x = () => {
+export const x = (props: StackProps) => {
   return (
     <>
       <YStack
@@ -96,6 +96,7 @@ export const x = () => {
         backgroundColor="red"
         bg="ok wut"
         aok="err"
+        {...props}
       >
         <div />
         <div />
