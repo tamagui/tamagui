@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/esdx",
-  "version": "0.7.0",
+  "version": "1.0.0-alpha.0",
   "bin": "esdx.js",
   "scripts": {
     "build": "true",
