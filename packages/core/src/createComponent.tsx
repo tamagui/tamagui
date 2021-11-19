@@ -260,7 +260,13 @@ export function createComponent<A extends Object = DefaultProps>(
       }
     }
 
-    const attachPress = !!((pseudos && pseudos.pressStyle) || onPress || onPressOut || onPressIn)
+    const attachPress = !!(
+      (pseudos && pseudos.pressStyle) ||
+      onPress ||
+      onPressOut ||
+      onPressIn ||
+      onClick
+    )
     const attachHover =
       isWeb &&
       !isTouchDevice &&
@@ -279,6 +285,7 @@ export function createComponent<A extends Object = DefaultProps>(
       'onPressOut' in props ||
       (isWeb &&
         ('hoverStyle' in props ||
+          'onClick' in props ||
           'onHoverIn' in props ||
           'onHoverOut' in props ||
           'onMouseEnter' in props ||
@@ -357,11 +364,12 @@ export function createComponent<A extends Object = DefaultProps>(
             : (onPressIn as any),
           onClick: attachPress
             ? (e) => {
-                e.preventDefault()
-                unPress()
-                onPressOut?.(e)
+                // this caused issue with next.js passing href
+                // e.preventDefault()
                 onPress?.(e)
                 onClick?.(e)
+                unPress()
+                onPressOut?.(e)
               }
             : (onPressOut as any),
         }
@@ -375,7 +383,7 @@ export function createComponent<A extends Object = DefaultProps>(
           hitSlop,
           onPressIn: events.onMouseDown,
           onPressOut: events.onPressOut,
-          onPress,
+          onPress: events.onClick,
         })
         Object.assign(viewProps, pressProps)
       } else {
@@ -398,9 +406,6 @@ export function createComponent<A extends Object = DefaultProps>(
         domProps.className && domProps.className !== viewProps.className
           ? `${domProps.className} ${viewProps.className}`
           : viewProps.className
-      if (Object.keys(domProps).length) {
-        console.log('assigning', viewProps, domProps)
-      }
       Object.assign(viewProps, domProps)
       viewProps.className = className
       content = createElement(ViewComponent, viewProps, spacedChildrenEl)
@@ -420,8 +425,9 @@ export function createComponent<A extends Object = DefaultProps>(
         viewProps['debug'] = true
         console.log('🥚 props in:', props)
         console.log('🥚 props out:', viewProps)
+        console.log(props.onClick?.toString())
         // prettier-ignore
-        console.log('🥚 etc:', { ViewComponent, viewProps, styles, pseudos, content, spacedChildrenEl })
+        console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, spacedChildrenEl })
         // only on browser because node expands it huge
         if (isWeb) {
           console.log('🥚 component info', { staticConfig, tamaguiConfig })

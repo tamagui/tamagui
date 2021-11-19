@@ -33,6 +33,7 @@ export const getSplitStyles = (
   let pseudos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
   let cur: ViewStyle | null = null
   let classNames: string[] | null = null
+
   for (const keyInit in props) {
     // be sure to sync next few lines below to getSubStyle (*1)
     const valInit = props[keyInit]
@@ -141,7 +142,7 @@ export const getSplitStyles = (
 
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      console.log(' 🥚 style debug:', { props, viewProps, style })
+      console.log(' 🥚 splitProps:', { props, viewProps, style })
     }
   }
 
@@ -186,7 +187,6 @@ const blacklistFinalProps = {
   ...blacklistDefaultProps,
   tag: true,
   debug: true,
-  onPress: true,
   space: true,
   hitSlop: true,
 }

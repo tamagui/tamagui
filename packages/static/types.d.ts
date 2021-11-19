@@ -104,7 +104,7 @@ export declare type CreateTamaguiConfig<A extends GenericTokens, B extends Gener
 	media: D;
 };
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia> = CreateTamaguiConfig<A, B, C, D> & {
-	Provider: (props: TamaguiProviderProps) => JSX.Element;
+	Provider: (props: TamaguiProviderProps) => any;
 	themeParsed: {
 		[key: string]: Variable;
 	};

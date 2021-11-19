@@ -22,7 +22,6 @@
 - as={Animated.Text}
 - make styled() accept any component (see Input.tsx)
 - fix // TODO comments
-- // TODO this ternary is being compiled backwards!
 - gzip stuff on site
 - blog
 - document process.env.TAMAGUI_TARGET
