@@ -51,7 +51,7 @@ export const InteractiveFrame = styled(XStack, {
     disabled: {
       true: {
         pointerEvents: 'none',
-        opacity: 0.75,
+        opacity: 0.5,
         hoverStyle: {
           backgroundColor: '$bg',
         },

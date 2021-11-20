@@ -15,7 +15,8 @@ export const SizableText = styled(Text, {
           }
         }
         const fs = +val
-        const lh = +val * (Math.log(Math.max(1.6, val)) * 0.01 + 1.25)
+        // TODO can have props.sizeLineHeight
+        const lh = +val * (Math.log(Math.max(1.6, val)) * 0.01 + 1.1)
         return {
           fontSize: fs,
           lineHeight: lh,

@@ -9,11 +9,11 @@ Tamagui is a light layer above React Native / React Native Web, it augments rath
 - **Themes** — that also avoid running JS
 - **Inline styles** — that extract at compile-time out of render
 
+<Image title="Tamagui logo" src="/blog/introducing-tamagui/hero.png" />
+
 Today, you can't share code between Native and Web without resorting to doing media queries, themes and styles in JavaScript, which slows critical areas down and makes things generally clunky enough that it makes sense to write them separately.
 
-Tamagui works backwards from ideal syntax - both inline styles and hooks - and then on the web generates [CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) when possible. On native it extracts everything to StyleSheet.create. This makes everything fast. The compiler goes further and flattens what would have been a `View` or `Text` into a plain `div` or `span` when possible, further helping performance.
-
-<Image alt="Tamagui logo with a purple and blue gradient" src="/docs-intro.svg" />
+Tamagui works backwards from ideal syntax - both inline styles and hooks - and then on the web generates [CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) when possible. On native it extracts everything to StyleSheet.create. This makes everything fast. The compiler goes further and flattens what would have been a `View` or `Text` into a `div` or `span` when possible, improving performance.
 
 ### React Native ❤️
 

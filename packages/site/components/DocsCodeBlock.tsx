@@ -68,7 +68,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           }}
         >
           <Button
-            theme="dark"
             className="text-shadow"
             chromeless
             onPress={() => setIsCollapsed((x) => !x)}

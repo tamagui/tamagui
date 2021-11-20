@@ -10,19 +10,19 @@ export function StacksDemo() {
         flex={1}
         space="$2"
         borderWidth={2}
-        borderColor="#fff"
+        borderColor="$color"
         br="$2"
         p="$3"
       >
-        <YStack bc="#fff" br="$2" p="$3" />
-        <YStack bc="#fff" br="$2" p="$3" />
-        <YStack bc="#fff" br="$2" p="$3" />
+        <YStack bc="$color" br="$2" p="$3" />
+        <YStack bc="$color" br="$2" p="$3" />
+        <YStack bc="$color" br="$2" p="$3" />
       </YStack>
 
-      <XStack flex={1} space="$2" borderWidth={2} borderColor="#fff" br="$2" p="$3">
-        <YStack bc="#fff" br="$2" p="$3" />
-        <YStack bc="#fff" br="$2" p="$3" />
-        <YStack bc="#fff" br="$2" p="$3" />
+      <XStack flex={1} space="$2" borderWidth={2} borderColor="$color" br="$2" p="$3">
+        <YStack bc="$color" br="$2" p="$3" />
+        <YStack bc="$color" br="$2" p="$3" />
+        <YStack bc="$color" br="$2" p="$3" />
       </XStack>
     </XStack>
   )

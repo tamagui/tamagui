@@ -166,7 +166,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             pr: 250,
           }}
         >
-          <YStack $sm={{ display: 'none' }} position="absolute" top={15} right={15}>
+          <YStack $sm={{ display: 'none' }} position="absolute" top={15} right={20}>
             <AlphaButton />
           </YStack>
           <DocsPageContainer>{children}</DocsPageContainer>
