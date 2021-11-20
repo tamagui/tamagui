@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, Paragraph, StackProps, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
 
+import { AlphaButton } from './AlphaButton'
 import { ColorToggle, useTint } from './ColorToggle'
 import { Container } from './Container'
 import { ExternalIcon } from './ExternalIcon'
@@ -166,13 +167,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           }}
         >
           <YStack $sm={{ display: 'none' }} position="absolute" top={15} right={15}>
-            <NextLink href="/blog/introducing-tamagui" passHref>
-              <YStack tag="a" mx={-5} $sm={{ display: 'none' }}>
-                <Button size="$3" theme="orange" br="$6">
-                  Alpha
-                </Button>
-              </YStack>
-            </NextLink>
+            <AlphaButton />
           </YStack>
           <DocsPageContainer>{children}</DocsPageContainer>
 

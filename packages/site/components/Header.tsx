@@ -1,12 +1,10 @@
 import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
-import { ExternalLink } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import React from 'react'
-import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import { Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
-import { DiscordIcon } from './DiscordIcon'
-import { GithubIcon } from './GithubIcon'
+import { AlphaButton } from './AlphaButton'
 
 export function Header() {
   return (
@@ -57,13 +55,7 @@ export function Header() {
           </Paragraph>
         </NextLink>
 
-        <NextLink href="/blog/introducing-tamagui" passHref>
-          <YStack tag="a" mx={-5} $sm={{ display: 'none' }}>
-            <Button theme="orange" br="$6">
-              Alpha
-            </Button>
-          </YStack>
-        </NextLink>
+        <AlphaButton />
 
         <ThemeToggle />
       </XStack>

@@ -15,7 +15,7 @@ export const SizableText = styled(Text, {
           }
         }
         const fs = +val
-        const lh = +val * (Math.log(Math.max(1.5, val)) * 0.08 + 1.3)
+        const lh = +val * (Math.log(Math.max(1.6, val)) * 0.01 + 1.25)
         return {
           fontSize: fs,
           lineHeight: lh,

@@ -17,13 +17,13 @@ export function HeroExample() {
         zIndex={-1}
         pointerEvents="none"
         opacity={0.1}
-        top="-20vh"
-        right="20%"
+        top="0"
+        right="-20%"
         width="80vw"
         height="80vw"
         scale={2}
-        maxHeight={720}
-        maxWidth={720}
+        maxHeight={820}
+        maxWidth={820}
       >
         <div
           style={{
@@ -34,16 +34,16 @@ export function HeroExample() {
         />
       </YStack>
 
-      {/* <YStack
+      <YStack
         position="absolute"
         zIndex={0}
         pointerEvents="none"
-        opacity={0.1}
+        opacity={0.15}
         top="10vh"
-        right="-20%"
+        left="-20%"
         width="80vw"
         height="80vw"
-        scale={1.2}
+        scale={3}
         maxHeight={720}
         maxWidth={720}
       >
@@ -51,11 +51,12 @@ export function HeroExample() {
           style={{
             width: '100%',
             height: '100%',
-            background: `radial-gradient(circle closest-side, var(--purple5), transparent)`,
+            background: `radial-gradient(circle closest-side, var(--blue5), transparent)`,
           }}
         />
-      </YStack> */}
-      <YStack
+      </YStack>
+
+      {/* <YStack
         position="absolute"
         zi={0}
         pe="none"
@@ -75,7 +76,7 @@ export function HeroExample() {
             background: `radial-gradient(circle closest-side, var(--blue5), transparent)`,
           }}
         />
-      </YStack>
+      </YStack> */}
 
       <YStack zi={1} space="$6">
         <H2 als="center">Examples</H2>

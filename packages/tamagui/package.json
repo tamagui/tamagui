@@ -14,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "esdx --jsx",
+    "build": "tamagui-build --jsx",
     "watch": "tamagui-build --jsx --watch"
   },
   "dependencies": {

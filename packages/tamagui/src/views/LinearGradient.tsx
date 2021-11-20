@@ -9,7 +9,7 @@ import { NativeLinearGradientPoint, NativeLinearGradientProps } from './NativeLi
 React['keep']
 
 export const LinearGradient = Stack.extractable(
-  ({ colors, locations, start, end, ...props }: NativeLinearGradientProps): ReactElement => {
+  ({ colors = [], locations, start, end, ...props }: NativeLinearGradientProps): ReactElement => {
     const [gradientColors, setGradientColors] = useState<string[]>([])
     const [pseudoAngle, setPseudoAngle] = useState<number>(0)
     const layoutProps = useLayout()

@@ -37,7 +37,7 @@ export function Hero() {
   return (
     <>
       <Theme name="blue">
-        <YStack backgroundColor="$bg">
+        <YStack backgroundColor="$bg" borderBottomWidth={0.5} borderColor="$borderColor">
           <Header />
 
           <ContainerLarge mb={-20}>
@@ -47,36 +47,39 @@ export function Hero() {
                   <Title
                     size="32"
                     letterSpacing={-2}
+                    fontFamily="$body"
                     fontWeight="700"
                     $sm={{
                       maxWidth: 550,
                     }}
                     $gtSm={{
-                      size: '36',
-                      px: 20,
+                      size: '55',
+                      px: 80,
                       ta: 'center',
                       my: -5,
                     }}
                     $gtMd={{
-                      letterSpacing: -3,
-                      size: '42',
+                      letterSpacing: -4,
+                      size: '79',
                       px: 0,
                       my: -10,
                     }}
                   >
-                    <span className="universal">Universal</span> React design systems that optimize
-                    to all platforms
+                    <Tooltip contents="Works the same on iOS, Android, and web">
+                      <span className="universal">Universal</span>
+                    </Tooltip>{' '}
+                    React design systems that optimize for native & web
                   </Title>
 
                   <YStack
                     px={0}
                     maxWidth={550}
                     $gtSm={{
-                      px: 80,
+                      px: 110,
                       maxWidth: 900,
                     }}
                     $gtMd={{
-                      px: 40,
+                      px: 90,
                     }}
                   >
                     <Paragraph
@@ -92,8 +95,9 @@ export function Hero() {
                         size: '$7',
                       }}
                     >
-                      React Native & Web UIs turbo-charged by an optimizing compiler. Themes, media
-                      queries and inline styles with amazing performance and less code.
+                      React Native & Web UIs <em>turbo-charged</em> by an optimizing compiler.
+                      Faster&nbsp;themes,&nbsp;media queries and typed inline styles that work
+                      everywhere.
                     </Paragraph>
                   </YStack>
                 </YStack>
