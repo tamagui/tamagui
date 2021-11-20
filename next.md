@@ -1,3 +1,5 @@
+- TODO: variant functions are receiving non-prefixes tokens/themes instead of prefixed..
+- make variant fn's take props alongside tokens/themes
 - basic styled() extraction => work liek props => <YStack />
 - space => gap?
 - fix parent variant types

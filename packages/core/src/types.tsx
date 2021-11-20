@@ -371,7 +371,8 @@ export type StaticConfigParsed = StaticConfig & {
   propMapper: (
     key: string,
     value: any,
-    theme: ThemeObject
+    theme: ThemeObject,
+    props: any
   ) => undefined | boolean | { [key: string]: any }
   variantsParsed?: {
     [key: string]: {

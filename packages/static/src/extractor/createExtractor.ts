@@ -584,7 +584,12 @@ export function createExtractor() {
               if (staticConfig.propMapper) {
                 // for now passing empty props {}, a bit odd, need to at least document
                 // for now we don't expose custom components so just noting behavior
-                const out = staticConfig.propMapper(name, styleValue, defaultTheme)
+                const out = staticConfig.propMapper(
+                  name,
+                  styleValue,
+                  defaultTheme,
+                  staticConfig.defaultProps
+                )
                 if (out) {
                   keys = Object.keys(out)
                 }

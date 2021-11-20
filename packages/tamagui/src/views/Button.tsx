@@ -2,7 +2,7 @@ import { TextProps, ThemeableProps, themeable } from '@tamagui/core'
 import React, { forwardRef } from 'react'
 
 import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
-import { SizableText } from './Paragraph'
+import { SizableText } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['keep']
@@ -23,7 +23,7 @@ export const Button = InteractiveFrame.extractable(
           children,
           icon,
           iconAfter,
-          space = '$1',
+          space,
           textProps,
           noTextWrap,
           elevation,
@@ -35,7 +35,7 @@ export const Button = InteractiveFrame.extractable(
         ref
       ) => {
         return (
-          <InteractiveFrame size={size} space={space} ref={ref as any} {...props}>
+          <InteractiveFrame size={size} space={space ?? size ?? '$2'} ref={ref as any} {...props}>
             {icon}
             {noTextWrap ? (
               children

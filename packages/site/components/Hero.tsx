@@ -43,29 +43,29 @@ export function Hero() {
           <ContainerLarge mb={-20}>
             <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
               <YStack space="$7">
-                <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$6">
+                <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
                   <Title
-                    size="$7"
-                    letterSpacing={-1}
+                    size="32"
+                    letterSpacing={-2}
                     fontWeight="700"
                     $sm={{
                       maxWidth: 550,
                     }}
                     $gtSm={{
-                      // TODO $12 not working?
-                      size: '$9',
-                      px: 70,
+                      size: '36',
+                      px: 20,
                       ta: 'center',
                       my: -5,
                     }}
                     $gtMd={{
-                      size: '$10',
-                      px: 50,
+                      letterSpacing: -3,
+                      size: '42',
+                      px: 0,
                       my: -10,
                     }}
                   >
                     <span className="universal">Universal</span> React design systems that optimize
-                    to every platform
+                    to all platforms
                   </Title>
 
                   <YStack
@@ -76,22 +76,24 @@ export function Hero() {
                       maxWidth: 900,
                     }}
                     $gtMd={{
-                      px: 110,
+                      px: 40,
                     }}
                   >
                     <Paragraph
                       color="$color"
                       opacity={0.7}
-                      size="$5"
+                      size="$4"
                       $gtSm={{
-                        // TODO
-                        size: '$6',
                         ta: 'center',
+                        size: '$5',
+                      }}
+                      $gtMd={{
+                        // TODO
+                        size: '$7',
                       }}
                     >
-                      React Native <em>and</em> Web UI kit + optimizing compiler with themes, media
-                      queries and&nbsp;typed&nbsp;inline styles — share&nbsp;more code with better
-                      performance.
+                      React Native & Web UIs turbo-charged by an optimizing compiler. Themes, media
+                      queries and inline styles with amazing performance and less code.
                     </Paragraph>
                   </YStack>
                 </YStack>
@@ -203,12 +205,12 @@ export function Hero() {
                 <Cpu size={20} color="var(--color2)" />
               </IconStack>
             </Theme>
-            <H3 size="$4" mb="$2">
+            <H3 size="$5" mb="$2">
               Performant
             </H3>
-            <Paragraph size="$3" color="$color3">
-              Compiles inline styles to atomic CSS, media query styles and hooks into CSS, and theme
-              hooks & tokens into CSS variables, even with conditional logic.
+            <Paragraph size="$4" color="$color3">
+              Compile inline styles to atomic CSS, even media queries and themes. Supports
+              evaluation of conditional logic and hooks.
             </Paragraph>
           </YStack>
 
@@ -218,10 +220,10 @@ export function Hero() {
                 <Compass size={20} color="var(--color2)" />
               </IconStack>
             </Theme>
-            <H3 size="$4" mb="$2">
+            <H3 size="$5" mb="$2">
               Compatible
             </H3>
-            <Paragraph size="$3" color="$color3">
+            <Paragraph size="$4" color="$color3">
               Augments{' '}
               <Text tag="a" href="https://necolas.github.io/react-native-web/">
                 react-native-web
@@ -237,10 +239,10 @@ export function Hero() {
                 <Layers size={20} color="var(--color2)" />
               </IconStack>
             </Theme>
-            <H3 size="$4" mb="$2">
+            <H3 size="$5" mb="$2">
               Intuitive
             </H3>
-            <Paragraph size="$3" color="$color3">
+            <Paragraph size="$4" color="$color3">
               Supports the incredible DX advances in design systems of late: themes, tokens,
               shorthands, media queries, and typed inline styles that just work.
             </Paragraph>

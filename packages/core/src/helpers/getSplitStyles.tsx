@@ -53,7 +53,7 @@ export const getSplitStyles = (
       // TODO test proxy here instead of merge
       const mediaProps = { ...props, ...valInit }
       // TODO media + hover
-      const mediaStyle = getSubStyle(valInit, staticConfig, theme)
+      const mediaStyle = getSubStyle(valInit, staticConfig, theme, props)
       const mediaStyles = getStylesAtomic(mediaStyle)
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
@@ -81,11 +81,11 @@ export const getSplitStyles = (
     if (validStylesPseudo[keyInit]) {
       if (!valInit) continue
       pseudos = pseudos || {}
-      pseudos[keyInit] = getSubStyle(valInit, staticConfig, theme)
+      pseudos[keyInit] = getSubStyle(valInit, staticConfig, theme, props)
       continue
     }
 
-    const out = staticConfig.propMapper(keyInit, valInit, theme)
+    const out = staticConfig.propMapper(keyInit, valInit, theme, props)
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
     for (const [key, val] of expanded) {
       // const val = valueMap(valInit) ?? valInit
@@ -157,13 +157,14 @@ export const getSplitStyles = (
 const getSubStyle = (
   styleIn: Object,
   staticConfig: StaticConfigParsed,
-  theme: ThemeObject
+  theme: ThemeObject,
+  props: any
 ): ViewStyle => {
   const styleOut: ViewStyle = {}
   for (const key in styleIn) {
     // be sure to sync next few lines below to loop above (*1)
     const val = styleIn[key]
-    const out = staticConfig.propMapper(key, val, theme)
+    const out = staticConfig.propMapper(key, val, theme, props)
     const expanded = out === true || !out ? [[key, val]] : Object.entries(out)
     for (const [skey, sval] of expanded) {
       // const sval = valueMap(valInit)
