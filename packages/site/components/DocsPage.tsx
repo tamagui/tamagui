@@ -165,6 +165,15 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             pr: 250,
           }}
         >
+          <YStack $sm={{ display: 'none' }} position="absolute" top={15} right={15}>
+            <NextLink href="/blog/introducing-tamagui" passHref>
+              <YStack tag="a" mx={-5} $sm={{ display: 'none' }}>
+                <Button size="$3" theme="orange" br="$6">
+                  Alpha
+                </Button>
+              </YStack>
+            </NextLink>
+          </YStack>
           <DocsPageContainer>{children}</DocsPageContainer>
 
           <DocsPageContainer>

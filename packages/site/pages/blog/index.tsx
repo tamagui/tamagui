@@ -27,7 +27,7 @@ export default function Blog({ frontmatters }) {
           <YStack key={frontmatter.title}>
             <YStack mb="$7" space="$2">
               <Link href={frontmatter.slug} passHref>
-                <H3>{frontmatter.title}</H3>
+                <H3 size="$8">{frontmatter.title}</H3>
               </Link>
 
               <XStack>

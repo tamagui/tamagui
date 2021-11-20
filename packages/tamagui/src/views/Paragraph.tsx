@@ -4,6 +4,7 @@ import { SizableText } from './SizableText'
 
 export const Paragraph = styled(SizableText, {
   fontFamily: '$body',
+  // fontWeight: '$body',
   color: '$color',
   size: '$4',
 })

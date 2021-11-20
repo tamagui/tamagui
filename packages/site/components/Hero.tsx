@@ -202,7 +202,7 @@ export function Hero() {
           <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
             <Theme name="purple">
               <IconStack>
-                <Cpu size={20} color="var(--color2)" />
+                <Cpu size={20} color="var(--color3)" />
               </IconStack>
             </Theme>
             <H3 size="$5" mb="$2">
@@ -217,7 +217,7 @@ export function Hero() {
           <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
             <Theme name="green">
               <IconStack>
-                <Compass size={20} color="var(--color2)" />
+                <Compass size={20} color="var(--color3)" />
               </IconStack>
             </Theme>
             <H3 size="$5" mb="$2">
@@ -236,7 +236,7 @@ export function Hero() {
           <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
             <Theme name="pink">
               <IconStack>
-                <Layers size={20} color="var(--color2)" />
+                <Layers size={20} color="var(--color3)" />
               </IconStack>
             </Theme>
             <H3 size="$5" mb="$2">

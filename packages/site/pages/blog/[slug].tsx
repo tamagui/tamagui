@@ -77,11 +77,13 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
             {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
           </Paragraph>
 
+          <Separator vertical mx="$2" />
+
           <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
-            <Separator vertical mx="$2" />
             <Paragraph size="$3" color="$color3">
               {frontmatter.readingTime.text}
             </Paragraph>
+
             {frontmatter.type === 'changelog' && (
               <>
                 <Separator vertical mx="$2" />
@@ -97,7 +99,7 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
 
         <Separator my="$8" mx="auto" />
 
-        <YStack ai="center">
+        <YStack mb="$8" ai="center">
           <Paragraph>
             Share this post on{' '}
             <Link
