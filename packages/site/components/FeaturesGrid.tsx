@@ -16,7 +16,7 @@ export function FeaturesGrid() {
       <YStack pt="$6">
         <Grid gap={25} itemMinWidth={250}>
           <YStack padding="$4" space>
-            <H4 letterSpacing={-1}>Complete</H4>
+            <H4 fontFamily="$body">Complete</H4>
             <Paragraph color="$color3">
               Inline typed styles with themes, constants, shorthand props and media queries, plus a
               set of accessible components that work together out of the box.
@@ -24,7 +24,7 @@ export function FeaturesGrid() {
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 letterSpacing={-1}>Performant</H4>
+            <H4 fontFamily="$body">Performant</H4>
             <Paragraph color="$color3">
               Tamagui avoids more JS parsing at runtime than other libraries, even with conditional
               logic in your render. It even flattens your tree when possible.
@@ -32,7 +32,7 @@ export function FeaturesGrid() {
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 letterSpacing={-1}>Server-side</H4>
+            <H4 fontFamily="$body">Server-side</H4>
             <Paragraph color="$color3">
               Tamagui supports cross-browser server-side rendering, even for responsive styles and
               variants.
@@ -40,7 +40,7 @@ export function FeaturesGrid() {
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 letterSpacing={-1}>Developer friendly</H4>
+            <H4 fontFamily="$body">Developer friendly</H4>
             <Paragraph color="$color3">
               A fully-typed API, completely extensible, token-aware properties, debug props and
               pragmas, and custom shorthands.
@@ -48,7 +48,7 @@ export function FeaturesGrid() {
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 letterSpacing={-1}>Stay in flow</H4>
+            <H4 fontFamily="$body">Stay in flow</H4>
             <Paragraph color="$color3">
               Inline styles that don't affect render performance, no more naming styles. Let the
               compiler optimize it for you.
@@ -56,7 +56,7 @@ export function FeaturesGrid() {
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 letterSpacing={-1}>Full-featured</H4>
+            <H4 fontFamily="$body">Full-featured</H4>
             <Paragraph color="$color3">
               Everything you need included on all platforms from themes to responsive design and
               more. Augments react-native-web.

@@ -51,7 +51,7 @@ export function Community() {
                 </defs>
               </svg>
             </YStack>
-            <H4>Twitter</H4>
+            <H4 fontFamily="$body">Twitter</H4>
             <Paragraph color="$color3">For news, announcements, and general updates.</Paragraph>
           </Card>
           <Card
@@ -67,7 +67,7 @@ export function Community() {
             <YStack>
               <DiscordIcon />
             </YStack>
-            <H4>Discord</H4>
+            <H4 fontFamily="$body">Discord</H4>
             <Paragraph color="$color3">Get involved and get questions answered.</Paragraph>
           </Card>
           <Card
@@ -83,7 +83,7 @@ export function Community() {
             <YStack>
               <GithubIcon />
             </YStack>
-            <H4>GitHub</H4>
+            <H4 fontFamily="$body">GitHub</H4>
             <Paragraph color="$color3">
               Bring up issues, request features, and contribute.
             </Paragraph>
