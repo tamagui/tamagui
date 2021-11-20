@@ -4,31 +4,13 @@ import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
 import { StaticComponent, TamaguiConfig, Themes, Tokens } from './types'
 
-export type GetProps<A> = A extends StaticComponent<infer Props>
-  ? Props
-  : A extends React.Component<infer Props>
-  ? Props
-  : {}
-
 export function styled<
-  A extends StaticComponent | React.Component<any>,
-  StyledVariants extends void | {
-    [key: string]: {
-      [key: string]:
-        | Partial<GetProps<A>>
-        | ((
-            val: any,
-            config: {
-              tokens: TamaguiConfig['tokens']
-              theme: Themes extends { [key: string]: infer B } ? B : unknown
-            }
-          ) => Partial<GetProps<A>>)
-    }
-  }
+  ParentComponent extends StaticComponent | React.Component<any>,
+  Variants extends GetVariants<ParentComponent>
 >(
-  Component: A,
-  options?: GetProps<A> & {
-    variants?: StyledVariants
+  Component: ParentComponent,
+  options?: GetProps<ParentComponent> & {
+    variants?: Variants
   }
 ) {
   const staticConfigProps = (() => {
@@ -40,32 +22,56 @@ export function styled<
   })()
   const config = extendStaticConfig(Component, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
-
-  // type ParentVariants = A extends StaticComponent<any, infer Variants> ? Variants : {}
-
-  type VariantProps = StyledVariants extends void
-    ? {}
-    : {
-        // ensure variants actually defined
-        [Key in keyof StyledVariants]?: keyof StyledVariants[Key] extends `...${infer VariantSpread}`
-          ? VariantSpread extends keyof Tokens
-            ? keyof Tokens[VariantSpread] extends string | number
-              ? `$${keyof Tokens[VariantSpread]}`
-              : unknown
-            : unknown
-          : keyof StyledVariants[Key] extends 'true'
-          ? boolean
-          : keyof StyledVariants[Key]
-      }
-
+  type VariantProps = GetVariantProps<Variants>
   return component as StaticComponent<
-    GetProps<A> & VariantProps
-    // adding this one causes infinite type recursion after a couple styled() exntesions
+    Omit<GetProps<ParentComponent>, keyof VariantProps> & VariantProps
+    // leave this out it was causing infinite recursion type issues
     // VariantProps
-    // typeof config,
-    // ParentVariants
   >
 }
+
+// type ParentVariants = A extends StaticComponent<any, infer Variants> ? Variants : {}
+
+export type GetProps<A> = A extends StaticComponent<infer Props>
+  ? Props
+  : A extends React.Component<infer Props>
+  ? Props
+  : {}
+
+export type GetVariants<ParentComponent extends StaticComponent | React.Component<any>> = void | {
+  [key: string]: {
+    [key: string]:
+      | Partial<GetProps<ParentComponent>>
+      | ((
+          val: any,
+          config: {
+            tokens: TamaguiConfig['tokens']
+            theme: Themes extends { [key: string]: infer B } ? B : unknown
+            props: GetProps<ParentComponent>
+          }
+        ) => Partial<GetProps<ParentComponent>>)
+  }
+}
+
+export type GetVariantProps<Variants> = Variants extends void
+  ? {}
+  : {
+      // ensure variants actually defined
+      [Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}`
+        ? VariantSpread extends keyof Tokens
+          ? keyof Tokens[VariantSpread] extends string | number
+            ? `$${keyof Tokens[VariantSpread]}`
+            : unknown
+          : unknown
+        : keyof Variants[Key] extends 'true'
+        ? boolean
+        : keyof Exclude<Variants[Key], undefined>
+    }
+
+// type X = { ok: 1 }
+// type Y = { okk: 2; ok: 3 }
+// type Z = X & Y
+// type Z2 = Z
 
 // TODO get name
 // const displayName = `styled(Component)`

@@ -1,4 +1,7 @@
 import {
+  GetProps,
+  GetVariantProps,
+  GetVariants,
   ShorthandStyleProps,
   Shorthands,
   Stack,
@@ -9,10 +12,6 @@ import {
   TamaguiStylesBase,
   TamaguiThemedStackStyleProps,
   ThemeKeyVariables,
-  ThemeKeys,
-  ThemeObject,
-  Themes,
-  Tokens,
   createTamagui,
   styled,
 } from '@tamagui/core'
@@ -83,33 +82,7 @@ const YStack = styled(Stack, {
   },
 })
 
-export const x = (props: StackProps) => {
-  return (
-    <>
-      <YStack
-        p={10}
-        scale={10}
-        width="$1"
-        x="$2"
-        y="$s"
-        borderColor="$red"
-        backgroundColor="red"
-        bg="ok wut"
-        aok="err"
-        {...props}
-      >
-        <div />
-        <div />
-      </YStack>
-      <ZStack spread="$10" bc="$bg" bg="alternate" aok="err" specific={1}>
-        <div />
-        <div />
-      </ZStack>
-    </>
-  )
-}
-
-const ZStack = test(YStack, {
+const ZStack = styled(YStack, {
   variants: {
     bg: {
       alternate: {
@@ -117,7 +90,7 @@ const ZStack = test(YStack, {
       },
     },
     spread: {
-      '...size': (val) => ({ width: val }),
+      '...size': (val, { tokens, theme, props }) => ({ width: val }),
     },
     // typed: {
     //   '[number]': (val) => ({ height: val }),
@@ -128,50 +101,23 @@ const ZStack = test(YStack, {
   },
 })
 
-export function test<
-  A extends StaticComponent | React.Component<any>,
-  StyledVariants extends void | {
-    [key: string]: {
-      [key: string]:
-        | Partial<GetProps<A>>
-        | ((
-            val: any,
-            config: {
-              tokens: TamaguiConfig['tokens']
-              theme: Themes extends { [key: string]: infer B } ? B : unknown
-            }
-          ) => Partial<GetProps<A>>)
-    }
-  }
->(
-  Component: A,
-  options?: GetProps<A> & {
-    variants?: StyledVariants
-  }
-) {
-  // const config = extendStaticConfig(Component, staticConfigProps)
-  const component = 1 as any //createComponent(config!) // error is good here its on init
-  // type ParentVariants = A extends StaticComponent<any, infer Variants> ? Variants : {}
+type z1 = GetProps<typeof YStack>
+type z11 = z1['bg']
 
-  type VariantProps = StyledVariants extends void
-    ? {}
-    : {
-        [Key in keyof StyledVariants]?: keyof StyledVariants[Key] extends `...${infer VariantSpread}`
-          ? VariantSpread extends keyof Tokens
-            ? keyof Tokens[VariantSpread] extends string | number
-              ? `$${keyof Tokens[VariantSpread]}`
-              : unknown
-            : unknown
-          : keyof StyledVariants[Key] extends 'true'
-          ? boolean
-          : keyof StyledVariants[Key]
-      }
+type z2 = GetProps<typeof ZStack>
+type zSV = GetVariants<typeof ZStack>
+type zVP = GetVariantProps<zSV>
+type z2222 = z2['bg']
 
-  return component as StaticComponent<GetProps<A> & VariantProps, VariantProps>
+export const x = (props: StackProps) => {
+  return (
+    <>
+      <YStack p={10} width="$1" x="$2" y="$s" borderColor="$red" bg="ok wut" aok="err" {...props}>
+        <div />
+      </YStack>
+      <ZStack spread="$10" bc="$bg" bg="alternate" aok="err" specific={1}>
+        <div />
+      </ZStack>
+    </>
+  )
 }
-
-export type GetProps<A> = A extends StaticComponent<infer Props>
-  ? Props
-  : A extends React.Component<infer Props>
-  ? Props
-  : {}

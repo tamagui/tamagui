@@ -28,8 +28,28 @@ const space = {
   '-10': -100,
 }
 
-// TODO could make this per-font by having fontSize: { title: {...} }
-// but would be nice to have that optional
+/*
+ * Going to move font definitions to:
+ *   font: { title: { family, size, lineHeight, letterSpace }, body: { ... }, [key: string]: { .... } }
+ *
+ *   further, de-normalizing would have two upsides and one downside:
+ *     + ensures we share the same keys at definition
+ *     + ensures types are easy to infer and always consistent
+ *     - forces you to define them awkwardly
+ *
+ *      font: {
+ *        0: { family, size, lineHeight, letterSpace }
+ *        1:
+ *      }
+ *
+ *   same with themes then too?
+ *
+ *     themes: {
+ *       bg: { light, dark, ... },
+ *       b2: { light, dark, ... }
+ *     }
+ *
+ */
 
 const fontSize = {
   1: 12,
@@ -61,6 +81,9 @@ const lineHeight = {
   12: fontSize[11] * 2.5,
 }
 
+const interFamily =
+  'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+
 export const tokens = createTokens({
   letterSpace: {
     '-2': -2,
@@ -79,10 +102,9 @@ export const tokens = createTokens({
     5: 500,
   },
   font: {
-    title:
-      'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    title: interFamily,
     mono: 'Monospace',
-    body: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    body: interFamily,
   },
   color: {
     ...light,

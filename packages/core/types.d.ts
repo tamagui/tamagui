@@ -415,21 +415,24 @@ export declare type MakeTokens<T> = T extends {
 		[key in keyof J]: Variable;
 	};
 } : never;
+export declare function styled<ParentComponent extends StaticComponent | React.Component<any>, Variants extends GetVariants<ParentComponent>>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
+	variants?: Variants;
+}): StaticComponent<Omit<GetProps<ParentComponent>, keyof GetVariantProps<Variants>> & GetVariantProps<Variants>, any, StaticConfigParsed, any>;
 export declare type GetProps<A> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Props : {};
-export declare function styled<A extends StaticComponent | React.Component<any>, StyledVariants extends void | {
+export declare type GetVariants<ParentComponent extends StaticComponent | React.Component<any>> = void | {
 	[key: string]: {
-		[key: string]: Partial<GetProps<A>> | ((val: any, config: {
+		[key: string]: Partial<GetProps<ParentComponent>> | ((val: any, config: {
 			tokens: TamaguiConfig["tokens"];
 			theme: Themes extends {
 				[key: string]: infer B;
 			} ? B : unknown;
-		}) => Partial<GetProps<A>>);
+			props: GetProps<ParentComponent>;
+		}) => Partial<GetProps<ParentComponent>>);
 	};
-}>(Component: A, options?: GetProps<A> & {
-	variants?: StyledVariants;
-}): StaticComponent<GetProps<A> & (StyledVariants extends void ? {} : {
-	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
-}), any, StaticConfigParsed, any>;
+};
+export declare type GetVariantProps<Variants> = Variants extends void ? {} : {
+	[Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof Tokens ? keyof Tokens[VariantSpread] extends string | number ? `$${keyof Tokens[VariantSpread]}` : unknown : unknown : keyof Variants[Key] extends "true" ? boolean : keyof Exclude<Variants[Key], undefined>;
+};
 export declare const pseudos: {
 	focusStyle: {
 		name: string;
