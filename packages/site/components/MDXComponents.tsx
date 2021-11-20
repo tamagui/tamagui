@@ -170,7 +170,7 @@ export const components = {
         // inline
         <Paragraph
           fontFamily="Monospace"
-          color="$color2"
+          color="$color3"
           br="$1"
           backgroundColor="$bg3"
           lineHeight={18}
