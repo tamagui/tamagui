@@ -37,11 +37,11 @@ const fontSize = {
   3: 15,
   4: 16, // p
   5: 17, // h4
-  6: 19, // h3
+  6: 18, // h3
   7: 20,
   8: 21,
-  9: 28, // h2
-  10: 36, // h1
+  9: 32, // h2
+  10: 38, // h1
   11: 40,
   12: 55,
 }
@@ -79,7 +79,8 @@ export const tokens = createTokens({
     5: 500,
   },
   font: {
-    title: 'Mono',
+    title:
+      'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     mono: 'Monospace',
     body: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
   },
