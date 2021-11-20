@@ -44,6 +44,8 @@ export function extendStaticConfig(
   })
 }
 
+const isObj = (x: any) => x && !Array.isArray(x) && typeof x === 'object'
+
 export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
   const variants = c.variants
   let variantsParsed
@@ -51,7 +53,7 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
     ...c,
     parsed: true,
 
-    propMapper(key: string, value: any, theme: any) {
+    propMapper(key: string, value: any, theme: any, props: any) {
       const conf = getTamaguiConfig()
       if (!conf) {
         console.trace('err')
@@ -63,31 +65,33 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
 
       // expand variants
       const variant = variantsParsed?.[key]
-      if (variant) {
+      if (variant && typeof value !== 'undefined') {
         const tokenKey = typeof value === 'string' && value[0] === '$' ? value.slice(1) : value
-        const val = tokenKey === true ? variant['true'] : variant[tokenKey] ?? value
+        const val =
+          tokenKey === true ? variant['true'] : variant[tokenKey] ?? variant['...'] ?? value
 
-        let res: any
-        if (typeof val === 'function') {
-          res = val(tokenKey, { tokens: conf.tokens, theme })
-        } else {
-          res = val
-        }
+        const res =
+          typeof val === 'function'
+            ? val(tokenKey, { tokens: conf.tokens, theme, props })
+            : isObj(val)
+            ? { ...val }
+            : val
 
-        if (res) {
+        if (isObj(res)) {
           for (const rKey in res) {
             const fKey = conf.shorthands[rKey] || rKey
             if (rKey !== fKey) {
+              console.log('delete me', rKey)
               delete res[rKey]
             }
             const val = res[rKey]
             if (val instanceof Variable) {
               res[fKey] = val.variable
-            } else if (val) {
+            } else if (typeof val === 'string') {
               const fVal = val[0] === '$' ? getToken(fKey, val, conf) : val
               res[fKey] = fVal
             } else {
-              // nullish values can't be tokens
+              // nullish values cant be tokens so need no exrta parsing
             }
           }
         }
@@ -181,19 +185,21 @@ const tokenCategories = {
   },
 }
 
+// turns variant spreads into individual lookups
 function parseVariants(variants: any, conf: TamaguiInternalConfig) {
   return Object.keys(variants).reduce((acc, key) => {
     acc[key] = Object.keys(variants[key]).reduce((vacc, vkey) => {
+      const variantVal = variants[key][vkey]
       if (vkey.startsWith('...')) {
+        // set the default one at '...' for easy fallback on non-exact-variant-match
+        vacc['...'] = variantVal
         const tokenKey = vkey.slice(3)
         const tokens = conf.tokens[tokenKey]
         for (const tkey in tokens) {
-          vacc[tkey] = variants[key][vkey]
+          vacc[tkey] = variantVal
         }
-        // explode
-        // acc[vkey] = variants[key][vkey]
       } else {
-        vacc[vkey] = variants[key][vkey]
+        vacc[vkey] = variantVal
       }
       return vacc
     }, {})

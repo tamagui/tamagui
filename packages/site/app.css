@@ -275,6 +275,20 @@ ul, ol, li, pre { margin: 0; }
   opacity: 0,
 }
 
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Inter-Light.woff') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Inter-Bold.woff') format('woff2');
+}
+
 /* Font */
 @font-face {
   font-family: 'Mono';

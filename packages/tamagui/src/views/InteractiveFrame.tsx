@@ -34,11 +34,12 @@ export const InteractiveFrame = styled(XStack, {
 
   variants: {
     size: {
-      '...size': (val, { tokens }) => {
+      '...size': (val = '4', { tokens, props }) => {
         const sizeIndex = Object.keys(tokens.size).indexOf(val)
         const size = tokens.size[sizeIndex] ?? tokens.size[val] ?? val
         const px = Math.round(+(size instanceof Variable ? size.val : size) * 0.7)
-        const py = Math.round(+(size instanceof Variable ? size.val : size) * 0.3)
+        const py = Math.round(+(size instanceof Variable ? size.val : size) * 0.5)
+        console.log('wut', { props, val, sizeIndex, size, px, py, tokens })
         return {
           paddingHorizontal: px,
           paddingVertical: py,

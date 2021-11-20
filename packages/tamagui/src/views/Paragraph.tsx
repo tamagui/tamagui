@@ -1,17 +1,6 @@
-import { PropTypes, Text, styled } from '@tamagui/core'
+import { PropTypes, styled } from '@tamagui/core'
 
-export const SizableText = styled(Text, {
-  variants: {
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          fontSize: tokens.fontSize[val] ?? val,
-          lineHeight: tokens.lineHeight[val] ?? val,
-        }
-      },
-    },
-  },
-})
+import { SizableText } from './SizableText'
 
 export const Paragraph = styled(SizableText, {
   fontFamily: '$body',

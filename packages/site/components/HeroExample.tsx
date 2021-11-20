@@ -103,7 +103,7 @@ export function HeroExample() {
               {activeExample.input.description}
             </Paragraph>
 
-            <H4 size="$1" bc="$bg2" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
+            <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
               Input
             </H4>
             <YStack>
@@ -138,7 +138,7 @@ export function HeroExample() {
             <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
               {activeExample.output.description}
             </Paragraph>
-            <H4 size="$1" bc="$bg2" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
+            <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-7" zi="100" als="center">
               Output
             </H4>
             <YStack>

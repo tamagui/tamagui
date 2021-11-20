@@ -284,7 +284,7 @@ export declare type StaticComponent<Props = any, VariantProps = any, StaticConfP
 };
 export declare type StaticConfigParsed = StaticConfig & {
 	parsed: true;
-	propMapper: (key: string, value: any, theme: ThemeObject) => undefined | boolean | {
+	propMapper: (key: string, value: any, theme: ThemeObject, props: any) => undefined | boolean | {
 		[key: string]: any;
 	};
 	variantsParsed?: {
