@@ -108,7 +108,7 @@ export function createExtractor() {
         if (bodyPath.type !== 'ImportDeclaration') continue
         const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as any
         const from = node.source.value
-        if (from === 'tamagui' || isInternalImport(from)) {
+        if (props.components.includes(from) || isInternalImport(from)) {
           if (
             node.specifiers.some((specifier) => {
               const name = specifier.local.name
@@ -163,12 +163,13 @@ export function createExtractor() {
 
           // validate its a proper import from tamagui (or internally inside tamagui)
           const binding = traversePath.scope.getBinding(node.name.name)
+
           if (binding) {
             if (!t.isImportDeclaration(binding.path.parent)) {
               return
             }
             const source = binding.path.parent.source
-            if (source.value !== 'tamagui' && !isInternalImport(source.value)) {
+            if (!props.components.includes(source.value) && !isInternalImport(source.value)) {
               return
             }
             if (!validComponents[binding.identifier.name]) {
@@ -187,7 +188,7 @@ export function createExtractor() {
           const validStyles = staticConfig?.validStyles ?? {}
 
           // find tag="a" tag="main" etc dom indicators
-          let tagName = isTextView ? 'span' : 'div'
+          let tagName = staticConfig.defaultProps?.tag ?? (isTextView ? 'span' : 'div')
           traversePath
             .get('openingElement')
             .get('attributes')
@@ -375,6 +376,7 @@ export function createExtractor() {
 
           function isStaticAttributeName(name: string) {
             return (
+              name === 'tag' ||
               !!validStyles[name] ||
               staticConfig.validPropsExtra?.[name] ||
               !!pseudos[name] ||

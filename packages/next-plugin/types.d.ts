@@ -13,8 +13,6 @@ export interface TamaguiOptions {
 	deoptProps?: Set<string>;
 	excludeProps?: string[];
 }
-export declare const withTamagui: (tamaguiOptions: TamaguiOptions) => {
-	webpack: (webpackConfig: any, options: any) => any;
-};
+export declare const withTamagui: (tamaguiOptions: TamaguiOptions) => (nextConfig?: any) => any;
 
 export {};

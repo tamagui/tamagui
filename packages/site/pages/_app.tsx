@@ -10,6 +10,7 @@ import { PopoverProvider, YStack } from 'tamagui'
 
 import Tamagui from '../tamagui.config'
 
+globalThis['React'] = React
 Error.stackTraceLimit = Infinity
 
 export default function App(props: AppProps) {
