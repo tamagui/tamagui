@@ -8,15 +8,6 @@ import { ThemeProviderProps } from './views/ThemeProvider'
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
-export type TamaguiStylesBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
-  TransformStyleProps & {
-    cursor?: string
-    contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
-    display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
-  }
-
-type StyleKeys = keyof TamaguiStylesBase
-
 type GenericTokens = CreateTokens
 type GenericThemes = {
   [key: string]: {
@@ -172,18 +163,32 @@ export type TransformStyleProps = {
   rotateZ?: string
 }
 
+// createComponent props helpers
+
 //
-// Stack props
+// base props that are accepted by createComponent (additional to react-native-web)
 //
+type ComponentPropsBase = {
+  className?: string
+  tag?: string
+  animated?: boolean
+  onHoverIn?: (e: MouseEvent) => any
+  onHoverOut?: (e: MouseEvent) => any
+  onPress?: (e: GestureResponderEvent) => any
+  onPressIn?: (e: GestureResponderEvent) => any
+  onPressOut?: (e: GestureResponderEvent) => any
+  // WEB ONLY
+  onMouseEnter?: (e: GestureResponderEvent) => any
+  // WEB ONLY
+  onMouseLeave?: (e: GestureResponderEvent) => any
+  space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number
+  pointerEvents?: string
+}
 
-// TODO make WithThemeValues apply them more specifically
-// so only things like padding/border/etc get $size shorthands
-// and only colorful things get color shorthands
-
-type ShortKeysView = keyof Shorthands
-
+//
+// adds in theme short values to relevant props
+//
 type ThemeValue<A> = Omit<A, string> | UnionableString | Variable
-
 export type WithThemeValues<T extends object> = {
   [K in keyof T]:
     | ThemeValue<T[K]>
@@ -206,70 +211,104 @@ export type WithThemeValues<T extends object> = {
         : {})
 }
 
-export type TamaguiThemedStackStyleProps = WithThemeValues<TamaguiStylesBase>
-
-export type ShorthandStyleProps = {
-  [key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof TamaguiThemedStackStyleProps
-    ? TamaguiThemedStackStyleProps[Shorthands[ShortKeysView]] | null
+//
+// adds in shorthand props
+//
+type WithShorthands<StyleProps> = {
+  [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
+    ? StyleProps[Shorthands[Key]] | null
     : {}
 }
 
-type StackStylePropsBase = TamaguiThemedStackStyleProps & ShorthandStyleProps
+//
+// add both theme and shorthands
+//
+type WithThemeAndShorthands<A extends object> = WithThemeValues<A> &
+  WithShorthands<WithThemeValues<A>>
 
-export type StackStyleProps = StackStylePropsBase & {
-  hoverStyle?: StackStylePropsBase | null
-  pressStyle?: StackStylePropsBase | null
+//
+// adds theme and shorthands + pseudo styles with both
+//
+type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & {
+  hoverStyle?: WithThemeAndShorthands<A> | null
+  pressStyle?: WithThemeAndShorthands<A> | null
 }
 
+//
+// adds theme, shorthands, psuedos, then all the previous to media queries
+//
+type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsAndPseudos<A> &
+  MediaProps<WithThemeShorthandsAndPseudos<A>>
+
+//
+// Stack
+//
+
+type StackStyleProps = WithThemeShorthandsPseudosAndMedia<
+  Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
+    TransformStyleProps & {
+      // WEB ONLY
+      cursor?: string
+      // WEB ONLY
+      contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
+      // WEB ONLY values: inherit, inline, block, content
+      display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
+    }
+>
+
 export type StackProps = Omit<RNWInternalProps, 'children'> &
-  MediaProps<StackStyleProps> &
+  Omit<ViewProps, 'display' | 'children'> &
   StackStyleProps &
-  Omit<ViewProps, 'display' | 'children'> & {
-    tag?: string
+  ComponentPropsBase & {
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)
-    animated?: boolean
-    fullscreen?: boolean
     children?: any | any[]
-    onHoverIn?: (e: MouseEvent) => any
-    onHoverOut?: (e: MouseEvent) => any
-    onPress?: (e: GestureResponderEvent) => any
-    onPressIn?: (e: GestureResponderEvent) => any
-    onPressOut?: (e: GestureResponderEvent) => any
-    onMouseEnter?: (e: GestureResponderEvent) => any
-    onMouseLeave?: (e: GestureResponderEvent) => any
-    space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number
-    pointerEvents?: string
-    userSelect?: string
-    className?: string
-    disabled?: boolean
   }
 
 //
 // Text props
 //
 
-type EnhancedTextStyleProps = WithThemeValues<
+// type EnhancedTextStyleProps = WithThemeValues<
+//   Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps
+// >
+// export type TextStylePropsBase = EnhancedTextStyleProps
+// export type TextStyleProps<S = TextStylePropsBase> = S & {
+//   hoverStyle?: S | null
+//   pressStyle?: S | null
+// }
+
+type TextStyleProps = WithThemeShorthandsPseudosAndMedia<
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps
 >
-export type TextStylePropsBase = EnhancedTextStyleProps
-export type TextStyleProps<S = TextStylePropsBase> = S & {
-  hoverStyle?: S | null
-  pressStyle?: S | null
-}
-export type TextProps<StyleProps = TextStyleProps> = Omit<ReactTextProps, 'style'> &
-  MediaProps<StyleProps> &
-  StyleProps & {
-    tag?: string
-    display?: TextStyle['display'] | 'inherit'
+
+export type TextProps = Omit<ReactTextProps, 'style'> &
+  TextStyleProps &
+  ComponentPropsBase & {
     ellipse?: boolean
     selectable?: boolean
-    children?: any
-    className?: string
-    pointerEvents?: string
-    cursor?: string
-    userSelect?: string
     textDecorationDistance?: number
   }
+
+//
+// StaticComponent
+//
+
+export type StaticComponent<
+  Props = any,
+  VariantProps = any,
+  StaticConfParsed = StaticConfigParsed,
+  ParentVariantProps = any
+> = React.FunctionComponent<Props> & {
+  staticConfig: StaticConfParsed
+  variantProps?: VariantProps
+
+  /*
+   * Only needed for more complex components
+   * If you create a styled frame component this is a HoC to extract
+   * styles from all parents.
+   */
+  extractable: <X>(a: X) => X
+}
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
   initialWindowMetrics?: any
@@ -347,23 +386,6 @@ export type RNWInternalProps = {
   onWheel?: (e: any) => void
   href?: string
   hrefAttrs?: { download?: boolean; rel?: string; target?: string }
-}
-
-export type StaticComponent<
-  Props = any,
-  VariantProps = any,
-  StaticConfParsed = StaticConfigParsed,
-  ParentVariantProps = any
-> = React.FunctionComponent<Props> & {
-  staticConfig: StaticConfParsed
-  variantProps?: VariantProps
-
-  /*
-   * Only needed for more complex components
-   * If you create a styled frame component this is a HoC to extract
-   * styles from all parents.
-   */
-  extractable: <X>(a: X) => X
 }
 
 export type StaticConfigParsed = StaticConfig & {

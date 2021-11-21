@@ -37,14 +37,9 @@ export const shorthands = {
   py: 'paddingVertical',
   w: 'width',
   zi: 'zIndex',
-  // view: {
-
-  // },
-  // text: {
-  //   // lh: 'lineHeight',
-  //   // ta: 'textAlign',
-  //   // fs: 'fontSize',
-  // },
+  lh: 'lineHeight',
+  ta: 'textAlign',
+  fosi: 'fontSize',
 } as const
 
 // nice and flat

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
-import { StaticComponent, TamaguiConfig, Themes, Tokens } from './types'
+import { MediaProps, StaticComponent, TamaguiConfig, Themes, Tokens } from './types'
 
 export function styled<
   ParentComponent extends StaticComponent | React.Component<any>,
@@ -24,7 +24,7 @@ export function styled<
   const component = createComponent(config!) // error is good here its on init
   type VariantProps = GetVariantProps<Variants>
   return component as StaticComponent<
-    Omit<GetProps<ParentComponent>, keyof VariantProps> & VariantProps
+    Omit<GetProps<ParentComponent>, keyof VariantProps> & VariantProps & MediaProps<VariantProps>
     // leave this out it was causing infinite recursion type issues
     // VariantProps
   >
