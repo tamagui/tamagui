@@ -18,10 +18,11 @@ name: text
 
 <Highlights
   features={[
-    'Accepts theme and themeInverse props.',
-    'Accepts size props to scale up and down.',
-    'Places icons and ensures text is styled.',
-    'Custom styles for disabled, active, chromeless.',
+    'Accepts size prop that works on all styles.',
+    'Themeable via context or theme prop.',
+    'Can inverse theme with themeInverse.',
+    'Place an icon before or after.',
+    'Disabled, active, chromeless props.',
   ]}
 />
 
@@ -38,6 +39,22 @@ export default () => (
   </Button>
 )
 ```
+
+### Sizing
+
+Sizing buttons provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, and font size all in one with the `size` prop.
+
+```jsx
+import { Button } from 'tamagui'
+
+export default () => (
+  <Button size="$6">
+    Lorem ipsum
+  </Button>
+)
+```
+
+Given your theme defines a size `6`, the button will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
 
 ### Button props
 
