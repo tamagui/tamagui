@@ -19,12 +19,16 @@ function Buttons(props) {
     <YStack elevation="$6" w={160} bc="$bg" p="$2" br="$2" space="$1" {...props}>
       <Button>Plain</Button>
       <Button theme="active">Active</Button>
-      <Theme name="yellow">
-        <Button size="$6">Large</Button>
-      </Theme>
-      <Button size="$3">Small</Button>
-      <Button disabled>Disabled</Button>
-      <Button chromeless>Chromeless</Button>
+      <Button theme="yellow">Yellow</Button>
+      <Button size="$7">XL</Button>
+      <Button size="$2">Small</Button>
+      <Button size="$1">XS</Button>
+      <Button size="$2" disabled>
+        Disabled
+      </Button>
+      <Button size="$2" chromeless>
+        Chromeless
+      </Button>
     </YStack>
   )
 }

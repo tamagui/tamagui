@@ -10,35 +10,55 @@ export function extendStaticConfig(
   Component?: StaticComponent | React.Component<any>,
   config: StaticConfig = {}
 ): StaticConfigParsed | null {
-  const a = (Component || {}) as any
-  if (!a.staticConfig) {
+  const parent = (Component || {}) as any
+  if (!parent.staticConfig) {
     // if no static config, we are extending an external component
-    a.staticConfig = {
+    parent.staticConfig = {
       Component,
     }
   }
 
+  const variants = {
+    ...parent.staticConfig.variants,
+  }
+
+  // merge variants without clobbering previous... can we tho (typed??
+  if (config.variants) {
+    for (const key in config.variants) {
+      if (variants[key]) {
+        variants[key] = {
+          ...variants[key],
+          ...config.variants[key],
+        }
+      } else {
+        variants[key] = config.variants[key]
+      }
+    }
+  }
+
+  // {
+  //   ...a.staticConfig.variants,
+  //   ...config.variants,
+  // }
+
   return parseStaticConfig({
-    ...a.staticConfig,
-    variants: {
-      ...a.staticConfig.variants,
-      ...config.variants,
-    },
-    isText: config.isText || a.staticConfig.isText || false,
-    neverFlatten: config.neverFlatten ?? a.staticConfig.neverFlatten,
-    ensureOverriddenProp: config.ensureOverriddenProp ?? a.staticConfig.ensureOverriddenProp,
+    ...parent.staticConfig,
+    variants,
+    isText: config.isText || parent.staticConfig.isText || false,
+    neverFlatten: config.neverFlatten ?? parent.staticConfig.neverFlatten,
+    ensureOverriddenProp: config.ensureOverriddenProp ?? parent.staticConfig.ensureOverriddenProp,
     validStyles: config.validStyles
       ? {
-          ...a.staticConfig.validStyles,
+          ...parent.staticConfig.validStyles,
           ...config.validStyles,
         }
-      : a.staticConfig.validStyles,
+      : parent.staticConfig.validStyles,
     validPropsExtra: {
-      ...a.staticConfig.validPropsExtra,
+      ...parent.staticConfig.validPropsExtra,
       ...config.validPropsExtra,
     },
     defaultProps: {
-      ...a.staticConfig.defaultProps,
+      ...parent.staticConfig.defaultProps,
       ...config.defaultProps,
     },
   })

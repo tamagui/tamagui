@@ -63,7 +63,12 @@ Add `tamagui-loader` and set up your `webpack.config.js`:
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.TAMAGUI_TARGET': '"web"',
+    })
+  ]
 }
 ```
 

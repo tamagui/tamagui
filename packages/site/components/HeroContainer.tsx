@@ -13,7 +13,7 @@ export function HeroContainer({ children }: { children?: React.ReactNode }) {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      py={60}
+      py={40}
       minHeight={380}
       borderRadius="$3"
       $gtLg={{
