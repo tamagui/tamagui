@@ -20,7 +20,7 @@ The timing that it takes to inject the initial styles. This happens when a compo
 
 <BenchmarkChart
   data={[
-    { name: 'Tamagui', value: 0.075 },
+    { name: 'Tamagui', value: 0.02 },
     { name: 'Stitches', value: 0.13 },
     { name: 'Emotion', value: 0.5 },
   ]}
@@ -35,7 +35,7 @@ Changing the variants is now faster than ever. Since variants can be conditional
 
 <BenchmarkChart
   data={[
-    { name: 'Tamagui', value: 0.018 }
+    { name: 'Tamagui', value: 0.031 },
     { name: 'Stitches', value: 0.037 },
     { name: 'Emotion', value: 0.069 },
     { name: 'styled-components', value: 0.081 },
@@ -53,14 +53,14 @@ The `css` prop is useful for setting styles at the consumption layer. These styl
 
 <BenchmarkChart
   data={[
-    { name: 'Stitches', value: 1.06 },
-    { name: 'Emotion', value: 2.15 },
-    { name: 'styled-components', value: 2.47 },
+    { name: 'Tamagui', value: 0.012 },
+    { name: 'Stitches', value: 0.038 },
+    { name: 'Emotion', value: 0.49 },
   ]}
 />
 }
 
-> Note: Since styled-components and Emotion don't offer a first-class `css` prop API without the need of Babel, this was done via prop interpolation.
+> Note: Since Emotion doesn't offer a first-class `css` prop API without the need of Babel, this was done via prop interpolation.
 
 ### Dynamic styles
 
@@ -70,9 +70,9 @@ In this test, we render the Sierpinski Triangle. Each node is a different color,
 
 <BenchmarkChart
   data={[
-    { name: 'Stitches', value: 28.79 },
-    { name: 'Emotion', value: 66.29 },
-    { name: 'styled-components', value: 73.42 },
+    { name: 'Tamagui', value: 35.0 },
+    { name: 'Stitches', value: 14.5 },
+    { name: 'Emotion', value: 49.01 },
   ]}
 />
 }
@@ -87,7 +87,8 @@ In this test, we mount a tree with many nested nodes.
 
 <BenchmarkChart
   data={[
-    { name: 'Stitches', value: 35.46 },
+    { name: 'Tamagui', value: 15.59 },
+    { name: 'Stitches', value: 8.37 },
     { name: 'Emotion', value: 42.49 },
     { name: 'styled-components', value: 51.4 },
   ]}

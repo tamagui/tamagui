@@ -557,6 +557,35 @@ export declare const Button: import("@tamagui/core").StaticComponent<Omit<import
 }) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
 }>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Dot: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const View: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Box: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, "color" | "fixed" | "layout" | "outer"> & {
+	color?: 0 | 1 | 2 | 3 | 4 | 5 | undefined;
+	layout?: "row" | "column" | undefined;
+	outer?: boolean | undefined;
+	fixed?: boolean | undefined;
+} & import("@tamagui/core").MediaProps<{
+	color?: 0 | 1 | 2 | 3 | 4 | 5 | undefined;
+	layout?: "row" | "column" | undefined;
+	outer?: boolean | undefined;
+	fixed?: boolean | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export * from "@tamagui/core";
 
 export {};

@@ -222,12 +222,12 @@ export function createComponent<A extends Object = DefaultProps>(
             props.className,
           ]
         : [defaultsClassName, props.className, classNames, stylesClassNames]
-      const classListFlat = classList.flat(1).filter(Boolean).join(' ')
-      const className = concatClassName(classListFlat)
+
+      const className = concatClassName(...classList)
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('🥚 className', { style, styles, stylesClassNames, classListFlat: classListFlat.split(' '), className })
+          console.log('🥚 className', { style, styles, classList, stylesClassNames, className })
         }
       }
       viewProps.className = className

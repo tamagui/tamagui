@@ -46,6 +46,7 @@ export function Hero() {
                 <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
                   <Title
                     size="$10"
+                    color="$colorBright"
                     fontFamily="$body"
                     $sm={{
                       maxWidth: 550,
