@@ -76,7 +76,7 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
     propMapper(key: string, value: any, theme: any, props: any) {
       const conf = getTamaguiConfig()
       if (!conf) {
-        console.trace('err')
+        console.trace('no conf! err')
         return
       }
       if (variants && !variantsParsed) {

@@ -1,5 +1,5 @@
+import { createFont, createTamagui, createTokens } from '@tamagui/bench-components'
 import * as Colors from '@tamagui/colors'
-import { createFont, createTamagui, createTokens } from 'tamagui'
 
 const lightColors = {
   ...Colors.blue,

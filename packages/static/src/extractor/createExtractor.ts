@@ -252,6 +252,7 @@ export function createExtractor() {
           //  SPREADS SETUP
           //
 
+          // TODO restore
           const hasDeopt = (obj: Object) => {
             return Object.keys(obj).some(isDeoptedProp)
           }
@@ -690,6 +691,9 @@ export function createExtractor() {
             function getStaticConditional(value: t.Node): Ternary | null {
               if (t.isConditionalExpression(value)) {
                 try {
+                  if (shouldPrintDebug) {
+                    console.log('attempt', value.alternate, value.consequent)
+                  }
                   const aVal = attemptEval(value.alternate)
                   const cVal = attemptEval(value.consequent)
                   if (shouldPrintDebug) {
