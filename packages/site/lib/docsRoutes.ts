@@ -20,8 +20,8 @@ export const docsRoutes = [
       { title: 'Headings', slug: 'docs/components/headings' },
       { title: 'Visually Hidden', slug: 'docs/components/visually-hidden' },
       { title: 'Form & Inputs', slug: 'docs/components/forms', pending: true },
-      { title: 'Popover', slug: 'docs/components/popover', pending: true },
-      { title: 'Tooltip', slug: 'docs/components/tooltip', pending: true },
+      // { title: 'Popover', slug: 'docs/components/popover', pending: true },
+      // { title: 'Tooltip', slug: 'docs/components/tooltip', pending: true },
       // { title: 'Grid', slug: 'docs/components/grid' },
     ],
   },
@@ -39,7 +39,10 @@ export const docsRoutes = [
 
   {
     label: 'Guides',
-    pages: [{ title: 'Design Systems', slug: 'docs/guides/design-systems' }],
+    pages: [
+      { title: 'Design Systems', slug: 'docs/guides/design-systems' },
+      { title: 'Next.js', slug: 'docs/guides/next-js' },
+    ],
   },
 ]
 
