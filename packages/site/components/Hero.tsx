@@ -1,3 +1,4 @@
+// debug
 // //! debug
 
 // import React from 'react'
@@ -80,19 +81,21 @@ export function Hero() {
                       color="$color"
                       opacity={0.7}
                       size="$4"
+                      letterSpacing={0}
                       $gtSm={{
                         ta: 'center',
                         size: '$6',
+                        letterSpacing: 0,
                         fontWeight: '400',
                       }}
                       $gtMd={{
                         size: '$7',
+                        letterSpacing: 0,
                         fontWeight: '400',
                       }}
                     >
-                      React Native & Web UIs <em>turbo-charged</em> by an optimizing compiler.
-                      Themes,&nbsp;media queries and typed inline styles that work everywhere -
-                      fast.
+                      React Native + Web UIs <em>turbo-charged</em> by an optimizing compiler.
+                      Themes,&nbsp;media queries & typed inline styles that fly, everywhere.
                     </Paragraph>
                   </YStack>
                 </YStack>

@@ -1,6 +1,5 @@
 import { Community } from '@components/Community'
 import { FeaturesGrid } from '@components/FeaturesGrid'
-import { Header } from '@components/Header'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import React from 'react'
@@ -13,9 +12,9 @@ export default function Home() {
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <YStack>
-        <YStack space="$7">
+        <YStack space="$8">
           <Hero />
-          <YStack space="$7" $sm={{ display: 'none' }}>
+          <YStack space="$8" $sm={{ display: 'none' }}>
             <Divider />
             <HeroExample />
           </YStack>

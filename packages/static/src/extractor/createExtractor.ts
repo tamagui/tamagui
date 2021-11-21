@@ -376,13 +376,13 @@ export function createExtractor() {
             .filter(isPresent)
 
           function isStaticAttributeName(name: string) {
-            return (
-              name === 'tag' ||
+            return !!(
               !!validStyles[name] ||
               staticConfig.validPropsExtra?.[name] ||
               !!pseudos[name] ||
               staticConfig.variants?.[name] ||
-              tamaguiConfig.shorthands[name]
+              tamaguiConfig.shorthands[name] ||
+              (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
             )
           }
 
@@ -395,7 +395,7 @@ export function createExtractor() {
                   return false
                 }
                 const propName = prop.key['name']
-                if (!isStaticAttributeName(propName)) {
+                if (!isStaticAttributeName(propName) && propName !== 'tag') {
                   // if (shouldPrintDebug) {
                   console.log('  not a valid style prop!', propName)
                   // }
@@ -597,7 +597,7 @@ export function createExtractor() {
                   keys = Object.keys(out)
                 }
               }
-              if (keys.some((k) => !isStaticAttributeName(k))) {
+              if (keys.some((k) => !isStaticAttributeName(k) && k !== 'tag')) {
                 if (shouldPrintDebug) {
                   console.log('  ! inlining, not static attribute name', name)
                 }
