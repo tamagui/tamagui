@@ -135,7 +135,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // faster lookups token keys become $keys to match input
   const tokensParsed: any = parseTokens(config.tokens)
-
   // all themes should match key and we just need variable name
   // TODO once w react native we'd want to have a reverse lookup back to value
   const themeParsed: any = {}

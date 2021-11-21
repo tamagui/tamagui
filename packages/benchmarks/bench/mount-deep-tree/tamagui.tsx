@@ -1,4 +1,3 @@
-// debug
 import { Box } from '@tamagui/bench-components'
 import React from 'react'
 

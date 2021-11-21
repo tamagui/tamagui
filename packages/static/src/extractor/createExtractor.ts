@@ -577,6 +577,13 @@ export function createExtractor() {
               return attr
             }
 
+            if (name === 'tag') {
+              return {
+                type: 'attr',
+                value: path.node,
+              }
+            }
+
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
 
