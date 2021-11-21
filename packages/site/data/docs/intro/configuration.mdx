@@ -5,33 +5,55 @@ description: Set up custom themes, tokens, shorthands, and media queries.
 
 You'll want to create a `tamagui.config.ts` in the root of your application code that sets up your design system properties.
 
-### Set up
+## Overview
 
-Let's start with an example of a small config file:
+Let's start with a full yet slimmed down `tamagui.config.ts`:
 
 ```jsx
-import { createTamagui, createTokens } from 'tamagui'
+import { createTamagui, createTokens, createFont } from 'tamagui'
+
+const interFont = createFont({
+  family: 'Inter, Helvetica, Arial, sans-serif',
+  size: {
+    1: 12,
+    2: 14,
+    3: 15,
+    // ...
+  },
+  lineHeight: {
+    1: 17,
+    2: 22,
+    3: 25,
+    // ...
+  },
+  weight: {
+    4: 300,
+    6: 600,
+  },
+  letterSpacing: {
+    4: 0,
+    8: -1,
+  },
+})
+
+const size = {
+  0: 0,
+  1: 5,
+  2: 10
+  // ....
+}
 
 export const tokens = createTokens({
-  // these root level keys are fixed, the child keys are your choice
-  size: { 0: 0, 1: 5, 2: 10, 3: 15, 4: 25, 5: 35 },
-  fontSize: { 1: 12, 2: 14, 3: 18, 4: 24 },
-  lineHeight: { 1: 14, 2: 18, 3: 24, 4: 28 },
+  font: { body: interFont },
+  size,
+  space: { ...size, '-1': -5, '-2': -10 },
   radius: { 0: 0, 1: 3 },
-  letterSpacing: { 1: 1, },
-  space: { 0: 0, 1: 4, 2: 8, 3: 12, 4: 16 },
   zIndex: { 0: 0, 1: 100, 2: 200 },
   color: {
     white: '#fff',
     black: '#000'
   },
-  font: {
-    title: 'Mono',
-    sans: '-system',
-    mono: 'Monospace',
-  },
 })
-
 
 const config = createTamagui({
   tokens,
@@ -46,8 +68,6 @@ const config = createTamagui({
     },
   },
   media: {
-    xs: { maxWidth: 660 },
-    gtXs: { minWidth: 660 + 1 },
     sm: { maxWidth: 860 },
     gtSm: { minWidth: 860 + 1 },
     short: { maxHeight: 820 },
@@ -57,7 +77,6 @@ const config = createTamagui({
   shorthands: {
     px: 'paddingHorizontal',
     f: 'flex',
-    h: 'height',
     w: 'width',
   },
 })
@@ -96,11 +115,60 @@ export default function App() {
 }
 ```
 
-### Tokens
+## Tokens
 
-Tokens have a pre-defined structure inspired by but a bit divergent from the [Theme UI spec](https://theme-ui.com/theme-spec/). They are mapped to CSS variables at build time. Tokens are meant to be paired together, so their keys should generally look good together at the same values.
+Tokens have a structure inspired by but divergent from the [Theme UI spec](https://theme-ui.com/theme-spec/). They are mapped to CSS variables at build time.
 
-Here's an example of a subset of tokens:
+### Font tokens
+
+The font tokens are a bit special and are created with `createFont`:
+
+```jsx
+const interFont = createFont({
+  family: 'Inter, Helvetica, Arial, sans-serif',
+  size: {
+    1: 12,
+    2: 14,
+    3: 15,
+    // ...
+  },
+  lineHeight: {
+    1: 17,
+    2: 22,
+    3: 25,
+    // ...
+  },
+  weight: {
+    4: 300,
+    6: 600,
+  },
+  letterSpacing: {
+    4: 0,
+    8: -1,
+  },
+})
+```
+
+<Notice>
+  Note, you don't need to use numbered keys, you can use `sm` or `tiny` or whatever you'd like. But
+  you do want keep those keys consistent.
+</Notice>
+
+This gives you a lot of power over customizing every aspect of your design based on each font family. In other styling libraries that follow the Theme UI spec, you generally don't group your size/lineHeight/weight/etc tokens by the family, which means you are forced to choose a single vertical rythym no matter the font.
+
+Things to note:
+
+- The keys of `size`, `lineHeight`, `weight`, and `letterSpacing` are meant to match.
+- You must be define all `size` keys, but the rest can be partial.
+- Missing keys from partially defined objects will be filled in.
+  - In the example above, `weight` is only defined at `4` and `6`.
+  - At creation Tamagui fills in the missing keys with previous value, or the next one if no previous exists. So weight `1` === `300`, weight `5` === `300`, and weight `7` === `600`.
+
+---
+
+### Non-font tokens
+
+The rest of the tokens are flat. Note that `space` and `size` generally also share keys, though space can have negative keys as well.
 
 ```jsx
 // passed into createTamagui
@@ -108,16 +176,6 @@ const tokens = createTokens({
   color: {
     white: '#fff',
     black: '#000'
-  },
-  fontSize: {
-    sm: 12,
-    md: 14,
-    lg: 18,
-  },
-  lineHeight: {
-    sm: 14,
-    md: 18,
-    lg: 24,
   },
 })
 ```
