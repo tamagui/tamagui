@@ -26,6 +26,7 @@ import { DemoButton } from './DemoButton'
 import * as Demos from './demos'
 import { Description } from './Description'
 import { DocCodeBlock } from './DocsCodeBlock'
+import { ExternalIcon } from './ExternalIcon'
 import { HeroContainer } from './HeroContainer'
 import { Highlights } from './Highlights'
 import { Preview } from './Preview'
@@ -119,7 +120,7 @@ export const components = {
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <Link size={10} color="var(--color)" />
+              <ExternalIcon />
             </>
           ) : null}
         </Text>
