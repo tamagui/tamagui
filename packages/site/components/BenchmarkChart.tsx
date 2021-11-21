@@ -21,35 +21,31 @@ export function BenchmarkChart({ data }) {
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
-    <XStack space="$2" mt="$4">
-      <YStack>
-        {data.map((result) => (
-          <Paragraph
-            key={result.name}
-            size="$2"
-            my="$1"
-            lineHeight="$5"
-            whiteSpace="nowrap"
-            ta="right"
-            fontWeight={result.name === 'Tamagui' ? '500' : '400'}
-          >
-            {result.name}
-          </Paragraph>
-        ))}
-      </YStack>
-      <YStack flex={1}>
-        {data.map((result) => (
-          <XStack ai="center" key={result.name} space="$2" my="$1" paddingRight="57px">
+    <YStack space="$2" my="$4">
+      {data.map((result, i) => (
+        <XStack space key={i}>
+          <YStack w={130}>
+            <Paragraph
+              key={result.name}
+              size="$2"
+              whiteSpace="nowrap"
+              ta="right"
+              my={-2}
+              fontWeight={result.name === 'Tamagui' ? '700' : '400'}
+            >
+              {result.name}
+            </Paragraph>
+          </YStack>
+          <XStack flex={1} ai="center">
             <YStack
-              height="$3"
               bc={getBarColor(result.name)}
               width={`${(result.value / maxValue) * 100}%`}
+              height="100%"
               position="relative"
               jc="center"
             >
               <Paragraph
                 size="$1"
-                lineHeight="$sizes$5"
                 whiteSpace="nowrap"
                 position="absolute"
                 right="$-1"
@@ -59,8 +55,8 @@ export function BenchmarkChart({ data }) {
               </Paragraph>
             </YStack>
           </XStack>
-        ))}
-      </YStack>
-    </XStack>
+        </XStack>
+      ))}
+    </YStack>
   )
 }

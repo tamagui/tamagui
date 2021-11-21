@@ -3,18 +3,20 @@ title: Benchmarks
 description: Performance tests and comparisons.
 ---
 
-We've put together a test suite to test a range of perfomance factors across multiple CSS-in-JS libraries.
+We've forked a common test suite for styling libraries. All tests were run in a production environment on a Macbook M1 Pro (2021). The [benchmarks](https://github.com/tamagui/tamagui/tree/master/src/packages/benchmarks) are open-source.
 
-All tests use object notation. All tests were run in a production environment, on a machine with the following spec:
-
-- Macbook M1 Pro 2021
-- 32GB RAM
-
-Just like Tamagui, our [benchmarks](https://github.com/tamagui/tamagui/tree/master/src/packages/benchmarks) are also open-source.
+<Notice>
+  **Note**: These benchmarks are competing against **web-only** style libraries. Those libraries
+  should have a big advantage as they basically can render directly to DOM, while Tamagui supports
+  the far richer and larger React Native API for every component. Still, we think Tamagui does well.
+  <br />
+  Next, we'll add a comparison to react-native-web and NativeBase, where it should show an ever
+  bigger difference.
+</Notice>
 
 ### Initial injection
 
-The timing that it takes to inject the initial styles. This happens when a component is rendered.
+The timing that it takes to inject the initial styles.
 
 {
 
@@ -29,7 +31,7 @@ The timing that it takes to inject the initial styles. This happens when a compo
 
 ### Updating variants
 
-Changing the variants is now faster than ever. Since variants can be conditionally applied, we ensure this happens as fast as possible.
+Changing variants is fast at runtime, and even faster when compiled:
 
 {
 
@@ -45,9 +47,9 @@ Changing the variants is now faster than ever. Since variants can be conditional
 
 > Note: Since styled-components and Emotion don't offer a first-class variant API, this was done via prop interpolation.
 
-### Updating `css` prop
+### Updating inline styles
 
-The `css` prop is useful for setting styles at the consumption layer. These styles need to be converted to CSS rules and injected to the DOM. This needs to happen fast - and it does!
+Tamagui has a big advantage for inline styles, it's the only library to compile them.
 
 {
 
@@ -60,11 +62,9 @@ The `css` prop is useful for setting styles at the consumption layer. These styl
 />
 }
 
-> Note: Since Emotion doesn't offer a first-class `css` prop API without the need of Babel, this was done via prop interpolation.
+### Dynamic styles (no compilation)
 
-### Dynamic styles
-
-In this test, we render the Sierpinski Triangle. Each node is a different color, to ensure styles are dynamic.
+Tamagui components are far more feature-rich than other styling libraries, so in the worst case where every component isn't extracted, you get middle-of-the-road performance. The good news is, this is a worst-case scenario, and we have a lot of low hanging fruit for improvement.
 
 {
 
@@ -77,7 +77,7 @@ In this test, we render the Sierpinski Triangle. Each node is a different color,
 />
 }
 
-> Note: This test was taken from the [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks). Emotion also tests against this.
+> Note: This test was taken from the [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks).
 
 ### Mounting deep tree
 
@@ -95,27 +95,10 @@ In this test, we mount a tree with many nested nodes.
 />
 }
 
-> Note: This test was taken from the [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks). Emotion also tests against this.
-
-### Mount wide tree
-
-In this test, we mount a tree with many sibling nodes.
-
-{
-
-<BenchmarkChart
-  data={[
-    { name: 'Stitches', value: 46.03 },
-    { name: 'Emotion', value: 62.58 },
-    { name: 'styled-components', value: 76.26 },
-  ]}
-/>
-}
-
-> Note: This test was taken from the [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks). Emotion also tests against this.
+> Note: This test was taken from the [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks).
 
 ## Summary
 
-Our benchmarks compare against styled-components and Emotion because they're the most popular CSS-in-JS libraries, and they've pushed us to improve our performance. Our goal with these benchmarks is to provide transparent performance comparisons for the community.
+Our benchmarks compare against Stitches, styled-components and Emotion because they're the most popular CSS-in-JS libraries for the web.
 
-If you'd like us to include your CSS-in-JS library, or think the tests could be improved, please [open an issue](https://github.com/modulz/stitches-bench).
+A few tests didn't run after upgrading Next.js for Emotion/styled-components, we've left them out for now.

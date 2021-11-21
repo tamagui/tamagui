@@ -292,7 +292,7 @@ function DocsRouteNavItem({ children, active, href, pending, external, ...props 
           size="$2"
           color="$color"
           {...(active && {
-            color: '$color2',
+            color: '$color3',
           })}
         >
           {children}

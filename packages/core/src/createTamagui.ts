@@ -191,7 +191,7 @@ const parseTokens = (tokens: any) => {
             continue
           }
           obj[attrKey] = Object.keys(attr).reduce((acc, cur) => {
-            acc[`$${cur}`] = cur
+            acc[`$${cur}`] = attr[cur]
             return acc
           }, {})
         }
@@ -202,5 +202,6 @@ const parseTokens = (tokens: any) => {
       res[key][`$${skey}`] = tokens[key][skey]
     }
   }
+
   return res
 }
