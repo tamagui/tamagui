@@ -1,3 +1,4 @@
+- <Theme name> needs to accept stripped `-light` `-dark` type
 - TODO: variant functions are receiving non-prefixes tokens/themes instead of prefixed..
 - basic styled() extraction => work liek props => <YStack />
 - space => gap?

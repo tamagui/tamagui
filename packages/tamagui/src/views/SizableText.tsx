@@ -1,15 +1,29 @@
-import { Text, Variable, styled } from '@tamagui/core'
-
-import { GetProps } from '../../types'
+import { GetProps, Text, Variable, styled } from '@tamagui/core'
 
 export const SizableText = styled(Text, {
   variants: {
     size: {
-      '...size': (val, { tokens }) => {
-        const fontSize = tokens.fontSize[val]
-        const lineHeight = tokens.lineHeight[val]
+      // TODO this should be ...fontSize type not working
+      '...size': (val, { tokens, props }) => {
+        // console.log('tokens', tokens)
+        const family = (
+          typeof props.fontFamily === 'string'
+            ? props.fontFamily.replace('$', '')
+            : props.fontFamily instanceof Variable
+            ? props.fontFamily.val
+            : props.fontFamily || 'body'
+        ) as any
+        const font = tokens.font[family]
+        const fontFamily = font.family
+        const fontSize = props.fontSize || font.size[val]
+        const lineHeight = props.lineHeight || font.lineHeight[val]
+        const fontWeight = props.fontWeight || font.weight[val]
+        const letterSpacing = props.letterSpacing || font.letterSpacing[val]
         if (fontSize instanceof Variable) {
           return {
+            fontFamily,
+            fontWeight,
+            letterSpacing,
             fontSize,
             lineHeight,
           }

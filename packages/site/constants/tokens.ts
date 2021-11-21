@@ -1,102 +1,117 @@
-import { createTokens } from 'tamagui'
+import { createFont, createTokens } from 'tamagui'
 
 import { darkColorsPostfixed, light } from './colors'
 
-const space = {
+const size = {
   0: 0,
   1: 5,
   2: 10,
   3: 15,
   4: 20,
   5: 25,
-  6: 35,
-  7: 45,
-  8: 60,
-  9: 80,
+  6: 30,
+  7: 40,
+  8: 50,
+  9: 75,
   10: 100,
   true: 10,
+}
+
+const space = {
+  ...size,
   '-0': -0,
   '-1': -5,
   '-2': -10,
   '-3': -15,
   '-4': -20,
   '-5': -25,
-  '-6': -35,
-  '-7': -45,
-  '-8': -60,
-  '-9': -80,
+  '-6': -30,
+  '-7': -40,
+  '-8': -50,
+  '-9': -75,
   '-10': -100,
 }
 
-/*
- * Want to move font definitions to:
- *   font: { title: { family, size, lineHeight, letterSpace }, body: { ... }, [key: string]: { .... } }
- *
- *   further, de-normalizing would have two upsides and one downside:
- *     + ensures we share the same keys at definition
- *     + ensures types are easy to infer and always consistent
- *     - forces you to define them awkwardly
- *
- *      font: {
- *        body: {
- *          0: { size, lineHeight, letterSpace }
- *        },
- *        title: {
- *          0: ...
- *        }
- *      }
- *
- *   same with themes then too?
- *
- *     themes: {
- *       bg: { light, dark, ... },
- *       b2: { light, dark, ... }
- *     }
- *
- */
+const interFont = createFont({
+  family:
+    'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  size: {
+    1: 12,
+    2: 14,
+    3: 15,
+    4: 16,
+    5: 17,
+    6: 18,
+    7: 20,
+    8: 21,
+    9: 38,
+    10: 44,
+    11: 68,
+    12: 76,
+  },
+  lineHeight: {
+    1: 17,
+    2: 22,
+    3: 25,
+    4: 26,
+    5: 30,
+    6: 31,
+    7: 35,
+    8: 42,
+    9: 48,
+    10: 56,
+    11: 75,
+    12: 88,
+  },
+  weight: {
+    4: '300',
+    6: '600',
+    8: '700',
+  },
+  letterSpacing: {
+    4: 0,
+    8: -1,
+    9: -2,
+    10: -3,
+    12: -4,
+  },
+})
 
-const fontSize = {
-  1: 12,
-  2: 14,
-  3: 15,
-  4: 16, // p
-  5: 17, // h4
-  6: 18, // h3
-  7: 20,
-  8: 21,
-  9: 38, // h2
-  10: 44, // h1
-  11: 50,
-  12: 62,
-}
-
-const lineHeight = {
-  1: fontSize[0] * 1.4,
-  2: fontSize[1] * 1.55,
-  3: fontSize[2] * 1.65,
-  4: fontSize[3] * 1.8,
-  5: fontSize[4] * 1.85,
-  6: fontSize[5] * 1.9,
-  7: fontSize[6] * 1.95,
-  8: fontSize[7] * 2,
-  9: fontSize[8] * 2.1,
-  10: fontSize[9] * 2.1,
-  11: fontSize[10] * 2.4,
-  12: fontSize[11] * 2.5,
-}
-
-const interFamily =
-  'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+const monoFont = createFont({
+  family: 'Monospace',
+  size: {
+    1: 12,
+    2: 14,
+    3: 15,
+    4: 16,
+    5: 17,
+    6: 18,
+  },
+  lineHeight: {
+    1: 15,
+    2: 20,
+    3: 22,
+    4: 23,
+    5: 24,
+    6: 26,
+  },
+  weight: {
+    4: '300',
+    6: '700',
+  },
+  letterSpacing: {
+    4: 0,
+  },
+})
 
 export const tokens = createTokens({
-  letterSpace: {
-    '-2': -2,
-    '-1': -1,
-    0: 0,
-    1: 1,
-    2: 2,
-  },
+  size,
   space,
+  font: {
+    title: interFont,
+    body: interFont,
+    mono: monoFont,
+  },
   zIndex: {
     0: 0,
     1: 100,
@@ -104,11 +119,6 @@ export const tokens = createTokens({
     3: 300,
     4: 400,
     5: 500,
-  },
-  font: {
-    title: interFamily,
-    mono: 'Monospace',
-    body: interFamily,
   },
   color: {
     ...light,
@@ -122,7 +132,4 @@ export const tokens = createTokens({
     4: 15,
     5: 20,
   },
-  size: space,
-  fontSize,
-  lineHeight,
 })

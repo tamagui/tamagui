@@ -3,6 +3,7 @@ import React from 'react'
 import { getTamaguiConfig } from '../createTamagui'
 import { Variable } from '../createVariable'
 import { StaticComponent, StaticConfig, StaticConfigParsed, TamaguiInternalConfig } from '../types'
+import { isObj } from './isObj'
 
 export function extendStaticConfig(
   // can be undefined when loading with @tamagui/fake-react-native
@@ -64,11 +65,10 @@ export function extendStaticConfig(
   })
 }
 
-const isObj = (x: any) => x && !Array.isArray(x) && typeof x === 'object'
-
 export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
   const variants = c.variants
   let variantsParsed
+  const defaultProps = c.defaultProps || {}
   return {
     ...c,
     parsed: true,
@@ -83,8 +83,14 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
         variantsParsed = parseVariants(variants, conf)
       }
 
+      let fontFamily = props.fontFamily || defaultProps.fontFamily || 'body'
+      if (fontFamily[0] === '$') {
+        fontFamily = fontFamily.slice(1)
+      }
+
       // expand variants
       const variant = variantsParsed?.[key]
+
       if (variant && typeof value !== 'undefined') {
         const tokenKey = typeof value === 'string' && value[0] === '$' ? value.slice(1) : value
         const val =
@@ -108,7 +114,7 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
             if (val instanceof Variable) {
               res[fKey] = val.variable
             } else if (typeof val === 'string') {
-              const fVal = val[0] === '$' ? getToken(fKey, val, conf) : val
+              const fVal = val[0] === '$' ? getToken(fKey, val, conf, fontFamily) : val
               res[fKey] = fVal
             } else {
               // nullish values cant be tokens so need no exrta parsing
@@ -129,7 +135,7 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
 
       if (value && value[0] === '$') {
         shouldReturn = true
-        value = getToken(key, value, conf)
+        value = getToken(key, value, conf, fontFamily)
       }
 
       if (value instanceof Variable) {
@@ -149,10 +155,26 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
 const getToken = (
   key: string,
   value: string,
-  { tokensParsed, themeParsed }: TamaguiInternalConfig
+  { tokensParsed, themeParsed }: TamaguiInternalConfig,
+  fontFamily: string | undefined = 'body'
 ) => {
   if (themeParsed[value]) {
     return themeParsed[value].variable
+  }
+  if (key === 'fontFamily') {
+    return tokensParsed.font[value]?.family || value
+  }
+  if (key === 'fontSize') {
+    return tokensParsed.font[fontFamily]?.size[value] || value
+  }
+  if (key === 'lineHeight') {
+    return tokensParsed.font[fontFamily].lineHeight[value]
+  }
+  if (key === 'letterSpacing') {
+    return tokensParsed.font[fontFamily].letterSpacing[value]
+  }
+  if (key === 'fontWeight') {
+    return tokensParsed.font[fontFamily].weight[value]
   }
   for (const cat in tokenCategories) {
     if (tokenCategories[cat][key]) {
@@ -184,15 +206,6 @@ const tokenCategories = {
     minHeight: true,
     maxWidth: true,
     maxHeight: true,
-  },
-  font: {
-    fontFamily: true,
-  },
-  fontSize: {
-    fontSize: true,
-  },
-  lineHeight: {
-    lineHeight: true,
   },
   color: {
     color: true,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnsureFlexed, GetProps, Grid, H2, H4, Paragraph, XStack, YStack } from 'tamagui'
+import { EnsureFlexed, GetProps, Grid, H2, H3, H4, Paragraph, XStack, YStack } from 'tamagui'
 
 import { Card } from './Card'
 import { ContainerLarge } from './Container'
@@ -8,11 +8,11 @@ import { GithubIcon } from './GithubIcon'
 
 export function Community() {
   return (
-    <ContainerLarge space="$3" py="$4">
+    <ContainerLarge space="$3">
       <H2 ta="center">Community</H2>
-      <Paragraph size="$6" color="$color3" ta="center">
+      <H3 fontWeight="400" color="$color3" ta="center">
         Join the community on these platforms
-      </Paragraph>
+      </H3>
 
       <YStack maxWidth="100%" fs={0} als="center" pt="$2" pb="$6">
         <EnsureFlexed />

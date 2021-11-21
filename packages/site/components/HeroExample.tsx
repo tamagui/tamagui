@@ -57,34 +57,12 @@ export function HeroExample() {
         />
       </YStack>
 
-      {/* <YStack
-        position="absolute"
-        zi={0}
-        pe="none"
-        opacity={0.1}
-        top="-60%"
-        left="-15%"
-        w="100%"
-        h="100%"
-        scale={1.5}
-        maxHeight={650}
-        maxWidth={520}
-      >
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            background: `radial-gradient(circle closest-side, var(--blue5), transparent)`,
-          }}
-        />
-      </YStack> */}
-
       <YStack zi={1} space="$6">
-        <H2 letterSpacing={-1} als="center">
+        <H2 als="center">
           Beautiful syntax, <span className="rainbow">faster output</span>
         </H2>
 
-        <InteractiveContainer mt={-10} als="center">
+        <InteractiveContainer als="center">
           {examples.map((example, i) => {
             return (
               <Button
@@ -103,7 +81,7 @@ export function HeroExample() {
 
         <XStack jc="space-between">
           <YStack flex={1} maxWidth="49%" space="$4">
-            <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
+            <Paragraph size="$3" minHeight={50} ta="center" px="$7" color="$color2">
               {activeExample.input.description}
             </Paragraph>
 
@@ -141,7 +119,7 @@ export function HeroExample() {
             </IconStack>
           </YStack>
           <YStack flex={1} maxWidth="49%" space="$4">
-            <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
+            <Paragraph size="$3" minHeight={50} ta="center" px="$7" color="$color2">
               {activeExample.output.description}
             </Paragraph>
             <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-4" zi="100" als="center">

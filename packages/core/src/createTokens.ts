@@ -4,8 +4,7 @@ import { CreateTokens } from './types'
 // tokens.color.dark.red ===>{ var: `color-dark-red`, val: '' }
 
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
-  // @ts-ignore
-  return setupTokens(tokens)
+  return setupTokens(tokens) as any
 }
 
 function setupTokens(tokens: any) {
@@ -32,10 +31,15 @@ export const mapTokensToVariables = (
 
 // verbose but gives us nice types...
 type MakeTokens<T> = T extends {
-  font: infer A
-  fontSize: infer B
-  lineHeight: infer C
-  letterSpace: infer D
+  font: {
+    [key in infer A]: {
+      size: infer B
+      lineHeight: infer C
+      letterSpacing: infer D
+      weight: infer Z
+      family: infer Y
+    }
+  }
   color: infer E
   space: infer F
   size: infer G
@@ -44,16 +48,21 @@ type MakeTokens<T> = T extends {
 }
   ? {
       font: {
-        [key in keyof A]: Variable
-      }
-      fontSize: {
-        [key in keyof B]: Variable
-      }
-      lineHeight: {
-        [key in keyof C]: Variable
-      }
-      letterSpace: {
-        [key in keyof D]: Variable
+        [key in A]: {
+          size: {
+            [key in keyof B]: Variable
+          }
+          lineHeight: {
+            [key in keyof C]: Variable
+          }
+          letterSpacing: {
+            [key in keyof D]: Variable
+          }
+          weight: {
+            [key in keyof Z]: Variable
+          }
+          family: Y
+        }
       }
       color: {
         [key in keyof E]: Variable

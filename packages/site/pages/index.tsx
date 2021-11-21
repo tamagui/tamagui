@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <YStack>
-        <YStack space="$8">
+        <YStack space="$7">
           <Hero />
           <YStack space="$7" $sm={{ display: 'none' }}>
             <Divider />
@@ -31,6 +31,7 @@ export default function Home() {
 
 const Divider = () => (
   <YStack
+    mt="$2"
     mx="auto"
     als="center"
     borderBottomColor="$borderColor"
