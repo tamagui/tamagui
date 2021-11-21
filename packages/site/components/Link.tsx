@@ -15,7 +15,13 @@ export const Link = ({
 }: LinkProps) => {
   return (
     <NextLink passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
-      <Paragraph tag="a" color="$color3" hoverStyle={{ color: '$color' }} {...props} />
+      <Paragraph
+        cursor="pointer"
+        tag="a"
+        color="$color3"
+        hoverStyle={{ color: '$color' }}
+        {...props}
+      />
     </NextLink>
   )
 }
