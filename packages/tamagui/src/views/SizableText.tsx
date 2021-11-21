@@ -13,6 +13,12 @@ export const SizableText = styled(Text, {
             : props.fontFamily || '$body'
         ) as any
         const font = tokens.font[family]
+        if (process.env.NODE_ENV === 'development') {
+          if (!font) {
+            console.warn('⚠️ no font found', { family, fontTokens: Object.keys(tokens.font), val })
+            return {}
+          }
+        }
         const fontFamily = font.family
         const fontSize = props.fontSize || font.size[val]
         const lineHeight = props.lineHeight || font.lineHeight[val]

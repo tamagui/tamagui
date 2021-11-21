@@ -12,7 +12,7 @@ import { Button, Paragraph, StackProps, Text, Theme, VisuallyHidden, XStack, YSt
 import { AlphaButton } from './AlphaButton'
 import { ColorToggle, useTint } from './ColorToggle'
 import { Container } from './Container'
-import { ExternalIcon } from './ExternalIcon'
+import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { Link } from './Link'
 import { NavHeading } from './NavHeading'
 
@@ -249,64 +249,10 @@ const DocsPageTheme = (props) => {
   return <Theme name={tint}>{React.useMemo(() => props.children, [])}</Theme>
 }
 
-type NavItemProps = {
+export type NavItemProps = {
   children: React.ReactNode
   active?: boolean
   href: string
   pending?: boolean
   external?: boolean
-}
-
-function DocsRouteNavItem({ children, active, href, pending, external, ...props }: NavItemProps) {
-  const isExternal = href.startsWith('http')
-
-  return (
-    <NextLink href={href} passHref>
-      <XStack
-        {...props}
-        {...(isExternal ? { href, target: '_blank', rel: 'noopener noreferrer' } : {})}
-        tag="a"
-        ai="center"
-        py="$1"
-        px="$4"
-        opacity={pending ? 0.25 : 0.75}
-        hoverStyle={{
-          backgroundColor: '$bg2',
-          opacity: 1,
-        }}
-        pressStyle={{
-          backgroundColor: '$bgTransparent',
-          opacity: 1,
-        }}
-        userSelect="none"
-        minHeight="$6"
-        pointerEvents={pending ? 'none' : 'auto'}
-        {...(active && {
-          backgroundColor: '$bg3',
-          hoverStyle: {
-            backgroundColor: '$bg3',
-          },
-        })}
-      >
-        <Paragraph
-          size="$2"
-          color="$color"
-          {...(active && {
-            color: '$color3',
-          })}
-        >
-          {children}
-        </Paragraph>
-        {!!external && <ExternalIcon />}
-        {!!pending ? (
-          <>
-            <XStack flex={1} />
-            <Paragraph size="$1" px="$2" py="$1" bc="$bg2" borderRadius="$3" color="$color3">
-              WIP
-            </Paragraph>
-          </>
-        ) : null}
-      </XStack>
-    </NextLink>
-  )
 }

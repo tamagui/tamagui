@@ -80,11 +80,11 @@ const interFont = createFont({
 const monoFont = createFont({
   family: 'Monospace',
   size: {
-    1: 12,
-    2: 14,
-    3: 15,
-    4: 16,
-    5: 17,
+    1: 10,
+    2: 11,
+    3: 12,
+    4: 13,
+    5: 16,
     6: 18,
   },
   lineHeight: {

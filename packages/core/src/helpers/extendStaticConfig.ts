@@ -83,15 +83,16 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
         variantsParsed = parseVariants(variants, conf)
       }
 
+      // handled here because we need to resolve this off tokens, its the only one-off like this
       let fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
 
       // expand variants
       const variant = variantsParsed?.[key]
-
       if (variant && typeof value !== 'undefined') {
-        const val = value === true ? variant['$true'] : variant[value] ?? variant['...'] ?? value
-
-        // console.log('hm', value, val, variant, variantsParsed)
+        const val =
+          value === true
+            ? variant['$true'] || variant['true']
+            : variant[value] ?? variant['...'] ?? value
 
         const res =
           typeof val === 'function'
