@@ -20,6 +20,7 @@ export const Tooltip = ({ contents, tooltipFrameProps, ...props }: TooltipProps)
     <HoverablePopover
       placement="bottom"
       delay={200}
+      disableUntilSettled
       {...props}
       trigger={(triggerProps) =>
         React.isValidElement(props.children) ? (
