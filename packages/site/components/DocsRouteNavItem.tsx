@@ -1,3 +1,4 @@
+// debug
 import NextLink from 'next/link'
 import * as React from 'react'
 import { Paragraph, XStack } from 'tamagui'

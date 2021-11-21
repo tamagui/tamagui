@@ -187,6 +187,7 @@ const getToken = (
     }
   }
   for (const cat in tokenCategories) {
+    // console.log('getting token', cat, key, tokenCategories[cat])
     if (tokenCategories[cat][key]) {
       const res = tokensParsed[cat][value]
       if (res) {

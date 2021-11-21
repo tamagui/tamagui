@@ -1,4 +1,3 @@
-// debug
 import { Dot, View } from '@tamagui/bench-components'
 import { interpolateBuPu, interpolatePurples, interpolateRdPu } from 'd3-scale-chromatic'
 import React from 'react'
