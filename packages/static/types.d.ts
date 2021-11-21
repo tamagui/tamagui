@@ -74,6 +74,26 @@ export declare type ThemeProviderProps = {
 	disableRootThemeClass?: boolean;
 	children?: any;
 };
+export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
+	font: {
+		[key: string]: GenericFont;
+	};
+	color: {
+		[key: string]: Val;
+	};
+	space: {
+		[key: string]: Val;
+	};
+	size: {
+		[key: string]: Val;
+	};
+	radius: {
+		[key: string]: Val;
+	};
+	zIndex: {
+		[key: string]: Val;
+	};
+}
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {
@@ -112,35 +132,21 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
 	themeConfig: any;
 	getCSS: () => string;
 };
-export interface CreateTokens<Val extends number | string | Variable = number | string | Variable, TextKeys extends string = string> {
-	font: {
-		[key in TextKeys]: Val;
-	};
-	fontSize: {
-		[key in TextKeys]: Val;
+export declare type GenericFont = {
+	size: {
+		[key: string | number]: number | Variable;
 	};
 	lineHeight: {
-		[key in TextKeys]: Val;
+		[key: string | number]: number | Variable;
 	};
-	letterSpace: {
-		[key in TextKeys]: Val;
+	letterSpacing: {
+		[key: string | number]: number | Variable;
 	};
-	color: {
-		[key: string]: Val;
+	weight: {
+		[key: string | number]: number | Variable;
 	};
-	space: {
-		[key: string]: Val;
-	};
-	size: {
-		[key: string]: Val;
-	};
-	radius: {
-		[key: string]: Val;
-	};
-	zIndex: {
-		[key: string]: Val;
-	};
-}
+	family: string | Variable;
+};
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, "children">> & {
 	initialWindowMetrics?: any;
 	fallback?: any;
@@ -148,7 +154,7 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, "chi
 };
 export declare type Extractor = ReturnType<typeof createExtractor>;
 export declare function createExtractor(): {
-	getTamaguiConfig(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<string | number | import("@tamagui/core").Variable, string>, {
+	getTamaguiConfig(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<string | number | import("@tamagui/core").Variable>, {
 		[key: string]: {
 			bg: string | import("@tamagui/core").Variable;
 			bg2: string | import("@tamagui/core").Variable;

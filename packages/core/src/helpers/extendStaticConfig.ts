@@ -3,6 +3,7 @@ import React from 'react'
 import { getTamaguiConfig } from '../createTamagui'
 import { Variable } from '../createVariable'
 import { StaticComponent, StaticConfig, StaticConfigParsed, TamaguiInternalConfig } from '../types'
+import { isObj } from './isObj'
 
 export function extendStaticConfig(
   // can be undefined when loading with @tamagui/fake-react-native
@@ -63,8 +64,6 @@ export function extendStaticConfig(
     },
   })
 }
-
-const isObj = (x: any) => x && !Array.isArray(x) && typeof x === 'object'
 
 export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
   const variants = c.variants
@@ -155,6 +154,7 @@ const getToken = (
     return themeParsed[value].variable
   }
   for (const cat in tokenCategories) {
+    // console.log('getting token', cat, key, tokenCategories[cat])
     if (tokenCategories[cat][key]) {
       const res = tokensParsed[cat][value]
       if (res) {
@@ -185,15 +185,15 @@ const tokenCategories = {
     maxWidth: true,
     maxHeight: true,
   },
-  font: {
-    fontFamily: true,
-  },
-  fontSize: {
-    fontSize: true,
-  },
-  lineHeight: {
-    lineHeight: true,
-  },
+  // font: {
+  //   fontFamily: true,
+  // },
+  // fontSize: {
+  //   fontSize: true,
+  // },
+  // lineHeight: {
+  //   lineHeight: true,
+  // },
   color: {
     color: true,
     backgroundColor: true,

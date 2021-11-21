@@ -8,6 +8,15 @@ import { ThemeProviderProps } from './views/ThemeProvider'
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
+export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
+  font: { [key: string]: GenericFont }
+  color: { [key: string]: Val }
+  space: { [key: string]: Val }
+  size: { [key: string]: Val }
+  radius: { [key: string]: Val }
+  zIndex: { [key: string]: Val }
+}
+
 type GenericTokens = CreateTokens
 type GenericThemes = {
   [key: string]: {
@@ -110,23 +119,12 @@ export type PropTypes<A extends StaticComponent> = A extends React.FunctionCompo
   ? Props
   : unknown
 
-// TODO:
-//  - make TextKeys enforced
-//  - space / size share keys?
-//  - color should be keyed with theme keys
-export interface CreateTokens<
-  Val extends number | string | Variable = number | string | Variable,
-  TextKeys extends string = string
-> {
-  font: { [key in TextKeys]: Val }
-  fontSize: { [key in TextKeys]: Val }
-  lineHeight: { [key in TextKeys]: Val }
-  letterSpace: { [key in TextKeys]: Val }
-  color: { [key: string]: Val }
-  space: { [key: string]: Val }
-  size: { [key: string]: Val }
-  radius: { [key: string]: Val }
-  zIndex: { [key: string]: Val }
+export type GenericFont = {
+  size: { [key: string | number]: number | Variable }
+  lineHeight: { [key: string | number]: number | Variable }
+  letterSpacing: { [key: string | number]: number | Variable }
+  weight: { [key: string | number]: number | Variable }
+  family: string | Variable
 }
 
 // media
@@ -185,6 +183,9 @@ type ComponentPropsBase = {
   pointerEvents?: string
 }
 
+type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =
+  keyof Tokens['font'][keyof Tokens['font']][A]
+
 //
 // adds in theme short values to relevant props
 //
@@ -199,7 +200,7 @@ export type WithThemeValues<T extends object> = {
         : K extends FontKeys
         ? `$${keyof Tokens['font']}`
         : K extends FontSizeKeys
-        ? `$${keyof Tokens['fontSize']}`
+        ? `$${GetTokenFontKeysFor<'size'>}`
         : K extends SpaceKeys
         ? `$${keyof Tokens['space']}`
         : K extends ColorKeys
@@ -207,7 +208,11 @@ export type WithThemeValues<T extends object> = {
         : K extends ZIndexKeys
         ? `$${keyof Tokens['zIndex']}`
         : K extends LineHeightKeys
-        ? `$${keyof Tokens['lineHeight']}`
+        ? `$${GetTokenFontKeysFor<'lineHeight'>}`
+        : K extends FontWeightKeys
+        ? `$${GetTokenFontKeysFor<'weight'>}`
+        : K extends FontLetterSpacingKeys
+        ? `$${GetTokenFontKeysFor<'letterSpacing'>}`
         : {})
 }
 
@@ -244,16 +249,21 @@ type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsA
 // Stack
 //
 
+type WebOnlyStyleProps = {
+  // WEB ONLY
+  cursor?: string
+  // WEB ONLY
+  contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
+  // WEB ONLY values: inherit, inline, block, content
+  display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
+  // WEB ONLY pointerEvents can be a style prop
+  pointerEvents?: ViewProps['pointerEvents']
+}
+
 type StackStyleProps = WithThemeShorthandsPseudosAndMedia<
   Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
-    TransformStyleProps & {
-      // WEB ONLY
-      cursor?: string
-      // WEB ONLY
-      contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string
-      // WEB ONLY values: inherit, inline, block, content
-      display?: 'inherit' | 'none' | 'inline' | 'block' | 'contents' | 'flex' | 'inline-flex'
-    }
+    TransformStyleProps &
+    WebOnlyStyleProps
 >
 
 export type StackProps = Omit<RNWInternalProps, 'children'> &
@@ -278,7 +288,7 @@ export type StackProps = Omit<RNWInternalProps, 'children'> &
 // }
 
 type TextStyleProps = WithThemeShorthandsPseudosAndMedia<
-  Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps
+  Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps
 >
 
 export type TextProps = Omit<ReactTextProps, 'style'> &
@@ -473,6 +483,10 @@ type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'ma
 type FontKeys = 'fontFamily'
 
 type FontSizeKeys = 'fontSize'
+
+type FontWeightKeys = 'fontWeight'
+
+type FontLetterSpacingKeys = 'letterSpacing'
 
 type LineHeightKeys = 'lineHeight'
 

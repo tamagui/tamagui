@@ -510,11 +510,26 @@ export declare type ThemeProviderProps = {
 };
 export declare const GET_DEFAULT_THEME = "___TGUI";
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
-export declare type TamaguiStylesBase = Omit<ViewStyle, "display" | "backfaceVisibility" | "elevation"> & TransformStyleProps & {
-	cursor?: string;
-	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
-	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
-};
+export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
+	font: {
+		[key: string]: GenericFont;
+	};
+	color: {
+		[key: string]: Val;
+	};
+	space: {
+		[key: string]: Val;
+	};
+	size: {
+		[key: string]: Val;
+	};
+	radius: {
+		[key: string]: Val;
+	};
+	zIndex: {
+		[key: string]: Val;
+	};
+}
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {
@@ -569,35 +584,21 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
 export declare type PropTypes<A extends StaticComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;
-export interface CreateTokens<Val extends number | string | Variable = number | string | Variable, TextKeys extends string = string> {
-	font: {
-		[key in TextKeys]: Val;
-	};
-	fontSize: {
-		[key in TextKeys]: Val;
+export declare type GenericFont = {
+	size: {
+		[key: string | number]: number | Variable;
 	};
 	lineHeight: {
-		[key in TextKeys]: Val;
+		[key: string | number]: number | Variable;
 	};
-	letterSpace: {
-		[key in TextKeys]: Val;
+	letterSpacing: {
+		[key: string | number]: number | Variable;
 	};
-	color: {
-		[key: string]: Val;
+	weight: {
+		[key: string | number]: number | Variable;
 	};
-	space: {
-		[key: string]: Val;
-	};
-	size: {
-		[key: string]: Val;
-	};
-	radius: {
-		[key: string]: Val;
-	};
-	zIndex: {
-		[key: string]: Val;
-	};
-}
+	family: string | Variable;
+};
 export declare type MediaKeys = keyof Media;
 export declare type MediaQueryObject = {
 	[key: string]: string | number | string;
@@ -631,26 +632,10 @@ export declare type TransformStyleProps = {
 	rotateX?: string;
 	rotateZ?: string;
 };
-export declare type ShortKeysView = keyof Shorthands;
-export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
-export declare type WithThemeValues<T extends object> = {
-	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${keyof Tokens["fontSize"]}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${keyof Tokens["lineHeight"]}` : {});
-};
-export declare type TamaguiThemedStackStyleProps = WithThemeValues<TamaguiStylesBase>;
-export declare type ShorthandStyleProps = {
-	[key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof TamaguiThemedStackStyleProps ? TamaguiThemedStackStyleProps[Shorthands[ShortKeysView]] | null : {};
-};
-export declare type StackStylePropsBase = TamaguiThemedStackStyleProps & ShorthandStyleProps;
-export declare type StackStyleProps = StackStylePropsBase & {
-	hoverStyle?: StackStylePropsBase | null;
-	pressStyle?: StackStylePropsBase | null;
-};
-export declare type StackProps = Omit<RNWInternalProps, "children"> & MediaProps<StackStyleProps> & StackStyleProps & Omit<ViewProps, "display" | "children"> & {
+export declare type ComponentPropsBase = {
+	className?: string;
 	tag?: string;
-	ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
 	animated?: boolean;
-	fullscreen?: boolean;
-	children?: any | any[];
 	onHoverIn?: (e: MouseEvent) => any;
 	onHoverOut?: (e: MouseEvent) => any;
 	onPress?: (e: GestureResponderEvent) => any;
@@ -660,27 +645,42 @@ export declare type StackProps = Omit<RNWInternalProps, "children"> & MediaProps
 	onMouseLeave?: (e: GestureResponderEvent) => any;
 	space?: Tokens["space"][keyof Tokens["space"]] | boolean | string | number;
 	pointerEvents?: string;
-	userSelect?: string;
-	className?: string;
-	disabled?: boolean;
 };
-export declare type EnhancedTextStyleProps = WithThemeValues<Omit<TextStyle, "display" | "backfaceVisibility"> & TransformStyleProps>;
-export declare type TextStylePropsBase = EnhancedTextStyleProps;
-export declare type TextStyleProps<S = TextStylePropsBase> = S & {
-	hoverStyle?: S | null;
-	pressStyle?: S | null;
+export declare type GetTokenFontKeysFor<A extends "size" | "weight" | "letterSpacing" | "family" | "lineHeight"> = keyof Tokens["font"][keyof Tokens["font"]][A];
+export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
+export declare type WithThemeValues<T extends object> = {
+	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${GetTokenFontKeysFor<"size">}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${GetTokenFontKeysFor<"lineHeight">}` : K extends FontWeightKeys ? `$${GetTokenFontKeysFor<"weight">}` : K extends FontLetterSpacingKeys ? `$${GetTokenFontKeysFor<"letterSpacing">}` : {});
 };
-export declare type TextProps<StyleProps = TextStyleProps> = Omit<ReactTextProps, "style"> & MediaProps<StyleProps> & StyleProps & {
-	tag?: string;
-	display?: TextStyle["display"] | "inherit";
+export declare type WithShorthands<StyleProps> = {
+	[Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : {};
+};
+export declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
+export declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & {
+	hoverStyle?: WithThemeAndShorthands<A> | null;
+	pressStyle?: WithThemeAndShorthands<A> | null;
+};
+export declare type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
+export declare type WebOnlyStyleProps = {
+	cursor?: string;
+	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
+	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
+	pointerEvents?: ViewProps["pointerEvents"];
+};
+export declare type StackStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<ViewStyle, "display" | "backfaceVisibility" | "elevation"> & TransformStyleProps & WebOnlyStyleProps>;
+export declare type StackProps = Omit<RNWInternalProps, "children"> & Omit<ViewProps, "display" | "children"> & StackStyleProps & ComponentPropsBase & {
+	ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
+	children?: any | any[];
+};
+export declare type TextStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<TextStyle, "display" | "backfaceVisibility"> & TransformStyleProps & WebOnlyStyleProps>;
+export declare type TextProps = Omit<ReactTextProps, "style"> & TextStyleProps & ComponentPropsBase & {
 	ellipse?: boolean;
 	selectable?: boolean;
-	children?: any;
-	className?: string;
-	pointerEvents?: string;
-	cursor?: string;
-	userSelect?: string;
 	textDecorationDistance?: number;
+};
+export declare type StaticComponent<Props = any, VariantProps = any, StaticConfParsed = StaticConfigParsed, ParentVariantProps = any> = React.FunctionComponent<Props> & {
+	staticConfig: StaticConfParsed;
+	variantProps?: VariantProps;
+	extractable: <X>(a: X) => X;
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, "children">> & {
 	initialWindowMetrics?: any;
@@ -761,14 +761,9 @@ export declare type RNWInternalProps = {
 		target?: string;
 	};
 };
-export declare type StaticComponent<Props = any, VariantProps = any, StaticConfParsed = StaticConfigParsed, ParentVariantProps = any> = React.FunctionComponent<Props> & {
-	staticConfig: StaticConfParsed;
-	variantProps?: VariantProps;
-	extractable: <X>(a: X) => X;
-};
 export declare type StaticConfigParsed = StaticConfig & {
 	parsed: true;
-	propMapper: (key: string, value: any, theme: ThemeObject) => undefined | boolean | {
+	propMapper: (key: string, value: any, theme: ThemeObject, props: any) => undefined | boolean | {
 		[key: string]: any;
 	};
 	variantsParsed?: {
@@ -804,6 +799,8 @@ export declare type ColorableKeys = "color" | "backgroundColor" | "borderColor" 
 export declare type SizeKeys = "width" | "height" | "minWidth" | "minHeight" | "maxWidth" | "maxHeight";
 export declare type FontKeys = "fontFamily";
 export declare type FontSizeKeys = "fontSize";
+export declare type FontWeightKeys = "fontWeight";
+export declare type FontLetterSpacingKeys = "letterSpacing";
 export declare type LineHeightKeys = "lineHeight";
 export declare type ZIndexKeys = "zIndex";
 export declare type ColorKeys = "color" | "backgroundColor" | "borderColor" | "borderBottomColor" | "borderTopColor" | "borderLeftColor" | "borderRightColor";
@@ -859,12 +856,18 @@ export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D> ? TamaguiInternalConfig<A, B, C, D> : unknown;
 export declare function getThemeParentClassName(themeName?: string | null): string;
+export declare const createFont: <A extends GenericFont>(font: A) => A;
 export declare function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T>;
 export declare type MakeTokens<T> = T extends {
-	font: infer A;
-	fontSize: infer B;
-	lineHeight: infer C;
-	letterSpace: infer D;
+	font: {
+		[key in infer A]: {
+			size: infer B;
+			lineHeight: infer C;
+			letterSpacing: infer D;
+			weight: infer Z;
+			family: infer Y;
+		};
+	};
 	color: infer E;
 	space: infer F;
 	size: infer G;
@@ -872,16 +875,21 @@ export declare type MakeTokens<T> = T extends {
 	zIndex: infer J;
 } ? {
 	font: {
-		[key in keyof A]: Variable;
-	};
-	fontSize: {
-		[key in keyof B]: Variable;
-	};
-	lineHeight: {
-		[key in keyof C]: Variable;
-	};
-	letterSpace: {
-		[key in keyof D]: Variable;
+		[key in A]: {
+			size: {
+				[key in keyof B]: Variable;
+			};
+			lineHeight: {
+				[key in keyof C]: Variable;
+			};
+			letterSpacing: {
+				[key in keyof D]: Variable;
+			};
+			weight: {
+				[key in keyof Z]: Variable;
+			};
+			family: Y;
+		};
 	};
 	color: {
 		[key in keyof E]: Variable;
@@ -899,21 +907,24 @@ export declare type MakeTokens<T> = T extends {
 		[key in keyof J]: Variable;
 	};
 } : never;
+export declare function styled<ParentComponent extends StaticComponent | React.Component<any>, Variants extends GetVariants<ParentComponent>>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
+	variants?: Variants;
+}): StaticComponent<Omit<GetProps<ParentComponent>, keyof GetVariantProps<Variants>> & GetVariantProps<Variants> & MediaProps<GetVariantProps<Variants>>, any, StaticConfigParsed, any>;
 export declare type GetProps<A> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Props : {};
-export declare function styled<A extends StaticComponent | React.Component<any>, StyledVariants extends void | {
+export declare type GetVariants<ParentComponent extends StaticComponent | React.Component<any>> = void | {
 	[key: string]: {
-		[key: string]: Partial<GetProps<A>> | ((val: any, config: {
+		[key: string]: Partial<GetProps<ParentComponent>> | ((val: any, config: {
 			tokens: TamaguiConfig["tokens"];
 			theme: Themes extends {
 				[key: string]: infer B;
 			} ? B : unknown;
-		}) => Partial<GetProps<A>>);
+			props: GetProps<ParentComponent>;
+		}) => Partial<GetProps<ParentComponent>>);
 	};
-}>(Component: A, options?: GetProps<A> & {
-	variants?: StyledVariants;
-}): StaticComponent<GetProps<A> & (StyledVariants extends void ? {} : {
-	[Key in keyof StyledVariants]?: (keyof StyledVariants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof CreateTokens ? keyof CreateTokens[VariantSpread] extends string | number ? `$${keyof CreateTokens[VariantSpread]}` : unknown : unknown : keyof StyledVariants[Key] extends "true" ? boolean : keyof StyledVariants[Key]) | undefined;
-}), any, StaticConfigParsed, any>;
+};
+export declare type GetVariantProps<Variants> = Variants extends void ? {} : {
+	[Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof Tokens ? keyof Tokens[VariantSpread] extends string | number ? `$${keyof Tokens[VariantSpread]}` : unknown : unknown : keyof Variants[Key] extends "true" ? boolean : keyof Exclude<Variants[Key], undefined>;
+};
 export declare const pseudos: {
 	focusStyle: {
 		name: string;
@@ -943,6 +954,7 @@ export declare const supportsTouchWeb: boolean;
 export declare const isTouchDevice: boolean;
 export declare const isWebIOS: boolean;
 export declare const rnw: Record<string, any>;
+export declare const isObj: (x: any) => any;
 export declare function getStylesAtomic(style: any, avoidCollection?: boolean): StyleObject[];
 export declare const matchMedia: any;
 export declare type ThemeableProps = {
@@ -1094,62 +1106,40 @@ export declare type BlurViewProps = StackProps & {
 	downsampleFactor?: number;
 };
 export declare function BlurView({ children, borderRadius, fallbackBackgroundColor, blurRadius, blurType, downsampleFactor, ...props }: BlurViewProps): JSX.Element;
-export declare const Box: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & {
+export declare const Box: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
 	fullscreen?: boolean | undefined;
 	elevation?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
-	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-declare const InteractiveFrame: import("@tamagui/core").StaticComponent<(Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & {
+} & import("@tamagui/core").MediaProps<{
 	fullscreen?: boolean | undefined;
 	elevation?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+declare const InteractiveFrame: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
+	fullscreen?: boolean | undefined;
+	elevation?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	fullscreen?: boolean | undefined;
+	elevation?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, "transparent" | "size" | "active" | "disabled" | "chromeless"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+	disabled?: boolean | undefined;
+	active?: boolean | undefined;
+	transparent?: boolean | undefined;
+	chromeless?: boolean | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+	disabled?: boolean | undefined;
+	active?: boolean | undefined;
+	transparent?: boolean | undefined;
+	chromeless?: boolean | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type InteractiveFrameProps = GetProps<typeof InteractiveFrame>;
 export declare type ButtonProps = InteractiveFrameProps & ThemeableProps & {
 	textProps?: Omit<TextProps, "children">;
@@ -1157,81 +1147,59 @@ export declare type ButtonProps = InteractiveFrameProps & ThemeableProps & {
 	icon?: JSX.Element | null;
 	iconAfter?: JSX.Element | null;
 };
-export declare const Button: (props: ThemeableProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
-export declare const Circle: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
+export declare const Button: (props: Pick<Omit<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
 	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & {
-	size?: `$${string}` | `$${number}` | undefined;
-}, any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Separator: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
+	elevation?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
 	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & {
-	vertical?: boolean | undefined;
-}, any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Form: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+	elevation?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Input: import("@tamagui/core").StaticComponent<any, any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const TextArea: import("@tamagui/core").StaticComponent<any, any, import("@tamagui/core").StaticConfigParsed, any>;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, "transparent" | "size" | "active" | "disabled" | "chromeless"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+	disabled?: boolean | undefined;
+	active?: boolean | undefined;
+	transparent?: boolean | undefined;
+	chromeless?: boolean | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+	disabled?: boolean | undefined;
+	active?: boolean | undefined;
+	transparent?: boolean | undefined;
+	chromeless?: boolean | undefined;
+}> & ThemeableProps & {
+	textProps?: Omit<TextProps, "children"> | undefined;
+	noTextWrap?: boolean | undefined;
+	icon?: JSX.Element | null | undefined;
+	iconAfter?: JSX.Element | null | undefined;
+}, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "transparent" | "className" | `$${string}` | "space" | "size" | "elevation" | "testID" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "active" | "onHoverIn" | "onHoverOut" | "tag" | "disabled" | keyof ThemeableProps | "animated" | "fullscreen" | "chromeless" | (`$${string}` & string) | "icon" | "iconAfter" | "textProps" | "noTextWrap"> & React.RefAttributes<unknown>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+export declare const Circle: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, "size"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Separator: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, "vertical"> & {
+	vertical?: boolean | undefined;
+} & import("@tamagui/core").MediaProps<{
+	vertical?: boolean | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Form: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Input: import("@tamagui/core").StaticComponent<Omit<any, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const TextArea: import("@tamagui/core").StaticComponent<Omit<any, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type GridProps = {
 	children?: any;
 	itemMinWidth?: number;
@@ -1242,13 +1210,17 @@ export declare function Grid({ children, columns, itemMinWidth, gap }: GridProps
 export declare type SpanProps = React.DOMAttributes<HTMLSpanElement>;
 export declare type HoverableProps = {
 	children?: any;
-	onHoverIn?: SpanProps["onMouseEnter"];
-	onHoverOut?: SpanProps["onMouseLeave"];
-	onHoverMove?: SpanProps["onMouseMove"];
+	disableUntilSettled?: boolean;
+	hoverDelay?: number;
+	onHoverIn?: () => void;
+	onHoverOut?: () => void;
 	onPressIn?: SpanProps["onMouseDown"];
 	onPressOut?: SpanProps["onClick"];
 };
-export declare const Hoverable: React.ForwardRefExoticComponent<HoverableProps & React.RefAttributes<unknown>>;
+export declare type HoverableHandle = {
+	close: () => void;
+};
+export declare const Hoverable: React.ForwardRefExoticComponent<HoverableProps & React.RefAttributes<HoverableHandle>>;
 export interface IPopoverProps {
 	defaultIsOpen?: boolean;
 	isOpen?: boolean;
@@ -1275,211 +1247,59 @@ export interface IPopoverProps {
 	onOpen?: () => void;
 	onChangeOpen?: (open: boolean) => void;
 }
-export declare type HoverablePopoverRef = {
+export declare type HoverablePopoverHandle = {
 	close: () => void;
 };
 export declare type HoverablePopoverProps = IPopoverProps & {
 	delay?: number;
-	fallbackToPress?: boolean;
 	allowHoverOnContent?: boolean;
+	disableUntilSettled?: boolean;
 };
 export declare const HoverablePopover: React.ForwardRefExoticComponent<IPopoverProps & {
 	delay?: number | undefined;
-	fallbackToPress?: boolean | undefined;
 	allowHoverOnContent?: boolean | undefined;
-} & React.RefAttributes<HoverablePopoverRef>>;
-export declare const InteractiveContainer: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+	disableUntilSettled?: boolean | undefined;
+} & React.RefAttributes<HoverablePopoverHandle>>;
+export declare const InteractiveContainer: import("@tamagui/core").StaticComponent<Omit<StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Section: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Article: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Section: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Main: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Header: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Article: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Aside: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Footer: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Main: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Nav: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Header: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Aside: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Footer: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Nav: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type NativeLinearGradientProps = React.ComponentProps<typeof View> & React.PropsWithChildren<{
 	colors: (number | string)[];
 	locations?: number[] | null;
@@ -1498,79 +1318,73 @@ export declare type ModalProps = Omit<ModalPropsReact, "children"> & AnimatedSta
 	children?: any | ((isOpen?: boolean) => any);
 };
 export declare const Modal: (props: ModalProps) => JSX.Element;
-export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: React.RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & {
+export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
 	fullscreen?: boolean | undefined;
 	elevation?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
+} & import("@tamagui/core").MediaProps<{
+	fullscreen?: boolean | undefined;
+	elevation?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
-	size?: `$${string}` | `$${number}` | undefined;
-}, any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
-	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type ParagraphProps = PropTypes<typeof Paragraph>;
-declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
+export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, "size"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare type SizableTextProps = GetProps<typeof SizableText>;
+declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core").RNWInternalProps, "children"> & Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+	cursor?: string | undefined;
+	contain?: string | undefined;
+	display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+	pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+}> & {} & {
+	hoverStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+	pressStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+} & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+	cursor?: string | undefined;
+	contain?: string | undefined;
+	display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+	pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+}> & {} & {
+	hoverStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+	pressStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+}> & {
+	className?: string | undefined;
 	tag?: string | undefined;
-	ref?: React.RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
 	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
 	onHoverIn?: ((e: MouseEvent) => any) | undefined;
 	onHoverOut?: ((e: MouseEvent) => any) | undefined;
 	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
@@ -1580,19 +1394,50 @@ declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<Omit<import("@t
 	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
 	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
 	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-}, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "userSelect" | "cursor" | "contain" | "pointerEvents" | "children" | "style" | "className" | "testID" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | "space" | keyof import("@tamagui/core").TransformStyleProps | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "tag" | "disabled" | "animated" | "fullscreen"> & React.RefAttributes<unknown>>;
-declare const PopoverContent: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
+} & {
 	ref?: React.RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
 	children?: any;
+}, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | `$${string}` | "space" | "testID" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "tag" | "animated"> & React.RefAttributes<unknown>>;
+declare const PopoverContent: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core").RNWInternalProps, "children"> & Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+	cursor?: string | undefined;
+	contain?: string | undefined;
+	display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+	pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+}> & {} & {
+	hoverStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+	pressStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+} & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+	cursor?: string | undefined;
+	contain?: string | undefined;
+	display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+	pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+}> & {} & {
+	hoverStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+	pressStyle?: (import("@tamagui/core").WithThemeValues<Omit<import("react-native").ViewStyle, "backfaceVisibility" | "display" | "elevation"> & import("@tamagui/core").TransformStyleProps & {
+		cursor?: string | undefined;
+		contain?: string | undefined;
+		display?: "flex" | "inherit" | "block" | "inline" | "inline-flex" | "contents" | "none" | undefined;
+		pointerEvents?: "auto" | "none" | "box-none" | "box-only" | undefined;
+	}> & {}) | null | undefined;
+}> & {
+	className?: string | undefined;
+	tag?: string | undefined;
+	animated?: boolean | undefined;
 	onHoverIn?: ((e: MouseEvent) => any) | undefined;
 	onHoverOut?: ((e: MouseEvent) => any) | undefined;
 	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
@@ -1602,10 +1447,10 @@ declare const PopoverContent: React.ForwardRefExoticComponent<Pick<Omit<import("
 	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
 	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
 	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-}, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "userSelect" | "cursor" | "contain" | "pointerEvents" | "children" | "style" | "className" | "testID" | "transformMatrix" | "rotation" | "translateX" | "translateY" | `$${string}` | "space" | keyof import("@tamagui/core").TransformStyleProps | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "tag" | "disabled" | "animated" | "fullscreen"> & React.RefAttributes<unknown>>;
+} & {
+	ref?: React.RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
+	children?: any;
+}, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "className" | `$${string}` | "space" | "testID" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "onHoverIn" | "onHoverOut" | "tag" | "animated"> & React.RefAttributes<unknown>>;
 export interface PopoverI extends React.FunctionComponent<IPopoverProps> {
 	Arrow: typeof PopoverArrow;
 	Content: typeof PopoverContent;
@@ -1614,355 +1459,170 @@ export declare const Popover: PopoverI;
 export declare const PopoverProvider: (props: {
 	children?: any;
 }) => JSX.Element;
-export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & {
+export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
 	fullscreen?: boolean | undefined;
 	elevation?: `$${string}` | `$${number}` | undefined;
-}, any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & {
+} & import("@tamagui/core").MediaProps<{
 	fullscreen?: boolean | undefined;
 	elevation?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
-	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Table: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const XStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
 	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
-	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const TableRow: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
+	elevation?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
 	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+	elevation?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const TableHead: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const TableHeadCell: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Table: import("@tamagui/core").StaticComponent<Omit<StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const TableHeadText: import("@tamagui/core").StaticComponent<Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const TableRow: import("@tamagui/core").StaticComponent<Omit<StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const TableHead: import("@tamagui/core").StaticComponent<Omit<StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const TableHeadCell: import("@tamagui/core").StaticComponent<Omit<StackProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const TableHeadText: import("@tamagui/core").StaticComponent<Omit<TextProps, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type TableCellProps = StackProps & TextProps;
-export declare const TableCell: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+export declare const TableCell: import("@tamagui/core").StaticComponent<Omit<StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const Title: import("@tamagui/core").StaticComponent<(Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Title: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
 	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
-	[x: string]: string | number | undefined;
-})) & ({} | {
-	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const H1: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
+} & import("@tamagui/core").MediaProps<{
 	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const H2: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const H1: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
 	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
-	[x: string]: string | number | undefined;
-})) & ({} | {
-	[x: string]: string | number | undefined;
-})) & ({} | {
-	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const H3: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
+} & import("@tamagui/core").MediaProps<{
 	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const H4: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const H2: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
 	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
-	[x: string]: string | number | undefined;
-})) & ({} | {
-	[x: string]: string | number | undefined;
-})) & ({} | {
-	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const H5: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
+} & import("@tamagui/core").MediaProps<{
 	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
-export declare const H6: import("@tamagui/core").StaticComponent<((Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & {
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const H3: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
 	size?: `$${string}` | `$${number}` | undefined;
-} & ({} | {
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
-})) & ({} | {
+}>, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const H4: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const H5: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const H6: import("@tamagui/core").StaticComponent<Omit<Omit<Omit<Omit<import("@tamagui/core").TextProps, "size"> & {
+	size?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	size?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type ToastOptions = {
 	duration?: number;
 	type?: "info" | "success" | "error";
@@ -1974,23 +1634,11 @@ export declare const Toast: {
 	success: (content: any, options?: Omit<ToastOptions, "type"> | undefined) => void;
 };
 export declare const ToastRoot: React.NamedExoticComponent<object>;
-export declare const EnsureFlexed: import("@tamagui/core").StaticComponent<Omit<import("react-native").TextProps, "style"> & import("@tamagui/core").MediaProps<import("@tamagui/core").TextStyleProps<import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps>>> & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> & {
-	hoverStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-	pressStyle?: import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "backfaceVisibility" | "display"> & import("@tamagui/core").TransformStyleProps> | null | undefined;
-} & {
-	tag?: string | undefined;
-	display?: "flex" | "inherit" | "none" | undefined;
-	ellipse?: boolean | undefined;
-	selectable?: boolean | undefined;
-	children?: any;
-	className?: string | undefined;
-	pointerEvents?: string | undefined;
-	cursor?: string | undefined;
-	userSelect?: string | undefined;
-	textDecorationDistance?: number | undefined;
-} & ({} | {
+export declare const EnsureFlexed: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type TooltipProps = Omit<HoverablePopoverProps, "trigger"> & {
 	contents?: string | any;
 	tooltipFrameProps?: Omit<StackProps, "children">;
@@ -2065,30 +1713,11 @@ export interface IPresenceTransitionProps extends ViewProps {
 	as?: ReactNode;
 }
 export declare const PresenceTransition: React.MemoExoticComponent<React.ForwardRefExoticComponent<IPresenceTransitionProps & React.RefAttributes<unknown>>>;
-export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").RNWInternalProps, "children"> & import("@tamagui/core").MediaProps<import("@tamagui/core").StackStyleProps> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps & {
-	hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-	pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").TamaguiStylesBase> & import("@tamagui/core").ShorthandStyleProps) | null | undefined;
-} & Omit<import("react-native").ViewProps, "display" | "children"> & {
-	tag?: string | undefined;
-	ref?: import("react").RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;
-	animated?: boolean | undefined;
-	fullscreen?: boolean | undefined;
-	children?: any;
-	onHoverIn?: ((e: MouseEvent) => any) | undefined;
-	onHoverOut?: ((e: MouseEvent) => any) | undefined;
-	onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-	space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
-	pointerEvents?: string | undefined;
-	userSelect?: string | undefined;
-	className?: string | undefined;
-	disabled?: boolean | undefined;
-} & ({} | {
+export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
-}), any, import("@tamagui/core").StaticConfigParsed, any>;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const prevent: (e: any) => any[];
 export * from "@tamagui/helpers";
 export * from "@tamagui/core";

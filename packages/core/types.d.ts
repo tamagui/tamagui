@@ -26,6 +26,26 @@ export declare type ThemeProviderProps = {
 };
 export declare const GET_DEFAULT_THEME = "___TGUI";
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
+export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
+	font: {
+		[key: string]: GenericFont;
+	};
+	color: {
+		[key: string]: Val;
+	};
+	space: {
+		[key: string]: Val;
+	};
+	size: {
+		[key: string]: Val;
+	};
+	radius: {
+		[key: string]: Val;
+	};
+	zIndex: {
+		[key: string]: Val;
+	};
+}
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {
@@ -80,35 +100,21 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
 export declare type PropTypes<A extends StaticComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;
-export interface CreateTokens<Val extends number | string | Variable = number | string | Variable, TextKeys extends string = string> {
-	font: {
-		[key in TextKeys]: Val;
-	};
-	fontSize: {
-		[key in TextKeys]: Val;
+export declare type GenericFont = {
+	size: {
+		[key: string | number]: number | Variable;
 	};
 	lineHeight: {
-		[key in TextKeys]: Val;
+		[key: string | number]: number | Variable;
 	};
-	letterSpace: {
-		[key in TextKeys]: Val;
+	letterSpacing: {
+		[key: string | number]: number | Variable;
 	};
-	color: {
-		[key: string]: Val;
+	weight: {
+		[key: string | number]: number | Variable;
 	};
-	space: {
-		[key: string]: Val;
-	};
-	size: {
-		[key: string]: Val;
-	};
-	radius: {
-		[key: string]: Val;
-	};
-	zIndex: {
-		[key: string]: Val;
-	};
-}
+	family: string | Variable;
+};
 export declare type MediaKeys = keyof Media;
 export declare type MediaQueryObject = {
 	[key: string]: string | number | string;
@@ -156,9 +162,10 @@ export declare type ComponentPropsBase = {
 	space?: Tokens["space"][keyof Tokens["space"]] | boolean | string | number;
 	pointerEvents?: string;
 };
+export declare type GetTokenFontKeysFor<A extends "size" | "weight" | "letterSpacing" | "family" | "lineHeight"> = keyof Tokens["font"][keyof Tokens["font"]][A];
 export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
-	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${keyof Tokens["fontSize"]}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${keyof Tokens["lineHeight"]}` : {});
+	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${GetTokenFontKeysFor<"size">}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${GetTokenFontKeysFor<"lineHeight">}` : K extends FontWeightKeys ? `$${GetTokenFontKeysFor<"weight">}` : K extends FontLetterSpacingKeys ? `$${GetTokenFontKeysFor<"letterSpacing">}` : {});
 };
 export declare type WithShorthands<StyleProps> = {
 	[Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : {};
@@ -169,16 +176,18 @@ export declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeA
 	pressStyle?: WithThemeAndShorthands<A> | null;
 };
 export declare type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
-export declare type StackStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<ViewStyle, "display" | "backfaceVisibility" | "elevation"> & TransformStyleProps & {
+export declare type WebOnlyStyleProps = {
 	cursor?: string;
 	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
 	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
-}>;
+	pointerEvents?: ViewProps["pointerEvents"];
+};
+export declare type StackStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<ViewStyle, "display" | "backfaceVisibility" | "elevation"> & TransformStyleProps & WebOnlyStyleProps>;
 export declare type StackProps = Omit<RNWInternalProps, "children"> & Omit<ViewProps, "display" | "children"> & StackStyleProps & ComponentPropsBase & {
 	ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
 	children?: any | any[];
 };
-export declare type TextStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<TextStyle, "display" | "backfaceVisibility"> & TransformStyleProps>;
+export declare type TextStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<TextStyle, "display" | "backfaceVisibility"> & TransformStyleProps & WebOnlyStyleProps>;
 export declare type TextProps = Omit<ReactTextProps, "style"> & TextStyleProps & ComponentPropsBase & {
 	ellipse?: boolean;
 	selectable?: boolean;
@@ -306,6 +315,8 @@ export declare type ColorableKeys = "color" | "backgroundColor" | "borderColor" 
 export declare type SizeKeys = "width" | "height" | "minWidth" | "minHeight" | "maxWidth" | "maxHeight";
 export declare type FontKeys = "fontFamily";
 export declare type FontSizeKeys = "fontSize";
+export declare type FontWeightKeys = "fontWeight";
+export declare type FontLetterSpacingKeys = "letterSpacing";
 export declare type LineHeightKeys = "lineHeight";
 export declare type ZIndexKeys = "zIndex";
 export declare type ColorKeys = "color" | "backgroundColor" | "borderColor" | "borderBottomColor" | "borderTopColor" | "borderLeftColor" | "borderRightColor";
@@ -361,12 +372,18 @@ export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D> ? TamaguiInternalConfig<A, B, C, D> : unknown;
 export declare function getThemeParentClassName(themeName?: string | null): string;
+export declare const createFont: <A extends GenericFont>(font: A) => A;
 export declare function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T>;
 export declare type MakeTokens<T> = T extends {
-	font: infer A;
-	fontSize: infer B;
-	lineHeight: infer C;
-	letterSpace: infer D;
+	font: {
+		[key in infer A]: {
+			size: infer B;
+			lineHeight: infer C;
+			letterSpacing: infer D;
+			weight: infer Z;
+			family: infer Y;
+		};
+	};
 	color: infer E;
 	space: infer F;
 	size: infer G;
@@ -374,16 +391,21 @@ export declare type MakeTokens<T> = T extends {
 	zIndex: infer J;
 } ? {
 	font: {
-		[key in keyof A]: Variable;
-	};
-	fontSize: {
-		[key in keyof B]: Variable;
-	};
-	lineHeight: {
-		[key in keyof C]: Variable;
-	};
-	letterSpace: {
-		[key in keyof D]: Variable;
+		[key in A]: {
+			size: {
+				[key in keyof B]: Variable;
+			};
+			lineHeight: {
+				[key in keyof C]: Variable;
+			};
+			letterSpacing: {
+				[key in keyof D]: Variable;
+			};
+			weight: {
+				[key in keyof Z]: Variable;
+			};
+			family: Y;
+		};
 	};
 	color: {
 		[key in keyof E]: Variable;
@@ -448,6 +470,7 @@ export declare const supportsTouchWeb: boolean;
 export declare const isTouchDevice: boolean;
 export declare const isWebIOS: boolean;
 export declare const rnw: Record<string, any>;
+export declare const isObj: (x: any) => any;
 export declare type StyleObject = {
 	property: string;
 	value: string;
