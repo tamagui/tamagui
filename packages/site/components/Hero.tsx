@@ -45,24 +45,17 @@ export function Hero() {
               <YStack space="$7">
                 <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
                   <Title
-                    size="32"
-                    letterSpacing={-2}
+                    size="$10"
                     fontFamily="$body"
-                    fontWeight="700"
                     $sm={{
                       maxWidth: 550,
                     }}
                     $gtSm={{
-                      size: '55',
-                      px: 80,
+                      size: '$11',
                       ta: 'center',
-                      my: -5,
                     }}
                     $gtMd={{
-                      letterSpacing: -4,
-                      size: '79',
-                      px: 0,
-                      my: -10,
+                      size: '$12',
                     }}
                   >
                     <Tooltip contents="Works the same on iOS, Android, and web">
@@ -88,22 +81,23 @@ export function Hero() {
                       size="$4"
                       $gtSm={{
                         ta: 'center',
-                        size: '$5',
+                        size: '$6',
+                        fontWeight: '400',
                       }}
                       $gtMd={{
-                        // TODO
                         size: '$7',
+                        fontWeight: '400',
                       }}
                     >
                       React Native & Web UIs <em>turbo-charged</em> by an optimizing compiler.
-                      Faster&nbsp;themes,&nbsp;media queries and typed inline styles that work
-                      everywhere.
+                      Themes,&nbsp;media queries and typed inline styles that work everywhere -
+                      fast.
                     </Paragraph>
                   </YStack>
                 </YStack>
 
                 {/* <Theme name="purple"> */}
-                <XStack ai="center" jc="center" space="$6">
+                <XStack ai="center" jc="center" space="$4">
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
                       // theme="green"
@@ -163,9 +157,7 @@ export function Hero() {
                 backgroundColor="$bg2"
               >
                 {/* TODO user defined constants + $mono */}
-                <Paragraph color="$color" fontSize={14} fontFamily="$mono">
-                  npm install tamagui
-                </Paragraph>
+                <Paragraph fontFamily="$mono">npm install tamagui</Paragraph>
                 <YStack width={60} />
                 <Tooltip contents="Copy to clipboard">
                   <Button
@@ -232,9 +224,9 @@ export function Hero() {
               Augments{' '}
               <Text tag="a" href="https://necolas.github.io/react-native-web/">
                 react-native-web
-              </Text>
-              , reducing overhead for faster running apps. Build your own design system or use our
-              lightweight component kit.
+              </Text>{' '}
+              and reduces overhead. Use it as a plain styling library, or an accessible component
+              kit.
             </Paragraph>
           </YStack>
 
@@ -248,8 +240,8 @@ export function Hero() {
               Intuitive
             </H3>
             <Paragraph size="$4" color="$color3">
-              Supports the incredible DX advances in design systems of late: themes, tokens,
-              shorthands, media queries, and typed inline styles that just work.
+              Supports DX advances in modern design systems: themes, tokens, shorthands, media
+              queries, and typed inline styles.
             </Paragraph>
           </YStack>
 
@@ -265,8 +257,6 @@ export function Hero() {
   </YStack> */}
         </XStack>
       </ContainerLarge>
-
-      <Spacer size="$4" />
     </>
   )
 }

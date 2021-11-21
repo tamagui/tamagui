@@ -111,7 +111,7 @@ export declare type GenericFont = {
 		[key: string | number]: number | Variable;
 	};
 	weight: {
-		[key: string | number]: number | Variable;
+		[key: string | number]: string | Variable;
 	};
 	family: string | Variable;
 };
@@ -163,6 +163,7 @@ export declare type ComponentPropsBase = {
 	pointerEvents?: string;
 };
 export declare type GetTokenFontKeysFor<A extends "size" | "weight" | "letterSpacing" | "family" | "lineHeight"> = keyof Tokens["font"][keyof Tokens["font"]][A];
+export declare type SpaceTokens = `$${keyof Tokens["space"]}`;
 export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
 	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${GetTokenFontKeysFor<"size">}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${GetTokenFontKeysFor<"lineHeight">}` : K extends FontWeightKeys ? `$${GetTokenFontKeysFor<"weight">}` : K extends FontLetterSpacingKeys ? `$${GetTokenFontKeysFor<"letterSpacing">}` : {});
@@ -325,7 +326,7 @@ export declare const mouseUps: Set<Function>;
 export declare type DefaultProps = {};
 export declare function createComponent<A extends Object = DefaultProps>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<A, void, StaticConfigParsed, any>;
 export declare const Spacer: StaticComponent<{
-	size?: number | undefined;
+	size?: number | `$${string}` | `$${number}` | undefined;
 	flex?: number | boolean | undefined;
 }, void, StaticConfigParsed, any>;
 export declare function spacedChildren({ children, space, flexDirection, }: {

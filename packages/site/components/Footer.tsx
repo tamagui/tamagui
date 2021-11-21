@@ -57,7 +57,7 @@ export const Footer = () => {
         </YStack>
 
         <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
-          <H4 size="$5">Overview</H4>
+          <H4>Overview</H4>
           <Link href="/docs/intro/introduction">Introduction</Link>
           <Link href="/docs/intro/configuration">Configuration</Link>
           <Link href="/docs/guides/design-systems">Guides</Link>
@@ -66,14 +66,14 @@ export const Footer = () => {
         </YStack>
 
         <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
-          <H4 size="$5">Docs</H4>
+          <H4>Docs</H4>
           <Link href="/docs/intro/installation">Installation</Link>
           <Link href="/docs/intro/themes">Themes</Link>
           <Link href="/docs/core/styled">Variants</Link>
         </YStack>
 
         <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
-          <H4 size="$5">Community</H4>
+          <H4>Community</H4>
           {/* <Link href="/blog">Blog</Link> */}
           <XStack space="$1" ai="center">
             <Link ai="center" href="https://github.com/tamagui/tamagui" target="_blank">

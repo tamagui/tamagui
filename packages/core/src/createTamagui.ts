@@ -135,6 +135,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // faster lookups token keys become $keys to match input
   const tokensParsed: any = parseTokens(config.tokens)
+
   // all themes should match key and we just need variable name
   // TODO once w react native we'd want to have a reverse lookup back to value
   const themeParsed: any = {}
@@ -179,15 +180,26 @@ const parseTokens = (tokens: any) => {
   const res: any = {}
   for (const key in tokens) {
     res[key] = {}
-    for (const skey in tokens[key]) {
-      const val = tokens[key][skey]
-      // console.log('val', skey, val, isVariable(val), isObj(val))
-      if (!isVariable(val) && isObj(val)) {
-        // recurse into sub-objects (font)
-        res[key][skey] = parseTokens(val)
-      } else {
-        res[key][`$${skey}`] = val
+    if (key === 'font') {
+      for (const family in tokens.font) {
+        const obj = {}
+        res.font[`$${family}`] = obj
+        for (const attrKey in tokens.font[family]) {
+          const attr = tokens.font[family][attrKey]
+          if (attrKey === 'family') {
+            obj[attrKey] = attr
+            continue
+          }
+          obj[attrKey] = Object.keys(attr).reduce((acc, cur) => {
+            acc[`$${cur}`] = cur
+            return acc
+          }, {})
+        }
       }
+      continue
+    }
+    for (const skey in tokens[key]) {
+      res[key][`$${skey}`] = tokens[key][skey]
     }
   }
   return res
