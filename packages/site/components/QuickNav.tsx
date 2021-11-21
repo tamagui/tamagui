@@ -1,22 +1,27 @@
+import NextLink from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
-import { H4, Spacer, YStack } from 'tamagui'
+import { H4, Paragraph, YStack } from 'tamagui'
 
-import { Link, LinkProps } from './Link'
+import { LinkProps } from './Link'
 
-const QuickNavLink = (props: LinkProps) => (
-  <Link
-    size="$2"
-    fontSize="$2"
-    opacity={0.5}
-    color="$color"
-    py={3}
-    hoverStyle={{
-      opacity: 1,
-    }}
-    {...props}
-  />
+const QuickNavLink = ({ href, ...rest }: LinkProps) => (
+  <NextLink passHref href={href}>
+    <Paragraph
+      tag="a"
+      size="$2"
+      fontSize="$2"
+      opacity={0.5}
+      color="$color"
+      cursor="pointer"
+      py="$1"
+      hoverStyle={{
+        opacity: 1,
+      }}
+      {...rest}
+    />
+  </NextLink>
 )
 
 export function QuickNav() {

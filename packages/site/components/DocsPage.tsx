@@ -16,10 +16,6 @@ import { ExternalIcon } from './ExternalIcon'
 import { Link } from './Link'
 import { NavHeading } from './NavHeading'
 
-const DocsPageContainer = (props: StackProps) => (
-  <Container $gtSm={{ maxWidth: 780 }} $gtMd={{ maxWidth: 780 }} {...props} />
-)
-
 export function DocsPage({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const [isOpen, setIsOpen] = React.useState(false)
@@ -169,9 +165,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           <YStack $sm={{ display: 'none' }} position="absolute" top={15} right={20}>
             <AlphaButton />
           </YStack>
-          <DocsPageContainer>{children}</DocsPageContainer>
+          <Container>{children}</Container>
 
-          <DocsPageContainer>
+          <Container>
             {(previous || next) && (
               <XStack aria-label="Pagination navigation" my="$9" jc="space-between" space>
                 {previous && (
@@ -230,9 +226,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 )}
               </XStack>
             )}
-          </DocsPageContainer>
+          </Container>
 
-          <DocsPageContainer my="$3">
+          <Container my="$3">
             <Link
               href={editUrl}
               title="Edit this page on GitHub."
@@ -241,7 +237,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             >
               Edit this page on GitHub.
             </Link>
-          </DocsPageContainer>
+          </Container>
         </YStack>
       </YStack>
     </DocsPageTheme>
