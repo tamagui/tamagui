@@ -66,7 +66,7 @@ export function Hero() {
                     }}
                   >
                     <Tooltip contents="Works the same on iOS, Android, and web">
-                      <span className="universal">Universal</span>
+                      <span className="rainbow help">Universal</span>
                     </Tooltip>{' '}
                     React design systems that optimize for native & web
                   </Title>
@@ -201,6 +201,7 @@ export function Hero() {
           maxWidth="100%"
           space="$8"
           flexWrap="nowrap"
+          px="$4"
           $sm={{ flexDirection: 'column' }}
         >
           <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>

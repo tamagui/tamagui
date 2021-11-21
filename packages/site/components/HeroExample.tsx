@@ -11,53 +11,53 @@ export function HeroExample() {
   const activeExample = examples[activeIndex]
 
   return (
-    <Theme name="pink">
-      <ContainerLarge position="relative">
-        <YStack
-          position="absolute"
-          zIndex={-1}
-          pointerEvents="none"
-          opacity={0.1}
-          top="0"
-          right="-20%"
-          width="80vw"
-          height="80vw"
-          scale={2}
-          maxHeight={820}
-          maxWidth={820}
-        >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              background: `radial-gradient(circle closest-side, var(--pink4), transparent)`,
-            }}
-          />
-        </YStack>
+    // <Theme name="pink">
+    <ContainerLarge position="relative">
+      <YStack
+        position="absolute"
+        zIndex={-1}
+        pointerEvents="none"
+        opacity={0.1}
+        top="0"
+        right="-20%"
+        width="80vw"
+        height="80vw"
+        scale={2}
+        maxHeight={820}
+        maxWidth={820}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            background: `radial-gradient(circle closest-side, var(--pink4), transparent)`,
+          }}
+        />
+      </YStack>
 
-        <YStack
-          position="absolute"
-          zIndex={0}
-          pointerEvents="none"
-          opacity={0.15}
-          top="10vh"
-          left="-20%"
-          width="80vw"
-          height="80vw"
-          scale={3}
-          maxHeight={720}
-          maxWidth={720}
-        >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              background: `radial-gradient(circle closest-side, var(--blue5), transparent)`,
-            }}
-          />
-        </YStack>
+      <YStack
+        position="absolute"
+        zIndex={0}
+        pointerEvents="none"
+        opacity={0.15}
+        top="10vh"
+        left="-20%"
+        width="80vw"
+        height="80vw"
+        scale={3}
+        maxHeight={720}
+        maxWidth={720}
+      >
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            background: `radial-gradient(circle closest-side, var(--blue5), transparent)`,
+          }}
+        />
+      </YStack>
 
-        {/* <YStack
+      {/* <YStack
         position="absolute"
         zi={0}
         pe="none"
@@ -79,38 +79,41 @@ export function HeroExample() {
         />
       </YStack> */}
 
-        <YStack zi={1} space="$6">
-          <H2 als="center">Examples</H2>
+      <YStack zi={1} space="$6">
+        <H2 letterSpacing={-1} als="center">
+          Beautiful syntax, <span className="rainbow">faster output</span>
+        </H2>
 
-          <InteractiveContainer mt={-10} als="center">
-            {examples.map((example, i) => {
-              return (
-                <Button
-                  textProps={{ fontFamily: '$mono', fontSize: '$2' }}
-                  onPress={() => setActiveIndex(i)}
-                  theme={i === activeIndex ? 'active' : null}
-                  chromeless={i !== activeIndex}
-                  key={i}
-                  br={0}
-                >
-                  {example.name}
-                </Button>
-              )
-            })}
-          </InteractiveContainer>
+        <InteractiveContainer mt={-10} als="center">
+          {examples.map((example, i) => {
+            return (
+              <Button
+                textProps={{ fontFamily: '$mono', fontSize: '$2' }}
+                onPress={() => setActiveIndex(i)}
+                theme={i === activeIndex ? 'active' : null}
+                chromeless={i !== activeIndex}
+                key={i}
+                br={0}
+              >
+                {example.name}
+              </Button>
+            )
+          })}
+        </InteractiveContainer>
 
-          <XStack jc="space-between">
-            <YStack flex={1} maxWidth="49%" space="$4">
-              <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
-                {activeExample.input.description}
-              </Paragraph>
+        <XStack jc="space-between">
+          <YStack flex={1} maxWidth="49%" space="$4">
+            <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
+              {activeExample.input.description}
+            </Paragraph>
 
-              <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-4" zi="100" als="center">
-                Input
-              </H4>
-              <YStack>
-                {activeExample.input.examples.map((example, i) => (
-                  <React.Fragment key={example.code}>
+            <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-4" zi="100" als="center">
+              Input
+            </H4>
+            <YStack>
+              {activeExample.input.examples.map((example, i) => (
+                <React.Fragment key={example.code}>
+                  <Theme name="pink">
                     <HoverableStack>
                       <CodeDemo
                         language={example.language}
@@ -120,35 +123,37 @@ export function HeroExample() {
                         value={example.code}
                       />
                     </HoverableStack>
-                    {i < activeExample.input.examples.length - 1 && (
-                      <YStack als="center" my="$-4" zIndex={1000}>
-                        <IconStack mb={0}>
-                          <Plus size={20} color="var(--color)" />
-                        </IconStack>
-                      </YStack>
-                    )}
-                  </React.Fragment>
-                ))}
-              </YStack>
+                  </Theme>
+                  {i < activeExample.input.examples.length - 1 && (
+                    <YStack als="center" my="$-4" zIndex={1000}>
+                      <IconStack mb={0}>
+                        <Plus size={20} color="var(--color)" />
+                      </IconStack>
+                    </YStack>
+                  )}
+                </React.Fragment>
+              ))}
             </YStack>
-            <YStack mt={180} mx={-15} zIndex={1000}>
-              <IconStack mb={0}>
-                <FastForward size={20} color="var(--color)" />
-              </IconStack>
-            </YStack>
-            <YStack flex={1} maxWidth="49%" space="$4">
-              <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
-                {activeExample.output.description}
-              </Paragraph>
-              <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-4" zi="100" als="center">
-                Output
-              </H4>
-              <YStack>
-                {activeExample.output.outputs.map((example, i) => {
-                  const hasMore = activeExample.output.outputs.length - 1 > i
-                  return (
-                    <React.Fragment key={`${activeIndex}${i}`}>
-                      <HoverableStack>
+          </YStack>
+          <YStack mt={180} mx={-15} zIndex={1000}>
+            <IconStack mb={0}>
+              <FastForward size={20} color="var(--color)" />
+            </IconStack>
+          </YStack>
+          <YStack flex={1} maxWidth="49%" space="$4">
+            <Paragraph size="$4" minHeight={50} ta="center" px="$6" color="$color2">
+              {activeExample.output.description}
+            </Paragraph>
+            <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-4" zi="100" als="center">
+              Output
+            </H4>
+            <YStack>
+              {activeExample.output.outputs.map((example, i) => {
+                const hasMore = activeExample.output.outputs.length - 1 > i
+                return (
+                  <React.Fragment key={`${activeIndex}${i}`}>
+                    <HoverableStack>
+                      <Theme name="pink">
                         <CodeDemo
                           language={example.language as any}
                           mode="interactive"
@@ -156,23 +161,24 @@ export function HeroExample() {
                           maxHeight={500}
                           value={example.code}
                         />
-                      </HoverableStack>
-                      {hasMore && (
-                        <YStack als="center" my="$-4" zIndex={1000}>
-                          <IconStack mb={0}>
-                            <Plus size={20} color="var(--color)" />
-                          </IconStack>
-                        </YStack>
-                      )}
-                    </React.Fragment>
-                  )
-                })}
-              </YStack>
+                      </Theme>
+                    </HoverableStack>
+                    {hasMore && (
+                      <YStack als="center" my="$-4" zIndex={1000}>
+                        <IconStack mb={0}>
+                          <Plus size={20} color="var(--color)" />
+                        </IconStack>
+                      </YStack>
+                    )}
+                  </React.Fragment>
+                )
+              })}
             </YStack>
-          </XStack>
-        </YStack>
-      </ContainerLarge>
-    </Theme>
+          </YStack>
+        </XStack>
+      </YStack>
+    </ContainerLarge>
+    // </Theme>
   )
 }
 
