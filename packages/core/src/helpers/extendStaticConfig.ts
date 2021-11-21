@@ -168,13 +168,13 @@ const getToken = (
     return tokensParsed.font[fontFamily]?.size[value] || value
   }
   if (key === 'lineHeight') {
-    return tokensParsed.font[fontFamily].lineHeight[value]
+    return tokensParsed.font[fontFamily]?.lineHeight[value] || value
   }
   if (key === 'letterSpacing') {
-    return tokensParsed.font[fontFamily].letterSpacing[value]
+    return tokensParsed.font[fontFamily]?.letterSpacing[value] || value
   }
   if (key === 'fontWeight') {
-    return tokensParsed.font[fontFamily].weight[value]
+    return tokensParsed.font[fontFamily]?.weight[value] || value
   }
   for (const cat in tokenCategories) {
     if (tokenCategories[cat][key]) {

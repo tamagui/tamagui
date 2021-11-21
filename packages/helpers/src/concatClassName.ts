@@ -5,6 +5,7 @@ const pseudoInvert = {
 }
 
 export function concatClassName(className: string, ...propObjects: any[]) {
+  return className
   const usedPrefixes = {}
   const final: string[] = []
   const names = className.split(' ')

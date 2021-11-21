@@ -143,7 +143,7 @@ export declare type GenericFont = {
 		[key: string | number]: number | Variable;
 	};
 	weight: {
-		[key: string | number]: number | Variable;
+		[key: string | number]: string | Variable;
 	};
 	family: string | Variable;
 };

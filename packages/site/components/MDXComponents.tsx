@@ -1,4 +1,4 @@
-import { AlertCircle, AlertOctagon, AlertTriangle, HelpCircle, Link } from '@tamagui/feather-icons'
+import { HelpCircle, Link } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
@@ -17,10 +17,10 @@ import {
   Theme,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 
 import { Frontmatter } from '../types/frontmatter'
+import { BenchmarkChart } from './BenchmarkChart'
 import { Code } from './Code'
 import { DemoButton } from './DemoButton'
 import * as Demos from './demos'
@@ -37,6 +37,7 @@ export const components = {
   Paragraph,
   YStack,
   Box,
+  BenchmarkChart,
   // Title,
   Separator,
   Code,
