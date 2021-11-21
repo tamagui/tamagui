@@ -29,7 +29,7 @@ const space = {
 }
 
 /*
- * Going to move font definitions to:
+ * Want to move font definitions to:
  *   font: { title: { family, size, lineHeight, letterSpace }, body: { ... }, [key: string]: { .... } }
  *
  *   further, de-normalizing would have two upsides and one downside:
@@ -38,8 +38,12 @@ const space = {
  *     - forces you to define them awkwardly
  *
  *      font: {
- *        0: { family, size, lineHeight, letterSpace }
- *        1:
+ *        body: {
+ *          0: { size, lineHeight, letterSpace }
+ *        },
+ *        title: {
+ *          0: ...
+ *        }
  *      }
  *
  *   same with themes then too?

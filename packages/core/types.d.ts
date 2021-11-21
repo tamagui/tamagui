@@ -26,11 +26,6 @@ export declare type ThemeProviderProps = {
 };
 export declare const GET_DEFAULT_THEME = "___TGUI";
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
-export declare type TamaguiStylesBase = Omit<ViewStyle, "display" | "backfaceVisibility" | "elevation"> & TransformStyleProps & {
-	cursor?: string;
-	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
-	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
-};
 export declare type GenericTokens = CreateTokens;
 export declare type GenericThemes = {
 	[key: string]: {
@@ -147,26 +142,10 @@ export declare type TransformStyleProps = {
 	rotateX?: string;
 	rotateZ?: string;
 };
-export declare type ShortKeysView = keyof Shorthands;
-export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
-export declare type WithThemeValues<T extends object> = {
-	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${keyof Tokens["fontSize"]}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${keyof Tokens["lineHeight"]}` : {});
-};
-export declare type TamaguiThemedStackStyleProps = WithThemeValues<TamaguiStylesBase>;
-export declare type ShorthandStyleProps = {
-	[key in ShortKeysView]?: Shorthands[ShortKeysView] extends keyof TamaguiThemedStackStyleProps ? TamaguiThemedStackStyleProps[Shorthands[ShortKeysView]] | null : {};
-};
-export declare type StackStylePropsBase = TamaguiThemedStackStyleProps & ShorthandStyleProps;
-export declare type StackStyleProps = StackStylePropsBase & {
-	hoverStyle?: StackStylePropsBase | null;
-	pressStyle?: StackStylePropsBase | null;
-};
-export declare type StackProps = Omit<RNWInternalProps, "children"> & MediaProps<StackStyleProps> & StackStyleProps & Omit<ViewProps, "display" | "children"> & {
+export declare type ComponentPropsBase = {
+	className?: string;
 	tag?: string;
-	ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
 	animated?: boolean;
-	fullscreen?: boolean;
-	children?: any | any[];
 	onHoverIn?: (e: MouseEvent) => any;
 	onHoverOut?: (e: MouseEvent) => any;
 	onPress?: (e: GestureResponderEvent) => any;
@@ -176,27 +155,39 @@ export declare type StackProps = Omit<RNWInternalProps, "children"> & MediaProps
 	onMouseLeave?: (e: GestureResponderEvent) => any;
 	space?: Tokens["space"][keyof Tokens["space"]] | boolean | string | number;
 	pointerEvents?: string;
-	userSelect?: string;
-	className?: string;
-	disabled?: boolean;
 };
-export declare type EnhancedTextStyleProps = WithThemeValues<Omit<TextStyle, "display" | "backfaceVisibility"> & TransformStyleProps>;
-export declare type TextStylePropsBase = EnhancedTextStyleProps;
-export declare type TextStyleProps<S = TextStylePropsBase> = S & {
-	hoverStyle?: S | null;
-	pressStyle?: S | null;
+export declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
+export declare type WithThemeValues<T extends object> = {
+	[K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens["size"]}` : K extends FontKeys ? `$${keyof Tokens["font"]}` : K extends FontSizeKeys ? `$${keyof Tokens["fontSize"]}` : K extends SpaceKeys ? `$${keyof Tokens["space"]}` : K extends ColorKeys ? `$${keyof Tokens["color"]}` : K extends ZIndexKeys ? `$${keyof Tokens["zIndex"]}` : K extends LineHeightKeys ? `$${keyof Tokens["lineHeight"]}` : {});
 };
-export declare type TextProps<StyleProps = TextStyleProps> = Omit<ReactTextProps, "style"> & MediaProps<StyleProps> & StyleProps & {
-	tag?: string;
-	display?: TextStyle["display"] | "inherit";
+export declare type WithShorthands<StyleProps> = {
+	[Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : {};
+};
+export declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
+export declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & {
+	hoverStyle?: WithThemeAndShorthands<A> | null;
+	pressStyle?: WithThemeAndShorthands<A> | null;
+};
+export declare type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
+export declare type StackStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<ViewStyle, "display" | "backfaceVisibility" | "elevation"> & TransformStyleProps & {
+	cursor?: string;
+	contain?: "none" | "strict" | "content" | "size" | "layout" | "paint" | string;
+	display?: "inherit" | "none" | "inline" | "block" | "contents" | "flex" | "inline-flex";
+}>;
+export declare type StackProps = Omit<RNWInternalProps, "children"> & Omit<ViewProps, "display" | "children"> & StackStyleProps & ComponentPropsBase & {
+	ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
+	children?: any | any[];
+};
+export declare type TextStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<TextStyle, "display" | "backfaceVisibility"> & TransformStyleProps>;
+export declare type TextProps = Omit<ReactTextProps, "style"> & TextStyleProps & ComponentPropsBase & {
 	ellipse?: boolean;
 	selectable?: boolean;
-	children?: any;
-	className?: string;
-	pointerEvents?: string;
-	cursor?: string;
-	userSelect?: string;
 	textDecorationDistance?: number;
+};
+export declare type StaticComponent<Props = any, VariantProps = any, StaticConfParsed = StaticConfigParsed, ParentVariantProps = any> = React.FunctionComponent<Props> & {
+	staticConfig: StaticConfParsed;
+	variantProps?: VariantProps;
+	extractable: <X>(a: X) => X;
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, "children">> & {
 	initialWindowMetrics?: any;
@@ -276,11 +267,6 @@ export declare type RNWInternalProps = {
 		rel?: string;
 		target?: string;
 	};
-};
-export declare type StaticComponent<Props = any, VariantProps = any, StaticConfParsed = StaticConfigParsed, ParentVariantProps = any> = React.FunctionComponent<Props> & {
-	staticConfig: StaticConfParsed;
-	variantProps?: VariantProps;
-	extractable: <X>(a: X) => X;
 };
 export declare type StaticConfigParsed = StaticConfig & {
 	parsed: true;
@@ -417,7 +403,7 @@ export declare type MakeTokens<T> = T extends {
 } : never;
 export declare function styled<ParentComponent extends StaticComponent | React.Component<any>, Variants extends GetVariants<ParentComponent>>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
 	variants?: Variants;
-}): StaticComponent<Omit<GetProps<ParentComponent>, keyof GetVariantProps<Variants>> & GetVariantProps<Variants>, any, StaticConfigParsed, any>;
+}): StaticComponent<Omit<GetProps<ParentComponent>, keyof GetVariantProps<Variants>> & GetVariantProps<Variants> & MediaProps<GetVariantProps<Variants>>, any, StaticConfigParsed, any>;
 export declare type GetProps<A> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Props : {};
 export declare type GetVariants<ParentComponent extends StaticComponent | React.Component<any>> = void | {
 	[key: string]: {

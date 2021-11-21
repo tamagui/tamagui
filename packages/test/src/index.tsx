@@ -2,15 +2,11 @@ import {
   GetProps,
   GetVariantProps,
   GetVariants,
-  ShorthandStyleProps,
   Shorthands,
   Stack,
   StackProps,
-  StackStyleProps,
-  StaticComponent,
   TamaguiConfig,
-  TamaguiStylesBase,
-  TamaguiThemedStackStyleProps,
+  Text,
   ThemeKeyVariables,
   createTamagui,
   styled,
@@ -19,17 +15,12 @@ import {
 import { shorthands, tokens } from './testConstants'
 import { themes } from './testThemes'
 
-type abc = TamaguiThemedStackStyleProps & ShorthandStyleProps
 type asd2 = abc['borderColor']
 
 type x2 = Shorthands['bc']
 type x = Shorthands['p']
 type x3 = Shorthands['s']
 type y = Shorthands['asdasd']
-type asd = ShorthandStyleProps['bc']
-type x22222 = TamaguiThemedStackStyleProps['borderColor']
-type x333 = StackStyleProps['borderColor']
-type x222 = TamaguiStylesBase['borderColor']
 type x22 = StackProps['borderColor']
 type sz = ThemeKeyVariables
 type asdsad = keyof TamaguiConfig['themes']
@@ -60,6 +51,8 @@ const config = createTamagui({
 })
 
 type OurConfig = typeof config
+
+type s = OurConfig['shorthands']
 
 declare module '@tamagui/core' {
   export interface TamaguiCustomConfig extends OurConfig {}
@@ -109,15 +102,64 @@ type zSV = GetVariants<typeof ZStack>
 type zVP = GetVariantProps<zSV>
 type z2222 = z2['bg']
 
+const Paragraph = styled(Text, {
+  variants: {
+    size: {
+      '...size': (val) => ({
+        fontSize: val,
+      }),
+    },
+  },
+})
+
+type pp = GetProps<typeof Paragraph>
+type ppp = pp['m']
+
 export const x = (props: StackProps) => {
   return (
     <>
-      <YStack p={10} width="$1" x="$2" y="$s" borderColor="$red" bg="ok wut" aok="err" {...props}>
+      <YStack
+        $lg={{
+          p: 10,
+          x: 10,
+        }}
+        p={10}
+        width="$1"
+        x="$2"
+        y="$s"
+        borderColor="$red"
+        bg="ok wut"
+        aok="err"
+        {...props}
+      >
         <div />
       </YStack>
-      <ZStack spread="$10" bc="$bg" bg="alternate" aok="err" specific={1}>
+      <ZStack
+        $lg={{
+          p: '$-0',
+        }}
+        spread="$10"
+        bc="$bg"
+        bg="alternate"
+        aok="err"
+        specific={1}
+      >
         <div />
       </ZStack>
+      <Text x={10} m={100} $lg={{ m: 20 }} />
+      <Paragraph
+        color="$color"
+        opacity={0.7}
+        size="$3"
+        ta="center"
+        $lg={{
+          m: 10,
+        }}
+        // $gtSm={{
+        //   ta: 'center',
+        //   size: '$5',
+        // }}
+      />
     </>
   )
 }
