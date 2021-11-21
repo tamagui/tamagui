@@ -1,5 +1,5 @@
 import * as Colors from '@tamagui/colors'
-import { createTokens } from '@tamagui/core'
+import { createFont, createTokens } from '@tamagui/core'
 
 export const shorthands = {
   ac: 'alignContent',
@@ -121,16 +121,7 @@ export type ColorNamesDark = keyof typeof dark
 export const colorNamesLight = Object.keys(light) as ColorNamesLight[]
 export const colorNamesDark = Object.keys(dark) as ColorNamesDark[]
 
-// const theme = useTheme()
-//
-// theme.red1
-// theme.fontSizeX
-// theme.lineHeightX
-// theme.spaceX
-//
-// bg="$red1"
-
-const space = {
+const size = {
   0: 0,
   1: 5,
   2: 10,
@@ -141,7 +132,11 @@ const space = {
   7: 45,
   8: 60,
   9: 80,
-  '10': 100,
+  10: 100,
+}
+
+const space = {
+  ...size,
   '-0': -0,
   '-1': -5,
   '-2': -10,
@@ -155,16 +150,56 @@ const space = {
   '-10': -100,
 }
 
-export const tokens = createTokens({
-  letterSpace: {
-    0: 0,
-    1: 1,
-    2: 2,
-    '-0': -0,
-    '-1': -1,
-    '-2': -2,
+const interFont = createFont({
+  family:
+    'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  size: {
+    1: 12,
+    2: 14,
+    3: 15,
+    4: 16,
+    5: 17,
+    6: 18,
+    7: 20,
+    8: 21,
+    9: 38,
+    10: 44,
+    11: 50,
+    12: 62,
   },
+  lineHeight: {
+    1: 17,
+    2: 22,
+    3: 25,
+    4: 29,
+    5: 31,
+    6: 34,
+    7: 39,
+    8: 42,
+    9: 80,
+    10: 92,
+    11: 120,
+    12: 155,
+  },
+  weight: {
+    4: 300,
+    6: 600,
+    8: 700,
+  },
+  letterSpacing: {
+    4: 0,
+    8: -1,
+    9: -2,
+  },
+})
+
+export const tokens = createTokens({
+  size,
   space,
+  font: {
+    title: interFont,
+    body: interFont,
+  },
   zIndex: {
     0: 0,
     1: 100,
@@ -172,10 +207,6 @@ export const tokens = createTokens({
     3: 300,
     4: 400,
     5: 500,
-  },
-  font: {
-    mono: 'Monospace',
-    sans: '-system',
   },
   color: {
     ...light,
@@ -188,28 +219,5 @@ export const tokens = createTokens({
     3: 10,
     4: 15,
     5: 20,
-  },
-  size: space,
-  fontSize: {
-    1: 12,
-    2: 13,
-    3: 15,
-    4: 17,
-    5: 19,
-    6: 21,
-    7: 27,
-    8: 35,
-    9: 59,
-  },
-  lineHeight: {
-    1: 12 * 1.2,
-    2: 13 * 1.2,
-    3: 15 * 1.2,
-    4: 17 * 1.2,
-    5: 19 * 1.2,
-    6: 21 * 1.2,
-    7: 27 * 1.2,
-    8: 35 * 1.2,
-    9: 59 * 1.2,
   },
 })

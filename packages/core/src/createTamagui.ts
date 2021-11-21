@@ -2,6 +2,7 @@ import { getStyleRules } from '@tamagui/helpers'
 
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
+import { isObj } from './helpers/isObj'
 import { configureMedia } from './hooks/useMedia'
 import {
   CreateTamaguiConfig,
@@ -62,11 +63,28 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // tokens
     let tokenRule = `:root {`
     const varsByValue = new Map<string, Variable>()
+    const addVar = (v: Variable) => {
+      varsByValue[v.val] = v
+      const rule = `--${v.name}:${typeof v.val === 'number' ? `${v.val}px` : v.val};`
+      tokenRule += rule
+    }
+
     for (const key in config.tokens) {
       for (const skey in config.tokens[key]) {
-        const v = config.tokens[key][skey]
-        varsByValue[v.val] = v
-        tokenRule += `--${v.name}:${typeof v.val === 'number' ? `${v.val}px` : v.val};`
+        const val = config.tokens[key][skey]
+        if (key === 'font') {
+          for (const fkey in val) {
+            if (fkey === 'family') {
+              addVar(val[fkey])
+            } else {
+              for (const fskey in val[fkey]) {
+                addVar(val[fkey][fskey])
+              }
+            }
+          }
+        } else {
+          addVar(val)
+        }
       }
     }
     cssRules.push(`${tokenRule}\n}`)
@@ -116,13 +134,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   })()
 
   // faster lookups token keys become $keys to match input
-  const tokensParsed: any = {}
-  for (const key in config.tokens) {
-    tokensParsed[key] = {}
-    for (const skey in config.tokens[key]) {
-      tokensParsed[key][`$${skey}`] = config.tokens[key][skey]
-    }
-  }
+  const tokensParsed: any = parseTokens(config.tokens)
+  console.log('tokensParsed', tokensParsed.font)
   // all themes should match key and we just need variable name
   // TODO once w react native we'd want to have a reverse lookup back to value
   const themeParsed: any = {}
@@ -163,25 +176,20 @@ export function getThemeParentClassName(themeName?: string | null) {
   return `theme-parent ${themeName ? `${PREFIX}${themeName}` : ''}`
 }
 
-// insertSheet() {
-//   // TODO use new react method of inserting
-//   const tag = createStyleTag()
-//   for (const rule of cssRules) {
-//     tag?.sheet?.insertRule(rule)
-//   }
-// },
-
-// function createStyleTag(): HTMLStyleElement | null {
-//   if (typeof document === 'undefined') {
-//     return null
-//   }
-//   const tag = document.createElement('style')
-//   tag.className = 'tamagui-css-vars'
-//   tag.setAttribute('type', 'text/css')
-//   tag.appendChild(document.createTextNode(''))
-//   if (!document.head) {
-//     throw new Error('expected head')
-//   }
-//   document.head.appendChild(tag)
-//   return tag
-// }
+const parseTokens = (tokens: any) => {
+  const res: any = {}
+  for (const key in tokens) {
+    res[key] = {}
+    for (const skey in tokens[key]) {
+      const val = tokens[key][skey]
+      // console.log('val', skey, val, isVariable(val), isObj(val))
+      if (!isVariable(val) && isObj(val)) {
+        // recurse into sub-objects (font)
+        res[key][skey] = parseTokens(val)
+      } else {
+        res[key][`$${skey}`] = val
+      }
+    }
+  }
+  return res
+}

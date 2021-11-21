@@ -8,14 +8,13 @@ import {
   TamaguiConfig,
   Text,
   ThemeKeyVariables,
+  Variable,
   createTamagui,
   styled,
 } from '@tamagui/core'
 
 import { shorthands, tokens } from './testConstants'
 import { themes } from './testThemes'
-
-type asd2 = abc['borderColor']
 
 type x2 = Shorthands['bc']
 type x = Shorthands['p']
@@ -102,22 +101,86 @@ type zSV = GetVariants<typeof ZStack>
 type zVP = GetVariantProps<zSV>
 type z2222 = z2['bg']
 
-const Paragraph = styled(Text, {
+export const SizableText = styled(Text, {
   variants: {
     size: {
-      '...size': (val) => ({
-        fontSize: val,
-      }),
+      '...size': (val, { tokens, props }) => {
+        const family = (
+          typeof props.fontFamily === 'string'
+            ? props.fontFamily.replace('$', '')
+            : props.fontFamily instanceof Variable
+            ? props.fontFamily.val
+            : props.fontFamily || 'body'
+        ) as any
+        const font = tokens.font[family]
+        const fontSize = font.size[val]
+        const lineHeight = font.lineHeight[val]
+        const fontWeight = font.weight[val]
+        const letterSpacing = font.letterSpacing[val]
+        console.log('got em', font, fontSize, lineHeight, fontWeight, letterSpacing)
+        if (fontSize instanceof Variable) {
+          return {
+            fontWeight,
+            letterSpacing,
+            fontSize,
+            lineHeight,
+          }
+        }
+        const fs = +val
+        // TODO can have props.sizeLineHeight
+        const lh = +val * (Math.log(Math.max(1.6, val)) * 0.01 + 1.1)
+        return {
+          fontSize: fs,
+          lineHeight: lh,
+        }
+      },
     },
   },
+})
+
+export const Paragraph = styled(SizableText, {
+  fontFamily: '$body',
+  color: '$color',
+  size: '$4',
 })
 
 type pp = GetProps<typeof Paragraph>
 type ppp = pp['m']
 
+export const InteractiveFrame = styled(Stack, {
+  variants: {
+    size: {
+      '...size': (val = '4', { tokens, props }) => {
+        const sizeIndex = Object.keys(tokens.size).indexOf(val)
+        const size = tokens.size[sizeIndex] ?? tokens.size[val] ?? val
+        const px = Math.round(+(size instanceof Variable ? size.val : size) * 0.8)
+        const py = Math.round(+(size instanceof Variable ? size.val : size) * 0.33)
+        return {
+          paddingHorizontal: px,
+          paddingVertical: py,
+          borderRadius: py * 0.5,
+        }
+      },
+    },
+
+    disabled: {
+      true: {
+        // TODO turning this on ruins types
+        // pointerEvents: 'none',
+        opacity: 0.5,
+        hoverStyle: {
+          backgroundColor: '$bg',
+        },
+      },
+    },
+  },
+})
+
 export const x = (props: StackProps) => {
   return (
     <>
+      <Paragraph size="$5" />
+      <InteractiveFrame size="$2" />
       <YStack
         $lg={{
           p: 10,
