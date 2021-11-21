@@ -65,12 +65,12 @@ const interFont = createFont({
   },
   weight: {
     4: '300',
-    6: '600',
+    7: '600',
     8: '700',
   },
   letterSpacing: {
     4: 0,
-    8: -1,
+    7: -1,
     9: -2,
     10: -3,
     12: -4,

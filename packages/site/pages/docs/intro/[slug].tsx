@@ -4,7 +4,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
-import { H1, Paragraph } from 'tamagui'
+import { H1, Spacer } from 'tamagui'
 import type { Frontmatter } from 'types/frontmatter'
 
 import { Description } from '../../../components/Description'
@@ -25,6 +25,7 @@ export default function DocIntroPage({ frontmatter, code }: Doc) {
       <H1 letterSpacing={-1} fontWeight="700">
         {frontmatter.title}
       </H1>
+      <Spacer />
       <Description>{frontmatter.description}</Description>
       <Component components={components as any} />
       <QuickNav />

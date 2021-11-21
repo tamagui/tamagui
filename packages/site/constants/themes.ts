@@ -63,7 +63,7 @@ for (const key of colorKeys) {
   colorThemes[nameKey] = {
     // @ts-ignore
     color: isDark ? '#ddd' : colorValues[`${colorName}12`],
-    color2: colorValues[`${colorName}12`],
+    color2: isDark ? dark.color2 : light.color2,
     color3: colorValues[`${colorName}11`],
     color4: colorValues[`${colorName}10`],
     bg: colorValues[`${colorName}${2 + offset}`],

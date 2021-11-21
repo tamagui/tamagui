@@ -101,7 +101,7 @@ type zSV = GetVariants<typeof ZStack>
 type zVP = GetVariantProps<zSV>
 type z2222 = z2['bg']
 
-export const SizableText = styled(Text, {
+export const SizableTextTEST = styled(Text, {
   variants: {
     size: {
       '...size': (val, { tokens, props }) => {
@@ -112,7 +112,7 @@ export const SizableText = styled(Text, {
             ? props.fontFamily.val
             : props.fontFamily || 'body'
         ) as any
-        const font = tokens.font[family]
+        const font = tokens.font?.[family]
         const fontSize = font.size[val]
         const lineHeight = font.lineHeight[val]
         const fontWeight = font.weight[val]
@@ -138,7 +138,7 @@ export const SizableText = styled(Text, {
   },
 })
 
-export const Paragraph = styled(SizableText, {
+export const Paragraph = styled(SizableTextTEST, {
   fontFamily: '$body',
   color: '$color',
   size: '$4',

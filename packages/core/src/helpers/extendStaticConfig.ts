@@ -83,22 +83,19 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
         variantsParsed = parseVariants(variants, conf)
       }
 
-      let fontFamily = props.fontFamily || defaultProps.fontFamily || 'body'
-      if (fontFamily[0] === '$') {
-        fontFamily = fontFamily.slice(1)
-      }
+      let fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
 
       // expand variants
       const variant = variantsParsed?.[key]
 
       if (variant && typeof value !== 'undefined') {
-        const tokenKey = typeof value === 'string' && value[0] === '$' ? value.slice(1) : value
-        const val =
-          tokenKey === true ? variant['true'] : variant[tokenKey] ?? variant['...'] ?? value
+        const val = value === true ? variant['$true'] : variant[value] ?? variant['...'] ?? value
+
+        // console.log('hm', value, val, variant, variantsParsed)
 
         const res =
           typeof val === 'function'
-            ? val(tokenKey, { tokens: conf.tokens, theme, props })
+            ? val(value, { tokens: conf.tokensParsed, theme, props })
             : isObj(val)
             ? { ...val }
             : val
@@ -156,25 +153,33 @@ const getToken = (
   key: string,
   value: string,
   { tokensParsed, themeParsed }: TamaguiInternalConfig,
-  fontFamily: string | undefined = 'body'
+  fontFamily: string | undefined = '$body'
 ) => {
   if (themeParsed[value]) {
     return themeParsed[value].variable
   }
+  let valOrVar: any
   if (key === 'fontFamily') {
-    return tokensParsed.font[value]?.family || value
+    valOrVar = tokensParsed.font[value]?.family || value
   }
   if (key === 'fontSize') {
-    return tokensParsed.font[fontFamily]?.size[value] || value
+    valOrVar = tokensParsed.font[fontFamily]?.size[value] || value
   }
   if (key === 'lineHeight') {
-    return tokensParsed.font[fontFamily]?.lineHeight[value] || value
+    valOrVar = tokensParsed.font[fontFamily]?.lineHeight[value] || value
   }
   if (key === 'letterSpacing') {
-    return tokensParsed.font[fontFamily]?.letterSpacing[value] || value
+    valOrVar = tokensParsed.font[fontFamily]?.letterSpacing[value] || value
   }
   if (key === 'fontWeight') {
-    return tokensParsed.font[fontFamily]?.weight[value] || value
+    valOrVar = tokensParsed.font[fontFamily]?.weight[value] || value
+  }
+  if (typeof valOrVar !== 'undefined') {
+    if (valOrVar instanceof Variable) {
+      return valOrVar.variable
+    } else {
+      return valOrVar
+    }
   }
   for (const cat in tokenCategories) {
     if (tokenCategories[cat][key]) {
@@ -229,7 +234,7 @@ function parseVariants(variants: any, conf: TamaguiInternalConfig) {
         const tokenKey = vkey.slice(3)
         const tokens = conf.tokens[tokenKey]
         for (const tkey in tokens) {
-          vacc[tkey] = variantVal
+          vacc[`$${tkey}`] = variantVal
         }
       } else {
         vacc[vkey] = variantVal
