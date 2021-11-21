@@ -1,10 +1,18 @@
-export function concatClassName(...classNames: string[]) {
+export function concatClassName(...classNamesOrPropObjects: string[]) {
   const usedPrefixes: string[] = []
   let final = ''
 
-  for (let x = classNames.length; x >= 0; x--) {
-    const cns = classNames[x]
+  const len = classNamesOrPropObjects.length
+  let propObjects: any = null
+  for (let x = len; x >= 0; x--) {
+    const cns = classNamesOrPropObjects[x]
     if (!cns) continue
+    if (!Array.isArray(cns) && typeof cns !== 'string') {
+      // is prop object
+      propObjects = propObjects || []
+      propObjects.push(cns)
+      continue
+    }
     const names = Array.isArray(cns) ? cns : cns.split(' ')
     for (let i = names.length - 1; i >= 0; i--) {
       const name = names[i]
@@ -35,9 +43,35 @@ export function concatClassName(...classNames: string[]) {
         }
         usedPrefixes.push(uid)
       }
+
+      // overrides for full safety
+      const propName = styleKey
+      // shouldLog && console.log('propName', propName)
+      if (propName && propObjects) {
+        if (
+          propObjects.some((po) => {
+            if (mediaKey) {
+              const propKey = pseudoInvert[mediaKey]
+              return po && po[propKey] && propName in po[propKey] && po[propKey] !== null
+            }
+            const res = po && propName in po && po[propName] !== null
+            return res
+          })
+        ) {
+          // shouldLog && console.log('SKIP PROP')
+          continue
+        }
+      }
+
       final = name + ' ' + final
     }
   }
 
   return final
+}
+
+const pseudoInvert = {
+  hover: 'hoverStyle',
+  focus: 'focusStyle',
+  press: 'pressStyle',
 }
