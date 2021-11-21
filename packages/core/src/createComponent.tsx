@@ -25,6 +25,7 @@ import { usePressable } from './hooks/usePressable'
 import { StaticComponent, StaticConfig, StaticConfigParsed, TamaguiInternalConfig } from './types'
 import { TextAncestorContext } from './views/TextAncestorContext'
 import { ThemeManagerContext } from './views/ThemeManagerContext'
+import { SpaceTokens } from '.'
 
 export const mouseUps = new Set<Function>()
 
@@ -492,7 +493,7 @@ export function createComponent<A extends Object = DefaultProps>(
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 
-export const Spacer = createComponent<{ size?: number; flex?: boolean | number }>({
+export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: boolean | number }>({
   defaultProps: stackDefaultStyles,
   variants: {
     size: {

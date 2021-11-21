@@ -24,7 +24,7 @@ export const H3 = styled(Title, {
   fontFamily: '$title',
   accessibilityRole: 'header',
   size: '$6',
-  fontWeight: '600',
+  fontWeight: '700',
 })
 
 export const H4 = styled(Title, {

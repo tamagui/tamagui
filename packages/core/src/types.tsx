@@ -123,7 +123,7 @@ export type GenericFont = {
   size: { [key: string | number]: number | Variable }
   lineHeight: { [key: string | number]: number | Variable }
   letterSpacing: { [key: string | number]: number | Variable }
-  weight: { [key: string | number]: number | Variable }
+  weight: { [key: string | number]: string | Variable }
   family: string | Variable
 }
 
@@ -185,6 +185,8 @@ type ComponentPropsBase = {
 
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =
   keyof Tokens['font'][keyof Tokens['font']][A]
+
+export type SpaceTokens = `$${keyof Tokens['space']}`
 
 //
 // adds in theme short values to relevant props

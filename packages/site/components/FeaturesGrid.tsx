@@ -1,7 +1,5 @@
 import React from 'react'
-import { Grid, H2, H4, Paragraph, YStack } from 'tamagui'
-
-import { Code } from './Code'
+import { Grid, H2, H3, H4, Paragraph, YStack } from 'tamagui'
 
 export function FeaturesGrid() {
   return (
@@ -9,9 +7,9 @@ export function FeaturesGrid() {
       <H2 fontWeight="800" ta="center">
         Features
       </H2>
-      <Paragraph size="$6" color="$color3" ta="center">
+      <H3 fontWeight="400" color="$color3" ta="center">
         A full featured styling library.
-      </Paragraph>
+      </H3>
 
       <YStack pt="$6">
         <Grid gap={25} itemMinWidth={250}>
