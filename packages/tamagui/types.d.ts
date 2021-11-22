@@ -6,7 +6,7 @@
 /// <reference types="react-native" />
 /// <reference types="scheduler" />
 
-export declare function concatClassName(className: string, ...propObjects: any[]): string;
+export declare function concatClassName(...classNamesOrPropObjects: string[]): string;
 export declare const stylePropsTransform: {
 	x: boolean;
 	y: boolean;
@@ -1025,6 +1025,10 @@ export declare const ThemeInverse: (props: {
 }) => JSX.Element;
 export declare const TextAncestorContext: any;
 export declare const TextAncestorProvider: (props: any) => any;
+export declare const SafeAreaProvider: ({ initialWindowMetrics, children, }: {
+	children?: any;
+	initialWindowMetrics?: any;
+}) => JSX.Element;
 export declare type ShorthandViewStyleProps = {
 	w?: ViewStyle["width"];
 	h?: ViewStyle["height"];

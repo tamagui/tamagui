@@ -65,12 +65,12 @@ const interFont = createFont({
   },
   weight: {
     4: '300',
-    6: '600',
+    7: '600',
     8: '700',
   },
   letterSpacing: {
     4: 0,
-    8: -1,
+    7: -1,
     9: -2,
     10: -3,
     12: -4,
@@ -80,11 +80,11 @@ const interFont = createFont({
 const monoFont = createFont({
   family: 'Monospace',
   size: {
-    1: 12,
-    2: 14,
-    3: 15,
-    4: 16,
-    5: 17,
+    1: 10,
+    2: 11,
+    3: 12,
+    4: 13,
+    5: 16,
     6: 18,
   },
   lineHeight: {

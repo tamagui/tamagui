@@ -22,10 +22,15 @@ import { getSplitStyles } from './helpers/getSplitStyles'
 import { useFeatures } from './hooks/useFeatures'
 import { useForceUpdate } from './hooks/useForceUpdate'
 import { usePressable } from './hooks/usePressable'
-import { StaticComponent, StaticConfig, StaticConfigParsed, TamaguiInternalConfig } from './types'
+import {
+  SpaceTokens,
+  StaticComponent,
+  StaticConfig,
+  StaticConfigParsed,
+  TamaguiInternalConfig,
+} from './types'
 import { TextAncestorContext } from './views/TextAncestorContext'
 import { ThemeManagerContext } from './views/ThemeManagerContext'
-import { SpaceTokens } from '.'
 
 export const mouseUps = new Set<Function>()
 
@@ -222,12 +227,12 @@ export function createComponent<A extends Object = DefaultProps>(
             props.className,
           ]
         : [defaultsClassName, props.className, classNames, stylesClassNames]
-      const classListFlat = classList.flat(1).filter(Boolean).join(' ')
-      const className = concatClassName(classListFlat)
+
+      const className = concatClassName(...classList)
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('🥚 className', { style, styles, stylesClassNames, classListFlat: classListFlat.split(' '), className })
+          console.log('🥚 className', { style, styles, classList, stylesClassNames, className })
         }
       }
       viewProps.className = className
@@ -494,16 +499,21 @@ export function createComponent<A extends Object = DefaultProps>(
 // keep inline to avoid circular deps
 
 export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: boolean | number }>({
-  defaultProps: stackDefaultStyles,
+  defaultProps: {
+    ...stackDefaultStyles,
+    size: true,
+  },
   variants: {
     size: {
       '...size': (size, { tokens }) => {
+        size = size == true ? '$true' : size
         return {
           width: tokens.size[size] ?? size,
           height: tokens.size[size] ?? size,
         }
       },
     },
+
     direction: {
       horizontal: {
         height: 0,

@@ -5,15 +5,20 @@ export const SizableText = styled(Text, {
     size: {
       // TODO this should be ...fontSize type not working
       '...size': (val, { tokens, props }) => {
-        // console.log('tokens', tokens)
         const family = (
           typeof props.fontFamily === 'string'
-            ? props.fontFamily.replace('$', '')
+            ? props.fontFamily
             : props.fontFamily instanceof Variable
             ? props.fontFamily.val
-            : props.fontFamily || 'body'
+            : props.fontFamily || '$body'
         ) as any
         const font = tokens.font[family]
+        if (process.env.NODE_ENV === 'development') {
+          if (!font) {
+            console.warn('⚠️ no font found', { family, fontTokens: Object.keys(tokens.font), val })
+            return {}
+          }
+        }
         const fontFamily = font.family
         const fontSize = props.fontSize || font.size[val]
         const lineHeight = props.lineHeight || font.lineHeight[val]

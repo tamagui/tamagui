@@ -1,0 +1,104 @@
+---
+title: Benchmarks
+description: Performance tests and comparisons.
+---
+
+We've forked a common test suite for styling libraries. All tests were run in a production environment on a Macbook M1 Pro (2021). The [benchmarks](https://github.com/tamagui/tamagui/tree/master/src/packages/benchmarks) are open-source.
+
+<Notice>
+  **Note**: These benchmarks are competing against **web-only** style libraries. Those libraries
+  should have a big advantage as they basically can render directly to DOM, while Tamagui supports
+  the far richer and larger React Native API for every component. Still, we think Tamagui does well.
+  <br />
+  Next, we'll add a comparison to react-native-web and NativeBase, where it should show an ever
+  bigger difference.
+</Notice>
+
+### Initial injection
+
+The timing that it takes to inject the initial styles.
+
+{
+
+<BenchmarkChart
+  data={[
+    { name: 'Tamagui', value: 0.02 },
+    { name: 'Stitches', value: 0.13 },
+    { name: 'Emotion', value: 0.5 },
+  ]}
+/>
+}
+
+### Updating variants
+
+Changing variants is fast at runtime, and even faster when compiled:
+
+{
+
+<BenchmarkChart
+  data={[
+    { name: 'Tamagui', value: 0.025 },
+    { name: 'Stitches', value: 0.037 },
+    { name: 'Emotion', value: 0.069 },
+    { name: 'styled-components', value: 0.081 },
+  ]}
+/>
+}
+
+> Note: Since styled-components and Emotion don't offer a first-class variant API, this was done via prop interpolation.
+
+### Updating inline styles
+
+Tamagui has a big advantage for inline styles, it's the only library to compile them.
+
+{
+
+<BenchmarkChart
+  data={[
+    { name: 'Tamagui', value: 0.013 },
+    { name: 'Stitches', value: 0.038 },
+    { name: 'Emotion', value: 0.49 },
+  ]}
+/>
+}
+
+### Dynamic styles (no compilation)
+
+Tamagui components are far more feature-rich than other styling libraries, so in the worst case where every component isn't extracted, you get middle-of-the-road performance. The good news is, this is an extreme case and rare, and we have a lot of low hanging fruit for improvement.
+
+{
+
+<BenchmarkChart
+  data={[
+    { name: 'Tamagui', value: 32.5 },
+    { name: 'Stitches', value: 14.5 },
+    { name: 'Emotion', value: 49.01 },
+  ]}
+/>
+}
+
+> Note: This test was taken from the [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks).
+
+### Mounting deep tree
+
+In this test, we mount a tree with many nested nodes.
+
+{
+
+<BenchmarkChart
+  data={[
+    { name: 'Tamagui', value: 15.59 },
+    { name: 'Stitches', value: 8.37 },
+    { name: 'Emotion', value: 42.49 },
+    { name: 'styled-components', value: 51.4 },
+  ]}
+/>
+}
+
+> Note: This test was taken from the [styled-components benchmarks](https://github.com/styled-components/styled-components/tree/main/packages/benchmarks).
+
+## Summary
+
+Our benchmarks compare against Stitches, styled-components and Emotion because they're the most popular CSS-in-JS libraries for the web.
+
+A few tests didn't run after upgrading Next.js for Emotion/styled-components, we've left them out for now.

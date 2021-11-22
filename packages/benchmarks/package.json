@@ -1,0 +1,35 @@
+{
+  "name": "@tamagui/benchmarks",
+  "version": "1.0.0-alpha.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "next:build": "next build",
+    "next:start": "next start"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.4.0",
+    "@radix-ui/colors": "^0.1.6",
+    "@stitches/core-v025": "npm:@stitches/core@0.2.5",
+    "@stitches/core-vc17": "npm:@stitches/core@1.0.0-canary.17",
+    "@stitches/react-v025": "npm:@stitches/react@0.2.5",
+    "@stitches/react-vc17": "npm:@stitches/react@1.0.0-canary.17",
+    "@stitches/stringify": "^0.2.5",
+    "@tamagui/bench-components": "^1.0.0-alpha.0",
+    "@tamagui/colors": "^1.0.0-alpha.0",
+    "d3-scale-chromatic": "^2.0.0",
+    "nanoid": "^3.1.23",
+    "next": "^11.1.2",
+    "react": "*",
+    "react-dom": "*",
+    "styled-components": "^5.3.0"
+  },
+  "devDependencies": {
+    "@emotion/styled": "^11.3.0",
+    "@tamagui/next-plugin": "^1.0.0-alpha.0",
+    "@types/react": "^17.0.5",
+    "@types/styled-components": "5.1.9",
+    "next-compose-plugins": "^2.2.1",
+    "typescript": "^4.2.4"
+  }
+}

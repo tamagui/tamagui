@@ -1,5 +1,6 @@
+- could do a pass on generated classnames to dedupe would help benchmarks
+- static compilation can go further with variants because it knows they always only accept certain values... see mount-deep-tree
 - <Theme name> needs to accept stripped `-light` `-dark` type
-- TODO: variant functions are receiving non-prefixes tokens/themes instead of prefixed..
 - basic styled() extraction => work liek props => <YStack />
 - space => gap?
 - fix parent variant types

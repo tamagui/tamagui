@@ -76,50 +76,33 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
     propMapper(key: string, value: any, theme: any, props: any) {
       const conf = getTamaguiConfig()
       if (!conf) {
-        console.trace('err')
+        console.trace('no conf! err')
         return
       }
       if (variants && !variantsParsed) {
         variantsParsed = parseVariants(variants, conf)
       }
 
-      let fontFamily = props.fontFamily || defaultProps.fontFamily || 'body'
-      if (fontFamily[0] === '$') {
-        fontFamily = fontFamily.slice(1)
-      }
+      // handled here because we need to resolve this off tokens, its the only one-off like this
+      let fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
 
       // expand variants
       const variant = variantsParsed?.[key]
-
       if (variant && typeof value !== 'undefined') {
-        const tokenKey = typeof value === 'string' && value[0] === '$' ? value.slice(1) : value
         const val =
-          tokenKey === true ? variant['true'] : variant[tokenKey] ?? variant['...'] ?? value
+          value === true
+            ? variant['$true'] || variant['true']
+            : variant[value] ?? variant['...'] ?? value
 
         const res =
           typeof val === 'function'
-            ? val(tokenKey, { tokens: conf.tokens, theme, props })
+            ? val(value, { tokens: conf.tokensParsed, theme, props })
             : isObj(val)
             ? { ...val }
             : val
 
         if (isObj(res)) {
-          for (const rKey in res) {
-            const fKey = conf.shorthands[rKey] || rKey
-            if (rKey !== fKey) {
-              console.log('delete me', rKey)
-              delete res[rKey]
-            }
-            const val = res[rKey]
-            if (val instanceof Variable) {
-              res[fKey] = val.variable
-            } else if (typeof val === 'string') {
-              const fVal = val[0] === '$' ? getToken(fKey, val, conf, fontFamily) : val
-              res[fKey] = fVal
-            } else {
-              // nullish values cant be tokens so need no exrta parsing
-            }
-          }
+          resolveTokens(res, conf, fontFamily)
         }
 
         return res
@@ -152,29 +135,56 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
   }
 }
 
+const resolveTokens = (res: any, conf: TamaguiInternalConfig, fontFamily: any) => {
+  for (const rKey in res) {
+    const fKey = conf.shorthands[rKey] || rKey
+    const val = res[rKey]
+    if (val instanceof Variable) {
+      res[fKey] = val.variable
+    } else if (typeof val === 'string') {
+      const fVal = val[0] === '$' ? getToken(fKey, val, conf, fontFamily) : val
+      res[fKey] = fVal
+    } else {
+      if (isObj(val)) {
+        // for things like shadowOffset which is a sub-object
+        resolveTokens(val, conf, fontFamily)
+      }
+      // nullish values cant be tokens so need no exrta parsing
+    }
+  }
+}
+
 const getToken = (
   key: string,
   value: string,
   { tokensParsed, themeParsed }: TamaguiInternalConfig,
-  fontFamily: string | undefined = 'body'
+  fontFamily: string | undefined = '$body'
 ) => {
   if (themeParsed[value]) {
     return themeParsed[value].variable
   }
+  let valOrVar: any
   if (key === 'fontFamily') {
-    return tokensParsed.font[value]?.family || value
+    valOrVar = tokensParsed.font[value]?.family || value
   }
   if (key === 'fontSize') {
-    return tokensParsed.font[fontFamily]?.size[value] || value
+    valOrVar = tokensParsed.font[fontFamily]?.size[value] || value
   }
   if (key === 'lineHeight') {
-    return tokensParsed.font[fontFamily].lineHeight[value]
+    valOrVar = tokensParsed.font[fontFamily]?.lineHeight[value] || value
   }
   if (key === 'letterSpacing') {
-    return tokensParsed.font[fontFamily].letterSpacing[value]
+    valOrVar = tokensParsed.font[fontFamily]?.letterSpacing[value] || value
   }
   if (key === 'fontWeight') {
-    return tokensParsed.font[fontFamily].weight[value]
+    valOrVar = tokensParsed.font[fontFamily]?.weight[value] || value
+  }
+  if (typeof valOrVar !== 'undefined') {
+    if (valOrVar instanceof Variable) {
+      return valOrVar.variable
+    } else {
+      return valOrVar
+    }
   }
   for (const cat in tokenCategories) {
     if (tokenCategories[cat][key]) {
@@ -229,7 +239,7 @@ function parseVariants(variants: any, conf: TamaguiInternalConfig) {
         const tokenKey = vkey.slice(3)
         const tokens = conf.tokens[tokenKey]
         for (const tkey in tokens) {
-          vacc[tkey] = variantVal
+          vacc[`$${tkey}`] = variantVal
         }
       } else {
         vacc[vkey] = variantVal

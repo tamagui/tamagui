@@ -22,6 +22,7 @@ const light = {
   bgTransparent: tokens.color.grayA1,
   borderColor: tokens.color.gray4,
   borderColor2: tokens.color.gray6,
+  colorBright: '#000',
   color: tokens.color.gray12,
   color2: tokens.color.gray11,
   color3: tokens.color.gray10,
@@ -40,6 +41,7 @@ const dark = {
   borderColor: tokens.color.gray3Dark,
   borderColor2: tokens.color.gray4Dark,
   color: '#ddd',
+  colorBright: '#fff',
   color2: tokens.color.gray11Dark,
   color3: tokens.color.gray10Dark,
   color4: tokens.color.gray6Dark,
@@ -61,7 +63,7 @@ for (const key of colorKeys) {
   colorThemes[nameKey] = {
     // @ts-ignore
     color: isDark ? '#ddd' : colorValues[`${colorName}12`],
-    color2: colorValues[`${colorName}12`],
+    color2: isDark ? dark.color2 : light.color2,
     color3: colorValues[`${colorName}11`],
     color4: colorValues[`${colorName}10`],
     bg: colorValues[`${colorName}${2 + offset}`],

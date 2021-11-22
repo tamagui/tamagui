@@ -1,4 +1,4 @@
-import { AlertCircle, AlertOctagon, AlertTriangle, HelpCircle, Link } from '@tamagui/feather-icons'
+import { HelpCircle, Link } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
@@ -17,10 +17,10 @@ import {
   Theme,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 
 import { Frontmatter } from '../types/frontmatter'
+import { BenchmarkChart } from './BenchmarkChart'
 import { Code } from './Code'
 import { DemoButton } from './DemoButton'
 import * as Demos from './demos'
@@ -37,6 +37,7 @@ export const components = {
   Paragraph,
   YStack,
   Box,
+  BenchmarkChart,
   // Title,
   Separator,
   Code,
@@ -196,35 +197,6 @@ export const components = {
         {children}
       </DocCodeBlock>
     )
-
-    // return (
-    //   <Pre
-    //     mb="$4"
-    //     {...(isCollapsed && {
-    //       height: 100,
-    //       position: 'relative',
-    //     })}
-    //     // css={{
-    //     //   '[data-preview] + &': {
-    //     //     marginTop: 1,
-    //     //     borderTopLeftRadius: 0,
-    //     //     borderTopRightRadius: 0,
-    //     //   },
-    //     // }}
-    //     className={className}
-    //     id={id}
-    //     data-line-numbers={showLineNumbers}
-    //   >
-    //     {isCollapsed && (
-    //       <YStack position="absolute" left={0} zIndex={1} bottom="$2" width="100%">
-    //         <Button onClick={() => setIsCollapsed(false)}>
-    //           <ChevronDown /> Show code
-    //         </Button>
-    //       </YStack>
-    //     )}
-    //     <code className={className} children={children} />
-    //   </Pre>
-    // )
   },
 
   Image: ({ children, size, ...props }) => (
@@ -276,7 +248,7 @@ export const components = {
   blockquote: ({ children, ...props }) => {
     return (
       <YStack
-        mt="$5"
+        my="$4"
         pl="$4"
         ml="$3"
         borderLeftWidth={1}
@@ -284,7 +256,7 @@ export const components = {
         jc="center"
         {...props}
       >
-        <Paragraph whiteSpace="revert" size="$5" color="$color4">
+        <Paragraph whiteSpace="revert" size="$4" color="$color" opacity={0.65}>
           {React.Children.toArray(children).map((x) => (x?.props?.children ? x.props.children : x))}
         </Paragraph>
       </YStack>

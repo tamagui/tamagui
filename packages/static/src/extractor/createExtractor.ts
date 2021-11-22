@@ -108,7 +108,7 @@ export function createExtractor() {
         if (bodyPath.type !== 'ImportDeclaration') continue
         const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as any
         const from = node.source.value
-        if (from === 'tamagui' || isInternalImport(from)) {
+        if (props.components.includes(from) || isInternalImport(from)) {
           if (
             node.specifiers.some((specifier) => {
               const name = specifier.local.name
@@ -163,12 +163,13 @@ export function createExtractor() {
 
           // validate its a proper import from tamagui (or internally inside tamagui)
           const binding = traversePath.scope.getBinding(node.name.name)
+
           if (binding) {
             if (!t.isImportDeclaration(binding.path.parent)) {
               return
             }
             const source = binding.path.parent.source
-            if (source.value !== 'tamagui' && !isInternalImport(source.value)) {
+            if (!props.components.includes(source.value) && !isInternalImport(source.value)) {
               return
             }
             if (!validComponents[binding.identifier.name]) {
@@ -187,7 +188,7 @@ export function createExtractor() {
           const validStyles = staticConfig?.validStyles ?? {}
 
           // find tag="a" tag="main" etc dom indicators
-          let tagName = isTextView ? 'span' : 'div'
+          let tagName = staticConfig.defaultProps?.tag ?? (isTextView ? 'span' : 'div')
           traversePath
             .get('openingElement')
             .get('attributes')
@@ -251,6 +252,7 @@ export function createExtractor() {
           //  SPREADS SETUP
           //
 
+          // TODO restore
           const hasDeopt = (obj: Object) => {
             return Object.keys(obj).some(isDeoptedProp)
           }
@@ -374,12 +376,13 @@ export function createExtractor() {
             .filter(isPresent)
 
           function isStaticAttributeName(name: string) {
-            return (
+            return !!(
               !!validStyles[name] ||
               staticConfig.validPropsExtra?.[name] ||
               !!pseudos[name] ||
               staticConfig.variants?.[name] ||
-              tamaguiConfig.shorthands[name]
+              tamaguiConfig.shorthands[name] ||
+              (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
             )
           }
 
@@ -392,7 +395,7 @@ export function createExtractor() {
                   return false
                 }
                 const propName = prop.key['name']
-                if (!isStaticAttributeName(propName)) {
+                if (!isStaticAttributeName(propName) && propName !== 'tag') {
                   // if (shouldPrintDebug) {
                   console.log('  not a valid style prop!', propName)
                   // }
@@ -594,7 +597,7 @@ export function createExtractor() {
                   keys = Object.keys(out)
                 }
               }
-              if (keys.some((k) => !isStaticAttributeName(k))) {
+              if (keys.some((k) => !isStaticAttributeName(k) && k !== 'tag')) {
                 if (shouldPrintDebug) {
                   console.log('  ! inlining, not static attribute name', name)
                 }
@@ -688,6 +691,9 @@ export function createExtractor() {
             function getStaticConditional(value: t.Node): Ternary | null {
               if (t.isConditionalExpression(value)) {
                 try {
+                  if (shouldPrintDebug) {
+                    console.log('attempt', value.alternate, value.consequent)
+                  }
                   const aVal = attemptEval(value.alternate)
                   const cVal = attemptEval(value.consequent)
                   if (shouldPrintDebug) {
