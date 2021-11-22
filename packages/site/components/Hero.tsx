@@ -46,7 +46,7 @@ export function Hero() {
                 <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
                   <Title
                     size="$10"
-                    color="$colorBright"
+                    // color="$colorBright"
                     fontFamily="$body"
                     $sm={{
                       maxWidth: 550,
@@ -109,7 +109,7 @@ export function Hero() {
                       // hoverStyle={{
                       //   backgroundColor: '$bg4',
                       // }}
-                      textProps={{ fontWeight: '700' }}
+                      textProps={{ fontWeight: '700', color: '$color3' }}
                       borderRadius={1000}
                       iconAfter={<ArrowRight color="var(--color3)" size={12} />}
                       tag="a"

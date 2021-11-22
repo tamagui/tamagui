@@ -10,7 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { stackDefaultStyles } from './constants/constants'
 import { isTouchDevice, isWeb } from './constants/platform'
@@ -53,7 +53,7 @@ export function createComponent<A extends Object = DefaultProps>(
     staticConfig = parseStaticConfig(configIn)
   }
 
-  const { Component, validStyles, isText } = staticConfig
+  const { Component, validStyles, isText, isZStack } = staticConfig
   const validStyleProps = validStyles ?? stylePropsView
 
   // split out default styles vs props so we can assign it to component.defaultProps
@@ -216,7 +216,7 @@ export function createComponent<A extends Object = DefaultProps>(
 
     if (isWeb) {
       const stylesClassNames = addStylesUsingClassname(styles)
-      const classList = staticConfig.isText
+      const classList = isText
         ? [
             defaultsClassName,
             // hasTextAncestor === true && cssText.textHasAncestor,
@@ -398,10 +398,11 @@ export function createComponent<A extends Object = DefaultProps>(
       }
     }
 
-    const spacedChildrenEl = spacedChildren({
+    const childEls = spacedChildren({
       children,
       space,
       flexDirection: props.flexDirection || defaultProps?.flexDirection,
+      isZStack: isZStack,
     })
 
     let content: any
@@ -415,12 +416,12 @@ export function createComponent<A extends Object = DefaultProps>(
           : viewProps.className
       Object.assign(viewProps, domProps)
       viewProps.className = className
-      content = createElement(ViewComponent, viewProps, spacedChildrenEl)
+      content = createElement(ViewComponent, viewProps, childEls)
     } else {
-      content = createElement(ViewComponent, viewProps, spacedChildrenEl)
+      content = createElement(ViewComponent, viewProps, childEls)
     }
 
-    const shouldWrapTextAncestor = isWeb && staticConfig.isText && !hasTextAncestor
+    const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
     if (shouldWrapTextAncestor) {
       // from react-native-web
       // @ts-ignore
@@ -434,7 +435,7 @@ export function createComponent<A extends Object = DefaultProps>(
         console.log('🥚 props out:', viewProps)
         console.log(props.onClick?.toString())
         // prettier-ignore
-        console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, spacedChildrenEl })
+        console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
         if (isWeb) {
           console.log('🥚 component info', { staticConfig, tamaguiConfig })
@@ -526,15 +527,17 @@ export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: bool
 })
 
 export function spacedChildren({
+  isZStack,
   children,
   space,
   flexDirection,
 }: {
+  isZStack?: boolean
   children: any
   space?: any
   flexDirection?: ViewStyle['flexDirection']
 }) {
-  if (!space) {
+  if (!space && !isZStack) {
     return children
   }
   const childrenList = Children.toArray(children)
@@ -549,27 +552,40 @@ export function spacedChildren({
     }
 
     const key = `${child?.['key'] ?? index}`
-    next.push(<Fragment key={key}>{child}</Fragment>)
+
+    next.push(<Fragment key={key}>{isZStack ? <Absolute>{child}</Absolute> : child}</Fragment>)
 
     // allows for custom visually hidden components that dont insert spacing
     if (child?.['type']?.['isVisuallyHidden']) {
       continue
     }
 
-    if (index === len - 1) {
-      break
+    if (index !== len - 1) {
+      if (space) {
+        next.push(
+          <Spacer
+            key={`${key}_spacer`}
+            // @ts-ignore TODO
+            direction={
+              flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
+            }
+            size={space}
+          />
+        )
+      }
     }
-
-    next.push(
-      <Spacer
-        key={`${key}_spacer`}
-        // @ts-ignore TODO
-        direction={
-          flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
-        }
-        size={space}
-      />
-    )
   }
   return next
 }
+
+// for now not so "tamagui-y"
+const Absolute = ({ children }) => <View style={sheet.fullscreen}>{children}</View>
+const sheet = StyleSheet.create({
+  fullscreen: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+})

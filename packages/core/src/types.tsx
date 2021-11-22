@@ -468,6 +468,11 @@ export type StaticConfig = {
    * so they get overriddent. In the future, this can be smarter.
    */
   ensureOverriddenProp?: { [key: string]: boolean }
+
+  /*
+   * We need to wrap children
+   */
+  isZStack?: boolean
 }
 
 type ColorableKeys =

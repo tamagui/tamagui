@@ -1,29 +1,26 @@
 import React from 'react'
-import { XStack, YStack } from 'tamagui'
+import { XStack, YStack, ZStack } from 'tamagui'
 
 export function StacksDemo() {
   return (
     <XStack als="center" space>
-      <YStack
-        elevation={2}
-        w={140}
-        flex={1}
-        space="$2"
-        borderWidth={2}
-        borderColor="$color"
-        br="$2"
-        p="$3"
-      >
-        <YStack bc="$color" br="$2" p="$3" />
-        <YStack bc="$color" br="$2" p="$3" />
-        <YStack bc="$color" br="$2" p="$3" />
+      <YStack elevation={2} flex={1} space="$2" bw={2} borderColor="$color" br="$2" p="$2">
+        <YStack bc="$color" br="$2" p="$2" />
+        <YStack bc="$color" br="$2" p="$2" />
+        <YStack bc="$color" br="$2" p="$2" />
       </YStack>
 
-      <XStack flex={1} space="$2" borderWidth={2} borderColor="$color" br="$2" p="$3">
-        <YStack bc="$color" br="$2" p="$3" />
-        <YStack bc="$color" br="$2" p="$3" />
-        <YStack bc="$color" br="$2" p="$3" />
+      <XStack flex={1} space="$2" bw={2} borderColor="$color" br="$2" p="$2">
+        <YStack bc="$color" br="$2" p="$2" />
+        <YStack bc="$color" br="$2" p="$2" />
+        <YStack bc="$color" br="$2" p="$2" />
       </XStack>
+
+      <ZStack mw={50} mh={85} w={100} flex={1}>
+        <YStack fullscreen bw={2} br="$1" p="$2" />
+        <YStack fullscreen y={10} x={10} bw={2} br="$1" p="$2" />
+        <YStack fullscreen y={20} x={20} bw={2} bc="$color" br="$1" p="$2" />
+      </ZStack>
     </XStack>
   )
 }
