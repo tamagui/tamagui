@@ -2,7 +2,7 @@ import React from 'react'
 
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
-import { MediaProps, StaticComponent, TamaguiConfig, Themes, Tokens } from './types'
+import { MediaProps, StaticComponent, StaticConfig, TamaguiConfig, Themes, Tokens } from './types'
 
 export function styled<
   ParentComponent extends StaticComponent | React.Component<any>,
@@ -11,12 +11,13 @@ export function styled<
   Component: ParentComponent,
   options?: GetProps<ParentComponent> & {
     variants?: Variants
-  }
+  },
+  staticExtractionOptions?: StaticConfig
 ) {
-  const staticConfigProps = (() => {
+  const staticConfigProps: StaticConfig = (() => {
     if (options) {
       const { variants, ...defaultProps } = options
-      return { variants, defaultProps }
+      return { ...staticExtractionOptions, variants, defaultProps }
     }
     return {}
   })()

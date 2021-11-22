@@ -795,6 +795,7 @@ export declare type StaticConfig = {
 	ensureOverriddenProp?: {
 		[key: string]: boolean;
 	};
+	isZStack?: boolean;
 };
 export declare type ColorableKeys = "color" | "backgroundColor" | "borderColor" | "borderTopColor" | "borderBottomColor" | "borderLeftColor" | "borderRightColor" | "shadowColor";
 export declare type SizeKeys = "width" | "height" | "minWidth" | "minHeight" | "maxWidth" | "maxHeight";
@@ -813,7 +814,8 @@ export declare const Spacer: StaticComponent<{
 	size?: number | `$${string}` | `$${number}` | undefined;
 	flex?: number | boolean | undefined;
 }, void, StaticConfigParsed, any>;
-export declare function spacedChildren({ children, space, flexDirection, }: {
+export declare function spacedChildren({ isZStack, children, space, flexDirection, }: {
+	isZStack?: boolean;
 	children: any;
 	space?: any;
 	flexDirection?: ViewStyle["flexDirection"];
@@ -910,7 +912,7 @@ export declare type MakeTokens<T> = T extends {
 } : never;
 export declare function styled<ParentComponent extends StaticComponent | React.Component<any>, Variants extends GetVariants<ParentComponent>>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
 	variants?: Variants;
-}): StaticComponent<Omit<GetProps<ParentComponent>, keyof GetVariantProps<Variants>> & GetVariantProps<Variants> & MediaProps<GetVariantProps<Variants>>, any, StaticConfigParsed, any>;
+}, staticExtractionOptions?: StaticConfig): StaticComponent<Omit<GetProps<ParentComponent>, keyof GetVariantProps<Variants>> & GetVariantProps<Variants> & MediaProps<GetVariantProps<Variants>>, any, StaticConfigParsed, any>;
 export declare type GetProps<A> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Props : {};
 export declare type GetVariants<ParentComponent extends StaticComponent | React.Component<any>> = void | {
 	[key: string]: {
@@ -1179,7 +1181,7 @@ export declare const Button: (props: Pick<Omit<Omit<Omit<import("@tamagui/core")
 	noTextWrap?: boolean | undefined;
 	icon?: JSX.Element | null | undefined;
 	iconAfter?: JSX.Element | null | undefined;
-}, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "transparent" | "className" | `$${string}` | "space" | "size" | "elevation" | "testID" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "active" | "onHoverIn" | "onHoverOut" | "tag" | "disabled" | keyof ThemeableProps | "animated" | "fullscreen" | "chromeless" | (`$${string}` & string) | "icon" | "iconAfter" | "textProps" | "noTextWrap"> & React.RefAttributes<unknown>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+}, "hoverStyle" | "pressStyle" | "backgroundColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderBottomWidth" | "borderColor" | "borderEndColor" | "borderLeftColor" | "borderLeftWidth" | "borderRadius" | "borderRightColor" | "borderRightWidth" | "borderStartColor" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "borderTopWidth" | "borderWidth" | "opacity" | "transform" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderEndWidth" | "borderStartWidth" | "bottom" | "display" | "end" | "flex" | "flexBasis" | "flexDirection" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "position" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "cursor" | "contain" | "pointerEvents" | "x" | "y" | "scale" | "perspective" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "children" | "style" | "transparent" | "className" | `$${string}` | "space" | "size" | "elevation" | "testID" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "accessibilityState" | "accessibilityValue" | "focusable" | "nativeID" | "onBlur" | "onClick" | "onClickCapture" | "onContextMenu" | "onFocus" | "onKeyDown" | "onKeyUp" | "onMoveShouldSetResponder" | "onMoveShouldSetResponderCapture" | "onResponderEnd" | "onResponderGrant" | "onResponderMove" | "onResponderReject" | "onResponderRelease" | "onResponderStart" | "onResponderTerminate" | "onResponderTerminationRequest" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "onStartShouldSetResponder" | "onStartShouldSetResponderCapture" | "dataSet" | "onMouseDown" | "onMouseEnter" | "onMouseLeave" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onMouseUp" | "onScroll" | "onTouchCancel" | "onTouchCancelCapture" | "onTouchEnd" | "onTouchEndCapture" | "onTouchMove" | "onTouchMoveCapture" | "onTouchStart" | "onTouchStartCapture" | "onWheel" | "href" | "hrefAttrs" | "hitSlop" | "onLayout" | "removeClippedSubviews" | "collapsable" | "needsOffscreenAlphaCompositing" | "renderToHardwareTextureAndroid" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "accessibilityRole" | "accessibilityHint" | "onAccessibilityAction" | "accessibilityLiveRegion" | "importantForAccessibility" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "onPress" | "onPressIn" | "onPressOut" | "active" | "onHoverIn" | "onHoverOut" | "fullscreen" | "tag" | "disabled" | keyof ThemeableProps | "animated" | "chromeless" | (`$${string}` & string) | "icon" | "iconAfter" | "textProps" | "noTextWrap"> & React.RefAttributes<unknown>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
 export declare const Circle: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, "size"> & {
 	size?: `$${string}` | `$${number}` | undefined;
 } & import("@tamagui/core").MediaProps<{
@@ -1472,6 +1474,17 @@ export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import
 	elevation?: `$${string}` | `$${number}` | undefined;
 }>, any, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const XStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
+	fullscreen?: boolean | undefined;
+	elevation?: `$${string}` | `$${number}` | undefined;
+} & import("@tamagui/core").MediaProps<{
+	fullscreen?: boolean | undefined;
+	elevation?: `$${string}` | `$${number}` | undefined;
+}>, never> & ({} | {
+	[x: string]: string | number | undefined;
+}) & import("@tamagui/core").MediaProps<{} | {
+	[x: string]: string | number | undefined;
+}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const ZStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
 	fullscreen?: boolean | undefined;
 	elevation?: `$${string}` | `$${number}` | undefined;
 } & import("@tamagui/core").MediaProps<{

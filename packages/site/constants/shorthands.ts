@@ -32,11 +32,12 @@ export const shorthands = {
   px: 'paddingHorizontal',
   py: 'paddingVertical',
   w: 'width',
+  pos: 'position',
+  bw: 'borderWidth',
   zi: 'zIndex',
-
-  // figure out text specifics
+  mw: 'maxWidth',
+  mh: 'maxHeight',
   lh: 'lineHeight',
   ta: 'textAlign',
-  // TODO
-  // fs: 'fontSize',
+  fos: 'fontSize',
 } as const

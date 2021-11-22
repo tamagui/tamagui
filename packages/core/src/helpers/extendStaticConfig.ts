@@ -44,6 +44,7 @@ export function extendStaticConfig(
 
   return parseStaticConfig({
     ...parent.staticConfig,
+    isZStack: config.isZStack || parent.staticConfig.isZStack,
     variants,
     isText: config.isText || parent.staticConfig.isText || false,
     neverFlatten: config.neverFlatten ?? parent.staticConfig.neverFlatten,

@@ -60,9 +60,9 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           display="inline-flex"
           alignItems="center"
           justifyContent="flex-end"
-          gap="$1"
-          top="$-7"
-          right="$7"
+          space="$1"
+          top="$-8"
+          right="$1"
           $sm={{
             right: '$2',
           }}
@@ -72,7 +72,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             chromeless
             onPress={() => setIsCollapsed((x) => !x)}
             textProps={{
-              fontSize: '$2',
+              size: '$2',
               color: '$color',
             }}
           >

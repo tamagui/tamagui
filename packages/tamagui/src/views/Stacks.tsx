@@ -41,12 +41,13 @@ export const XStack = styled(YStack, {
   flexDirection: 'row',
 })
 
-// // test types
-// TODO regressed :(
-// type YProps = PropTypes<typeof YStack>
-// type x = YProps['children']
-// type test<A> = A extends StaticComponent<any, infer B> ? B : null
-// type x2 = test<typeof YStack>
-// const x00 = <Stack missing={0} />
-// const x0 = <YStack missing={0} />
-// const x1 = (props: StackProps) => <YStack {...props} />
+export const ZStack = styled(
+  YStack,
+  {
+    position: 'relative',
+  },
+  {
+    neverFlatten: true,
+    isZStack: true,
+  }
+)
