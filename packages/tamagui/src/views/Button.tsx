@@ -28,7 +28,6 @@ export const Button = InteractiveFrame.extractable(
           noTextWrap,
           elevation,
           theme: themeName,
-          // TODO
           size,
           ...props
         }: ButtonProps,

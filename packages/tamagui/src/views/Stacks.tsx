@@ -1,3 +1,4 @@
+import { isVariable } from '@tamagui/core'
 import { Stack, styled } from '@tamagui/core'
 
 export const YStack = styled(Stack, {
@@ -16,15 +17,12 @@ export const YStack = styled(Stack, {
 
     elevation: {
       '...size': (size, { tokens, theme }) => {
-        const [shadowRadius, height] = (() => {
-          const val = tokens.size[size]
-          if (val) {
-            const sizeKeys = Object.keys(tokens.size)
-            const valIndex = sizeKeys.indexOf(size)
-            const nextSizeUp = tokens.size[sizeKeys[valIndex + 1]]
-            return [val, nextSizeUp] as const
+        const token = tokens.size[size]
+        const [height, shadowRadius] = (() => {
+          if (isVariable(token)) {
+            return [+token.val / 3, +token.val / 2] as const
           }
-          return [size, size / 2] as const
+          return [size / 3, size / 2] as const
         })()
         const shadow = {
           shadowColor: theme.shadowColor,

@@ -44,7 +44,7 @@ export function DocsRouteNavItem({
         })}
       >
         <Paragraph
-          size="$2"
+          size="$3"
           color="$color"
           {...(active && {
             color: '$color3',

@@ -3,15 +3,15 @@ title: Introduction
 description: The how and why of Tamagui
 ---
 
-Tamagui is a light layer above React Native / React Native Web, it augments rather than replaces it. Tamagui's goal is simple: letting you share much more code between your web and native apps. It does that by improving a few things:
+Tamagui is a light layer above React Native / React Native Web, augmenting rather than replacing them. Tamagui's goal is simple: share a lot more code between web and native apps, without sacrificing look, feel and especially, performance. It's a big step forward for:
 
-- **Responsive styles** — media queries that avoid JS when possible
-- **Themes** — that also avoid running JS
-- **Inline styles** — that extract at compile-time out of render
+- **Responsive styling** — fully cross platform, easy to use, with amazing performance.
+- **Theming** — works cross platform, eas, and avoids all runtime on web.
+- **Inline styles** — that are typed, and extracted into atomic CSS at build-time.
 
 <Image title="Tamagui logo" src="/blog/introducing-tamagui/hero.png" />
 
-Today, you can't share code between Native and Web without resorting to doing media queries, themes and styles in JavaScript, which slows critical areas down and makes things generally clunky enough that it makes sense to write them separately.
+Today, you can't share code between Native and Web without resorting to writing media queries, themes and styles in JS. This slows things down a lot and generally feels clunky.
 
 Tamagui works backwards from ideal syntax - both inline styles and hooks - and then on the web generates [CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) when possible. On native it extracts everything to StyleSheet.create. This makes everything fast. The compiler goes further and flattens what would have been a `View` or `Text` into a `div` or `span` when possible, improving performance.
 
