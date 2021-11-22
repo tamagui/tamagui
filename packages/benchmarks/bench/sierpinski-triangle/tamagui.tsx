@@ -1,3 +1,4 @@
+// debug
 import { Dot, View } from '@tamagui/bench-components'
 import { interpolateBuPu, interpolatePurples, interpolateRdPu } from 'd3-scale-chromatic'
 import React from 'react'
@@ -57,8 +58,10 @@ export function SierpinskiTriangle({ testIndex, x = 0, y = 0, depth = 0, s: _s =
           borderRightWidth={targetSize / 2}
           borderBottomWidth={targetSize / 2}
           borderLeftWidth={targetSize / 2}
-          marginLeft={x - targetSize / 2}
-          marginTop={y - targetSize / 2}
+          x={x}
+          y={y}
+          marginLeft={-targetSize / 2}
+          marginTop={-targetSize / 2}
         />
       )
     }

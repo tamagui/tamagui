@@ -1,13 +1,22 @@
+// debug
 import { Button } from '@tamagui/bench-components'
 import React from 'react'
 
 import { TestComponentProps, TestRunner } from '../TestRunner'
 
 const Test = ({ testIndex }: TestComponentProps) => {
+  const val = Math.random()
   return (
-    <Button backgroundColor={`hsl(${Math.floor(Math.random() * 360)} 80% 80%)`} padding={20}>
-      testing
-    </Button>
+    <>
+      <Button
+        backgroundColor={val > 0.5 ? 'red' : 'green'}
+        padding="20px"
+        borderRadius={10}
+        margin={2}
+      >
+        testing
+      </Button>
+    </>
   )
 }
 

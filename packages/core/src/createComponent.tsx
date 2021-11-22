@@ -16,7 +16,7 @@ import { stackDefaultStyles } from './constants/constants'
 import { isTouchDevice, isWeb } from './constants/platform'
 import { rnw } from './constants/rnw'
 import { onConfiguredOnce } from './createTamagui'
-import { addStylesUsingClassname } from './helpers/addStylesUsingClassname'
+import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { getSplitStyles } from './helpers/getSplitStyles'
 import { useFeatures } from './hooks/useFeatures'
@@ -215,7 +215,7 @@ export function createComponent<A extends Object = DefaultProps>(
     ]
 
     if (isWeb) {
-      const stylesClassNames = addStylesUsingClassname(styles)
+      const stylesClassNames = useStylesAsClassname(styles)
       const classList = isText
         ? [
             defaultsClassName,
