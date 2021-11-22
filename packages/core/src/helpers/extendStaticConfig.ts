@@ -102,22 +102,7 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
             : val
 
         if (isObj(res)) {
-          for (const rKey in res) {
-            const fKey = conf.shorthands[rKey] || rKey
-            if (rKey !== fKey) {
-              console.log('delete me', rKey)
-              delete res[rKey]
-            }
-            const val = res[rKey]
-            if (val instanceof Variable) {
-              res[fKey] = val.variable
-            } else if (typeof val === 'string') {
-              const fVal = val[0] === '$' ? getToken(fKey, val, conf, fontFamily) : val
-              res[fKey] = fVal
-            } else {
-              // nullish values cant be tokens so need no exrta parsing
-            }
-          }
+          resolveTokens(res, conf, fontFamily)
         }
 
         return res
@@ -147,6 +132,25 @@ export function parseStaticConfig(c: StaticConfig): StaticConfigParsed {
         }
       }
     },
+  }
+}
+
+const resolveTokens = (res: any, conf: TamaguiInternalConfig, fontFamily: any) => {
+  for (const rKey in res) {
+    const fKey = conf.shorthands[rKey] || rKey
+    const val = res[rKey]
+    if (val instanceof Variable) {
+      res[fKey] = val.variable
+    } else if (typeof val === 'string') {
+      const fVal = val[0] === '$' ? getToken(fKey, val, conf, fontFamily) : val
+      res[fKey] = fVal
+    } else {
+      if (isObj(val)) {
+        // for things like shadowOffset which is a sub-object
+        resolveTokens(val, conf, fontFamily)
+      }
+      // nullish values cant be tokens so need no exrta parsing
+    }
   }
 }
 

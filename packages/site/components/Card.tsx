@@ -8,6 +8,7 @@ export const Card = styled(Box, {
   elevation: '$2',
   hoverStyle: {
     backgroundColor: '$bg2',
+    // TODO
     elevation: '$4',
     y: -4,
   },

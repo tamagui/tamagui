@@ -1,5 +1,5 @@
 import React from 'react'
-import { EnsureFlexed, GetProps, Grid, H2, H3, H4, Paragraph, XStack, YStack } from 'tamagui'
+import { EnsureFlexed, H2, H3, H4, Paragraph, XStack, YStack } from 'tamagui'
 
 import { Card } from './Card'
 import { ContainerLarge } from './Container'
