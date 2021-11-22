@@ -16,11 +16,20 @@ export const YStack = styled(Stack, {
 
     elevation: {
       '...size': (size, { tokens, theme }) => {
-        const s = tokens.size[size] ?? size
+        const [shadowRadius, height] = (() => {
+          const val = tokens.size[size]
+          if (val) {
+            const sizeKeys = Object.keys(tokens.size)
+            const valIndex = sizeKeys.indexOf(size)
+            const nextSizeUp = tokens.size[sizeKeys[valIndex + 1]]
+            return [val, nextSizeUp] as const
+          }
+          return [size, size / 2] as const
+        })()
         const shadow = {
           shadowColor: theme.shadowColor,
-          shadowRadius: s,
-          shadowOffset: { height: +size * 2, width: 0 },
+          shadowRadius,
+          shadowOffset: { height, width: 0 },
         }
         return shadow
       },
