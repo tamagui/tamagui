@@ -69,7 +69,7 @@ export function Hero() {
                     px={0}
                     maxWidth={550}
                     $gtSm={{
-                      px: 110,
+                      px: 100,
                       maxWidth: 900,
                     }}
                     $gtMd={{
@@ -94,7 +94,8 @@ export function Hero() {
                       }}
                     >
                       React Native + Web UIs much faster with an optimizing compiler.
-                      Themes,&nbsp;media queries & typed inline styles that fly, everywhere.
+                      Themes,&nbsp;media&nbsp;queries & typed inline styles that run better,
+                      everywhere.
                     </Paragraph>
                   </YStack>
                 </YStack>

@@ -172,8 +172,12 @@ ul, ol, li, pre { margin: 0; }
   color: var(--green11);
 }
 
-.token.punctuation, .token.module, .token.property {
-  color: var(--pink11);
+.token.punctuation {
+  color: var(--color2);
+}
+
+.token.module, .token.property {
+  color: var(--red11);
 }
 
 .token.comment {
