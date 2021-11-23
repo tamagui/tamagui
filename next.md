@@ -1,3 +1,4 @@
+- compiler vs non: messing up "Show Code" pos
 - dev mode validate tokens, theme, font
 - could do a pass on generated classnames to dedupe would help benchmarks
 - static compilation can go further with variants because it knows they always only accept certain values... see mount-deep-tree

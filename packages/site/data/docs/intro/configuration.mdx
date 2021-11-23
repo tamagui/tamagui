@@ -159,7 +159,7 @@ This gives you a lot of power over customizing every aspect of your design based
 Things to note:
 
 - The keys of `size`, `lineHeight`, `weight`, and `letterSpacing` are meant to match.
-- You must be define all `size` keys, but the rest can be partial.
+- Define the full set of keys on `size`, the rest can be a subset.
 - Missing keys from partially defined objects will be filled in.
   - In the example above, `weight` is only defined at `4` and `6`.
   - At creation Tamagui fills in the missing keys with previous value, or the next one if no previous exists. So weight `1` === `300`, weight `5` === `300`, and weight `7` === `600`.
@@ -168,7 +168,7 @@ Things to note:
 
 ### Non-font tokens
 
-The rest of the tokens are flat. Note that `space` and `size` generally also share keys, though space can have negative keys as well.
+The rest of the tokens categories besides font are flatter. Note that `space` and `size` generally share keys, and that space can generally use negative keys as well.
 
 ```jsx
 // passed into createTamagui
@@ -199,9 +199,9 @@ One final note: using tokens with themes. Tokens are considered a "fallback" to 
 
 ### Themes
 
-Themes live one level below tokens. Tokens are your variables, where themes use those tokens to create consistent, generic properties that you then typically use in shareable components.
+Themes live one level below tokens. Tokens are your variables, where themes use those tokens to create consistent, generic properties that you then typically use in shareable components. Themes should generally only deal with colors.
 
-Tamagui components in general expect a set of theme keys to be defined (see [the source for the website](https://github.com/tamagui/tamagui/blob/master/packages/site/constants/themes.ts)):
+Tamagui components in general expect a set of theme keys to be defined like the following, but you can deviate if you create your own design system. See [the source for the website](https://github.com/tamagui/tamagui/blob/master/packages/site/constants/themes.ts) for a fuller example.
 
 ```jsx
 const light = {
@@ -222,9 +222,7 @@ const light = {
 }
 ```
 
-Notice you don't have to use tokens as your theme values, but if you do they avoid some overhead.
-
-In general, the idea is that `bg`, `color`, and `borderColor` represent the "primary" and clearest colors, and as the postfix number increases, they get less strong.
+Notice you don't have to use tokens as your theme values, but if you do they avoid some overhead. With Tamagui, the idea is that `bg`, `color`, and `borderColor` represent the "primary" and clearest colors, and `bg2`, `color2` etc get more subtle.
 
 To see how it works, here's a snippet from `InteractiveFrame` which is the frame component that's used in `Button`:
 
@@ -301,7 +299,7 @@ const shorthands = {
   zi: 'zIndex',
   lh: 'lineHeight',
   ta: 'textAlign',
-  fos: 'fontSize'
+  fos: 'fontSize',
 } as const
 
 export default createTamagui({
