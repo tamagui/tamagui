@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/bench-components",
   "version": "1.0.0-alpha.1",
+  "private": true,
   "sideEffects": [
     "*.css"
   ],
