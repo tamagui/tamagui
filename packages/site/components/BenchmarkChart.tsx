@@ -14,6 +14,8 @@ const getBarColor = (name) => {
       return '$pink9'
     case 'Emotion':
       return '$green9'
+    case 'Dripsy':
+      return '$blue9'
     default:
       return 'gray'
   }
