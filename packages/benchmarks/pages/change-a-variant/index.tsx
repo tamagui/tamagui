@@ -7,6 +7,9 @@ export default function Home() {
           <Link href="change-a-variant/tamagui">Tamagui</Link>
         </li>
         <li>
+          <Link href="change-a-variant/dripsy">dripsy</Link>
+        </li>
+        <li>
           <Link href="change-a-variant/rnw">rnw</Link>
         </li>
         <li>

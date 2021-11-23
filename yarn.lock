@@ -1621,6 +1621,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dripsy/core@npm:^3.5.3":
+  version: 3.5.3
+  resolution: "@dripsy/core@npm:3.5.3"
+  dependencies:
+    "@expo/html-elements": ^0.0.1
+    "@react-native-community/hooks": ^2.6.0
+    "@theme-ui/css": ^0.4.0-rc.1
+    stable-hash: ^0.0.2
+    ts-toolbelt: ^9.6.0
+  checksum: a6402eb5b1583a207b15922c9c342950f6f00ddc312447eb47459d6b2b04b8662a0286f73a9533f1a0d196d6c9cab4824408da9509cabf15365452249cf3f841
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.3.0":
   version: 11.3.0
   resolution: "@emotion/babel-plugin@npm:11.3.0"
@@ -1848,6 +1861,15 @@ __metadata:
     slugify: ^1.3.4
     sucrase: ^3.20.0
   checksum: a6cdd9ad86e747355ec5fab61cb16831e425f89a2bb1451d47fd54480439fe2f056d7d7d074a5d49b0fb3369e1e7d29c62d487b715169ce83f69430e1f8f4fac
+  languageName: node
+  linkType: hard
+
+"@expo/html-elements@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@expo/html-elements@npm:0.0.1"
+  peerDependencies:
+    react-native-web: ~0.13.7
+  checksum: 70d6f88060aaf979f623796372f08fe046e4ca662654748e8097fcc6e55cf6f81b10482860b1fe794df0957d7a8db051821c543dd8908c73b64462106c21f4d7
   languageName: node
   linkType: hard
 
@@ -3702,6 +3724,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/hooks@npm:^2.6.0":
+  version: 2.8.1
+  resolution: "@react-native-community/hooks@npm:2.8.1"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-native: ">=0.59"
+  checksum: d1138c3203ebddcbeb7866724a22785df33e9f36b4b683ec90f5678b5eac9fe6e34eb22afd8aecf14145e17eb4df4fcddac8183f085476a90e658a5a7a7b45f0
+  languageName: node
+  linkType: hard
+
 "@react-native/normalize-color@npm:^2.0.0":
   version: 2.0.0
   resolution: "@react-native/normalize-color@npm:2.0.0"
@@ -3901,9 +3933,11 @@ __metadata:
     "@types/react": ^17.0.5
     "@types/styled-components": 5.1.9
     d3-scale-chromatic: ^2.0.0
+    dripsy: ^3.5.3
     nanoid: ^3.1.23
     next: ^11.1.2
     next-compose-plugins: ^2.2.1
+    next-transpile-modules: ^9.0.0
     react: "*"
     react-dom: "*"
     react-native-web: ^0.17.5
@@ -4151,6 +4185,15 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: a3dd131f3beae549991d54dcf5a937fb5688b204dd51b451ee13a4bad09fead3e340ab70bec2860d91a09362b7e72814095db3fb5f032bf69a38509bda6e429d
+  languageName: node
+  linkType: hard
+
+"@theme-ui/css@npm:^0.4.0-rc.1":
+  version: 0.4.0-rc.13
+  resolution: "@theme-ui/css@npm:0.4.0-rc.13"
+  dependencies:
+    csstype: ^2.5.7
+  checksum: fedcdcf30e7ac2a605fb423b0f9b1588395273e8413b75f9f38bcb13411b505ebf976c2a58a4f4b32239a70e1c7568d6af9611268d71b947f68746b6fb6d2501
   languageName: node
   linkType: hard
 
@@ -7868,6 +7911,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csstype@npm:^2.5.7":
+  version: 2.6.19
+  resolution: "csstype@npm:2.6.19"
+  checksum: 72b51ddd30ba308d08373cd890e79526efdc19a9762941845040055f75353992f2d8d4cf4db282a8e1d3d9d2a39c989c65fe32b7b2655f08d313660c4048d2d6
+  languageName: node
+  linkType: hard
+
 "csstype@npm:^3.0.2":
   version: 3.0.10
   resolution: "csstype@npm:3.0.10"
@@ -8566,6 +8616,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dripsy@npm:^3.5.3":
+  version: 3.5.3
+  resolution: "dripsy@npm:3.5.3"
+  dependencies:
+    "@dripsy/core": ^3.5.3
+  checksum: 7d33029a5b717d9f2acdaa582ca22b6604c2e0d20483a589bb0ebac15622264144b20d7e9933aff1c6b6cecd06032c64f93bb8b4f826dbb9e1a35cdba52c98a9
+  languageName: node
+  linkType: hard
+
 "dts-bundle-generator@npm:^5.9.0":
   version: 5.9.0
   resolution: "dts-bundle-generator@npm:5.9.0"
@@ -8677,7 +8736,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.8.3":
+"enhanced-resolve@npm:^5.7.0, enhanced-resolve@npm:^5.8.3":
   version: 5.8.3
   resolution: "enhanced-resolve@npm:5.8.3"
   dependencies:
@@ -14831,6 +14890,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-transpile-modules@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "next-transpile-modules@npm:9.0.0"
+  dependencies:
+    enhanced-resolve: ^5.7.0
+    escalade: ^3.1.1
+  checksum: 9a5d86d80cedc2404b2b1d5bd4994f2f7bf60e5e20f24e8cc5cfec34da1418b4a439916f37a95ca336bcf6d81094c3647354ac6a0c6737b3df59e62b6380507d
+  languageName: node
+  linkType: hard
+
 "next-videos@npm:^1.4.0":
   version: 1.4.0
   resolution: "next-videos@npm:1.4.0"
@@ -19322,6 +19391,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stable-hash@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "stable-hash@npm:0.0.2"
+  checksum: c4d1c2d5e947c9c95b034f7d1948e0208006a5c39bf0c5dc570402a7c5dd1d341ad5f7f6d6642f6a1271f0f19d63534a5c291fcc546092f0360e85c376fc5e2d
+  languageName: node
+  linkType: hard
+
 "stable@npm:^0.1.8":
   version: 0.1.8
   resolution: "stable@npm:0.1.8"
@@ -20458,6 +20534,13 @@ __metadata:
     typescript:
       optional: true
   checksum: c2a698b85d521298fe6f2435fbf2d3dc5834b423ea25abd321805ead3f399dbeedce7ca09492d7eb005b9d2c009c6b9587055bc3ab273dc6b9e40eefd7edb5b2
+  languageName: node
+  linkType: hard
+
+"ts-toolbelt@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "ts-toolbelt@npm:9.6.0"
+  checksum: 9f35fd95d895a5d32ea9fd2e532a695b0bae6cbff6832b77292efa188a0ed1ed6e54f63f74a8920390f3d909a7a3adb20a144686372a8e78b420246a9bd3d58a
   languageName: node
   linkType: hard
 

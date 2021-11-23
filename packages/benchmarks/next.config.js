@@ -1,6 +1,12 @@
 const { withTamagui } = require('@tamagui/next-plugin')
 const withPlugins = require('next-compose-plugins')
 
+const withTM = require('next-transpile-modules')([
+  'dripsy',
+  '@dripsy/core',
+  // you can add other packages here that need transpiling
+])
+
 //
 // See: https://kentcdodds.com/blog/profile-a-react-app-for-performance#build-and-measure-the-production-app
 // See: https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
@@ -13,6 +19,7 @@ module.exports = withPlugins(
       logTimings: true,
       disableExtraction: false,
     }),
+    withTM,
   ],
   {
     experimental: {
