@@ -1,14 +1,24 @@
-import { Button, Text } from '@tamagui/bench-components'
 import React from 'react'
+import { Text } from 'react-native-web'
 
+import { Button } from '../rnw/Button'
 import { TestComponentProps, TestRunner } from '../TestRunner'
 
-const Test: React.FunctionComponent<TestComponentProps> = ({ testIndex }: TestComponentProps) => {
-  const isEven = testIndex % 2 === 0
+const Test = ({ testIndex }: TestComponentProps) => {
+  const val = Math.random()
   return (
-    <Button red={isEven ? true : false} blue={isEven ? false : true} size={isEven ? '$1' : '$2'}>
-      <Text>testing</Text>
-    </Button>
+    <>
+      <Button
+        style={{
+          backgroundColor: val > 0.5 ? 'red' : 'green',
+          padding: 20,
+          borderRadius: 10,
+          margin: 2,
+        }}
+      >
+        <Text>testing</Text>
+      </Button>
+    </>
   )
 }
 

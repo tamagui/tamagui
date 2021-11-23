@@ -2,11 +2,11 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 
 const CreateAndMountComponent = () => {
-  const TamaguiTest = dynamic(() => import('../../bench/create-and-mount-button/tamagui'), {
+  const RnwTest = dynamic(() => import('../../bench/create-and-mount-button/rnw'), {
     ssr: false,
   })
 
-  return <TamaguiTest />
+  return <RnwTest />
 }
 
 export default CreateAndMountComponent

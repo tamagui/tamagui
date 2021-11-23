@@ -3,13 +3,15 @@ import { Paragraph, XStack, YStack } from 'tamagui'
 const getBarColor = (name) => {
   switch (name) {
     case 'Tamagui':
-      return '$blue9'
+      return '$yellow9'
     case 'Stitches':
       return '$violet9'
     case 'Stitches 0.1.9':
       return '$violet4'
     case 'styled-components':
-      return '$orange9'
+      return '$red9'
+    case 'react-native-web':
+      return '$pink9'
     case 'Emotion':
       return '$green9'
     default:
@@ -36,7 +38,7 @@ export function BenchmarkChart({ data }) {
               {result.name}
             </Paragraph>
           </YStack>
-          <XStack flex={1} ai="center">
+          <XStack pr={80} flex={1} ai="center">
             <YStack
               bc={getBarColor(result.name)}
               width={`${(result.value / maxValue) * 100}%`}

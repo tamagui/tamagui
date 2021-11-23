@@ -4,13 +4,36 @@ import { useInsertionEffect } from 'react'
 import { getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule } from './insertStyleRule'
 
-// can be cleared occasionally
+// uses new useInsertionEffect for better perf if available
+
+// could be cleared occasionally
 let added = new Set<string>()
-let cached = new Map()
 
-// TODO use upcoming react method for inserting
+export function useStylesAsClassname(styles: any[]) {
+  if (!useInsertionEffect) {
+    return addStylesUsingClassname(styles)
+  } else {
+    const insertions: any[] = []
+    const className = addStylesUsingClassname(styles, (_, rules) => {
+      for (const rule of rules) {
+        insertions.push(rule)
+      }
+    })
 
-export function addStylesUsingClassname(styles: any[]) {
+    useInsertionEffect(() => {
+      for (const ruleset of insertions) {
+        insertStyleRule(ruleset)
+      }
+    })
+
+    return className
+  }
+}
+
+export function addStylesUsingClassname(
+  styles: any[],
+  onAdd?: (identifier: string, rules: string[]) => any
+) {
   let className = ''
   for (const style of styles) {
     if (!style) continue
@@ -24,43 +47,14 @@ export function addStylesUsingClassname(styles: any[]) {
         continue
       }
       added.add(identifier)
-      for (const rule of rules) {
-        insertStyleRule(rule)
-      }
-    }
-  }
-  return className
-}
-
-export function useStylesAsClassname(styles: any[]) {
-  let className = ''
-  let insertions: any[] = []
-
-  for (const style of styles.flat(1)) {
-    if (!style) continue
-    for (const key in style) {
-      const cacheKey = `${key}${style[key]}`
-      if (cached.has(cacheKey)) {
-        className += ` ${cached.get(cacheKey)}`
-        continue
-      }
-      let cns = ``
-      for (const { identifier, rules } of getStylesAtomic({ [key]: style[key] })) {
-        cns += ` ${identifier}`
+      if (onAdd) {
+        onAdd(identifier, rules)
+      } else {
         for (const rule of rules) {
-          insertions.push(rule)
+          insertStyleRule(rule)
         }
       }
-      cached.set(cacheKey, cns)
-      className += cns
     }
   }
-
-  useInsertionEffect(() => {
-    for (const ruleset of insertions) {
-      insertStyleRule(ruleset)
-    }
-  })
-
   return className
 }

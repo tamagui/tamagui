@@ -23,6 +23,7 @@ The timing that it takes to inject the initial styles.
 <BenchmarkChart
   data={[
     { name: 'Tamagui', value: 0.018 },
+    { name: 'react-native-web', value: 0.057 },
     { name: 'Stitches', value: 0.023 },
     { name: 'Emotion', value: 0.041 },
   ]}
@@ -37,7 +38,8 @@ Changing variants is fast at runtime, and even faster when compiled:
 
 <BenchmarkChart
   data={[
-    { name: 'Tamagui', value: 0.025 },
+    { name: 'Tamagui', value: 0.026 },
+    { name: 'react-native-web', value: 0.063 },
     { name: 'Stitches', value: 0.037 },
     { name: 'Emotion', value: 0.069 },
     { name: 'styled-components', value: 0.081 },
@@ -56,15 +58,22 @@ Tamagui has a big advantage for inline styles, it's the only library to compile 
 <BenchmarkChart
   data={[
     { name: 'Tamagui', value: 0.025 },
+    { name: 'react-native-web', value: 0.06 },
     { name: 'Stitches', value: 0.027 },
     { name: 'Emotion', value: 0.047 },
   ]}
 />
 }
 
+---
+
+Note, the next two tests are not really testing styling performance at all, as they're mostly testing the internals of the component. We think they don't represent anything close to a typical application, but we've left them in to be charitable.
+
+In general, the plan is to add a new test that does represent better a good mix of use cases as the current tests here are all very micro.
+
 ### Dynamic styles (no compilation)
 
-Tamagui components are far more feature-rich than other styling libraries, so in the worst case where every component isn't extracted, you get middle-of-the-road performance. The good news is, this is an extreme case and rare, and we have a lot of low hanging fruit for improvement.
+Tamagui components are far more feature-rich than other styling libraries, so in the worst case where every component isn't extracted, you get middle-of-the-road performance. Basically, the next two tests represent extremely rare cases.
 
 {
 
@@ -99,6 +108,6 @@ In this test, we mount a tree with many nested nodes.
 
 ## Summary
 
-Our benchmarks compare against Stitches, styled-components and Emotion because they're the most popular CSS-in-JS libraries for the web.
+Tamagui greatly increases render performance and compares well to the best web-only style libraries. We' plan to add comparisons to other cross-platform style libraries in the future as we should fare well against them.
 
-A few tests didn't run after upgrading Next.js for Emotion/styled-components, we've left them out for now.
+Tamagui will also dramatically outperform for media queries and themes, which will be in upcoming tests.

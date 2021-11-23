@@ -31,7 +31,8 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   }
 
   // import config
-  const tamaguiConfigExport = require(join(process.cwd(), props.config))
+  const configPath = join(process.cwd(), props.config)
+  const tamaguiConfigExport = require(configPath)
   // TODO validate its the right config
   const tamaguiConfig = (tamaguiConfigExport['default'] ||
     tamaguiConfigExport) as TamaguiInternalConfig
