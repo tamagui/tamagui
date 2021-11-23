@@ -1,8 +1,7 @@
-import '@dish/react-test-env/browser'
 import '@expo/match-media'
 
-import { TestRenderer, act, render } from '@dish/testy'
-import React from 'react'
+import { TestRenderer, act, render } from '@testing-library/react'
+import * as React from 'react'
 
 process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''

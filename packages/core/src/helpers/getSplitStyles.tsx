@@ -86,7 +86,9 @@ export const getSplitStyles = (
     }
 
     const out = staticConfig.propMapper(keyInit, valInit, theme, props)
+
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
+
     for (const [key, val] of expanded) {
       // const val = valueMap(valInit) ?? valInit
       const keyFirstChar = key[0]

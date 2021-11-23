@@ -50,7 +50,7 @@ export const Button = styled(Stack, {
     },
     red: {
       true: {
-        backgroundColor: 'blue',
+        backgroundColor: 'red',
         borderColor: 'gray',
       },
     },

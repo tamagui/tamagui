@@ -1,5 +1,4 @@
-// debug
-import { Button } from '@tamagui/bench-components'
+import { Button, Text } from '@tamagui/bench-components'
 import React from 'react'
 
 import { TestComponentProps, TestRunner } from '../TestRunner'
@@ -14,7 +13,7 @@ const Test = ({ testIndex }: TestComponentProps) => {
         borderRadius={10}
         margin={2}
       >
-        testing
+        <Text>testing</Text>
       </Button>
     </>
   )

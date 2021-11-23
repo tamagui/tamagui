@@ -209,8 +209,8 @@ export function Hero() {
               Performant
             </H3>
             <Paragraph size="$4" color="$color3">
-              Compile inline styles to atomic CSS, even media queries and themes. Supports
-              evaluation of conditional logic and hooks.
+              Compile inline styles, media queries and themes to atomic CSS. Even conditional logic
+              compiles away!
             </Paragraph>
           </YStack>
 

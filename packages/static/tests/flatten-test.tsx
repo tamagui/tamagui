@@ -1,5 +1,3 @@
-import '@dish/react-test-env/browser'
-
 import * as React from 'react'
 
 import { extractBabel } from './lib/extract'

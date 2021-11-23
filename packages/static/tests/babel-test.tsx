@@ -1,5 +1,4 @@
-import '@dish/react-test-env/browser'
-
+import { cleanup } from '@testing-library/react'
 import * as React from 'react'
 
 import { extractBabel } from './lib/extract'
@@ -12,15 +11,20 @@ const app = require('./spec/out/out-babel')
 
 window['React'] = React
 
+beforeEach(() => {
+  jest.resetModules()
+  cleanup()
+})
+
 test('styles - 1. extracts to a div for simple views', async () => {
-  const { style } = await getTestElement(app.Test1)
+  const { style } = await getTestElement(app.Provider, app.Test1)
   expect(style.backgroundColor).toBe('rgb(255, 0, 0)')
   expect(style.borderTopLeftRadius).toBe('100px')
   expect(style.boxShadow).toBe('0px 0px 10px rgba(0,0,0,1.00)')
 })
 
 test('styles - 2. extracts className for complex views but keeps other props', async () => {
-  const [truthy, falsy] = await getTestElements(app.Test2)
+  const [truthy, falsy] = await getTestElements(app.Provider, app.Test2)
   expect(truthy.style.backgroundColor).toBe('rgb(255, 255, 255)')
   expect(truthy.style.top).toBe('-14px')
   expect(falsy.style.backgroundColor).toBe('rgb(0, 0, 0)')
@@ -28,13 +32,13 @@ test('styles - 2. extracts className for complex views but keeps other props', a
 })
 
 test('styles - 6. spread ternary', async () => {
-  const [truthy, falsy] = await getTestElements(app.Test6)
+  const [truthy, falsy] = await getTestElements(app.Provider, app.Test6)
   expect(truthy.style.backgroundColor).toBe('rgb(0, 0, 255)')
   expect(falsy.style.backgroundColor).toBe('rgb(255, 0, 0)')
 })
 
 test('styles - 11. all in one', async () => {
-  const [truthy, falsy] = await getTestElements(app.Test11)
+  const [truthy, falsy] = await getTestElements(app.Provider, app.Test11)
   expect(truthy.style.height).toBe('31px')
   expect(truthy.style.borderTopLeftRadius).toBe('8px')
   expect(truthy.style.borderTopColor).toBe('rgba(0,0,0,0.15)')

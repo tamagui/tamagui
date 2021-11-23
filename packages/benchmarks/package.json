@@ -22,6 +22,7 @@
     "next": "^11.1.2",
     "react": "*",
     "react-dom": "*",
+    "react-native-web": "^0.17.5",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {

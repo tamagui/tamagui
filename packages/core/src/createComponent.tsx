@@ -463,7 +463,10 @@ export function createComponent<A extends Object = DefaultProps>(
       }
       defaultsClassName += addStylesUsingClassname([next.style, next.pseudos])
     } else {
-      console.log('we need to account for default styles for media queries', next)
+      if (!hasWarnedOnce) {
+        hasWarnedOnce = true
+        console.log('⚠️ we need to account for default styles for media queries')
+      }
     }
     // @ts-ignore
     component.defaultProps = {
@@ -495,6 +498,8 @@ export function createComponent<A extends Object = DefaultProps>(
 
   return res
 }
+
+let hasWarnedOnce = false
 
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps

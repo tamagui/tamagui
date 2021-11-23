@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Box, Spacer, Text, YStack, useMedia } from 'tamagui'
 
+import Tamagui from '../lib/tamagui.config'
 import { testColor } from './constants'
 import { baseStyle, nestedStyle } from './extract-spec-constants'
 
@@ -10,6 +11,8 @@ type TestProps = {
   conditional?: boolean
   altConditional?: boolean
 }
+
+export const Provider = (props) => <Tamagui.Provider>{props.children}</Tamagui.Provider>
 
 const child = <Text>hello world</Text>
 

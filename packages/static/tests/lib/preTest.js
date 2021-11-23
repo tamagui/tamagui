@@ -10,7 +10,7 @@ module.exports = async function main() {
   await Promise.all([
     //
     extractStaticAppBabel(),
-    extractStaticWebpackApp(),
+    // extractStaticWebpackApp(),
   ])
   process.env.IS_STATIC = undefined
 }
@@ -52,6 +52,7 @@ async function extractStaticAppBabel() {
                   [
                     '@tamagui/babel-plugin',
                     {
+                      config: './tests/lib/tamagui.config.js',
                       components: ['tamagui'],
                     },
                   ],
@@ -67,7 +68,7 @@ async function extractStaticAppBabel() {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
-        'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
+        'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
         'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
     ],

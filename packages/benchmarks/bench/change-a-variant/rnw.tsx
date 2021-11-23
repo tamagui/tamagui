@@ -1,18 +1,18 @@
-import { Button, Text } from '@tamagui/bench-components'
 import React from 'react'
+import { Text } from 'react-native-web'
 
+import { Button } from '../rnw/Button'
 import { TestComponentProps, TestRunner } from '../TestRunner'
 
 const Test: React.FunctionComponent<TestComponentProps> = ({ testIndex }: TestComponentProps) => {
-  const isEven = testIndex % 2 === 0
   return (
-    <Button red={isEven ? true : false} blue={isEven ? false : true} size={isEven ? '$1' : '$2'}>
+    <Button isEven={testIndex % 2 === 0}>
       <Text>testing</Text>
     </Button>
   )
 }
 
-const TamaguiTest = () => {
+const RNWTest = () => {
   return (
     <>
       <TestRunner numberOfRuns={3} iterationN={1000} TestComponent={Test} />
@@ -26,4 +26,4 @@ const TamaguiTest = () => {
   )
 }
 
-export default TamaguiTest
+export default RNWTest

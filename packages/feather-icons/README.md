@@ -15,7 +15,7 @@ You will also need to ensure you have installed [React Native SVG](https://githu
 ### Usage
 
 ```javascript
-import { Camera } from '@dish/react-feather';
+import { Camera } from '@tamagui/react-feather';
 
 class MyClass extends React.Component {
   render() {
