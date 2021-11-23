@@ -8,6 +8,9 @@
     "build": "true",
     "watch": "true"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "chokidar": "^3.5.2",
     "chokidar-cli": "^2.1.0",

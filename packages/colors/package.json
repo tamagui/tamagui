@@ -12,6 +12,9 @@
   "devDependencies": {
     "@tamagui/build": "^1.0.0-alpha.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=16"
   }
