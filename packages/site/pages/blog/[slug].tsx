@@ -142,7 +142,6 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
 
 export async function getStaticPaths() {
   const frontmatters = getAllFrontmatter('blog')
-  console.log('frontmatters', frontmatters)
   return {
     paths: frontmatters.map(({ slug }) => ({ params: { slug: slug.replace('blog/', '') } })),
     fallback: false,
