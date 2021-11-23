@@ -73,6 +73,9 @@ export function createExtractor() {
       if (sourcePath === '') {
         throw new Error(`Must provide a source file name`)
       }
+      if (!Array.isArray(props.components)) {
+        throw new Error(`Must provide components array with list of Tamagui component modules`)
+      }
 
       // we require it after parse because we need to set some global/env stuff before importing
       // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors

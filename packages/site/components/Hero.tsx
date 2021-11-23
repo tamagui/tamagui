@@ -93,7 +93,7 @@ export function Hero() {
                         fontWeight: '400',
                       }}
                     >
-                      React Native + Web UIs <em>turbo-charged</em> by an optimizing compiler.
+                      React Native + Web UIs much faster with an optimizing compiler.
                       Themes,&nbsp;media queries & typed inline styles that fly, everywhere.
                     </Paragraph>
                   </YStack>

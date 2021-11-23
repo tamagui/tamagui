@@ -2,7 +2,6 @@ import { getStyleRules } from '@tamagui/helpers'
 
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
-import { isObj } from './helpers/isObj'
 import { configureMedia } from './hooks/useMedia'
 import {
   CreateTamaguiConfig,
@@ -47,8 +46,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 ): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D>
   ? TamaguiInternalConfig<A, B, C, D>
   : unknown {
+  // test env loads a few times as it runs diff tests
   if (conf) {
-    throw new Error(`#000 createTamagui called twice`)
+    console.warn('Called createTamagui twice! Should never do so')
+    // throw new Error(`#000 createTamagui called twice`)
   }
 
   configureMedia({
