@@ -11,7 +11,7 @@ description: The latest changes in Tamagui
   - `@tamagui/core`: Base layer, design system creation library
   - `tamagui`: All the components
 
-### Core `1.0.0-alpha.0`
+### @tamagui/core `1.0.0-alpha.0`
 
 - ✨ `createTamagui` for creation of design systems
   - `createFont` for bundling font designs together by font-family
@@ -29,7 +29,23 @@ description: The latest changes in Tamagui
 - 🏎 Variety of bugs and fixes for performance landed
 - 🔥 Remove propMapper in favor of variants and shorthands
 
-### Static `1.0.0-alpha.0`
+### tamagui `1.0.0-alpha.0`
+
+- ✨ `ZStack` - align things along the z-axis
+- ✨ `HStack` => `XStack`, `VStack` => `YStack`
+- ✨ `SizableText` which is the base component for Paragraph
+- ✨ `Paragraph` now uses themes properly
+- ✨ `EnsureFlexed` helper component for pushing flex layouts to widest
+- ✨ `LinearGradient` now supports extraction of style properties and flat style properties
+- ✨ Headings - `H1` through `H6` which use theme properly
+- 🏎 Buttons now wrap with `StaticComponent.extractable`
+- 🏎 Greatly reduced the size by trimming out extra helpers, hooks, components
+
+### @tamagui/next-plugin `1.0.0-alpha.0`
+
+- ✨ Published initial version of working next plugin
+
+### @tamagui/static `1.0.0-alpha.0`
 
 Static is our compiler that supports babel and webpack.
 
@@ -41,14 +57,10 @@ Static is our compiler that supports babel and webpack.
 - 🐛 Fix bug with spread conditional objects being reversed sometimes
 - 🐛 Tons of correctness bugs improved
 
-### Tamagui `1.0.0-alpha.0`
+### @tamgui/colors `1.0.0-alpha.0`
 
-- ✨ `ZStack` - align things along the z-axis
-- ✨ `HStack` => `XStack`, `VStack` => `YStack`
-- ✨ `SizableText` which is the base component for Paragraph
-- ✨ `Paragraph` now uses themes properly
-- ✨ `EnsureFlexed` helper component for pushing flex layouts to widest
-- ✨ `LinearGradient` now supports extraction of style properties and flat style properties
-- ✨ Headings - `H1` through `H6` which use theme properly
-- 🏎 Buttons now wrap with `StaticComponent.extractable`
-- 🏎 Greatly reduced the size by trimming out extra helpers, hooks, components
+- ✨ Forked `@radix-ui/colors` and changed values to be compatible with React Native
+
+### @tamagui/feather-icons `1.0.0-alpha.0`
+
+- ✨ Published feather icons adapated for React Native

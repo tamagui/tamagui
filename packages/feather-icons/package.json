@@ -31,5 +31,8 @@
     "prettier-plugin-import-sort": "^0.0.6",
     "prop-types": "^15.7.2",
     "uppercamelcase": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
