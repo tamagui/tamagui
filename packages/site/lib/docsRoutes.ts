@@ -8,6 +8,7 @@ export const docsRoutes = [
       { title: 'Themes', slug: 'docs/intro/themes' },
       { title: 'Props', slug: 'docs/intro/props' },
       { title: 'Benchmarks', slug: 'docs/intro/benchmarks' },
+      { title: 'Releases', slug: 'docs/intro/releases' },
     ],
   },
 

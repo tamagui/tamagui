@@ -1,15 +1,54 @@
 ---
 title: Releases
-description: Tamagui Changelog
+description: The latest changes in Tamagui
 ---
-
-# Releases
-
-<Description>Tamagui changelog of latest releases</Description>
 
 ## 22/10/2021
 
-\*_All of tamagui_
+- 🎉 This release is too large to do justice!
+- ✨ Renamed from `snackui` to `tamagui`
+- ✨ Split out into two main packages:
+  - `@tamagui/core`: Base layer, design system creation library
+  - `tamagui`: All the components
 
-- 🎉 1.0.0-alpha.0 released, renamed from SnackUI to Tamagui!
-- This release is too large to do justice to
+### Core `1.0.0-alpha.0`
+
+- ✨ `createTamagui` for creation of design systems
+  - `createFont` for bundling font designs together by font-family
+  - `createTokens` for building out base variables that can be shared between themes
+  - `shorthands` that allow for Tailwinds-like short style props you can control
+  - `theme` which takes our previous themes and makes them better typed and able to use tokens
+  - `media` which are no fully customizable, and typed
+- ✨ `styled()` helper for infinitely extensible component definitions
+  - Variants for easy, typed and powerful props on styled components
+  - Spread variants allow for gathering all variants of a token
+- ✨ Property value shorthands: `backgroundColor="$white"` can use tokens or themes
+- ✨ Media query inline syntax: `$sm={{ color: 'red' }}`
+- ✨ `StaticComponent.extractable` helper for allowing better wrapper component extraction
+- 🏎 Components are now much flatter generally avoiding nesting on web
+- 🏎 Variety of bugs and fixes for performance landed
+- 🔥 Remove propMapper in favor of variants and shorthands
+
+### Static `1.0.0-alpha.0`
+
+Static is our compiler that supports babel and webpack.
+
+- ✨ Improve recursive extraction for conditional and spread logic
+- ✨ Supports extraction of media queries
+- ✨ Supports extraction of shorthands
+- ✨ Supports extraction of property value shorthands
+- ✨ Supports of variants
+- 🐛 Fix bug with spread conditional objects being reversed sometimes
+- 🐛 Tons of correctness bugs improved
+
+### Tamagui `1.0.0-alpha.0`
+
+- ✨ `ZStack` - align things along the z-axis
+- ✨ `HStack` => `XStack`, `VStack` => `YStack`
+- ✨ `SizableText` which is the base component for Paragraph
+- ✨ `Paragraph` now uses themes properly
+- ✨ `EnsureFlexed` helper component for pushing flex layouts to widest
+- ✨ `LinearGradient` now supports extraction of style properties and flat style properties
+- ✨ Headings - `H1` through `H6` which use theme properly
+- 🏎 Buttons now wrap with `StaticComponent.extractable`
+- 🏎 Greatly reduced the size by trimming out extra helpers, hooks, components
