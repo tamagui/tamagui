@@ -479,7 +479,7 @@ export function createExtractor() {
               const arg = attribute.argument
               const conditional = t.isConditionalExpression(arg)
                 ? // <YStack {...isSmall ? { color: 'red } : { color: 'blue }}
-                  ([arg.test, arg.alternate, arg.consequent] as const)
+                  ([arg.test, arg.consequent, arg.alternate] as const)
                 : t.isLogicalExpression(arg) && arg.operator === '&&'
                 ? // <YStack {...isSmall && { color: 'red }}
                   ([arg.left, arg.right, null] as const)
