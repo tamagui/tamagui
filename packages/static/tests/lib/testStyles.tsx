@@ -9,7 +9,6 @@ export async function getTestElement(Provider: any, Component: any, conditional 
   )
   const childElement = await out.findByText('hello world')
   const element = childElement.parentElement!
-  console.log('element', element.getAttribute('class'))
   const style = window.getComputedStyle(element)
   cleanup()
   return {

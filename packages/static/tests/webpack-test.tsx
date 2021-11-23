@@ -1,7 +1,8 @@
 import '@expo/match-media'
 
-import { TestRenderer, act, render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import * as React from 'react'
+import TestRenderer from 'react-test-renderer'
 
 process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
