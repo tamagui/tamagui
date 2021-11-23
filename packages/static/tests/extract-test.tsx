@@ -1,4 +1,4 @@
-import { getStylesAtomic } from '@tamagui/core'
+import { getStylesAtomic } from '@tamagui/core-node'
 
 process.env.NODE_ENV = 'test'
 process.env.IDENTIFY_TAGS = 'true'

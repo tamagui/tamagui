@@ -61,7 +61,6 @@ export const configureMedia = ({
     console.warn(
       `Already configured mediaQueries once (you may have called getMedia() before configureMedia())`
     )
-    return
   }
 
   if (queries) {

@@ -1,6 +1,6 @@
 import '@dish/react-test-env/browser'
 
-import React from 'react'
+import * as React from 'react'
 
 import { extractBabel } from './lib/extract'
 
@@ -19,7 +19,11 @@ test('flat transform props', async () => {
       
       return (
         <YStack
+          y={10}
+          x={20}
+          rotate="10deg"
           {...media.sm && {
+            scale: 2,
             borderRadius: 10,
             backgroundColor: isLoading ? 'red' : 'blue'
           }}
@@ -28,12 +32,39 @@ test('flat transform props', async () => {
     }
   `)
   const code = output?.code ?? ''
-
-  console.log('code', code)
-
-  expect(true).toBeTruthy()
-  // expect(code.includes(`  "scale": 2`)).toBeTruthy()
-  // expect(code.includes(`  "translateX": 10`)).toBeTruthy()
-  // expect(code.includes(`  "translateY": 20`)).toBeTruthy()
-  // expect(code.includes(`  "rotate": "10deg"`)).toBeTruthy()
+  expect(
+    code.includes(
+      `[_sheet["0"], media.sm ? _sheet["1"] : _sheet["2"], media.sm && isLoading ? _sheet["3"] : _sheet["4"], media.sm && !isLoading ? _sheet["5"] : _sheet["6"]]`
+    )
+  ).toBeTruthy()
+  expect(
+    code.includes(`"0": {
+    "flexDirection": "column",
+    "boxSizing": "border-box",
+    "flexBasis": "auto",
+    "flexShrink": 0,
+    "alignItems": "stretch",
+    "transform": [{
+      "translateY": 10
+    }, {
+      "translateX": 20
+    }, {
+      "rotate": "10deg"
+    }]
+  },
+  "1": {
+    "transform": [{
+      "scale": 2
+    }],
+    "borderRadius": 10
+  },
+  "2": {},
+  "3": {
+    "backgroundColor": "red"
+  },
+  "4": {},
+  "5": {
+    "backgroundColor": "blue"
+  }`)
+  ).toBeTruthy()
 })

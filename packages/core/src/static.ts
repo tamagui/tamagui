@@ -2,6 +2,8 @@
 
 export * from './styled'
 export * from './createComponent'
+export * from './createFont'
+export * from './createTokens'
 export * from './createTamagui'
 export * from './constants/constants'
 

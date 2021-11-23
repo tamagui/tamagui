@@ -48,7 +48,14 @@ async function extractStaticAppBabel() {
               loader: 'babel-loader',
               options: {
                 // add our plugin
-                plugins: [require.resolve('@tamagui/babel-plugin')],
+                plugins: [
+                  [
+                    '@tamagui/babel-plugin',
+                    {
+                      components: ['tamagui'],
+                    },
+                  ],
+                ],
                 presets: [require.resolve('@dish/babel-preset')],
               },
             },
