@@ -5,6 +5,7 @@ import React from 'react'
 import { Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
+import { GithubIcon } from './GithubIcon'
 
 export function Header() {
   return (
@@ -56,6 +57,15 @@ export function Header() {
         </NextLink>
 
         <AlphaButton />
+
+        <NextLink href="https://github.com/tamagui/tamagui" passHref>
+          <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+            <VisuallyHidden>
+              <Text>Github</Text>
+            </VisuallyHidden>
+            <GithubIcon width={23} />
+          </YStack>
+        </NextLink>
 
         <ThemeToggle />
       </XStack>

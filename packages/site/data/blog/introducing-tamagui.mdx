@@ -15,23 +15,21 @@ Tamagui takes the next steps towards truly universal styling for React apps.
 
 It was born to allow **sharing more code between native and web components** — with all the [modern styling features we've grown love](/docs/intro/introduction).
 
-Until today, sharing code between native and web has had some big downsides, especially with inline styling, responsive styling and themes.
+Until today, sharing code between native and web has had some big downsides — especially inline styling, responsive styling and themes. All of the above require time and memory-hungry operations in JavaScript. On the web, especially, this runs a lot of JS on the same thread as your layout, cuasing issues with jank and limitations rendering deeper trees.
 
-The biggest downside is performance. All of the above require time and memory-hungry operations in JavaScript — on the web, especially, it runs a lot of JS on the same thread as your layout. This causes issues with jank and limitations rendering deeper trees.
-
-Tamagui tackles these problems with an optimizing compiler. It enables:
+**Tamagui introduces an optimizing compiler, enabling:**
 
 ### Inline styles without overhead
 
-An optimizing compiler extracts most styles you write, even if they're inside conditional ternaries or spread objects. It pulls them out of your JS bundle and into atomic CSS.
+An optimizing compiler extracts most styles you write, for **2-3x speed improvements**. Even if they're inside conditional ternaries or spread objects, it extracts styles out of your JS bundle and into atomic CSS.
 
 ### Fast responsive styles
 
-Use hooks and inline responsive styling props without worry, again even with ternaries or other logical operations interspersed, and get clean CSS media queries extracted. On native, your render function will have less work while still allowing you to enjoy the terser style syntax and `useMedia` hook.
+**Hooks and inline responsive styles also optimize away**. Again, even with ternaries or other logical operations interspersed, you get clean CSS media queries as your output.
 
-### Native themes
+### Universal, fast themes
 
-Use powerful themes that extract on the web to CSS variables, leaving your tree clear of large amounts of objects.
+A powerful theme system that outputs CSS variables on the web, clearing your tree of many large objects.
 
 ---
 
