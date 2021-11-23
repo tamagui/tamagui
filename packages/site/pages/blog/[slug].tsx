@@ -27,7 +27,7 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
 		https://twitter.com/intent/tweet?
 		text="${frontmatter.title}" by @${
     authors[frontmatter.by].twitter
-  } on the @tamagui_dev blog.&url=https://tamagui.dev/blog/${frontmatter.slug}
+  } on the @tamagui_js blog.&url=https://tamagui.dev/blog/${frontmatter.slug}
 		`
 
   return (

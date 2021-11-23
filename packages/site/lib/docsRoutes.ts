@@ -44,6 +44,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Design Systems', slug: 'docs/guides/design-systems' },
       { title: 'Next.js', slug: 'docs/guides/next-js' },
+      { title: 'Expo', slug: 'docs/guides/expo' },
     ],
   },
 ]

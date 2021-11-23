@@ -23,7 +23,7 @@ export function Community() {
             $sm={{ width: 'auto' }}
             space
             tag="a"
-            href="https://twitter.com/tamagui_dev"
+            href="https://twitter.com/tamagui_js"
             target="_blank"
             rel="noopener noreferrer"
             p="$4"

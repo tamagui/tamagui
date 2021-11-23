@@ -82,7 +82,7 @@ export const Footer = () => {
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
-            <Link ai="center" href="https://twitter.com/tamagui_dev" target="_blank">
+            <Link ai="center" href="https://twitter.com/tamagui_js" target="_blank">
               Twitter
             </Link>
             <ExternalIcon />

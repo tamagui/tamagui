@@ -130,7 +130,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 <DocsRouteNavItem href="https://github.com/tamagui/tamagui" external>
                   GitHub
                 </DocsRouteNavItem>
-                <DocsRouteNavItem href="https://twitter.com/tamagui_dev" external>
+                <DocsRouteNavItem href="https://twitter.com/tamagui_js" external>
                   Twitter
                 </DocsRouteNavItem>
                 <DocsRouteNavItem href="https://discord.gg/uUtvv6GM" external>
