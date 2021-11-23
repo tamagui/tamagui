@@ -6,7 +6,7 @@ on:
       - 'assets/**'
       - '.vscode/**'
     branches:
-      - nate/dev-site
+      - master
 
 jobs:
   release:
