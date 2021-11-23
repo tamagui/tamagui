@@ -15,13 +15,13 @@ Tamagui takes the next steps towards truly universal styling for React apps.
 
 It was born to allow **sharing more code between native and web components** — with all the [modern styling features we've grown love](/docs/intro/introduction).
 
-Until today, sharing code between native and web has had some big downsides — especially inline styling, responsive styling and themes. All of the above require time and memory-hungry operations in JavaScript. On the web, especially, this runs a lot of JS on the same thread as your layout, cuasing issues with jank and limitations rendering deeper trees.
+Until today, sharing code between native and web has had some big downsides — especially inline styling, responsive styling and themes. All of the above require time and memory-hungry operations in JavaScript. On the web, especially, this runs a lot of JS on the same thread as your layout, causing issues with jank and limitations rendering deeper trees.
 
 **Tamagui introduces an optimizing compiler, enabling:**
 
 ### Inline styles without overhead
 
-An optimizing compiler extracts most styles you write, for **2-3x speed improvements**. Even if they're inside conditional ternaries or spread objects, it extracts styles out of your JS bundle and into atomic CSS.
+An optimizing compiler extracts most styles you write, for [**2-8x speed improvements**](/docs/intro/benchmarks) vs other cross-platform UI kits. Even if they're inside conditional ternaries or spread objects, it extracts styles out of your JS bundle and into atomic CSS.
 
 ### Fast responsive styles
 
