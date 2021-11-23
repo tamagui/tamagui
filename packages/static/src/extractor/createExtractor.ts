@@ -100,6 +100,7 @@ export function createExtractor() {
        */
       const isInternalImport = (importStr: string) =>
         isInsideTamagui(sourcePath) && importStr[0] === '.'
+
       const validComponents: { [key: string]: any } = Object.keys(components)
         .filter((key) => !!components[key]?.staticConfig)
         .reduce((obj, name) => {
@@ -118,6 +119,7 @@ export function createExtractor() {
               return validComponents[name] || validHooks[name]
             })
           ) {
+            console.log('WHAT')
             doesUseValidImport = true
             break
           }

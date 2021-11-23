@@ -16,6 +16,8 @@ const getBarColor = (name) => {
       return '$green9'
     case 'Dripsy':
       return '$blue9'
+    case 'NativeBase':
+      return '$orange9'
     default:
       return 'gray'
   }
@@ -28,7 +30,7 @@ export function BenchmarkChart({ data }) {
     <YStack space="$2" my="$4">
       {data.map((result, i) => (
         <XStack space key={i}>
-          <YStack w={130}>
+          <YStack w={120}>
             <Paragraph
               key={result.name}
               size="$2"
@@ -40,7 +42,7 @@ export function BenchmarkChart({ data }) {
               {result.name}
             </Paragraph>
           </YStack>
-          <XStack pr={80} flex={1} ai="center">
+          <XStack pr={70} flex={1} ai="center">
             <YStack
               bc={getBarColor(result.name)}
               width={`${(result.value / maxValue) * 100}%`}

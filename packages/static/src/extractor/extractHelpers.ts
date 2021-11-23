@@ -21,7 +21,10 @@ export const attrStr = (attr: ExtractedAttr) => {
 
 export const objToStr = (obj: any) => {
   return Object.entries(obj)
-    .map(([k, v]) => `${k}:${Array.isArray(v) ? `[...]` : v && typeof v === 'object' ? `{${objToStr(v)}}` : v}`)
+    .map(
+      ([k, v]) =>
+        `${k}:${Array.isArray(v) ? `[...]` : v && typeof v === 'object' ? `{${objToStr(v)}}` : v}`
+    )
     .join(', ')
 }
 
@@ -69,7 +72,11 @@ export function findComponentName(scope) {
   return componentName
 }
 
-export function isValidThemeHook(jsxPath: NodePath<t.JSXElement>, n: t.MemberExpression, sourcePath: string) {
+export function isValidThemeHook(
+  jsxPath: NodePath<t.JSXElement>,
+  n: t.MemberExpression,
+  sourcePath: string
+) {
   if (!t.isIdentifier(n.object) || !t.isIdentifier(n.property)) return false
   const bindings = jsxPath.scope.getAllBindings()
   const binding = bindings[n.object.name]
@@ -90,4 +97,5 @@ export function isValidThemeHook(jsxPath: NodePath<t.JSXElement>, n: t.MemberExp
   return true
 }
 
-export const isInsideTamagui = (srcName: string) => srcName.includes('/tamagui/')
+export const isInsideTamagui = (srcName: string) =>
+  srcName.includes('/tamagui/src') || srcName.includes('/core/src')

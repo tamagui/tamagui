@@ -8,6 +8,9 @@ export default function Home() {
           <Link href="create-and-mount-button/tamagui">Tamagui</Link>
         </li>
         <li>
+          <Link href="create-and-mount-button/nativebase">Nativebase</Link>
+        </li>
+        <li>
           <Link href="create-and-mount-button/rnw">rnw</Link>
         </li>
         <li>

@@ -2,9 +2,28 @@ const { withTamagui } = require('@tamagui/next-plugin')
 const withPlugins = require('next-compose-plugins')
 
 const withTM = require('next-transpile-modules')([
+  // drispy
   'dripsy',
   '@dripsy/core',
-  // you can add other packages here that need transpiling
+
+  // nativebase
+  'native-base',
+  'react-native-svg',
+  'react-native-safe-area-context',
+  '@react-aria/visually-hidden',
+  '@react-native-aria/button',
+  '@react-native-aria/checkbox',
+  '@react-native-aria/combobox',
+  '@react-native-aria/focus',
+  '@react-native-aria/interactions',
+  '@react-native-aria/listbox',
+  '@react-native-aria/overlays',
+  '@react-native-aria/radio',
+  '@react-native-aria/slider',
+  '@react-native-aria/tabs',
+  '@react-native-aria/utils',
+  '@react-stately/combobox',
+  '@react-stately/radio',
 ])
 
 //

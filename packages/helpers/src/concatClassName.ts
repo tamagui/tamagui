@@ -1,4 +1,21 @@
-export function concatClassName(...classNamesOrPropObjects: string[]) {
+// perf sensitive so doing some weird stuff
+
+// testing caching
+// because we can hit these recent ones a ton of times in common cases
+// we're caching the simple case, this shouldn't be bad on memory either
+// const recently = new Map()
+// setInterval(() => {
+//   recently.clear()
+// }, 1000)
+
+export function concatClassName(_cn: any) {
+  // if (arguments.length === 1) {
+  //   if (recently.has(arguments[0])) {
+  //     return recently.get(arguments[0])
+  //   }
+  // }
+
+  const classNamesOrPropObjects = arguments
   const usedPrefixes: string[] = []
   let final = ''
 
@@ -14,7 +31,9 @@ export function concatClassName(...classNamesOrPropObjects: string[]) {
       continue
     }
     const names = Array.isArray(cns) ? cns : cns.split(' ')
-    for (let i = names.length - 1; i >= 0; i--) {
+
+    const numNames = names.length
+    for (let i = numNames - 1; i >= 0; i--) {
       const name = names[i]
       if (!name || name === ' ') continue
       if (name[0] !== '_') {
@@ -23,6 +42,7 @@ export function concatClassName(...classNamesOrPropObjects: string[]) {
         continue
       }
       const splitIndex = name.indexOf('-')
+
       if (splitIndex < 1) {
         final = name + ' ' + final
         continue
@@ -33,10 +53,12 @@ export function concatClassName(...classNamesOrPropObjects: string[]) {
       const isMediaQuery = nextChar === '_'
       // PSEUDO_SEP
       const isPsuedoQuery = nextChar === '-'
+
       const styleKey = name.slice(1, splitIndex)
       const mediaKey =
         isMediaQuery || isPsuedoQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
       const uid = mediaKey ? styleKey + mediaKey : styleKey
+
       if (!isMediaQuery && !isPsuedoQuery) {
         if (usedPrefixes.indexOf(uid) > -1) {
           continue
@@ -46,7 +68,6 @@ export function concatClassName(...classNamesOrPropObjects: string[]) {
 
       // overrides for full safety
       const propName = styleKey
-      // shouldLog && console.log('propName', propName)
       if (propName && propObjects) {
         if (
           propObjects.some((po) => {
@@ -58,7 +79,6 @@ export function concatClassName(...classNamesOrPropObjects: string[]) {
             return res
           })
         ) {
-          // shouldLog && console.log('SKIP PROP')
           continue
         }
       }
@@ -66,6 +86,10 @@ export function concatClassName(...classNamesOrPropObjects: string[]) {
       final = name + ' ' + final
     }
   }
+
+  // if (arguments.length === 1) {
+  //   recently.set(arguments[0], final)
+  // }
 
   return final
 }

@@ -10,6 +10,9 @@ export default function Home() {
           <Link href="change-a-variant/dripsy">dripsy</Link>
         </li>
         <li>
+          <Link href="change-a-variant/nativebase">nativebase</Link>
+        </li>
+        <li>
           <Link href="change-a-variant/rnw">rnw</Link>
         </li>
         <li>

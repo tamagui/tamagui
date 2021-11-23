@@ -124,14 +124,14 @@ export function createComponent<A extends Object = DefaultProps>(
         return prev
       })
 
-    // from react-native-web
-    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
-      Children.toArray(props.children).forEach((item) => {
-        if (typeof item === 'string') {
-          console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
-        }
-      })
-    }
+    // // from react-native-web
+    // if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
+    //   Children.toArray(props.children).forEach((item) => {
+    //     if (typeof item === 'string') {
+    //       console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
+    //     }
+    //   })
+    // }
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
