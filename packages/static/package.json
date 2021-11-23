@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -34,8 +34,8 @@
     "@babel/types": "^7.15.6",
     "@dish/babel-preset": "^0.0.6",
     "@expo/match-media": "^0.1.0",
-    "@tamagui/build": "^1.0.0-alpha.0",
-    "@tamagui/core": "^1.0.0-alpha.0",
+    "@tamagui/build": "^1.0.0-alpha.1",
+    "@tamagui/core": "^1.0.0-alpha.1",
     "@testing-library/react": "13.0.0-alpha.4",
     "@types/jest": "*",
     "@types/node": "^16.11.9",
@@ -55,14 +55,14 @@
     "react-dom": "*",
     "react-test-renderer": "18.0.0-beta-149b420f6-20211119",
     "style-loader": "^3.3.0",
-    "tamagui": "^1.0.0-alpha.0",
+    "tamagui": "^1.0.0-alpha.1",
     "typescript": "^4.4.4",
     "webpack": "^5.58.1"
   },
   "dependencies": {
-    "@tamagui/core-node": "^1.0.0-alpha.0",
-    "@tamagui/fake-react-native": "^1.0.0-alpha.0",
-    "@tamagui/helpers": "^1.0.0-alpha.0",
+    "@tamagui/core-node": "^1.0.0-alpha.1",
+    "@tamagui/fake-react-native": "^1.0.0-alpha.1",
+    "@tamagui/helpers": "^1.0.0-alpha.1",
     "esbuild-register": "^3.1.2"
   },
   "peerDependencies": {
