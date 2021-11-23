@@ -98,14 +98,23 @@ Simply add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
 ```js
 module.exports = {
   plugins: [
-    '@tamagui/babel-plugin',
+    [
+      '@tamagui/babel-plugin',
+      {
+        components: ['tamagui'],
+        config: './tests/lib/tamagui.config.js',
+        importsWhitelist: ['constants.js', 'colors.js'],
+        logTimings: true,
+        disableExtraction: process.env.NODE_ENV === 'development',
+      }
+    ]
   ]
 }
 ```
 
 ### Compiler options
 
-The webpack loader and next.js plugin accept the same configuration options:
+The webpack loader and Next.js plugin accept the same configuration options:
 
 <PropsTable
   data={[
@@ -150,7 +159,7 @@ The webpack loader and next.js plugin accept the same configuration options:
       typeSimple: 'enum',
       default: false,
       description:
-        'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the tamagui configuration itself.',
+        'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the Tamagui configuration itself.',
     },
   ]}
 />
