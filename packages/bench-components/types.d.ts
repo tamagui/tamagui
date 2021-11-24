@@ -11,6 +11,7 @@ export declare class Variable {
 	val: string | number;
 	variable: string | number;
 	constructor({ val, name }: VariableIn);
+	toString(): string | number;
 }
 export declare type VariableIn = {
 	val: string | number;
@@ -96,6 +97,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
 	tokensParsed: CreateTokens<Variable>;
 	themeConfig: any;
 	getCSS: () => string;
+	parsed: boolean;
 };
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
@@ -491,6 +493,7 @@ export declare const themeable: ThemeableHOC;
 export interface ThemeableHOC {
 	<R extends ReactElement<any, any> | null, P extends ThemeableProps = {}>(component: (props: P) => R): (props: P) => R;
 }
+export declare const isTamaguiElement: (child: any) => child is React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 export declare function useConstant<T>(fn: () => T): T;
 export declare const mediaState: {
 	[key in keyof MediaQueryState]: boolean;
@@ -549,10 +552,6 @@ export declare const ThemeInverse: (props: {
 }) => JSX.Element;
 export declare const TextAncestorContext: any;
 export declare const TextAncestorProvider: (props: any) => any;
-export declare const SafeAreaProvider: ({ initialWindowMetrics, children, }: {
-	children?: any;
-	initialWindowMetrics?: any;
-}) => JSX.Element;
 export declare const Button: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
 }) & import("@tamagui/core").MediaProps<{} | {

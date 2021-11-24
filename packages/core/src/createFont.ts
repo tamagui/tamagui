@@ -1,6 +1,11 @@
+import { validateFont } from './helpers/validate'
 import { GenericFont } from './types'
 
 export const createFont = <A extends GenericFont>(font: A): A => {
+  if (process.env.NODE_ENV === 'development') {
+    validateFont(font)
+  }
+
   // fills in any missing values based on size keys being standard
   const sizeKeys = Object.keys(font.size)
 

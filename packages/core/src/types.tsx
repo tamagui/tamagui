@@ -110,6 +110,7 @@ export type TamaguiInternalConfig<
   tokensParsed: CreateTokens<Variable>
   themeConfig: any
   getCSS: () => string
+  parsed: boolean
 }
 
 // prevents const intersections from being clobbered into string, keeping the consts

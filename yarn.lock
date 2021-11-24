@@ -4576,7 +4576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sindresorhus/is@npm:^4.0.0":
+"@sindresorhus/is@npm:^4.0.0, @sindresorhus/is@npm:^4.2.0":
   version: 4.2.0
   resolution: "@sindresorhus/is@npm:4.2.0"
   checksum: 59040dfb75c2eb6ab76e8c7ac10b7f7f6ba740f0b5ac618a89a8bcdbaf923836a8e998078d59d81f6f13f4b6bbe15bfe1bca962c877edcbe9160d1c100c56fd7
@@ -4756,6 +4756,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.2
     "@tamagui/helpers": ^1.0.0-alpha.5
+    "@tamagui/ow": ^0.28.1
     "@tamagui/use-debounce": ^1.0.0-alpha.6
     "@tamagui/use-force-update": ^1.0.0-alpha.5
     "@types/react": ^17.0.35
@@ -4817,6 +4818,20 @@ __metadata:
     next: ">=11.0.0"
   languageName: unknown
   linkType: soft
+
+"@tamagui/ow@npm:^0.28.1":
+  version: 0.28.1
+  resolution: "@tamagui/ow@npm:0.28.1"
+  dependencies:
+    "@sindresorhus/is": ^4.2.0
+    callsites: ^3.1.0
+    dot-prop: ^6.0.1
+    lodash.isequal: ^4.5.0
+    type-fest: ^2.3.4
+    vali-date: ^1.0.0
+  checksum: 636a096b72b86241dae7dec03c87c055f6ddb2199ebd3c54106de94b7664913a0d3d7be51655259c29c763ac13a39bfb822bfa4a28c9c2efd73527e0721fb539
+  languageName: node
+  linkType: hard
 
 "@tamagui/site@workspace:packages/site":
   version: 0.0.0-use.local
@@ -7160,7 +7175,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"callsites@npm:^3.0.0":
+"callsites@npm:^3.0.0, callsites@npm:^3.1.0":
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
   checksum: 072d17b6abb459c2ba96598918b55868af677154bec7e73d222ef95a8fdb9bbf7dae96a8421085cdad8cd190d86653b5b6dc55a4484f2e5b2e27d5e0c3fc15b3
@@ -21633,6 +21648,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"type-fest@npm:^2.3.4":
+  version: 2.6.0
+  resolution: "type-fest@npm:2.6.0"
+  checksum: 8cb11716f3c2e02d062edc4cafab10097fdcd6de323e34f8929e0eca15c490ba877e2f400d2c322f71922dae60f1750e1733604196ba96b0748c4fe54e958b7d
+  languageName: node
+  linkType: hard
+
 "typedarray-to-buffer@npm:^3.1.5":
   version: 3.1.5
   resolution: "typedarray-to-buffer@npm:3.1.5"
@@ -22418,6 +22440,13 @@ __metadata:
     convert-source-map: ^1.6.0
     source-map: ^0.7.3
   checksum: c7dabf9567e0c210b24d0720e553803cbe1ff81edb1ec7f2080eb4be01ed081a40286cc9f4aaa86d1bf8d57840cefae8fdf326b7cb8faa316ba50c7b948030d4
+  languageName: node
+  linkType: hard
+
+"vali-date@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "vali-date@npm:1.0.0"
+  checksum: 6464369cb77003a966591f2bd17b7c938c480956992e254b3455fd1651a3b7633e23aac8a03b974bbdfbd2357da52b98d46357bb6f292ffd28768a6d3959e61e
   languageName: node
   linkType: hard
 

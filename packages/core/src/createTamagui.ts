@@ -2,6 +2,7 @@ import { getStyleRules } from '@tamagui/helpers'
 
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
+import { validateConfig } from './helpers/validate'
 import { configureMedia } from './hooks/useMedia'
 import {
   CreateTamaguiConfig,
@@ -46,6 +47,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 ): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D>
   ? TamaguiInternalConfig<A, B, C, D>
   : unknown {
+  if (process.env.NODE_ENV === 'development') {
+    // config is re-run by the @tamagui/static, dont double validate
+    if (!config['parsed']) {
+      validateConfig(config)
+    }
+  }
   // test env loads a few times as it runs diff tests
   if (conf) {
     console.warn('Called createTamagui twice! Should never do so')
@@ -157,6 +164,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     themeConfig,
     themeParsed,
     tokensParsed,
+    parsed: true,
     getCSS() {
       return `${themeConfig.css}\n${[...getStyleRules()].join('\n')}`
     },

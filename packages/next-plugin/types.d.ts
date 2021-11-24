@@ -6,6 +6,7 @@ export interface TamaguiOptions {
 	evaluateVars?: boolean;
 	importsWhitelist?: string[];
 	disableExtraction?: boolean;
+	disableDebugAttr?: boolean;
 	exclude?: RegExp;
 	logTimings?: boolean;
 	cssPath?: string;

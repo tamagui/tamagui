@@ -98,7 +98,8 @@ export function createExtractor() {
         isInsideTamagui(sourcePath) && importStr[0] === '.'
 
       const validComponents: { [key: string]: any } = Object.keys(components)
-        .filter((key) => !!components[key]?.staticConfig)
+        // check if uppercase to avoid hitting media query proxy before init
+        .filter((key) => key[0].toUpperCase() === key[0] && !!components[key]?.staticConfig)
         .reduce((obj, name) => {
           obj[name] = components[name]
           return obj

@@ -97,6 +97,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
 	tokensParsed: CreateTokens<Variable>;
 	themeConfig: any;
 	getCSS: () => string;
+	parsed: boolean;
 };
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
