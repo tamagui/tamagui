@@ -9,5 +9,4 @@ export const Pre = styled(YStack, {
   borderWidth: 1,
   borderColor: '$borderColor',
   my: '$3',
-  whiteSpace: 'pre',
 })
