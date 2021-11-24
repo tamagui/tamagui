@@ -1,6 +1,6 @@
 import { Paragraph, XStack, YStack } from 'tamagui'
 
-const getBarColor = (name) => {
+const getBarColor = (name: string) => {
   switch (name) {
     case 'Tamagui':
       return '$yellow9'
@@ -8,9 +8,9 @@ const getBarColor = (name) => {
       return '$violet9'
     case 'Stitches 0.1.9':
       return '$violet4'
-    case 'styled-components':
+    case 'SC':
       return '$red9'
-    case 'react-native-web':
+    case 'RNW':
       return '$pink9'
     case 'Emotion':
       return '$green9'
@@ -30,7 +30,7 @@ export function BenchmarkChart({ data }) {
     <YStack space="$2" my="$4">
       {data.map((result, i) => (
         <XStack space key={i}>
-          <YStack w={120}>
+          <YStack w={90}>
             <Paragraph
               key={result.name}
               size="$2"
@@ -42,7 +42,7 @@ export function BenchmarkChart({ data }) {
               {result.name}
             </Paragraph>
           </YStack>
-          <XStack pr={70} flex={1} ai="center">
+          <XStack pr={65} flex={1} ai="center">
             <YStack
               bc={getBarColor(result.name)}
               width={`${(result.value / maxValue) * 100}%`}
