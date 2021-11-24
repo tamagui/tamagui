@@ -1737,6 +1737,7 @@ export declare const SafeAreaProvider: ({ initialWindowMetrics, children, }: {
 	initialWindowMetrics?: any;
 }) => JSX.Element;
 export declare const prevent: (e: any) => any[];
+export { useSafeAreaInsets } from "react-native-safe-area-context";
 export * from "@tamagui/helpers";
 export * from "@tamagui/core";
 export * from "@tamagui/use-debounce";

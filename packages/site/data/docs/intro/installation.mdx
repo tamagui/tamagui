@@ -161,6 +161,15 @@ The webpack loader and Next.js plugin accept the same configuration options:
       description:
         'Disable extraction to CSS completely, instead fully relying on runtime. Setting this to true speed up development as generally your app will hot reload the Tamagui configuration itself.',
     },
+    {
+      name: 'disableDebugAttr',
+      required: false,
+      type: 'boolean',
+      typeSimple: 'enum',
+      default: false,
+      description:
+        'If enabled along with disableExtraction, all parsing will turn off. Normally turning off disableExtraction will keep the helpful debug attributes in DOM',
+    },
   ]}
 />
 

@@ -18652,16 +18652,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^3.3.2":
-  version: 3.3.2
-  resolution: "react-native-safe-area-context@npm:3.3.2"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 4feda1bbc9e18b3b279b972303f1866c46e37f331ef22cd2ff630599fdd8b2b8c7a84cc53420df595b89d95d0bce7496333fe28ea5c4b2330d9d1b7beab8f389
-  languageName: node
-  linkType: hard
-
 "react-native-screens@npm:^3.4.0":
   version: 3.9.0
   resolution: "react-native-screens@npm:3.9.0"
@@ -20960,8 +20950,8 @@ __metadata:
     normalize-css-color: "*"
     react: "*"
     react-dom: "*"
-    react-native-safe-area-context: ^3.3.2
   peerDependencies:
+    react-native-safe-area-context: ^3.3.2
     react-native-web: "*"
   languageName: unknown
   linkType: soft

@@ -11,8 +11,14 @@ export function patchReactNativeWeb() {
   const rootDir = require.resolve('react-native-web').replace(/\/dist.*/, '')
 
   // write our export files
-  fs.writeFileSync(path.join(rootDir, 'dist', 'tamagui-exports.js'), moduleExports)
-  fs.writeFileSync(path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js'), cjsExports)
+  const modulePath = path.join(rootDir, 'dist', 'tamagui-exports.js')
+  if (fs.readFileSync(modulePath, 'utf-8') !== moduleExports) {
+    fs.writeFileSync(modulePath, moduleExports)
+  }
+  const cjsPath = path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js')
+  if (fs.readFileSync(cjsPath, 'utf-8') !== cjsExports) {
+    fs.writeFileSync(cjsPath, cjsExports)
+  }
 
   // if entry files not patched, patch them:
   const moduleEntry = path.join(rootDir, 'dist', 'index.js')

@@ -79,17 +79,11 @@ export function extractToClassNames({
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists: { [key: string]: t.Identifier } = {}
 
-  let flattened = 0
-  let optimized = 0
-
-  extractor.parse(ast, {
+  const res = extractor.parse(ast, {
     sourcePath,
     shouldPrintDebug,
     ...options,
     getFlattenedNode: ({ tag }) => tag,
-    onDidFlatten() {
-      flattened++
-    },
     onExtractTag: ({
       attrs,
       node,
@@ -100,8 +94,6 @@ export function extractToClassNames({
       lineNumbers,
       programPath,
     }) => {
-      optimized++
-
       let finalClassNames: ClassNameObject[] = []
       let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
       let finalStyles: StyleObject[] = []
@@ -276,15 +268,12 @@ export function extractToClassNames({
     },
   })
 
-  if (!optimized) {
+  if (!res || !res.modified) {
     return null
   }
 
   const styles = Array.from(cssMap.values())
-    .map((x) => {
-      // remove comments
-      return x.css //shouldInternalDedupe ? x.css : `${x.commentTexts.join('\n')}\n${x.css}`
-    })
+    .map((x) => x.css)
     .join('\n')
     .trim()
 
@@ -325,7 +314,7 @@ export function extractToClassNames({
     const memUsed =
       Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
     // prettier-ignore
-    console.log(`  🥚 ${basename(sourcePath).padStart(40)} ${`${Date.now() - start}`.padStart(3)}ms ׁ· ${`${optimized}`.padStart(4)} optimized · ${flattened} flattened ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
+    console.log(`  🥚 ${basename(sourcePath).padStart(40)} ${`${Date.now() - start}`.padStart(3)}ms ׁ· ${`${res.optimized}`.padStart(4)} optimized · ${res.flattened} flattened ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
   }
 
   return {
