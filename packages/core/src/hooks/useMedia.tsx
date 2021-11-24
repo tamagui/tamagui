@@ -1,3 +1,4 @@
+import { useForceUpdate } from '@tamagui/use-force-update'
 import { useRef } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
@@ -9,7 +10,6 @@ import {
   MediaQueryState,
 } from '../types'
 import { useConstant } from './useConstant'
-import { useForceUpdate } from './useForceUpdate'
 
 export const mediaState: { [key in keyof MediaQueryState]: boolean } = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}

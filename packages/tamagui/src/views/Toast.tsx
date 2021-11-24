@@ -1,5 +1,5 @@
 import { AnimatedStack, Text, isWeb } from '@tamagui/core'
-import { useForceUpdate } from '@tamagui/core'
+import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { memo, useCallback, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 

@@ -969,7 +969,6 @@ export interface ThemeableHOC {
 	<R extends ReactElement<any, any> | null, P extends ThemeableProps = {}>(component: (props: P) => R): (props: P) => R;
 }
 export declare function useConstant<T>(fn: () => T): T;
-export declare function useForceUpdate(): Function;
 export declare const mediaState: {
 	[key in keyof MediaQueryState]: boolean;
 };
@@ -1082,6 +1081,7 @@ export declare function useDebounce<A extends (...args: any) => any | undefined 
 	cancel: () => void;
 }>(fn: A, wait: number, options?: DebounceSettings, mountArgs?: any[]): DebouncedFn;
 export declare function useDebounceValue<A>(val: A, amt?: number): A;
+export declare function useForceUpdate(): Function;
 export declare const useLayout: (props?: {
 	stateless?: boolean | undefined;
 	onLayout?: ((rect: LayoutChangeEvent) => void) | undefined;
@@ -1739,5 +1739,7 @@ export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omi
 export declare const prevent: (e: any) => any[];
 export * from "@tamagui/helpers";
 export * from "@tamagui/core";
+export * from "@tamagui/use-debounce";
+export * from "@tamagui/use-force-update";
 
 export {};

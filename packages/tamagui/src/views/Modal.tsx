@@ -7,11 +7,11 @@ import {
   styled,
   useThemeName,
 } from '@tamagui/core'
+import { useDebounceValue } from '@tamagui/use-debounce'
 import React, { useLayoutEffect } from 'react'
 import { Modal as ModalNative, ModalProps as ModalPropsReact } from 'react-native'
 
 import { prevent } from '../helpers/prevent'
-import { useDebounceValue } from '../hooks/useDebounce'
 import { YStack } from './Stacks'
 
 export type ModalProps = Omit<ModalPropsReact, 'children'> &

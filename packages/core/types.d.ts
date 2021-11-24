@@ -492,7 +492,6 @@ export interface ThemeableHOC {
 	<R extends ReactElement<any, any> | null, P extends ThemeableProps = {}>(component: (props: P) => R): (props: P) => R;
 }
 export declare function useConstant<T>(fn: () => T): T;
-export declare function useForceUpdate(): Function;
 export declare const mediaState: {
 	[key in keyof MediaQueryState]: boolean;
 };

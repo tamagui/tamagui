@@ -1,35 +1,31 @@
 {
-  "name": "@tamagui/core",
+  "name": "@tamagui/use-window-size",
   "version": "1.0.0-alpha.2",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "typings": "types.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-alpha.2",
     "@tamagui/use-debounce": "^1.0.0-alpha.2",
-    "@tamagui/use-force-update": "^1.0.0-alpha.2",
-    "react": "*",
-    "react-dom": "*",
-    "react-native-safe-area-context": "^3.3.0"
-  },
-  "peerDependencies": {
-    "react-native-web": "*"
+    "@tamagui/use-force-update": "^1.0.0-alpha.2"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.0-alpha.2",
-    "@types/react": "^17.0.35",
-    "esbuild": "^0.11.20",
-    "typescript": "^4.4.4"
+    "@types/react": "^17.0.35"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "engines": {
-    "node": ">=16"
   }
 }

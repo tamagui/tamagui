@@ -19,7 +19,6 @@ export * from './helpers/matchMedia'
 export * from './helpers/themeable'
 
 export * from './hooks/useConstant'
-export * from './hooks/useForceUpdate'
 export * from './hooks/useMedia'
 export * from './hooks/useTheme'
 

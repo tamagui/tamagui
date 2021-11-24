@@ -26,6 +26,8 @@
     "@tamagui/core": "^1.0.0-alpha.2",
     "@tamagui/fake-react-native": "^1.0.0-alpha.2",
     "@tamagui/helpers": "^1.0.0-alpha.2",
+    "@tamagui/use-debounce": "^1.0.0-alpha.2",
+    "@tamagui/use-force-update": "^1.0.0-alpha.2",
     "expo-linear-gradient": "^9.1.0",
     "normalize-css-color": "*",
     "react": "*",

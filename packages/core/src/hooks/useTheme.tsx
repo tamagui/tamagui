@@ -1,3 +1,4 @@
+import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
@@ -6,7 +7,6 @@ import { ThemeName } from '../types'
 import { ThemeContext } from '../views/ThemeContext'
 import { ThemeManagerContext } from '../views/ThemeManagerContext'
 import { GET_DEFAULT_THEME } from '../views/ThemeProvider'
-import { useForceUpdate } from './useForceUpdate'
 
 type UseThemeState = {
   uuid: Object

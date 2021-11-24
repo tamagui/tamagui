@@ -1,7 +1,6 @@
 import { isWeb } from '@tamagui/core'
+import { useDebounce } from '@tamagui/use-debounce'
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-
-import { useDebounce } from '../hooks/useDebounce'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

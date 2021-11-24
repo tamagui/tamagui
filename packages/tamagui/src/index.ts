@@ -3,7 +3,9 @@ export * from '@tamagui/core'
 
 export * from './viewTypes'
 
-export * from './hooks/useDebounce'
+export * from '@tamagui/use-debounce'
+export * from '@tamagui/use-force-update'
+
 export * from './hooks/useLayout'
 export * from './hooks/useSafeAreaInsets'
 export * from './hooks/useKeyboardDismissable'

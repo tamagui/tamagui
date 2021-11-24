@@ -1,4 +1,5 @@
 import { concatClassName, stylePropsView } from '@tamagui/helpers'
+import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
   Children,
   Fragment,
@@ -20,7 +21,6 @@ import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStyl
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { getSplitStyles } from './helpers/getSplitStyles'
 import { useFeatures } from './hooks/useFeatures'
-import { useForceUpdate } from './hooks/useForceUpdate'
 import { usePressable } from './hooks/usePressable'
 import {
   SpaceTokens,

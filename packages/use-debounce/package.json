@@ -1,0 +1,25 @@
+{
+  "name": "@tamagui/use-debounce",
+  "version": "1.0.0-alpha.2",
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "typings": "types.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.0-alpha.2"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

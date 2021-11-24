@@ -1,11 +1,12 @@
-import { isTouchDevice } from '@tamagui/core'
+// import { isTouchDevice } from '@tamagui/core'
+import { useDebounce } from '@tamagui/use-debounce'
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
-import { Pressable } from 'react-native'
 
-import { useDebounce } from '../hooks/useDebounce'
 import { Hoverable, HoverableHandle } from './Hoverable'
 import { Popover } from './Popover/Popover'
 import { IPopoverProps } from './Popover/types'
+
+// import { Pressable } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
