@@ -33,7 +33,7 @@
     "normalize-css-color": "*",
     "react": "*",
     "react-dom": "*",
-    "react-native-safe-area-context": "^3.3.0"
+    "react-native-safe-area-context": "^3.3.2"
   },
   "peerDependencies": {
     "react-native-web": "*"

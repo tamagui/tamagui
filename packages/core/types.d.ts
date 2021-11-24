@@ -549,9 +549,5 @@ export declare const ThemeInverse: (props: {
 }) => JSX.Element;
 export declare const TextAncestorContext: any;
 export declare const TextAncestorProvider: (props: any) => any;
-export declare const SafeAreaProvider: ({ initialWindowMetrics, children, }: {
-	children?: any;
-	initialWindowMetrics?: any;
-}) => JSX.Element;
 
 export {};
