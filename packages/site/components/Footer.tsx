@@ -88,7 +88,7 @@ export const Footer = () => {
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
-            <Link ai="center" href="https://discord.gg/uUtvv6GM" target="_blank">
+            <Link ai="center" href="https://discord.gg/4qh6tdcVDa" target="_blank">
               Discord
             </Link>
             <ExternalIcon />

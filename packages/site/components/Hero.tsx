@@ -129,7 +129,7 @@ export function Hero() {
                   </NextLink>
 
                   <NextLink
-                    href="https://discord.gg/uUtvv6GM"
+                    href="https://discord.gg/4qh6tdcVDa"
                     passHref
                     // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
                   >

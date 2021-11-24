@@ -133,7 +133,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 <DocsRouteNavItem href="https://twitter.com/tamagui_js" external>
                   Twitter
                 </DocsRouteNavItem>
-                <DocsRouteNavItem href="https://discord.gg/uUtvv6GM" external>
+                <DocsRouteNavItem href="https://discord.gg/4qh6tdcVDa" external>
                   Discord
                 </DocsRouteNavItem>
               </YStack>

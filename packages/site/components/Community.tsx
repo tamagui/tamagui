@@ -59,7 +59,7 @@ export function Community() {
             $sm={{ width: 'auto' }}
             space
             tag="a"
-            href="https://discord.gg/uUtvv6GM"
+            href="https://discord.gg/4qh6tdcVDa"
             target="_blank"
             rel="noopener noreferrer"
             p="$4"
