@@ -29,8 +29,8 @@ export function BenchmarkChart({ data }) {
   return (
     <YStack space="$2" my="$4">
       {data.map((result, i) => (
-        <XStack space key={i}>
-          <YStack w={90}>
+        <XStack space="$2" key={i}>
+          <YStack w={70}>
             <Paragraph
               key={result.name}
               size="$2"
