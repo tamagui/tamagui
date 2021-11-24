@@ -492,6 +492,7 @@ export declare const themeable: ThemeableHOC;
 export interface ThemeableHOC {
 	<R extends ReactElement<any, any> | null, P extends ThemeableProps = {}>(component: (props: P) => R): (props: P) => R;
 }
+export declare const isTamaguiElement: (child: any) => child is React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 export declare function useConstant<T>(fn: () => T): T;
 export declare const mediaState: {
 	[key in keyof MediaQueryState]: boolean;
