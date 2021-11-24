@@ -14,9 +14,9 @@ node_modules
 **/_jsx
 **/_
 **/tests/spec/out
+.DS_Store
 
 .next
-
 
 .vercel
 
