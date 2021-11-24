@@ -4,7 +4,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'rea
 import { useDebounce } from '../hooks/useDebounce'
 
 // bugfix esbuild strips react jsx: 'preserve'
-React['keep']
+React['createElement']
 
 type SpanProps = React.DOMAttributes<HTMLSpanElement>
 

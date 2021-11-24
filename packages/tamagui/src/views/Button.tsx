@@ -5,7 +5,7 @@ import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
 import { SizableText } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
-React['keep']
+React['createElement']
 
 export type ButtonProps = InteractiveFrameProps &
   ThemeableProps & {

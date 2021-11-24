@@ -171,7 +171,7 @@ export const components = {
       return (
         // inline
         <Paragraph
-          fontFamily="Monospace"
+          fontFamily="$mono"
           color="$color3"
           br="$1"
           backgroundColor="$bg3"
@@ -325,7 +325,7 @@ export const components = {
       }
     }, [])
 
-    return <Paragraph fontFamily="Monospace" cursor="default" ref={triggerRef} {...props} />
+    return <Paragraph fontFamily="$mono" cursor="default" ref={triggerRef} {...props} />
   },
 }
 

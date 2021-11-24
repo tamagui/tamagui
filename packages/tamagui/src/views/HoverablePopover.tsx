@@ -8,7 +8,7 @@ import { Popover } from './Popover/Popover'
 import { IPopoverProps } from './Popover/types'
 
 // bugfix esbuild strips react jsx: 'preserve'
-React['keep']
+React['createElement']
 
 export type HoverablePopoverHandle = {
   close: () => void

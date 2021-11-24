@@ -6,7 +6,7 @@
 /// <reference types="react-native" />
 /// <reference types="scheduler" />
 
-export declare function concatClassName(...classNamesOrPropObjects: string[]): string;
+export declare function concatClassName(_cn: any): string;
 export declare const stylePropsTransform: {
 	x: boolean;
 	y: boolean;

@@ -119,7 +119,6 @@ export function createExtractor() {
               return validComponents[name] || validHooks[name]
             })
           ) {
-            console.log('WHAT')
             doesUseValidImport = true
             break
           }
@@ -401,9 +400,9 @@ export function createExtractor() {
                 }
                 const propName = prop.key['name']
                 if (!isStaticAttributeName(propName) && propName !== 'tag') {
-                  // if (shouldPrintDebug) {
-                  console.log('  not a valid style prop!', propName)
-                  // }
+                  if (shouldPrintDebug) {
+                    console.log('  not a valid style prop!', propName)
+                  }
                   return false
                 }
                 return true
@@ -491,7 +490,9 @@ export function createExtractor() {
                 const [test, alt, cons] = conditional
                 if (!test) throw new Error(`no test`)
                 if ([alt, cons].some((side) => side && !isExtractable(side))) {
-                  console.log('not extractable', alt, cons)
+                  if (shouldPrintDebug) {
+                    console.log('not extractable', alt, cons)
+                  }
                   return attr
                 }
                 // split into individual ternaries per object property

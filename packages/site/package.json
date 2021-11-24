@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development next dev",
-    "next:build": "next build",
-    "next:export": "next export",
-    "next:start": "next start"
+    "next:build": "NEXT_TELEMETRY_DISABLED=1NODE_ENV=production next build",
+    "next:export": "NEXT_TELEMETRY_DISABLED=1NODE_ENV=production next export",
+    "next:start": "NEXT_TELEMETRY_DISABLED=1NODE_ENV=production next start"
   },
   "dependencies": {
     "@tamagui/colors": "^1.0.0-alpha.2",

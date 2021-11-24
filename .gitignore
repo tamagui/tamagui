@@ -19,3 +19,5 @@ node_modules
 
 
 .vercel
+
+packages/site/out

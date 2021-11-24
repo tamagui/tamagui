@@ -6,7 +6,7 @@ import { useLayout } from '../hooks/useLayout'
 import { NativeLinearGradientPoint, NativeLinearGradientProps } from './NativeLinearGradientProps'
 
 // bugfix esbuild strips react jsx: 'preserve'
-React['keep']
+React['createElement']
 
 export const LinearGradient = Stack.extractable(
   ({ colors = [], locations, start, end, ...props }: NativeLinearGradientProps): ReactElement => {
