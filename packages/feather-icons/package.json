@@ -7,7 +7,9 @@
   "module": "dist/index.js",
   "typings": "types.d.ts",
   "files": [
-    "dist"
+    "types.d.ts",
+    "dist",
+    "src"
   ],
   "sideEffects": false,
   "scripts": {

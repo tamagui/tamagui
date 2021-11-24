@@ -9,6 +9,11 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"
   },
+  "files": [
+    "types.d.ts",
+    "dist",
+    "src"
+  ],
   "devDependencies": {
     "@tamagui/build": "^1.0.0-alpha.2"
   },

@@ -6,6 +6,7 @@
   "module": "dist/index.js",
   "typings": "types.d.ts",
   "files": [
+    "types.d.ts",
     "dist",
     "src"
   ],

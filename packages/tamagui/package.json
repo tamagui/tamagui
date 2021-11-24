@@ -10,6 +10,7 @@
   "typings": "types.d.ts",
   "module:jsx": "_jsx",
   "files": [
+    "types.d.ts",
     "_jsx",
     "dist"
   ],

@@ -9,6 +9,11 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"
   },
+  "files": [
+    "types.d.ts",
+    "dist",
+    "src"
+  ],
   "dependencies": {
     "@tamagui/helpers": "^1.0.0-alpha.2",
     "@tamagui/use-debounce": "^1.0.0-alpha.4",
