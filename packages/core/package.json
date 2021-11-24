@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.4",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@tamagui/helpers": "^1.0.0-alpha.2",
-    "@tamagui/use-debounce": "^1.0.0-alpha.2",
-    "@tamagui/use-force-update": "^1.0.0-alpha.2",
+    "@tamagui/use-debounce": "^1.0.0-alpha.4",
+    "@tamagui/use-force-update": "^1.0.0-alpha.4",
     "react": "*",
     "react-dom": "*",
     "react-native-safe-area-context": "^3.3.0"
