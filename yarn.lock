@@ -4762,7 +4762,6 @@ __metadata:
     esbuild: ^0.11.20
     react: "*"
     react-dom: "*"
-    react-native-safe-area-context: ^3.3.0
     typescript: ^4.4.4
   peerDependencies:
     react-native-web: "*"
@@ -18653,7 +18652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^3.3.0":
+"react-native-safe-area-context@npm:^3.3.2":
   version: 3.3.2
   resolution: "react-native-safe-area-context@npm:3.3.2"
   peerDependencies:
@@ -20961,7 +20960,7 @@ __metadata:
     normalize-css-color: "*"
     react: "*"
     react-dom: "*"
-    react-native-safe-area-context: ^3.3.0
+    react-native-safe-area-context: ^3.3.2
   peerDependencies:
     react-native-web: "*"
   languageName: unknown

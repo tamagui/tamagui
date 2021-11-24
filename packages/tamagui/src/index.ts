@@ -7,7 +7,6 @@ export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 
 export * from './hooks/useLayout'
-export * from './hooks/useSafeAreaInsets'
 export * from './hooks/useKeyboardDismissable'
 
 export * from './views/BlurView'
@@ -36,5 +35,6 @@ export * from './views/Tooltip'
 export * from './views/TouchableOpacity'
 export * from './views/Transitions'
 export * from './views/VisuallyHidden'
+export * from './views/SafeAreaProvider'
 
 export * from './helpers/prevent'

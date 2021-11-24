@@ -1026,10 +1026,6 @@ export declare const ThemeInverse: (props: {
 }) => JSX.Element;
 export declare const TextAncestorContext: any;
 export declare const TextAncestorProvider: (props: any) => any;
-export declare const SafeAreaProvider: ({ initialWindowMetrics, children, }: {
-	children?: any;
-	initialWindowMetrics?: any;
-}) => JSX.Element;
 export declare type ShorthandViewStyleProps = {
 	w?: ViewStyle["width"];
 	h?: ViewStyle["height"];
@@ -1075,7 +1071,7 @@ export declare type DebounceSettings = {
 	leading?: boolean;
 };
 export declare function debounce<A extends Function>(func: A, wait?: number, leading?: boolean): A & {
-	cancel: Function;
+	cancel: () => void;
 };
 export declare function useDebounce<A extends (...args: any) => any | undefined | null, DebouncedFn extends A & {
 	cancel: () => void;
@@ -1736,6 +1732,10 @@ export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omi
 }) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;
 }>, any, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const SafeAreaProvider: ({ initialWindowMetrics, children, }: {
+	children?: any;
+	initialWindowMetrics?: any;
+}) => JSX.Element;
 export declare const prevent: (e: any) => any[];
 export * from "@tamagui/helpers";
 export * from "@tamagui/core";

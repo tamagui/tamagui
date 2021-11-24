@@ -19,8 +19,7 @@
     "@tamagui/use-debounce": "^1.0.0-alpha.5",
     "@tamagui/use-force-update": "^1.0.0-alpha.5",
     "react": "*",
-    "react-dom": "*",
-    "react-native-safe-area-context": "^3.3.0"
+    "react-dom": "*"
   },
   "peerDependencies": {
     "react-native-web": "*"
