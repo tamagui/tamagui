@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -10,7 +10,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-alpha.1",
+    "@tamagui/helpers": "^1.0.0-alpha.2",
     "react": "*",
     "react-dom": "*",
     "react-native-safe-area-context": "^3.3.0"
@@ -19,7 +19,7 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.1",
+    "@tamagui/build": "^1.0.0-alpha.2",
     "@types/react": "^17.0.35",
     "esbuild": "^0.11.20",
     "typescript": "^4.4.4"
