@@ -30,13 +30,6 @@ body {
   box-sizing: border-box;
 }
 
-.title-gradient {
-  background: -webkit-linear-gradient(35deg, #e7c615, #fb00dc);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 a {
   text-decoration: none;
   color: inherit;

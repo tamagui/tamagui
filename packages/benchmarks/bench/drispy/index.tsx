@@ -1,4 +1,5 @@
-import { View, makeTheme, styled } from 'dripsy'
+import { makeTheme, styled } from 'dripsy'
+import { View } from 'react-native-web'
 
 export const dripsyTheme = makeTheme({
   colors: {
