@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -63,7 +63,7 @@
     "fs-extra": "^9.0.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.20",
-    "tamagui": "^1.0.0-alpha.2"
+    "tamagui": "^1.0.0-alpha.3"
   },
   "peerDependencies": {
     "react-native-web": "*"

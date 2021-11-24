@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/benchmarks",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@emotion/styled": "^11.3.0",
-    "@tamagui/next-plugin": "^1.0.0-alpha.2",
+    "@tamagui/next-plugin": "^1.0.0-alpha.3",
     "@types/react": "^17.0.5",
     "@types/styled-components": "5.1.9",
     "next-compose-plugins": "^2.2.1",
