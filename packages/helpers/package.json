@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.5",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

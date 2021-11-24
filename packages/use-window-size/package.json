@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-window-size",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -15,8 +15,8 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/use-debounce": "^1.0.0-alpha.4",
-    "@tamagui/use-force-update": "^1.0.0-alpha.4"
+    "@tamagui/use-debounce": "^1.0.0-alpha.5",
+    "@tamagui/use-force-update": "^1.0.0-alpha.5"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.0-alpha.2",
