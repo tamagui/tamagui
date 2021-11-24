@@ -16,6 +16,7 @@ const stylePathToFilePath = new Map<string, string>()
 
 let index = 0
 let hasLogged = false
+let hasPatched = false
 
 process.env.TAMAGUI_TARGET = 'web'
 
@@ -23,8 +24,9 @@ export function loader(this: any, source: string) {
   this.cacheable()
   const callback = this.async()
 
-  if (!process.env.TAMAGUI_DISABLE_RNW_PATCH) {
+  if (!process.env.TAMAGUI_DISABLE_RNW_PATCH && !hasPatched) {
     patchReactNativeWeb()
+    hasPatched = true
   }
 
   try {

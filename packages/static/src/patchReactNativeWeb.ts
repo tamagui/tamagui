@@ -9,14 +9,26 @@ import path from 'path'
 // keep it sync
 export function patchReactNativeWeb() {
   const rootDir = require.resolve('react-native-web').replace(/\/dist.*/, '')
-
-  // write our export files
   const modulePath = path.join(rootDir, 'dist', 'tamagui-exports.js')
-  if (fs.readFileSync(modulePath, 'utf-8') !== moduleExports) {
-    fs.writeFileSync(modulePath, moduleExports)
-  }
   const cjsPath = path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js')
-  if (fs.readFileSync(cjsPath, 'utf-8') !== cjsExports) {
+
+  const isEqual = (() => {
+    let res = false
+    try {
+      res =
+        fs.readFileSync(modulePath, 'utf-8') === moduleExports &&
+        fs.readFileSync(cjsPath, 'utf-8') == cjsExports
+    } catch {
+      res = false
+    }
+    return res
+  })()
+
+  if (!isEqual) {
+    console.log('🥚 Tamagui patching react-native-web to share atomic styling primitives')
+    console.log('   > adding', modulePath)
+    console.log('   > adding', cjsPath)
+    fs.writeFileSync(modulePath, moduleExports)
     fs.writeFileSync(cjsPath, cjsExports)
   }
 
@@ -47,8 +59,6 @@ exports.TamaguiExports = _interopRequireDefault(require("./tamagui-exports"));
 // tamagui-patch-end
 `
     )
-
-    console.log(`Tamagui patched react-native-web`)
   }
 }
 
