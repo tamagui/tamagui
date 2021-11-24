@@ -11,6 +11,7 @@ export declare class Variable {
 	val: string | number;
 	variable: string | number;
 	constructor({ val, name }: VariableIn);
+	toString(): string | number;
 }
 export declare type VariableIn = {
 	val: string | number;

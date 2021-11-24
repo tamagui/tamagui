@@ -18,6 +18,5 @@ export const ThemeInverse = (props: { children: any }) => {
   const themeName = useThemeName()
   const defaultTheme = useDefaultThemeName()
   const name = inversions[themeName] || inversions[defaultTheme] || null
-  console.log('todo fixme invert', { themeName, defaultTheme, next: name })
   return <Theme name={name}>{props.children}</Theme>
 }

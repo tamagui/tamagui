@@ -68,6 +68,44 @@ export function createComponent<A extends Object = DefaultProps>(
   // see onConfiguredOnce below which attaches a name then to this component
 
   const component = forwardRef<View, A>((props: any, forwardedRef) => {
+    const forceUpdate = useForceUpdate()
+    const features = useFeatures(props, { forceUpdate })
+    const manager = useContext(ThemeManagerContext)
+    const [state, set_] = useState(() => ({
+      hover: false,
+      press: false,
+      pressIn: false,
+      theme: manager.name,
+    }))
+    const set = (next: Partial<typeof state>) =>
+      set_((prev) => {
+        for (const key in next) {
+          if (prev[key] !== next[key]) {
+            return { ...prev, ...next }
+          }
+        }
+        return prev
+      })
+
+    // from react-native-web
+    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
+      Children.toArray(props.children).forEach((item) => {
+        if (typeof item === 'string') {
+          console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
+        }
+      })
+    }
+
+    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
+    const hostRef = useRef(null)
+
+    const {
+      viewProps: viewPropsIn,
+      pseudos,
+      style,
+      classNames,
+    } = getSplitStyles(props, staticConfig, (manager.theme as any) || initialTheme)
+
     const {
       tag,
       hitSlop,
@@ -101,40 +139,19 @@ export function createComponent<A extends Object = DefaultProps>(
       onStartShouldSetResponderCapture,
       onMouseDown,
       onClick,
-      // TODO feature load layou hook
+
+      accessible,
+      accessibilityRole,
+
+      // TODO feature load layout hook
       onLayout,
-    } = props
+      ...viewProps
+    } = viewPropsIn
 
-    const forceUpdate = useForceUpdate()
-    const features = useFeatures(props, { forceUpdate })
-    const manager = useContext(ThemeManagerContext)
-    const [state, set_] = useState(() => ({
-      hover: false,
-      press: false,
-      pressIn: false,
-      theme: manager.name,
-    }))
-    const set = (next: Partial<typeof state>) =>
-      set_((prev) => {
-        for (const key in next) {
-          if (prev[key] !== next[key]) {
-            return { ...prev, ...next }
-          }
-        }
-        return prev
-      })
-
-    // from react-native-web
-    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
-      Children.toArray(props.children).forEach((item) => {
-        if (typeof item === 'string') {
-          console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
-        }
-      })
+    if (!isWeb) {
+      if (accessible) viewProps.accessible = accessible
+      if (accessibilityRole) viewProps.accessibilityRole = accessibilityRole
     }
-
-    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
-    const hostRef = useRef(null)
 
     if (isWeb) {
       // from react-native-web
@@ -159,12 +176,6 @@ export function createComponent<A extends Object = DefaultProps>(
     }
 
     const isTracking = useRef(false)
-
-    const { viewProps, pseudos, style, classNames } = getSplitStyles(
-      props,
-      staticConfig,
-      (manager.theme as any) || initialTheme
-    )
 
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
