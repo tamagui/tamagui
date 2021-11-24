@@ -15,6 +15,7 @@ export interface TamaguiOptions {
   evaluateVars?: boolean
   importsWhitelist?: string[]
   disableExtraction?: boolean
+  disableDebugAttr?: boolean
   exclude?: RegExp
   logTimings?: boolean
 
@@ -32,7 +33,10 @@ export type ExtractedAttrAttr = {
 
 export type ExtractedAttrStyle = { type: 'style'; value: Object }
 
-export type ExtractedAttr = ExtractedAttrAttr | { type: 'ternary'; value: Ternary } | ExtractedAttrStyle
+export type ExtractedAttr =
+  | ExtractedAttrAttr
+  | { type: 'ternary'; value: Ternary }
+  | ExtractedAttrStyle
 
 export type ExtractTagProps = {
   attrs: ExtractedAttr[]
@@ -51,7 +55,6 @@ export type ExtractorParseProps = TamaguiOptions & {
   shouldPrintDebug?: boolean
   onExtractTag: (props: ExtractTagProps) => void
   getFlattenedNode: (props: { isTextView: boolean; tag: string }) => string
-  onDidFlatten?: () => void
 }
 
 export interface Ternary {

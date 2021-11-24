@@ -1,3 +1,4 @@
+export { useSafeAreaInsets } from 'react-native-safe-area-context'
 export * from '@tamagui/helpers'
 export * from '@tamagui/core'
 

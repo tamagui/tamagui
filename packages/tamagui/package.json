@@ -32,10 +32,10 @@
     "expo-linear-gradient": "^9.1.0",
     "normalize-css-color": "*",
     "react": "*",
-    "react-dom": "*",
-    "react-native-safe-area-context": "^3.3.2"
+    "react-dom": "*"
   },
   "peerDependencies": {
+    "react-native-safe-area-context": "^3.3.2",
     "react-native-web": "*"
   },
   "devDependencies": {

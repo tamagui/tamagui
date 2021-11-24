@@ -51,6 +51,7 @@ export function createExtractor() {
   })
 
   let loadedTamaguiConfig: TamaguiInternalConfig
+  let hasLogged = false
 
   return {
     getTamaguiConfig() {
@@ -66,7 +67,8 @@ export function createExtractor() {
         sourcePath = '',
         onExtractTag,
         getFlattenedNode,
-        onDidFlatten,
+        disableExtraction,
+        disableDebugAttr,
         ...props
       }: ExtractorParseProps
     ) => {
@@ -87,12 +89,6 @@ export function createExtractor() {
       loadedTamaguiConfig = tamaguiConfig
 
       const defaultTheme = tamaguiConfig.themes[Object.keys(tamaguiConfig.themes)[0]]
-
-      // TODO this can be passed in / set based on if source changed
-      // const shouldReCheckTheme = false //Date.now() - hasParsedFileLast > 600
-      // hasParsedFileLast = Date.now()
-
-      let doesUseValidImport = false
       const body = fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
       /**
@@ -107,6 +103,8 @@ export function createExtractor() {
           obj[name] = components[name]
           return obj
         }, {})
+
+      let doesUseValidImport = false
 
       for (const bodyPath of body) {
         if (bodyPath.type !== 'ImportDeclaration') continue
@@ -148,6 +146,12 @@ export function createExtractor() {
        */
       let programPath: NodePath<t.Program>
 
+      const res = {
+        flattened: 0,
+        optimized: 0,
+        modified: 0,
+      }
+
       callTraverse({
         Program: {
           enter(path) {
@@ -186,8 +190,41 @@ export function createExtractor() {
             return
           }
 
-          const { staticConfig } = component
           const originalNodeName = node.name.name
+
+          if (shouldPrintDebug) {
+            console.log(`\n<${originalNodeName} />`)
+          }
+
+          const filePath = sourcePath.replace(process.cwd(), '.')
+          const lineNumbers = node.loc
+            ? node.loc.start.line +
+              (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
+            : ''
+
+          // add data-is
+          if (shouldAddDebugProp && !disableDebugAttr) {
+            const preName = componentName ? `${componentName}:` : ''
+            res.modified++
+            node.attributes.unshift(
+              t.jsxAttribute(
+                t.jsxIdentifier('data-is'),
+                t.stringLiteral(
+                  `  ${preName}${node.name.name}   ${filePath.replace('./', '')}:${lineNumbers}  `
+                )
+              )
+            )
+          }
+
+          if (disableExtraction) {
+            if (!hasLogged) {
+              console.log('🥚 Tamagui disableExtraction set: no CSS or optimizations will be run')
+              hasLogged = true
+            }
+            return
+          }
+
+          const { staticConfig } = component
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
 
@@ -222,10 +259,6 @@ export function createExtractor() {
             const res = deoptProps.has(name)
             if (res && shouldPrintDebug) console.log(`  deopting ${name}`)
             return res
-          }
-
-          if (shouldPrintDebug) {
-            console.log(`\n<${originalNodeName} />`)
           }
 
           // Generate scope object at this level
@@ -775,12 +808,6 @@ export function createExtractor() {
             modifiedComponents.add(parentFn)
           }
 
-          const filePath = sourcePath.replace(process.cwd(), '.')
-          const lineNumbers = node.loc
-            ? node.loc.start.line +
-              (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
-            : ''
-
           // combine ternaries
           let ternaries: Ternary[] = []
           attrs = attrs
@@ -1051,21 +1078,6 @@ export function createExtractor() {
             console.log('  - attrs (after): ', attrs.map(attrStr).join(', '))
           }
 
-          // add data-is
-          if (shouldAddDebugProp) {
-            const preName = componentName ? `${componentName}:` : ''
-            // unshift so spreads/nesting overwrite
-            attrs.unshift({
-              type: 'attr',
-              value: t.jsxAttribute(
-                t.jsxIdentifier('data-is'),
-                t.stringLiteral(
-                  `  ${preName}${node.name.name}   ${filePath.replace('./', '')}:${lineNumbers}  `
-                )
-              ),
-            })
-          }
-
           if (shouldFlatten) {
             // DO FLATTEN
             if (shouldPrintDebug) {
@@ -1073,7 +1085,7 @@ export function createExtractor() {
             }
             isFlattened = true
             node.name.name = flatNode
-            onDidFlatten?.()
+            res.flattened++
             if (closingElement) {
               closingElement.name.name = flatNode
             }
@@ -1084,6 +1096,8 @@ export function createExtractor() {
             console.log('  [❊] inline props ', inlinePropCount, shouldDeopt ? ' deopted' : '', hasSpread ? ' spread' : '', '!flatten', staticConfig.neverFlatten)
             console.log('  - attrs (end): ', attrs.map(attrStr).join(', '))
           }
+
+          res.optimized++
 
           onExtractTag({
             attrs,
@@ -1111,6 +1125,8 @@ export function createExtractor() {
           removeUnusedHooks(comp, shouldPrintDebug)
         }
       }
+
+      return res
     },
   }
 }

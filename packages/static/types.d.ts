@@ -11,6 +11,7 @@ export interface TamaguiOptions {
 	evaluateVars?: boolean;
 	importsWhitelist?: string[];
 	disableExtraction?: boolean;
+	disableDebugAttr?: boolean;
 	exclude?: RegExp;
 	logTimings?: boolean;
 	cssPath?: string;
@@ -49,7 +50,6 @@ export declare type ExtractorParseProps = TamaguiOptions & {
 		isTextView: boolean;
 		tag: string;
 	}) => string;
-	onDidFlatten?: () => void;
 };
 export interface Ternary {
 	test: t.Expression;
@@ -174,7 +174,11 @@ export declare function createExtractor(): {
 			[key: string]: string | number;
 		};
 	}>;
-	parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, onDidFlatten, ...props }: ExtractorParseProps) => null | undefined;
+	parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableExtraction, disableDebugAttr, ...props }: ExtractorParseProps) => {
+		flattened: number;
+		optimized: number;
+		modified: number;
+	} | null;
 };
 export declare function literalToAst(literal: any): t.Expression;
 export declare const CSS_FILE_NAME = "__snack.css";

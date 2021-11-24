@@ -31,9 +31,12 @@ export function loader(this: any, source: string) {
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...getOptions(this) }
 
-    if (options.disableExtraction) {
+    if (
+      options.disableExtraction &&
+      (options.disableDebugAttr || process.env.NODE_ENV !== 'development')
+    ) {
       if (!hasLogged) {
-        console.log('🥚 Tamagui disableExtraction set: no CSS or optimizations will be run')
+        console.log('🥚 Tamagui disableDebug & disableExtraction set, no parsing running')
         hasLogged = true
       }
       return callback(null, source)
@@ -59,13 +62,11 @@ export function loader(this: any, source: string) {
     }
 
     // check if should ignore
-    const isTamaguiInternalView = sourcePath.includes('/tamagui/')
-
+    const ext = extname(sourcePath)
     if (
-      !isTamaguiInternalView &&
-      (extname(sourcePath) !== '.tsx' ||
-        (startsWithComment &&
-          (source.startsWith('// tamagui-ignore') || source.startsWith('//! tamagui-ignore'))))
+      (ext !== '.tsx' && ext !== '.jsx') ||
+      (startsWithComment &&
+        (source.startsWith('// tamagui-ignore') || source.startsWith('//! tamagui-ignore')))
     ) {
       return callback(null, source)
     }
