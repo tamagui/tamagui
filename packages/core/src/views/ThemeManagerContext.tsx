@@ -2,15 +2,25 @@ import { createContext } from 'react'
 
 export class ThemeManager {
   name: string | null = 'light'
+  parentName: string | null = null
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
   callbacks = new Set<Function>()
   theme = null
 
-  setActiveTheme(name: string | null, theme?: any) {
+  setActiveTheme({
+    name,
+    theme,
+    parentName,
+  }: {
+    parentName?: string | null
+    name: string | null
+    theme?: any
+  }) {
     if (name === this.name) return
     this.name = name
     this.theme = theme
+    this.parentName = parentName || null
     this.update()
   }
 

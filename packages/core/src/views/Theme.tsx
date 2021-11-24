@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { getThemeParentClassName } from '../createTamagui'
 import { useConstant } from '../hooks/useConstant'
-import { ThemeName, Themes } from '../types'
+import { ThemeName } from '../types'
 import { ThemeContext } from './ThemeContext'
 import { ThemeManager, ThemeManagerContext } from './ThemeManagerContext'
 
@@ -18,11 +18,21 @@ export const Theme = (props: ThemeProps) => {
   const themes = useContext(ThemeContext)
   const [parentName, setParentName] = useState(parent.name || 'light')
   if (!themes) {
-    console.warn('no themes???', props)
+    console.warn('Error, no themes in context', props)
     return props.children
   }
   const name = props.name as string
-  const activeName = !name ? null : name in themes ? name : `${name}-${parentName}`
+  const nextNameParent = `${name}-${parentName}`
+  const nextNameParentParent = `${name}-${parent.parentName}`
+  const activeName = !name
+    ? null
+    : name in themes
+    ? name
+    : nextNameParent in themes
+    ? nextNameParent
+    : nextNameParentParent in themes
+    ? nextNameParentParent
+    : null
   const theme = activeName ? themes[activeName] : null
   const themeManager = useConstant<ThemeManager | null>(() => {
     if (!theme) {
@@ -30,7 +40,7 @@ export const Theme = (props: ThemeProps) => {
     }
     const manager = new ThemeManager()
     if (name) {
-      manager.setActiveTheme(name, themes[name])
+      manager.setActiveTheme({ name, theme: themes[name], parentName })
     }
     return manager
   })
@@ -39,14 +49,14 @@ export const Theme = (props: ThemeProps) => {
     if (!themeManager) {
       return
     }
-    themeManager.setActiveTheme(activeName, theme)
+    themeManager.setActiveTheme({ name: activeName, theme, parentName })
     return parent.onChangeTheme((next) => {
       if (next) {
-        themeManager.setActiveTheme(next, themes[next])
+        themeManager.setActiveTheme({ name: next, theme: themes[next], parentName })
         setParentName(next)
       }
     })
-  }, [themes, activeName])
+  }, [themes, activeName, parentName])
 
   if (!name || !theme) {
     return props.children
