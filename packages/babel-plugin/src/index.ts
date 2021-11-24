@@ -104,6 +104,10 @@ export default declare(function snackBabelPlugin(
               'contain',
             ],
             ...options,
+            // disable this extraction for now at least, need to figure out merging theme vs non-theme
+            // because theme need to stay in render(), whereas non-theme can be extracted
+            // for now just turn it off entirely at a small perf loss
+            disableExtractInlineMedia: true,
             sourcePath,
             getFlattenedNode({ isTextView }) {
               if (!hasImportedView) {
@@ -117,25 +121,31 @@ export default declare(function snackBabelPlugin(
               const stylesExpr = t.arrayExpression([])
               let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 
-              for (const attr of props.attrs) {
-                function addStyle(expr: any, key: string) {
-                  if (props.isFlattened) {
-                    stylesExpr.elements.push(expr)
-                  } else {
-                    finalAttrs.push(
-                      t.jsxAttribute(
-                        t.jsxIdentifier(`_style${key}`),
-                        t.jsxExpressionContainer(expr)
-                      )
-                    )
-                  }
+              function addStyle(expr: any, key: string) {
+                if (props.isFlattened) {
+                  stylesExpr.elements.push(expr)
+                } else {
+                  finalAttrs.push(
+                    t.jsxAttribute(t.jsxIdentifier(`_style${key}`), t.jsxExpressionContainer(expr))
+                  )
                 }
+              }
+
+              for (const attr of props.attrs) {
                 switch (attr.type) {
                   case 'style':
-                    const ident = addSheetStyle(attr.value, props.node)
-                    addStyle(ident, simpleHash(JSON.stringify(attr.value)))
+                    // split theme properties and leave them as props since RN has no concept of theme
+                    const { themed, plain } = splitThemeStyles(attr.value)
+                    for (const key in themed) {
+                      finalAttrs.push(
+                        t.jsxAttribute(t.jsxIdentifier(key), t.stringLiteral(themed[key]))
+                      )
+                    }
+                    const ident = addSheetStyle(plain, props.node)
+                    addStyle(ident, simpleHash(JSON.stringify(plain)))
                     break
                   case 'ternary':
+                    // TODO use splitThemeStyles
                     const { consequent, alternate } = attr.value
                     const cons = addSheetStyle(consequent, props.node)
                     const alt = addSheetStyle(alternate, props.node)
@@ -206,4 +216,18 @@ const simpleHash = (str: string) => {
     hash &= hash // Convert to 32bit integer
   }
   return new Uint32Array([hash])[0].toString(36)
+}
+
+function splitThemeStyles(style: Object) {
+  const themed = {}
+  const plain = {}
+  for (const key in style) {
+    const val = style[key]
+    if (val && val[0] === '$') {
+      themed[key] = val
+    } else {
+      plain[key] = val
+    }
+  }
+  return { themed, plain }
 }
