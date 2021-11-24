@@ -28,7 +28,6 @@ export const getSplitStyles = (
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: Record<string, any> = {}
   const style: any[] = []
-  const blacklistProps = isSplittingDefaultProps ? blacklistDefaultProps : blacklistFinalProps
 
   let pseudos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
   let cur: ViewStyle | null = null
@@ -130,8 +129,9 @@ export const getSplitStyles = (
         cur[key] = val
         continue
       }
-      // TODO this blacklist should be configurable + better set up
-      if (!blacklistProps[key]) {
+
+      // pass to view props
+      if (!staticConfig.variants || !(key in staticConfig.variants)) {
         viewProps[key] = val
       }
     }
@@ -179,19 +179,6 @@ const getSubStyle = (
   }
   fixNativeShadow(styleOut)
   return styleOut
-}
-
-const blacklistDefaultProps = {
-  ...validStyles,
-  ...stylePropsText,
-}
-
-const blacklistFinalProps = {
-  ...blacklistDefaultProps,
-  tag: true,
-  debug: true,
-  space: true,
-  hitSlop: true,
 }
 
 const mapTransformKeys = {

@@ -22,8 +22,12 @@ export const Theme = (props: ThemeProps) => {
     return props.children
   }
   const name = props.name as string
-  const theme = themes[name] || themes[`${name}-${parentName}`]
-  const themeManager = useConstant<ThemeManager>(() => {
+  const activeName = !name ? null : name in themes ? name : `${name}-${parentName}`
+  const theme = activeName ? themes[activeName] : null
+  const themeManager = useConstant<ThemeManager | null>(() => {
+    if (!theme) {
+      return null
+    }
     const manager = new ThemeManager()
     if (name) {
       manager.setActiveTheme(name, themes[name])
@@ -32,16 +36,19 @@ export const Theme = (props: ThemeProps) => {
   })
 
   useIsomorphicLayoutEffect(() => {
-    themeManager.setActiveTheme(name, theme)
+    if (!themeManager) {
+      return
+    }
+    themeManager.setActiveTheme(activeName, theme)
     return parent.onChangeTheme((next) => {
       if (next) {
         themeManager.setActiveTheme(next, themes[next])
         setParentName(next)
       }
     })
-  }, [themes, name])
+  }, [themes, activeName])
 
-  if (!name) {
+  if (!name || !theme) {
     return props.children
   }
 

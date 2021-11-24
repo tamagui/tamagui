@@ -11,6 +11,10 @@ export class Variable {
     this.name = name
     this.variable = isWeb ? `var(--${name})` : this.val
   }
+
+  toString() {
+    return isWeb ? this.variable : this.val
+  }
 }
 
 type VariableIn = { val: string | number; name: string }
