@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    paths-ignore:
+      - 'assets/**'
+      - '.vscode/**'
+    branches:
+      - nate/dev
+
+jobs:
+  release:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@master
+        with:
+          node-version: 16.x
+
+      - name: install yarn
+        run: |
+          npm i yarn -g
+          yarn set version stable
+
+      # - uses: c-hive/gha-yarn-cache@v2
+
+      - name: Install Dependencies
+        run: |
+          yarn install
+
+      - name: Build JS
+        run: yarn build:js
+
+      - name: Test
+        run: |
+          yarn workspace @tamagui/static test
+
