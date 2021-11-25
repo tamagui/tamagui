@@ -4,13 +4,13 @@
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
-  "typings": "types.d.ts",
+  "typings": "types",
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "build": "tamagui-build legacy",
+    "watch": "tamagui-build legacy --watch"
   },
   "files": [
-    "types.d.ts",
+    "types",
     "dist",
     "src"
   ],
