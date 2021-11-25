@@ -2,14 +2,15 @@
   "name": "@tamagui/core",
   "version": "1.0.0-alpha.7",
   "source": "src/index.ts",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "main": "dist/cjs",
+  "module": "dist",
   "typings": "types.d.ts",
   "scripts": {
-    "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "build": "tamagui-build --separate",
+    "watch": "tamagui-build --separate --watch"
   },
   "files": [
+    "_",
     "types.d.ts",
     "dist",
     "src"

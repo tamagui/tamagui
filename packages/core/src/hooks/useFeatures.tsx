@@ -1,51 +1,66 @@
 import React from 'react'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
-import { addMediaQueryListener, removeMediaQueryListener } from './useMedia'
+import { addMediaQueryListener, mediaState, removeMediaQueryListener } from './useMedia'
 
-// only needed on native
-// dynamic loading of features to avoid heavy views
+type FeatureDefinition = {
+  isEnabled: (props: any) => boolean
+  Component: any
+}
 
-const createDefinition = ({ Component, propNames }: { Component; propNames: string[] }) => ({
+const createDefinition = ({
+  Component,
+  propNames,
+}: {
+  Component: any
+  propNames: string[]
+}): FeatureDefinition => ({
   isEnabled: (props: any) => propNames.some((name) => !!props[name]),
   Component,
 })
 
-const mediaQueryPropNames = [
-  '$xs',
-  '$sm',
-  '$md',
-  '$lg',
-  '$xl',
-  '$xxl',
-  '$pointerCoarse',
-  '$hoverNone',
-  '$tall',
-  '$short',
-  '$gtSm',
-  '$notXs',
-  '$gtMd',
-  '$gtLg',
-]
+let featureDefinitions: Record<string, FeatureDefinition> | null = null
 
-const featureDefinitions = {
-  measureLayout: createDefinition({
-    Component: (props) => {
-      console.log('measure', props)
-      return null
-    },
-    propNames: ['onLayout'],
-  }),
+export const useFeatures = (props: any, utils?: { forceUpdate?: Function }) => {
+  if (!featureDefinitions) {
+    featureDefinitions = loadFeatures()
+  }
+  const features: JSX.Element[] = []
+  for (const name in featureDefinitions) {
+    const { isEnabled, Component } = featureDefinitions[name]
+    if (isEnabled(props) && Component) {
+      features.push(<Component key={name} {...props} _utils={utils} />)
+    }
+  }
+  return features
+}
 
-  // will update the parent whenever media query changes
-  mediaQuery: createDefinition({
-    Component: (props) => {
-      if (isWeb) {
-        // no need for media queries are inserted and run in css
-        return
-      }
+function loadFeatures(): Record<string, FeatureDefinition> {
+  return {
+    // TODO
+    // measureLayout: createDefinition({
+    //   Component: (props) => {
+    //     console.log('measure', props)
+    //     return null
+    //   },
+    //   propNames: ['onLayout'],
+    // }),
 
-      const keys = mediaQueryPropNames.flatMap((x) => (x in props ? x.slice(1) : []))
+    // will update the parent whenever media query changes
+    // no need on web, media queries are inserted and run in css
+    ...(!isWeb && {
+      mediaQuery: loadMediaQueryFeature(),
+    }),
+  }
+}
+
+function loadMediaQueryFeature() {
+  const mediaPropNames = Object.keys(mediaState)
+
+  return createDefinition({
+    Component: (props: any) => {
+      const keys = mediaPropNames.flatMap((x) => (x in props ? x.slice(1) : []))
+
       useIsomorphicLayoutEffect(() => {
         for (const key of keys) {
           addMediaQueryListener(key, props._utils.forceUpdate)
@@ -56,23 +71,9 @@ const featureDefinitions = {
           }
         }
       }, [keys.join(',')])
+
       return null
     },
-    propNames: mediaQueryPropNames,
-  }),
-}
-
-const featureNames = Object.keys(featureDefinitions)
-const numFeatures = featureNames.length
-
-export const useFeatures = (props: any, utils?: { forceUpdate?: Function }) => {
-  const features: JSX.Element[] = []
-  for (let i = 0; i < numFeatures; i++) {
-    const name = featureNames[i]
-    const { isEnabled, Component } = featureDefinitions[name] as any //FeatureDefinition
-    if (isEnabled(props) && Component) {
-      features.push(<Component key={name} {...props} _utils={utils} />)
-    }
-  }
-  return features
+    propNames: mediaPropNames,
+  })
 }

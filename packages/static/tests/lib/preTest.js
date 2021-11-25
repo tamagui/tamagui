@@ -9,7 +9,7 @@ const outFileWebpack = 'out-webpack.js'
 module.exports = async function main() {
   await Promise.all([
     //
-    // extractStaticAppBabel(),
+    extractStaticAppBabel(),
     extractStaticWebpackApp(),
   ])
   process.env.IS_STATIC = undefined
@@ -68,7 +68,7 @@ async function extractStaticAppBabel() {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
-        'process.env.TAMAGUI_TARGET': JSON.stringify('native'),
+        'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
         'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
       }),
     ],
@@ -115,9 +115,11 @@ async function extractStaticWebpackApp() {
           exclude: /node_modules\/(?!react-native-web)/g,
           use: [
             {
-              loader: 'babel-loader',
+              loader: require.resolve('esbuild-loader'),
               options: {
-                presets: ['@dish/babel-preset'],
+                loader: 'tsx',
+                target: 'es2020',
+                keepNames: true,
               },
             },
             {

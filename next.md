@@ -1,3 +1,4 @@
+- TODO fix babel tests they seem right but output isny matching
 - compiler vs non: messing up "Show Code" pos
 - dev mode validate tokens, theme, font
 - could do a pass on generated classnames to dedupe would help benchmarks

@@ -29,8 +29,8 @@ Let's name our package `@ourapp/components`:
 ```json
 {
   "name": "@ourapp/components",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "main": "dist/cjs",
+  "module": "dist",
   "module:jsx": "_jsx",
   "typings": "types.d.ts",
   "sideEffects": ["*.css"],
@@ -38,8 +38,8 @@ Let's name our package `@ourapp/components`:
     "@tamagui/core": "1.0.0-alpha.1"
   },
   "scripts": {
-    "build": "tamagui-build --jsx",
-    "watch": "tamagui-build --jsx --watch"
+    "build": "tamagui-build --separate --jsx",
+    "watch": "tamagui-build --separate --jsx --watch"
   },
   "devDependencies": {
     "@tamagui/build": "*"

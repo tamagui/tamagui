@@ -1,7 +1,7 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { useRef } from 'react'
 
-import { useIsomorphicLayoutEffect } from '../constants/platform'
+import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
 import {
   ConfigureMediaQueryOptions,

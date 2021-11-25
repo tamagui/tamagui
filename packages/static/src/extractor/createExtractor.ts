@@ -576,12 +576,12 @@ export function createExtractor() {
             }
 
             // shorthand media queries
-            if (
-              name[0] === '$' &&
-              t.isJSXExpressionContainer(attribute?.value) &&
+            if (name[0] === '$' && t.isJSXExpressionContainer(attribute?.value)) {
               // allow disabling this extraction
-              !disableExtractInlineMedia
-            ) {
+              if (disableExtractInlineMedia) {
+                return attr
+              }
+
               const shortname = name.slice(1)
               if (mediaQueryConfig[shortname]) {
                 const expression = attribute.value.expression

@@ -64,6 +64,23 @@ export function TestMediaQuery() {
   )
 }
 
+export function TestMediaQueryInline() {
+  return (
+    <>
+      <YStack
+        $sm={{
+          backgroundColor: '$bg',
+          hoverStyle: {
+            backgroundColor: 'red',
+          },
+        }}
+      >
+        {child}
+      </YStack>
+    </>
+  )
+}
+
 export function Test1() {
   return (
     <YStack
@@ -86,7 +103,7 @@ export function Test1() {
 export function Test2(props: TestProps) {
   return (
     <>
-      <Box className="who" onAccessibilityTap={() => {}} overflow="hidden" />
+      <Box className="who" onPress={() => {}} overflow="hidden" />
       <Box
         className="ease-in-out-top"
         backgroundColor="#000"
@@ -212,19 +229,19 @@ export function Test10({ textStyle }) {
 }
 
 // alllll in one
-export function Test11(props: TestProps) {
+export function Test11({ conditional, altConditional, ...rest }: TestProps) {
   const lineHeight = 10
   return (
     <YStack
-      height={(props.conditional ? 1 : 0) * 31}
-      borderRadius={8 * (props.conditional ? 1 : 0)}
+      height={(conditional ? 1 : 0) * 31}
+      borderRadius={8 * (conditional ? 1 : 0)}
       borderWidth={1}
-      borderColor={props.altConditional ? 'red' : 'rgba(0,0,0,0.15)'}
+      borderColor={altConditional ? 'red' : 'rgba(0,0,0,0.15)'}
       overflow="hidden"
       alignItems="center"
       position="relative"
       minHeight={lineHeight}
-      {...props}
+      {...rest}
       backgroundColor="blue"
     >
       {child}

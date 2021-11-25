@@ -192,7 +192,13 @@ export default declare(function snackBabelPlugin(
           sheetOuter.declarations[0].init.arguments[0] = sheetObject
           root.unshiftContainer('body', sheetOuter)
           if (shouldPrintDebug) {
-            console.log('>>', generator(root.parent).code)
+            console.log('\n -------- output code ------- \n')
+            console.log(
+              generator(root.parent)
+                .code.split('\n')
+                .filter((x) => !x.startsWith('//'))
+                .join('\n')
+            )
           }
         },
       },

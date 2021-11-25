@@ -8,7 +8,7 @@ import {
 import { ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
-import { mediaQueryConfig } from '../hooks/useMedia'
+import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import { StaticConfigParsed, ThemeObject } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
@@ -53,14 +53,15 @@ export const getSplitStyles = (
       const mediaProps = { ...props, ...valInit }
       // TODO media + hover
       const mediaStyle = getSubStyle(valInit, staticConfig, theme, props)
-      const mediaStyles = getStylesAtomic(mediaStyle)
-      if (process.env.NODE_ENV === 'development') {
-        if (props['debug']) {
-          console.log('mediaStyles', keyInit, { mediaProps, mediaStyle, mediaStyles })
+
+      if (isWeb) {
+        const mediaStyles = getStylesAtomic(mediaStyle)
+        if (process.env.NODE_ENV === 'development') {
+          if (props['debug']) {
+            console.log('mediaStyles', keyInit, { mediaProps, mediaStyle, mediaStyles })
+          }
         }
-      }
-      for (const style of mediaStyles) {
-        if (isWeb) {
+        for (const style of mediaStyles) {
           const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
           classNames = classNames || []
           classNames.push(out.identifier)
@@ -69,8 +70,10 @@ export const getSplitStyles = (
           if (process.env.NODE_ENV === 'development' && props['debug']) {
             console.log('mediaProp', style.identifier, out, mediaProps, mediaStyle, mediaStyles)
           }
-        } else {
-          console.log('TODO native media style logic')
+        }
+      } else {
+        if (mediaState[mediaKey]) {
+          style.push(mediaStyle)
         }
       }
       continue

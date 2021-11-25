@@ -4909,6 +4909,7 @@ __metadata:
     babel-loader: ^8.2.2
     css-loader: ^5.2.4
     esbuild: ^0.13.12
+    esbuild-loader: ^2.16.0
     esbuild-register: ^3.1.2
     find-cache-dir: ^3.3.1
     fs-extra: ^9.0.0

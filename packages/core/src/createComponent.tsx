@@ -477,7 +477,7 @@ export function createComponent<A extends Object = DefaultProps>(
     } else {
       if (!hasWarnedOnce) {
         hasWarnedOnce = true
-        console.log('⚠️ we need to account for default styles for media queries')
+        console.log('⚠️ TODO account for default styles for media queries')
       }
     }
     // @ts-ignore

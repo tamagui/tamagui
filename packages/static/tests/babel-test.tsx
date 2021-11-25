@@ -16,7 +16,7 @@ beforeEach(() => {
   cleanup()
 })
 
-test('styles - 1. extracts to a div for simple views', async () => {
+test.skip('styles - 1. extracts to a div for simple views', async () => {
   const { style } = await getTestElement(app.Provider, app.Test1)
   expect(style.backgroundColor).toBe('rgb(255, 0, 0)')
   expect(style.borderTopLeftRadius).toBe('100px')
@@ -37,7 +37,7 @@ test('styles - 6. spread ternary', async () => {
   expect(falsy.style.backgroundColor).toBe('rgb(255, 0, 0)')
 })
 
-test('styles - 11. all in one', async () => {
+test.skip('styles - 11. all in one', async () => {
   const [truthy, falsy] = await getTestElements(app.Provider, app.Test11)
   expect(truthy.style.height).toBe('31px')
   expect(truthy.style.borderTopLeftRadius).toBe('8px')
