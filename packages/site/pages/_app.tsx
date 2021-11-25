@@ -6,7 +6,7 @@ import * as NextThemes from '@components/NextTheme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { PopoverProvider, YStack } from 'tamagui'
+import { PopoverProvider, SafeAreaProvider, YStack } from 'tamagui'
 
 import Tamagui from '../tamagui.config'
 
@@ -32,9 +32,11 @@ export default function App(props: AppProps) {
       onChangeTheme={(x) => setTheme(x)}
     >
       <Tamagui.Provider defaultTheme={theme}>
-        <PopoverProvider>
-          <ContentInner {...props} />
-        </PopoverProvider>
+        <SafeAreaProvider>
+          <PopoverProvider>
+            <ContentInner {...props} />
+          </PopoverProvider>
+        </SafeAreaProvider>
       </Tamagui.Provider>
     </NextThemes.ThemeProvider>
   )
