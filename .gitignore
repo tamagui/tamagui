@@ -3,6 +3,9 @@
 **/types/**/*.d.ts.map
 
 .yarn/**
+!.yarn/plugins
+!.yarn/install-state.gz
+
 .ultra.cache.json
 tmp
 *.tsbuildinfo
