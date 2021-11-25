@@ -68,13 +68,15 @@ Add `tamagui-loader` and set up your `webpack.config.js`:
 
 #### Next.js
 
+<Notice>Support only for Next.js 11 right now</Notice>
+
 Add `@tamagui/next-plugin` and configure your `next.config.js`:
 
 ```js
 const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
 
-export default withPlugins(
+export default withPlugins([
   withTamagui({
     config: './tamagui.config.ts',
     components: ['tamagui'],
@@ -82,7 +84,7 @@ export default withPlugins(
     logTimings: true,
     disableExtraction: process.env.NODE_ENV === 'development',
   })
-)
+])
 ```
 
 #### React Native

@@ -112,6 +112,10 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         const oneOfRule = webpackConfig.module.rules.find((x) => !!x.oneOf)
 
+        for (const rule of webpackConfig.module.rules) {
+          console.log('rule', rule)
+        }
+
         if (oneOfRule) {
           if (!dev) {
             // replace nextjs picky style rules with simple minicssextract
@@ -135,24 +139,24 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
               })
             )
           } else {
-            const {
-              getGlobalCssLoader,
-            } = require('next/dist/build/webpack/config/blocks/css/loaders')
-            oneOfRule.oneOf.unshift({
-              test: /\.css$/i,
-              sideEffects: true,
-              use: getGlobalCssLoader(
-                {
-                  assetPrefix: options.config.assetPrefix,
-                  future: { webpack5: true },
-                  isClient: !isServer,
-                  isServer,
-                  isDevelopment: true,
-                },
-                [],
-                []
-              ),
-            })
+            // const {
+            //   getGlobalCssLoader,
+            // } = require('next/dist/build/webpack/config/blocks/css/loaders')
+            // oneOfRule.oneOf.unshift({
+            //   test: /\.css$/i,
+            //   sideEffects: true,
+            //   use: getGlobalCssLoader(
+            //     {
+            //       assetPrefix: options.config.assetPrefix,
+            //       future: { webpack5: true },
+            //       isClient: !isServer,
+            //       isServer,
+            //       isDevelopment: true,
+            //     },
+            //     [],
+            //     []
+            //   ),
+            // })
           }
         }
 

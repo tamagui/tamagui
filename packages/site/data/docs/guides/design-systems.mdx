@@ -111,12 +111,12 @@ In your `webpack.config.js`:
 In your `next.config.js`:
 
 ```js
-export default withPlugins(
+export default withPlugins([
   withTamagui({
     config: './tamagui.config.ts',
     components: ['@ourapp/components', 'tamagui'],
   })
-)
+])
 ```
 
 ### React Native
