@@ -1,6 +1,7 @@
 {
   "name": "@tamagui/feather-icons",
   "version": "1.0.0-alpha.5",
+  "sideEffects": false,
   "description": "React Native components for Feather icons - native and web",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
@@ -11,7 +12,6 @@
     "dist",
     "src"
   ],
-  "sideEffects": false,
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
