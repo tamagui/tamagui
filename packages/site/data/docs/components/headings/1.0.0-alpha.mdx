@@ -18,7 +18,7 @@ The headings all extend from the base Title component:
 
 ```
 
-## Title
+Headings all build off the base title component:
 
 ```jsx
 export const Title = styled(Paragraph, {
@@ -29,68 +29,3 @@ export const Title = styled(Paragraph, {
 ```
 
 They expect for your tokens.fontSize to have values for 4-10.
-
-## H1
-
-```jsx
-export const H1 = styled(Title, {
-  fontFamily: '$title',
-  accessibilityRole: 'header',
-  size: '$10',
-})
-```
-
-## H2
-
-```jsx
-export const H2 = styled(Title, {
-  fontFamily: '$title',
-  accessibilityRole: 'header',
-  size: '$9',
-})
-```
-
-## H3
-
-```jsx
-export const H3 = styled(Title, {
-  fontFamily: '$title',
-  accessibilityRole: 'header',
-  size: '$6',
-  fontWeight: '600',
-})
-```
-
-## H4
-
-```jsx
-export const H4 = styled(Title, {
-  fontFamily: '$title',
-  accessibilityRole: 'header',
-  size: '$5',
-})
-```
-
-## H5
-
-```jsx
-export const H5 = styled(Title, {
-  fontFamily: '$title',
-  accessibilityRole: 'header',
-  size: '$4',
-  color: '$color2',
-  fontWeight: '600',
-})
-```
-
-## H6
-
-```jsx
-export const H6 = styled(Title, {
-  fontFamily: '$title',
-  accessibilityRole: 'header',
-  size: '$4',
-  color: '$color3',
-  fontWeight: '600',
-})
-```
