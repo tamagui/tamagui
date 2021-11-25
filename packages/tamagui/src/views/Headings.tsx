@@ -23,20 +23,20 @@ export const H2 = styled(Title, {
 export const H3 = styled(Title, {
   fontFamily: '$title',
   accessibilityRole: 'header',
-  size: '$6',
+  size: '$8',
   fontWeight: '700',
 })
 
 export const H4 = styled(Title, {
   fontFamily: '$title',
   accessibilityRole: 'header',
-  size: '$5',
+  size: '$6',
 })
 
 export const H5 = styled(Title, {
   fontFamily: '$title',
   accessibilityRole: 'header',
-  size: '$4',
+  size: '$5',
   color: '$color2',
   fontWeight: '600',
 })

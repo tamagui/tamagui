@@ -152,16 +152,20 @@ export function Hero() {
 
               <XStack
                 borderWidth={1}
-                borderColor="$borderColor"
+                borderColor="$borderColor2"
                 px="$5"
                 height={48}
                 ai="center"
                 als="center"
                 br="$6"
-                backgroundColor="$bg2"
+                bc="$bg"
+                hoverStyle={{
+                  bc: '$bg2',
+                }}
               >
-                {/* TODO user defined constants + $mono */}
-                <Paragraph fontFamily="$mono">npm install tamagui</Paragraph>
+                <Paragraph size="$5" fontWeight="500" fontFamily="$mono">
+                  npm install tamagui
+                </Paragraph>
                 <YStack width={60} />
                 <Tooltip contents="Copy to clipboard">
                   <Button
@@ -206,7 +210,8 @@ export function Hero() {
                 <Cpu size={20} color="var(--color3)" />
               </IconStack>
             </Theme>
-            <H3 size="$5" mb="$2">
+            {/* TODO why weight is removed */}
+            <H3 fontWeight="700" size="$5" mb="$2">
               Performant
             </H3>
             <Paragraph size="$4" color="$color3">
@@ -221,7 +226,7 @@ export function Hero() {
                 <Compass size={20} color="var(--color3)" />
               </IconStack>
             </Theme>
-            <H3 size="$5" mb="$2">
+            <H3 fontWeight="700" size="$5" mb="$2">
               Compatible
             </H3>
             <Paragraph size="$4" color="$color3">
@@ -240,7 +245,7 @@ export function Hero() {
                 <Layers size={20} color="var(--color3)" />
               </IconStack>
             </Theme>
-            <H3 size="$5" mb="$2">
+            <H3 fontWeight="700" size="$5" mb="$2">
               Intuitive
             </H3>
             <Paragraph size="$4" color="$color3">

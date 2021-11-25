@@ -3,10 +3,10 @@ import { YStack, styled } from 'tamagui'
 export const Pre = styled(YStack, {
   overflow: 'auto',
   tag: 'pre',
-  p: '$4',
-  borderRadius: '$3',
+  p: '$3',
+  borderRadius: '$1',
   bc: '$bg',
   borderWidth: 1,
-  borderColor: '$borderColor',
+  borderColor: '$borderColor2',
   my: '$3',
 })
