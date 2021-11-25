@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/colors",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.8",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -15,7 +15,7 @@
     "src"
   ],
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.2"
+    "@tamagui/build": "^1.0.0-alpha.8"
   },
   "publishConfig": {
     "access": "public"
