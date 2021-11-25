@@ -2,10 +2,7 @@
 **/types/**/*.d.ts
 **/types/**/*.d.ts.map
 
-.yarn
-!.yarn/plugins
-!.yarn/plugins/**/*
-!.yarn/install-state.gz
+.yarn/cache
 
 .ultra.cache.json
 tmp
