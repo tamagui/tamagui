@@ -8,7 +8,7 @@ name: text
 
 <Description>A simple, sizable button.</Description>
 
-<HeroContainer>
+<HeroContainer resetTheme>
   <ButtonDemo />
 </HeroContainer>
 
@@ -19,10 +19,8 @@ name: text
 <Highlights
   features={[
     'Accepts size prop that works on all styles.',
-    'Themeable via context or theme prop.',
     'Can inverse theme with themeInverse.',
     'Place an icon before or after.',
-    'Disabled, active, chromeless props.',
   ]}
 />
 
@@ -40,7 +38,7 @@ export default () => (
 
 ### Sizing
 
-Sizing buttons provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, and font size all in one with the `size` prop.
+Sizing buttons provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, font size and icons sizes all in one with the `size` prop.
 
 ```jsx
 import { Button } from 'tamagui'

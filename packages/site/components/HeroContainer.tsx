@@ -1,7 +1,13 @@
 import React from 'react'
 import { Theme, YStack, useThemeName } from 'tamagui'
 
-export function HeroContainer({ children }: { children?: React.ReactNode }) {
+export function HeroContainer({
+  children,
+  resetTheme,
+}: {
+  children?: React.ReactNode
+  resetTheme?: boolean
+}) {
   const themeName = useThemeName({ parent: true })
   const parentThemeBaseName = themeName.replace(/[a-z]+\-/, '')
 
@@ -26,7 +32,7 @@ export function HeroContainer({ children }: { children?: React.ReactNode }) {
       //   mx: '$-6',
       // }}
     >
-      <Theme name={parentThemeBaseName}>{children}</Theme>
+      {resetTheme ? <Theme name={parentThemeBaseName}>{children}</Theme> : children}
     </YStack>
   )
 }

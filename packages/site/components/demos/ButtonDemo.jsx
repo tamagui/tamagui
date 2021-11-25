@@ -30,8 +30,8 @@ function Buttons(props) {
           Yellow
         </Button>
       </InteractiveContainer>
-      <Button themeIcon iconAfter={Gift} size="$2">
-        Small
+      <Button themeInverse themeIcon iconAfter={Gift} size="$2">
+        Small Inversed
       </Button>
       <Button themeIcon icon={Activity} size="$1">
         XS
