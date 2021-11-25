@@ -1,5 +1,6 @@
+import { Activity, Airplay, Gift } from '@tamagui/feather-icons'
 import React from 'react'
-import { Button, Theme, XStack, YStack } from 'tamagui'
+import { Button, InteractiveContainer, Theme, XStack, YStack } from 'tamagui'
 
 export function ButtonDemo() {
   return (
@@ -18,11 +19,23 @@ function Buttons(props) {
   return (
     <YStack elevation="$6" w={160} bc="$bg" p="$2" br="$2" space="$1" {...props}>
       <Button>Plain</Button>
-      <Button theme="active">Active</Button>
-      <Button theme="yellow">Yellow</Button>
-      <Button size="$7">XL</Button>
-      <Button size="$2">Small</Button>
-      <Button size="$1">XS</Button>
+      <Button themeIcon icon={Airplay} size="$6">
+        Large
+      </Button>
+      <InteractiveContainer>
+        <Button size="$3" br={0} theme="active">
+          Active
+        </Button>
+        <Button size="$3" br={0} theme="yellow">
+          Yellow
+        </Button>
+      </InteractiveContainer>
+      <Button themeIcon iconAfter={Gift} size="$3">
+        Small
+      </Button>
+      <Button themeIcon icon={Activity} size="$2">
+        XS
+      </Button>
       <Button size="$2" disabled>
         Disabled
       </Button>

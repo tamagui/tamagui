@@ -56,14 +56,14 @@ There are a few things to note here:
 
 ## Step 2: Define and export components
 
-Now you'll want to create and export the components you'd like. You can re-export components from `tamagui` or `@tamagui/core` as well. Let's create a Circle component
+Now you'll want to create and export the components you'd like. You can re-export components from `tamagui` or `@tamagui/core` as well. Let's create a ZCircle component
 
 `Circle.tsx`:
 
 ```jsx
-import { styled, Stack } from '@tamagui/core'
+import { styled, ZStack } from 'tamagui'
 
-export const Circle = styled(Stack, {
+export const ZCircle = styled(ZStack, {
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: 100_000_000,
@@ -90,7 +90,7 @@ export * from './Circle'
 
 ## Step 3: Set up your build
 
-Now in your app, add `@ourapp/components` to your package.json, and update your tamagui build configuration.
+Now in your app, add `@ourapp/components` and `tamagui` (since we are extending it) to your package.json, and update your tamagui build configuration.
 
 ### Webpack
 
@@ -101,7 +101,7 @@ In your `webpack.config.js`:
   loader: 'tamagui-loader',
   options: {
     config: './tamagui.config.ts',
-    components: ['@ourapp/components'],
+    components: ['@ourapp/components', 'tamagui'],
   },
 }
 ```
@@ -114,7 +114,7 @@ In your `next.config.js`:
 export default withPlugins(
   withTamagui({
     config: './tamagui.config.ts',
-    components: ['@ourapp/components'],
+    components: ['@ourapp/components', 'tamagui'],
   })
 )
 ```
@@ -131,12 +131,16 @@ export default {
       {
         exclude: /node_modules/,
         config: './tamagui.config.ts',
-        components: ['@ourapp/components']
+        components: ['@ourapp/components', 'tamagui']
       },
     ],
   ],
 }
 ```
+
+### Configuration notes
+
+You only need `tamagui` in your `components` array if you extend it, otherwise no need. You can also extend your own base level module so long as they export Tamagui `styled` components.
 
 ## Step 4: Test it out
 

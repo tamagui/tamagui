@@ -88,7 +88,7 @@ export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 // themes
-export type ThemeName = keyof Themes extends `${infer Prefix}-light`
+export type ThemeName = keyof Themes extends `${infer Prefix}-${string}`
   ? Prefix | keyof Themes
   : keyof Themes
 export type ThemeKeys = keyof ThemeObject
@@ -320,7 +320,7 @@ export type StaticComponent<
    * If you create a styled frame component this is a HoC to extract
    * styles from all parents.
    */
-  extractable: <X>(a: X) => X
+  extractable: <X>(a: X, opts?: StaticConfig) => X
 }
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {

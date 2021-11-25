@@ -21,7 +21,8 @@
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "ultra -r --no-pretty --serial test",
-    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true"
+    "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
+    "site": "yarn workspace @tamagui/site dev"
   },
   "resolutions": {
     "@types/node": "16.11.9",

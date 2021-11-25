@@ -1,11 +1,13 @@
 import { createContext } from 'react'
 
+type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
+
 export class ThemeManager {
   name: string | null = 'light'
   parentName: string | null = null
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
-  callbacks = new Set<Function>()
+  themeListeners = new Set<ThemeListener>()
   theme = null
 
   setActiveTheme({
@@ -38,13 +40,13 @@ export class ThemeManager {
         this.listeners.get(uuid)?.()
       }
     }
-    this.callbacks.forEach((cb) => cb(this.name))
+    this.themeListeners.forEach((cb) => cb(this.name, this))
   }
 
-  onChangeTheme(cb: (name: string | null) => void) {
-    this.callbacks.add(cb)
+  onChangeTheme(cb: ThemeListener) {
+    this.themeListeners.add(cb)
     return () => {
-      this.callbacks.delete(cb)
+      this.themeListeners.delete(cb)
     }
   }
 

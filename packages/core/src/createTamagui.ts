@@ -28,7 +28,9 @@ export type CreateTamaguiProps = TamaguiProviderProps &
 let conf: TamaguiInternalConfig | null
 
 export const getHasConfigured = () => !!conf
-export const getTamaguiConfig = () => conf!
+
+export const getTamagui = () => conf!
+export const getTokens = () => conf!.tokensParsed
 
 type ConfigListener = (conf: TamaguiInternalConfig) => void
 const configListeners = new Set<ConfigListener>()

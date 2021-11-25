@@ -1,3 +1,4 @@
+- document slimming react-native-web and bundle size
 - TODO fix babel tests they seem right but output isny matching
 - compiler vs non: messing up "Show Code" pos
 - dev mode validate tokens, theme, font

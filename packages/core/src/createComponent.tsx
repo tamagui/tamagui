@@ -500,10 +500,14 @@ export function createComponent<A extends Object = DefaultProps>(
   const res = component as any as StaticComponent<A, void>
 
   // add extractable HoC
-  res['extractable'] = (Component: any) => {
+  res['extractable'] = (Component: any, conf?: StaticConfig) => {
     Component['staticConfig'] = extendStaticConfig(res, {
+      ...conf,
       neverFlatten: true,
-      defaultProps: Component.defaultProps,
+      defaultProps: {
+        ...Component.defaultProps,
+        ...conf?.defaultProps,
+      },
     })
     return Component
   }

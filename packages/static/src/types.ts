@@ -32,7 +32,12 @@ export type ExtractedAttrAttr = {
   value: t.JSXAttribute | t.JSXSpreadAttribute
 }
 
-export type ExtractedAttrStyle = { type: 'style'; value: Object }
+export type ExtractedAttrStyle = {
+  type: 'style'
+  value: Object
+  attr?: t.JSXAttribute | t.JSXSpreadAttribute
+  name?: string
+}
 
 export type ExtractedAttr =
   | ExtractedAttrAttr

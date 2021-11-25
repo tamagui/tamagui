@@ -65,7 +65,7 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
         Ellipse,
         G,
         LinearGradient,
-        RadialGradient,
+        RadialGradient, 
         Line,
         Path,
         Polygon,
@@ -84,7 +84,7 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
           ${$('svg')
             .toString()
             .replace(/ class=\"[^\"]+\"/g, '')
-            .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={color}')
+            .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={`${color}`}')
             .replace('width="24"', 'width={size}')
             .replace('height="24"', 'height={size}')
             .replace('otherProps="..."', '{...otherProps}')
@@ -139,10 +139,6 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
     const cname = uppercamelcase(id)
     const exportString = `export { ${cname} } from './icons/${id}'\n`
 
-    fs.appendFileSync(
-      path.join(rootDir, 'src', 'index.ts'),
-      exportString,
-      'utf-8'
-    )
+    fs.appendFileSync(path.join(rootDir, 'src', 'index.ts'), exportString, 'utf-8')
   })
 })

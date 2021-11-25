@@ -86,7 +86,7 @@ export declare type Tokens = TamaguiConfig["tokens"];
 export declare type Shorthands = TamaguiConfig["shorthands"];
 export declare type Media = TamaguiConfig["media"];
 export declare type Themes = TamaguiConfig["themes"];
-export declare type ThemeName = keyof Themes extends `${infer Prefix}-light` ? Prefix | keyof Themes : keyof Themes;
+export declare type ThemeName = keyof Themes extends `${infer Prefix}-${string}` ? Prefix | keyof Themes : keyof Themes;
 export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeKeyVariables = `$${ThemeKeys}`;
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia> = CreateTamaguiConfig<A, B, C, D> & {
@@ -199,7 +199,7 @@ export declare type TextProps = Omit<ReactTextProps, "style"> & TextStyleProps &
 export declare type StaticComponent<Props = any, VariantProps = any, StaticConfParsed = StaticConfigParsed, ParentVariantProps = any> = React.FunctionComponent<Props> & {
 	staticConfig: StaticConfParsed;
 	variantProps?: VariantProps;
-	extractable: <X>(a: X) => X;
+	extractable: <X>(a: X, opts?: StaticConfig) => X;
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, "children">> & {
 	initialWindowMetrics?: any;

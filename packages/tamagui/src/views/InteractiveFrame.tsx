@@ -6,13 +6,6 @@ import { XStack } from './Stacks'
 // for use in button-like things
 
 export const InteractiveFrame = styled(XStack, {
-  hitSlop: {
-    top: 5,
-    left: 5,
-    right: 5,
-    bottom: 5,
-  },
-
   borderRadius: '$1',
   paddingVertical: '$2',
   paddingHorizontal: '$3',

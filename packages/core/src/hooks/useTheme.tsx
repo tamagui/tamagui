@@ -1,5 +1,5 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { Variable } from '../createVariable'
@@ -24,17 +24,16 @@ const areEqualSets = (a: Set<string>, b: Set<string>) => {
   return true
 }
 
-export const useThemeName = () => {
+export const useThemeName = (opts?: { parent?: true }) => {
   const parent = useContext(ThemeManagerContext)
   const [name, setName] = useState(parent.name)
-  useEffect(() => {
-    return parent.onChangeTheme((next) => {
-      setName((prev) => {
-        if (prev === next) return prev
-        return next
-      })
+
+  useLayoutEffect(() => {
+    return parent.onChangeTheme((next, manager) => {
+      setName(opts?.parent ? manager.parentName : next)
     })
   }, [parent])
+
   return name || 'light'
 }
 

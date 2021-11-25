@@ -182,7 +182,7 @@ export function extractToClassNames({
             const mediaExtraction = extractMediaStyle(
               attr.value,
               jsxPath,
-              extractor.getTamaguiConfig(),
+              extractor.getTamagui(),
               sourcePath,
               lastMediaImportance,
               shouldPrintDebug

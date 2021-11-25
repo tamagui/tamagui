@@ -1,5 +1,5 @@
-import { TextProps, ThemeableProps, themeable } from '@tamagui/core'
-import React, { forwardRef } from 'react'
+import { TextProps, ThemeableProps, getTokens, themeable, useTheme } from '@tamagui/core'
+import React, { forwardRef, isValidElement } from 'react'
 
 import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
 import { SizableText } from './SizableText'
@@ -13,6 +13,9 @@ export type ButtonProps = InteractiveFrameProps &
     noTextWrap?: boolean
     icon?: JSX.Element | null
     iconAfter?: JSX.Element | null
+
+    /* don't toggle this either always on or not */
+    themeIcon?: boolean
   }
 
 export const Button = InteractiveFrame.extractable(
@@ -29,13 +32,43 @@ export const Button = InteractiveFrame.extractable(
           elevation,
           theme: themeName,
           size,
+          themeIcon,
           ...props
         }: ButtonProps,
         ref
       ) => {
+        const theme = themeIcon ? useTheme() : null
+        const addTheme = (el: any) =>
+          isValidElement(el)
+            ? el
+            : !!el
+            ? React.createElement(
+                el,
+                theme ? { color: theme.color2, size: getIconSize(size, -1) } : {}
+              )
+            : null
+        const themedIcon = icon ? addTheme(icon) : null
+        const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
+
         return (
-          <InteractiveFrame size={size} space={space ?? size ?? '$2'} ref={ref as any} {...props}>
-            {icon}
+          <InteractiveFrame
+            size={size}
+            space={
+              space ??
+              // TODO make helper fn
+              (() => {
+                // size down 2
+                const sizes = getTokens().size
+                const sizeNames = Object.keys(sizes)
+                const sizeDown =
+                  sizes[sizeNames[Math.max(0, sizeNames.indexOf(size || '$4') - 3)]] || '$4'
+                return sizeDown
+              })()
+            }
+            ref={ref as any}
+            {...props}
+          >
+            {themedIcon}
             {noTextWrap ? (
               children
             ) : !children ? null : textProps ? (
@@ -55,10 +88,20 @@ export const Button = InteractiveFrame.extractable(
                 {children}
               </SizableText>
             )}
-            {iconAfter}
+            {themedIconAfter}
           </InteractiveFrame>
         )
       }
     )
   )
 )
+
+const getIconSize = (size: any = '$4', sizeUpDown = 0) => {
+  const tokens = getTokens()
+  const fonts = Object.keys(tokens.font)
+  const fontSize = (tokens.font.body || tokens.font[fonts[0]]).size
+  const fontSizeNames = Object.keys(fontSize)
+  const nameIndex = Math.max(1, fontSizeNames.indexOf(size) + sizeUpDown)
+  const sizedName = fontSizeNames[nameIndex]
+  return (sizeUpDown === 0 ? fontSize[size] : fontSize[sizedName]) ?? 16
+}

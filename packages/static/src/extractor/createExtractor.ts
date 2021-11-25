@@ -54,7 +54,7 @@ export function createExtractor() {
   let hasLogged = false
 
   return {
-    getTamaguiConfig() {
+    getTamagui() {
       return loadedTamaguiConfig
     },
     parse: (
@@ -633,8 +633,8 @@ export function createExtractor() {
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
 
-            // we never flatten if a prop isn't a valid static attribute
-            // but we need to make sure its post-prop mapping
+            // never flatten if a prop isn't a valid static attribute
+            // only post prop-mapping
             if (!isStaticAttributeName(name)) {
               let keys = [name]
               if (staticConfig.propMapper) {
@@ -664,6 +664,8 @@ export function createExtractor() {
               return {
                 type: 'style',
                 value: { [name]: styleValue },
+                name,
+                attr: path.node,
               }
             }
 
@@ -904,29 +906,27 @@ export function createExtractor() {
               if (cur.type === 'style') {
                 // TODO need to loop over initial props not just style props
                 for (const key in cur.value) {
-                  const shouldInsertNull =
-                    !!(
-                      staticConfig.ensureOverriddenProp?.[key] // || staticConfig.defaultProps?.[key]
-                    )
+                  const shouldEnsureOverridden = !!staticConfig.ensureOverriddenProp?.[key]
                   const isSetInAttrsAlready = attrs.some(
                     (x) =>
                       x.type === 'attr' &&
                       x.value.type === 'JSXAttribute' &&
                       x.value.name.name === key
                   )
-                  const shouldInsertNullOverride = shouldInsertNull && !isSetInAttrsAlready
-                  // if (shouldPrintDebug) {
-                  //   // prettier-ignore
-                  //   console.log('what is', key, { shouldInsertNullOverride, shouldInsertNull, isSetInAttrsAlready })
-                  // }
-                  if (shouldInsertNullOverride) {
-                    acc.push({
-                      type: 'attr',
-                      value: t.jsxAttribute(
-                        t.jsxIdentifier(key),
-                        t.jsxExpressionContainer(t.nullLiteral())
-                      ),
-                    })
+
+                  if (!isSetInAttrsAlready) {
+                    const isVariant = !!staticConfig.variants?.[cur.name || '']
+                    if (isVariant || shouldEnsureOverridden) {
+                      acc.push({
+                        type: 'attr',
+                        value:
+                          cur.attr ||
+                          t.jsxAttribute(
+                            t.jsxIdentifier(key),
+                            t.jsxExpressionContainer(t.nullLiteral())
+                          ),
+                      })
+                    }
                   }
                 }
               }

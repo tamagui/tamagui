@@ -27,6 +27,8 @@ export declare type ExtractedAttrAttr = {
 export declare type ExtractedAttrStyle = {
 	type: "style";
 	value: Object;
+	attr?: t.JSXAttribute | t.JSXSpreadAttribute;
+	name?: string;
 };
 export declare type ExtractedAttr = ExtractedAttrAttr | {
 	type: "ternary";
@@ -157,7 +159,7 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, "chi
 };
 export declare type Extractor = ReturnType<typeof createExtractor>;
 export declare function createExtractor(): {
-	getTamaguiConfig(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<string | number | import("@tamagui/core").Variable>, {
+	getTamagui(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<string | number | import("@tamagui/core").Variable>, {
 		[key: string]: {
 			bg: string | import("@tamagui/core").Variable;
 			bg2: string | import("@tamagui/core").Variable;
