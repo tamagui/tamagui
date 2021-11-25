@@ -83,12 +83,12 @@ export function Hero() {
                       letterSpacing={0}
                       $gtSm={{
                         ta: 'center',
-                        size: '$6',
+                        size: '$5',
                         letterSpacing: 0,
                         fontWeight: '400',
                       }}
                       $gtMd={{
-                        size: '$7',
+                        size: '$6',
                         letterSpacing: 0,
                         fontWeight: '400',
                       }}
