@@ -20,7 +20,7 @@ name: text
   features={[
     'Supports all react-native-web props and Tamagui styling props.',
     'Media query styles, hoverStyle, pressStyle.',
-    'Paragraph uses themes and functional variants for a nicer default.',
+    'Paragraph uses themes and spread variants for a nicer default.',
   ]}
 />
 
@@ -53,26 +53,16 @@ export default () => (
 
 ## SizableText
 
-Seeing how SizableText and Paragraph are defined is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
+[Seeing how SizableText is defined](https://github.com/tamagui/tamagui/blob/master/packages/tamagui/src/views/SizableText.tsx) is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
 
-```jsx
-import { Text, styled } from '@tamagui/core'
+SizableText simply adds a single `size` property to maniplulate all of:
 
-export const SizableText = styled(Text, {
-  variants: {
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          fontSize: tokens.fontSize[val] ?? val,
-          lineHeight: tokens.lineHeight[val] ?? val,
-        }
-      },
-    },
-  },
-})
-```
+- fontSize
+- lineHeight
+- fontWeight
+- letterSpacing
 
-SizableText simply adds a single `size` property to maniplulate both fontSize and lineHeight, using the [Functional Variants]() feature. Then Paragraph extends that and ensures it defaults to values from your theme - fontSize, lineHeight, color and fontFamily.
+Based on the values set in your tokens. It uses [spread variants](/docs/core/styled#spread-variants) feature. Then Paragraph extends that and ensures it defaults to values from your theme - fontSize, lineHeight, color and fontFamily.
 
 ## Paragraph
 
