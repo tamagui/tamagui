@@ -185,6 +185,7 @@ export const x = (props: StackProps) => {
         $lg={{
           p: 10,
           x: 10,
+          width: 10,
         }}
         p={10}
         width="$1"

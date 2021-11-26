@@ -1,6 +1,7 @@
+import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
+
 import { isWeb } from '../constants/platform'
 import { createComponent } from '../createComponent'
-import { stylePropsTextOnly, validStyles } from '../static'
 import { TextProps } from '../types'
 
 const ellipseStyle = {

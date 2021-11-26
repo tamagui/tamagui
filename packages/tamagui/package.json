@@ -5,18 +5,18 @@
     "*.css"
   ],
   "source": "src/index.ts",
+  "typings": "types",
   "main": "dist/cjs",
-  "module": "dist",
-  "typings": "types.d.ts",
-  "module:jsx": "_jsx",
+  "module": "dist/esm",
+  "module:jsx": "dist/_jsx",
   "files": [
-    "types.d.ts",
-    "_jsx",
+    "types",
+    "src",
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build --separate --jsx",
-    "watch": "tamagui-build --separate --jsx --watch"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
   },
   "dependencies": {
     "@react-aria/ssr": "^3.1.0",

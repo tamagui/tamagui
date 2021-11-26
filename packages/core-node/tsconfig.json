@@ -1,7 +1,9 @@
 {
   "extends": "../core/tsconfig",
+  "include": ["../core/src"],
   "compilerOptions": {
-    "rootDir": "../",
+    "baseUrl": "../core",
+    "rootDir": "../core/src",
     "incremental": false,
     "emitDeclarationOnly": false,
     "jsx": "react",

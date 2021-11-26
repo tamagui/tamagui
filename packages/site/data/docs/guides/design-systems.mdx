@@ -3,10 +3,10 @@ title: Design Systems Guide
 description: How to set up a package of your own components that get optimized.
 ---
 
-<Notice>
-  A great reference for this guide is reading the source of the
-  [tamagui](https://github.com/tamagui/tamagui/tree/master/packages/tamagui) package itself.
-</Notice>
+To skip to some real examples:
+
+- A simple example is the [benchmark components](https://github.com/tamagui/tamagui/tree/master/packages/bench-components).
+- More complete, the [tamagui](https://github.com/tamagui/tamagui/tree/master/packages/tamagui) package itself.
 
 Tamagui allows you to build our your own set of components that are optimized with the compiler whenever they are used in your app.
 
@@ -29,17 +29,18 @@ Let's name our package `@ourapp/components`:
 ```json
 {
   "name": "@ourapp/components",
+  "typings": "types",
   "main": "dist/cjs",
-  "module": "dist",
-  "module:jsx": "_jsx",
-  "typings": "types.d.ts",
+  "module": "dist/esm",
+  "module:jsx": "dist/_jsx",
+  "files": ["types", "src", "dist"],
   "sideEffects": ["*.css"],
   "dependencies": {
-    "@tamagui/core": "1.0.0-alpha.1"
+    "@tamagui/core": "*"
   },
   "scripts": {
-    "build": "tamagui-build --separate --jsx",
-    "watch": "tamagui-build --separate --jsx --watch"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
   },
   "devDependencies": {
     "@tamagui/build": "*"
@@ -47,12 +48,14 @@ Let's name our package `@ourapp/components`:
 }
 ```
 
+And be sure to have a `tsconfig.json` with whichever options you'd like.
+
 There are a few things to note here:
 
-- We're using `@tamagui/build` to build this package, which is a small script built around `esbuild` and `rollup-plugin-flat-dts` that makes sure you output your components _with JSX preserved_ into `./_jsx`.
+- We're using `@tamagui/build` to build this package, which is a small script built around `esbuild` and `typescript` that makes sure you output your components _with JSX preserved_.
 - We then set `module:jsx`, which then needs to be added to your webpack `resolve.mainFields`.
   - The Next.js plugin handles this for you automatically.
-- `sideEffects` is important: otherwise webpack will remove the generated CSS in production.
+- `sideEffects` field is important, otherwise webpack will remove the generated CSS in production.
 
 ## Step 2: Define and export components
 

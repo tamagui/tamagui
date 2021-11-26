@@ -6,12 +6,13 @@
     "*.css"
   ],
   "source": "src/index.ts",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "typings": "types.d.ts",
-  "module:jsx": "_jsx",
+  "typings": "types",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/_jsx",
   "files": [
-    "_jsx",
+    "types",
+    "src",
     "dist"
   ],
   "scripts": {

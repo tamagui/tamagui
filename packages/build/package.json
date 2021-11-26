@@ -14,7 +14,6 @@
   "devDependencies": {
     "chokidar": "^3.5.2",
     "chokidar-cli": "^2.1.0",
-    "dts-bundle-generator": "^5.9.0",
     "esbuild": "^0.13.14",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.7",

@@ -2,18 +2,19 @@
   "name": "@tamagui/colors",
   "version": "1.0.0-alpha.8",
   "source": "src/index.ts",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
   "typings": "types",
-  "scripts": {
-    "build": "tamagui-build legacy",
-    "watch": "tamagui-build legacy --watch"
-  },
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/_jsx",
   "files": [
     "types",
-    "dist",
-    "src"
+    "src",
+    "dist"
   ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
   "devDependencies": {
     "@tamagui/build": "^1.0.0-alpha.8"
   },

@@ -4,14 +4,13 @@
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist",
-  "typings": "types.d.ts",
+  "typings": "types",
   "scripts": {
-    "build": "tamagui-build --separate",
-    "watch": "tamagui-build --separate --watch"
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
   },
   "files": [
-    "_",
-    "types.d.ts",
+    "types",
     "dist",
     "src"
   ],

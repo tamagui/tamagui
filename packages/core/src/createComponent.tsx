@@ -241,7 +241,7 @@ export function createComponent<A extends Object = DefaultProps>(
           ]
         : [defaultsClassName, props.className, classNames, stylesClassNames]
 
-      // @ts-expect-error
+      // @ts-ignore we are optimizing using arguments
       const className = concatClassName(...classList)
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {

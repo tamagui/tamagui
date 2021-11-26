@@ -2,13 +2,14 @@
   "name": "@tamagui/static",
   "version": "1.0.0-alpha.11",
   "source": "src/index.ts",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "typings": "types.d.ts",
+  "typings": "types",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/_jsx",
   "files": [
-    "types.d.ts",
-    "dist",
-    "src"
+    "types",
+    "src",
+    "dist"
   ],
   "scripts": {
     "build": "tamagui-build",

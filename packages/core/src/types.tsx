@@ -225,7 +225,7 @@ export type WithThemeValues<T extends object> = {
 type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
     ? StyleProps[Shorthands[Key]] | null
-    : {}
+    : undefined
 }
 
 //
@@ -263,11 +263,11 @@ type WebOnlyStyleProps = {
   pointerEvents?: ViewProps['pointerEvents']
 }
 
-type StackStyleProps = WithThemeShorthandsPseudosAndMedia<
-  Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
-    TransformStyleProps &
-    WebOnlyStyleProps
->
+export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> &
+  TransformStyleProps &
+  WebOnlyStyleProps
+
+export type StackStyleProps = WithThemeShorthandsPseudosAndMedia<StackStylePropsBase>
 
 export type StackProps = Omit<RNWInternalProps, 'children'> &
   Omit<ViewProps, 'display' | 'children'> &

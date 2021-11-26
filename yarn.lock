@@ -3686,7 +3686,6 @@ __metadata:
   dependencies:
     chokidar: ^3.5.2
     chokidar-cli: ^2.1.0
-    dts-bundle-generator: ^5.9.0
     esbuild: ^0.13.14
     execa: ^5.0.0
     fast-glob: ^3.2.7
@@ -6536,17 +6535,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cliui@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "cliui@npm:6.0.0"
-  dependencies:
-    string-width: ^4.2.0
-    strip-ansi: ^6.0.0
-    wrap-ansi: ^6.2.0
-  checksum: 4fcfd26d292c9f00238117f39fc797608292ae36bac2168cfee4c85923817d0607fe21b3329a8621e01aedf512c99b7eaa60e363a671ffd378df6649fb48ae42
-  languageName: node
-  linkType: hard
-
 "cliui@npm:^7.0.2":
   version: 7.0.4
   resolution: "cliui@npm:7.0.4"
@@ -8275,18 +8263,6 @@ __metadata:
     p-event: ^2.1.0
     pify: ^3.0.0
   checksum: 158feb3dab42f3429f4242a7bd6610e6890ab72e6da9bd5a7bee3d0f56b7df2786eefccd4c0d3cfb7f03e77997950e41ca0a2dcdbb76098cedaeb6c594aa0f3f
-  languageName: node
-  linkType: hard
-
-"dts-bundle-generator@npm:^5.9.0":
-  version: 5.9.0
-  resolution: "dts-bundle-generator@npm:5.9.0"
-  dependencies:
-    typescript: ">=3.0.1"
-    yargs: ^15.3.1
-  bin:
-    dts-bundle-generator: dist/bin/dts-bundle-generator.js
-  checksum: e16d18eb4b4d310006ce2bad0b22fe2bcf50c7d7b6fef5e05dd5ecb6b27bb9b421f24eae1324d2fc6c6e24e8b97ab68f0f3d7e1309909b035ba9b9e549ba4e65
   languageName: node
   linkType: hard
 
@@ -21523,17 +21499,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrap-ansi@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "wrap-ansi@npm:6.2.0"
-  dependencies:
-    ansi-styles: ^4.0.0
-    string-width: ^4.1.0
-    strip-ansi: ^6.0.0
-  checksum: 6cd96a410161ff617b63581a08376f0cb9162375adeb7956e10c8cd397821f7eb2a6de24eb22a0b28401300bf228c86e50617cd568209b5f6775b93c97d2fe3a
-  languageName: node
-  linkType: hard
-
 "wrap-ansi@npm:^7.0.0":
   version: 7.0.0
   resolution: "wrap-ansi@npm:7.0.0"
@@ -21796,16 +21761,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:^18.1.2":
-  version: 18.1.3
-  resolution: "yargs-parser@npm:18.1.3"
-  dependencies:
-    camelcase: ^5.0.0
-    decamelize: ^1.2.0
-  checksum: 60e8c7d1b85814594d3719300ecad4e6ae3796748b0926137bfec1f3042581b8646d67e83c6fc80a692ef08b8390f21ddcacb9464476c39bbdf52e34961dd4d9
-  languageName: node
-  linkType: hard
-
 "yargs-parser@npm:^20.2.2, yargs-parser@npm:^20.2.3":
   version: 20.2.9
   resolution: "yargs-parser@npm:20.2.9"
@@ -21828,25 +21783,6 @@ __metadata:
     y18n: ^4.0.0
     yargs-parser: ^13.1.2
   checksum: 75c13e837eb2bb25717957ba58d277e864efc0cca7f945c98bdf6477e6ec2f9be6afa9ed8a876b251a21423500c148d7b91e88dee7adea6029bdec97af1ef3e8
-  languageName: node
-  linkType: hard
-
-"yargs@npm:^15.3.1":
-  version: 15.4.1
-  resolution: "yargs@npm:15.4.1"
-  dependencies:
-    cliui: ^6.0.0
-    decamelize: ^1.2.0
-    find-up: ^4.1.0
-    get-caller-file: ^2.0.1
-    require-directory: ^2.1.1
-    require-main-filename: ^2.0.0
-    set-blocking: ^2.0.0
-    string-width: ^4.2.0
-    which-module: ^2.0.0
-    y18n: ^4.0.0
-    yargs-parser: ^18.1.2
-  checksum: 40b974f508d8aed28598087720e086ecd32a5fd3e945e95ea4457da04ee9bdb8bdd17fd91acff36dc5b7f0595a735929c514c40c402416bbb87c03f6fb782373
   languageName: node
   linkType: hard
 

@@ -1,6 +1,7 @@
 {
-  "extends": "../../tsconfig",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "../..",
+    "baseUrl": "../..",
+    "jsx": "preserve",
   }
 }
