@@ -1,7 +1,7 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { useRef } from 'react'
 
-import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
 import {
   ConfigureMediaQueryOptions,
@@ -28,13 +28,15 @@ let conf: MediaQueries | null = null
 export const mediaQueryConfig = new Proxy<MediaQueries>({} as any, {
   get(target, key) {
     if (!conf) {
-      throw new Error(`Be sure to run configureMedia before accessing mediaQueryConfig`)
+      console.warn('Warning: accessing media query before init')
+      return null
     }
     return Reflect.get(conf, key)
   },
   ownKeys() {
     if (!conf) {
-      throw new Error(`Be sure to run configureMedia before accessing mediaQueryConfig`)
+      console.warn('Warning: accessing media query before init')
+      return []
     }
     return Object.keys(conf)
   },

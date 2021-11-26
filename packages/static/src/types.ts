@@ -17,6 +17,7 @@ export interface TamaguiOptions {
   disableExtraction?: boolean
   disableDebugAttr?: boolean
   disableExtractInlineMedia?: boolean
+  disableExtractVariables?: boolean
   exclude?: RegExp
   logTimings?: boolean
 

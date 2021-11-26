@@ -70,6 +70,7 @@ export function createExtractor() {
         getFlattenedNode,
         disableExtraction,
         disableExtractInlineMedia,
+        disableExtractVariables,
         disableDebugAttr,
         ...props
       }: ExtractorParseProps
@@ -629,6 +630,19 @@ export function createExtractor() {
               return {
                 type: 'attr',
                 value: path.node,
+              }
+            }
+
+            // native shouldn't extract variables
+            if (disableExtractVariables) {
+              if (value) {
+                if (value.type === 'StringLiteral' && value.value[0] === '$') {
+                  if (shouldPrintDebug) {
+                    console.log('  native, disable extract var', value.value)
+                  }
+                  inlinePropCount++
+                  return attr
+                }
               }
             }
 

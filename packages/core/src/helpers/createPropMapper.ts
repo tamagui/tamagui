@@ -1,3 +1,4 @@
+import { isWeb } from '../constants/platform'
 import { getTamagui } from '../createTamagui'
 import { Variable } from '../createVariable'
 import { StaticConfig, TamaguiInternalConfig } from '../types'
@@ -37,7 +38,7 @@ export const createPropMapper = (c: StaticConfig) => {
           : val
 
       if (isObj(res)) {
-        resolveTokens(res, conf, fontFamily)
+        resolveTokens(res, conf, theme, fontFamily)
       }
 
       return res
@@ -53,7 +54,7 @@ export const createPropMapper = (c: StaticConfig) => {
 
     if (value && value[0] === '$') {
       shouldReturn = true
-      value = getToken(key, value, conf, fontFamily)
+      value = getToken(key, value, conf, theme, fontFamily)
     }
 
     if (value instanceof Variable) {
@@ -69,19 +70,19 @@ export const createPropMapper = (c: StaticConfig) => {
   }
 }
 
-const resolveTokens = (res: any, conf: TamaguiInternalConfig, fontFamily: any) => {
+const resolveTokens = (res: any, conf: TamaguiInternalConfig, theme: any, fontFamily: any) => {
   for (const rKey in res) {
     const fKey = conf.shorthands[rKey] || rKey
     const val = res[rKey]
     if (val instanceof Variable) {
       res[fKey] = val.variable
     } else if (typeof val === 'string') {
-      const fVal = val[0] === '$' ? getToken(fKey, val, conf, fontFamily) : val
+      const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily) : val
       res[fKey] = fVal
     } else {
       if (isObj(val)) {
         // for things like shadowOffset which is a sub-object
-        resolveTokens(val, conf, fontFamily)
+        resolveTokens(val, conf, theme, fontFamily)
       }
       // nullish values cant be tokens so need no exrta parsing
     }
@@ -92,10 +93,17 @@ const getToken = (
   key: string,
   value: string,
   { tokensParsed, themeParsed }: TamaguiInternalConfig,
+  theme: any,
   fontFamily: string | undefined = '$body'
 ) => {
   if (themeParsed[value]) {
-    return themeParsed[value].variable
+    if (isWeb && themeParsed[value].variable) {
+      return themeParsed[value].variable
+    } else {
+      if (value && value[0] === '$') {
+        return theme[`${value.slice(1)}`]?.val || themeParsed[value]?.val
+      }
+    }
   }
   let valOrVar: any
   if (key === 'fontFamily') {

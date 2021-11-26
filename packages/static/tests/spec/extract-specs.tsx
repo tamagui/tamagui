@@ -20,8 +20,9 @@ export const Card = (props: any) => (
   <Box
     className="transition all ease-in ms100"
     borderRadius="$2"
+    backgroundColor="$bg"
     hoverStyle={{
-      backgroundColor: '$bg',
+      backgroundColor: '$bg2',
       shadowColor: '$shadowColor',
       shadowRadius: 20,
       shadowOffset: { height: 3, width: 0 },

@@ -13,6 +13,7 @@ export interface TamaguiOptions {
 	disableExtraction?: boolean;
 	disableDebugAttr?: boolean;
 	disableExtractInlineMedia?: boolean;
+	disableExtractVariables?: boolean;
 	exclude?: RegExp;
 	logTimings?: boolean;
 	cssPath?: string;
@@ -179,7 +180,7 @@ export declare function createExtractor(): {
 			[key: string]: string | number;
 		};
 	}>;
-	parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableExtraction, disableExtractInlineMedia, disableDebugAttr, ...props }: ExtractorParseProps) => {
+	parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disableExtraction, disableExtractInlineMedia, disableExtractVariables, disableDebugAttr, ...props }: ExtractorParseProps) => {
 		flattened: number;
 		optimized: number;
 		modified: number;

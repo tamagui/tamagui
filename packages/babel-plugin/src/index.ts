@@ -108,6 +108,8 @@ export default declare(function snackBabelPlugin(
             // because theme need to stay in render(), whereas non-theme can be extracted
             // for now just turn it off entirely at a small perf loss
             disableExtractInlineMedia: true,
+            // disable extracting variables as no native concept of them
+            disableExtractVariables: true,
             sourcePath,
             getFlattenedNode({ isTextView }) {
               if (!hasImportedView) {

@@ -542,7 +542,7 @@ export declare const Stack: StaticComponent;
 export declare const Text: StaticComponent;
 export declare type ThemeProps = {
 	disableThemeClass?: boolean;
-	name: ThemeName | null;
+	name: Exclude<ThemeName, number> | null;
 	children?: any;
 };
 export declare const Theme: (props: ThemeProps) => any;

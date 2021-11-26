@@ -99,12 +99,14 @@ export function createComponent<A extends Object = DefaultProps>(
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
 
+    const theme = (manager.theme as any) || initialTheme
+
     const {
       viewProps: viewPropsIn,
       pseudos,
       style,
       classNames,
-    } = getSplitStyles(props, staticConfig, (manager.theme as any) || initialTheme)
+    } = getSplitStyles(props, staticConfig, theme)
 
     const {
       tag,

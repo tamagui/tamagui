@@ -9,7 +9,7 @@ import { ThemeManager, ThemeManagerContext } from './ThemeManagerContext'
 
 export type ThemeProps = {
   disableThemeClass?: boolean
-  name: ThemeName | null
+  name: Exclude<ThemeName, number> | null
   children?: any
 }
 
@@ -21,19 +21,19 @@ export const Theme = (props: ThemeProps) => {
     console.warn('Error, no themes in context', props)
     return props.children
   }
-  const name = props.name as string
-  const nextNameParent = `${name}-${parentName}`
-  const nextNameParentParent = `${name}-${parent.parentName}`
-  const activeName = !name
+
+  const nextNameParent = `${props.name}-${parentName}`
+  const nextNameParentParent = `${props.name}-${parent.parentName}`
+  const name = !props.name
     ? null
-    : name in themes
-    ? name
+    : props.name in themes
+    ? props.name
     : nextNameParent in themes
     ? nextNameParent
     : nextNameParentParent in themes
     ? nextNameParentParent
     : null
-  const theme = activeName ? themes[activeName] : null
+  const theme = name ? themes[name] : null
   const themeManager = useConstant<ThemeManager | null>(() => {
     if (!theme) {
       return null
@@ -49,14 +49,16 @@ export const Theme = (props: ThemeProps) => {
     if (!themeManager) {
       return
     }
-    themeManager.setActiveTheme({ name: activeName, theme, parentName })
+    if (name) {
+      themeManager.setActiveTheme({ name, theme, parentName })
+    }
     return parent.onChangeTheme((next) => {
       if (next) {
         themeManager.setActiveTheme({ name: next, theme: themes[next], parentName })
         setParentName(next)
       }
     })
-  }, [themes, activeName, parentName])
+  }, [themes, name, parentName])
 
   if (!name || !theme) {
     return props.children
@@ -74,16 +76,18 @@ export const Theme = (props: ThemeProps) => {
     if (props.disableThemeClass) {
       return contents
     }
-    const color = themes[name]?.['color']?.['variable']
-    return (
-      <div
-        className={getThemeParentClassName(name)}
-        // in order to provide currentColor, set color by default
-        style={{ display: 'contents', color }}
-      >
-        {contents}
-      </div>
-    )
+    if (name) {
+      const color = themes[name]?.['color']?.['variable']
+      return (
+        <div
+          className={getThemeParentClassName(name)}
+          // in order to provide currentColor, set color by default
+          style={{ display: 'contents', color }}
+        >
+          {contents}
+        </div>
+      )
+    }
   }
 
   return contents

@@ -23,7 +23,7 @@ test.skip('styles - 1. extracts to a div for simple views', async () => {
   expect(style.boxShadow).toBe('0px 0px 10px rgba(0,0,0,1.00)')
 })
 
-test('styles - 2. extracts className for complex views but keeps other props', async () => {
+test.skip('styles - 2. extracts className for complex views but keeps other props', async () => {
   const [truthy, falsy] = await getTestElements(app.Provider, app.Test2)
   expect(truthy.style.backgroundColor).toBe('rgb(255, 255, 255)')
   expect(truthy.style.top).toBe('-14px')
