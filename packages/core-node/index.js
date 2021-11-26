@@ -1,3 +1,5 @@
+// see core/static
+
 process.env.TAMAGUI_COMPILE_PROCESS = 1
 process.env.IS_STATIC = 'is_static'
 const all = require('./dist/static')
