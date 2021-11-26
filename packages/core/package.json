@@ -16,6 +16,7 @@
     "src"
   ],
   "dependencies": {
+    "@tamagui/ow": "^0.28.1",
     "@tamagui/helpers": "^1.0.0-alpha.8",
     "@tamagui/use-debounce": "^1.0.0-alpha.8",
     "@tamagui/use-force-update": "^1.0.0-alpha.8",
@@ -27,7 +28,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.0-alpha.8",
-    "@tamagui/ow": "^0.28.1",
     "@types/react": "^17.0.35",
     "esbuild": "^0.11.20",
     "typescript": "^4.4.4"
