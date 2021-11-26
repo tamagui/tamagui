@@ -5,7 +5,6 @@ import * as Colors from '@tamagui/colors'
 export const colorNames = [
   'blue',
   'gray',
-  'grayA',
   'green',
   'indigo',
   'orange',
