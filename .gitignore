@@ -2,7 +2,12 @@
 **/types/**/*.d.ts
 **/types/**/*.d.ts.map
 
-.yarn/cache
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 .ultra.cache.json
 tmp
