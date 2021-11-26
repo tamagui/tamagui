@@ -1,5 +1,6 @@
 import * as RadixColors from '@tamagui/colors'
 
+import { colorNames } from './colors'
 import { tokens } from './tokens'
 
 export type MyTheme = typeof light
@@ -50,9 +51,8 @@ const dark = {
   ...darkColors,
 }
 
-const colorThemes: Record<string, typeof light> = {}
-const colorKeys = Object.keys(RadixColors)
-for (const key of colorKeys) {
+const colorThemes: Record<typeof colorNames[number], typeof light> = {} as any
+for (const key of colorNames) {
   if (key.endsWith('A')) continue
   const colorName = key.replace('Dark', '')
   const colorValues = RadixColors[key]

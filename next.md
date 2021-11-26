@@ -1,3 +1,4 @@
+- document: getTokens, useThemeName
 - textTransform on font for uppercase h6
 - document slimming react-native-web and bundle size
 - TODO fix babel tests they seem right but output isny matching

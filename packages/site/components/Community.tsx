@@ -10,9 +10,9 @@ export function Community() {
   return (
     <ContainerLarge space="$3">
       <H2 ta="center">Community</H2>
-      <H3 fontWeight="400" color="$color3" ta="center">
+      <H4 fontWeight="400" color="$color3" ta="center">
         Join the community on these platforms
-      </H3>
+      </H4>
 
       <YStack maxWidth="100%" fs={0} als="center" pt="$2" pb="$6">
         <EnsureFlexed />
