@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/test",
   "private": true,
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.11",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -11,7 +11,7 @@
     "watch": "true"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.0-alpha.10",
+    "@tamagui/core": "^1.0.0-alpha.11",
     "@tamagui/helpers": "^1.0.0-alpha.8"
   },
   "peerDependencies": {
