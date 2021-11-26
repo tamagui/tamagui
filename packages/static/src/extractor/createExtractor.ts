@@ -13,6 +13,7 @@ import { findTopmostFunction } from './findTopmostFunction'
 import { getStaticBindingsForScope } from './getStaticBindingsForScope'
 import { literalToAst } from './literalToAst'
 import { loadTamagui } from './loadTamagui'
+import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
 
@@ -95,8 +96,9 @@ export function createExtractor() {
       /**
        * Step 1: Determine if importing any statically extractable components
        */
-      const isInternalImport = (importStr: string) =>
-        isInsideTamagui(sourcePath) && importStr[0] === '.'
+      const isInternalImport = (importStr: string) => {
+        return isInsideTamagui(sourcePath) && importStr[0] === '.'
+      }
 
       const validComponents: { [key: string]: any } = Object.keys(components)
         // check if uppercase to avoid hitting media query proxy before init
@@ -797,7 +799,7 @@ export function createExtractor() {
 
           // see if we can filter them
           if (shouldPrintDebug) {
-            console.log('  - attrs (before): ', attrs.map(attrStr).join(', '))
+            console.log('  - attrs (before):\n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           // now update to new values
@@ -936,7 +938,7 @@ export function createExtractor() {
           }
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (flattened):  ', attrs.map(attrStr).join(', '))
+            console.log('  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           // evaluate away purely style props
@@ -962,7 +964,7 @@ export function createExtractor() {
           }, [])
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (evaluated styles):  ', attrs.map(attrStr).join(', '))
+            console.log('  - attrs (evaluated styles): \n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           // combine styles, leave undefined values
@@ -980,7 +982,7 @@ export function createExtractor() {
           }, [])
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (combined 🔀):  ', attrs.map(attrStr).join(', '))
+            console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           // post process
@@ -995,9 +997,10 @@ export function createExtractor() {
             const out = postProcessStyles(props, staticConfig, defaultTheme)
             const next = out?.style ?? props
             if (shouldPrintDebug) {
-              console.log('    >> getStyles: ', objToStr(props), '==>>', objToStr(next))
-              console.log('    >>     style: ', objToStr(out.style))
-              console.log('    >>     viewp: ', objToStr(out.viewProps))
+              console.log('  getStyles props >>\n', logLines(objToStr(props)))
+              console.log('  getStyles next  >>\n', logLines(objToStr(next)))
+              console.log('  getStyles style >>\n', logLines(objToStr(out.style)))
+              console.log('  getStyles viewp >>\n', logLines(objToStr(out.viewProps)))
             }
             if (staticConfig.validStyles) {
               for (const key in next) {
@@ -1007,10 +1010,6 @@ export function createExtractor() {
               }
             }
             return next
-          }
-
-          if (shouldPrintDebug) {
-            console.log('  staticConfig.defaultProps', staticConfig.defaultProps)
           }
 
           // used to ensure we pass the entire prop bundle to getStyles
@@ -1041,9 +1040,9 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log('    completeStaticProps', objToStr(completeStaticProps))
+            console.log('   completeStaticProps\n', logLines(objToStr(completeStaticProps)))
             // prettier-ignore
-            console.log('    completeStylesProcessed', objToStr(completeStylesProcessed))
+            console.log('   completeStylesProcessed\n', logLines(objToStr(completeStylesProcessed)))
           }
 
           for (const attr of attrs) {
@@ -1082,7 +1081,7 @@ export function createExtractor() {
           }
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (after): ', attrs.map(attrStr).join(', '))
+            console.log('  - attrs (after):\n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           if (shouldFlatten) {
@@ -1101,7 +1100,7 @@ export function createExtractor() {
           if (shouldPrintDebug) {
             // prettier-ignore
             console.log('  [❊] inline props ', inlinePropCount, shouldDeopt ? ' deopted' : '', hasSpread ? ' spread' : '', '!flatten', staticConfig.neverFlatten)
-            console.log('  - attrs (end): ', attrs.map(attrStr).join(', '))
+            console.log('  - attrs (end):\n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           res.optimized++

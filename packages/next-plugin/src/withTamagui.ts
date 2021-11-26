@@ -112,10 +112,6 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         const oneOfRule = webpackConfig.module.rules.find((x) => !!x.oneOf)
 
-        for (const rule of webpackConfig.module.rules) {
-          console.log('rule', rule)
-        }
-
         if (oneOfRule) {
           if (!dev) {
             // replace nextjs picky style rules with simple minicssextract
@@ -139,24 +135,24 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
               })
             )
           } else {
-            // const {
-            //   getGlobalCssLoader,
-            // } = require('next/dist/build/webpack/config/blocks/css/loaders')
-            // oneOfRule.oneOf.unshift({
-            //   test: /\.css$/i,
-            //   sideEffects: true,
-            //   use: getGlobalCssLoader(
-            //     {
-            //       assetPrefix: options.config.assetPrefix,
-            //       future: { webpack5: true },
-            //       isClient: !isServer,
-            //       isServer,
-            //       isDevelopment: true,
-            //     },
-            //     [],
-            //     []
-            //   ),
-            // })
+            const {
+              getGlobalCssLoader,
+            } = require('next/dist/build/webpack/config/blocks/css/loaders')
+            oneOfRule.oneOf.unshift({
+              test: /\.css$/i,
+              sideEffects: true,
+              use: getGlobalCssLoader(
+                {
+                  assetPrefix: options.config.assetPrefix,
+                  future: { webpack5: true },
+                  isClient: !isServer,
+                  isServer,
+                  isDevelopment: true,
+                },
+                [],
+                []
+              ),
+            })
           }
         }
 
@@ -164,16 +160,12 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         const shouldExclude = (x) => {
           // analyze everything in our src dir
           // analyze everything in the components dirs
-          if (
+          const shouldInclude =
             x.includes(options.dir) ||
             tamaguiOptions.components.some(
               (c) => x.includes(`/node_modules/${c}`) || x.includes(`${c}/_jsx/`)
             )
-          ) {
-            return false
-          }
-          // exclude everything else
-          return true
+          return !shouldInclude
         }
         const [first, second, ...rest] = webpackConfig.module.rules
         webpackConfig.module.rules = [

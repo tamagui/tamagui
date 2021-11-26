@@ -353,7 +353,7 @@ export declare type CreateTamaguiProps = TamaguiProviderProps & Omit<GenericTama
 	mediaQueryDefaultActive?: MediaQueryKey[];
 };
 export declare const getHasConfigured: () => boolean;
-export declare const getTamaguiConfig: () => TamaguiInternalConfig<CreateTokens, {
+export declare const getTamagui: () => TamaguiInternalConfig<CreateTokens, {
 	[key: string]: {
 		bg: string | Variable;
 		bg2: string | Variable;
@@ -373,6 +373,7 @@ export declare const getTamaguiConfig: () => TamaguiInternalConfig<CreateTokens,
 		[key: string]: string | number;
 	};
 }>;
+export declare const getTokens: () => CreateTokens;
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
 export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D> ? TamaguiInternalConfig<A, B, C, D> : unknown;
@@ -509,7 +510,9 @@ export declare const useMedia: () => {
 	[x: string]: boolean;
 };
 export declare function mediaObjectToString(query: string | MediaQueryObject): string;
-export declare const useThemeName: () => string;
+export declare const useThemeName: (opts?: {
+	parent?: true | undefined;
+} | undefined) => string;
 export declare const useDefaultThemeName: () => string | number;
 export declare const useTheme: () => {
 	bg: string | Variable;

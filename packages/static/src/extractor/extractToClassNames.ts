@@ -18,6 +18,7 @@ import { ensureImportingConcat } from './ensureImportingConcat'
 import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
 import { hoistClassNames } from './hoistClassNames'
+import { logLines } from './logLines'
 
 export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
 
@@ -136,10 +137,6 @@ export function extractToClassNames({
           case 'style':
             const styles = addStyles(attr.value)
             const newClassNames = concatClassName(styles.map((x) => x.identifier).join(' '))
-            if (shouldPrintDebug) {
-              // console.log('  style', attr.value)
-              console.log('  classnames', newClassNames, finalClassNames)
-            }
             // prettier-ignore
             const existing = finalClassNames.find((x) => x.type == 'StringLiteral') as t.StringLiteral | null
             if (existing) {
@@ -149,7 +146,7 @@ export function extractToClassNames({
             }
             if (shouldPrintDebug) {
               // prettier-ignore
-              console.log('  classnames (after)', finalClassNames.map(x => x['value']).join(' '))
+              console.log('  classnames (after)\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
             }
             break
           case 'attr':

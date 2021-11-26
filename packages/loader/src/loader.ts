@@ -66,9 +66,8 @@ export function loader(this: any, source: string) {
     // check if should ignore
     const ext = extname(sourcePath)
     if (
-      (ext !== '.tsx' && ext !== '.jsx') ||
-      (startsWithComment &&
-        (source.startsWith('// tamagui-ignore') || source.startsWith('//! tamagui-ignore')))
+      startsWithComment &&
+      (source.startsWith('// tamagui-ignore') || source.startsWith('//! tamagui-ignore'))
     ) {
       return callback(null, source)
     }

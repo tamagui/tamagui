@@ -1,5 +1,5 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
-import React, { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { Variable } from '../createVariable'
@@ -28,7 +28,7 @@ export const useThemeName = (opts?: { parent?: true }) => {
   const parent = useContext(ThemeManagerContext)
   const [name, setName] = useState(parent.name)
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     return parent.onChangeTheme((next, manager) => {
       setName(opts?.parent ? manager.parentName : next)
     })

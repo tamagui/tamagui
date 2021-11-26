@@ -5,10 +5,11 @@ import {
   isTouchDevice,
   isWeb,
   styled,
+  useIsomorphicLayoutEffect,
   useThemeName,
 } from '@tamagui/core'
 import { useDebounceValue } from '@tamagui/use-debounce'
-import React, { useLayoutEffect } from 'react'
+import React from 'react'
 import { Modal as ModalNative, ModalProps as ModalPropsReact } from 'react-native'
 
 import { prevent } from '../helpers/prevent'
@@ -75,7 +76,7 @@ export const Modal = (props: ModalProps) => {
     const pointerEvents = visible ? 'auto' : 'none'
     const modalVisible = useDebounceValue(visible, visible ? 200 : 0)
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (visible) {
         document.body.classList.add('modal-open')
         return () => {
@@ -86,7 +87,7 @@ export const Modal = (props: ModalProps) => {
 
     // this fixes page getting stuck at top, at the expense of a flicker
     if (isTouchDevice) {
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         if (visible) {
           return () => {
             const og = document.body.style.display
