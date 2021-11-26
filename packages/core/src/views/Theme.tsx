@@ -80,7 +80,7 @@ export const Theme = (props: ThemeProps) => {
       const color = themes[name]?.['color']?.['variable']
       return (
         <div
-          className={getThemeParentClassName(name)}
+          className={getThemeParentClassName(props.name)}
           // in order to provide currentColor, set color by default
           style={{ display: 'contents', color }}
         >
