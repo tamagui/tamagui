@@ -22,6 +22,7 @@
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
+    "publish": "lerna publish",
     "site": "yarn workspace @tamagui/site dev"
   },
   "resolutions": {

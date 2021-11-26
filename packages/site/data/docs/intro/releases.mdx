@@ -3,49 +3,55 @@ title: Releases
 description: The latest changes in Tamagui
 ---
 
-## 24/10/2021
+### 25/10/2021
 
-### @tamagui/helpers `1.0.0-alpha.8`
+#### tamagui `1.0.0-alpha.9`
+
+- 🐛 Fix Button border radius sizing consistency, disabled style
+
+### 24/10/2021
+
+#### @tamagui/helpers `1.0.0-alpha.8`
 
 - 🐛 Improve allRules file capitalization
 
-### @tamagui/colors `1.0.0-alpha.8`
+#### @tamagui/colors `1.0.0-alpha.8`
 
 - 🐛 Improve type generation
 
-### @tamagui/feather-icons `1.0.0-alpha.8`
+#### @tamagui/feather-icons `1.0.0-alpha.8`
 
 - 🐛 Make flatter so tree shaking more likely
 
-### @tamagui/core `1.0.0-alpha.8`
+#### @tamagui/core `1.0.0-alpha.8`
 
 - 🐛 Fix cjs exports so native apps pick up `.native.js` extensions
 - 🐛 Fix media query style application (non-psuedos)
 - 🐛 Fix `<Theme name />` type inference for -dark and -light suffix removal
 
-### tamagui `1.0.0-alpha.8`
+#### tamagui `1.0.0-alpha.8`
 
 - 🐛 Fix cjs exports so native apps pick up `.native.js` extensions
 
-## 24/10/2021
+### 24/10/2021
 
-### @tamagui/static `1.0.0-alpha.7`
+#### @tamagui/static `1.0.0-alpha.7`
 
 - 🐛 Fix inline media query disable to actually leave it in place for babel-loader
 
-## 24/10/2021
+### 24/10/2021
 
-### @tamagui/core `1.0.0-alpha.7`
+#### @tamagui/core `1.0.0-alpha.7`
 
 - ✨ Allow disabling media extraction
 
-### @tamagui/babel-loader `1.0.0-alpha.6`
+#### @tamagui/babel-loader `1.0.0-alpha.6`
 
 - 🐛 Fix broken theme value references
 
-## 23/10/2021
+### 23/10/2021
 
-### @tamagui/core `1.0.0-alpha.6`
+#### @tamagui/core `1.0.0-alpha.6`
 
 - ✨ Added validation to `createTamagui`, `createFont`, `createTokens`
 - ✨ Export `isTamaguiElement` helper
@@ -56,16 +62,16 @@ description: The latest changes in Tamagui
 - 🔥 Remove blacklistProps saving some size and time
 - 🔥 Remove react-native-safe-area in favor of putting in tamagui only
 
-### tamagui `1.0.0-alpha.6`
+#### tamagui `1.0.0-alpha.6`
 
 - 🐛 Fix types exports
 - ✨ Add SafeAreaProvider and export safe area hooks
 
-### @tamagui/static `1.0.0-alpha.6`
+#### @tamagui/static `1.0.0-alpha.6`
 
 - 🔥 Remove some extra logging
 
-## 22/10/2021
+### 22/10/2021
 
 - 🎉 This release is too large to do justice!
 - ✨ Renamed from `snackui` to `tamagui`
@@ -73,7 +79,7 @@ description: The latest changes in Tamagui
   - `@tamagui/core`: Base layer, design system creation library
   - `tamagui`: All the components
 
-### @tamagui/core `1.0.0-alpha.1`
+#### @tamagui/core `1.0.0-alpha.1`
 
 - ✨ `createTamagui` for creation of design systems
   - `createFont` for bundling font designs together by font-family
@@ -91,7 +97,7 @@ description: The latest changes in Tamagui
 - 🏎 Variety of bugs and fixes for performance landed
 - 🔥 Remove propMapper in favor of variants and shorthands
 
-### tamagui `1.0.0-alpha.1`
+#### tamagui `1.0.0-alpha.1`
 
 - ✨ `ZStack` - align things along the z-axis
 - ✨ `HStack` => `XStack`, `VStack` => `YStack`
@@ -103,11 +109,11 @@ description: The latest changes in Tamagui
 - 🏎 Buttons now wrap with `StaticComponent.extractable`
 - 🏎 Greatly reduced the size by trimming out extra helpers, hooks, components
 
-### @tamagui/next-plugin `1.0.0-alpha.1`
+#### @tamagui/next-plugin `1.0.0-alpha.1`
 
 - ✨ Published initial version of working next plugin
 
-### @tamagui/static `1.0.0-alpha.1`
+#### @tamagui/static `1.0.0-alpha.1`
 
 Static is our compiler that supports babel and webpack.
 
@@ -119,10 +125,10 @@ Static is our compiler that supports babel and webpack.
 - 🐛 Fix bug with spread conditional objects being reversed sometimes
 - 🐛 Tons of correctness bugs improved
 
-### @tamgui/colors `1.0.0-alpha.1`
+#### @tamgui/colors `1.0.0-alpha.1`
 
 - ✨ Forked `@radix-ui/colors` and changed values to be compatible with React Native
 
-### @tamagui/feather-icons `1.0.0-alpha.1`
+#### @tamagui/feather-icons `1.0.0-alpha.1`
 
 - ✨ Published feather icons adapated for React Native
