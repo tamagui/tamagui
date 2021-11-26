@@ -1,6 +1,6 @@
 {
   "name": "tamagui-loader",
-  "version": "1.0.0-alpha.11",
+  "version": "1.0.0-alpha.12",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -15,13 +15,13 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/static": "^1.0.0-alpha.11",
+    "@tamagui/static": "^1.0.0-alpha.12",
     "fs-extra": "^9.1.0",
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.8"
+    "@tamagui/build": "^1.0.0-alpha.12"
   },
   "publishConfig": {
     "access": "public"

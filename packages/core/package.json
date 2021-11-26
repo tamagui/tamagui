@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.0-alpha.11",
+  "version": "1.0.0-alpha.12",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist",
@@ -15,10 +15,10 @@
     "src"
   ],
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-alpha.8",
+    "@tamagui/helpers": "^1.0.0-alpha.12",
     "@tamagui/ow": "^0.28.1",
-    "@tamagui/use-debounce": "^1.0.0-alpha.8",
-    "@tamagui/use-force-update": "^1.0.0-alpha.8",
+    "@tamagui/use-debounce": "^1.0.0-alpha.12",
+    "@tamagui/use-force-update": "^1.0.0-alpha.12",
     "react": "*",
     "react-dom": "*"
   },
@@ -26,7 +26,7 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.8",
+    "@tamagui/build": "^1.0.0-alpha.12",
     "@types/react": "^17.0.35",
     "esbuild": "^0.11.20",
     "typescript": "^4.4.4"
