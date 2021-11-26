@@ -17,10 +17,10 @@ export function Highlights({ features }) {
 
   return (
     <YStack
-      mt="$4"
+      mt="$2"
       $gtSm={{
         fd: 'row',
-        mt: '$6',
+        mt: '$2',
       }}
     >
       <YStack
@@ -95,7 +95,7 @@ export function Highlights({ features }) {
               target="_blank"
             >
               <XStack ai="center" space="$1">
-                <Paragraph size="$1" color="inherit">
+                <Paragraph size="$2" color="inherit">
                   View source
                 </Paragraph>
                 <YStack opacity={0.5} ml="$1">
@@ -111,7 +111,7 @@ export function Highlights({ features }) {
               target="_blank"
             >
               <XStack ai="center" space="$1">
-                <Paragraph size="$1" color="inherit">
+                <Paragraph size="$2" color="inherit">
                   View on npm
                 </Paragraph>
                 <YStack opacity={0.5} ml="$1">
@@ -123,7 +123,7 @@ export function Highlights({ features }) {
           <YStack>
             <Link href="https://github.com/tamagui/tamagui/issues/new/choose" target="_blank">
               <XStack ai="center" space="$1">
-                <Paragraph size="$1" color="inherit">
+                <Paragraph size="$2" color="inherit">
                   Report an issue
                 </Paragraph>
                 <YStack opacity={0.5} ml="$1">
@@ -137,7 +137,7 @@ export function Highlights({ features }) {
             <YStack mb="$2">
               <Link variant="blue" href={frontmatter.aria} target="_blank">
                 <XStack position="relative">
-                  <Paragraph size="$1" color="$color2">
+                  <Paragraph size="$2" color="$color2">
                     ARIA design pattern
                   </Paragraph>
                   <YStack ml="$1">

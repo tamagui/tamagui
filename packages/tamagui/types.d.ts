@@ -1271,7 +1271,7 @@ export declare const HoverablePopover: React.ForwardRefExoticComponent<IPopoverP
 	allowHoverOnContent?: boolean | undefined;
 	disableUntilSettled?: boolean | undefined;
 } & React.RefAttributes<HoverablePopoverHandle>>;
-export declare const InteractiveContainer: import("@tamagui/core").StaticComponent<Omit<StackProps, never> & ({} | {
+export declare const InteractiveContainer: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, never> & ({} | {
 	[x: string]: string | number | undefined;
 }) & import("@tamagui/core").MediaProps<{} | {
 	[x: string]: string | number | undefined;

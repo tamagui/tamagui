@@ -61,10 +61,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           alignItems="center"
           justifyContent="flex-end"
           space="$1"
-          top="$-8"
-          right="$1"
-          $sm={{
-            right: '$2',
+          top={-70}
+          right="$2"
+          $gtSm={{
+            right: 50,
+          }}
+          $gtMd={{
+            right: 50,
           }}
         >
           <Button

@@ -17,10 +17,16 @@ export function ButtonDemo() {
 
 function Buttons(props) {
   return (
-    <YStack elevation="$6" w={160} bc="$bg" p="$2" br="$2" space="$1" {...props}>
+    <YStack elevation="$6" w={180} bc="$bg" p="$3" br="$2" space="$2" {...props}>
       <Button>Plain</Button>
       <Button themeIcon icon={Airplay} size="$6">
         Large
+      </Button>
+      <Button themeInverse themeIcon iconAfter={Gift} size="$2">
+        Small Inversed
+      </Button>
+      <Button themeIcon icon={Activity} size="$1">
+        XS
       </Button>
       <InteractiveContainer>
         <Button size="$3" br={0} theme="active">
@@ -30,18 +36,14 @@ function Buttons(props) {
           Yellow
         </Button>
       </InteractiveContainer>
-      <Button themeInverse themeIcon iconAfter={Gift} size="$2">
-        Small Inversed
-      </Button>
-      <Button themeIcon icon={Activity} size="$1">
-        XS
-      </Button>
-      <Button size="$2" disabled>
-        Disabled
-      </Button>
-      <Button size="$2" chromeless>
-        Chromeless
-      </Button>
+      <InteractiveContainer>
+        <Button size="$2" disabled>
+          Disabled
+        </Button>
+        <Button size="$2" chromeless>
+          Chromeless
+        </Button>
+      </InteractiveContainer>
     </YStack>
   )
 }

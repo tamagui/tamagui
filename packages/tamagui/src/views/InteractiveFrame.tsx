@@ -35,7 +35,7 @@ export const InteractiveFrame = styled(XStack, {
         return {
           paddingHorizontal: px,
           paddingVertical: py,
-          borderRadius: py * 0.5,
+          borderRadius: py,
         }
       },
     },
@@ -44,7 +44,8 @@ export const InteractiveFrame = styled(XStack, {
       true: {
         // TODO enabling this messes up types for some reason
         // pointerEvents: 'none',
-        opacity: 0.5,
+        opacity: 0.45,
+        backgroundColor: '$bg',
         hoverStyle: {
           backgroundColor: '$bg',
         },

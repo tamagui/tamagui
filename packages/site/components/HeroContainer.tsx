@@ -18,6 +18,7 @@ export function HeroContainer({
       // role="presentation"
       className="hero-gradient"
       mt="$2"
+      mb="$4"
       position="relative"
       display="flex"
       alignItems="center"

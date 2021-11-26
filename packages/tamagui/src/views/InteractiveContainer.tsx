@@ -1,6 +1,4 @@
-import { Stack, StackProps, styled } from '@tamagui/core'
-
-// TODO merge w InteractiveFrame
+import { Stack, styled } from '@tamagui/core'
 
 export const InteractiveContainer = styled(Stack, {
   flexDirection: 'row',
