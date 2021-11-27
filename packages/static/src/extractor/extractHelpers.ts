@@ -98,5 +98,5 @@ export function isValidThemeHook(
 }
 
 export const isInsideTamagui = (srcName: string) => {
-  return srcName.includes('/tamagui/_jsx') || srcName.includes('/core/src')
+  return srcName.includes('/dist/jsx') || srcName.includes('/core/src')
 }

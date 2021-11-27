@@ -163,8 +163,9 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           const shouldInclude =
             x.includes(options.dir) ||
             tamaguiOptions.components.some(
-              (c) => x.includes(`/node_modules/${c}`) || x.includes(`${c}/_jsx/`)
+              (c) => x.includes(`/node_modules/${c}`) || x.includes(`${c}/dist/jsx/`)
             )
+
           return !shouldInclude
         }
         const [first, second, ...rest] = webpackConfig.module.rules

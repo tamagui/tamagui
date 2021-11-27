@@ -9,7 +9,7 @@
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "module:jsx": "dist/_jsx",
+  "module:jsx": "dist/jsx",
   "files": [
     "types",
     "src",

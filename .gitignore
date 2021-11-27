@@ -17,7 +17,6 @@ yarn-error.log
 dist
 tsconfig.tsbuildinfo
 node_modules
-**/_jsx
 **/_
 **/tests/spec/out
 .DS_Store
