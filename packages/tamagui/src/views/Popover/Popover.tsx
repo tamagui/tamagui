@@ -95,7 +95,8 @@ const PopoverMain = memo(
         setIsOpen(false)
       }
 
-      const childrenElements = typeof children === 'function' ? children({ open: isOpen }) : children
+      const childrenElements =
+        typeof children === 'function' ? children({ open: isOpen }) : children
 
       return (
         <>

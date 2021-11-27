@@ -27,31 +27,33 @@ import { Transition } from './Transition'
 import type { IPresenceTransitionProps } from './types'
 
 export const PresenceTransition = memo(
-  forwardRef(({ visible = false, onTransitionComplete, ...rest }: IPresenceTransitionProps, ref: any) => {
-    const [animationExited, setAnimationExited] = React.useState(!visible)
+  forwardRef(
+    ({ visible = false, onTransitionComplete, ...rest }: IPresenceTransitionProps, ref: any) => {
+      const [animationExited, setAnimationExited] = React.useState(!visible)
 
-    const { setExited } = React.useContext(ExitAnimationContext)
+      const { setExited } = React.useContext(ExitAnimationContext)
 
-    if (!visible && animationExited) {
-      return null
+      if (!visible && animationExited) {
+        return null
+      }
+
+      return (
+        <Transition
+          visible={visible}
+          onTransitionComplete={(state) => {
+            if (state === 'exited') {
+              setAnimationExited(true)
+              setExited(true)
+            } else {
+              setAnimationExited(false)
+              setExited(false)
+            }
+            onTransitionComplete && onTransitionComplete(state)
+          }}
+          {...rest}
+          ref={ref}
+        />
+      )
     }
-
-    return (
-      <Transition
-        visible={visible}
-        onTransitionComplete={(state) => {
-          if (state === 'exited') {
-            setAnimationExited(true)
-            setExited(true)
-          } else {
-            setAnimationExited(false)
-            setExited(false)
-          }
-          onTransitionComplete && onTransitionComplete(state)
-        }}
-        {...rest}
-        ref={ref}
-      />
-    )
-  })
+  )
 )

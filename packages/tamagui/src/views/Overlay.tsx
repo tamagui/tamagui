@@ -22,8 +22,7 @@
 
 import { OverlayContainer } from '@react-native-aria/overlays'
 import React from 'react'
-import { Platform } from 'react-native'
-import { Modal } from 'react-native'
+import { Modal, Platform } from 'react-native'
 
 import { useKeyboardDismissable } from '../hooks/useKeyboardDismissable'
 import { ExitAnimationContext } from './ExitAnimationContext'
@@ -68,10 +67,11 @@ export function Overlay({
     )
   }
 
-  // Since OverlayContainer mounts children in NativeBaseProvider  using Context, we need to pass the context by wrapping children
   return (
     <OverlayContainer>
-      <ExitAnimationContext.Provider value={{ exited, setExited }}>{children}</ExitAnimationContext.Provider>
+      <ExitAnimationContext.Provider value={{ exited, setExited }}>
+        {children}
+      </ExitAnimationContext.Provider>
     </OverlayContainer>
   )
 }
