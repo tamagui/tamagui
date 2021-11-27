@@ -3711,11 +3711,10 @@ __metadata:
     "@tamagui/helpers": ^1.0.0-alpha.12
     "@types/node": "*"
     "@types/react": "*"
-    chokidar-cli: ^3.0.0
     esbuild: ^0.13.12
     ts-transform-import-path-rewrite: ^0.3.0
-    ttypescript: ^1.5.12
-    typescript: ^4.4.4
+    ttypescript: ^1.5.13
+    typescript: ^4.5.2
   languageName: unknown
   linkType: soft
 
@@ -6336,20 +6335,6 @@ __metadata:
   bin:
     chokidar: ./index.js
   checksum: 896c46df299281851f8cf523b4458bfe819318dc72669771ec0e69449d9f6ca8124bd681ca4ec69091d40fb4f572340c97fa372c353958846f9f780ad7bd5672
-  languageName: node
-  linkType: hard
-
-"chokidar-cli@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "chokidar-cli@npm:3.0.0"
-  dependencies:
-    chokidar: ^3.5.2
-    lodash.debounce: ^4.0.8
-    lodash.throttle: ^4.1.1
-    yargs: ^13.3.0
-  bin:
-    chokidar: index.js
-  checksum: 4a4ffb83aaa3e1745bc1f279f25c66e5b2dd84cac500c4f1b6a2602254e05e717f646678e54e419144fe398a1a672a5b061e19d82ba5a61a636385a2aa11d825
   languageName: node
   linkType: hard
 
@@ -20150,7 +20135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ttypescript@npm:^1.5.12":
+"ttypescript@npm:^1.5.13":
   version: 1.5.13
   resolution: "ttypescript@npm:1.5.13"
   dependencies:

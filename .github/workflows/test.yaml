@@ -1,4 +1,4 @@
-name: Release
+name: Test
 
 on:
   push:
@@ -27,7 +27,6 @@ jobs:
       - name: install yarn
         run: |
           npm i yarn -g
-          yarn set version stable
 
       # - uses: c-hive/gha-yarn-cache@v2
 
@@ -41,4 +40,9 @@ jobs:
       - name: Test
         run: |
           yarn workspace @tamagui/static test
+
+      - name: Build Site
+        run: |
+          yarn --cwd packages/site next:build
+          yarn --cwd packages/site next:export
 
