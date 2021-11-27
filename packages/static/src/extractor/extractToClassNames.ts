@@ -62,7 +62,7 @@ export function extractToClassNames({
     '`sourcePath` must be an absolute path to a .js file'
   )
 
-  const shouldLogTiming = shouldPrintDebug ?? options.logTimings ?? true
+  const shouldLogTiming = options.logTimings ?? true
   const start = Date.now()
   const mem = shouldLogTiming ? process.memoryUsage() : null
 
