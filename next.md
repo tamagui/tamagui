@@ -1,3 +1,5 @@
+- themes: mobile sizing separate :)
+
 - document: getTokens, useThemeName
 - textTransform on font for uppercase h6
 - document slimming react-native-web and bundle size
@@ -6,7 +8,6 @@
 - dev mode validate tokens, theme, font
 - could do a pass on generated classnames to dedupe would help benchmarks
 - static compilation can go further with variants because it knows they always only accept certain values... see mount-deep-tree
-- <Theme name> needs to accept stripped `-light` `-dark` type
 - basic styled() extraction => work liek props => <YStack />
 - space => gap?
 - fix parent variant types

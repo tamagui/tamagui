@@ -62,7 +62,7 @@ export function extractToClassNames({
     '`sourcePath` must be an absolute path to a .js file'
   )
 
-  const shouldLogTiming = shouldPrintDebug || options.logTimings
+  const shouldLogTiming = shouldPrintDebug ?? options.logTimings ?? true
   const start = Date.now()
   const mem = shouldLogTiming ? process.memoryUsage() : null
 
@@ -265,7 +265,10 @@ export function extractToClassNames({
     },
   })
 
-  if (!res || !res.modified) {
+  if (!res || (!res.modified && !res.optimized && !res.flattened)) {
+    if (shouldPrintDebug) {
+      console.log('no res or none modified', res)
+    }
     return null
   }
 
@@ -306,12 +309,17 @@ export function extractToClassNames({
     console.log('\n -------- output style -------- \n\n', styles)
   }
 
-  if (shouldLogTiming && mem) {
-    // console.log(`${parseTime} / ${traverseTime} / ${generateTime}`)
-    const memUsed =
-      Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
-    // prettier-ignore
-    console.log(`  🥚 ${basename(sourcePath).padStart(40)} ${`${Date.now() - start}`.padStart(3)}ms ׁ· ${`${res.optimized}`.padStart(4)} optimized · ${res.flattened} flattened ${memUsed > 10 ? `used ${memUsed}MB` : ''}`)
+  if (shouldLogTiming) {
+    const memUsed = mem
+      ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
+      : 0
+    const timing = `${Date.now() - start}`.padStart(3)
+    const path = basename(sourcePath).padStart(40)
+    const numOptimized = `${res.optimized}`.padStart(4)
+    const memory = memUsed > 10 ? `used ${memUsed}MB` : ''
+    console.log(
+      `  🥚 ${path} ${timing}ms ׁ· ${numOptimized} optimized · ${res.flattened} flattened ${memory}`
+    )
   }
 
   return {
