@@ -31,6 +31,7 @@ export const getHasConfigured = () => !!conf
 
 export const getTamagui = () => conf!
 export const getTokens = () => conf!.tokensParsed
+export const getThemes = () => conf!.themes
 
 type ConfigListener = (conf: TamaguiInternalConfig) => void
 const configListeners = new Set<ConfigListener>()

@@ -13,7 +13,7 @@ export class Variable {
   }
 
   toString() {
-    return isWeb ? this.variable : this.val
+    return `${isWeb ? this.variable : this.val}`
   }
 }
 
