@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "main": "index.js",
   "scripts": {
     "build": "TAMAGUI_COMPILE_PROCESS=1 ttsc --skipLibCheck --skipDefaultLibCheck && yarn build:dist-to-cjs",
@@ -14,7 +14,7 @@
     ]
   },
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-alpha.12"
+    "@tamagui/helpers": "^1.0.0-alpha.13"
   },
   "devDependencies": {
     "@types/node": "*",
