@@ -83,7 +83,7 @@ It's easy for types to get mixed up with themes, there are patterns and helpers 
 Here's what we've landed on which helps ensure everything is typed properly. We use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. We keep themes in a separate `themes.ts` file, and we structure it like so:
 
 ```jsx
-import { createTheme } from '@dish/ui'
+import { createTheme } from 'tamagui'
 import { tokens } from './tokens'
 
 const lightTheme = createTheme({
@@ -141,8 +141,8 @@ const lightTranslucent: BaseTheme = createTheme({
 export const themes = {
   dark,
   light,
-  'dark-translucent': darkTranslucent,
-  'light-translucent': lightTranslucent,
+  'translucent-dark': darkTranslucent,
+  'translucent-light': lightTranslucent,
   ...colorThemes,
 } as const
 ```

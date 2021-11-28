@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
+    "composite": true,
     // for jumping to things properly in vscode
     "baseUrl": "../..",
     "paths": {
-      "@tamagui/*": ["packages/*/src"],
-      "tamagui": ["packages/tamagui/src"],
       "@components/*": [
         "packages/site/components/*"
       ],
@@ -37,9 +36,27 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "data/docs/core/use-media.msx"  ],
+    "**/*.tsx",
+    "data/docs/core/use-media.msx"
+  ],
   "exclude": [
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../colors"
+    },
+    {
+      "path": "../feather-icons"
+    },
+    {
+      "path": "../tamagui"
+    },
+    {
+      "path": "../next-plugin"
+    },
+    {
+      "path": "../loader"
+    }
   ]
 }

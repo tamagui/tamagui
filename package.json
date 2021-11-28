@@ -14,6 +14,7 @@
     ]
   },
   "scripts": {
+    "postinstall": "manypkg check",
     "build": "yarn build:js && yarn build:types",
     "build:js": "SKIP_TYPES=1 ultra -r --no-pretty --concurrency 100 --rebuild",
     "build:types": "SKIP_JS=1 ultra -r --no-pretty --concurrency 100 --rebuild",
@@ -42,7 +43,16 @@
     "react-refresh": "0.11.0",
     "react-native-web": "0.17.5"
   },
-  "devDependencies": {
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
+  },
+  "packageManager": "yarn@3.1.1",
+  "dependencies": {
+    "@manypkg/cli": "^0.19.1",
+    "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.2",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "esbuild": "^0.13.12",
@@ -54,12 +64,5 @@
     "prettier-plugin-import-sort": "^0.0.7",
     "pretty-quick": "^3.1.2",
     "ultra-runner": "^3.10.5"
-  },
-  "importSort": {
-    ".js, .jsx, .ts, .tsx": {
-      "style": "module",
-      "parser": "typescript"
-    }
-  },
-  "packageManager": "yarn@3.1.1"
+  }
 }

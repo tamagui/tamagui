@@ -2,6 +2,7 @@
 
 const exec = require('execa')
 const fs = require('fs-extra')
+const json5 = require('json5')
 const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
@@ -35,18 +36,36 @@ async function build() {
     //  baseUrl: ., outDir: types, rootDir: src
     // now we can have the best of both worlds
     await fs.remove('types')
-    await exec('npx', [
-      'tsc',
-      '--baseUrl',
-      '.',
-      '--outDir',
-      'types',
-      '--rootDir',
-      'src',
-      '--declaration',
-      '--emitDeclarationOnly',
-      '--declarationMap',
-    ])
+
+    // NOTE: to get intellisense to *not* suggest importing from the index file when it re-exports another package...
+    // (like tamagui does with @tamagui/core...)
+    // we add `exclude: ['src/index.ts']` to the tsconfig.json which fixes that
+    // but then it causes it to not export the types out from index... so....
+    // we do a stupid, stupid thing to re-write it temporarily without it before build. then restore it after
+    // honestly hate typescript config all around but this seems to work so fuck it
+    const tsConfOg = await fs.readFile('tsconfig.json')
+    const tsConfJSON = json5.parse(tsConfOg)
+    if (tsConfJSON.exclude && tsConfJSON.exclude.includes('src/index.ts')) {
+      tsConfJSON.exclude = tsConfJSON.exclude.filter((x) => x !== 'src/index.ts')
+      await fs.writeJSON('tsconfig.json', tsConfJSON)
+    }
+    try {
+      await exec('npx', [
+        'tsc',
+        '--baseUrl',
+        '.',
+        '--outDir',
+        'types',
+        '--rootDir',
+        'src',
+        '--declaration',
+        '--emitDeclarationOnly',
+        '--declarationMap',
+      ])
+    } finally {
+      // restore
+      await fs.writeFile('tsconfig.json', tsConfOg)
+    }
   }
 
   const externalPlugin = createExternalPlugin({

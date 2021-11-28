@@ -3,7 +3,7 @@ import { Grid, H2, H4, Paragraph, YStack } from 'tamagui'
 
 export function FeaturesGrid() {
   return (
-    <YStack maxWidth={790} mx="auto" space="$3" ai="stretch">
+    <YStack maxWidth={790} mx="auto" space="$3">
       <H2 fontWeight="800" ta="center">
         Features
       </H2>

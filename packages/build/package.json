@@ -12,12 +12,14 @@
     "access": "public"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
     "chokidar": "^3.5.2",
     "chokidar-cli": "^2.1.0",
-    "esbuild": "^0.13.14",
+    "esbuild": "^0.13.12",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.7",
     "fs-extra": "^9.1.0",
-    "typescript": "^4.2.4"
+    "json5": "^2.2.0",
+    "typescript": "^4.4.4"
   }
 }

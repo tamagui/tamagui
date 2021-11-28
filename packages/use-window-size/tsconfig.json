@@ -1,7 +1,18 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "../..",
-    "jsx": "preserve",
-  }
+    "composite": true,
+    "jsx": "preserve"
+  },
+  "references": [
+    {
+      "path": "../use-debounce"
+    },
+    {
+      "path": "../use-force-update"
+    },
+    {
+      "path": "../build"
+    }
+  ]
 }

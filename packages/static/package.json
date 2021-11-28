@@ -41,6 +41,7 @@
     "loader-utils": "^2.0.0",
     "react": "*",
     "react-dom": "*",
+    "react-native-web": "^0.17.5",
     "react-test-renderer": "18.0.0-beta-149b420f6-20211119",
     "style-loader": "^3.3.0",
     "typescript": "^4.4.4",
@@ -63,9 +64,9 @@
     "esbuild": "^0.13.12",
     "esbuild-register": "^3.1.2",
     "find-cache-dir": "^3.3.1",
-    "fs-extra": "^9.0.0",
+    "fs-extra": "^9.1.0",
     "invariant": "^2.2.4",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "tamagui": "^1.0.0-alpha.16"
   },
   "peerDependencies": {

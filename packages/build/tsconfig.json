@@ -4,12 +4,4 @@
     "composite": true,
     "jsx": "preserve"
   },
-  "references": [
-    {
-      "path": "../static"
-    },
-    {
-      "path": "../build"
-    }
-  ]
 }

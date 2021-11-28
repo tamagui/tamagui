@@ -1,5 +1,4 @@
-import { isVariable } from '@tamagui/core'
-import { Stack, styled } from '@tamagui/core'
+import { Stack, isVariable, styled } from '@tamagui/core'
 
 export const YStack = styled(Stack, {
   flexDirection: 'column',

@@ -1,11 +1,21 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "../..",
-    "paths": {
-      "@tamagui/*": ["packages/*/src"],
-      "tamagui": ["packages/tamagui/src"],
+    "composite": true,
+    "jsx": "preserve"
+  },
+  "references": [
+    {
+      "path": "../core"
     },
-    "jsx": "preserve",
-  }
+    {
+      "path": "../fake-react-native"
+    },
+    {
+      "path": "../helpers"
+    },
+    {
+      "path": "../build"
+    }
+  ]
 }

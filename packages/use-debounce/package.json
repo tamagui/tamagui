@@ -15,7 +15,8 @@
     "watch": "tamagui-build --watch"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.12"
+    "@tamagui/build": "^1.0.0-alpha.12",
+    "react": "*"
   },
   "peerDependencies": {
     "react": "*"

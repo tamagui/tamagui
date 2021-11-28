@@ -3,9 +3,6 @@
     // THIS MUST BE AT ROOT, if you set baseurl in sub-package it breaks intellisense jump to
     "baseUrl": ".",
     "rootDir": ".",
-    "paths": {
-      "@tamagui/*": ["packages/*/src"],
-    },
     "outDir": "dist",
     "importHelpers": true,
     "allowJs": false,

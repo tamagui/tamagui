@@ -1,7 +1,30 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
+    "composite": true,
     "rootDir": "../.."
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../build"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../core-node"
+    },
+    {
+      "path": "../fake-react-native"
+    },
+    {
+      "path": "../helpers"
+    },
+    {
+      "path": "../tamagui"
+    }
+  ]
 }
