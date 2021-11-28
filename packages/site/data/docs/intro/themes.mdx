@@ -76,6 +76,79 @@ export const App = () => (
 //  .color-2nesi3 { background-color: var(--red); }
 ```
 
+### Ensuring valid types
+
+It's easy for types to get mixed up with themes, there are patterns and helpers to make this better.
+
+Here's what we've landed on which helps ensure everything is typed properly. We use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. We keep themes in a separate `themes.ts` file, and we structure it like so:
+
+```jsx
+import { createTheme } from '@dish/ui'
+import { tokens } from './tokens'
+
+const lightTheme = createTheme({
+  bg: '#fff',
+  bg2: tokens.color.gray3,
+  bg3: tokens.color.gray4,
+  bg4: tokens.color.gray5,
+  borderColor: tokens.color.gray4,
+  borderColor2: tokens.color.gray6,
+  color: tokens.color.gray12,
+  color2: tokens.color.gray11,
+  color3: tokens.color.gray10,
+  color4: tokens.color.gray6,
+  shadowColor: tokens.color.grayA5,
+  shadowColor2: tokens.color.grayA6,
+})
+
+// note: we set up a consistent theme type to validate the rest:
+type BaseTheme = typeof lightTheme
+
+// the rest of the themes use BaseTheme
+const dark: BaseTheme = {
+  bg: '#000',
+  bg2: tokens.color.gray2Dark,
+  bg3: tokens.color.gray3Dark,
+  bg4: tokens.color.gray4Dark,
+  borderColor: tokens.color.gray3Dark,
+  borderColor2: tokens.color.gray4Dark,
+  color: '#ddd',
+  color2: tokens.color.gray11Dark,
+  color3: tokens.color.gray10Dark,
+  color4: tokens.color.gray6Dark,
+  shadowColor: tokens.color.grayA6,
+  shadowColor2: tokens.color.grayA7,
+}
+
+// if you need to add non-token values, use createTheme
+const darkTranslucent: BaseTheme = createTheme({
+  ...dark,
+  bg: 'rgba(0,0,0,0.7)',
+  bg2: 'rgba(0,0,0,0.5)',
+  bg3: 'rgba(0,0,0,0.25)',
+  bg4: 'rgba(0,0,0,0.1)',
+})
+
+const lightTranslucent: BaseTheme = createTheme({
+  ...light,
+  bg: 'rgba(255,255,255,0.85)',
+  bg2: 'rgba(250,250,250,0.85)',
+  bg3: 'rgba(240,240,240,0.85)',
+  bg4: 'rgba(240,240,240,0.7)',
+})
+
+// use `as const` at the end here to be sure its strictly typed
+export const themes = {
+  dark,
+  light,
+  'dark-translucent': darkTranslucent,
+  'light-translucent': lightTranslucent,
+  ...colorThemes,
+} as const
+```
+
 ### Subset themes
 
 One of the real powers of Tamagui is theme nesting, which we'll explain below, but which is important to understand. If you define a theme with the name in the form `[name]-[parentName]`, Tamagui handles `<Theme name="[name]" />` as though it's valid.
+
+For more on this, see the [Theme docs](/docs/core/Theme).
