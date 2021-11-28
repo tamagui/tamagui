@@ -3,6 +3,9 @@
     // THIS MUST BE AT ROOT, if you set baseurl in sub-package it breaks intellisense jump to
     "baseUrl": ".",
     "rootDir": ".",
+    "paths": {
+      "@tamagui/*": ["packages/*/src"],
+    },
     "outDir": "dist",
     "importHelpers": true,
     "allowJs": false,
@@ -30,11 +33,8 @@
     "target": "es2020",
     "types": ["node", "react"],
     "lib": ["dom", "esnext"],
-    "paths": {
-      "@tamagui/*": ["packages/*/src"]
-    },
   },
-  "exclude": ["_", "test/**/*"],
+  "exclude": ["test/**/*"],
   "typeAcquisition": {
     "enable": true
   },

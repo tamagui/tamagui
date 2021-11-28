@@ -3,7 +3,8 @@ import { Variable, createVariable } from './createVariable'
 export const createTheme = <Theme extends { [key: string]: string | Variable }>(
   theme: Theme
 ): {
-  [key in keyof Theme]: Variable
+  // allow string | Variable
+  [key in keyof Theme]: Variable | string
 } => {
   const res = {} as any
   for (const key in theme) {

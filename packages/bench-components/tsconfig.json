@@ -2,6 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "../..",
+    "paths": {
+      "@tamagui/*": ["packages/*/src"],
+      "tamagui": ["packages/tamagui/src"],
+    },
     "jsx": "preserve",
   }
 }

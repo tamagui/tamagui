@@ -1,4 +1,4 @@
-import { Stack, styled } from '@tamagui/core'
+import { GetProps, Stack, styled } from '@tamagui/core'
 
 export const Circle = styled(Stack, {
   alignItems: 'center',
@@ -17,6 +17,8 @@ export const Circle = styled(Stack, {
     },
   },
 })
+
+export type CircleProps = GetProps<typeof Circle>
 
 // test types
 // const a = <Circle size={100} />
