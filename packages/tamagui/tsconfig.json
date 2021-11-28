@@ -1,27 +1,15 @@
 {
   "extends": "../../tsconfig.json",
-  // NOTE we only use this for type generation, see tamagui-build.js for why
-  // fixes bug with re-exporting another package
   "exclude": ["src/index.ts"],
   "compilerOptions": {
     "composite": true,
     "jsx": "preserve"
   },
   "references": [
-    {
-      "path": "../core"
-    },
-    {
-      "path": "../helpers"
-    },
-    {
-      "path": "../use-debounce"
-    },
-    {
-      "path": "../use-force-update"
-    },
-    {
-      "path": "../build"
-    }
+    { "path": "../core" },
+    { "path": "../helpers" },
+    { "path": "../use-debounce" },
+    { "path": "../use-force-update" },
+    { "path": "../build" }
   ]
 }

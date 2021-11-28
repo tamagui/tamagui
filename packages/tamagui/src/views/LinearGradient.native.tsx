@@ -1,5 +1,4 @@
-import { Stack } from '@tamagui/core'
-import { StackProps } from '@tamagui/core'
+import { Stack, StackProps } from '@tamagui/core'
 import { LinearGradient as LinearGradientNative, LinearGradientProps } from 'expo-linear-gradient'
 import { StyleSheet } from 'react-native'
 

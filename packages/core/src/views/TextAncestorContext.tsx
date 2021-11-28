@@ -1,12 +1,11 @@
-import React from 'react'
+import React, { createContext } from 'react'
 
 import { rnw } from '../constants/rnw'
 
-export const TextAncestorContext = rnw?.TextAncestorContext
+export const FallbackNativeContext = createContext(false)
+
+export const TextAncestorContext = rnw?.TextAncestorContext ?? FallbackNativeContext
 
 export const TextAncestorProvider = (props) => {
-  if (TextAncestorContext) {
-    return <TextAncestorContext.Provider value={false}>{props.children}</TextAncestorContext.Provider>
-  }
-  return props.children
+  return <TextAncestorContext.Provider value={false}>{props.children}</TextAncestorContext.Provider>
 }
