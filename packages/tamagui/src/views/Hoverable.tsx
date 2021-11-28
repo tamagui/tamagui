@@ -13,6 +13,7 @@ export type HoverableProps = {
   hoverDelay?: number
   onHoverIn?: () => void
   onHoverOut?: () => void
+  onHoverMove?: () => void
   onPressIn?: SpanProps['onMouseDown']
   onPressOut?: SpanProps['onClick']
 }
@@ -28,6 +29,7 @@ export const Hoverable = forwardRef<HoverableHandle, HoverableProps>(
       onPressOut,
       onHoverIn,
       onHoverOut,
+      onHoverMove,
       disableUntilSettled,
       hoverDelay = 0,
       children,
@@ -69,6 +71,11 @@ export const Hoverable = forwardRef<HoverableHandle, HoverableProps>(
       setOnSlow()
     }
 
+    const hoverMove = () => {
+      if (onHoverMove) onHoverMove()
+      if (disableUntilSettled) setOn()
+    }
+
     return (
       <span
         ref={ref as any}
@@ -77,7 +84,7 @@ export const Hoverable = forwardRef<HoverableHandle, HoverableProps>(
         }}
         onMouseEnter={setOn}
         onMouseLeave={setOff}
-        onMouseMove={disableUntilSettled ? setOn : undefined}
+        onMouseMove={hoverMove}
         onMouseDown={onPressIn}
         onClick={onPressOut}
       >

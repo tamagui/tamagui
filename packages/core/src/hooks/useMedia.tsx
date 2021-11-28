@@ -20,7 +20,7 @@ export const addMediaQueryListener = (key: string, cb: any) => {
 }
 
 export const removeMediaQueryListener = (key: string, cb: any) => {
-  mediaQueryListeners[key].delete(cb)
+  mediaQueryListeners[key]?.delete(cb)
 }
 
 let conf: MediaQueries | null = null
