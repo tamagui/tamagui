@@ -31,7 +31,16 @@ export const SizableText = styled(Text, {
             lineHeight,
           }
         }
-        const fs = +val
+        let fs = +val
+        if (process.env.NODE_ENV === 'development') {
+          if (isNaN(fs)) {
+            console.warn('Got NaN font size, likely missing font', { font, val })
+            return {
+              fontSize: 16,
+              lineHeight: 20,
+            }
+          }
+        }
         // TODO can have props.sizeLineHeight
         const lh = +val * (Math.log(Math.max(1.6, val)) * 0.01 + 1.1)
         return {
