@@ -15,6 +15,7 @@
   },
   "scripts": {
     "postinstall": "manypkg check",
+    "check": "manypkg check",
     "build": "yarn build:js && yarn build:types",
     "build:js": "SKIP_TYPES=1 ultra -r --no-pretty --concurrency 100 --rebuild",
     "build:types": "SKIP_JS=1 ultra -r --no-pretty --concurrency 100 --rebuild",
