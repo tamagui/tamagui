@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.0-alpha.17",
+  "version": "1.0.0-alpha.18",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist",
@@ -17,8 +17,8 @@
   "dependencies": {
     "@tamagui/helpers": "^1.0.0-alpha.17",
     "@tamagui/ow": "^0.28.1",
-    "@tamagui/use-debounce": "^1.0.0-alpha.17",
-    "@tamagui/use-force-update": "^1.0.0-alpha.17",
+    "@tamagui/use-debounce": "^1.0.0-alpha.18",
+    "@tamagui/use-force-update": "^1.0.0-alpha.18",
     "react": "*",
     "react-dom": "*"
   },
