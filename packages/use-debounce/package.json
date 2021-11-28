@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-debounce",
-  "version": "1.0.0-alpha.15",
+  "version": "1.0.0-alpha.16",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
