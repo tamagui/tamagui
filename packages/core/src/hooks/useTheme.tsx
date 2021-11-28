@@ -87,7 +87,8 @@ export const useTheme = () => {
           const val = activeTheme[key]
           if (process.env.NODE_ENV === 'development') {
             if (typeof val === 'undefined') {
-              throw new Error(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
+              console.warn(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
+              return null
             }
           }
           if (state.current.isRendering) {

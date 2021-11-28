@@ -1,4 +1,4 @@
-import { StackProps, Text, Theme, isTamaguiElement } from '@tamagui/core'
+import { StackProps, Text, Theme, isTamaguiElement, isWeb } from '@tamagui/core'
 import React from 'react'
 
 import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
@@ -27,7 +27,13 @@ export const Tooltip = ({ contents, tooltipFrameProps, ...props }: TooltipProps)
           React.cloneElement(props.children, triggerProps)
         ) : (
           // TODO validate works on native (see Hero <Tooltip /> font)
-          <Text fontFamily="inherit" fontSize="inherit" {...triggerProps}>
+          <Text
+            {...(isWeb && {
+              fontFamily: 'inherit',
+              fontSize: 'inherit',
+            })}
+            {...triggerProps}
+          >
             {props.children}
           </Text>
         )
