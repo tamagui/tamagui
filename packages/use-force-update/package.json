@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-force-update",
-  "version": "1.0.0-alpha.22",
+  "version": "1.0.0-alpha.23",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",

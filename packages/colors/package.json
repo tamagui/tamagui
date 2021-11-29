@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/colors",
-  "version": "1.0.0-alpha.22",
+  "version": "1.0.0-alpha.23",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
