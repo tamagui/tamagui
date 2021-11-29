@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.0-alpha.17",
+  "version": "1.0.0-alpha.21",
   "main": "index.js",
   "scripts": {
     "build": "TAMAGUI_COMPILE_PROCESS=1 ttsc --skipLibCheck --skipDefaultLibCheck && yarn build:dist-to-cjs",
