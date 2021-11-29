@@ -3768,7 +3768,7 @@ __metadata:
     "@babel/traverse": ^7.15.4
     "@babel/types": ^7.15.6
     "@tamagui/build": ^1.0.0-alpha.17
-    "@tamagui/static": ^1.0.0-alpha.20
+    "@tamagui/static": ^1.0.0-alpha.21
   languageName: unknown
   linkType: soft
 
@@ -3777,7 +3777,7 @@ __metadata:
   resolution: "@tamagui/bench-components@workspace:packages/bench-components"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.17
-    "@tamagui/core": ^1.0.0-alpha.20
+    "@tamagui/core": ^1.0.0-alpha.21
     "@tamagui/fake-react-native": ^1.0.0-alpha.17
     "@tamagui/helpers": ^1.0.0-alpha.17
     "@types/node": ^16.11.9
@@ -3814,7 +3814,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core-node@^1.0.0-alpha.17, @tamagui/core-node@workspace:packages/core-node":
+"@tamagui/core-node@^1.0.0-alpha.21, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
@@ -3828,7 +3828,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.0.0-alpha.20, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.0.0-alpha.21, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -3884,17 +3884,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@^1.0.0-alpha.20, @tamagui/next-plugin@workspace:packages/next-plugin":
+"@tamagui/next-plugin@^1.0.0-alpha.21, @tamagui/next-plugin@workspace:packages/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.17
-    "@tamagui/static": ^1.0.0-alpha.20
+    "@tamagui/static": ^1.0.0-alpha.21
     css-minimizer-webpack-plugin: ^3.1.3
     esbuild-loader: ^2.16.0
     next: ^11.1.2
     next-compose-plugins: ^2.2.1
-    tamagui-loader: ^1.0.0-alpha.20
+    tamagui-loader: ^1.0.0-alpha.21
   peerDependencies:
     next: ">=11.0.0"
   languageName: unknown
@@ -3923,7 +3923,7 @@ __metadata:
     "@mdx-js/loader": ^1.6.22
     "@tamagui/colors": ^1.0.0-alpha.17
     "@tamagui/feather-icons": ^1.0.0-alpha.17
-    "@tamagui/next-plugin": ^1.0.0-alpha.20
+    "@tamagui/next-plugin": ^1.0.0-alpha.21
     compare-versions: ^4.0.1
     copy-to-clipboard: ^3.3.1
     css-minimizer-webpack-plugin: ^3.1.3
@@ -3955,15 +3955,15 @@ __metadata:
     remark-autolink-headings: ^6.0.1
     remark-slug: ^6.0.0
     seamless-scroll-polyfill: ^1.2.3
-    tamagui: ^1.0.0-alpha.20
-    tamagui-loader: ^1.0.0-alpha.20
+    tamagui: ^1.0.0-alpha.21
+    tamagui-loader: ^1.0.0-alpha.21
     unified: ^9.2.1
     unist-util-visit: ^2.0.3
     webpack-bundle-analyzer: ^4.4.2
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@^1.0.0-alpha.20, @tamagui/static@workspace:packages/static":
+"@tamagui/static@^1.0.0-alpha.21, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -3977,8 +3977,8 @@ __metadata:
     "@dish/babel-preset": ^0.0.6
     "@expo/match-media": ^0.1.0
     "@tamagui/build": ^1.0.0-alpha.17
-    "@tamagui/core": ^1.0.0-alpha.20
-    "@tamagui/core-node": ^1.0.0-alpha.17
+    "@tamagui/core": ^1.0.0-alpha.21
+    "@tamagui/core-node": ^1.0.0-alpha.21
     "@tamagui/fake-react-native": ^1.0.0-alpha.17
     "@tamagui/helpers": ^1.0.0-alpha.17
     "@testing-library/react": 13.0.0-alpha.4
@@ -4003,7 +4003,7 @@ __metadata:
     react-native-web: ^0.17.5
     react-test-renderer: 18.0.0-beta-149b420f6-20211119
     style-loader: ^3.3.0
-    tamagui: ^1.0.0-alpha.20
+    tamagui: ^1.0.0-alpha.21
     typescript: ^4.4.4
     webpack: ^5.58.1
   peerDependencies:
@@ -4015,7 +4015,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/test@workspace:packages/test"
   dependencies:
-    "@tamagui/core": ^1.0.0-alpha.20
+    "@tamagui/core": ^1.0.0-alpha.21
     "@tamagui/helpers": ^1.0.0-alpha.17
     react-native-web: ^0.17.5
   peerDependencies:
@@ -6933,6 +6933,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"compare-versions@npm:^3.4.0":
+  version: 3.6.0
+  resolution: "compare-versions@npm:3.6.0"
+  checksum: 7492a50cdaa2c27f5254eee7c4b38856e1c164991bab3d98d7fd067fe4b570d47123ecb92523b78338be86aa221668fd3868bfe8caa5587dc3ebbe1a03d52b5d
+  languageName: node
+  linkType: hard
+
 "compare-versions@npm:^4.0.1":
   version: 4.1.1
   resolution: "compare-versions@npm:4.1.1"
@@ -9172,10 +9179,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:^9.1.0":
-  version: 9.2.0
-  resolution: "expo-linear-gradient@npm:9.2.0"
-  checksum: 702c6c894a6c05595c31d9ef6ba70906183cfeda10c0636fc633706e89ffa62087bab14d15b13cc9174722448dfb339463c2cd7f7a51498c41635a5cc473ba34
+"expo-linear-gradient@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "expo-linear-gradient@npm:10.0.3"
+  dependencies:
+    expo-modules-core: ~0.4.4
+  checksum: f8b18e3da6aa4f190bfa3c9cc00051481340008717e729cb0bc6ff7ac25fd5b9540d572f707f565d89db845355f62fff45d9639912ca097c90716c60cbd46fc6
+  languageName: node
+  linkType: hard
+
+"expo-modules-core@npm:~0.4.4":
+  version: 0.4.8
+  resolution: "expo-modules-core@npm:0.4.8"
+  dependencies:
+    compare-versions: ^3.4.0
+    invariant: ^2.2.4
+  checksum: ea931c59b54e9139bebd717734e52d221a5ed29f1ea0bd9eb46e2ef1271aebb57e25316ed39b6ae7e6c1c2a4859f6bf76e4dd9cb711c9a56e1fed8d3bf8c1ff2
   languageName: node
   linkType: hard
 
@@ -19909,12 +19928,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.0.0-alpha.20, tamagui-loader@workspace:packages/loader":
+"tamagui-loader@^1.0.0-alpha.21, tamagui-loader@workspace:packages/loader":
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.17
-    "@tamagui/static": ^1.0.0-alpha.20
+    "@tamagui/static": ^1.0.0-alpha.21
     fs-extra: ^9.1.0
     loader-utils: ^2.0.0
     lodash: ^4.17.21
@@ -19941,7 +19960,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@^1.0.0-alpha.20, tamagui@workspace:packages/tamagui":
+"tamagui@^1.0.0-alpha.21, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
@@ -19951,14 +19970,14 @@ __metadata:
     "@react-native-aria/overlays": ^0.3.2
     "@react-native-community/blur": ^3.6.0
     "@tamagui/build": ^1.0.0-alpha.17
-    "@tamagui/core": ^1.0.0-alpha.20
+    "@tamagui/core": ^1.0.0-alpha.21
     "@tamagui/fake-react-native": ^1.0.0-alpha.17
     "@tamagui/helpers": ^1.0.0-alpha.17
     "@tamagui/use-debounce": ^1.0.0-alpha.18
     "@tamagui/use-force-update": ^1.0.0-alpha.18
     "@types/node": ^16.11.9
     "@types/react": ^17.0.35
-    expo-linear-gradient: ^9.1.0
+    expo-linear-gradient: ^10.0.3
     normalize-css-color: "*"
     react: "*"
     react-dom: "*"
