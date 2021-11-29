@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-window-size",
-  "version": "1.0.0-alpha.24",
+  "version": "1.0.0-alpha.25",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -14,8 +14,8 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/use-debounce": "^1.0.0-alpha.24",
-    "@tamagui/use-force-update": "^1.0.0-alpha.24",
+    "@tamagui/use-debounce": "^1.0.0-alpha.25",
+    "@tamagui/use-force-update": "^1.0.0-alpha.25",
     "react": "*"
   },
   "devDependencies": {
