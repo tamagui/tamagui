@@ -24,7 +24,7 @@ export const Tooltip = ({ contents, tooltipFrameProps, ...props }: TooltipProps)
       {...props}
       trigger={(triggerProps) =>
         isTamaguiElement(props.children) ? (
-          React.cloneElement(props.children, triggerProps)
+          React.cloneElement(props.children as any, triggerProps)
         ) : (
           // TODO validate works on native (see Hero <Tooltip /> font)
           <Text
