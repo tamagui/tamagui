@@ -6,7 +6,6 @@
   "compilerOptions": {
     "rootDir": "../",
     "composite": true,
-    "incremental": false,
     "emitDeclarationOnly": false,
     "jsx": "react",
     "outDir": "dist",
