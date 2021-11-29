@@ -1,5 +1,6 @@
+# never-mind, lets keep these in repo so we can track type changes
 # these just need to be published on npm
-**/types/**/*.d.ts
+# **/types/**/*.d.ts
 **/types/**/*.d.ts.map
 
 .yarn/*
