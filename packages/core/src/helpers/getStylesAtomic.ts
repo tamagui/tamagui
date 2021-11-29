@@ -1,4 +1,5 @@
-import { AllRules, StyleObject } from '@tamagui/helpers'
+import { AllRules } from '@tamagui/helpers'
+import type { StyleObject } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
 import { pseudos } from '../constants/pseudos'

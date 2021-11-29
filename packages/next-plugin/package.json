@@ -8,7 +8,6 @@
   "module:jsx": "dist/jsx",
   "files": [
     "types",
-    "src",
     "dist"
   ],
   "scripts": {
