@@ -13,7 +13,6 @@
     "strict": true,
     "esModuleInterop": true,
     "preserveSymlinks": true,
-    "incremental": true,
     "jsx": "react",
     "module": "system",
     "moduleResolution": "node",

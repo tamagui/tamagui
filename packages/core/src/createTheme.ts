@@ -14,6 +14,8 @@ export const createTheme = <Theme extends { [key: string]: string | Variable }>(
         name: key,
         val,
       })
+    } else {
+      res[key] = val
     }
   }
   return res
