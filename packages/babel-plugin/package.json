@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin",
-  "version": "1.0.0-alpha.19",
+  "version": "1.0.0-alpha.20",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -26,7 +26,7 @@
     "@babel/traverse": "^7.15.4",
     "@babel/types": "^7.15.6",
     "@tamagui/build": "^1.0.0-alpha.17",
-    "@tamagui/static": "^1.0.0-alpha.19"
+    "@tamagui/static": "^1.0.0-alpha.20"
   },
   "gitHead": "a41c5a5b08be5518d138515137122c248e3f7c71"
 }
