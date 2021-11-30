@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.0.0-alpha.25",
+  "version": "1.0.0-alpha.26",
   "sideEffects": [
     "*.css"
   ],
@@ -23,11 +23,11 @@
     "@react-native-aria/focus": "^0.2.5",
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
-    "@tamagui/core": "^1.0.0-alpha.25",
+    "@tamagui/core": "^1.0.0-alpha.26",
     "@tamagui/fake-react-native": "^1.0.0-alpha.17",
-    "@tamagui/helpers": "^1.0.0-alpha.25",
-    "@tamagui/use-debounce": "^1.0.0-alpha.25",
-    "@tamagui/use-force-update": "^1.0.0-alpha.25",
+    "@tamagui/helpers": "^1.0.0-alpha.26",
+    "@tamagui/use-debounce": "^1.0.0-alpha.26",
+    "@tamagui/use-force-update": "^1.0.0-alpha.26",
     "expo-linear-gradient": "^10.0.3",
     "normalize-css-color": "*",
     "react": "*",
