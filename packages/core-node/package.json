@@ -3,10 +3,8 @@
   "version": "1.0.0-alpha.26",
   "main": "index.js",
   "scripts": {
-    "build": "TAMAGUI_COMPILE_PROCESS=1 ttsc --skipLibCheck --skipDefaultLibCheck && yarn build:dist-to-cjs",
-    "build:dist-to-cjs": "./build-cjs.sh",
-    "watch": "TAMAGUI_COMPILE_PROCESS=1 ttsc --watch --preserveWatchOutput && yarn watch:dist-to-cjs",
-    "watch:dist-to-cjs": "./build-cjs.sh --watch"
+    "build": "./build.js",
+    "watch": "./build.js --watch"
   },
   "ultra": {
     "concurrent": [
@@ -19,7 +17,12 @@
   "devDependencies": {
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
+    "chokidar": "^3.5.2",
     "esbuild": "^0.13.12",
+    "execa": "^5.0.0",
+    "fast-glob": "^3.2.7",
+    "fs-extra": "^9.1.0",
+    "lodash": "^4.17.21",
     "ts-transform-import-path-rewrite": "^0.3.0",
     "ttypescript": "^1.5.13",
     "typescript": "^4.5.2"
