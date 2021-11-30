@@ -4,7 +4,6 @@ import path from 'path'
 import compareVersions from 'compare-versions'
 import glob from 'glob'
 import matter from 'gray-matter'
-// TODO error on docs pages with esbuild
 import { bundleMDX } from 'mdx-bundler'
 import readingTime from 'reading-time'
 import remarkSlug from 'remark-slug'

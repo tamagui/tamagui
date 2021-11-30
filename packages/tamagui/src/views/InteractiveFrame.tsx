@@ -42,7 +42,6 @@ export const InteractiveFrame = styled(XStack, {
 
     disabled: {
       true: {
-        // TODO enabling this messes up types for some reason
         // pointerEvents: 'none',
         opacity: 0.45,
         backgroundColor: '$bg',

@@ -1,10 +1,12 @@
+- Paragraph size={} not accepting simple numbers
+- fix theme strip -postfix
+- tamagui needs to overwrite StackProps (verify)
 - themes: mobile sizing separate :)
 
 - document: getTokens, useThemeName
 - textTransform on font for uppercase h6
 - document slimming react-native-web and bundle size
 - TODO fix babel tests they seem right but output isny matching
-- compiler vs non: messing up "Show Code" pos
 - dev mode validate tokens, theme, font
 - could do a pass on generated classnames to dedupe would help benchmarks
 - static compilation can go further with variants because it knows they always only accept certain values... see mount-deep-tree
@@ -22,7 +24,6 @@
 
 - escape hatch for html props `htmlProps` ?
 - optimize regular styled() usage
-- add: dev mode can add data-is to properties if you want
 - pressStyle test
 - variants [number] [any] would be nice
   - instead of any variant: { size: (x: typed) => {} } could be inferred? fully dynamic basically

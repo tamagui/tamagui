@@ -145,12 +145,8 @@ const shorthands = {
   py: 'paddingVertical',
   w: 'width',
   zi: 'zIndex',
-
-  // figure out text specifics
   lh: 'lineHeight',
   ta: 'textAlign',
-  // TODO
-  // fs: 'fontSize',
 } as const
 
 export type MyTheme = typeof light

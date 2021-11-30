@@ -88,7 +88,6 @@ test('8. styleExpansions', async () => {
   const { test8 } = context
   const out = test8.renderer.toJSON()
   expect(out).toMatchSnapshot()
-  // TODO test constant folding
 })
 
 test('9. combines with classname', async () => {

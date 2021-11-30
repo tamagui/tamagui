@@ -1,5 +1,8 @@
 export { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+export * from '@tamagui/helpers'
+export * from '@tamagui/core'
+
 export * from './viewTypes'
 
 export * from '@tamagui/use-debounce'
@@ -39,6 +42,3 @@ export * from './views/Transitions'
 export * from './views/VisuallyHidden'
 
 export * from './helpers/prevent'
-
-export * from '@tamagui/helpers'
-export * from '@tamagui/core'

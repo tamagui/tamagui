@@ -33,7 +33,6 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   // import config
   const configPath = join(process.cwd(), props.config)
   const tamaguiConfigExport = require(configPath)
-  // TODO validate its the right config
   const tamaguiConfig = (tamaguiConfigExport['default'] ||
     tamaguiConfigExport) as TamaguiInternalConfig
 
@@ -41,7 +40,6 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   const components = {}
   for (const module of props.components) {
     const exported = require(module)
-    // TODO check if overwriting and warn
     Object.assign(components, exported)
   }
 

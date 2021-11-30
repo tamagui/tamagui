@@ -50,7 +50,6 @@ export const Text = createComponent<TextProps>({
           },
     },
   },
-  // TODO document
   deoptProps: new Set(isWeb ? [] : ['ellipse']),
   validStyles: {
     ...validStyles,

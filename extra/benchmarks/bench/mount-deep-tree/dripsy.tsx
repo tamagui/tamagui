@@ -23,10 +23,6 @@ export function Tree({ breadth, depth, id, wrap }) {
   const colorIndex2 = (id % 3) + 3
   const isCol = depth % 2 === 0
 
-  // TODO: we could make this fully extract by having the compiler understand that variants are fixed
-  // it would have to generate something like:
-  //   <div className={concat( colorIndex === 0 ? cn1 : colorIndex === 1 ? cn2 : ... )} />
-  // it understands there are limited variants so it can generate all of them
   let result = (
     <Box color={colorIndex as any} layout={isCol ? 'column' : 'row'} outer>
       {depth === 0 && <Box color={colorIndex2 as any} fixed />}
