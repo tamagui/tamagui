@@ -1,6 +1,7 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
+import { ThemeObject } from '../../types'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { Variable } from '../createVariable'
 import { ThemeName } from '../types'
@@ -41,7 +42,7 @@ export const useDefaultThemeName = () => {
   return useContext(ThemeContext)[GET_DEFAULT_THEME] as any as ThemeName
 }
 
-export const useTheme = () => {
+export const useTheme = (): ThemeObject => {
   const forceUpdate = useForceUpdate()
   const manager = useContext(ThemeManagerContext)
   const themes = useContext(ThemeContext)

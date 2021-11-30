@@ -7,12 +7,14 @@ import { SizableText } from './SizableText'
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
+type IconProp = JSX.Element | ((props: { color?: string; size?: number }) => JSX.Element) | null
+
 export type ButtonProps = InteractiveFrameProps &
   ThemeableProps & {
     textProps?: Omit<TextProps, 'children'>
     noTextWrap?: boolean
-    icon?: JSX.Element | null
-    iconAfter?: JSX.Element | null
+    icon?: IconProp
+    iconAfter?: IconProp
 
     /* don't toggle this either always on or not */
     themeIcon?: boolean
