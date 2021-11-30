@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.0-alpha.26",
+  "version": "1.0.0-alpha.28",
   "main": "index.js",
   "scripts": {
     "build": "./build.js",
