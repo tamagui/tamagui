@@ -5,12 +5,12 @@ export declare const Box: import("@tamagui/core").StaticComponent<Omit<Omit<impo
 }>, "color" | "fixed" | "layout" | "outer"> & {
     color?: 0 | 1 | 2 | 3 | 4 | 5 | undefined;
     layout?: "column" | "row" | undefined;
-    outer?: boolean | undefined;
-    fixed?: boolean | undefined;
+    outer?: boolean | null | undefined;
+    fixed?: boolean | null | undefined;
 } & import("@tamagui/core").MediaProps<{
     color?: 0 | 1 | 2 | 3 | 4 | 5 | undefined;
     layout?: "column" | "row" | undefined;
-    outer?: boolean | undefined;
-    fixed?: boolean | undefined;
+    outer?: boolean | null | undefined;
+    fixed?: boolean | null | undefined;
 }>, any, import("@tamagui/core").StaticConfigParsed, any>;
 //# sourceMappingURL=Box.d.ts.map
