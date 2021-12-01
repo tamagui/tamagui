@@ -1,10 +1,10 @@
 import { GetProps } from '@tamagui/core';
 export declare const Box: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: `$${string}` | `$${number}` | undefined;
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 } & import("@tamagui/core").MediaProps<{
-    fullscreen?: boolean | undefined;
-    elevation?: `$${string}` | `$${number}` | undefined;
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, never> & ({} | {
     [x: string]: string | number | undefined;
 }) & import("@tamagui/core").MediaProps<{} | {

@@ -1,4 +1,4 @@
-import { TextProps, ThemeableProps, getTokens, themeable, useTheme } from '@tamagui/core'
+import { TextProps, ThemeableProps, Variable, getTokens, themeable, useTheme } from '@tamagui/core'
 import React, { forwardRef, isValidElement } from 'react'
 
 import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
@@ -15,9 +15,6 @@ export type ButtonProps = InteractiveFrameProps &
     noTextWrap?: boolean
     icon?: IconProp
     iconAfter?: IconProp
-
-    /* don't toggle this either always on or not */
-    themeIcon?: boolean
   }
 
 export const Button = InteractiveFrame.extractable(
@@ -32,19 +29,19 @@ export const Button = InteractiveFrame.extractable(
         noTextWrap,
         theme: themeName,
         size,
-        themeIcon,
         ...rest
       } = props
-      const theme = themeIcon ? useTheme() : null
-      const addTheme = (el: any) =>
-        isValidElement(el)
+      const theme = useTheme()
+      const addTheme = (el: any) => {
+        return isValidElement(el)
           ? el
           : !!el
-          ? React.createElement(
-              el,
-              theme ? { color: theme.color2, size: getIconSize(size, -1) } : {}
-            )
+          ? React.createElement(el, {
+              color: theme.color2,
+              size: getIconSize(size, -1),
+            })
           : null
+      }
       const themedIcon = icon ? addTheme(icon) : null
       const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
 
@@ -94,8 +91,17 @@ export const getIconSize = (size: any = '$4', sizeUpOrDownBy = 0) => {
   const tokens = getTokens()
   const fonts = Object.keys(tokens.font)
   const fontSize = (tokens.font.body || tokens.font[fonts[0]]).size
-  const fontSizeNames = Object.keys(fontSize)
-  const nameIndex = Math.max(1, fontSizeNames.indexOf(size) + sizeUpOrDownBy)
-  const sizedName = fontSizeNames[nameIndex]
-  return (sizeUpOrDownBy === 0 ? fontSize[size] : fontSize[sizedName]) ?? 16
+  let res: Variable | number | null = null
+  if (sizeUpOrDownBy === 0) {
+    res = fontSize[size]
+  } else {
+    const fontSizeNames = Object.keys(fontSize)
+    const nameIndex = Math.max(1, fontSizeNames.indexOf(size) + sizeUpOrDownBy)
+    const sizedName = fontSizeNames[nameIndex]
+    res = fontSize[sizedName] ?? 16
+  }
+  if (res instanceof Variable) {
+    return res.val
+  }
+  return res
 }

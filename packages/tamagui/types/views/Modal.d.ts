@@ -9,11 +9,11 @@ export declare type ModalProps = Omit<ModalPropsReact, 'children'> & AnimatedSta
 };
 export declare const Modal: (props: ModalProps) => JSX.Element;
 export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: `$${string}` | `$${number}` | undefined;
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 } & import("@tamagui/core").MediaProps<{
-    fullscreen?: boolean | undefined;
-    elevation?: `$${string}` | `$${number}` | undefined;
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, never> & ({} | {
     [x: string]: string | number | undefined;
 }) & import("@tamagui/core").MediaProps<{} | {
