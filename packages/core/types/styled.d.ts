@@ -16,6 +16,6 @@ export declare type GetVariants<ParentComponent extends StaticComponent | React.
     };
 };
 export declare type GetVariantProps<Variants> = Variants extends void ? {} : {
-    [Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof Tokens ? keyof Tokens[VariantSpread] extends string | number ? `$${keyof Tokens[VariantSpread]}` : unknown : unknown : keyof Variants[Key] extends 'true' ? boolean : keyof Exclude<Variants[Key], undefined>;
+    [Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof Tokens ? keyof Tokens[VariantSpread] extends string | number ? `$${keyof Tokens[VariantSpread]}` | null : unknown : unknown : keyof Variants[Key] extends 'true' ? boolean | null : keyof Exclude<Variants[Key], undefined>;
 };
 //# sourceMappingURL=styled.d.ts.map

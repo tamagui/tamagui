@@ -61,11 +61,11 @@ export type GetVariantProps<Variants> = Variants extends void
       [Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}`
         ? VariantSpread extends keyof Tokens
           ? keyof Tokens[VariantSpread] extends string | number
-            ? `$${keyof Tokens[VariantSpread]}`
+            ? `$${keyof Tokens[VariantSpread]}` | null
             : unknown
           : unknown
         : keyof Variants[Key] extends 'true'
-        ? boolean
+        ? boolean | null
         : keyof Exclude<Variants[Key], undefined>
     }
 
