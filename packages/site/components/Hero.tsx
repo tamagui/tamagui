@@ -42,13 +42,16 @@ export function Hero() {
 
           <ContainerLarge mb={-20}>
             <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
-              <YStack space="$7">
+              <YStack
+                $sm={{
+                  maxWidth: 550,
+                  mx: 'auto',
+                }}
+                space="$7"
+              >
                 <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
                   <Title
                     size="$10"
-                    $sm={{
-                      maxWidth: 550,
-                    }}
                     $gtSm={{
                       size: '$11',
                       ta: 'center',
@@ -201,7 +204,7 @@ export function Hero() {
           px="$4"
           $sm={{ flexDirection: 'column' }}
         >
-          <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
+          <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
             <Theme name="purple">
               <IconStack>
                 <Cpu size={20} color="var(--color3)" />
@@ -217,7 +220,7 @@ export function Hero() {
             </Paragraph>
           </YStack>
 
-          <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
+          <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
             <Theme name="green">
               <IconStack>
                 <Compass size={20} color="var(--color3)" />
@@ -236,7 +239,7 @@ export function Hero() {
             </Paragraph>
           </YStack>
 
-          <YStack width="33%" $sm={{ width: 'auto' }} flexShrink={1}>
+          <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
             <Theme name="pink">
               <IconStack>
                 <Layers size={20} color="var(--color3)" />
