@@ -1,5 +1,7 @@
 import { Variable } from './createVariable';
-export declare const createTheme: <Theme extends {
+declare type GenericTheme = {
     [key: string]: string | Variable;
-}>(theme: Theme) => { [key in keyof Theme]: string | Variable; };
+};
+export declare const createTheme: <Theme extends GenericTheme>(theme: Theme) => Theme;
+export {};
 //# sourceMappingURL=createTheme.d.ts.map

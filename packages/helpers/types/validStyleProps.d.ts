@@ -1,4 +1,4 @@
-export declare const stylePropsTransform: {
+export declare const stylePropsTransform: Readonly<{
     x: boolean;
     y: boolean;
     scale: boolean;
@@ -12,7 +12,7 @@ export declare const stylePropsTransform: {
     rotateY: boolean;
     rotateX: boolean;
     rotateZ: boolean;
-};
+}>;
 export declare const stylePropsView: Readonly<{
     userSelect?: boolean | undefined;
     cursor?: boolean | undefined;
@@ -366,12 +366,12 @@ export declare const stylePropsAll: Readonly<{
     shadowOpacity: boolean;
     shadowRadius: boolean;
 }>;
-export declare const validStylesPseudo: {
+export declare const validStylesPseudo: Readonly<{
     hoverStyle: boolean;
     pressStyle: boolean;
     focusStyle: boolean;
-};
-export declare const validStyles: {
+}>;
+export declare const validStyles: Readonly<{
     userSelect?: boolean | undefined;
     cursor?: boolean | undefined;
     contain?: boolean | undefined;
@@ -471,5 +471,5 @@ export declare const validStyles: {
     hoverStyle: boolean;
     pressStyle: boolean;
     focusStyle: boolean;
-};
+}>;
 //# sourceMappingURL=validStyleProps.d.ts.map

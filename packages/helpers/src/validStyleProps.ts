@@ -1,5 +1,5 @@
 // flat transform props
-export const stylePropsTransform = {
+export const stylePropsTransform = Object.freeze({
   x: true,
   y: true,
   scale: true,
@@ -13,7 +13,7 @@ export const stylePropsTransform = {
   rotateY: true,
   rotateX: true,
   rotateZ: true,
-}
+})
 
 export const stylePropsView = Object.freeze({
   backfaceVisibility: true,
@@ -140,13 +140,13 @@ export const stylePropsText = Object.freeze({
 
 export const stylePropsAll = stylePropsText
 
-export const validStylesPseudo = {
+export const validStylesPseudo = Object.freeze({
   hoverStyle: true,
   pressStyle: true,
   focusStyle: true,
-}
+})
 
-export const validStyles = {
+export const validStyles = Object.freeze({
   ...validStylesPseudo,
   ...stylePropsView,
-}
+})

@@ -1,6 +1,7 @@
 import { getStyleRules } from '@tamagui/helpers'
 
-import { Variable, createVariable, isVariable } from './createVariable'
+import { isWeb } from './constants/platform'
+import { Variable, createVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { validateConfig } from './helpers/validate'
 import { configureMedia } from './hooks/useMedia'
@@ -50,12 +51,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 ): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D>
   ? TamaguiInternalConfig<A, B, C, D>
   : unknown {
-  if (process.env.NODE_ENV === 'development') {
-    // config is re-run by the @tamagui/static, dont double validate
-    if (!config['parsed']) {
-      validateConfig(config)
-    }
+  // config is re-run by the @tamagui/static, dont double validate
+  // but cheap to check and not much downside just returning here if parsed
+  if (config['parsed']) {
+    return config as any
   }
+
   // test env loads a few times as it runs diff tests
   if (conf) {
     console.warn('Called createTamagui twice! Should never do so')
@@ -67,75 +68,76 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultActive: config.mediaQueryDefaultActive,
   })
 
-  // TODO can avoid some of this CSS creation on native
   const themeConfig = (() => {
     let cssRules: string[] = []
-
-    // tokens
-    let tokenRule = `:root {`
     const varsByValue = new Map<string, Variable>()
-    const addVar = (v: Variable) => {
-      varsByValue[v.val] = v
-      const rule = `--${v.name}:${typeof v.val === 'number' ? `${v.val}px` : v.val};`
-      tokenRule += rule
-    }
 
-    for (const key in config.tokens) {
-      for (const skey in config.tokens[key]) {
-        const val = config.tokens[key][skey]
-        if (key === 'font') {
-          for (const fkey in val) {
-            if (fkey === 'family') {
-              addVar(val[fkey])
-            } else {
-              for (const fskey in val[fkey]) {
-                addVar(val[fkey][fskey])
+    if (isWeb) {
+      // tokens
+      let tokenRule = `:root {`
+      const addVar = (v: Variable) => {
+        varsByValue[v.val] = v
+        const rule = `--${v.name}:${typeof v.val === 'number' ? `${v.val}px` : v.val};`
+        tokenRule += rule
+      }
+
+      for (const key in config.tokens) {
+        for (const skey in config.tokens[key]) {
+          const val = config.tokens[key][skey]
+          if (key === 'font') {
+            for (const fkey in val) {
+              if (fkey === 'family') {
+                addVar(val[fkey])
+              } else {
+                for (const fskey in val[fkey]) {
+                  addVar(val[fkey][fskey])
+                }
               }
             }
+          } else {
+            addVar(val)
           }
-        } else {
-          addVar(val)
         }
       }
+      cssRules.push(`${tokenRule}\n}`)
     }
-    cssRules.push(`${tokenRule}\n}`)
 
     // themes
     for (const themeName in config.themes) {
       // to allow using the same theme with diff names, be sure we don't mutate!
-      config.themes[themeName] = { ...config.themes[themeName] }
-      const theme = config.themes[themeName]
+      const theme = { ...config.themes[themeName] }
+      config.themes[themeName] = theme
+
       let vars = ''
+
       for (const themeKey in theme) {
-        const val = theme[themeKey]
-        const getVariableCSS = (inv: any) => {
-          const v = varsByValue[inv] ?? inv
-          return isVariable(v) ? `--${themeKey}:var(--${v.name});` : `--${themeKey}:${v};`
+        if (isWeb) {
+          const val = theme[themeKey]
+          // TODO sanity check is necessary
+          const varName = val instanceof Variable ? val.name : varsByValue[val]?.name
+          vars += `--${themeKey}:${varName ? `var(--${varName});` : `${val}`};`
         }
-        vars += getVariableCSS(val)
-        // TODO sanity check is necessary
-        // make everything a variable that gets put into css
-        if (!isVariable(val)) {
-          theme[themeKey] = createVariable({
-            name: themeKey,
-            val,
-          })
-        }
+
+        // make sure properly names theme variables
+        ensureThemeVariable(theme, themeKey)
       }
 
-      const [themeClassName, parentName] = themeName.includes('-')
-        ? themeName.split('-')
-        : [themeName, '']
-      // tiny hack for now assuming light/dark are typical parentName
-      const oppositeName = parentName === 'dark' ? 'light' : 'dark'
-      const cssParentSel = parentName ? `.${PREFIX}${parentName}` : ''
-      const cssChildSel = `.${PREFIX}${themeClassName}`
-      const cssSel = `${cssParentSel} ${cssChildSel}`
-      // we need to force specificity
-      const cssRule = `${cssSel}, .${PREFIX}${oppositeName} ${cssSel} {\n${vars}\n}`
-      cssRules.push(cssRule)
+      if (isWeb) {
+        const [themeClassName, parentName] = themeName.includes('-')
+          ? themeName.split('-')
+          : [themeName, '']
+        // tiny hack for now assuming light/dark are typical parentName
+        const oppositeName = parentName === 'dark' ? 'light' : 'dark'
+        const cssParentSel = parentName ? `.${PREFIX}${parentName}` : ''
+        const cssChildSel = `.${PREFIX}${themeClassName}`
+        const cssSel = `${cssParentSel} ${cssChildSel}`
+        // we need to force specificity
+        const cssRule = `${cssSel}, .${PREFIX}${oppositeName} ${cssSel} {\n${vars}\n}`
+        cssRules.push(cssRule)
+      }
     }
 
+    varsByValue.clear()
     Object.freeze(cssRules)
 
     return {
@@ -146,6 +148,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // faster lookups token keys become $keys to match input
   const tokensParsed: any = parseTokens(config.tokens)
+
+  // we could do this above in theme loop
   // all themes should match key and we just need variable name
   // TODO once w react native we'd want to have a reverse lookup back to value
   const themeParsed: any = {}
@@ -215,4 +219,24 @@ const parseTokens = (tokens: any) => {
   }
 
   return res
+}
+
+// mutates, freeze after
+// shared by createTamagui so extracted here
+function ensureThemeVariable(theme: any, key: string) {
+  const val = theme[key]
+  if (!(val instanceof Variable)) {
+    theme[key] = createVariable({
+      name: key,
+      val,
+    })
+  } else {
+    if (val.name !== key) {
+      // rename to theme name
+      theme[key] = createVariable({
+        name: key,
+        val: val.val,
+      })
+    }
+  }
 }

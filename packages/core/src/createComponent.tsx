@@ -22,6 +22,7 @@ import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticCon
 import { getSplitStyles } from './helpers/getSplitStyles'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
+import { useTheme } from './hooks/useTheme'
 import {
   SpaceTokens,
   StaticComponent,
@@ -30,7 +31,6 @@ import {
   TamaguiInternalConfig,
 } from './types'
 import { TextAncestorContext } from './views/TextAncestorContext'
-import { ThemeManagerContext } from './views/ThemeManagerContext'
 
 export const mouseUps = new Set<Function>()
 
@@ -42,6 +42,27 @@ if (typeof document !== 'undefined') {
 }
 
 type DefaultProps = {}
+
+const defaultComponentState = {
+  hover: false,
+  press: false,
+  pressIn: false,
+}
+
+type ComponentState = typeof defaultComponentState
+
+function createShallowUpdate(setter: React.Dispatch<React.SetStateAction<ComponentState>>) {
+  return (next: Partial<ComponentState>) => {
+    setter((prev) => {
+      for (const key in next) {
+        if (prev[key] !== next[key]) {
+          return { ...prev, ...next }
+        }
+      }
+      return prev
+    })
+  }
+}
 
 export function createComponent<A extends Object = DefaultProps>(
   configIn: Partial<StaticConfig> | StaticConfigParsed
@@ -70,22 +91,9 @@ export function createComponent<A extends Object = DefaultProps>(
   const component = forwardRef<View, A>((props: any, forwardedRef) => {
     const forceUpdate = useForceUpdate()
     const features = useFeatures(props, { forceUpdate })
-    const manager = useContext(ThemeManagerContext)
-    const [state, set_] = useState(() => ({
-      hover: false,
-      press: false,
-      pressIn: false,
-      theme: manager.name,
-    }))
-    const set = (next: Partial<typeof state>) =>
-      set_((prev) => {
-        for (const key in next) {
-          if (prev[key] !== next[key]) {
-            return { ...prev, ...next }
-          }
-        }
-        return prev
-      })
+    const theme = useTheme()
+    const [state, set_] = useState<ComponentState>(defaultComponentState)
+    const set = createShallowUpdate(set_)
 
     // from react-native-web
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
@@ -98,8 +106,6 @@ export function createComponent<A extends Object = DefaultProps>(
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
-
-    const theme = (manager.theme as any) || initialTheme
 
     const {
       viewProps: viewPropsIn,
@@ -177,8 +183,6 @@ export function createComponent<A extends Object = DefaultProps>(
       })
     }
 
-    const isTracking = useRef(false)
-
     // hasEverHadEvents prevents repareting if you remove onPress or similar...
     const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
     if (!internal.current) {
@@ -189,18 +193,11 @@ export function createComponent<A extends Object = DefaultProps>(
 
     useEffect(() => {
       internal.current!.isMounted = true
-      const dispose = manager?.onChangeTheme((name) => {
-        if (isTracking.current) {
-          set({ theme: name })
-        }
-      })
       return () => {
-        dispose()
         mouseUps.delete(unPress)
-        isTracking.current = false
         internal.current!.isMounted = false
       }
-    }, [manager])
+    }, [])
 
     // element
     const element = isWeb

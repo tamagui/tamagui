@@ -8,17 +8,21 @@ const fg = require('fast-glob')
 
 async function build() {
   console.log('building core-node...')
-  await fs.remove('dist')
-  await exec('npx', ['ttsc', '--skipLibCheck', '--skipDefaultLibCheck'])
-  await exec('npx', [
-    'esbuild',
-    '--bundle',
-    '--outdir=dist',
-    '--format=cjs',
-    '--target=node16',
-    './dist/core/src/static.js',
-  ])
-  await fs.remove('dist/core')
+  try {
+    await fs.remove('dist')
+    await exec('npx', ['ttsc', '--skipLibCheck', '--skipDefaultLibCheck'])
+    await exec('npx', [
+      'esbuild',
+      '--bundle',
+      '--outdir=dist',
+      '--format=cjs',
+      '--target=node16',
+      './dist/core/src/static.js',
+    ])
+    await fs.remove('dist/core')
+  } catch (err) {
+    console.error('Error building core-node:', err.message)
+  }
   console.log('...built core-node')
 }
 

@@ -87,16 +87,20 @@ export const useTheme = (): ThemeObject => {
           const val = activeTheme[key]
           if (process.env.NODE_ENV === 'development') {
             if (typeof val === 'undefined') {
-              console.warn(`No theme value "${String(key)}" in: ${Object.keys(activeTheme)}`)
+              console.warn(`No theme value "${String(key)}" in`, activeTheme, themes)
               return null
+            }
+            if (!(val instanceof Variable)) {
+              console.warn('Non variable!', val)
+            }
+            if (val.name !== key) {
+              console.warn('Non-matching name for variable to key', key, val.name)
             }
           }
           if (state.current.isRendering) {
             state.current.keys.add(key)
           }
-          // TODO costly, can make faster (we need name mapping to og name, but val pointing to new val)
-          // console.log('returning new variable', val, key)
-          return new Variable({ val: val.val, name: key })
+          return val
         },
       })
     },

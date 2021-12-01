@@ -37,7 +37,11 @@
 - [perf] no need to concat classname at compile className={} if not flattening because it happens in createComponent
 - media based hoverStyle/pressStyle may need runtime equivalent!
 - babel add displayname
+- bring back focusStyle, eventually focusWithinStyle
 - font weight tokens
 - a way for font token size/weight/etc to be per-font
 
 - make colors tree shakeable
+
+- container queries
+- auto skeleton components
