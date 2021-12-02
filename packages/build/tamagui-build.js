@@ -170,4 +170,6 @@ if (shouldWatch) {
       .on('change', finish)
       .on('add', finish)
   })
+} else {
+  build()
 }
