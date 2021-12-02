@@ -13,7 +13,6 @@ const shouldSkipTypes = process.argv.includes('skip-types') || process.env.SKIP_
 const shouldWatch = process.argv.includes('--watch')
 
 const pkg = fs.readJSONSync('./package.json')
-const pkgSource = pkg.source || 'src/index.ts'
 const pkgMain = pkg.main
 const pkgModule = pkg.module
 
@@ -148,72 +147,19 @@ if (shouldWatch) {
   const path = require('path')
   process.env.IS_WATCHING = true
   process.env.DISABLE_AUTORUN = true
-
-  // TODO determine internal packages smarter
-  const deps = [
-    ...new Set([...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.devDependencies || {})]),
-  ]
-    .filter(Boolean)
-    .filter((x) => x.includes(`tamagui`))
-
-  const watchDirs = [
-    'src',
-    ...deps.flatMap((d) => {
-      try {
-        return path.dirname(require.resolve(d))
-      } catch {
-        const potentialDir = path.join('..', d.replace('@tamagui/', '') + '/dist')
-        if (fs.existsSync(potentialDir)) {
-          return potentialDir
-        }
-        return []
-      }
-    }),
-  ]
-
-  for (const dir of watchDirs) {
-    if (dir === 'src') {
-      build().then(() => doWatch())
-    } else {
-      doWatch()
+  build().then(() => {
+    const finish = (_, path, stats) => {
+      build()
     }
-
-    const watchSize = {}
-    function doWatch() {
-      const finish = (event, path, stats) => {
-        if (dir === 'src' || (stats && stats.size != watchSize[path])) {
-          if (stats) watchSize[path] = stats.size
-          console.log('watch build', dir)
-          build()
-        }
-      }
-
-      const chokidar = require('chokidar')
-      chokidar
-        // prevent infinite loop but cause race condition if you just build directly
-        .watch(dir, {
-          persistent: true,
-          alwaysStat: true,
-          ignoreInitial: true,
-        })
-        .on('change', finish)
-        .on('add', finish)
-    }
-  }
-
-  if (deps.length) {
-    console.log('  ', pkg.name, '👀', deps.join(', '))
-  }
-} else {
-  process.on('uncaughtException', console.log.bind(console))
-  process.on('unhandledRejection', console.log.bind(console))
-  build()
-}
-
-function debounce(callback, wait) {
-  let timer
-  return (...args) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => callback(...args), wait)
-  }
+    const chokidar = require('chokidar')
+    chokidar
+      // prevent infinite loop but cause race condition if you just build directly
+      .watch('src', {
+        persistent: true,
+        alwaysStat: true,
+        ignoreInitial: true,
+      })
+      .on('change', finish)
+      .on('add', finish)
+  })
 }

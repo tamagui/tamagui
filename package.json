@@ -19,7 +19,7 @@
     "build": "yarn build:js && yarn build:types",
     "build:js": "SKIP_TYPES=1 ultra -r --no-pretty --concurrency 100 --rebuild",
     "build:types": "SKIP_JS=1 ultra -r --no-pretty --concurrency 100 --rebuild",
-    "watch": "ultra -r --no-pretty --concurrency 100 watch",
+    "watch": "yarn build:types && SKIP_TYPES=1 ultra -r --no-pretty --concurrency 100 watch",
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "ultra -r --no-pretty --serial test",
