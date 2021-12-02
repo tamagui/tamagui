@@ -42,3 +42,4 @@ export * from './views/Transitions'
 export * from './views/VisuallyHidden'
 
 export * from './helpers/prevent'
+export * from './helpers/getFontSize'

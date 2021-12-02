@@ -187,7 +187,15 @@ type ComponentPropsBase = {
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =
   keyof Tokens['font'][keyof Tokens['font']][A]
 
+export type SizeTokens = `$${keyof Tokens['size']}`
+export type FontTokens = `$${keyof Tokens['font']}`
+export type FontSizeTokens = `$${GetTokenFontKeysFor<'size'>}`
+export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}`
+export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}`
+export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}`
 export type SpaceTokens = `$${keyof Tokens['space']}`
+export type ColorTokens = `$${keyof Tokens['color']}`
+export type ZIndexTokens = `$${keyof Tokens['zIndex']}`
 
 //
 // adds in theme short values to relevant props
@@ -199,23 +207,23 @@ export type WithThemeValues<T extends object> = {
     | (K extends ColorableKeys
         ? ThemeKeyVariables
         : K extends SizeKeys
-        ? `$${keyof Tokens['size']}`
+        ? SizeTokens
         : K extends FontKeys
-        ? `$${keyof Tokens['font']}`
+        ? FontTokens
         : K extends FontSizeKeys
-        ? `$${GetTokenFontKeysFor<'size'>}`
+        ? FontSizeTokens
         : K extends SpaceKeys
-        ? `$${keyof Tokens['space']}`
+        ? SpaceTokens
         : K extends ColorKeys
-        ? `$${keyof Tokens['color']}`
+        ? ColorTokens
         : K extends ZIndexKeys
-        ? `$${keyof Tokens['zIndex']}`
+        ? ZIndexTokens
         : K extends LineHeightKeys
-        ? `$${GetTokenFontKeysFor<'lineHeight'>}`
+        ? FontLineHeightTokens
         : K extends FontWeightKeys
-        ? `$${GetTokenFontKeysFor<'weight'>}`
+        ? FontWeightTokens
         : K extends FontLetterSpacingKeys
-        ? `$${GetTokenFontKeysFor<'letterSpacing'>}`
+        ? FontLetterSpacingTokens
         : {})
 }
 

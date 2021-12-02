@@ -1,6 +1,7 @@
-import { TextProps, ThemeableProps, Variable, getTokens, themeable, useTheme } from '@tamagui/core'
+import { TextProps, ThemeableProps, getTokens, themeable, useTheme } from '@tamagui/core'
 import React, { forwardRef, isValidElement } from 'react'
 
+import { getFontSize } from '../helpers/getFontSize'
 import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
 import { SizableText } from './SizableText'
 
@@ -38,7 +39,7 @@ export const Button = InteractiveFrame.extractable(
           : !!el
           ? React.createElement(el, {
               color: theme.color2,
-              size: getIconSize(size, -1),
+              size: getFontSize(size, { relativeSize: -1 }),
             })
           : null
       }
@@ -85,23 +86,4 @@ export const getSpaceSize = (size: any, sizeUpOrDownBy = 0) => {
   const sizeDown =
     sizes[sizeNames[Math.max(0, sizeNames.indexOf(size || '$4') + sizeUpOrDownBy)]] || '$4'
   return sizeDown
-}
-
-export const getIconSize = (size: any = '$4', sizeUpOrDownBy = 0) => {
-  const tokens = getTokens()
-  const fonts = Object.keys(tokens.font)
-  const fontSize = (tokens.font.body || tokens.font[fonts[0]]).size
-  let res: Variable | number | null = null
-  if (sizeUpOrDownBy === 0) {
-    res = fontSize[size]
-  } else {
-    const fontSizeNames = Object.keys(fontSize)
-    const nameIndex = Math.max(1, fontSizeNames.indexOf(size) + sizeUpOrDownBy)
-    const sizedName = fontSizeNames[nameIndex]
-    res = fontSize[sizedName] ?? 16
-  }
-  if (res instanceof Variable) {
-    return res.val
-  }
-  return res
 }

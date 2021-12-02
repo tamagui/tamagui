@@ -141,10 +141,18 @@ declare type ComponentPropsBase = {
     pointerEvents?: string;
 };
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
+export declare type SizeTokens = `$${keyof Tokens['size']}`;
+export declare type FontTokens = `$${keyof Tokens['font']}`;
+export declare type FontSizeTokens = `$${GetTokenFontKeysFor<'size'>}`;
+export declare type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}`;
+export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}`;
+export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}`;
 export declare type SpaceTokens = `$${keyof Tokens['space']}`;
+export declare type ColorTokens = `$${keyof Tokens['color']}`;
+export declare type ZIndexTokens = `$${keyof Tokens['zIndex']}`;
 declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? `$${keyof Tokens['size']}` : K extends FontKeys ? `$${keyof Tokens['font']}` : K extends FontSizeKeys ? `$${GetTokenFontKeysFor<'size'>}` : K extends SpaceKeys ? `$${keyof Tokens['space']}` : K extends ColorKeys ? `$${keyof Tokens['color']}` : K extends ZIndexKeys ? `$${keyof Tokens['zIndex']}` : K extends LineHeightKeys ? `$${GetTokenFontKeysFor<'lineHeight'>}` : K extends FontWeightKeys ? `$${GetTokenFontKeysFor<'weight'>}` : K extends FontLetterSpacingKeys ? `$${GetTokenFontKeysFor<'letterSpacing'>}` : {});
+    [K in keyof T]: ThemeValue<T[K]> | (K extends ColorableKeys ? ThemeKeyVariables : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : {});
 };
 declare type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;

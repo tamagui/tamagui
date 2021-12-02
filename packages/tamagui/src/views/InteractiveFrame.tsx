@@ -78,3 +78,4 @@ export const InteractiveFrame = styled(XStack, {
 })
 
 export type InteractiveFrameProps = GetProps<typeof InteractiveFrame>
+

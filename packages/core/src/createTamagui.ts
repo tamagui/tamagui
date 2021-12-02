@@ -3,7 +3,6 @@ import { getStyleRules } from '@tamagui/helpers'
 import { isWeb } from './constants/platform'
 import { Variable, createVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
-import { validateConfig } from './helpers/validate'
 import { configureMedia } from './hooks/useMedia'
 import {
   CreateTamaguiConfig,
