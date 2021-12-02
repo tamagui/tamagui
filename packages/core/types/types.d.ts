@@ -171,7 +171,7 @@ declare type WebOnlyStyleProps = {
 };
 export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & WebOnlyStyleProps;
 export declare type StackStyleProps = WithThemeShorthandsPseudosAndMedia<StackStylePropsBase>;
-export declare type StackProps = Omit<RNWInternalProps, 'children'> & Omit<ViewProps, 'display' | 'children'> & StackStyleProps & ComponentPropsBase & {
+export declare type StackProps = Omit<RNWInternalProps, 'children'> & StackStyleProps & ComponentPropsBase & {
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
     children?: any | any[];
 };

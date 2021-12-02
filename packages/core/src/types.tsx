@@ -278,7 +278,7 @@ export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibilit
 export type StackStyleProps = WithThemeShorthandsPseudosAndMedia<StackStylePropsBase>
 
 export type StackProps = Omit<RNWInternalProps, 'children'> &
-  Omit<ViewProps, 'display' | 'children'> &
+  // Omit<ViewProps, 'display' | 'children'> &
   StackStyleProps &
   ComponentPropsBase & {
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)

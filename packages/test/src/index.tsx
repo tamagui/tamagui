@@ -147,6 +147,8 @@ export const Paragraph = styled(SizableTextTEST, {
 type pp = GetProps<typeof Paragraph>
 type ppp = pp['m']
 
+const EmptyExtension = styled(Text)
+
 export const InteractiveFrame = styled(Stack, {
   variants: {
     size: {
@@ -179,8 +181,32 @@ export const InteractiveFrame = styled(Stack, {
 export const x = (props: StackProps) => {
   return (
     <>
-      <Paragraph size="$5" />
-      <InteractiveFrame size="$2" />
+      <EmptyExtension asd="asds" />
+      <Stack asdsadasd="sadsd" />
+      <YStack asdsadasd="sadsd" />
+      <YStack $lg={{ notValid: 1, x: 10 }} />
+      <InteractiveFrame asdsadasd="sadsd" />
+      <InteractiveFrame $lg={{ notValid: 0 }} />
+      <Text asdsadasd="sadsd" />
+      <Text $lg={{ x: 10, wut: 1 }} />
+      <SizableTextTEST asdsadasd="sadsd" />
+      <SizableTextTEST $sm={{ size: '$2', wut: 3 }} />
+      <Paragraph size="$5" $lg={{ size: '$0', wut: 0 }} />
+      <Paragraph
+        color="$color"
+        opacity={0.7}
+        size="$3"
+        ta="center"
+        asdasd={1}
+        $lg={{
+          m: 10,
+          asdsad: 1,
+        }}
+        // $gtSm={{
+        //   ta: 'center',
+        //   size: '$5',
+        // }}
+      />
       <YStack
         $lg={{
           p: 10,
@@ -205,25 +231,13 @@ export const x = (props: StackProps) => {
         spread="$10"
         bc="$bg"
         bg="alternate"
+        asdsad={1}
         aok="err"
         specific={1}
       >
         <div />
       </ZStack>
-      <Text x={10} m={100} $lg={{ m: 20 }} />
-      <Paragraph
-        color="$color"
-        opacity={0.7}
-        size="$3"
-        ta="center"
-        $lg={{
-          m: 10,
-        }}
-        // $gtSm={{
-        //   ta: 'center',
-        //   size: '$5',
-        // }}
-      />
+      <Text asdsd={1} x={10} m={100} $lg={{ m: 20 }} />
     </>
   )
 }

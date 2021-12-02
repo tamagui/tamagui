@@ -25,9 +25,14 @@ export function styled<
   const component = createComponent(config!) // error is good here its on init
   type VariantProps = GetVariantProps<Variants>
   return component as StaticComponent<
-    Omit<GetProps<ParentComponent>, keyof VariantProps> & VariantProps & MediaProps<VariantProps>
-    // leave this out it was causing infinite recursion type issues
-    // VariantProps
+    // if not options/variants passed just styled(Text):
+    keyof VariantProps extends never
+      ? GetProps<ParentComponent>
+      : // if options passed: styled(Text, { ... })
+        Omit<GetProps<ParentComponent>, keyof VariantProps> &
+          VariantProps &
+          MediaProps<VariantProps>,
+    void
   >
 }
 

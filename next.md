@@ -1,3 +1,20 @@
+- honestly hover/press/focus need children selectors, this unlocks much nicer list effects and press effects:
+
+```jsx
+hoverStyle={{
+  bc: 'red',
+
+  '& .heading': {
+    color: 'white'
+  }
+}}
+```
+
+constraints: 
+  - className only!
+
+seems somewhat doable: for css extraction its actuall direct to CSS, for js runtime you set a context, something like "ChildStyleContext" where it keeps a hash of [className]: style and then in createComponent just have to merge it in during getSplitStyles.
+
 - Paragraph size={} not accepting simple numbers
 - fix theme strip -postfix
 - tamagui needs to overwrite StackProps (verify)
