@@ -40,5 +40,9 @@ export const getFontSizeToken = (
   const tokens = getTokens()
   const fontSize = tokens.font[opts?.font || '$body'].size
   const sizeTokens = Object.keys(fontSize)
-  return (sizeTokens[Math.max(1, sizeTokens.indexOf(size) + relativeSize)] ?? size) as SizeTokens
+  const tokenIndex = Math.min(
+    Math.max(0, sizeTokens.indexOf(size) + relativeSize),
+    sizeTokens.length - 1
+  )
+  return (sizeTokens[tokenIndex] ?? size) as SizeTokens
 }
