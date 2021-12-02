@@ -5,12 +5,15 @@ type GetFontSizeOpts = {
   font?: FontTokens
 }
 
-export const getFontSize = (inSize: SizeTokens | null | undefined, opts?: GetFontSizeOpts) => {
+export const getFontSize = (
+  inSize: SizeTokens | null | undefined,
+  opts?: GetFontSizeOpts
+): number => {
   const res = getFontSizeVariable(inSize, opts)
   if (res instanceof Variable) {
-    return res.val
+    return +res.val
   }
-  return res ?? 16
+  return res ? +res : 16
 }
 
 export const getFontSizeVariable = (

@@ -8,9 +8,12 @@ const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const path = require('path')
 
-const skipJS = process.env.SKIP_JS || false
-const shouldSkipTypes = process.argv.includes('skip-types') || process.env.SKIP_TYPES
+const jsOnly = !!process.env.JS_ONLY
+const skipJS = !!(process.env.SKIP_JS || false)
+const shouldSkipTypes = !!(process.argv.includes('skip-types') || process.env.SKIP_TYPES)
 const shouldWatch = process.argv.includes('--watch')
+
+let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 
 const pkg = fs.readJSONSync('./package.json')
 const pkgMain = pkg.main
@@ -28,7 +31,12 @@ async function build() {
   }
 
   async function buildTsc() {
-    if (process.env.JS_ONLY || shouldSkipTypes) return
+    if (jsOnly || shouldSkipTypes) return
+    if (shouldSkipInitialTypes) {
+      shouldSkipInitialTypes = false
+      return
+    }
+
     // NOTE:
     // for Intellisense to work in monorepo you need baseUrl: "../.."
     // but to build things nicely we need here to reset a few things:

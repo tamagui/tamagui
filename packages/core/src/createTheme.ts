@@ -2,9 +2,4 @@ import { Variable } from './createVariable'
 
 type GenericTheme = { [key: string]: string | Variable }
 
-export const createTheme = <Theme extends GenericTheme>(
-  theme: Theme
-): {
-  // allow subset themes, string | Variable values
-  [key in keyof Theme]?: string | Variable
-} => theme
+export const createTheme = <Theme extends GenericTheme>(theme: Theme): Theme => theme
