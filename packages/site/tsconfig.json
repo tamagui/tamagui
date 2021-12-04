@@ -36,8 +36,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "data/docs/core/use-media.msx"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"
