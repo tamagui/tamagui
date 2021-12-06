@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.0.0-alpha.32",
+  "version": "1.0.0-alpha.34",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -66,7 +66,7 @@
     "invariant": "^2.2.4",
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.21",
-    "tamagui": "^1.0.0-alpha.32"
+    "tamagui": "^1.0.0-alpha.34"
   },
   "peerDependencies": {
     "react-native-web": "*"
