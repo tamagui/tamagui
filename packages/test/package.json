@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@tamagui/core": "^1.0.0-alpha.32",
-    "@tamagui/helpers": "^1.0.0-alpha.32"
+    "@tamagui/helpers": "^1.0.0-alpha.32",
+    "tamagui": "^1.0.0-alpha.32"
   },
   "peerDependencies": {
     "react-native-web": "*"

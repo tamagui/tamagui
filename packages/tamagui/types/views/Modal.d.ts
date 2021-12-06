@@ -8,15 +8,11 @@ export declare type ModalProps = Omit<ModalPropsReact, 'children'> & AnimatedSta
     children?: any | ((isOpen?: boolean) => any);
 };
 export declare const Modal: (props: ModalProps) => JSX.Element;
-export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
+export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
 } & import("@tamagui/core").MediaProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
-}>, never> & ({} | {
-    [x: string]: string | number | undefined;
-}) & import("@tamagui/core").MediaProps<{} | {
-    [x: string]: string | number | undefined;
-}>, any, import("@tamagui/core").StaticConfigParsed, any>;
+}>, void, import("@tamagui/core").StaticConfigParsed, any>;
 //# sourceMappingURL=Modal.d.ts.map

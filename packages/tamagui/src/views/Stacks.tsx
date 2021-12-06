@@ -1,4 +1,4 @@
-import { Stack, isVariable, styled } from '@tamagui/core'
+import { GetProps, Stack, isVariable, styled } from '@tamagui/core'
 
 export const YStack = styled(Stack, {
   flexDirection: 'column',
@@ -48,3 +48,10 @@ export const ZStack = styled(
     isZStack: true,
   }
 )
+
+// these are all the same, really:
+// we'll override core StackProps first
+export type StackProps = GetProps<typeof YStack>
+export type YStackProps = StackProps
+export type XStackProps = StackProps
+export type ZStackProps = StackProps

@@ -46,7 +46,6 @@
     "webpack": "^5.58.1"
   },
   "dependencies": {
-    "loader-utils": "^2.0.0",
     "@babel/core": "^7.15.5",
     "@babel/generator": "^7.15.4",
     "@babel/helper-plugin-utils": "^7.14.5",
@@ -65,6 +64,7 @@
     "find-cache-dir": "^3.3.1",
     "fs-extra": "^9.1.0",
     "invariant": "^2.2.4",
+    "loader-utils": "^2.0.0",
     "lodash": "^4.17.21",
     "tamagui": "^1.0.0-alpha.32"
   },

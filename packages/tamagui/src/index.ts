@@ -1,7 +1,84 @@
 export { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export * from '@tamagui/helpers'
-export * from '@tamagui/core'
+
+// since we overlap with StackProps and potentially others
+// lets be explicit on what gets exported
+export {
+  // types
+  ColorTokens,
+  CreateTamaguiConfig,
+  CreateTamaguiProps,
+  FontLetterSpacingTokens,
+  FontLineHeightTokens,
+  FontSizeTokens,
+  FontTokens,
+  FontWeightTokens,
+  GetProps,
+  MediaKeys,
+  MediaQueries,
+  MediaQueryState,
+  Shorthands,
+  SizeTokens,
+  SpaceTokens,
+  TamaguiConfig,
+  TamaguiProviderProps,
+  StaticComponent,
+  ThemeKeys,
+  StaticConfig,
+  ThemeableHOC,
+  ThemeObject,
+  TextProps,
+  ThemeProps,
+  Themes,
+  Tokens,
+  TransformStyleProps,
+  StaticConfigParsed,
+  // components
+  Spacer,
+  Stack,
+  Text,
+  Theme,
+  ThemeInverse,
+  // constants
+  isWeb,
+  isSSR,
+  isChrome,
+  supportsTouchWeb,
+  isTouchDevice,
+  isWebIOS,
+  // helpers
+  mediaState,
+  styled,
+  createComponent,
+  createFont,
+  createShorthands,
+  createTamagui,
+  createTheme,
+  createTokens,
+  createVariable,
+  mediaObjectToString,
+  Variable,
+  getMedia,
+  getThemes,
+  getTamagui,
+  getTokens,
+  getHasConfigured,
+  getThemeParentClassName,
+  spacedChildren,
+  themeable,
+  getStylesAtomic,
+  isObj,
+  isTamaguiElement,
+  matchMedia,
+  // hooks
+  useConstant,
+  useDefaultThemeName,
+  useIsomorphicLayoutEffect,
+  useMedia,
+  useTheme,
+  useThemeName,
+} from '@tamagui/core'
 
 export * from './viewTypes'
 
