@@ -40,6 +40,8 @@ export {
   Text,
   Theme,
   ThemeInverse,
+  // context,
+  TextAncestorContext,
   // constants
   isWeb,
   isSSR,
