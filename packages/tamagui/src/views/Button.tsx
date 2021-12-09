@@ -38,7 +38,7 @@ export const Button = InteractiveFrame.extractable(
           ? el
           : !!el
           ? React.createElement(el, {
-              color: theme.color2,
+              color: theme.color2.toString(),
               size: getFontSize(size, { relativeSize: -1 }),
             })
           : null
