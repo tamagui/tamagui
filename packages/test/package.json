@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/test",
   "private": true,
-  "version": "1.0.0-alpha.34",
+  "version": "1.0.0-alpha.35",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -13,7 +13,7 @@
   "dependencies": {
     "@tamagui/core": "^1.0.0-alpha.32",
     "@tamagui/helpers": "^1.0.0-alpha.32",
-    "tamagui": "^1.0.0-alpha.34"
+    "tamagui": "^1.0.0-alpha.35"
   },
   "peerDependencies": {
     "react-native-web": "*"
