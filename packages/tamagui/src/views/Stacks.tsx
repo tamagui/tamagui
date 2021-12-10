@@ -22,7 +22,7 @@ export const YStack = styled(Stack, {
             return [+token.val / 3, +token.val / 2] as const
           }
           return [size / 3, size / 2] as const
-        })()
+        })().map((x) => Math.round(x))
         const shadow = {
           shadowColor: theme.shadowColor,
           shadowRadius,
