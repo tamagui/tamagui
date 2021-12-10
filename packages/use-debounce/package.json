@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-debounce",
-  "version": "1.0.0-alpha.32",
+  "version": "1.0.0-alpha.36",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -14,7 +14,7 @@
     "watch": "tamagui-build --watch"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.32"
+    "@tamagui/build": "^1.0.0-alpha.36"
   },
   "dependencies": {
     "react": "*"
