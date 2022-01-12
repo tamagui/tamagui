@@ -2,6 +2,7 @@
   "name": "@tamagui/next-plugin",
   "version": "1.0.0-alpha.38",
   "source": "src/index.ts",
+  "license": "MIT",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -14,7 +15,6 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"
   },
-  "license": "MIT",
   "dependencies": {
     "@tamagui/static": "^1.0.0-alpha.38",
     "css-minimizer-webpack-plugin": "^3.1.3",
