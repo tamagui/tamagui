@@ -1093,7 +1093,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.7.tgz#03ff99f64106588c9c403c6ecb8c3bafbbdff1fa"
   integrity sha512-9E9FJowqAsytyOY6LG+1KuueckRL+aQW+mKvXRXnuFGyRAyepJPmEo9vgMfXUA6O9u3IeEdv9MAkppFcaQwogQ==
@@ -2908,6 +2908,20 @@
   integrity sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==
   dependencies:
     defer-to-connect "^2.0.0"
+
+"@tamagui/mdx-bundler@^8.0.0":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@tamagui/mdx-bundler/-/mdx-bundler-8.0.1.tgz#04ab3ae8316d3a0090909d371059f151810dd9d4"
+  integrity sha512-wgPh9ID8l7tcBRpzSpjzjuhs2p4bn9gE1TJmEjPxie7JLtAISS6fPuaJo4dns4PQKh1WgZeiD5iXlP0LrSaONQ==
+  dependencies:
+    "@babel/runtime" "^7.16.3"
+    "@esbuild-plugins/node-resolve" "^0.1.4"
+    "@fal-works/esbuild-plugin-global-externals" "^2.1.2"
+    gray-matter "^4.0.3"
+    remark-frontmatter "^4.0.1"
+    remark-mdx-frontmatter "^1.1.1"
+    uuid "^8.3.2"
+    xdm "^3.3.0"
 
 "@tamagui/ow@^0.28.1":
   version "0.28.1"
@@ -10348,20 +10362,6 @@ mdurl@^1.0.0:
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
   integrity sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
 
-mdx-bundler@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/mdx-bundler/-/mdx-bundler-7.0.0.tgz#f13d528f1d124c7f99868e709d5d87e8dde02ad1"
-  integrity sha512-68dbyNjOWU26c3xw2A/pnY4Mu61GYr8tJDSUFyXhGg8b9RwGCWfWB3UOXjGg0Bp/0Qv85o/Zn5cuHxcZv5Ww0w==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-    "@esbuild-plugins/node-resolve" "^0.1.4"
-    "@fal-works/esbuild-plugin-global-externals" "^2.1.2"
-    gray-matter "^4.0.3"
-    remark-frontmatter "^4.0.1"
-    remark-mdx-frontmatter "^1.0.1"
-    uuid "^8.3.2"
-    xdm "^3.2.0"
-
 mdx-prism@^0.3.4:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/mdx-prism/-/mdx-prism-0.3.4.tgz#ab99b9e6e5f50e29b5dcb871354c5039b90b27fe"
@@ -13665,7 +13665,7 @@ remark-frontmatter@^4.0.1:
     micromark-extension-frontmatter "^1.0.0"
     unified "^10.0.0"
 
-remark-mdx-frontmatter@^1.0.1:
+remark-mdx-frontmatter@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/remark-mdx-frontmatter/-/remark-mdx-frontmatter-1.1.1.tgz#54cfb3821fbb9cb6057673e0570ae2d645f6fe32"
   integrity sha512-7teX9DW4tI2WZkXS4DBxneYSY7NHiXl4AKdWDO9LXVweULlCT8OPWsOjLEnMIXViN1j+QcY8mfbq3k0EK6x3uA==
@@ -16431,7 +16431,7 @@ xcode@^3.0.1:
     simple-plist "^1.1.0"
     uuid "^7.0.3"
 
-xdm@^3.2.0:
+xdm@^3.3.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/xdm/-/xdm-3.3.1.tgz#a76d42830f590702211c3cfcb60b47ce5a27729c"
   integrity sha512-+bePFAMIxKyhBd2QQcGsG5oVy16THJm7WjAd8GD4VC21LTYM0SWySTGVPBhwXA71H6P96pgUBzg3r8GPi+178A==

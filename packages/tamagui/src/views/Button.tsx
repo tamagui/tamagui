@@ -1,4 +1,4 @@
-import { TextProps, ThemeableProps, getTokens, themeable, useTheme } from '@tamagui/core'
+import { TextProps, ThemeableProps, getTokens, styled, themeable, useTheme } from '@tamagui/core'
 import React, { forwardRef, isValidElement } from 'react'
 
 import { getFontSize } from '../helpers/getFontSize'
@@ -18,7 +18,11 @@ export type ButtonProps = InteractiveFrameProps &
     iconAfter?: IconProp
   }
 
-export const Button = InteractiveFrame.extractable(
+const ButtonFrame = styled(InteractiveFrame, {
+  tag: 'button',
+})
+
+export const Button = ButtonFrame.extractable(
   themeable(
     forwardRef((props: ButtonProps, ref) => {
       const {
@@ -47,12 +51,7 @@ export const Button = InteractiveFrame.extractable(
       const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
 
       return (
-        <InteractiveFrame
-          size={size}
-          space={space ?? getSpaceSize(size, -3)}
-          ref={ref as any}
-          {...rest}
-        >
+        <ButtonFrame size={size} space={space ?? getSpaceSize(size, -3)} ref={ref as any} {...rest}>
           {themedIcon}
           {noTextWrap ? (
             children
@@ -74,7 +73,7 @@ export const Button = InteractiveFrame.extractable(
             </SizableText>
           )}
           {themedIconAfter}
-        </InteractiveFrame>
+        </ButtonFrame>
       )
     })
   )

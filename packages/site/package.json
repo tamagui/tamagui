@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha.39",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development next dev",
+    "dev": "NODE_ENV=development next dev --port 5005",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start"
@@ -11,6 +11,7 @@
   "dependencies": {
     "@tamagui/colors": "^1.0.0-alpha.39",
     "@tamagui/feather-icons": "^1.0.0-alpha.39",
+    "@tamagui/mdx-bundler": "^8.0.0",
     "compare-versions": "^4.0.1",
     "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.26.0",
@@ -19,7 +20,6 @@
     "hast-util-to-html": "^7.1.2",
     "hast-util-to-string": "^1.0.4",
     "lodash.debounce": "^4.0.8",
-    "mdx-bundler": "^7.0.0",
     "mdx-prism": "^0.3.4",
     "next": "^11.1.2",
     "next-videos": "^1.4.0",
