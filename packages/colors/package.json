@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/colors",
-  "version": "1.0.0-alpha.37",
+  "version": "1.0.0-alpha.38",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -15,7 +15,7 @@
     "watch": "tamagui-build --watch"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.37"
+    "@tamagui/build": "^1.0.0-alpha.38"
   },
   "publishConfig": {
     "access": "public"
