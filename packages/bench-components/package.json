@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/bench-components",
-  "version": "1.0.0-alpha.38",
+  "version": "1.0.0-alpha.39",
   "private": true,
   "sideEffects": [
     "*.css"
@@ -19,15 +19,15 @@
     "watch": "tamagui-build --jsx --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.0-alpha.38",
+    "@tamagui/core": "^1.0.0-alpha.39",
     "@tamagui/fake-react-native": "^1.0.0-alpha.17",
-    "@tamagui/helpers": "^1.0.0-alpha.38"
+    "@tamagui/helpers": "^1.0.0-alpha.39"
   },
   "peerDependencies": {
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.38",
+    "@tamagui/build": "^1.0.0-alpha.39",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "react-native-web": "^0.17.5"
