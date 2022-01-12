@@ -5,9 +5,6 @@
   "repository": {
     "url": "https://github.com/tamagui/tamagui"
   },
-  "engines": {
-    "node": ">=10 <=17"
-  },
   "workspaces": {
     "packages": [
       "packages/*"
