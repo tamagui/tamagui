@@ -186,25 +186,3 @@ Then you can use it like:
 ```jsx
 <Text color="red" $sm={{ color: 'blue' }} />
 ```
-
-### Why inline style props?
-
-#### 🏎 Faster to write
-
-Inline styles have a few developer-speed benefits over `StyleSheet.create`: they require fewer imports and fewer lines of code, and they save you from jumping between the top and bottom of your file whenever you want to change a style so you can see exactly whats happening where it's happening.
-
-#### 💀 Easier to maintain, no dead code
-
-`StyleSheet.create` forces you to manually link together the style with the node that's using the style. When you delete the style, you must delete the node, and when you delete a node, you have to manually check to be see if any other node is using that style before removing it.
-
-#### ⚖️ Less vertical space
-
-When using shorthand style props, adding the overhead of a `style`, `css`, or `sx` prop will often make the difference in keeping your styles to one line vs multiple (when say using something like Prettier). With Typescript, the flat props feel natural and easy to understand.
-
-#### 🤨 Less forced naming
-
-With StyleSheets you must name every style group, and even every ternary conditional style or else you lose performance. With inline styles you avoid both problems, leading to more creative experimentation and less friction.
-
-#### 💃 Encourages dynamic styles
-
-Changing between a style that's determined by a ternary or conditional and one that's static shouldn't be a hard choice. With StyleSheet there's some friction as you have to either inline it and save time and readability or extract it to the bottom and gain performance. With inline styles (and the compiler) you no longer have that friction: convert any prop to have a ternary and it works the same, and runs fast.
