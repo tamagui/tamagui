@@ -21,8 +21,9 @@ const transform = withPlugins(
       logTimings: true,
       disableExtraction: process.env.NODE_ENV === 'development',
     }),
-    // for github pages
     (config) => {
+      // 'react/jsx-runtime.js': require.resolve('react/jsx-runtime'),
+      // for github pages
       if (process.env.ON_GITHUB_PAGES) {
         console.log('Setting github pages base and asset paths')
         config.basePath = '/tamagui'

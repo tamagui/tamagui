@@ -1,10 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 
+import { bundleMDX } from '@tamagui/mdx-bundler'
 import compareVersions from 'compare-versions'
 import glob from 'glob'
 import matter from 'gray-matter'
-import { bundleMDX } from 'mdx-bundler'
 import readingTime from 'reading-time'
 import remarkSlug from 'remark-slug'
 
@@ -41,7 +41,8 @@ export const getMdxBySlug = async (basePath, slug) => {
     mdxPath += `/${versions[0]}`
   }
   const source = fs.readFileSync(path.join(DATA_PATH, basePath, `${mdxPath}.mdx`), 'utf8')
-  const { frontmatter, code } = await bundleMDX(source, {
+  const { frontmatter, code } = await bundleMDX({
+    source,
     xdmOptions(options) {
       // @ts-ignore
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkSlug, remarkHeroTemplate]
