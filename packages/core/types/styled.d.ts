@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { MediaProps, StaticComponent, StaticConfig, TamaguiConfig, Themes, Tokens } from './types';
 export declare function styled<ParentComponent extends StaticComponent | React.Component<any>, Variants extends GetVariants<ParentComponent>>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
     variants?: Variants;

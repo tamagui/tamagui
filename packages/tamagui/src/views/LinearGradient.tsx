@@ -63,6 +63,7 @@ export const LinearGradient = Stack.extractable(
       <Stack
         {...props}
         {...layoutProps}
+        // @ts-ignore
         style={[
           props.style,
           // @ts-ignore: [ts] Property 'backgroundImage' does not exist on type 'ViewStyle'.
