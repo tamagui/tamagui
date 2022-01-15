@@ -66,6 +66,9 @@ Add `tamagui-loader` and set up your `webpack.config.js`:
 }
 ```
 
+- _importsWhitelist_: Tamagui takes a conservative approach to partial evaluation, this field whitelists (matching against both .ts and .js) files to allow files that import them to read and use their values during compilation. Typically colors and constants files.
+- _disableExtaction_: Useful for faster developer iteration as themes hot reload more reliably.
+
 #### Next.js
 
 <Notice>Support only for Next.js 11 right now</Notice>
