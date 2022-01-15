@@ -5,6 +5,10 @@
   "repository": {
     "url": "https://github.com/tamagui/tamagui"
   },
+  "volta": {
+    "node": "16.13.2",
+    "yarn": "1.22.17"
+  },
   "workspaces": {
     "packages": [
       "packages/*"

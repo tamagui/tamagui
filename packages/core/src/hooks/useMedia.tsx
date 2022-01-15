@@ -28,14 +28,14 @@ let conf: MediaQueries | null = null
 export const mediaQueryConfig = new Proxy<MediaQueries>({} as any, {
   get(target, key) {
     if (!conf) {
-      console.warn('Warning: accessing media query before init')
+      console.warn('Tamagui warning: accessing media query before init')
       return null
     }
     return Reflect.get(conf, key)
   },
   ownKeys() {
     if (!conf) {
-      console.warn('Warning: accessing media query before init')
+      console.warn('Tamagui warning: accessing media query before init')
       return []
     }
     return Object.keys(conf)

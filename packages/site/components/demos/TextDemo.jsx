@@ -1,3 +1,5 @@
+// debug
+
 import React from 'react'
 import { Paragraph, SizableText, Text, YStack } from 'tamagui'
 

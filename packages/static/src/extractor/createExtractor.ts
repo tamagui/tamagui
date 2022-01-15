@@ -1,7 +1,7 @@
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core'
-import * as CoreNode from '@tamagui/core-node'
+import { mediaQueryConfig, postProcessStyles, pseudos } from '@tamagui/core-node'
 import { stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
 
@@ -16,8 +16,6 @@ import { loadTamagui } from './loadTamagui'
 import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
-
-const { mediaQueryConfig, postProcessStyles, pseudos } = CoreNode
 
 export const FAILED_EVAL = Symbol('failed_style_eval')
 const UNTOUCHED_PROPS = {
@@ -417,6 +415,10 @@ export function createExtractor() {
             .flat(4)
             .filter(isPresent)
 
+          if (shouldPrintDebug) {
+            console.log('  - attrs (before):\n', logLines(attrs.map(attrStr).join(', ')))
+          }
+
           function isStaticAttributeName(name: string) {
             return !!(
               !!validStyles[name] ||
@@ -811,11 +813,6 @@ export function createExtractor() {
             }
           } // END function evaluateAttribute
 
-          // see if we can filter them
-          if (shouldPrintDebug) {
-            console.log('  - attrs (before):\n', logLines(attrs.map(attrStr).join(', ')))
-          }
-
           // now update to new values
           node.attributes = attrs.filter(isAttr).map((x) => x.value)
 
@@ -963,10 +960,16 @@ export function createExtractor() {
               typeof cur.value.name.name !== 'string'
             ) {
               if (cur.type === 'style') {
-                const key = Object.keys(cur.value)[0]
+                let key = Object.keys(cur.value)[0]
+                const fullKey = tamaguiConfig.shorthands[key]
+                // expand shorthand here
+                if (fullKey) {
+                  cur.value = { [fullKey]: cur.value[key] }
+                  key = fullKey
+                }
                 if (!validStyles[key] && !pseudos[key]) {
                   if (shouldPrintDebug) {
-                    console.log(' ❌ excluding', key)
+                    console.log('   - ignoring (expanded already):', key)
                   }
                   // we've already expanded shorthands, now we can remove them
                   return acc
