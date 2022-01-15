@@ -45,14 +45,15 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
 
 const PREFIX = `theme--`
 
+const createdConfigs = new WeakMap<any, boolean>()
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
 ): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D>
   ? TamaguiInternalConfig<A, B, C, D>
   : unknown {
   // config is re-run by the @tamagui/static, dont double validate
-  // but cheap to check and not much downside just returning here if parsed
-  if (config['parsed']) {
+  if (createdConfigs.has(config)) {
     return config as any
   }
 
@@ -175,12 +176,15 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       return `${themeConfig.css}\n${[...getStyleRules()].join('\n')}`
     },
   }
+
   conf = next
 
   if (configListeners.size) {
     configListeners.forEach((cb) => cb(next))
     configListeners.clear()
   }
+
+  createdConfigs.set(next, true)
 
   // @ts-expect-error
   return next

@@ -19,10 +19,9 @@ const transform = withPlugins(
       components: ['tamagui'],
       importsWhitelist: ['constants.js', 'colors.js'],
       logTimings: true,
-      disableExtraction: process.env.NODE_ENV === 'development',
+      // disableExtraction: process.env.NODE_ENV === 'development',
     }),
     (config) => {
-      // 'react/jsx-runtime.js': require.resolve('react/jsx-runtime'),
       // for github pages
       if (process.env.ON_GITHUB_PAGES) {
         console.log('Setting github pages base and asset paths')

@@ -1,5 +1,3 @@
-import { extname } from 'path'
-
 import {
   TamaguiOptions,
   createExtractor,
@@ -73,7 +71,6 @@ export function loader(this: any, source: string) {
 
     const cssPath = threaded ? `${sourcePath}.module.css` : `${sourcePath}.${index++}.module.css`
     const extracted = extractToClassNames({
-      // @ts-ignore
       loader: this,
       extractor,
       source,
