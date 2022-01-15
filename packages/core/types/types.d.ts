@@ -171,12 +171,12 @@ declare type WebOnlyStyleProps = {
 };
 export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & WebOnlyStyleProps;
 export declare type StackStyleProps = WithThemeShorthandsPseudosAndMedia<StackStylePropsBase>;
-export declare type StackProps = Omit<RNWInternalProps, 'children'> & StackStyleProps & ComponentPropsBase & {
+export declare type StackProps = Omit<RNWInternalProps, 'children'> & Omit<ViewProps, 'display' | 'children'> & StackStyleProps & ComponentPropsBase & {
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
     children?: any | any[];
 };
 declare type TextStyleProps = WithThemeShorthandsPseudosAndMedia<Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps>;
-export declare type TextProps = Omit<ReactTextProps, 'style'> & TextStyleProps & ComponentPropsBase & {
+export declare type TextProps = ReactTextProps & TextStyleProps & ComponentPropsBase & {
     ellipse?: boolean;
     selectable?: boolean;
     textDecorationDistance?: number;

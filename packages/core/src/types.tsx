@@ -278,7 +278,7 @@ export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibilit
 export type StackStyleProps = WithThemeShorthandsPseudosAndMedia<StackStylePropsBase>
 
 export type StackProps = Omit<RNWInternalProps, 'children'> &
-  // Omit<ViewProps, 'display' | 'children'> &
+  Omit<ViewProps, 'display' | 'children'> &
   StackStyleProps &
   ComponentPropsBase & {
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)
@@ -302,7 +302,7 @@ type TextStyleProps = WithThemeShorthandsPseudosAndMedia<
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps
 >
 
-export type TextProps = Omit<ReactTextProps, 'style'> &
+export type TextProps = ReactTextProps &
   TextStyleProps &
   ComponentPropsBase & {
     ellipse?: boolean

@@ -25,7 +25,6 @@ import { StackProps } from '@tamagui/core'
 import type { ReactElement, RefObject } from 'react'
 import React, { createContext, useContext, useEffect, useRef } from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { YStack } from './Stacks'
 

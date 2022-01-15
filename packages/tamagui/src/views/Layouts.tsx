@@ -1,4 +1,4 @@
-import { Stack, styled } from '@tamagui/core'
+import { Stack, StackProps, styled } from '@tamagui/core'
 
 export const Section = styled(Stack, {
   tag: 'section',
