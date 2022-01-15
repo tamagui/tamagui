@@ -12,10 +12,10 @@ import {
   TamaguiProviderProps,
 } from './types'
 
-export type CreateTamaguiProps = TamaguiProviderProps &
-  // we omit and re-declare it because we need to allow instantation types to be flexible
+export type CreateTamaguiProps = TamaguiProviderProps & // we omit and re-declare it because we need to allow instantation types to be flexible
   // user then re-defines the types after createTamagui returns the typed object they want
-  Omit<GenericTamaguiConfig, 'themes'> & {
+  Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens'>> & {
+    tokens: GenericTamaguiConfig['tokens']
     themes: {
       [key: string]: {
         [key: string]: string | number | Variable
@@ -161,8 +161,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   const next: TamaguiInternalConfig = {
-    // @ts-ignore
     shorthands: {},
+    media: {},
     ...config,
     Provider: createTamaguiProvider({
       defaultTheme: 'light',
