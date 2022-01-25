@@ -1,5 +1,5 @@
+import { getTamagui } from '../conf'
 import { isWeb } from '../constants/platform'
-import { getTamagui } from '../createTamagui'
 import { Variable } from '../createVariable'
 import { StaticConfig, TamaguiInternalConfig } from '../types'
 import { isObj } from './isObj'

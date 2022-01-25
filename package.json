@@ -26,7 +26,8 @@
     "test": "ultra -r --no-pretty --serial test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish": "lerna publish",
-    "site": "yarn workspace @tamagui/site dev"
+    "site": "yarn workspace @tamagui/site dev",
+    "clean": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +"
   },
   "resolutions": {
     "@types/node": "16.11.9",
@@ -34,10 +35,10 @@
     "react-native": "0.0.0",
     "@types/react-native": "0.66.3",
     "rollup-plugin-flat-dts": "^1.3.0",
-    "esbuild": "0.14.11",
-    "typescript": "4.5.2",
-    "webpack": "^5.58.1",
-    "prettier": "2.4.1",
+    "esbuild": "0.14.14",
+    "typescript": "4.5.5",
+    "webpack": "5.67.0",
+    "prettier": "2.5.1",
     "prettier-plugin-import-sort": "0.0.7",
     "react": "18.0.0-beta-f320ef88f-20211116",
     "react-dom": "18.0.0-beta-f320ef88f-20211116",

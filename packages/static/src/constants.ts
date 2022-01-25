@@ -8,3 +8,6 @@ export const MEDIA_SEP = '_'
 
 // ensure cache dir
 export const cacheDir = findCacheDir({ name: 'tamagui', create: true })
+
+export const FAILED_EVAL = Symbol('failed_style_eval')
+export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'

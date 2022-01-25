@@ -5,7 +5,7 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { TamaguiConfig } from '@tamagui/core'
 
-import { FAILED_EVAL } from './createExtractor'
+import { FAILED_EVAL } from '../constants'
 import { evaluateAstNode } from './evaluateAstNode'
 import { isValidThemeHook } from './extractHelpers'
 

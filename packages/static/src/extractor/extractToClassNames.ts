@@ -10,6 +10,7 @@ import invariant from 'invariant'
 import { getRemainingRequest } from 'loader-utils'
 import { ViewStyle } from 'react-native'
 
+import { CONCAT_CLASSNAME_IMPORT } from '../constants'
 import { ClassNameObject, StyleObject, TamaguiOptions } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
@@ -19,8 +20,6 @@ import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
 import { hoistClassNames } from './hoistClassNames'
 import { logLines } from './logLines'
-
-export const CONCAT_CLASSNAME_IMPORT = 'concatClassName'
 
 const mergeStyleGroups = {
   shadowOpacity: true,

@@ -5,6 +5,7 @@ import { mediaQueryConfig, postProcessStyles, pseudos } from '@tamagui/core-node
 import { stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
 
+import { FAILED_EVAL } from '../constants'
 import { ExtractedAttr, ExtractedAttrAttr, ExtractorParseProps, Ternary } from '../types'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator'
 import { evaluateAstNode } from './evaluateAstNode'
@@ -17,7 +18,6 @@ import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
 
-export const FAILED_EVAL = Symbol('failed_style_eval')
 const UNTOUCHED_PROPS = {
   key: true,
   style: true,

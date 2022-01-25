@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
-import { CONCAT_CLASSNAME_IMPORT } from './extractToClassNames'
+import { CONCAT_CLASSNAME_IMPORT } from '../constants'
 
 const importConcatPkg = '@tamagui/helpers'
 
@@ -22,12 +22,18 @@ export function ensureImportingConcat(path: NodePath<t.Program>) {
 
   const specifiers = imported.node.specifiers
   const alreadyImported = specifiers.some(
-    (x) => t.isImportSpecifier(x) && t.isIdentifier(x.imported) && x.imported.name === CONCAT_CLASSNAME_IMPORT
+    (x) =>
+      t.isImportSpecifier(x) &&
+      t.isIdentifier(x.imported) &&
+      x.imported.name === CONCAT_CLASSNAME_IMPORT
   )
 
   if (!alreadyImported) {
     specifiers.push(
-      t.importSpecifier(t.identifier(CONCAT_CLASSNAME_IMPORT), t.identifier(CONCAT_CLASSNAME_IMPORT))
+      t.importSpecifier(
+        t.identifier(CONCAT_CLASSNAME_IMPORT),
+        t.identifier(CONCAT_CLASSNAME_IMPORT)
+      )
     )
   }
 }

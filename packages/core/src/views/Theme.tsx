@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
-import { getThemeParentClassName } from '../createTamagui'
+import { getThemeParentClassName } from '../helpers/getThemeParentClassName'
 import { useConstant } from '../hooks/useConstant'
 import { ThemeName } from '../types'
 import { ThemeContext } from './ThemeContext'
