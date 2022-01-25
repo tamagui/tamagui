@@ -1,5 +1,7 @@
 import { getStyleRules } from '@tamagui/helpers'
 
+import { configListeners, getHasConfigured, setConfig } from './conf'
+import { PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { Variable, createVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
@@ -25,26 +27,6 @@ export type CreateTamaguiProps = TamaguiProviderProps & // we omit and re-declar
     mediaQueryDefaultActive?: MediaQueryKey[]
   }
 
-let conf: TamaguiInternalConfig | null
-
-export const getHasConfigured = () => !!conf
-
-export const getTamagui = () => conf!
-export const getTokens = () => conf!.tokensParsed
-export const getThemes = () => conf!.themes
-
-type ConfigListener = (conf: TamaguiInternalConfig) => void
-const configListeners = new Set<ConfigListener>()
-export const onConfiguredOnce = (cb: ConfigListener) => {
-  if (conf) {
-    cb(conf)
-  } else {
-    configListeners.add(cb)
-  }
-}
-
-const PREFIX = `theme--`
-
 const createdConfigs = new WeakMap<any, boolean>()
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
@@ -58,7 +40,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   // test env loads a few times as it runs diff tests
-  if (conf) {
+  if (getHasConfigured()) {
     console.warn('Called createTamagui twice! Should never do so')
     // throw new Error(`#000 createTamagui called twice`)
   }
@@ -177,7 +159,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     },
   }
 
-  conf = next
+  setConfig(next)
 
   if (configListeners.size) {
     configListeners.forEach((cb) => cb(next))
@@ -188,10 +170,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // @ts-expect-error
   return next
-}
-
-export function getThemeParentClassName(themeName?: string | null) {
-  return `theme-parent ${themeName ? `${PREFIX}${themeName}` : ''}`
 }
 
 const parseTokens = (tokens: any) => {

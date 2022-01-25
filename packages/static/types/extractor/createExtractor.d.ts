@@ -2,7 +2,6 @@ import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import type { TamaguiInternalConfig } from '@tamagui/core';
 import { ExtractorParseProps } from '../types';
-export declare const FAILED_EVAL: unique symbol;
 export declare type Extractor = ReturnType<typeof createExtractor>;
 export declare function createExtractor(): {
     getTamagui(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<string | number | import("@tamagui/core").Variable>, {

@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react'
 
+import { getHasConfigured } from '../conf'
+import { GET_DEFAULT_THEME } from '../constants/constants'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
-import { getHasConfigured, getThemeParentClassName } from '../createTamagui'
+import { getThemeParentClassName } from '../helpers/getThemeParentClassName'
 import { Theme } from './Theme'
 import { ThemeContext } from './ThemeContext'
 
@@ -11,8 +13,6 @@ export type ThemeProviderProps = {
   disableRootThemeClass?: boolean
   children?: any
 }
-
-export const GET_DEFAULT_THEME = '___TGUI'
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
   if (!getHasConfigured()) {

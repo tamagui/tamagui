@@ -1,5 +1,9 @@
 import { isWeb } from './platform'
 
+export const GET_DEFAULT_THEME = '___TGUI'
+
+export const PREFIX = `theme--`
+
 export const stackDefaultStyles = {
   alignItems: 'stretch',
   flexShrink: 0,

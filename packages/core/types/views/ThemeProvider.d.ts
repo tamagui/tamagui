@@ -5,6 +5,5 @@ export declare type ThemeProviderProps = {
     disableRootThemeClass?: boolean;
     children?: any;
 };
-export declare const GET_DEFAULT_THEME = "___TGUI";
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
 //# sourceMappingURL=ThemeProvider.d.ts.map

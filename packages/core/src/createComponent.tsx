@@ -13,10 +13,10 @@ import React, {
 } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
+import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isTouchDevice, isWeb } from './constants/platform'
 import { rnw } from './constants/rnw'
-import { onConfiguredOnce } from './createTamagui'
 import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { getSplitStyles } from './helpers/getSplitStyles'
