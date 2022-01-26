@@ -7,7 +7,7 @@ import webpack from 'webpack'
 export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
   return (nextConfig: any = {}) => {
     return Object.assign({}, nextConfig, {
-      webpack: (webpackConfig, options) => {
+      webpack: (webpackConfig: any, options) => {
         const { config, dev, isServer } = options
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143

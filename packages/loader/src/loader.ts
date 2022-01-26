@@ -58,7 +58,7 @@ export function loader(this: any, source: string) {
       if (!out) {
         console.warn(`no styles... ${stylesByFile.keys} ${sourcePath}`)
       }
-      return callback(null, out)
+      return callback(null, out || '')
     }
 
     // check if should ignore

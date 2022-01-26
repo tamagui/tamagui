@@ -21,6 +21,23 @@ const transform = withPlugins(
       logTimings: true,
       // disableExtraction: process.env.NODE_ENV === 'development',
     }),
+    // template for modifying webpack further:
+    // (nextConfig = {}) => {
+    //   return Object.assign({}, nextConfig, {
+    //     webpack(config, options) {
+    //       config.resolve.fallback = {
+    //         ...config.resolve.fallback,
+    //         fs: require.resolve('fs'),
+    //       }
+
+    //       if (typeof nextConfig.webpack === 'function') {
+    //         return nextConfig.webpack(config, options)
+    //       }
+
+    //       return config
+    //     },
+    //   })
+    // },
     (config) => {
       // for github pages
       if (process.env.ON_GITHUB_PAGES) {
