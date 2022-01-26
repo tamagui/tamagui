@@ -44,6 +44,10 @@ p a, span a {
   text-underline-offset: 5px;
 }
 
+input, textarea, select, button {
+  margin: 0;
+}
+
 p a:hover, span a:hover {
   color: var(--blue12);
   text-decoration-color: var(--borderColor2);
