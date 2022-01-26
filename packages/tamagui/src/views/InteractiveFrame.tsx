@@ -30,12 +30,13 @@ export const InteractiveFrame = styled(XStack, {
       '...size': (val = '4', { tokens, props }) => {
         const sizeIndex = Object.keys(tokens.size).indexOf(val)
         const size = tokens.size[sizeIndex] ?? tokens.size[val] ?? val
+        const radius = tokens.radius[val] ?? tokens.radius[sizeIndex] ?? size
         const px = Math.round(+(size instanceof Variable ? size.val : size) * 0.8)
         const py = Math.round(+(size instanceof Variable ? size.val : size) * 0.33)
         return {
           paddingHorizontal: px,
           paddingVertical: py,
-          borderRadius: py,
+          borderRadius: radius,
         }
       },
     },
@@ -78,4 +79,3 @@ export const InteractiveFrame = styled(XStack, {
 })
 
 export type InteractiveFrameProps = GetProps<typeof InteractiveFrame>
-

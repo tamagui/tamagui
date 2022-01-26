@@ -150,6 +150,9 @@ const getToken = (
 
 // just specificy the least costly, all else go to `space` (most keys - we can exclude)
 const tokenCategories = {
+  radius: {
+    borderRadius: true,
+  },
   size: {
     width: true,
     height: true,
