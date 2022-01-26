@@ -1,4 +1,0 @@
-{
-  "presets": [["next/babel", { "preset-react": { "runtime": "classic" } }]],
-  "plugins": ["@babel/plugin-syntax-jsx"]
-}

@@ -1,22 +1,28 @@
 import path from 'path'
 
 import { TamaguiOptions } from '@tamagui/static'
+import browserslist from 'browserslist'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
+import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
 import webpack from 'webpack'
 
 export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
   return (nextConfig: any = {}) => {
     return Object.assign({}, nextConfig, {
       webpack: (webpackConfig: any, options) => {
-        const { config, dev, isServer } = options
+        const { dir, config, dev, isServer } = options
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         const jsxRuntime = require.resolve('react/jsx-runtime.js')
+        const jsxDevRuntime = require.resolve('react/jsx-dev-runtime.js')
 
         webpackConfig.resolve.alias = {
           ...(webpackConfig.resolve.alias || {}),
           'react/jsx-runtime.js': jsxRuntime,
           'react/jsx-runtime': jsxRuntime,
+          'react/jsx-dev-runtime.js': jsxDevRuntime,
+          'react/jsx-dev-runtime': jsxDevRuntime,
           'react-native$': 'react-native-web',
           'react-native-web/src/modules/normalizeColor': require.resolve(
             'react-native-web/dist/cjs/modules/normalizeColor'
@@ -57,8 +63,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         // look for compiled js with jsx intact as specified by module:jsx
         webpackConfig.resolve.mainFields.unshift('module:jsx')
 
-        // why is it undefined on next11??? but it says using webpack5
-        const isWebpack5 = !!config.future.webpack5 || typeof config.webpack5 === 'undefined'
+        const isWebpack5 = !!config.future?.webpack5 || typeof config.webpack5 === 'undefined'
 
         const includeModule = (context: string, request: string) => {
           const fullPath = request[0] === '.' ? path.join(context, request) : request
@@ -117,13 +122,11 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           if (!dev) {
             // replace nextjs picky style rules with simple minicssextract
             const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-            oneOfRule.oneOf = [
-              {
-                test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
-                sideEffects: true,
-              },
-            ]
+            oneOfRule.oneOf.unshift({
+              test: /\.css$/i,
+              use: [MiniCssExtractPlugin.loader, 'css-loader'],
+              sideEffects: true,
+            })
             const idx = webpackConfig.plugins.findIndex(
               (x) => x.constructor.name === 'NextMiniCssExtractPlugin'
             )
@@ -136,21 +139,21 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
               })
             )
           } else {
-            const {
-              getGlobalCssLoader,
-            } = require('next/dist/build/webpack/config/blocks/css/loaders')
             oneOfRule.oneOf.unshift({
               test: /\.css$/i,
               sideEffects: true,
               use: getGlobalCssLoader(
+                // @ts-ignore
                 {
-                  assetPrefix: options.config.assetPrefix,
-                  future: { webpack5: true },
+                  assetPrefix: options.config.assetPrefix || config.assetPrefix,
+                  future: nextConfig.future,
+                  experimental: nextConfig.experimental || {},
                   isClient: !isServer,
                   isServer,
                   isDevelopment: true,
                 },
-                [],
+                // @ts-ignore
+                () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
                 []
               ),
             })
@@ -201,4 +204,16 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
       },
     })
   }
+}
+
+function getSupportedBrowsers(dir, isDevelopment) {
+  let browsers
+  try {
+    browsers = browserslist.loadConfig({
+      path: dir,
+      env: isDevelopment ? 'development' : 'production',
+    })
+  } catch {}
+
+  return browsers
 }
