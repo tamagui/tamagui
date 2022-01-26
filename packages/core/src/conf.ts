@@ -1,6 +1,6 @@
 import { TamaguiInternalConfig } from './types'
 
-type ConfigListener = (conf: TamaguiInternalConfig) => void
+export type ConfigListener = (conf: TamaguiInternalConfig) => void
 
 export let conf: TamaguiInternalConfig | null
 

@@ -7,7 +7,7 @@ export { createTokens } from './createTokens';
 export * from './createVariable';
 export * from './styled';
 export * from './types';
-export { getHasConfigured, getTamagui, getThemes, getTokens, onConfiguredOnce } from './conf';
+export { getHasConfigured, getTamagui, getThemes, getTokens, onConfiguredOnce, ConfigListener, } from './conf';
 export * from './constants/pseudos';
 export * from './constants/constants';
 export * from './constants/platform';

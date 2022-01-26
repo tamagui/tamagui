@@ -1,5 +1,5 @@
 import { TamaguiInternalConfig } from './types';
-declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
+export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export declare let conf: TamaguiInternalConfig | null;
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const getHasConfigured: () => boolean;
@@ -42,5 +42,4 @@ export declare const getThemes: () => {
 };
 export declare const configListeners: Set<ConfigListener>;
 export declare const onConfiguredOnce: (cb: ConfigListener) => void;
-export {};
 //# sourceMappingURL=conf.d.ts.map

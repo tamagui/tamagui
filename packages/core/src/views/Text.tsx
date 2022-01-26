@@ -14,7 +14,7 @@ const ellipseStyle = {
 export const Text = createComponent<TextProps>({
   isText: true,
   defaultProps: {
-    display: isWeb ? 'inline' : 'inline-flex',
+    display: isWeb ? 'inline' : 'flex',
     boxSizing: 'border-box',
     fontFamily: 'System',
     wordWrap: 'break-word',

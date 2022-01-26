@@ -1,4 +1,4 @@
-import { Stack, StackProps, Text, TextProps, styled } from '@tamagui/core'
+import { Stack, StackProps, Text, TextProps, isWeb, styled } from '@tamagui/core'
 
 export const Table = styled(Stack, {
   tag: 'table',
@@ -21,7 +21,7 @@ export const TableHead = styled(Stack, {
 
 export const TableHeadCell = styled(Stack, {
   tag: 'th',
-  display: 'table-head',
+  display: isWeb ? 'table-head' : 'flex',
   flexDirection: 'row',
 })
 
@@ -43,7 +43,7 @@ export const TableCell = styled(Stack, {
   alignSelf: 'stretch',
   alignItems: 'center',
   tag: 'td',
-  display: 'table-cell',
+  display: isWeb ? 'table-cell' : 'flex',
   // borderBottomWidth: 1,
   // borderBottomColor: '$borderColor',
   paddingVertical: '$3',

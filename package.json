@@ -27,7 +27,8 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish": "lerna publish",
     "site": "yarn workspace @tamagui/site dev",
-    "clean": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +"
+    "clean": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
+    "fix": "yarn manypkg fix"
   },
   "resolutions": {
     "@types/node": "16.11.9",

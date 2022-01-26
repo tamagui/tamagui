@@ -82,7 +82,7 @@ export function createComponent<A extends Object = DefaultProps>(
   let tamaguiConfig: TamaguiInternalConfig
 
   // web uses className, native uses style
-  let defaultsStyle: any
+  let defaultNativeStyle: StyleSheet.NamedStyles<{ base: {} }> | null = null
   let defaultsClassName = ''
   let initialTheme: any
 
@@ -215,6 +215,7 @@ export function createComponent<A extends Object = DefaultProps>(
     const isPressing = !disabled && pseudos && state.press
 
     const styles = [
+      defaultNativeStyle ? defaultNativeStyle.base : null,
       // parity w react-native-web, only for text in text
       // TODO this should be able to be done w css to replicate after extraction:
       //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
@@ -474,10 +475,15 @@ export function createComponent<A extends Object = DefaultProps>(
       }
       defaultsClassName += addStylesUsingClassname([next.style, next.pseudos])
     } else {
-      if (!hasWarnedOnce) {
-        hasWarnedOnce = true
-        console.log('⚠️ TODO account for default styles for media queries')
+      // native, create a default StyleSheet
+      // TODO handle next.pseudos
+      const sheetStyles = {}
+      for (const style of next.style) {
+        Object.assign(sheetStyles, style)
       }
+      defaultNativeStyle = StyleSheet.create({
+        base: sheetStyles,
+      })
     }
     // @ts-ignore
     component.defaultProps = {
