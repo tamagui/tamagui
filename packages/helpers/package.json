@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "1.0.0-alpha.40",
+  "version": "1.0.0-alpha.41",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -15,7 +15,7 @@
     "watch": "tamagui-build --watch"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.40",
+    "@tamagui/build": "^1.0.0-alpha.41",
     "react-native": "*"
   },
   "peerDependencies": {
