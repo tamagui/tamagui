@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-window-size",
-  "version": "1.0.0-alpha.41",
+  "version": "1.0.0-alpha.42",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -14,12 +14,12 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/use-debounce": "^1.0.0-alpha.41",
-    "@tamagui/use-force-update": "^1.0.0-alpha.41",
+    "@tamagui/use-debounce": "^1.0.0-alpha.42",
+    "@tamagui/use-force-update": "^1.0.0-alpha.42",
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.41",
+    "@tamagui/build": "^1.0.0-alpha.42",
     "@types/react": "^17.0.35",
     "react-native": "*"
   },
