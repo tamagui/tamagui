@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-force-update",
-  "version": "1.0.0-alpha.41",
+  "version": "1.0.0-alpha.42",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -14,7 +14,7 @@
     "watch": "tamagui-build --watch"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.41"
+    "@tamagui/build": "^1.0.0-alpha.42"
   },
   "dependencies": {
     "react": "*"
