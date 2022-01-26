@@ -12,7 +12,7 @@ export const SizableText = styled(Text, {
             ? props.fontFamily.val
             : props.fontFamily || '$body'
         ) as any
-        const font = tokens.font[family]
+        const font = tokens.font[family] ?? tokens.font['$body']
         if (!font) {
           console.warn('⚠️ no font found', { family, fontTokens: Object.keys(tokens.font), val })
           return {}

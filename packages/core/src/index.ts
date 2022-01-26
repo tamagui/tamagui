@@ -14,6 +14,7 @@ export * from './constants/constants'
 export * from './constants/platform'
 export * from './constants/rnw'
 
+export * from './helpers/getThemeParentClassName'
 export * from './helpers/isObj'
 export * from './helpers/getStylesAtomic'
 export * from './helpers/matchMedia'

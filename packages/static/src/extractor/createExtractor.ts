@@ -961,12 +961,12 @@ export function createExtractor() {
             ) {
               if (cur.type === 'style') {
                 let key = Object.keys(cur.value)[0]
-                const fullKey = tamaguiConfig.shorthands[key]
-                // expand shorthand here
-                if (fullKey) {
-                  cur.value = { [fullKey]: cur.value[key] }
-                  key = fullKey
-                }
+                // const fullKey = tamaguiConfig.shorthands[key]
+                // // expand shorthand here
+                // if (fullKey) {
+                //   cur.value = { [fullKey]: cur.value[key] }
+                //   key = fullKey
+                // }
                 if (!validStyles[key] && !pseudos[key]) {
                   if (shouldPrintDebug) {
                     console.log('   - ignoring (expanded already):', key)
