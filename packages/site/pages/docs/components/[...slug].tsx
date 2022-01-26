@@ -3,7 +3,7 @@ import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 // import { formatBytes, getPackageData } from '@lib/bundlephobia'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
-import { getMDXComponent } from '@tamagui/mdx-bundler/client'
+import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import type { Frontmatter } from 'types/frontmatter'
 

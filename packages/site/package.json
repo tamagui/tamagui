@@ -11,7 +11,6 @@
   "dependencies": {
     "@tamagui/colors": "^1.0.0-alpha.40",
     "@tamagui/feather-icons": "^1.0.0-alpha.40",
-    "@tamagui/mdx-bundler": "^8.0.0",
     "compare-versions": "^4.0.1",
     "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.26.0",
@@ -20,6 +19,7 @@
     "hast-util-to-html": "^7.1.2",
     "hast-util-to-string": "^1.0.4",
     "lodash.debounce": "^4.0.8",
+    "mdx-bundler": "^8.0.1",
     "mdx-prism": "^0.3.4",
     "next": "^11.1.2",
     "next-videos": "^1.4.0",

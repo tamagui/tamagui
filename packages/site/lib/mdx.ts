@@ -1,10 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 
-import { bundleMDX } from '@tamagui/mdx-bundler'
 import compareVersions from 'compare-versions'
 import glob from 'glob'
 import matter from 'gray-matter'
+import { bundleMDX } from 'mdx-bundler'
 import readingTime from 'reading-time'
 import remarkSlug from 'remark-slug'
 
