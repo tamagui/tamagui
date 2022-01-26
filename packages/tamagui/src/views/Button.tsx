@@ -20,6 +20,7 @@ export type ButtonProps = InteractiveFrameProps &
 
 const ButtonFrame = styled(InteractiveFrame, {
   tag: 'button',
+  borderWidth: 0,
 })
 
 export const Button = ButtonFrame.extractable(
