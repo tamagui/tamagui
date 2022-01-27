@@ -6,7 +6,7 @@ name: text
 
 # Forms
 
-<Description>Base components for forms.</Description>
+<Description>Styled input and textarea that scale.</Description>
 
 <HeroContainer>
   <FormsDemo />
@@ -16,6 +16,46 @@ name: text
 
 ```
 
-## TODO
+Using the same base component [TextInput](https://necolas.github.io/react-native-web/docs/text-input/), from react-native-web, Tamagui simply wraps these components to allow the full set of style props, as well as scaling all the styles up or down using the `size` property, much like Button.
 
-We're working to patch createElement in react-native-web to support any className, which would let us more easily wrap any component they export. For now you can use form components directly from react-native-web.
+### Input
+
+A one-line input field:
+
+```tsx
+import { Input } from 'tamagui'
+
+export const App = () => (
+  // Accepts size and style properties directly
+  <Input size="$4" borderWidth={2} />
+)
+```
+
+### TextArea
+
+For multi-line inputs:
+
+```tsx
+import { TextArea } from 'tamagui'
+
+export const App = () => (
+  // Accepts size and style properties directly
+  <TextArea size="$4" borderWidth={2} />
+)
+```
+
+### Form
+
+A helper element that only has functionality on the web, but falls back to a view on native:
+
+```tsx
+import { Form } from 'tamagui'
+
+export const App = () => (
+  <Form>
+    {/* ... */}
+    {/* form elements here */}
+    {/* ... */}
+  </Form>
+)
+```

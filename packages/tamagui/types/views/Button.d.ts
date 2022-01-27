@@ -18,17 +18,17 @@ export declare const Button: (props: Pick<Omit<Omit<import("@tamagui/core").Stac
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, "size" | "transparent" | "disabled" | "active" | "chromeless"> & {
-    size?: `$${string}` | `$${number}` | null | undefined;
-    disabled?: boolean | null | undefined;
-    active?: boolean | null | undefined;
-    transparent?: boolean | null | undefined;
-    chromeless?: boolean | null | undefined;
+    readonly size?: `$${string}` | `$${number}` | null | undefined;
+    readonly disabled?: boolean | null | undefined;
+    readonly active?: boolean | null | undefined;
+    readonly transparent?: boolean | null | undefined;
+    readonly chromeless?: boolean | null | undefined;
 } & import("@tamagui/core").MediaProps<{
-    size?: `$${string}` | `$${number}` | null | undefined;
-    disabled?: boolean | null | undefined;
-    active?: boolean | null | undefined;
-    transparent?: boolean | null | undefined;
-    chromeless?: boolean | null | undefined;
+    readonly size?: `$${string}` | `$${number}` | null | undefined;
+    readonly disabled?: boolean | null | undefined;
+    readonly active?: boolean | null | undefined;
+    readonly transparent?: boolean | null | undefined;
+    readonly chromeless?: boolean | null | undefined;
 }> & ThemeableProps & {
     textProps?: Omit<TextProps, "children"> | undefined;
     noTextWrap?: boolean | undefined;

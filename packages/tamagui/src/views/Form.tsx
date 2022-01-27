@@ -1,41 +1,67 @@
 import { Stack, styled } from '@tamagui/core'
 import { TextInput } from 'react-native'
 
+import { createFrameSizeVariant } from './InteractiveFrame'
+import { sizableTextSizeVariant } from './SizableText'
+
 export const Form = styled(Stack, {
   tag: 'form',
 })
 
-// TODO
-// @ts-ignore
-export const Input = styled(TextInput, {
-  paddingVertical: '$2',
-  paddingHorizontal: '$4',
-  fontSize: '$4',
-})
+const inputSizeFrame = createFrameSizeVariant(0.75, 0.75)
 
-// TODO
-// @ts-ignore
-export const TextArea = styled(TextInput, {
-  multiline: true,
-  numberOfLines: 4,
+const inputSizeVariant = (val = '4', props) => {
+  const frame = inputSizeFrame(val, props)
+  const font = sizableTextSizeVariant(val, props)
+  return {
+    ...frame,
+    ...font,
+  }
+}
 
-  paddingVertical: '$2',
-  paddingHorizontal: '$4',
-  fontSize: '$4',
-})
+export const Input = styled(
+  // @ts-ignore
+  TextInput,
+  {
+    borderRadius: '$3',
+    borderWidth: 1,
+    borderColor: '$borderColor',
+    backgroundColor: '$bg',
+    paddingVertical: '$2',
+    paddingHorizontal: '$2',
 
-// TODO
-// type AutocompleteType =
-//   | 'cc-csc'
-//   | 'cc-exp'
-//   | 'cc-exp-month'
-//   | 'cc-exp-year'
-//   | 'cc-number'
-//   | 'email'
-//   | 'name'
-//   | 'password'
-//   | 'postal-code'
-//   | 'street-address'
-//   | 'tel'
-//   | 'username'
-//   | 'off'
+    variants: {
+      size: {
+        '...size': inputSizeVariant,
+      },
+    },
+  },
+  {
+    isText: true,
+  }
+)
+
+export const TextArea = styled(
+  // @ts-ignore
+  TextInput,
+  {
+    multiline: true,
+    numberOfLines: 4,
+
+    borderRadius: '$3',
+    borderWidth: 1,
+    borderColor: '$borderColor',
+    backgroundColor: '$bg',
+    paddingVertical: '$2',
+    paddingHorizontal: '$2',
+
+    variants: {
+      size: {
+        '...size': inputSizeVariant,
+      },
+    },
+  },
+  {
+    isText: true,
+  }
+)

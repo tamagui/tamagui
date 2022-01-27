@@ -21,7 +21,7 @@ export const docsRoutes = [
       { title: 'Linear Gradient', slug: 'docs/components/linear-gradient' },
       { title: 'Headings', slug: 'docs/components/headings' },
       { title: 'Visually Hidden', slug: 'docs/components/visually-hidden' },
-      { title: 'Form & Inputs', slug: 'docs/components/forms', pending: true },
+      { title: 'Forms', slug: 'docs/components/forms' },
       // { title: 'Popover', slug: 'docs/components/popover', pending: true },
       // { title: 'Tooltip', slug: 'docs/components/tooltip', pending: true },
       // { title: 'Grid', slug: 'docs/components/grid' },
