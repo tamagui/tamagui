@@ -13,6 +13,8 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
       webpack: (webpackConfig: any, options) => {
         const { dir, config, dev, isServer } = options
 
+        const isNext12 = typeof options.config?.swcMinify === 'boolean'
+
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         const jsxRuntime = require.resolve('react/jsx-runtime.js')
         const jsxDevRuntime = require.resolve('react/jsx-dev-runtime.js')
@@ -162,39 +164,64 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         // add loader
         const shouldExclude = (x) => {
-          // analyze everything in our src dir
+          // analyze everything in our jsx dir
           // analyze everything in the components dirs
           const shouldInclude =
             x.includes(options.dir) ||
             tamaguiOptions.components.some(
               (c) => x.includes(`/node_modules/${c}`) || x.includes(`${c}/dist/jsx/`)
             )
-
-          return !shouldInclude
+          if (!shouldInclude) {
+            return true
+          }
+          return false
         }
-        const [first, second, ...rest] = webpackConfig.module.rules
-        webpackConfig.module.rules = [
-          first,
-          second,
-          {
-            test: /\.(tsx|js|mjs|jsx)$/,
+
+        if (isNext12) {
+          const oneOfJSRules = webpackConfig.module.rules[2].oneOf
+          const swcLoaderIndex = oneOfJSRules.findIndex(
+            (x) => !x.issuerLayer && x.use?.loader === 'next-swc-loader'
+          )
+          const swcLoader = oneOfJSRules[swcLoaderIndex]
+          // put an earlier loader where we just do tamagui stuff before regular swc
+          oneOfJSRules.splice(swcLoaderIndex, 0, {
+            test: /\.(jsx?|tsx?)$/,
             exclude: shouldExclude,
             use: [
-              {
-                loader: 'esbuild-loader',
-                options: {
-                  loader: 'tsx',
-                  minify: false,
-                },
-              },
+              swcLoader.use,
               {
                 loader: 'tamagui-loader',
                 options: tamaguiOptions,
               },
             ],
-          },
-          ...rest,
-        ]
+          })
+        } else {
+          // next 11 modify loader
+          const [first, second, ...rest] = webpackConfig.module.rules
+          webpackConfig.module.rules = [
+            first,
+            second,
+            {
+              test: /\.(tsx|jsx)$/,
+              exclude: shouldExclude,
+              use: [
+                'thread-loader',
+                {
+                  loader: 'esbuild-loader',
+                  options: {
+                    loader: 'tsx',
+                    minify: false,
+                  },
+                },
+                {
+                  loader: 'tamagui-loader',
+                  options: tamaguiOptions,
+                },
+              ],
+            },
+            ...rest,
+          ]
+        }
 
         if (typeof nextConfig.webpack === 'function') {
           return nextConfig.webpack(webpackConfig, options)

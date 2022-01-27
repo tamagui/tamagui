@@ -220,6 +220,7 @@ export function createExtractor() {
           }
 
           if (disableExtraction) {
+            console.log('disableExtraction', disableExtraction)
             if (!hasLogged) {
               console.log('🥚 Tamagui disableExtraction set: no CSS or optimizations will be run')
               hasLogged = true
@@ -358,16 +359,30 @@ export function createExtractor() {
           // add in default props
           if (staticConfig.defaultProps) {
             for (const key in staticConfig.defaultProps) {
+              if (key === 'StyleSheet') {
+                // temp bugfix when wrapping styled(require('react-native-web').Input)
+                continue
+              }
               const serialize = require('babel-literal-to-ast')
               const val = staticConfig.defaultProps[key]
-              node.attributes.unshift(
-                t.jsxAttribute(
-                  t.jsxIdentifier(key),
-                  typeof val === 'string'
-                    ? t.stringLiteral(val)
-                    : t.jsxExpressionContainer(serialize(val))
+              try {
+                const serializedDefaultProp = serialize(val)
+                node.attributes.unshift(
+                  t.jsxAttribute(
+                    t.jsxIdentifier(key),
+                    typeof val === 'string'
+                      ? t.stringLiteral(val)
+                      : t.jsxExpressionContainer(serializedDefaultProp)
+                  )
                 )
-              )
+              } catch (err) {
+                console.warn(
+                  `⚠️ Error evaluating default prop for component ${node.name.name}, prop ${key}\n error: ${err}\n value:`,
+                  val,
+                  '\n defaultProps:',
+                  staticConfig.defaultProps
+                )
+              }
             }
           }
 

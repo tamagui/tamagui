@@ -5,6 +5,8 @@ import { GestureResponderEvent, View, ViewProps, ViewStyle } from 'react-native'
 import { Variable } from './createVariable'
 import { ThemeProviderProps } from './views/ThemeProvider'
 
+export type ConfigListener = (conf: TamaguiInternalConfig) => void
+
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 

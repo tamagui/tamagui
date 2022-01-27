@@ -1,5 +1,4 @@
-import { TamaguiInternalConfig } from './types';
-export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
+import { ConfigListener, TamaguiInternalConfig } from './types';
 export declare let conf: TamaguiInternalConfig | null;
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const getHasConfigured: () => boolean;

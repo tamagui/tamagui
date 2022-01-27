@@ -3,6 +3,7 @@ import { TextProps as ReactTextProps, TextStyle } from 'react-native';
 import { GestureResponderEvent, View, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
 import { ThemeProviderProps } from './views/ThemeProvider';
+export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
     font: {
         [key: string]: GenericFont;
