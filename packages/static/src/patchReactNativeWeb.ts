@@ -32,6 +32,37 @@ export function patchReactNativeWeb() {
     fs.writeFileSync(cjsPath, cjsExports)
   }
 
+  // patch to allow className prop
+  const classNamePatch = `if (props.className) { domProps.className = className ? className + ' ' + props.className : props.className }`
+  const domPropsPath = ['modules', 'createDOMProps', 'index.js']
+  const domPropsModulePath = path.join(rootDir, 'dist', ...domPropsPath)
+  const domPropsCjsPath = path.join(rootDir, 'dist', 'cjs', ...domPropsPath)
+  const patchClassName = (file: string) => {
+    const contents = fs.readFileSync(file, 'utf-8')
+    if (!contents.includes(classNamePatch)) {
+      const needle = `domProps.className = className`
+      const patchLocation = contents.indexOf(needle) + needle.length + 5
+      // its far down the file
+      if (patchLocation < 100) {
+        console.warn(
+          `⚠️ Couldn't apply className patch! Maybe using incompatible react-native-web version.`
+        )
+      } else {
+        const before = contents.slice(0, patchLocation)
+        const after = contents.slice(patchLocation)
+        const patched = before + '\n' + classNamePatch + '\n' + after
+        console.log('Tamagui patch - adding className support to react-native-web', file)
+        fs.writeFileSync(file, patched)
+      }
+    }
+  }
+  patchClassName(domPropsModulePath)
+  patchClassName(domPropsCjsPath)
+
+  // if (props.className) {
+  //   domProps.className = className ? className + ' ' + props.className : props.className
+  // }
+
   // if entry files not patched, patch them:
   const moduleEntry = path.join(rootDir, 'dist', 'index.js')
   const moduleEntrySrc = fs.readFileSync(moduleEntry, 'utf-8')

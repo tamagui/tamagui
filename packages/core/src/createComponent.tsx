@@ -447,7 +447,7 @@ export function createComponent<A extends Object = DefaultProps>(
         console.log('🥚 props out:', viewProps)
         console.log(props.onClick?.toString())
         // prettier-ignore
-        console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
+        console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, configIn })
         // only on browser because node expands it huge
         if (isWeb) {
           console.log('🥚 component info', { staticConfig, tamaguiConfig })
