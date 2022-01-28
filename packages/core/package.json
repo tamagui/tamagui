@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.0-alpha.45",
+  "version": "1.0.0-alpha.46",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
