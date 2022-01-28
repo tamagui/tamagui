@@ -4,6 +4,7 @@ import { useInsertionEffect } from 'react'
 import { getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule } from './insertStyleRule'
 
+// TODO can drop most of this code once we drop support for 17
 // uses new useInsertionEffect for better perf if available
 
 // could be cleared occasionally

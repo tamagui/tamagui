@@ -44,7 +44,8 @@ export const useDefaultThemeName = () => {
 export const useTheme = (): ThemeObject => {
   const forceUpdate = useForceUpdate()
   const manager = useContext(ThemeManagerContext)
-  const themes = useContext(ThemeContext)
+  const themes = useContext(ThemeContext) || {}
+
   const state = useRef() as React.MutableRefObject<UseThemeState>
   if (!state.current) {
     state.current = {
@@ -69,7 +70,7 @@ export const useTheme = (): ThemeObject => {
     return manager.onUpdate(state.current.uuid, forceUpdate)
   }, [])
 
-  const theme = (manager.name ? themes[manager.name] : themes.light) ?? themes.light
+  const theme = (manager.name ? themes[manager.name] : themes.light) ?? themes.light ?? {}
 
   return useMemo(
     () => {
@@ -81,7 +82,9 @@ export const useTheme = (): ThemeObject => {
           }
           let activeTheme = themes[name]
           if (!activeTheme) {
-            console.error('No theme by name', name, 'only:', themes, 'keeping current theme')
+            if (process.env.NODE_ENV !== 'test') {
+              console.error('No theme by name', name, 'only:', themes, 'keeping current theme')
+            }
             activeTheme = theme
           }
           const val = activeTheme[key]
