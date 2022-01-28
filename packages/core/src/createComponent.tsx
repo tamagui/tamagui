@@ -11,7 +11,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TextInput, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
@@ -200,12 +200,9 @@ export function createComponent<A extends Object = DefaultProps>(
     }, [])
 
     // element
-    const element = isWeb
-      ? !Component || typeof Component === 'string'
-        ? // default to tag, fallback to component (when both strings)
-          tag || Component
-        : Component
-      : Component
+    const isInternalComponent = !Component || typeof Component === 'string'
+    // default to tag, fallback to component (when both strings)
+    const element = isWeb ? (isInternalComponent ? tag || Component : Component) : Component
     const ReactView = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
     const ReactText = !isWeb ? Text : element || 'span'
     const ViewComponent = isText ? ReactText : ReactView
@@ -427,7 +424,16 @@ export function createComponent<A extends Object = DefaultProps>(
           ? `${domProps.className} ${viewProps.className}`
           : viewProps.className
       Object.assign(viewProps, domProps)
-      viewProps.className = className
+
+      // hacky workaround to pass classnames until we get stylex
+      if (ViewComponent === TextInput) {
+        viewProps.dataSet = viewProps.dataSet || {}
+        Object.assign(viewProps.dataSet, { __className: className })
+      } else {
+        // we already handle Text/View properly
+        viewProps.className = className
+      }
+
       content = createElement(ViewComponent, viewProps, childEls)
     } else {
       content = createElement(ViewComponent, viewProps, childEls)
@@ -436,7 +442,6 @@ export function createComponent<A extends Object = DefaultProps>(
     const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
     if (shouldWrapTextAncestor) {
       // from react-native-web
-      // @ts-ignore
       content = createElement(TextAncestorContext.Provider, { value: true }, content)
     }
 
@@ -445,13 +450,10 @@ export function createComponent<A extends Object = DefaultProps>(
         viewProps['debug'] = true
         console.log('🥚 props in:', props)
         console.log('🥚 props out:', viewProps)
-        console.log(props.onClick?.toString())
         // prettier-ignore
         console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, configIn })
         // only on browser because node expands it huge
-        if (isWeb) {
-          console.log('🥚 component info', { staticConfig, tamaguiConfig })
-        }
+        if (isWeb) console.log('🥚 component info', { staticConfig, tamaguiConfig })
       }
     }
 

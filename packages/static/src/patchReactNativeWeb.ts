@@ -33,7 +33,7 @@ export function patchReactNativeWeb() {
   }
 
   // patch to allow className prop
-  const classNamePatch = `if (props.className) { domProps.className = className ? className + ' ' + props.className : props.className }`
+  const classNamePatch = `if (props.dataSet && props.dataSet['__className']) { domProps.className = className ? className + ' ' + props.dataSet['__className'] : props.dataSet['__className']; delete props.dataSet['__className'] }`
   const domPropsPath = ['modules', 'createDOMProps', 'index.js']
   const domPropsModulePath = path.join(rootDir, 'dist', ...domPropsPath)
   const domPropsCjsPath = path.join(rootDir, 'dist', 'cjs', ...domPropsPath)
@@ -51,7 +51,7 @@ export function patchReactNativeWeb() {
         const before = contents.slice(0, patchLocation)
         const after = contents.slice(patchLocation)
         const patched = before + '\n' + classNamePatch + '\n' + after
-        console.log('Tamagui patch - adding className support to react-native-web', file)
+        console.log('   > adding className support to react-native-web', file)
         fs.writeFileSync(file, patched)
       }
     }

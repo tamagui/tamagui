@@ -220,7 +220,6 @@ export function createExtractor() {
           }
 
           if (disableExtraction) {
-            console.log('disableExtraction', disableExtraction)
             if (!hasLogged) {
               console.log('🥚 Tamagui disableExtraction set: no CSS or optimizations will be run')
               hasLogged = true

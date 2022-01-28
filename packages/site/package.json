@@ -2,6 +2,10 @@
   "name": "@tamagui/site",
   "version": "1.0.0-alpha.45",
   "private": true,
+  "volta": {
+    "node": "16.13.2",
+    "yarn": "1.22.17"
+  },
   "scripts": {
     "dev": "NODE_ENV=development next dev --port 5005",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",

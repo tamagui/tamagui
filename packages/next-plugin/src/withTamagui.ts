@@ -179,16 +179,14 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         if (isNext12) {
           const oneOfJSRules = webpackConfig.module.rules[2].oneOf
-          const swcLoaderIndex = oneOfJSRules.findIndex(
-            (x) => !x.issuerLayer && x.use?.loader === 'next-swc-loader'
-          )
+          const swcLoaderIndex = 3
           const swcLoader = oneOfJSRules[swcLoaderIndex]
           // put an earlier loader where we just do tamagui stuff before regular swc
           oneOfJSRules.splice(swcLoaderIndex, 0, {
             test: /\.(jsx?|tsx?)$/,
             exclude: shouldExclude,
             use: [
-              swcLoader.use,
+              ...[].concat(swcLoader.use),
               {
                 loader: 'tamagui-loader',
                 options: tamaguiOptions,
