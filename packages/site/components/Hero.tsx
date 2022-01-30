@@ -13,9 +13,13 @@ import NextLink from 'next/link'
 import React from 'react'
 import {
   Button,
+  GenericTamaguiConfig,
   H3,
   Paragraph,
+  Shorthands,
   Spacer,
+  TamaguiConfig,
+  TamaguiCustomConfig,
   Text,
   Theme,
   Title,
@@ -30,6 +34,16 @@ import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
 import { IconStack } from './IconStack'
+
+type y = Shorthands
+type x = TamaguiConfig['shorthands']
+type z = TamaguiCustomConfig['shorthands']
+
+interface TamaguiConfigTest
+  extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
+    TamaguiCustomConfig {}
+
+type a = TamaguiConfigTest['shorthands']
 
 export function Hero() {
   const [hasCopied, setHasCopied] = React.useState(false)
@@ -157,7 +171,7 @@ export function Hero() {
                 height={48}
                 ai="center"
                 als="center"
-                br="$6"
+                br="$10"
                 bc="$bg"
                 hoverStyle={{
                   bc: '$bg2',

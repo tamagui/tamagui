@@ -64,7 +64,7 @@ function createShallowUpdate(setter: React.Dispatch<React.SetStateAction<Compone
   }
 }
 
-export function createComponent<A extends Object = DefaultProps>(
+export function createComponent<ComponentPropTypes extends Object = DefaultProps>(
   configIn: Partial<StaticConfig> | StaticConfigParsed
 ) {
   let staticConfig: StaticConfigParsed
@@ -88,7 +88,7 @@ export function createComponent<A extends Object = DefaultProps>(
 
   // see onConfiguredOnce below which attaches a name then to this component
 
-  const component = forwardRef<View, A>((props: any, forwardedRef) => {
+  const component = forwardRef<View, ComponentPropTypes>((props: any, forwardedRef) => {
     const forceUpdate = useForceUpdate()
     const features = useFeatures(props, { forceUpdate })
     const theme = useTheme()
@@ -241,7 +241,7 @@ export function createComponent<A extends Object = DefaultProps>(
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('🥚 className', { style, styles, classList, stylesClassNames, className })
+          console.log('🥚 className', { style, styles, classList, stylesClassNames, className: className.trim().split(' ') })
         }
       }
       viewProps.className = className
@@ -448,7 +448,7 @@ export function createComponent<A extends Object = DefaultProps>(
       if (props['debug']) {
         viewProps['debug'] = true
         console.log('🥚 props in:', props)
-        console.log('🥚 props out:', viewProps)
+        console.log('🥚 props out:', viewProps, viewProps.className?.split(' '))
         // prettier-ignore
         console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, configIn })
         // only on browser because node expands it huge
@@ -503,7 +503,7 @@ export function createComponent<A extends Object = DefaultProps>(
     ...staticConfig,
   }
 
-  const res = component as any as StaticComponent<A, void>
+  const res = component as any as StaticComponent<ComponentPropTypes, void>
 
   // add extractable HoC
   res['extractable'] = (Component: any, conf?: StaticConfig) => {
