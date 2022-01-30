@@ -8,7 +8,6 @@ import { YStack } from 'tamagui'
 import { HeroExample } from '../components/HeroExample'
 
 export default function Home() {
-  return <Hero />
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
