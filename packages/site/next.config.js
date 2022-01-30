@@ -26,11 +26,9 @@ const transform = withPlugins(
     //   return Object.assign({}, nextConfig, {
     //     webpack(config, options) {
     //       config.optimization.minimize = false
-
     //       if (typeof nextConfig.webpack === 'function') {
     //         return nextConfig.webpack(config, options)
     //       }
-
     //       return config
     //     },
     //   })

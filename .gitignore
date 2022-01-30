@@ -10,6 +10,8 @@
 !.yarn/sdks
 !.yarn/versions
 
+.turbo
+
 .ultra.cache.json
 tmp
 *.tsbuildinfo
