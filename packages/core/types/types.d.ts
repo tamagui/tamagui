@@ -300,6 +300,7 @@ export declare type StaticConfig = {
         [key: string]: boolean;
     };
     isZStack?: boolean;
+    isReactNativeWeb?: boolean;
 };
 declare type ColorableKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderTopColor' | 'borderBottomColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor';
 declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight';

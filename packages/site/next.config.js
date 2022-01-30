@@ -21,14 +21,11 @@ const transform = withPlugins(
       logTimings: true,
       disableExtraction: process.env.NODE_ENV === 'development',
     }),
-    // template for modifying webpack further:
+    // // template for modifying webpack further:
     // (nextConfig = {}) => {
     //   return Object.assign({}, nextConfig, {
     //     webpack(config, options) {
-    //       config.resolve.fallback = {
-    //         ...config.resolve.fallback,
-    //         fs: require.resolve('fs'),
-    //       }
+    //       config.optimization.minimize = false
 
     //       if (typeof nextConfig.webpack === 'function') {
     //         return nextConfig.webpack(config, options)

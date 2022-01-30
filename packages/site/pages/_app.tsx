@@ -43,9 +43,6 @@ export default function App(props: AppProps) {
 }
 
 function ContentInner({ Component, pageProps }: AppProps) {
-  // test stuff here
-  // return <Button>hi</Button>
-
   const router = useRouter()
   const isDocs = router.pathname.includes('/docs')
   return (

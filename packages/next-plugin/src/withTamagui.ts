@@ -18,6 +18,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         const jsxRuntime = require.resolve('react/jsx-runtime.js')
         const jsxDevRuntime = require.resolve('react/jsx-dev-runtime.js')
+        const rnw = require.resolve('react-native-web')
 
         webpackConfig.resolve.alias = {
           ...(webpackConfig.resolve.alias || {}),
@@ -25,7 +26,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           'react/jsx-runtime': jsxRuntime,
           'react/jsx-dev-runtime.js': jsxDevRuntime,
           'react/jsx-dev-runtime': jsxDevRuntime,
-          'react-native$': 'react-native-web',
+          'react-native$': rnw,
           'react-native-web/src/modules/normalizeColor': require.resolve(
             'react-native-web/dist/cjs/modules/normalizeColor'
           ),

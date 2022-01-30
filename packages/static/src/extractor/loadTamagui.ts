@@ -16,7 +16,7 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   // lets shim require and avoid importing react-native + react-native-web
   // we just need to read the config around them
   process.env.IS_STATIC = 'is_static'
-  const proxyWorm = require('@tamagui/fake-react-native')
+  const proxyWorm = require('react-native-web')
   const Mod = require('module')
   const og = Mod.prototype.require
   Mod.prototype.require = function (path: string) {

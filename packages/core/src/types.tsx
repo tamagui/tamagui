@@ -484,6 +484,11 @@ export type StaticConfig = {
    * We need to wrap children
    */
   isZStack?: boolean
+
+  /*
+   * To account for style adjustments
+   */
+  isReactNativeWeb?: boolean
 }
 
 type ColorableKeys =

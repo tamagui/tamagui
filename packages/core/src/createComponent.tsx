@@ -11,7 +11,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { StyleSheet, Text, TextInput, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
@@ -425,8 +425,7 @@ export function createComponent<A extends Object = DefaultProps>(
           : viewProps.className
       Object.assign(viewProps, domProps)
 
-      // hacky workaround to pass classnames until we get stylex
-      if (ViewComponent === TextInput) {
+      if (staticConfig.isReactNativeWeb) {
         viewProps.dataSet = viewProps.dataSet || {}
         Object.assign(viewProps.dataSet, { __className: className })
       } else {
