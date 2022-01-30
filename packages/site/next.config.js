@@ -22,22 +22,19 @@ const transform = withPlugins(
       disableExtraction: process.env.NODE_ENV === 'development',
     }),
     // template for modifying webpack further:
-    // (nextConfig = {}) => {
-    //   return Object.assign({}, nextConfig, {
-    //     webpack(config, options) {
-    //       config.resolve.fallback = {
-    //         ...config.resolve.fallback,
-    //         fs: require.resolve('fs'),
-    //       }
+    (nextConfig = {}) => {
+      return Object.assign({}, nextConfig, {
+        webpack(config, options) {
+          config.optimization.minimize = false
 
-    //       if (typeof nextConfig.webpack === 'function') {
-    //         return nextConfig.webpack(config, options)
-    //       }
+          if (typeof nextConfig.webpack === 'function') {
+            return nextConfig.webpack(config, options)
+          }
 
-    //       return config
-    //     },
-    //   })
-    // },
+          return config
+        },
+      })
+    },
     (config) => {
       // for github pages
       if (process.env.ON_GITHUB_PAGES) {
