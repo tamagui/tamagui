@@ -168,7 +168,7 @@ Things to note:
 
 ### Non-font tokens
 
-The rest of the tokens categories besides font are flatter. Note that `space` and `size` generally share keys, and that space can generally use negative keys as well.
+The rest of the tokens categories besides font are flatter. The `space` and `size` generally share keys, and that space can generally use negative keys as well.
 
 ```jsx
 // passed into createTamagui
@@ -180,7 +180,7 @@ const tokens = createTokens({
 })
 ```
 
-You access tokens then by using `$` prefixes in your values. Note that Tamagui knows which tokens to use based on the style property you use.
+You access tokens then by using `$` prefixes in your values. Tamagui knows which tokens to use based on the style property you use.
 
 ```jsx
 const App = () => (
@@ -222,7 +222,7 @@ const light = {
 }
 ```
 
-Notice you don't have to use tokens as your theme values, but if you do they avoid some overhead. With Tamagui, the idea is that `bg`, `color`, and `borderColor` represent the "primary" and clearest colors, and `bg2`, `color2` etc get more subtle.
+You don't have to use tokens as your theme values, but if you do they avoid some overhead. With Tamagui, the idea is that `bg`, `color`, and `borderColor` represent the "primary" and clearest colors, and `bg2`, `color2` etc get more subtle.
 
 To see how it works, here's a snippet from `InteractiveFrame` which is the frame component that's used in `Button`:
 
