@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.0.0-alpha.49",
+  "version": "1.0.0-alpha.50",
   "sideEffects": [
     "*.css"
   ],
