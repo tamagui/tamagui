@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/site",
-  "version": "1.0.0-alpha.50",
+  "version": "1.0.0-alpha.51",
   "private": true,
   "volta": {
     "node": "16.13.2"
@@ -38,7 +38,7 @@
     "remark-autolink-headings": "^6.0.1",
     "remark-slug": "^6.0.0",
     "seamless-scroll-polyfill": "^1.2.3",
-    "tamagui": "^1.0.0-alpha.50",
+    "tamagui": "^1.0.0-alpha.51",
     "unified": "^9.2.1",
     "unist-util-visit": "^2.0.3"
   },
@@ -46,7 +46,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.14.5",
     "@expo/webpack-config": "^0.16.2",
     "@mdx-js/loader": "^1.6.22",
-    "@tamagui/next-plugin": "^1.0.0-alpha.50",
+    "@tamagui/next-plugin": "^1.0.0-alpha.51",
     "css-minimizer-webpack-plugin": "^3.1.3",
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-optipng": "^8.0.0",
@@ -54,7 +54,7 @@
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
     "next-optimized-images": "^2.6.2",
-    "tamagui-loader": "^1.0.0-alpha.50",
+    "tamagui-loader": "^1.0.0-alpha.51",
     "webpack-bundle-analyzer": "^4.4.2"
   }
 }
