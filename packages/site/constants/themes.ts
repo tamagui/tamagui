@@ -70,6 +70,7 @@ for (const key of colorNames) {
       bgTransparent: colorValues[`${key}${1 + offset}`],
       borderColor: colorValues[`${key}${4 + offset}`],
       borderColor2: colorValues[`${key}${5 + offset}`],
+      shadowColor: isDark ? dark.shadowColor : light.shadowColor,
     }
   }
 }

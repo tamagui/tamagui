@@ -1,25 +1,19 @@
-import { Pocket, X } from '@tamagui/feather-icons'
+import { Battery, Moon, Pocket, Thermometer, X } from '@tamagui/feather-icons'
 import React from 'react'
 import { Button, Theme, Tooltip, XStack } from 'tamagui'
 
 export function TooltipDemo() {
   return (
     <XStack space>
-      <Theme name="dark">
-        <Tooltip contents="This is a tooltips contents">
-          <Button icon={Pocket} circular />
-        </Tooltip>
-      </Theme>
-      <Theme name="light">
-        <Tooltip size="$6" contents="This is a tooltips contents">
-          <Button size="$6" icon={Pocket} circular />
-        </Tooltip>
-      </Theme>
-      <Theme name="light">
-        <Tooltip size="$7" contents="This is a tooltips contents">
-          <Button size="$7" icon={Pocket} circular />
-        </Tooltip>
-      </Theme>
+      <Tooltip contents="Normal sized tooltip">
+        <Button icon={Pocket} circular />
+      </Tooltip>
+      <Tooltip size="$6" contents="Larger tooltip">
+        <Button size="$6" icon={Battery} circular />
+      </Tooltip>
+      <Tooltip alwaysDark size="$7" contents="Large, dark tooltip">
+        <Button size="$7" icon={Moon} circular />
+      </Tooltip>
     </XStack>
   )
 }

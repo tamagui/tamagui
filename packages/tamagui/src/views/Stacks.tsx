@@ -18,7 +18,7 @@ export const YStack = styled(Stack, {
       '...size': (size, { tokens, theme }) => {
         const token = tokens.size[size]
         const base = isVariable(token) ? +token.val : size
-        const [height, shadowRadius] = [base / 3 + 10, base / 2 + 10]
+        const [height, shadowRadius] = [base / 3 + 2, base / 2 + 2]
         const shadow = {
           shadowColor: theme.shadowColor,
           shadowRadius,

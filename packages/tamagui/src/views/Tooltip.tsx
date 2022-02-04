@@ -58,7 +58,7 @@ export const Tooltip = ({
         return open ? (
           <Theme name={alwaysDark ? 'dark' : null}>
             <TooltipFrame
-              elevation="$4"
+              elevation={size}
               margin={10}
               backgroundColor="$bg2"
               maxWidth={400}
