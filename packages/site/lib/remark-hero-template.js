@@ -14,7 +14,7 @@ module.exports = (options = {}) => {
     if (!node.meta) return
     const [_, templateName] = node.meta?.split('template=') ?? []
     if (!templateName) return
-    const templatePath = path.join(`${ROOT_PATH}/${HERO_PATH}/${templateName}Demo.jsx`)
+    const templatePath = path.join(`${ROOT_PATH}/${HERO_PATH}/${templateName}Demo.tsx`)
     let source = fs.readFileSync(path.join(templatePath), 'utf8')
     node.value = source
   }

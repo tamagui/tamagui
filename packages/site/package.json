@@ -24,7 +24,7 @@
     "lodash.debounce": "^4.0.8",
     "mdx-bundler": "^8.0.1",
     "mdx-prism": "^0.3.4",
-    "next": "^12.0.8",
+    "next": "^12.0.10",
     "next-videos": "^1.4.0",
     "parse-numeric-range": "^1.2.0",
     "react": "*",

@@ -1,6 +1,6 @@
 export { useSafeAreaInsets } from 'react-native-safe-area-context';
 export * from '@tamagui/helpers';
-export { GenericTamaguiConfig, ColorTokens, CreateTamaguiConfig, CreateTamaguiProps, FontLetterSpacingTokens, FontLineHeightTokens, FontSizeTokens, FontTokens, FontWeightTokens, GetProps, MediaKeys, MediaQueries, MediaQueryState, Shorthands, SizeTokens, SpaceTokens, TamaguiCustomConfig, TamaguiConfig, TamaguiProviderProps, StaticComponent, ThemeKeys, StaticConfig, ThemeableHOC, ThemeObject, TextProps, ThemeProps, Themes, Tokens, TransformStyleProps, StaticConfigParsed, Spacer, Stack, Text, Theme, ThemeInverse, TextAncestorContext, isWeb, isSSR, isChrome, supportsTouchWeb, isTouchDevice, isWebIOS, mediaState, styled, createComponent, createFont, createShorthands, createTamagui, createTheme, createTokens, createVariable, mediaObjectToString, Variable, getMedia, getThemes, getTamagui, getTokens, getHasConfigured, getThemeParentClassName, spacedChildren, themeable, getStylesAtomic, isObj, isTamaguiElement, matchMedia, useConstant, useDefaultThemeName, useIsomorphicLayoutEffect, useMedia, useTheme, useThemeName, } from '@tamagui/core';
+export { addMediaQueryListener, mediaQueryConfig, TamaguiInternalConfig, GenericTamaguiConfig, ColorTokens, CreateTamaguiConfig, CreateTamaguiProps, FontLetterSpacingTokens, FontLineHeightTokens, FontSizeTokens, FontTokens, FontWeightTokens, GetProps, MediaKeys, MediaQueries, MediaQueryState, Shorthands, SizeTokens, SpaceTokens, TamaguiCustomConfig, TamaguiConfig, TamaguiProviderProps, StaticComponent, ThemeKeys, StaticConfig, ThemeableHOC, ThemeObject, TextProps, ThemeProps, Themes, Tokens, TransformStyleProps, StaticConfigParsed, Spacer, Stack, Text, Theme, ThemeInverse, TextAncestorContext, isWeb, isSSR, isChrome, supportsTouchWeb, isTouchDevice, isWebIOS, mediaState, styled, createComponent, createFont, createShorthands, createTamagui, createTheme, createTokens, createVariable, mediaObjectToString, Variable, getMedia, getThemes, getTamagui, getTokens, getHasConfigured, getThemeParentClassName, spacedChildren, themeable, getStylesAtomic, isObj, isTamaguiElement, matchMedia, useConstant, useDefaultThemeName, useIsomorphicLayoutEffect, useMedia, useTheme, useThemeName, } from '@tamagui/core';
 export * from './viewTypes';
 export * from '@tamagui/use-debounce';
 export * from '@tamagui/use-force-update';
@@ -10,6 +10,7 @@ export * from './views/BlurView';
 export * from './views/Box';
 export * from './views/Button';
 export * from './views/Circle';
+export * from './views/Drawer';
 export * from './views/EnsureFlexed';
 export * from './views/Form';
 export * from './views/Grid';

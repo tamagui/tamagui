@@ -6,5 +6,8 @@ export declare type NativeLinearGradientProps = React.ComponentProps<typeof View
     start?: NativeLinearGradientPoint | null;
     end?: NativeLinearGradientPoint | null;
 }>;
-export declare type NativeLinearGradientPoint = [number, number];
+export declare type NativeLinearGradientPoint = {
+    x?: number;
+    y?: number;
+} | [number, number];
 //# sourceMappingURL=NativeLinearGradientProps.d.ts.map

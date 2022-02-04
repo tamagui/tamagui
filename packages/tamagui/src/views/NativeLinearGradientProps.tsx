@@ -9,4 +9,4 @@ export type NativeLinearGradientProps = React.ComponentProps<typeof View> &
     end?: NativeLinearGradientPoint | null
   }>
 
-export type NativeLinearGradientPoint = [number, number]
+export type NativeLinearGradientPoint = { x?: number; y?: number } | [number, number]

@@ -16,16 +16,19 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   // lets shim require and avoid importing react-native + react-native-web
   // we just need to read the config around them
   process.env.IS_STATIC = 'is_static'
-  const proxyWorm = require('react-native-web')
+  const rnw = require('react-native-web')
   const Mod = require('module')
   const og = Mod.prototype.require
   Mod.prototype.require = function (path: string) {
+    if (path === '@gorhom/bottom-sheet') {
+      return {}
+    }
     if (
       path.startsWith('react-native') &&
       // allow our rnw.tsx imports through
       !path.startsWith('react-native-web/dist/cjs/exports')
     ) {
-      return proxyWorm
+      return rnw
     }
     return og.apply(this, arguments)
   }

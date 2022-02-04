@@ -6,6 +6,9 @@ export * from '@tamagui/helpers'
 // lets be explicit on what gets exported
 export {
   // types
+  addMediaQueryListener,
+  mediaQueryConfig,
+  TamaguiInternalConfig,
   GenericTamaguiConfig,
   ColorTokens,
   CreateTamaguiConfig,
@@ -96,6 +99,7 @@ export * from './views/BlurView'
 export * from './views/Box'
 export * from './views/Button'
 export * from './views/Circle'
+export * from './views/Drawer'
 export * from './views/EnsureFlexed'
 export * from './views/Form'
 export * from './views/Grid'

@@ -19,6 +19,8 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         const jsxRuntime = require.resolve('react/jsx-runtime.js')
         const jsxDevRuntime = require.resolve('react/jsx-dev-runtime.js')
         const rnw = require.resolve('react-native-web')
+        const reanimated = require.resolve('react-native-reanimated')
+        console.log('reanimated', reanimated)
 
         webpackConfig.resolve.alias = {
           ...(webpackConfig.resolve.alias || {}),
@@ -27,6 +29,10 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           'react/jsx-dev-runtime.js': jsxDevRuntime,
           'react/jsx-dev-runtime': jsxDevRuntime,
           'react-native$': rnw,
+          'react-native-reanimated': reanimated,
+          '@gorhom/bottom-sheet$': require
+            .resolve('@gorhom/bottom-sheet')
+            .replace('commonjs', 'module'),
           'react-native-web/src/modules/normalizeColor': require.resolve(
             'react-native-web/dist/cjs/modules/normalizeColor'
           ),
@@ -37,6 +43,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         webpackConfig.plugins.push(
           new webpack.DefinePlugin({
             'process.env.TAMAGUI_TARGET': '"web"',
+            __DEV__: JSON.stringify(dev),
           })
         )
 
@@ -73,6 +80,9 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           if (/^\@?react-native-/.test(request)) {
             return false
           }
+          if (fullPath === '@gorhom/bottom-sheet') {
+            return 'inline'
+          }
           if (
             fullPath.startsWith('react-native-web') ||
             fullPath.includes('node_modules/react-native-web')
@@ -96,6 +106,9 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
               if (isWebpack5) {
                 return (ctx, cb) => {
                   const res = includeModule(ctx.context, ctx.request)
+                  if (res === 'inline') {
+                    return cb()
+                  }
                   if (typeof res === 'string') {
                     return cb(null, res)
                   }
@@ -164,7 +177,10 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         }
 
         // add loader
-        const shouldExclude = (x) => {
+        const shouldExclude = (x: string) => {
+          if (x.includes('react-native-reanimated')) {
+            return false
+          }
           // analyze everything in our jsx dir
           // analyze everything in the components dirs
           const shouldInclude =
@@ -179,21 +195,48 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         }
 
         if (isNext12) {
-          const oneOfJSRules = webpackConfig.module.rules[2].oneOf
+          const oneOfJSRules: any[] = webpackConfig.module.rules[2].oneOf
           const swcLoaderIndex = 3
           const swcLoader = oneOfJSRules[swcLoaderIndex]
           // put an earlier loader where we just do tamagui stuff before regular swc
-          oneOfJSRules.splice(swcLoaderIndex, 0, {
-            test: /\.(jsx?|tsx?)$/,
-            exclude: shouldExclude,
-            use: [
-              ...[].concat(swcLoader.use),
-              {
-                loader: 'tamagui-loader',
-                options: tamaguiOptions,
-              },
-            ],
-          })
+          oneOfJSRules.splice(
+            swcLoaderIndex,
+            0,
+            {
+              // test: /\.(jsx?|tsx?)$/,
+              test: /(bottom-sheet).*\.[tj]sx?$/,
+              use: [
+                // ...[].concat(swcLoader.use),
+                {
+                  loader: 'babel-loader',
+                  options: {
+                    plugins: [
+                      'react-native-reanimated/plugin',
+                      // '@babel/plugin-transform-react-jsx',
+                    ],
+                  },
+                },
+                {
+                  loader: 'esbuild-loader',
+                  options: {
+                    target: 'esnext',
+                    loader: 'jsx',
+                  },
+                },
+              ],
+            },
+            {
+              test: /\.(jsx?|tsx?)$/,
+              exclude: shouldExclude,
+              use: [
+                ...[].concat(swcLoader.use),
+                {
+                  loader: 'tamagui-loader',
+                  options: tamaguiOptions,
+                },
+              ],
+            }
+          )
         } else {
           // next 11 modify loader
           const [first, second, ...rest] = webpackConfig.module.rules

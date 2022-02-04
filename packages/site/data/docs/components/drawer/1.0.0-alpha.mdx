@@ -1,0 +1,84 @@
+---
+title: Drawer
+description: A simple drawer component
+name: text
+---
+
+# Drawer
+
+<Description>Show content above in a bottom sliding drawer.</Description>
+
+<HeroContainer resetTheme>
+  <DrawerDemo />
+</HeroContainer>
+
+```jsx hero template=Drawer
+
+```
+
+<Highlights
+  features={[`Doesn't open until your mouse stops moving.`, `Doesn't render on native.`]}
+/>
+
+## Usage
+
+```jsx
+import { Drawer, Button } from 'tamagui'
+
+export default () => (
+  <Drawer contents="Text in drawer">
+    <Button>Hover to open</Button>
+  </Drawer>
+)
+```
+
+### Drawer props
+
+Drawers extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'contents',
+      required: true,
+      type: 'string',
+      description: `What's shown in the drawer.`,
+    },
+    {
+      name: 'drawerFrameProps',
+      required: false,
+      type: 'StackProps',
+      description: `Change style of the drawer frame`,
+    },
+    {
+      name: 'size',
+      required: true,
+      type: 'Size',
+      description: `Size it up or down.`,
+    },
+    {
+      name: 'alwaysDark',
+      required: false,
+      type: 'Boolean',
+      description: `Make sure the frame is dark`,
+    },
+    {
+      name: 'delay',
+      required: false,
+      type: 'number',
+      description: `Set the delay before appearing`,
+    },
+    {
+      name: 'allowHoverOnContent',
+      required: false,
+      type: 'Boolean',
+      description: `Allow hover on drawer content`,
+    },
+    {
+      name: 'disableUntilSettled',
+      required: false,
+      type: 'Boolean',
+      description: `Override hover only on settled`,
+    },
+  ]}
+/>
