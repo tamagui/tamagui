@@ -3783,7 +3783,7 @@ __metadata:
     "@babel/traverse": ^7.15.4
     "@babel/types": ^7.15.6
     "@tamagui/build": ^1.0.0-alpha.44
-    "@tamagui/static": ^1.0.0-alpha.53
+    "@tamagui/static": ^1.0.0-alpha.54
   languageName: unknown
   linkType: soft
 
@@ -3903,18 +3903,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@^1.0.0-alpha.53, @tamagui/next-plugin@workspace:packages/next-plugin":
+"@tamagui/next-plugin@^1.0.0-alpha.54, @tamagui/next-plugin@workspace:packages/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.44
-    "@tamagui/static": ^1.0.0-alpha.53
+    "@tamagui/static": ^1.0.0-alpha.54
     browserslist: ^4.19.1
     css-minimizer-webpack-plugin: ^3.1.3
     esbuild-loader: ^2.18.0
     next: ^12.0.10
     next-compose-plugins: ^2.2.1
-    tamagui-loader: ^1.0.0-alpha.53
+    tamagui-loader: ^1.0.0-alpha.54
     thread-loader: ^3.0.4
   peerDependencies:
     next: ">=12.0.0"
@@ -3944,7 +3944,7 @@ __metadata:
     "@mdx-js/loader": ^1.6.22
     "@tamagui/colors": ^1.0.0-alpha.44
     "@tamagui/feather-icons": ^1.0.0-alpha.44
-    "@tamagui/next-plugin": ^1.0.0-alpha.53
+    "@tamagui/next-plugin": ^1.0.0-alpha.54
     compare-versions: ^4.0.1
     copy-to-clipboard: ^3.3.1
     css-minimizer-webpack-plugin: ^3.1.3
@@ -3976,15 +3976,15 @@ __metadata:
     remark-autolink-headings: ^6.0.1
     remark-slug: ^6.0.0
     seamless-scroll-polyfill: ^1.2.3
-    tamagui: ^1.0.0-alpha.53
-    tamagui-loader: ^1.0.0-alpha.53
+    tamagui: ^1.0.0-alpha.54
+    tamagui-loader: ^1.0.0-alpha.54
     unified: ^9.2.1
     unist-util-visit: ^2.0.3
     webpack-bundle-analyzer: ^4.4.2
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@^1.0.0-alpha.53, @tamagui/static@workspace:packages/static":
+"@tamagui/static@^1.0.0-alpha.54, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -4024,7 +4024,7 @@ __metadata:
     react-native-web: ^0.17.5
     react-test-renderer: 18.0.0-beta-149b420f6-20211119
     style-loader: ^3.3.0
-    tamagui: ^1.0.0-alpha.53
+    tamagui: ^1.0.0-alpha.54
     typescript: ^4.5.2
     webpack: ^5.68.0
   peerDependencies:
@@ -4039,7 +4039,7 @@ __metadata:
     "@tamagui/core": ^1.0.0-alpha.48
     "@tamagui/helpers": ^1.0.0-alpha.48
     react-native-web: ^0.17.5
-    tamagui: ^1.0.0-alpha.53
+    tamagui: ^1.0.0-alpha.54
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -18873,12 +18873,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.0.0-alpha.53, tamagui-loader@workspace:packages/loader":
+"tamagui-loader@^1.0.0-alpha.54, tamagui-loader@workspace:packages/loader":
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.44
-    "@tamagui/static": ^1.0.0-alpha.53
+    "@tamagui/static": ^1.0.0-alpha.54
     fs-extra: ^9.1.0
     loader-utils: ^2.0.0
     lodash: ^4.17.21
@@ -18906,7 +18906,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@^1.0.0-alpha.53, tamagui@workspace:packages/tamagui":
+"tamagui@^1.0.0-alpha.54, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
