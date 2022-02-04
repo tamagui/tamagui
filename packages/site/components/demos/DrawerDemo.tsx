@@ -8,7 +8,7 @@ export function DrawerDemo() {
     <Drawer.Provider>
       <XStack space>
         <Button
-          size="$8"
+          size="$6"
           icon={show ? ChevronDown : ChevronUp}
           circular
           onPress={() => setShow((x) => !x)}

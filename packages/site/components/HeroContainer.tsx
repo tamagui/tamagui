@@ -8,9 +8,6 @@ export function HeroContainer({
   children?: React.ReactNode
   resetTheme?: boolean
 }) {
-  const themeName = useThemeName({ parent: true })
-  const parentThemeBaseName = themeName.replace(/[a-z]+\-/, '')
-
   return (
     <YStack
       // In case any semantic content sneaks through in a hero, let's hide it
@@ -33,7 +30,13 @@ export function HeroContainer({
       //   mx: '$-6',
       // }}
     >
-      {resetTheme ? <Theme name={parentThemeBaseName}>{children}</Theme> : children}
+      {resetTheme ? <ResetTheme>{children}</ResetTheme> : children}
     </YStack>
   )
+}
+
+function ResetTheme({ children }: { children?: any }) {
+  const themeName = useThemeName({ parent: true })
+  const parentThemeBaseName = themeName.replace(/[a-z]+\-/, '')
+  return <Theme name={parentThemeBaseName as any}>{children}</Theme>
 }

@@ -5,7 +5,7 @@ import { Footer } from '@components/Footer'
 import * as NextThemes from '@components/NextTheme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { PopoverProvider, SafeAreaProvider, YStack } from 'tamagui'
 
 import Tamagui from '../tamagui.config'
@@ -17,6 +17,16 @@ export default function App(props: AppProps) {
   const classes = typeof document !== 'undefined' ? [...document.documentElement.classList] : []
   const isDark = classes.includes('theme--dark')
   const [theme, setTheme] = useState(isDark ? 'dark' : 'light')
+
+  const contents = useMemo(() => {
+    return (
+      <SafeAreaProvider>
+        <PopoverProvider>
+          <ContentInner {...props} />
+        </PopoverProvider>
+      </SafeAreaProvider>
+    )
+  }, [props])
 
   // cant do system them because next SSR
   return (
@@ -31,13 +41,7 @@ export default function App(props: AppProps) {
       }}
       onChangeTheme={(x) => setTheme(x)}
     >
-      <Tamagui.Provider defaultTheme={theme}>
-        <SafeAreaProvider>
-          <PopoverProvider>
-            <ContentInner {...props} />
-          </PopoverProvider>
-        </SafeAreaProvider>
-      </Tamagui.Provider>
+      <Tamagui.Provider defaultTheme={theme}>{contents}</Tamagui.Provider>
     </NextThemes.ThemeProvider>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonProps, Circle, YStack } from 'tamagui'
+import { Button, ButtonProps, Circle, ThemeProps, YStack } from 'tamagui'
 
-const colors = ['blue', 'pink', 'green', 'red', 'orange', 'violet', 'purple']
+const colors: ThemeProps['name'][] = ['blue', 'pink', 'green', 'red', 'orange', 'violet', 'purple']
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
 // const tint = tintVal ? +tintVal 0
@@ -10,7 +10,7 @@ const listeners = new Set<Function>()
 
 export const useTint = () => {
   const [colorI, setColorI] = useState(tint)
-  const color = colors[colorI]
+  const color = colors[colorI] as ThemeProps['name']
 
   useEffect(() => {
     const updateVal = (next) => setColorI(next)

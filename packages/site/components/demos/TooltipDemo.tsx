@@ -16,8 +16,8 @@ export function TooltipDemo() {
         </Tooltip>
       </Theme>
       <Theme name="light">
-        <Tooltip size="$8" contents="This is a tooltips contents">
-          <Button size="$8" icon={Pocket} circular />
+        <Tooltip size="$7" contents="This is a tooltips contents">
+          <Button size="$7" icon={Pocket} circular />
         </Tooltip>
       </Theme>
     </XStack>
