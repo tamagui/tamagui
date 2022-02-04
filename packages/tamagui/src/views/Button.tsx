@@ -34,7 +34,7 @@ export const Button = ButtonFrame.extractable(
         textProps,
         noTextWrap,
         theme: themeName,
-        size,
+        size = '$4',
         ...rest
       } = props
       const theme = useTheme()
@@ -52,7 +52,14 @@ export const Button = ButtonFrame.extractable(
       const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
 
       return (
-        <ButtonFrame size={size} space={space ?? getSpaceSize(size, -3)} ref={ref as any} {...rest}>
+        <ButtonFrame
+          hoverable
+          pressable
+          size={size}
+          space={space ?? getSpaceSize(size, -3)}
+          ref={ref as any}
+          {...rest}
+        >
           {themedIcon}
           {noTextWrap ? (
             children

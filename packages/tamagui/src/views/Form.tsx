@@ -1,14 +1,14 @@
 import { Stack, styled } from '@tamagui/core'
 import { TextInput } from 'react-native'
 
-import { createFrameSizeVariant } from './InteractiveFrame'
+import { getSize } from './InteractiveFrame'
 import { sizableTextSizeVariant } from './SizableText'
 
 export const Form = styled(Stack, {
   tag: 'form',
 })
 
-const inputSizeFrame = createFrameSizeVariant(0.75, 0.75)
+const inputSizeFrame = getSize(0.75, 0.75)
 
 const inputSizeVariant = (val = '4', props) => {
   const frame = inputSizeFrame(val, props)

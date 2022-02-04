@@ -1,7 +1,13 @@
 import { GetProps } from '@tamagui/core';
-export declare const createFrameSizeVariant: (sizeX?: number, sizeY?: number) => (val: string | undefined, { tokens, props }: {
+export declare const getSize: (sizeX?: number, sizeY?: number) => (val: any, { tokens }: {
     tokens: any;
-    props: any;
+}) => {
+    paddingHorizontal: number;
+    paddingVertical: number;
+    borderRadius: any;
+};
+export declare const getButtonSize: (val: any, { tokens }: {
+    tokens: any;
 }) => {
     paddingHorizontal: number;
     paddingVertical: number;
@@ -13,7 +19,9 @@ export declare const InteractiveFrame: import("@tamagui/core").StaticComponent<O
 } & import("@tamagui/core").MediaProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
-}>, "size" | "transparent" | "circular" | "disabled" | "active" | "chromeless"> & {
+}>, "size" | "transparent" | "hoverable" | "pressable" | "circular" | "disabled" | "active" | "chromeless"> & {
+    hoverable?: boolean | null | undefined;
+    pressable?: boolean | null | undefined;
     size?: `$${string}` | `$${number}` | null | undefined;
     circular?: boolean | null | undefined;
     disabled?: boolean | null | undefined;
@@ -21,6 +29,8 @@ export declare const InteractiveFrame: import("@tamagui/core").StaticComponent<O
     transparent?: boolean | null | undefined;
     chromeless?: boolean | null | undefined;
 } & import("@tamagui/core").MediaProps<{
+    hoverable?: boolean | null | undefined;
+    pressable?: boolean | null | undefined;
     size?: `$${string}` | `$${number}` | null | undefined;
     circular?: boolean | null | undefined;
     disabled?: boolean | null | undefined;

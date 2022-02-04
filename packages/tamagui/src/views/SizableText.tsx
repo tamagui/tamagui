@@ -1,6 +1,6 @@
 import { GetProps, Text, Variable, styled } from '@tamagui/core'
 
-export const sizableTextSizeVariant = (val: any, { tokens, props }) => {
+export const sizableTextSizeVariant = (val = '$4', { tokens, props }) => {
   const family = (
     typeof props.fontFamily === 'string'
       ? props.fontFamily
@@ -17,6 +17,7 @@ export const sizableTextSizeVariant = (val: any, { tokens, props }) => {
   const fontSize = props.fontSize || font.size[val]
   const lineHeight = props.lineHeight || font.lineHeight[val]
   const fontWeight = props.fontWeight || font.weight[val]
+  console.log('val', val, fontSize)
   const letterSpacing = props.letterSpacing || font.letterSpacing[val]
   return {
     fontFamily,

@@ -23,7 +23,7 @@ export const docsRoutes = [
       { title: 'Visually Hidden', slug: 'docs/components/visually-hidden' },
       { title: 'Forms', slug: 'docs/components/forms' },
       { title: 'Tooltip', slug: 'docs/components/tooltip' },
-      { title: 'Popover', slug: 'docs/components/popover' },
+      // { title: 'Popover', slug: 'docs/components/popover' },
       // { title: 'Grid', slug: 'docs/components/grid' },
     ],
   },

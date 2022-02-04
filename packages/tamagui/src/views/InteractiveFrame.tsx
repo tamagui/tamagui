@@ -1,24 +1,25 @@
-import { GetProps, Variable } from '@tamagui/core'
+import { GetProps, Variable, isVariable } from '@tamagui/core'
 import { styled } from '@tamagui/core'
 
 import { XStack } from './Stacks'
 
 // for use in button-like things
 
-export const createFrameSizeVariant =
-  (sizeX = 0.8, sizeY = 0.33) =>
-  (val = '4', { tokens, props }) => {
-    const size = tokens.size[val] ?? val ?? 44
-    const radius = tokens.radius[val] ?? size
-    console.log('radius', radius)
-    const px = Math.round(+(size instanceof Variable ? size.val : size) * sizeX)
-    const py = Math.round(+(size instanceof Variable ? size.val : size) * sizeY)
+export const getSize =
+  (sizeX = 0.8, sizeY = 0.333) =>
+  (val: any, { tokens }) => {
+    const size = tokens.size[val] ?? tokens.size['$4'] ?? val ?? 14
+    const radius = tokens.radius[val] ?? tokens.radius['$4'] ?? size
+    const px = Math.round(+(isVariable(size) ? size.val : size) * sizeX)
+    const py = Math.round(+(isVariable(size) ? size.val : size) * sizeY)
     return {
       paddingHorizontal: px,
       paddingVertical: py,
       borderRadius: radius,
     }
   }
+
+export const getButtonSize = getSize()
 
 export const InteractiveFrame = styled(XStack, {
   borderRadius: '$1',
@@ -32,27 +33,39 @@ export const InteractiveFrame = styled(XStack, {
   flexDirection: 'row',
   flexShrink: 1,
 
-  hoverStyle: {
-    backgroundColor: '$bg3',
-  },
-
-  pressStyle: {
-    backgroundColor: '$bg4',
-  },
-
   variants: {
+    hoverable: {
+      true: {
+        hoverStyle: {
+          backgroundColor: '$bg3',
+        },
+      },
+    },
+
+    pressable: {
+      true: {
+        pressStyle: {
+          backgroundColor: '$bg4',
+        },
+      },
+    },
+
     size: {
-      '...size': createFrameSizeVariant(),
+      '...size': getButtonSize,
     },
 
     circular: {
       true: (_, { props, tokens }) => {
-        const size = tokens.size[props['size']] ?? tokens.size['$4'] ?? 44
-        console.log('is circular')
+        const size = tokens.size[props['size'] ?? '$4'] ?? 44
         return {
           width: size,
+          maxWidth: size,
           height: size,
+          maxHeight: size,
+          overflow: 'hidden',
           borderRadius: 100_000,
+          paddingVertical: 0,
+          paddingHorizontal: 0,
         }
       },
     },

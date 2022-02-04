@@ -20,7 +20,7 @@ const TooltipFrame = styled(InteractiveFrame, {
 })
 
 export const Tooltip = ({
-  size,
+  size = '$4',
   contents,
   tooltipFrameProps,
   alwaysDark,
@@ -58,14 +58,14 @@ export const Tooltip = ({
         return open ? (
           <Theme name={alwaysDark ? 'dark' : null}>
             <TooltipFrame
+              elevation="$4"
               margin={10}
               backgroundColor="$bg2"
               maxWidth={400}
-              elevation={size}
               size={size}
               {...tooltipFrameProps}
             >
-              <Paragraph textAlign="center" fontSize={14} color="$color" size={size}>
+              <Paragraph textAlign="center" fontSize={14} color="$color">
                 {contents}
               </Paragraph>
             </TooltipFrame>

@@ -1,5 +1,5 @@
 import { GetProps } from '@tamagui/core';
-export declare const sizableTextSizeVariant: (val: any, { tokens, props }: {
+export declare const sizableTextSizeVariant: (val: string | undefined, { tokens, props }: {
     tokens: any;
     props: any;
 }) => {
