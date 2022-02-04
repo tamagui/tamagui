@@ -1,26 +1,26 @@
 ---
-title: Drawer
-description: A simple drawer component
+title: Menu
+description: A simple menu component
 name: text
 ---
 
-# Drawer
+# Menu
 
-<Description>Show content above in a bottom sliding drawer.</Description>
+<Description>Show a menu as a popover (large screen) or drawer (small screen).</Description>
 
 <HeroContainer>
-  <DrawerDemo />
+  <MenuDemo />
 </HeroContainer>
 
-```jsx hero template=Drawer
+```jsx hero template=Menu
 
 ```
 
 <Highlights features={[`Animation and dragging on native and web.`]} />
 
-### Drawer props
+### Menu props
 
-Drawers extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+Menus extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
@@ -28,7 +28,7 @@ Drawers extend Stack views inheriting all the [Tamagui standard props](/docs/int
       name: 'open',
       required: false,
       type: 'boolean',
-      description: `Show drawer.`,
+      description: `Show menu.`,
     },
     {
       name: 'onChange',
@@ -46,7 +46,7 @@ Drawers extend Stack views inheriting all the [Tamagui standard props](/docs/int
       name: 'children',
       required: false,
       type: 'JSX.Element',
-      description: `What's inside the drawer.`,
+      description: `What's inside the menu.`,
     },
   ]}
 />

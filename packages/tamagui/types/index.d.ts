@@ -22,6 +22,7 @@ export * from './views/InteractiveContainer';
 export * from './views/InteractiveFrame';
 export * from './views/Layouts';
 export * from './views/LinearGradient';
+export * from './views/Menu';
 export * from './views/Modal';
 export * from './views/Overlay';
 export * from './views/Paragraph';
