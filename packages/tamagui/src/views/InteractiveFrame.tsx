@@ -56,12 +56,14 @@ export const InteractiveFrame = styled(XStack, {
 
     circular: {
       true: (_, { props, tokens }) => {
-        const size = tokens.size[props['size'] ?? '$4'] ?? 44
+        const sizeVal = props['size'] ?? '$4'
+        const size = tokens.size[sizeVal] ?? 44
+        const sizePx = +(isVariable(size) ? size.val : size)
         return {
-          width: size,
-          maxWidth: size,
-          height: size,
-          maxHeight: size,
+          width: sizePx * 2,
+          maxWidth: sizePx * 2,
+          height: sizePx * 2,
+          maxHeight: sizePx * 2,
           overflow: 'hidden',
           borderRadius: 100_000,
           paddingVertical: 0,
