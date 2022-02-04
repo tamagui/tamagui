@@ -24,6 +24,7 @@ export const docsRoutes = [
       { title: 'Forms', route: '/docs/components/forms' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
       { title: 'Drawer', route: '/docs/components/drawer' },
+      { title: 'Menu', route: '/docs/components/menu' },
       // { title: 'Popover', route: '/docs/components/popover' },
       // { title: 'Grid', route: '/docs/components/grid' },
     ],

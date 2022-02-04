@@ -1,25 +1,23 @@
-import { ChevronDown, ChevronUp, ChevronsUp, Menu } from '@tamagui/feather-icons'
+import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
-import { Button, Drawer, H1, H2, H3, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Drawer, H3, Paragraph, XStack, YStack } from 'tamagui'
 
 export function DrawerDemo() {
   const [show, setShow] = useState(false)
   return (
     <Drawer.Provider>
-      <XStack space>
-        <Button
-          size="$6"
-          icon={show ? ChevronDown : ChevronUp}
-          circular
-          onPress={() => setShow((x) => !x)}
-        />
-        <Drawer open={show} onChange={setShow}>
-          <YStack p="$6">
-            <H3>Drawer contents</H3>
-            <Paragraph>Lorem ipsum dolor sit amet.</Paragraph>
-          </YStack>
-        </Drawer>
-      </XStack>
+      <Button
+        size="$6"
+        icon={show ? ChevronDown : ChevronUp}
+        circular
+        onPress={() => setShow((x) => !x)}
+      />
+      <Drawer open={show} onChange={setShow}>
+        <YStack p="$6">
+          <H3 selectable={false}>Drawer contents</H3>
+          <Paragraph selectable={false}>Lorem ipsum dolor sit amet.</Paragraph>
+        </YStack>
+      </Drawer>
     </Drawer.Provider>
   )
 }
