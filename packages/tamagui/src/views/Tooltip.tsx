@@ -1,16 +1,31 @@
-import { StackProps, Text, Theme, isTamaguiElement, isWeb } from '@tamagui/core'
+import { StackProps, Text, Theme, isTamaguiElement, isWeb, styled } from '@tamagui/core'
 import React from 'react'
 
 import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
+import { InteractiveFrame } from './InteractiveFrame'
 import { Paragraph } from './Paragraph'
+import { SizableTextProps } from './SizableText'
 import { YStack } from './Stacks'
 
 export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
+  size?: SizableTextProps['size']
   contents?: string | any
   tooltipFrameProps?: Omit<StackProps, 'children'>
+  alwaysDark?: boolean
 }
 
-export const Tooltip = ({ contents, tooltipFrameProps, ...props }: TooltipProps) => {
+const TooltipFrame = styled(InteractiveFrame, {
+  tag: 'button',
+  borderWidth: 0,
+})
+
+export const Tooltip = ({
+  size,
+  contents,
+  tooltipFrameProps,
+  alwaysDark,
+  ...props
+}: TooltipProps) => {
   // this causes ssr issues
   // if (isTouchDevice) {
   //   // TODO optionally have it show something on tap
@@ -41,23 +56,19 @@ export const Tooltip = ({ contents, tooltipFrameProps, ...props }: TooltipProps)
     >
       {({ open }) => {
         return open ? (
-          <Theme name="dark">
-            <YStack
+          <Theme name={alwaysDark ? 'dark' : null}>
+            <TooltipFrame
               margin={10}
               backgroundColor="$bg2"
-              paddingHorizontal="$2"
-              paddingVertical="$2"
               maxWidth={400}
-              borderRadius="$2"
-              shadowColor="$shadowColor"
-              shadowRadius={2}
-              shadowOffset={{ height: 2, width: 0 }}
+              elevation={size}
+              size={size}
               {...tooltipFrameProps}
             >
-              <Paragraph textAlign="center" fontSize={14} color="$color">
+              <Paragraph textAlign="center" fontSize={14} color="$color" size={size}>
                 {contents}
               </Paragraph>
-            </YStack>
+            </TooltipFrame>
           </Theme>
         ) : null
       }}

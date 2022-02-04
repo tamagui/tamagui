@@ -6,8 +6,8 @@ export const Code = styled(Paragraph, {
   fontSize: 13,
   lineHeight: 18,
   whiteSpace: 'pre',
-  padding: 4,
-  borderRadius: 4,
+  padding: '$1',
+  borderRadius: '$3',
 
   variants: {
     colored: {

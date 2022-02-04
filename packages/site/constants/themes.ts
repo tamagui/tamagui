@@ -17,9 +17,9 @@ const darkColors = Object.fromEntries(
 
 const light = {
   bg: '#fff',
-  bg2: tokens.color.gray3,
-  bg3: tokens.color.gray4,
-  bg4: tokens.color.gray5,
+  bg2: tokens.color.gray4,
+  bg3: tokens.color.gray6,
+  bg4: tokens.color.gray8,
   bgTransparent: tokens.color.grayA1,
   borderColor: tokens.color.gray4,
   borderColor2: tokens.color.gray6,
@@ -35,15 +35,15 @@ const light = {
 
 const dark = {
   bg: '#171717',
-  bg2: tokens.color.gray3Dark,
-  bg3: tokens.color.gray4Dark,
-  bg4: tokens.color.gray5Dark,
+  bg2: tokens.color.gray4Dark,
+  bg3: tokens.color.gray7Dark,
+  bg4: tokens.color.gray9Dark,
   bgTransparent: tokens.color.grayA1Dark,
   borderColor: tokens.color.gray3Dark,
   borderColor2: tokens.color.gray4Dark,
-  color: '#ddd',
+  color: '#fff',
   colorBright: '#fff',
-  color2: tokens.color.gray11Dark,
+  color2: '#f2f2f2',
   color3: tokens.color.gray10Dark,
   color4: tokens.color.gray6Dark,
   shadowColor: tokens.color.grayA7,

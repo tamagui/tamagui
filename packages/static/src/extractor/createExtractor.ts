@@ -418,8 +418,10 @@ export function createExtractor() {
                 }
                 return res
               } catch (err: any) {
-                console.log('Error extracting attribute', err.message, err.stack)
-                console.log('node', path.node)
+                if (shouldPrintDebug) {
+                  console.log('Error extracting attribute', err.message, err.stack)
+                  console.log('node', path.node)
+                }
                 return {
                   type: 'attr',
                   value: path.node,

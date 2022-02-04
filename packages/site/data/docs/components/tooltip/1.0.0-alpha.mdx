@@ -1,0 +1,84 @@
+---
+title: Tooltip
+description: A simple tooltip component
+name: text
+---
+
+# Tooltip
+
+<Description>A tooltip on web, with only accessibility output on native.</Description>
+
+<HeroContainer resetTheme>
+  <TooltipDemo />
+</HeroContainer>
+
+```jsx hero template=Tooltip
+
+```
+
+<Highlights
+  features={[`Doesn't open until your mouse stops moving.`, `Doesn't render on native.`]}
+/>
+
+## Usage
+
+```jsx
+import { Tooltip, Button } from 'tamagui'
+
+export default () => (
+  <Tooltip contents="Text in tooltip">
+    <Button>Hover to open</Button>
+  </Tooltip>
+)
+```
+
+### Tooltip props
+
+Tooltips extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'contents',
+      required: true,
+      type: 'string',
+      description: `What's shown in the tooltip.`,
+    },
+    {
+      name: 'tooltipFrameProps',
+      required: false,
+      type: 'StackProps',
+      description: `Change style of the tooltip frame`,
+    },
+    {
+      name: 'themeInverse',
+      required: false,
+      type: 'boolean',
+      description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
+    },
+    {
+      name: 'textProps',
+      required: false,
+      type: 'TextProps',
+      description: `By default a tooltip wraps contents in Text and will pass textProps if set.`,
+    },
+    {
+      name: 'noTextWrap',
+      required: false,
+      type: 'boolean',
+      description: `If true, Tooltip won't wrap content with a Text element.`,
+    },
+    {
+      name: 'icon',
+      required: false,
+      type: 'JSX.Element',
+      description: `Pass any React element, appears before the text.`,
+    },
+    {
+      name: 'iconAfter',
+      required: false,
+      type: 'JSX.Element',
+      description: `Pass any React element, appears after the text.`,
+    },
+  ]}
+/>

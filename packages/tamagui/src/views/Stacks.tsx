@@ -17,12 +17,9 @@ export const YStack = styled(Stack, {
     elevation: {
       '...size': (size, { tokens, theme }) => {
         const token = tokens.size[size]
-        const [height, shadowRadius] = (() => {
-          if (isVariable(token)) {
-            return [+token.val / 3, +token.val / 2] as const
-          }
-          return [size / 3, size / 2] as const
-        })().map((x) => Math.round(x))
+        const base = isVariable(token) ? +token.val : size
+        console.log('base', base)
+        const [height, shadowRadius] = [base / 3 + 10, base / 2 + 10]
         const shadow = {
           shadowColor: theme.shadowColor,
           shadowRadius,

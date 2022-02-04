@@ -226,14 +226,19 @@ export function extractToClassNames({
 
         // if has some spreads, use concat helper
         if (nameExpr && !t.isIdentifier(nameExpr)) {
-          ensureImportingConcat(programPath)
-          const simpleSpreads = attrs.filter(
-            (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
-          )
-          expr = t.callExpression(t.identifier(CONCAT_CLASSNAME_IMPORT), [
-            expr,
-            ...simpleSpreads.map((val) => val.value['argument']),
-          ])
+          if (!res?.flattened) {
+            console.log('not flat')
+          } else {
+            console.log('flat')
+            ensureImportingConcat(programPath)
+            const simpleSpreads = attrs.filter(
+              (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)
+            )
+            expr = t.callExpression(t.identifier(CONCAT_CLASSNAME_IMPORT), [
+              expr,
+              ...simpleSpreads.map((val) => val.value['argument']),
+            ])
+          }
         }
 
         node.attributes.push(

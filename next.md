@@ -1,6 +1,8 @@
+- for lineargradient:
+  - propMapper
+  - move logic to function
 - media queries in styled() not working
 - Paragraph size={} not accepting simple numbers
-- fix theme strip -postfix
 - tamagui needs to overwrite StackProps (verify)
 - themes: mobile sizing separate :)
 
