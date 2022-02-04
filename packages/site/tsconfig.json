@@ -36,6 +36,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "tamagui.config.ts",
     "**/*.ts",
     "**/*.tsx"
   ],
