@@ -1,24 +1,23 @@
-import {
-  BottomSheetModal,
-  BottomSheetModalProps,
-  BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet'
+import { BottomSheetModal, BottomSheetModalProps } from '@gorhom/bottom-sheet'
+import { useTheme } from '@tamagui/core'
 import { useEffect, useRef } from 'react'
 
 import { withStaticProperties } from '../helpers/withStaticProperties'
+import { DrawerProvider } from './DrawerProvider'
 import { YStack } from './Stacks'
-
-export const DrawerProvider = BottomSheetModalProvider
 
 export const Drawer = withStaticProperties(
   ({
     children,
     open,
+    onChange,
     ...props
-  }: Partial<BottomSheetModalProps> & {
+  }: Omit<Partial<BottomSheetModalProps>, 'onChange'> & {
     open?: boolean
+    onChange?: ((showing: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>
   }) => {
     const sheetRef = useRef<BottomSheetModal>(null)
+    const theme = useTheme()
 
     useEffect(() => {
       if (!open) {
@@ -29,8 +28,22 @@ export const Drawer = withStaticProperties(
     }, [open])
 
     return (
-      <BottomSheetModal snapPoints={[0.5]} ref={sheetRef} {...props}>
-        <YStack backgroundColor="$bg" borderTopLeftRadius="$2" borderTopRightRadius="$2">
+      <BottomSheetModal
+        backgroundStyle={{
+          backgroundColor: theme.bg?.toString(),
+          shadowColor: theme.shadowColor?.toString(),
+          shadowRadius: 10,
+        }}
+        snapPoints={['40%']}
+        ref={sheetRef}
+        {...(!!onChange && {
+          onChange: (i) => {
+            onChange(i === 0)
+          },
+        })}
+        {...props}
+      >
+        <YStack fullscreen backgroundColor="$bg" borderTopLeftRadius="$2" borderTopRightRadius="$2">
           {children}
         </YStack>
       </BottomSheetModal>

@@ -20,7 +20,6 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         const jsxDevRuntime = require.resolve('react/jsx-dev-runtime.js')
         const rnw = require.resolve('react-native-web')
         const reanimated = require.resolve('react-native-reanimated')
-        console.log('reanimated', reanimated)
 
         webpackConfig.resolve.alias = {
           ...(webpackConfig.resolve.alias || {}),
@@ -203,24 +202,15 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
             swcLoaderIndex,
             0,
             {
-              // test: /\.(jsx?|tsx?)$/,
               test: /(bottom-sheet).*\.[tj]sx?$/,
               use: [
-                // ...[].concat(swcLoader.use),
                 {
                   loader: 'babel-loader',
                   options: {
                     plugins: [
                       'react-native-reanimated/plugin',
-                      // '@babel/plugin-transform-react-jsx',
+                      '@babel/plugin-transform-react-jsx',
                     ],
-                  },
-                },
-                {
-                  loader: 'esbuild-loader',
-                  options: {
-                    target: 'esnext',
-                    loader: 'jsx',
                   },
                 },
               ],

@@ -16,20 +16,37 @@ name: text
 
 ```
 
-<Highlights
-  features={[`Doesn't open until your mouse stops moving.`, `Doesn't render on native.`]}
-/>
+<Highlights features={[`Animation and dragging on native and web.`]} />
 
 ## Usage
 
 ```jsx
-import { Drawer, Button } from 'tamagui'
+import { ChevronDown, ChevronUp, ChevronsUp, Menu } from '@tamagui/feather-icons'
+import React, { useState } from 'react'
+import { Button, Drawer, H1, H2, H3, Paragraph, XStack, YStack } from 'tamagui'
 
-export default () => (
-  <Drawer contents="Text in drawer">
-    <Button>Hover to open</Button>
-  </Drawer>
-)
+export function DrawerDemo() {
+  const [show, setShow] = useState(false)
+  return (
+    <Drawer.Provider>
+      <XStack space>
+        <Button
+          size="$8"
+          icon={show ? ChevronDown : ChevronUp}
+          circular
+          onPress={() => setShow((x) => !x)}
+        />
+        <Drawer open={show} onChange={setShow}>
+          <YStack p="$6">
+            <H3>Drawer contents</H3>
+            <Paragraph>Lorem ipsum dolor sit amet.</Paragraph>
+          </YStack>
+        </Drawer>
+      </XStack>
+    </Drawer.Provider>
+  )
+}
+
 ```
 
 ### Drawer props
@@ -39,46 +56,22 @@ Drawers extend Stack views inheriting all the [Tamagui standard props](/docs/int
 <PropsTable
   data={[
     {
-      name: 'contents',
-      required: true,
-      type: 'string',
-      description: `What's shown in the drawer.`,
-    },
-    {
-      name: 'drawerFrameProps',
+      name: 'open',
       required: false,
-      type: 'StackProps',
-      description: `Change style of the drawer frame`,
+      type: 'boolean',
+      description: `Show drawer.`,
     },
     {
-      name: 'size',
-      required: true,
-      type: 'Size',
-      description: `Size it up or down.`,
-    },
-    {
-      name: 'alwaysDark',
+      name: 'onChange',
       required: false,
-      type: 'Boolean',
-      description: `Make sure the frame is dark`,
+      type: '(showing: boolean) => void',
+      description: `Called on change show (if dismissed).`,
     },
     {
-      name: 'delay',
+      name: 'children',
       required: false,
-      type: 'number',
-      description: `Set the delay before appearing`,
-    },
-    {
-      name: 'allowHoverOnContent',
-      required: false,
-      type: 'Boolean',
-      description: `Allow hover on drawer content`,
-    },
-    {
-      name: 'disableUntilSettled',
-      required: false,
-      type: 'Boolean',
-      description: `Override hover only on settled`,
+      type: 'JSX.Element',
+      description: `What's inside the drawer.`,
     },
   ]}
 />

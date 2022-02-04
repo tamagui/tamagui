@@ -1,8 +1,8 @@
 /// <reference types="react" />
 import { BottomSheetModalProps } from '@gorhom/bottom-sheet';
-export declare const DrawerProvider: ({ children, }: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModalProvider/types").BottomSheetModalProviderProps) => JSX.Element;
-export declare const Drawer: (({ children, open, ...props }: Partial<BottomSheetModalProps> & {
+export declare const Drawer: (({ children, open, onChange, ...props }: Omit<Partial<BottomSheetModalProps>, "onChange"> & {
     open?: boolean | undefined;
+    onChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((showing: boolean) => void) | undefined;
 }) => JSX.Element) & {
     Provider: ({ children, }: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModalProvider/types").BottomSheetModalProviderProps) => JSX.Element;
 };
