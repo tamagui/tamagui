@@ -1,25 +1,18 @@
 import NextLink from 'next/link'
 import * as React from 'react'
-import { Paragraph, XStack } from 'tamagui'
+import { Paragraph, Spacer, XStack } from 'tamagui'
 
 import { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
 
-export function DocsRouteNavItem({
-  children,
-  active,
-  href,
-  pending,
-  external,
-  ...props
-}: NavItemProps) {
+export function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItemProps) {
   const isExternal = href.startsWith('http')
 
   return (
     <NextLink href={href} passHref>
       <XStack
         {...props}
-        {...(isExternal ? { href, target: '_blank', rel: 'noopener noreferrer' } : {})}
+        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         tag="a"
         ai="center"
         py="$1"
@@ -52,7 +45,12 @@ export function DocsRouteNavItem({
         >
           {children}
         </Paragraph>
-        {!!external && <ExternalIcon />}
+        {isExternal && (
+          <>
+            <Spacer />
+            <ExternalIcon />
+          </>
+        )}
         {!!pending ? (
           <>
             <XStack flex={1} />

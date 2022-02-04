@@ -58,9 +58,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             {section.pages.map((page) => {
               return (
                 <DocsRouteNavItem
-                  key={page.slug}
-                  href={`/${page.slug}`}
-                  active={currentPath === `/${page.slug}`}
+                  key={page.route}
+                  href={page.route}
+                  active={currentPath === page.route}
                   pending={page['pending']}
                 >
                   {page.title}
@@ -73,15 +73,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         <YStack mb="$4">
           <NavHeading>Community</NavHeading>
           {/* <DocsRouteNavItem href="/blog">Blog</DocsRouteNavItem> */}
-          <DocsRouteNavItem href="https://github.com/tamagui/tamagui" external>
-            GitHub
-          </DocsRouteNavItem>
-          <DocsRouteNavItem href="https://twitter.com/tamagui_js" external>
-            Twitter
-          </DocsRouteNavItem>
-          <DocsRouteNavItem href="https://discord.gg/4qh6tdcVDa" external>
-            Discord
-          </DocsRouteNavItem>
+          <DocsRouteNavItem href="https://github.com/tamagui/tamagui">GitHub</DocsRouteNavItem>
+          <DocsRouteNavItem href="https://twitter.com/tamagui_js">Twitter</DocsRouteNavItem>
+          <DocsRouteNavItem href="https://discord.gg/4qh6tdcVDa">Discord</DocsRouteNavItem>
         </YStack>
 
         <YStack
@@ -122,7 +116,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           {(previous || next) && (
             <XStack aria-label="Pagination navigation" my="$9" jc="space-between" space>
               {previous && (
-                <NextLink href={`/${previous.slug}`} passHref>
+                <NextLink href={previous.route} passHref>
                   <YStack
                     hoverStyle={{
                       backgroundColor: '$bg2',
@@ -149,7 +143,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 </NextLink>
               )}
               {next && (
-                <NextLink href={`/${next.slug}`} passHref>
+                <NextLink href={next.route} passHref>
                   <YStack
                     hoverStyle={{
                       backgroundColor: '$bg2',
