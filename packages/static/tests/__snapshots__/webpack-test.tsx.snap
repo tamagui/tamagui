@@ -2,10 +2,12 @@
 
 exports[`1. extracts to a div for simple views, flat transforms 1`] = `
 <div
-  className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexGrow-16y2uox _flexShrink-1wbh5a2  _backgroundColor-1g6456j _borderBottomLeftRadius-13c4fz4 _borderBottomRightRadius-1iofnf8 _borderTopLeftRadius-12r24e5 _borderTopRightRadius-12he9u2 _boxShadow-1xz9bc3 _flex-13awgt0 _transform--hover-16p4e1x  test1"
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr test1 _backgroundColor-1g6456j _borderBottomLeftRadius-13c4fz4 _borderBottomRightRadius-1iofnf8 _borderTopLeftRadius-12r24e5 _borderTopRightRadius-12he9u2 _boxShadow-1xz9bc3 _flexGrow-16y2uox _flexShrink-1wbh5a2 "
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
 >
   <span
-    className=" _boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
+    className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
   >
     hello world
   </span>
@@ -15,17 +17,17 @@ exports[`1. extracts to a div for simple views, flat transforms 1`] = `
 exports[`2. extracts className for complex views but keeps other props 1`] = `
 Array [
   <div
-    className="_alignItems-1oszu61 _backgroundColor-ai0rcz _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _overflowX-11yh6sk _overflowY-buy8e9 who _boxShadow-1kailnf "
+    className="_alignItems-1oszu61 _backgroundColor-ai0rcz _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxShadow-t00iz8 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx who _overflowX-11yh6sk _overflowY-buy8e9 "
     onClick={[Function]}
     onMouseDown={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   />,
   <div
-    className="_alignItems-1oszu61 _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxShadow-1kailnf _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _paddingBottom-l4nmg1 _paddingTop-vmopo1 ease-in-out-top _backgroundColor-14lw9ot _top-15am80v "
+    className="_alignItems-1oszu61 _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxShadow-t00iz8 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx ease-in-out-top _backgroundColor-14lw9ot _paddingBottom-l4nmg1 _paddingTop-vmopo1 _top-15am80v "
   >
     <span
-      className=" _boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
+      className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
     >
       hello world
     </span>
@@ -36,17 +38,17 @@ Array [
 exports[`2. extracts className for complex views but keeps other props 2`] = `
 Array [
   <div
-    className="_alignItems-1oszu61 _backgroundColor-ai0rcz _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _overflowX-11yh6sk _overflowY-buy8e9 who _boxShadow-1kailnf "
+    className="_alignItems-1oszu61 _backgroundColor-ai0rcz _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxShadow-t00iz8 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx who _overflowX-11yh6sk _overflowY-buy8e9 "
     onClick={[Function]}
     onMouseDown={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   />,
   <div
-    className="_alignItems-1oszu61 _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxShadow-1kailnf _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor-kemksi _paddingBottom-l4nmg1 _paddingTop-vmopo1 _top-ipm5af ease-in-out-top "
+    className="_alignItems-1oszu61 _borderBottomLeftRadius-16of09f _borderBottomRightRadius-1lf30or _borderTopLeftRadius-9bfr1a _borderTopRightRadius-h7h2ax _boxShadow-t00iz8 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx ease-in-out-top _backgroundColor-kemksi _paddingBottom-l4nmg1 _paddingTop-vmopo1 _top-ipm5af "
   >
     <span
-      className=" _boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
+      className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
     >
       hello world
     </span>
@@ -76,34 +78,34 @@ Array [
   "_flexDirection-eqz5dr",
   "_flexShrink-1q142lx",
   "_height-4d76ec",
-  "_overflowX--hover-okxjgd",
-  "_overflowY--hover-ipc04b",
   "_width-3zb3j3",
 ]
 `;
 
 exports[`4. leaves dynamic variables 2`] = `
 <div
-  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _height-4d76ec _overflowX--hover-okxjgd _overflowY--hover-ipc04b _width-3zb3j3 "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _height-4d76ec _width-3zb3j3 "
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
 />
 `;
 
 exports[`5. spread conditional 1`] = `
 <div
-  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _overflowX-11yh6sk _overflowY-buy8e9 _backgroundColor-57dg7b "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor-57dg7b _overflowX-11yh6sk _overflowY-buy8e9 "
 >
   <div
-    className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _overflowX-11yh6sk _overflowY-buy8e9 hello-world _backgroundColor-57dg7b "
+    className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx hello-world _backgroundColor-57dg7b _overflowX-11yh6sk _overflowY-buy8e9 "
   />
 </div>
 `;
 
 exports[`6. spread ternary 1`] = `
 <div
-  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _overflowX-11yh6sk _overflowY-buy8e9 _backgroundColor-57dg7b "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor-57dg7b _overflowX-11yh6sk _overflowY-buy8e9 "
 >
   <span
-    className=" _boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
+    className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
   >
     hello world
   </span>
@@ -112,10 +114,10 @@ exports[`6. spread ternary 1`] = `
 
 exports[`6. spread ternary 2`] = `
 <div
-  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _overflowX-11yh6sk _overflowY-buy8e9 _backgroundColor-1g6456j "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor-1g6456j _overflowX-11yh6sk _overflowY-buy8e9 "
 >
   <span
-    className=" _boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
+    className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 "
   >
     hello world
   </span>
@@ -124,7 +126,7 @@ exports[`6. spread ternary 2`] = `
 
 exports[`7. ternary + data-is 1`] = `
 <div
-  className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _maxWidth-f2w40 _minWidth-68jxh1 _paddingBottom-1mi0q7o _paddingLeft-1j3zfw3 _paddingRight-mszm1p _width-1skwq7n "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _maxWidth-f2w40 _minWidth-68jxh1 _paddingBottom-1mi0q7o _paddingLeft-1j3zfw3 _paddingRight-mszm1p _width-1skwq7n "
 >
   <div
     className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _height-1or9b2r _width-5soawk "
@@ -134,13 +136,13 @@ exports[`7. ternary + data-is 1`] = `
 
 exports[`8. styleExpansions 1`] = `
 <div
-  className=" _alignItems-1oszu61 _bottom-1p0dtai _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _left-1d2f490 _position-bnwqim _right-zchlnj _top-ipm5af "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _bottom-1p0dtai _left-1d2f490 _position-bnwqim _right-zchlnj _top-ipm5af "
 >
   <div
-    className=" _alignItems-1oszu61 _backgroundColor-1g6456j _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx "
+    className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor-1g6456j "
   >
     <div
-      className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor-14lw9ot _bottom-1p0dtai _left-1d2f490 _position-u8s1d _right-zchlnj _top-ipm5af "
+      className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor-14lw9ot _bottom-1p0dtai _left-1d2f490 _position-bnwqim _right-zchlnj _top-ipm5af "
       color="blue"
     />
   </div>
@@ -149,19 +151,19 @@ exports[`8. styleExpansions 1`] = `
 
 exports[`9. combines with classname 1`] = `
 <div
-  className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _paddingBottom-19yat4t _paddingTop-1qxgc49  home-top-dish"
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx home-top-dish _paddingBottom-19yat4t _paddingTop-1qxgc49 "
 />
 `;
 
 exports[`10. extracts Text 1`] = `
 <span
-  className=" _boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _fontSize-10x49cs _wordWrap-qvutc0 "
+  className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 _fontSize-10x49cs "
 >
   <span
-    className=" _boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _selectable-1khexzf _userSelect-1xnzce8 _wordWrap-qvutc0 "
+    className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 _userSelect-1xnzce8 "
   >
     <span
-      className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 _fontSize-a023e6 _fontWeight-1kfrs79 _color-cqee49 "
+      className="_boxSizing-deolkf _display-1471scf _fontFamily-187pbxx _wordWrap-qvutc0 _color-cqee49 _fontSize-a023e6 _fontWeight-1kfrs79 "
     >
       hello
     </span>
@@ -176,29 +178,29 @@ Array [
   "_flexBasis-1mlwlqe",
   "_flexDirection-eqz5dr",
   "_flexShrink-1q142lx",
+  "_alignItems-1awozwy",
+  "_backgroundColor-57dg7b",
+  "_borderBottomColor-19sur4y",
+  "_borderBottomLeftRadius-pm2fo",
+  "_borderBottomRightRadius-zmljjp",
   "_borderBottomStyle-rull8r",
   "_borderBottomWidth-qklmqi",
+  "_borderLeftColor-1utlcvg",
   "_borderLeftStyle-mm0ijv",
   "_borderLeftWidth-1ljd8xs",
+  "_borderRightColor-1qev2y0",
   "_borderRightStyle-14skgim",
   "_borderRightWidth-13l2t4g",
+  "_borderTopColor-48c68v",
+  "_borderTopLeftRadius-ou6ah9",
+  "_borderTopRightRadius-t12b5v",
   "_borderTopStyle-1efd50x",
   "_borderTopWidth-5kkj8d",
-  "_alignItems-1awozwy",
+  "_height-1w2pmg",
   "_minHeight-yfq7p9",
   "_overflowX-11yh6sk",
   "_overflowY-buy8e9",
   "_position-bnwqim",
-  "_backgroundColor-57dg7b",
-  "_borderBottomLeftRadius-pm2fo",
-  "_borderBottomRightRadius-zmljjp",
-  "_borderTopLeftRadius-ou6ah9",
-  "_borderTopRightRadius-t12b5v",
-  "_height-1w2pmg",
-  "_borderBottomColor-19sur4y",
-  "_borderLeftColor-1utlcvg",
-  "_borderRightColor-1qev2y0",
-  "_borderTopColor-48c68v",
 ]
 `;
 
@@ -210,24 +212,28 @@ exports[`12. ternary multiple on same key 1`] = `
 
 exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 <div
-  className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor--hover-1g6456j _backgroundColor--active-57dg7b "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx "
+  onClick={[Function]}
+  onMouseDown={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
 />
 `;
 
 exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
   <div
-    className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexShrink-1q142lx _height-7fo01u _width-3ykz2q "
+    className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexShrink-1q142lx _height-7fo01u _width-3ykz2q "
   />,
   <div
-    className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flex-13awgt0 _flexBasis-1mlwlqe _flexGrow-16y2uox _flexShrink-1wbh5a2 _height-1or9b2r _width-5soawk "
+    className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexGrow-16y2uox _flexShrink-1wbh5a2 _height-1or9b2r _width-5soawk "
   />,
 ]
 `;
 
 exports[`16. deopt when spreading multiple 1`] = `
 <div
-  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexGrow-16y2uox _flexShrink-1wbh5a2 _backgroundColor-1g6456j "
+  className="_alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _backgroundColor-1g6456j _flexGrow-16y2uox _flexShrink-1wbh5a2 "
   conditional={true}
 />
 `;
