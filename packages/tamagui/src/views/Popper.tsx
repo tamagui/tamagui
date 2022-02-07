@@ -1,30 +1,7 @@
-// forked from NativeBase
-// The MIT License (MIT)
-
-// Copyright (c) 2021 GeekyAnts India Pvt Ltd
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-// the Software, and to permit persons to whom the Software is furnished to do so,
-// subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-import { useOverlayPosition } from '@react-native-aria/overlays'
-import { StackProps } from '@tamagui/core'
+import { StackProps, styled } from '@tamagui/core'
 import type { ReactElement, RefObject } from 'react'
-import React, { createContext, useContext, useEffect, useRef } from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import React, { createContext, useContext, useRef } from 'react'
+import { View, ViewStyle } from 'react-native'
 
 import { YStack } from './Stacks'
 
@@ -36,11 +13,9 @@ export type IPopoverArrowProps = {
   style?: any
 }
 
+export type IPlacementCentered = 'top' | 'bottom' | 'left' | 'right'
+
 export type IPlacement =
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
   | 'top left'
   | 'top right'
   | 'bottom left'
@@ -61,13 +36,13 @@ export type IPopperProps = {
 }
 
 export type IArrowStyles = {
-  placement?: string
+  placement?: IPlacementCentered
   height?: number
   width?: number
 }
 
 export type IScrollContentStyle = {
-  placement?: string
+  placement?: IPlacementCentered
   arrowHeight: number
   arrowWidth: number
 }
@@ -110,113 +85,40 @@ const PopperContent = React.forwardRef(({ children, style, ...rest }: any, ref: 
     setOverlayRef,
   } = context
   const overlayRef = useRef(null)
-  console.log('triggerRef', triggerRef)
   // const { top } = useSafeAreaInsets()
-  const { overlayProps, rendered, arrowProps, placement } = useOverlayPosition({
-    targetRef: triggerRef,
-    overlayRef,
-    shouldFlip: shouldFlip,
-    crossOffset: crossOffset,
-    isOpen: true,
-    offset: offset,
-    placement: placementProp as any,
-    containerPadding: 0,
-    onClose: onClose,
-    shouldOverlapWithTrigger,
-  })
 
   let restElements: React.ReactNode[] = []
   let arrowElement: React.ReactElement | null = null
 
-  useEffect(() => {
-    setOverlayRef && setOverlayRef(overlayRef)
-  }, [overlayRef, setOverlayRef])
-
-  // Might have performance impact if there are a lot of siblings!
-  // Shouldn't be an issue with popovers since it would have atmost 2. Arrow and Content.
-  React.Children.forEach(children, (child) => {
-    if (
-      React.isValidElement(child) &&
-      // @ts-ignore
-      child.type.displayName === 'PopperArrow'
-    ) {
-      arrowElement = React.cloneElement(child, {
-        // @ts-ignore
-        arrowProps,
-        actualPlacement: placement,
-      })
-    } else {
-      restElements.push(child)
-    }
-  })
-
-  let arrowHeight = 0
-  let arrowWidth = 0
-
-  if (arrowElement) {
-    arrowHeight = defaultArrowHeight
-    arrowWidth = defaultArrowWidth
-    //@ts-ignore
-    if (arrowElement.props.height) {
-      //@ts-ignore
-      arrowHeight = arrowElement.props.height
-    }
-    //@ts-ignore
-    if (arrowElement.props.width) {
-      //@ts-ignore
-      arrowWidth = arrowElement.props.width
-    }
-  }
-
-  const containerStyle = React.useMemo(
-    () =>
-      getContainerStyle({
-        placement,
-        arrowHeight,
-        arrowWidth,
-      }),
-    [arrowHeight, arrowWidth, placement]
-  )
-
-  // TODO move this over to snack views
-  const overlayStyle = React.useMemo(
-    () =>
-      StyleSheet.create({
-        overlay: {
-          ...overlayProps.style,
-          // To handle translucent android StatusBar
-          // marginTop: Platform.select({ android: top, default: 0 }),
-          opacity: rendered ? 1 : 0,
-          position: 'absolute',
-        },
-      }),
-    [rendered, overlayProps.style]
-  )
-
   return (
-    <View ref={overlayRef} collapsable={false} style={overlayStyle.overlay}>
+    <Overlay
+      {...(!rendered && {
+        backgroundColor: 'transparent',
+        pointerEvents: 'none',
+      })}
+    >
       {arrowElement}
-      <View style={StyleSheet.flatten([containerStyle, style])} {...rest} ref={ref}>
-        {restElements}
-      </View>
-    </View>
+      <View ref={ref}>{restElements}</View>
+    </Overlay>
   )
 })
 
-// This is an internal implementation of PopoverArrow
-export type PopperArrowProps = StackProps
+const Overlay = styled(YStack, {
+  backgroundColor: '$bg',
+  fullscreen: true,
+})
 
-// TODO fix types
+// This is an internal implementation of PopoverArrow
+export type PopperArrowProps = StackProps & {
+  placement?: IPlacementCentered
+}
+
 const PopperArrow = React.forwardRef(
   (
     {
       height = defaultArrowHeight,
       width = defaultArrowWidth,
-
-      //@ts-ignore - Will be passed by React.cloneElement from PopperContent
-      arrowProps = {},
-      //@ts-ignore - Will be passed by React.cloneElement from PopperContent
-      actualPlacement,
+      placement,
       style,
       borderColor = '#52525b',
       backgroundColor = 'black',
@@ -225,9 +127,8 @@ const PopperArrow = React.forwardRef(
     ref: any
   ) => {
     const additionalStyles = React.useMemo(
-      // @ts-ignore
-      () => getArrowStyles({ placement: actualPlacement, height, width }),
-      [actualPlacement, height, width]
+      () => getArrowStyles({ placement, height: +height, width: +width }),
+      [placement, height, width]
     )
 
     // @ts-ignore
@@ -242,13 +143,12 @@ const PopperArrow = React.forwardRef(
 
     let arrowStyles = React.useMemo(
       // @ts-ignore
-      () => [arrowProps.style, triangleStyle, additionalStyles, style],
+      () => [triangleStyle, additionalStyles, style],
       // @ts-ignore
-      [triangleStyle, additionalStyles, arrowProps.style, style]
+      [triangleStyle, additionalStyles, style]
     )
 
     return (
-      // @ts-ignore TODO
       <YStack
         ref={ref}
         style={arrowStyles}
@@ -260,6 +160,10 @@ const PopperArrow = React.forwardRef(
     )
   }
 )
+
+PopperArrow.displayName = 'PopperArrow'
+Popper.Content = PopperContent
+Popper.Arrow = PopperArrow
 
 const getArrowStyles = (props: IArrowStyles) => {
   let additionalStyles: any = {
@@ -302,24 +206,3 @@ const getArrowStyles = (props: IArrowStyles) => {
 
   return additionalStyles
 }
-
-const getContainerStyle = ({ placement, arrowHeight }: IScrollContentStyle) => {
-  const diagonalLength = getDiagonalLength(arrowHeight, arrowHeight) / 2
-  if (placement === 'top') {
-    return { marginBottom: diagonalLength }
-  }
-  if (placement === 'bottom') {
-    return { marginTop: diagonalLength }
-  }
-  if (placement === 'left') {
-    return { marginRight: diagonalLength }
-  }
-  if (placement === 'right') {
-    return { marginLeft: diagonalLength }
-  }
-  return {}
-}
-
-PopperArrow.displayName = 'PopperArrow'
-Popper.Content = PopperContent
-Popper.Arrow = PopperArrow

@@ -1813,6 +1813,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^0.3.0, @floating-ui/core@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@floating-ui/core@npm:0.3.1"
+  checksum: b5b646f662994cff2feb694781c1fae2025293b74c6bbdb891a647a26b57aa8499cee8d8211f8dd9eafa53909cc24ad451545678c250162b30c37bc02046845a
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^0.1.10":
+  version: 0.1.10
+  resolution: "@floating-ui/dom@npm:0.1.10"
+  dependencies:
+    "@floating-ui/core": ^0.3.0
+  checksum: 9a247f87ef9fd5d20ebfcb262222adce394c49a9c9b35da966794edf7aecc193ee6481cdb6e25a561c6f3d4eb4dea1dad3bc712ccfdba4aeb565d9228618ca94
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react-dom@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "@floating-ui/react-dom@npm:0.4.3"
+  dependencies:
+    "@floating-ui/dom": ^0.1.10
+    use-isomorphic-layout-effect: ^1.1.1
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 4406d4cc8c21ecd54e02db7fad26482b7d38d6d8f04cf317c370b12aaf7ebf5dc0303b2b62ce53ab4e02897fba2906ddc8731184c8e14d3283f9e6ea2d43fca9
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react-native@npm:^0.4.4":
+  version: 0.4.4
+  resolution: "@floating-ui/react-native@npm:0.4.4"
+  dependencies:
+    "@floating-ui/core": ^0.3.1
+  peerDependencies:
+    react: ">=16.8.0"
+    react-native: ">=0.64.0"
+  checksum: bc4a994f550db37f95a1592abee19f3627ef1bbee5a53f90e056c48aab61c761acedc1d047fe14458874c354a58cc5dc69b412ecfad953efc256638a01596947
+  languageName: node
+  linkType: hard
+
 "@formatjs/ecma402-abstract@npm:1.11.2":
   version: 1.11.2
   resolution: "@formatjs/ecma402-abstract@npm:1.11.2"
@@ -18919,6 +18960,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
+    "@floating-ui/react-dom": ^0.4.3
+    "@floating-ui/react-native": ^0.4.4
     "@gorhom/bottom-sheet": ^4.1.5
     "@react-aria/ssr": ^3.1.0
     "@react-aria/utils": ^3.10.0
@@ -20307,6 +20350,18 @@ __metadata:
     "@types/react":
       optional: true
   checksum: b0027242311ed3fb006575c3be69efe31946f17129f2464707f4fcf2e167b91917236569a1d622c57b36843bc05efd9740a4ba51591553ad6fe2799cc12b138e
+  languageName: node
+  linkType: hard
+
+"use-isomorphic-layout-effect@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "use-isomorphic-layout-effect@npm:1.1.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: fd9061817d4945af37fd79866b1fe96a09cafe873169a66ec699140b609c64db6c60512d94ec3ca90967837026ea6e6d003901c557693708aeee11d392418a9e
   languageName: node
   linkType: hard
 
