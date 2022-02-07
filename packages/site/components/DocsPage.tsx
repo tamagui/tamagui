@@ -31,8 +31,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
     currentPath = currentPath.replace('[slug]', router.query.slug as string)
   }
 
-  const currentPageId = currentPath.slice(1)
-  const currentPageIndex = allNotPending.findIndex((page) => page.slug === currentPageId)
+  const currentPageIndex = allNotPending.findIndex((page) => page.route === currentPath)
   const previous = allNotPending[currentPageIndex - 1]
   const next = allNotPending[currentPageIndex + 1]
   const GITHUB_URL = 'https://github.com'
@@ -185,7 +184,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         </Container>
       </>
     )
-  }, [children, previous?.title, next?.title, editUrl])
+  }, [children, previous, next, editUrl])
 
   return (
     <Theme name={tint}>
