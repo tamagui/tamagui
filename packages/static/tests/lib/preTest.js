@@ -15,6 +15,13 @@ module.exports = async function main() {
   process.env.IS_STATIC = undefined
 }
 
+const alias = {
+  'react-native$': 'react-native-web',
+  'react-native-reanimated$': '@dish/proxy-worm',
+  'react-native-gesture-handler$': '@dish/proxy-worm',
+  '@gorhom/bottom-sheet$': '@dish/proxy-worm',
+}
+
 async function extractStaticAppBabel() {
   const compiler = webpack({
     context: specDir,
@@ -34,10 +41,8 @@ async function extractStaticAppBabel() {
     externals: [externalizeModules],
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
-      mainFields: ['tsmain', 'browser', 'module', 'main'],
-      alias: {
-        'react-native': 'react-native-web',
-      },
+      mainFields: ['module:jsx', 'browser', 'module', 'main'],
+      alias,
     },
     module: {
       rules: [
@@ -103,10 +108,8 @@ async function extractStaticWebpackApp() {
     externals: [externalizeModules],
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
-      mainFields: ['tsmain', 'browser', 'module', 'main'],
-      alias: {
-        'react-native': 'react-native-web',
-      },
+      mainFields: ['module:jsx', 'browser', 'module', 'main'],
+      alias,
     },
     module: {
       rules: [
@@ -150,8 +153,8 @@ async function extractStaticWebpackApp() {
 
   await new Promise((res) => {
     compiler.run((err, result) => {
-      // console.log({ err })
-      // console.log(result?.toString())
+      console.log({ err })
+      console.log(result?.toString())
       res()
     })
   })

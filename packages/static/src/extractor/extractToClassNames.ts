@@ -79,11 +79,16 @@ export function extractToClassNames({
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists: { [key: string]: t.Identifier } = {}
 
+  let hasFlattened = false
+
   const res = extractor.parse(ast, {
     sourcePath,
     shouldPrintDebug,
     ...options,
-    getFlattenedNode: ({ tag }) => tag,
+    getFlattenedNode: ({ tag }) => {
+      hasFlattened = true
+      return tag
+    },
     onExtractTag: ({
       attrs,
       node,
@@ -226,10 +231,9 @@ export function extractToClassNames({
 
         // if has some spreads, use concat helper
         if (nameExpr && !t.isIdentifier(nameExpr)) {
-          if (!res?.flattened) {
-            console.log('not flat')
+          if (!hasFlattened) {
+            // not flat
           } else {
-            console.log('flat')
             ensureImportingConcat(programPath)
             const simpleSpreads = attrs.filter(
               (x) => t.isJSXSpreadAttribute(x.value) && isSimpleSpread(x.value)

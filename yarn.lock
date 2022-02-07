@@ -1622,6 +1622,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dish/proxy-worm@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@dish/proxy-worm@npm:0.0.4"
+  checksum: 370bdaf2e2e33f596f37a6426e22a55a70d0ebdab6f3371cc5d356b111a0266b4559fc30c4f4bd0539c8f9c6323715d851fc7349cf657a30b9e9a085a672afb8
+  languageName: node
+  linkType: hard
+
 "@egjs/hammerjs@npm:^2.0.17":
   version: 2.0.17
   resolution: "@egjs/hammerjs@npm:2.0.17"
@@ -3997,6 +4004,7 @@ __metadata:
     "@babel/traverse": ^7.15.4
     "@babel/types": ^7.15.6
     "@dish/babel-preset": ^0.0.6
+    "@dish/proxy-worm": ^0.0.4
     "@expo/match-media": ^0.1.0
     "@tamagui/build": ^1.0.0-alpha.44
     "@tamagui/core": ^1.0.0-alpha.55

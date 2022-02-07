@@ -1,4 +1,4 @@
-import path from 'path'
+import * as path from 'path'
 
 export const externalizeModules: any = ({ context, request }, callback) => {
   if (request === './cjs/react.development.js') {
@@ -10,6 +10,9 @@ export const externalizeModules: any = ({ context, request }, callback) => {
   if (context.includes('node_modules')) {
     if (context.includes('react-native/')) {
       context = context.replace('react-native/', 'react-native-web/')
+    }
+    if (context.includes('react-native-reanimated')) {
+      return callback(undefined, 'react-native-reanimated')
     }
     if (context.includes('react-native-web') && request[0] === '.') {
       const out = path
