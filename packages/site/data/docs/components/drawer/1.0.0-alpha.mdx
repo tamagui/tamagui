@@ -18,9 +18,33 @@ name: text
 
 <Highlights features={[`Animation and dragging on native and web.`]} />
 
+## Usage
+
+Drawer extends the excellent (@gorhom/bottom-sheet)[https://github.com/gorhom/react-native-bottom-sheet]. Note this will bring along [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) and will require some extra configuration with webpack:
+
+```tsx
+oneOf: [
+  {
+    test: /(bottom-sheet).*\.[tj]sx?$/,
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          plugins: [
+            'react-native-reanimated/plugin',
+            '@babel/plugin-transform-react-jsx',
+          ],
+        },
+      },
+    ],
+  },
+  // tamagui loader
+]}
+```
+
 ### Drawer props
 
-Drawers extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+All the props from [react-native-bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/props), plus:
 
 <PropsTable
   data={[
@@ -41,6 +65,12 @@ Drawers extend Stack views inheriting all the [Tamagui standard props](/docs/int
       required: false,
       type: 'boolean',
       description: `Show a handle at top.`,
+    },
+    {
+      name: 'hideBackground',
+      required: false,
+      type: 'boolean',
+      description: `Don't show a background container element.`,
     },
     {
       name: 'children',
