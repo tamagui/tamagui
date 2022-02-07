@@ -1,4 +1,5 @@
-import React, { RefObject } from 'react'
+import CSS from 'csstype'
+import React, { HTMLProps, RefObject } from 'react'
 import { TextProps as ReactTextProps, TextStyle } from 'react-native'
 import { GestureResponderEvent, View, ViewProps, ViewStyle } from 'react-native'
 
@@ -200,7 +201,7 @@ export type ColorTokens = `$${keyof Tokens['color']}`
 export type ZIndexTokens = `$${keyof Tokens['zIndex']}`
 
 //
-// adds in theme short values to relevant props
+// adds theme short values to relevant props
 //
 type ThemeValue<A> = Omit<A, string> | UnionableString | Variable
 export type WithThemeValues<T extends object> = {
@@ -229,13 +230,17 @@ export type WithThemeValues<T extends object> = {
         : {})
 }
 
-//
-// adds in shorthand props
-//
+// adds shorthand props
 type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
     ? StyleProps[Shorthands[Key]] | null
     : undefined
+}
+
+// adds pseudo props
+export type PseudoProps<A> = {
+  hoverStyle?: A | null
+  pressStyle?: A | null
 }
 
 //
@@ -245,15 +250,14 @@ type WithThemeAndShorthands<A extends object> = WithThemeValues<A> &
   WithShorthands<WithThemeValues<A>>
 
 //
-// adds theme and shorthands + pseudo styles with both
+// combines all of theme, shorthands, psuedos...
 //
-type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & {
-  hoverStyle?: WithThemeAndShorthands<A> | null
-  pressStyle?: WithThemeAndShorthands<A> | null
-}
+type WithThemeShorthandsAndPseudos<A extends object> = 
+  | WithThemeAndShorthands<A>
+  & PseudoProps<WithThemeAndShorthands<A>>
 
 //
-// adds theme, shorthands, psuedos, then all the previous to media queries
+// ... and media queries
 //
 type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsAndPseudos<A> &
   MediaProps<WithThemeShorthandsAndPseudos<A>>
@@ -310,6 +314,11 @@ export type TextProps = ReactTextProps &
     ellipse?: boolean
     selectable?: boolean
     textDecorationDistance?: number
+    userSelect?: CSS.Properties['userSelect']
+    textOverflow?: CSS.Properties['textOverflow']
+    whiteSpace?: CSS.Properties['whiteSpace']
+    wordWrap?: CSS.Properties['wordWrap']
+    cursor?: CSS.Properties['cursor']
   }
 
 //

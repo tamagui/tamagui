@@ -2,7 +2,15 @@ import * as React from 'react'
 
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
-import { MediaProps, StaticComponent, StaticConfig, TamaguiConfig, Themes, Tokens } from './types'
+import {
+  MediaProps,
+  PseudoProps,
+  StaticComponent,
+  StaticConfig,
+  TamaguiConfig,
+  Themes,
+  Tokens,
+} from './types'
 
 export function styled<
   ParentComponent extends StaticComponent | React.Component<any>,
@@ -31,7 +39,8 @@ export function styled<
       : // if options passed: styled(Text, { ... })
         Omit<GetProps<ParentComponent>, keyof VariantProps> &
           VariantProps &
-          MediaProps<VariantProps>,
+          MediaProps<VariantProps> &
+          PseudoProps<VariantProps>,
     void
   >
 }
