@@ -185,7 +185,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         </Container>
       </>
     )
-  }, [children, previous, next, editUrl])
+  }, [children, previous?.title, next?.title, editUrl])
 
   return (
     <Theme name={tint}>
