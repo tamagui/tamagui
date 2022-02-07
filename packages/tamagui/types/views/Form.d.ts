@@ -3,10 +3,14 @@ export declare const Input: import("@tamagui/core").StaticComponent<Omit<any, "s
     size?: `$${string}` | `$${number}` | null | undefined;
 } & import("@tamagui/core").MediaProps<{
     size?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
+    size?: `$${string}` | `$${number}` | null | undefined;
 }>, void, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const TextArea: import("@tamagui/core").StaticComponent<Omit<any, "size"> & {
     size?: `$${string}` | `$${number}` | null | undefined;
 } & import("@tamagui/core").MediaProps<{
+    size?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
     size?: `$${string}` | `$${number}` | null | undefined;
 }>, void, import("@tamagui/core").StaticConfigParsed, any>;
 //# sourceMappingURL=Form.d.ts.map

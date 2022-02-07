@@ -19,6 +19,9 @@ export declare const InteractiveFrame: import("@tamagui/core").StaticComponent<O
 } & import("@tamagui/core").MediaProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, "size" | "transparent" | "hoverable" | "pressable" | "circular" | "disabled" | "active" | "chromeless"> & {
     hoverable?: boolean | null | undefined;
     pressable?: boolean | null | undefined;
@@ -29,6 +32,15 @@ export declare const InteractiveFrame: import("@tamagui/core").StaticComponent<O
     transparent?: boolean | null | undefined;
     chromeless?: boolean | null | undefined;
 } & import("@tamagui/core").MediaProps<{
+    hoverable?: boolean | null | undefined;
+    pressable?: boolean | null | undefined;
+    size?: `$${string}` | `$${number}` | null | undefined;
+    circular?: boolean | null | undefined;
+    disabled?: boolean | null | undefined;
+    active?: boolean | null | undefined;
+    transparent?: boolean | null | undefined;
+    chromeless?: boolean | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
     hoverable?: boolean | null | undefined;
     pressable?: boolean | null | undefined;
     size?: `$${string}` | `$${number}` | null | undefined;

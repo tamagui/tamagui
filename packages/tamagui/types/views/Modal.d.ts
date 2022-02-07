@@ -14,5 +14,8 @@ export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<i
 } & import("@tamagui/core").MediaProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, void, import("@tamagui/core").StaticConfigParsed, any>;
 //# sourceMappingURL=Modal.d.ts.map

@@ -5,6 +5,9 @@ export declare const Box: import("@tamagui/core").StaticComponent<Omit<import("@
 } & import("@tamagui/core").MediaProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, void, import("@tamagui/core").StaticConfigParsed, any>;
 export declare type BoxProps = GetProps<typeof Box>;
 //# sourceMappingURL=Box.d.ts.map

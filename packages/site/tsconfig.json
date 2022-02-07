@@ -5,6 +5,12 @@
     // for jumping to things properly in vscode
     "baseUrl": "../..",
     "paths": {
+      "tamagui": [
+        "packages/tamagui"
+      ],
+      "@tamagui/*": [
+        "packages/*"
+      ],
       "@components/*": [
         "packages/site/components/*"
       ],

@@ -130,6 +130,7 @@ export const Modal = (props: ModalProps) => {
                 animation,
               }}
             >
+              {/* @ts-ignore */}
               <ModalYStack onPress={prevent} pointerEvents={pointerEvents} {...rest}>
                 {finalChildren}
               </ModalYStack>
@@ -143,6 +144,7 @@ export const Modal = (props: ModalProps) => {
   return (
     <ModalNative animationType={animationType} {...modalProps}>
       <Theme name={themeName}>
+        {/* @ts-ignore */}
         <YStack flex={1} {...rest} backgroundColor="$bg">
           {finalChildren}
         </YStack>

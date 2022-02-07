@@ -1,3 +1,4 @@
+import CSS from 'csstype';
 import React, { RefObject } from 'react';
 import { TextProps as ReactTextProps, TextStyle } from 'react-native';
 import { GestureResponderEvent, View, ViewProps, ViewStyle } from 'react-native';
@@ -158,11 +159,12 @@ export declare type WithThemeValues<T extends object> = {
 declare type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
-declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
-declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & {
-    hoverStyle?: WithThemeAndShorthands<A> | null;
-    pressStyle?: WithThemeAndShorthands<A> | null;
+export declare type PseudoProps<A> = {
+    hoverStyle?: A | null;
+    pressStyle?: A | null;
 };
+declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
+declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
 declare type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
 declare type WebOnlyStyleProps = {
     cursor?: string;
@@ -181,6 +183,11 @@ export declare type TextProps = ReactTextProps & TextStyleProps & ComponentProps
     ellipse?: boolean;
     selectable?: boolean;
     textDecorationDistance?: number;
+    userSelect?: CSS.Properties['userSelect'];
+    textOverflow?: CSS.Properties['textOverflow'];
+    whiteSpace?: CSS.Properties['whiteSpace'];
+    wordWrap?: CSS.Properties['wordWrap'];
+    cursor?: CSS.Properties['cursor'];
 };
 export declare type StaticComponent<Props = any, VariantProps = any, StaticConfParsed = StaticConfigParsed, ParentVariantProps = any> = React.FunctionComponent<Props> & {
     staticConfig: StaticConfParsed;

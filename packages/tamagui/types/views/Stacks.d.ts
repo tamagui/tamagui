@@ -5,6 +5,9 @@ export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import
 } & import("@tamagui/core").MediaProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, void, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
     fullscreen?: boolean | null | undefined;
@@ -12,11 +15,17 @@ export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import
 } & import("@tamagui/core").MediaProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, void, import("@tamagui/core").StaticConfigParsed, any>;
 export declare const ZStack: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, "elevation" | "fullscreen"> & {
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
 } & import("@tamagui/core").MediaProps<{
+    fullscreen?: boolean | null | undefined;
+    elevation?: `$${string}` | `$${number}` | null | undefined;
+}> & import("@tamagui/core").PseudoProps<{
     fullscreen?: boolean | null | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
 }>, void, import("@tamagui/core").StaticConfigParsed, any>;

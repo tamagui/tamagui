@@ -5,7 +5,6 @@ import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
 import { InteractiveFrame } from './InteractiveFrame'
 import { Paragraph } from './Paragraph'
 import { SizableTextProps } from './SizableText'
-import { YStack } from './Stacks'
 
 export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
   size?: SizableTextProps['size']
