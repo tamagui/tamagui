@@ -12,11 +12,13 @@ export const Drawer = withStaticProperties(
     open,
     onChange,
     showHandle,
+    hideBackground,
     ...props
   }: Omit<Partial<BottomSheetModalProps>, 'onChange'> & {
     open?: boolean
     onChange?: ((showing: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>
     showHandle?: boolean
+    hideBackground?: boolean
   }) => {
     const sheetRef = useRef<BottomSheetModal>(null)
     const theme = useTheme()
@@ -31,9 +33,9 @@ export const Drawer = withStaticProperties(
 
     return (
       <BottomSheetModal
-        {...!showHandle && {
-          handleComponent: null
-        }}
+        {...(!showHandle && {
+          handleComponent: null,
+        })}
         backgroundStyle={{
           backgroundColor: theme.bg?.toString(),
           shadowColor: theme.shadowColor?.toString(),
@@ -48,9 +50,16 @@ export const Drawer = withStaticProperties(
         })}
         {...props}
       >
-        <YStack fullscreen backgroundColor="$bg" borderTopLeftRadius="$2" borderTopRightRadius="$2">
-          {children}
-        </YStack>
+        {hideBackground ? null : (
+          <YStack
+            fullscreen
+            backgroundColor="$bg"
+            borderTopLeftRadius="$2"
+            borderTopRightRadius="$2"
+          >
+            {children}
+          </YStack>
+        )}
       </BottomSheetModal>
     )
   },
