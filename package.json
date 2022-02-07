@@ -38,7 +38,6 @@
     "next": "12.0.10",
     "webpack": "5.68.0",
     "prettier": "2.5.1",
-    "prettier-plugin-import-sort": "0.0.7",
     "react": "18.0.0-beta-f320ef88f-20211116",
     "react-dom": "18.0.0-beta-f320ef88f-20211116",
     "react-refresh": "0.11.0",

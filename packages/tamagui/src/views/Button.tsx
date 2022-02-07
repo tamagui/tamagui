@@ -3,7 +3,7 @@ import React, { forwardRef, isValidElement } from 'react'
 
 import { getFontSize } from '../helpers/getFontSize'
 import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
-import { SizableText } from './SizableText'
+import { SizableText, SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -12,7 +12,7 @@ type IconProp = JSX.Element | ((props: { color?: string; size?: number }) => JSX
 
 export type ButtonProps = InteractiveFrameProps &
   ThemeableProps & {
-    textProps?: Omit<TextProps, 'children'>
+    textProps?: Omit<SizableTextProps, 'children'>
     noTextWrap?: boolean
     icon?: IconProp
     iconAfter?: IconProp

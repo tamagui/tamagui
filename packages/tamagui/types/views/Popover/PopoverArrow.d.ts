@@ -1,11 +1,5 @@
 import React from 'react';
-export declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core/types").RNWInternalProps, "children"> & Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {} & {
-    hoverStyle?: (import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {}) | null | undefined;
-    pressStyle?: (import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {}) | null | undefined;
-} & import("@tamagui/core/types").MediaProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {} & {
-    hoverStyle?: (import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {}) | null | undefined;
-    pressStyle?: (import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {}) | null | undefined;
-}> & {
+export declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core/types").RNWInternalProps, "children"> & Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {} & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {}> & import("@tamagui/core/types").MediaProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {} & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & {}>> & {
     className?: string | undefined;
     tag?: string | undefined;
     animated?: boolean | undefined;

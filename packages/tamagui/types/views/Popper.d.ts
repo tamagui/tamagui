@@ -36,13 +36,7 @@ export declare const Popper: {
         setOverlayRef?: ((overlayRef: any) => void) | undefined;
     }): JSX.Element;
     Content: React.ForwardRefExoticComponent<Pick<any, string | number | symbol> & React.RefAttributes<unknown>>;
-    Arrow: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core").RNWInternalProps, "children"> & Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {} & {
-        hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {}) | null | undefined;
-        pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {}) | null | undefined;
-    } & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {} & {
-        hoverStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {}) | null | undefined;
-        pressStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {}) | null | undefined;
-    }> & {
+    Arrow: React.ForwardRefExoticComponent<Pick<Omit<import("@tamagui/core").RNWInternalProps, "children"> & Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {} & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {}> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {} & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & {}>> & {
         className?: string | undefined;
         tag?: string | undefined;
         animated?: boolean | undefined;

@@ -3857,6 +3857,7 @@ __metadata:
     "@tamagui/use-debounce": ^1.0.0-alpha.44
     "@tamagui/use-force-update": ^1.0.0-alpha.44
     "@types/react": ^17.0.35
+    csstype: ^3.0.10
     esbuild: ^0.13.12
     react: "*"
     react-dom: "*"
@@ -7375,7 +7376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:^3.0.2":
+"csstype@npm:^3.0.10, csstype@npm:^3.0.2":
   version: 3.0.10
   resolution: "csstype@npm:3.0.10"
   checksum: 20a8fa324f2b33ddf94aa7507d1b6ab3daa6f3cc308888dc50126585d7952f2471de69b2dbe0635d1fdc31223fef8e070842691877e725caf456e2378685a631
@@ -16270,7 +16271,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-import-sort@npm:0.0.7":
+"prettier-plugin-import-sort@npm:^0.0.7":
   version: 0.0.7
   resolution: "prettier-plugin-import-sort@npm:0.0.7"
   dependencies:

@@ -9,3 +9,5 @@ export const Box = styled(YStack, {
 })
 
 export type BoxProps = GetProps<typeof Box>
+
+type x = BoxProps['elevation']
