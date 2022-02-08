@@ -29,18 +29,13 @@ export const createPropMapper = (c: StaticConfig) => {
         value === true
           ? variant['$true'] || variant['true']
           : variant[value] ?? variant['...'] ?? value
-
-      const res =
-        typeof val === 'function'
-          ? val(value, { tokens: conf.tokensParsed, theme, props })
-          : isObj(val)
-          ? { ...val }
-          : val
-
-      if (isObj(res)) {
-        resolveTokens(res, conf, theme, fontFamily)
+      let res = val
+      if (typeof val === 'function') {
+        res = val(value, { tokens: conf.tokensParsed, theme, props })
       }
-
+      if (isObj(res)) {
+        res = resolveTokens(res, conf, theme, fontFamily)
+      }
       return res
     }
 
@@ -70,10 +65,11 @@ export const createPropMapper = (c: StaticConfig) => {
   }
 }
 
-const resolveTokens = (res: any, conf: TamaguiInternalConfig, theme: any, fontFamily: any) => {
-  for (const rKey in res) {
+const resolveTokens = (input: Object, conf: TamaguiInternalConfig, theme: any, fontFamily: any) => {
+  let res = {}
+  for (const rKey in input) {
     const fKey = conf.shorthands[rKey] || rKey
-    const val = res[rKey]
+    const val = input[rKey]
     if (val instanceof Variable) {
       res[fKey] = val.variable
     } else if (typeof val === 'string') {
@@ -82,11 +78,12 @@ const resolveTokens = (res: any, conf: TamaguiInternalConfig, theme: any, fontFa
     } else {
       if (isObj(val)) {
         // for things like shadowOffset which is a sub-object
-        resolveTokens(val, conf, theme, fontFamily)
+        res[fKey] = resolveTokens(val, conf, theme, fontFamily)
       }
       // nullish values cant be tokens so need no exrta parsing
     }
   }
+  return res
 }
 
 const getToken = (
