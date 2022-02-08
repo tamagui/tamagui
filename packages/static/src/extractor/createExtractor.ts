@@ -656,7 +656,7 @@ export function createExtractor() {
               if (value) {
                 if (value.type === 'StringLiteral' && value.value[0] === '$') {
                   if (shouldPrintDebug) {
-                    console.log('  native, disable extract var', value.value)
+                    console.log(`  native, disable extract:  ${name} =`, value.value)
                   }
                   inlinePropCount++
                   return attr
@@ -695,6 +695,9 @@ export function createExtractor() {
 
             // FAILED = dynamic or ternary, keep going
             if (styleValue !== FAILED_EVAL) {
+              if (shouldPrintDebug) {
+                console.log(`  style: ${name} =`, styleValue)
+              }
               return {
                 type: 'style',
                 value: { [name]: styleValue },
@@ -709,6 +712,9 @@ export function createExtractor() {
             // basically for the common use case of:
             // opacity={(conditional ? 0 : 1) * scale}
             if (t.isBinaryExpression(value)) {
+              if (shouldPrintDebug) {
+                console.log(` binary expression ${name} = `, value)
+              }
               const { operator, left, right } = value
               // if one side is a ternary, and the other side is evaluatable, we can maybe extract
               const lVal = attemptEvalSafe(left)
@@ -733,11 +739,17 @@ export function createExtractor() {
 
             const staticConditional = getStaticConditional(value)
             if (staticConditional) {
+              if (shouldPrintDebug) {
+                console.log(` static conditional ${name} = `, value)
+              }
               return { type: 'ternary', value: staticConditional }
             }
 
             const staticLogical = getStaticLogical(value)
             if (staticLogical) {
+              if (shouldPrintDebug) {
+                console.log(` static ternary ${name} = `, value)
+              }
               return { type: 'ternary', value: staticLogical }
             }
 
@@ -746,6 +758,10 @@ export function createExtractor() {
             }
             // if we've made it this far, the prop stays inline
             inlinePropCount++
+
+            if (shouldPrintDebug) {
+              console.log(` inlining ${name} = `, value)
+            }
 
             //
             // RETURN ATTR
@@ -970,26 +986,41 @@ export function createExtractor() {
 
           // evaluate away purely style props
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
-            if (
-              cur.type !== 'attr' ||
-              !t.isJSXAttribute(cur.value) ||
-              typeof cur.value.name.name !== 'string'
-            ) {
-              if (cur.type === 'style') {
-                let key = Object.keys(cur.value)[0]
-                // const fullKey = tamaguiConfig.shorthands[key]
-                // // expand shorthand here
-                // if (fullKey) {
-                //   cur.value = { [fullKey]: cur.value[key] }
-                //   key = fullKey
-                // }
-                if (!validStyles[key] && !pseudos[key]) {
+            if (cur.type === 'style') {
+              let key = Object.keys(cur.value)[0]
+              let value = cur.value[key]
+              const expandedShorthandKey = tamaguiConfig.shorthands[key]
+              // expand shorthand here
+              if (expandedShorthandKey) {
+                cur.value = { [expandedShorthandKey]: value }
+                key = expandedShorthandKey
+              }
+
+              // finally we have all styles + expansions, lets see if we need to skip
+              // any and keep them as attrs
+              if (disableExtractVariables) {
+                if (value[0] === '$') {
                   if (shouldPrintDebug) {
-                    console.log('   - ignoring (expanded already):', key)
+                    console.log(`   keeping variable inline: ${key} =`, value)
                   }
-                  // we've already expanded shorthands, now we can remove them
-                  return acc
+                  return [
+                    {
+                      type: 'attr',
+                      value: t.jsxAttribute(
+                        t.jsxIdentifier(key),
+                        t.jsxExpressionContainer(t.stringLiteral(value))
+                      ),
+                    },
+                  ]
                 }
+              }
+
+              if (!validStyles[key] && !pseudos[key]) {
+                if (shouldPrintDebug) {
+                  console.log('   - ignoring (expanded already):', key)
+                }
+                // we've already expanded shorthands, now we can remove them
+                return acc
               }
             }
             acc.push(cur)
@@ -1026,7 +1057,6 @@ export function createExtractor() {
                 if (isExcludedProp(key)) delete props[key]
               }
             }
-
             const out = postProcessStyles(props, staticConfig, defaultTheme)
             const next = out?.style ?? props
             if (shouldPrintDebug) {
@@ -1035,8 +1065,8 @@ export function createExtractor() {
               console.log('  getStyles style >>\n', logLines(objToStr(out.style)))
               console.log('  getStyles viewp >>\n', logLines(objToStr(out.viewProps)))
             }
-            if (staticConfig.validStyles) {
-              for (const key in next) {
+            for (const key in next) {
+              if (staticConfig.validStyles) {
                 if (!staticConfig.validStyles[key] && !pseudos[key]) {
                   delete next[key]
                 }
@@ -1078,7 +1108,13 @@ export function createExtractor() {
             console.log('   completeStylesProcessed\n', logLines(objToStr(completeStylesProcessed)))
           }
 
-          for (const attr of attrs) {
+          let shouldBail: any = false
+
+          // fix up ternaries, combine final style values
+          attrs = attrs.reduce<ExtractedAttr[]>((acc, attr) => {
+            if (shouldBail) {
+              return acc
+            }
             try {
               switch (attr.type) {
                 case 'ternary':
@@ -1091,26 +1127,49 @@ export function createExtractor() {
                   }
                   break
                 case 'style':
-                  const next = {}
-                  for (const key in attr.value) {
-                    if (key in stylePropsTransform) {
-                      // TODO this logic needs to be a bit more right, because could have spread in between transforms...
-                      next['transform'] = completeStylesProcessed['transform']
+                  for (const keyIn in attr.value) {
+                    const [key, value] = (() => {
+                      if (keyIn in stylePropsTransform) {
+                        // TODO this logic needs to be a bit more right, because could have spread in between transforms...
+                        return ['transform', completeStylesProcessed['transform']] as const
+                      } else {
+                        return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
+                      }
+                    })()
+                    if (disableExtractVariables && typeof value === 'string' && value[0] === '$') {
+                      if (shouldPrintDebug) {
+                        console.log(`   keeping variable inline: ${key} =`, value)
+                      }
+                      acc.push({
+                        type: 'attr',
+                        value: t.jsxAttribute(
+                          t.jsxIdentifier(key),
+                          t.jsxExpressionContainer(t.stringLiteral(value))
+                        ),
+                      })
+                      return acc
                     } else {
-                      next[key] = completeStylesProcessed[key] ?? attr.value[key]
+                      attr.value = {
+                        [key]: value,
+                      }
                     }
                   }
-                  attr.value = next
                   break
               }
             } catch (err) {
               // any error de-opt
-              if (shouldPrintDebug) {
-                console.log(' postprocessing error, deopt', err)
-                node.attributes = ogAttributes
-                return node
-              }
+              shouldBail = err
+              return acc
             }
+
+            acc.push(attr)
+            return acc
+          }, [])
+
+          if (shouldBail) {
+            console.log(' postprocessing error, deopt', shouldBail)
+            node.attributes = ogAttributes
+            return node
           }
 
           if (shouldPrintDebug) {

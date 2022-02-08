@@ -110,6 +110,7 @@ const PopoverMain = memo(
               visible={isOpen}
               style={StyleSheet.absoluteFill}
             >
+              {/* @ts-ignore */}
               <Popper onClose={handleClose} triggerRef={triggerRef} {...props}>
                 {/* <AbsoluteYStack
                   fullscreen

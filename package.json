@@ -14,6 +14,7 @@
     "postinstall": "manypkg check",
     "check": "manypkg check",
     "build": "yarn build:js && yarn build:types",
+    "build:force": "yarn build:js --force && yarn build:types --force",
     "build:js": "SKIP_TYPES=1 turbo run build",
     "build:types": "SKIP_JS=1 turbo run build",
     "watch": "yarn build && SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 100 watch",
@@ -23,7 +24,6 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish": "lerna publish",
     "site": "yarn workspace @tamagui/site dev",
-    "clean": "yarn turbo:clean",
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
