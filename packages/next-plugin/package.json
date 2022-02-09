@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-plugin",
-  "version": "1.0.0-alpha.58",
+  "version": "1.0.0-alpha.59",
   "source": "src/index.ts",
   "license": "MIT",
   "typings": "types",
@@ -16,12 +16,12 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/static": "^1.0.0-alpha.58",
+    "@tamagui/static": "^1.0.0-alpha.59",
     "browserslist": "^4.19.1",
     "css-minimizer-webpack-plugin": "^3.1.3",
     "esbuild-loader": "^2.18.0",
     "next-compose-plugins": "^2.2.1",
-    "tamagui-loader": "^1.0.0-alpha.58",
+    "tamagui-loader": "^1.0.0-alpha.59",
     "thread-loader": "^3.0.4"
   },
   "devDependencies": {
