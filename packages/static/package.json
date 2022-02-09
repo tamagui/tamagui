@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.0.0-alpha.55",
+  "version": "1.0.0-alpha.56",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -59,7 +59,7 @@
     "@dish/babel-preset": "^0.0.6",
     "@expo/match-media": "^0.1.0",
     "@tamagui/build": "^1.0.0-alpha.44",
-    "@tamagui/core": "^1.0.0-alpha.55",
+    "@tamagui/core": "^1.0.0-alpha.56",
     "@tamagui/core-node": "^1.0.0-alpha.48",
     "@tamagui/fake-react-native": "^1.0.0-alpha.17",
     "@tamagui/helpers": "^1.0.0-alpha.48",
@@ -71,7 +71,7 @@
     "invariant": "^2.2.4",
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.21",
-    "tamagui": "^1.0.0-alpha.55"
+    "tamagui": "^1.0.0-alpha.56"
   },
   "peerDependencies": {
     "react-native-web": "*"
