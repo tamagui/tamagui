@@ -110,7 +110,6 @@ const PopperContent = React.forwardRef(({ children, style, ...rest }: any, ref: 
     setOverlayRef,
   } = context
   const overlayRef = useRef(null)
-  console.log('triggerRef', triggerRef)
   // const { top } = useSafeAreaInsets()
   const { overlayProps, rendered, arrowProps, placement } = useOverlayPosition({
     targetRef: triggerRef,
