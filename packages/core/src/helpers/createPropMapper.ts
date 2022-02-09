@@ -84,6 +84,11 @@ const resolveTokens = (input: Object, conf: TamaguiInternalConfig, theme: any, f
         res[fKey] = input[fKey]
       }
     }
+    if (process.env.NODE_ENV === 'development') {
+      if (res[fKey]?.[0] === '$') {
+        console.warn('missing token in theme', fKey, res[fKey], theme)
+      }
+    }
   }
   return res
 }

@@ -467,20 +467,30 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   // Once configuration is run and all components are registered
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
+    const shouldDebug = staticConfig.defaultProps?.debug
     tamaguiConfig = conf
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-    const next = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, true)
+    const { classNames, pseudos, style, viewProps } = getSplitStyles(
+      staticConfig.defaultProps,
+      staticConfig,
+      initialTheme,
+      true
+    )
     if (isWeb) {
-      if (next.classNames) {
-        defaultsClassName += next.classNames + ' '
+      if (classNames) {
+        defaultsClassName += classNames + ' '
       }
-      defaultsClassName += addStylesUsingClassname([next.style, next.pseudos])
+      defaultsClassName += addStylesUsingClassname([style, pseudos])
+      if (process.env.NODE_ENV === 'development' && shouldDebug) {
+        // prettier-ignore
+        console.log('tamagui 🐛:', { defaultsClassName: defaultsClassName.split(' ') })
+      }
     } else {
       // native, create a default StyleSheet
-      // TODO handle next.pseudos
+      // TODO handle pseudos
       const sheetStyles = {}
-      for (const style of next.style) {
-        Object.assign(sheetStyles, style)
+      for (const styleObj of style) {
+        Object.assign(sheetStyles, styleObj)
       }
       defaultNativeStyle = StyleSheet.create({
         base: sheetStyles,
@@ -488,13 +498,12 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     }
     // @ts-ignore
     component.defaultProps = {
-      ...next.viewProps,
+      ...viewProps,
       ...component.defaultProps,
     }
-    if (process.env.NODE_ENV === 'development') {
-      if (staticConfig.defaultProps?.debug) {
-        console.log('tamagui debug component:', next, defaultsClassName, component.defaultProps)
-      }
+    if (process.env.NODE_ENV === 'development' && shouldDebug) {
+      // prettier-ignore
+      console.log('tamagui 🐛:', { initialTheme, classNames, pseudos, style, viewProps, defaultsClassName, component })
     }
   })
 
