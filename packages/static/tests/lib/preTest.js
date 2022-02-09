@@ -47,6 +47,10 @@ async function extractStaticAppBabel() {
     module: {
       rules: [
         {
+          test: /\.css$/,
+          use: 'null-loader',
+        },
+        {
           test: /\.[jt]sx?$/,
           use: [
             {

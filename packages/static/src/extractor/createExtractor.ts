@@ -1131,6 +1131,7 @@ export function createExtractor() {
                         return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
                       }
                     })()
+                    delete attr.value[keyIn]
                     attr.value[key] = value
                   }
                   continue
