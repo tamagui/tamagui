@@ -22,6 +22,7 @@ export const docsRoutes = [
       { title: 'Headings', route: '/docs/components/headings' },
       { title: 'Visually Hidden', route: '/docs/components/visually-hidden' },
       { title: 'Forms', route: '/docs/components/forms' },
+      { title: 'Separator', route: '/docs/components/separator' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
       { title: 'Drawer', route: '/docs/components/drawer' },
       // { title: 'Menu', route: '/docs/components/menu' },

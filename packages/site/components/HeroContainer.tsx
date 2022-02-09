@@ -1,13 +1,7 @@
 import React from 'react'
-import { Theme, YStack, useThemeName } from 'tamagui'
+import { Theme, YStack } from 'tamagui'
 
-export function HeroContainer({
-  children,
-  resetTheme,
-}: {
-  children?: React.ReactNode
-  resetTheme?: boolean
-}) {
+export function HeroContainer({ children }: { children?: React.ReactNode }) {
   return (
     <YStack
       // In case any semantic content sneaks through in a hero, let's hide it
@@ -30,13 +24,20 @@ export function HeroContainer({
       //   mx: '$-6',
       // }}
     >
-      {resetTheme ? <ResetTheme>{children}</ResetTheme> : children}
+      {children}
     </YStack>
   )
 }
 
-function ResetTheme({ children }: { children?: any }) {
-  const themeName = useThemeName({ parent: true })
-  const parentThemeBaseName = themeName.replace(/[a-z]+\-/, '')
-  return <Theme name={parentThemeBaseName as any}>{children}</Theme>
-}
+// not ssr safe
+// function ResetTheme({ children }: { children?: any }) {
+//   const themeName = useThemeName({ parent: true })
+//   const parentThemeBaseName = themeName.replace(/[a-z]+\-/, '')
+//   console.log('resetting to', themeName, parentThemeBaseName)
+
+//   return (
+//     <Theme debug name={parentThemeBaseName as any}>
+//       {children}
+//     </Theme>
+//   )
+// }
