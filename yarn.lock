@@ -4028,6 +4028,7 @@ __metadata:
     jest: ^27.3.1
     loader-utils: ^2.0.0
     lodash: ^4.17.21
+    null-loader: ^4.0.1
     react: "*"
     react-dom: "*"
     react-native-web: ^0.17.5
@@ -14573,6 +14574,18 @@ __metadata:
   dependencies:
     boolbase: ^1.0.0
   checksum: 5386d035c48438ff304fe687704d93886397349d1bed136de97aeae464caba10e8ffac55a04b215b86b3bc8897f33e0a5aa1045a9d8b2f251ae61b2a3ad3e450
+  languageName: node
+  linkType: hard
+
+"null-loader@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "null-loader@npm:4.0.1"
+  dependencies:
+    loader-utils: ^2.0.0
+    schema-utils: ^3.0.0
+  peerDependencies:
+    webpack: ^4.0.0 || ^5.0.0
+  checksum: eeb4c4dd2f8f41e46f5665e4500359109e95ec1028a178a60e0161984906572da7dd87644bcc3cb29f0125d77e2b2508fb4f3813cfb1c6604a15865beb4b987b
   languageName: node
   linkType: hard
 
