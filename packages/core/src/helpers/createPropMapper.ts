@@ -100,14 +100,9 @@ const getToken = (
   theme: any,
   fontFamily: string | undefined = '$body'
 ) => {
-  if (themeParsed[value]) {
-    if (isWeb && themeParsed[value].variable) {
-      return themeParsed[value].variable
-    } else {
-      if (value && value[0] === '$') {
-        return theme[`${value.slice(1)}`]?.val || themeParsed[value]?.val
-      }
-    }
+  const tokenVal = themeParsed[value]
+  if (tokenVal) {
+    return isWeb && tokenVal.variable ? tokenVal.variable : tokenVal.val
   }
   let valOrVar: any
   if (key === 'fontFamily') {
@@ -148,6 +143,10 @@ const getToken = (
   const spaceVar = tokensParsed.space[value]
   if (spaceVar) {
     return spaceVar.variable
+  }
+  if (value && value[0] === '$') {
+    console.warn('Missing token in theme', value, 'in', theme)
+    return null
   }
   return value
 }
