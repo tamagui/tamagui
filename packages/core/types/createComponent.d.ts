@@ -1,3 +1,5 @@
+/// <reference types="react" />
+import './tamagui-base.css';
 import { ViewStyle } from 'react-native';
 import { StaticComponent, StaticConfig, StaticConfigParsed } from './types';
 export declare const mouseUps: Set<Function>;
@@ -13,5 +15,6 @@ export declare function spacedChildren({ isZStack, children, space, flexDirectio
     space?: any;
     flexDirection?: ViewStyle['flexDirection'];
 }): any;
+export declare const AbsoluteFill: (props: any) => JSX.Element;
 export {};
 //# sourceMappingURL=createComponent.d.ts.map

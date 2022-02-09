@@ -1,3 +1,5 @@
+import './tamagui-base.css'
+
 import { concatClassName, stylePropsView } from '@tamagui/helpers'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
@@ -450,18 +452,24 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         console.log('🥚 props in:', props)
         console.log('🥚 props out:', viewProps, viewProps.className?.split(' '))
         // prettier-ignore
-        console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, configIn })
+        console.log('🥚 etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
-        if (isWeb) console.log('🥚 component info', { staticConfig, tamaguiConfig })
+        if (typeof window !== 'undefined') {
+          console.log('🥚 component info', { staticConfig, tamaguiConfig })
+        }
       }
     }
 
-    return (
-      <>
-        {features}
-        {content}
-      </>
-    )
+    if (features.length) {
+      return (
+        <>
+          {features}
+          {content}
+        </>
+      )
+    }
+
+    return content
   })
 
   // Once configuration is run and all components are registered
@@ -589,7 +597,9 @@ export function spacedChildren({
 
     const key = `${child?.['key'] ?? index}`
 
-    next.push(<Fragment key={key}>{isZStack ? <Absolute>{child}</Absolute> : child}</Fragment>)
+    next.push(
+      <Fragment key={key}>{isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}</Fragment>
+    )
 
     // allows for custom visually hidden components that dont insert spacing
     if (child?.['type']?.['isVisuallyHidden']) {
@@ -614,14 +624,9 @@ export function spacedChildren({
   return next
 }
 
-// for now not so "tamagui-y"
-const Absolute = ({ children }) => <View style={sheet.fullscreen}>{children}</View>
-const sheet = StyleSheet.create({
-  fullscreen: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-})
+export const AbsoluteFill = (props: any) =>
+  isWeb ? (
+    <div className="tamagui-absolute-fill">{props.children}</div>
+  ) : (
+    <View style={StyleSheet.absoluteFill}>{props.child}</View>
+  )

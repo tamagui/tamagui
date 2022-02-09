@@ -20,6 +20,9 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   const Mod = require('module')
   const og = Mod.prototype.require
   Mod.prototype.require = function (path: string) {
+    if (path.endsWith('.css')) {
+      return {}
+    }
     if (path === '@gorhom/bottom-sheet') {
       return {}
     }

@@ -5,6 +5,9 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "typings": "types",
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch"

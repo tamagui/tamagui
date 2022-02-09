@@ -22,7 +22,9 @@ const pkgModule = pkg.module
 async function build() {
   console.log('🥚', pkg.name)
   const x = Date.now()
-  let files = (await fg(['src/**/*.ts', 'src/**/*.tsx'])).filter((x) => !x.includes('.d.ts'))
+  let files = (await fg(['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.css'])).filter(
+    (x) => !x.includes('.d.ts')
+  )
 
   if (process.env.NO_CLEAN) {
     console.log('skip typecheck')

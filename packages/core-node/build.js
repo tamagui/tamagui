@@ -4,13 +4,17 @@ const watch = process.argv.includes('--watch')
 const fs = require('fs-extra')
 const exec = require('execa')
 const _ = require('lodash')
-const fg = require('fast-glob')
+const path = require('path')
 
 async function build() {
   console.log('building core-node...')
   try {
     await fs.remove('dist')
     await exec('npx', ['ttsc', '--skipLibCheck', '--skipDefaultLibCheck'])
+    await fs.copyFile(
+      path.join(__dirname, '../core/src/tamagui-base.css'),
+      path.join(__dirname, './dist/core/src/tamagui-base.css')
+    )
     await exec('npx', [
       'esbuild',
       '--bundle',
