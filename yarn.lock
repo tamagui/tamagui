@@ -3790,7 +3790,7 @@ __metadata:
     "@babel/traverse": ^7.15.4
     "@babel/types": ^7.15.6
     "@tamagui/build": ^1.0.0-alpha.58
-    "@tamagui/static": ^1.0.0-alpha.60
+    "@tamagui/static": ^1.0.0-alpha.61
   languageName: unknown
   linkType: soft
 
@@ -3911,18 +3911,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/next-plugin@^1.0.0-alpha.60, @tamagui/next-plugin@workspace:packages/next-plugin":
+"@tamagui/next-plugin@^1.0.0-alpha.61, @tamagui/next-plugin@workspace:packages/next-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.58
-    "@tamagui/static": ^1.0.0-alpha.60
+    "@tamagui/static": ^1.0.0-alpha.61
     browserslist: ^4.19.1
     css-minimizer-webpack-plugin: ^3.1.3
     esbuild-loader: ^2.18.0
     next: ^12.0.10
     next-compose-plugins: ^2.2.1
-    tamagui-loader: ^1.0.0-alpha.60
+    tamagui-loader: ^1.0.0-alpha.61
     thread-loader: ^3.0.4
   peerDependencies:
     next: ">=12.0.0"
@@ -3952,7 +3952,7 @@ __metadata:
     "@mdx-js/loader": ^1.6.22
     "@tamagui/colors": ^1.0.0-alpha.58
     "@tamagui/feather-icons": ^1.0.0-alpha.58
-    "@tamagui/next-plugin": ^1.0.0-alpha.60
+    "@tamagui/next-plugin": ^1.0.0-alpha.61
     compare-versions: ^4.0.1
     copy-to-clipboard: ^3.3.1
     css-minimizer-webpack-plugin: ^3.1.3
@@ -3985,14 +3985,14 @@ __metadata:
     remark-slug: ^6.0.0
     seamless-scroll-polyfill: ^1.2.3
     tamagui: ^1.0.0-alpha.60
-    tamagui-loader: ^1.0.0-alpha.60
+    tamagui-loader: ^1.0.0-alpha.61
     unified: ^9.2.1
     unist-util-visit: ^2.0.3
     webpack-bundle-analyzer: ^4.4.2
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@^1.0.0-alpha.60, @tamagui/static@workspace:packages/static":
+"@tamagui/static@^1.0.0-alpha.61, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -18895,12 +18895,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.0.0-alpha.60, tamagui-loader@workspace:packages/loader":
+"tamagui-loader@^1.0.0-alpha.61, tamagui-loader@workspace:packages/loader":
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.58
-    "@tamagui/static": ^1.0.0-alpha.60
+    "@tamagui/static": ^1.0.0-alpha.61
     fs-extra: ^9.1.0
     loader-utils: ^2.0.0
     lodash: ^4.17.21
