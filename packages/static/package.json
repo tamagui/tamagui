@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.0.0-alpha.60",
+  "version": "1.0.0-alpha.61",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
