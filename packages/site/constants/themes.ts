@@ -17,9 +17,9 @@ const darkColors = Object.fromEntries(
 
 const light = {
   bg: '#fff',
-  bg2: tokens.color.gray4,
-  bg3: tokens.color.gray6,
-  bg4: tokens.color.gray8,
+  bg2: tokens.color.gray2,
+  bg3: tokens.color.gray4,
+  bg4: tokens.color.gray6,
   bgTransparent: tokens.color.grayA1,
   borderColor: tokens.color.gray4,
   borderColor2: tokens.color.gray6,

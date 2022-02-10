@@ -58,11 +58,11 @@ export const Tooltip = ({
           return null
         }
         return [
-          showArrow ? <HoverablePopover.Arrow backgroundColor="$bg2" /> : null,
+          showArrow ? <HoverablePopover.Arrow backgroundColor="$bg" /> : null,
           <Theme name={alwaysDark ? 'dark' : null}>
             <TooltipFrame
               elevation={size}
-              backgroundColor="$bg2"
+              backgroundColor="$bg"
               maxWidth={400}
               size={size}
               {...tooltipFrameProps}

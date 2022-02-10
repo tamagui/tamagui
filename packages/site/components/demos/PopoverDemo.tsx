@@ -9,8 +9,8 @@ export function PopoverDemo() {
       trigger={(props) => <Button size="$6" icon={Menu} circular {...props} />}
     >
       <Popover.Content>
-        <Popover.Arrow backgroundColor="$bg2" />
-        <YStack backgroundColor="$bg2" padding="$6" borderRadius="$4">
+        <Popover.Arrow backgroundColor="$bg" />
+        <YStack backgroundColor="$bg" padding="$6" borderRadius="$4">
           <H4>Popover contents</H4>
           <Paragraph>Lorem ipsum dolor sit amet.</Paragraph>
         </YStack>
