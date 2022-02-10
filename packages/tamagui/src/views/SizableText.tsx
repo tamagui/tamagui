@@ -1,10 +1,10 @@
-import { GetProps, Text, Variable, styled } from '@tamagui/core'
+import { GetProps, Text, isVariable, styled } from '@tamagui/core'
 
 export const sizableTextSizeVariant = (val = '$4', { tokens, props }) => {
   const family = (
     typeof props.fontFamily === 'string'
       ? props.fontFamily
-      : props.fontFamily instanceof Variable
+      : isVariable(props.fontFamily)
       ? props.fontFamily.val
       : props.fontFamily || '$body'
   ) as any

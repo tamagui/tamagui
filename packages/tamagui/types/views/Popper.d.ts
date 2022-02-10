@@ -27,8 +27,8 @@ export declare type IScrollContentStyle = {
     arrowHeight: number;
     arrowWidth: number;
 };
-export declare const defaultArrowHeight = 15;
-export declare const defaultArrowWidth = 15;
+export declare const defaultArrowHeight = 11;
+export declare const defaultArrowWidth = 11;
 export declare const getDiagonalLength: (height: number, width: number) => number;
 export declare const Popper: {
     (props: IPopperProps & {
