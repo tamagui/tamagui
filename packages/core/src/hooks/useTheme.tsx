@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { GET_DEFAULT_THEME } from '../constants/constants'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
-import { Variable } from '../createVariable'
+import { isVariable } from '../createVariable'
 import { ThemeName, ThemeObject } from '../types'
 import { ThemeContext } from '../views/ThemeContext'
 import { ThemeManagerContext } from '../views/ThemeManagerContext'
@@ -93,7 +93,7 @@ export const useTheme = (): ThemeObject => {
               console.warn(`No theme value "${String(key)}" in`, activeTheme, themes)
               return null
             }
-            if (!(val instanceof Variable)) {
+            if (!isVariable(val)) {
               console.warn('Non variable!', val)
             }
             if (val.name !== key) {

@@ -481,8 +481,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const { classNames, pseudos, style, viewProps } = getSplitStyles(
       staticConfig.defaultProps,
       staticConfig,
-      initialTheme,
-      true
+      initialTheme
     )
     if (isWeb) {
       if (classNames) {

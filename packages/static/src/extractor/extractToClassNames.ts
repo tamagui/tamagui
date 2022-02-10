@@ -128,6 +128,9 @@ export function extractToClassNames({
         if (!style) return []
         const styleWithPrev = ensureNeededPrevStyle(style)
         const res = getStylesAtomic(styleWithPrev)
+        if (shouldPrintDebug) {
+          console.log('styleWithPrev', styleWithPrev, res)
+        }
         if (res.length) {
           finalStyles = [...finalStyles, ...res]
         }

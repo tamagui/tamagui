@@ -1,4 +1,6 @@
+export declare const IS_VARIABLE_SYMBOL = "__isVariable__";
 export declare class Variable {
+    [IS_VARIABLE_SYMBOL]: boolean;
     name: string;
     val: string | number;
     variable: string | number;
@@ -6,7 +8,7 @@ export declare class Variable {
     toString(): string;
 }
 declare type VariableIn = {
-    val: string | number;
+    val: string | number | Variable;
     name: string;
 };
 export declare const createVariable: (props: VariableIn) => Variable;

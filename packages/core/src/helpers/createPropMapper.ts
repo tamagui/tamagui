@@ -1,6 +1,6 @@
 import { getTamagui } from '../conf'
 import { isWeb } from '../constants/platform'
-import { Variable } from '../createVariable'
+import { isVariable } from '../createVariable'
 import { StaticConfig, TamaguiInternalConfig } from '../types'
 import { isObj } from './isObj'
 
@@ -52,7 +52,7 @@ export const createPropMapper = (c: StaticConfig) => {
       value = getToken(key, value, conf, theme, fontFamily)
     }
 
-    if (value instanceof Variable) {
+    if (isVariable(value)) {
       shouldReturn = true
       value = value.variable
     }
@@ -70,7 +70,7 @@ const resolveTokens = (input: Object, conf: TamaguiInternalConfig, theme: any, f
   for (const rKey in input) {
     const fKey = conf.shorthands[rKey] || rKey
     const val = input[rKey]
-    if (val instanceof Variable) {
+    if (isVariable(val)) {
       res[fKey] = val.variable
     } else if (typeof val === 'string') {
       const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily) : val
@@ -121,7 +121,7 @@ const getToken = (
     valOrVar = tokensParsed.font[fontFamily]?.weight[value] || value
   }
   if (typeof valOrVar !== 'undefined') {
-    if (valOrVar instanceof Variable) {
+    if (isVariable(valOrVar)) {
       return valOrVar.variable
     } else {
       return valOrVar

@@ -3,7 +3,7 @@ import { StaticConfigParsed, ThemeObject } from '../types';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
 export declare const getSplitStyles: (props: {
     [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeObject, isSplittingDefaultProps?: boolean | undefined) => {
+}, staticConfig: StaticConfigParsed, theme: ThemeObject) => {
     viewProps: Record<string, any>;
     style: any[];
     pseudos: {

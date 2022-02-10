@@ -22,8 +22,7 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
-  theme: ThemeObject,
-  isSplittingDefaultProps?: boolean
+  theme: ThemeObject
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: Record<string, any> = {}
@@ -89,6 +88,10 @@ export const getSplitStyles = (
 
     const out = staticConfig.propMapper(keyInit, valInit, theme, props)
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
+
+    if (props['debug']) {
+      console.log('wut', keyInit, valInit, out)
+    }
 
     for (const [key, val] of expanded) {
       // const val = valueMap(valInit) ?? valInit

@@ -3,7 +3,7 @@ import { getStyleRules } from '@tamagui/helpers'
 import { configListeners, getHasConfigured, setConfig } from './conf'
 import { PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
-import { Variable, createVariable } from './createVariable'
+import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { configureMedia } from './hooks/useMedia'
 import {
@@ -206,7 +206,7 @@ const parseTokens = (tokens: any) => {
 // shared by createTamagui so extracted here
 function ensureThemeVariable(theme: any, key: string) {
   const val = theme[key]
-  if (!(val instanceof Variable)) {
+  if (!isVariable(val)) {
     theme[key] = createVariable({
       name: key,
       val,

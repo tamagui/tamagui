@@ -572,11 +572,18 @@ export function createExtractor() {
               !attribute.name ||
               typeof attribute.name.name !== 'string'
             ) {
+              if (shouldPrintDebug) {
+                console.log('  ! inlining, spread attr')
+              }
               inlinePropCount++
               return attr
             }
 
             const name = attribute.name.name
+
+            if (name.startsWith('data-')) {
+              return attr
+            }
 
             if (isExcludedProp(name)) {
               return null
@@ -656,7 +663,7 @@ export function createExtractor() {
               if (value) {
                 if (value.type === 'StringLiteral' && value.value[0] === '$') {
                   if (shouldPrintDebug) {
-                    console.log(`  native, disable extract:  ${name} =`, value.value)
+                    console.log(`  ! inlining, native disable extract: ${name} =`, value.value)
                   }
                   inlinePropCount++
                   return attr
@@ -686,6 +693,9 @@ export function createExtractor() {
               }
               for (const key of keys) {
                 if (!isStaticAttributeName(key)) {
+                  if (shouldPrintDebug) {
+                    console.log('  ! inlining, non-static', key)
+                  }
                   inlinePropCount++
                 }
               }
@@ -1069,7 +1079,13 @@ export function createExtractor() {
                 if (isExcludedProp(key)) delete props[key]
               }
             }
+            if (shouldPrintDebug) {
+              props['debug'] = true
+            }
             const out = postProcessStyles(props, staticConfig, defaultTheme)
+            if (shouldPrintDebug) {
+              delete props['debug']
+            }
             const next = out?.style ?? props
             if (shouldPrintDebug) {
               console.log('    -- viewProps:\n', logLines(objToStr(out.viewProps)))
@@ -1113,9 +1129,9 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log('   completeStaticProps\n', logLines(objToStr(completeStaticProps)))
+            console.log('   completeStaticProps\n', completeStaticProps)
             // prettier-ignore
-            console.log('   completeStylesProcessed\n', logLines(objToStr(completeStylesProcessed)))
+            console.log('   completeStylesProcessed\n', completeStylesProcessed)
           }
 
           let getStyleError: any = null
@@ -1136,12 +1152,13 @@ export function createExtractor() {
                     const [key, value] = (() => {
                       if (keyIn in stylePropsTransform) {
                         // TODO this logic needs to be a bit more right, because could have spread in between transforms...
+                        // could just output flat transforms as webkit now supports on recent versions
                         return ['transform', completeStylesProcessed['transform']] as const
                       } else {
                         return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
                       }
                     })()
-                    if (shouldPrintDebug) console.log('style', { keyIn, key, value })
+                    // if (shouldPrintDebug) console.log('style', { keyIn, key, value })
                     delete attr.value[keyIn]
                     attr.value[key] = value
                   }
