@@ -15,6 +15,9 @@ import { Modal as ModalNative, ModalProps as ModalPropsReact } from 'react-nativ
 import { prevent } from '../helpers/prevent'
 import { YStack } from './Stacks'
 
+// bugfix esbuild strips react jsx: 'preserve'
+React['createElement']
+
 export type ModalProps = Omit<ModalPropsReact, 'children'> &
   AnimatedStackProps & {
     visible?: boolean

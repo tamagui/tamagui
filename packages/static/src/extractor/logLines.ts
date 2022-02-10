@@ -2,7 +2,7 @@ export const logLines = (str: string) => {
   let lines: string[] = ['']
   const items = str.split(' ')
   for (const item of items) {
-    if (item.length + lines[lines.length - 1].length > 100) {
+    if (item.length + lines[lines.length - 1].length > 85) {
       lines.push('')
     }
     lines[lines.length - 1] += item + ' '

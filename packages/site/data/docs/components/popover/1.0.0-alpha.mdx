@@ -1,0 +1,145 @@
+---
+title: Popover
+description: A simple popover component
+name: text
+---
+
+# Popover
+
+<Description>Show content with a trigger in a floating pane.</Description>
+
+<HeroContainer>
+  <PopoverDemo />
+</HeroContainer>
+
+```jsx hero template=Popover
+
+```
+
+<Highlights
+  features={[
+    `Optional arrow to point to content.`,
+    `Keeps within bounds of page.`,
+    `Can be placed into 12 anchor positions.`,
+  ]}
+/>
+
+### Popover props
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      required: true,
+      type: `React.ReactNode
+| ((state: { open: boolean }) => React.ReactNode)`,
+      description: `Popover children`,
+    },
+    {
+      name: 'trigger',
+      required: true,
+      type: `(props: {
+  ref: any
+  onPress: (e?: GestureResponderEvent) => any
+  [key: string]: any
+},
+state: { open: boolean })) => JSX.Element`,
+      description: `Function that returns a React Element. This element will be used as a Trigger for the popover`,
+    },
+    {
+      name: 'defaultIsOpen',
+      required: false,
+      type: 'boolean',
+      description: `If true, the popover will be opened by default`,
+    },
+    {
+      name: 'isOpen',
+      required: false,
+      type: 'boolean',
+      description: `Whether the popover is opened. Useful for conrolling the open state`,
+    },
+    {
+      name: 'trapFocus',
+      required: false,
+      type: 'boolean',
+      description: `Whether popover should trap focus. @default true`,
+    },
+    {
+      name: 'shouldFlip',
+      required: false,
+      type: 'boolean',
+      description: `Whether the element should flip its orientation (e.g. top to bottom or left to right) when there is `,
+    },
+    {
+      name: 'initialFocusRef',
+      required: false,
+      type: 'React.RefObject<any>',
+      description: `The ref of element to receive focus when the popover opens.`,
+    },
+    {
+      name: 'finalFocusRef',
+      required: false,
+      type: 'React.RefObject<any>',
+      description: `The ref of element to receive focus when the modal closes.`,
+    },
+    {
+      name: 'crossOffset',
+      required: false,
+      type: 'number',
+      description: `The additional offset applied along the cross axis between the element and its trigger element.`,
+    },
+    {
+      name: 'offset',
+      required: false,
+      type: 'number',
+      description: `The additional offset applied along the main axis between the element and its trigger element.`,
+    },
+    {
+      name: 'shouldOverlapWithTrigger',
+      required: false,
+      type: 'boolean',
+      description: `Determines whether menu content should overlap with the trigger @default false`,
+    },
+    {
+      name: 'isKeyboardDismissable',
+      required: false,
+      type: 'boolean',
+      description: `If true, the modal will close when Escape key is pressed @default true`,
+    },
+    {
+      name: 'placement',
+      required: false,
+      type: `'top' 
+| 'bottom' 
+| 'left' 
+| 'right' 
+| 'top left' 
+| 'top right' 
+| 'bottom left' 
+| 'bottom 'right' 
+| 'right top' 
+| 'right bottom' 
+| 'left top' 
+| 'left bottom'`,
+      description: `Popover placement @default bottom`,
+    },
+    {
+      name: 'onClose',
+      required: false,
+      type: '() => void',
+      description: `This function will be invoked when popover is closed. It'll also be called when user attempts to `,
+    },
+    {
+      name: 'onOpen',
+      required: false,
+      type: '() => void',
+      description: `This function will be invoked when popover is opened`,
+    },
+    {
+      name: 'onChangeOpen',
+      required: false,
+      type: '(open: boolean) => void',
+      description: `This function will be invoked when popover is opened or closed`,
+    },
+  ]}
+/>

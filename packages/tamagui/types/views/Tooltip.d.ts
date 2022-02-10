@@ -7,6 +7,7 @@ export declare type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
     contents?: string | any;
     tooltipFrameProps?: Omit<StackProps, 'children'>;
     alwaysDark?: boolean;
+    showArrow?: boolean;
 };
-export declare const Tooltip: ({ size, contents, tooltipFrameProps, alwaysDark, ...props }: TooltipProps) => JSX.Element;
+export declare const Tooltip: ({ size, contents, tooltipFrameProps, alwaysDark, showArrow, ...props }: TooltipProps) => JSX.Element;
 //# sourceMappingURL=Tooltip.d.ts.map

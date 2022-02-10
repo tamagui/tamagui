@@ -25,9 +25,11 @@ import { Platform } from 'react-native'
 
 import { useKeyboardDismissable } from '../../hooks/useKeyboardDismissable'
 import { Popper } from '../Popper'
-import { YStack } from '../Stacks'
 import { PopoverContext } from './PopoverContext'
 import type { IPopoverContentProps } from './types'
+
+// bugfix esbuild strips react jsx: 'preserve'
+React['createElement']
 
 export const PopoverContent = React.forwardRef((props: IPopoverContentProps, ref: any) => {
   const {
@@ -70,8 +72,7 @@ export const PopoverContent = React.forwardRef((props: IPopoverContentProps, ref
 
   return (
     <Popper.Content nativeID={popoverContentId} {...accessibilityProps} ref={ref}>
-      {/* @ts-ignore TODO */}
-      <YStack {...props}>{props.children}</YStack>
+      {props.children}
     </Popper.Content>
   )
 })

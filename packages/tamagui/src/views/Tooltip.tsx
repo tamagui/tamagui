@@ -6,11 +6,15 @@ import { InteractiveFrame } from './InteractiveFrame'
 import { Paragraph } from './Paragraph'
 import { SizableTextProps } from './SizableText'
 
+// bugfix esbuild strips react jsx: 'preserve'
+React['createElement']
+
 export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
   size?: SizableTextProps['size']
   contents?: string | any
   tooltipFrameProps?: Omit<StackProps, 'children'>
   alwaysDark?: boolean
+  showArrow?: boolean
 }
 
 const TooltipFrame = styled(InteractiveFrame, {
@@ -23,13 +27,9 @@ export const Tooltip = ({
   contents,
   tooltipFrameProps,
   alwaysDark,
+  showArrow,
   ...props
 }: TooltipProps) => {
-  // this causes ssr issues
-  // if (isTouchDevice) {
-  //   // TODO optionally have it show something on tap
-  //   return <>{props.children}</>
-  // }
   return (
     <HoverablePopover
       placement="bottom"
@@ -54,22 +54,25 @@ export const Tooltip = ({
       }
     >
       {({ open }) => {
-        return open ? (
+        if (!open) {
+          return null
+        }
+        return [
+          showArrow ? <HoverablePopover.Arrow backgroundColor="$bg2" /> : null,
           <Theme name={alwaysDark ? 'dark' : null}>
             <TooltipFrame
               elevation={size}
-              margin={10}
               backgroundColor="$bg2"
               maxWidth={400}
               size={size}
               {...tooltipFrameProps}
             >
-              <Paragraph textAlign="center" fontSize={14} color="$color">
+              <Paragraph textAlign="center" color="$color" size={size}>
                 {contents}
               </Paragraph>
             </TooltipFrame>
-          </Theme>
-        ) : null
+          </Theme>,
+        ]
       }}
     </HoverablePopover>
   )

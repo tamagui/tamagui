@@ -2,13 +2,13 @@ import { Stack, styled } from '@tamagui/core'
 
 export const Separator = styled(Stack, {
   backgroundColor: '$separatorColor',
-  height: 0.5,
+  height: 1,
 
   variants: {
     vertical: {
       true: {
         height: 'auto',
-        width: 0.5,
+        width: 1,
         alignSelf: 'stretch',
         flexShrink: 0,
       },

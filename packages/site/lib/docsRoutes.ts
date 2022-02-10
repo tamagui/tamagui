@@ -21,6 +21,8 @@ export const docsRoutes = [
       { title: 'Headings', route: '/docs/components/headings' },
       { title: 'Forms', route: '/docs/components/forms' },
       { title: 'Separator', route: '/docs/components/separator' },
+      { title: 'Popover', route: '/docs/components/popover' },
+      { title: 'HoverablePopover', route: '/docs/components/hoverable-popover' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
       { title: 'Drawer', route: '/docs/components/drawer' },
       { title: 'LinearGradient', route: '/docs/components/linear-gradient' },

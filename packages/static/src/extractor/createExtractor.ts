@@ -293,9 +293,9 @@ export function createExtractor() {
           //
 
           // TODO restore
-          const hasDeopt = (obj: Object) => {
-            return Object.keys(obj).some(isDeoptedProp)
-          }
+          // const hasDeopt = (obj: Object) => {
+          //   return Object.keys(obj).some(isDeoptedProp)
+          // }
 
           // flatten any easily evaluatable spreads
           const flattenedAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
@@ -684,13 +684,12 @@ export function createExtractor() {
                   keys = Object.keys(out)
                 }
               }
-              if (
-                keys.some((k) => !isStaticAttributeName(k) && k !== 'tag' && !k.startsWith('data-'))
-              ) {
-                if (shouldPrintDebug) {
-                  console.log('  ! inlining, not static attribute name', name)
+              for (const key of keys) {
+                if (!isStaticAttributeName(key)) {
+                  inlinePropCount++
                 }
-                inlinePropCount++
+              }
+              if (inlinePropCount) {
                 return attr
               }
             }
@@ -998,6 +997,24 @@ export function createExtractor() {
                 key = nonShortKey
               }
 
+              if (
+                // de-opt transform styles so it merges properly if not flattened
+                (!shouldFlatten && stylePropsTransform[key]) ||
+                // de-opt if non-style
+                (!validStyles[key] && !pseudos[key] && !key.startsWith('data-'))
+              ) {
+                acc.push({
+                  type: 'attr',
+                  value: t.jsxAttribute(
+                    t.jsxIdentifier(key),
+                    t.jsxExpressionContainer(
+                      typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
+                    )
+                  ),
+                })
+                return acc
+              }
+
               // finally we have all styles + expansions, lets see if we need to skip
               // any and keep them as attrs
               if (disableExtractVariables) {
@@ -1005,24 +1022,15 @@ export function createExtractor() {
                   if (shouldPrintDebug) {
                     console.log(`   keeping variable inline: ${key} =`, value)
                   }
-                  return [
-                    {
-                      type: 'attr',
-                      value: t.jsxAttribute(
-                        t.jsxIdentifier(key),
-                        t.jsxExpressionContainer(t.stringLiteral(value))
-                      ),
-                    },
-                  ]
+                  acc.push({
+                    type: 'attr',
+                    value: t.jsxAttribute(
+                      t.jsxIdentifier(key),
+                      t.jsxExpressionContainer(t.stringLiteral(value))
+                    ),
+                  })
+                  return acc
                 }
-              }
-
-              if (!validStyles[key] && !pseudos[key]) {
-                if (shouldPrintDebug) {
-                  console.log('   - ignoring (expanded already):', key)
-                }
-                // we've already expanded shorthands, now we can remove them
-                return acc
               }
             }
             acc.push(cur)
@@ -1030,7 +1038,7 @@ export function createExtractor() {
           }, [])
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (evaluated styles): \n', logLines(attrs.map(attrStr).join(', ')))
+            console.log('  - attrs (evaluated): \n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           // combine styles, leave undefined values
@@ -1062,9 +1070,9 @@ export function createExtractor() {
             const out = postProcessStyles(props, staticConfig, defaultTheme)
             const next = out?.style ?? props
             if (shouldPrintDebug) {
-              console.log('  viewProps >>\n', logLines(objToStr(out.viewProps)))
-              console.log('  props >>\n', logLines(objToStr(props)))
-              console.log('  next  <<\n', logLines(objToStr(next)))
+              console.log('    -- viewProps:\n', logLines(objToStr(out.viewProps)))
+              console.log('    -- props:\n', logLines(objToStr(props)))
+              console.log('    -- next:\n', logLines(objToStr(next)))
             }
             for (const key in next) {
               if (staticConfig.validStyles) {
@@ -1131,6 +1139,7 @@ export function createExtractor() {
                         return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
                       }
                     })()
+                    if (shouldPrintDebug) console.log('style', { keyIn, key, value })
                     delete attr.value[keyIn]
                     attr.value[key] = value
                   }

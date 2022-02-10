@@ -53,8 +53,6 @@ export function Highlights({ features }) {
           <h2 id="site-component-info-heading">Component Reference Links</h2>
         </VisuallyHidden>
 
-        <Separator />
-
         <YStack py="$1" ai="center">
           <Select
             value={frontmatter.version}
