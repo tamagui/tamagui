@@ -997,22 +997,24 @@ export function createExtractor() {
                 key = nonShortKey
               }
 
-              if (
-                // de-opt transform styles so it merges properly if not flattened
-                (!shouldFlatten && stylePropsTransform[key]) ||
-                // de-opt if non-style
-                (!validStyles[key] && !pseudos[key] && !key.startsWith('data-'))
-              ) {
-                acc.push({
-                  type: 'attr',
-                  value: t.jsxAttribute(
-                    t.jsxIdentifier(key),
-                    t.jsxExpressionContainer(
-                      typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
-                    )
-                  ),
-                })
-                return acc
+              if (!shouldFlatten) {
+                if (
+                  // de-opt transform styles so it merges properly if not flattened
+                  stylePropsTransform[key] ||
+                  // de-opt if non-style
+                  (!validStyles[key] && !pseudos[key] && !key.startsWith('data-'))
+                ) {
+                  acc.push({
+                    type: 'attr',
+                    value: t.jsxAttribute(
+                      t.jsxIdentifier(key),
+                      t.jsxExpressionContainer(
+                        typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
+                      )
+                    ),
+                  })
+                  return acc
+                }
               }
 
               // finally we have all styles + expansions, lets see if we need to skip

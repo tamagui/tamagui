@@ -134,7 +134,7 @@ exports[`7. ternary + data-is 1`] = `
 
 exports[`8. styleExpansions 1`] = `
 <div
-  className=" _alignItems-1oszu61 _bottom-1p0dtai _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _left-1d2f490 _position-bnwqim _right-zchlnj _top-ipm5af "
+  className=" _alignItems-1oszu61 _bottom-1p0dtai _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _fullscreen-1b1a026 _left-1d2f490 _position-bnwqim _right-zchlnj _top-ipm5af "
 >
   <div
     className=" _alignItems-1oszu61 _backgroundColor-1g6456j _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx "
@@ -217,10 +217,10 @@ exports[`14. extracts psuedo styles and evaluates constants 1`] = `
 exports[`15. extracts spacer (complex expansion) 1`] = `
 Array [
   <div
-    className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexShrink-1q142lx _height-7fo01u _width-3ykz2q "
+    className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexShrink-1q142lx _height-7fo01u _size-quvc4v _width-3ykz2q "
   />,
   <div
-    className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flex-13awgt0 _flexBasis-1mlwlqe _flexGrow-16y2uox _flexShrink-1wbh5a2 _height-1or9b2r _width-5soawk "
+    className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flex-13awgt0 _flexBasis-1mlwlqe _flexGrow-16y2uox _flexShrink-1wbh5a2 _height-1or9b2r _size-1vbn22f _width-5soawk "
   />,
 ]
 `;
