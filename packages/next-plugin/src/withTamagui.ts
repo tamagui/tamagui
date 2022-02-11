@@ -20,6 +20,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         const jsxDevRuntime = require.resolve('react/jsx-dev-runtime.js')
         const rnw = require.resolve('react-native-web')
         const reanimated = require.resolve('react-native-reanimated')
+        const prefix = `${isServer ? '[ssr]' : '[web]'} »`
 
         webpackConfig.resolve.alias = {
           ...(webpackConfig.resolve.alias || {}),
@@ -46,8 +47,21 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           })
         )
 
+        if (Array.isArray(tamaguiOptions.excludeReactNativeWebExports)) {
+          const regex = `\/react-native-web\/.*${tamaguiOptions.excludeReactNativeWebExports.join(
+            '|'
+          )}.*\/`
+          console.log(prefix, 'Excluding react-native-web deps:', regex)
+          webpackConfig.plugins.push(
+            new webpack.NormalModuleReplacementPlugin(
+              new RegExp(regex),
+              require.resolve('@tamagui/proxy-worm')
+            )
+          )
+        }
+
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
-          console.log('ignoring tsconfig paths, they mess up transpile')
+          console.log(prefix, 'Ignoring tsconfig paths, they mess up transpile')
           delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
           delete webpackConfig.resolve.plugins[0].paths['tamagui']
         }
@@ -247,7 +261,10 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
                 },
                 {
                   loader: 'tamagui-loader',
-                  options: tamaguiOptions,
+                  options: {
+                    prefixLogs: prefix,
+                    ...tamaguiOptions,
+                  },
                 },
               ],
             },

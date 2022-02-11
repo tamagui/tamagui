@@ -16,6 +16,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@tamagui/proxy-worm": "^1.0.0-alpha.63",
     "@tamagui/static": "^1.0.0-alpha.63",
     "browserslist": "^4.19.1",
     "css-minimizer-webpack-plugin": "^3.1.3",
