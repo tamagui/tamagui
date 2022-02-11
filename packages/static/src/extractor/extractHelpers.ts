@@ -21,7 +21,7 @@ export const attrStr = (attr: ExtractedAttr) => {
 }
 
 export const objToStr = (obj: any) => {
-  return Object.entries(obj)
+  return `{${Object.entries(obj)
     .map(
       ([k, v]) =>
         `${k}:${
@@ -29,10 +29,10 @@ export const objToStr = (obj: any) => {
             ? `[...]`
             : v && typeof v === 'object'
             ? `{${objToStr(v)}}`
-            : astToLiteral(v) ?? JSON.stringify(v)
+            : JSON.stringify(v)
         }`
     )
-    .join(', ')
+    .join(', ')}}`
 }
 
 const getNameAttr = (attr: t.JSXAttribute | t.JSXSpreadAttribute) => {

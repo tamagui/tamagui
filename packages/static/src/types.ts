@@ -18,8 +18,10 @@ export interface TamaguiOptions {
   disableDebugAttr?: boolean
   disableExtractInlineMedia?: boolean
   disableExtractVariables?: boolean
+  excludeReactNativeWebExports?: string[]
   exclude?: RegExp
   logTimings?: boolean
+  prefixLogs?: string
 
   // probably non user options
   cssPath?: string

@@ -70,6 +70,7 @@ export function createExtractor() {
         disableExtractInlineMedia,
         disableExtractVariables,
         disableDebugAttr,
+        prefixLogs,
         ...props
       }: ExtractorParseProps
     ) => {
@@ -221,7 +222,10 @@ export function createExtractor() {
 
           if (disableExtraction) {
             if (!hasLogged) {
-              console.log('🥚 Tamagui disableExtraction set: no CSS or optimizations will be run')
+              console.log(
+                prefixLogs,
+                'Tamagui disableExtraction set: no CSS or optimizations will be run'
+              )
               hasLogged = true
             }
             return
@@ -1108,23 +1112,18 @@ export function createExtractor() {
           // post process
           const getStyles = (props: Object | null) => {
             if (!props) return
+            if (!Object.keys(props).length) return
             if (!!excludeProps.size) {
               for (const key in props) {
                 if (isExcludedProp(key)) delete props[key]
               }
             }
-            if (shouldPrintDebug) {
-              props['debug'] = true
-            }
             const out = postProcessStyles(props, staticConfig, defaultTheme)
-            if (shouldPrintDebug) {
-              delete props['debug']
-            }
             const next = out?.style ?? props
             if (shouldPrintDebug) {
-              console.log('    -- viewProps:\n', logLines(objToStr(out.viewProps)))
-              console.log('    -- props:\n', logLines(objToStr(props)))
-              console.log('    -- next:\n', logLines(objToStr(next)))
+              console.log('  -- getStyles (viewProps):\n', logLines(objToStr(out.viewProps)))
+              console.log('  -- getStyles (props):\n', logLines(objToStr(props)))
+              console.log('  -- getStyles (next):\n', logLines(objToStr(next)))
             }
             for (const key in next) {
               if (staticConfig.validStyles) {
@@ -1163,9 +1162,9 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log('   completeStaticProps:', completeStaticProps)
+            console.log('   -- completeStaticProps:\n', logLines(objToStr(completeStaticProps)))
             // prettier-ignore
-            console.log('   completeStylesProcessed:', completeStylesProcessed)
+            console.log('   -- completeStylesProcessed:\n', logLines(objToStr(completeStylesProcessed)))
           }
 
           let getStyleError: any = null
@@ -1173,6 +1172,7 @@ export function createExtractor() {
           // fix up ternaries, combine final style values
           for (const attr of attrs) {
             try {
+              if (shouldPrintDebug) console.log('  *', attrStr(attr))
               switch (attr.type) {
                 case 'ternary':
                   const a = getStyles(attr.value.alternate)
@@ -1229,7 +1229,7 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log('  [❊] inline props ', inlinePropCount, shouldDeopt ? ' deopted' : '', hasSpread ? ' spread' : '', '!flatten', staticConfig.neverFlatten)
+            console.log(` ❊❊ inline props (${inlinePropCount}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : '')
             console.log('  - attrs (end):\n', logLines(attrs.map(attrStr).join(', ')))
           }
 

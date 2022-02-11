@@ -11,13 +11,14 @@ import { getRemainingRequest } from 'loader-utils'
 import { ViewStyle } from 'react-native'
 
 import { CONCAT_CLASSNAME_IMPORT } from '../constants'
-import { ClassNameObject, StyleObject, TamaguiOptions } from '../types'
+import { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'
 import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
 import { Extractor } from './createExtractor'
 import { ensureImportingConcat } from './ensureImportingConcat'
 import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
+import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
 import { logLines } from './logLines'
 
@@ -124,7 +125,7 @@ export function extractToClassNames({
         return style
       }
 
-      const addStyles = (style: ViewStyle | null) => {
+      const addStyles = (style: ViewStyle | null): StyleObject[] => {
         if (!style) return []
         const styleWithPrev = ensureNeededPrevStyle(style)
         const res = getStylesAtomic(styleWithPrev)
@@ -189,39 +190,48 @@ export function extractToClassNames({
               shouldPrintDebug
             )
             if (shouldPrintDebug) {
-              console.log('ternary (mediaExtraction)', mediaExtraction)
+              // prettier-ignore
+              console.log('ternary (mediaStyles)', mediaExtraction?.ternaryWithoutMedia?.inlineMediaQuery ?? '', mediaExtraction?.mediaStyles.map((x) => x.identifier).join('.'))
             }
-            if (mediaExtraction) {
-              lastMediaImportance++
+            if (!mediaExtraction) {
+              addTernaryStyle(
+                attr.value,
+                addStyles(attr.value.consequent),
+                addStyles(attr.value.alternate)
+              )
+              continue
+            }
+            lastMediaImportance++
+            if (mediaExtraction.mediaStyles) {
               finalStyles = [...finalStyles, ...mediaExtraction.mediaStyles]
+            }
+            if (mediaExtraction.ternaryWithoutMedia) {
+              addTernaryStyle(mediaExtraction.ternaryWithoutMedia, mediaExtraction.mediaStyles, [])
+            } else {
               finalClassNames = [
                 ...finalClassNames,
                 ...mediaExtraction.mediaStyles.map((x) => t.stringLiteral(x.identifier)),
               ]
-              if (!mediaExtraction.ternaryWithoutMedia) {
-                continue
-              }
-            }
-            const isMedia = !!mediaExtraction?.ternaryWithoutMedia
-            const ternary = mediaExtraction?.ternaryWithoutMedia || attr.value
-            const consInfo = isMedia ? mediaExtraction.mediaStyles : addStyles(ternary.consequent)
-            const altInfo = isMedia ? [] : addStyles(ternary.alternate)
-            const cCN = consInfo.map((x) => x.identifier).join(' ')
-            const aCN = altInfo.map((x) => x.identifier).join(' ')
-            if (consInfo.length && altInfo.length) {
-              finalClassNames.push(
-                t.conditionalExpression(ternary.test, t.stringLiteral(cCN), t.stringLiteral(aCN))
-              )
-            } else {
-              finalClassNames.push(
-                t.conditionalExpression(
-                  ternary.test,
-                  t.stringLiteral(' ' + cCN),
-                  t.stringLiteral(' ' + aCN)
-                )
-              )
             }
             break
+        }
+      }
+
+      function addTernaryStyle(ternary: Ternary, a: any, b: any) {
+        const cCN = a.map((x) => x.identifier).join(' ')
+        const aCN = b.map((x) => x.identifier).join(' ')
+        if (a.length && b.length) {
+          finalClassNames.push(
+            t.conditionalExpression(ternary.test, t.stringLiteral(cCN), t.stringLiteral(aCN))
+          )
+        } else {
+          finalClassNames.push(
+            t.conditionalExpression(
+              ternary.test,
+              t.stringLiteral(' ' + cCN),
+              t.stringLiteral(' ' + aCN)
+            )
+          )
         }
       }
 
@@ -326,11 +336,13 @@ export function extractToClassNames({
       ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
       : 0
     const timing = `${Date.now() - start}`.padStart(3)
-    const path = basename(sourcePath).padStart(40)
+    const path = basename(sourcePath).padStart(30)
     const numOptimized = `${res.optimized}`.padStart(4)
     const memory = memUsed > 10 ? `used ${memUsed}MB` : ''
     console.log(
-      `  🥚 ${path} ${timing}ms ׁ· ${numOptimized} optimized · ${res.flattened} flattened ${memory}`
+      `${getPrefixLogs(options)} ${path} ${timing}ms ׁ· ${numOptimized} optimized · ${
+        res.flattened
+      } flattened ${memory}`
     )
   }
 

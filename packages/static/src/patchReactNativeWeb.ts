@@ -25,7 +25,7 @@ export function patchReactNativeWeb() {
   })()
 
   if (!isEqual) {
-    console.log('🥚 Tamagui patching react-native-web to share atomic styling primitives')
+    console.log('» Tamagui patching react-native-web to share atomic styling primitives')
     console.log('   > adding', modulePath)
     console.log('   > adding', cjsPath)
     fs.writeFileSync(modulePath, moduleExports)
