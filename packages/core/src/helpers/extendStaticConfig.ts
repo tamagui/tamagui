@@ -6,7 +6,7 @@ import { createPropMapper } from './createPropMapper'
 export function extendStaticConfig(
   // can be undefined when loading with @tamagui/fake-react-native
   // could be fixed a bit cleaner
-  Component?: StaticComponent | React.Component<any>,
+  Component?: StaticComponent | React.Component<any> | ((props: any) => any),
   config: StaticConfig = {}
 ): StaticConfigParsed | null {
   const parent = (Component || {}) as any

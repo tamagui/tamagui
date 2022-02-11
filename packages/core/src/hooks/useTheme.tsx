@@ -90,7 +90,7 @@ export const useTheme = (): ThemeObject => {
           const val = activeTheme[key]
           if (process.env.NODE_ENV === 'development') {
             if (typeof val === 'undefined') {
-              console.warn(`No theme value "${String(key)}" in`, activeTheme, themes)
+              console.warn(`No theme value "${String(key)}" in`, activeTheme)
               return null
             }
             if (!isVariable(val)) {

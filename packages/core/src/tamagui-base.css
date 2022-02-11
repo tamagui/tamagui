@@ -5,3 +5,7 @@
   right: 0;
   bottom: 0;
 }
+
+.reset-appearance {
+  -webkit-appearance: none;
+}

@@ -13,8 +13,9 @@ import {
 } from './types'
 
 export function styled<
+  Props,
   ParentComponent extends StaticComponent | React.Component<any>,
-  Variants extends GetVariants<ParentComponent>
+  Variants extends GetVariants<GetProps<ParentComponent>>
 >(
   Component: ParentComponent,
   options?: GetProps<ParentComponent> & {
@@ -31,13 +32,16 @@ export function styled<
   })()
   const config = extendStaticConfig(Component, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
+
   type VariantProps = GetVariantProps<Variants>
+  type ParentProps = Props extends Object ? Props : GetProps<ParentComponent>
+
   return component as StaticComponent<
     // if not options/variants passed just styled(Text):
     keyof VariantProps extends never
-      ? GetProps<ParentComponent>
+      ? ParentProps
       : // if options passed: styled(Text, { ... })
-        Omit<GetProps<ParentComponent>, keyof VariantProps> &
+        Omit<ParentProps, keyof VariantProps> &
           VariantProps &
           MediaProps<VariantProps> &
           PseudoProps<VariantProps>,
@@ -51,20 +55,22 @@ export type GetProps<A> = A extends StaticComponent<infer Props>
   ? Props
   : A extends React.Component<infer Props>
   ? Props
+  : A extends (props: infer Props) => any
+  ? Props
   : {}
 
-export type GetVariants<ParentComponent extends StaticComponent | React.Component<any>> = void | {
+export type GetVariants<Props> = void | {
   [key: string]: {
     [key: string]:
-      | Partial<GetProps<ParentComponent>>
+      | Partial<Props>
       | ((
           val: any,
           config: {
             tokens: TamaguiConfig['tokens']
             theme: Themes extends { [key: string]: infer B } ? B : unknown
-            props: GetProps<ParentComponent>
+            props: Props
           }
-        ) => Partial<GetProps<ParentComponent>>)
+        ) => Partial<Props>)
   }
 }
 

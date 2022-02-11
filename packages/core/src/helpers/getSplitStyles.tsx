@@ -145,7 +145,7 @@ export const getSplitStyles = (
 
   if (process.env.NODE_ENV === 'development') {
     if (props['debug']) {
-      console.log(' 🥚 splitProps:', { props, viewProps, style })
+      console.log('  splitProps:', { props, viewProps, style })
     }
   }
 
