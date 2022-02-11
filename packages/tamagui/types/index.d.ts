@@ -30,7 +30,6 @@ export * from './views/Paragraph';
 export * from './views/Popover/Popover';
 export * from './views/Popover/PopoverProvider';
 export * from './views/SafeAreaProvider';
-export * from './views/Select';
 export * from './views/Separator';
 export * from './views/SizableText';
 export * from './views/Stacks';

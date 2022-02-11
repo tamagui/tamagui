@@ -497,12 +497,6 @@ export type StaticConfig = {
    * To account for style adjustments
    */
   isReactNativeWeb?: boolean
-
-  /*
-   * Make sure it's not removed as a style value
-   * See: Image needs width/height
-   */
-  keepAsProp?: Set<string>
 }
 
 type ColorableKeys =

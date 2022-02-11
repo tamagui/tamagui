@@ -308,7 +308,6 @@ export declare type StaticConfig = {
     };
     isZStack?: boolean;
     isReactNativeWeb?: boolean;
-    keepAsProp?: Set<string>;
 };
 declare type ColorableKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderTopColor' | 'borderBottomColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor';
 declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight';

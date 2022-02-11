@@ -10,6 +10,7 @@ import {
   H2,
   H3,
   H4,
+  Image,
   Paragraph,
   Separator,
   StackProps,
@@ -203,13 +204,7 @@ export const components = {
   Image: ({ children, size, ...props }) => (
     <YStack tag="figure" mx={0} mb="$3">
       <OffsetBox size={size}>
-        <img
-          {...props}
-          style={{
-            maxWidth: '100%',
-            verticalAlign: 'middle',
-          }}
-        />
+        <Image maxWidth="100%" verticalAlign="middle" {...props} />
       </OffsetBox>
       <Text tag="figcaption" lineHeight={23} color="$color3" mt="$2">
         {children}

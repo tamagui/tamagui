@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MediaProps, PseudoProps, StaticComponent, StaticConfig, TamaguiConfig, Themes, Tokens } from './types';
-export declare function styled<Props, ParentComponent extends StaticComponent | React.Component<any>, Variants extends GetVariants<GetProps<ParentComponent>>>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
+export declare function styled<Props, ParentComponent extends StaticComponent | React.Component<any> = React.Component<Partial<Props>>, Variants extends GetVariants<GetProps<ParentComponent>> = GetVariants<GetProps<ParentComponent>>>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
     variants?: Variants;
 }, staticExtractionOptions?: StaticConfig): StaticComponent<keyof GetVariantProps<Variants> extends never ? Props extends Object ? Props : GetProps<ParentComponent> : Omit<Props extends Object ? Props : GetProps<ParentComponent>, keyof GetVariantProps<Variants>> & GetVariantProps<Variants> & MediaProps<GetVariantProps<Variants>> & PseudoProps<GetVariantProps<Variants>>, void, import("./types").StaticConfigParsed, any>;
 export declare type GetProps<A> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Props : A extends (props: infer Props) => any ? Props : {};

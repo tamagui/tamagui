@@ -14,8 +14,8 @@ import {
 
 export function styled<
   Props,
-  ParentComponent extends StaticComponent | React.Component<any>,
-  Variants extends GetVariants<GetProps<ParentComponent>>
+  ParentComponent extends StaticComponent | React.Component<any> = React.Component<Partial<Props>>,
+  Variants extends GetVariants<GetProps<ParentComponent>> = GetVariants<GetProps<ParentComponent>>
 >(
   Component: ParentComponent,
   options?: GetProps<ParentComponent> & {

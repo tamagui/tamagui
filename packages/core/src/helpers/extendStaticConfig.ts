@@ -1,3 +1,4 @@
+import { stylePropsView } from '@tamagui/helpers'
 import React from 'react'
 
 import { StaticComponent, StaticConfig, StaticConfigParsed } from '../types'
@@ -48,7 +49,7 @@ export function extendStaticConfig(
           ...parent.staticConfig.validStyles,
           ...config.validStyles,
         }
-      : parent.staticConfig.validStyles,
+      : parent.staticConfig.validStyles || stylePropsView,
     validPropsExtra: {
       ...parent.staticConfig.validPropsExtra,
       ...config.validPropsExtra,
