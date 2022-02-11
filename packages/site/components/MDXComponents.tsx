@@ -29,6 +29,7 @@ import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
 import { HeroContainer } from './HeroContainer'
 import { Highlights } from './Highlights'
+import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 
@@ -327,18 +328,6 @@ export const components = {
 
     return <Paragraph fontFamily="$mono" cursor="default" ref={triggerRef} {...props} />
   },
-}
-
-const OffsetBox = (props: StackProps & { size?: 'hero' }) => {
-  return (
-    <YStack
-      {...(props.size === 'hero' && {
-        $gtSm: { mx: '$-5' },
-        $gtMd: { mx: '$-10' },
-      })}
-      {...props}
-    />
-  )
 }
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & StackProps) => (

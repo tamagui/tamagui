@@ -20,7 +20,7 @@ const pkgMain = pkg.main
 const pkgModule = pkg.module
 
 async function build() {
-  console.log('🥚', pkg.name)
+  console.log('»', pkg.name)
   const x = Date.now()
   let files = (await fg(['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.css'])).filter(
     (x) => !x.includes('.d.ts')

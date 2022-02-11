@@ -1,0 +1,12 @@
+{
+  "name": "@tamagui/proxy-worm",
+  "version": "1.0.0-alpha.63",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "true",
+    "watch": "true"
+  }
+}

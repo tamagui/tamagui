@@ -19,13 +19,13 @@ function Buttons(props) {
   return (
     <YStack elevation="$6" w={180} bc="$bg" p="$3" br="$2" space="$2" {...props}>
       <Button>Plain</Button>
-      <Button themeIcon icon={Airplay} size="$6">
+      <Button icon={Airplay} size="$6">
         Large
       </Button>
-      <Button themeInverse themeIcon iconAfter={Gift} size="$2">
+      <Button themeInverse iconAfter={Gift} size="$2">
         Small Inversed
       </Button>
-      <Button themeIcon icon={Activity} size="$1">
+      <Button icon={Activity} size="$1">
         XS
       </Button>
       <InteractiveContainer>

@@ -1,3 +1,12 @@
+- @tamagui/cli: tamagui test ./packages/site/components/OffsetBox.tsx
+
+cli to compile a file and see output:
+
+> Loading tamagui
+> Compiling OffsetBox
+  >> <YStack />
+  >> ...
+
 - for lineargradient:
   - propMapper
   - move logic to function

@@ -21,6 +21,7 @@ const transform = withPlugins(
       logTimings: true,
       // disableExtraction: false,
       disableExtraction: process.env.NODE_ENV === 'development',
+      excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker'],
     }),
     // // template for modifying webpack further:
     // (nextConfig = {}) => {

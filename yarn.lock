@@ -3916,6 +3916,7 @@ __metadata:
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.58
+    "@tamagui/proxy-worm": ^1.0.0-alpha.63
     "@tamagui/static": ^1.0.0-alpha.63
     browserslist: ^4.19.1
     css-minimizer-webpack-plugin: ^3.1.3
@@ -3942,6 +3943,12 @@ __metadata:
   checksum: 636a096b72b86241dae7dec03c87c055f6ddb2199ebd3c54106de94b7664913a0d3d7be51655259c29c763ac13a39bfb822bfa4a28c9c2efd73527e0721fb539
   languageName: node
   linkType: hard
+
+"@tamagui/proxy-worm@^1.0.0-alpha.63, @tamagui/proxy-worm@workspace:packages/proxy-worm":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
+  languageName: unknown
+  linkType: soft
 
 "@tamagui/site@workspace:packages/site":
   version: 0.0.0-use.local
@@ -4042,9 +4049,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/test@workspace:packages/test":
+"@tamagui/test@workspace:packages/test-playground":
   version: 0.0.0-use.local
-  resolution: "@tamagui/test@workspace:packages/test"
+  resolution: "@tamagui/test@workspace:packages/test-playground"
   dependencies:
     "@tamagui/core": ^1.0.0-alpha.63
     "@tamagui/helpers": ^1.0.0-alpha.63
