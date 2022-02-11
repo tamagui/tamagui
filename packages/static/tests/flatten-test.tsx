@@ -30,6 +30,7 @@ test('flat transform props', async () => {
     }
   `)
   const code = output?.code ?? ''
+  console.log('code', code)
   expect(
     code.includes(
       `[_sheet["0"], media.sm ? _sheet["1"] : _sheet["2"], media.sm && isLoading ? _sheet["3"] : _sheet["4"], media.sm && !isLoading ? _sheet["5"] : _sheet["6"]]`
@@ -56,13 +57,12 @@ test('flat transform props', async () => {
     }],
     "borderRadius": 10
   },
-  "2": {},
   "3": {
     "backgroundColor": "red"
   },
-  "4": {},
   "5": {
     "backgroundColor": "blue"
-  }`)
+  }
+})`)
   ).toBeTruthy()
 })
