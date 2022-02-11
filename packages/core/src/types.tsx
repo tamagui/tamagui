@@ -252,9 +252,8 @@ type WithThemeAndShorthands<A extends object> = WithThemeValues<A> &
 //
 // combines all of theme, shorthands, psuedos...
 //
-type WithThemeShorthandsAndPseudos<A extends object> = 
-  | WithThemeAndShorthands<A>
-  & PseudoProps<WithThemeAndShorthands<A>>
+type WithThemeShorthandsAndPseudos<A extends object> =
+  | WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>
 
 //
 // ... and media queries
@@ -498,6 +497,12 @@ export type StaticConfig = {
    * To account for style adjustments
    */
   isReactNativeWeb?: boolean
+
+  /*
+   * Make sure it's not removed as a style value
+   * See: Image needs width/height
+   */
+  keepAsProp?: Set<string>
 }
 
 type ColorableKeys =

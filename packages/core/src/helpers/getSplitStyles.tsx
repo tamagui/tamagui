@@ -36,6 +36,11 @@ export const getSplitStyles = (
     // be sure to sync next few lines below to getSubStyle (*1)
     const valInit = props[keyInit]
 
+    if (staticConfig.keepAsProp?.has(keyInit)) {
+      viewProps[keyInit] = valInit
+      continue
+    }
+
     // media
     if (keyInit[0] === '$') {
       const mediaKey = keyInit.slice(1)
