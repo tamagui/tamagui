@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.0-alpha.63",
+  "version": "1.0.0-alpha.64",
   "main": "index.js",
   "scripts": {
     "build": "./build.js",
@@ -12,7 +12,7 @@
     ]
   },
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-alpha.63"
+    "@tamagui/helpers": "^1.0.0-alpha.64"
   },
   "devDependencies": {
     "@types/node": "^16.11.9",
