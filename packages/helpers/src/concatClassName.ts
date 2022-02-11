@@ -15,6 +15,8 @@ export function concatClassName(_cn: any) {
   //   }
   // }
 
+  // const shouldDebug = _cn.includes('_right-_gtMd_hxu0ph')
+  // if (shouldDebug) console.log('debug:', _cn)
   const classNamesOrPropObjects = arguments
   const usedPrefixes: string[] = []
   let final = ''
@@ -23,6 +25,7 @@ export function concatClassName(_cn: any) {
   let propObjects: any = null
   for (let x = len; x >= 0; x--) {
     const cns = classNamesOrPropObjects[x]
+
     if (!cns) continue
     if (!Array.isArray(cns) && typeof cns !== 'string') {
       // is prop object
@@ -30,37 +33,39 @@ export function concatClassName(_cn: any) {
       propObjects.push(cns)
       continue
     }
-    const names = Array.isArray(cns) ? cns : cns.split(' ')
 
+    const names = Array.isArray(cns) ? cns : cns.split(' ')
     const numNames = names.length
     for (let i = numNames - 1; i >= 0; i--) {
       const name = names[i]
+
       if (!name || name === ' ') continue
       if (name[0] !== '_') {
         // not snack style (todo slightly stronger heuristic)
         final = name + ' ' + final
         continue
       }
-      const splitIndex = name.indexOf('-')
 
+      const splitIndex = name.indexOf('-')
       if (splitIndex < 1) {
         final = name + ' ' + final
+        // if (shouldDebug) console.log('debug exclude:', name, final)
         continue
       }
+
       const nextChar = name[splitIndex + 1]
       // synced to static-ui constants
       // MEDIA_SEP
       const isMediaQuery = nextChar === '_'
       // PSEUDO_SEP
       const isPsuedoQuery = nextChar === '-'
-
       const styleKey = name.slice(1, splitIndex)
       const mediaKey =
         isMediaQuery || isPsuedoQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
       const uid = mediaKey ? styleKey + mediaKey : styleKey
-
       if (!isMediaQuery && !isPsuedoQuery) {
         if (usedPrefixes.indexOf(uid) > -1) {
+          // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
           continue
         }
         usedPrefixes.push(uid)
@@ -79,6 +84,7 @@ export function concatClassName(_cn: any) {
             return res
           })
         ) {
+          // if (shouldDebug) console.log('debug exclude:', name)
           continue
         }
       }

@@ -30,7 +30,7 @@ const light = {
   color4: tokens.color.gray6,
   shadowColor: tokens.color.grayA6,
   shadowColor2: tokens.color.grayA8,
-  separatorColor: tokens.color.gray12,
+  separatorColor: tokens.color.grayA8,
   ...lightColors,
 }
 
@@ -49,7 +49,7 @@ const dark = {
   color4: tokens.color.gray6Dark,
   shadowColor: tokens.color.grayA7,
   shadowColor2: tokens.color.grayA9,
-  separatorColor: '#fff',
+  separatorColor: tokens.color.grayA8Dark,
   ...darkColors,
 }
 

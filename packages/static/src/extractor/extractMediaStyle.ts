@@ -101,7 +101,7 @@ function getMediaQueryTernary(
   // this handles unwrapping logical && media query ternarys
   // first, unwrap if it has media logicalExpression
   if (t.isLogicalExpression(ternary.test) && ternary.test.operator === '&&') {
-    // *should* be normalized to always be on left side, TODO verify
+    // *should* be normalized to always be on left side
     const mediaLeft = getMediaInfoFromExpression(
       ternary.test.left,
       jsxPath,

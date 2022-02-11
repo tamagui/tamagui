@@ -128,9 +128,6 @@ export function extractToClassNames({
         if (!style) return []
         const styleWithPrev = ensureNeededPrevStyle(style)
         const res = getStylesAtomic(styleWithPrev)
-        if (shouldPrintDebug) {
-          console.log('styleWithPrev', styleWithPrev, res)
-        }
         if (res.length) {
           finalStyles = [...finalStyles, ...res]
         }
@@ -191,6 +188,9 @@ export function extractToClassNames({
               lastMediaImportance,
               shouldPrintDebug
             )
+            if (shouldPrintDebug) {
+              console.log('ternary (mediaExtraction)', mediaExtraction)
+            }
             if (mediaExtraction) {
               lastMediaImportance++
               finalStyles = [...finalStyles, ...mediaExtraction.mediaStyles]
@@ -202,9 +202,10 @@ export function extractToClassNames({
                 continue
               }
             }
+            const isMedia = !!mediaExtraction?.ternaryWithoutMedia
             const ternary = mediaExtraction?.ternaryWithoutMedia || attr.value
-            const consInfo = addStyles(ternary.consequent)
-            const altInfo = addStyles(ternary.alternate)
+            const consInfo = isMedia ? mediaExtraction.mediaStyles : addStyles(ternary.consequent)
+            const altInfo = isMedia ? [] : addStyles(ternary.alternate)
             const cCN = consInfo.map((x) => x.identifier).join(' ')
             const aCN = altInfo.map((x) => x.identifier).join(' ')
             if (consInfo.length && altInfo.length) {

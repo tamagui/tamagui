@@ -57,7 +57,7 @@ export const getSplitStyles = (
         const mediaStyles = getStylesAtomic(mediaStyle)
         if (process.env.NODE_ENV === 'development') {
           if (props['debug']) {
-            console.log('mediaStyles', keyInit, { mediaProps, mediaStyle, mediaStyles })
+            console.log('mediaStyles', keyInit, { mediaProps, mediaStyle })
           }
         }
         for (const style of mediaStyles) {
@@ -67,7 +67,7 @@ export const getSplitStyles = (
           AllRules.add(out.styleRule)
           insertStyleRule(out.styleRule)
           if (process.env.NODE_ENV === 'development' && props['debug']) {
-            console.log('mediaProp', style.identifier, out, mediaProps, mediaStyle, mediaStyles)
+            console.log('mediaProp', style.identifier, out.styleRule)
           }
         }
       } else {
@@ -88,10 +88,6 @@ export const getSplitStyles = (
 
     const out = staticConfig.propMapper(keyInit, valInit, theme, props)
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
-
-    if (props['debug']) {
-      console.log('wut', keyInit, valInit, out)
-    }
 
     for (const [key, val] of expanded) {
       // const val = valueMap(valInit) ?? valInit

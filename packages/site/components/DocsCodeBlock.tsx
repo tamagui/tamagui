@@ -81,28 +81,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           >
             {isCollapsed ? 'Show code' : 'Hide code'}
           </Button>
-
-          {/* {isHero && (
-            <YStack
-              as="form"
-              css={{
-                display: 'none',
-                color: '$whiteA12',
-                '@bp1': { display: 'inline-block' },
-              }}
-              action="https://codesandbox.io/api/v1/sandboxes/define"
-              method="POST"
-              target="_blank"
-            >
-              <input type="hidden" name="query" value="module=App.js" />
-              <input type="hidden" name="parameters" value={makeCodeSandboxParams(frontmatter.name, code)} />
-              <Tooltip content="Open demo in CodeSandbox">
-                <Button type="submit" css={{ color: '$whiteA12' }}>
-                  <CodeSandboxLogoIcon />
-                </Button>
-              </Tooltip>
-            </Box>
-          )} */}
         </YStack>
       )}
 

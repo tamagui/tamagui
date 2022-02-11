@@ -466,10 +466,15 @@ export function createExtractor() {
             )
           }
 
-          // side <= { color: 'red', background: x ? 'red' : 'green' }
-          // | => Ternary<test, { color: 'red' }, null>
-          // | => Ternary<test && x, { background: 'red' }, null>
-          // | => Ternary<test && !x, { background: 'green' }, null>
+          // side = {
+          //   color: 'red',
+          //   background: x ? 'red' : 'green',
+          //   $gtSm: { color: 'green' }
+          // }
+          // => Ternary<test, { color: 'red' }, null>
+          // => Ternary<test && x, { background: 'red' }, null>
+          // => Ternary<test && !x, { background: 'green' }, null>
+          // => Ternary<test && '$gtSm', { color: 'green' }, null>
           function createTernariesFromObjectProperties(
             test: t.Expression,
             side: t.Expression | null,
@@ -484,6 +489,35 @@ export function createExtractor() {
             return side.properties.flatMap((property) => {
               if (!t.isObjectProperty(property)) {
                 throw new Error('expected object property')
+              }
+              // handle media queries inside spread/conditional objects
+              if (t.isIdentifier(property.key)) {
+                const key = property.key.name
+                const mediaQueryKey = key.slice(1)
+                const isMediaQuery = key[0] === '$' && mediaQueryConfig[mediaQueryKey]
+                if (isMediaQuery) {
+                  if (t.isExpression(property.value)) {
+                    const ternaries = createTernariesFromObjectProperties(
+                      t.stringLiteral(mediaQueryKey),
+                      property.value,
+                      {
+                        inlineMediaQuery: mediaQueryKey,
+                      }
+                    )
+                    if (ternaries) {
+                      return ternaries.map((value) => ({
+                        ...ternaryPartial,
+                        ...value,
+                        // ensure media query test stays on left side (see getMediaQueryTernary)
+                        test: t.logicalExpression('&&', value.test, test),
+                      }))
+                    } else {
+                      console.log('⚠️ no ternaries?', property)
+                    }
+                  } else {
+                    console.log('⚠️ not expression', property)
+                  }
+                }
               }
               // this could be a recurse here if we want to get fancy
               if (t.isConditionalExpression(property.value)) {
@@ -1129,9 +1163,9 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log('   completeStaticProps\n', completeStaticProps)
+            console.log('   completeStaticProps:', completeStaticProps)
             // prettier-ignore
-            console.log('   completeStylesProcessed\n', completeStylesProcessed)
+            console.log('   completeStylesProcessed:', completeStylesProcessed)
           }
 
           let getStyleError: any = null

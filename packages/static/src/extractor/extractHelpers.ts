@@ -2,6 +2,7 @@ import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
 import { ExtractedAttr, Ternary } from '../types'
+import { astToLiteral } from './literalToAst'
 
 export function isPresent<T extends Object>(input: null | void | undefined | T): input is T {
   return input != null
@@ -23,7 +24,13 @@ export const objToStr = (obj: any) => {
   return Object.entries(obj)
     .map(
       ([k, v]) =>
-        `${k}:${Array.isArray(v) ? `[...]` : v && typeof v === 'object' ? `{${objToStr(v)}}` : v}`
+        `${k}:${
+          Array.isArray(v)
+            ? `[...]`
+            : v && typeof v === 'object'
+            ? `{${objToStr(v)}}`
+            : astToLiteral(v) ?? JSON.stringify(v)
+        }`
     )
     .join(', ')
 }
@@ -36,15 +43,27 @@ const getNameAttr = (attr: t.JSXAttribute | t.JSXSpreadAttribute) => {
 }
 
 export const ternaryStr = (x: Ternary) => {
+  const conditional = t.isIdentifier(x.test)
+    ? x.test.name
+    : t.isMemberExpression(x.test)
+    ? [x.test.object['name'], x.test.property['name']]
+    : astToLiteral(x.test) ??
+      [
+        x.test['type'],
+        astToLiteral(x.test['left']),
+        x.test['operator'],
+        astToLiteral(x.test['right']),
+        x.test['value'],
+        x.test['name'],
+      ]
+        .filter((x) => typeof x !== 'undefined')
+        .join(' ')
   return [
-    'ternary:',
-    t.isIdentifier(x.test)
-      ? x.test.name
-      : t.isMemberExpression(x.test)
-      ? [x.test.object['name'], x.test.property['name']]
-      : x.test,
-    x.consequent ? `  ? ${objToStr(x.consequent)}` : '  ? ⚫️',
-    x.alternate ? `  : ${objToStr(x.alternate)}` : '  : ⚫️',
+    'ternary(',
+    conditional,
+    x.consequent ? ` ? ${objToStr(x.consequent)}` : ' ? 🚫',
+    x.alternate ? ` : ${objToStr(x.alternate)}` : ' : 🚫',
+    ')',
   ]
     .flat()
     .join('')
