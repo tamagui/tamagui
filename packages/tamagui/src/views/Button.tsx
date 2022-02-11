@@ -1,4 +1,4 @@
-import { TextProps, ThemeableProps, getTokens, styled, themeable, useTheme } from '@tamagui/core'
+import { ThemeableProps, getTokens, styled, themeable, useTheme } from '@tamagui/core'
 import React, { forwardRef, isValidElement } from 'react'
 
 import { getFontSize } from '../helpers/getFontSize'
@@ -12,6 +12,7 @@ type IconProp = JSX.Element | ((props: { color?: string; size?: number }) => JSX
 
 export type ButtonProps = InteractiveFrameProps &
   ThemeableProps & {
+    color?: SizableTextProps['color']
     textProps?: Omit<SizableTextProps, 'children'>
     noTextWrap?: boolean
     icon?: IconProp
@@ -35,15 +36,17 @@ export const Button = ButtonFrame.extractable(
         noTextWrap,
         theme: themeName,
         size = '$4',
+        color: colorProp,
         ...rest
       } = props
       const theme = useTheme()
+      const color = (colorProp || theme.color2).toString()
       const addTheme = (el: any) => {
         return isValidElement(el)
           ? el
           : !!el
           ? React.createElement(el, {
-              color: theme.color2.toString(),
+              color,
               size: getFontSize(size, { relativeSize: -1 }),
             })
           : null
@@ -66,17 +69,17 @@ export const Button = ButtonFrame.extractable(
           ) : !children ? null : textProps ? (
             // flex shrink = 1, flex grow = 0 makes buttons shrink properly in native
             <SizableText
-              color="$color2"
               flexGrow={0}
               flexShrink={1}
               ellipse
               size={size}
+              color={color}
               {...textProps}
             >
               {children}
             </SizableText>
           ) : (
-            <SizableText size={size} color="$color2" flexGrow={0} flexShrink={1} ellipse>
+            <SizableText size={size} color={color} flexGrow={0} flexShrink={1} ellipse>
               {children}
             </SizableText>
           )}
