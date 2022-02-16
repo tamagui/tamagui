@@ -1,7 +1,13 @@
 import React from 'react'
-import { Theme, YStack } from 'tamagui'
+import { Theme, XStack, YStack, styled } from 'tamagui'
 
-export function HeroContainer({ children }: { children?: React.ReactNode }) {
+export function HeroContainer({
+  children,
+  demoMultiple,
+}: {
+  demoMultiple?: boolean
+  children?: React.ReactNode
+}) {
   return (
     <YStack
       // In case any semantic content sneaks through in a hero, let's hide it
@@ -14,7 +20,9 @@ export function HeroContainer({ children }: { children?: React.ReactNode }) {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      py={40}
+      overflow="auto"
+      pt={30}
+      pb={70}
       minHeight={380}
       borderRadius="$3"
       $gtLg={{
@@ -24,10 +32,42 @@ export function HeroContainer({ children }: { children?: React.ReactNode }) {
       //   mx: '$-6',
       // }}
     >
-      {children}
+      {demoMultiple ? (
+        <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
+          <XStack space px="$8">
+            <Theme name="dark">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="light">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="blue">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="red">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="orange">
+              <Card>{children}</Card>
+            </Theme>
+          </XStack>
+        </XStack>
+      ) : (
+        children
+      )}
     </YStack>
   )
 }
+
+const Card = styled(YStack, {
+  ai: 'center',
+  jc: 'center',
+  elevation: '$6',
+  minWidth: 180,
+  bc: '$bg',
+  minHeight: 220,
+  br: '$4',
+})
 
 // not ssr safe
 // function ResetTheme({ children }: { children?: any }) {

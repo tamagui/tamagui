@@ -59,18 +59,20 @@ export type GetProps<A> = A extends StaticComponent<infer Props>
   ? Props
   : {}
 
+export type VariantSpreadExtras<Props> = {
+  tokens: TamaguiConfig['tokens']
+  theme: Themes extends { [key: string]: infer B } ? B : unknown
+  props: Props
+}
+
+export type VariantSpreadFunction<Props, Val = any> = (
+  val: Val,
+  config: VariantSpreadExtras<Props>
+) => Partial<Props>
+
 export type GetVariants<Props> = void | {
   [key: string]: {
-    [key: string]:
-      | Partial<Props>
-      | ((
-          val: any,
-          config: {
-            tokens: TamaguiConfig['tokens']
-            theme: Themes extends { [key: string]: infer B } ? B : unknown
-            props: Props
-          }
-        ) => Partial<Props>)
+    [key: string]: Partial<Props> | VariantSpreadFunction<Props>
   }
 }
 
@@ -85,7 +87,19 @@ export type GetVariantProps<Variants> = Variants extends void
             : unknown
           : unknown
         : keyof Variants[Key] extends 'true'
-        ? boolean | null
+        ? boolean
+        : keyof Variants[Key] extends ':string'
+        ? string
+        : keyof Variants[Key] extends ':boolean'
+        ? boolean
+        : keyof Variants[Key] extends ':number'
+        ? number
+        : keyof Variants[Key] extends ':string?'
+        ? string | undefined | null
+        : keyof Variants[Key] extends ':boolean?'
+        ? boolean | undefined | null
+        : keyof Variants[Key] extends ':number?'
+        ? number | undefined | null
         : keyof Exclude<Variants[Key], undefined>
     }
 

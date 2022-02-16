@@ -40,4 +40,5 @@ export const shorthands = {
   lh: 'lineHeight',
   ta: 'textAlign',
   fos: 'fontSize',
+  fow: 'fontWeight',
 } as const

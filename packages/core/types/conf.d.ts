@@ -21,6 +21,10 @@ export declare const getTamagui: () => TamaguiInternalConfig<import("./types").C
     [x: string]: {
         [key: string]: string | number;
     };
+}, {
+    [key: string]: string | {
+        [key: string]: any;
+    };
 }>;
 export declare const getTokens: () => import("./types").CreateTokens<import("./createVariable").Variable>;
 export declare const getThemes: () => {

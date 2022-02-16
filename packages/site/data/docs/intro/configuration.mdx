@@ -115,6 +115,33 @@ export default function App() {
 }
 ```
 
+Tamagui.Provider takes a few properties:
+
+<PropsTable
+  data={[
+    { name: 'defaultTheme', required: true, type: 'string' },
+    {
+      name: 'disableRootThemeClass',
+      required: false,
+      type: 'boolean',
+      description:
+        'Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.',
+    },
+    {
+      name: 'injectCSS',
+      required: false,
+      type: 'boolean',
+      description: `By default Tamagui won't insert any of your CSS, letting you control if you want to serve it at build time. But if you're not doing any SSR stuff, this is a simple way to have your theme and base CSS inserted automatically.`,
+    },
+    {
+      name: 'initialWindowMetrics',
+      required: false,
+      type: 'react-native-safe-area-context Metrics',
+    },
+    { name: 'children', required: false, type: 'any' },
+  ]}
+/>
+
 ## Tokens
 
 Tokens have a structure inspired by but divergent from the [Theme UI spec](https://theme-ui.com/theme-spec/). They are mapped to CSS variables at build time.

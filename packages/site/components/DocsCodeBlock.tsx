@@ -1,7 +1,7 @@
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
 import React, { forwardRef, useContext, useEffect, useRef, useState } from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Button, Paragraph, Text, YStack } from 'tamagui'
 
 import { Code } from './Code'
 import { FrontmatterContext } from './MDXComponents'
@@ -70,16 +70,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             right: 50,
           }}
         >
-          <Button
-            className="text-shadow"
-            chromeless
-            onPress={() => setIsCollapsed((x) => !x)}
-            textProps={{
-              size: '$2',
-              color: '$color',
-            }}
-          >
-            {isCollapsed ? 'Show code' : 'Hide code'}
+          <Button className="text-shadow" chromeless onPress={() => setIsCollapsed((x) => !x)}>
+            <Paragraph size="$2" color="$color">
+              {isCollapsed ? 'Show code' : 'Hide code'}
+            </Paragraph>
           </Button>
         </YStack>
       )}

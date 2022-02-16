@@ -28,9 +28,9 @@ const light = {
   color2: tokens.color.gray11,
   color3: tokens.color.gray10,
   color4: tokens.color.gray6,
-  shadowColor: tokens.color.grayA6,
+  shadowColor: tokens.color.grayA5,
   shadowColor2: tokens.color.grayA8,
-  separatorColor: tokens.color.grayA8,
+  separatorColor: tokens.color.grayA5,
   ...lightColors,
 }
 
@@ -59,9 +59,10 @@ for (const key of colorNames) {
     const isDark = scheme === 'dark'
     const colorKey = isDark ? `${key}Dark` : key
     const colorValues = RadixColors[colorKey]
+    // console.log(key, scheme, colorValues)
     const offset = isDark ? -1 : 0
     colorThemes[`${key}-${scheme}`] = {
-      color: isDark ? '#ddd' : colorValues[`${key}12`],
+      color: colorValues[`${key}12`],
       color2: isDark ? dark.color2 : light.color2,
       color3: colorValues[`${key}11`],
       color4: colorValues[`${key}10`],

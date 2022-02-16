@@ -93,14 +93,21 @@ export const components = {
     )
   },
 
-  h1: (props) => <H1 letterSpacing={-1} mb="$2" {...props} />,
+  h1: (props) => <H1 mb="$2" {...props} />,
 
   h2: ({ children, id, ...props }) => (
-    <LinkHeading mt="$4" id={id}>
-      <H2 size="$8" letterSpacing={-0.5} id={id} data-heading {...props}>
-        {children}
-      </H2>
-    </LinkHeading>
+    <H2
+      color="$color"
+      mt="$4"
+      size="$8"
+      id={id}
+      letterSpacing={-0.5}
+      id={id}
+      data-heading
+      {...props}
+    >
+      {children}
+    </H2>
   ),
 
   h3: ({ children, id, ...props }) => (

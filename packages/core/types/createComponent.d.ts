@@ -1,5 +1,4 @@
 /// <reference types="react" />
-import './tamagui-base.css';
 import { ViewStyle } from 'react-native';
 import { StaticComponent, StaticConfig, StaticConfigParsed } from './types';
 export declare const mouseUps: Set<Function>;

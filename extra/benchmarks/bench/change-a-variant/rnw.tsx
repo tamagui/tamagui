@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'react-native-web'
 
-import { Button } from '../rnw/Button'
+import { Button } from '../rnw/RNWButton'
 import { TestComponentProps, TestRunner } from '../TestRunner'
 
 const Test: React.FunctionComponent<TestComponentProps> = ({ testIndex }: TestComponentProps) => {

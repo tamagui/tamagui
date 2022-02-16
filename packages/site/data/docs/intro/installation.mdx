@@ -27,6 +27,8 @@ For more information on the options, see the [compiler options](#compiler-option
 
 #### Webpack
 
+We have a full example of a [plain, webpack-only repo here](https://github.com/tamagui/tamagui/tree/master/packages/sandbox), which should capture the complete configuration more accurately.
+
 Add `tamagui-loader` and set up your `webpack.config.js`:
 
 ```js
@@ -90,6 +92,9 @@ export default withPlugins([
     logTimings: true,
     // disable static extraction, faster to iterate in dev mode (default false)
     disableExtraction: process.env.NODE_ENV === 'development',
+    // disableExtraction only disables optimizations but keeps the debug ability and output
+    // if you want faster builds, you can disable tamagui entirely with this:
+    disable: false,
     // optionally exclude some react-native-web imports to lighten bundle
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker'],
   })

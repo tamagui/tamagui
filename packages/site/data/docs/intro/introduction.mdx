@@ -3,17 +3,11 @@ title: Introduction
 description: The how and why of Tamagui
 ---
 
-Tamagui is a light layer above React Native / React Native Web, augmenting rather than replacing them. Tamagui's goal is simple: share a lot more code between web and native apps, without sacrificing look, feel and especially, performance. It especially improves:
+**Tamagui lets you share more code between web and native apps without sacrificing DX, performance, and accessibility**. It turns natural syntax for **responsive styles**, **themes**, and **inline styles** into, on the web: atomic classes, media queries, and CSS variables, and on native to an optimized StyleSheet.create.
 
-- **Responsive styling** — fully cross platform, easy to use, with amazing performance.
-- **Theming** — works cross platform, fast, avoiding all runtime on web.
-- **Inline styles** — that are typed, and extracted into atomic CSS at build-time.
+The compiler paritally evaluates many common logical operations, spreads and more, and flattens any fully analyzable views into a simple HTML tags on web or View/Text on native.
 
 <Image title="Tamagui logo" src="/blog/introducing-tamagui/hero.png" />
-
-Today, you can't share code between Native and Web without resorting to writing media queries, themes and styles in JS. This slows things down a lot and generally feels clunky.
-
-Tamagui works backwards from ideal syntax - both inline styles and hooks - and then on the web generates [CSS media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) and [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) when possible. On native it extracts everything to StyleSheet.create. This makes everything fast. The compiler goes further and flattens what would have been a `View` or `Text` into a `div` or `span` when possible, improving performance.
 
 ### React Native ❤️
 
@@ -73,9 +67,9 @@ Inline styles have a few developer-speed benefits over `StyleSheet.create`: they
 
 `StyleSheet.create` forces you to manually link together the style with the node that's using the style. When you delete the style, you must delete the node, and when you delete a node, you have to manually check to be see if any other node is using that style before removing it.
 
-#### ⚖️ Less vertical space
+#### 📚 Less reading/writing
 
-When using shorthand style props, adding the overhead of a `style`, `css`, or `sx` prop will often make the difference in keeping your styles to one line vs multiple (when say using something like Prettier). With Typescript, the flat props feel natural and easy to understand.
+Fast inline styles and common tokens mean less having to name things. Shorthand style props that are flat often make the difference between one line and multiple.
 
 #### 🤨 Less forced naming
 

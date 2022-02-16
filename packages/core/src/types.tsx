@@ -1,7 +1,15 @@
+// TODO split this into own package @tamagui/types to share with animations packages
+
 import CSS from 'csstype'
-import React, { HTMLProps, RefObject } from 'react'
-import { TextProps as ReactTextProps, TextStyle } from 'react-native'
-import { GestureResponderEvent, View, ViewProps, ViewStyle } from 'react-native'
+import React, { RefObject } from 'react'
+import {
+  GestureResponderEvent,
+  TextProps as ReactTextProps,
+  TextStyle,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native'
 
 import { Variable } from './createVariable'
 import { ThemeProviderProps } from './views/ThemeProvider'
@@ -47,6 +55,13 @@ type GenericMedia<K extends string = string> = {
     [key: string]: number | string
   }
 }
+type GenericAnimations = {
+  [key: string]:
+    | string
+    | {
+        [key: string]: any
+      }
+}
 
 // this is the "main" typed object, which users re-define
 // (internal) keep all types directly on this object and reference them from elsewhere
@@ -68,12 +83,14 @@ export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
   C extends GenericShorthands,
-  D extends GenericMedia
+  D extends GenericMedia,
+  E extends GenericAnimations
 > = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
   tokens: A
   themes: B
   shorthands: C
   media: D
+  animations: E
 }
 
 // for use in creation functions so it doesnt get overwrtitten
@@ -81,7 +98,8 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericTokens,
   GenericThemes,
   GenericShorthands,
-  GenericMedia
+  GenericMedia,
+  GenericAnimations
 >
 
 // since TamaguiConfig will be re-declared, these will all be typed globally
@@ -90,23 +108,38 @@ export type Tokens = TamaguiConfig['tokens']
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
-// themes
-export type ThemeName = keyof Themes extends `${infer Prefix}-${string}`
-  ? Prefix | keyof Themes
-  : keyof Themes
+export type ThemeName = GetAltThemeNames<keyof Themes>
 export type ThemeKeys = keyof ThemeObject
 export type ThemeKeyVariables = `$${ThemeKeys}`
-// export type Spaces = TamaguiConfig['tokens']['spaces'][keyof TamaguiConfig['tokens']['spaces']]
-// export type FontSizes = TamaguiConfig['tokens']['fontSizes'][keyof TamaguiConfig['tokens']['fontSizes']]
-// export type Colors = TamaguiConfig['tokens']['colors'][keyof TamaguiConfig['tokens']['colors']]
+
+type GetAltThemeNames<S> = (S extends `${string}-${infer Alt}` ? Alt : S) | S
+
+export type AnimationHook = (
+  props: any,
+  extra: {
+    style: any
+    hoverStyle?: any
+    pressStyle?: any
+    exitStyle?: any
+    onDidAnimate?: any
+    delay?: number
+  }
+) => any
 
 // this is the config generated via createTamagui()
 export type TamaguiInternalConfig<
   A extends GenericTokens = GenericTokens,
   B extends GenericThemes = GenericThemes,
   C extends GenericShorthands = GenericShorthands,
-  D extends GenericMedia = GenericMedia
-> = CreateTamaguiConfig<A, B, C, D> & {
+  D extends GenericMedia = GenericMedia,
+  E extends GenericAnimations = GenericAnimations
+> = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
+  animations?: {
+    animations?: E
+    useAnimations?: Function
+    Text?: any
+    View?: any
+  }
   Provider: (props: TamaguiProviderProps) => any
   // with $ prefixes for fast lookups (one time cost at startup vs every render)
   themeParsed: { [key: string]: Variable }
@@ -256,10 +289,12 @@ type WithThemeShorthandsAndPseudos<A extends object> =
   | WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>
 
 //
-// ... and media queries
+// ... media queries and animations
 //
-type WithThemeShorthandsPseudosAndMedia<A extends object> = WithThemeShorthandsAndPseudos<A> &
-  MediaProps<WithThemeShorthandsAndPseudos<A>>
+type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> &
+  MediaProps<WithThemeShorthandsAndPseudos<A>> & {
+    animation?: string
+  }
 
 //
 // Stack
@@ -280,7 +315,7 @@ export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibilit
   TransformStyleProps &
   WebOnlyStyleProps
 
-export type StackStyleProps = WithThemeShorthandsPseudosAndMedia<StackStylePropsBase>
+export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
 
 export type StackProps = Omit<RNWInternalProps, 'children'> &
   Omit<ViewProps, 'display' | 'children'> &
@@ -303,7 +338,7 @@ export type StackProps = Omit<RNWInternalProps, 'children'> &
 //   pressStyle?: S | null
 // }
 
-type TextStyleProps = WithThemeShorthandsPseudosAndMedia<
+type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps
 >
 
@@ -342,6 +377,7 @@ export type StaticComponent<
 }
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
+  injectCSS?: boolean
   initialWindowMetrics?: any
   fallback?: any
   children?: any

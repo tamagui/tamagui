@@ -1,5 +1,6 @@
 import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
+import { styled } from '../styled'
 import { StackProps } from '../types'
 
 export const Stack = createComponent<StackProps>({

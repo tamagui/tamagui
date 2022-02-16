@@ -12,28 +12,14 @@ export function patchReactNativeWeb() {
   const modulePath = path.join(rootDir, 'dist', 'tamagui-exports.js')
   const cjsPath = path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js')
 
-  const isEqual = (() => {
-    let res = false
-    try {
-      res =
-        fs.readFileSync(modulePath, 'utf-8') === moduleExports &&
-        fs.readFileSync(cjsPath, 'utf-8') == cjsExports
-    } catch {
-      res = false
-    }
-    return res
-  })()
-
-  if (!isEqual) {
-    console.log('» Tamagui patching react-native-web to share atomic styling primitives')
-    console.log('   > adding', modulePath)
-    console.log('   > adding', cjsPath)
-    fs.writeFileSync(modulePath, moduleExports)
-    fs.writeFileSync(cjsPath, cjsExports)
-  }
+  console.log('» Tamagui patching react-native-web to share atomic styling primitives')
+  console.log('   > adding', modulePath)
+  console.log('   > adding', cjsPath)
+  fs.writeFileSync(modulePath, moduleExports)
+  fs.writeFileSync(cjsPath, cjsExports)
 
   // patch to allow className prop
-  const classNamePatch = `if (props.dataSet && props.dataSet['__className']) { domProps.className = className ? className + ' ' + props.dataSet['__className'] : props.dataSet['__className']; delete props.dataSet['__className'] }`
+  const classNamePatch = `if (props.dataSet && props.dataSet['cn']) { domProps.className = className ? className + ' ' + props.dataSet['cn'] : props.dataSet['cn']; delete props.dataSet['cn'] }`
   const domPropsPath = ['modules', 'createDOMProps', 'index.js']
   const domPropsModulePath = path.join(rootDir, 'dist', ...domPropsPath)
   const domPropsCjsPath = path.join(rootDir, 'dist', 'cjs', ...domPropsPath)

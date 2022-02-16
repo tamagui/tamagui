@@ -1,0 +1,27 @@
+{
+  "name": "@tamagui/animations-css",
+  "version": "1.0.0-alpha.67",
+  "source": "src/index.ts",
+  "license": "MIT",
+  "typings": "types",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "dependencies": {
+    "@tamagui/core": "^1.0.0-alpha.67"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.0-alpha.64"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

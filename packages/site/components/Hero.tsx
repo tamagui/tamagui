@@ -124,7 +124,6 @@ export function Hero() {
                       // hoverStyle={{
                       //   backgroundColor: '$bg4',
                       // }}
-                      textProps={{ fontWeight: '700', color: '$color3' }}
                       borderRadius={1000}
                       iconAfter={<ArrowRight color="var(--color3)" size={12} />}
                       tag="a"

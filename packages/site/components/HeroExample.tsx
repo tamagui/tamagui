@@ -1,10 +1,36 @@
+// debug
 import { FastForward, Plus } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
-import { Button, H2, H4, InteractiveContainer, Paragraph, Theme, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H2,
+  H4,
+  InteractiveContainer,
+  Paragraph,
+  Text,
+  Theme,
+  ThemeInverse,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 
 import { CodeDemo } from './CodeDemo'
 import { ContainerLarge } from './Container'
 import { IconStack } from './IconStack'
+
+const Pill = styled(Paragraph, {
+  bc: '$color3',
+  color: '$bg2',
+  size: '$3',
+  fow: '800',
+  py: '$1',
+  px: '$4',
+  br: '$10',
+  mb: '$-8',
+  zi: '100',
+  als: 'center',
+})
 
 export function HeroExample() {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -66,14 +92,13 @@ export function HeroExample() {
           {examples.map((example, i) => {
             return (
               <Button
-                textProps={{ fontFamily: '$mono' }}
                 onPress={() => setActiveIndex(i)}
                 theme={i === activeIndex ? 'active' : null}
-                chromeless={i !== activeIndex}
+                // chromeless={i !== activeIndex}
                 key={i}
-                br={0}
+                borderRadius="$0"
               >
-                {example.name}
+                <Paragraph fontFamily="$mono">{example.name}</Paragraph>
               </Button>
             )
           })}
@@ -85,9 +110,9 @@ export function HeroExample() {
               {activeExample.input.description}
             </Paragraph>
 
-            <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-8" zi="100" als="center">
-              Input
-            </H4>
+            <Theme name="blue">
+              <Pill>Input</Pill>
+            </Theme>
             <YStack>
               {activeExample.input.examples.map((example, i) => (
                 <React.Fragment key={example.code}>
@@ -104,9 +129,11 @@ export function HeroExample() {
                   </Theme>
                   {i < activeExample.input.examples.length - 1 && (
                     <YStack als="center" my="$-4" zIndex={1000}>
-                      <IconStack mb={0}>
-                        <Plus size={20} color="var(--color)" />
-                      </IconStack>
+                      <ThemeInverse>
+                        <IconStack mb={0}>
+                          <Plus size={20} color="var(--color)" />
+                        </IconStack>
+                      </ThemeInverse>
                     </YStack>
                   )}
                 </React.Fragment>
@@ -114,17 +141,19 @@ export function HeroExample() {
             </YStack>
           </YStack>
           <YStack mt={180} mx={-15} zIndex={1000}>
-            <IconStack mb={0}>
-              <FastForward size={20} color="var(--color)" />
-            </IconStack>
+            <ThemeInverse>
+              <IconStack mb={0}>
+                <FastForward size={20} color="var(--color)" />
+              </IconStack>
+            </ThemeInverse>
           </YStack>
           <YStack flex={1} maxWidth="49%" space="$4">
             <Paragraph size="$3" minHeight={50} ta="center" px="$7" color="$color2">
               {activeExample.output.description}
             </Paragraph>
-            <H4 size="$2" bc="$bg2" py="$2" px="$3" br="$4" mb="$-8" zi="100" als="center">
-              Output
-            </H4>
+            <Theme name="blue">
+              <Pill>Output</Pill>
+            </Theme>
             <YStack>
               {activeExample.output.outputs.map((example, i) => {
                 const hasMore = activeExample.output.outputs.length - 1 > i
@@ -143,9 +172,11 @@ export function HeroExample() {
                     </HoverableStack>
                     {hasMore && (
                       <YStack als="center" my="$-4" zIndex={1000}>
-                        <IconStack mb={0}>
-                          <Plus size={20} color="var(--color)" />
-                        </IconStack>
+                        <ThemeInverse>
+                          <IconStack mb={0}>
+                            <Plus size={20} color="var(--color)" />
+                          </IconStack>
+                        </ThemeInverse>
                       </YStack>
                     )}
                   </React.Fragment>

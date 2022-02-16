@@ -8,7 +8,7 @@ name: text
 
 <Description>A simple, sizable button.</Description>
 
-<HeroContainer>
+<HeroContainer demoMultiple>
   <ButtonDemo />
 </HeroContainer>
 
@@ -79,12 +79,6 @@ Buttons extend Stack views inheriting all the [Tamagui standard props](/docs/int
       required: false,
       type: 'boolean',
       description: `Helpful for "flipping" any theme between dark and light (including flipping a sub themes defined as [subtheme]-[dark/light]`,
-    },
-    {
-      name: 'textProps',
-      required: false,
-      type: 'TextProps',
-      description: `By default a button wraps contents in Text and will pass textProps if set.`,
     },
     {
       name: 'noTextWrap',

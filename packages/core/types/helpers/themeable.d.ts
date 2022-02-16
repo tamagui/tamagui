@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
+import { ThemeName } from '../types';
 export declare type ThemeableProps = {
-    theme?: string | null;
+    theme?: ThemeName | string | null;
     themeInverse?: boolean;
 };
 export declare const themeable: ThemeableHOC;

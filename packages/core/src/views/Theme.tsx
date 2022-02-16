@@ -22,8 +22,8 @@ export const Theme = (props: ThemeProps) => {
     return props.children
   }
 
-  const nextNameParent = `${props.name}-${parentName}`
-  const nextNameParentParent = `${props.name}-${parent.parentName}`
+  const nextNameParent = `${parentName}-${props.name}`
+  const nextNameParentParent = `${parent.parentName}-${props.name}`
   const name = !props.name
     ? null
     : props.name in themes
@@ -60,8 +60,6 @@ export const Theme = (props: ThemeProps) => {
     })
   }, [themes, name, parentName])
 
-  console.log('what', props, name, theme)
-
   if (!name || !theme) {
     console.warn('no theme', { name, theme })
     return props.children
@@ -75,11 +73,12 @@ export const Theme = (props: ThemeProps) => {
     props.children
   )
 
+  console.log('huh', props.name, name, theme, props.disableThemeClass)
+
   if (isWeb) {
     if (props.disableThemeClass) {
       return contents
     }
-    console.log('name', name)
     const color = themes[name]?.['color']?.['variable']
     return (
       <div

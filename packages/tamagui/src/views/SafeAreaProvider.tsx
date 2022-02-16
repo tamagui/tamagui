@@ -13,7 +13,7 @@ export const SafeAreaProvider = ({
   children,
 }: {
   children?: any
-  initialWindowMetrics?: any
+  initialWindowMetrics?: Metrics
 }) => {
   if (!initialWindowMetrics && !defaultMetrics) {
     defaultMetrics = Platform.select({
