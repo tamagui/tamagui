@@ -225,7 +225,10 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
                 {
                   loader: 'babel-loader',
                   options: {
-                    plugins: ['@babel/plugin-transform-react-jsx'],
+                    plugins: [
+                      'react-native-reanimated/plugin',
+                      '@babel/plugin-transform-react-jsx',
+                    ],
                   },
                 },
               ],
