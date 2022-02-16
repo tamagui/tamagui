@@ -1,5 +1,5 @@
 // published a patched version that works on native
-import ow from '@tamagui/ow'
+import ow from '@tamagui/ow/dev-only'
 
 export const validateConfig = (conf: any) => {
   if (!conf) {
@@ -9,8 +9,7 @@ export const validateConfig = (conf: any) => {
   try {
     ow(conf, validConfig)
   } catch (err: any) {
-    console.log('Given config:\n', JSON.stringify(conf, null, 2))
-    throw err
+    console.warn('Given config:\n', JSON.stringify(conf, null, 2), err)
   }
 }
 
@@ -44,8 +43,7 @@ export const validateTokens = (tokens: any) => {
   try {
     ow(tokens, validTokens)
   } catch (err: any) {
-    console.log('Given tokens:\n', JSON.stringify(tokens, null, 2))
-    throw err
+    console.warn('Given tokens:\n', JSON.stringify(tokens, null, 2), err)
   }
 }
 
@@ -53,7 +51,6 @@ export const validateFont = (font: any) => {
   try {
     ow(font, validFont)
   } catch (err: any) {
-    console.log('Given font:\n', JSON.stringify(font, null, 2))
-    throw err
+    console.warn('Given font:\n', JSON.stringify(font, null, 2), err)
   }
 }
