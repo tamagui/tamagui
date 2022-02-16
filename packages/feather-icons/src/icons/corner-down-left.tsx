@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const CornerDownLeft = (props: IconProps) => {
+export const CornerDownLeft = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const CornerDownLeft = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -38,7 +39,7 @@ export const CornerDownLeft = (props: IconProps) => {
       <Polyline
         points="9 10 4 15 9 20"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -46,11 +47,11 @@ export const CornerDownLeft = (props: IconProps) => {
       <Path
         d="M20 4v7a4 4 0 0 1-4 4H4"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

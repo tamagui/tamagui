@@ -13,6 +13,7 @@
     "@tamagui/colors": "^1.0.0-alpha.64",
     "@tamagui/drawer": "^1.0.0-alpha.68",
     "@tamagui/feather-icons": "^1.0.0-alpha.64",
+    "@tamagui/menu": "^1.0.0-alpha.68",
     "compare-versions": "^4.0.1",
     "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.26.0",

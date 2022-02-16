@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const Chrome = (props: IconProps) => {
+export const Chrome = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const Chrome = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -40,7 +41,7 @@ export const Chrome = (props: IconProps) => {
         cy="12"
         r="10"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -50,7 +51,7 @@ export const Chrome = (props: IconProps) => {
         cy="12"
         r="4"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -61,7 +62,7 @@ export const Chrome = (props: IconProps) => {
         x2="12"
         y2="8"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -72,7 +73,7 @@ export const Chrome = (props: IconProps) => {
         x2="8.54"
         y2="14"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -83,11 +84,11 @@ export const Chrome = (props: IconProps) => {
         x2="15.46"
         y2="14"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const Map = (props: IconProps) => {
+export const Map = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const Map = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -38,7 +39,7 @@ export const Map = (props: IconProps) => {
       <Polygon
         points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -49,7 +50,7 @@ export const Map = (props: IconProps) => {
         x2="8"
         y2="18"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -60,11 +61,11 @@ export const Map = (props: IconProps) => {
         x2="16"
         y2="22"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

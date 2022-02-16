@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const Rss = (props: IconProps) => {
+export const Rss = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const Rss = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -38,7 +39,7 @@ export const Rss = (props: IconProps) => {
       <Path
         d="M4 11a9 9 0 0 1 9 9"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -46,7 +47,7 @@ export const Rss = (props: IconProps) => {
       <Path
         d="M4 4a16 16 0 0 1 16 16"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -56,11 +57,11 @@ export const Rss = (props: IconProps) => {
         cy="19"
         r="1"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

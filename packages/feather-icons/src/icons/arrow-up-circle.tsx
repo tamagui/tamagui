@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const ArrowUpCircle = (props: IconProps) => {
+export const ArrowUpCircle = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const ArrowUpCircle = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -40,7 +41,7 @@ export const ArrowUpCircle = (props: IconProps) => {
         cy="12"
         r="10"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -48,7 +49,7 @@ export const ArrowUpCircle = (props: IconProps) => {
       <Polyline
         points="16 12 12 8 8 12"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -59,11 +60,11 @@ export const ArrowUpCircle = (props: IconProps) => {
         x2="12"
         y2="8"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

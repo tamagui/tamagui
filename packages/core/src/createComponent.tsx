@@ -1,5 +1,3 @@
-import './tamagui-base.css'
-
 import { concatClassName, stylePropsView } from '@tamagui/helpers'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
@@ -33,6 +31,10 @@ import {
   TamaguiInternalConfig,
 } from './types'
 import { TextAncestorContext } from './views/TextAncestorContext'
+
+if (process.env.TAMAGUI_TARGET === 'web') {
+  require('./tamagui-base.css')
+}
 
 export const mouseUps = new Set<Function>()
 
@@ -201,19 +203,25 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     }, [])
 
+    const useAnimations = tamaguiConfig.animations?.useAnimations
+    const isAnimated = !!(useAnimations && props.animation)
+
     // element
     const isInternalComponent = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isInternalComponent ? tag || Component : Component) : Component
-    const ReactView = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
-    const ReactText = !isWeb ? Text : element || 'span'
+    const ReactView =
+      (isAnimated ? tamaguiConfig?.animations?.View : null) ??
+      (!isWeb ? View : element || (hasTextAncestor ? 'span' : 'div'))
+    const ReactText =
+      (isAnimated ? tamaguiConfig?.animations?.Text : null) ?? (!isWeb ? Text : element || 'span')
     const ViewComponent = isText ? ReactText : ReactView
 
     // styles
     const isHovering = !isTouchDevice && !disabled && pseudos && state.hover
     const isPressing = !disabled && pseudos && state.press
 
-    const styles = [
+    let styles = [
       defaultNativeStyle ? defaultNativeStyle.base : null,
       // parity w react-native-web, only for text in text
       // TODO this should be able to be done w css to replicate after extraction:
@@ -224,7 +232,22 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       isPressing ? pseudos.pressStyle || null : null,
     ]
 
-    if (isWeb) {
+    if (isAnimated) {
+      if (process.env.NODE_ENV === 'development') {
+        if (props['debug']) {
+          // prettier-ignore
+          console.log('» animations', useAnimations, tamaguiConfig.animations, ViewComponent?.render?.toString(), { animation: props.animation }, style)
+        }
+      }
+      const res = useAnimations(props, {
+        style,
+        isHovering,
+        isPressing,
+      })
+      styles = [res]
+    }
+
+    if (isWeb && !isAnimated) {
       const stylesClassNames = useStylesAsClassname(styles)
       const classList = isText
         ? [
@@ -255,7 +278,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       viewProps.pointerEvents = pointerEvents
     }
 
-    if (isWeb) {
+    if (isWeb && !isAnimated) {
       // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(viewProps)
       const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
@@ -419,7 +442,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     let content: any
 
     // replicate react-native-web's `createElement`
-    if (isWeb && rnw) {
+    if (isWeb && rnw && !isAnimated) {
       const domProps = rnw.createDOMProps(viewProps)
       const className =
         domProps.className && domProps.className !== viewProps.className
@@ -428,29 +451,36 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       Object.assign(viewProps, domProps)
 
       if (staticConfig.isReactNativeWeb) {
-        viewProps.dataSet = viewProps.dataSet || {}
-        Object.assign(viewProps.dataSet, { __className: className })
+        viewProps.dataSet = {
+          ...(viewProps.dataSet || {}),
+          cn: className,
+        }
+        console.log('set', className, viewProps.dataSet, viewProps)
       } else {
         // we already handle Text/View properly
-        viewProps.className = className
+        if (className) {
+          viewProps.className = className
+        }
       }
-
       content = createElement(ViewComponent, viewProps, childEls)
     } else {
       content = createElement(ViewComponent, viewProps, childEls)
     }
 
-    const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
-    if (shouldWrapTextAncestor) {
-      // from react-native-web
-      content = createElement(TextAncestorContext.Provider, { value: true }, content)
-    }
+    // const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
+    // if (shouldWrapTextAncestor) {
+    //   // from react-native-web
+    //   content = createElement(TextAncestorContext.Provider, { value: true }, content)
+    // }
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         viewProps['debug'] = true
         console.log('» props in:', props)
-        console.log('» props out:', viewProps, viewProps.className?.split(' '))
+        console.log('» props out:', viewProps.dataSet, {
+          ...viewProps,
+          classNameSplit: viewProps.className?.split(' '),
+        })
         // prettier-ignore
         console.log('» etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
@@ -521,7 +551,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
   const res = component as any as StaticComponent<ComponentPropTypes, void>
 
-  // add extractable HoC
+  // res.extractable HoC
   res['extractable'] = (Component: any, conf?: StaticConfig) => {
     Component['staticConfig'] = extendStaticConfig(res, {
       ...conf,

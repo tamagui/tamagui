@@ -31,3 +31,10 @@ export const createVariable = (props: VariableIn) => new Variable(props)
 export function isVariable(v: Variable | any): v is Variable {
   return v instanceof Variable || (v && v[IS_VARIABLE_SYMBOL])
 }
+
+export function getVariableValue(v: Variable | any) {
+  if (isVariable(v)) {
+    return v.val
+  }
+  return v
+}

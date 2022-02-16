@@ -1,6 +1,9 @@
-import { GetProps, Stack, styled } from '@tamagui/core'
+import { GetProps, styled } from '@tamagui/core'
+import React from 'react'
 
-export const Circle = styled(Stack, {
+import { SizableFrame } from './SizableFrame'
+
+export const Circle = styled(SizableFrame, {
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: 100_000_000,

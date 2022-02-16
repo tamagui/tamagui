@@ -2,8 +2,8 @@ import { StackProps, Text, Theme, isTamaguiElement, isWeb, styled } from '@tamag
 import React from 'react'
 
 import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
-import { InteractiveFrame } from './InteractiveFrame'
 import { Paragraph } from './Paragraph'
+import { SizableFrame } from './SizableFrame'
 import { SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
@@ -17,7 +17,7 @@ export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
   showArrow?: boolean
 }
 
-const TooltipFrame = styled(InteractiveFrame, {
+const TooltipFrame = styled(SizableFrame, {
   tag: 'button',
   borderWidth: 0,
 })

@@ -17,8 +17,8 @@ export * from './helpers/isObj';
 export * from './helpers/getStylesAtomic';
 export * from './helpers/matchMedia';
 export * from './helpers/themeable';
-export * from './helpers/isTamaguiElement';
 export * from './helpers/withStaticProperties';
+export * from './helpers/isTamaguiElement';
 export * from './hooks/useConstant';
 export * from './hooks/useMedia';
 export * from './hooks/useTheme';
@@ -29,4 +29,5 @@ export * from './views/Theme';
 export * from './views/ThemeInverse';
 export * from './views/ThemeProvider';
 export * from './views/TextAncestorContext';
+export * from '@tamagui/helpers';
 //# sourceMappingURL=index.d.ts.map

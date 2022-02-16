@@ -6,10 +6,6 @@ export * from '@tamagui/helpers'
 // lets be explicit on what gets exported
 export {
   // types
-  addMediaQueryListener,
-  mediaQueryConfig,
-  TamaguiInternalConfig,
-  GenericTamaguiConfig,
   ColorTokens,
   CreateTamaguiConfig,
   CreateTamaguiProps,
@@ -18,30 +14,39 @@ export {
   FontSizeTokens,
   FontTokens,
   FontWeightTokens,
+  GenericTamaguiConfig,
   GetProps,
+  GetVariantProps,
+  Media,
   MediaKeys,
   MediaQueries,
+  mediaQueryConfig,
   MediaQueryState,
   Shorthands,
   SizeTokens,
   SpaceTokens,
-  TamaguiCustomConfig,
-  TamaguiConfig,
-  TamaguiProviderProps,
   StaticComponent,
-  ThemeKeys,
   StaticConfig,
-  ThemeableHOC,
-  ThemeObject,
+  StaticConfigParsed,
+  TamaguiConfig,
+  TamaguiCustomConfig,
+  TamaguiInternalConfig,
+  TamaguiProviderProps,
   TextProps,
+  ThemeableHOC,
+  ThemeKeys,
+  ThemeName,
+  ThemeObject,
   ThemeProps,
   Themes,
   Tokens,
   TransformStyleProps,
-  StaticConfigParsed,
+  VariantSpreadExtras,
+  VariantSpreadFunction,
   // components
   Spacer,
   Stack,
+  StackProps,
   Text,
   Theme,
   ThemeInverse,
@@ -55,6 +60,7 @@ export {
   isTouchDevice,
   isWebIOS,
   // helpers
+  addMediaQueryListener,
   mediaState,
   styled,
   createComponent,
@@ -78,6 +84,7 @@ export {
   isObj,
   isTamaguiElement,
   matchMedia,
+  withStaticProperties,
   // hooks
   useConstant,
   useDefaultThemeName,
@@ -98,6 +105,7 @@ export * from './hooks/useKeyboardDismissable'
 export * from './views/BlurView'
 export * from './views/Box'
 export * from './views/Button'
+export * from './views/Card'
 export * from './views/Circle'
 export * from './views/EnsureFlexed'
 export * from './views/Form'
@@ -107,10 +115,8 @@ export * from './views/Hoverable'
 export * from './views/HoverablePopover'
 export * from './views/Image'
 export * from './views/InteractiveContainer'
-export * from './views/InteractiveFrame'
 export * from './views/Layouts'
 export * from './views/LinearGradient'
-// export * from './views/Menu'
 export * from './views/Modal'
 export * from './views/Overlay'
 export * from './views/Paragraph'
@@ -118,7 +124,9 @@ export * from './views/Popover/Popover'
 export * from './views/Popover/PopoverProvider'
 export * from './views/SafeAreaProvider'
 export * from './views/Separator'
+export * from './views/SizableFrame'
 export * from './views/SizableText'
+export * from './views/Square'
 export * from './views/Stacks'
 export * from './views/Table'
 export * from './views/Toast'

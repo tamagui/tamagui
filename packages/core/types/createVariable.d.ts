@@ -13,5 +13,6 @@ declare type VariableIn = {
 };
 export declare const createVariable: (props: VariableIn) => Variable;
 export declare function isVariable(v: Variable | any): v is Variable;
+export declare function getVariableValue(v: Variable | any): any;
 export {};
 //# sourceMappingURL=createVariable.d.ts.map

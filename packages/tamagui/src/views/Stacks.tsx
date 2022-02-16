@@ -1,4 +1,4 @@
-import { GetProps, Stack, isVariable, styled } from '@tamagui/core'
+import { GetProps, Stack, VariantSpreadExtras, isVariable, styled } from '@tamagui/core'
 
 export const YStack = styled(Stack, {
   flexDirection: 'column',
@@ -15,20 +15,19 @@ export const YStack = styled(Stack, {
     },
 
     elevation: {
-      '...size': (size, { tokens, theme }) => {
+      '...size': (size, extras) => {
+        const { tokens, theme } = extras
         const token = tokens.size[size]
-        const base = isVariable(token) ? +token.val : size
-        const [height, shadowRadius] = [base / 3 + 2, base / 2 + 2]
-        const shadow = {
-          shadowColor: theme.shadowColor,
-          shadowRadius,
-          shadowOffset: { height, width: 0 },
-        }
-        return shadow
+        const sizeNum = isVariable(token) ? +token.val : size
+        return getSizedElevation(sizeNum, extras)
       },
     },
   },
 })
+
+export type YStackProps = GetProps<typeof YStack>
+export type XStackProps = GetProps<typeof YStack>
+export type ZStackProps = GetProps<typeof ZStack>
 
 export const XStack = styled(YStack, {
   flexDirection: 'row',
@@ -45,9 +44,12 @@ export const ZStack = styled(
   }
 )
 
-// these are all the same, really:
-// we'll override core StackProps first
-export type StackProps = GetProps<typeof YStack>
-export type YStackProps = StackProps
-export type XStackProps = StackProps
-export type ZStackProps = StackProps
+export const getSizedElevation = (val: number, { theme }: VariantSpreadExtras<any>) => {
+  const [height, shadowRadius] = [val / 3 + 2, val / 2 + 2]
+  const shadow = {
+    shadowColor: theme.shadowColor,
+    shadowRadius,
+    shadowOffset: { height, width: 0 },
+  }
+  return shadow
+}

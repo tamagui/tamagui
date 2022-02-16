@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const Gift = (props: IconProps) => {
+export const Gift = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const Gift = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -38,7 +39,7 @@ export const Gift = (props: IconProps) => {
       <Polyline
         points="20 12 20 22 4 22 4 12"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -49,7 +50,7 @@ export const Gift = (props: IconProps) => {
         width="20"
         height="5"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -60,7 +61,7 @@ export const Gift = (props: IconProps) => {
         x2="12"
         y2="7"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -68,7 +69,7 @@ export const Gift = (props: IconProps) => {
       <Path
         d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -76,11 +77,11 @@ export const Gift = (props: IconProps) => {
       <Path
         d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

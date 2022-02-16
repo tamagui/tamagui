@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "../..",
+    "jsx": "preserve"
+  },
+  "references": [
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../tamagui"
+    }
+  ]
+}

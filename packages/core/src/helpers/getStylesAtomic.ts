@@ -1,4 +1,4 @@
-import { AllRules } from '@tamagui/helpers'
+import { addRule } from '@tamagui/helpers'
 import type { StyleObject } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
@@ -89,7 +89,7 @@ function getAtomicStyle(
       if (rules.length > 1) {
         console.warn('have never seen more than one, verifying')
       }
-      AllRules.add(rules[0])
+      addRule(rules[0])
     }
 
     const result: StyleObject = {

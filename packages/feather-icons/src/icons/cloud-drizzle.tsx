@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const CloudDrizzle = (props: IconProps) => {
+export const CloudDrizzle = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const CloudDrizzle = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -41,7 +42,7 @@ export const CloudDrizzle = (props: IconProps) => {
         x2="8"
         y2="21"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -52,7 +53,7 @@ export const CloudDrizzle = (props: IconProps) => {
         x2="8"
         y2="15"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -63,7 +64,7 @@ export const CloudDrizzle = (props: IconProps) => {
         x2="16"
         y2="21"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -74,7 +75,7 @@ export const CloudDrizzle = (props: IconProps) => {
         x2="16"
         y2="15"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -85,7 +86,7 @@ export const CloudDrizzle = (props: IconProps) => {
         x2="12"
         y2="23"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -96,7 +97,7 @@ export const CloudDrizzle = (props: IconProps) => {
         x2="12"
         y2="17"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -104,11 +105,11 @@ export const CloudDrizzle = (props: IconProps) => {
       <Path
         d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

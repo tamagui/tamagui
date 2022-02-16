@@ -5,7 +5,7 @@
     "*.css"
   ],
   "source": "src/index.ts",
-  "typings": "types",
+  "types": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
@@ -18,7 +18,6 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^4.1.5",
     "@react-aria/ssr": "^3.1.0",
     "@react-aria/utils": "^3.10.0",
     "@react-native-aria/focus": "^0.2.5",

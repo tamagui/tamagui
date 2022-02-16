@@ -1,8 +1,15 @@
-import { ThemeableProps, getTokens, styled, themeable, useTheme } from '@tamagui/core'
+import {
+  StaticComponent,
+  ThemeableProps,
+  getTokens,
+  styled,
+  themeable,
+  useTheme,
+} from '@tamagui/core'
 import React, { forwardRef, isValidElement } from 'react'
 
 import { getFontSize } from '../helpers/getFontSize'
-import { InteractiveFrame, InteractiveFrameProps } from './InteractiveFrame'
+import { SizableFrame, SizableFrameProps } from './SizableFrame'
 import { SizableText, SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
@@ -10,49 +17,63 @@ React['createElement']
 
 type IconProp = JSX.Element | ((props: { color?: string; size?: number }) => JSX.Element) | null
 
-export type ButtonProps = InteractiveFrameProps &
+export type ButtonProps = SizableFrameProps &
   ThemeableProps & {
+    scaleIcon?: number
     color?: SizableTextProps['color']
-    textProps?: Omit<SizableTextProps, 'children'>
     noTextWrap?: boolean
     icon?: IconProp
     iconAfter?: IconProp
   }
 
-const ButtonFrame = styled(InteractiveFrame, {
+const ButtonFrame = styled(SizableFrame, {
   tag: 'button',
   borderWidth: 0,
 })
 
-export const Button = ButtonFrame.extractable(
+export const Button: React.FC<ButtonProps> = ButtonFrame.extractable(
   themeable(
-    forwardRef((props: ButtonProps, ref) => {
+    forwardRef((props, ref) => {
       const {
         children,
         icon,
         iconAfter,
         space,
-        textProps,
         noTextWrap,
         theme: themeName,
         size = '$4',
+        scaleIcon = 0,
         color: colorProp,
         ...rest
       } = props
       const theme = useTheme()
-      const color = (colorProp || theme.color2).toString()
+      const color = (colorProp || theme.color).toString()
       const addTheme = (el: any) => {
         return isValidElement(el)
           ? el
           : !!el
           ? React.createElement(el, {
               color,
-              size: getFontSize(size, { relativeSize: -1 }),
+              size: getFontSize(size, { relativeSize: -1 + scaleIcon }),
             })
           : null
       }
       const themedIcon = icon ? addTheme(icon) : null
       const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
+
+      const contents = noTextWrap
+        ? children
+        : React.Children.map(children, (child) => {
+            const component = typeof child !== 'string' ? (child['type'] as StaticComponent) : null
+            if (component?.staticConfig?.isText) {
+              return child
+            }
+            return (
+              <SizableText size={size} color={color} flexGrow={0} flexShrink={1} ellipse>
+                {children}
+              </SizableText>
+            )
+          })
 
       return (
         <ButtonFrame
@@ -64,25 +85,7 @@ export const Button = ButtonFrame.extractable(
           {...rest}
         >
           {themedIcon}
-          {noTextWrap ? (
-            children
-          ) : !children ? null : textProps ? (
-            // flex shrink = 1, flex grow = 0 makes buttons shrink properly in native
-            <SizableText
-              flexGrow={0}
-              flexShrink={1}
-              ellipse
-              size={size}
-              color={color}
-              {...textProps}
-            >
-              {children}
-            </SizableText>
-          ) : (
-            <SizableText size={size} color={color} flexGrow={0} flexShrink={1} ellipse>
-              {children}
-            </SizableText>
-          )}
+          {contents}
           {themedIconAfter}
         </ButtonFrame>
       )

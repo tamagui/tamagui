@@ -77,8 +77,9 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
         Defs,
         Stop
       } from 'react-native-svg'
+      import { themed } from '../themed'
 
-      export const ${uppercamelcase(id)} = (props: IconProps) => {
+      export const ${uppercamelcase(id)} = themed((props: IconProps) => {
         const { color = 'black', size = 24, ...otherProps } = props
         return (
           ${$('svg')
@@ -122,7 +123,7 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
             .replace(new RegExp('</stop', 'g'), '</Stop')
             .replace(new RegExp('px', 'g'), '')}
         )
-      }
+      })
     `
 
     const component = prettier.format(element, {

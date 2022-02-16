@@ -7,6 +7,7 @@ import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { configureMedia } from './hooks/useMedia'
 import {
+  AnimationHook,
   CreateTamaguiConfig,
   GenericTamaguiConfig,
   MediaQueryKey,
@@ -16,7 +17,15 @@ import {
 
 export type CreateTamaguiProps = TamaguiProviderProps & // we omit and re-declare it because we need to allow instantation types to be flexible
   // user then re-defines the types after createTamagui returns the typed object they want
-  Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens'>> & {
+  Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
+    animations?: {
+      useAnimations: AnimationHook
+      animations: {
+        [key: string]: any
+      }
+      View?: any
+      Text?: any
+    }
     tokens: GenericTamaguiConfig['tokens']
     themes: {
       [key: string]: {
@@ -31,8 +40,8 @@ const createdConfigs = new WeakMap<any, boolean>()
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
-): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D>
-  ? TamaguiInternalConfig<A, B, C, D>
+): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E>
+  ? TamaguiInternalConfig<A, B, C, D, E>
   : unknown {
   // config is re-run by the @tamagui/static, dont double validate
   if (createdConfigs.has(config)) {
@@ -56,11 +65,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     if (isWeb) {
       // tokens
-      let tokenRule = `:root {`
+      const tokenRules = new Set<string>()
+
       const addVar = (v: Variable) => {
         varsByValue[v.val] = v
-        const rule = `--${v.name}:${typeof v.val === 'number' ? `${v.val}px` : v.val};`
-        tokenRule += rule
+        const rule = `--${v.name}:${typeof v.val === 'number' ? `${v.val}px` : v.val}`
+        tokenRules.add(rule)
       }
 
       for (const key in config.tokens) {
@@ -81,7 +91,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           }
         }
       }
-      cssRules.push(`${tokenRule}\n}`)
+      const sep = process.env.NODE_ENV === 'development' ? '\n  ' : ''
+      cssRules.push(`:root {${sep}${[...tokenRules].join(`;${sep}`)}${sep}}`)
     }
 
     // themes
@@ -97,7 +108,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           const val = theme[themeKey]
           // TODO sanity check is necessary
           const varName = val instanceof Variable ? val.name : varsByValue[val]?.name
-          vars += `--${themeKey}:${varName ? `var(--${varName});` : `${val}`};`
+          vars += `--${themeKey}:${varName ? `var(--${varName})` : `${val}`};`
         }
 
         // make sure properly names theme variables
@@ -105,9 +116,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
 
       if (isWeb) {
-        const [themeClassName, parentName] = themeName.includes('-')
+        const [parentName, themeClassName] = themeName.includes('-')
           ? themeName.split('-')
-          : [themeName, '']
+          : ['', themeName]
+
         // tiny hack for now assuming light/dark are typical parentName
         const oppositeName = parentName === 'dark' ? 'light' : 'dark'
         const cssParentSel = parentName ? `.${PREFIX}${parentName}` : ''
@@ -115,6 +127,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const cssSel = `${cssParentSel} ${cssChildSel}`
         // we need to force specificity
         const cssRule = `${cssSel}, .${PREFIX}${oppositeName} ${cssSel} {\n${vars}\n}`
+        console.log('giot', { parentName, themeClassName, cssRule })
         cssRules.push(cssRule)
       }
     }
@@ -142,11 +155,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     themeParsed[`$${key}`] = new Variable({ val, name: key })
   }
 
+  const getCSS = () => {
+    return `${themeConfig.css}\n${[...getStyleRules()].join('\n')}`
+  }
+
   const next: TamaguiInternalConfig = {
+    animations: {},
     shorthands: {},
     media: {},
     ...config,
     Provider: createTamaguiProvider({
+      getCSS,
       defaultTheme: 'light',
       ...config,
     }),
@@ -154,9 +173,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     themeParsed,
     tokensParsed,
     parsed: true,
-    getCSS() {
-      return `${themeConfig.css}\n${[...getStyleRules()].join('\n')}`
-    },
+    getCSS,
   }
 
   setConfig(next)

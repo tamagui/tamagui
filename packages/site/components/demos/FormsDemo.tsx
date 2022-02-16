@@ -1,13 +1,22 @@
 import React from 'react'
-import { Input, TextArea, YStack } from 'tamagui'
+import { Button, Input, TextArea, XStack, YStack } from 'tamagui'
 
 export function FormsDemo() {
   return (
-    <YStack space>
-      <Input size="$2" placeholder="Size 2..." />
-      <Input size="$3" placeholder="Size 3..." />
-      <Input size="$4" placeholder="Size 4..." />
-      <TextArea />
+    <YStack maxWidth={220} overflow="hidden" space="$2" m="$3" p="$2">
+      <FormDemo size="$1" />
+      <FormDemo size="$2" />
+      <FormDemo size="$3" />
+      <TextArea numberOfLines={2} />
     </YStack>
+  )
+}
+
+function FormDemo(props: { size: number }) {
+  return (
+    <XStack space="$1">
+      <Input f={1} w="0%" size={props.size} placeholder={`Size ${props.size.slice(1)}...`} />
+      <Button size={props.size}>Go</Button>
+    </XStack>
   )
 }

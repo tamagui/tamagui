@@ -20,8 +20,9 @@ import {
 } from 'react-native-svg'
 
 import { IconProps } from '../IconProps'
+import { themed } from '../themed'
 
-export const LifeBuoy = (props: IconProps) => {
+export const LifeBuoy = themed((props: IconProps) => {
   const { color = 'black', size = 24, ...otherProps } = props
   return (
     <Svg
@@ -29,7 +30,7 @@ export const LifeBuoy = (props: IconProps) => {
       height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={color}
+      stroke={`${color}`}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -40,7 +41,7 @@ export const LifeBuoy = (props: IconProps) => {
         cy="12"
         r="10"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -50,7 +51,7 @@ export const LifeBuoy = (props: IconProps) => {
         cy="12"
         r="4"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -61,7 +62,7 @@ export const LifeBuoy = (props: IconProps) => {
         x2="9.17"
         y2="9.17"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -72,7 +73,7 @@ export const LifeBuoy = (props: IconProps) => {
         x2="19.07"
         y2="19.07"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -83,7 +84,7 @@ export const LifeBuoy = (props: IconProps) => {
         x2="19.07"
         y2="4.93"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -94,7 +95,7 @@ export const LifeBuoy = (props: IconProps) => {
         x2="18.36"
         y2="5.64"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -105,11 +106,11 @@ export const LifeBuoy = (props: IconProps) => {
         x2="9.17"
         y2="14.83"
         fill="none"
-        stroke={color}
+        stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </Svg>
   )
-}
+})

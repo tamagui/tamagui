@@ -1,5 +1,5 @@
 import {
-  AllRules,
+  addRule,
   stylePropsText,
   stylePropsTransform,
   validStyles,
@@ -36,60 +36,72 @@ export const getSplitStyles = (
     // be sure to sync next few lines below to getSubStyle (*1)
     const valInit = props[keyInit]
 
-    // media
-    if (keyInit[0] === '$') {
-      const mediaKey = keyInit.slice(1)
-
-      if (!mediaQueryConfig[mediaKey]) {
-        // this isn't a media key, pass through
-        viewProps[keyInit] = valInit
-        continue
-      }
-
-      // dont check if media is active, we just apply *all* media styles
-      // we combine the media props on top regular props, could proxy this
-      // TODO test proxy here instead of merge
-      const mediaProps = { ...props, ...valInit }
-      // TODO media + hover
-      const mediaStyle = getSubStyle(valInit, staticConfig, theme, props)
-
-      if (isWeb) {
-        const mediaStyles = getStylesAtomic(mediaStyle)
-        if (process.env.NODE_ENV === 'development') {
-          if (props['debug']) {
-            console.log('mediaStyles', keyInit, { mediaProps, mediaStyle })
-          }
-        }
-        for (const style of mediaStyles) {
-          const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
-          classNames = classNames || []
-          classNames.push(out.identifier)
-          AllRules.add(out.styleRule)
-          insertStyleRule(out.styleRule)
-          if (process.env.NODE_ENV === 'development' && props['debug']) {
-            console.log('mediaProp', style.identifier, out.styleRule)
-          }
-        }
-      } else {
-        if (mediaState[mediaKey]) {
-          style.push(mediaStyle)
-        }
-      }
-      continue
-    }
-
-    // pseudo
-    if (validStylesPseudo[keyInit]) {
-      if (!valInit) continue
-      pseudos = pseudos || {}
-      pseudos[keyInit] = getSubStyle(valInit, staticConfig, theme, props)
-      continue
-    }
-
-    const out = staticConfig.propMapper(keyInit, valInit, theme, props)
+    let isMedia = keyInit[0] === '$'
+    let isPseudo = validStylesPseudo[keyInit]
+    const out =
+      isMedia || isPseudo
+        ? [[keyInit, valInit]]
+        : staticConfig.propMapper(keyInit, valInit, theme, props)
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
     for (const [key, val] of expanded) {
+      isMedia = key[0] === '$'
+      isPseudo = validStylesPseudo[key]
+
+      if (staticConfig.deoptProps?.has(key)) {
+        viewProps[key] = val
+      }
+
+      // pseudo
+      if (isPseudo) {
+        if (!val) continue
+        pseudos = pseudos || {}
+        pseudos[key] = getSubStyle(val, staticConfig, theme, props)
+        continue
+      }
+
+      // media
+      if (isMedia) {
+        const mediaKey = key.slice(1)
+
+        if (!mediaQueryConfig[mediaKey]) {
+          // this isn't a media key, pass through
+          viewProps[key] = valInit
+          continue
+        }
+
+        // dont check if media is active, we just apply *all* media styles
+        // we combine the media props on top regular props, could proxy this
+        // TODO test proxy here instead of merge
+        const mediaProps = { ...props, ...valInit }
+        // TODO media + hover
+        const mediaStyle = getSubStyle(valInit, staticConfig, theme, props)
+
+        if (isWeb) {
+          const mediaStyles = getStylesAtomic(mediaStyle)
+          if (process.env.NODE_ENV === 'development') {
+            if (props['debug']) {
+              console.log('mediaStyles', key, { mediaProps, mediaStyle })
+            }
+          }
+          for (const style of mediaStyles) {
+            const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
+            classNames = classNames || []
+            classNames.push(out.identifier)
+            addRule(out.styleRule)
+            insertStyleRule(out.styleRule)
+            if (process.env.NODE_ENV === 'development' && props['debug']) {
+              console.log('mediaProp', style.identifier, out.styleRule)
+            }
+          }
+        } else {
+          if (mediaState[mediaKey]) {
+            style.push(mediaStyle)
+          }
+        }
+        continue
+      }
+
       // const val = valueMap(valInit) ?? valInit
       const keyFirstChar = key[0]
       if (key === 'style' || (keyFirstChar === '_' && key.startsWith('_style'))) {
@@ -133,7 +145,9 @@ export const getSplitStyles = (
 
       // pass to view props
       if (!staticConfig.variants || !(key in staticConfig.variants)) {
-        viewProps[key] = val
+        if (key !== 'animation' && key !== 'debug') {
+          viewProps[key] = val
+        }
       }
     }
   }

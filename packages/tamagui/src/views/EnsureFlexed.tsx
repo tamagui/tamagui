@@ -11,3 +11,6 @@ export const EnsureFlexed = styled(Text, {
   children: `wwwwwwwwwwwwwwwwwww`,
   pointerEvents: 'none',
 })
+
+// @tamgui/core checks for this in spacing
+EnsureFlexed['isVisuallyHidden'] = true

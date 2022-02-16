@@ -2,7 +2,7 @@
   "name": "@tamagui/helpers",
   "version": "1.0.0-alpha.64",
   "source": "src/index.ts",
-  "typings": "types",
+  "types": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
