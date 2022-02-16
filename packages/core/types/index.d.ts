@@ -18,6 +18,7 @@ export * from './helpers/getStylesAtomic';
 export * from './helpers/matchMedia';
 export * from './helpers/themeable';
 export * from './helpers/isTamaguiElement';
+export * from './helpers/withStaticProperties';
 export * from './hooks/useConstant';
 export * from './hooks/useMedia';
 export * from './hooks/useTheme';

@@ -3775,6 +3775,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/drawer@^1.0.0-alpha.67, @tamagui/drawer@workspace:packages/drawer":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/drawer@workspace:packages/drawer"
+  dependencies:
+    "@gorhom/bottom-sheet": ^4.1.5
+    "@tamagui/build": ^1.0.0-alpha.64
+    "@tamagui/core": ^1.0.0-alpha.67
+    react-native-gesture-handler: ^2.2.0
+    react-native-reanimated: ^2.3.1
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/fake-react-native@^1.0.0-alpha.17, @tamagui/fake-react-native@workspace:packages/fake-react-native":
   version: 0.0.0-use.local
   resolution: "@tamagui/fake-react-native@workspace:packages/fake-react-native"
@@ -3858,6 +3873,7 @@ __metadata:
     "@expo/webpack-config": ^0.16.2
     "@next/bundle-analyzer": ^12.0.10
     "@tamagui/colors": ^1.0.0-alpha.64
+    "@tamagui/drawer": ^1.0.0-alpha.67
     "@tamagui/feather-icons": ^1.0.0-alpha.64
     "@tamagui/next-plugin": ^1.0.0-alpha.67
     compare-versions: ^4.0.1
@@ -18656,8 +18672,6 @@ __metadata:
     normalize-css-color: "*"
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.2.0
-    react-native-reanimated: ^2.3.1
     react-native-safe-area-context: ^3.3.2
     react-native-web: ^0.17.5
   peerDependencies:

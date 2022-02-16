@@ -199,7 +199,11 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           const shouldInclude =
             x.includes(options.dir) ||
             tamaguiOptions.components.some(
-              (c) => x.includes(`/node_modules/${c}`) || x.includes(`${c}/dist/jsx/`)
+              (c) =>
+                x.includes(`/node_modules/${c}`) ||
+                x.includes(`${c}/dist/jsx/`) ||
+                // more generic catch-all for independent tamagui packages like drawer
+                (x.includes('tamagui') && x.includes('/dist/jsx/'))
             )
           if (!shouldInclude) {
             return true
@@ -221,10 +225,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
                 {
                   loader: 'babel-loader',
                   options: {
-                    plugins: [
-                      'react-native-reanimated/plugin',
-                      '@babel/plugin-transform-react-jsx',
-                    ],
+                    plugins: ['@babel/plugin-transform-react-jsx'],
                   },
                 },
               ],

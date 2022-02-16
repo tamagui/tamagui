@@ -1,8 +1,7 @@
-import { isWeb } from '@tamagui/core'
+import { isWeb, withStaticProperties } from '@tamagui/core'
 import { useDebounce } from '@tamagui/use-debounce'
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
-import { withStaticProperties } from '../helpers/withStaticProperties'
 import { Hoverable, HoverableHandle } from './Hoverable'
 import { HoverOrToggle } from './HoverOrToggle'
 import { Popover } from './Popover/Popover'

@@ -13,6 +13,17 @@ export const docsRoutes = [
   },
 
   {
+    label: 'Core',
+    pages: [
+      { title: 'styled', route: '/docs/core/styled' },
+      { title: 'Stack & Text', route: '/docs/core/stack-and-text' },
+      { title: 'Theme', route: '/docs/core/theme' },
+      { title: 'useMedia', route: '/docs/core/use-media' },
+      { title: 'useTheme', route: '/docs/core/use-theme' },
+    ],
+  },
+
+  {
     label: 'Tamagui',
     pages: [
       { title: 'Stacks', route: '/docs/components/stacks' },
@@ -25,24 +36,14 @@ export const docsRoutes = [
       { title: 'Popover', route: '/docs/components/popover' },
       { title: 'HoverablePopover', route: '/docs/components/hoverable-popover' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
-      { title: 'Drawer', route: '/docs/components/drawer' },
       { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
       { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },
-      // { title: 'Menu', route: '/docs/components/menu' },
-      // { title: 'Popover', route: '/docs/components/popover' },
-      // { title: 'Grid', route: '/docs/components/grid' },
     ],
   },
 
   {
-    label: 'Core',
-    pages: [
-      { title: 'styled', route: '/docs/core/styled' },
-      { title: 'Stack & Text', route: '/docs/core/stack-and-text' },
-      { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'useMedia', route: '/docs/core/use-media' },
-      { title: 'useTheme', route: '/docs/core/use-theme' },
-    ],
+    label: 'Extra',
+    pages: [{ title: 'Drawer', route: '/docs/components/drawer' }],
   },
 
   {

@@ -1,6 +1,7 @@
+import { Drawer } from '@tamagui/drawer'
 import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
-import { Button, Drawer, H3, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, H3, Paragraph, XStack, YStack } from 'tamagui'
 
 export function DrawerDemo() {
   const [show, setShow] = useState(false)

@@ -33,8 +33,6 @@
     "normalize-css-color": "*",
     "react": "*",
     "react-dom": "*",
-    "react-native-gesture-handler": "^2.2.0",
-    "react-native-reanimated": "^2.3.1",
     "react-native-safe-area-context": "^3.3.2"
   },
   "peerDependencies": {

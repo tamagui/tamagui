@@ -1,10 +1,9 @@
 import { BottomSheetModal, BottomSheetModalProps } from '@gorhom/bottom-sheet'
-import { useTheme } from '@tamagui/core'
+import { Stack, useTheme, withStaticProperties } from '@tamagui/core'
+import React from 'react'
 import { useEffect, useRef } from 'react'
 
-import { withStaticProperties } from '../helpers/withStaticProperties'
 import { DrawerProvider } from './DrawerProvider'
-import { YStack } from './Stacks'
 
 export const Drawer = withStaticProperties(
   ({
@@ -51,14 +50,18 @@ export const Drawer = withStaticProperties(
         {...props}
       >
         {hideBackground ? null : (
-          <YStack
-            fullscreen
+          <Stack
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
             backgroundColor="$bg"
             borderTopLeftRadius="$2"
             borderTopRightRadius="$2"
           >
             {children}
-          </YStack>
+          </Stack>
         )}
       </BottomSheetModal>
     )

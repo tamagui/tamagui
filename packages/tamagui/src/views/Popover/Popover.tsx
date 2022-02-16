@@ -4,10 +4,10 @@
 
 import { useId } from '@react-aria/utils'
 import { FocusScope } from '@react-native-aria/focus'
+import { withStaticProperties } from '@tamagui/core'
 import React, { forwardRef, memo, useCallback, useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import { withStaticProperties } from '../../helpers/withStaticProperties'
 import { useControllableState } from '../../hooks/useControllableState'
 import { Overlay } from '../Overlay'
 import { Popper } from '../Popper'

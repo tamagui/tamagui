@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@tamagui/colors": "^1.0.0-alpha.64",
+    "@tamagui/drawer": "^1.0.0-alpha.67",
     "@tamagui/feather-icons": "^1.0.0-alpha.64",
     "compare-versions": "^4.0.1",
     "copy-to-clipboard": "^3.3.1",
