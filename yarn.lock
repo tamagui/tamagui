@@ -3782,6 +3782,8 @@ __metadata:
     "@gorhom/bottom-sheet": ^4.1.5
     "@tamagui/build": ^1.0.0-alpha.64
     "@tamagui/core": ^1.0.0-alpha.67
+    react: "*"
+    react-dom: "*"
     react-native-gesture-handler: ^2.2.0
     react-native-reanimated: ^2.3.1
   peerDependencies:

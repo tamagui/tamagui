@@ -28,6 +28,8 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.64"
+    "@tamagui/build": "^1.0.0-alpha.64",
+    "react": "*",
+    "react-dom": "*"
   }
 }
