@@ -31,5 +31,9 @@
     "@tamagui/build": "^1.0.0-alpha.64",
     "react": "*",
     "react-dom": "*"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "98c4dd693106d539ab9f71889f2f88209b6be721"
 }

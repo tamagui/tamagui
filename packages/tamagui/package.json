@@ -43,5 +43,6 @@
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "react-native-web": "^0.17.5"
-  }
+  },
+  "gitHead": "98c4dd693106d539ab9f71889f2f88209b6be721"
 }
