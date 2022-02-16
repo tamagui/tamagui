@@ -60,7 +60,10 @@ export const Theme = (props: ThemeProps) => {
     })
   }, [themes, name, parentName])
 
+  console.log('what', props, name, theme)
+
   if (!name || !theme) {
+    console.warn('no theme', { name, theme })
     return props.children
   }
 
@@ -76,18 +79,17 @@ export const Theme = (props: ThemeProps) => {
     if (props.disableThemeClass) {
       return contents
     }
-    if (name) {
-      const color = themes[name]?.['color']?.['variable']
-      return (
-        <div
-          className={getThemeParentClassName(props.name)}
-          // in order to provide currentColor, set color by default
-          style={{ display: 'contents', color }}
-        >
-          {contents}
-        </div>
-      )
-    }
+    console.log('name', name)
+    const color = themes[name]?.['color']?.['variable']
+    return (
+      <div
+        className={getThemeParentClassName(props.name)}
+        // in order to provide currentColor, set color by default
+        style={{ display: 'contents', color }}
+      >
+        {contents}
+      </div>
+    )
   }
 
   return contents
