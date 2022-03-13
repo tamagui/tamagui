@@ -7,6 +7,7 @@ export const Paragraph = styled(SizableText, {
   color: '$color',
   size: '$4',
   selectable: true,
+  cursor: 'text',
 })
 
 export type ParagraphProps = PropTypes<typeof Paragraph>

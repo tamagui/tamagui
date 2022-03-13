@@ -7,9 +7,10 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
 }> & import("@tamagui/core").PseudoProps<{
     fullscreen?: boolean | undefined;
     elevation?: `$${string}` | `$${number}` | null | undefined;
-}>, "size" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "disabled" | "active" | "chromeless"> & {
+}>, "focusable" | "size" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "active" | "chromeless"> & {
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
+    focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: `$${string}` | `$${number}` | null | undefined;
     circular?: boolean | undefined;
@@ -20,6 +21,7 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
 } & import("@tamagui/core").MediaProps<{
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
+    focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: `$${string}` | `$${number}` | null | undefined;
     circular?: boolean | undefined;
@@ -30,6 +32,7 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
 }> & import("@tamagui/core").PseudoProps<{
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
+    focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: `$${string}` | `$${number}` | null | undefined;
     circular?: boolean | undefined;

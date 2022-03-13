@@ -73,8 +73,6 @@ export const Theme = (props: ThemeProps) => {
     props.children
   )
 
-  console.log('huh', props.name, name, theme, props.disableThemeClass)
-
   if (isWeb) {
     if (props.disableThemeClass) {
       return contents

@@ -26,6 +26,7 @@ const whiteColors = [
   tokens.color.gray10,
   tokens.color.gray11,
   tokens.color.gray12,
+  '#222',
   '#010101',
   '#000',
 ]
@@ -44,20 +45,23 @@ const getTheme =
     const bgBase = isLight ? whiteColors : blackColors
     const colorBase = isLight ? blackColors : whiteColors
     return {
-      bg: bgBase[0 + str],
-      bg2: bgBase[1 + str],
-      bg3: bgBase[2 + str],
-      bg4: bgBase[3 + str],
-      bgTransparent: tokens.color.grayA1,
-      borderColor: isLight ? colorBase[6 + str] : bgBase[2 + str],
-      borderColor2: isLight ? colorBase[7 + str] : bgBase[3 + str],
+      background: bgBase[str],
+      backgroundHover: bgBase[str - 1],
+      backgroundPress: bgBase[2 + str],
+      backgroundFocus: bgBase[3 + str],
+      backgroundTransparent: tokens.color.grayA1,
+      borderColor: isLight ? colorBase[7] : bgBase[2],
+      borderColorHover: isLight ? colorBase[8] : bgBase[3],
+      borderColorPress: isLight ? colorBase[8] : bgBase[3],
+      borderColorFocus: isLight ? colorBase[8] : bgBase[3],
       color: colorBase[0 + str],
-      color2: colorBase[1 + str],
-      color3: colorBase[2 + str],
-      color4: colorBase[3 + str],
+      colorHover: colorBase[1 + str],
+      colorPress: colorBase[2 + str],
+      colorFocus: colorBase[3 + str],
       shadowColor: blackColors[!isLight ? 0 : 7],
-      shadowColor2: blackColors[!isLight ? 1 : 8],
-      separatorColor: bgBase[4],
+      shadowColorHover: blackColors[!isLight ? 1 : 8],
+      shadowColorPress: blackColors[!isLight ? 1 : 8],
+      shadowColorFocus: blackColors[!isLight ? 1 : 8],
     }
   }
 
@@ -76,7 +80,6 @@ const light = {
 
 export const themes = {
   dark,
-  'dark-alt0': getDarkTheme(0),
   'dark-alt1': getDarkTheme(1),
   'dark-alt2': getDarkTheme(2),
   'dark-alt3': getDarkTheme(3),
@@ -84,7 +87,6 @@ export const themes = {
   'dark-alt5': getDarkTheme(5),
   'dark-alt6': getDarkTheme(6),
   light,
-  'light-alt0': getLightTheme(0),
   'light-alt1': getLightTheme(1),
   'light-alt2': getLightTheme(2),
   'light-alt3': getLightTheme(3),

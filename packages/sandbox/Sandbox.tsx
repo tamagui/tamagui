@@ -1,4 +1,4 @@
-import { Heart, Pause } from '@tamagui/feather-icons'
+import { FastForward, Heart, Pause, Rewind } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
 import { useLayoutEffect } from 'react'
 import { Button, Card, Image, Paragraph, Square, Theme, ThemeName, XStack, YStack } from 'tamagui'
@@ -15,23 +15,21 @@ const Scale = ({ between, ...props }: any) => {
 export const Sandbox = () => {
   return (
     <Tamagui.Provider injectCSS>
-      <YStack space>
+      <YStack>
         <XStack>
           <Theme name="dark">
-            <MediaPlayer subTheme={0} />
-            <MediaPlayer subTheme={1} />
-            <MediaPlayer subTheme={3} />
-            <MediaPlayer subTheme={4} />
-            <MediaPlayer subTheme={5} />
+            <MediaPlayer alt={1} />
+            <MediaPlayer alt={3} />
+            <MediaPlayer alt={4} />
+            <MediaPlayer alt={5} />
           </Theme>
         </XStack>
         <XStack>
           <Theme name="light">
-            <MediaPlayer subTheme={0} />
-            <MediaPlayer subTheme={1} />
-            <MediaPlayer subTheme={3} />
-            <MediaPlayer subTheme={4} />
-            <MediaPlayer subTheme={5} />
+            <MediaPlayer alt={1} />
+            <MediaPlayer alt={3} />
+            <MediaPlayer alt={4} />
+            <MediaPlayer alt={5} />
           </Theme>
         </XStack>
       </YStack>
@@ -39,17 +37,16 @@ export const Sandbox = () => {
   )
 }
 
-export const MediaPlayer = ({ subTheme }: { subTheme: number }) => {
-  const str = subTheme
-  const mainButtonTheme = `alt${str}`
-  const barTheme = `alt${str + 1}`
+export const MediaPlayer = ({ alt }: { alt: number }) => {
+  const mainButtonTheme = `alt${alt}`
+  const barTheme = `alt${alt + 1}`
 
   // alternatively have
   // <Scale.Container> for non-viewport usage
 
   return (
-    <YStack bc="$bg2">
-      <YStack p="$4">
+    <YStack bc="$background">
+      <YStack py="$5" px="$2">
         <Scale
           // could be `container` as well
           // is container="viewport" default?
@@ -85,7 +82,7 @@ export const MediaPlayer = ({ subTheme }: { subTheme: number }) => {
                   borderTopColor="$borderColor"
                   w="100%"
                   px="$8"
-                  bc="$bg"
+                  bc="$background"
                   bbrr="$2"
                   bblr="$2"
                   ai="center"
@@ -93,24 +90,24 @@ export const MediaPlayer = ({ subTheme }: { subTheme: number }) => {
                   space="$8"
                   jc="center"
                 >
-                  <Heart />
+                  <Rewind />
                   <Button
-                    theme={mainButtonTheme}
-                    bc="$bg"
                     // animation="spring"
-                    bw={1}
+                    theme={mainButtonTheme}
+                    bordered
+                    // bc="$background"
+                    hoverStyle={{
+                      elevation: '$6',
+                      scale: 1.1,
+                    }}
                     my="$-6"
                     icon={Pause}
                     scaleIcon={2}
                     circular
                     size="$8"
                     elevation="$4"
-                    hoverStyle={{
-                      bc: '$bg2',
-                      scale: 1.1,
-                    }}
                   />
-                  <Heart />
+                  <FastForward />
                 </XStack>
               </Theme>
             </YStack>

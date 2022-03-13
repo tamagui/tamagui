@@ -146,7 +146,7 @@ For styling, Tamagui adds flattened transform properties, pseudo states and medi
 
 ### Pseudo style props
 
-Support for `hoverStyle` and `pressStyle` is helpful as it turns what typically is complex stateful code into pure CSS on web, and a more performant StyleSheet.create (compared to inline styles) for native. They can be used with media queries as well.
+Support for `hoverStyle`, `pressStyle`, and `focusStyle` is helpful as it turns what typically is complex stateful code into pure CSS on web, and a more performant StyleSheet.create (compared to inline styles) for native. They can be used with media queries as well.
 
 ```jsx
 <Text color="red" hoverStyle={{ color: 'blue' }} />
@@ -161,6 +161,11 @@ Support for `hoverStyle` and `pressStyle` is helpful as it turns what typically 
     },
     {
       name: 'pressStyle',
+      required: false,
+      type: 'TamaguiStyleProps',
+    },
+    {
+      name: 'focusStyle',
       required: false,
       type: 'TamaguiStyleProps',
     },

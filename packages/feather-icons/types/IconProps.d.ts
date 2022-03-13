@@ -3,6 +3,5 @@ export declare type IconProps = Omit<SvgProps, 'onPress' | 'onPressIn' | 'onPres
     size?: number;
     color?: string;
     style?: any;
-    disableTheme?: boolean;
 };
 //# sourceMappingURL=IconProps.d.ts.map

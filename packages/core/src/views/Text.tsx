@@ -18,6 +18,7 @@ export const Text = createComponent<TextProps>({
     boxSizing: 'border-box',
     fontFamily: 'System',
     wordWrap: 'break-word',
+    cursor: 'text',
   },
   variants: {
     numberOfLines: {

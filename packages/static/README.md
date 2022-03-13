@@ -1,7 +1,6 @@
 - onPress extraction
 - bug with props after spread not applying, make them deopt:
   - <YStack {...baseStyle} cursor="default" /> wont be right rn
-- make pressStyle override hoverStyle always
 - activeStyle may be desirable...
 - space
   - SmallButton good example case of constant

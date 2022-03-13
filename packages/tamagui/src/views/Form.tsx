@@ -48,6 +48,7 @@ export const Input = styled(
   },
   {
     isText: true,
+    isInput: true,
     isReactNativeWeb: true,
   }
 )
@@ -76,6 +77,7 @@ export const TextArea = styled(
   },
   {
     isText: true,
+    isInput: true,
     isReactNativeWeb: true,
   }
 )

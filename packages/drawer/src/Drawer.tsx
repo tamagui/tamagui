@@ -36,7 +36,7 @@ export const Drawer = withStaticProperties(
           handleComponent: null,
         })}
         backgroundStyle={{
-          backgroundColor: theme.bg2?.toString(),
+          backgroundColor: theme.background?.toString(),
           shadowColor: theme.shadowColor?.toString(),
           shadowRadius: 10,
         }}

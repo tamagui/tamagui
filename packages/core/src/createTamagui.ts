@@ -127,7 +127,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const cssSel = `${cssParentSel} ${cssChildSel}`
         // we need to force specificity
         const cssRule = `${cssSel}, .${PREFIX}${oppositeName} ${cssSel} {\n${vars}\n}`
-        console.log('giot', { parentName, themeClassName, cssRule })
         cssRules.push(cssRule)
       }
     }
