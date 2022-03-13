@@ -58,7 +58,8 @@ export const getSplitStyles = (
       if (isPseudo) {
         if (!val) continue
         pseudos = pseudos || {}
-        pseudos[key] = getSubStyle(val, staticConfig, theme, props)
+        pseudos[key] = pseudos[key] || {}
+        Object.assign(pseudos[key], getSubStyle(val, staticConfig, theme, props))
         continue
       }
 
@@ -81,10 +82,8 @@ export const getSplitStyles = (
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
-          if (process.env.NODE_ENV === 'development') {
-            if (props['debug']) {
-              console.log('mediaStyles', key, { mediaProps, mediaStyle })
-            }
+          if (process.env.NODE_ENV === 'development' && props['debug']) {
+            console.log('mediaStyles', key, { mediaProps, mediaStyle })
           }
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)

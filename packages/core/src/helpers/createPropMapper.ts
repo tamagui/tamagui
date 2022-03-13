@@ -23,7 +23,7 @@ export const createPropMapper = (c: StaticConfig) => {
     let fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
 
     // expand variants
-    const variant = variantsParsed?.[key]
+    const variant = variantsParsed && variantsParsed[key]
     if (variant && typeof value !== 'undefined') {
       const val =
         value === true

@@ -29,6 +29,8 @@ export type ButtonProps = SizableFrameProps &
 const ButtonFrame = styled(SizableFrame, {
   tag: 'button',
   borderWidth: 0,
+  hoverable: true,
+  pressable: true,
 })
 
 export const Button: React.FC<ButtonProps> = ButtonFrame.extractable(
@@ -76,14 +78,7 @@ export const Button: React.FC<ButtonProps> = ButtonFrame.extractable(
           })
 
       return (
-        <ButtonFrame
-          hoverable
-          pressable
-          size={size}
-          space={space ?? getSpaceSize(size, -3)}
-          ref={ref as any}
-          {...rest}
-        >
+        <ButtonFrame size={size} space={space ?? getSpaceSize(size, -3)} ref={ref as any} {...rest}>
           {themedIcon}
           {contents}
           {themedIconAfter}
