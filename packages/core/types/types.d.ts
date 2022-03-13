@@ -2,6 +2,7 @@ import CSS from 'csstype';
 import React, { RefObject } from 'react';
 import { GestureResponderEvent, TextProps as ReactTextProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
+import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
@@ -27,18 +28,22 @@ export interface CreateTokens<Val extends number | string | Variable = number | 
 declare type GenericTokens = CreateTokens;
 declare type GenericThemes = {
     [key: string]: {
-        bg: string | Variable;
-        bg2: string | Variable;
-        bg3: string | Variable;
-        bg4: string | Variable;
+        background: string | Variable;
+        backgroundHover: string | Variable;
+        backgroundPress: string | Variable;
+        backgroundFocus: string | Variable;
         color: string | Variable;
-        color2: string | Variable;
-        color3: string | Variable;
-        color4: string | Variable;
+        colorHover: string | Variable;
+        colorPress: string | Variable;
+        colorFocus: string | Variable;
         borderColor: string | Variable;
-        borderColor2: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
         shadowColor: string | Variable;
-        shadowColor2: string | Variable;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
     };
 };
 declare type GenericShorthands = {};
@@ -77,6 +82,7 @@ export declare type AnimationHook = (props: any, extra: {
     style: any;
     hoverStyle?: any;
     pressStyle?: any;
+    focusStyle?: any;
     exitStyle?: any;
     onDidAnimate?: any;
     delay?: number;
@@ -149,6 +155,7 @@ export declare type TransformStyleProps = {
     rotateZ?: string;
 };
 declare type ComponentPropsBase = {
+    disabled?: boolean;
     className?: string;
     tag?: string;
     animated?: boolean;
@@ -182,6 +189,7 @@ declare type WithShorthands<StyleProps> = {
 export declare type PseudoProps<A> = {
     hoverStyle?: A | null;
     pressStyle?: A | null;
+    focusStyle?: A | null;
 };
 declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
 declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
@@ -196,12 +204,12 @@ declare type WebOnlyStyleProps = {
 };
 export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & WebOnlyStyleProps;
 export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
-export declare type StackProps = Omit<RNWInternalProps, 'children'> & Omit<ViewProps, 'display' | 'children'> & StackStyleProps & ComponentPropsBase & {
+export declare type StackProps = Omit<ViewProps, 'display' | 'children'> & RNWViewProps & StackStyleProps & ComponentPropsBase & {
     ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any);
     children?: any | any[];
 };
 declare type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps>;
-export declare type TextProps = ReactTextProps & TextStyleProps & ComponentPropsBase & {
+export declare type TextProps = ReactTextProps & RNWTextProps & TextStyleProps & ComponentPropsBase & {
     ellipse?: boolean;
     selectable?: boolean;
     textDecorationDistance?: number;
@@ -221,80 +229,6 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
     initialWindowMetrics?: any;
     fallback?: any;
     children?: any;
-};
-export declare type RNWInternalProps = {
-    accessibilityState?: {
-        busy?: boolean;
-        checked?: boolean | 'mixed';
-        disabled?: boolean;
-        expanded?: boolean;
-        grabbed?: boolean;
-        hidden?: boolean;
-        invalid?: boolean;
-        modal?: boolean;
-        pressed?: boolean;
-        readonly?: boolean;
-        required?: boolean;
-        selected?: boolean;
-    };
-    accessibilityValue?: {
-        max?: number;
-        min?: number;
-        now?: number;
-        text?: string;
-    };
-    children?: any;
-    focusable?: boolean;
-    nativeID?: string;
-    onBlur?: (e: any) => void;
-    onClick?: (e: any) => void;
-    onClickCapture?: (e: any) => void;
-    onContextMenu?: (e: any) => void;
-    onFocus?: (e: any) => void;
-    onKeyDown?: (e: any) => void;
-    onKeyUp?: (e: any) => void;
-    onMoveShouldSetResponder?: (e: any) => boolean;
-    onMoveShouldSetResponderCapture?: (e: any) => boolean;
-    onResponderEnd?: (e: any) => void;
-    onResponderGrant?: (e: any) => void;
-    onResponderMove?: (e: any) => void;
-    onResponderReject?: (e: any) => void;
-    onResponderRelease?: (e: any) => void;
-    onResponderStart?: (e: any) => void;
-    onResponderTerminate?: (e: any) => void;
-    onResponderTerminationRequest?: (e: any) => boolean;
-    onScrollShouldSetResponder?: (e: any) => boolean;
-    onScrollShouldSetResponderCapture?: (e: any) => boolean;
-    onSelectionChangeShouldSetResponder?: (e: any) => boolean;
-    onSelectionChangeShouldSetResponderCapture?: (e: any) => boolean;
-    onStartShouldSetResponder?: (e: any) => boolean;
-    onStartShouldSetResponderCapture?: (e: any) => boolean;
-    pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto';
-    testID?: string;
-    dataSet?: Object;
-    onMouseDown?: (e: any) => void;
-    onMouseEnter?: (e: any) => void;
-    onMouseLeave?: (e: any) => void;
-    onMouseMove?: (e: any) => void;
-    onMouseOver?: (e: any) => void;
-    onMouseOut?: (e: any) => void;
-    onMouseUp?: (e: any) => void;
-    onScroll?: (e: any) => void;
-    onTouchCancel?: (e: any) => void;
-    onTouchCancelCapture?: (e: any) => void;
-    onTouchEnd?: (e: any) => void;
-    onTouchEndCapture?: (e: any) => void;
-    onTouchMove?: (e: any) => void;
-    onTouchMoveCapture?: (e: any) => void;
-    onTouchStart?: (e: any) => void;
-    onTouchStartCapture?: (e: any) => void;
-    onWheel?: (e: any) => void;
-    href?: string;
-    hrefAttrs?: {
-        download?: boolean;
-        rel?: string;
-        target?: string;
-    };
 };
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
@@ -318,6 +252,7 @@ export declare type StaticConfig = {
     };
     neverFlatten?: boolean | 'jsx';
     isText?: boolean;
+    isInput?: boolean;
     validStyles?: {
         [key: string]: boolean;
     };

@@ -25,7 +25,7 @@ export const SizableFrame = styled(XStack, {
   borderRadius: '$1',
   paddingVertical: '$2',
   paddingHorizontal: '$3',
-  backgroundColor: '$bg2',
+  backgroundColor: '$background',
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',
@@ -37,7 +37,7 @@ export const SizableFrame = styled(XStack, {
     hoverable: {
       true: {
         hoverStyle: {
-          backgroundColor: '$bg3',
+          backgroundColor: '$backgroundHover',
         },
       },
     },
@@ -45,7 +45,15 @@ export const SizableFrame = styled(XStack, {
     pressable: {
       true: {
         pressStyle: {
-          backgroundColor: '$bg',
+          backgroundColor: '$backgroundPress',
+        },
+      },
+    },
+
+    focusable: {
+      true: {
+        focusStyle: {
+          backgroundColor: '$backgroundFocus',
         },
       },
     },

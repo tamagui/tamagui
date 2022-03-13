@@ -9,7 +9,7 @@ import { ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
-import { StaticConfigParsed, ThemeObject } from '../types'
+import { StackProps, StaticConfigParsed, ThemeObject } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
 import { getStylesAtomic } from './getStylesAtomic'
@@ -17,7 +17,11 @@ import { insertStyleRule } from './insertStyleRule'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
-// TODO run over this, should be able to cut it down quite a bit
+type PseudoStyles = {
+  hoverStyle?: ViewStyle
+  pressStyle?: ViewStyle
+  focusStyle?: ViewStyle
+}
 
 export const getSplitStyles = (
   props: { [key: string]: any },
@@ -25,10 +29,10 @@ export const getSplitStyles = (
   theme: ThemeObject
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
-  const viewProps: Record<string, any> = {}
+  const viewProps: StackProps = {}
   const style: any[] = []
 
-  let pseudos: { hoverStyle?: ViewStyle; pressStyle?: ViewStyle } | null = null
+  let pseudos: PseudoStyles | null = null
   let cur: ViewStyle | null = null
   let classNames: string[] | null = null
 
@@ -38,10 +42,8 @@ export const getSplitStyles = (
 
     let isMedia = keyInit[0] === '$'
     let isPseudo = validStylesPseudo[keyInit]
-    const out =
-      isMedia || isPseudo
-        ? [[keyInit, valInit]]
-        : staticConfig.propMapper(keyInit, valInit, theme, props)
+
+    const out = isMedia || isPseudo ? true : staticConfig.propMapper(keyInit, valInit, theme, props)
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
     for (const [key, val] of expanded) {
@@ -184,7 +186,6 @@ const getSubStyle = (
     const out = staticConfig.propMapper(key, val, theme, props)
     const expanded = out === true || !out ? [[key, val]] : Object.entries(out)
     for (const [skey, sval] of expanded) {
-      // const sval = valueMap(valInit)
       if (skey in stylePropsTransform) {
         mergeTransform(styleOut, skey, sval)
       } else {

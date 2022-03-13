@@ -25,6 +25,7 @@ import { usePressable } from './hooks/usePressable'
 import { useTheme } from './hooks/useTheme'
 import {
   SpaceTokens,
+  StackProps,
   StaticComponent,
   StaticConfig,
   StaticConfigParsed,
@@ -51,6 +52,7 @@ const defaultComponentState = {
   hover: false,
   press: false,
   pressIn: false,
+  focus: false,
 }
 
 type ComponentState = typeof defaultComponentState
@@ -157,8 +159,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
       // TODO feature load layout hook
       onLayout,
-      ...viewProps
+      ...viewPropsRest
     } = viewPropsIn
+
+    let viewProps: StackProps = viewPropsRest
 
     if (!isWeb) {
       if (accessible) viewProps.accessible = accessible
@@ -187,8 +191,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       })
     }
 
-    // hasEverHadEvents prevents repareting if you remove onPress or similar...
-    const internal = useRef<{ isMounted: boolean; hasEverHadEvents?: boolean }>()
+    const internal = useRef<{ isMounted: boolean }>()
     if (!internal.current) {
       internal.current = {
         isMounted: true,
@@ -218,8 +221,9 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const ViewComponent = isText ? ReactText : ReactView
 
     // styles
-    const isHovering = !isTouchDevice && !disabled && pseudos && state.hover
+    const isHovering = !disabled && !isTouchDevice && pseudos && state.hover
     const isPressing = !disabled && pseudos && state.press
+    const isFocusing = !disabled && pseudos && state.focus
 
     let styles = [
       defaultNativeStyle ? defaultNativeStyle.base : null,
@@ -230,6 +234,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       style,
       isHovering ? pseudos.hoverStyle || null : null,
       isPressing ? pseudos.pressStyle || null : null,
+      isFocusing ? pseudos.focusStyle || null : null,
     ]
 
     if (isAnimated) {
@@ -317,7 +322,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     // while avoiding reparenting...
     // once proper reparenting is supported, we can remove this and use that...
     const shouldAttach =
-      internal.current.hasEverHadEvents ||
       attachPress ||
       attachHover ||
       'pressStyle' in props ||
@@ -331,11 +335,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           'onHoverOut' in props ||
           'onMouseEnter' in props ||
           'onMouseLeave' in props))
-
-    // never remove events as we wrap in a div (for now, may be able to remove..)
-    if (shouldAttach) {
-      internal.current.hasEverHadEvents = true
-    }
 
     const unPress = useCallback(() => {
       if (!internal.current!.isMounted) return
@@ -455,7 +454,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           ...(viewProps.dataSet || {}),
           cn: className,
         }
-        console.log('set', className, viewProps.dataSet, viewProps)
       } else {
         // we already handle Text/View properly
         if (className) {
@@ -477,7 +475,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       if (props['debug']) {
         viewProps['debug'] = true
         console.log('» props in:', props)
-        console.log('» props out:', viewProps.dataSet, {
+        console.log('» props out:', {
           ...viewProps,
           classNameSplit: viewProps.className?.split(' '),
         })

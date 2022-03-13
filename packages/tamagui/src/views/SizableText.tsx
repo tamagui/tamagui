@@ -28,6 +28,8 @@ export const sizableTextSizeVariant = (val = '$4', { tokens, props }) => {
 }
 
 export const SizableText = styled(Text, {
+  cursor: 'text',
+
   variants: {
     size: {
       // TODO this should be ...fontSize type not working

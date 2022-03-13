@@ -1,15 +1,18 @@
 import { ViewStyle } from 'react-native';
-import { StaticConfigParsed, ThemeObject } from '../types';
+import { StackProps, StaticConfigParsed, ThemeObject } from '../types';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
+declare type PseudoStyles = {
+    hoverStyle?: ViewStyle;
+    pressStyle?: ViewStyle;
+    focusStyle?: ViewStyle;
+};
 export declare const getSplitStyles: (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeObject) => {
-    viewProps: Record<string, any>;
+    viewProps: StackProps;
     style: any[];
-    pseudos: {
-        hoverStyle?: ViewStyle | undefined;
-        pressStyle?: ViewStyle | undefined;
-    } | null;
+    pseudos: PseudoStyles | null;
     classNames: string[] | null;
 };
+export {};
 //# sourceMappingURL=getSplitStyles.d.ts.map
