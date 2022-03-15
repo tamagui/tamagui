@@ -2,14 +2,18 @@ import React from 'react'
 import { StackProps, YStack } from 'tamagui'
 
 export function RegionTable(props: StackProps) {
+  console.warn('todo')
   return (
     <YStack
+      // TODO change to this:
+      // theme="alt1"
+      // bc="$background"
+      bc="$bg2"
       tag="table"
       display="table"
       role="region"
       tabIndex={0}
       position="relative"
-      bc="$bg2"
       borderRadius="$2"
       borderWidth={1}
       borderColor="$borderColor2"

@@ -20,6 +20,7 @@ export function createTamaguiProvider({
     // inject CSS if asked to (not SSR compliant)
     if (typeof document !== 'undefined') {
       React.useLayoutEffect(() => {
+        if (!injectCSS) return
         const style = document.createElement('style')
         style.appendChild(document.createTextNode(getCSS()))
         document.head.appendChild(style)

@@ -164,7 +164,6 @@ export const themes = {
 
 const config = createTamagui({
   defaultTheme: 'light',
-  disableRootThemeClass: true,
   shorthands,
   themes,
   tokens,

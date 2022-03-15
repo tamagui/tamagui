@@ -148,7 +148,7 @@ export const Modal = (props: ModalProps) => {
     <ModalNative animationType={animationType} {...modalProps}>
       <Theme name={themeName}>
         {/* @ts-ignore */}
-        <YStack flex={1} {...rest} backgroundColor="$bg">
+        <YStack flex={1} {...rest} backgroundColor="$background">
           {finalChildren}
         </YStack>
       </Theme>
@@ -157,7 +157,7 @@ export const Modal = (props: ModalProps) => {
 }
 
 export const ModalYStack = styled(YStack, {
-  backgroundColor: '$bg',
+  backgroundColor: '$background',
   borderRadius: 12,
   alignItems: 'center',
   position: 'relative',

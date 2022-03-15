@@ -5,7 +5,9 @@ import { Variable } from './createVariable';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
-export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
+export declare type VariableVal = number | string | Variable;
+export declare type VariableColorVal = string | Variable;
+export interface CreateTokens<Val extends VariableVal = VariableVal> {
     font: {
         [key: string]: GenericFont;
     };
@@ -25,26 +27,29 @@ export interface CreateTokens<Val extends number | string | Variable = number | 
         [key: string]: Val;
     };
 }
+export declare type TamaguiBaseTheme = {
+    background: VariableColorVal;
+    backgroundHover: VariableColorVal;
+    backgroundPress: VariableColorVal;
+    backgroundFocus: VariableColorVal;
+    color: VariableColorVal;
+    colorHover: VariableColorVal;
+    colorPress: VariableColorVal;
+    colorFocus: VariableColorVal;
+    borderColor: VariableColorVal;
+    borderColorHover: VariableColorVal;
+    borderColorPress: VariableColorVal;
+    borderColorFocus: VariableColorVal;
+    shadowColor: VariableColorVal;
+    shadowColorHover: VariableColorVal;
+    shadowColorPress: VariableColorVal;
+    shadowColorFocus: VariableColorVal;
+};
 declare type GenericTokens = CreateTokens;
 declare type GenericThemes = {
-    [key: string]: {
-        background: string | Variable;
-        backgroundHover: string | Variable;
-        backgroundPress: string | Variable;
-        backgroundFocus: string | Variable;
-        color: string | Variable;
-        colorHover: string | Variable;
-        colorPress: string | Variable;
-        colorFocus: string | Variable;
-        borderColor: string | Variable;
-        borderColorHover: string | Variable;
-        borderColorPress: string | Variable;
-        borderColorFocus: string | Variable;
-        shadowColor: string | Variable;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-    };
+    [key: string]: (Partial<TamaguiBaseTheme> & {
+        [key: string]: VariableVal;
+    });
 };
 declare type GenericShorthands = {};
 declare type GenericMedia<K extends string = string> = {
@@ -61,7 +66,7 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
-export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands, D extends GenericMedia, E extends GenericAnimations> = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
+export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
     tokens: A;
     themes: B;
     shorthands: C;
@@ -250,6 +255,7 @@ export declare type StaticConfig = {
             };
         };
     };
+    componentName?: string;
     neverFlatten?: boolean | 'jsx';
     isText?: boolean;
     isInput?: boolean;

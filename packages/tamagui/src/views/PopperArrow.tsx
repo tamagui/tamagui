@@ -30,7 +30,7 @@ export const PopperArrow = React.memo(
       <YStack
         ref={ref}
         borderColor="$borderColor"
-        backgroundColor="$bg"
+        backgroundColor="$background"
         position="absolute"
         rotate="45deg"
         zIndex={1}

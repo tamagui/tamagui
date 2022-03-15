@@ -7,7 +7,6 @@ export function createAnimations<A>(animations: A): {
   const useAnimations = (props: Object, extra) => {
     const { style, hoverStyle, pressStyle, exitStyle, onDidAnimate, delay } = extra
   }
-
   return {
     useAnimations,
     animations,

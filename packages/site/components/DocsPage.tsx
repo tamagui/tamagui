@@ -118,7 +118,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 <NextLink href={previous.route} passHref>
                   <YStack
                     hoverStyle={{
-                      backgroundColor: '$bg2',
+                      backgroundColor: '$backgroundHover',
                     }}
                     flex={1}
                     width="50%"
@@ -145,7 +145,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 <NextLink href={next.route} passHref>
                   <YStack
                     hoverStyle={{
-                      backgroundColor: '$bg2',
+                      backgroundColor: '$backgroundHover',
                     }}
                     width="50%"
                     flex={1}

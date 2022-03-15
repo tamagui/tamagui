@@ -18,7 +18,7 @@ export declare const Popover: React.NamedExoticComponent<IPopoverProps & React.R
         onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
+        space?: boolean | import("@tamagui/core").VariableVal | undefined;
         pointerEvents?: string | undefined;
     } & {
         ref?: React.RefObject<HTMLElement | View> | ((node: HTMLElement | View) => any) | undefined;
@@ -40,7 +40,7 @@ export declare const Popover: React.NamedExoticComponent<IPopoverProps & React.R
         onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
+        space?: boolean | import("@tamagui/core").VariableVal | undefined;
         pointerEvents?: string | undefined;
     } & {
         ref?: React.RefObject<HTMLElement | View> | ((node: HTMLElement | View) => any) | undefined;

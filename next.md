@@ -1,10 +1,19 @@
+- theme="" prop on any createComponent
+  - easy part is useTheme()
+  - decision:
+    - faster/simpler is non-contextual, but maybe not desirable
+    - a bit more complex it passes it to children, but maybe slow
+  - either way compiler probably wants to also handle theme prop
+
 - createTamagui({ defaultProps: { Button: {} } }) for any component
 
 - site demo with toggles for animations:
   - https://blog.maximeheckel.com/posts/framer-motion-layout-animations/
 
 - not adding data-displayname
-- array shorthand values
+
+- can speed up non-flattened a lot by having compiler inject `disableTheme` prop when it detects no spread + no theme prop set
+  - because useTheme() hook has gotten heavy
 
 - document <SizableFrame />
 - document <EnsureFlexed />
@@ -71,6 +80,8 @@
 - document: getTokens, useThemeName
 
 - static compilation can go further with variants because it knows they always only accept certain values... see mount-deep-tree
+
+- array shorthand values?
 
 - basic styled() extraction to css at compile time
 

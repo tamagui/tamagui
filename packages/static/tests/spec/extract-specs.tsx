@@ -20,9 +20,9 @@ export const Card = (props: any) => (
   <Box
     className="transition all ease-in ms100"
     borderRadius="$2"
-    backgroundColor="$bg"
+    backgroundColor="$background"
     hoverStyle={{
-      backgroundColor: '$bg2',
+      backgroundColor: '$backgroundHover',
       shadowColor: '$shadowColor',
       shadowRadius: 20,
       shadowOffset: { height: 3, width: 0 },
@@ -60,7 +60,7 @@ export function TestMediaQuery() {
       >
         {media3.lg && <div />}
       </YStack>
-      <YStack p="$2" $lg={{ backgroundColor: '$bg', p: '$2' }} />
+      <YStack p="$2" $lg={{ backgroundColor: '$background', p: '$2' }} />
     </>
   )
 }
@@ -70,7 +70,7 @@ export function TestMediaQueryInline() {
     <>
       <YStack
         $sm={{
-          backgroundColor: '$bg',
+          backgroundColor: '$background',
           hoverStyle: {
             backgroundColor: 'red',
           },

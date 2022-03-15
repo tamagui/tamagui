@@ -20,7 +20,10 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 // to prevent things from going circular, hoisting some types in this file
 // to generally order them as building up towards TamaguiConfig
 
-export interface CreateTokens<Val extends number | string | Variable = number | string | Variable> {
+export type VariableVal = number | string | Variable
+export type VariableColorVal = string | Variable
+
+export interface CreateTokens<Val extends VariableVal = VariableVal> {
   font: { [key: string]: GenericFont }
   color: { [key: string]: Val }
   space: { [key: string]: Val }
@@ -29,29 +32,34 @@ export interface CreateTokens<Val extends number | string | Variable = number | 
   zIndex: { [key: string]: Val }
 }
 
+export type TamaguiBaseTheme = {
+  // defined for our tamagui kit , we could do this inside `tamagui`
+  // but maybe helpful to have some sort of universally shared things +
+  // + enforce if they want their own, redefine in their design sys
+  background: VariableColorVal
+  backgroundHover: VariableColorVal
+  backgroundPress: VariableColorVal
+  backgroundFocus: VariableColorVal
+  color: VariableColorVal
+  colorHover: VariableColorVal
+  colorPress: VariableColorVal
+  colorFocus: VariableColorVal
+  borderColor: VariableColorVal
+  borderColorHover: VariableColorVal
+  borderColorPress: VariableColorVal
+  borderColorFocus: VariableColorVal
+  shadowColor: VariableColorVal
+  shadowColorHover: VariableColorVal
+  shadowColorPress: VariableColorVal
+  shadowColorFocus: VariableColorVal
+}
+
 type GenericTokens = CreateTokens
 type GenericThemes = {
-  [key: string]: {
-    // defined for our tamagui kit , we could do this inside `tamagui`
-    // but maybe helpful to have some sort of universally shared things +
-    // + enforce if they want their own, redefine in their design sys
-    background: string | Variable
-    backgroundHover: string | Variable
-    backgroundPress: string | Variable
-    backgroundFocus: string | Variable
-    color: string | Variable
-    colorHover: string | Variable
-    colorPress: string | Variable
-    colorFocus: string | Variable
-    borderColor: string | Variable
-    borderColorHover: string | Variable
-    borderColorPress: string | Variable
-    borderColorFocus: string | Variable
-    shadowColor: string | Variable
-    shadowColorHover: string | Variable
-    shadowColorPress: string | Variable
-    shadowColorFocus: string | Variable
-  }
+  [key: string]:
+    | Partial<TamaguiBaseTheme> & {
+        [key: string]: VariableVal
+      }
 }
 type GenericShorthands = {}
 type GenericMedia<K extends string = string> = {
@@ -87,9 +95,9 @@ export interface TamaguiConfig
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
-  C extends GenericShorthands,
-  D extends GenericMedia,
-  E extends GenericAnimations
+  C extends GenericShorthands = GenericShorthands,
+  D extends GenericMedia = GenericMedia,
+  E extends GenericAnimations = GenericAnimations
 > = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
   tokens: A
   themes: B
@@ -337,15 +345,6 @@ export type StackProps = Omit<ViewProps, 'display' | 'children'> &
 // Text props
 //
 
-// type EnhancedTextStyleProps = WithThemeValues<
-//   Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps
-// >
-// export type TextStylePropsBase = EnhancedTextStyleProps
-// export type TextStyleProps<S = TextStylePropsBase> = S & {
-//   hoverStyle?: S | null
-//   pressStyle?: S | null
-// }
-
 type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<
   Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps
 >
@@ -392,78 +391,6 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
   children?: any
 }
 
-// export type RNWInternalProps = {
-//   accessibilityState?: {
-//     busy?: boolean
-//     checked?: boolean | 'mixed'
-//     disabled?: boolean
-//     expanded?: boolean
-//     grabbed?: boolean
-//     hidden?: boolean
-//     invalid?: boolean
-//     modal?: boolean
-//     pressed?: boolean
-//     readonly?: boolean
-//     required?: boolean
-//     selected?: boolean
-//   }
-//   accessibilityValue?: {
-//     max?: number
-//     min?: number
-//     now?: number
-//     text?: string
-//   }
-//   children?: any
-//   focusable?: boolean
-//   nativeID?: string
-//   onBlur?: (e: any) => void
-//   onClick?: (e: any) => void
-//   onClickCapture?: (e: any) => void
-//   onContextMenu?: (e: any) => void
-//   onFocus?: (e: any) => void
-//   onKeyDown?: (e: any) => void
-//   onKeyUp?: (e: any) => void
-//   onMoveShouldSetResponder?: (e: any) => boolean
-//   onMoveShouldSetResponderCapture?: (e: any) => boolean
-//   onResponderEnd?: (e: any) => void
-//   onResponderGrant?: (e: any) => void
-//   onResponderMove?: (e: any) => void
-//   onResponderReject?: (e: any) => void
-//   onResponderRelease?: (e: any) => void
-//   onResponderStart?: (e: any) => void
-//   onResponderTerminate?: (e: any) => void
-//   onResponderTerminationRequest?: (e: any) => boolean
-//   onScrollShouldSetResponder?: (e: any) => boolean
-//   onScrollShouldSetResponderCapture?: (e: any) => boolean
-//   onSelectionChangeShouldSetResponder?: (e: any) => boolean
-//   onSelectionChangeShouldSetResponderCapture?: (e: any) => boolean
-//   onStartShouldSetResponder?: (e: any) => boolean
-//   onStartShouldSetResponderCapture?: (e: any) => boolean
-//   pointerEvents?: 'box-none' | 'none' | 'box-only' | 'auto'
-//   testID?: string
-//   // unstable
-//   dataSet?: Object
-//   onMouseDown?: (e: any) => void
-//   onMouseEnter?: (e: any) => void
-//   onMouseLeave?: (e: any) => void
-//   onMouseMove?: (e: any) => void
-//   onMouseOver?: (e: any) => void
-//   onMouseOut?: (e: any) => void
-//   onMouseUp?: (e: any) => void
-//   onScroll?: (e: any) => void
-//   onTouchCancel?: (e: any) => void
-//   onTouchCancelCapture?: (e: any) => void
-//   onTouchEnd?: (e: any) => void
-//   onTouchEndCapture?: (e: any) => void
-//   onTouchMove?: (e: any) => void
-//   onTouchMoveCapture?: (e: any) => void
-//   onTouchStart?: (e: any) => void
-//   onTouchStartCapture?: (e: any) => void
-//   onWheel?: (e: any) => void
-//   href?: string
-//   hrefAttrs?: { download?: boolean; rel?: string; target?: string }
-// }
-
 export type StaticConfigParsed = StaticConfig & {
   parsed: true
   propMapper: (
@@ -491,6 +418,11 @@ export type StaticConfig = {
           }
     }
   }
+
+  /*
+   * Determines ultimate output tag (Text vs View)
+   */
+  componentName?: string
 
   /*
    * If you need to pass context or something, prevents from ever

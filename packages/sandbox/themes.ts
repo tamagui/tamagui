@@ -1,11 +1,10 @@
 import * as Colors from '@tamagui/colors'
-import { getVariableValue } from '@tamagui/core'
 
 import { tokens } from './tokens'
 
 // helpers
 
-const alternates = [1, 2, 3, 4, 5, 6] as const
+const alternates = [1, 2, 3] as const
 type AltKeys = typeof alternates[number]
 type AltThemeGetter<A = any> = (str: number) => A
 type AltName<Name extends string, Keys extends string | number> = `${Name}-alt${Keys}`
@@ -20,11 +19,13 @@ function createThemeWithAlts<Name extends string, GetTheme extends AltThemeGette
 } {
   const altNames = alternates.map((str) => `${name}-alt${str}`) as AltName<Name, AltKeys>[]
   const names = [name, ...altNames] as const
-  const themes = Object.fromEntries(
-    names.map((name, str) => {
-      return [name, getTheme(str)] as const
-    })
-  )
+  const themeEntries = names.map((name, str) => {
+    return [name, getTheme(str)] as const
+  })
+  // add button theme
+  const [btnThemeName, btnTheme] = themeEntries[themeEntries.length - alternates.length + 1]
+  themeEntries.push([`${btnThemeName}-button` as any, btnTheme])
+  const themes = Object.fromEntries(themeEntries)
   return themes as any
 }
 
@@ -63,21 +64,23 @@ const themeCreator =
   (str = 1) => {
     const colors = [...backgrounds].reverse()
     const darkColors = isLight ? colors : backgrounds
+    const lighterDir = isLight ? -1 : 1
+    const darkerDir = -lighterDir
     return {
       background: backgrounds[str],
-      backgroundHover: backgrounds[str - 1],
-      backgroundPress: backgrounds[2 + str],
-      backgroundFocus: backgrounds[3 + str],
+      backgroundHover: backgrounds[str + lighterDir * 2],
+      backgroundPress: backgrounds[2 + darkerDir * 2],
+      backgroundFocus: backgrounds[3 + darkerDir * 1],
       backgroundTransparent: tokens.color.grayA1,
-      borderColor: isLight ? colors[7] : backgrounds[2],
-      borderColorHover: isLight ? colors[8] : backgrounds[3],
-      borderColorPress: isLight ? colors[8] : backgrounds[3],
-      borderColorFocus: isLight ? colors[8] : backgrounds[3],
+      borderColor: isLight ? colors[8 - str] : backgrounds[2 + str],
+      borderColorHover: isLight ? colors[7 - str] : backgrounds[3 + str],
+      borderColorPress: isLight ? colors[6 - str] : backgrounds[3 + str],
+      borderColorFocus: isLight ? colors[6 - str] : backgrounds[3 + str],
       color: colors[0 + str],
       colorHover: colors[1 + str],
       colorPress: colors[2 + str],
       colorFocus: colors[3 + str],
-      shadowColor: darkColors[!isLight ? 0 : 7],
+      shadowColor: darkColors[!isLight ? 0 - str : 7],
       shadowColorHover: darkColors[!isLight ? 1 : 8],
       shadowColorPress: darkColors[!isLight ? 1 : 8],
       shadowColorFocus: darkColors[!isLight ? 1 : 8],
@@ -85,7 +88,7 @@ const themeCreator =
     }
   }
 
-const colorNames = [
+export const colorNames = [
   'blue',
   'gray',
   'green',
@@ -104,34 +107,46 @@ const colorGradients = colorNames.map((name) => {
 
 type ColorNames = typeof colorNames[number]
 
+const makeLightTheme = themeCreator(grays, true, true)
+const makeDarkTheme = themeCreator([...grays].reverse(), false, true)
 const baseThemes = {
-  ...createThemeWithAlts('light', themeCreator(grays, true, true)),
-  ...createThemeWithAlts('dark', themeCreator([...grays].reverse(), false, true)),
+  ...createThemeWithAlts('light', makeLightTheme),
+  ...createThemeWithAlts('dark', makeDarkTheme),
 }
 
 export type MyTheme = typeof baseThemes['light']
 
-const colorThemes: {
-  [key in
-    | ColorNames
-    | AltName<`light-${ColorNames}`, AltKeys>
-    | AltName<`dark-${ColorNames}`, AltKeys>]: MyTheme
-} = Object.fromEntries(
-  colorGradients.flatMap(({ name, gradient }) => {
-    return ['light', 'dark'].flatMap((scheme) => {
-      const isLight = scheme === 'light'
-      const getter = themeCreator(isLight ? gradient : [...gradient].reverse(), isLight, false)
-      const themeWithAlts = createThemeWithAlts(name, getter)
-      return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}-${k}`, v])
-    })
+type ColorThemeNames =
+  | ColorNames
+  | AltName<`light-${ColorNames}`, AltKeys>
+  | AltName<`dark-${ColorNames}`, AltKeys>
+
+const colorThemeEntries = colorGradients.flatMap(({ name, gradient }) => {
+  const [altLightThemes, altDarkThemes] = ['light', 'dark'].map((scheme) => {
+    const isLight = scheme === 'light'
+    const getter = themeCreator(isLight ? gradient : [...gradient].reverse(), isLight, false)
+    const themeWithAlts = createThemeWithAlts(name, getter)
+    return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}-${k}`, v])
   })
-) as any
+  const lightButtonTheme = altLightThemes[2]
+  const darkButtonTheme = altDarkThemes[2]
+  return [
+    ...altLightThemes,
+    [`${lightButtonTheme[0]}-button`, darkButtonTheme[1]],
+    ...altDarkThemes,
+    [`${darkButtonTheme[0]}-button`, lightButtonTheme[1]],
+  ]
+})
+
+const colorThemes: {
+  [key in ColorThemeNames]: MyTheme
+} = Object.fromEntries(colorThemeEntries) as any
 
 export const themes = {
   ...baseThemes,
   ...colorThemes,
 } as const
 
-console.log('themes', themes)
+console.log('themes', colorThemeEntries)
 
 export type MyThemes = typeof themes

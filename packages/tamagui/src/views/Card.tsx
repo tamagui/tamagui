@@ -10,7 +10,7 @@ React['createElement']
 export const Card = styled(SizableFrame, {
   alignItems: 'flex-start',
   flexDirection: 'column',
-  backgroundColor: '$bg',
+  backgroundColor: '$background',
   overflow: 'hidden',
 
   variants: {

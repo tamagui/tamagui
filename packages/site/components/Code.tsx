@@ -12,8 +12,8 @@ export const Code = styled(Paragraph, {
   variants: {
     colored: {
       true: {
-        color: '$color2',
-        backgroundColor: '$bg4',
+        color: '$color',
+        backgroundColor: '$background',
       },
     },
   },

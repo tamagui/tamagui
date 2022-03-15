@@ -1,11 +1,10 @@
-import { StackProps, YStack, createTamagui } from 'tamagui'
+import { Stack, StackProps, createTamagui } from '@tamagui/core'
 
 import { shorthands, tokens } from './testConstants'
 import { themes } from './testThemes'
 
 const config = createTamagui({
   defaultTheme: 'light',
-  disableRootThemeClass: true,
   shorthands,
   themes,
   tokens,
@@ -37,7 +36,7 @@ declare module '@tamagui/core' {
 export const x = (props: StackProps) => {
   return (
     <>
-      <YStack bc="$bg" $lg={{ bc: '$bg2' }} />
+      <Stack bc="$bg" $lg={{ bc: '$bg2' }} />
     </>
   )
 }

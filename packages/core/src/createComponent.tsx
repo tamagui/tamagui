@@ -80,7 +80,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     staticConfig = parseStaticConfig(configIn)
   }
 
-  const { Component, validStyles, isText, isZStack } = staticConfig
+  const { Component, validStyles, isText, isZStack, componentName } = staticConfig
   const validStyleProps = validStyles ?? stylePropsView
 
   // split out default styles vs props so we can assign it to component.defaultProps
@@ -97,7 +97,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   const component = forwardRef<View, ComponentPropTypes>((props: any, forwardedRef) => {
     const forceUpdate = useForceUpdate()
     const features = useFeatures(props, { forceUpdate })
-    const theme = useTheme()
+    const theme = useTheme(props.theme, componentName)
     const [state, set_] = useState<ComponentState>(defaultComponentState)
     const set = createShallowUpdate(set_)
 
@@ -256,6 +256,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       const stylesClassNames = useStylesAsClassname(styles)
       const classList = isText
         ? [
+            // TODO
+            theme.className,
             defaultsClassName,
             // hasTextAncestor === true && cssText.textHasAncestor,
             // TODO MOVE TO VARIANTS [number] [any]
@@ -264,7 +266,14 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
             stylesClassNames,
             props.className,
           ]
-        : [defaultsClassName, props.className, classNames, stylesClassNames]
+        : [
+            //
+            theme.className,
+            defaultsClassName,
+            props.className,
+            classNames,
+            stylesClassNames,
+          ]
 
       // @ts-ignore we are optimizing using arguments
       const className = concatClassName(...classList)

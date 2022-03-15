@@ -4,4 +4,4 @@ export declare function createAnimations<A>(animations: A): {
     View?: any;
     Text?: any;
 };
-//# sourceMappingURL=createAnimation.d.ts.map
+//# sourceMappingURL=createAnimations.d.ts.map

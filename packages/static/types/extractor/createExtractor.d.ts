@@ -4,20 +4,9 @@ import type { TamaguiInternalConfig } from '@tamagui/core';
 import { ExtractorParseProps } from '../types';
 export declare type Extractor = ReturnType<typeof createExtractor>;
 export declare function createExtractor(): {
-    getTamagui(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<string | number | import("@tamagui/core").Variable>, {
-        [key: string]: {
-            bg: string | import("@tamagui/core").Variable;
-            bg2: string | import("@tamagui/core").Variable;
-            bg3: string | import("@tamagui/core").Variable;
-            bg4: string | import("@tamagui/core").Variable;
-            color: string | import("@tamagui/core").Variable;
-            color2: string | import("@tamagui/core").Variable;
-            color3: string | import("@tamagui/core").Variable;
-            color4: string | import("@tamagui/core").Variable;
-            borderColor: string | import("@tamagui/core").Variable;
-            borderColor2: string | import("@tamagui/core").Variable;
-            shadowColor: string | import("@tamagui/core").Variable;
-            shadowColor2: string | import("@tamagui/core").Variable;
+    getTamagui(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<import("@tamagui/core").VariableVal>, {
+        [key: string]: Partial<import("@tamagui/core").TamaguiBaseTheme> & {
+            [key: string]: import("@tamagui/core").VariableVal;
         };
     }, {}, {
         [x: string]: {
