@@ -21,7 +21,7 @@ import { IconStack } from './IconStack'
 
 const Pill = styled(Paragraph, {
   bc: '$color3',
-  color: '$bg2',
+  color: '$backgroundHover',
   size: '$3',
   fow: '800',
   py: '$1',

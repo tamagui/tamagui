@@ -4,8 +4,8 @@ import { getHasConfigured } from '../conf'
 import { GET_DEFAULT_THEME } from '../constants/constants'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { getThemeParentClassName } from '../helpers/getThemeParentClassName'
+import { ThemeContext } from '../ThemeContext'
 import { Theme } from './Theme'
-import { ThemeContext } from './ThemeContext'
 
 export type ThemeProviderProps = {
   themes: any

@@ -26,7 +26,6 @@ type asdsad = keyof TamaguiConfig['themes']
 
 const config = createTamagui({
   defaultTheme: 'light',
-  disableRootThemeClass: true,
   shorthands,
   themes,
   tokens,
@@ -171,7 +170,7 @@ export const InteractiveFrame = styled(Stack, {
         // pointerEvents: 'none',
         opacity: 0.5,
         hoverStyle: {
-          backgroundColor: '$bg',
+          backgroundColor: '$background',
         },
       },
     },
@@ -229,7 +228,7 @@ export const x = (props: StackProps) => {
           p: '$-0',
         }}
         spread="$10"
-        bc="$bg"
+        bc="$background"
         bg="alternate"
         asdsad={1}
         aok="err"

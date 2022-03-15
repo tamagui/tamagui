@@ -29,7 +29,7 @@ export declare const HoverablePopover: React.ForwardRefExoticComponent<IPopoverP
         onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        space?: string | number | boolean | import("@tamagui/core").Variable | undefined;
+        space?: boolean | import("@tamagui/core").VariableVal | undefined;
         pointerEvents?: string | undefined;
     } & {
         ref?: React.RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;

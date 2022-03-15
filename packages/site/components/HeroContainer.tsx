@@ -64,7 +64,7 @@ const Card = styled(YStack, {
   jc: 'center',
   elevation: '$6',
   minWidth: 180,
-  bc: '$bg',
+  bc: '$background',
   minHeight: 220,
   br: '$4',
 })

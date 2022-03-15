@@ -20,6 +20,7 @@ const validConfig = ow.object.exactShape({
   themes: ow.object.valuesOfType(ow.object),
   tokens: ow.object.valuesOfType(ow.object),
   media: ow.object.valuesOfType(ow.object),
+  animations: ow.object.valuesOfType(ow.object),
 })
 
 const validFont = ow.object.exactShape({

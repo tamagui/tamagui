@@ -26,12 +26,18 @@ export type ButtonProps = SizableFrameProps &
     iconAfter?: IconProp
   }
 
-const ButtonFrame = styled(SizableFrame, {
-  tag: 'button',
-  borderWidth: 0,
-  hoverable: true,
-  pressable: true,
-})
+const ButtonFrame = styled(
+  SizableFrame,
+  {
+    tag: 'button',
+    borderWidth: 0,
+    hoverable: true,
+    pressable: true,
+  },
+  {
+    componentName: 'button',
+  }
+)
 
 export const Button: React.FC<ButtonProps> = ButtonFrame.extractable(
   themeable(
@@ -49,7 +55,7 @@ export const Button: React.FC<ButtonProps> = ButtonFrame.extractable(
         ...rest
       } = props
       const theme = useTheme()
-      const color = (colorProp || theme.color).toString()
+      const color = (colorProp || theme.color)?.toString()
       const addTheme = (el: any) => {
         return isValidElement(el)
           ? el
@@ -71,7 +77,14 @@ export const Button: React.FC<ButtonProps> = ButtonFrame.extractable(
               return child
             }
             return (
-              <SizableText size={size} color={color} flexGrow={0} flexShrink={1} ellipse>
+              <SizableText
+                cursor="inherit"
+                size={size}
+                color={color}
+                flexGrow={0}
+                flexShrink={1}
+                ellipse
+              >
                 {children}
               </SizableText>
             )

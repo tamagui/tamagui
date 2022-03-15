@@ -13,7 +13,7 @@ export declare const PopoverContent: React.ForwardRefExoticComponent<Pick<Omit<i
     onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-    space?: string | number | boolean | import("@tamagui/core/types").Variable | undefined;
+    space?: boolean | import("@tamagui/core/types").VariableVal | undefined;
     pointerEvents?: string | undefined;
 } & {
     ref?: React.RefObject<HTMLElement | import("react-native").View> | ((node: HTMLElement | import("react-native").View) => any) | undefined;

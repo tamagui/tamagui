@@ -1,10 +1,18 @@
 import { FastForward, Pause, Rewind } from '@tamagui/feather-icons'
 import React from 'react'
-import { Button, Card, Image, Paragraph, Square, Theme, XStack, YStack } from 'tamagui'
+import { Button, Card, Image, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
+import { colorNames } from './themes'
 
-console.log('css', Tamagui.getCSS().split('\n'))
+const blocks = Tamagui.getCSS().split('}\n')
+console.groupCollapsed('CSS')
+for (const block of blocks) {
+  console.groupCollapsed(block.slice(0, block.indexOf('{')))
+  console.log(block)
+  console.groupEnd()
+}
+console.groupEnd()
 
 const Scale = ({ between, ...props }: any) => {
   return props.children
@@ -14,49 +22,74 @@ const Scale = ({ between, ...props }: any) => {
 }
 
 export const Sandbox = () => {
-  const coloredPlayers = (
+  // return (
+  //   <Tamagui.Provider injectCSS>
+  //     <Button>Hello</Button>
+  //     <Button theme="blue">Hello</Button>
+  //     <Button theme="red">Hello</Button>
+  //     <Button theme="green">Hello</Button>
+  //     <Button theme="dark">Hello</Button>
+  //   </Tamagui.Provider>
+  // )
+
+  // return (
+  //   <Tamagui.Provider injectCSS>
+  //     <Theme name="blue">
+  //       <XStack p="$4" space="$4">
+  //         <Button debug bordered icon={Pause} circular size="$8" elevation="$4" />
+  //         <YStack width={100} height={100} bc="$background" br="$10" elevation="$4" />
+  //       </XStack>
+  //     </Theme>
+  //     {/* <Button theme="yellow" bordered icon={Pause} circular size="$8" elevation="$4" /> */}
+  //   </Tamagui.Provider>
+  // )
+
+  const players = (
     <>
       <YStack>
         <XStack>
           <MediaPlayer />
           <MediaPlayer alt={1} />
+          <MediaPlayer alt={2} />
           <MediaPlayer alt={3} />
           <MediaPlayer alt={4} />
-          <MediaPlayer alt={5} />
         </XStack>
-        <XStack>
-          <Theme name="blue">
-            <MediaPlayer />
-            <MediaPlayer alt={1} />
-            <MediaPlayer alt={3} />
-            <MediaPlayer alt={4} />
-            <MediaPlayer alt={5} />
+        {colorNames.map((name) => (
+          <Theme key={name} name={name}>
+            <XStack>
+              <MediaPlayer />
+              <MediaPlayer alt={1} />
+              <MediaPlayer alt={2} />
+              <MediaPlayer alt={3} />
+              <MediaPlayer alt={4} />
+            </XStack>
           </Theme>
-        </XStack>
+        ))}
       </YStack>
     </>
   )
 
   return (
     <Tamagui.Provider injectCSS>
-      <YStack>
-        <Theme name="dark">{coloredPlayers}</Theme>
-        <Theme name="light">{coloredPlayers}</Theme>
-      </YStack>
+      <XStack>
+        <Theme name="dark">{players}</Theme>
+        <Theme name="light">{players}</Theme>
+      </XStack>
     </Tamagui.Provider>
   )
 }
 
 export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
-  const mainButtonTheme = `alt${alt}`
-  const barTheme = `alt${alt + 1}`
+  const themeName = alt ? (`alt${alt}` as any) : null
+  const mainButtonTheme = `alt${alt}` as any
+  const barTheme = `alt${alt + 1}` as any
 
   // alternatively have
   // <Scale.Container> for non-viewport usage
 
   return (
-    <Theme name={alt ? `alt${alt}` : null}>
-      <YStack bc="$background">
+    <YStack bc="$background">
+      <Theme name={themeName}>
         <YStack py="$6" px="$4">
           <Scale
             // could be `container` as well
@@ -70,8 +103,8 @@ export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
             scaleDirection="vertical"
           >
             <Card flex={1} overflow="visible" bordered size="$6" pl={0} pr={0} pb={0} pt={0}>
-              <YStack w="100%" space="$5">
-                <XStack ai="center" p="$4" space="$5">
+              <YStack w="100%">
+                <XStack ai="center" p="$3" space="$5">
                   <Square br="$2" size="$12">
                     <Image w="150%" h="150%" src="http://placekitten.com/200/200" />
                   </Square>
@@ -81,16 +114,12 @@ export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
                     <Paragraph>Kanye West</Paragraph>
                     <Paragraph>College Dropout</Paragraph>
                   </YStack>
-
-                  {/* <Button als="asdsda" w="100">
-                  hello
-                </Button> */}
                 </XStack>
+
+                <Separator />
 
                 <Theme name={barTheme}>
                   <XStack
-                    borderTopWidth={1}
-                    borderTopColor="$borderColor"
                     w="100%"
                     px="$8"
                     bc="$background"
@@ -109,7 +138,7 @@ export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
                       // bc="$background"
                       hoverStyle={{
                         elevation: '$6',
-                        scale: 1.1,
+                        scale: 1.05,
                       }}
                       my="$-6"
                       icon={Pause}
@@ -125,7 +154,7 @@ export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
             </Card>
           </Scale>
         </YStack>
-      </YStack>
-    </Theme>
+      </Theme>
+    </YStack>
   )
 }

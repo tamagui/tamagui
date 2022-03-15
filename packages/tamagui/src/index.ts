@@ -6,6 +6,7 @@ export * from '@tamagui/helpers'
 // lets be explicit on what gets exported
 export {
   // types
+  TamaguiBaseTheme,
   ColorTokens,
   CreateTamaguiConfig,
   CreateTamaguiProps,

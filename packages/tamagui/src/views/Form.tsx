@@ -26,7 +26,7 @@ export const Input = styled(
     borderRadius: '$3',
     borderWidth: 1,
     borderColor: '$borderColor',
-    backgroundColor: '$bg',
+    backgroundColor: '$background',
     paddingVertical: '$2',
     paddingHorizontal: '$2',
 
@@ -65,7 +65,7 @@ export const TextArea = styled(
     borderRadius: '$3',
     borderWidth: 1,
     borderColor: '$borderColor',
-    backgroundColor: '$bg',
+    backgroundColor: '$background',
     paddingVertical: '$2',
     paddingHorizontal: '$2',
 

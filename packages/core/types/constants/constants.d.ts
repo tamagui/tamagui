@@ -1,5 +1,5 @@
 export declare const GET_DEFAULT_THEME = "___TGUI";
-export declare const PREFIX = "theme--";
+export declare const THEME_CLASSNAME_PREFIX = "theme--";
 export declare const stackDefaultStyles: {
     display?: string | undefined;
     flexBasis?: string | undefined;

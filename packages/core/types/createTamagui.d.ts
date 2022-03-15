@@ -1,6 +1,6 @@
 import { Variable } from './createVariable';
-import { AnimationHook, CreateTamaguiConfig, GenericTamaguiConfig, MediaQueryKey, TamaguiInternalConfig, TamaguiProviderProps } from './types';
-export declare type CreateTamaguiProps = TamaguiProviderProps & Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
+import { AnimationHook, CreateTamaguiConfig, GenericTamaguiConfig, MediaQueryKey, TamaguiInternalConfig } from './types';
+export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
     animations?: {
         useAnimations: AnimationHook;
         animations: {
@@ -17,5 +17,5 @@ export declare type CreateTamaguiProps = TamaguiProviderProps & Partial<Omit<Gen
     };
     mediaQueryDefaultActive?: MediaQueryKey[];
 };
-export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E> ? TamaguiInternalConfig<A, B, C, D, E> : unknown;
+export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E>> ? TamaguiInternalConfig<A, B, C, D, E> : unknown;
 //# sourceMappingURL=createTamagui.d.ts.map

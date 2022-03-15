@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
 
-import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { isWeb } from '../constants/platform'
 import { getThemeParentClassName } from '../helpers/getThemeParentClassName'
-import { useConstant } from '../hooks/useConstant'
+import { useChangeThemeEffect } from '../static'
+import { ThemeManagerContext } from '../ThemeManager'
 import { ThemeName } from '../types'
-import { ThemeContext } from './ThemeContext'
-import { ThemeManager, ThemeManagerContext } from './ThemeManagerContext'
+
+// bugfix esbuild strips react jsx: 'preserve'
+React['createElement']
 
 export type ThemeProps = {
   disableThemeClass?: boolean
@@ -14,54 +16,17 @@ export type ThemeProps = {
 }
 
 export const Theme = (props: ThemeProps) => {
-  const parent = useContext(ThemeManagerContext)
-  const themes = useContext(ThemeContext)
-  const [parentName, setParentName] = useState(parent.name || 'light')
+  const { name, theme, themeManager, themes, className } = useChangeThemeEffect(props.name)
+
   if (!themes) {
     console.warn('Error, no themes in context', props)
     return props.children
   }
 
-  const nextNameParent = `${parentName}-${props.name}`
-  const nextNameParentParent = `${parent.parentName}-${props.name}`
-  const name = !props.name
-    ? null
-    : props.name in themes
-    ? props.name
-    : nextNameParent in themes
-    ? nextNameParent
-    : nextNameParentParent in themes
-    ? nextNameParentParent
-    : null
-  const theme = name ? themes[name] : null
-  const themeManager = useConstant<ThemeManager | null>(() => {
-    if (!theme) {
-      return null
-    }
-    const manager = new ThemeManager()
-    if (name) {
-      manager.setActiveTheme({ name, theme: themes[name], parentName })
-    }
-    return manager
-  })
-
-  useIsomorphicLayoutEffect(() => {
-    if (!themeManager) {
-      return
-    }
-    if (name) {
-      themeManager.setActiveTheme({ name, theme, parentName })
-    }
-    return parent.onChangeTheme((next) => {
-      if (next) {
-        themeManager.setActiveTheme({ name: next, theme: themes[next], parentName })
-        setParentName(next)
-      }
-    })
-  }, [themes, name, parentName])
-
   if (!name || !theme) {
-    console.warn('no theme', { name, theme })
+    if (process.env.NODE_ENV === 'development' && name && !theme) {
+      console.warn(`No theme found by name ${name}`)
+    }
     return props.children
   }
 
@@ -77,12 +42,15 @@ export const Theme = (props: ThemeProps) => {
     if (props.disableThemeClass) {
       return contents
     }
-    const color = themes[name]?.['color']?.['variable']
+    // console.log('??', className, 'is wrong light-blue when should be dark-blue')
     return (
       <div
         className={getThemeParentClassName(props.name)}
-        // in order to provide currentColor, set color by default
-        style={{ display: 'contents', color }}
+        style={{
+          display: 'contents',
+          // in order to provide currentColor, set color by default
+          color: themes[name]?.color?.toString(),
+        }}
       >
         {contents}
       </div>

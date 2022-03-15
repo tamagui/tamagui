@@ -91,16 +91,10 @@ export const SizableFrame = styled(XStack, {
       true: {
         // pointerEvents: 'none',
         opacity: 0.45,
-        backgroundColor: '$bg',
+        backgroundColor: '$background',
         hoverStyle: {
-          backgroundColor: '$bg',
+          backgroundColor: '$background',
         },
-      },
-    },
-
-    active: {
-      true: {
-        backgroundColor: '$bg3',
       },
     },
 

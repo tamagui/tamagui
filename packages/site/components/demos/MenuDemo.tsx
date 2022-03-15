@@ -1,10 +1,11 @@
 import { Menu as MenuIcon } from '@tamagui/feather-icons'
-import { Menu } from '@tamagui/menu'
+// import { Menu } from '@tamagui/menu'
 import React, { useState } from 'react'
 import { Button, H3, Paragraph, XStack, YStack } from 'tamagui'
 
 export function MenuDemo() {
   const [show, setShow] = useState(false)
+  return null
 
   return (
     <Menu.Provider>

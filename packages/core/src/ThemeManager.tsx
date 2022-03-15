@@ -2,6 +2,12 @@ import { createContext } from 'react'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 
+export type SetActiveThemeProps = {
+  parentName?: string | null
+  name: string | null
+  theme?: any
+}
+
 export class ThemeManager {
   name: string | null = 'light'
   parentName: string | null = null
@@ -10,15 +16,7 @@ export class ThemeManager {
   themeListeners = new Set<ThemeListener>()
   theme = null
 
-  setActiveTheme({
-    name,
-    theme,
-    parentName,
-  }: {
-    parentName?: string | null
-    name: string | null
-    theme?: any
-  }) {
+  setActiveTheme({ name, theme, parentName }: SetActiveThemeProps) {
     if (name === this.name) return
     this.name = name
     this.theme = theme

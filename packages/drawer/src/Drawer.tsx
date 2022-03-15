@@ -56,7 +56,7 @@ export const Drawer = withStaticProperties(
             left={0}
             right={0}
             bottom={0}
-            backgroundColor="$bg"
+            backgroundColor="$background"
             borderTopLeftRadius="$2"
             borderTopRightRadius="$2"
           >

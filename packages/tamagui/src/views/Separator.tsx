@@ -1,7 +1,7 @@
 import { Stack, styled } from '@tamagui/core'
 
 export const Separator = styled(Stack, {
-  backgroundColor: '$separatorColor',
+  backgroundColor: '$borderColor',
   height: 1,
 
   variants: {

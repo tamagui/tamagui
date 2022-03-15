@@ -13,6 +13,18 @@ import Tamagui from '../tamagui.config'
 globalThis['React'] = React
 Error.stackTraceLimit = Infinity
 
+if (typeof document !== 'undefined' && process.env.NODE_ENV === 'development') {
+  // log out CSS for debugging
+  const blocks = Tamagui.getCSS().split('}\n')
+  console.groupCollapsed('CSS')
+  for (const block of blocks) {
+    console.groupCollapsed(block.slice(0, block.indexOf('{')))
+    console.log(block)
+    console.groupEnd()
+  }
+  console.groupEnd()
+}
+
 export default function App(props: AppProps) {
   const classes = typeof document !== 'undefined' ? [...document.documentElement.classList] : []
   const isDark = classes.includes('theme--dark')
@@ -41,7 +53,9 @@ export default function App(props: AppProps) {
       }}
       onChangeTheme={(x) => setTheme(x)}
     >
-      <Tamagui.Provider defaultTheme={theme}>{contents}</Tamagui.Provider>
+      <Tamagui.Provider disableRootThemeClass defaultTheme={theme}>
+        {contents}
+      </Tamagui.Provider>
     </NextThemes.ThemeProvider>
   )
 }

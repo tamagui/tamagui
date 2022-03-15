@@ -3,7 +3,7 @@ import { GetProps, styled } from '@tamagui/core'
 import { YStack } from './Stacks'
 
 export const Box = styled(YStack, {
-  backgroundColor: '$bg',
+  backgroundColor: '$background',
   borderRadius: '$2',
   elevation: '$3',
 })

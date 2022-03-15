@@ -43,7 +43,7 @@ export const Menu = withStaticProperties(
       >
         <Popover.Content>
           {/* <Popover.Arrow /> */}
-          <YStack backgroundColor="$bg" borderRadius="$2">
+          <YStack backgroundColor="$background" borderRadius="$2">
             {children}
           </YStack>
         </Popover.Content>

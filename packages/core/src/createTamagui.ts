@@ -1,7 +1,7 @@
 import { getStyleRules } from '@tamagui/helpers'
 
 import { configListeners, getHasConfigured, setConfig } from './conf'
-import { PREFIX } from './constants/constants'
+import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
@@ -12,10 +12,9 @@ import {
   GenericTamaguiConfig,
   MediaQueryKey,
   TamaguiInternalConfig,
-  TamaguiProviderProps,
 } from './types'
 
-export type CreateTamaguiProps = TamaguiProviderProps & // we omit and re-declare it because we need to allow instantation types to be flexible
+export type CreateTamaguiProps =
   // user then re-defines the types after createTamagui returns the typed object they want
   Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
     animations?: {
@@ -38,9 +37,24 @@ export type CreateTamaguiProps = TamaguiProviderProps & // we omit and re-declar
 
 const createdConfigs = new WeakMap<any, boolean>()
 
+// for quick testing types:
+// const x = createTamagui({
+//   shorthands: {},
+//   media: {},
+//   themes: {},
+//   tokens: {
+//     font: {},
+//     color: {},
+//     radius: {},
+//     size: {},
+//     space: {},
+//     zIndex: {},
+//   },
+// })
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
-): Conf extends CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E>
+): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E>>
   ? TamaguiInternalConfig<A, B, C, D, E>
   : unknown {
   // config is re-run by the @tamagui/static, dont double validate
@@ -95,6 +109,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       cssRules.push(`:root {${sep}${[...tokenRules].join(`;${sep}`)}${sep}}`)
     }
 
+    const baseThemeNames = [...new Set(Object.keys(config.themes).filter((x) => !x.includes('-')))]
+    console.log('baseThemeNames', baseThemeNames)
+
     // themes
     for (const themeName in config.themes) {
       // to allow using the same theme with diff names, be sure we don't mutate!
@@ -116,17 +133,41 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
 
       if (isWeb) {
-        const [parentName, themeClassName] = themeName.includes('-')
-          ? themeName.split('-')
-          : ['', themeName]
-
-        // tiny hack for now assuming light/dark are typical parentName
-        const oppositeName = parentName === 'dark' ? 'light' : 'dark'
-        const cssParentSel = parentName ? `.${PREFIX}${parentName}` : ''
-        const cssChildSel = `.${PREFIX}${themeClassName}`
-        const cssSel = `${cssParentSel} ${cssChildSel}`
-        // we need to force specificity
-        const cssRule = `${cssSel}, .${PREFIX}${oppositeName} ${cssSel} {\n${vars}\n}`
+        // assuming we have themes in every combo:
+        //   ['dark', 'light', 'blue', 'alt1', 'alt2', 'button']
+        // light-blue-alt1-button
+        // [
+        //   '.theme--light .theme--blue .theme--alt1 .theme--button',
+        //   '.theme--light-blue .theme--alt1 .theme--button',
+        //   '.theme--light-blue-alt1 .theme--button',
+        //   '.theme--light-blue-alt1-button',
+        // ]
+        const names = themeName.split('-')
+        console.log('names', names)
+        const selectors = new Set<string>()
+        const max = names.length
+        for (let i = 0; i < max; i++) {
+          const numJoined = max - i
+          const [joined, separate] = [names.slice(0, numJoined), names.slice(numJoined)]
+          const curSelectors = [
+            joined.length ? `.${THEME_CLASSNAME_PREFIX}${joined.join('-')}` : null,
+            separate.map((s) => `.${THEME_CLASSNAME_PREFIX}${s}`).join(' '),
+          ]
+          const selector = curSelectors.filter(Boolean).flat().join(' ')
+          selectors.add(selector)
+          // add specificity selector hacks
+          for (const baseName of baseThemeNames) {
+            if (baseName === names[0]) {
+              continue
+            }
+            selectors.add(`.${THEME_CLASSNAME_PREFIX}${baseName} ${selector}`)
+          }
+        }
+        const selectorsStr = [...selectors].join(', ')
+        if (names[0] === 'dark' && names[1] === 'blue') {
+          console.log('>>', selectorsStr)
+        }
+        const cssRule = `${selectorsStr} {\n${vars}\n}`
         cssRules.push(cssRule)
       }
     }
@@ -149,8 +190,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const themeParsed: any = {}
   const firstKey = Object.keys(config.themes)[0]
   for (const key in config.themes[firstKey]) {
-    // themeParsed[`$${key}`] = config.themes[firstKey][key]
-    const val = config.themes[firstKey][key].val
+    const val = config.themes[firstKey][key]
     themeParsed[`$${key}`] = new Variable({ val, name: key })
   }
 
@@ -162,7 +202,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: {},
     shorthands: {},
     media: {},
-    ...config,
+    // TODO fix types
+    ...(config as any),
     Provider: createTamaguiProvider({
       getCSS,
       defaultTheme: 'light',

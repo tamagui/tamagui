@@ -51,7 +51,7 @@ export function Hero() {
   return (
     <>
       <Theme name="blue">
-        <YStack backgroundColor="$bg" borderBottomWidth={0.5} borderColor="$borderColor">
+        <YStack backgroundColor="$background" borderBottomWidth={0.5} borderColor="$borderColor">
           <Header />
 
           <ContainerLarge mb={-20}>
@@ -118,7 +118,7 @@ export function Hero() {
                 <XStack ai="center" jc="center" space="$4">
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
-                      // theme="green"
+                      theme="button"
                       // TODO check why hoverStyle not overriding
                       // backgroundColor="$bg3"
                       // hoverStyle={{
@@ -171,9 +171,9 @@ export function Hero() {
                 ai="center"
                 als="center"
                 br="$10"
-                bc="$bg"
+                bc="$background"
                 hoverStyle={{
-                  bc: '$bg2',
+                  bc: '$backgroundHover',
                 }}
               >
                 <Paragraph size="$5" fontWeight="500" fontFamily="$mono">
