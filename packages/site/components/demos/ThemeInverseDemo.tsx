@@ -18,7 +18,7 @@ function Buttons() {
     <YStack bc="$background" p="$3" br="$3" space>
       <Button>Dark</Button>
       <Button themeInverse>Inversed</Button>
-      <Button theme="active">Active dark</Button>
+      <Button theme="alt1">Alt1 Dark</Button>
       <Theme name="yellow">
         <Button>Yellow dark</Button>
       </Theme>

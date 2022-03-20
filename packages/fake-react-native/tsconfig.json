@@ -1,5 +1,7 @@
 {
   "extends": "../../tsconfig",
+  "include": [],
+  "files": [],
   "compilerOptions": {
     "composite": true
   }

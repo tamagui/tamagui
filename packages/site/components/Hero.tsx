@@ -118,15 +118,14 @@ export function Hero() {
                 <XStack ai="center" jc="center" space="$4">
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
-                      theme="button"
                       // TODO check why hoverStyle not overriding
-                      // backgroundColor="$bg3"
                       // hoverStyle={{
-                      //   backgroundColor: '$bg4',
+                      //   backgroundColor: 'red',
                       // }}
                       borderRadius={1000}
-                      iconAfter={<ArrowRight color="var(--color3)" size={12} />}
+                      iconAfter={ArrowRight}
                       tag="a"
+                      fontWeight="800"
                     >
                       Documentation
                     </Button>
@@ -165,7 +164,7 @@ export function Hero() {
 
               <XStack
                 borderWidth={1}
-                borderColor="$borderColor2"
+                borderColor="$borderColorHover"
                 px="$5"
                 height={48}
                 ai="center"
@@ -187,9 +186,9 @@ export function Hero() {
                     // TODO broken in latest
                     icon={
                       hasCopied ? (
-                        <Check size={16} color="var(--color2)" />
+                        <Check size={16} color="var(--colorHover)" />
                       ) : (
-                        <Copy size={16} color="var(--color2)" />
+                        <Copy size={16} color="var(--colorHover)" />
                       )
                     }
                     aria-label="Copy the install snippet to Clipboard"
@@ -218,31 +217,31 @@ export function Hero() {
           $sm={{ flexDirection: 'column' }}
         >
           <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-            <Theme name="purple">
+            <Theme name="purple_alt2">
               <IconStack>
-                <Cpu size={20} color="var(--color3)" />
+                <Cpu size={20} color="var(--colorHover)" />
               </IconStack>
             </Theme>
             {/* TODO why weight is removed */}
             <H3 fontWeight="700" size="$5" mb="$2">
               Performant
             </H3>
-            <Paragraph size="$4" color="$color3">
+            <Paragraph size="$4" theme="alt2">
               Compile inline styles, media queries and themes to atomic CSS. Even conditional logic
               compiles away!
             </Paragraph>
           </YStack>
 
           <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-            <Theme name="green">
+            <Theme name="green_alt2">
               <IconStack>
-                <Compass size={20} color="var(--color3)" />
+                <Compass size={20} color="var(--colorHover)" />
               </IconStack>
             </Theme>
             <H3 fontWeight="700" size="$5" mb="$2">
               Compatible
             </H3>
-            <Paragraph size="$4" color="$color3">
+            <Paragraph size="$4" theme="alt2">
               Augments{' '}
               <Text tag="a" href="https://necolas.github.io/react-native-web/">
                 react-native-web
@@ -253,15 +252,15 @@ export function Hero() {
           </YStack>
 
           <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-            <Theme name="pink">
+            <Theme name="pink_alt2">
               <IconStack>
-                <Layers size={20} color="var(--color3)" />
+                <Layers size={20} color="var(--colorHover)" />
               </IconStack>
             </Theme>
             <H3 fontWeight="700" size="$5" mb="$2">
               Intuitive
             </H3>
-            <Paragraph size="$4" color="$color3">
+            <Paragraph size="$4" theme="alt2">
               Supports DX advances in modern design systems: themes, tokens, shorthands, media
               queries, and typed inline styles.
             </Paragraph>
@@ -269,10 +268,10 @@ export function Hero() {
 
           {/* <YStack flexShrink={1}>
     <IconStack>
-      <FastForward size={20} color="var(--color2)" />
+      <FastForward size={20} color="var(--colorHover)" />
     </IconStack>
     <H3 mb="$2">Native</H3>
-    <Paragraph size="$3" color="$color3">
+    <Paragraph size="$3" theme="alt2">
       On the web Tamagui extracts styles to atomic CSS using CSS variables for themes and
       CSS media queries - even if you use hooks. On native, it extracts StyleSheet.
     </Paragraph>

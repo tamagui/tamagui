@@ -85,6 +85,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             data-invert-line-highlight={isHighlightingLines}
             data-line-numbers={showLineNumbers}
             className={className}
+            // @ts-ignore
             id={id}
           >
             <Code backgroundColor="transparent" className={className}>

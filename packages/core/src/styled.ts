@@ -3,13 +3,17 @@ import * as React from 'react'
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
 import {
+  MediaPropKeys,
   MediaProps,
   PseudoProps,
+  PsuedoPropKeys,
   StaticComponent,
   StaticConfig,
   TamaguiConfig,
+  ThemeValueByCategory,
   Themes,
   Tokens,
+  WithShorthands,
 } from './types'
 
 export function styled<
@@ -19,14 +23,15 @@ export function styled<
 >(
   Component: ParentComponent,
   options?: GetProps<ParentComponent> & {
+    name?: string
     variants?: Variants
   },
   staticExtractionOptions?: StaticConfig
 ) {
   const staticConfigProps: StaticConfig = (() => {
     if (options) {
-      const { variants, ...defaultProps } = options
-      return { ...staticExtractionOptions, variants, defaultProps }
+      const { variants, name, ...defaultProps } = options
+      return { ...staticExtractionOptions, variants, defaultProps, componentName: name }
     }
     return {}
   })()
@@ -34,17 +39,17 @@ export function styled<
   const component = createComponent(config!) // error is good here its on init
 
   type VariantProps = GetVariantProps<Variants>
-  type ParentProps = Props extends Object ? Props : GetProps<ParentComponent>
+  type BaseProps = Props extends Object ? Props : GetProps<ParentComponent>
 
   return component as StaticComponent<
     // if not options/variants passed just styled(Text):
     keyof VariantProps extends never
-      ? ParentProps
+      ? BaseProps
       : // if options passed: styled(Text, { ... })
-        Omit<ParentProps, keyof VariantProps> &
+        Omit<BaseProps, keyof VariantProps | MediaPropKeys | PsuedoPropKeys> &
           VariantProps &
-          MediaProps<VariantProps> &
-          PseudoProps<VariantProps>,
+          MediaProps<BaseProps & VariantProps & WithShorthands<BaseProps & VariantProps>> &
+          PseudoProps<BaseProps & VariantProps & WithShorthands<BaseProps & VariantProps>>,
     void
   >
 }
@@ -82,9 +87,7 @@ export type GetVariantProps<Variants> = Variants extends void
       // ensure variants actually defined
       [Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}`
         ? VariantSpread extends keyof Tokens
-          ? keyof Tokens[VariantSpread] extends string | number
-            ? `$${keyof Tokens[VariantSpread]}` | null
-            : unknown
+          ? ThemeValueByCategory<VariantSpread> | null
           : unknown
         : keyof Variants[Key] extends 'true'
         ? boolean
@@ -100,7 +103,7 @@ export type GetVariantProps<Variants> = Variants extends void
         ? boolean | undefined | null
         : keyof Variants[Key] extends ':number?'
         ? number | undefined | null
-        : keyof Exclude<Variants[Key], undefined>
+        : any
     }
 
 // type X = { ok: 1 }

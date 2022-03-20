@@ -1,7 +1,7 @@
 import { GetProps, StackProps } from '@tamagui/core';
 import React from 'react';
 import { ImageProps as RNImageProps } from 'react-native';
-declare const StyledImage: import("@tamagui/core").StaticComponent<RNImageProps, void, import("@tamagui/core").StaticConfigParsed, any>;
+declare const StyledImage: import("@tamagui/core").StaticComponent<RNImageProps, void, any, import("@tamagui/core").StaticConfigParsed>;
 declare type StyledImageProps = GetProps<typeof StyledImage>;
 export declare type ImageProps = StackProps & Omit<StyledImageProps, 'source'> & {
     src?: string | StyledImageProps['source'];

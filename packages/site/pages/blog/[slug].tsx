@@ -26,7 +26,7 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
   const twitterShare = `
 		https://twitter.com/intent/tweet?
 		text="${frontmatter.title}" by @${
-    authors[frontmatter.by].twitter
+    authors[frontmatter.by || ''].twitter
   } on the @tamagui_js blog.&url=https://tamagui.dev/blog/${frontmatter.slug}
 		`
 
@@ -63,25 +63,25 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
 
           <Paragraph size="$3" color="$color3" whiteSpace="nowrap">
             <Link
-              href={`https://twitter.com/${authors[frontmatter.by].twitter}`}
+              href={`https://twitter.com/${authors[frontmatter.by || ''].twitter}`}
               rel="noopener noreferrer"
-              variant="subtle"
+              // variant="subtle"
             >
-              {authors[frontmatter.by].name}
+              {authors[frontmatter.by || ''].name}
             </Link>
           </Paragraph>
 
           <Separator vertical mx="$2" />
 
           <Paragraph tag="time" size="$3" color="$color3" whiteSpace="nowrap">
-            {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
+            {format(parseISO(frontmatter.publishedAt || ''), 'MMMM yyyy')}
           </Paragraph>
 
           <Separator vertical mx="$2" />
 
           <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
             <Paragraph size="$3" color="$color3">
-              {frontmatter.readingTime.text}
+              {frontmatter.readingTime?.text}
             </Paragraph>
 
             {frontmatter.type === 'changelog' && (

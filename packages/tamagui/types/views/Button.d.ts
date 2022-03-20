@@ -9,6 +9,8 @@ declare type IconProp = JSX.Element | ((props: {
 export declare type ButtonProps = SizableFrameProps & ThemeableProps & {
     scaleIcon?: number;
     color?: SizableTextProps['color'];
+    fontWeight?: SizableTextProps['fontWeight'];
+    letterSpacing?: SizableTextProps['letterSpacing'];
     noTextWrap?: boolean;
     icon?: IconProp;
     iconAfter?: IconProp;

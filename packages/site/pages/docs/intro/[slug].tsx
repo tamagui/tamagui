@@ -5,9 +5,9 @@ import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import { H1, Spacer } from 'tamagui'
-import type { Frontmatter } from 'types/frontmatter'
 
 import { Description } from '../../../components/Description'
+import type { Frontmatter } from '../../../types/frontmatter'
 
 type Doc = {
   frontmatter: Frontmatter

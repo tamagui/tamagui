@@ -9,15 +9,15 @@ const config = createTamagui({
   shorthands,
   themes,
   tokens,
-  defaultProps: {
-    Button: {
-      scaleIcon: 2,
-    },
-  },
-  mediaScale: {
-    horizontal: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
-    vertical: ['short', 'tall'],
-  },
+  // defaultProps: {
+  //   Button: {
+  //     scaleIcon: 2,
+  //   },
+  // },
+  // mediaScale: {
+  //   horizontal: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+  //   vertical: ['short', 'tall'],
+  // },
   media: {
     xs: { maxWidth: 660 },
     sm: { maxWidth: 860 },

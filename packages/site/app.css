@@ -39,7 +39,7 @@ a {
 p a, span a {
   text-decoration: underline;
   text-decoration-style: dotted;
-  color: var(--color3);
+  color: var(--colorPress);
   text-decoration-color: var(--borderColor);
   text-underline-offset: 5px;
 }
@@ -50,7 +50,7 @@ input, textarea, select, button {
 
 p a:hover, span a:hover {
   color: var(--blue12);
-  text-decoration-color: var(--borderColor2);
+  text-decoration-color: var(--borderColorHover);
 }
 
 /* display block > display inline-flex bug */
@@ -156,11 +156,11 @@ ul, ol, li, pre { margin: 0; }
 */
 
 .token.parameter {
-  color: var(--color3),
+  color: var(--colorPress),
 }
 
 .token.tag, .token.class-name, .token.selector, .token.selector .class, .token.function {
-  color: var(--color3);
+  color: var(--colorPress);
 }
 
 .token.attr-value, .token.class, .token.string, .token.number, .token.unit, .token.color {
@@ -172,7 +172,7 @@ ul, ol, li, pre { margin: 0; }
 }
 
 .token.punctuation {
-  color: var(--color2);
+  color: var(--colorHover);
 }
 
 .token.module, .token.property {

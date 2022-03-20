@@ -18,3 +18,5 @@ export const Code = styled(Paragraph, {
     },
   },
 })
+
+// const x = <Code />

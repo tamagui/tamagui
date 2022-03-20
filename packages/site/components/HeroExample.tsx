@@ -1,36 +1,21 @@
-// debug
 import { FastForward, Plus } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
 import {
   Button,
   H2,
-  H4,
   InteractiveContainer,
   Paragraph,
-  Text,
+  SizableText,
   Theme,
   ThemeInverse,
   XStack,
   YStack,
-  styled,
 } from 'tamagui'
 
 import { CodeDemo } from './CodeDemo'
 import { ContainerLarge } from './Container'
 import { IconStack } from './IconStack'
-
-const Pill = styled(Paragraph, {
-  bc: '$color3',
-  color: '$backgroundHover',
-  size: '$3',
-  fow: '800',
-  py: '$1',
-  px: '$4',
-  br: '$10',
-  mb: '$-8',
-  zi: '100',
-  als: 'center',
-})
+import { Pill } from './Pill'
 
 export function HeroExample() {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -94,11 +79,10 @@ export function HeroExample() {
               <Button
                 onPress={() => setActiveIndex(i)}
                 theme={i === activeIndex ? 'active' : null}
-                // chromeless={i !== activeIndex}
                 key={i}
                 borderRadius="$0"
               >
-                <Paragraph fontFamily="$mono">{example.name}</Paragraph>
+                {example.name}
               </Button>
             )
           })}
@@ -106,20 +90,18 @@ export function HeroExample() {
 
         <XStack jc="space-between">
           <YStack flex={1} maxWidth="49%" space="$4">
-            <Paragraph size="$3" minHeight={50} ta="center" px="$7" color="$color2">
+            <Paragraph size="$3" minHeight={50} ta="center" px="$7" theme="alt1">
               {activeExample.input.description}
             </Paragraph>
 
-            <Theme name="blue">
-              <Pill>Input</Pill>
-            </Theme>
+            <Pill theme="blue">Input</Pill>
             <YStack>
               {activeExample.input.examples.map((example, i) => (
                 <React.Fragment key={example.code}>
                   <Theme name="pink">
                     <HoverableStack>
                       <CodeDemo
-                        language={example.language}
+                        language={example.language as any}
                         mode="interactive"
                         line="3-20"
                         maxHeight={500}
@@ -129,11 +111,9 @@ export function HeroExample() {
                   </Theme>
                   {i < activeExample.input.examples.length - 1 && (
                     <YStack als="center" my="$-4" zIndex={1000}>
-                      <ThemeInverse>
-                        <IconStack mb={0}>
-                          <Plus size={20} color="var(--color)" />
-                        </IconStack>
-                      </ThemeInverse>
+                      <IconStack theme="blue" mb={0}>
+                        <Plus size={20} />
+                      </IconStack>
                     </YStack>
                   )}
                 </React.Fragment>
@@ -141,19 +121,15 @@ export function HeroExample() {
             </YStack>
           </YStack>
           <YStack mt={180} mx={-15} zIndex={1000}>
-            <ThemeInverse>
-              <IconStack mb={0}>
-                <FastForward size={20} color="var(--color)" />
-              </IconStack>
-            </ThemeInverse>
+            <IconStack theme="blue" mb={0}>
+              <FastForward size={20} />
+            </IconStack>
           </YStack>
           <YStack flex={1} maxWidth="49%" space="$4">
-            <Paragraph size="$3" minHeight={50} ta="center" px="$7" color="$color2">
+            <Paragraph size="$3" minHeight={50} ta="center" px="$7" theme="alt1">
               {activeExample.output.description}
             </Paragraph>
-            <Theme name="blue">
-              <Pill>Output</Pill>
-            </Theme>
+            <Pill theme="blue">Output</Pill>
             <YStack>
               {activeExample.output.outputs.map((example, i) => {
                 const hasMore = activeExample.output.outputs.length - 1 > i
@@ -172,11 +148,9 @@ export function HeroExample() {
                     </HoverableStack>
                     {hasMore && (
                       <YStack als="center" my="$-4" zIndex={1000}>
-                        <ThemeInverse>
-                          <IconStack mb={0}>
-                            <Plus size={20} color="var(--color)" />
-                          </IconStack>
-                        </ThemeInverse>
+                        <IconStack theme="blue" mb={0}>
+                          <Plus size={20} />
+                        </IconStack>
                       </YStack>
                     )}
                   </React.Fragment>
@@ -290,7 +264,7 @@ const App = (props) => (
       backgroundColor: 'green',
     })}
   >
-    <Paragraph color="$color3" size="$2">
+    <Paragraph size="$2">
       Lorem ipsum dolor.
     </Paragraph>
   </YStack>
@@ -336,7 +310,6 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
 ._paddingRight-g6vdx7{padding-right:var(--space-3);}
 ._paddingTop-1vq430g{padding-top:var(--space-3);}
 ._backgroundColor-1542mo4{background-color:rgba(0,128,0,1.00);}
-._color-scmqyp{color:var(--color3);}
 ._display-1471scf{display:inline;}
 ._fontFamily-xeweqh{font-family:var(--font-body);}
 ._fontSize-7uzi8p{font-size:var(--fontSize-2);}
@@ -416,7 +389,7 @@ const App = () => <div className={_cn} />`,
 
 const App = () => (
   <YStack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Text c="$color3" fs="$2">
+    <Text fs="$2">
       Lorem ipsum dolor.
     </Text>
   </YStack>
@@ -464,7 +437,6 @@ const App = () => (
 ._width-11mp6g5{width:550px;}
 @media screen and (min-width: 861px) { :root:root ._paddingLeft-_gtSm_1hxi05q{padding-left:var(--space-6);} }
 @media screen and (min-width: 861px) { :root:root ._paddingRight-_gtSm_poy3ov{padding-right:var(--space-6);} }
-._color-scmqyp{color:var(--color3);}
 ._display-1471scf{display:inline;}
 ._fontFamily-187pbxx{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
 ._fontSize-7uzi8p{font-size:var(--fontSize-2);}

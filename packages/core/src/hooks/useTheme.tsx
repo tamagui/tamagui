@@ -1,7 +1,11 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
-import { GET_DEFAULT_THEME, THEME_CLASSNAME_PREFIX } from '../constants/constants'
+import {
+  GET_DEFAULT_THEME,
+  THEME_CLASSNAME_PREFIX,
+  THEME_NAME_SEPARATOR,
+} from '../constants/constants'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { isVariable } from '../createVariable'
 import { areEqualSets } from '../helpers/areEqualSets'
@@ -9,6 +13,8 @@ import { ThemeContext } from '../ThemeContext'
 import { ThemeManager, ThemeManagerContext } from '../ThemeManager'
 import { ThemeName, ThemeObject } from '../types'
 import { useConstant } from './useConstant'
+
+const SEP = THEME_NAME_SEPARATOR
 
 type UseThemeState = {
   uuid: Object
@@ -117,8 +123,8 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
   const parent = useContext(ThemeManagerContext)
   const themes = useContext(ThemeContext)
   const [parentName, setParentName] = useState(parent.name || 'light')
-  const nextNameParent = shortName ? `${parentName}-${shortName}` : ''
-  const nextNameParentParent = shortName ? `${parent.parentName}-${shortName}` : ''
+  const nextNameParent = shortName ? `${parentName}${SEP}${shortName}` : ''
+  const nextNameParentParent = shortName ? `${parent.parentName}${SEP}${shortName}` : ''
   const nextParentName =
     nextNameParent in themes
       ? nextNameParent
@@ -158,12 +164,9 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
   }, [themes, name, parentName])
 
   let className: string | null = null
-  if (shortName || componentName) {
-    className = nextParentName ?? name ?? parentName
-    if (componentName) {
-      className += `-${componentName}`
-    }
-    className = `${THEME_CLASSNAME_PREFIX}${className}`
+  const classNamePost = shortName ?? componentName
+  if (classNamePost) {
+    className = `${THEME_CLASSNAME_PREFIX}${classNamePost}`
   }
 
   return {

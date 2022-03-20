@@ -10,8 +10,8 @@ export function ButtonDemo(props) {
         Large
       </Button>
       <InteractiveContainer>
-        <Button w="50%" size="$3" br={0} theme="active">
-          Active
+        <Button w="50%" size="$3" br={0} theme="alt1">
+          Alt1
         </Button>
         <Button w="50%" size="$3" br={0} theme="yellow">
           Yellow

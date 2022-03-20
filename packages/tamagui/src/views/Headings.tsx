@@ -34,13 +34,11 @@ export const H4 = styled(Title, {
 export const H5 = styled(Title, {
   tag: 'h5',
   size: '$5',
-  color: '$color2',
   fontWeight: '600',
 })
 
 export const H6 = styled(Title, {
   tag: 'h6',
   size: '$4',
-  color: '$color3',
   fontWeight: '600',
 })

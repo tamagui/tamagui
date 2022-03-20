@@ -43,9 +43,12 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
       return <CodeTypewriter className={classes} css={css} variant="" value={result} {...props} />
     }
     return (
-      // @ts-ignore
       <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
-        <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
+        <Code
+          className={classes}
+          // @ts-ignore
+          dangerouslySetInnerHTML={{ __html: result }}
+        />
       </Pre>
     )
   }
@@ -55,9 +58,11 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
  * recursively get all text nodes as an array for a given element
  */
 function getTextNodes(node) {
-  let childTextNodes = []
+  let childTextNodes: any[] = []
 
-  if (!node.hasChildNodes()) return
+  if (!node.hasChildNodes()) {
+    return childTextNodes
+  }
 
   const childNodes = node.childNodes
   for (let i = 0; i < childNodes.length; i++) {
@@ -98,7 +103,7 @@ function wrapEachCharacter(textNode, tag, count) {
 }
 
 function CodeTypewriter({ value, className, ...props }) {
-  const wrapperRef = React.useRef(null)
+  const wrapperRef = React.useRef<any>(null)
 
   React.useEffect(() => {
     const wrapper = wrapperRef.current
@@ -122,6 +127,7 @@ function CodeTypewriter({ value, className, ...props }) {
       ref={wrapperRef}
       style={{ opacity: 0 }}
       className={className}
+      // @ts-ignore
       dangerouslySetInnerHTML={{ __html: value }}
       {...props}
     />

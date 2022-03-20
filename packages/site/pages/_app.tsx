@@ -13,12 +13,19 @@ import Tamagui from '../tamagui.config'
 globalThis['React'] = React
 Error.stackTraceLimit = Infinity
 
-if (typeof document !== 'undefined' && process.env.NODE_ENV === 'development') {
+const isChrome =
+  typeof document !== 'undefined' &&
+  process.env.NODE_ENV === 'development' &&
+  /Chrome/.test(navigator.userAgent) &&
+  /Google Inc/.test(navigator.vendor)
+if (isChrome) {
   // log out CSS for debugging
   const blocks = Tamagui.getCSS().split('}\n')
   console.groupCollapsed('CSS')
   for (const block of blocks) {
-    console.groupCollapsed(block.slice(0, block.indexOf('{')))
+    const title = block.slice(0, block.indexOf('{')).split(', ').join('\n')
+    console.log(title)
+    console.groupCollapsed(title)
     console.log(block)
     console.groupEnd()
   }

@@ -18,7 +18,7 @@ export default function Blog({ frontmatters }) {
         <H1 size="$9" letterSpacing={-1} mb={-15}>
           Blog
         </H1>
-        <Paragraph tag="h2" color="$color2" fontWeight="300" size="$6">
+        <Paragraph theme="alt1" tag="h2" fontWeight="300" size="$6">
           What's new with Tamagui
         </Paragraph>
       </Container>
@@ -37,7 +37,7 @@ export default function Blog({ frontmatters }) {
                 <Paragraph color="$color3" size="$2">
                   &nbsp;by {authors[frontmatter.by].name}
                 </Paragraph>
-                {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>}
+                {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
               </XStack>
 
               <Paragraph color="$color3">{frontmatter.description}</Paragraph>
@@ -52,7 +52,7 @@ export default function Blog({ frontmatters }) {
 export function getStaticProps() {
   const frontmatters = getAllFrontmatter('blog')
   const sortedFrontmatters = frontmatters.sort(
-    (a, b) => Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
+    (a, b) => Number(new Date(b.publishedAt || '')) - Number(new Date(a.publishedAt || ''))
   )
   return { props: { frontmatters: sortedFrontmatters } }
 }

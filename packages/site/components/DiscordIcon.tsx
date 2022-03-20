@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const DiscordIcon = ({ plain, ...props }) => (
+export const DiscordIcon = ({ plain, ...props }: any) => (
   <svg
     width="30"
     height="31"

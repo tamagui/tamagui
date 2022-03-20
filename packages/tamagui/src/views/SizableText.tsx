@@ -28,7 +28,12 @@ export const sizableTextSizeVariant = (val = '$4', { tokens, props }) => {
 }
 
 export const SizableText = styled(Text, {
-  cursor: 'text',
+  fontFamily: '$body',
+  color: '$color',
+  // TODO can we make it work using its own variants with types? likely not...
+  // TODO if not then we need to add defaultVariants: {}
+  // @ts-ignore
+  size: '$4',
 
   variants: {
     size: {

@@ -1,4 +1,5 @@
 import { stylePropsTextOnly, validStyles } from '@tamagui/helpers'
+import { Text as TextView } from 'react-native'
 
 import { isWeb } from '../constants/platform'
 import { createComponent } from '../createComponent'
@@ -11,14 +12,13 @@ const ellipseStyle = {
   whiteSpace: 'nowrap',
 }
 
-export const Text = createComponent<TextProps>({
+export const Text = createComponent<TextProps, TextView>({
   isText: true,
   defaultProps: {
     display: isWeb ? 'inline' : 'flex',
     boxSizing: 'border-box',
     fontFamily: 'System',
     wordWrap: 'break-word',
-    cursor: 'text',
   },
   variants: {
     numberOfLines: {

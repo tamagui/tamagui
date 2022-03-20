@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, TextArea, XStack, YStack } from 'tamagui'
+import { Button, Input, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
 
 export function FormsDemo() {
   return (
@@ -12,7 +12,7 @@ export function FormsDemo() {
   )
 }
 
-function FormDemo(props: { size: number }) {
+function FormDemo(props: { size: SizeTokens }) {
   return (
     <XStack space="$1">
       <Input f={1} w="0%" size={props.size} placeholder={`Size ${props.size.slice(1)}...`} />

@@ -4,7 +4,6 @@ declare type RNWWebAccessibilityRole = 'adjustable' | 'article' | 'banner' | 'bl
 export interface RNWViewProps {
     dataSet?: any;
     target?: any;
-    ref?: any;
     rel?: any;
     download?: any;
     accessibilityRole?: RNWWebAccessibilityRole;

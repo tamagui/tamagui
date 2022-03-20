@@ -43,15 +43,31 @@ export function Header() {
         <LogoWords />
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav" ai="center" space="$6">
+      <XStack pointerEvents="auto" tag="nav" ai="center" space="$5">
         <NextLink href="/docs/intro/installation" passHref>
-          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
+          <Paragraph
+            p="$2"
+            mx="$-2"
+            cursor="pointer"
+            size="$3"
+            opacity={0.5}
+            hoverStyle={{ opacity: 1 }}
+            tag="a"
+          >
             Docs
           </Paragraph>
         </NextLink>
 
         <NextLink href="/blog" passHref>
-          <Paragraph size="$3" opacity={0.5} hoverStyle={{ opacity: 1 }} tag="a">
+          <Paragraph
+            p="$2"
+            mx="$-2"
+            cursor="pointer"
+            size="$3"
+            opacity={0.5}
+            hoverStyle={{ opacity: 1 }}
+            tag="a"
+          >
             Blog
           </Paragraph>
         </NextLink>

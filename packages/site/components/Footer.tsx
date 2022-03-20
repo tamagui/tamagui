@@ -37,18 +37,19 @@ export const Footer = () => {
             </Text>
             <TamaguiLogo showWords />
           </Link>
-          <Paragraph size="$2" color="$color3">
-            by{' '}
+          <Paragraph size="$2" theme="alt2">
+            by
+            {/* @ts-ignore */}
             <Link fontSize="inherit" href="https://twitter.com/natebirdman" target="_blank">
               nate
             </Link>
             .
           </Paragraph>
-          <Paragraph size="$2" color="$color3">
+          <Paragraph size="$2" theme="alt2">
             built with Tamagui
           </Paragraph>
-          <Paragraph size="$2" color="$color3">
-            site forked from{' '}
+          <Paragraph size="$2" theme="alt2">
+            site forked from {/* @ts-ignore */}
             <Link fontSize="inherit" href="https://github.com/modulz" target="_blank">
               modulz
             </Link>
@@ -76,18 +77,21 @@ export const Footer = () => {
           <H4>Community</H4>
           {/* <Link href="/blog">Blog</Link> */}
           <XStack space="$1" ai="center">
+            {/* @ts-ignore */}
             <Link ai="center" href="https://github.com/tamagui/tamagui" target="_blank">
               GitHub
             </Link>
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
+            {/* @ts-ignore */}
             <Link ai="center" href="https://twitter.com/tamagui_js" target="_blank">
               Twitter
             </Link>
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
+            {/* @ts-ignore */}
             <Link ai="center" href="https://discord.gg/4qh6tdcVDa" target="_blank">
               Discord
             </Link>

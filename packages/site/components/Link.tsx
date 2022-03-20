@@ -2,7 +2,12 @@ import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React from 'react'
 import { Paragraph, ParagraphProps } from 'tamagui'
 
-export type LinkProps = Omit<NextLinkProps, 'passHref' | 'as'> & ParagraphProps
+export type LinkProps = Omit<NextLinkProps, 'passHref' | 'as'> &
+  ParagraphProps & {
+    target?: any
+    rel?: any
+    title?: any
+  }
 
 export const Link = ({
   href = '',
@@ -18,7 +23,7 @@ export const Link = ({
       <Paragraph
         cursor="pointer"
         tag="a"
-        color="$color3"
+        theme="alt2"
         hoverStyle={{ color: '$color' }}
         {...props}
       />

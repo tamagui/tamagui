@@ -43,7 +43,7 @@ export function PropsTable({
             pb="$3"
             pr="$4"
           >
-            <Paragraph fontWeight="600" size="$4" color="$color2">
+            <Paragraph fontWeight="600" size="$4" theme="alt1">
               Prop
             </Paragraph>
           </YStack>
@@ -55,7 +55,7 @@ export function PropsTable({
             pb="$3"
             pr="$4"
           >
-            <Paragraph fontWeight="600" size="$4" color="$color2">
+            <Paragraph fontWeight="600" size="$4" theme="alt1">
               Type
             </Paragraph>
           </YStack>
@@ -67,7 +67,7 @@ export function PropsTable({
             pb="$3"
             pr="$4"
           >
-            <Paragraph fontWeight="600" size="$4" color="$color2">
+            <Paragraph fontWeight="600" size="$4" theme="alt1">
               Default
             </Paragraph>
           </YStack>
@@ -104,7 +104,7 @@ export function PropsTable({
                 <td colSpan={2}>
                   <Theme name="gray">
                     <YStack p="$2">
-                      <Paragraph size="$2" color="$color2">
+                      <Paragraph size="$2" theme="alt1">
                         {description}
                       </Paragraph>
                     </YStack>

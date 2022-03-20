@@ -5,6 +5,9 @@
     - a bit more complex it passes it to children, but maybe slow
   - either way compiler probably wants to also handle theme prop
 
+- need to release a default theme
+  - `@tamagui/tamacolo`
+
 - createTamagui({ defaultProps: { Button: {} } }) for any component
 
 - site demo with toggles for animations:

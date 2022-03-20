@@ -1,2 +1,2 @@
-export declare const InteractiveContainer: import("@tamagui/core").StaticComponent<import("@tamagui/core").StackProps, void, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const InteractiveContainer: import("@tamagui/core").StaticComponent<import("@tamagui/core").StackProps, void, any, import("@tamagui/core").StaticConfigParsed>;
 //# sourceMappingURL=InteractiveContainer.d.ts.map

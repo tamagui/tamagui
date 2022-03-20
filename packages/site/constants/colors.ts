@@ -15,7 +15,7 @@ export const colorNames = [
   'yellow',
 ] as const
 
-export const light = {
+export const allLightColors = {
   ...Colors.blue,
   ...Colors.gray,
   ...Colors.grayA,
@@ -29,7 +29,7 @@ export const light = {
   ...Colors.yellow,
 }
 
-export const dark = {
+export const allDarkColors = {
   ...Colors.blueDark,
   ...Colors.grayDark,
   ...Colors.grayDarkA,
@@ -45,13 +45,13 @@ export const dark = {
 
 export const darkColorsPostfixed = Object.fromEntries(
   // Dark
-  Object.entries(dark).map(([k, v]) => [`${k}Dark`, v])
+  Object.entries(allDarkColors).map(([k, v]) => [`${k}Dark`, v])
 ) as {
-  [key in `${keyof typeof dark}Dark`]: string
+  [key in `${keyof typeof allDarkColors}Dark`]: string
 }
 
-export type ColorNamesLight = keyof typeof light
-export type ColorNamesDark = keyof typeof dark
+export type ColorNamesLight = keyof typeof allLightColors
+export type ColorNamesDark = keyof typeof allDarkColors
 
-export const colorNamesLight = Object.keys(light) as ColorNamesLight[]
-export const colorNamesDark = Object.keys(dark) as ColorNamesDark[]
+export const colorNamesLight = Object.keys(allLightColors) as ColorNamesLight[]
+export const colorNamesDark = Object.keys(allDarkColors) as ColorNamesDark[]

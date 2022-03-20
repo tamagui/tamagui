@@ -82,7 +82,7 @@ export const components = {
           {...props}
         >
           {/* TODO could unwrapText to get proper coloring */}
-          <Paragraph py="$1" color="$color2" mt={-3} mb={-3} className="paragraph-parent" size="$3">
+          <Paragraph py="$1" theme="alt1" mt={-3} mb={-3} className="paragraph-parent" size="$3">
             {children}
           </Paragraph>
           <YStack ml="auto" mt={-2} w={30} h={30} ai="center" jc="center" bc="$bg4" br={100}>
@@ -95,24 +95,15 @@ export const components = {
 
   h1: (props) => <H1 mb="$2" {...props} />,
 
-  h2: ({ children, id, ...props }) => (
-    <H2
-      color="$color"
-      mt="$4"
-      size="$8"
-      id={id}
-      letterSpacing={-0.5}
-      id={id}
-      data-heading
-      {...props}
-    >
+  h2: ({ children, ...props }) => (
+    <H2 color="$color" mt="$4" size="$8" letterSpacing={-0.5} data-heading {...props}>
       {children}
     </H2>
   ),
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading mt="$5" id={id}>
-      <H3 fontFamily="$body" id={id} data-heading {...props}>
+      <H3 fontFamily="$body" data-heading {...props}>
         {children}
       </H3>
     </LinkHeading>
@@ -167,7 +158,8 @@ export const components = {
 
   img: ({ ...props }) => (
     <YStack my="$6">
-      <YStack tag="img" {...props} maxWidth="100%" verticalAlign="middle" />
+      {/* TODO make this a proper <Image /> component */}
+      <YStack tag="img" {...props} maxWidth="100%" />
     </YStack>
   ),
 
@@ -211,7 +203,7 @@ export const components = {
   Image: ({ children, size, ...props }) => (
     <YStack tag="figure" mx={0} mb="$3">
       <OffsetBox size={size}>
-        <Image maxWidth="100%" verticalAlign="middle" {...props} />
+        <Image maxWidth="100%" {...props} />
       </OffsetBox>
       <Text tag="figcaption" lineHeight={23} color="$color3" mt="$2">
         {children}
@@ -260,6 +252,7 @@ export const components = {
         {...props}
       >
         <Paragraph whiteSpace="revert" size="$4" color="$color" opacity={0.65}>
+          {/* @ts-ignore */}
           {React.Children.toArray(children).map((x) => (x?.props?.children ? x.props.children : x))}
         </Paragraph>
       </YStack>
@@ -319,12 +312,12 @@ export const components = {
       const removeClass = () =>
         targetIndex.forEach((i) => allHighlightWords[i].classList.remove('on'))
 
-      trigger.addEventListener('mouseenter', addClass)
-      trigger.addEventListener('mouseleave', removeClass)
+      trigger?.addEventListener('mouseenter', addClass)
+      trigger?.addEventListener('mouseleave', removeClass)
 
       return () => {
-        trigger.removeEventListener('mouseenter', addClass)
-        trigger.removeEventListener('mouseleave', removeClass)
+        trigger?.removeEventListener('mouseenter', addClass)
+        trigger?.removeEventListener('mouseleave', removeClass)
       }
     }, [])
 

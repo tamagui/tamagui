@@ -28,7 +28,7 @@ export function Demo(props: Omit<HoverablePopoverProps, 'children'>) {
   return (
     <HoverablePopover {...props}>
       <HoverablePopover.Arrow backgroundColor="$bg" />
-      <YStack backgroundColor="$background" p="$3" elevation={2} borderRadius="$4">
+      <YStack backgroundColor="$background" p="$3" elevation="$2" borderRadius="$4">
         <Paragraph fontWeight="600">HoverablePopover contents</Paragraph>
         <Paragraph>Lorem ipsum dolor sit amet.</Paragraph>
       </YStack>

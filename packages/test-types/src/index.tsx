@@ -180,7 +180,7 @@ export const InteractiveFrame = styled(Stack, {
 export const x = (props: StackProps) => {
   return (
     <>
-      <EmptyExtension asd="asds" />
+      <EmptyExtension elevation="" asd="asds" />
       <Stack asdsadasd="sadsd" />
       <YStack asdsadasd="sadsd" />
       <YStack $lg={{ notValid: 1, x: 10 }} />
