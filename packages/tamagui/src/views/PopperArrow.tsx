@@ -64,7 +64,8 @@ export const PopperArrow = React.memo(
           borderBottomWidth: borderWidth,
           borderLeftWidth: borderWidth,
         })}
-        {...rest}
+        // TODO we could fix this i think with some fancy stuff
+        {...(rest as any)}
       />
     )
   })

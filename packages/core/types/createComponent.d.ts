@@ -1,13 +1,13 @@
 /// <reference types="react" />
-import { ViewStyle } from 'react-native';
-import { StaticComponent, StaticConfig, StaticConfigParsed } from './types';
+import { View, ViewStyle } from 'react-native';
+import { SpaceTokens, StaticComponent, StaticConfig, StaticConfigParsed } from './types';
 export declare const mouseUps: Set<Function>;
 declare type DefaultProps = {};
-export declare function createComponent<ComponentPropTypes extends Object = DefaultProps>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<ComponentPropTypes, void, StaticConfigParsed, any>;
+export declare function createComponent<ComponentPropTypes extends Object = DefaultProps, Ref = View>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<ComponentPropTypes, void, Ref, StaticConfigParsed>;
 export declare const Spacer: StaticComponent<{
-    size?: number | `$${string}` | `$${number}` | undefined;
+    size?: number | SpaceTokens | undefined;
     flex?: number | boolean | undefined;
-}, void, StaticConfigParsed, any>;
+}, void, View, StaticConfigParsed>;
 export declare function spacedChildren({ isZStack, children, space, flexDirection, }: {
     isZStack?: boolean;
     children: any;

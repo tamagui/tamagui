@@ -1,7 +1,7 @@
 // TODO split this into own package @tamagui/types to share with animations packages
 
 import CSS from 'csstype'
-import React, { RefObject } from 'react'
+import React from 'react'
 import {
   GestureResponderEvent,
   TextProps as ReactTextProps,
@@ -23,13 +23,15 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 export type VariableVal = number | string | Variable
 export type VariableColorVal = string | Variable
 
+type GenericKey = string | number | symbol
+
 export interface CreateTokens<Val extends VariableVal = VariableVal> {
-  font: { [key: string]: GenericFont }
-  color: { [key: string]: Val }
-  space: { [key: string]: Val }
-  size: { [key: string]: Val }
-  radius: { [key: string]: Val }
-  zIndex: { [key: string]: Val }
+  font: { [key: GenericKey]: GenericFont }
+  color: { [key: GenericKey]: Val }
+  space: { [key: GenericKey]: Val }
+  size: { [key: GenericKey]: Val }
+  radius: { [key: GenericKey]: Val }
+  zIndex: { [key: GenericKey]: Val }
 }
 
 export type TamaguiBaseTheme = {
@@ -122,10 +124,11 @@ export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 export type ThemeName = GetAltThemeNames<keyof Themes>
+// export type ThemeNameWithSubThemes = GetSubThemes<ThemeName>
 export type ThemeKeys = keyof ThemeObject
 export type ThemeKeyVariables = `$${ThemeKeys}`
 
-type GetAltThemeNames<S> = (S extends `${string}-${infer Alt}` ? Alt : S) | S
+type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
 
 export type AnimationHook = (
   props: any,
@@ -174,7 +177,7 @@ export type GenericFont = {
   size: { [key: string | number]: number | Variable }
   lineHeight: { [key: string | number]: number | Variable }
   letterSpacing: { [key: string | number]: number | Variable }
-  weight: { [key: string | number]: string | Variable }
+  weight: { [key: string | number]: number | string | Variable }
   family: string | Variable
 }
 
@@ -185,8 +188,9 @@ export type MediaQueryState = {
   [key in string]: boolean
 }
 export type MediaQueryKey = keyof Media
+export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaProps<A> = {
-  [key in `$${MediaQueryKey}`]?: A
+  [key in MediaPropKeys]?: A
 }
 export type MediaQueries = {
   [key in MediaQueryKey]: MediaQueryObject
@@ -220,8 +224,10 @@ export type TransformStyleProps = {
 type ComponentPropsBase = {
   disabled?: boolean
   className?: string
+  id?: string
   tag?: string
   animated?: boolean
+  theme?: ThemeName | null
   onHoverIn?: (e: MouseEvent) => any
   onHoverOut?: (e: MouseEvent) => any
   onPress?: (e: GestureResponderEvent) => any
@@ -238,48 +244,73 @@ type ComponentPropsBase = {
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =
   keyof Tokens['font'][keyof Tokens['font']][A]
 
-export type SizeTokens = `$${keyof Tokens['size']}`
-export type FontTokens = `$${keyof Tokens['font']}`
+type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
+
+export type SizeTokens = GetTokenString<keyof Tokens['size']>
+export type FontTokens = GetTokenString<keyof Tokens['font']>
 export type FontSizeTokens = `$${GetTokenFontKeysFor<'size'>}`
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}`
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}`
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}`
-export type SpaceTokens = `$${keyof Tokens['space']}`
-export type ColorTokens = `$${keyof Tokens['color']}`
-export type ZIndexTokens = `$${keyof Tokens['zIndex']}`
+export type SpaceTokens = GetTokenString<keyof Tokens['space']>
+export type ColorTokens = GetTokenString<keyof Tokens['color']>
+export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']>
 
 //
 // adds theme short values to relevant props
 //
 type ThemeValue<A> = Omit<A, string> | UnionableString | Variable
+
+export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme'
+  ? ThemeKeyVariables
+  : K extends 'size'
+  ? SizeTokens
+  : K extends 'font'
+  ? FontTokens
+  : K extends 'fontSize'
+  ? FontSizeTokens
+  : K extends 'space'
+  ? SpaceTokens
+  : K extends 'color'
+  ? ColorTokens
+  : K extends 'zIndex'
+  ? ZIndexTokens
+  : K extends 'lineHeight'
+  ? FontLineHeightTokens
+  : K extends 'fontWeight'
+  ? FontWeightTokens
+  : K extends 'letterSpacing'
+  ? FontLetterSpacingTokens
+  : {}
+
+export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
+  ? ThemeKeyVariables
+  : K extends SizeKeys
+  ? SizeTokens
+  : K extends FontKeys
+  ? FontTokens
+  : K extends FontSizeKeys
+  ? FontSizeTokens
+  : K extends SpaceKeys
+  ? SpaceTokens
+  : K extends ColorKeys
+  ? ColorTokens
+  : K extends ZIndexKeys
+  ? ZIndexTokens
+  : K extends LineHeightKeys
+  ? FontLineHeightTokens
+  : K extends FontWeightKeys
+  ? FontWeightTokens
+  : K extends FontLetterSpacingKeys
+  ? FontLetterSpacingTokens
+  : {}
+
 export type WithThemeValues<T extends object> = {
-  [K in keyof T]:
-    | ThemeValue<T[K]>
-    | (K extends ColorableKeys
-        ? ThemeKeyVariables
-        : K extends SizeKeys
-        ? SizeTokens
-        : K extends FontKeys
-        ? FontTokens
-        : K extends FontSizeKeys
-        ? FontSizeTokens
-        : K extends SpaceKeys
-        ? SpaceTokens
-        : K extends ColorKeys
-        ? ColorTokens
-        : K extends ZIndexKeys
-        ? ZIndexTokens
-        : K extends LineHeightKeys
-        ? FontLineHeightTokens
-        : K extends FontWeightKeys
-        ? FontWeightTokens
-        : K extends FontLetterSpacingKeys
-        ? FontLetterSpacingTokens
-        : {})
+  [K in keyof T]: ThemeValue<T[K]> | ThemeValueGet<K>
 }
 
 // adds shorthand props
-type WithShorthands<StyleProps> = {
+export type WithShorthands<StyleProps> = {
   [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
     ? StyleProps[Shorthands[Key]] | null
     : undefined
@@ -291,6 +322,8 @@ export type PseudoProps<A> = {
   pressStyle?: A | null
   focusStyle?: A | null
 }
+
+export type PsuedoPropKeys = keyof PseudoProps<any>
 
 //
 // add both theme and shorthands
@@ -337,7 +370,7 @@ export type StackProps = Omit<ViewProps, 'display' | 'children'> &
   RNWViewProps &
   StackStyleProps &
   ComponentPropsBase & {
-    ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)
+    // ref?: RefObject<View | HTMLElement> | ((node: View | HTMLElement) => any)
     children?: any | any[]
   }
 
@@ -370,12 +403,14 @@ export type TextProps = ReactTextProps &
 export type StaticComponent<
   Props = any,
   VariantProps = any,
-  StaticConfParsed = StaticConfigParsed,
-  ParentVariantProps = any
-> = React.FunctionComponent<Props> & {
-  staticConfig: StaticConfParsed
-  variantProps?: VariantProps
+  Ref = any,
+  StaticConfParsed extends StaticConfigParsed = StaticConfigParsed
+> = React.ForwardRefExoticComponent<React.PropsWithoutRef<Props> & React.RefAttributes<Ref>> &
+  StaticComponentObject<StaticConfParsed, VariantProps>
 
+type StaticComponentObject<StaticConfig extends StaticConfigParsed, VariantProps extends any> = {
+  staticConfig: StaticConfig
+  variantProps?: VariantProps
   /*
    * Only needed for more complex components
    * If you create a styled frame component this is a HoC to extract
@@ -407,7 +442,7 @@ export type StaticConfigParsed = StaticConfig & {
 }
 
 export type StaticConfig = {
-  Component?: StaticComponent
+  Component?: React.FunctionComponent<any> & StaticComponentObject<any, any>
 
   variants?: {
     [key: string]: {
@@ -420,7 +455,7 @@ export type StaticConfig = {
   }
 
   /*
-   * Determines ultimate output tag (Text vs View)
+   * Used for applying sub theme style
    */
   componentName?: string
 
@@ -481,16 +516,6 @@ export type StaticConfig = {
   isReactNativeWeb?: boolean
 }
 
-type ColorableKeys =
-  | 'color'
-  | 'backgroundColor'
-  | 'borderColor'
-  | 'borderTopColor'
-  | 'borderBottomColor'
-  | 'borderLeftColor'
-  | 'borderRightColor'
-  | 'shadowColor'
-
 type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight'
 
 type FontKeys = 'fontFamily'
@@ -513,8 +538,10 @@ type ColorKeys =
   | 'borderTopColor'
   | 'borderLeftColor'
   | 'borderRightColor'
+  | 'shadowColor'
 
 type SpaceKeys =
+  | 'space'
   | 'padding'
   | 'paddingHorizontal'
   | 'paddingVertical'

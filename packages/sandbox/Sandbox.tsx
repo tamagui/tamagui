@@ -46,13 +46,12 @@ export const Sandbox = () => {
 
   const players = (
     <>
-      <YStack>
+      <YStack bc="$background">
         <XStack>
           <MediaPlayer />
           <MediaPlayer alt={1} />
           <MediaPlayer alt={2} />
           <MediaPlayer alt={3} />
-          <MediaPlayer alt={4} />
         </XStack>
         {colorNames.map((name) => (
           <Theme key={name} name={name}>
@@ -61,7 +60,6 @@ export const Sandbox = () => {
               <MediaPlayer alt={1} />
               <MediaPlayer alt={2} />
               <MediaPlayer alt={3} />
-              <MediaPlayer alt={4} />
             </XStack>
           </Theme>
         ))}
@@ -81,7 +79,7 @@ export const Sandbox = () => {
 
 export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
   const themeName = alt ? (`alt${alt}` as any) : null
-  const mainButtonTheme = `alt${alt}` as any
+  const mainButtonTheme = `alt${alt + 2}` as any
   const barTheme = `alt${alt + 1}` as any
 
   // alternatively have
@@ -90,7 +88,7 @@ export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
   return (
     <YStack bc="$background">
       <Theme name={themeName}>
-        <YStack py="$6" px="$4">
+        <YStack pb="$6" pt="$4" px="$4">
           <Scale
             // could be `container` as well
             // is container="viewport" default?

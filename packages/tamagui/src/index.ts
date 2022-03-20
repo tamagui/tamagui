@@ -47,7 +47,6 @@ export {
   // components
   Spacer,
   Stack,
-  StackProps,
   Text,
   Theme,
   ThemeInverse,
@@ -78,7 +77,6 @@ export {
   getTamagui,
   getTokens,
   getHasConfigured,
-  getThemeParentClassName,
   spacedChildren,
   themeable,
   getStylesAtomic,

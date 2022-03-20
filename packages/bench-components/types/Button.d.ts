@@ -1,2 +1,2 @@
-export declare const Button: import("@tamagui/core").StaticComponent<import("@tamagui/core").StackProps, void, import("@tamagui/core").StaticConfigParsed, any>;
+export declare const Button: import("@tamagui/core").StaticComponent<import("@tamagui/core").StackProps, void, any, import("@tamagui/core").StaticConfigParsed>;
 //# sourceMappingURL=Button.d.ts.map

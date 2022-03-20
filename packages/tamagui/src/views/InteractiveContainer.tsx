@@ -7,6 +7,6 @@ export const InteractiveContainer = styled(Stack, {
   overflow: 'hidden',
   borderRadius: '$2',
   hoverStyle: {
-    borderColor: '$borderColor2',
+    borderColor: '$borderColorHover',
   },
 })

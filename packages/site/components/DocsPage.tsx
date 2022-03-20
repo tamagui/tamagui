@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, StackProps, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { ColorToggle, useTint } from './ColorToggle'
@@ -131,7 +131,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     ai="flex-start"
                   >
                     <YStack mb="$2">
-                      <Paragraph color="$color2" size="$6">
+                      <Paragraph theme="alt1" size="$6">
                         Previous
                       </Paragraph>
                     </YStack>
@@ -158,7 +158,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     ai="flex-end"
                   >
                     <YStack mb="$2">
-                      <Paragraph color="$color2" size="$6">
+                      <Paragraph theme="alt1" size="$6">
                         Next
                       </Paragraph>
                     </YStack>
@@ -175,6 +175,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         <Container my="$3">
           <Link
             href={editUrl}
+            // @ts-ignore
             title="Edit this page on GitHub."
             rel="noopener noreferrer"
             target="_blank"
@@ -229,7 +230,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   display: 'none',
                 }}
               >
-                <Button onPress={() => setIsOpen(!isOpen)} theme={isOpen ? 'active' : undefined}>
+                <Button onPress={() => setIsOpen(!isOpen)} theme={isOpen ? 'alt1' : undefined}>
                   <Menu size={12} color="var(--color)" />
                 </Button>
               </YStack>

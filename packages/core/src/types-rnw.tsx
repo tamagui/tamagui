@@ -85,7 +85,6 @@ export interface RNWViewProps {
 
   // TODO get proper types:
   target?: any
-  ref?: any
   rel?: any
   download?: any
 

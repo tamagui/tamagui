@@ -65,7 +65,8 @@ export const Tooltip = ({
               backgroundColor="$background"
               maxWidth={400}
               size={size}
-              {...tooltipFrameProps}
+              // TODO we could fix this i think with some fancy stuff
+              {...(tooltipFrameProps as any)}
             >
               <Paragraph textAlign="center" color="$color" size={size}>
                 {contents}

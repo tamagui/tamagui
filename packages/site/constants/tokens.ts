@@ -1,6 +1,6 @@
 import { createFont, createTokens } from 'tamagui'
 
-import { darkColorsPostfixed, light } from './colors'
+import { allLightColors, darkColorsPostfixed } from './colors'
 
 const size = {
   0: 2,
@@ -14,6 +14,8 @@ const size = {
   8: 50,
   9: 65,
   10: 75,
+  11: 85,
+  12: 100,
   true: 10,
 }
 
@@ -122,7 +124,7 @@ export const tokens = createTokens({
     5: 500,
   },
   color: {
-    ...light,
+    ...allLightColors,
     ...darkColorsPostfixed,
   },
   radius: {

@@ -11,12 +11,13 @@ export function RegionTable(props: StackProps) {
       bc="$bg2"
       tag="table"
       display="table"
+      // @ts-ignore
       role="region"
       tabIndex={0}
       position="relative"
       borderRadius="$2"
       borderWidth={1}
-      borderColor="$borderColor2"
+      borderColor="$borderColorHover"
       overflow="hidden"
       p="$2"
       mb="$4"

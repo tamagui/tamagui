@@ -13,6 +13,7 @@ const Select = (props) => <select {...props} />
 export function Highlights({ features }) {
   const router = useRouter()
   const frontmatter = React.useContext(FrontmatterContext)
+  // @ts-ignore
   const publishedName = frontmatter.publishedName || frontmatter.name || ''
 
   return (
@@ -55,9 +56,12 @@ export function Highlights({ features }) {
 
         <YStack py="$1" ai="center">
           <Select
+            // @ts-ignore
             value={frontmatter.version}
+            // @ts-ignore
             onChange={(e) => router.push(`./${frontmatter.name}/${e.target.value}`)}
           >
+            {/* @ts-ignore */}
             {(frontmatter.versions || []).map((v, i) => {
               return (
                 <option key={v} value={v}>
@@ -69,20 +73,6 @@ export function Highlights({ features }) {
           </Select>
         </YStack>
 
-        {/* {frontmatter.gzip && (
-          <Paragraph size="$2" color="$color3">
-            Size:{' '}
-            <Link
-              variant="subtle"
-              href={`https://bundlephobia.com/package/@tamagui/react-${frontmatter.name}@${frontmatter.version}`}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {frontmatter.gzip}
-            </Link>
-          </Paragraph>
-        )} */}
-
         <Separator />
 
         <YStack py="$2" space="$1">
@@ -90,6 +80,7 @@ export function Highlights({ features }) {
             <Link
               // /${publishedName}/src
               href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views`}
+              // @ts-ignore
               target="_blank"
             >
               <XStack ai="center" space="$1">
@@ -97,7 +88,7 @@ export function Highlights({ features }) {
                   View source
                 </Paragraph>
                 <YStack opacity={0.5} ml="$1">
-                  <ExternalLink size={12} color="var(--color2)" />
+                  <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
             </Link>
@@ -106,6 +97,7 @@ export function Highlights({ features }) {
             <Link
               // @tamagui/react-${publishedName}
               href={`https://www.npmjs.com/package/tamagui`}
+              // @ts-ignore
               target="_blank"
             >
               <XStack ai="center" space="$1">
@@ -113,7 +105,7 @@ export function Highlights({ features }) {
                   View on npm
                 </Paragraph>
                 <YStack opacity={0.5} ml="$1">
-                  <ExternalLink size={12} color="var(--color2)" />
+                  <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
             </Link>
@@ -125,21 +117,23 @@ export function Highlights({ features }) {
                   Report an issue
                 </Paragraph>
                 <YStack opacity={0.5} ml="$1">
-                  <ExternalLink size={12} color="var(--color2)" />
+                  <ExternalLink size={12} color="var(--colorHover)" />
                 </YStack>
               </XStack>
             </Link>
           </YStack>
 
+          {/* @ts-ignore */}
           {frontmatter.aria && (
             <YStack mb="$2">
-              <Link variant="blue" href={frontmatter.aria} target="_blank">
+              {/* @ts-ignore */}
+              <Link theme="blue" href={frontmatter.aria} target="_blank">
                 <XStack position="relative">
-                  <Paragraph size="$2" color="$color2">
+                  <Paragraph size="$2" theme="alt1">
                     ARIA design pattern
                   </Paragraph>
                   <YStack ml="$1">
-                    <Text color="$color3">
+                    <Text theme="alt2">
                       <ExternalLink size={12} color="var(--color)" />
                     </Text>
                   </YStack>

@@ -1,7 +1,7 @@
 import { getStyleRules } from '@tamagui/helpers'
 
 import { configListeners, getHasConfigured, setConfig } from './conf'
-import { THEME_CLASSNAME_PREFIX } from './constants/constants'
+import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
@@ -109,8 +109,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       cssRules.push(`:root {${sep}${[...tokenRules].join(`;${sep}`)}${sep}}`)
     }
 
-    const baseThemeNames = [...new Set(Object.keys(config.themes).filter((x) => !x.includes('-')))]
-    console.log('baseThemeNames', baseThemeNames)
+    const baseThemeNames = [
+      ...new Set(Object.keys(config.themes).filter((x) => !x.includes(THEME_NAME_SEPARATOR))),
+    ]
 
     // themes
     for (const themeName in config.themes) {
@@ -142,31 +143,45 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         //   '.theme--light-blue-alt1 .theme--button',
         //   '.theme--light-blue-alt1-button',
         // ]
-        const names = themeName.split('-')
-        console.log('names', names)
         const selectors = new Set<string>()
-        const max = names.length
-        for (let i = 0; i < max; i++) {
-          const numJoined = max - i
-          const [joined, separate] = [names.slice(0, numJoined), names.slice(numJoined)]
-          const curSelectors = [
-            joined.length ? `.${THEME_CLASSNAME_PREFIX}${joined.join('-')}` : null,
-            separate.map((s) => `.${THEME_CLASSNAME_PREFIX}${s}`).join(' '),
+        const themeNames = themeName.split(THEME_NAME_SEPARATOR)
+        const [name, ...subThemeNames] = themeNames
+
+        let selectorCombos: string[][] = []
+
+        if (!subThemeNames.length) {
+          selectorCombos = [[themeName]]
+        } else {
+          // gather all combinations of joined/separate names
+          selectorCombos = [
+            // all separate
+            [name, ...subThemeNames],
+            // all joined
+            [[name, ...subThemeNames].join('_')],
           ]
-          const selector = curSelectors.filter(Boolean).flat().join(' ')
+          // get all middle combos
+          for (let point = 1; point < themeNames.length; point++) {
+            const [before, after] = [themeNames.slice(0, point), themeNames.slice(point)]
+            if (before.length > 1) {
+              selectorCombos.push([before.join('_'), ...after])
+            }
+            if (after.length > 1) {
+              selectorCombos.push([...before, after.join('_')])
+            }
+          }
+        }
+
+        for (const combo of selectorCombos) {
+          const selector = combo.map((x) => `.${THEME_CLASSNAME_PREFIX}${x}`).join(' ')
           selectors.add(selector)
           // add specificity selector hacks
           for (const baseName of baseThemeNames) {
-            if (baseName === names[0]) {
-              continue
-            }
+            if (baseName === name) continue
             selectors.add(`.${THEME_CLASSNAME_PREFIX}${baseName} ${selector}`)
           }
         }
+
         const selectorsStr = [...selectors].join(', ')
-        if (names[0] === 'dark' && names[1] === 'blue') {
-          console.log('>>', selectorsStr)
-        }
         const cssRule = `${selectorsStr} {\n${vars}\n}`
         cssRules.push(cssRule)
       }

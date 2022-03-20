@@ -25,6 +25,7 @@ export const YStack = styled(Stack, {
   },
 })
 
+export type StackProps = GetProps<typeof YStack>
 export type YStackProps = GetProps<typeof YStack>
 export type XStackProps = GetProps<typeof YStack>
 export type ZStackProps = GetProps<typeof ZStack>

@@ -17,7 +17,9 @@
     "build:force": "yarn build:js --force && yarn build:types --force",
     "build:js": "SKIP_TYPES=1 turbo run build",
     "build:types": "SKIP_JS=1 turbo run build",
-    "watch": "yarn build:js && SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 100 watch",
+    "watch": "npm-run-all --parallel watch:ts watch:build",
+    "watch:ts": "yarn tsc -b -w tsconfig.build.json",
+    "watch:build": "SKIP_TYPES_INITIAL=1 ultra -r --no-pretty --concurrency 100 watch",
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "turbo run test",
@@ -61,10 +63,12 @@
     "import-sort-style-module": "^6.0.0",
     "lerna": "^4.0.0",
     "node-gyp": "^8.4.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
     "prettier-plugin-import-sort": "^0.0.7",
     "pretty-quick": "^3.1.2",
     "turbo": "^1.1.1",
+    "typescript": "^4.5.2",
     "ultra-runner": "^3.10.5"
   }
 }

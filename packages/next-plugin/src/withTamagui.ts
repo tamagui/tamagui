@@ -47,17 +47,23 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           })
         )
 
-        if (Array.isArray(tamaguiOptions.excludeReactNativeWebExports)) {
-          const regex = `\/react-native-web\/.*${tamaguiOptions.excludeReactNativeWebExports.join(
-            '|'
-          )}.*\/`
-          console.log(prefix, 'Excluding react-native-web deps:', regex)
-          webpackConfig.plugins.push(
-            new webpack.NormalModuleReplacementPlugin(
-              new RegExp(regex),
-              require.resolve('@tamagui/proxy-worm')
+        const excludeExports = tamaguiOptions.excludeReactNativeWebExports
+        if (Array.isArray(excludeExports)) {
+          try {
+            const regexStr = `\/react-native-web\/.*(${excludeExports.join('|')}).*\/`
+            const regex = new RegExp(regexStr)
+            console.log(prefix, 'Excluding react-native-web deps:', regexStr)
+            webpackConfig.plugins.push(
+              new webpack.NormalModuleReplacementPlugin(
+                regex,
+                require.resolve('@tamagui/proxy-worm')
+              )
             )
-          )
+          } catch (err) {
+            console.warn(
+              `Invalid names provided to excludeReactNativeWebExports: ${excludeExports.join(', ')}`
+            )
+          }
         }
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {

@@ -26,21 +26,22 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
           backgroundColor: '$bgTransparent',
           opacity: 1,
         }}
-        userSelect="none"
         minHeight="$6"
         pointerEvents={pending ? 'none' : 'auto'}
         {...(active && {
-          backgroundColor: '$backgroundPress',
+          theme: 'alt3',
+          backgroundColor: '$background',
           hoverStyle: {
-            backgroundColor: '$backgroundPress',
+            backgroundColor: '$background',
           },
         })}
       >
         <Paragraph
           size="$3"
           color="$color"
+          userSelect="none"
           {...(active && {
-            color: '$color3',
+            theme: 'alt2',
           })}
         >
           {children}
@@ -54,14 +55,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         {!!pending ? (
           <>
             <XStack flex={1} />
-            <Paragraph
-              size="$1"
-              px="$2"
-              py="$1"
-              bc="$backgroundHover"
-              borderRadius="$3"
-              color="$color3"
-            >
+            <Paragraph theme="alt2" size="$1" px="$2" py="$1" bc="$background" borderRadius="$3">
               WIP
             </Paragraph>
           </>

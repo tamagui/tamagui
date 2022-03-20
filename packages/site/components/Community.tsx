@@ -10,7 +10,7 @@ export function Community() {
   return (
     <ContainerLarge py="$4" space="$3">
       <H2 ta="center">Community</H2>
-      <H4 fontWeight="400" color="$color3" ta="center">
+      <H4 theme="alt2" fontWeight="400" ta="center">
         Join the community on these platforms
       </H4>
 
@@ -51,8 +51,12 @@ export function Community() {
                 </defs>
               </svg>
             </YStack>
-            <H4 fontFamily="$body">Twitter</H4>
-            <Paragraph color="$color3">For news, announcements, and general updates.</Paragraph>
+            <H4 cursor="pointer" fontFamily="$body">
+              Twitter
+            </H4>
+            <Paragraph cursor="pointer" theme="alt2">
+              For news, announcements, and general updates.
+            </Paragraph>
           </Card>
           <Card
             width="33.33%"
@@ -67,8 +71,12 @@ export function Community() {
             <YStack>
               <DiscordIcon />
             </YStack>
-            <H4 fontFamily="$body">Discord</H4>
-            <Paragraph color="$color3">Get involved and get questions answered.</Paragraph>
+            <H4 cursor="pointer" fontFamily="$body">
+              Discord
+            </H4>
+            <Paragraph cursor="pointer" theme="alt2">
+              Get involved and get questions answered.
+            </Paragraph>
           </Card>
           <Card
             width="33.33%"
@@ -83,8 +91,10 @@ export function Community() {
             <YStack>
               <GithubIcon />
             </YStack>
-            <H4 fontFamily="$body">GitHub</H4>
-            <Paragraph color="$color3">
+            <H4 cursor="pointer" fontFamily="$body">
+              GitHub
+            </H4>
+            <Paragraph cursor="pointer" theme="alt2">
               Bring up issues, request features, and contribute.
             </Paragraph>
           </Card>

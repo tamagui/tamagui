@@ -70,7 +70,7 @@ function createShallowUpdate(setter: React.Dispatch<React.SetStateAction<Compone
   }
 }
 
-export function createComponent<ComponentPropTypes extends Object = DefaultProps>(
+export function createComponent<ComponentPropTypes extends Object = DefaultProps, Ref = View>(
   configIn: Partial<StaticConfig> | StaticConfigParsed
 ) {
   let staticConfig: StaticConfigParsed
@@ -94,7 +94,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
   // see onConfiguredOnce below which attaches a name then to this component
 
-  const component = forwardRef<View, ComponentPropTypes>((props: any, forwardedRef) => {
+  const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     const forceUpdate = useForceUpdate()
     const features = useFeatures(props, { forceUpdate })
     const theme = useTheme(props.theme, componentName)
@@ -156,6 +156,9 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
       accessible,
       accessibilityRole,
+
+      // ignore from here on out
+      theme: _ignoreTheme,
 
       // TODO feature load layout hook
       onLayout,
@@ -296,6 +299,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(viewProps)
       const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+      // @ts-ignore
       viewProps.ref = setRef
       if (props.href != null && hrefAttrs != null) {
         const { download, rel, target } = hrefAttrs
@@ -311,6 +315,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     } else {
       if (forwardedRef) {
+        // @ts-ignore
         viewProps.ref = forwardedRef
       }
     }
@@ -556,7 +561,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     ...staticConfig,
   }
 
-  const res = component as any as StaticComponent<ComponentPropTypes, void>
+  const res = component as any as StaticComponent<ComponentPropTypes, void, Ref>
 
   // res.extractable HoC
   res['extractable'] = (Component: any, conf?: StaticConfig) => {
@@ -573,8 +578,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
   return res
 }
-
-let hasWarnedOnce = false
 
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps

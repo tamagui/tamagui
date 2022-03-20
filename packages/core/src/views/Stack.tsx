@@ -1,9 +1,10 @@
+import { View } from 'react-native'
+
 import { stackDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
-import { styled } from '../styled'
 import { StackProps } from '../types'
 
-export const Stack = createComponent<StackProps>({
+export const Stack = createComponent<StackProps, View>({
   defaultProps: {
     ...stackDefaultStyles,
     flexDirection: 'column',

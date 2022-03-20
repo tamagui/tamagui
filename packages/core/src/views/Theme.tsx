@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { isWeb } from '../constants/platform'
-import { getThemeParentClassName } from '../helpers/getThemeParentClassName'
 import { useChangeThemeEffect } from '../static'
 import { ThemeManagerContext } from '../ThemeManager'
 import { ThemeName } from '../types'
@@ -45,7 +44,9 @@ export const Theme = (props: ThemeProps) => {
     // console.log('??', className, 'is wrong light-blue when should be dark-blue')
     return (
       <div
-        className={getThemeParentClassName(props.name)}
+        {...(!!className && {
+          className,
+        })}
         style={{
           display: 'contents',
           // in order to provide currentColor, set color by default
