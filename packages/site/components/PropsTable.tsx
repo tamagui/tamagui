@@ -86,11 +86,11 @@ export function PropsTable({
                 </XStack>
               </TD>
               <TD>
-                <Code bc="$bg3">{type}</Code>
+                <Code bc="$backgroundPress">{type}</Code>
               </TD>
               <TD>
                 {Boolean(defaultValue) ? (
-                  <Code bc="$bg3">{defaultValue}</Code>
+                  <Code bc="$backgroundPress">{defaultValue}</Code>
                 ) : (
                   <YStack>
                     {/*  as={AccessibleIcon} label="No default value" */}

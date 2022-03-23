@@ -51,7 +51,7 @@ export function QuickNav() {
       // https://github.com/theKashey/react-remove-scroll#positionfixed-elements
       className={RemoveScroll.classNames.zeroRight}
       display="none"
-      $lg={{
+      $gtLg={{
         display: 'flex',
         width: 230,
         flexShrink: 0,

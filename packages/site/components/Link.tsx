@@ -24,7 +24,7 @@ export const Link = ({
         cursor="pointer"
         tag="a"
         theme="alt2"
-        hoverStyle={{ color: '$color' }}
+        hoverStyle={{ color: '$colorHover' }}
         {...props}
       />
     </NextLink>

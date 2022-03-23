@@ -33,27 +33,38 @@ function createThemeWithAlts<Name extends string, GetTheme extends AltThemeGette
 
 // isLight could be auto-calculated with a library
 const themeCreator =
-  (backgrounds: (string | Variable)[], isLight = true, isBase = false) =>
+  ({
+    backgrounds,
+    isLight = true,
+    isBase = false,
+    shiftColors = 0,
+  }: {
+    backgrounds: (string | Variable)[]
+    isLight?: boolean
+    isBase?: boolean
+    shiftColors?: number
+  }) =>
   (str = 1) => {
     const colors = [...backgrounds].reverse()
     const darkColors = isLight ? colors : backgrounds
     const lighterDir = isLight ? -1 : 1
     const darkerDir = -lighterDir
+    const get = (arr: any[], index: number) => arr[Math.max(0, Math.min(index, arr.length - 1))]
     return {
-      background: backgrounds[str],
-      backgroundHover: backgrounds[str + lighterDir * 1] ?? backgrounds[str + darkerDir * 1],
-      backgroundPress: backgrounds[str + darkerDir * 1],
-      backgroundFocus: backgrounds[str + darkerDir * 2],
+      background: get(backgrounds, str),
+      backgroundHover: backgrounds[str + lighterDir * 1] ?? get(backgrounds, str + darkerDir * 1),
+      backgroundPress: get(backgrounds, str + darkerDir * 1),
+      backgroundFocus: get(backgrounds, str + darkerDir * 2),
       backgroundTransparent: tokens.color.grayA1,
-      borderColor: isLight ? colors[8 - str] : backgrounds[0 + str],
+      borderColor: isLight ? colors[8 - str] : backgrounds[2 + str],
       borderColorHover: isLight ? colors[7 - str] : backgrounds[1 + str],
-      borderColorPress: isLight ? colors[6 - str] : backgrounds[2 + str],
-      borderColorFocus: isLight ? colors[6 - str] : backgrounds[3 + str],
-      color: colors[0 + str],
-      colorHover: colors[1 + str],
-      colorPress: colors[2 + str],
-      colorFocus: colors[3 + str],
-      shadowColor: isLight ? tokens.color.grayA4 : tokens.color.grayA9,
+      borderColorPress: isLight ? colors[6 - str] : backgrounds[3 + str],
+      borderColorFocus: isLight ? colors[6 - str] : backgrounds[4 + str],
+      color: colors[0 + str + shiftColors],
+      colorHover: colors[1 + str + shiftColors],
+      colorPress: colors[2 + str + shiftColors],
+      colorFocus: colors[3 + str + shiftColors],
+      shadowColor: isLight ? tokens.color.grayA4 : tokens.color.grayA8,
       shadowColorHover: darkColors[!isLight ? 1 : 8],
       shadowColorPress: darkColors[!isLight ? 1 : 8],
       shadowColorFocus: darkColors[!isLight ? 1 : 8],
@@ -61,7 +72,7 @@ const themeCreator =
     }
   }
 
-const colorSchemes = [
+export const colorSchemes = [
   { name: 'blue', colors: Colors.blue, darkColors: Colors.blueDark },
   { name: 'gray', colors: Colors.gray, darkColors: Colors.grayDark },
   { name: 'green', colors: Colors.green, darkColors: Colors.greenDark },
@@ -76,8 +87,8 @@ const colorSchemes = [
 
 type ColorNames = typeof colorSchemes[number]['name']
 
-const makeLightTheme = themeCreator(
-  [
+const makeLightTheme = themeCreator({
+  backgrounds: [
     '#fff',
     '#f2f2f2',
     tokens.color.gray1,
@@ -93,16 +104,16 @@ const makeLightTheme = themeCreator(
     tokens.color.gray11,
     tokens.color.gray12,
   ],
-  true,
-  true
-)
+  isLight: true,
+  isBase: true,
+})
 
-const makeDarkTheme = themeCreator(
-  [
-    '#000',
-    '#010101',
-    // '#222',
-    tokens.color.gray12,
+const makeDarkTheme = themeCreator({
+  backgrounds: [
+    // '#000',
+    '#151515',
+    '#222',
+    '#272727',
     tokens.color.gray11,
     tokens.color.gray10,
     tokens.color.gray9,
@@ -115,9 +126,10 @@ const makeDarkTheme = themeCreator(
     tokens.color.gray2,
     tokens.color.gray1,
   ],
-  false,
-  true
-)
+  shiftColors: 6,
+  isLight: false,
+  isBase: true,
+})
 
 const lightThemes = createThemeWithAlts('light', makeLightTheme)
 const darkThemes = createThemeWithAlts('dark', makeDarkTheme)
@@ -149,7 +161,7 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
   const [altLightThemes, altDarkThemes] = [colors, darkColors].map((colors, i) => {
     const isLight = i === 0
     const scheme = isLight ? 'light' : 'dark'
-    const getter = themeCreator(Object.values(colors), isLight, false)
+    const getter = themeCreator({ backgrounds: Object.values(colors), isLight, isBase: false })
     const themeWithAlts = createThemeWithAlts(name, getter)
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])
   })

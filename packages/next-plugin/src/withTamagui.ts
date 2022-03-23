@@ -16,8 +16,8 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
-        const jsxRuntime = require.resolve('react/jsx-runtime.js')
-        const jsxDevRuntime = require.resolve('react/jsx-dev-runtime.js')
+        const jsxRuntime = require.resolve('react/jsx-runtime')
+        const jsxDevRuntime = require.resolve('react/jsx-dev-runtime')
         const rnw = require.resolve('react-native-web')
         const reanimated = require.resolve('react-native-reanimated')
         const prefix = `${isServer ? '[ssr]' : '[web]'} »`

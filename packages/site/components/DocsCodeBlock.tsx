@@ -70,10 +70,14 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             right: 50,
           }}
         >
-          <Button className="text-shadow" chromeless onPress={() => setIsCollapsed((x) => !x)}>
-            <Paragraph size="$2" color="$color">
-              {isCollapsed ? 'Show code' : 'Hide code'}
-            </Paragraph>
+          <Button
+            size="$3"
+            color="$color"
+            className="text-shadow"
+            chromeless
+            onPress={() => setIsCollapsed((x) => !x)}
+          >
+            {isCollapsed ? 'Show code' : 'Hide code'}
           </Button>
         </YStack>
       )}

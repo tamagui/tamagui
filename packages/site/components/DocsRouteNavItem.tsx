@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import * as React from 'react'
-import { Paragraph, Spacer, XStack } from 'tamagui'
+import { Paragraph, SizableText, Spacer, XStack } from 'tamagui'
 
 import { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
@@ -23,7 +23,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
           opacity: 1,
         }}
         pressStyle={{
-          backgroundColor: '$bgTransparent',
+          backgroundColor: '$backgroundPress',
           opacity: 1,
         }}
         minHeight="$6"
@@ -36,16 +36,15 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
           },
         })}
       >
-        <Paragraph
+        <SizableText
           size="$3"
-          color="$color"
           userSelect="none"
           {...(active && {
             theme: 'alt2',
           })}
         >
           {children}
-        </Paragraph>
+        </SizableText>
         {isExternal && (
           <>
             <Spacer />
@@ -55,9 +54,9 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         {!!pending ? (
           <>
             <XStack flex={1} />
-            <Paragraph theme="alt2" size="$1" px="$2" py="$1" bc="$background" borderRadius="$3">
+            <SizableText theme="alt2" size="$1" px="$2" py="$1" bc="$background" borderRadius="$3">
               WIP
-            </Paragraph>
+            </SizableText>
           </>
         ) : null}
       </XStack>

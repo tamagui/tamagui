@@ -94,9 +94,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           $sm={{ display: 'none' }}
           position="absolute"
           top={15}
-          right={20}
+          right={30}
           ai="center"
-          space="$4"
+          space="$6"
         >
           <AlphaButton />
 
@@ -257,8 +257,8 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             pl: 250,
             pr: 0,
           }}
-          $gtLg={{
-            pr: 250,
+          $gtMd={{
+            pr: 150,
           }}
         >
           {pageContents}

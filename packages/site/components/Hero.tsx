@@ -7,19 +7,15 @@
 //   return <H4 size="$1">Input</H4>
 // }
 
-import { ArrowRight, Check, Compass, Copy, Cpu, ExternalLink, Layers } from '@tamagui/feather-icons'
+import { ArrowRight, Check, Compass, Copy, Cpu, Layers } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
 import NextLink from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Button,
-  GenericTamaguiConfig,
   H3,
   Paragraph,
-  Shorthands,
   Spacer,
-  TamaguiConfig,
-  TamaguiCustomConfig,
   Text,
   Theme,
   Title,
@@ -35,23 +31,22 @@ import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
 import { IconStack } from './IconStack'
 
-type y = Shorthands
-type x = TamaguiConfig['shorthands']
-type z = TamaguiCustomConfig['shorthands']
-
-interface TamaguiConfigTest
-  extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>,
-    TamaguiCustomConfig {}
-
-type a = TamaguiConfigTest['shorthands']
-
 export function Hero() {
   const [hasCopied, setHasCopied] = React.useState(false)
+
+  useEffect(() => {
+    if (hasCopied) {
+      const tm = setTimeout(() => {
+        setHasCopied(false)
+      }, 2_000)
+      return () => clearTimeout(tm)
+    }
+  }, [hasCopied])
 
   return (
     <>
       <Theme name="blue">
-        <YStack backgroundColor="$background" borderBottomWidth={0.5} borderColor="$borderColor">
+        <YStack className="hero-gradient" borderBottomWidth={0.5} borderColor="$borderColor">
           <Header />
 
           <ContainerLarge mb={-20}>
@@ -61,23 +56,25 @@ export function Hero() {
                   maxWidth: 550,
                   mx: 'auto',
                 }}
-                space="$7"
+                space="$8"
               >
                 <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
                   <Title
-                    size="$10"
+                    size="$9"
                     $gtSm={{
-                      size: '$11',
+                      size: '$10',
                       ta: 'center',
+                      mx: '$8',
                     }}
                     $gtMd={{
-                      size: '$12',
+                      size: '$11',
+                      mx: '$4',
                     }}
                   >
                     <Tooltip contents="Works the same on iOS, Android, and web">
                       <span className="rainbow help">Universal</span>
                     </Tooltip>{' '}
-                    React design systems that optimize for native & web
+                    React design systems that&nbsp;optimize for native & web
                   </Title>
 
                   <YStack
@@ -99,23 +96,25 @@ export function Hero() {
                       $gtSm={{
                         ta: 'center',
                         size: '$5',
+                        maxWidth: 600,
                         letterSpacing: 0,
                         fontWeight: '400',
                       }}
                       $gtMd={{
                         size: '$7',
+                        maxWidth: 800,
                         fontWeight: '400',
                       }}
                     >
-                      React Native + Web UIs much faster with an optimizing compiler.
-                      Themes,&nbsp;media&nbsp;queries & typed inline styles that run better,
-                      everywhere.
+                      Write-once native&nbsp;+&nbsp;web UIs with a smart, optimizing compiler.
+                      <br />
+                      Ship faster. Perform better. Run everywhere.
                     </Paragraph>
                   </YStack>
                 </YStack>
 
                 {/* <Theme name="purple"> */}
-                <XStack ai="center" jc="center" space="$4">
+                <XStack ai="center" jc="center" space="$2">
                   <NextLink href="/docs/intro/introduction" passHref>
                     <Button
                       // TODO check why hoverStyle not overriding
@@ -132,7 +131,13 @@ export function Hero() {
                   </NextLink>
 
                   <NextLink href="https://github.com/tamagui/tamagui" passHref>
-                    <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+                    <YStack
+                      p="$2"
+                      opacity={0.65}
+                      hoverStyle={{ opacity: 1 }}
+                      tag="a"
+                      target="_blank"
+                    >
                       <VisuallyHidden>
                         <Text>Github</Text>
                       </VisuallyHidden>
@@ -146,6 +151,7 @@ export function Hero() {
                     // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
                   >
                     <YStack
+                      p="$2"
                       $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
                       opacity={0.65}
                       hoverStyle={{ opacity: 1 }}
@@ -164,7 +170,7 @@ export function Hero() {
 
               <XStack
                 borderWidth={1}
-                borderColor="$borderColorHover"
+                borderColor="$borderColor"
                 px="$5"
                 height={48}
                 ai="center"
@@ -175,7 +181,7 @@ export function Hero() {
                   bc: '$backgroundHover',
                 }}
               >
-                <Paragraph size="$5" fontWeight="500" fontFamily="$mono">
+                <Paragraph size="$7" fontWeight="500" fontFamily="$mono">
                   npm install tamagui
                 </Paragraph>
                 <YStack width={60} />
@@ -223,7 +229,7 @@ export function Hero() {
               </IconStack>
             </Theme>
             {/* TODO why weight is removed */}
-            <H3 fontWeight="700" size="$5" mb="$2">
+            <H3 fontWeight="700" size="$6" mb="$2">
               Performant
             </H3>
             <Paragraph size="$4" theme="alt2">
@@ -238,7 +244,7 @@ export function Hero() {
                 <Compass size={20} color="var(--colorHover)" />
               </IconStack>
             </Theme>
-            <H3 fontWeight="700" size="$5" mb="$2">
+            <H3 fontWeight="700" size="$6" mb="$2">
               Compatible
             </H3>
             <Paragraph size="$4" theme="alt2">
@@ -257,7 +263,7 @@ export function Hero() {
                 <Layers size={20} color="var(--colorHover)" />
               </IconStack>
             </Theme>
-            <H3 fontWeight="700" size="$5" mb="$2">
+            <H3 fontWeight="700" size="$6" mb="$2">
               Intuitive
             </H3>
             <Paragraph size="$4" theme="alt2">

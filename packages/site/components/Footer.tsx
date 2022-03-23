@@ -38,12 +38,10 @@ export const Footer = () => {
             <TamaguiLogo showWords />
           </Link>
           <Paragraph size="$2" theme="alt2">
-            by
-            {/* @ts-ignore */}
+            by {/* @ts-ignore */}
             <Link fontSize="inherit" href="https://twitter.com/natebirdman" target="_blank">
               nate
             </Link>
-            .
           </Paragraph>
           <Paragraph size="$2" theme="alt2">
             built with Tamagui
@@ -53,7 +51,6 @@ export const Footer = () => {
             <Link fontSize="inherit" href="https://github.com/modulz" target="_blank">
               modulz
             </Link>
-            .
           </Paragraph>
         </YStack>
 

@@ -85,7 +85,16 @@ export const components = {
           <Paragraph py="$1" theme="alt1" mt={-3} mb={-3} className="paragraph-parent" size="$3">
             {children}
           </Paragraph>
-          <YStack ml="auto" mt={-2} w={30} h={30} ai="center" jc="center" bc="$bg4" br={100}>
+          <YStack
+            ml="auto"
+            mt={-2}
+            w={30}
+            h={30}
+            ai="center"
+            jc="center"
+            bc="$backgroundFocus"
+            br={100}
+          >
             <HelpCircle size={18} color="var(--yellow11)" />
           </YStack>
         </XStack>
@@ -173,9 +182,10 @@ export const components = {
         // inline
         <Paragraph
           fontFamily="$mono"
-          color="$color3"
+          theme="alt2"
+          color="$color"
+          backgroundColor="$background"
           br="$1"
-          backgroundColor="$bg3"
           lineHeight={18}
           px="$1"
           py={3}
