@@ -4174,11 +4174,10 @@ __metadata:
     hast-util-to-string: ^1.0.4
     imagemin-mozjpeg: ^9.0.0
     imagemin-optipng: ^8.0.0
-    lodash.debounce: ^4.0.8
     mdx-bundler: ^8.0.1
     mdx-prism: ^0.3.4
     mini-css-extract-plugin: ^2.4.3
-    next: ^12.0.10
+    next: ^12.1.0
     next-compose-plugins: ^2.2.1
     next-fonts: ^1.5.1
     next-optimized-images: ^2.6.2
@@ -18178,16 +18177,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.0.0-beta-f320ef88f-20211116":
-  version: 18.0.0-beta-f320ef88f-20211116
-  resolution: "react-dom@npm:18.0.0-beta-f320ef88f-20211116"
+"react-dom@npm:18.0.0-rc.3":
+  version: 18.0.0-rc.3
+  resolution: "react-dom@npm:18.0.0-rc.3"
   dependencies:
     loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-    scheduler: 0.21.0-beta-f320ef88f-20211116
+    scheduler: ^0.21.0-rc.3
   peerDependencies:
-    react: 18.0.0-beta-f320ef88f-20211116
-  checksum: f6717f3596bd2dad69574a9b8cb4a4c367b63fa10173470d4967b19a6ee6933b2611acd55d4e8465c4ca911fcccd9e778fe5f209f327f8aa14d33277c802aeb7
+    react: ^18.0.0-rc.3
+  checksum: 4867c051b855cccd234fa62313a881d92348f68c9d9d297b605a8e159a73db72a82f628565c5439298e42d6a7a2fd16b4c6b264e3e4d8f49a3b55296a6361afc
   languageName: node
   linkType: hard
 
@@ -18425,13 +18423,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.0.0-beta-f320ef88f-20211116":
-  version: 18.0.0-beta-f320ef88f-20211116
-  resolution: "react@npm:18.0.0-beta-f320ef88f-20211116"
+"react@npm:18.0.0-rc.3":
+  version: 18.0.0-rc.3
+  resolution: "react@npm:18.0.0-rc.3"
   dependencies:
     loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: a3d400ff28d0c5e1f7259b562778f5d9aaccd54454cb7e282eebb65cfad00effbaf8c1e87e7b53d1f5205877fb83c233b65815cded9259751fcc7a53dd5ecd54
+  checksum: 7645007183bd98f28a5f21abccde54b180263d9bc2be204c1d7d623597f4be31fdf414ed3fa8e1e3ac4eba47858b33c94cacc3635ee4a0f1d6de1aa5b026fae3
   languageName: node
   linkType: hard
 
@@ -19316,13 +19313,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:0.21.0-beta-f320ef88f-20211116":
-  version: 0.21.0-beta-f320ef88f-20211116
-  resolution: "scheduler@npm:0.21.0-beta-f320ef88f-20211116"
+"scheduler@npm:^0.21.0-rc.3":
+  version: 0.21.0-rc.3-next-de516ca5a-20220321
+  resolution: "scheduler@npm:0.21.0-rc.3-next-de516ca5a-20220321"
   dependencies:
     loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: 9586346cc511b1a2f9071e30c666d26c01b15717e81828eb645b6e5cbdb820a8c48d5c546e2e3c7ec0f0e158541a552d7c701c668f92b5f85ab2eb0afa442fa2
+  checksum: 8a97fb043fc309c0b5f1b7eded272e4a220eb1c57cbb87af18469afae8f1682faf38aa325eab8bf32ab5203aa02e117ce319b78237f18d2cd89e976b7ba1519e
   languageName: node
   linkType: hard
 

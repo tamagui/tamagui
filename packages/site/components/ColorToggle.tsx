@@ -42,7 +42,7 @@ export const ColorToggle = (props: ButtonProps) => {
       {...props}
       aria-label="toggle a light and dark color scheme"
     >
-      <YStack m={2} width={5} height={5} borderRadius={100} backgroundColor={tint} />
+      <YStack m={2} width={7} height={7} rotate="45deg" backgroundColor={tint} />
     </Button>
   )
 }

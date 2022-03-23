@@ -10,6 +10,7 @@ const getBarColor = (name: string) => {
       return '$violet4'
     case 'SC':
       return '$red9'
+    case 'react-native-web':
     case 'RNW':
       return '$pink9'
     case 'Emotion':
@@ -23,14 +24,14 @@ const getBarColor = (name: string) => {
   }
 }
 
-export function BenchmarkChart({ data }) {
+export function BenchmarkChart({ data, large }) {
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
     <YStack space="$2" my="$4">
       {data.map((result, i) => (
         <XStack space="$2" key={i}>
-          <YStack w={70}>
+          <YStack w={large ? 120 : 70}>
             <Paragraph
               key={result.name}
               size="$2"

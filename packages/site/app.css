@@ -22,7 +22,7 @@ html, body {
 }
 
 body {
-  background-color: var(--bg);
+  background-color: var(--background);
   margin: 0;
 }
 
@@ -40,7 +40,7 @@ p a, span a {
   text-decoration: underline;
   text-decoration-style: dotted;
   color: var(--colorPress);
-  text-decoration-color: var(--borderColor);
+  text-decoration-color: var(--borderColorHover);
   text-underline-offset: 5px;
 }
 
@@ -85,7 +85,7 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 .hero-gradient {
-  background-image: linear-gradient(330deg, var(--bg4) 0%, var(--bg2) 100%);
+  background: linear-gradient(330deg, var(--background) 0%, var(--backgroundHover) 100%);
 }
 
 /* reset */

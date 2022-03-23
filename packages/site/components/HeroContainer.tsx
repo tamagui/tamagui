@@ -22,7 +22,7 @@ export function HeroContainer({
       justifyContent="center"
       overflow="auto"
       pt={30}
-      pb={70}
+      pb={50}
       minHeight={380}
       borderRadius="$3"
       $gtLg={{
@@ -35,19 +35,28 @@ export function HeroContainer({
       {demoMultiple ? (
         <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
           <XStack space px="$8">
-            <Theme name="dark">
+            {/* <Theme name="dark">
               <Card>{children}</Card>
             </Theme>
             <Theme name="light">
               <Card>{children}</Card>
-            </Theme>
+            </Theme> */}
             <Theme name="blue">
               <Card>{children}</Card>
             </Theme>
             <Theme name="red">
               <Card>{children}</Card>
             </Theme>
+            <Theme name="pink">
+              <Card>{children}</Card>
+            </Theme>
             <Theme name="orange">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="green">
+              <Card>{children}</Card>
+            </Theme>
+            <Theme name="yellow">
               <Card>{children}</Card>
             </Theme>
           </XStack>
