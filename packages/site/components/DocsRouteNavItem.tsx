@@ -29,7 +29,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         minHeight="$6"
         pointerEvents={pending ? 'none' : 'auto'}
         {...(active && {
-          theme: 'alt3',
+          theme: 'alt1',
           backgroundColor: '$background',
           hoverStyle: {
             backgroundColor: '$background',

@@ -23,12 +23,13 @@ type BlogPost = {
 export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
 
-  const twitterShare = `
-		https://twitter.com/intent/tweet?
-		text="${frontmatter.title}" by @${
-    authors[frontmatter.by || ''].twitter
-  } on the @tamagui_js blog.&url=https://tamagui.dev/blog/${frontmatter.slug}
-		`
+  const authorTwitter = authors[frontmatter.by || ''].twitter
+  const tweetText = `${frontmatter.title} by @${authorTwitter} on the @tamagui_js blog.`
+  const tweetUrl = `https://tamagui.dev/blog/${frontmatter.slug}`
+  const enc = encodeURIComponent
+  const twitterShare = `https://twitter.com/intent/tweet?text="${enc(tweetText)}"&url=${enc(
+    tweetUrl
+  )}`
 
   return (
     <>
@@ -50,18 +51,18 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
           </NextLink>
         </YStack>
 
-        <H1 letterSpacing={-1} mt="$4">
+        <H1 letterSpacing={-1} mt="$4" mb="$2">
           {frontmatter.title}
         </H1>
 
-        <H2 size="$7" fontWeight="500" fontFamily="$body" mb="$2" color="$color2">
+        <H2 theme="alt1" size="$7" fontWeight="500" fontFamily="$body" mb="$2">
           {frontmatter.description}
         </H2>
 
         <XStack ai="center" mb="$3">
           {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
 
-          <Paragraph size="$3" color="$color3" whiteSpace="nowrap">
+          <Paragraph size="$3" theme="alt2" whiteSpace="nowrap">
             <Link
               href={`https://twitter.com/${authors[frontmatter.by || ''].twitter}`}
               rel="noopener noreferrer"
@@ -73,14 +74,14 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
 
           <Separator vertical mx="$2" />
 
-          <Paragraph tag="time" size="$3" color="$color3" whiteSpace="nowrap">
+          <Paragraph tag="time" size="$3" theme="alt2" whiteSpace="nowrap">
             {format(parseISO(frontmatter.publishedAt || ''), 'MMMM yyyy')}
           </Paragraph>
 
           <Separator vertical mx="$2" />
 
           <YStack ai="center" display="none" $gtSm={{ display: 'flex' }}>
-            <Paragraph size="$3" color="$color3">
+            <Paragraph size="$3" theme="alt2">
               {frontmatter.readingTime?.text}
             </Paragraph>
 

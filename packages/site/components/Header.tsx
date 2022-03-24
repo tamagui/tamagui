@@ -40,7 +40,11 @@ export function Header() {
         pointerEvents="none"
         ai="center"
       >
-        <LogoWords />
+        <NextLink href="/" passHref>
+          <XStack pointerEvents="auto" tag="a" als="center">
+            <LogoWords />
+          </XStack>
+        </NextLink>
       </XStack>
 
       <XStack pointerEvents="auto" tag="nav" ai="center" space="$5">
