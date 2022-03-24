@@ -1,6 +1,6 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React from 'react'
-import { Paragraph, ParagraphProps } from 'tamagui'
+import { Paragraph, ParagraphProps, Theme } from 'tamagui'
 
 export type LinkProps = Omit<NextLinkProps, 'passHref' | 'as'> &
   ParagraphProps & {
@@ -16,8 +16,10 @@ export const Link = ({
   shallow,
   prefetch,
   locale,
+  children,
   ...props
 }: LinkProps) => {
+  const allChildrenStrings = React.Children.toArray(children).every((x) => typeof x === 'string')
   return (
     <NextLink passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
       <Paragraph
@@ -26,7 +28,9 @@ export const Link = ({
         theme="alt2"
         hoverStyle={{ color: '$colorHover' }}
         {...props}
-      />
+      >
+        {allChildrenStrings ? children : children}
+      </Paragraph>
     </NextLink>
   )
 }

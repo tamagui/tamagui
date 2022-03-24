@@ -56,7 +56,7 @@ export function Hero() {
                   maxWidth: 550,
                   mx: 'auto',
                 }}
-                space="$8"
+                space="$7"
               >
                 <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
                   <Title
@@ -108,7 +108,7 @@ export function Hero() {
                     >
                       Write-once native&nbsp;+&nbsp;web UIs with a smart, optimizing compiler.
                       <br />
-                      Ship faster. Perform better. Run everywhere.
+                      Simpler code. Less maintenance. Runs faster, everywhere.
                     </Paragraph>
                   </YStack>
                 </YStack>
@@ -233,8 +233,8 @@ export function Hero() {
               Performant
             </H3>
             <Paragraph size="$4" theme="alt2">
-              Compile inline styles, media queries and themes to atomic CSS. Even conditional logic
-              compiles away!
+              The fastest UI kit on web or native through a compiler that handles advanced
+              transforms like media queries, CSS variables, and tree flattening.
             </Paragraph>
           </YStack>
 
@@ -245,15 +245,15 @@ export function Hero() {
               </IconStack>
             </Theme>
             <H3 fontWeight="700" size="$6" mb="$2">
-              Compatible
+              Easy to adopt
             </H3>
             <Paragraph size="$4" theme="alt2">
-              Augments{' '}
+              Works with react-native and{' '}
               <Text tag="a" href="https://necolas.github.io/react-native-web/">
                 react-native-web
-              </Text>{' '}
-              and reduces overhead. Use it as a plain styling library, or an accessible component
-              kit.
+              </Text>
+              . Use just the style library or the full component kit. Plug in an existing theme or
+              BYO.
             </Paragraph>
           </YStack>
 
@@ -264,11 +264,11 @@ export function Hero() {
               </IconStack>
             </Theme>
             <H3 fontWeight="700" size="$6" mb="$2">
-              Intuitive
+              Productive
             </H3>
             <Paragraph size="$4" theme="alt2">
-              Supports DX advances in modern design systems: themes, tokens, shorthands, media
-              queries, and typed inline styles.
+              Write inline styles without worry about performance. Themes, tokens, shorthands, media
+              queries, and animations that work fast out of the box.
             </Paragraph>
           </YStack>
 

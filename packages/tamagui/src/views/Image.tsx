@@ -24,9 +24,8 @@ export type ImageProps = StackProps &
   }
 
 export const Image: React.FC<ImageProps> = StyledImage.extractable(
-  ({ src, width, height, ...rest }) => {
-    const sourceProp =
-      typeof src === 'string' ? { uri: src, width: width ?? '100%', height: height ?? '100%' } : src
+  ({ src, width = '100%', height = 'auto', ...rest }) => {
+    const sourceProp = typeof src === 'string' ? { uri: src, width, height } : src
 
     if (!sourceProp) {
       // placeholder with customizability

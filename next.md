@@ -1,3 +1,7 @@
+- extracted theme="" components will change how ThemeReset/Theme work with finding parent context, we'll need to have the equivalent web versions for all of them. something like MutationObserver(querySelector.closest('.theme--parent'))
+
+- test component theme + alt theme (plus with compiled)
+
 - theme="" prop on any createComponent
   - easy part is useTheme()
   - decision:
@@ -29,6 +33,8 @@
 	- css
 
 - create-tamagui-app
+
+- <Scale />
 
 - @tamagui/cli: 
   - tamagui test ./packages/site/components/OffsetBox.tsx

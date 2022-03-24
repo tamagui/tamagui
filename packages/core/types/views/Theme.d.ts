@@ -1,5 +1,6 @@
 import { ThemeName } from '../types';
 export declare type ThemeProps = {
+    className?: string;
     disableThemeClass?: boolean;
     name: Exclude<ThemeName, number> | null;
     children?: any;

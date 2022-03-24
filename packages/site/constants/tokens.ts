@@ -3,6 +3,7 @@ import { createFont, createTokens } from 'tamagui'
 import { allLightColors, darkColorsPostfixed } from './colors'
 
 const size = {
+  '0.5': 1,
   0: 2,
   1: 6,
   2: 10,
@@ -16,22 +17,12 @@ const size = {
   10: 75,
   11: 85,
   12: 100,
-  true: 10,
 }
 
 const space = {
+  true: size[2],
   ...size,
-  '-0': -0,
-  '-1': -5,
-  '-2': -10,
-  '-3': -15,
-  '-4': -20,
-  '-5': -25,
-  '-6': -30,
-  '-7': -40,
-  '-8': -50,
-  '-9': -75,
-  '-10': -100,
+  ...Object.fromEntries(Object.entries(size).map(([k, v]) => [`-${k}`, -v])),
 }
 
 const interFont = createFont({

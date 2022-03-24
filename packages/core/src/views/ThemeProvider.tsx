@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useLayoutEffect, useMemo } from 'react'
 
 import { getHasConfigured } from '../conf'
 import { GET_DEFAULT_THEME, THEME_CLASSNAME_PREFIX } from '../constants/constants'
@@ -22,18 +22,18 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
   }
 
   // ensure theme is attached to root body node as well to work with modals by default
-  useIsomorphicLayoutEffect(() => {
-    if (props.disableRootThemeClass) {
-      return
-    }
-    if (typeof document !== 'undefined') {
+  if (typeof document !== 'undefined') {
+    useLayoutEffect(() => {
+      if (props.disableRootThemeClass) {
+        return
+      }
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
       document.body.classList.add(cn)
       return () => {
         document.body.classList.remove(cn)
       }
-    }
-  }, [])
+    }, [])
+  }
 
   const themeContext = useMemo(() => {
     return new Proxy(props.themes, {

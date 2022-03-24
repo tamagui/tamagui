@@ -41,7 +41,7 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
           <NextLink href="/blog" passHref>
             <Button
               chromeless
-              icon={<ArrowLeft color="var(--color3)" size={12} />}
+              icon={<ArrowLeft color="var(--colorPress)" size={12} />}
               tag="a"
               space="$2"
               ml="$-6"

@@ -28,7 +28,7 @@ export function HeroExample() {
       <YStack zi={1} space="$5">
         <YStack space="$2">
           <H2 als="center">
-            Less work, feels native <span className="rainbow">everywhere</span>
+            Less work to feel native <span className="rainbow">everywhere</span>
           </H2>
           <H3 theme="alt2" als="center" fow="400">
             Next level performance meets easer to write code.
@@ -43,6 +43,7 @@ export function HeroExample() {
                 theme={i === activeIndex ? 'active' : null}
                 key={i}
                 borderRadius="$0"
+                fontWeight="700"
               >
                 {example.name}
               </Button>

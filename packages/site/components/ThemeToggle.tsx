@@ -11,7 +11,8 @@ export const ThemeToggle = (props: ButtonProps) => {
       {...props}
       aria-label="toggle a light and dark color scheme"
     >
-      {theme === 'light' ? <Moon size={12} /> : <SunIcon />}
+      <SunIcon />
+      {/* {theme === 'light' ? <Moon size={12} /> : <SunIcon />} */}
     </Button>
   )
 }
