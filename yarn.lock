@@ -4090,7 +4090,7 @@ __metadata:
     browserslist: ^4.19.1
     css-minimizer-webpack-plugin: ^3.1.3
     esbuild-loader: ^2.18.0
-    next: ^12.0.10
+    next: ^12.1.0
     next-compose-plugins: ^2.2.1
     tamagui-loader: ^1.0.0-alpha.68
     thread-loader: ^3.0.4
@@ -14338,7 +14338,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdx-bundler@npm:^8.0.1":
+"mdx-bundler@npm:8.0.1":
   version: 8.0.1
   resolution: "mdx-bundler@npm:8.0.1"
   dependencies:
@@ -14353,6 +14353,24 @@ __metadata:
   peerDependencies:
     esbuild: 0.11.x || 0.12.x || 0.13.x || 0.14.x
   checksum: a5cbe02c8e0d7bc7bc63cfdf76079e6f5b02933c2fa246a21ca5b40fb5ae0ab1c5e97729afbe3b522c19dd5b3226acea045f84be38180ca70110fd99163e6840
+  languageName: node
+  linkType: hard
+
+"mdx-bundler@patch:mdx-bundler@npm:8.0.1#.yarn/patches/mdx-bundler.diff::locator=tamagui-monorepo%40workspace%3A.":
+  version: 8.0.1
+  resolution: "mdx-bundler@patch:mdx-bundler@npm%3A8.0.1#.yarn/patches/mdx-bundler.diff::version=8.0.1&hash=f6ec3b&locator=tamagui-monorepo%40workspace%3A."
+  dependencies:
+    "@babel/runtime": ^7.16.3
+    "@esbuild-plugins/node-resolve": ^0.1.4
+    "@fal-works/esbuild-plugin-global-externals": ^2.1.2
+    gray-matter: ^4.0.3
+    remark-frontmatter: ^4.0.1
+    remark-mdx-frontmatter: ^1.1.1
+    uuid: ^8.3.2
+    xdm: ^3.3.0
+  peerDependencies:
+    esbuild: 0.11.x || 0.12.x || 0.13.x || 0.14.x
+  checksum: 28ff552286935b6fc52867fe84fc6119dc99254339b855f884a1abc2fa1e9691ed99e64bae208b9a8f3fb9b29117ffb9666d105053c2cda57a9f2b885d252cc2
   languageName: node
   linkType: hard
 
