@@ -28,6 +28,7 @@
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.14.5",
     "@babel/types": "^7.15.6",
+    "@dish/babel-preset": "^0.0.6",
     "@dish/proxy-worm": "^0.0.4",
     "@testing-library/react": "13.0.0-alpha.4",
     "@types/jest": "*",
@@ -53,7 +54,6 @@
     "@babel/helper-plugin-utils": "^7.14.5",
     "@babel/parser": "^7.15.7",
     "@babel/traverse": "^7.15.4",
-    "@dish/babel-preset": "^0.0.6",
     "@expo/match-media": "^0.1.0",
     "@tamagui/build": "^1.0.0-alpha.64",
     "@tamagui/core": "^1.0.0-alpha.68",
