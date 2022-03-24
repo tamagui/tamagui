@@ -31,7 +31,7 @@ export const useTint = () => {
   ] as const
 }
 
-export const ColorToggle = (props: ButtonProps) => {
+export const ColorToggleButton = (props: ButtonProps) => {
   const [tint, setTint] = useTint()
   const nextIndex = (colors.indexOf(tint) + 1) % colors.length
   const next = colors[nextIndex]

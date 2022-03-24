@@ -2,7 +2,7 @@ import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Circle } from '@tama
 import React from 'react'
 import { Button, HoverablePopover, HoverablePopoverProps, Paragraph, XStack, YStack } from 'tamagui'
 
-export function HoverablePopoverDemo() {
+export default function HoverablePopoverDemo() {
   return (
     <YStack space>
       <XStack space>

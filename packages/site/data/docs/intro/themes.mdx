@@ -49,11 +49,11 @@ In this example we've set up darkRed and lightRed variables and a a dark and lig
   --colors-light-red: #ff0000;
 }
 
-.theme--dark {
+.tui_dark {
   --red: var(--colors-dark-red);
 }
 
-.theme--light {
+.tui_light {
   --red: var(--colors-light-red);
 }
 ```
@@ -149,6 +149,46 @@ export const themes = {
 
 ### Subset themes
 
-One of the real powers of Tamagui is theme nesting, which we'll explain below, but which is important to understand. If you define a theme with the name in the form `[name]-[parentName]`, Tamagui handles `<Theme name="[name]" />` as though it's valid.
+One of the real powers of Tamagui is theme nesting, which we'll explain below, but which is important to understand. If you define a theme with the name in the form `[parentName]_[subName]`, Tamagui then accepts `<Theme name="[subName]" />` as though it's valid.
+
+You can do this as many times as you'd like. For example you can have the following themes:
+
+- `dark_green_subtle`
+- `light_green_subtle`
+
+And you're able to then access them (fully typed):
+
+```tsx
+<Theme name="dark">
+  <Theme name="green">
+    <Button theme="subtle">Hello world</Button>
+  </Theme>
+</Theme>
+```
+
+You can also do:
+
+```tsx
+<Theme name="dark_green">
+  <Button theme="subtle">Hello world</Button>
+</Theme>
+```
+
+#### Component subset themes
+
+Finally, each component in Tamagui can be set up to accept a component specific theme by passing the `name` property to the second argument of `styled()`. For example, for the Button component, we define the frame of it like so:
+
+```tsx
+const ButtonFrame = styled(SizableFrame, {
+  name: 'button',
+  tag: 'button',
+})
+```
+
+The `name` attribute will be removed from the defaultProps as it's special, and instructs Tamagui to look for any `_button` theme. So you can add the following themes to customize buttons at any level:
+
+- `dark_button`
+- `dark_green_button`
+- `dark_green_subtle_button`
 
 For more on this, see the [Theme docs](/docs/core/Theme).

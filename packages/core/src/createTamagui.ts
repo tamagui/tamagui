@@ -31,9 +31,14 @@ export type CreateTamaguiProps =
         [key: string]: string | number | Variable
       }
     }
+
+    // TODO document
     // for ssr/native, will default to active
     mediaQueryDefaultActive?: MediaQueryKey[]
+    cssStyleSeparator?: string
   }
+
+const PRE = THEME_CLASSNAME_PREFIX
 
 const createdConfigs = new WeakMap<any, boolean>()
 
@@ -105,12 +110,16 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           }
         }
       }
-      const sep = process.env.NODE_ENV === 'development' ? '\n  ' : ''
+      const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
       cssRules.push(`:root {${sep}${[...tokenRules].join(`;${sep}`)}${sep}}`)
     }
 
     const baseThemeNames = [
-      ...new Set(Object.keys(config.themes).filter((x) => !x.includes(THEME_NAME_SEPARATOR))),
+      ...new Set(
+        Object.keys(config.themes).flatMap((x) => {
+          return x.split(THEME_NAME_SEPARATOR)
+        })
+      ),
     ]
 
     // themes
@@ -136,12 +145,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       if (isWeb) {
         // assuming we have themes in every combo:
         //   ['dark', 'light', 'blue', 'alt1', 'alt2', 'button']
-        // light-blue-alt1-button
+        // light_blue_alt1_button
         // [
-        //   '.theme--light .theme--blue .theme--alt1 .theme--button',
-        //   '.theme--light-blue .theme--alt1 .theme--button',
-        //   '.theme--light-blue-alt1 .theme--button',
-        //   '.theme--light-blue-alt1-button',
+        //   '.tui_light .tui_blue .tui_alt1 .tui_button',
+        //   '.tui_light-blue .tui_alt1 .tui_button',
+        //   '.tui_light-blue-alt1 .tui_button',
+        //   '.tui_light-blue-alt1-button',
         // ]
         const selectors = new Set<string>()
         const themeNames = themeName.split(THEME_NAME_SEPARATOR)
@@ -172,16 +181,25 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         }
 
         for (const combo of selectorCombos) {
-          const selector = combo.map((x) => `.${THEME_CLASSNAME_PREFIX}${x}`).join(' ')
+          const selector = combo.map((x) => `.${PRE}${x}`).join(' ')
           selectors.add(selector)
           // add specificity selector hacks
           for (const baseName of baseThemeNames) {
-            if (baseName === name) continue
-            selectors.add(`.${THEME_CLASSNAME_PREFIX}${baseName} ${selector}`)
+            if (baseName !== name) {
+              selectors.add(`.${PRE}${baseName} ${selector}`)
+            }
+            for (const baseName2 of baseThemeNames) {
+              if (baseName2 !== baseName) {
+                selectors.add(`.${PRE}${baseName} .${PRE}${baseName2} ${selector}`)
+              }
+            }
           }
         }
 
         const selectorsStr = [...selectors].join(', ')
+        // if (themeName === 'dark_alt1') {
+        //   console.log('selectorsStr', selectorsStr.split(', '))
+        // }
         const cssRule = `${selectorsStr} {\n${vars}\n}`
         cssRules.push(cssRule)
       }

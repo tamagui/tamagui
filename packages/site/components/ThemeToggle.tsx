@@ -21,8 +21,8 @@ const SunIcon = () => (
   <svg
     style={{ marginBottom: -1 }}
     xmlns="http://www.w3.org/2000/svg"
-    width="12"
-    height="12"
+    width="15"
+    height="15"
     viewBox="0 0 15 15"
     fill="none"
   >

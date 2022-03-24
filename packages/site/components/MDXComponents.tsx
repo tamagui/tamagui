@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
 import React from 'react'
+import { ScrollView } from 'react-native'
 import {
   Box,
   EnsureFlexed,
@@ -22,7 +23,7 @@ import {
 
 import { Frontmatter } from '../types/frontmatter'
 import { BenchmarkChart } from './BenchmarkChart'
-import { Code } from './Code'
+import { Code, CodeInline } from './Code'
 import { DemoButton } from './DemoButton'
 import * as Demos from './demos'
 import { Description } from './Description'
@@ -30,17 +31,19 @@ import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
 import { HeroContainer } from './HeroContainer'
 import { Highlights } from './Highlights'
+import { MediaPlayer } from './MediaPlayer'
 import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 
 export const components = {
+  ScrollView,
   Text,
   Paragraph,
   YStack,
+  XStack,
   Box,
   BenchmarkChart,
-  // Title,
   Separator,
   Code,
   HeroContainer,
@@ -187,22 +190,7 @@ export const components = {
     const { hero, line, scrollable, className, children, id, showLineNumbers, collapsed, ...rest } =
       props
     if (!className) {
-      return (
-        // inline
-        <Paragraph
-          fontFamily="$mono"
-          theme="alt2"
-          color="$color"
-          backgroundColor="$background"
-          br="$1"
-          lineHeight={18}
-          px="$1"
-          py={3}
-          fontSize={14}
-        >
-          {children}
-        </Paragraph>
-      )
+      return <CodeInline>{children}</CodeInline>
     }
     return (
       <DocCodeBlock
@@ -341,6 +329,14 @@ export const components = {
     }, [])
 
     return <Paragraph fontFamily="$mono" cursor="default" ref={triggerRef} {...props} />
+  },
+
+  MediaPlayerDemo: ({ theme, ...props }) => {
+    return (
+      <Theme name={theme}>
+        <MediaPlayer {...props} />
+      </Theme>
+    )
   },
 }
 

@@ -1,17 +1,13 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
-import {
-  GET_DEFAULT_THEME,
-  THEME_CLASSNAME_PREFIX,
-  THEME_NAME_SEPARATOR,
-} from '../constants/constants'
+import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from '../constants/constants'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { isVariable } from '../createVariable'
 import { areEqualSets } from '../helpers/areEqualSets'
 import { ThemeContext } from '../ThemeContext'
 import { ThemeManager, ThemeManagerContext } from '../ThemeManager'
-import { ThemeName, ThemeObject } from '../types'
+import { ThemeObject } from '../types'
 import { useConstant } from './useConstant'
 
 const SEP = THEME_NAME_SEPARATOR
@@ -130,15 +126,15 @@ export const useThemeName = (opts?: { parent?: true }) => {
 }
 
 export const useDefaultThemeName = () => {
-  return useContext(ThemeContext)[GET_DEFAULT_THEME] as any as ThemeName
+  return useContext(ThemeContext)?.defaultTheme
 }
 
 export const useChangeThemeEffect = (shortName?: string | null, componentName?: string) => {
-  const parent = useContext(ThemeManagerContext)
-  const themes = useContext(ThemeContext)
-  const [parentName, setParentName] = useState(parent.name || 'light')
+  const parentManager = useContext(ThemeManagerContext)
+  const { themes } = useContext(ThemeContext)!
+  const [parentName, setParentName] = useState(parentManager.name || 'light')
   const nextNameParent = shortName ? `${parentName}${SEP}${shortName}` : ''
-  const nextNameParentParent = shortName ? `${parent.parentName}${SEP}${shortName}` : ''
+  const nextNameParentParent = shortName ? `${parentManager.parentName}${SEP}${shortName}` : ''
   const nextParentName =
     nextNameParent in themes
       ? nextNameParent
@@ -153,29 +149,31 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
     }
     const manager = new ThemeManager()
     if (nextName) {
-      manager.setActiveTheme({ name: nextName, theme: themes[nextName], parentName })
+      manager.update({ name: nextName, theme: themes[nextName], parentManager })
     }
     return manager
   })
 
-  useIsomorphicLayoutEffect(() => {
-    if (!themeManager) {
-      return
-    }
-    if (nextName) {
-      themeManager.setActiveTheme({ name: nextName, theme: nextTheme, parentName })
-    }
-    const dispose = parent.onChangeTheme((next) => {
-      if (next) {
-        themeManager.setActiveTheme({ name: next, theme: themes[next], parentName })
-        setParentName(next)
+  if (typeof document !== 'undefined') {
+    useLayoutEffect(() => {
+      if (!themeManager) {
+        return
       }
-    })
-    return () => {
-      // TODO should we undo setActiveTheme on dispose?
-      dispose()
-    }
-  }, [themes, nextName, parentName])
+      if (nextName) {
+        themeManager.update({ name: nextName, theme: nextTheme, parentManager })
+      }
+      const dispose = parentManager.onChangeTheme((next) => {
+        if (next) {
+          themeManager.update({ name: next, theme: themes[next], parentManager })
+          setParentName(next)
+        }
+      })
+      return () => {
+        // TODO should we undo setActiveTheme on dispose?
+        dispose()
+      }
+    }, [themes, nextName, parentName])
+  }
 
   let className: string | null = null
   const classNamePost = shortName ?? componentName
@@ -187,7 +185,7 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
     name: nextName || parentName,
     themes,
     themeManager,
-    theme: nextTheme || themeManager?.theme || parent.theme || themes['light'],
+    theme: nextTheme || themeManager?.theme || parentManager.theme || themes['light'],
     className,
   }
 }

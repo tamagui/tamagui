@@ -1,7 +1,7 @@
 /// <reference types="react" />
+import { ThemeName, Themes } from './types';
 export declare const ThemeContext: import("react").Context<{
-    [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
-        [key: string]: import("./types").VariableVal;
-    };
-}>;
+    themes: Themes;
+    defaultTheme: ThemeName;
+} | null>;
 //# sourceMappingURL=ThemeContext.d.ts.map

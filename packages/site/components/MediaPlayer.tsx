@@ -15,12 +15,12 @@ export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
             <YStack w="100%">
               <XStack ai="center" p="$3" space="$5">
                 <Square br="$2" size="$12">
-                  <Image w={150} h={150} src="http://placekitten.com/200/200" />
+                  <Image width={150} height={150} src="http://placekitten.com/200/200" />
                 </Square>
 
                 <YStack jc="center" space="$0.5">
                   <Paragraph fontWeight="700">Spaceship</Paragraph>
-                  <Paragraph>Kanye West??</Paragraph>
+                  <Paragraph>Kanye West</Paragraph>
                   <Paragraph>College Dropout</Paragraph>
                 </YStack>
               </XStack>

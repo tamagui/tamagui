@@ -1,3 +1,4 @@
+// debug
 import '../app.css'
 
 import { DocsPage } from '@components/DocsPage'
@@ -6,7 +7,7 @@ import * as NextThemes from '@components/NextTheme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import React, { useMemo, useState } from 'react'
-import { PopoverProvider, SafeAreaProvider, YStack } from 'tamagui'
+import { Button, PopoverProvider, SafeAreaProvider, YStack } from 'tamagui'
 
 import Tamagui from '../tamagui.config'
 
@@ -34,10 +35,8 @@ if (isChrome) {
 
 export default function App(props: AppProps) {
   const classes = typeof document !== 'undefined' ? [...document.documentElement.classList] : []
-  const isDark = classes.includes('theme--dark')
+  const isDark = classes.includes('tui_dark')
   const [theme, setTheme] = useState(isDark ? 'dark' : 'light')
-
-  console.log('theme', theme)
 
   const contents = useMemo(() => {
     return (
@@ -57,8 +56,8 @@ export default function App(props: AppProps) {
       attribute="class"
       defaultTheme="system"
       value={{
-        dark: 'theme--dark',
-        light: 'theme--light',
+        dark: 'tui_dark',
+        light: 'tui_light',
       }}
       onChangeTheme={(x) => setTheme(x)}
     >

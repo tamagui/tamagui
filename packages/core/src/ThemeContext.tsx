@@ -1,5 +1,5 @@
 import { createContext } from 'react'
 
-import { Themes } from './types'
+import { ThemeName, Themes } from './types'
 
-export const ThemeContext = createContext<Themes>(null as any)
+export const ThemeContext = createContext<{ themes: Themes; defaultTheme: ThemeName } | null>(null)

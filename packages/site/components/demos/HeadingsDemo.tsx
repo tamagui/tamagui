@@ -1,7 +1,7 @@
 import React from 'react'
 import { H1, H2, H3, H4, H5, H6, YStack } from 'tamagui'
 
-export function HeadingsDemo() {
+export default function HeadingsDemo() {
   return (
     <YStack als="center" space>
       <H1>Heading 1</H1>

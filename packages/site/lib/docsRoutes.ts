@@ -7,6 +7,7 @@ export const docsRoutes = [
       { title: 'Configuration', route: '/docs/intro/configuration' },
       { title: 'Themes', route: '/docs/intro/themes' },
       { title: 'Props', route: '/docs/intro/props' },
+      { title: 'Dev Tools', route: '/docs/intro/dev-tools' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
       { title: 'Releases', route: 'https://github.com/tamagui/tamagui/releases' },
     ],
@@ -15,11 +16,12 @@ export const docsRoutes = [
   {
     label: 'Core',
     pages: [
-      { title: 'styled', route: '/docs/core/styled' },
+      { title: 'styled()', route: '/docs/core/styled' },
+      { title: 'Animations', route: '/docs/core/animations' },
       { title: 'Stack & Text', route: '/docs/core/stack-and-text' },
       { title: 'Theme', route: '/docs/core/theme' },
-      { title: 'useMedia', route: '/docs/core/use-media' },
-      { title: 'useTheme', route: '/docs/core/use-theme' },
+      { title: 'useMedia()', route: '/docs/core/use-media' },
+      { title: 'useTheme()', route: '/docs/core/use-theme' },
     ],
   },
 
@@ -52,6 +54,7 @@ export const docsRoutes = [
       { title: 'Design Systems', route: '/docs/guides/design-systems' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
+      { title: 'create-tamagui-app', route: '/docs/guides/create-tamagui-app' },
     ],
   },
 ]

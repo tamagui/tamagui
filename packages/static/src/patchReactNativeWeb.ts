@@ -11,10 +11,8 @@ export function patchReactNativeWeb() {
   const rootDir = require.resolve('react-native-web').replace(/\/dist.*/, '')
   const modulePath = path.join(rootDir, 'dist', 'tamagui-exports.js')
   const cjsPath = path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js')
-
-  console.log('» Tamagui patching react-native-web to share atomic styling primitives')
-  console.log('   > adding', modulePath)
-  console.log('   > adding', cjsPath)
+  console.log('      » + react-native-web/' + path.relative(rootDir, modulePath))
+  console.log('      » + react-native-web/' + path.relative(rootDir, cjsPath))
   fs.writeFileSync(modulePath, moduleExports)
   fs.writeFileSync(cjsPath, cjsExports)
 

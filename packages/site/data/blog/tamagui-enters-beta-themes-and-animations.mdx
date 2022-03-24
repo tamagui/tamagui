@@ -1,7 +1,7 @@
 ---
 title: Tamagui Beta
 publishedAt: '2022-03-23'
-description: A new theme system, introducing animations, and much more.
+description: Introducting a new theme system, animations, and much more.
 by: nate
 ---
 
@@ -14,15 +14,35 @@ by: nate
 
 Tamagui enters beta!
 
-Six months, hundreds of bugs, 3 demo apps, 1 benchmark suite, and introducing 2 big new features: **themes v2** and **pluggable animations**. Here's what's new:
+Six months, hundreds of bugs, 3 demo apps, 1 benchmark suite, and 2 big new features: **themes v2** and **pluggable animations**. Here's what's new:
 
-## create-tamagui-app
+## Start faster with create-tamagui-app
+
+Set up a starter repo with expo, webpack, and tamagui configured and ready to go:
+
+```bash
+npx create-tamagui-app@latest my-app
+```
 
 ## Themes v2
 
+Themes has been redone to add a ton of flexiblity and power. Tamagui now supports unlimited sub-themes, and per-component theming. Further, we've standardized the names of theme props, giving full control to customize any aspect of every component.
+
+<ScrollView horizontal showsHorizontalScrollbars={false}>
+  <XStack>
+    <MediaPlayerDemo theme="pink" />
+    <MediaPlayerDemo theme="blue" />
+    <MediaPlayerDemo theme="yellow" />
+  </XStack>
+</ScrollView>
+
+We've also fixed and improved a lot of how the `@tamagui/feather-icons` and Button component together with themes to automatically handle passing values between each other.
+
+[Read the docs for more on how](/docs/intro/themes).
+
 ## Animations
 
-## Components
+## New Components
 
 ## Pseudo: Focus
 

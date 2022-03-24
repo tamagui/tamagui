@@ -1,4 +1,5 @@
 export const shorthands = {
+  o: 'opacity',
   ac: 'alignContent',
   ai: 'alignItems',
   als: 'alignSelf',

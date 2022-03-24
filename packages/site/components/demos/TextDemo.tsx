@@ -1,7 +1,7 @@
 import React from 'react'
 import { Paragraph, SizableText, Text, YStack } from 'tamagui'
 
-export function TextDemo() {
+export default function TextDemo() {
   return (
     <YStack space="$2" ai="center">
       <Text>Hello world</Text>

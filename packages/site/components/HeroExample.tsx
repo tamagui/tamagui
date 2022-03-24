@@ -28,10 +28,10 @@ export function HeroExample() {
       <YStack zi={1} space="$5">
         <YStack space="$2">
           <H2 als="center">
-            Less work to feel native <span className="rainbow">everywhere</span>
+            Styles that run faster <span className="rainbow">everywhere</span>
           </H2>
           <H3 theme="alt2" als="center" fow="400">
-            Next level performance meets easer to write code.
+            Faster runtime 🤝 less code 🤝 more platforms.
           </H3>
         </YStack>
 
@@ -174,8 +174,8 @@ export default createTamagui({
         'The compiler optimizes inline styles to atomic CSS and flattens trees to HTML tags extra speed.',
       outputs: [
         {
-          code: `const _cn2 = " _boxSizing-deolkf _color-1gcmrwd _display-1471scf _fontFamily-187pbxx _fontSize-mmgcxm _wordWrap-qvutc0"
-const _cn = " _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-1vvdr1v _paddingRight-9myuio _width-11mp6g5"
+          code: `const _cn2 = " _color-1gcmrwd _display-1471scf _fontFamily-187pbxx _fontSize-mmgcxm"
+const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-1vvdr1v _paddingRight-9myuio _width-11mp6g5"
 import { Text, YStack } from 'tamagui'
 
 const App = () => <div className={_cn}>
@@ -186,11 +186,7 @@ const App = () => <div className={_cn}>
           language: 'jsx',
         },
         {
-          code: `
-._alignItems-1oszu61{-ms-flex-align:stretch;-webkit-align-items:stretch;-webkit-box-align:stretch;align-items:stretch;}
-._boxSizing-deolkf{box-sizing:border-box;}
-._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexBasis-1mlwlqe{-ms-flex-preferred-size:auto;-webkit-flex-basis:auto;flex-basis:auto;}
+          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
 ._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 ._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
 ._paddingLeft-1vvdr1v{padding-left:var(--space-1);}
@@ -200,7 +196,6 @@ const App = () => <div className={_cn}>
 ._display-1471scf{display:inline;}
 ._fontFamily-187pbxx{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
 ._fontSize-mmgcxm{font-size:var(--fontSize-1);}
-._wordWrap-qvutc0{word-wrap:break-word;}
 `,
           language: 'css',
         },
@@ -238,11 +233,11 @@ const App = (props) => (
         'Instead of large objects, your render function now just concats a single className string.',
       outputs: [
         {
-          code: `const _cn5 = " _boxSizing-deolkf _color-scmqyp _display-1471scf _fontFamily-xeweqh _fontSize-7uzi8p _lineHeight-1l6ykvy _wordWrap-qvutc0"
+          code: `const _cn5 = " _color-scmqyp _display-1471scf _fontFamily-xeweqh _fontSize-7uzi8p _lineHeight-1l6ykvy"
 const _cn4 = "  _backgroundColor-1542mo4"
 const _cn3 = " _paddingBottom-12bic3x _paddingLeft-7ztw5e _paddingRight-g6vdx7 _paddingTop-1vq430g"
 const _cn2 = " _paddingBottom-z3qxl0 _paddingLeft-14km6ah _paddingRight-1qpq1qc _paddingTop-1medp4i"
-const _cn = " _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx "
+const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx "
 import { concatClassName } from "@tamagui/helpers"
 import { Paragraph, YStack } from 'tamagui'
 
@@ -255,10 +250,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
           language: 'jsx',
         },
         {
-          code: ` ._alignItems-1oszu61{-ms-flex-align:stretch;-webkit-align-items:stretch;-webkit-box-align:stretch;align-items:stretch;}
-._boxSizing-deolkf{box-sizing:border-box;}
-._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexBasis-1mlwlqe{-ms-flex-preferred-size:auto;-webkit-flex-basis:auto;flex-basis:auto;}
+          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
 ._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 ._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
 ._paddingBottom-z3qxl0{padding-bottom:var(--space-5);}
@@ -273,8 +265,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
 ._display-1471scf{display:inline;}
 ._fontFamily-xeweqh{font-family:var(--font-body);}
 ._fontSize-7uzi8p{font-size:var(--fontSize-2);}
-._lineHeight-1l6ykvy{line-height:var(--lineHeight-2);}
-._wordWrap-qvutc0{word-wrap:break-word;}`,
+._lineHeight-1l6ykvy{line-height:var(--lineHeight-2);}`,
           language: 'css',
         },
       ],
@@ -314,18 +305,16 @@ const App = () => (
         'Custom defined media queries output to clean CSS that runs much faster (try resizing this site).',
       outputs: [
         {
-          code: `const _cn = " _alignItems-1oszu61 _backgroundColor-1g6456j _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor--hover-57dg7b _backgroundColor-_gtSm_1542mo4 _backgroundColor-_gtSm_-active-98uye2"
+          code: `const _cn = " _backgroundColor-1g6456j _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor--hover-57dg7b _backgroundColor-_gtSm_1542mo4 _backgroundColor-_gtSm_-active-98uye2"
 import { YStack } from 'tamagui'
 
 const App = () => <div className={_cn} />`,
           language: 'jsx',
         },
         {
-          code: `._alignItems-1oszu61{-ms-flex-align:stretch;-webkit-align-items:stretch;-webkit-box-align:stretch;align-items:stretch;}
+          code: `
 ._backgroundColor-1g6456j{background-color:rgba(255,0,0,1.00);}
-._boxSizing-deolkf{box-sizing:border-box;}
 ._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexBasis-1mlwlqe{-ms-flex-preferred-size:auto;-webkit-flex-basis:auto;flex-basis:auto;}
 ._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 ._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
 @media not all and (hover: none) { :root  ._backgroundColor--hover-57dg7b:hover{background-color:rgba(0,0,255,1.00);} }
@@ -374,8 +363,8 @@ const App = () => (
         'Shorthands work with the compiler support of media queries, psuedo styling and conditional logic.',
       outputs: [
         {
-          code: `const _cn2 = " _boxSizing-deolkf _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p _wordWrap-qvutc0"
-  const _cn = " _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
+          code: `const _cn2 = " _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p"
+  const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
   import { Text, YStack } from 'tamagui'
   
   const App = () => <div className={_cn}>
@@ -386,10 +375,7 @@ const App = () => (
           language: 'jsx',
         },
         {
-          code: `._alignItems-1oszu61{-ms-flex-align:stretch;-webkit-align-items:stretch;-webkit-box-align:stretch;align-items:stretch;}
-._boxSizing-deolkf{box-sizing:border-box;}
-._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexBasis-1mlwlqe{-ms-flex-preferred-size:auto;-webkit-flex-basis:auto;flex-basis:auto;}
+          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
 ._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 ._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
 ._paddingLeft-11jtx42{padding-left:var(--space-2);}
@@ -399,8 +385,7 @@ const App = () => (
 @media screen and (min-width: 861px) { :root:root ._paddingRight-_gtSm_poy3ov{padding-right:var(--space-6);} }
 ._display-1471scf{display:inline;}
 ._fontFamily-187pbxx{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
-._fontSize-7uzi8p{font-size:var(--fontSize-2);}
-._wordWrap-qvutc0{word-wrap:break-word;}`,
+._fontSize-7uzi8p{font-size:var(--fontSize-2);}`,
           language: 'css',
         },
       ],
@@ -439,7 +424,7 @@ const App = () => {
         'If all hooks are used purely for styling, the compiler will remove the hook call entirely.',
       outputs: [
         {
-          code: `const _cn = " _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0"
+          code: `const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0"
 import { YStack, useMedia, useTheme } from 'tamagui'
 
 const App = () => {
@@ -448,10 +433,7 @@ const App = () => {
           language: 'jsx',
         },
         {
-          code: ` ._alignItems-1oszu61{-ms-flex-align:stretch;-webkit-align-items:stretch;-webkit-box-align:stretch;align-items:stretch;}
-._boxSizing-deolkf{box-sizing:border-box;}
-._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexBasis-1mlwlqe{-ms-flex-preferred-size:auto;-webkit-flex-basis:auto;flex-basis:auto;}
+          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
 ._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 ._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
 @media screen and (max-width: 860px) { :root:root ._transform-_sm_1exagq{-webkit-transform:translateY(10px);transform:translateY(10px);} }

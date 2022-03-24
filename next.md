@@ -1,4 +1,7 @@
+- fix image w/h shorthand not translating to width/height runtime
 - extracted theme="" components will change how ThemeReset/Theme work with finding parent context, we'll need to have the equivalent web versions for all of them. something like MutationObserver(querySelector.closest('.theme--parent'))
+
+- document ThemeReverse
 
 - test component theme + alt theme (plus with compiled)
 
