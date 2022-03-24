@@ -28,7 +28,7 @@
     "@tamagui/helpers": "^1.0.0-alpha.64",
     "@tamagui/use-debounce": "^1.0.0-alpha.64",
     "@tamagui/use-force-update": "^1.0.0-alpha.64",
-    "expo-linear-gradient": "^11.0.2",
+    "expo-linear-gradient": "~11.0.2",
     "normalize-css-color": "*",
     "react": "*",
     "react-dom": "*",
