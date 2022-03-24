@@ -225,14 +225,15 @@ export function createExtractor() {
             )
           }
 
-          if (disableExtraction) {
-            if (!hasLogged) {
-              console.log(
-                prefixLogs,
-                'Tamagui disableExtraction set: no CSS or optimizations will be run'
-              )
-              hasLogged = true
+          const shouldLog = !hasLogged
+          if (shouldLog) {
+            if (disableExtraction) {
+              console.log(prefixLogs || '      »', 'disableExtraction: not optimizing')
             }
+            console.log(prefixLogs || '      »', '                    name | time |   opt · flat')
+            hasLogged = true
+          }
+          if (disableExtraction) {
             return
           }
 

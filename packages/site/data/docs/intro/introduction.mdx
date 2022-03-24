@@ -3,9 +3,11 @@ title: Introduction
 description: The how and why of Tamagui
 ---
 
-Tamagui lets you **share more code between web and native apps while improvings DX, performance, and accessibility**. It turns natural syntax for responsive styles, themes, and inline styles into efficient atomic CSS (or on native, hoisted into a top-level StyleSheet.create).
+Tamagui lets you **share way more code between web and native apps - all while improving DX, performance, and accessibility**. It turns all styles, even inline styles, responsive queries and themes, into efficient extracted atomic CSS (or on native, hoisted into a top-level StyleSheet.create).
 
-The compiler paritally evaluates many common logical operations, spreads and more, and flattens any fully analyzable views into a simple HTML tags on web or View/Text on native.
+This is a **win-win-win**: it's more performant, easier to write and maintain, and renders on native and web the same. Typically you'd trade performance for DX, or both for cross-platform compatibility. With Tamagui, you get all three at once.
+
+The compiler even evaluates away many common logical operations, conditionals, and spreads. It flattens any fully analyzable views into a much faster simple HTML tags on web, or View/Text on native.
 
 <Image title="Tamagui logo" src="/blog/introducing-tamagui/hero.png" height={200} />
 

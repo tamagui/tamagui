@@ -3,7 +3,7 @@ import { Menu as MenuIcon } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
 import { Button, H3, Paragraph, XStack, YStack } from 'tamagui'
 
-export function MenuDemo() {
+export default function MenuDemo() {
   const [show, setShow] = useState(false)
   return null
 

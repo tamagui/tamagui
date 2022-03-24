@@ -19,4 +19,15 @@ export const Code = styled(Paragraph, {
   },
 })
 
+export const CodeInline = styled(Paragraph, {
+  fontFamily: '$mono',
+  theme: 'alt2',
+  color: '$color',
+  backgroundColor: '$background',
+  br: '$1',
+  lineHeight: 18,
+  px: '$1',
+  py: 3,
+})
+
 // const x = <Code />

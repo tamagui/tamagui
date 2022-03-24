@@ -274,9 +274,9 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
             //
             theme.className,
             defaultsClassName,
-            props.className,
             classNames,
             stylesClassNames,
+            props.className,
           ]
 
       // @ts-ignore we are optimizing using arguments
@@ -492,7 +492,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         viewProps['debug'] = true
-        console.log('» props in:', props)
+        console.log('» props in:', props, 'className', props.className?.split(' '))
         console.log('» props out:', {
           ...viewProps,
           classNameSplit: viewProps.className?.split(' '),

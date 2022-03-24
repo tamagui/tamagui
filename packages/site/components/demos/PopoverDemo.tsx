@@ -2,7 +2,7 @@ import { Menu } from '@tamagui/feather-icons'
 import React from 'react'
 import { Button, H4, Paragraph, Popover, YStack } from 'tamagui'
 
-export function PopoverDemo() {
+export default function PopoverDemo() {
   return (
     <Popover
       placement="top right"

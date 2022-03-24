@@ -103,8 +103,34 @@ And the following CSS:
 }
 ```
 
-## Can I use it beyond styling?
+## Using outside of styling
 
 Yes. The nice thing about `useTheme` and `useMedia` is that they fall back gracefully and can be used generally in your render for any purpose. Like useMedia, if you use useTheme like this, it also granularly tracks which values you use and only re-renders on tracked keys.
 
 So if you access only `theme.bg` in your render function, the component will only re-render when theme.bg changes.
+
+## Changing the theme at the hook level
+
+This is a more advanced use for building custom hooks or components, but you can pass in a theme name and a component theme name (as [discussed here](/docs/intro/themes#component-subset-themes)) to grab the right subset theme:
+
+```tsx
+function MyComponent(props) {
+  const theme = useTheme(props.theme, 'mycomponent')
+}
+```
+
+For example, if you have the following themes:
+
+- `dark`
+- `dark_green`
+- `dark_green_mycomponent`
+
+And this code:
+
+```tsx
+<Theme name="dark">
+  <MyComponent theme="green" />
+</Theme>
+```
+
+The above `useTheme` hook would return the `dark_green_mycomponent` theme.

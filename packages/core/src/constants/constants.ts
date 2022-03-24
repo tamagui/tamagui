@@ -1,8 +1,7 @@
 import { isWeb } from './platform'
 
-export const GET_DEFAULT_THEME = '___TGUI'
 export const THEME_NAME_SEPARATOR = '_'
-export const THEME_CLASSNAME_PREFIX = `theme--`
+export const THEME_CLASSNAME_PREFIX = `tui_`
 
 export const stackDefaultStyles = {
   alignItems: 'stretch',

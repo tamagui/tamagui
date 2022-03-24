@@ -13,6 +13,16 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
       webpack: (webpackConfig: any, options) => {
         const { dir, config, dev, isServer } = options
 
+        // TODO move into tamagui?
+        if (typeof requestAnimationFrame === 'undefined') {
+          globalThis['requestAnimationFrame'] = setImmediate
+        }
+        // @ts-ignore
+        if (typeof globalThis['__DEV__'] === 'undefined') {
+          // @ts-ignore
+          globalThis['__DEV__'] = dev
+        }
+
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
@@ -54,7 +64,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           try {
             const regexStr = `\/react-native-web\/.*(${excludeExports.join('|')}).*\/`
             const regex = new RegExp(regexStr)
-            console.log(prefix, 'Excluding react-native-web deps:', regexStr)
+            console.log(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
               new webpack.NormalModuleReplacementPlugin(
                 regex,
@@ -69,7 +79,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         }
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
-          console.log(prefix, 'Ignoring tsconfig paths, they mess up transpile')
+          console.log(prefix, 'ignoring tsconfig paths')
           delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
           delete webpackConfig.resolve.plugins[0].paths['tamagui']
         }

@@ -36,7 +36,7 @@ export function loader(this: any, source: string) {
       (options.disableDebugAttr || process.env.NODE_ENV !== 'development')
     ) {
       if (!hasLogged) {
-        console.log(' » Tamagui disableDebug & disableExtraction set, no parsing running')
+        console.log(' » disableExtraction: no optimizations running')
         hasLogged = true
       }
       return callback(null, source)

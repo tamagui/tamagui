@@ -3,25 +3,31 @@ import { createContext } from 'react'
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 
 export type SetActiveThemeProps = {
-  parentName?: string | null
+  parentManager?: ThemeManager | null
   name: string | null
   theme?: any
 }
 
 export class ThemeManager {
   name: string | null = 'light'
-  parentName: string | null = null
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
   themeListeners = new Set<ThemeListener>()
+  parentManager: ThemeManager | null = null
   theme = null
 
-  setActiveTheme({ name, theme, parentName }: SetActiveThemeProps) {
-    if (name === this.name) return
+  get parentName() {
+    return this.parentManager?.name ?? null
+  }
+
+  update({ name, theme, parentManager = null }: SetActiveThemeProps) {
+    if (name === this.name && parentManager == this.parentManager) {
+      return
+    }
     this.name = name
     this.theme = theme
-    this.parentName = parentName || null
-    this.update()
+    this.parentManager = parentManager
+    this.notifyListeners()
   }
 
   track(uuid: any, keys: Set<string>) {
@@ -29,7 +35,7 @@ export class ThemeManager {
     this.keys.set(uuid, keys)
   }
 
-  update() {
+  notifyListeners() {
     if (!this.name) {
       this.keys.clear()
     }

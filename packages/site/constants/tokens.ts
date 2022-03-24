@@ -3,6 +3,7 @@ import { createFont, createTokens } from 'tamagui'
 import { allLightColors, darkColorsPostfixed } from './colors'
 
 const size = {
+  true: 10, // for space boolean true
   '0.5': 1,
   0: 2,
   1: 6,
@@ -20,7 +21,6 @@ const size = {
 }
 
 const space = {
-  true: size[2],
   ...size,
   ...Object.fromEntries(Object.entries(size).map(([k, v]) => [`-${k}`, -v])),
 }

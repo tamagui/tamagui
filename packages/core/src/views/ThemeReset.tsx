@@ -21,6 +21,12 @@ export const ThemeReset = (props: { children?: any }) => {
         setName(themeManager.parentName)
       }
     }, [themeManager.parentName])
+
+    useLayoutEffect(() => {
+      return themeManager.onChangeTheme(() => {
+        setName(themeManager.parentName)
+      })
+    }, [])
   }
 
   if (!themeManager || !props.children) {
@@ -28,7 +34,7 @@ export const ThemeReset = (props: { children?: any }) => {
   }
 
   return (
-    <Theme className="tamagui-theme-reset" name={name}>
+    <Theme className="tui-theme-reset" name={name}>
       {props.children}
     </Theme>
   )

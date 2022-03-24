@@ -1,0 +1,24 @@
+---
+title: Dev Tools
+description: Understand your views with helpful dev tools.
+---
+
+Tamagui has two ways of giving you a lot more insight into what's happening.
+
+## Debug pragma
+
+Adding `// debug` to the top of any file will output a verbose stream of everything Tamagui is doing at compile-time.
+
+Use it to see what's being extracted, why, and every step along the optimization pipeline.
+
+## Debug prop
+
+Adding `debug` to any Tamagui component will output a lot of information on what's going on at runtime. Use it like so:
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => <Button debug>Hello world</Button>
+```
+
+And you'll see props, styles, and a variety of variables relevant to processing them.

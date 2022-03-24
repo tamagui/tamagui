@@ -1,20 +1,21 @@
 /// <reference types="react" />
 declare type ThemeListener = (name: string | null, themeManager: ThemeManager) => void;
 export declare type SetActiveThemeProps = {
-    parentName?: string | null;
+    parentManager?: ThemeManager | null;
     name: string | null;
     theme?: any;
 };
 export declare class ThemeManager {
     name: string | null;
-    parentName: string | null;
     keys: Map<any, Set<string>>;
     listeners: Map<any, Function>;
     themeListeners: Set<ThemeListener>;
+    parentManager: ThemeManager | null;
     theme: null;
-    setActiveTheme({ name, theme, parentName }: SetActiveThemeProps): void;
+    get parentName(): string | null;
+    update({ name, theme, parentManager }: SetActiveThemeProps): void;
     track(uuid: any, keys: Set<string>): void;
-    update(): void;
+    notifyListeners(): void;
     onChangeTheme(cb: ThemeListener): () => void;
     onUpdate(uuid: any, cb: Function): () => void;
 }

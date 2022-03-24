@@ -10,7 +10,7 @@ import { ScrollView } from 'react-native'
 import { Button, Paragraph, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
-import { ColorToggle, useTint } from './ColorToggle'
+import { ColorToggleButton, useTint } from './ColorToggleButton'
 import { Container } from './Container'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { GithubIcon } from './GithubIcon'
@@ -221,7 +221,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               </Link>
 
               <XStack space="$1" ml="auto">
-                <ColorToggle />
+                <ColorToggleButton />
                 <ThemeToggle chromeless />
               </XStack>
 
@@ -255,7 +255,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           $gtSm={{
             pt: 67,
             pb: '$9',
-            pl: 250,
+            pl: 230,
             pr: 0,
           }}
           $gtMd={{

@@ -3,13 +3,14 @@
   "version": "1.0.0-alpha.68",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development next dev --port 5005",
+    "dev": "NODE_OPTIONS='--no-deprecation' NODE_ENV=development next dev --port 5005",
     "dev:clean": "rm -r .next && yarn dev",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start"
   },
   "dependencies": {
+    "@docsearch/react": "^3.0.0",
     "@tamagui/colors": "^1.0.0-alpha.64",
     "@tamagui/drawer": "^1.0.0-alpha.68",
     "@tamagui/feather-icons": "^1.0.0-alpha.64",

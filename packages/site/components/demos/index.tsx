@@ -1,14 +1,16 @@
-export { StacksDemo } from './StacksDemo'
-export { TextDemo } from './TextDemo'
-export { ButtonDemo } from './ButtonDemo'
-export { ThemeInverseDemo } from './ThemeInverseDemo'
-export { FormsDemo } from './FormsDemo'
-export { LinearGradientDemo } from './LinearGradientDemo'
-export { HeadingsDemo } from './HeadingsDemo'
-export { TooltipDemo } from './TooltipDemo'
-export { DrawerDemo } from './DrawerDemo'
-export { MenuDemo } from './MenuDemo'
-export { SeparatorDemo } from './SeparatorDemo'
-export { PopoverDemo } from './PopoverDemo'
-export { HoverablePopoverDemo } from './HoverablePopoverDemo'
-export { ImageDemo } from './ImageDemo'
+import dynamic from 'next/dynamic'
+
+export const StacksDemo = dynamic(() => import('./StacksDemo'))
+export const TextDemo = dynamic(() => import('./TextDemo'))
+export const ButtonDemo = dynamic(() => import('./ButtonDemo'))
+export const ThemeInverseDemo = dynamic(() => import('./ThemeInverseDemo'))
+export const FormsDemo = dynamic(() => import('./FormsDemo'))
+export const LinearGradientDemo = dynamic(() => import('./LinearGradientDemo'))
+export const HeadingsDemo = dynamic(() => import('./HeadingsDemo'))
+export const TooltipDemo = dynamic(() => import('./TooltipDemo'))
+export const DrawerDemo = dynamic(() => import('./DrawerDemo'))
+export const MenuDemo = dynamic(() => import('./MenuDemo'))
+export const SeparatorDemo = dynamic(() => import('./SeparatorDemo'))
+export const PopoverDemo = dynamic(() => import('./PopoverDemo'))
+export const HoverablePopoverDemo = dynamic(() => import('./HoverablePopoverDemo'))
+export const ImageDemo = dynamic(() => import('./ImageDemo'))

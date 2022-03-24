@@ -1,8 +1,7 @@
-import { Battery, Moon, Pocket, Thermometer, X } from '@tamagui/feather-icons'
-import React from 'react'
-import { Button, Theme, Tooltip, XStack } from 'tamagui'
+import { Battery, Moon, Pocket } from '@tamagui/feather-icons'
+import { Button, Tooltip, XStack } from 'tamagui'
 
-export function TooltipDemo() {
+export default function TooltipDemo() {
   return (
     <XStack space>
       <Tooltip contents="Normal tooltip with arrow" showArrow>

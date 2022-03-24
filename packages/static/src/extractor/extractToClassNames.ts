@@ -336,13 +336,13 @@ export function extractToClassNames({
       ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
       : 0
     const timing = `${Date.now() - start}`.padStart(3)
-    const path = basename(sourcePath).padStart(30)
+    const path = basename(sourcePath).slice(0, 22).padStart(24)
     const numOptimized = `${res.optimized}`.padStart(4)
-    const memory = memUsed > 10 ? `used ${memUsed}MB` : ''
+    const memory = memUsed > 10 ? ` ${memUsed}MB` : ''
     console.log(
-      `${getPrefixLogs(options)} ${path} ${timing}ms ׁ· ${numOptimized} optimized · ${
+      `${getPrefixLogs(options)} ${path} ${timing}ms ׁ| ${numOptimized}␚ · ${
         res.flattened
-      } flattened ${memory}`
+      }␡${memory}`
     )
   }
 

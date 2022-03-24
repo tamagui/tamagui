@@ -1,0 +1,51 @@
+---
+title: Animations
+description: Pluggable animation drivers.
+---
+
+By default, Tamagui ships without animations. Now in beta, you can plug-in whichever animation driver you'd like, or write your own.
+
+Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using more advanced libraries like `reanimated` on native - all without changing any of your view code.
+
+## Installing an animation driver
+
+To your `tamagui.config.ts` file add:
+
+```tsx
+import { animations } from './animations'
+
+export default createTamagui({
+  animations,
+  ...theRestOfYourConfig,
+})
+```
+
+Now, in your `animations.ts` file:
+
+```tsx
+import { createAnimations } from '@tamagui/animations-css'
+
+export const animations = createAnimations({
+  springy: 'ease-in-out 300ms',
+})
+```
+
+If you want reanimated on native, add a `animations.native.ts` file:
+
+```tsx
+import { createAnimations } from '@tamagui/animations-reanimated'
+
+export const animations = createAnimations({
+  springy: {
+    type: 'spring',
+    damping: 20,
+    stiffness: 90,
+  },
+})
+```
+
+Note the keys match, so you can swap them out.
+
+## Using animations
+
+The `animation`...

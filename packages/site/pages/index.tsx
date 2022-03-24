@@ -3,8 +3,7 @@ import { FeaturesGrid } from '@components/FeaturesGrid'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import Link from 'next/link'
-import React from 'react'
-import { Button, H2, H3, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, H2, H3, Paragraph, YStack } from 'tamagui'
 
 import { BenchmarkChart } from '../components/BenchmarkChart'
 import { ContainerLarge } from '../components/Container'
@@ -41,7 +40,7 @@ function Performance() {
     <ContainerLarge position="relative">
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
-          <H2>Unmatched performance</H2>
+          <H2>Really, really fast</H2>
           <H3 theme="alt2" fow="400">
             3-10x speed, even with inline styling.
           </H3>
