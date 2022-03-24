@@ -23,6 +23,12 @@ type PseudoStyles = {
   focusStyle?: ViewStyle
 }
 
+const skipKeys = {
+  children: true,
+  key: true,
+  ref: true,
+}
+
 export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
@@ -39,6 +45,11 @@ export const getSplitStyles = (
   for (const keyInit in props) {
     // be sure to sync next few lines below to getSubStyle (*1)
     const valInit = props[keyInit]
+
+    if (skipKeys[keyInit]) {
+      viewProps[keyInit] = valInit
+      continue
+    }
 
     let isMedia = keyInit[0] === '$'
     let isPseudo = validStylesPseudo[keyInit]

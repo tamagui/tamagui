@@ -55,14 +55,25 @@ export const useTheme = (themeName?: string | null, componentName?: string): The
 
   return useMemo(
     () => {
-      if (!theme || !themeManager) {
-        console.log('wut', themeName, theme, themeManager)
+      if (!theme) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('No theme', { themeName, theme })
+        }
         return theme as any
       }
       return new Proxy(theme, {
-        get(_, key: string) {
+        get(_, key) {
           if (!name) {
             return Reflect.get(_, key)
+          }
+          if (key === GetThemeManager) {
+            return themeManager
+          }
+          if (key === 'name') {
+            return name
+          }
+          if (key === 'className') {
+            return className
           }
           let activeTheme = themes[name]
           if (!activeTheme) {
@@ -71,28 +82,25 @@ export const useTheme = (themeName?: string | null, componentName?: string): The
             }
             activeTheme = theme
           }
-          if (key === 'name') {
-            return name
-          }
-          if (key === 'className') {
-            return className
-          }
-          const val = activeTheme[key]
-          if (process.env.NODE_ENV === 'development') {
-            if (typeof val === 'undefined') {
-              console.warn(`No theme value "${String(key)}" in`, activeTheme)
-              return null
+          if (typeof key === 'string') {
+            const val = activeTheme[key]
+            if (process.env.NODE_ENV === 'development') {
+              if (typeof val === 'undefined') {
+                console.warn(`No theme value "${String(key)}" in`, activeTheme)
+                return null
+              }
+              if (!isVariable(val)) {
+                console.warn('Non variable!', val)
+              } else if (val.name !== key) {
+                console.warn('Non-matching name for variable to key', key, val.name)
+              }
             }
-            if (!isVariable(val)) {
-              console.warn('Non variable!', val)
-            } else if (val.name !== key) {
-              console.warn('Non-matching name for variable to key', key, val.name)
+            if (state.current.isRendering) {
+              state.current.keys.add(key)
             }
+            return val
           }
-          if (state.current.isRendering) {
-            state.current.keys.add(key)
-          }
-          return val
+          return Reflect.get(_, key)
         },
       })
     },
@@ -100,6 +108,12 @@ export const useTheme = (themeName?: string | null, componentName?: string): The
       /* if concurrent mode wanted put manager.name here */
     ]
   )
+}
+
+const GetThemeManager = Symbol('GetThemeManager')
+
+export const getThemeManager = (theme: any) => {
+  return theme?.[GetThemeManager]
 }
 
 export const useThemeName = (opts?: { parent?: true }) => {
@@ -131,15 +145,15 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
       : nextNameParentParent in themes
       ? nextNameParentParent
       : null
-  const name = !shortName ? null : shortName in themes ? shortName : nextParentName
-  const theme = name ? themes[name] : null
+  const nextName = !shortName ? null : shortName in themes ? shortName : nextParentName
+  const nextTheme = nextName ? themes[nextName] : null
   const themeManager = useConstant<ThemeManager | null>(() => {
-    if (!theme) {
+    if (!nextTheme) {
       return null
     }
     const manager = new ThemeManager()
-    if (name) {
-      manager.setActiveTheme({ name, theme: themes[name], parentName })
+    if (nextName) {
+      manager.setActiveTheme({ name: nextName, theme: themes[nextName], parentName })
     }
     return manager
   })
@@ -148,8 +162,8 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
     if (!themeManager) {
       return
     }
-    if (name) {
-      themeManager.setActiveTheme({ name, theme, parentName })
+    if (nextName) {
+      themeManager.setActiveTheme({ name: nextName, theme: nextTheme, parentName })
     }
     const dispose = parent.onChangeTheme((next) => {
       if (next) {
@@ -161,7 +175,7 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
       // TODO should we undo setActiveTheme on dispose?
       dispose()
     }
-  }, [themes, name, parentName])
+  }, [themes, nextName, parentName])
 
   let className: string | null = null
   const classNamePost = shortName ?? componentName
@@ -170,10 +184,10 @@ export const useChangeThemeEffect = (shortName?: string | null, componentName?: 
   }
 
   return {
-    name: name || parentName,
+    name: nextName || parentName,
     themes,
-    themeManager: themeManager || parent,
-    theme: theme || themeManager?.theme || parent.theme || themes['light'],
+    themeManager,
+    theme: nextTheme || themeManager?.theme || parent.theme || themes['light'],
     className,
   }
 }

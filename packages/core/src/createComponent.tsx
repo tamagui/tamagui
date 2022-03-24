@@ -20,9 +20,10 @@ import { rnw } from './constants/rnw'
 import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { getSplitStyles } from './helpers/getSplitStyles'
+import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
-import { useTheme } from './hooks/useTheme'
+import { getThemeManager, useTheme } from './hooks/useTheme'
 import {
   SpaceTokens,
   StackProps,
@@ -158,7 +159,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       accessibilityRole,
 
       // ignore from here on out
-      theme: _ignoreTheme,
+      theme: _themeProp,
 
       // TODO feature load layout hook
       onLayout,
@@ -445,12 +446,15 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     }
 
-    const childEls = spacedChildren({
-      children,
-      space,
-      flexDirection: props.flexDirection || defaultProps?.flexDirection,
-      isZStack: isZStack,
-    })
+    const childEls = wrapThemeManagerContext(
+      spacedChildren({
+        children,
+        space,
+        flexDirection: props.flexDirection || defaultProps?.flexDirection,
+        isZStack: isZStack,
+      }),
+      getThemeManager(theme)
+    )
 
     let content: any
 

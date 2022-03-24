@@ -16,13 +16,11 @@ import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { GithubIcon } from './GithubIcon'
 import { Link } from './Link'
 import { NavHeading } from './NavHeading'
-import { useTheme } from './NextTheme'
 
 const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
 export function DocsPage({ children }: { children: React.ReactNode }) {
-  const { theme } = useTheme()
-  console.log('theme', theme)
+  // const { theme } = useTheme()
   const [tint] = useTint()
   const router = useRouter()
   const [isOpen, setIsOpen] = React.useState(false)

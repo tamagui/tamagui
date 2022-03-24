@@ -1,6 +1,7 @@
 import { ThemeManager } from '../ThemeManager';
 import { ThemeName, ThemeObject } from '../types';
 export declare const useTheme: (themeName?: string | null | undefined, componentName?: string | undefined) => ThemeObject;
+export declare const getThemeManager: (theme: any) => any;
 export declare const useThemeName: (opts?: {
     parent?: true | undefined;
 } | undefined) => string;
@@ -12,7 +13,7 @@ export declare const useChangeThemeEffect: (shortName?: string | null | undefine
             [key: string]: import("../types").VariableVal;
         };
     };
-    themeManager: ThemeManager;
+    themeManager: ThemeManager | null;
     theme: Partial<import("../types").TamaguiBaseTheme> & {
         [key: string]: import("../types").VariableVal;
     };

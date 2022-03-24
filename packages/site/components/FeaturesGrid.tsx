@@ -27,8 +27,8 @@ export function FeaturesGrid() {
           <YStack ai="flex-start" space p="$4">
             <H4 fontFamily="$body">SSR</H4>
             <Paragraph theme="alt2">
-              Tamagui supports cross-browser server-side rendering, even for responsive styles and
-              variants.
+              Cross-browser server-side rendering, even for responsive styles and variants out of
+              the box.
             </Paragraph>
           </YStack>
 
@@ -36,7 +36,7 @@ export function FeaturesGrid() {
             <H4 fontFamily="$body">Dev tools</H4>
             <Paragraph theme="alt2">
               A fully-typed API, completely extensible, token-aware properties, debug props and
-              pragmas, and custom shorthands.
+              pragmas, dev-time filename and line numbers on each html tag.
             </Paragraph>
           </YStack>
 

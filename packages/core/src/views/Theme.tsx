@@ -1,14 +1,15 @@
 import React from 'react'
 
 import { isWeb } from '../constants/platform'
+import { wrapThemeManagerContext } from '../helpers/wrapThemeManagerContext'
 import { useChangeThemeEffect } from '../static'
-import { ThemeManagerContext } from '../ThemeManager'
 import { ThemeName } from '../types'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
 export type ThemeProps = {
+  className?: string
   disableThemeClass?: boolean
   name: Exclude<ThemeName, number> | null
   children?: any
@@ -29,24 +30,15 @@ export const Theme = (props: ThemeProps) => {
     return props.children
   }
 
-  const contents = themeManager ? (
-    <ThemeManagerContext.Provider value={themeManager}>
-      {props.children}
-    </ThemeManagerContext.Provider>
-  ) : (
-    props.children
-  )
+  const contents = wrapThemeManagerContext(props.children, themeManager)
 
   if (isWeb) {
     if (props.disableThemeClass) {
       return contents
     }
-    // console.log('??', className, 'is wrong light-blue when should be dark-blue')
     return (
       <div
-        {...(!!className && {
-          className,
-        })}
+        className={`${className || ''} ${props.className || ''}`}
         style={{
           display: 'contents',
           // in order to provide currentColor, set color by default

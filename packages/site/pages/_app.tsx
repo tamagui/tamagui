@@ -37,6 +37,8 @@ export default function App(props: AppProps) {
   const isDark = classes.includes('theme--dark')
   const [theme, setTheme] = useState(isDark ? 'dark' : 'light')
 
+  console.log('theme', theme)
+
   const contents = useMemo(() => {
     return (
       <SafeAreaProvider>

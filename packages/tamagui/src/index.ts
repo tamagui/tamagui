@@ -50,6 +50,7 @@ export {
   Text,
   Theme,
   ThemeInverse,
+  ThemeReset,
   // context,
   TextAncestorContext,
   // constants

@@ -20,6 +20,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         const jsxDevRuntime = require.resolve('react/jsx-dev-runtime')
         const rnw = require.resolve('react-native-web')
         const reanimated = require.resolve('react-native-reanimated')
+        const proxyWorm = require.resolve('@dish/proxy-worm')
         const prefix = `${isServer ? '[ssr]' : '[web]'} »`
 
         webpackConfig.resolve.alias = {
@@ -30,6 +31,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           'react/jsx-dev-runtime': jsxDevRuntime,
           'react-native$': rnw,
           'react-native-reanimated': reanimated,
+          '@testing-library/react-native': proxyWorm,
           '@gorhom/bottom-sheet$': require
             .resolve('@gorhom/bottom-sheet')
             .replace('commonjs', 'module'),

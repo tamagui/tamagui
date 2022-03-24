@@ -5,7 +5,7 @@ description: How to create and use themes in Tamagui.
 
 Themes in Tamagui are powerful because they can compose off each other nicely. They are meant to be fairly small, with tokens doing much of the heavy lifting.
 
-Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color1`, `color2`, `bg1`, and `bg2`. We also have a set of light and dark colors, which we define onto their respective `dark` and `light` base themes.
+Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color1`, `colorHover`, `background1`, and `backgroundHover`. We also have a set of light and dark colors, which we define onto their respective `dark` and `light` base themes.
 
 Tamagui lets you access themes and tokens both in the same way. Let's start with an example of inline styling with a subset of the configuration:
 
@@ -80,25 +80,25 @@ export const App = () => (
 
 It's easy for types to get mixed up with themes, there are patterns and helpers to make this better.
 
-Here's what we've landed on which helps ensure everything is typed properly. We use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. We keep themes in a separate `themes.ts` file, and we structure it like so:
+Here's what we've landed on which helps ensure everything is typed properly. Use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. Keep themes in a separate `themes.ts` file, and structure it like this:
 
 ```jsx
 import { createTheme } from 'tamagui'
 import { tokens } from './tokens'
 
 const lightTheme = createTheme({
-  bg: '#fff',
-  bg2: tokens.color.gray3,
-  bg3: tokens.color.gray4,
-  bg4: tokens.color.gray5,
+  background: '#fff',
+  backgroundHover: tokens.color.gray3,
+  backgroundPress: tokens.color.gray4,
+  backgroundFocus: tokens.color.gray5,
   borderColor: tokens.color.gray4,
-  borderColor2: tokens.color.gray6,
+  borderColorHover: tokens.color.gray6,
   color: tokens.color.gray12,
-  color2: tokens.color.gray11,
-  color3: tokens.color.gray10,
-  color4: tokens.color.gray6,
+  colorHover: tokens.color.gray11,
+  colorPress: tokens.color.gray10,
+  colorFocus: tokens.color.gray6,
   shadowColor: tokens.color.grayA5,
-  shadowColor2: tokens.color.grayA6,
+  shadowColorHover: tokens.color.grayA6,
 })
 
 // note: we set up a consistent theme type to validate the rest:
@@ -106,35 +106,35 @@ type BaseTheme = typeof lightTheme
 
 // the rest of the themes use BaseTheme
 const dark: BaseTheme = {
-  bg: '#000',
-  bg2: tokens.color.gray2Dark,
-  bg3: tokens.color.gray3Dark,
-  bg4: tokens.color.gray4Dark,
+  background: '#000',
+  backgroundHover: tokens.color.gray2Dark,
+  backgroundPress: tokens.color.gray3Dark,
+  backgroundFocus: tokens.color.gray4Dark,
   borderColor: tokens.color.gray3Dark,
-  borderColor2: tokens.color.gray4Dark,
+  borderColorHover: tokens.color.gray4Dark,
   color: '#ddd',
-  color2: tokens.color.gray11Dark,
-  color3: tokens.color.gray10Dark,
-  color4: tokens.color.gray6Dark,
+  colorHover: tokens.color.gray11Dark,
+  colorPress: tokens.color.gray10Dark,
+  colorFocus: tokens.color.gray6Dark,
   shadowColor: tokens.color.grayA6,
-  shadowColor2: tokens.color.grayA7,
+  shadowColorHover: tokens.color.grayA7,
 }
 
 // if you need to add non-token values, use createTheme
 const darkTranslucent: BaseTheme = createTheme({
   ...dark,
-  bg: 'rgba(0,0,0,0.7)',
-  bg2: 'rgba(0,0,0,0.5)',
-  bg3: 'rgba(0,0,0,0.25)',
-  bg4: 'rgba(0,0,0,0.1)',
+  background: 'rgba(0,0,0,0.7)',
+  backgroundHover: 'rgba(0,0,0,0.5)',
+  backgroundPress: 'rgba(0,0,0,0.25)',
+  backgroundFocus: 'rgba(0,0,0,0.1)',
 })
 
 const lightTranslucent: BaseTheme = createTheme({
   ...light,
-  bg: 'rgba(255,255,255,0.85)',
-  bg2: 'rgba(250,250,250,0.85)',
-  bg3: 'rgba(240,240,240,0.85)',
-  bg4: 'rgba(240,240,240,0.7)',
+  background: 'rgba(255,255,255,0.85)',
+  backgroundHover: 'rgba(250,250,250,0.85)',
+  backgroundPress: 'rgba(240,240,240,0.85)',
+  backgroundFocus: 'rgba(240,240,240,0.7)',
 })
 
 // use `as const` at the end here to be sure its strictly typed
