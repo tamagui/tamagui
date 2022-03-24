@@ -120,7 +120,16 @@ export const components = {
 
   h4: (props) => <H4 mt="$4" fontFamily="$body" {...props} />,
 
-  p: (props) => <Paragraph className="paragraph" display="block" {...props} mb="$2" mt="$2" />,
+  p: (props) => (
+    <Paragraph
+      // color="$colorHover"
+      className="paragraph"
+      display="block"
+      {...props}
+      mb="$2"
+      mt="$2"
+    />
+  ),
 
   a: ({ href = '', children, ...props }) => {
     return (
@@ -215,7 +224,7 @@ export const components = {
       <OffsetBox size={size}>
         <Image maxWidth="100%" {...props} />
       </OffsetBox>
-      <Text tag="figcaption" lineHeight={23} color="$color3" mt="$2">
+      <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
         {children}
       </Text>
     </YStack>
@@ -244,7 +253,7 @@ export const components = {
           style={{ width: '100%', display: 'block' }}
         ></video>
       </OffsetBox>
-      <Text tag="figcaption" lineHeight={23} mt="$2" color="$color3">
+      <Text tag="figcaption" lineHeight={23} mt="$2" color="$colorPress">
         {children}
       </Text>
     </YStack>

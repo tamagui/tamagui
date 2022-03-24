@@ -82,9 +82,9 @@ export function QuickNav() {
               </YStack>
             )} */}
 
-            {headings.map(({ id, nodeName, innerText }) => {
+            {headings.map(({ id, nodeName, innerText }, i) => {
               return (
-                <YStack tag="li" key={id} data-level={getLevel(nodeName)}>
+                <YStack tag="li" key={i} data-level={getLevel(nodeName)}>
                   <QuickNavLink href={`#${id}`}>{innerText}</QuickNavLink>
                 </YStack>
               )
