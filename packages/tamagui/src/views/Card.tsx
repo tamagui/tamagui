@@ -8,6 +8,7 @@ import { getSizedElevation } from './Stacks'
 React['createElement']
 
 export const Card = styled(SizableFrame, {
+  name: 'card',
   alignItems: 'flex-start',
   flexDirection: 'column',
   backgroundColor: '$background',

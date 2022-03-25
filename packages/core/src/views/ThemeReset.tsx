@@ -17,12 +17,14 @@ export const ThemeReset = (props: { children?: any }) => {
 
   if (typeof document !== 'undefined') {
     useLayoutEffect(() => {
+      if (!themeManager) return
       if (name !== themeManager.parentName) {
         setName(themeManager.parentName)
       }
-    }, [themeManager.parentName])
+    }, [themeManager?.parentName])
 
     useLayoutEffect(() => {
+      if (!themeManager) return
       return themeManager.onChangeTheme(() => {
         setName(themeManager.parentName)
       })

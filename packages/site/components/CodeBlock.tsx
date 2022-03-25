@@ -10,6 +10,7 @@ import css from 'refractor/lang/css'
 import diff from 'refractor/lang/diff'
 import js from 'refractor/lang/javascript'
 import jsx from 'refractor/lang/jsx'
+import { Theme } from 'tamagui'
 
 import { Code } from './Code'
 import { Pre } from './Pre'
@@ -43,13 +44,15 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
       return <CodeTypewriter className={classes} css={css} variant="" value={result} {...props} />
     }
     return (
-      <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
-        <Code
-          className={classes}
-          // @ts-ignore
-          dangerouslySetInnerHTML={{ __html: result }}
-        />
-      </Pre>
+      <Theme name="alt1">
+        <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
+          <Code
+            className={classes}
+            // @ts-ignore
+            dangerouslySetInnerHTML={{ __html: result }}
+          />
+        </Pre>
+      </Theme>
     )
   }
 )

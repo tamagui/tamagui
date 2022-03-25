@@ -55,7 +55,7 @@ const transform = withPlugins(
       return [
         {
           source: '/docs',
-          destination: '/docs/installation',
+          destination: '/docs/intro',
           permanent: true,
         },
       ]

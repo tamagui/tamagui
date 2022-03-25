@@ -446,15 +446,17 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     }
 
-    const childEls = wrapThemeManagerContext(
-      spacedChildren({
-        children,
-        space,
-        flexDirection: props.flexDirection || defaultProps?.flexDirection,
-        isZStack: isZStack,
-      }),
-      getThemeManager(theme)
-    )
+    const childEls = !children
+      ? children
+      : wrapThemeManagerContext(
+          spacedChildren({
+            children,
+            space,
+            flexDirection: props.flexDirection || defaultProps?.flexDirection,
+            isZStack: isZStack,
+          }),
+          getThemeManager(theme)
+        )
 
     let content: any
 
@@ -492,11 +494,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         viewProps['debug'] = true
-        console.log('» props in:', props, 'className', props.className?.split(' '))
-        console.log('» props out:', {
-          ...viewProps,
-          classNameSplit: viewProps.className?.split(' '),
-        })
+        console.log('» props in:', props, 'classnames', props.className?.split(' '))
+        console.log('» props out:', { ...viewProps }, 'classnames', viewProps.className?.split(' '))
         // prettier-ignore
         console.log('» etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
