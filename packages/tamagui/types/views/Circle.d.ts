@@ -94,13 +94,12 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
 } & {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
-}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -205,7 +204,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -310,7 +308,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -415,7 +412,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -520,7 +516,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -621,13 +616,12 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
 } & {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
-}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -732,7 +726,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -837,7 +830,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -942,7 +934,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1047,7 +1038,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1148,13 +1138,12 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
 } & {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
-}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1259,7 +1248,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1364,7 +1352,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1469,7 +1456,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1574,7 +1560,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1675,13 +1660,12 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
 } & {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
-}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1786,7 +1770,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1891,7 +1874,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -1996,7 +1978,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -2101,7 +2082,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -2202,13 +2182,12 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
 } & {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
-}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}>>, "focusable" | `$${string}` | "disabled" | "size" | keyof import("@tamagui/core").PseudoProps<any> | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -2313,7 +2292,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -2418,7 +2396,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -2523,7 +2500,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -2628,7 +2604,6 @@ export declare const Circle: import("@tamagui/core").StaticComponent<Omit<Omit<O
     focusable?: boolean | undefined;
     bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-    circular?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;

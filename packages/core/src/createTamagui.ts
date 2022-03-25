@@ -114,13 +114,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       cssRules.push(`:root {${sep}${[...tokenRules].join(`;${sep}`)}${sep}}`)
     }
 
-    const baseThemeNames = [
-      ...new Set(
-        Object.keys(config.themes).flatMap((x) => {
-          return x.split(THEME_NAME_SEPARATOR)
-        })
-      ),
-    ]
+    // special case for SSR
+    const hasDarkLight = 'light' in config.themes && 'dark' in config.themes
+    const CNP = `.${THEME_CLASSNAME_PREFIX}`
 
     // themes
     for (const themeName in config.themes) {
@@ -143,64 +139,21 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
 
       if (isWeb) {
-        // assuming we have themes in every combo:
-        //   ['dark', 'light', 'blue', 'alt1', 'alt2', 'button']
-        // light_blue_alt1_button
-        // [
-        //   '.tui_light .tui_blue .tui_alt1 .tui_button',
-        //   '.tui_light-blue .tui_alt1 .tui_button',
-        //   '.tui_light-blue-alt1 .tui_button',
-        //   '.tui_light-blue-alt1-button',
-        // ]
-        const selectors = new Set<string>()
-        const themeNames = themeName.split(THEME_NAME_SEPARATOR)
-        const [name, ...subThemeNames] = themeNames
-
-        let selectorCombos: string[][] = []
-
-        if (!subThemeNames.length) {
-          selectorCombos = [[themeName]]
-        } else {
-          // gather all combinations of joined/separate names
-          selectorCombos = [
-            // all separate
-            [name, ...subThemeNames],
-            // all joined
-            [[name, ...subThemeNames].join('_')],
-          ]
-          // get all middle combos
-          for (let point = 1; point < themeNames.length; point++) {
-            const [before, after] = [themeNames.slice(0, point), themeNames.slice(point)]
-            if (before.length > 1) {
-              selectorCombos.push([before.join('_'), ...after])
-            }
-            if (after.length > 1) {
-              selectorCombos.push([...before, after.join('_')])
-            }
-          }
-        }
-
-        for (const combo of selectorCombos) {
-          const selector = combo.map((x) => `.${PRE}${x}`).join(' ')
-          selectors.add(selector)
-          // add specificity selector hacks
-          for (const baseName of baseThemeNames) {
-            if (baseName !== name) {
-              selectors.add(`.${PRE}${baseName} ${selector}`)
-            }
-            for (const baseName2 of baseThemeNames) {
-              if (baseName2 !== baseName) {
-                selectors.add(`.${PRE}${baseName} .${PRE}${baseName2} ${selector}`)
-              }
-            }
-          }
-        }
-
-        const selectorsStr = [...selectors].join(', ')
-        // if (themeName === 'dark_alt1') {
-        //   console.log('selectorsStr', selectorsStr.split(', '))
-        // }
-        const cssRule = `${selectorsStr} {\n${vars}\n}`
+        const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
+        const isDark = themeName.includes('dark_')
+        const selector = `${CNP}${themeName}`
+        const addDarkLightSels = hasDarkLight && !isDarkOrLightBase
+        const selectors = [
+          selector,
+          addDarkLightSels && isDark
+            ? `${CNP}dark ${CNP}${themeName.replace('dark_', '').replace('light_', '')}`
+            : null,
+          addDarkLightSels && !isDark
+            ? `${CNP}light ${CNP}${themeName.replace('dark_', '').replace('light_', '')}`
+            : null,
+          ,
+        ].filter(Boolean)
+        const cssRule = `${selectors.join(', ')} {\n${vars}\n}`
         cssRules.push(cssRule)
       }
     }

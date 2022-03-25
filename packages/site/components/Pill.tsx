@@ -5,10 +5,9 @@ export const Pill = styled(Paragraph, {
   py: '$1',
   px: '$4',
   br: '$10',
-  mb: '$-8',
   zi: 100,
   als: 'center',
-  color: '$colorFocus',
+  color: '$colorHover',
   size: '$3',
   fow: '800',
 })

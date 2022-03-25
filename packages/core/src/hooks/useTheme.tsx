@@ -6,8 +6,8 @@ import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { isVariable } from '../createVariable'
 import { areEqualSets } from '../helpers/areEqualSets'
 import { ThemeContext } from '../ThemeContext'
-import { ThemeManager, ThemeManagerContext } from '../ThemeManager'
-import { ThemeObject } from '../types'
+import { ThemeManager, ThemeManagerContext, emptyManager } from '../ThemeManager'
+import { ThemeObject, Themes } from '../types'
 import { useConstant } from './useConstant'
 
 const SEP = THEME_NAME_SEPARATOR
@@ -20,7 +20,7 @@ type UseThemeState = {
 
 export const useTheme = (themeName?: string | null, componentName?: string): ThemeObject => {
   const forceUpdate = useForceUpdate()
-  const { name, theme, themes, themeManager, className } = useChangeThemeEffect(
+  const { name, theme, themes, themeManager, className, didChangeTheme } = useChangeThemeEffect(
     themeName,
     componentName
   )
@@ -62,7 +62,13 @@ export const useTheme = (themeName?: string | null, componentName?: string): The
           if (!name) {
             return Reflect.get(_, key)
           }
+          // TODO make this pattern better
           if (key === GetThemeManager) {
+            if (!didChangeTheme) {
+              return null
+            }
+            // TODO
+            // console.log('DID CHANGE THEME')
             return themeManager
           }
           if (key === 'name') {
@@ -74,7 +80,8 @@ export const useTheme = (themeName?: string | null, componentName?: string): The
           let activeTheme = themes[name]
           if (!activeTheme) {
             if (process.env.NODE_ENV !== 'test') {
-              console.error('No theme by name', name, 'only:', themes, 'keeping current theme')
+              // prettier-ignore
+              console.error('No theme by name', name, 'keeping current theme')
             }
             activeTheme = theme
           }
@@ -114,78 +121,69 @@ export const getThemeManager = (theme: any) => {
 
 export const useThemeName = (opts?: { parent?: true }) => {
   const parent = useContext(ThemeManagerContext)
-  const [name, setName] = useState(parent.name)
+  const [name, setName] = useState(parent?.name || '')
 
   useIsomorphicLayoutEffect(() => {
+    if (!parent) return
     return parent.onChangeTheme((next, manager) => {
-      setName(opts?.parent ? manager.parentName : next)
+      const name = opts?.parent ? manager.parentName || next : next
+      if (!name) return
+      setName(name)
     })
   }, [parent])
 
-  return name || 'light'
+  return name
 }
 
 export const useDefaultThemeName = () => {
   return useContext(ThemeContext)?.defaultTheme
 }
 
-export const useChangeThemeEffect = (shortName?: string | null, componentName?: string) => {
-  const parentManager = useContext(ThemeManagerContext)
+export const useChangeThemeEffect = (name?: string | null, componentName?: string) => {
+  const parentManager = useContext(ThemeManagerContext) || emptyManager
   const { themes } = useContext(ThemeContext)!
-  const [parentName, setParentName] = useState(parentManager.name || 'light')
-  const nextNameParent = shortName ? `${parentName}${SEP}${shortName}` : ''
-  const nextNameParentParent = shortName ? `${parentManager.parentName}${SEP}${shortName}` : ''
-  const nextParentName =
-    nextNameParent in themes
-      ? nextNameParent
-      : nextNameParentParent in themes
-      ? nextNameParentParent
-      : null
-  const nextName = !shortName ? null : shortName in themes ? shortName : nextParentName
-  const nextTheme = nextName ? themes[nextName] : null
+  const next = parentManager.getNextTheme({ name, componentName, themes })
+  const forceUpdate = useForceUpdate()
   const themeManager = useConstant<ThemeManager | null>(() => {
-    if (!nextTheme) {
+    if (!next) {
       return null
     }
     const manager = new ThemeManager()
-    if (nextName) {
-      manager.update({ name: nextName, theme: themes[nextName], parentManager })
-    }
+    manager.update({ ...next, parentManager })
     return manager
   })
 
-  if (typeof document !== 'undefined') {
-    useLayoutEffect(() => {
-      if (!themeManager) {
-        return
-      }
-      if (nextName) {
-        themeManager.update({ name: nextName, theme: nextTheme, parentManager })
-      }
-      const dispose = parentManager.onChangeTheme((next) => {
-        if (next) {
-          themeManager.update({ name: next, theme: themes[next], parentManager })
-          setParentName(next)
-        }
-      })
-      return () => {
-        // TODO should we undo setActiveTheme on dispose?
-        dispose()
-      }
-    }, [themes, nextName, parentName])
-  }
+  // if (typeof document !== 'undefined') {
+  //   useLayoutEffect(() => {
+  //     if (!themeManager) {
+  //       return
+  //     }
+  //     if (next?.name) {
+  //       themeManager.update({ ...next, parentManager })
+  //     }
+  //     const dispose = parentManager.onChangeTheme((nextParent) => {
+  //       if (!nextParent) return
+  //       const next = getNextTheme({ parentManager, name, componentName, themes })
+  //       if (!next) return
+  //       themeManager.update({ ...next, parentManager })
+  //       // forceUpdate()
+  //     })
+  //     return () => {
+  //       dispose()
+  //     }
+  //   }, [themes, next?.name])
+  // }
 
-  let className: string | null = null
-  const classNamePost = shortName ?? componentName
-  if (classNamePost) {
-    className = `${THEME_CLASSNAME_PREFIX}${classNamePost}`
-  }
+  const didChangeTheme = next && parentManager && next.name !== parentManager.fullName
 
   return {
-    name: nextName || parentName,
+    ...(parentManager && {
+      name: parentManager.name,
+      theme: parentManager.theme,
+    }),
+    ...next,
+    didChangeTheme,
     themes,
     themeManager,
-    theme: nextTheme || themeManager?.theme || parentManager.theme || themes['light'],
-    className,
   }
 }

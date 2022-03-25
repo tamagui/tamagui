@@ -1,16 +1,42 @@
 import { FastForward, Pause, Rewind } from '@tamagui/feather-icons'
 import React from 'react'
-import { Button, Card, Image, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Card,
+  Image,
+  Paragraph,
+  Separator,
+  Square,
+  Theme,
+  ThemeName,
+  XStack,
+  YStack,
+} from 'tamagui'
 
-export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
-  const themeName = alt ? (`alt${alt}` as any) : null
-  const mainButtonTheme = `alt${alt + 2}` as any
-  const barTheme = `alt${alt + 1}` as any
+export const MediaPlayer = ({
+  theme,
+  alt: altProp,
+  onHoverSection,
+}: {
+  theme?: ThemeName
+  alt?: number | null
+  onHoverSection?: (name: string) => void
+}) => {
+  const alt = altProp ?? 0
+  const themeName = theme ?? (alt ? (`alt${alt}` as any) : null)
+  const mainButtonTheme = theme ?? (`alt${alt + 2}` as any)
+  const barTheme = theme ?? (`alt${alt + 1}` as any)
 
   return (
     <YStack>
       <Theme name={themeName}>
-        <YStack pb="$6" pt="$4" px="$2">
+        <YStack
+          // @ts-ignore
+          onMouseMove={(e) => {
+            const theme = e.target.closest('.tamagui-theme')
+            console.log('hovering', theme)
+          }}
+        >
           <Card flex={1} overflow="visible" bordered size="$6" pl={0} pr={0} pb={0} pt={0}>
             <YStack w="100%">
               <XStack ai="center" p="$3" space="$5">

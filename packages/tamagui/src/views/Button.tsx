@@ -1,7 +1,9 @@
 import {
+  GetProps,
   StaticComponent,
   ThemeableProps,
   getTokens,
+  getVariableValue,
   styled,
   themeable,
   useTheme,
@@ -18,7 +20,35 @@ React['createElement']
 
 type IconProp = JSX.Element | ((props: { color?: string; size?: number }) => JSX.Element) | null
 
-export type ButtonProps = SizableFrameProps &
+const ButtonFrame = styled(SizableFrame, {
+  name: 'button',
+  tag: 'button',
+  borderWidth: 0,
+  hoverable: true,
+  pressable: true,
+
+  variants: {
+    circular: {
+      true: (_, { props, tokens }) => {
+        const sizeVal = props['size'] ?? '$4'
+        const size = tokens.size[sizeVal] ?? 44
+        const sizePx = +getVariableValue(size)
+        return {
+          width: sizePx * 2,
+          maxWidth: sizePx * 2,
+          height: sizePx * 2,
+          maxHeight: sizePx * 2,
+          overflow: 'hidden',
+          borderRadius: 100_000,
+          paddingVertical: 0,
+          paddingHorizontal: 0,
+        }
+      },
+    },
+  },
+})
+
+export type ButtonProps = GetProps<typeof ButtonFrame> &
   ThemeableProps & {
     scaleIcon?: number
     color?: SizableTextProps['color']
@@ -28,14 +58,6 @@ export type ButtonProps = SizableFrameProps &
     icon?: IconProp
     iconAfter?: IconProp
   }
-
-const ButtonFrame = styled(SizableFrame, {
-  name: 'button',
-  tag: 'button',
-  borderWidth: 0,
-  hoverable: true,
-  pressable: true,
-})
 
 export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>> =
   ButtonFrame.extractable(
@@ -56,7 +78,7 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           ...rest
         } = props as ButtonProps
         const theme = useTheme()
-        const color = (colorProp || theme.color)?.toString()
+        const color = (colorProp || theme?.color)?.toString()
         const addTheme = (el: any) => {
           return isValidElement(el)
             ? el

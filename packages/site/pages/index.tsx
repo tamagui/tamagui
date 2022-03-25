@@ -3,14 +3,21 @@ import { FeaturesGrid } from '@components/FeaturesGrid'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import Link from 'next/link'
-import { Button, H2, H3, Paragraph, YStack } from 'tamagui'
+import { Button, H2, H3, Image, Paragraph, Theme, YStack } from 'tamagui'
 
 import { BenchmarkChart } from '../components/BenchmarkChart'
 import { ContainerLarge } from '../components/Container'
-import { HeroExample } from '../components/HeroExample'
-import { HeroExampleCarousel } from '../components/HeroExampleCarousel'
+import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
+import { HeroExampleCode } from '../components/HeroExampleCode'
+import { HeroExampleCarousel } from '../components/HeroExampleThemes'
 
 export default function Home() {
+  // return (
+  //   <Theme debug name="blue">
+  //     <Button>hello</Button>
+  //   </Theme>
+  // )
+
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
@@ -19,9 +26,11 @@ export default function Home() {
           <Hero />
           <Divider />
           <HeroExampleCarousel />
+          <Divider />
+          <HeroExampleAnimations />
           <YStack space="$8" $sm={{ display: 'none' }}>
             <Divider />
-            <HeroExample />
+            <HeroExampleCode />
           </YStack>
           <Divider />
           <Performance />
@@ -45,7 +54,16 @@ function Performance() {
             3-10x speed, even with inline styling.
           </H3>
         </YStack>
-        <YStack width="100%" ai="stretch">
+
+        <YStack
+          // borderStyle="dashed"
+          // borderWidth={1}
+          // borderColor="$colorTranslucent"
+          p="$2"
+          br="$8"
+          width="100%"
+          ai="stretch"
+        >
           <BenchmarkChart
             large
             data={[

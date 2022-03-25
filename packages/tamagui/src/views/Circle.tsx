@@ -1,5 +1,4 @@
 import { GetProps, styled } from '@tamagui/core'
-import React from 'react'
 
 import { SizableFrame } from './SizableFrame'
 
@@ -12,9 +11,15 @@ export const Circle = styled(SizableFrame, {
   variants: {
     size: {
       '...size': (size, { tokens }) => {
+        const width = tokens.size[size] ?? size
+        const height = tokens.size[size] ?? size
         return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
+          width,
+          height,
+          minWidth: width,
+          maxWidth: width,
+          maxHeight: height,
+          minHeight: height,
         }
       },
     },

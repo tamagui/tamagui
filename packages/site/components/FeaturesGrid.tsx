@@ -28,7 +28,7 @@ export function FeaturesGrid() {
             <H4 fontFamily="$body">SSR</H4>
             <Paragraph theme="alt2">
               Cross-browser server-side rendering, even for responsive styles and variants out of
-              the box.
+              the box. Next.js plugin and example apps.
             </Paragraph>
           </YStack>
 

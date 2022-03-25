@@ -69,24 +69,6 @@ export const SizableFrame = styled(XStack, {
       '...size': (val, extras) => getButtonSize(val, extras),
     },
 
-    circular: {
-      true: (_, { props, tokens }) => {
-        const sizeVal = props['size'] ?? '$4'
-        const size = tokens.size[sizeVal] ?? 44
-        const sizePx = +(isVariable(size) ? size.val : size)
-        return {
-          width: sizePx * 2,
-          maxWidth: sizePx * 2,
-          height: sizePx * 2,
-          maxHeight: sizePx * 2,
-          overflow: 'hidden',
-          borderRadius: 100_000,
-          paddingVertical: 0,
-          paddingHorizontal: 0,
-        }
-      },
-    },
-
     disabled: {
       true: {
         // pointerEvents: 'none',

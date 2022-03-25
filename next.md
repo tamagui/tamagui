@@ -1,3 +1,10 @@
+- // TODO fix variant merge type
+- OmitShorthands<> helper (see ActiveCirlce in site)
+- toggle/switch, tabs, label, togglegroup
+- useTheme in createComponent could be in a feature save a ton of render perf
+- document fullscreen elevation onHoverIn onHoverOut onPress etc
+- fix types on color, not showing all
+- fix type autocomplete not showing in menu on some
 - fix image w/h shorthand not translating to width/height runtime
 - extracted theme="" components will change how ThemeReset/Theme work with finding parent context, we'll need to have the equivalent web versions for all of them. something like MutationObserver(querySelector.closest('.theme--parent'))
 

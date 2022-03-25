@@ -1,3 +1,5 @@
+import './polyfills'
+
 export { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export * from '@tamagui/helpers'

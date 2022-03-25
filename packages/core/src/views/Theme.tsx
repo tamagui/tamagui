@@ -38,7 +38,9 @@ export const Theme = (props: ThemeProps) => {
     }
     return (
       <div
-        className={`${className || ''} ${props.className || ''}`}
+        className={
+          props.className ? `${className || ''} ${props.className || ''}` : className || ''
+        }
         style={{
           display: 'contents',
           // in order to provide currentColor, set color by default

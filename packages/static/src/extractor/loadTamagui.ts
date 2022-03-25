@@ -16,6 +16,7 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   // lets shim require and avoid importing react-native + react-native-web
   // we just need to read the config around them
   process.env.IS_STATIC = 'is_static'
+  const proxyWorm = require('@tamagui/proxy-worm')
   const rnw = require('react-native-web')
   const Mod = require('module')
   const og = Mod.prototype.require
@@ -23,8 +24,8 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     if (path.endsWith('.css')) {
       return {}
     }
-    if (path === '@gorhom/bottom-sheet') {
-      return {}
+    if (path === '@gorhom/bottom-sheet' || path.startsWith('react-native-reanimated')) {
+      return proxyWorm
     }
     if (
       path.startsWith('react-native') &&

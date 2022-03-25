@@ -13,10 +13,6 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
       webpack: (webpackConfig: any, options) => {
         const { dir, config, dev, isServer } = options
 
-        // TODO move into tamagui?
-        if (typeof requestAnimationFrame === 'undefined') {
-          globalThis['requestAnimationFrame'] = setImmediate
-        }
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {
           // @ts-ignore
