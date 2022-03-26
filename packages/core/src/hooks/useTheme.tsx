@@ -18,11 +18,15 @@ type UseThemeState = {
   isRendering: boolean
 }
 
-export const useTheme = (themeName?: string | null, componentName?: string): ThemeObject => {
-  const forceUpdate = useForceUpdate()
+export const useTheme = (
+  themeName?: string | null,
+  componentName?: string,
+  debug = false
+): ThemeObject => {
   const { name, theme, themes, themeManager, className, didChangeTheme } = useChangeThemeEffect(
     themeName,
-    componentName
+    componentName,
+    debug
   )
 
   const state = useRef() as React.MutableRefObject<UseThemeState>
@@ -45,72 +49,63 @@ export const useTheme = (themeName?: string | null, componentName?: string): The
     }
   })
 
-  useEffect(() => {
-    return themeManager?.onUpdate(state.current.uuid, forceUpdate)
-  }, [])
-
-  return useMemo(
-    () => {
-      if (!theme) {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('No theme', { themeName, theme })
-        }
-        return theme as any
+  return useMemo(() => {
+    if (!theme) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('No theme', { themeName, theme })
       }
-      return new Proxy(theme, {
-        get(_, key) {
-          if (!name) {
-            return Reflect.get(_, key)
+      return theme as any
+    }
+    return new Proxy(theme, {
+      get(_, key) {
+        if (!name) {
+          return Reflect.get(_, key)
+        }
+        // TODO make this pattern better
+        if (key === GetThemeManager) {
+          if (!didChangeTheme) {
+            return null
           }
-          // TODO make this pattern better
-          if (key === GetThemeManager) {
-            if (!didChangeTheme) {
+          // TODO
+          // console.log('DID CHANGE THEME')
+          return themeManager
+        }
+        if (key === 'name') {
+          return name
+        }
+        if (key === 'className') {
+          return className
+        }
+        let activeTheme = themes[name]
+        if (!activeTheme) {
+          if (process.env.NODE_ENV !== 'test') {
+            // prettier-ignore
+            console.error('No theme by name', name, 'keeping current theme')
+          }
+          activeTheme = theme
+        }
+        if (typeof key === 'string') {
+          const val = activeTheme[key]
+          if (process.env.NODE_ENV === 'development') {
+            if (typeof val === 'undefined') {
+              console.warn(`No theme value "${String(key)}" in`, activeTheme)
               return null
             }
-            // TODO
-            // console.log('DID CHANGE THEME')
-            return themeManager
-          }
-          if (key === 'name') {
-            return name
-          }
-          if (key === 'className') {
-            return className
-          }
-          let activeTheme = themes[name]
-          if (!activeTheme) {
-            if (process.env.NODE_ENV !== 'test') {
-              // prettier-ignore
-              console.error('No theme by name', name, 'keeping current theme')
+            if (!isVariable(val)) {
+              console.warn('Non variable!', val)
+            } else if (val.name !== key) {
+              console.warn('Non-matching name for variable to key', key, val.name)
             }
-            activeTheme = theme
           }
-          if (typeof key === 'string') {
-            const val = activeTheme[key]
-            if (process.env.NODE_ENV === 'development') {
-              if (typeof val === 'undefined') {
-                console.warn(`No theme value "${String(key)}" in`, activeTheme)
-                return null
-              }
-              if (!isVariable(val)) {
-                console.warn('Non variable!', val)
-              } else if (val.name !== key) {
-                console.warn('Non-matching name for variable to key', key, val.name)
-              }
-            }
-            if (state.current.isRendering) {
-              state.current.keys.add(key)
-            }
-            return val
+          if (state.current.isRendering) {
+            state.current.keys.add(key)
           }
-          return Reflect.get(_, key)
-        },
-      })
-    },
-    [
-      /* if concurrent mode wanted put manager.name here */
-    ]
-  )
+          return val
+        }
+        return Reflect.get(_, key)
+      },
+    })
+  }, [name, theme, className, didChangeTheme])
 }
 
 const GetThemeManager = Symbol('GetThemeManager')
@@ -139,10 +134,14 @@ export const useDefaultThemeName = () => {
   return useContext(ThemeContext)?.defaultTheme
 }
 
-export const useChangeThemeEffect = (name?: string | null, componentName?: string) => {
+export const useChangeThemeEffect = (
+  name?: string | null,
+  componentName?: string,
+  debug = false
+) => {
   const parentManager = useContext(ThemeManagerContext) || emptyManager
   const { themes } = useContext(ThemeContext)!
-  const next = parentManager.getNextTheme({ name, componentName, themes })
+  const next = parentManager.getNextTheme({ name, componentName, themes }, debug)
   const forceUpdate = useForceUpdate()
   const themeManager = useConstant<ThemeManager | null>(() => {
     if (!next) {
@@ -153,26 +152,25 @@ export const useChangeThemeEffect = (name?: string | null, componentName?: strin
     return manager
   })
 
-  // if (typeof document !== 'undefined') {
-  //   useLayoutEffect(() => {
-  //     if (!themeManager) {
-  //       return
-  //     }
-  //     if (next?.name) {
-  //       themeManager.update({ ...next, parentManager })
-  //     }
-  //     const dispose = parentManager.onChangeTheme((nextParent) => {
-  //       if (!nextParent) return
-  //       const next = getNextTheme({ parentManager, name, componentName, themes })
-  //       if (!next) return
-  //       themeManager.update({ ...next, parentManager })
-  //       // forceUpdate()
-  //     })
-  //     return () => {
-  //       dispose()
-  //     }
-  //   }, [themes, next?.name])
-  // }
+  if (typeof document !== 'undefined') {
+    useLayoutEffect(() => {
+      if (!themeManager) return
+      if (next?.name) {
+        themeManager.update({ ...next, parentManager })
+      }
+      return parentManager.onChangeTheme(() => {
+        const next = parentManager.getNextTheme({ name, componentName, themes }, debug)
+        if (process.env.NODE_ENV === 'development' && debug) {
+          console.log('changing theme', name, componentName, next)
+        }
+        if (!next) return
+        if (themeManager.update({ ...next, parentManager })) {
+          console.log('force updating')
+          forceUpdate()
+        }
+      })
+    }, [themes, name, componentName, debug, next?.name])
+  }
 
   const didChangeTheme = next && parentManager && next.name !== parentManager.fullName
 

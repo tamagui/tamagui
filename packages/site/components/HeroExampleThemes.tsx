@@ -1,6 +1,6 @@
 import { useTheme } from '@components/NextTheme'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   Circle,
@@ -11,7 +11,7 @@ import {
   ThemeName,
   XStack,
   YStack,
-  useThemeName,
+  useDebounceValue,
 } from 'tamagui'
 
 import { CodeInline } from './Code'
@@ -25,7 +25,7 @@ export function HeroExampleCarousel() {
         <YStack zi={1} space="$2">
           <H2 als="center">Truly flexible themes</H2>
           <H3 theme="alt2" als="center" fow="400">
-            Unlimited sub-themes, down to the component.
+            Unlimited sub-themes, down to the component
           </H3>
         </YStack>
 
@@ -59,7 +59,7 @@ export function HeroExampleCarousel() {
 }
 
 const themes: (ThemeName | null)[][] = [
-  [null, 'green', 'pink', 'red', 'orange', 'blue'],
+  ['orange', 'red', 'pink', null, 'green', 'teal', 'blue'],
   [null, 'alt1', 'alt2', 'alt3'],
 ]
 
@@ -94,12 +94,72 @@ const ActiveCircle = ({ isActive, ...props }) => {
 }
 
 const MediaPlayerDemoStack = () => {
-  const { theme, setTheme } = useTheme()
+  const { setTheme, theme: userTheme } = useTheme()
   const [activeI, setActiveI] = useState([0, 0])
-  const activeThemeComboI = activeI[0] * (themes[0].length - 2) + activeI[1]
-  const colorName = themes[0][activeI[0]]
-  const altName = themes[1][activeI[1]]
-  const [hoverSectionName, setHoverSectionName] = useState('')
+  const [curColorI, curShadeI] = activeI
+  const [theme, setSelTheme] = useState('')
+  const nextIndex = activeI[0] * (themes[0].length - 2) + activeI[1]
+  const curIndex = useDebounceValue(nextIndex, 300)
+  const isTransitioning = curIndex !== nextIndex
+  const isMidTransition = useDebounceValue(isTransitioning, 150)
+
+  // arrow keys
+  useEffect(() => {
+    //
+  }, [])
+
+  useEffect(() => {
+    setSelTheme(userTheme as any)
+  }, [userTheme])
+
+  const offset = 30
+  const offsetActive = 20
+  const offsetTransition = 200
+  const offsetX = -nextIndex * (isTransitioning ? offsetTransition : offset)
+
+  const mediaPlayersRow = (
+    <XStack
+      ai="center"
+      jc="center"
+      // x={offsetX}
+      className="transition-test"
+      space="$6"
+      pos="relative"
+      height={220}
+    >
+      {themeCombos.map((name, i) => {
+        const isCurActive = curIndex === i
+        const isNextActive = nextIndex === i
+        const isActive = isMidTransition ? isNextActive : isCurActive
+        const isBeforeActive = i < curIndex
+        const colorI = Math.floor(i / 4)
+        const shadeI = i % 4
+        const isActiveGroup = colorI === curColorI
+        const [color, alt] = name.split('_')
+        return (
+          <XStack
+            key={i}
+            className="transition-test"
+            zi={(isActive ? 1000 : isBeforeActive ? i : 1000 - i) + (isActiveGroup ? 1000 : 0)}
+            pos="absolute"
+            x={
+              i * offset +
+              0 + // (isActiveGroup ? (isBeforeActive ? -1 : 0) * 20 * i : 0)
+              (!isTransitioning && isActiveGroup ? offsetActive * shadeI : 0)
+            }
+            scale={isTransitioning ? 0.6 : 1 + (isActiveGroup ? -0.4 : -0.5) + (isActive ? 0.1 : 0)}
+            onPress={() => {
+              setActiveI([colorI, shadeI])
+            }}
+          >
+            <Theme name={color as any}>
+              <MediaPlayer alt={alt ? +alt.replace('alt', '') : 0} />
+            </Theme>
+          </XStack>
+        )
+      })}
+    </XStack>
+  )
 
   return (
     <YStack ai="center" jc="center" space="$6">
@@ -118,7 +178,7 @@ const MediaPlayerDemoStack = () => {
 
         <InteractiveContainer p="$1" br="$10" als="center" space="$1">
           {themes[0].map((color, i) => {
-            const isActive = activeI[0] === i
+            const isActive = curColorI === i
             return (
               <Theme key={color} name={color}>
                 <ActiveCircle
@@ -133,7 +193,7 @@ const MediaPlayerDemoStack = () => {
 
         <InteractiveContainer p="$1" br="$10" als="center" space="$1">
           {themes[1].map((name, i) => {
-            const isActive = activeI[1] === i
+            const isActive = curShadeI === i
             return (
               <ActiveCircle
                 onPress={() => setActiveI((x) => [x[0], i])}
@@ -146,33 +206,12 @@ const MediaPlayerDemoStack = () => {
         </InteractiveContainer>
       </XStack>
 
-      <XStack space="$6" pos="relative" height={220}>
-        {themeCombos.map((name, i) => {
-          const isActive = activeThemeComboI === i
-          const isBeforeActive = i < activeThemeComboI
-          const [color, alt] = name.split('_')
-          return (
-            <XStack
-              key={name}
-              zi={isActive ? 1000 : isBeforeActive ? i : 1000 - i}
-              pos="absolute"
-              x={i * 30}
-            >
-              <Theme name={color as any}>
-                <MediaPlayer
-                  onHoverSection={setHoverSectionName}
-                  alt={alt ? +alt.replace('alt', '') : 0}
-                />
-              </Theme>
-            </XStack>
-          )
-        })}
-      </XStack>
+      {mediaPlayersRow}
 
       <Theme name="green">
         <CodeInline my="$2" br="$3" size="$6">
-          {theme}_{colorName}_{altName}
-          {hoverSectionName ? `_${hoverSectionName}` : ''}
+          {/* {theme}_{colorName}_{altName}
+          {hoverSectionName ? `_${hoverSectionName}` : ''} */}
         </CodeInline>
       </Theme>
     </YStack>

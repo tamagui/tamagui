@@ -256,9 +256,9 @@ export function Hero() {
             <H3 fontWeight="700" size="$6" mb="$2">
               Performant
             </H3>
-            <Paragraph size="$4" theme="alt2">
+            <Paragraph size="$3" theme="alt2">
               The fastest UI kit on web or native through a compiler that handles advanced
-              transforms like media queries, CSS variables, and tree flattening.
+              transforms - including media queries, CSS variables, and tree&nbsp;flattening.
             </Paragraph>
           </YStack>
 
@@ -271,13 +271,13 @@ export function Hero() {
             <H3 fontWeight="700" size="$6" mb="$2">
               Easy to adopt
             </H3>
-            <Paragraph size="$4" theme="alt2">
+            <Paragraph size="$3" theme="alt2">
               Works with react-native and{' '}
               <Text tag="a" href="https://necolas.github.io/react-native-web/">
                 react-native-web
               </Text>
-              . Use just the style library or the full component kit. Plug in an existing theme or
-              BYO.
+              . Use just the style library or the full component kit. Plug in an existing
+              theme&nbsp;or&nbsp;BYO.
             </Paragraph>
           </YStack>
 
@@ -290,9 +290,9 @@ export function Hero() {
             <H3 fontWeight="700" size="$6" mb="$2">
               Productive
             </H3>
-            <Paragraph size="$4" theme="alt2">
-              Write inline styles without worry about performance. Themes, tokens, shorthands, media
-              queries, and animations that work fast out of the box.
+            <Paragraph size="$3" theme="alt2">
+              Inline styles without worry about performance. Themes, tokens, shorthands, media
+              queries, and animations that are fast, out of&nbsp;the&nbsp;box.
             </Paragraph>
           </YStack>
 

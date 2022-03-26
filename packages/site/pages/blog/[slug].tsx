@@ -12,7 +12,7 @@ import React from 'react'
 import { Button, H1, H2, H3, H6, Paragraph, Separator, Text, Theme, XStack, YStack } from 'tamagui'
 
 import { Link } from '../../components/Link'
-import { Frontmatter } from '../../types/frontmatter'
+import { Frontmatter } from '../../frontmatter'
 
 type BlogPost = {
   frontmatter: Frontmatter

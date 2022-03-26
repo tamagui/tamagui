@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo, useMemo } from 'react'
 
 import { isWeb } from '../constants/platform'
 import { wrapThemeManagerContext } from '../helpers/wrapThemeManagerContext'
@@ -13,10 +13,15 @@ export type ThemeProps = {
   disableThemeClass?: boolean
   name: Exclude<ThemeName, number> | null
   children?: any
+  debug?: boolean
 }
 
-export const Theme = (props: ThemeProps) => {
-  const { name, theme, themeManager, themes, className } = useChangeThemeEffect(props.name)
+export const Theme = memo(function Theme(props: ThemeProps) {
+  const { name, theme, themeManager, themes, className } = useChangeThemeEffect(
+    props.name,
+    undefined,
+    props.debug
+  )
 
   if (!themes) {
     console.warn('Error, no themes in context', props)
@@ -30,7 +35,11 @@ export const Theme = (props: ThemeProps) => {
     return props.children
   }
 
-  const contents = wrapThemeManagerContext(props.children, themeManager)
+  // memo here, changing theme without re-rendering all children is a critical optimization
+  // may require some effort of end user to memoize but without this memo they'd have no option
+  const contents = useMemo(() => {
+    return wrapThemeManagerContext(props.children, themeManager)
+  }, [props.children, themeManager])
 
   if (isWeb) {
     if (props.disableThemeClass) {
@@ -53,4 +62,4 @@ export const Theme = (props: ThemeProps) => {
   }
 
   return contents
-}
+})

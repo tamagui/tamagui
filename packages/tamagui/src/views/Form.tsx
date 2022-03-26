@@ -5,6 +5,7 @@ import { getSize } from './SizableFrame'
 import { sizableTextSizeVariant } from './SizableText'
 
 export const Form = styled(Stack, {
+  name: 'Form',
   tag: 'form',
 })
 
@@ -23,6 +24,7 @@ export const Input = styled(
   // @ts-ignore
   TextInput,
   {
+    name: 'Input',
     borderRadius: '$3',
     borderWidth: 1,
     borderColor: '$borderColor',
@@ -59,6 +61,7 @@ export const TextArea = styled(
   // @ts-ignore
   TextInput,
   {
+    name: 'TextArea',
     multiline: true,
     numberOfLines: 4,
 

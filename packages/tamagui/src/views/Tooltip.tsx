@@ -18,7 +18,7 @@ export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
 }
 
 const TooltipFrame = styled(SizableFrame, {
-  tag: 'button',
+  name: 'Tooltip',
   borderWidth: 0,
 })
 

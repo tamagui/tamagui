@@ -25,6 +25,7 @@ export const Link = ({
       <Paragraph
         cursor="pointer"
         tag="a"
+        // TODO this is grabbing blue_alt it shold jsut be alt2
         theme="alt2"
         hoverStyle={{ color: '$colorHover' }}
         {...props}

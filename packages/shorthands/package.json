@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/colors",
+  "name": "@tamagui/shorthands",
   "version": "1.0.0-alpha.68",
   "source": "src/index.ts",
   "typings": "types",

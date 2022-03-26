@@ -21,12 +21,11 @@ import {
   YStack,
 } from 'tamagui'
 
-import { Frontmatter } from '../types/frontmatter'
+import { Frontmatter } from '../frontmatter'
 import { BenchmarkChart } from './BenchmarkChart'
 import { Code, CodeInline } from './Code'
 import { DemoButton } from './DemoButton'
 import * as Demos from './demos'
-import { Description } from './Description'
 import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
 import { HeroContainer } from './HeroContainer'
@@ -35,6 +34,7 @@ import { MediaPlayer } from './MediaPlayer'
 import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
+import { SubTitle } from './SubTitle'
 
 export const components = {
   ScrollView,
@@ -52,7 +52,7 @@ export const components = {
 
   Highlights,
   PropsTable,
-  Description,
+  Description: SubTitle,
 
   Note: (props) => (
     <YStack
@@ -108,20 +108,20 @@ export const components = {
   h1: (props) => <H1 mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2 color="$color" mt="$4" size="$8" letterSpacing={-0.5} data-heading {...props}>
+    <H2 color="$color" mt="$8" letterSpacing={-0.5} data-heading {...props}>
       {children}
     </H2>
   ),
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading mt="$5" id={id}>
-      <H3 fontFamily="$body" data-heading {...props}>
+      <H3 data-heading {...props}>
         {children}
       </H3>
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mt="$4" fontFamily="$body" {...props} />,
+  h4: (props) => <H4 mt="$4" {...props} />,
 
   p: (props) => (
     <Paragraph
@@ -142,7 +142,9 @@ export const components = {
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <ExternalIcon />
+              <Text display="inline-flex" y={2} mr={2}>
+                <ExternalIcon />
+              </Text>
             </>
           ) : null}
         </Text>

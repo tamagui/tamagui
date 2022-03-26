@@ -10,7 +10,16 @@
       "path": "../core"
     },
     {
+      "path": "../colors"
+    },
+    {
       "path": "../tamagui"
+    },
+    {
+      "path": "../shorthands"
+    },
+    {
+      "path": "../theme-base"
     }
   ]
 }

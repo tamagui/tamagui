@@ -3,11 +3,11 @@ title: Introduction
 description: The how and why of Tamagui
 ---
 
-Tamagui lets you **share way more code between web and native apps - all while improving DX, performance, and accessibility**. It turns all styles, even inline styles, responsive queries and themes, into efficient extracted atomic CSS (or on native, hoisted into a top-level StyleSheet.create).
+Tamagui lets you **share more code between web and native apps while improving DX, performance, and accessibility**. It turns all styles, even inline styles with conditional logic or responsive queries or themes, into efficient extracted atomic CSS on the web, or on native, into an efficient top-level StyleSheet.
 
-This is a **win-win-win**: it's more performant, easier to write and maintain, and renders on native and web the same. Typically you'd trade performance for DX, or both for cross-platform compatibility. With Tamagui, you get all three at once.
+This is a **win-win-win**: more performant, easier to write/maintain, and works on every platform. Typically you'd have to trade performance for DX, or both for cross-platform compatibility. With Tamagui, you don't.
 
-The compiler even evaluates away many common logical operations, conditionals, and spreads. It flattens any fully analyzable views into a much faster simple HTML tags on web, or View/Text on native.
+The compiler even flattens any fully analyzable views into a much faster simple HTML tags on web, or View/Text on native, reducing tree depth signficantly.
 
 <Image title="Tamagui logo" src="/blog/introducing-tamagui/hero.png" height={200} />
 
@@ -69,13 +69,9 @@ Inline styles have a few developer-speed benefits over `StyleSheet.create`: they
 
 `StyleSheet.create` forces you to manually link together the style with the node that's using the style. When you delete the style, you must delete the node, and when you delete a node, you have to manually check to be see if any other node is using that style before removing it.
 
-#### 📚 Less reading/writing
+#### 📚 Less reading/writing and naming
 
 Fast inline styles and common tokens mean less having to name things. Shorthand style props that are flat often make the difference between one line and multiple.
-
-#### 🤨 Less forced naming
-
-With StyleSheets you must name every style group, and even every ternary conditional style or else you lose performance. With inline styles you avoid both problems, leading to more creative experimentation and less friction.
 
 #### 💃 Encourages dynamic styles
 

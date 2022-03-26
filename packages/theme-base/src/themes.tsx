@@ -5,6 +5,40 @@ import { allDarkColors, allLightColors } from './colors'
 import { setColorAlpha } from './colorUtils'
 import { tokens } from './tokens'
 
+// TODO
+export function createThemes(props: {
+  colors?:
+    | 'amber'
+    | 'blue'
+    | 'bronze'
+    | 'brown'
+    | 'crimson'
+    | 'cyan'
+    | 'gold'
+    | 'grass'
+    | 'gray'
+    | 'green'
+    | 'indigo'
+    | 'lime'
+    | 'mint'
+    | 'olive'
+    | 'orange'
+    | 'pink'
+    | 'plum'
+    | 'purple'
+    | 'mauve'
+    | 'red'
+    | 'sage'
+    | 'sand'
+    | 'sky'
+    | 'slate'
+    | 'teal'
+    | 'tomato'
+    | 'violet'
+    | 'yellow'
+  alternates?: number
+}) {}
+
 // helpers
 
 const alternates = [1, 2, 3, 4] as const
@@ -25,9 +59,12 @@ function createThemeWithAlts<Name extends string, GetTheme extends AltThemeGette
   const themeEntries = names.map((name, str) => {
     return [name, getTheme(str)] as const
   })
-  // add button theme
-  const [btnThemeName, btnTheme] = themeEntries[themeEntries.length - alternates.length + 1]
-  themeEntries.push([`${btnThemeName}_button` as any, btnTheme])
+  // add button themes
+  for (const alt of alternates) {
+    const [btnThemeName] = themeEntries[alt]
+    const [_, btnTheme] = themeEntries[alt + 1]
+    themeEntries.push([`${btnThemeName}_Button` as any, btnTheme])
+  }
   const themes = Object.fromEntries(themeEntries)
   return themes as any
 }
@@ -69,7 +106,7 @@ const themeCreator =
     return {
       background: get(backgrounds, str),
       backgroundSoft: get(backgrounds, str + 3),
-      backgroundHover: backgrounds[str + lighterDir * 1] ?? get(backgrounds, str + darkerDir * 1),
+      backgroundHover: get(backgrounds, str + lighterDir),
       backgroundPress: get(backgrounds, str + darkerDir * 1),
       backgroundFocus: get(backgrounds, str + darkerDir * 2),
       backgroundTransparent: tokens.color.grayA1,
@@ -101,6 +138,9 @@ export const colorSchemes = [
   { name: 'red', colors: Colors.red, darkColors: Colors.redDark },
   { name: 'violet', colors: Colors.violet, darkColors: Colors.violetDark },
   { name: 'yellow', colors: Colors.yellow, darkColors: Colors.yellowDark },
+  { name: 'teal', colors: Colors.teal, darkColors: Colors.tealDark },
+  { name: 'lime', colors: Colors.lime, darkColors: Colors.limeDark },
+  { name: 'brown', colors: Colors.brown, darkColors: Colors.brownDark },
 ] as const
 
 export type ColorNames = typeof colorSchemes[number]['name']
@@ -166,10 +206,10 @@ const darkThemes = createThemeWithAlts('dark', makeDarkTheme)
 const baseThemes = {
   ...lightThemes,
   light_active: makeActiveTheme(darkThemes.dark),
-  light_card: lightThemes.light_alt1,
+  light_Card: lightThemes.light,
   ...darkThemes,
   dark_active: makeActiveTheme(lightThemes.light),
-  dark_card: darkThemes.dark_alt1,
+  dark_Card: darkThemes.dark_alt1,
 
   light: {
     ...lightThemes.light,
@@ -216,9 +256,9 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
   const darkButtonTheme = altDarkThemes[0]
   return [
     ...altLightThemes,
-    [`${lightButtonTheme[0]}_button`, altLightThemes[2][1]],
+    [`${lightButtonTheme[0]}_Button`, altLightThemes[2][1]],
     ...altDarkThemes,
-    [`${darkButtonTheme[0]}_button`, altDarkThemes[2][1]],
+    [`${darkButtonTheme[0]}_Button`, altDarkThemes[2][1]],
   ]
 })
 
@@ -261,5 +301,3 @@ export const themes = {
   dark_outline,
   light_outline,
 } as const
-
-export type MyThemes = typeof themes

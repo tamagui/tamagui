@@ -3,12 +3,34 @@ title: Tamagui Props
 description: All the properties supported on base Tamagui components.
 ---
 
-Tamagui uses a superset of the style properties that are supported in React Native and React Native Web, and flattens them onto the direct properties of Stack and Text ([see why below](#why-inline-style-props)). For the full list of style and non-style props, see [View](https://reactnative.dev/docs/view-style-props) and [Text](https://reactnative.dev/docs/text-style-props) from the react native documentation.
+Tamagui uses a superset of the style properties that are supported in React Native and React Native Web, and flattens them onto the direct properties of Stack and Text ([see why below](#why-inline-style-props)).
+
+For the full list of style and non-style props, see:
+
+- [View](https://reactnative.dev/docs/view-style-props), or
+- [Text](https://reactnative.dev/docs/text-style-props)
+
+You may also want to reference the [react-native-web docs](https://necolas.github.io/react-native-web/docs/) for more on props related to:
+
+- [Accessibility](https://necolas.github.io/react-native-web/docs/accessibility/)
+- [Interactions](https://necolas.github.io/react-native-web/docs/interactions/)
+- [Localization](https://necolas.github.io/react-native-web/docs/localization/)
 
 Beyond style properties, Tamagui adds `className` and `tag`:
 
 <PropsTable
   data={[
+    {
+      name: 'theme',
+      required: false,
+      type: 'string',
+      description: (
+        <span>
+          Apply a [theme or sub-theme](/docs/intro/themes) to this component and the components
+          below it.
+        </span>
+      ),
+    },
     {
       name: 'className',
       required: false,
@@ -158,16 +180,19 @@ Support for `hoverStyle`, `pressStyle`, and `focusStyle` is helpful as it turns 
       name: 'hoverStyle',
       required: false,
       type: 'TamaguiStyleProps',
+      description: 'Web only: Applies the given style on hover',
     },
     {
       name: 'pressStyle',
       required: false,
       type: 'TamaguiStyleProps',
+      description: 'Applies the given style on press',
     },
     {
       name: 'focusStyle',
       required: false,
       type: 'TamaguiStyleProps',
+      description: 'Applies the given style on focus',
     },
   ]}
 />
@@ -191,3 +216,25 @@ Then you can use it like:
 ```jsx
 <Text color="red" $sm={{ color: 'blue' }} />
 ```
+
+### Hover Events
+
+Tamagui adds events above the typical react-native/react-native-web View/Text props. These are:
+
+<PropsTable
+  data={[
+    {
+      name: 'onHoverIn',
+      required: false,
+      type: '(e: HoverEvent) => void',
+      description: 'Web only: maps to onMouseEnter',
+    },
+    {
+      name: 'onHoverOut',
+      required: false,
+      type: '(e: HoverEvent) => void',
+      description: 'Web only: maps to onMouseLeave',
+    },
+
+]}
+/>

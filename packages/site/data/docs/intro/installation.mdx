@@ -9,9 +9,21 @@ The instructions here are for using `tamagui`, a more complete set of components
 
 If you'd rather build your own design system on top of core, [see the Design Systems guide](/docs/guides/design-systems).
 
-<Notice>
-  Try out [create-tamagui-app](/docs/guides/create-tamagui-app) for a helpful starter template.
-</Notice>
+### Quick Start
+
+Try out [create-tamagui-app](/docs/guides/create-tamagui-app) for a helpful starter template. You may also use `@tamagui/shorthands` and `@tamagui/theme-base` to set up nice defaults for shorthands, themes and tokens:
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { themes, tokens } from '@tamagui/theme-base'
+import { shorthands } from '@tamagui/shorthands'
+
+export default createTamagui({
+  themes,
+  tokens,
+  shorthands,
+})
+```
 
 ### Install Tamagui
 
