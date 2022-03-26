@@ -269,13 +269,9 @@ ul, ol, li, pre { margin: 0; }
   padding-left: var(--space-4);
 }
 
-/* &::before {
-  content: attr(data-line);
-  position: absolute;
-  left: -5,
-  top: 0,
-  color: var(--lineNumbers),
-} */
+.transition-test {
+  transition: all ease-in 300ms;
+}
 
 .typewriter {
   opacity: 0,

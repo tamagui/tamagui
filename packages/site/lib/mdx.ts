@@ -8,7 +8,7 @@ import { bundleMDX } from 'mdx-bundler'
 import readingTime from 'reading-time'
 import remarkSlug from 'remark-slug'
 
-import { Frontmatter } from '../types/frontmatter'
+import { Frontmatter } from '../frontmatter'
 import rehypeHighlightCode from './rehype-highlight-code'
 import rehypeMetaAttribute from './rehype-meta-attribute'
 import remarkHeroTemplate from './remark-hero-template'

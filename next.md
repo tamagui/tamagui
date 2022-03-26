@@ -1,3 +1,50 @@
+
+IF first level is dark/light
+  at each second level theme
+ELSE
+  at each first level theme
+DO
+  add a ._tr (theme reset) className in DOM
+
+THEN do styles like this:
+
+.tui_orange.tui_Button,
+.tui_orange .tui_Button,
+._tr .tui_orange.tui_Button,
+._tr .tui_orange .tui_Button,
+._tr ._tr .tui_orange.tui_Button,
+._tr ._tr .tui_orange .tui_Button,
+._tr ._tr ._tr .tui_orange.tui_Button,
+._tr ._tr ._tr .tui_orange .tui_Button {
+
+}
+
+that should let us do component themes without changing at runtime and then the only override we need is adding a few levels of theme-reset
+
+for alts, same way:
+
+.tui_orange_alt2.tui_Button,
+.tui_orange_alt2 .tui_Button,
+._tr .tui_orange_alt2.tui_Button,
+._tr .tui_orange_alt2 .tui_Button,
+._tr ._tr .tui_orange_alt2.tui_Button,
+._tr ._tr .tui_orange_alt2 .tui_Button,
+._tr ._tr ._tr .tui_orange_alt2.tui_Button,
+._tr ._tr ._tr .tui_orange_alt2 .tui_Button {
+
+}
+
+so yes *every* child <Theme /> of any <Theme /> has to re-render the whole every time a theme name changes. BUT this is ok because:
+
+- already have the themeParent.listener pattern just need to restore/fix it
+- can memoize <Theme /> children so only the specific middle nodes render
+- <Button /> dont have to re-render (expensive) due to above CSS
+
+
+- // TODO this is grabbing blue_alt it shold jsut be alt2
+- remove onClick just keep onPress (from types)
+- dev mode global Tamagui to see things
+  - all classnames: Tamagui.classes['_borderBottomColor-1go1dts'] => style
 - // TODO fix variant merge type
 - OmitShorthands<> helper (see ActiveCirlce in site)
 - toggle/switch, tabs, label, togglegroup
@@ -7,6 +54,7 @@
 - fix type autocomplete not showing in menu on some
 - fix image w/h shorthand not translating to width/height runtime
 - extracted theme="" components will change how ThemeReset/Theme work with finding parent context, we'll need to have the equivalent web versions for all of them. something like MutationObserver(querySelector.closest('.theme--parent'))
+- github sponsor
 
 - document ThemeReverse
 

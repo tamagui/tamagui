@@ -6,7 +6,7 @@ import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/md
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 
-import type { Frontmatter } from '../../../types/frontmatter'
+import type { Frontmatter } from '../../../frontmatter'
 
 type Doc = {
   frontmatter: Frontmatter

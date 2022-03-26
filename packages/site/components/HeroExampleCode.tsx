@@ -27,13 +27,14 @@ export function HeroExampleCode() {
     <ContainerLarge position="relative">
       <YStack zi={1} space="$5">
         <YStack space="$2">
-          <H2 als="center">Optimizing compiler</H2>
+          <H2 als="center">DX, meet speed</H2>
           <H3 theme="alt2" als="center" fow="400">
             Faster runtime 🤝 less code 🤝 more platforms.
           </H3>
         </YStack>
 
-        <InteractiveContainer als="center">
+        <InteractiveContainer maxWidth="100%" als="center">
+          {/* <ScrollView> */}
           {examples.map((example, i) => {
             return (
               <Button
@@ -47,10 +48,11 @@ export function HeroExampleCode() {
               </Button>
             )
           })}
+          {/* </ScrollView> */}
         </InteractiveContainer>
 
-        <XStack mt="$2" jc="space-between">
-          <YStack flex={1} maxWidth="50%" px="$2" space="$6">
+        <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
+          <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$6">
             <Paragraph theme="alt2" minHeight={50} ta="center" px="$7">
               <Theme name="blue">
                 <CodeInline size="$4">Input</CodeInline>
@@ -61,12 +63,12 @@ export function HeroExampleCode() {
 
             <CodeExamples {...activeExample.input} />
           </YStack>
-          <YStack mx={-30} zIndex={1000}>
+          <YStack $sm={{ display: 'none' }} mx={-30} zIndex={1000}>
             <IconStack p="$3" theme="blue" mb={0}>
               <FastForward size={18} />
             </IconStack>
           </YStack>
-          <YStack flex={1} maxWidth="50%" px="$2" space="$6">
+          <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
             <Paragraph theme="alt2" minHeight={50} ta="center" px="$7">
               <Theme name="blue">
                 <CodeInline size="$4">Output</CodeInline>
@@ -87,7 +89,7 @@ const CodeExamples = ({ examples }) => {
   const example = examples[activeIndex]
 
   return (
-    <YStack overflow="hidden" flex={1}>
+    <YStack theme="blue" overflow="hidden" flex={1}>
       <InteractiveContainer zi={10} mb={-30} als="center">
         {examples.map((example, i) => (
           <Button
@@ -103,7 +105,7 @@ const CodeExamples = ({ examples }) => {
         ))}
       </InteractiveContainer>
       <XStack maxWidth="100%" flex={1}>
-        <HoverableStack>
+        <YStack flex={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemo
             language={example.language as any}
             mode="interactive"
@@ -113,15 +115,11 @@ const CodeExamples = ({ examples }) => {
             flex={1}
             value={example.code}
           />
-        </HoverableStack>
+        </YStack>
       </XStack>
     </YStack>
   )
 }
-
-const HoverableStack = (props) => (
-  <YStack flex={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }} {...props} />
-)
 
 const examples = [
   {
@@ -205,7 +203,7 @@ const App = () => <div className={_cn}>
   },
 
   {
-    name: 'Conditionals',
+    name: 'Logic',
     input: {
       description: `use logical statements, spreads, imported constants, and other expressions as you would normally.`,
       examples: [
@@ -231,7 +229,8 @@ const App = (props) => (
       ],
     },
     output: {
-      description: 'the compiler extracts .',
+      description:
+        'the compiler evaluates ternaries, spreads, even deeply nested logic and turns heavy objects into simple strings.',
       examples: [
         {
           name: 'app.js',
@@ -276,7 +275,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
   },
 
   {
-    name: 'Responsive',
+    name: 'Media',
     input: {
       description:
         'Psuedo states styling and media queries extract at compile-time, but fallback gracefully at runtime.',
@@ -333,7 +332,7 @@ const App = () => <div className={_cn} />`,
   },
 
   {
-    name: 'Shorthands',
+    name: 'Shorthand',
     input: {
       description:
         'Fully typed shorthands you can set up yourself work with all the features of Tamagui.',

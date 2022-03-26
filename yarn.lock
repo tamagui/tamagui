@@ -4144,7 +4144,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@^1.0.0-alpha.64, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@^1.0.0-alpha.64, @tamagui/colors@^1.0.0-alpha.68, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -4171,7 +4171,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.0.0-alpha.67, @tamagui/core@^1.0.0-alpha.68, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.0.0-alpha.64, @tamagui/core@^1.0.0-alpha.67, @tamagui/core@^1.0.0-alpha.68, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -4225,7 +4225,7 @@ __metadata:
     cheerio: ^1.0.0-rc.5
     feather-icons: ^4.28.0
     glob: ^7.1.6
-    prettier: ^2.4.1
+    prettier: ^2.6.1
     prettier-plugin-import-sort: ^0.0.7
     prop-types: ^15.7.2
     react: "*"
@@ -4335,6 +4335,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/shorthands@^1.0.0-alpha.68, @tamagui/shorthands@workspace:packages/shorthands":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/shorthands@workspace:packages/shorthands"
+  dependencies:
+    "@tamagui/build": ^1.0.0-alpha.64
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/site@workspace:packages/site":
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:packages/site"
@@ -4344,11 +4352,12 @@ __metadata:
     "@expo/webpack-config": ^0.16.2
     "@next/bundle-analyzer": ^12.0.10
     "@tamagui/animations-reanimated": ^1.0.0-alpha.68
-    "@tamagui/colors": ^1.0.0-alpha.64
+    "@tamagui/colors": ^1.0.0-alpha.68
     "@tamagui/drawer": ^1.0.0-alpha.68
     "@tamagui/feather-icons": ^1.0.0-alpha.64
     "@tamagui/menu": ^1.0.0-alpha.68
     "@tamagui/next-plugin": ^1.0.0-alpha.68
+    "@tamagui/shorthands": ^1.0.0-alpha.68
     "@tamagui/theme-base": ^1.0.0-alpha.68
     compare-versions: ^4.0.1
     copy-to-clipboard: ^3.3.1
@@ -4457,6 +4466,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.64
     "@tamagui/colors": ^1.0.0-alpha.64
+    "@tamagui/core": ^1.0.0-alpha.64
   languageName: unknown
   linkType: soft
 
@@ -20871,10 +20881,10 @@ __metadata:
     lerna: ^4.0.0
     node-gyp: ^8.4.0
     npm-run-all: ^4.1.5
-    prettier: ^2.4.1
+    prettier: ^2.6.1
     prettier-plugin-import-sort: ^0.0.7
     pretty-quick: ^3.1.2
-    turbo: ^1.1.1
+    turbo: ^1.1.10
     typescript: ^4.5.2
     ultra-runner: ^3.10.5
   languageName: unknown
@@ -21507,106 +21517,106 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-darwin-64@npm:1.1.5"
+"turbo-darwin-64@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-darwin-64@npm:1.1.10"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-darwin-arm64@npm:1.1.5"
+"turbo-darwin-arm64@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-darwin-arm64@npm:1.1.10"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-freebsd-64@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-freebsd-64@npm:1.1.5"
+"turbo-freebsd-64@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-freebsd-64@npm:1.1.10"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-freebsd-arm64@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-freebsd-arm64@npm:1.1.5"
+"turbo-freebsd-arm64@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-freebsd-arm64@npm:1.1.10"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-32@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-linux-32@npm:1.1.5"
+"turbo-linux-32@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-linux-32@npm:1.1.10"
   conditions: os=linux & cpu=ia32
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-linux-64@npm:1.1.5"
+"turbo-linux-64@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-linux-64@npm:1.1.10"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-linux-arm64@npm:1.1.5"
+"turbo-linux-arm64@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-linux-arm64@npm:1.1.10"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-linux-arm@npm:1.1.5"
+"turbo-linux-arm@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-linux-arm@npm:1.1.10"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"turbo-linux-mips64le@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-linux-mips64le@npm:1.1.5"
+"turbo-linux-mips64le@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-linux-mips64le@npm:1.1.10"
   conditions: os=linux & cpu=mips64el
   languageName: node
   linkType: hard
 
-"turbo-linux-ppc64le@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-linux-ppc64le@npm:1.1.5"
+"turbo-linux-ppc64le@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-linux-ppc64le@npm:1.1.10"
   conditions: os=linux & cpu=ppc64
   languageName: node
   linkType: hard
 
-"turbo-windows-32@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-windows-32@npm:1.1.5"
+"turbo-windows-32@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-windows-32@npm:1.1.10"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:1.1.5":
-  version: 1.1.5
-  resolution: "turbo-windows-64@npm:1.1.5"
+"turbo-windows-64@npm:1.1.10":
+  version: 1.1.10
+  resolution: "turbo-windows-64@npm:1.1.10"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo@npm:^1.1.1":
-  version: 1.1.5
-  resolution: "turbo@npm:1.1.5"
+"turbo@npm:^1.1.10":
+  version: 1.1.10
+  resolution: "turbo@npm:1.1.10"
   dependencies:
-    turbo-darwin-64: 1.1.5
-    turbo-darwin-arm64: 1.1.5
-    turbo-freebsd-64: 1.1.5
-    turbo-freebsd-arm64: 1.1.5
-    turbo-linux-32: 1.1.5
-    turbo-linux-64: 1.1.5
-    turbo-linux-arm: 1.1.5
-    turbo-linux-arm64: 1.1.5
-    turbo-linux-mips64le: 1.1.5
-    turbo-linux-ppc64le: 1.1.5
-    turbo-windows-32: 1.1.5
-    turbo-windows-64: 1.1.5
+    turbo-darwin-64: 1.1.10
+    turbo-darwin-arm64: 1.1.10
+    turbo-freebsd-64: 1.1.10
+    turbo-freebsd-arm64: 1.1.10
+    turbo-linux-32: 1.1.10
+    turbo-linux-64: 1.1.10
+    turbo-linux-arm: 1.1.10
+    turbo-linux-arm64: 1.1.10
+    turbo-linux-mips64le: 1.1.10
+    turbo-linux-ppc64le: 1.1.10
+    turbo-windows-32: 1.1.10
+    turbo-windows-64: 1.1.10
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -21634,7 +21644,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: ebc312e868a02b93711802ad5287b1cab79c5cf9fffca197b53b15dae4c936a47d295deedebe993676a528576c84f2d879f76d954ffca0785376dba4c01883af
+  checksum: ba1c606f231ab50f8d8d457fe9fc8e7b59c88e2f8957b4c341aa96a807c96028554cd0f8aa7ba022ecf49248e0c14d4c055d3fb9faa7fea838e030209079bd20
   languageName: node
   linkType: hard
 

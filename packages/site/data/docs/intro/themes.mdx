@@ -7,7 +7,27 @@ Themes in Tamagui are powerful because they can compose off each other nicely. T
 
 Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color1`, `colorHover`, `background1`, and `backgroundHover`. We also have a set of light and dark colors, which we define onto their respective `dark` and `light` base themes.
 
-Tamagui lets you access themes and tokens both in the same way. Let's start with an example of inline styling with a subset of the configuration:
+Tamagui lets you access themes and tokens both in the same way.
+
+### Quick start with @tamagui/theme-base
+
+To get started quickly, you can use the themes we've developed alongside this site and with other apps, `@tamagui/theme-base`. It's even easier to see how it all comes together by using [create-tamagui-app to bootstrap](/docs/guides/create-tamagui-app).
+
+To install, just add import it and add it to your `tamagui.config.ts`:
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { themes, tokens } from '@tamagui/theme-base'
+
+export default createTamagui({
+  themes,
+  tokens,
+})
+```
+
+### Example
+
+Let's start with an example of inline styling with a subset of the configuration:
 
 ```jsx
 import { createTokens, createTamagui, YStack, Theme } from 'tamagui'
@@ -180,15 +200,20 @@ Finally, each component in Tamagui can be set up to accept a component specific 
 
 ```tsx
 const ButtonFrame = styled(SizableFrame, {
-  name: 'button',
+  name: 'Button',
   tag: 'button',
 })
 ```
 
-The `name` attribute will be removed from the defaultProps as it's special, and instructs Tamagui to look for any `_button` theme. So you can add the following themes to customize buttons at any level:
+<Notice>
+  We've decided to enforce the first letter being capitalized. This makes it easier to users to
+  distinguish component themes, and allows Tamagui internally to avoid extra work and nesting.
+</Notice>
 
-- `dark_button`
-- `dark_green_button`
-- `dark_green_subtle_button`
+The `name` attribute will be removed from the defaultProps and used internally by Tamagui to check for the sub-theme that matches. This means any theme named with an ending of `_Button` will apply. So you can add the following themes to customize buttons at any level:
+
+- `dark_Button`
+- `dark_green_Button`
+- `dark_green_subtle_Button`
 
 For more on this, see the [Theme docs](/docs/core/Theme).

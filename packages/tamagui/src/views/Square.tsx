@@ -3,6 +3,7 @@ import { GetProps, styled } from '@tamagui/core'
 import { SizableFrame } from './SizableFrame'
 
 export const Square = styled(SizableFrame, {
+  borderRadius: '$0',
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',

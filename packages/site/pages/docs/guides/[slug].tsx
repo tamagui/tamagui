@@ -6,8 +6,8 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import { H1 } from 'tamagui'
 
-import { Description } from '../../../components/Description'
-import type { Frontmatter } from '../../../types/frontmatter'
+import { SubTitle } from '../../../components/SubTitle'
+import type { Frontmatter } from '../../../frontmatter'
 
 type Doc = {
   frontmatter: Frontmatter
@@ -25,7 +25,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
       <H1 letterSpacing={-1} fontWeight="700">
         {frontmatter.title}
       </H1>
-      <Description>{frontmatter.description}</Description>
+      <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
       <QuickNav />
     </>

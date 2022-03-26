@@ -1,7 +1,7 @@
 import { Box, styled } from 'tamagui'
 
 export const Card = styled(Box, {
-  name: 'card',
+  name: 'Card',
   className: 'transition all ease-in ms100',
   borderRadius: '$2',
   backgroundColor: '$background',

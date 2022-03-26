@@ -21,7 +21,7 @@ React['createElement']
 type IconProp = JSX.Element | ((props: { color?: string; size?: number }) => JSX.Element) | null
 
 const ButtonFrame = styled(SizableFrame, {
-  name: 'button',
+  name: 'Button',
   tag: 'button',
   borderWidth: 0,
   hoverable: true,

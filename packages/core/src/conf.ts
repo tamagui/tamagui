@@ -4,6 +4,12 @@ export let conf: TamaguiInternalConfig | null
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
+
+  if (process.env.NODE_ENV === 'development') {
+    if (!globalThis['Tamagui']) {
+      globalThis['Tamagui'] = next
+    }
+  }
 }
 
 export const getHasConfigured = () => !!conf

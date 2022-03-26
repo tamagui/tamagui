@@ -98,7 +98,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     const forceUpdate = useForceUpdate()
     const features = useFeatures(props, { forceUpdate })
-    const theme = useTheme(props.theme, componentName)
+    const theme = useTheme(props.theme, componentName, props['debug'])
     const [state, set_] = useState<ComponentState>(defaultComponentState)
     const set = createShallowUpdate(set_)
 
@@ -285,6 +285,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         if (props['debug']) {
           // prettier-ignore
           console.log('» styles', { pseudos, style, styles, classList, stylesClassNames, className: className.trim().split(' ') })
+          console.log('» theme className', theme.className)
         }
       }
       viewProps.className = className

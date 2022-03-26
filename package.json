@@ -14,7 +14,8 @@
     "postinstall": "manypkg check",
     "check": "manypkg check",
     "build": "yarn build:js && yarn build:types",
-    "build:force": "yarn build:js --force && yarn build:types --force",
+    "rebuild": "rm -r packages/*/types; yarn build:js --force && yarn build:types --force",
+    "rebuild:types": "rm -r packages/*/types; yarn build:types --force",
     "build:js": "SKIP_TYPES=1 turbo run build",
     "build:types": "SKIP_JS=1 turbo run build",
     "watch": "npm-run-all --parallel watch:ts:preserve-output watch:build",
@@ -66,10 +67,10 @@
     "lerna": "^4.0.0",
     "node-gyp": "^8.4.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.4.1",
+    "prettier": "^2.6.1",
     "prettier-plugin-import-sort": "^0.0.7",
     "pretty-quick": "^3.1.2",
-    "turbo": "^1.1.1",
+    "turbo": "^1.1.10",
     "typescript": "^4.5.2",
     "ultra-runner": "^3.10.5"
   }

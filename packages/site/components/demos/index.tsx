@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 
 export const StacksDemo = dynamic(() => import('./StacksDemo'))
+export const ShapesDemo = dynamic(() => import('./ShapesDemo'))
 export const TextDemo = dynamic(() => import('./TextDemo'))
 export const ButtonDemo = dynamic(() => import('./ButtonDemo'))
 export const ThemeInverseDemo = dynamic(() => import('./ThemeInverseDemo'))

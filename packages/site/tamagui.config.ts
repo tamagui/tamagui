@@ -1,8 +1,8 @@
+import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
 import { createTamagui } from 'tamagui'
 
 import { animations } from './constants/animations'
-import { shorthands } from './constants/shorthands'
 
 const config = createTamagui({
   animations,

@@ -6,8 +6,8 @@ import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 import { H1, Spacer } from 'tamagui'
 
-import { Description } from '../../../components/Description'
-import type { Frontmatter } from '../../../types/frontmatter'
+import { SubTitle } from '../../../components/SubTitle'
+import type { Frontmatter } from '../../../frontmatter'
 
 type Doc = {
   frontmatter: Frontmatter
@@ -26,7 +26,7 @@ export default function DocIntroPage({ frontmatter, code }: Doc) {
         {frontmatter.title}
       </H1>
       <Spacer />
-      <Description>{frontmatter.description}</Description>
+      <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
       <QuickNav />
     </>

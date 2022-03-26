@@ -1,13 +1,15 @@
 import { createContext } from 'react'
 
+import { getThemes } from './conf'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from './static'
 import { ThemeObject, Themes } from './types'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
 
 export type SetActiveThemeProps = {
+  className?: string
   parentManager?: ThemeManager | null
-  name: string | null
+  name?: string | null
   theme?: any
 }
 
@@ -18,31 +20,51 @@ export class ThemeManager {
   themeListeners = new Set<ThemeListener>()
   parentManager: ThemeManager | null = null
   theme: ThemeObject | null = null
+  className: string | null = null
 
   get parentName() {
     return this.parentManager?.name ?? null
   }
 
   get fullName(): string {
-    const parentName = this.parentManager?.fullName || ''
-    const name = this.name || ''
-    const parts = [...new Set([...`${parentName}_${name}`.split('_')])].filter(Boolean)
-    return parts.join('_')
+    return this.getNextTheme().name || this.name || ''
+    // const parentName = this.parentManager?.fullName || ''
+    // const name = this.name || ''
+    // const parts = [...new Set([...`${parentName}_${name}`.split('_')])].filter(Boolean)
+    // return parts.join('_')
   }
 
-  update({ name, theme, parentManager = null }: SetActiveThemeProps) {
-    if (name === this.name && parentManager == this.parentManager) {
-      return
+  update({ name, theme, className, parentManager = null }: SetActiveThemeProps = {}) {
+    if (
+      // optimization for web, avoid dark/light re-renders
+      (className ? className === this.className : name === this.name) &&
+      parentManager == this.parentManager
+    ) {
+      return false
     }
-    this.name = name
+    console.log('changing', this.name, name, this.className, className)
+    this.className = className || null
+    this.name = name || null
     this.theme = theme
     this.parentManager = parentManager
     this.notifyListeners()
+    return true
   }
 
-  getNextTheme(props: { themes: Themes; name?: string | null; componentName?: string | null }) {
-    const { themes, name, componentName } = props
+  getNextTheme(
+    props: { themes?: Themes; name?: string | null; componentName?: string | null } = {},
+    debug = false
+  ) {
+    const { themes = getThemes(), name, componentName } = props
+
     if (!name) {
+      if (componentName) {
+        const name = `${this.name}_${componentName}`
+        const theme = themes[name]
+        if (theme) {
+          return { name, theme, className: this.#getClassName(name) }
+        }
+      }
       return {
         name: this.name,
         theme: this.theme,
@@ -51,10 +73,6 @@ export class ThemeManager {
 
     let nextName = props.name || this.name || ''
     let parentName = this.fullName
-
-    if (name === 'orange') {
-      console.warn('ok', props, parentName)
-    }
 
     while (true) {
       if (nextName in themes) {
@@ -66,16 +84,18 @@ export class ThemeManager {
       }
       if (!parentName.includes(THEME_NAME_SEPARATOR)) {
         // not found!
-        console.warn('not found??', props, this)
+        console.warn('theme not found', props.name)
         break
       }
       // go up one
       parentName = parentName.slice(0, parentName.lastIndexOf(THEME_NAME_SEPARATOR))
     }
 
-    const componentThemeName = `${nextName}_${componentName}`
-    if (componentThemeName in themes) {
-      nextName = componentThemeName
+    if (componentName) {
+      const componentThemeName = `${nextName}_${componentName}`
+      if (componentThemeName in themes) {
+        nextName = componentThemeName
+      }
     }
 
     let theme = themes[nextName]
@@ -83,19 +103,21 @@ export class ThemeManager {
       theme = themes[`light_${nextName}`]
     }
 
-    if (!theme) {
-      console.log('why no theme', nextName, parentName)
+    if (process.env.NODE_ENV === 'development' && debug) {
+      console.log('getNextTheme', { props, nextName, parentName }, this)
     }
-
-    const className = `tamagui-theme ${THEME_CLASSNAME_PREFIX}${nextName}`
-      .replace('light_', '')
-      .replace('dark_', '')
 
     return {
       name: nextName,
       theme,
-      className,
+      className: this.#getClassName(nextName),
     }
+  }
+
+  #getClassName(name: string) {
+    return `tamagui-theme ${THEME_CLASSNAME_PREFIX}${name}`
+      .replace('light_', '')
+      .replace('dark_', '')
   }
 
   track(uuid: any, keys: Set<string>) {
