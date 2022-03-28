@@ -186,9 +186,10 @@ export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpa
 export declare type SpaceTokens = GetTokenString<keyof Tokens['space']>;
 export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject>;
 export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']>;
-declare type ThemeValue<A> = Omit<A, string> | UnionableString | Variable;
 export declare type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeKeyVariables : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
 export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeKeyVariables : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : {};
+export declare type ThemeValueFallback = UnionableString | Variable;
+declare type ThemeValue<A> = A | ThemeValueFallback;
 export declare type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValue<T[K]> | ThemeValueGet<K>;
 };

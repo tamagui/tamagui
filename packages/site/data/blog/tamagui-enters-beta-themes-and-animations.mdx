@@ -16,7 +16,7 @@ Tamagui enters beta!
 
 Six months, hundreds of bugs, 3 demo apps, 1 benchmark suite, and 2 big new features: **themes v2** and **pluggable animations**. Here's what's new:
 
-## Start faster with create-tamagui-app
+### Start faster with create-tamagui-app
 
 Set up a starter repo with expo, webpack, and tamagui configured and ready to go:
 
@@ -24,7 +24,7 @@ Set up a starter repo with expo, webpack, and tamagui configured and ready to go
 npx create-tamagui-app@latest my-app
 ```
 
-## Themes v2
+### Themes v2
 
 Themes has been redone to add a ton of flexiblity and power. Tamagui now supports unlimited sub-themes, and per-component theming. Further, we've standardized the names of theme props, giving full control to customize any aspect of every component.
 
@@ -40,20 +40,26 @@ We've also fixed and improved a lot of how the `@tamagui/feather-icons`, the `Bu
 
 [Read the docs for more on how](/docs/intro/themes).
 
-## Animations
+### Animations
 
 Animations are making their way into `@tamagui/core`. While they should be considered somewhat experimental as we get feedback and use them more in practice, we think the API's won't change signifcantly.
 
-## New Components
+### New Components
 
-Over the last few months we've added the [Inputs](/docs/components/forms), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover), [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), and [HTML Element](/docs/components/html-elements) components.
+Over the last few months we've added [Inputs](/docs/components/forms), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover), [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), and [HTML Element](/docs/components/html-elements) components.
 
 These are big, helpful components and we've made sure each works fully with the optimizing compiler and full suite of react-native and Tamagui properties.
 
-But this is also just the start.
+But this is also just the start. There's tons of room to grow and improve. We're looking at using [Floating UI]() to improve the various floating panels. We'll continue to add form components that can share fully consistent styles. And much more.
 
-## Pseudo: Focus
+### Focus styling
 
-## ThemeReset
+We landed experimental support for the `focusStyle` prop, which works much like `pressStyle` and `hoverStyle`.
 
-## space => gap
+### ThemeReset
+
+Sometimes you want to have your theme reset to the one above it. ThemeReset does just this. Note: it's not SSR compatible if you're doing automatic light/dark themes - it will still work, but there may be a flash on first load. There's a fix for this that is a bit involved,so we think it's still useful to release as experimental until we land that.
+
+### Renaming space to gap
+
+As we're moving from alpha to beta, we're going to take this chance to make breaking changes. To better align with the flexbox spec, `space` has been renamed to `gap`.

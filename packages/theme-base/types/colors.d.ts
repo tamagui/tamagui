@@ -1,5 +1,17 @@
-export declare const colorNames: readonly ["blue", "gray", "green", "indigo", "orange", "pink", "purple", "red", "violet", "yellow"];
+export declare const colorNames: readonly ["blue", "gray", "green", "indigo", "orange", "pink", "purple", "red", "violet", "yellow", "teal"];
 export declare const allLightColors: {
+    teal1: string;
+    teal2: string;
+    teal3: string;
+    teal4: string;
+    teal5: string;
+    teal6: string;
+    teal7: string;
+    teal8: string;
+    teal9: string;
+    teal10: string;
+    teal11: string;
+    teal12: string;
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -134,6 +146,18 @@ export declare const allLightColors: {
     blue12: string;
 };
 export declare const allDarkColors: {
+    teal1: string;
+    teal2: string;
+    teal3: string;
+    teal4: string;
+    teal5: string;
+    teal6: string;
+    teal7: string;
+    teal8: string;
+    teal9: string;
+    teal10: string;
+    teal11: string;
+    teal12: string;
     yellow1: string;
     yellow2: string;
     yellow3: string;
@@ -268,6 +292,18 @@ export declare const allDarkColors: {
     blue12: string;
 };
 export declare const darkColorsPostfixed: {
+    teal1Dark: string;
+    teal2Dark: string;
+    teal3Dark: string;
+    teal4Dark: string;
+    teal5Dark: string;
+    teal6Dark: string;
+    teal7Dark: string;
+    teal8Dark: string;
+    teal9Dark: string;
+    teal10Dark: string;
+    teal11Dark: string;
+    teal12Dark: string;
     yellow1Dark: string;
     yellow2Dark: string;
     yellow3Dark: string;
@@ -403,6 +439,6 @@ export declare const darkColorsPostfixed: {
 };
 export declare type ColorNamesLight = keyof typeof allLightColors;
 export declare type ColorNamesDark = keyof typeof allDarkColors;
-export declare const colorNamesLight: ("yellow1" | "yellow2" | "yellow3" | "yellow4" | "yellow5" | "yellow6" | "yellow7" | "yellow8" | "yellow9" | "yellow10" | "yellow11" | "yellow12" | "violet1" | "violet2" | "violet3" | "violet4" | "violet5" | "violet6" | "violet7" | "violet8" | "violet9" | "violet10" | "violet11" | "violet12" | "red1" | "red2" | "red3" | "red4" | "red5" | "red6" | "red7" | "red8" | "red9" | "red10" | "red11" | "red12" | "purple1" | "purple2" | "purple3" | "purple4" | "purple5" | "purple6" | "purple7" | "purple8" | "purple9" | "purple10" | "purple11" | "purple12" | "pink1" | "pink2" | "pink3" | "pink4" | "pink5" | "pink6" | "pink7" | "pink8" | "pink9" | "pink10" | "pink11" | "pink12" | "orange1" | "orange2" | "orange3" | "orange4" | "orange5" | "orange6" | "orange7" | "orange8" | "orange9" | "orange10" | "orange11" | "orange12" | "indigo1" | "indigo2" | "indigo3" | "indigo4" | "indigo5" | "indigo6" | "indigo7" | "indigo8" | "indigo9" | "indigo10" | "indigo11" | "indigo12" | "green1" | "green2" | "green3" | "green4" | "green5" | "green6" | "green7" | "green8" | "green9" | "green10" | "green11" | "green12" | "grayA1" | "grayA2" | "grayA3" | "grayA4" | "grayA5" | "grayA6" | "grayA7" | "grayA8" | "grayA9" | "grayA10" | "grayA11" | "grayA12" | "gray1" | "gray2" | "gray3" | "gray4" | "gray5" | "gray6" | "gray7" | "gray8" | "gray9" | "gray10" | "gray11" | "gray12" | "blue1" | "blue2" | "blue3" | "blue4" | "blue5" | "blue6" | "blue7" | "blue8" | "blue9" | "blue10" | "blue11" | "blue12")[];
-export declare const colorNamesDark: ("yellow1" | "yellow2" | "yellow3" | "yellow4" | "yellow5" | "yellow6" | "yellow7" | "yellow8" | "yellow9" | "yellow10" | "yellow11" | "yellow12" | "violet1" | "violet2" | "violet3" | "violet4" | "violet5" | "violet6" | "violet7" | "violet8" | "violet9" | "violet10" | "violet11" | "violet12" | "red1" | "red2" | "red3" | "red4" | "red5" | "red6" | "red7" | "red8" | "red9" | "red10" | "red11" | "red12" | "purple1" | "purple2" | "purple3" | "purple4" | "purple5" | "purple6" | "purple7" | "purple8" | "purple9" | "purple10" | "purple11" | "purple12" | "pink1" | "pink2" | "pink3" | "pink4" | "pink5" | "pink6" | "pink7" | "pink8" | "pink9" | "pink10" | "pink11" | "pink12" | "orange1" | "orange2" | "orange3" | "orange4" | "orange5" | "orange6" | "orange7" | "orange8" | "orange9" | "orange10" | "orange11" | "orange12" | "indigo1" | "indigo2" | "indigo3" | "indigo4" | "indigo5" | "indigo6" | "indigo7" | "indigo8" | "indigo9" | "indigo10" | "indigo11" | "indigo12" | "green1" | "green2" | "green3" | "green4" | "green5" | "green6" | "green7" | "green8" | "green9" | "green10" | "green11" | "green12" | "grayA1" | "grayA2" | "grayA3" | "grayA4" | "grayA5" | "grayA6" | "grayA7" | "grayA8" | "grayA9" | "grayA10" | "grayA11" | "grayA12" | "gray1" | "gray2" | "gray3" | "gray4" | "gray5" | "gray6" | "gray7" | "gray8" | "gray9" | "gray10" | "gray11" | "gray12" | "blue1" | "blue2" | "blue3" | "blue4" | "blue5" | "blue6" | "blue7" | "blue8" | "blue9" | "blue10" | "blue11" | "blue12")[];
+export declare const colorNamesLight: ("teal1" | "teal2" | "teal3" | "teal4" | "teal5" | "teal6" | "teal7" | "teal8" | "teal9" | "teal10" | "teal11" | "teal12" | "yellow1" | "yellow2" | "yellow3" | "yellow4" | "yellow5" | "yellow6" | "yellow7" | "yellow8" | "yellow9" | "yellow10" | "yellow11" | "yellow12" | "violet1" | "violet2" | "violet3" | "violet4" | "violet5" | "violet6" | "violet7" | "violet8" | "violet9" | "violet10" | "violet11" | "violet12" | "red1" | "red2" | "red3" | "red4" | "red5" | "red6" | "red7" | "red8" | "red9" | "red10" | "red11" | "red12" | "purple1" | "purple2" | "purple3" | "purple4" | "purple5" | "purple6" | "purple7" | "purple8" | "purple9" | "purple10" | "purple11" | "purple12" | "pink1" | "pink2" | "pink3" | "pink4" | "pink5" | "pink6" | "pink7" | "pink8" | "pink9" | "pink10" | "pink11" | "pink12" | "orange1" | "orange2" | "orange3" | "orange4" | "orange5" | "orange6" | "orange7" | "orange8" | "orange9" | "orange10" | "orange11" | "orange12" | "indigo1" | "indigo2" | "indigo3" | "indigo4" | "indigo5" | "indigo6" | "indigo7" | "indigo8" | "indigo9" | "indigo10" | "indigo11" | "indigo12" | "green1" | "green2" | "green3" | "green4" | "green5" | "green6" | "green7" | "green8" | "green9" | "green10" | "green11" | "green12" | "grayA1" | "grayA2" | "grayA3" | "grayA4" | "grayA5" | "grayA6" | "grayA7" | "grayA8" | "grayA9" | "grayA10" | "grayA11" | "grayA12" | "gray1" | "gray2" | "gray3" | "gray4" | "gray5" | "gray6" | "gray7" | "gray8" | "gray9" | "gray10" | "gray11" | "gray12" | "blue1" | "blue2" | "blue3" | "blue4" | "blue5" | "blue6" | "blue7" | "blue8" | "blue9" | "blue10" | "blue11" | "blue12")[];
+export declare const colorNamesDark: ("teal1" | "teal2" | "teal3" | "teal4" | "teal5" | "teal6" | "teal7" | "teal8" | "teal9" | "teal10" | "teal11" | "teal12" | "yellow1" | "yellow2" | "yellow3" | "yellow4" | "yellow5" | "yellow6" | "yellow7" | "yellow8" | "yellow9" | "yellow10" | "yellow11" | "yellow12" | "violet1" | "violet2" | "violet3" | "violet4" | "violet5" | "violet6" | "violet7" | "violet8" | "violet9" | "violet10" | "violet11" | "violet12" | "red1" | "red2" | "red3" | "red4" | "red5" | "red6" | "red7" | "red8" | "red9" | "red10" | "red11" | "red12" | "purple1" | "purple2" | "purple3" | "purple4" | "purple5" | "purple6" | "purple7" | "purple8" | "purple9" | "purple10" | "purple11" | "purple12" | "pink1" | "pink2" | "pink3" | "pink4" | "pink5" | "pink6" | "pink7" | "pink8" | "pink9" | "pink10" | "pink11" | "pink12" | "orange1" | "orange2" | "orange3" | "orange4" | "orange5" | "orange6" | "orange7" | "orange8" | "orange9" | "orange10" | "orange11" | "orange12" | "indigo1" | "indigo2" | "indigo3" | "indigo4" | "indigo5" | "indigo6" | "indigo7" | "indigo8" | "indigo9" | "indigo10" | "indigo11" | "indigo12" | "green1" | "green2" | "green3" | "green4" | "green5" | "green6" | "green7" | "green8" | "green9" | "green10" | "green11" | "green12" | "grayA1" | "grayA2" | "grayA3" | "grayA4" | "grayA5" | "grayA6" | "grayA7" | "grayA8" | "grayA9" | "grayA10" | "grayA11" | "grayA12" | "gray1" | "gray2" | "gray3" | "gray4" | "gray5" | "gray6" | "gray7" | "gray8" | "gray9" | "gray10" | "gray11" | "gray12" | "blue1" | "blue2" | "blue3" | "blue4" | "blue5" | "blue6" | "blue7" | "blue8" | "blue9" | "blue10" | "blue11" | "blue12")[];
 //# sourceMappingURL=colors.d.ts.map

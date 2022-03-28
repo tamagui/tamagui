@@ -39,6 +39,7 @@ export {
   TamaguiProviderProps,
   TextProps,
   ThemeableHOC,
+  ThemeValueFallback,
   ThemeKeys,
   ThemeName,
   ThemeObject,
@@ -48,6 +49,7 @@ export {
   TransformStyleProps,
   VariantSpreadExtras,
   VariantSpreadFunction,
+  ZIndexTokens,
   // components
   Spacer,
   Stack,
