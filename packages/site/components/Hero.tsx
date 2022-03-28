@@ -130,9 +130,9 @@ export function Hero() {
                         fontWeight: '400',
                       }}
                     >
-                      Write-once native&nbsp;+&nbsp;web UIs with a smart, optimizing compiler.
+                      Consistent UI on Native & Web with a smart optimizing compiler.
                       <br />
-                      Simpler code. Less maintenance. Runs faster, everywhere.
+                      Better code, better DX. Runs fast, everywhere.
                     </Paragraph>
                   </YStack>
                 </YStack>
@@ -257,8 +257,8 @@ export function Hero() {
               Performant
             </H3>
             <Paragraph size="$3" theme="alt2">
-              The fastest UI kit on web or native through a compiler that handles advanced
-              transforms - including media queries, CSS variables, and tree&nbsp;flattening.
+              The fastest UI kit thanks to an advanced compiler that handles styles, media queries,
+              CSS variables, and tree&nbsp;flattening.
             </Paragraph>
           </YStack>
 
@@ -272,12 +272,12 @@ export function Hero() {
               Easy to adopt
             </H3>
             <Paragraph size="$3" theme="alt2">
-              Works with react-native and{' '}
+              Works with React Native and{' '}
               <Text tag="a" href="https://necolas.github.io/react-native-web/">
-                react-native-web
+                Web
               </Text>
-              . Use just the style library or the full component kit. Plug in an existing
-              theme&nbsp;or&nbsp;BYO.
+              . Use it as a style library or full component kit. Comes with beautiful themes, or
+              bring your own.
             </Paragraph>
           </YStack>
 
@@ -291,8 +291,8 @@ export function Hero() {
               Productive
             </H3>
             <Paragraph size="$3" theme="alt2">
-              Inline styles without worry about performance. Themes, tokens, shorthands, media
-              queries, and animations that are fast, out of&nbsp;the&nbsp;box.
+              Typed inline styles without performance downside. Themes, tokens, shorthands, media
+              queries, and animations that run fast.
             </Paragraph>
           </YStack>
 

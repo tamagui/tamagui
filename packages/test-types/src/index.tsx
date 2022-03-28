@@ -1,4 +1,5 @@
 import {
+  ColorTokens,
   GetProps,
   GetVariantProps,
   GetVariants,
@@ -8,13 +9,13 @@ import {
   TamaguiConfig,
   Text,
   ThemeKeyVariables,
+  ThemeObject,
   Variable,
   createTamagui,
   styled,
 } from '@tamagui/core'
-
-import { shorthands, tokens } from './testConstants'
-import { themes } from './testThemes'
+import { shorthands } from '@tamagui/shorthands'
+import { themes, tokens } from '@tamagui/theme-base'
 
 type x2 = Shorthands['bc']
 type x = Shorthands['p']
@@ -92,13 +93,21 @@ const ZStack = styled(YStack, {
   },
 })
 
+type abc = ColorTokens
+
 type z1 = GetProps<typeof YStack>
-type z11 = z1['bg']
+type z11 = z1['bc']
+type z111 = z1['backgroundColor']
+type z12 = ThemeObject
+type themes = TamaguiConfig['themes']
+type themekeys = keyof themes
+type z123 = themes[themekeys]
 
 type z2 = GetProps<typeof ZStack>
 type zSV = GetVariants<typeof ZStack>
 type zVP = GetVariantProps<zSV>
 type z2222 = z2['bg']
+type z22222 = z2['shoulderr']
 
 export const SizableTextTEST = styled(Text, {
   variants: {
@@ -181,7 +190,7 @@ export const x = (props: StackProps) => {
   return (
     <>
       <EmptyExtension elevation="" asd="asds" />
-      <Stack asdsadasd="sadsd" />
+      <Stack bc="$background" asdsadasd="sadsd" />
       <YStack asdsadasd="sadsd" />
       <YStack $lg={{ notValid: 1, x: 10 }} />
       <InteractiveFrame asdsadasd="sadsd" />

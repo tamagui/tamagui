@@ -212,13 +212,13 @@ const baseThemes = {
   dark_Card: darkThemes.dark_alt1,
 
   light: {
-    ...lightThemes.light,
     ...allLightColors,
+    ...lightThemes.light,
   },
 
   dark: {
-    ...darkThemes.dark,
     ...allDarkColors,
+    ...darkThemes.dark,
   },
 }
 
@@ -295,9 +295,13 @@ const colorThemes: {
   [key in ColorThemeNames]: MyThemeBase
 } = Object.fromEntries(colorThemeEntries) as any
 
-export const themes = {
+const allThemes = {
   ...baseThemes,
   ...colorThemes,
   dark_outline,
   light_outline,
 } as const
+
+export const themes: {
+  [key in keyof typeof allThemes]: typeof baseThemes['light']
+} = allThemes as any
