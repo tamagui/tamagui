@@ -189,6 +189,7 @@ export const InteractiveFrame = styled(Stack, {
 export const x = (props: StackProps) => {
   return (
     <>
+      <Paragraph ta="center" />
       <EmptyExtension elevation="" asd="asds" />
       <Stack bc="$background" asdsadasd="sadsd" />
       <YStack asdsadasd="sadsd" />

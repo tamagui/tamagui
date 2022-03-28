@@ -257,7 +257,6 @@ export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']>
 //
 // adds theme short values to relevant props
 //
-type ThemeValue<A> = Omit<A, string> | UnionableString | Variable
 
 export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme'
   ? ThemeKeyVariables
@@ -302,6 +301,10 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   : K extends FontLetterSpacingKeys
   ? FontLetterSpacingTokens
   : {}
+
+export type ThemeValueFallback = UnionableString | Variable
+
+type ThemeValue<A> = A | ThemeValueFallback //Exclude<A, string> | ThemeValueFallback
 
 export type WithThemeValues<T extends object> = {
   [K in keyof T]: ThemeValue<T[K]> | ThemeValueGet<K>

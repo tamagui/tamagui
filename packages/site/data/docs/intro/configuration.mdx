@@ -224,6 +224,26 @@ const App = () => (
 
 One final note: using tokens with themes. Tokens are considered a "fallback" to themes, so any values you define in your theme will override the token. The next section will explain this further.
 
+### Strict tokens
+
+If you'd like to enforce _only_ allowing token values from your theme, you can override the `ThemeValueFallback` type in tamagui in your `tamagui.config.ts`, like so:
+
+```tsx
+const config = createTamagui({
+  ...yourConfig
+})
+
+type Conf = typeof config
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends Conf {}
+  // add this line:
+  type ThemeFallbackValue = {}
+}
+```
+
+This will change all special style properties that map to token/theme values to not accept strings or numbers. If you want to make exceptions, you can then add back in any general types by overriding one of the following: SizeTokens `FontTokens`, `FontSizeTokens`, `FontLineHeightTokens`, `FontWeightTokens`, `FontLetterSpacingTokens`, `SpaceTokens`, `ColorTokens`, and `ZIndexTokens`.
+
 ### Themes
 
 Themes live one level below tokens. Tokens are your variables, where themes use those tokens to create consistent, generic properties that you then typically use in shareable components. Themes should generally only deal with colors.
