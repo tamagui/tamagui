@@ -1,4 +1,4 @@
-import { isTouchDevice } from '@tamagui/core'
+import { useIsTouchDevice } from '@tamagui/core'
 import React, { forwardRef, useState } from 'react'
 
 import { Hoverable, HoverableProps } from './Hoverable'
@@ -15,7 +15,8 @@ export const HoverOrToggle = forwardRef(
     },
     ref: any
   ) => {
-    // conditional render causes SSR issues
+    const isTouchDevice = useIsTouchDevice()
+
     if (isTouchDevice) {
       const [_isOn, setIsOn] = useState(false)
       if (!fallbackToPress) {

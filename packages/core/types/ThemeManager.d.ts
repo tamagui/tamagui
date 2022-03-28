@@ -10,12 +10,13 @@ export declare type SetActiveThemeProps = {
 export declare class ThemeManager {
     #private;
     name: string | null;
+    theme: ThemeObject | null;
+    parentManager: ThemeManager | null;
     keys: Map<any, Set<string>>;
     listeners: Map<any, Function>;
     themeListeners: Set<ThemeListener>;
-    parentManager: ThemeManager | null;
-    theme: ThemeObject | null;
     className: string | null;
+    constructor(name?: string | null, theme?: ThemeObject | null, parentManager?: ThemeManager | null);
     get parentName(): string | null;
     get fullName(): string;
     update({ name, theme, className, parentManager }?: SetActiveThemeProps): boolean;

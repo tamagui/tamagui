@@ -95,9 +95,9 @@ export function Hero() {
                       mx: '$4',
                     }}
                   >
-                    <Tooltip contents="Works the same on iOS, Android, and web">
+                    {/* <Tooltip contents="Works the same on iOS, Android, and web">
                       <span className="rainbow help">Universal</span>
-                    </Tooltip>{' '}
+                    </Tooltip>{' '} */}
                     React design systems that&nbsp;optimize for native & web
                   </Title>
 

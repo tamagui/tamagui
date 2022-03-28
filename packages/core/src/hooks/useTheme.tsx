@@ -147,9 +147,7 @@ export const useChangeThemeEffect = (
     if (!next) {
       return null
     }
-    const manager = new ThemeManager()
-    manager.update({ ...next, parentManager })
-    return manager
+    return new ThemeManager(next.name, next.theme, parentManager)
   })
 
   if (typeof document !== 'undefined') {
