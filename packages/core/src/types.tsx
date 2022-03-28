@@ -253,7 +253,7 @@ export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}`
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}`
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}`
 export type SpaceTokens = GetTokenString<keyof Tokens['space']>
-export type ColorTokens = GetTokenString<keyof Tokens['color']>
+export type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject>
 export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']>
 
 //

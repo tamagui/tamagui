@@ -12,18 +12,18 @@ export function FeaturesGrid() {
       <YStack pt="$6">
         <Grid gap={25} itemMinWidth={250}>
           <YStack padding="$4" space>
-            <H4 fontFamily="$body">Style system</H4>
+            <H4 fontFamily="$body">Ultra-modern design system</H4>
             <Paragraph theme="alt2">
-              Inline typed styles with themes, constants, shorthand props and media queries, plus a
-              set of accessible components that work together out of the box.
+              Inline typed styles, typed themes, tokens, shorthands, media queries and animations,
+              plus a full suite of accessible components.
             </Paragraph>
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 fontFamily="$body">Optimizer</H4>
+            <H4 fontFamily="$body">Fast by default</H4>
             <Paragraph theme="alt2">
-              Tamagui avoids more JS parsing at runtime than other libraries, even with conditional
-              logic in your render. It even flattens your tree when possible.
+              Tamagui saves you time writing code because it optimizes even inline styles, even
+              flattening your tree when possible.
             </Paragraph>
           </YStack>
 
@@ -36,7 +36,7 @@ export function FeaturesGrid() {
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 fontFamily="$body">Dev tools</H4>
+            <H4 fontFamily="$body">Avanced dev tools</H4>
             <Paragraph theme="alt2">
               A fully-typed API, completely extensible, token-aware properties, debug props and
               pragmas, dev-time filename and line numbers on each html tag.
@@ -44,15 +44,15 @@ export function FeaturesGrid() {
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 fontFamily="$body">DX</H4>
+            <H4 fontFamily="$body">Accesible</H4>
             <Paragraph theme="alt2">
-              Inline styles that don't affect render performance, no more naming styles. Let the
-              compiler optimize it for you.
+              Built on top of react-native-web, you get complete accessiblity control out of the
+              box, plus components that have smart defaults.
             </Paragraph>
           </YStack>
 
           <YStack ai="flex-start" space p="$4">
-            <H4 fontFamily="$body">Compatibility</H4>
+            <H4 fontFamily="$body">Compatible</H4>
             <Paragraph theme="alt2">
               Everything you need included on all platforms from themes to responsive design and
               more. Augments react-native-web.
