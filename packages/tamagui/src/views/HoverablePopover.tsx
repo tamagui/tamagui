@@ -1,16 +1,12 @@
-import { isWeb, withStaticProperties } from '@tamagui/core'
+import { useIsTouchDevice, withStaticProperties } from '@tamagui/core'
 import { useDebounce } from '@tamagui/use-debounce'
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 import { Hoverable, HoverableHandle } from './Hoverable'
 import { HoverOrToggle } from './HoverOrToggle'
 import { Popover } from './Popover/Popover'
 import { IPopoverProps } from './Popover/types'
 import { PopperArrow } from './PopperArrow'
-
-// TODO make this work on mobile web too...
-// need to figure out SSR
-const isTouchDevice = !isWeb
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -42,6 +38,7 @@ export const HoverablePopover = withStaticProperties(
     ) => {
       const hoverableRef = useRef<HoverableHandle>(null)
       const [isActive, set] = useState(false)
+      const isTouchDevice = useIsTouchDevice()
 
       // these are debounced only to allow jump betewen target/trigger
       // ..and to make content trigger faster than trigger
@@ -71,9 +68,9 @@ export const HoverablePopover = withStaticProperties(
       }))
 
       // ssr issue
-      // if (isTouchDevice && !fallbackToPress) {
-      //   return trigger(null as any, { open: false })
-      // }
+      if (isTouchDevice && !fallbackToPress) {
+        return trigger(null as any, { open: false })
+      }
 
       return (
         <Popover

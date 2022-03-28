@@ -14,13 +14,16 @@ export type SetActiveThemeProps = {
 }
 
 export class ThemeManager {
-  name: string | null = ''
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
   themeListeners = new Set<ThemeListener>()
-  parentManager: ThemeManager | null = null
-  theme: ThemeObject | null = null
   className: string | null = null
+
+  constructor(
+    public name: string | null = null,
+    public theme: ThemeObject | null = null,
+    public parentManager: ThemeManager | null = null
+  ) {}
 
   get parentName() {
     return this.parentManager?.name ?? null

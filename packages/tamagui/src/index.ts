@@ -98,6 +98,8 @@ export {
   useMedia,
   useTheme,
   useThemeName,
+  useIsTouchDevice,
+  usePressable,
 } from '@tamagui/core'
 
 export * from './viewTypes'
