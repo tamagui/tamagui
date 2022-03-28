@@ -4345,6 +4345,7 @@ __metadata:
     "@tamagui/next-plugin": ^1.0.0-alpha.68
     "@tamagui/shorthands": ^1.0.0-alpha.68
     "@tamagui/theme-base": ^1.0.0-alpha.68
+    "@types/react-native": ^0.67.3
     compare-versions: ^4.0.1
     copy-to-clipboard: ^3.3.1
     css-minimizer-webpack-plugin: ^3.1.3
@@ -4366,6 +4367,7 @@ __metadata:
     parse-numeric-range: ^1.2.0
     react: "*"
     react-dom: "*"
+    react-native: 0.0.0
     react-native-web: ^0.17.5
     react-remove-scroll: ^2.4.1
     reading-time: 1.3.0

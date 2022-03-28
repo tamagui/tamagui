@@ -16,63 +16,21 @@ import {
 
 import Tamagui from './tamagui.config'
 
-const blocks = Tamagui.getCSS().split('}\n')
-console.groupCollapsed('CSS')
-for (const block of blocks) {
-  console.groupCollapsed(block.slice(0, block.indexOf('{')))
-  console.log(block)
-  console.groupEnd()
-}
-console.groupEnd()
-
-const Scale = ({ between, ...props }: any) => {
-  return props.children
-  return React.cloneElement(props.children, {
-    ...props,
-  })
-}
-
 export const Sandbox = () => {
-  const [color, setColor] = useState('orange')
-
   return (
     <Tamagui.Provider injectCSS defaultTheme="dark">
-      <Theme p="$6" name={color}>
-        <YStack p="$6" bc="$background" space>
-          <Button
-            debug
-            onPress={() => {
-              setColor(color === 'orange' ? 'green' : 'orange')
-            }}
-          >
-            {color}_Button
-          </Button>
-          <Button theme="alt1">Alt1</Button>
-          <Button theme="alt2">Alt2</Button>
-
-          <Button theme="blue">Blue</Button>
-          <Theme name="alt2">
-            <Button theme="blue">Blue alt2</Button>
+      <XStack>
+        <ColorsTest />
+        <Theme name="light">
+          <ColorsTest />
+          <Theme name="dark">
+            <ColorsTest />
+            <Theme name="light">
+              <ColorsTest />
+            </Theme>
           </Theme>
-
-          <YStack p="$6" theme="red" bc="$background" space>
-            red
-            <Button>red Button</Button>
-            <XStack p="$6" theme="alt1" bc="$background" space>
-              alt1
-              <Button>Button</Button>
-            </XStack>
-            <XStack p="$6" theme="alt2" bc="$background" space>
-              alt2
-              <Button>Button</Button>
-            </XStack>
-            <XStack p="$6" theme="alt3" bc="$background" space>
-              alt3
-              <Button>Button</Button>
-            </XStack>
-          </YStack>
-        </YStack>
-      </Theme>
+        </Theme>
+      </XStack>
     </Tamagui.Provider>
   )
 
@@ -128,6 +86,48 @@ export const Sandbox = () => {
         <Theme name="light">{players}</Theme>
       </XStack>
     </Tamagui.Provider>
+  )
+}
+
+const ColorsTest = () => {
+  const [color, setColor] = useState('orange')
+
+  return (
+    <Theme p="$6" name={color}>
+      <YStack p="$6" bc="$background" space>
+        <Button
+          onPress={() => {
+            setColor(color === 'orange' ? 'green' : 'orange')
+          }}
+        >
+          {color}_Button
+        </Button>
+        <Button theme="alt1">Alt1</Button>
+        <Button theme="alt2">Alt2</Button>
+
+        <Button theme="blue">Blue</Button>
+        <Theme name="alt2">
+          <Button theme="blue">Blue alt2</Button>
+        </Theme>
+
+        <YStack p="$6" theme="red" bc="$background" space>
+          red
+          <Button>red Button</Button>
+          <XStack p="$6" theme="alt1" bc="$background" space>
+            alt1
+            <Button>Button</Button>
+          </XStack>
+          <XStack p="$6" theme="alt2" bc="$background" space>
+            alt2
+            <Button>Button</Button>
+          </XStack>
+          <XStack p="$6" theme="alt3" bc="$background" space>
+            alt3
+            <Button>Button</Button>
+          </XStack>
+        </YStack>
+      </YStack>
+    </Theme>
   )
 }
 
@@ -209,4 +209,11 @@ export const MediaPlayer = ({ alt = 0 }: { alt?: number }) => {
       </Theme>
     </YStack>
   )
+}
+
+const Scale = ({ between, ...props }: any) => {
+  return props.children
+  return React.cloneElement(props.children, {
+    ...props,
+  })
 }

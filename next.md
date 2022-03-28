@@ -1,3 +1,4 @@
+- document injectCSS, mediaQueryDefaultActive, cssStyleSeparator, maxDarkLightNesting
 
 IF first level is dark/light
   at each second level theme
@@ -35,6 +36,10 @@ for alts, same way:
 }
 
 so yes *every* child <Theme /> of any <Theme /> has to re-render the whole every time a theme name changes. BUT this is ok because:
+
+- note in starter kit adding react-native at version 0 + latest @types/react-native gives autocomplete
+
+- override react native web color values and add in types for css colors "red" etc
 
 - already have the themeParent.listener pattern just need to restore/fix it
 - can memoize <Theme /> children so only the specific middle nodes render

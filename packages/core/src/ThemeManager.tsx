@@ -45,7 +45,7 @@ export class ThemeManager {
     ) {
       return false
     }
-    console.log('changing', this.name, name, this.className, className)
+    // console.log('changing', this.name, name, this.className, className)
     this.className = className || null
     this.name = name || null
     this.theme = theme
@@ -118,9 +118,7 @@ export class ThemeManager {
   }
 
   #getClassName(name: string) {
-    return `tamagui-theme ${THEME_CLASSNAME_PREFIX}${name}`
-      .replace('light_', '')
-      .replace('dark_', '')
+    return `${THEME_CLASSNAME_PREFIX}${name} tui_theme`.replace('light_', '').replace('dark_', '')
   }
 
   track(uuid: any, keys: Set<string>) {

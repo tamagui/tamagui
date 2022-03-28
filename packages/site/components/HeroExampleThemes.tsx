@@ -1,6 +1,7 @@
 import { useTheme } from '@components/NextTheme'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { ScrollView } from 'react-native'
 import {
   Button,
   H2,
@@ -24,7 +25,7 @@ export function HeroExampleCarousel() {
       <ContainerLarge space="$3" position="relative">
         <YStack zi={1} space="$2">
           <H2 als="center">Truly flexible themes</H2>
-          <H3 theme="alt2" als="center" fow="400">
+          <H3 ta="center" theme="alt2" als="center" fow="400">
             Unlimited sub-themes, down to the component
           </H3>
         </YStack>
@@ -141,48 +142,54 @@ const MediaPlayerDemoStack = () => {
 
   return (
     <YStack ai="center" jc="center" space="$6">
-      <XStack space="$4">
-        <InteractiveContainer p="$1" br="$10" als="center" space="$1">
-          {['light', 'dark'].map((name, i) => {
-            const selected = i === 0 ? 'light' : 'dark'
-            const isActive = theme === selected
-            return (
-              <Theme key={name} name={selected}>
-                <ActiveCircle onPress={() => setTheme(selected)} isActive={isActive} />
-              </Theme>
-            )
-          })}
-        </InteractiveContainer>
+      <ScrollView
+        style={{ maxWidth: 'calc(100% + 40px)', marginHorizontal: -20 }}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
+        <XStack px="$4" space="$4">
+          <InteractiveContainer p="$1" br="$10" als="center" space="$1">
+            {['light', 'dark'].map((name, i) => {
+              const selected = i === 0 ? 'light' : 'dark'
+              const isActive = theme === selected
+              return (
+                <Theme key={name} name={selected}>
+                  <ActiveCircle onPress={() => setTheme(selected)} isActive={isActive} />
+                </Theme>
+              )
+            })}
+          </InteractiveContainer>
 
-        <InteractiveContainer p="$1" br="$10" als="center" space="$1">
-          {themes[0].map((color, i) => {
-            const isActive = curColorI === i
-            return (
-              <Theme key={color} name={color}>
+          <InteractiveContainer p="$1" br="$10" als="center" space="$1">
+            {themes[0].map((color, i) => {
+              const isActive = curColorI === i
+              return (
+                <Theme key={color} name={color}>
+                  <ActiveCircle
+                    onPress={() => setActiveI((x) => [i, x[1]])}
+                    isActive={isActive}
+                    backgroundColor="$colorMid"
+                  />
+                </Theme>
+              )
+            })}
+          </InteractiveContainer>
+
+          <InteractiveContainer p="$1" br="$10" als="center" space="$1">
+            {themes[1].map((name, i) => {
+              const isActive = curShadeI === i
+              return (
                 <ActiveCircle
-                  onPress={() => setActiveI((x) => [i, x[1]])}
+                  onPress={() => setActiveI((x) => [x[0], i])}
+                  key={i}
                   isActive={isActive}
-                  backgroundColor="$colorMid"
+                  backgroundColor={i == 0 ? 'transparent' : `rgba(150,150,150,${1 - (4 - i) / 4})`}
                 />
-              </Theme>
-            )
-          })}
-        </InteractiveContainer>
-
-        <InteractiveContainer p="$1" br="$10" als="center" space="$1">
-          {themes[1].map((name, i) => {
-            const isActive = curShadeI === i
-            return (
-              <ActiveCircle
-                onPress={() => setActiveI((x) => [x[0], i])}
-                key={i}
-                isActive={isActive}
-                backgroundColor={i == 0 ? 'transparent' : `rgba(150,150,150,${1 - (4 - i) / 4})`}
-              />
-            )
-          })}
-        </InteractiveContainer>
-      </XStack>
+              )
+            })}
+          </InteractiveContainer>
+        </XStack>
+      </ScrollView>
 
       {mediaPlayersRow}
 
