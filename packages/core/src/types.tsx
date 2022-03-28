@@ -127,6 +127,7 @@ export type ThemeName = GetAltThemeNames<keyof Themes>
 // export type ThemeNameWithSubThemes = GetSubThemes<ThemeName>
 export type ThemeKeys = keyof ThemeObject
 export type ThemeKeyVariables = `$${ThemeKeys}`
+export type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {}
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
 
@@ -151,12 +152,7 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations
 > = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
-  animations?: {
-    animations?: E
-    useAnimations?: Function
-    Text?: any
-    View?: any
-  }
+  animations: E
   Provider: (props: TamaguiProviderProps) => any
   // with $ prefixes for fast lookups (one time cost at startup vs every render)
   themeParsed: { [key: string]: Variable }
@@ -165,6 +161,8 @@ export type TamaguiInternalConfig<
   getCSS: () => string
   parsed: boolean
 }
+
+export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations']
 
 // prevents const intersections from being clobbered into string, keeping the consts
 export type UnionableString = string & {}
@@ -342,7 +340,7 @@ type WithThemeShorthandsAndPseudos<A extends object> =
 //
 type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> &
   MediaProps<WithThemeShorthandsAndPseudos<A>> & {
-    animation?: string
+    animation?: AnimationKeys
   }
 
 //

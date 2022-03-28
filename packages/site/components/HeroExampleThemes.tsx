@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import {
   Button,
-  Circle,
   H2,
   H3,
   InteractiveContainer,
@@ -14,6 +13,7 @@ import {
   useDebounceValue,
 } from 'tamagui'
 
+import { ActiveCircle } from './ActiveCircle'
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
 import { MediaPlayer } from './MediaPlayer'
@@ -71,28 +71,6 @@ for (let i = 0; i < themes[0].length; i++) {
   }
 }
 
-const ActiveCircle = ({ isActive, ...props }) => {
-  return (
-    <YStack
-      br="$10"
-      borderWidth={2}
-      borderColor="transparent"
-      my={-1}
-      {...(!!isActive && {
-        borderColor: '$color',
-      })}
-      {...(!isActive && {
-        hoverStyle: {
-          borderColor: '$borderColor',
-        },
-      })}
-    >
-      {/* @ts-ignore */}
-      <Circle size={20} backgroundColor="$background" {...props} />
-    </YStack>
-  )
-}
-
 const MediaPlayerDemoStack = () => {
   const { setTheme, theme: userTheme } = useTheme()
   const [activeI, setActiveI] = useState([0, 0])
@@ -147,7 +125,7 @@ const MediaPlayerDemoStack = () => {
               0 + // (isActiveGroup ? (isBeforeActive ? -1 : 0) * 20 * i : 0)
               (!isTransitioning && isActiveGroup ? offsetActive * shadeI : 0)
             }
-            scale={isTransitioning ? 0.6 : 1 + (isActiveGroup ? -0.4 : -0.5) + (isActive ? 0.1 : 0)}
+            scale={isTransitioning ? 0.6 : 1 + (isActiveGroup ? -0.1 : -0.5) + (isActive ? 0.1 : 0)}
             onPress={() => {
               setActiveI([colorI, shadeI])
             }}

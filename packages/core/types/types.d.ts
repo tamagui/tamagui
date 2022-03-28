@@ -83,6 +83,7 @@ export declare type Themes = TamaguiConfig['themes'];
 export declare type ThemeName = GetAltThemeNames<keyof Themes>;
 export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeKeyVariables = `$${ThemeKeys}`;
+export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {};
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 export declare type AnimationHook = (props: any, extra: {
     style: any;
@@ -94,12 +95,7 @@ export declare type AnimationHook = (props: any, extra: {
     delay?: number;
 }) => any;
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
-    animations?: {
-        animations?: E;
-        useAnimations?: Function;
-        Text?: any;
-        View?: any;
-    };
+    animations: E;
     Provider: (props: TamaguiProviderProps) => any;
     themeParsed: {
         [key: string]: Variable;
@@ -109,6 +105,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
     getCSS: () => string;
     parsed: boolean;
 };
+export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations'];
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
 export declare type PropTypes<A extends StaticComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;
@@ -207,7 +204,7 @@ export declare type PsuedoPropKeys = keyof PseudoProps<any>;
 declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
 declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
 declare type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>> & {
-    animation?: string;
+    animation?: AnimationKeys;
 };
 declare type WebOnlyStyleProps = {
     cursor?: string;

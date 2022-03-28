@@ -115,7 +115,7 @@ function Performance() {
         <YStack ai="center" space="$2">
           <H2>... it's really fast</H2>
           <H3 theme="alt2" fow="400">
-            3-10x speed, even with inline styling
+            Incredible performance, even with inline styles
           </H3>
         </YStack>
 

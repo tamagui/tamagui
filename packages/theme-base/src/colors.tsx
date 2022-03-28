@@ -13,6 +13,7 @@ export const colorNames = [
   'red',
   'violet',
   'yellow',
+  'teal',
 ] as const
 
 export const allLightColors = {
@@ -27,6 +28,7 @@ export const allLightColors = {
   ...Colors.red,
   ...Colors.violet,
   ...Colors.yellow,
+  ...Colors.teal,
 }
 
 export const allDarkColors = {
@@ -41,6 +43,7 @@ export const allDarkColors = {
   ...Colors.redDark,
   ...Colors.violetDark,
   ...Colors.yellowDark,
+  ...Colors.tealDark,
 }
 
 export const darkColorsPostfixed = Object.fromEntries(
