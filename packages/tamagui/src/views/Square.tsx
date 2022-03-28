@@ -7,6 +7,8 @@ export const Square = styled(SizableFrame, {
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
+  paddingHorizontal: 0,
+  paddingVertical: 0,
 
   variants: {
     size: {

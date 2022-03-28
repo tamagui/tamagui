@@ -58,7 +58,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;
@@ -127,7 +127,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;
@@ -196,7 +196,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;
@@ -265,7 +265,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;

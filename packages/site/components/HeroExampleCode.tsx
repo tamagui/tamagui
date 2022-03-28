@@ -27,7 +27,7 @@ export function HeroExampleCode() {
     <ContainerLarge position="relative">
       <YStack zi={1} space="$5">
         <YStack space="$2">
-          <H2 als="center">DX, meet speed</H2>
+          <H2 als="center">Ship better, faster</H2>
           <H3 theme="alt2" als="center" fow="400">
             Faster runtime 🤝 less code 🤝 more platforms.
           </H3>

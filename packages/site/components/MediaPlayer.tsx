@@ -35,14 +35,18 @@ export const MediaPlayer = memo(
             <Card flex={1} overflow="visible" bordered size="$6" pl={0} pr={0} pb={0} pt={0}>
               <YStack w="100%">
                 <XStack ai="center" p="$3" space="$5">
-                  <Square br="$2" size="$12">
+                  <Square br="$6" size="$11">
                     <Image width={150} height={150} src="http://placekitten.com/200/200" />
                   </Square>
 
-                  <YStack jc="center" space="$0.5">
+                  <YStack mt={-10} jc="center">
                     <Paragraph fontWeight="700">Spaceship</Paragraph>
-                    <Paragraph>Kanye West</Paragraph>
-                    <Paragraph>College Dropout</Paragraph>
+                    <Paragraph theme={barTheme} size="$3">
+                      Kanye West
+                    </Paragraph>
+                    <Paragraph theme={barTheme} size="$3">
+                      College Dropout
+                    </Paragraph>
                   </YStack>
                 </XStack>
 
@@ -52,12 +56,12 @@ export const MediaPlayer = memo(
                   <XStack
                     w="100%"
                     px="$8"
+                    py="$2"
                     bc="$background"
                     bbrr="$2"
                     bblr="$2"
                     ai="center"
-                    p="$2"
-                    space="$8"
+                    space="$7"
                     jc="center"
                   >
                     <Rewind />

@@ -16,7 +16,7 @@ export const YStack = styled(Stack, {
 
     elevation: {
       '...size': (size, extras) => {
-        const { tokens, theme } = extras
+        const { tokens } = extras
         const token = tokens.size[size]
         const sizeNum = isVariable(token) ? +token.val : size
         return getSizedElevation(sizeNum, extras)

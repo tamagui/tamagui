@@ -210,7 +210,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     }, [])
 
-    const useAnimations = tamaguiConfig.animations?.useAnimations
+    const useAnimations = tamaguiConfig.animations?.useAnimations as any
     const isAnimated = !!(useAnimations && props.animation)
 
     // element
@@ -218,10 +218,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isInternalComponent ? tag || Component : Component) : Component
     const ReactView =
-      (isAnimated ? tamaguiConfig?.animations?.View : null) ??
+      (isAnimated ? (tamaguiConfig?.animations?.View as any) : null) ??
       (!isWeb ? View : element || (hasTextAncestor ? 'span' : 'div'))
     const ReactText =
-      (isAnimated ? tamaguiConfig?.animations?.Text : null) ?? (!isWeb ? Text : element || 'span')
+      (isAnimated ? (tamaguiConfig?.animations?.Text as any) : null) ??
+      (!isWeb ? Text : element || 'span')
     const ViewComponent = isText ? ReactText : ReactView
 
     // styles

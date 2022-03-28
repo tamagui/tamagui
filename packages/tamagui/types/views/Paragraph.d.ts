@@ -42,7 +42,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;
@@ -111,7 +111,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;
@@ -180,7 +180,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;
@@ -249,7 +249,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
     pointerEvents?: "auto" | "box-none" | "none" | "box-only" | undefined;
 }>>>> & {
-    animation?: string | undefined;
+    animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
     disabled?: boolean | undefined;
     className?: string | undefined;
