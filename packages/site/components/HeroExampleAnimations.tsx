@@ -85,7 +85,7 @@ export function HeroExampleAnimations() {
       <ContainerLarge position="relative" space="$6">
         <YStack zi={1} space="$2">
           <H2 als="center">First-class animations</H2>
-          <H3 theme="alt2" als="center" fow="400">
+          <H3 ta="center" theme="alt2" als="center" fow="400">
             Swappable animation drivers for every platform
           </H3>
         </YStack>
@@ -102,7 +102,7 @@ export function HeroExampleAnimations() {
           x={0}
         >
           <Theme name="blue">
-            <YStack pos="relative" className="hero-gradient" ai="center" jc="center" f={10}>
+            <YStack pos="relative" className="hero-gradient" ai="center" jc="center" f={5}>
               <Square
                 className="all ease-in ms300"
                 // animation="bounce1"
@@ -136,7 +136,7 @@ export function HeroExampleAnimations() {
           </Theme>
           <Separator vertical />
 
-          <YStack f={1}>
+          <YStack $sm={{ display: 'none' }} f={1}>
             <ScrollView>
               {animations.map((item, i) => {
                 const isActive = item === animation

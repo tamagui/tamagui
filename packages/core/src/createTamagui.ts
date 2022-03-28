@@ -36,6 +36,7 @@ export type CreateTamaguiProps =
     // for ssr/native, will default to active
     mediaQueryDefaultActive?: MediaQueryKey[]
     cssStyleSeparator?: string
+    maxDarkLightNesting?: number
   }
 
 const PRE = THEME_CLASSNAME_PREFIX
@@ -143,16 +144,21 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const isDark = themeName.includes('dark_')
         const selector = `${CNP}${themeName}`
         const addDarkLightSels = hasDarkLight && !isDarkOrLightBase
-        const selectors = [
-          selector,
-          addDarkLightSels && isDark
-            ? `${CNP}dark ${CNP}${themeName.replace('dark_', '').replace('light_', '')}`
-            : null,
-          addDarkLightSels && !isDark
-            ? `${CNP}light ${CNP}${themeName.replace('dark_', '').replace('light_', '')}`
-            : null,
-          ,
-        ].filter(Boolean)
+        const selectors = [selector]
+        // since we dont specify dark/light in classnames we have to do an awkward specificity war
+        // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
+        if (addDarkLightSels) {
+          const childSelector = `${CNP}${themeName.replace('dark_', '').replace('light_', '')}`
+          const [stronger, weaker] = isDark ? ['dark', 'light'] : ['light', 'dark']
+          const max = config.maxDarkLightNesting ?? 3
+          new Array(max * 2).fill(undefined).forEach((_, pi) => {
+            if (pi % 2 === 1) return
+            const parents = new Array(pi + 1).fill(undefined).map((_, psi) => {
+              return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
+            })
+            selectors.push(`${parents.slice(1).join(' ')} ${childSelector}`)
+          })
+        }
         const cssRule = `${selectors.join(', ')} {\n${vars}\n}`
         cssRules.push(cssRule)
       }

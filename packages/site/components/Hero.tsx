@@ -95,9 +95,9 @@ export function Hero() {
                       mx: '$4',
                     }}
                   >
-                    {/* <Tooltip contents="Works the same on iOS, Android, and web">
+                    <Tooltip contents="Works the same on iOS, Android, and web">
                       <span className="rainbow help">Universal</span>
-                    </Tooltip>{' '} */}
+                    </Tooltip>{' '}
                     React design systems that&nbsp;optimize for native & web
                   </Title>
 
@@ -204,10 +204,10 @@ export function Hero() {
                   bc: '$backgroundHover',
                 }}
               >
-                <Paragraph size="$7" fontWeight="500" fontFamily="$mono">
+                <Paragraph ta="center" size="$6" fontWeight="500" fontFamily="$mono">
                   npm install tamagui
                 </Paragraph>
-                <YStack width={60} />
+                <Spacer size="$5" />
                 <Tooltip contents="Copy to clipboard">
                   <Button
                     borderRadius="$8"

@@ -1,5 +1,6 @@
 import { FastForward, Plus } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
+import { ScrollView } from 'react-native'
 import {
   Button,
   H2,
@@ -28,27 +29,27 @@ export function HeroExampleCode() {
       <YStack zi={1} space="$5">
         <YStack space="$2">
           <H2 als="center">Ship better, faster</H2>
-          <H3 theme="alt2" als="center" fow="400">
+          <H3 ta="center" theme="alt2" als="center" fow="400">
             Faster runtime 🤝 less code 🤝 more platforms.
           </H3>
         </YStack>
 
         <InteractiveContainer maxWidth="100%" als="center">
-          {/* <ScrollView> */}
-          {examples.map((example, i) => {
-            return (
-              <Button
-                onPress={() => setActiveIndex(i)}
-                theme={i === activeIndex ? 'active' : null}
-                key={i}
-                borderRadius="$0"
-                fontWeight={i === activeIndex ? '700' : '400'}
-              >
-                {example.name}
-              </Button>
-            )
-          })}
-          {/* </ScrollView> */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {examples.map((example, i) => {
+              return (
+                <Button
+                  onPress={() => setActiveIndex(i)}
+                  theme={i === activeIndex ? 'active' : null}
+                  key={i}
+                  borderRadius="$0"
+                  fontWeight={i === activeIndex ? '700' : '400'}
+                >
+                  {example.name}
+                </Button>
+              )
+            })}
+          </ScrollView>
         </InteractiveContainer>
 
         <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
