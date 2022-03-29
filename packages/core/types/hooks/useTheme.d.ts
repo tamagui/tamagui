@@ -1,12 +1,12 @@
 import { ThemeManager } from '../ThemeManager';
 import { ThemeObject } from '../types';
-export declare const useTheme: (themeName?: string | null | undefined, componentName?: string | undefined, debug?: boolean) => ThemeObject;
+export declare const useTheme: (themeName?: string | null | undefined, componentName?: string | undefined, props?: any) => ThemeObject;
 export declare const getThemeManager: (theme: any) => any;
 export declare const useThemeName: (opts?: {
     parent?: true | undefined;
 } | undefined) => string;
 export declare const useDefaultThemeName: () => import("../types").ThemeName | undefined;
-export declare const useChangeThemeEffect: (name?: string | null | undefined, componentName?: string | undefined, debug?: boolean) => {
+export declare const useChangeThemeEffect: (name?: string | null | undefined, componentName?: string | undefined, props?: any) => {
     didChangeTheme: boolean;
     themes: {
         [key: string]: Partial<import("../types").TamaguiBaseTheme> & {

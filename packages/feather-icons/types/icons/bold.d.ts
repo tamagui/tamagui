@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Bold: (props: IconProps) => JSX.Element;
+export declare const Bold: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=bold.d.ts.map

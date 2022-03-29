@@ -97,9 +97,6 @@ export declare type AnimationHook = (props: any, extra: {
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
     animations: E;
     Provider: (props: TamaguiProviderProps) => any;
-    themeParsed: {
-        [key: string]: Variable;
-    };
     tokensParsed: CreateTokens<Variable>;
     themeConfig: any;
     getCSS: () => string;
@@ -158,7 +155,8 @@ export declare type TransformStyleProps = {
     rotateX?: string;
     rotateZ?: string;
 };
-declare type ComponentPropsBase = {
+declare type Something<A> = A extends symbol ? Something<{}> : A;
+declare type ComponentPropsBase = Something<{
     disabled?: boolean;
     className?: string;
     id?: string;
@@ -174,7 +172,7 @@ declare type ComponentPropsBase = {
     onMouseLeave?: (e: GestureResponderEvent) => any;
     space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number;
     pointerEvents?: string;
-};
+}>;
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;

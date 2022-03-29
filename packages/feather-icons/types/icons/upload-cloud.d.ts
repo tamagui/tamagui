@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const UploadCloud: (props: IconProps) => JSX.Element;
+export declare const UploadCloud: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=upload-cloud.d.ts.map

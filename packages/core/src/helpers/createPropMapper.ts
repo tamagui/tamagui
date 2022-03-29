@@ -15,6 +15,7 @@ export const createPropMapper = (c: StaticConfig) => {
       console.trace('no conf! err')
       return
     }
+    const isAnimated = !!props.animation
     if (variants && !variantsParsed) {
       variantsParsed = parseVariants(variants, conf)
     }
@@ -34,7 +35,7 @@ export const createPropMapper = (c: StaticConfig) => {
         res = res(value, { tokens: conf.tokensParsed, theme, props })
       }
       if (isObj(res)) {
-        res = resolveTokens(res, conf, theme, fontFamily)
+        res = resolveTokens(res, conf, theme, fontFamily, isAnimated)
       }
       return res
     }
@@ -49,7 +50,7 @@ export const createPropMapper = (c: StaticConfig) => {
 
     if (value && value[0] === '$') {
       shouldReturn = true
-      value = getToken(key, value, conf, theme, fontFamily)
+      value = getToken(key, value, conf, theme, fontFamily, isAnimated)
     }
 
     if (isVariable(value)) {
@@ -65,7 +66,13 @@ export const createPropMapper = (c: StaticConfig) => {
   }
 }
 
-const resolveTokens = (input: Object, conf: TamaguiInternalConfig, theme: any, fontFamily: any) => {
+const resolveTokens = (
+  input: Object,
+  conf: TamaguiInternalConfig,
+  theme: any,
+  fontFamily: any,
+  isAnimated = false
+) => {
   let res = {}
   for (const rKey in input) {
     const fKey = conf.shorthands[rKey] || rKey
@@ -73,12 +80,12 @@ const resolveTokens = (input: Object, conf: TamaguiInternalConfig, theme: any, f
     if (isVariable(val)) {
       res[fKey] = val.variable
     } else if (typeof val === 'string') {
-      const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily) : val
+      const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily, isAnimated) : val
       res[fKey] = fVal
     } else {
       if (isObj(val)) {
         // for things like shadowOffset, hoverStyle which is a sub-object
-        res[fKey] = resolveTokens(val, conf, theme, fontFamily)
+        res[fKey] = resolveTokens(val, conf, theme, fontFamily, isAnimated)
       } else {
         // nullish values cant be tokens so need no exrta parsing
         res[fKey] = input[fKey]
@@ -96,57 +103,71 @@ const resolveTokens = (input: Object, conf: TamaguiInternalConfig, theme: any, f
 const getToken = (
   key: string,
   value: string,
-  { tokensParsed, themeParsed }: TamaguiInternalConfig,
+  { tokensParsed }: TamaguiInternalConfig,
   theme: any,
-  fontFamily: string | undefined = '$body'
+  fontFamily: string | undefined = '$body',
+  isAnimated = false
 ) => {
-  const tokenVal = themeParsed[value]
-  if (tokenVal) {
-    return isWeb && tokenVal.variable ? tokenVal.variable : tokenVal.val
-  }
   let valOrVar: any
-  if (key === 'fontFamily') {
-    valOrVar = tokensParsed.font[value]?.family || value
-  }
-  if (key === 'fontSize') {
-    valOrVar = tokensParsed.font[fontFamily]?.size[value] || value
-  }
-  if (key === 'lineHeight') {
-    valOrVar = tokensParsed.font[fontFamily]?.lineHeight[value] || value
-  }
-  if (key === 'letterSpacing') {
-    valOrVar = tokensParsed.font[fontFamily]?.letterSpacing[value] || value
-  }
-  if (key === 'fontWeight') {
-    valOrVar = tokensParsed.font[fontFamily]?.weight[value] || value
-  }
-  if (typeof valOrVar !== 'undefined') {
-    if (isVariable(valOrVar)) {
-      return valOrVar.variable
-    } else {
-      return valOrVar
+  let hasSet = false
+  const valueName = value[0] === '$' ? value.slice(1) : value
+  if (valueName in theme) {
+    valOrVar = theme[valueName]
+    hasSet = true
+  } else {
+    switch (key) {
+      case 'fontFamily':
+        valOrVar = tokensParsed.font[value]?.family || value
+        hasSet = true
+        break
+      case 'fontSize':
+        valOrVar = tokensParsed.font[fontFamily]?.size[value] || value
+        hasSet = true
+        break
+      case 'lineHeight':
+        valOrVar = tokensParsed.font[fontFamily]?.lineHeight[value] || value
+        hasSet = true
+        break
+      case 'letterSpacing':
+        valOrVar = tokensParsed.font[fontFamily]?.letterSpacing[value] || value
+        hasSet = true
+        break
+      case 'fontWeight':
+        valOrVar = tokensParsed.font[fontFamily]?.weight[value] || value
+        hasSet = true
+        break
     }
-  }
-  for (const cat in tokenCategories) {
-    if (tokenCategories[cat][key]) {
-      const res = tokensParsed[cat][value]
-      if (res) {
-        return res.variable
-      } else {
-        const themeVar = themeParsed[value]
-        if (themeVar) {
-          return themeVar.variable
+    for (const cat in tokenCategories) {
+      if (key in tokenCategories[cat]) {
+        const res = tokensParsed[cat][value]
+        if (res) {
+          valOrVar = res
+          hasSet = true
         }
       }
     }
+    if (!hasSet) {
+      const spaceVar = tokensParsed.space[value]
+      if (spaceVar) {
+        valOrVar = spaceVar
+        hasSet = true
+      }
+    }
   }
-  const spaceVar = tokensParsed.space[value]
-  if (spaceVar) {
-    return spaceVar.variable
+  if (hasSet) {
+    if (isVariable(valOrVar)) {
+      if (!isWeb || isAnimated) {
+        return valOrVar.val
+      }
+      return valOrVar.variable
+    }
+    return valOrVar
   }
-  if (value && value[0] === '$') {
-    console.warn(`⚠️ Missing token in theme ${theme.name}:`, value)
-    return null
+  if (process.env.NODE_ENV === 'development') {
+    if (value && value[0] === '$') {
+      console.warn(`⚠️ Missing token in theme:`, value, theme)
+      return null
+    }
   }
   return value
 }

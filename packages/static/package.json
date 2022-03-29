@@ -33,7 +33,7 @@
     "@testing-library/react": "13.0.0-alpha.4",
     "@types/jest": "*",
     "@types/node": "^16.11.9",
-    "@types/react-native": "^0.64.2",
+    "@types/react-native": "^0.67.3",
     "@types/webpack": "^4.41.26",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.4",

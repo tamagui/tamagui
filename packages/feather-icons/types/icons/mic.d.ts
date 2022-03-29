@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Mic: (props: IconProps) => JSX.Element;
+export declare const Mic: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=mic.d.ts.map

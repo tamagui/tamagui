@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Feather: (props: IconProps) => JSX.Element;
+export declare const Feather: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=feather.d.ts.map

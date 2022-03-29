@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Octagon: (props: IconProps) => JSX.Element;
+export declare const Octagon: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=octagon.d.ts.map

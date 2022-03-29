@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const CloudDrizzle: (props: IconProps) => JSX.Element;
+export declare const CloudDrizzle: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=cloud-drizzle.d.ts.map

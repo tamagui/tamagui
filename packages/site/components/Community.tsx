@@ -8,7 +8,7 @@ import { GithubIcon } from './GithubIcon'
 
 export function Community() {
   return (
-    <ContainerLarge py="$4" space="$3">
+    <ContainerLarge space="$3">
       <H2 ta="center">Community</H2>
       <H4 theme="alt2" fontWeight="400" ta="center">
         Join the community on these platforms

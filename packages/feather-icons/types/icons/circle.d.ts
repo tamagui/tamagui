@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Circle: (props: IconProps) => JSX.Element;
+export declare const Circle: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=circle.d.ts.map

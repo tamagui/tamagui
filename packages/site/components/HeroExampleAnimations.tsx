@@ -1,31 +1,19 @@
 import { Play } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  AnimationKeys,
-  Button,
-  GetAnimationKeys,
-  H2,
-  H3,
-  Paragraph,
-  Separator,
-  Square,
-  TamaguiConfig,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H2, H3, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
 
+import { animations } from '../constants/animations'
 import { ContainerLarge } from './Container'
-import { LogoIcon, TamaguiLogo } from './TamaguiLogo'
+import { LogoIcon } from './TamaguiLogo'
 
 const positions = [
   {
     x: 0,
     y: 0,
     scale: 1,
+    rotate: '0deg',
   },
   {
     x: -50,
@@ -41,44 +29,37 @@ const positions = [
   },
 ]
 
-const animations = [
+const animationDescriptions = [
   {
     name: 'Bouncy',
     description: 'A bouncy spring',
     animation: 'bouncy',
-    settings: {
-      type: 'spring',
-      damping: 20,
-      stiffness: 90,
-    },
+    settings: animations.animations.bouncy,
   },
   {
     name: 'Lazy',
     description: 'A lazy, straightforward spring',
     animation: 'lazy',
-    settings: {
-      type: 'spring',
-      damping: 25,
-      stiffness: 70,
-    },
+    settings: animations.animations.lazy,
   },
   {
     name: 'Quick',
     description: 'A quick, straightforward spring',
     animation: 'quick',
-    settings: {
-      type: 'spring',
-      damping: 28,
-      stiffness: 120,
-    },
+    settings: animations.animations.quick,
   },
-]
+] as const
 
 export function HeroExampleAnimations() {
   const [animationI, setAnimationI] = useState(0)
   const [positionI, setPositionI] = useState(0)
   const position = positions[positionI]
-  const animation = animations[animationI]
+  const animation = animationDescriptions[animationI]
+  const next = () => {
+    setPositionI((x) => (x + 1) % positions.length)
+  }
+
+  const settings = Object.entries(animation.settings)
 
   return (
     <YStack>
@@ -86,7 +67,7 @@ export function HeroExampleAnimations() {
         <YStack zi={1} space="$2">
           <H2 als="center">First-class animations</H2>
           <H3 ta="center" theme="alt2" als="center" fow="400">
-            Swappable animation drivers for every platform
+            Plug-and-play drivers for every platform
           </H3>
         </YStack>
 
@@ -102,17 +83,21 @@ export function HeroExampleAnimations() {
           x={0}
         >
           <Theme name="blue">
-            <YStack pos="relative" className="hero-gradient" ai="center" jc="center" f={5}>
+            <YStack
+              pos="relative"
+              className="hero-gradient"
+              ai="center"
+              jc="center"
+              width="60%"
+              $sm={{ width: '100%' }}
+            >
               <Square
-                className="all ease-in ms300"
-                // animation="bounce1"
+                animation={animation.animation}
                 elevation="$4"
                 size={110}
                 bc="$color"
                 br="$9"
-                onPress={() => {
-                  setPositionI((x) => (x + 1) % positions.length)
-                }}
+                onPress={next}
                 {...position}
               >
                 <LogoIcon downscale={0.75} color="var(--background)" />
@@ -125,19 +110,15 @@ export function HeroExampleAnimations() {
                 iconAfter={Play}
                 theme="blue"
                 size="$6"
-                onPress={() => {
-                  setPositionI((x) => (x + 1) % positions.length)
-                }}
-              >
-                Go
-              </Button>
+                onPress={next}
+              />
             </YStack>
           </Theme>
           <Separator vertical />
 
-          <YStack $sm={{ display: 'none' }} f={1}>
+          <YStack $sm={{ display: 'none' }} width="40%">
             <ScrollView>
-              {animations.map((item, i) => {
+              {animationDescriptions.map((item, i) => {
                 const isActive = item === animation
                 return (
                   <Theme key={item.name} name={isActive ? null : 'alt2'}>
@@ -153,6 +134,7 @@ export function HeroExampleAnimations() {
                       }}
                       onPress={() => {
                         setAnimationI(i)
+                        next()
                       }}
                     >
                       <Paragraph cursor="inherit" size="$4" fontWeight="800">
@@ -169,8 +151,8 @@ export function HeroExampleAnimations() {
 
             <Separator />
 
-            <XStack p="$4" ai="center" jc="$center">
-              {Object.entries(animation.settings).map(([key, value]) => {
+            <XStack p="$4" ai="center" jc="center">
+              {settings.map(([key, value], i) => {
                 return (
                   <React.Fragment key={key}>
                     <YStack>
@@ -179,7 +161,7 @@ export function HeroExampleAnimations() {
                       </Paragraph>
                       <Paragraph>{value}</Paragraph>
                     </YStack>
-                    <Separator vertical mx={20} />
+                    {i < settings.length - 1 && <Separator vertical mx={20} />}
                   </React.Fragment>
                 )
               })}

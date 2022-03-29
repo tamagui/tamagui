@@ -7,8 +7,6 @@ import { Highlights } from './Highlights'
 export function FeaturesGrid() {
   return (
     <YStack maxWidth={790} mx="auto" space="$3">
-      <H2 ta="center">Everything you need</H2>
-
       <YStack pt="$6">
         <Grid gap={25} itemMinWidth={250}>
           <YStack padding="$4" space>

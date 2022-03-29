@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Trash: (props: IconProps) => JSX.Element;
+export declare const Trash: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=trash.d.ts.map

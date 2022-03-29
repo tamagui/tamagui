@@ -129,8 +129,8 @@ export const components = {
       className="paragraph"
       display="block"
       {...props}
-      mb="$2"
-      mt="$2"
+      mb="$1"
+      mt="$1"
     />
   ),
 

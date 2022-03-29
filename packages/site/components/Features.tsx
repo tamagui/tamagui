@@ -5,7 +5,7 @@ import { CheckCircle } from './CheckCircle'
 
 export const Features = (props: any) => {
   return props.items.map((feature, i) => (
-    <XStack p="$1" tag="li" key={i}>
+    <XStack py="$2" tag="li" key={i}>
       <Text color="$green9">
         <CheckCircle />
       </Text>

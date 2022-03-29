@@ -231,8 +231,12 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   display: 'none',
                 }}
               >
-                <Button onPress={() => setIsOpen(!isOpen)} theme={isOpen ? 'alt1' : undefined}>
-                  <Menu size={12} color="var(--color)" />
+                <Button
+                  noTextWrap
+                  onPress={() => setIsOpen(!isOpen)}
+                  theme={isOpen ? 'alt1' : undefined}
+                >
+                  <Menu size={16} color="var(--color)" />
                 </Button>
               </YStack>
             </XStack>

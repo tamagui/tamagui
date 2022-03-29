@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Linkedin: (props: IconProps) => JSX.Element;
+export declare const Linkedin: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=linkedin.d.ts.map
