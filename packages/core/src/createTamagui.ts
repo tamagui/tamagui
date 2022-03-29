@@ -156,7 +156,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
             const parents = new Array(pi + 1).fill(undefined).map((_, psi) => {
               return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
             })
-            selectors.push(`${parents.slice(1).join(' ')} ${childSelector}`)
+            selectors.push(
+              `${(parents.length > 1 ? parents.slice(1) : parents).join(' ')} ${childSelector}`
+            )
           })
         }
         const cssRule = `${selectors.join(', ')} {\n${vars}\n}`

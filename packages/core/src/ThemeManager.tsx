@@ -38,14 +38,13 @@ export class ThemeManager {
   }
 
   update({ name, theme, className, parentManager = null }: SetActiveThemeProps = {}) {
-    if (
-      // optimization for web, avoid dark/light re-renders
-      (className ? className === this.className : name === this.name) &&
-      parentManager == this.parentManager
-    ) {
+    const sameParentManager = parentManager === this.parentManager
+    // className compare on web, avoids light/dark re-renders
+    const sameNameOrClassName = this.className ? className === this.className : name === this.name
+    if (sameNameOrClassName && sameParentManager) {
       return false
     }
-    // console.log('changing', this.name, name, this.className, className)
+    // console.log('changing', this.name, name, this.className, className, sameParentManager)
     this.className = className || null
     this.name = name || null
     this.theme = theme

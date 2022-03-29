@@ -23,6 +23,15 @@ export const Theme = memo(function Theme(props: ThemeProps) {
     props.debug
   )
 
+  // memo here, changing theme without re-rendering all children is a critical optimization
+  // may require some effort of end user to memoize but without this memo they'd have no option
+  const contents = useMemo(() => {
+    if (!name || !theme) {
+      return props.children
+    }
+    return wrapThemeManagerContext(props.children, themeManager)
+  }, [props.children, themeManager])
+
   if (!themes) {
     console.warn('Error, no themes in context', props)
     return props.children
@@ -34,12 +43,6 @@ export const Theme = memo(function Theme(props: ThemeProps) {
     }
     return props.children
   }
-
-  // memo here, changing theme without re-rendering all children is a critical optimization
-  // may require some effort of end user to memoize but without this memo they'd have no option
-  const contents = useMemo(() => {
-    return wrapThemeManagerContext(props.children, themeManager)
-  }, [props.children, themeManager])
 
   if (isWeb) {
     if (props.disableThemeClass) {
