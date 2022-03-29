@@ -1,36 +1,35 @@
-import { Activity, Airplay, Gift } from '@tamagui/feather-icons'
-import React from 'react'
-import { Button, InteractiveContainer, Theme, XStack, YStack } from 'tamagui'
+import { Activity, Airplay } from '@tamagui/feather-icons'
+import { Button, InteractiveContainer, XStack, YStack } from 'tamagui'
 
 export default function ButtonDemo(props) {
   return (
-    <YStack p="$3" space="$1" {...props}>
+    <YStack py="$3" space="$2" {...props}>
       <Button>Plain</Button>
       <Button icon={Airplay} size="$6">
         Large
       </Button>
       <InteractiveContainer>
-        <Button w="50%" size="$3" br={0} theme="alt1">
-          Alt1
+        <Button w="50%" size="$3" br={0} theme="alt2">
+          Alt2
         </Button>
         <Button w="50%" size="$3" br={0} theme="yellow">
           Yellow
         </Button>
       </InteractiveContainer>
       <XStack space>
-        <Button themeInverse iconAfter={Gift} size="$2">
-          Small Inversed
+        <Button themeInverse size="$2">
+          Small Inverse
         </Button>
-        <Button icon={Activity} size="$1">
-          XS
+        <Button iconAfter={Activity} size="$2">
+          After
         </Button>
       </XStack>
       <InteractiveContainer>
-        <Button w="50%" size="$1" disabled>
-          Disabled
+        <Button br={0} w="50%" size="$1" disabled>
+          disabled
         </Button>
-        <Button w="50%" size="$1" chromeless>
-          Chromeless
+        <Button br={0} w="50%" size="$1" chromeless>
+          chromeless
         </Button>
       </InteractiveContainer>
     </YStack>

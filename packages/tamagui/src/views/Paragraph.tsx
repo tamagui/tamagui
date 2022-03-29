@@ -4,7 +4,6 @@ import { SizableText } from './SizableText'
 
 export const Paragraph = styled(SizableText, {
   name: 'Paragraph',
-  size: '$4',
   selectable: true,
   cursor: 'text',
 })

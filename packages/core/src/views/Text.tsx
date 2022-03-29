@@ -30,6 +30,7 @@ export const Text = createComponent<TextProps, TextView>({
     selectable: {
       true: {
         userSelect: 'text',
+        cursor: 'text',
       },
       false: {
         userSelect: 'none',
