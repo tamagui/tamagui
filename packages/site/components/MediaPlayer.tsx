@@ -18,10 +18,14 @@ export const MediaPlayer = memo(
     theme,
     alt: altProp,
     onHoverSection,
+    pointerEvents,
+    pointerEventsControls,
   }: {
     theme?: ThemeName
     alt?: number | null
     onHoverSection?: (name: string) => void
+    pointerEvents?: any
+    pointerEventsControls?: any
   }) => {
     const alt = altProp ?? 0
     const themeName = theme ?? (alt ? (`alt${alt}` as any) : null)
@@ -32,7 +36,18 @@ export const MediaPlayer = memo(
       <YStack>
         <Theme name={themeName}>
           <YStack>
-            <Card flex={1} overflow="visible" bordered size="$6" pl={0} pr={0} pb={0} pt={0}>
+            <Card
+              className="transition-test"
+              flex={1}
+              overflow="visible"
+              bordered
+              size="$6"
+              pointerEvents={pointerEvents}
+              pl={0}
+              pr={0}
+              pb={0}
+              pt={0}
+            >
               <YStack w="100%">
                 <XStack ai="center" p="$3" space="$5">
                   <Square br="$6" size="$11">
@@ -58,14 +73,17 @@ export const MediaPlayer = memo(
                     px="$8"
                     py="$2"
                     bc="$background"
+                    className="transition-test"
                     bbrr="$2"
                     bblr="$2"
                     ai="center"
                     space="$7"
                     jc="center"
+                    pointerEvents={pointerEventsControls}
                   >
                     <Rewind />
                     <Button
+                      className="transition-test"
                       // animation="spring"
                       theme={mainButtonTheme}
                       bordered

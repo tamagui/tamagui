@@ -12,7 +12,7 @@ export const ActiveCircle = ({ isActive, ...props }) => {
       })}
       {...(!isActive && {
         hoverStyle: {
-          borderColor: '$borderColor',
+          borderColor: '$colorMid',
         },
       })}
     >

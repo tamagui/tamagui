@@ -71,10 +71,10 @@ export function Hero() {
         <YStack className="hero-gradient" borderBottomWidth={0.5} borderColor="$borderColor">
           <Header />
 
-          <ContainerLarge mb={-20}>
+          <ContainerLarge mb={-23}>
             {/* <OutlineThemeComponentGrid /> */}
 
-            <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$8' }}>
+            <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$6' }}>
               <YStack
                 $sm={{
                   maxWidth: 550,
@@ -96,7 +96,7 @@ export function Hero() {
                     }}
                   >
                     <Tooltip contents="Works the same on iOS, Android, and web">
-                      <span className="rainbow help">Universal</span>
+                      <span className="rainbow clip-text help">Universal</span>
                     </Tooltip>{' '}
                     React design systems that&nbsp;optimize for native & web
                   </Title>

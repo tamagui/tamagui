@@ -127,6 +127,9 @@ ul, ol, li, pre { margin: 0; }
   background: -webkit-linear-gradient(-190deg,
     var(--green9), var(--yellow9), var(--red9), var(--orange9), var(--blue9), var(--purple9), var(--teal9)
   );
+}
+
+.clip-text {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
