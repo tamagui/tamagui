@@ -178,16 +178,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // faster lookups token keys become $keys to match input
   const tokensParsed: any = parseTokens(config.tokens)
 
-  // we could do this above in theme loop
-  // all themes should match key and we just need variable name
-  // TODO once w react native we'd want to have a reverse lookup back to value
-  const themeParsed: any = {}
-  const firstKey = Object.keys(config.themes)[0]
-  for (const key in config.themes[firstKey]) {
-    const val = config.themes[firstKey][key]
-    themeParsed[`$${key}`] = new Variable({ val, name: key })
-  }
-
   const getCSS = () => {
     return `${themeConfig.css}\n${[...getStyleRules()].join('\n')}`
   }
@@ -196,15 +186,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animations: {},
     shorthands: {},
     media: {},
-    // TODO fix types
-    ...(config as any),
+    ...config,
     Provider: createTamaguiProvider({
       getCSS,
       defaultTheme: 'light',
       ...config,
     }),
     themeConfig,
-    themeParsed,
     tokensParsed,
     parsed: true,
     getCSS,

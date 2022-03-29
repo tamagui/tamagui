@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Zap: (props: IconProps) => JSX.Element;
+export declare const Zap: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=zap.d.ts.map

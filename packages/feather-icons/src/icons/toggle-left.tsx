@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { memo } from 'react'
 import {
   Defs,
   Ellipse,
@@ -22,43 +22,45 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const ToggleLeft = themed((props: IconProps) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={`${color}`}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Rect
-        x="1"
-        y="5"
-        width="22"
-        height="14"
-        rx="7"
-        ry="7"
+export const ToggleLeft = memo<IconProps>(
+  themed((props) => {
+    const { color = 'black', size = 24, ...otherProps } = props
+    return (
+      <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-      <_Circle
-        cx="8"
-        cy="12"
-        r="3"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  )
-})
+        {...otherProps}
+      >
+        <Rect
+          x="1"
+          y="5"
+          width="22"
+          height="14"
+          rx="7"
+          ry="7"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <_Circle
+          cx="8"
+          cy="12"
+          r="3"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    )
+  })
+)

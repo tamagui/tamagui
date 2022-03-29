@@ -20,7 +20,7 @@ export const Theme = memo(function Theme(props: ThemeProps) {
   const { name, theme, themeManager, themes, className } = useChangeThemeEffect(
     props.name,
     undefined,
-    props.debug
+    props
   )
 
   // memo here, changing theme without re-rendering all children is a critical optimization

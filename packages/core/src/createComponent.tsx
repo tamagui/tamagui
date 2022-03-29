@@ -19,7 +19,7 @@ import { isTouchDevice, isWeb } from './constants/platform'
 import { rnw } from './constants/rnw'
 import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import { getSplitStyles } from './helpers/getSplitStyles'
+import { SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
@@ -92,13 +92,14 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   let defaultNativeStyle: StyleSheet.NamedStyles<{ base: {} }> | null = null
   let defaultsClassName = ''
   let initialTheme: any
+  let splitStyleResult: SplitStyleResult | null = null
 
   // see onConfiguredOnce below which attaches a name then to this component
 
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     const forceUpdate = useForceUpdate()
     const features = useFeatures(props, { forceUpdate })
-    const theme = useTheme(props.theme, componentName, props['debug'])
+    const theme = useTheme(props.theme, componentName, props)
     const [state, set_] = useState<ComponentState>(defaultComponentState)
     const set = createShallowUpdate(set_)
 
@@ -113,6 +114,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
+
+    if (props['debug']) {
+      console.log('GET??', theme.color)
+    }
 
     const {
       viewProps: viewPropsIn,
@@ -230,6 +235,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const isPressing = !disabled && pseudos && state.press
     const isFocusing = !disabled && pseudos && state.focus
 
+    const includeNativeStyle = !isWeb || isAnimated
+
     let styles = [
       defaultNativeStyle ? defaultNativeStyle.base : null,
       // parity w react-native-web, only for text in text
@@ -243,12 +250,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     ]
 
     if (isAnimated) {
-      if (process.env.NODE_ENV === 'development') {
-        if (props['debug']) {
-          // prettier-ignore
-          console.log('» animations', useAnimations, tamaguiConfig.animations, ViewComponent?.render?.toString(), { animation: props.animation }, style)
-        }
-      }
       const res = useAnimations(props, {
         style,
         isHovering,
@@ -286,12 +287,21 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         if (props['debug']) {
           // prettier-ignore
           console.log('» styles', { pseudos, style, styles, classList, stylesClassNames, className: className.trim().split(' ') })
-          console.log('» theme className', theme.className)
         }
       }
       viewProps.className = className
     } else {
-      viewProps.style = styles
+      if (process.env.NODE_ENV === 'development') {
+        if (props['debug']) {
+          // prettier-ignore
+          console.log('» animations', props.animation, { style, styles, includeNativeStyle, defaultNativeStyle, splitStyleResult })
+        }
+      }
+      if (isAnimated) {
+        viewProps.style = [defaultNativeStyle?.base, styles]
+      } else {
+        viewProps.style = styles
+      }
     }
 
     if (pointerEvents) {
@@ -502,6 +512,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         console.log('» etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
         if (typeof window !== 'undefined') {
+          console.log('» theme', theme, 'className', theme.className)
           console.log('» component info', { staticConfig, tamaguiConfig })
         }
       }
@@ -525,11 +536,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const shouldDebug = staticConfig.defaultProps?.debug
     tamaguiConfig = conf
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-    const { classNames, pseudos, style, viewProps } = getSplitStyles(
-      staticConfig.defaultProps,
-      staticConfig,
-      initialTheme
-    )
+    splitStyleResult = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme)
+    const { classNames, pseudos, style, viewProps } = splitStyleResult
     if (isWeb) {
       if (classNames) {
         defaultsClassName += classNames + ' '
@@ -539,17 +547,18 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         // prettier-ignore
         console.log('tamagui 🐛:', { defaultsClassName: defaultsClassName.split(' ') })
       }
-    } else {
-      // native, create a default StyleSheet
-      // TODO handle pseudos
-      const sheetStyles = {}
-      for (const styleObj of style) {
-        Object.assign(sheetStyles, styleObj)
-      }
-      defaultNativeStyle = StyleSheet.create({
-        base: sheetStyles,
-      })
     }
+
+    // for animations and native
+    // TODO handle pseudos
+    const sheetStyles = {}
+    for (const styleObj of style) {
+      Object.assign(sheetStyles, styleObj)
+    }
+    defaultNativeStyle = StyleSheet.create({
+      base: sheetStyles,
+    })
+
     // @ts-ignore
     component.defaultProps = {
       ...viewProps,

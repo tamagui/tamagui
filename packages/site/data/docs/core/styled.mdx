@@ -160,7 +160,7 @@ Spread variants save you from having to define hardcoded styles for every key (`
 
 The Spread variant function will receive two arguments: the first is the value given to the property (`"$lg"`), and the second is an object with `{ theme, tokens, props }`.
 
-- `theme` of type ThemeParsed, the current active theme but the keys all start with `$`.
+- `theme` a proxy to your theme that lets you access all theme values using normal keys, or with a `$` prefix.
 - `tokens` of type TokensParsed, the tokens from `createTokens`, but the keys all start with `$`.
 
 Because you can expand them to any number of styles, they can save a ton of code:

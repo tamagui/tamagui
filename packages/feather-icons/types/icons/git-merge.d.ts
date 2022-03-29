@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const GitMerge: (props: IconProps) => JSX.Element;
+export declare const GitMerge: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=git-merge.d.ts.map

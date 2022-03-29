@@ -74,7 +74,7 @@ export function Hero() {
           <ContainerLarge mb={-23}>
             {/* <OutlineThemeComponentGrid /> */}
 
-            <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$6' }}>
+            <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$7' }}>
               <YStack
                 $sm={{
                   maxWidth: 550,
@@ -96,9 +96,9 @@ export function Hero() {
                     }}
                   >
                     <Tooltip contents="Works the same on iOS, Android, and web">
-                      <span className="rainbow clip-text help">Universal</span>
+                      Faster <span className="rainbow clip-text help">universal</span>
                     </Tooltip>{' '}
-                    React design systems that&nbsp;optimize for native & web
+                    React design systems for native & web
                   </Title>
 
                   <YStack
@@ -126,12 +126,12 @@ export function Hero() {
                       }}
                       $gtMd={{
                         size: '$7',
-                        maxWidth: 800,
+                        maxWidth: 700,
                         fontWeight: '400',
                       }}
                     >
-                      Consistent UI on Native & Web with a smart optimizing compiler.
-                      Move&nbsp;faster&nbsp;with better DX and no-cost performance.
+                      Better UI with a smart optimizing compiler, style system, and kit.
+                      Simpler&nbsp;code,&nbsp;better DX, no-cost performance.
                     </Paragraph>
                   </YStack>
                 </YStack>

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { memo } from 'react'
 import {
   Defs,
   Ellipse,
@@ -22,36 +22,38 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const PieChart = themed((props: IconProps) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={`${color}`}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Path
-        d="M21.21 15.89A10 10 0 1 1 8 2.83"
+export const PieChart = memo<IconProps>(
+  themed((props) => {
+    const { color = 'black', size = 24, ...otherProps } = props
+    return (
+      <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-      <Path
-        d="M22 12A10 10 0 0 0 12 2v10z"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  )
-})
+        {...otherProps}
+      >
+        <Path
+          d="M21.21 15.89A10 10 0 1 1 8 2.83"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <Path
+          d="M22 12A10 10 0 0 0 12 2v10z"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    )
+  })
+)

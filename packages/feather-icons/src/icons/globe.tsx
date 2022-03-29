@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { memo } from 'react'
 import {
   Defs,
   Ellipse,
@@ -22,49 +22,51 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const Globe = themed((props: IconProps) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={`${color}`}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <_Circle
-        cx="12"
-        cy="12"
-        r="10"
+export const Globe = memo<IconProps>(
+  themed((props) => {
+    const { color = 'black', size = 24, ...otherProps } = props
+    return (
+      <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-      <Line
-        x1="2"
-        y1="12"
-        x2="22"
-        y2="12"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-        fill="none"
-        stroke={`${color}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  )
-})
+        {...otherProps}
+      >
+        <_Circle
+          cx="12"
+          cy="12"
+          r="10"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <Line
+          x1="2"
+          y1="12"
+          x2="22"
+          y2="12"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <Path
+          d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    )
+  })
+)

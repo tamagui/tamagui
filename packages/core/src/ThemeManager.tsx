@@ -44,7 +44,7 @@ export class ThemeManager {
     if (sameNameOrClassName && sameParentManager) {
       return false
     }
-    // console.log('changing', this.name, name, this.className, className, sameParentManager)
+    console.log('changing', this.name, name, this.className, className, sameParentManager)
     this.className = className || null
     this.name = name || null
     this.theme = theme
@@ -54,10 +54,10 @@ export class ThemeManager {
   }
 
   getNextTheme(
-    props: { themes?: Themes; name?: string | null; componentName?: string | null } = {},
-    debug = false
+    opts: { themes?: Themes; name?: string | null; componentName?: string | null } = {},
+    props?: any
   ) {
-    const { themes = getThemes(), name, componentName } = props
+    const { themes = getThemes(), name, componentName } = opts
 
     if (!name) {
       if (componentName) {
@@ -73,7 +73,7 @@ export class ThemeManager {
       }
     }
 
-    let nextName = props.name || this.name || ''
+    let nextName = name || this.name || ''
     let parentName = this.fullName
 
     while (true) {
@@ -86,7 +86,7 @@ export class ThemeManager {
       }
       if (!parentName.includes(THEME_NAME_SEPARATOR)) {
         // not found!
-        console.warn('theme not found', props.name)
+        console.warn('theme not found', name)
         break
       }
       // go up one
@@ -105,8 +105,8 @@ export class ThemeManager {
       theme = themes[`light_${nextName}`]
     }
 
-    if (process.env.NODE_ENV === 'development' && debug) {
-      console.log('getNextTheme', { props, nextName, parentName }, this)
+    if (process.env.NODE_ENV === 'development' && props && props['debug']) {
+      console.log('getNextTheme', { opts, nextName, parentName }, this)
     }
 
     return {

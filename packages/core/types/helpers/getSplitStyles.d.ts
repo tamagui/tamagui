@@ -6,6 +6,7 @@ declare type PseudoStyles = {
     pressStyle?: ViewStyle;
     focusStyle?: ViewStyle;
 };
+export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 export declare const getSplitStyles: (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeObject) => {

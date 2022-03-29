@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const PhoneForwarded: (props: IconProps) => JSX.Element;
+export declare const PhoneForwarded: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=phone-forwarded.d.ts.map

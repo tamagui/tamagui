@@ -29,10 +29,13 @@ npx create-tamagui-app@latest my-app
 Themes has been redone to add a ton of flexiblity and power. Tamagui now supports unlimited sub-themes, and per-component theming. Further, we've standardized the names of theme props, giving full control to customize any aspect of every component.
 
 <ScrollView horizontal showsHorizontalScrollbars={false}>
-  <XStack>
-    <MediaPlayerDemo theme="pink" />
-    <MediaPlayerDemo theme="blue" />
-    <MediaPlayerDemo theme="yellow" />
+  <XStack py="$4">
+    <YStack scale={0.8}>
+      <MediaPlayerDemo theme="pink" />
+    </YStack>
+    <YStack scale={0.8}>
+      <MediaPlayerDemo theme="blue" />
+    </YStack>
   </XStack>
 </ScrollView>
 

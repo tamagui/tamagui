@@ -20,11 +20,11 @@ export declare class ThemeManager {
     get parentName(): string | null;
     get fullName(): string;
     update({ name, theme, className, parentManager }?: SetActiveThemeProps): boolean;
-    getNextTheme(props?: {
+    getNextTheme(opts?: {
         themes?: Themes;
         name?: string | null;
         componentName?: string | null;
-    }, debug?: boolean): {
+    }, props?: any): {
         name: string;
         theme: Partial<import("./types").TamaguiBaseTheme> & {
             [key: string]: import("./types").VariableVal;

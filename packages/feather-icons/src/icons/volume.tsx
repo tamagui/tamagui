@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { memo } from 'react'
 import {
   Defs,
   Ellipse,
@@ -22,28 +22,30 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const Volume = themed((props: IconProps) => {
-  const { color = 'black', size = 24, ...otherProps } = props
-  return (
-    <Svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={`${color}`}
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...otherProps}
-    >
-      <Polygon
-        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+export const Volume = memo<IconProps>(
+  themed((props) => {
+    const { color = 'black', size = 24, ...otherProps } = props
+    return (
+      <Svg
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-    </Svg>
-  )
-})
+        {...otherProps}
+      >
+        <Polygon
+          points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+          fill="none"
+          stroke={`${color}`}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    )
+  })
+)

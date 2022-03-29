@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const ShoppingBag: (props: IconProps) => JSX.Element;
+export declare const ShoppingBag: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=shopping-bag.d.ts.map

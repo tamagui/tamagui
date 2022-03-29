@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const BatteryCharging: (props: IconProps) => JSX.Element;
+export declare const BatteryCharging: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
 //# sourceMappingURL=battery-charging.d.ts.map

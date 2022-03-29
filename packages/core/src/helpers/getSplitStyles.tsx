@@ -24,10 +24,15 @@ type PseudoStyles = {
 }
 
 const skipKeys = {
+  // could put events in here
+  animation: true,
+  animated: true,
   children: true,
   key: true,
   ref: true,
 }
+
+export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
 export const getSplitStyles = (
   props: { [key: string]: any },
@@ -93,8 +98,8 @@ export const getSplitStyles = (
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
-          if (process.env.NODE_ENV === 'development' && props['debug']) {
-            console.log('mediaStyles', key, { mediaProps, mediaStyle })
+          if (process.env.NODE_ENV === 'development') {
+            if (props['debug']) console.log('mediaStyles', key, { mediaProps, mediaStyle })
           }
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
@@ -102,8 +107,8 @@ export const getSplitStyles = (
             classNames.push(out.identifier)
             addRule(out.styleRule)
             insertStyleRule(out.styleRule)
-            if (process.env.NODE_ENV === 'development' && props['debug']) {
-              console.log('mediaProp', style.identifier, out.styleRule)
+            if (process.env.NODE_ENV === 'development') {
+              if (props['debug']) console.log('mediaProp', style.identifier, out.styleRule)
             }
           }
         } else {

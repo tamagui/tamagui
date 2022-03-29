@@ -37,7 +37,6 @@ export const MediaPlayer = memo(
         <Theme name={themeName}>
           <YStack>
             <Card
-              className="transition-test"
               flex={1}
               overflow="visible"
               bordered
@@ -73,7 +72,6 @@ export const MediaPlayer = memo(
                     px="$8"
                     py="$2"
                     bc="$background"
-                    className="transition-test"
                     bbrr="$2"
                     bblr="$2"
                     ai="center"
@@ -83,7 +81,6 @@ export const MediaPlayer = memo(
                   >
                     <Rewind />
                     <Button
-                      className="transition-test"
                       // animation="spring"
                       theme={mainButtonTheme}
                       bordered

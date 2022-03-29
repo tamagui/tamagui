@@ -1,4 +1,5 @@
 import { useTheme } from '@components/NextTheme'
+import throttle from 'lodash.throttle'
 import Link from 'next/link'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -12,9 +13,12 @@ import {
   XStack,
   YStack,
   debounce,
+  useDebounce,
   useDebounceValue,
 } from 'tamagui'
 
+import { useGet } from '../hooks/useGet'
+import { useScrollPosition } from '../hooks/useScrollPosition'
 import { ActiveCircle } from './ActiveCircle'
 import { CodeInline } from './Code'
 import { ContainerLarge } from './Container'
@@ -43,19 +47,20 @@ const splitToFlat = ([a, b]: number[]) => {
   return a * 4 + b
 }
 
-export function HeroExampleCarousel() {
+export function HeroExampleThemes() {
   const { setTheme, theme: userTheme } = useTheme()
   const [activeI, setActiveI] = useState([0, 0])
   const [curColorI, curShadeI] = activeI
   const [theme, setSelTheme] = useState('')
   const nextIndex = splitToFlat(activeI)
   const curIndex = useDebounceValue(nextIndex, 300)
-  const isTransitioning = curIndex !== nextIndex
+  // const isTransitioning = curIndex !== nextIndex
   // const isMidTransition = useDebounceValue(isTransitioning, 150)
   // const altName = themes[1][curShadeI]
   const colorName = themes[0][curColorI]
   const scrollView = useRef<HTMLElement | null>(null)
   const [scrollLock, setScrollLock] = useState<null | 'shouldAnimate' | 'animate' | 'scroll'>(null)
+  const getLock = useGet(scrollLock)
 
   const updateActiveI = (to: SetStateAction<number[]>) => {
     setScrollLock('shouldAnimate')
@@ -71,7 +76,7 @@ export function HeroExampleCarousel() {
   }
 
   const width = 180
-  const scale = 0.5
+  const scale = 0.6
 
   useEffect(() => {
     if (scrollLock !== 'shouldAnimate') return
@@ -83,6 +88,30 @@ export function HeroExampleCarousel() {
     // @ts-ignore
     node.scrollTo({ x, y: 0 })
   }, [nextIndex, scrollLock])
+
+  const onScroll = useMemo(
+    () =>
+      throttle(
+        ({ percent }) => {
+          if (getLock() !== null) return
+          const node = scrollView.current
+          if (!node) return
+          const x = 20 * percent
+          // @ts-ignore
+          node.scrollTo(0, x, false)
+        },
+        10,
+        {
+          leading: true,
+        }
+      ),
+    []
+  )
+
+  useScrollPosition({
+    ref: scrollView,
+    onScroll,
+  })
 
   // scroll lock unset
   useEffect(() => {
@@ -306,7 +335,7 @@ export function HeroExampleCarousel() {
             </XStack>
           </ScrollView>
 
-          <YStack pe="none" fullscreen ai="center" jc="center">
+          <YStack pe="none" fullscreen ai="center" jc="center" $sm={{ scale: 0.85 }}>
             <Theme name={colorName}>
               <MediaPlayer pointerEvents="none" pointerEventsControls="auto" alt={curShadeI} />
             </Theme>

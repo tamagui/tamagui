@@ -5,12 +5,13 @@ import { H4, Paragraph, Separator, Text, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from './Container'
 import { ExternalIcon } from './ExternalIcon'
 import { Link } from './Link'
+import { PageSeparator } from './PageSeparator'
 
 export const Footer = () => {
   return (
     <ContainerLarge>
       <YStack mt="$4" justifyContent="center">
-        <Separator />
+        <PageSeparator />
       </YStack>
       <XStack py="$8" $sm={{ flexDirection: 'column', ai: 'center' }}>
         <YStack
@@ -74,21 +75,18 @@ export const Footer = () => {
           <H4>Community</H4>
           {/* <Link href="/blog">Blog</Link> */}
           <XStack space="$1" ai="center">
-            {/* @ts-ignore */}
             <Link ai="center" href="https://github.com/tamagui/tamagui" target="_blank">
               GitHub
             </Link>
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
-            {/* @ts-ignore */}
             <Link ai="center" href="https://twitter.com/tamagui_js" target="_blank">
               Twitter
             </Link>
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
-            {/* @ts-ignore */}
             <Link ai="center" href="https://discord.gg/4qh6tdcVDa" target="_blank">
               Discord
             </Link>

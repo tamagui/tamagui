@@ -1,10 +1,12 @@
 import { GetProps, VariantSpreadExtras } from '@tamagui/core';
-export declare const getSize: (sizeX?: number, sizeY?: number) => (val: any, { tokens }: VariantSpreadExtras<any>) => {
+export declare const getSize: (sizeX?: number, sizeY?: number) => (val: any, { tokens, props }: VariantSpreadExtras<any>) => {
+    minHeight: any;
     paddingHorizontal: number;
     paddingVertical: number;
     borderRadius: import("@tamagui/core").VariableVal;
 };
-export declare const getButtonSize: (val: any, { tokens }: VariantSpreadExtras<any>) => {
+export declare const getButtonSize: (val: any, { tokens, props }: VariantSpreadExtras<any>) => {
+    minHeight: any;
     paddingHorizontal: number;
     paddingVertical: number;
     borderRadius: import("@tamagui/core").VariableVal;

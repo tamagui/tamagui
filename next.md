@@ -1,3 +1,4 @@
+- document $body being default font family
 - document injectCSS, mediaQueryDefaultActive, cssStyleSeparator, maxDarkLightNesting
 
 IF first level is dark/light

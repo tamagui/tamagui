@@ -40,7 +40,7 @@ export function createAnimations<A>(animations: A): {
   Text: any
 } {
   // , isHovered, isPressed, isExiting
-  const useAnimations = (props: Object, extra) => {
+  const useAnimations = (props: { animation: string; [key: string]: any }, extra) => {
     const { style, hoverStyle, pressStyle, exitStyle, onDidAnimate, delay } = extra
     const [isPresent, safeToUnmount] = usePresence()
     const presence = useContext(PresenceContext)
@@ -80,7 +80,9 @@ export function createAnimations<A>(animations: A): {
       }
 
       // const isExiting = !isPresent && !!exitStyle
-      const transition = 100 as any
+      // const transition = 100 as any
+      const transition = animations[props.animation]
+      console.log('transition', transition)
 
       const mergedStyles = {
         ...style[0],
@@ -144,7 +146,7 @@ export function createAnimations<A>(animations: A): {
         } else if (typeof value === 'object') {
           // shadows
           final[key] = {}
-          Object.keys(value || {}).forEach((innerStyleKey) => {
+          for (const innerStyleKey of Object.keys(value || {})) {
             let finalValue = animation(value, config, callback)
             if (shouldRepeat) {
               finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
@@ -154,7 +156,7 @@ export function createAnimations<A>(animations: A): {
             } else {
               final[key][innerStyleKey] = finalValue
             }
-          })
+          }
         } else {
           let finalValue = animation(value, config, callback)
           if (shouldRepeat) {
@@ -352,24 +354,11 @@ function animationConfig<Animate>(
     animation = withTiming
   } else if (animationType === 'spring') {
     animation = withSpring
-    config = {
-      // solve the missing velocity bug in 2.0.0-rc.0
-      // velocity: 2,
-    } as WithSpringConfig
-    const configKeys: (keyof WithSpringConfig)[] = [
-      'damping',
-      'mass',
-      'overshootClamping',
-      'restDisplacementThreshold',
-      'restSpeedThreshold',
-      'stiffness',
-      'velocity',
-    ]
+    config = {} as WithSpringConfig
     configKeys.forEach((configKey) => {
       'worklet'
       const styleSpecificConfig = transition?.[key]?.[configKey]
       const transitionConfigForKey = transition?.[configKey]
-
       if (styleSpecificConfig != null) {
         config[configKey] = styleSpecificConfig
       } else if (transitionConfigForKey != null) {
@@ -410,3 +399,13 @@ function animationConfig<Animate>(
     shouldRepeat: !!repeatCount,
   }
 }
+
+const configKeys: (keyof WithSpringConfig)[] = [
+  'damping',
+  'mass',
+  'overshootClamping',
+  'restDisplacementThreshold',
+  'restSpeedThreshold',
+  'stiffness',
+  'velocity',
+]

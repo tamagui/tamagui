@@ -155,7 +155,6 @@ export type TamaguiInternalConfig<
   animations: E
   Provider: (props: TamaguiProviderProps) => any
   // with $ prefixes for fast lookups (one time cost at startup vs every render)
-  themeParsed: { [key: string]: Variable }
   tokensParsed: CreateTokens<Variable>
   themeConfig: any
   getCSS: () => string
@@ -219,7 +218,9 @@ export type TransformStyleProps = {
 //
 // base props that are accepted by createComponent (additional to react-native-web)
 //
-type ComponentPropsBase = {
+type Something<A> = A extends symbol ? Something<{}> : A
+
+type ComponentPropsBase = Something<{
   disabled?: boolean
   className?: string
   id?: string
@@ -237,7 +238,7 @@ type ComponentPropsBase = {
   onMouseLeave?: (e: GestureResponderEvent) => any
   space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number
   pointerEvents?: string
-}
+}>
 
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =
   keyof Tokens['font'][keyof Tokens['font']][A]

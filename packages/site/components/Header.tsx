@@ -47,7 +47,7 @@ export function Header() {
         </NextLink>
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav" ai="center" space="$5">
+      <XStack pointerEvents="auto" tag="nav" ai="center" space="$4">
         <NextLink href="/docs/intro/installation" passHref>
           <Paragraph
             p="$2"
@@ -79,7 +79,7 @@ export function Header() {
         <AlphaButton />
 
         <NextLink href="https://github.com/tamagui/tamagui" passHref>
-          <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+          <YStack opacity={0.6} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
             <VisuallyHidden>
               <Text>Github</Text>
             </VisuallyHidden>

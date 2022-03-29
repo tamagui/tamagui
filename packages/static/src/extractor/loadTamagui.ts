@@ -34,7 +34,14 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     ) {
       return rnw
     }
-    return og.apply(this, arguments)
+    try {
+      return og.apply(this, arguments)
+    } catch (err: any) {
+      console.error(err.message)
+      console.error(err.stack)
+      // avoid infinite loops
+      process.exit(1)
+    }
   }
 
   // import config
