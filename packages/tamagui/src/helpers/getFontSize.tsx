@@ -31,7 +31,10 @@ export const getFontSizeVariable = (
 export const getFontSizeToken = (
   inSize: SizeTokens | null | undefined,
   opts?: GetFontSizeOpts
-): SizeTokens => {
+): SizeTokens | null => {
+  if (typeof inSize === 'number') {
+    return null
+  }
   const size = inSize || '$4'
   const relativeSize = opts?.relativeSize || 0
   if (relativeSize === 0) {

@@ -5,6 +5,6 @@ declare type GetFontSizeOpts = {
 };
 export declare const getFontSize: (inSize: SizeTokens | null | undefined, opts?: GetFontSizeOpts | undefined) => number;
 export declare const getFontSizeVariable: (inSize: SizeTokens | null | undefined, opts?: GetFontSizeOpts | undefined) => number | `$${string}` | import("@tamagui/core").Variable | null | undefined;
-export declare const getFontSizeToken: (inSize: SizeTokens | null | undefined, opts?: GetFontSizeOpts | undefined) => SizeTokens;
+export declare const getFontSizeToken: (inSize: SizeTokens | null | undefined, opts?: GetFontSizeOpts | undefined) => SizeTokens | null;
 export {};
 //# sourceMappingURL=getFontSize.d.ts.map

@@ -107,7 +107,6 @@ export function HeroExampleAnimations() {
                 className="all ease-in ms300"
                 // animation="bounce1"
                 elevation="$4"
-                // @ts-expect-error TODO
                 size={110}
                 bc="$color"
                 br="$9"
