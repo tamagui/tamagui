@@ -5,7 +5,7 @@ export declare const mouseUps: Set<Function>;
 declare type DefaultProps = {};
 export declare function createComponent<ComponentPropTypes extends Object = DefaultProps, Ref = View>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<ComponentPropTypes, void, Ref, StaticConfigParsed>;
 export declare const Spacer: StaticComponent<{
-    size?: number | SpaceTokens | undefined;
+    size?: SpaceTokens | undefined;
     flex?: number | boolean | undefined;
 }, void, View, StaticConfigParsed>;
 export declare function spacedChildren({ isZStack, children, space, flexDirection, }: {
