@@ -14,8 +14,10 @@ import { Header } from '../components/Header'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
 import { HeroExampleCode } from '../components/HeroExampleCode'
 import { HeroExampleThemes } from '../components/HeroExampleThemes'
+import { HomeH2, HomeH3 } from '../components/HomeH2'
 import { InstallInput } from '../components/InstallInput'
 import { PageSeparator } from '../components/PageSeparator'
+import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
   // return <HeroExampleAnimations />
@@ -27,7 +29,15 @@ export default function Home() {
       <YStack>
         <YStack space="$8">
           <Hero />
-          <InstallInput />
+          <ContainerLarge>
+            <XStack my="$3" ai="center">
+              <PageSeparator />
+              <ThemeTint>
+                <InstallInput />
+              </ThemeTint>
+              <PageSeparator />
+            </XStack>
+          </ContainerLarge>
           {/* <PageSeparator /> */}
           <HeroExampleThemes />
           <PageSeparator />
@@ -99,10 +109,8 @@ const FeaturesItems = () => {
   return (
     <ContainerLarge position="relative">
       <YStack ai="center" space="$2">
-        <H2>More to every component</H2>
-        <H3 ta="center" theme="alt3" fow="400">
-          Time-saving props on every view
-        </H3>
+        <HomeH2>More to every component</HomeH2>
+        <HomeH3>Time-saving props on every view</HomeH3>
       </YStack>
 
       <XStack p="$6" space="$4" $sm={{ flexDirection: 'column' }}>
@@ -147,10 +155,8 @@ function Performance() {
     <ContainerLarge position="relative">
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
-          <H2>Build more ambitious apps</H2>
-          <H3 theme="alt2" fow="400">
-            UX, meet DX - inline styles that run fast
-          </H3>
+          <HomeH2>Build more ambitious apps</HomeH2>
+          <HomeH3>UX, meet DX - inline styles that run fast</HomeH3>
         </YStack>
 
         <YStack

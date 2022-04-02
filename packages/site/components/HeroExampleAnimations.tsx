@@ -18,6 +18,7 @@ import {
 import { animations } from '../constants/animations'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
+import { HomeH2, HomeH3 } from './HomeH2'
 import { LogoIcon } from './TamaguiLogo'
 
 const positions = [
@@ -78,10 +79,8 @@ export function HeroExampleAnimations() {
     <YStack>
       <ContainerLarge position="relative" space="$6">
         <YStack zi={1} space="$2">
-          <H2 als="center">First-class animations</H2>
-          <H3 ta="center" theme="alt2" als="center" fow="400">
-            Plug-and-play drivers for every platform
-          </H3>
+          <HomeH2>First-class animations</HomeH2>
+          <HomeH3>Plug-and-play drivers for every platform</HomeH3>
         </YStack>
 
         <XStack
@@ -93,6 +92,8 @@ export function HeroExampleAnimations() {
           ov="hidden"
           bc="$background"
           h={320}
+          mw={880}
+          als="center"
           x={0}
         >
           <Theme name={tint}>
@@ -129,6 +130,7 @@ export function HeroExampleAnimations() {
               />
             </YStack>
           </Theme>
+
           <Separator vertical />
 
           <YStack $sm={{ display: 'none' }} width="40%">

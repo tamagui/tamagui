@@ -1756,7 +1756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/css@npm:3.0.0":
+"@docsearch/css@npm:3.0.0, @docsearch/css@npm:^3.0.0":
   version: 3.0.0
   resolution: "@docsearch/css@npm:3.0.0"
   checksum: 1a02fb808369908f9ae0174cd18fd152fa1cbebe5725d197fd52588696794ecfd384c504c09be55926cc2b36360173216365b46aae72769d581496d0418a0f16
@@ -4342,6 +4342,7 @@ __metadata:
   resolution: "@tamagui/site@workspace:packages/site"
   dependencies:
     "@babel/plugin-proposal-optional-chaining": ^7.14.5
+    "@docsearch/css": ^3.0.0
     "@docsearch/react": ^3.0.0
     "@expo/webpack-config": ^0.16.2
     "@next/bundle-analyzer": ^12.0.10

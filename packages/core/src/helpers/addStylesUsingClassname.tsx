@@ -15,15 +15,15 @@ export function useStylesAsClassname(styles: any[]) {
     return addStylesUsingClassname(styles)
   } else {
     const insertions: any[] = []
-    const className = addStylesUsingClassname(styles, (_, rules) => {
+    const className = addStylesUsingClassname(styles, (identifier, rules) => {
       for (const rule of rules) {
-        insertions.push(rule)
+        insertions.push({ identifier, rule })
       }
     })
 
     useInsertionEffect(() => {
-      for (const ruleset of insertions) {
-        insertStyleRule(ruleset)
+      for (const { identifier, rule } of insertions) {
+        insertStyleRule(identifier, rule)
       }
     })
 
@@ -51,9 +51,7 @@ export function addStylesUsingClassname(
       if (onAdd) {
         onAdd(identifier, rules)
       } else {
-        for (const rule of rules) {
-          insertStyleRule(rule)
-        }
+        insertStyleRule(identifier, rules[0])
       }
     }
   }

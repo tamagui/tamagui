@@ -5,14 +5,13 @@ import { Card } from './Card'
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
+import { HomeH2, HomeH3 } from './HomeH2'
 
 export function Community() {
   return (
     <ContainerLarge space="$3">
-      <H2 ta="center">Community</H2>
-      <H4 theme="alt2" fontWeight="400" ta="center">
-        Join the community on these platforms
-      </H4>
+      <HomeH2>Community</HomeH2>
+      <HomeH3>Join the community on these platforms</HomeH3>
 
       <YStack maxWidth="100%" fs={0} als="center" pt="$2" pb="$6">
         <EnsureFlexed />

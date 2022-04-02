@@ -23,6 +23,7 @@ export const SizableStack = styled(XStack, {
       true: {
         hoverStyle: {
           backgroundColor: '$backgroundHover',
+          borderColor: '$borderColorHover',
         },
       },
     },
@@ -31,6 +32,7 @@ export const SizableStack = styled(XStack, {
       true: {
         pressStyle: {
           backgroundColor: '$backgroundPress',
+          borderColor: '$borderColorPress',
         },
       },
     },
@@ -39,6 +41,7 @@ export const SizableStack = styled(XStack, {
       true: {
         focusStyle: {
           backgroundColor: '$backgroundFocus',
+          borderColor: '$borderColorFocus',
         },
       },
     },

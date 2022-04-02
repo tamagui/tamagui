@@ -1,3 +1,5 @@
+import '@docsearch/css'
+
 import '../app.css'
 
 import { DocsPage } from '@components/DocsPage'

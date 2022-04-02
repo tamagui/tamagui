@@ -29,8 +29,8 @@ export const MediaPlayer = memo(
   }) => {
     const alt = altProp ?? 0
     const themeName = theme ?? (alt ? (`alt${alt}` as any) : null)
-    const mainButtonTheme = theme ?? (`alt${alt + 2}` as any)
-    const barTheme = theme ?? (`alt${alt + 1}` as any)
+    const mainButtonTheme = theme ?? (`alt${Math.min(4, alt + 2)}` as any)
+    const barTheme = theme ?? (`alt${Math.min(4, alt + 1)}` as any)
 
     return (
       <YStack>
@@ -77,7 +77,7 @@ export const MediaPlayer = memo(
                     ai="center"
                     space="$7"
                     jc="center"
-                    pointerEvents={pointerEventsControls}
+                    pointerEvents={pointerEvents}
                   >
                     <Rewind />
                     <Button
@@ -95,6 +95,7 @@ export const MediaPlayer = memo(
                       circular
                       size="$8"
                       elevation="$4"
+                      pointerEvents={pointerEventsControls}
                     />
                     <FastForward />
                   </XStack>

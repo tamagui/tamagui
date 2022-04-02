@@ -106,7 +106,7 @@ export const getSplitStyles = (
             classNames = classNames || []
             classNames.push(out.identifier)
             addRule(out.styleRule)
-            insertStyleRule(out.styleRule)
+            insertStyleRule(out.identifier, out.styleRule)
             if (process.env.NODE_ENV === 'development') {
               if (props['debug']) console.log('mediaProp', style.identifier, out.styleRule)
             }

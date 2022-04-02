@@ -275,6 +275,7 @@ export declare type StaticConfig = {
     };
     isZStack?: boolean;
     isReactNativeWeb?: boolean;
+    memo?: boolean;
 };
 declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight';
 declare type FontKeys = 'fontFamily';
