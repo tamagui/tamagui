@@ -1,7 +1,6 @@
 import { useTheme } from '@components/NextTheme'
-import throttle from 'lodash.throttle'
 import Link from 'next/link'
-import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { SetStateAction, memo, useEffect, useMemo, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -13,14 +12,12 @@ import {
   XStack,
   YStack,
   debounce,
-  useDebounce,
   useDebounceValue,
 } from 'tamagui'
 
 import { useGet } from '../hooks/useGet'
-import { useScrollPosition } from '../hooks/useScrollPosition'
 import { ActiveCircle } from './ActiveCircle'
-import { CodeInline } from './Code'
+import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { MediaPlayer } from './MediaPlayer'
 
@@ -222,20 +219,6 @@ export function HeroExampleThemes() {
     )
   }, [])
 
-  const bottomElements = useMemo(() => {
-    return (
-      <ContainerLarge space="$3" position="relative">
-        <YStack mt="$3" ai="center" als="center" maxWidth={480} space="$2">
-          <Link href="/docs/intro/themes" passHref>
-            <Button theme="blue" tag="a">
-              Learn how themes work &raquo;
-            </Button>
-          </Link>
-        </YStack>
-      </ContainerLarge>
-    )
-  }, [])
-
   return (
     <YStack>
       {titleElements}
@@ -353,7 +336,23 @@ export function HeroExampleThemes() {
         </Theme>
       </YStack>
 
-      {bottomElements}
+      <Bottom />
     </YStack>
   )
 }
+
+const Bottom = memo(() => {
+  const { tint } = useTint()
+
+  return (
+    <ContainerLarge space="$3" position="relative">
+      <YStack mt="$3" ai="center" als="center" maxWidth={480} space="$2">
+        <Link href="/docs/intro/themes" passHref>
+          <Button theme={tint} tag="a">
+            Learn how themes work &raquo;
+          </Button>
+        </Link>
+      </YStack>
+    </ContainerLarge>
+  )
+})

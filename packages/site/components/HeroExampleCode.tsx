@@ -1,26 +1,16 @@
-import { FastForward, Plus } from '@tamagui/feather-icons'
-import React, { useState } from 'react'
+import { FastForward } from '@tamagui/feather-icons'
+import { memo, useState } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H2,
-  H3,
-  InteractiveContainer,
-  Paragraph,
-  SizableText,
-  Theme,
-  ThemeInverse,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H2, H3, InteractiveContainer, Paragraph, Theme, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { CodeDemo } from './CodeDemo'
+import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { IconStack } from './IconStack'
-import { Pill } from './Pill'
 
 export function HeroExampleCode() {
+  const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExample = examples[activeIndex]
 
@@ -30,7 +20,7 @@ export function HeroExampleCode() {
         <YStack space="$2">
           <H2 als="center">Next-generation compiler</H2>
           <H3 ta="center" theme="alt2" als="center" fow="400">
-            Faster runtime 🤝 less code 🤝 more platforms.
+            Faster runtime 🤝 less code 🤝 more platforms
           </H3>
         </YStack>
 
@@ -52,45 +42,43 @@ export function HeroExampleCode() {
           </ScrollView>
         </InteractiveContainer>
 
-        <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
-          <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$6">
-            <Paragraph theme="alt2" minHeight={50} ta="center" px="$7">
-              <Theme name="blue">
+        <Theme name={tint}>
+          <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
+            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$6">
+              <Paragraph minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Input</CodeInline>
-              </Theme>
-              &nbsp;－&nbsp;
-              {activeExample.input.description}
-            </Paragraph>
+                &nbsp;－&nbsp;
+                {activeExample.input.description}
+              </Paragraph>
 
-            <CodeExamples {...activeExample.input} />
-          </YStack>
-          <YStack $sm={{ display: 'none' }} mx={-30} zIndex={1000}>
-            <IconStack p="$3" theme="blue" mb={0}>
-              <FastForward size={18} />
-            </IconStack>
-          </YStack>
-          <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
-            <Paragraph theme="alt2" minHeight={50} ta="center" px="$7">
-              <Theme name="blue">
+              <CodeExamples {...activeExample.input} />
+            </YStack>
+            <YStack $sm={{ display: 'none' }} mx={-30} zIndex={1000}>
+              <IconStack p="$3" theme="blue" mb={0}>
+                <FastForward size={18} />
+              </IconStack>
+            </YStack>
+            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
+              <Paragraph minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Output</CodeInline>
-              </Theme>
-              &nbsp;－&nbsp;
-              {activeExample.output.description}
-            </Paragraph>
-            <CodeExamples {...activeExample.output} />
-          </YStack>
-        </XStack>
+                &nbsp;－&nbsp;
+                {activeExample.output.description}
+              </Paragraph>
+              <CodeExamples {...activeExample.output} />
+            </YStack>
+          </XStack>
+        </Theme>
       </YStack>
     </ContainerLarge>
   )
 }
 
-const CodeExamples = ({ examples }) => {
+const CodeExamples = memo(({ examples }: any) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const example = examples[activeIndex]
 
   return (
-    <YStack theme="blue" overflow="hidden" flex={1}>
+    <YStack overflow="hidden" flex={1}>
       <InteractiveContainer zi={10} mb={-30} als="center">
         {examples.map((example, i) => (
           <Button
@@ -120,7 +108,7 @@ const CodeExamples = ({ examples }) => {
       </XStack>
     </YStack>
   )
-}
+})
 
 const examples = [
   {
