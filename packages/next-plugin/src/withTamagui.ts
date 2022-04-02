@@ -82,16 +82,18 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         // TODO document and make configurable
         // replace minifier with css-minimizer-webpack-plugin which handles deduping atomic styles
-        const cssMin = webpackConfig.optimization.minimizer.find((x) =>
-          x.toString().includes('css-minimizer-plugin')
-        )
-        if (cssMin) {
-          webpackConfig.optimization.minimizer = webpackConfig.optimization.minimizer.slice(
-            cssMin.index,
-            1
+        if (!isServer) {
+          const cssMin = webpackConfig.optimization.minimizer.find((x) =>
+            x.toString().includes('css-minimizer-plugin')
           )
+          if (cssMin) {
+            webpackConfig.optimization.minimizer = webpackConfig.optimization.minimizer.slice(
+              cssMin.index,
+              1
+            )
+          }
+          webpackConfig.optimization.minimizer.push(new CssMinimizerPlugin())
         }
-        webpackConfig.optimization.minimizer.push(new CssMinimizerPlugin())
 
         if (!webpackConfig.resolve.extensions.includes('.web.js')) {
           webpackConfig.resolve.extensions = ['.web.js', ...webpackConfig.resolve.extensions]
@@ -162,7 +164,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         const oneOfRule = webpackConfig.module.rules.find((x) => !!x.oneOf)
 
         if (oneOfRule) {
-          if (!dev) {
+          if (!dev && !isServer) {
             // replace nextjs picky style rules with simple minicssextract
             const MiniCssExtractPlugin = require('mini-css-extract-plugin')
             oneOfRule.oneOf.unshift({
