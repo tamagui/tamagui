@@ -237,7 +237,6 @@ type ComponentPropsBase = Something<{
   // WEB ONLY
   onMouseLeave?: (e: GestureResponderEvent) => any
   space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number
-  pointerEvents?: string
 }>
 
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =

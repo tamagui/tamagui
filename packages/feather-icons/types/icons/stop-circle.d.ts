@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const StopCircle: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const StopCircle: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=stop-circle.d.ts.map

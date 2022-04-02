@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Maximize: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const Maximize: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=maximize.d.ts.map

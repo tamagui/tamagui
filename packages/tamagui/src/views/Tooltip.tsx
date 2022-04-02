@@ -1,5 +1,5 @@
 import { StackProps, Text, Theme, isTamaguiElement, isWeb, styled } from '@tamagui/core'
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
 import { Paragraph } from './Paragraph'
@@ -30,6 +30,32 @@ export const Tooltip = ({
   showArrow,
   ...props
 }: TooltipProps) => {
+  const getContents = useCallback(
+    ({ open }: { open: boolean }) => {
+      if (!open) {
+        return null
+      }
+      return [
+        showArrow ? <HoverablePopover.Arrow backgroundColor="$background" /> : null,
+        <Theme name={alwaysDark ? 'dark' : null}>
+          <TooltipFrame
+            elevation={size}
+            backgroundColor="$background"
+            maxWidth={400}
+            size={size}
+            // TODO we could fix this i think with some fancy stuff
+            {...(tooltipFrameProps as any)}
+          >
+            <Paragraph textAlign="center" color="$color" size={size}>
+              {contents}
+            </Paragraph>
+          </TooltipFrame>
+        </Theme>,
+      ]
+    },
+    [showArrow, alwaysDark, contents, tooltipFrameProps, size]
+  )
+
   return (
     <HoverablePopover
       placement="bottom"
@@ -53,28 +79,7 @@ export const Tooltip = ({
         )
       }
     >
-      {({ open }) => {
-        if (!open) {
-          return null
-        }
-        return [
-          showArrow ? <HoverablePopover.Arrow backgroundColor="$background" /> : null,
-          <Theme name={alwaysDark ? 'dark' : null}>
-            <TooltipFrame
-              elevation={size}
-              backgroundColor="$background"
-              maxWidth={400}
-              size={size}
-              // TODO we could fix this i think with some fancy stuff
-              {...(tooltipFrameProps as any)}
-            >
-              <Paragraph textAlign="center" color="$color" size={size}>
-                {contents}
-              </Paragraph>
-            </TooltipFrame>
-          </Theme>,
-        ]
-      }}
+      {getContents}
     </HoverablePopover>
   )
 }

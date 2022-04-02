@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const BarChart: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const BarChart: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=bar-chart.d.ts.map

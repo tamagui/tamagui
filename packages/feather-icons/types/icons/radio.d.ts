@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Radio: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const Radio: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=radio.d.ts.map

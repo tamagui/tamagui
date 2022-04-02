@@ -57,7 +57,6 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -126,7 +125,6 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -195,7 +193,6 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -264,7 +261,6 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -336,7 +332,6 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -405,7 +400,6 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -474,7 +468,6 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -543,7 +536,6 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -615,7 +607,6 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -684,7 +675,6 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -753,7 +743,6 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -822,7 +811,6 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -894,7 +882,6 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -963,7 +950,6 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1032,7 +1018,6 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1101,7 +1086,6 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1173,7 +1157,6 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1242,7 +1225,6 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1311,7 +1293,6 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1380,7 +1361,6 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1452,7 +1432,6 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1521,7 +1500,6 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1590,7 +1568,6 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1659,7 +1636,6 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1731,7 +1707,6 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1800,7 +1775,6 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1869,7 +1843,6 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -1938,7 +1911,6 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;

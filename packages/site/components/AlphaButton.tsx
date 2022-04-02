@@ -3,13 +3,20 @@ import React from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
 
 export const AlphaButton = () => (
-  <YStack mx={4} $sm={{ width: 0, overflow: 'hidden', mx: -8 }}>
+  <YStack $sm={{ width: 0, height: 0, overflow: 'hidden', mx: -4 }}>
     <NextLink href="/blog/tamagui-enters-beta-themes-and-animations" passHref>
-      <Button tag="a" mx={-6} theme="orange" br="$6">
-        <Paragraph cursor="inherit" theme="alt2" size="$3">
-          New
-        </Paragraph>
-      </Button>
+      <Paragraph
+        theme="orange_alt2"
+        p="$2"
+        px="$3"
+        cursor="pointer"
+        opacity={0.9}
+        hoverStyle={{ opacity: 1 }}
+        tag="a"
+        size="$3"
+      >
+        New
+      </Paragraph>
     </NextLink>
   </YStack>
 )

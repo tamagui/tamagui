@@ -88,17 +88,19 @@ export function Hero() {
                     $gtSm={{
                       size: '$10',
                       ta: 'center',
+                      maxWidth: 700,
                       mx: '$8',
                     }}
                     $gtMd={{
                       size: '$11',
+                      maxWidth: 900,
                       mx: '$4',
                     }}
                   >
                     <Tooltip contents="Works the same on iOS, Android, and web">
-                      Faster <span className="rainbow clip-text help">universal</span>
+                      <span className="rainbow clip-text help">Universal</span>
                     </Tooltip>{' '}
-                    React design systems for native & web
+                    React design systems much faster on native & web
                   </Title>
 
                   <YStack
@@ -130,8 +132,9 @@ export function Hero() {
                         fontWeight: '400',
                       }}
                     >
-                      Better UI with a smart optimizing compiler, style system, and kit.
-                      Simpler&nbsp;code,&nbsp;better DX, no-cost performance.
+                      Build faster apps faster thanks to an optimizing compiler.
+                      Write&nbsp;better,&nbsp;simpler&nbsp;code - get unmatched performance for
+                      free.
                     </Paragraph>
                   </YStack>
                 </YStack>

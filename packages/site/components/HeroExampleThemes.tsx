@@ -89,29 +89,29 @@ export function HeroExampleThemes() {
     node.scrollTo({ x, y: 0 })
   }, [nextIndex, scrollLock])
 
-  const onScroll = useMemo(
-    () =>
-      throttle(
-        ({ percent }) => {
-          if (getLock() !== null) return
-          const node = scrollView.current
-          if (!node) return
-          const x = 20 * percent
-          // @ts-ignore
-          node.scrollTo(0, x, false)
-        },
-        10,
-        {
-          leading: true,
-        }
-      ),
-    []
-  )
+  // const onScroll = useMemo(
+  //   () =>
+  //     throttle(
+  //       ({ percent }) => {
+  //         if (getLock() !== null) return
+  //         const node = scrollView.current
+  //         if (!node) return
+  //         const x = 20 * percent
+  //         // @ts-ignore
+  //         node.scrollTo(0, x, false)
+  //       },
+  //       10,
+  //       {
+  //         leading: true,
+  //       }
+  //     ),
+  //   []
+  // )
 
-  useScrollPosition({
-    ref: scrollView,
-    onScroll,
-  })
+  // useScrollPosition({
+  //   ref: scrollView,
+  //   onScroll,
+  // })
 
   // scroll lock unset
   useEffect(() => {

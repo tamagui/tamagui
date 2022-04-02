@@ -54,7 +54,6 @@ export declare const Popper: {
         onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
         space?: boolean | import("@tamagui/core/types").VariableVal | undefined;
-        pointerEvents?: string | undefined;
     } & {
         children?: any;
     } & {

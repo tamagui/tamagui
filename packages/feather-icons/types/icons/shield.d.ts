@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Shield: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const Shield: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=shield.d.ts.map

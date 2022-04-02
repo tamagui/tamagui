@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Chrome: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const Chrome: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=chrome.d.ts.map

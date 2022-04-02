@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Crosshair: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const Crosshair: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=crosshair.d.ts.map

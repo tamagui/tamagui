@@ -6,12 +6,30 @@ const json5 = require('json5')
 const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
-const path = require('path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
 const shouldSkipTypes = !!(process.argv.includes('skip-types') || process.env.SKIP_TYPES)
+const shouldClean = !!process.argv.includes('clean')
+const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
 const shouldWatch = process.argv.includes('--watch')
+
+if (shouldClean || shouldCleanBuildOnly) {
+  ;(async () => {
+    try {
+      await Promise.allSettled([fs.remove('.turbo'), fs.remove('types'), fs.remove('dist')])
+    } catch {}
+    if (shouldCleanBuildOnly) {
+      console.log('» cleaned', pkg.name)
+      process.exit(0)
+    }
+    try {
+      await Promise.allSettled([fs.remove('node_modules')])
+    } catch {}
+    console.log('» cleaned', pkg.name)
+    process.exit(0)
+  })()
+}
 
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 

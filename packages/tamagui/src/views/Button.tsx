@@ -8,17 +8,29 @@ import {
   themeable,
   useTheme,
 } from '@tamagui/core'
-import React, { forwardRef, isValidElement } from 'react'
+import React, { FunctionComponent, forwardRef, isValidElement } from 'react'
 import { View } from 'react-native'
 
 import { getFontSize } from '../helpers/getFontSize'
-import { SizableFrame, SizableFrameProps } from './SizableFrame'
+import { SizableFrame } from './SizableFrame'
 import { SizableText, SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-type IconProp = JSX.Element | ((props: { color?: string; size?: number }) => JSX.Element) | null
+type ButtonIconProps = { color?: string; size?: number }
+type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
+
+export type ButtonProps = GetProps<typeof ButtonFrame> &
+  ThemeableProps & {
+    scaleIcon?: number
+    color?: SizableTextProps['color']
+    fontWeight?: SizableTextProps['fontWeight']
+    letterSpacing?: SizableTextProps['letterSpacing']
+    noTextWrap?: boolean
+    icon?: IconProp
+    iconAfter?: IconProp
+  }
 
 const ButtonFrame = styled(SizableFrame, {
   name: 'Button',
@@ -47,17 +59,6 @@ const ButtonFrame = styled(SizableFrame, {
     },
   },
 })
-
-export type ButtonProps = GetProps<typeof ButtonFrame> &
-  ThemeableProps & {
-    scaleIcon?: number
-    color?: SizableTextProps['color']
-    fontWeight?: SizableTextProps['fontWeight']
-    letterSpacing?: SizableTextProps['letterSpacing']
-    noTextWrap?: boolean
-    icon?: IconProp
-    iconAfter?: IconProp
-  }
 
 export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>> =
   ButtonFrame.extractable(
