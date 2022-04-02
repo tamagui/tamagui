@@ -36,7 +36,7 @@ const program = new Commander.Command(packageJson.name)
   
 Example usage:
 
-${chalk.blueBright(`npx ${packageJson.name} twitter-clone`)}`
+${chalk.blueBright(`npx ${packageJson.name} next-expo`)}`
   )
   .action((name) => {
     projectPath = name
@@ -68,13 +68,13 @@ export function downloadAndExtractExample(root: string, name = 'tamagui'): Promi
   }
 
   return pipeline(
-    got.stream('https://codeload.github.com/tamagui/tamagui/tar.gz/master'),
+    got.stream('https://codeload.github.com/tamagui/starters/tar.gz/master'),
     tar.extract({ cwd: root, strip: 3 }, [`tamagui-master/starter-apps/${name}`])
   )
 }
 
 async function run() {
-  console.log(chalk.bold('🦖 Creating tamagui app...'))
+  console.log(chalk.bold('Creating tamagui app...'))
   if (typeof projectPath === 'string') {
     projectPath = projectPath.trim()
   }
@@ -83,7 +83,7 @@ async function run() {
       type: 'text',
       name: 'path',
       message: 'What is your project named?',
-      initial: 'my-tamagui-app',
+      initial: 'my-app',
       validate: (name) => {
         const validation = validateNpmName(path.basename(path.resolve(name)))
         if (validation.valid) {
