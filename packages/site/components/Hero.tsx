@@ -7,10 +7,9 @@
 //   return <H4 size="$1">Input</H4>
 // }
 
-import { ArrowRight, Check, Compass, Copy, Cpu, Layers } from '@tamagui/feather-icons'
-import copy from 'copy-to-clipboard'
+import { ArrowRight, Compass, Cpu, Layers, Search as SearchIcon } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
-import React, { useEffect, useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import {
   Button,
   H3,
@@ -18,6 +17,8 @@ import {
   Spacer,
   Text,
   Theme,
+  ThemeInverse,
+  ThemeReset,
   Title,
   Tooltip,
   VisuallyHidden,
@@ -31,19 +32,10 @@ import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
 import { IconStack } from './IconStack'
+import { SearchButton, SearchProvider } from './Search'
 
 export function Hero() {
-  const [hasCopied, setHasCopied] = React.useState(false)
   const { tint } = useTint()
-
-  useEffect(() => {
-    if (hasCopied) {
-      const tm = setTimeout(() => {
-        setHasCopied(false)
-      }, 2_000)
-      return () => clearTimeout(tm)
-    }
-  }, [hasCopied])
 
   const heroTopElements = useMemo(() => {
     return (
@@ -52,7 +44,7 @@ export function Hero() {
           <Header />
           {/* <OutlineThemeComponentGrid /> */}
 
-          <YStack space="$8" position="relative" pt="$6" $gtSm={{ pt: '$7' }}>
+          <YStack space="$6" position="relative" pt="$6" $gtSm={{ pt: '$7' }}>
             <YStack
               $sm={{
                 maxWidth: 550,
@@ -95,23 +87,23 @@ export function Hero() {
                   <Paragraph
                     color="$color"
                     opacity={0.7}
-                    size="$4"
+                    size="$5"
                     letterSpacing={0}
                     $gtSm={{
                       ta: 'center',
-                      size: '$5',
+                      size: '$6',
                       maxWidth: 600,
                       letterSpacing: 0,
                       fontWeight: '400',
                     }}
                     $gtMd={{
-                      size: '$7',
+                      size: '$8',
                       maxWidth: 700,
                       fontWeight: '400',
                     }}
                   >
-                    Build faster apps faster thanks to an optimizing compiler.
-                    Write&nbsp;better,&nbsp;simpler&nbsp;code - get unmatched performance for free.
+                    Fast apps built faster thanks to an optimizing compiler.
+                    Write&nbsp;better,&nbsp;simpler&nbsp;code – get unmatched performance for free.
                   </Paragraph>
                 </YStack>
               </YStack>
@@ -165,121 +157,16 @@ export function Hero() {
               {/* </Theme> */}
             </YStack>
 
-            <XStack
-              borderWidth={1}
-              borderColor="$borderColor"
-              px="$5"
-              height={48}
-              ai="center"
-              als="center"
-              br="$10"
-              bc="$background"
-              hoverStyle={{
-                bc: '$backgroundHover',
-              }}
-            >
-              <Paragraph ta="center" size="$6" fontWeight="500" fontFamily="$mono">
-                npm install tamagui
-              </Paragraph>
-              <Spacer size="$5" />
-              <Tooltip contents="Copy to clipboard">
-                <Button
-                  borderRadius="$8"
-                  mr={-18}
-                  // TODO broken in latest
-                  icon={
-                    hasCopied ? (
-                      <Check size={16} color="var(--colorHover)" />
-                    ) : (
-                      <Copy size={16} color="var(--colorHover)" />
-                    )
-                  }
-                  aria-label="Copy the install snippet to Clipboard"
-                  onClick={() => {
-                    copy('npm install tamagui')
-                    setHasCopied(true)
-                  }}
-                />
-              </Tooltip>
+            <XStack ai="center" jc="center">
+              <ThemeReset>
+                <SearchButton width={350} size="$6">
+                  Search Docs...
+                </SearchButton>
+              </ThemeReset>
             </XStack>
           </YStack>
         </ContainerLarge>
       </YStack>
-    )
-  }, [])
-
-  const heroBottomElements = useMemo(() => {
-    return (
-      <XStack
-        flex={1}
-        overflow="hidden"
-        maxWidth="100%"
-        space="$8"
-        flexWrap="nowrap"
-        px="$4"
-        $sm={{ flexDirection: 'column' }}
-      >
-        <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-          <Theme name="purple_alt2">
-            <IconStack>
-              <Cpu size={20} color="var(--colorHover)" />
-            </IconStack>
-          </Theme>
-          {/* TODO why weight is removed */}
-          <H3 fontWeight="700" size="$6" mb="$2">
-            Performant
-          </H3>
-          <Paragraph size="$3" theme="alt2">
-            The fastest UI kit thanks to an advanced compiler that handles styles, media queries,
-            CSS variables, and tree&nbsp;flattening.
-          </Paragraph>
-        </YStack>
-
-        <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-          <Theme name="green_alt2">
-            <IconStack>
-              <Compass size={20} color="var(--colorHover)" />
-            </IconStack>
-          </Theme>
-          <H3 fontWeight="700" size="$6" mb="$2">
-            Easy to adopt
-          </H3>
-          <Paragraph size="$3" theme="alt2">
-            Works with React Native and{' '}
-            <Text tag="a" href="https://necolas.github.io/react-native-web/">
-              Web
-            </Text>
-            . Use it as a style library or full component kit. Comes with beautiful themes, or bring
-            your own.
-          </Paragraph>
-        </YStack>
-
-        <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-          <Theme name="pink_alt2">
-            <IconStack>
-              <Layers size={20} color="var(--colorHover)" />
-            </IconStack>
-          </Theme>
-          <H3 fontWeight="700" size="$6" mb="$2">
-            Productive
-          </H3>
-          <Paragraph size="$3" theme="alt2">
-            Typed inline styles without performance downside. Themes, tokens, shorthands, media
-            queries, and animations that run fast.
-          </Paragraph>
-        </YStack>
-
-        {/* <YStack flexShrink={1}>
-    <IconStack>
-      <FastForward size={20} color="var(--colorHover)" />
-    </IconStack>
-    <H3 mb="$2">Native</H3>
-    <Paragraph size="$3" theme="alt2">
-      On the web Tamagui extracts styles to atomic CSS using CSS variables for themes and
-      CSS media queries - even if you use hooks. On native, it extracts StyleSheet.
-    </Paragraph>
-  </YStack> */}
-      </XStack>
     )
   }, [])
 
@@ -289,28 +176,84 @@ export function Hero() {
 
       <Spacer size="$9" />
 
-      <ContainerLarge>{heroBottomElements}</ContainerLarge>
+      <ContainerLarge>
+        <HeroBelow />
+      </ContainerLarge>
     </>
   )
 }
 
-// const OutlineThemeComponentGrid = () => {
-//   return (
-//     <YStack fullscreen pointerEvents="none" zi={0} opacity={0.025}>
-//       <XStack>
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//       </XStack>
-//     </YStack>
-//   )
-// }
+const HeroBelow = memo(() => {
+  return (
+    <XStack
+      flex={1}
+      overflow="hidden"
+      maxWidth="100%"
+      space="$8"
+      flexWrap="nowrap"
+      px="$4"
+      $sm={{ flexDirection: 'column' }}
+    >
+      <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
+        <Theme name="purple_alt2">
+          <IconStack>
+            <Cpu size={20} color="var(--colorHover)" />
+          </IconStack>
+        </Theme>
+        {/* TODO why weight is removed */}
+        <H3 fontWeight="700" size="$6" mb="$2">
+          Performant
+        </H3>
+        <Paragraph size="$3" theme="alt2">
+          The fastest UI kit thanks to an advanced compiler that handles styles, media queries, CSS
+          variables, and tree&nbsp;flattening.
+        </Paragraph>
+      </YStack>
+
+      <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
+        <Theme name="green_alt2">
+          <IconStack>
+            <Compass size={20} color="var(--colorHover)" />
+          </IconStack>
+        </Theme>
+        <H3 fontWeight="700" size="$6" mb="$2">
+          Easy to adopt
+        </H3>
+        <Paragraph size="$3" theme="alt2">
+          Works with React Native and{' '}
+          <Text tag="a" href="https://necolas.github.io/react-native-web/">
+            Web
+          </Text>
+          . Use it as a style library or full component kit. Comes with beautiful themes, or bring
+          your own.
+        </Paragraph>
+      </YStack>
+
+      <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
+        <Theme name="pink_alt2">
+          <IconStack>
+            <Layers size={20} color="var(--colorHover)" />
+          </IconStack>
+        </Theme>
+        <H3 fontWeight="700" size="$6" mb="$2">
+          Productive
+        </H3>
+        <Paragraph size="$3" theme="alt2">
+          Typed inline styles without performance downside. Themes, tokens, shorthands, media
+          queries, and animations that run fast.
+        </Paragraph>
+      </YStack>
+
+      {/* <YStack flexShrink={1}>
+  <IconStack>
+    <FastForward size={20} color="var(--colorHover)" />
+  </IconStack>
+  <H3 mb="$2">Native</H3>
+  <Paragraph size="$3" theme="alt2">
+    On the web Tamagui extracts styles to atomic CSS using CSS variables for themes and
+    CSS media queries - even if you use hooks. On native, it extracts StyleSheet.
+  </Paragraph>
+</YStack> */}
+    </XStack>
+  )
+})

@@ -16,6 +16,7 @@ import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { GithubIcon } from './GithubIcon'
 import { Link } from './Link'
 import { NavHeading } from './NavHeading'
+import { SearchButton } from './Search'
 
 const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
@@ -97,8 +98,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           top={15}
           right={30}
           ai="center"
-          space="$6"
+          space="$2"
         >
+          <SearchButton />
+
           <AlphaButton />
 
           <NextLink href="https://github.com/tamagui/tamagui" passHref>

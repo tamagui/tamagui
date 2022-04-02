@@ -58,7 +58,7 @@ export function QuickNav() {
         zIndex: 1,
         position: 'fixed',
         right: 0,
-        top: 75,
+        top: 94,
       }}
     >
       <ScrollView>

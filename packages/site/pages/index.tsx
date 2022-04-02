@@ -14,6 +14,7 @@ import { Header } from '../components/Header'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
 import { HeroExampleCode } from '../components/HeroExampleCode'
 import { HeroExampleThemes } from '../components/HeroExampleThemes'
+import { InstallInput } from '../components/InstallInput'
 import { PageSeparator } from '../components/PageSeparator'
 
 export default function Home() {
@@ -26,7 +27,8 @@ export default function Home() {
       <YStack>
         <YStack space="$8">
           <Hero />
-          <PageSeparator />
+          <InstallInput />
+          {/* <PageSeparator /> */}
           <HeroExampleThemes />
           <PageSeparator />
           <HeroExampleAnimations />

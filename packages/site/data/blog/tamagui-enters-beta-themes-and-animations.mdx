@@ -47,9 +47,23 @@ We've also fixed and improved a lot of how the `@tamagui/feather-icons`, the `Bu
 
 Animations are making their way into `@tamagui/core`. While they should be considered somewhat experimental as we get feedback and use them more in practice, we think the API's won't change signifcantly.
 
+### Better styled() helper
+
+The styled helper now automatically detects Text/View components and properly handles their styling/types. It also detects Inputs and a wider range of react-native components for automatic styling.
+
 ### New Components
 
-Over the last few months we've added [Inputs](/docs/components/forms), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover), [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), and [HTML Element](/docs/components/html-elements) components.
+Over the last few months we've added:
+
+- [Inputs](/docs/components/forms)
+- [Image](/docs/components/image)
+- [Separator](/docs/components/separator)
+- [ThemeInverse](/docs/core/theme#theme-inverse) and [ThemeReset](/docs/core/theme#theme-reset)
+- [Popover](/docs/components/popover) and [HoverablePopover](/docs/components/hoverable-popover)
+- [Tooltip](/docs/components/tooltip)
+- [Drawer](/docs/components/drawer)
+- [Square and Circle](/docs/components/shapes)
+- [HTML Elements](/docs/components/html-elements)
 
 These are big, helpful components and we've made sure each works fully with the optimizing compiler and full suite of react-native and Tamagui properties.
 
