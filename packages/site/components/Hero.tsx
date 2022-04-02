@@ -9,7 +9,7 @@
 
 import { ArrowRight, Compass, Cpu, Layers } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import {
   Button,
   H3,
@@ -17,7 +17,6 @@ import {
   Spacer,
   Text,
   Theme,
-  ThemeReset,
   Title,
   Tooltip,
   VisuallyHidden,
@@ -42,7 +41,7 @@ export function Hero() {
         <HeroTop />
       </Theme>
 
-      <XStack mt={-28} ai="center" jc="center">
+      <XStack theme="alt1" mt={-28} ai="center" jc="center">
         <SearchButton width={350} size="$6">
           Search Docs...
         </SearchButton>
@@ -90,7 +89,7 @@ const HeroTop = memo(() => {
               <Tooltip contents="Works the same on iOS, Android, and web">
                 <span className="rainbow clip-text help">Universal</span>
               </Tooltip>{' '}
-              React design systems made faster on native & web
+              React design systems made faster on native&nbsp;&&nbsp;web
             </Title>
 
             <YStack
@@ -122,8 +121,8 @@ const HeroTop = memo(() => {
                   fontWeight: '400',
                 }}
               >
-                Fast apps built faster thanks to an optimizing compiler.
-                Write&nbsp;better,&nbsp;simpler&nbsp;code – get unmatched performance for free.
+                Build faster apps faster with an optimizing compiler and UI kit.
+                Better,&nbsp;simpler&nbsp;code + unmatched performance.
               </Paragraph>
             </YStack>
           </YStack>

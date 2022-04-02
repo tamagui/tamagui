@@ -58,11 +58,11 @@ export const monoFont = createFont({
   },
   lineHeight: {
     1: 15,
-    2: 20,
-    3: 20,
-    4: 21,
-    5: 23,
-    6: 25,
+    2: 18,
+    3: 19,
+    4: 20,
+    5: 22,
+    6: 24,
   },
   weight: {
     4: '300',

@@ -67,6 +67,7 @@ export function SearchProvider({ children }) {
             indexName={INDEX}
             navigator={{
               navigate({ itemUrl }) {
+                console.log('navigate', itemUrl)
                 setIsOpen(false)
                 router.push(itemUrl)
               },
@@ -147,6 +148,7 @@ export const SearchButton = (props: ButtonProps) => {
       borderRadius={1000}
       icon={SearchIcon}
       elevation="$1"
+      color="$colorTranslucent"
       hoverStyle={{
         elevation: '$4',
       }}

@@ -3,27 +3,6 @@ import copy from 'copy-to-clipboard'
 import React, { memo, useEffect } from 'react'
 import { Button, Paragraph, Spacer, Tooltip, XStack } from 'tamagui'
 
-// const OutlineThemeComponentGrid = () => {
-//   return (
-//     <YStack fullscreen pointerEvents="none" zi={0} opacity={0.025}>
-//       <XStack>
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//       </XStack>
-//     </YStack>
-//   )
-// }
-
 export const InstallInput = memo(() => {
   const [hasCopied, setHasCopied] = React.useState(false)
 
@@ -46,6 +25,7 @@ export const InstallInput = memo(() => {
       als="center"
       br="$10"
       bc="$background"
+      elevation="$1"
       hoverStyle={{
         bc: '$backgroundHover',
       }}
@@ -77,3 +57,24 @@ export const InstallInput = memo(() => {
     </XStack>
   )
 })
+
+// const OutlineThemeComponentGrid = () => {
+//   return (
+//     <YStack fullscreen pointerEvents="none" zi={0} opacity={0.025}>
+//       <XStack>
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//         <MediaPlayer theme="outline" />
+//       </XStack>
+//     </YStack>
+//   )
+// }

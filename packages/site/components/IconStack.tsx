@@ -1,6 +1,9 @@
-import React from 'react'
-import { StackProps, YStack } from 'tamagui'
+import { YStack, styled } from 'tamagui'
 
-export const IconStack = (props: StackProps) => {
-  return <YStack mb="$4" br={100} bc="$background" p="$2" als="flex-start" {...props} />
-}
+export const IconStack = styled(YStack, {
+  mb: '$4',
+  br: 100,
+  bc: '$background',
+  p: '$2',
+  als: 'flex-start',
+})
