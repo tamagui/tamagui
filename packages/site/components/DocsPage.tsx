@@ -21,7 +21,7 @@ const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
 export function DocsPage({ children }: { children: React.ReactNode }) {
   // const { theme } = useTheme()
-  const [tint] = useTint()
+  const { tint } = useTint()
   const router = useRouter()
   const [isOpen, setIsOpen] = React.useState(false)
 

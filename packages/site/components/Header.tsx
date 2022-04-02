@@ -5,29 +5,26 @@ import React from 'react'
 import { Paragraph, Spacer, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
+import { useTint } from './ColorToggleButton'
 import { GithubIcon } from './GithubIcon'
 
-export function Header() {
+export function Header({ floating }: { floating?: boolean }) {
+  const { setNextTint } = useTint()
+
   return (
     <XStack
       ai="center"
       position="relative"
       tag="header"
-      py="$4"
+      py={floating ? 0 : '$2'}
       px="$4"
       jc="space-between"
       p="relative"
       zi={1}
     >
-      <NextLink href="/" passHref>
-        <YStack cursor="pointer" tag="a" my={-20}>
-          <VisuallyHidden>
-            <Text>Tamagui homepage</Text>
-          </VisuallyHidden>
-
-          <TamaguiLogo />
-        </YStack>
-      </NextLink>
+      <YStack cursor="pointer" tag="a" my={-20}>
+        <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
+      </YStack>
 
       <XStack
         position="absolute"
@@ -77,7 +74,7 @@ export function Header() {
             </Paragraph>
           </NextLink>
 
-          <AlphaButton />
+          {!floating && <AlphaButton />}
 
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
             <YStack px="$3" opacity={0.6} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">

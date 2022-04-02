@@ -1,12 +1,21 @@
 import React from 'react'
-import { XStack, YStack } from 'tamagui'
+import { StackProps, XStack, YStack } from 'tamagui'
 
-export const TamaguiLogo = ({ showWords, color }: { showWords?: boolean; color?: string }) => (
-  <XStack ai="center" jc="center" space="$5">
-    <LogoIcon downscale={showWords ? 2 : 1.5} color={color} />
+export const TamaguiLogo = ({
+  showWords,
+  color,
+  downscale,
+  ...props
+}: {
+  showWords?: boolean
+  color?: string
+  downscale?: number
+} & StackProps) => (
+  <XStack ai="center" jc="center" space="$5" {...props}>
+    <LogoIcon downscale={downscale ?? (showWords ? 2 : 1.5)} color={color} />
     {showWords && (
       <YStack mb={-4}>
-        <LogoWords downscale={2} color={color} />
+        <LogoWords downscale={downscale ?? 2} color={color} />
       </YStack>
     )}
   </XStack>

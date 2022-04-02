@@ -20,25 +20,30 @@ export const useTint = () => {
     }
   }, [])
 
-  return [
-    color,
-    (next: ThemeName) => {
-      const i = colors.indexOf(next as any)
-      // localStorage.setItem('tint', `${i}`)
-      setColorI(i)
-      listeners.forEach((x) => x(i))
+  const nextIndex = (colors.indexOf(color) + 1) % colors.length
+  const next = colors[nextIndex]
+  const setTint = (next: ThemeName) => {
+    const i = colors.indexOf(next as any)
+    // localStorage.setItem('tint', `${i}`)
+    setColorI(i)
+    listeners.forEach((x) => x(i))
+  }
+
+  return {
+    tint: color,
+    setTint,
+    setNextTint: () => {
+      setTint(next)
     },
-  ] as const
+  } as const
 }
 
 export const ColorToggleButton = (props: ButtonProps) => {
-  const [tint, setTint] = useTint()
-  const nextIndex = (colors.indexOf(tint) + 1) % colors.length
-  const next = colors[nextIndex]
+  const { tint, setNextTint } = useTint()
   return (
     <Button
       chromeless
-      onClick={() => setTint(next)}
+      onClick={setNextTint}
       {...props}
       aria-label="toggle a light and dark color scheme"
     >

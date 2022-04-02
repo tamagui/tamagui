@@ -2,9 +2,21 @@ import { Play } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, H2, H3, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H2,
+  H3,
+  Paragraph,
+  Separator,
+  Square,
+  Theme,
+  ThemeReset,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { animations } from '../constants/animations'
+import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { LogoIcon } from './TamaguiLogo'
 
@@ -55,6 +67,7 @@ export function HeroExampleAnimations() {
   const [positionI, setPositionI] = useState(0)
   const position = positions[positionI]
   const animation = animationDescriptions[animationI]
+  const { tint } = useTint()
   const next = () => {
     setPositionI((x) => (x + 1) % positions.length)
   }
@@ -72,7 +85,7 @@ export function HeroExampleAnimations() {
         </YStack>
 
         <XStack
-          bow={1}
+          bw={1}
           boc="$borderColor"
           w="100%"
           theme="alt1"
@@ -82,7 +95,7 @@ export function HeroExampleAnimations() {
           h={320}
           x={0}
         >
-          <Theme name="blue">
+          <Theme name={tint}>
             <YStack
               pos="relative"
               className="hero-gradient"
@@ -100,7 +113,9 @@ export function HeroExampleAnimations() {
                 onPress={next}
                 {...position}
               >
-                <LogoIcon downscale={0.75} color="var(--background)" />
+                <ThemeReset>
+                  <LogoIcon downscale={0.75} color="var(--background)" />
+                </ThemeReset>
               </Square>
 
               <Button
@@ -108,7 +123,7 @@ export function HeroExampleAnimations() {
                 bottom={20}
                 right={20}
                 iconAfter={Play}
-                theme="blue"
+                theme={tint}
                 size="$6"
                 onPress={next}
               />
@@ -170,7 +185,7 @@ export function HeroExampleAnimations() {
         </XStack>
 
         <Link href="/docs/core/animations" passHref>
-          <Button als="center" theme="blue" tag="a">
+          <Button als="center" theme={tint} tag="a">
             Animations docs &raquo;
           </Button>
         </Link>
