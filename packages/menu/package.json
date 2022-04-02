@@ -1,9 +1,7 @@
 {
   "name": "@tamagui/menu",
   "version": "1.0.0-alpha.68",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": true,
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -22,6 +20,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.1.5",
     "@tamagui/core": "^1.0.0-alpha.68",
+    "@tamagui/polyfill-dev": "^1.0.0-alpha.68",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-reanimated": "^2.4.1"
   },

@@ -4183,6 +4183,7 @@ __metadata:
     "@gorhom/bottom-sheet": ^4.1.5
     "@tamagui/build": ^1.0.0-alpha.64
     "@tamagui/core": ^1.0.0-alpha.68
+    "@tamagui/polyfill-dev": ^1.0.0-alpha.68
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: ^2.2.0
@@ -4237,6 +4238,7 @@ __metadata:
     "@gorhom/bottom-sheet": ^4.1.5
     "@tamagui/build": ^1.0.0-alpha.64
     "@tamagui/core": ^1.0.0-alpha.68
+    "@tamagui/polyfill-dev": ^1.0.0-alpha.68
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: ^2.2.0
@@ -4279,6 +4281,12 @@ __metadata:
   checksum: 636a096b72b86241dae7dec03c87c055f6ddb2199ebd3c54106de94b7664913a0d3d7be51655259c29c763ac13a39bfb822bfa4a28c9c2efd73527e0721fb539
   languageName: node
   linkType: hard
+
+"@tamagui/polyfill-dev@^1.0.0-alpha.68, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
+  languageName: unknown
+  linkType: soft
 
 "@tamagui/proxy-worm@^1.0.0-alpha.64, @tamagui/proxy-worm@workspace:packages/proxy-worm":
   version: 0.0.0-use.local
