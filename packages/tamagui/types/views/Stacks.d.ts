@@ -19,7 +19,6 @@ export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -42,7 +41,6 @@ export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -65,7 +63,6 @@ export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -88,7 +85,6 @@ export declare const YStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -119,7 +115,6 @@ export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -142,7 +137,6 @@ export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -165,7 +159,6 @@ export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -188,7 +181,6 @@ export declare const XStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -215,7 +207,6 @@ export declare const ZStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -238,7 +229,6 @@ export declare const ZStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -261,7 +251,6 @@ export declare const ZStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -284,7 +273,6 @@ export declare const ZStack: import("@tamagui/core").StaticComponent<Omit<import
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {

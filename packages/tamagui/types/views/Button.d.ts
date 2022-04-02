@@ -1,11 +1,21 @@
 import { GetProps, StaticComponent, ThemeableProps } from '@tamagui/core';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { View } from 'react-native';
 import { SizableTextProps } from './SizableText';
-declare type IconProp = JSX.Element | ((props: {
+declare type ButtonIconProps = {
     color?: string;
     size?: number;
-}) => JSX.Element) | null;
+};
+declare type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
+export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps & {
+    scaleIcon?: number;
+    color?: SizableTextProps['color'];
+    fontWeight?: SizableTextProps['fontWeight'];
+    letterSpacing?: SizableTextProps['letterSpacing'];
+    noTextWrap?: boolean;
+    icon?: IconProp;
+    iconAfter?: IconProp;
+};
 declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
@@ -26,7 +36,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -49,7 +58,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -72,7 +80,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -95,7 +102,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -130,7 +136,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -153,7 +158,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -176,7 +180,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -199,7 +202,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -234,7 +236,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -257,7 +258,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -280,7 +280,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -303,7 +302,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -338,7 +336,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -361,7 +358,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -384,7 +380,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -407,7 +402,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -442,7 +436,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -465,7 +458,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -488,7 +480,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -511,7 +502,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -548,7 +538,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -571,7 +560,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -594,7 +582,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -617,7 +604,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -652,7 +638,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -675,7 +660,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -698,7 +682,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -721,7 +704,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -756,7 +738,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -779,7 +760,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -802,7 +782,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -825,7 +804,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -860,7 +838,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -883,7 +860,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -906,7 +882,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -929,7 +904,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -964,7 +938,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -987,7 +960,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1010,7 +982,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1033,7 +1004,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1070,7 +1040,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1093,7 +1062,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1116,7 +1084,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1139,7 +1106,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1174,7 +1140,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1197,7 +1162,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1220,7 +1184,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1243,7 +1206,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1278,7 +1240,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1301,7 +1262,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1324,7 +1284,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1347,7 +1306,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1382,7 +1340,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1405,7 +1362,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1428,7 +1384,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1451,7 +1406,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1486,7 +1440,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1509,7 +1462,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1532,7 +1484,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1555,7 +1506,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1592,7 +1542,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1615,7 +1564,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1638,7 +1586,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1661,7 +1608,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1696,7 +1642,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1719,7 +1664,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1742,7 +1686,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1765,7 +1708,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1800,7 +1742,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1823,7 +1764,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1846,7 +1786,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1869,7 +1808,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1904,7 +1842,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1927,7 +1864,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1950,7 +1886,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1973,7 +1908,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2008,7 +1942,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2031,7 +1964,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2054,7 +1986,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2077,7 +2008,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2114,7 +2044,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2137,7 +2066,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2160,7 +2088,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2183,7 +2110,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2218,7 +2144,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2241,7 +2166,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2264,7 +2188,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2287,7 +2210,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2322,7 +2244,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2345,7 +2266,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2368,7 +2288,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2391,7 +2310,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2426,7 +2344,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2449,7 +2366,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2472,7 +2388,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2495,7 +2410,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2530,7 +2444,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2553,7 +2466,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2576,7 +2488,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2599,7 +2510,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2617,15 +2527,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
 }>> & {
     circular?: boolean | undefined;
 }>>, void, any, import("@tamagui/core").StaticConfigParsed>;
-export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps & {
-    scaleIcon?: number;
-    color?: SizableTextProps['color'];
-    fontWeight?: SizableTextProps['fontWeight'];
-    letterSpacing?: SizableTextProps['letterSpacing'];
-    noTextWrap?: boolean;
-    icon?: IconProp;
-    iconAfter?: IconProp;
-};
 export declare const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>>;
 export declare const getSpaceSize: (size: any, sizeUpOrDownBy?: number) => import("@tamagui/core").Variable;
 export {};

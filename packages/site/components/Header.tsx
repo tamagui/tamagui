@@ -2,7 +2,7 @@ import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
 import NextLink from 'next/link'
 import React from 'react'
-import { Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import { Paragraph, Spacer, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { GithubIcon } from './GithubIcon'
@@ -47,47 +47,51 @@ export function Header() {
         </NextLink>
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav" ai="center" space="$4">
-        <NextLink href="/docs/intro/installation" passHref>
-          <Paragraph
-            p="$2"
-            mx="$-2"
-            cursor="pointer"
-            size="$3"
-            opacity={0.5}
-            hoverStyle={{ opacity: 1 }}
-            tag="a"
-          >
-            Docs
-          </Paragraph>
-        </NextLink>
+      <XStack pointerEvents="auto" tag="nav">
+        <XStack ai="center">
+          <NextLink href="/docs/intro/installation" passHref>
+            <Paragraph
+              p="$2"
+              px="$3"
+              cursor="pointer"
+              size="$3"
+              opacity={0.5}
+              hoverStyle={{ opacity: 1 }}
+              tag="a"
+            >
+              Docs
+            </Paragraph>
+          </NextLink>
 
-        <NextLink href="/blog" passHref>
-          <Paragraph
-            p="$2"
-            mx="$-2"
-            cursor="pointer"
-            size="$3"
-            opacity={0.5}
-            hoverStyle={{ opacity: 1 }}
-            tag="a"
-          >
-            Blog
-          </Paragraph>
-        </NextLink>
+          <NextLink href="/blog" passHref>
+            <Paragraph
+              p="$2"
+              px="$3"
+              cursor="pointer"
+              size="$3"
+              opacity={0.5}
+              hoverStyle={{ opacity: 1 }}
+              tag="a"
+            >
+              Blog
+            </Paragraph>
+          </NextLink>
 
-        <AlphaButton />
+          <AlphaButton />
 
-        <NextLink href="https://github.com/tamagui/tamagui" passHref>
-          <YStack opacity={0.6} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
-            <VisuallyHidden>
-              <Text>Github</Text>
-            </VisuallyHidden>
-            <GithubIcon width={23} />
-          </YStack>
-        </NextLink>
+          <NextLink href="https://github.com/tamagui/tamagui" passHref>
+            <YStack px="$3" opacity={0.6} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+              <VisuallyHidden>
+                <Text>Github</Text>
+              </VisuallyHidden>
+              <GithubIcon width={22} />
+            </YStack>
+          </NextLink>
 
-        <ThemeToggle />
+          <Spacer size="$2" />
+
+          <ThemeToggle />
+        </XStack>
       </XStack>
     </XStack>
   )

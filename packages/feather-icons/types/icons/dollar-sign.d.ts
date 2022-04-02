@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const DollarSign: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const DollarSign: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=dollar-sign.d.ts.map

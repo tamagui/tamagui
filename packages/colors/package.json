@@ -12,7 +12,9 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.0-alpha.64"

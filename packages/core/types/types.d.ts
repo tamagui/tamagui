@@ -171,7 +171,6 @@ declare type ComponentPropsBase = Something<{
     onMouseEnter?: (e: GestureResponderEvent) => any;
     onMouseLeave?: (e: GestureResponderEvent) => any;
     space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number;
-    pointerEvents?: string;
 }>;
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;

@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const CloudLightning: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const CloudLightning: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=cloud-lightning.d.ts.map

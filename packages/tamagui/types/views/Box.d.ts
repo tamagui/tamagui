@@ -19,7 +19,6 @@ export declare const Box: import("@tamagui/core").StaticComponent<Omit<import("@
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -42,7 +41,6 @@ export declare const Box: import("@tamagui/core").StaticComponent<Omit<import("@
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -65,7 +63,6 @@ export declare const Box: import("@tamagui/core").StaticComponent<Omit<import("@
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -88,7 +85,6 @@ export declare const Box: import("@tamagui/core").StaticComponent<Omit<import("@
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {

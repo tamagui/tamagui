@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const DivideCircle: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const DivideCircle: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=divide-circle.d.ts.map

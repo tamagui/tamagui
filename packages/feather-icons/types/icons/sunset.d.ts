@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Sunset: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const Sunset: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sunset.d.ts.map

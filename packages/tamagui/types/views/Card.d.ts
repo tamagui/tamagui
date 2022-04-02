@@ -18,7 +18,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -41,7 +40,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -64,7 +62,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -87,7 +84,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -122,7 +118,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -145,7 +140,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -168,7 +162,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -191,7 +184,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -226,7 +218,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -249,7 +240,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -272,7 +262,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -295,7 +284,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -330,7 +318,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -353,7 +340,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -376,7 +362,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -399,7 +384,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -434,7 +418,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -457,7 +440,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -480,7 +462,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -503,7 +484,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -540,7 +520,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -563,7 +542,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -586,7 +564,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -609,7 +586,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -644,7 +620,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -667,7 +642,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -690,7 +664,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -713,7 +686,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -748,7 +720,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -771,7 +742,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -794,7 +764,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -817,7 +786,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -852,7 +820,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -875,7 +842,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -898,7 +864,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -921,7 +886,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -956,7 +920,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -979,7 +942,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1002,7 +964,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1025,7 +986,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1062,7 +1022,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1085,7 +1044,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1108,7 +1066,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1131,7 +1088,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1166,7 +1122,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1189,7 +1144,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1212,7 +1166,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1235,7 +1188,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1270,7 +1222,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1293,7 +1244,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1316,7 +1266,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1339,7 +1288,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1374,7 +1322,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1397,7 +1344,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1420,7 +1366,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1443,7 +1388,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1478,7 +1422,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1501,7 +1444,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1524,7 +1466,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1547,7 +1488,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1584,7 +1524,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1607,7 +1546,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1630,7 +1568,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1653,7 +1590,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1688,7 +1624,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1711,7 +1646,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1734,7 +1668,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1757,7 +1690,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1792,7 +1724,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1815,7 +1746,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1838,7 +1768,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1861,7 +1790,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1896,7 +1824,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1919,7 +1846,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1942,7 +1868,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -1965,7 +1890,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2000,7 +1924,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2023,7 +1946,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2046,7 +1968,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2069,7 +1990,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2106,7 +2026,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2129,7 +2048,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2152,7 +2070,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2175,7 +2092,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2210,7 +2126,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2233,7 +2148,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2256,7 +2170,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2279,7 +2192,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2314,7 +2226,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2337,7 +2248,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2360,7 +2270,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2383,7 +2292,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2418,7 +2326,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2441,7 +2348,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2464,7 +2370,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2487,7 +2392,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2522,7 +2426,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2545,7 +2448,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2568,7 +2470,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -2591,7 +2492,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {

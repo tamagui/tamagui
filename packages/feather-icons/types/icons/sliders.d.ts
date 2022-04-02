@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const Sliders: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const Sliders: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=sliders.d.ts.map

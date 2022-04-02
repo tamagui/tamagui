@@ -31,7 +31,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -54,7 +53,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -77,7 +75,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -100,7 +97,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -135,7 +131,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -158,7 +153,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -181,7 +175,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -204,7 +197,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -239,7 +231,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -262,7 +253,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -285,7 +275,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -308,7 +297,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -343,7 +331,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -366,7 +353,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -389,7 +375,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -412,7 +397,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -447,7 +431,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -470,7 +453,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -493,7 +475,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {
@@ -516,7 +497,6 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: boolean | import("@tamagui/core").VariableVal | undefined;
-    pointerEvents?: string | undefined;
 } & {
     children?: any;
 } & {

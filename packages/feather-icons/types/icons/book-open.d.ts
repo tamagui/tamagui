@@ -1,4 +1,4 @@
 import React from 'react';
 import { IconProps } from '../IconProps';
-export declare const BookOpen: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+export declare const BookOpen: React.NamedExoticComponent<IconProps>;
 //# sourceMappingURL=book-open.d.ts.map

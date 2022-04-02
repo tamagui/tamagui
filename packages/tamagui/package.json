@@ -16,7 +16,9 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@react-aria/ssr": "^3.1.0",
