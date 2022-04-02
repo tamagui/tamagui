@@ -520,6 +520,11 @@ export type StaticConfig = {
    * To account for style adjustments
    */
   isReactNativeWeb?: boolean
+
+  /*
+   * Memoize the component
+   */
+  memo?: boolean
 }
 
 type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight'

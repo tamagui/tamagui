@@ -1,12 +1,11 @@
 import { useTheme } from '@components/NextTheme'
 import Link from 'next/link'
-import { SetStateAction, memo, useEffect, useMemo, useRef, useState } from 'react'
+import { SetStateAction, memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  H2,
-  H3,
   InteractiveContainer,
+  Square,
   Theme,
   ThemeName,
   XStack,
@@ -19,6 +18,7 @@ import { useGet } from '../hooks/useGet'
 import { ActiveCircle } from './ActiveCircle'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
+import { HomeH2, HomeH3 } from './HomeH2'
 import { MediaPlayer } from './MediaPlayer'
 
 const themes: (ThemeName | null)[][] = [
@@ -34,6 +34,8 @@ for (let i = 0; i < themes[0].length; i++) {
   }
 }
 
+console.log('themeCombos', themeCombos)
+
 const flatToSplit = (i: number) => {
   const colorI = Math.floor(i / 4)
   const shadeI = i % 4
@@ -43,6 +45,8 @@ const flatToSplit = (i: number) => {
 const splitToFlat = ([a, b]: number[]) => {
   return a * 4 + b
 }
+
+let hasScrolledOnce = false
 
 export function HeroExampleThemes() {
   const { setTheme, theme: userTheme } = useTheme()
@@ -72,51 +76,39 @@ export function HeroExampleThemes() {
     })
   }
 
+  const moveToIndex = (index: number) => {
+    updateActiveI(flatToSplit(index))
+  }
+
   const width = 180
   const scale = 0.6
 
+  function scrollToIndex(index: number, force = false) {
+    const node = scrollView.current
+    const lock = getLock()
+    const isReadyToAnimate = lock === 'shouldAnimate'
+    const isForced = force && (isReadyToAnimate || lock === null)
+    const shouldPrevent = !isReadyToAnimate && !isForced
+    if (!node || shouldPrevent) return
+    const left = (width + 30) * index + width / 2 + 30
+    if (node.scrollLeft === left) return
+    node.scrollTo({ left, top: 0, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     if (scrollLock !== 'shouldAnimate') return
-    const node = scrollView.current
-    if (!node) return
-    const x = (width + 30) * nextIndex + width / 2 + 30
-    if (node.scrollLeft === x) return
-    setScrollLock('animate')
-    // @ts-ignore
-    node.scrollTo({ x, y: 0 })
-  }, [nextIndex, scrollLock])
-
-  // const onScroll = useMemo(
-  //   () =>
-  //     throttle(
-  //       ({ percent }) => {
-  //         if (getLock() !== null) return
-  //         const node = scrollView.current
-  //         if (!node) return
-  //         const x = 20 * percent
-  //         // @ts-ignore
-  //         node.scrollTo(0, x, false)
-  //       },
-  //       10,
-  //       {
-  //         leading: true,
-  //       }
-  //     ),
-  //   []
-  // )
-
-  // useScrollPosition({
-  //   ref: scrollView,
-  //   onScroll,
-  // })
+    scrollToIndex(nextIndex)
+  }, [nextIndex, scrollLock, scrollView.current])
 
   // scroll lock unset
-  useEffect(() => {
+  useLayoutEffect(() => {
     const node = scrollView.current
     if (!node) return
     const listener = debounce(() => {
+      console.log('done')
       setScrollLock(null)
     }, 200)
+    console.log('add listener')
     node.addEventListener('scroll', listener)
     return () => {
       node.removeEventListener('scroll', listener)
@@ -142,6 +134,14 @@ export function HeroExampleThemes() {
     const io = new IntersectionObserver(
       ([{ isIntersecting }]) => {
         if (isIntersecting) {
+          if (!hasScrolledOnce) {
+            // scroll to middle on first intersection
+            hasScrolledOnce = true
+            const index = themeCombos.indexOf('')
+            moveToIndex(index)
+            setScrollLock('shouldAnimate')
+            scrollToIndex(index, true)
+          }
           window.addEventListener('keydown', onKey)
           dispose = () => {
             window.removeEventListener('keydown', onKey)
@@ -169,12 +169,12 @@ export function HeroExampleThemes() {
 
   const scrollContents = useMemo(() => {
     return themeCombos.map((name, i) => {
-      const isCurActive = curIndex === i
-      const isNextActive = nextIndex === i
+      // const isCurActive = curIndex === i
+      // const isNextActive = nextIndex === i
       // const isActive = isMidTransition ? isNextActive : isCurActive
       // const isBeforeActive = i < curIndex
-      const [colorI, shadeI] = flatToSplit(i)
       // const isActiveGroup = colorI === curColorI
+      const [colorI, shadeI] = flatToSplit(i)
       const [color, alt] = name.split('_')
       return (
         <XStack key={i} width={width}>
@@ -210,10 +210,8 @@ export function HeroExampleThemes() {
     return (
       <ContainerLarge space="$3" position="relative">
         <YStack zi={1} space="$2">
-          <H2 als="center">Truly flexible themes</H2>
-          <H3 ta="center" theme="alt2" als="center" fow="400">
-            Unlimited sub-themes, down to the component
-          </H3>
+          <HomeH2>Truly flexible themes</HomeH2>
+          <HomeH3>Unlimited sub-themes, down to the component</HomeH3>
         </YStack>
       </ContainerLarge>
     )
@@ -223,7 +221,7 @@ export function HeroExampleThemes() {
     <YStack>
       {titleElements}
 
-      <YStack mt="$3" ai="center" jc="center" space="$6">
+      <YStack mt="$3" ai="center" jc="center" space="$2">
         <ScrollView style={{ maxWidth: '100%' }} horizontal showsHorizontalScrollIndicator={false}>
           <XStack px="$4" space="$4">
             <InteractiveContainer p="$1" br="$10" als="center" space="$1">
@@ -283,18 +281,17 @@ export function HeroExampleThemes() {
           pos="relative"
           pointerEvents={scrollLock === 'animate' ? 'none' : 'auto'}
         >
-          <ScrollView
-            style={{ width: '100%', overflow: 'hidden' }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
+          <XStack
+            // @ts-ignore
+            style={{ width: '100%', overflow: 'hidden', overflowX: 'auto' }}
             // @ts-ignore
             ref={scrollView}
-            scrollEventThrottle={16}
-            onScroll={(e) => {
+            onScroll={(e: any) => {
+              console.log('scrollin', scrollLock)
               if (scrollLock === 'animate' || scrollLock === 'shouldAnimate') {
                 return
               }
-              const scrollX = Math.max(0, e.nativeEvent.contentOffset.x)
+              const scrollX = Math.max(0, e.target.scrollLeft)
               const itemI = Math.min(Math.floor(scrollX / (width + 30)), themeCombos.length - 1)
               const [n1, n2] = flatToSplit(itemI)
               const [c1, c2] = activeI
@@ -307,8 +304,6 @@ export function HeroExampleThemes() {
             <XStack
               ai="center"
               jc="center"
-              // x={offsetX}
-              // className="transition-test"
               space="$6"
               pos="relative"
               px={`calc(50vw + 30px)`}
@@ -316,7 +311,7 @@ export function HeroExampleThemes() {
             >
               {scrollContents}
             </XStack>
-          </ScrollView>
+          </XStack>
 
           <YStack pe="none" fullscreen ai="center" jc="center" $sm={{ scale: 0.85 }}>
             <Theme name={colorName}>
@@ -346,13 +341,37 @@ const Bottom = memo(() => {
 
   return (
     <ContainerLarge space="$3" position="relative">
-      <YStack mt="$3" ai="center" als="center" maxWidth={480} space="$2">
+      <YStack ai="center" als="center" maxWidth={480} space="$2">
         <Link href="/docs/intro/themes" passHref>
           <Button theme={tint} tag="a">
-            Learn how themes work &raquo;
+            How themes work &raquo;
           </Button>
         </Link>
       </YStack>
     </ContainerLarge>
   )
 })
+
+// const onScroll = useMemo(
+//   () =>
+//     throttle(
+//       ({ percent }) => {
+//         if (getLock() !== null) return
+//         const node = scrollView.current
+//         if (!node) return
+//         const x = 20 * percent
+//         // @ts-ignore
+//         node.scrollTo(0, x, false)
+//       },
+//       10,
+//       {
+//         leading: true,
+//       }
+//     ),
+//   []
+// )
+
+// useScrollPosition({
+//   ref: scrollView,
+//   onScroll,
+// })

@@ -1,12 +1,23 @@
 import { FastForward } from '@tamagui/feather-icons'
 import { memo, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, H2, H3, InteractiveContainer, Paragraph, Theme, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H2,
+  H3,
+  InteractiveContainer,
+  Paragraph,
+  Theme,
+  ThemeReset,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { CodeInline } from './Code'
 import { CodeDemo } from './CodeDemo'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
+import { HomeH2, HomeH3 } from './HomeH2'
 import { IconStack } from './IconStack'
 
 export function HeroExampleCode() {
@@ -18,10 +29,8 @@ export function HeroExampleCode() {
     <ContainerLarge position="relative">
       <YStack zi={1} space="$5">
         <YStack space="$2">
-          <H2 als="center">Next-generation compiler</H2>
-          <H3 ta="center" theme="alt2" als="center" fow="400">
-            Faster runtime 🤝 less code 🤝 more platforms
-          </H3>
+          <HomeH2>Next-generation compiler</HomeH2>
+          <HomeH3>Faster runtime 🤝 less code 🤝 more platforms</HomeH3>
         </YStack>
 
         <InteractiveContainer maxWidth="100%" als="center">
@@ -54,8 +63,8 @@ export function HeroExampleCode() {
               <CodeExamples {...activeExample.input} />
             </YStack>
             <YStack $sm={{ display: 'none' }} mx={-30} zIndex={1000}>
-              <IconStack p="$3" theme="blue" mb={0}>
-                <FastForward size={18} />
+              <IconStack p="$3" mb={0}>
+                <FastForward color="var(--colorHover)" size={18} />
               </IconStack>
             </YStack>
             <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
@@ -79,20 +88,22 @@ const CodeExamples = memo(({ examples }: any) => {
 
   return (
     <YStack overflow="hidden" flex={1}>
-      <InteractiveContainer zi={10} mb={-30} als="center">
-        {examples.map((example, i) => (
-          <Button
-            onPress={() => setActiveIndex(i)}
-            theme={i === activeIndex ? null : 'alt2'}
-            size="$3"
-            key={i}
-            borderRadius="$0"
-            fontWeight={i === activeIndex ? '700' : '400'}
-          >
-            {example.name}
-          </Button>
-        ))}
-      </InteractiveContainer>
+      <ThemeReset>
+        <InteractiveContainer zi={10} mb={-30} als="center">
+          {examples.map((example, i) => (
+            <Button
+              onPress={() => setActiveIndex(i)}
+              theme={i === activeIndex ? null : 'alt2'}
+              size="$3"
+              key={i}
+              borderRadius="$0"
+              fontWeight={i === activeIndex ? '700' : '400'}
+            >
+              {example.name}
+            </Button>
+          ))}
+        </InteractiveContainer>
+      </ThemeReset>
       <XStack maxWidth="100%" flex={1}>
         <YStack flex={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemo
@@ -267,7 +278,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
     name: 'Media',
     input: {
       description:
-        'Psuedo states styling and media queries extract at compile-time, but fallback gracefully at runtime.',
+        'Psuedo and media query styles extract at compile-time, fallback gracefully at runtime.',
       examples: [
         {
           name: 'app.tsx',

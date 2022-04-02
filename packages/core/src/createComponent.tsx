@@ -5,6 +5,7 @@ import React, {
   Fragment,
   createElement,
   forwardRef,
+  memo,
   useCallback,
   useContext,
   useEffect,
@@ -575,7 +576,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     ...staticConfig,
   }
 
-  const res = component as any as StaticComponent<ComponentPropTypes, void, Ref>
+  let res: StaticComponent<ComponentPropTypes, void, Ref> = component as any
+
+  if (configIn.memo) {
+    res = memo(res) as any
+  }
 
   // res.extractable HoC
   res['extractable'] = (Component: any, conf?: StaticConfig) => {
@@ -597,6 +602,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 // keep inline to avoid circular deps
 
 export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: boolean | number }>({
+  memo: true,
   defaultProps: {
     ...stackDefaultStyles,
     size: true,

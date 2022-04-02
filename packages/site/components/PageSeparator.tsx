@@ -2,8 +2,7 @@ import { YStack } from 'tamagui'
 
 export const PageSeparator = () => (
   <YStack
-    mt="$4"
-    mb="$2"
+    mt="$3"
     mx="auto"
     als="center"
     borderBottomColor="$borderColor"

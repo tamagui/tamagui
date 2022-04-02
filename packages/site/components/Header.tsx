@@ -22,9 +22,13 @@ export function Header({ floating }: { floating?: boolean }) {
       p="relative"
       zi={1}
     >
-      <YStack cursor="pointer" tag="a" my={-20}>
-        <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
-      </YStack>
+      <XStack ai="center" space="$4">
+        <YStack cursor="pointer" tag="a" my={-20}>
+          <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
+        </YStack>
+
+        {!floating && <AlphaButton />}
+      </XStack>
 
       <XStack
         position="absolute"
@@ -72,17 +76,6 @@ export function Header({ floating }: { floating?: boolean }) {
             >
               Blog
             </Paragraph>
-          </NextLink>
-
-          {!floating && <AlphaButton />}
-
-          <NextLink href="https://github.com/tamagui/tamagui" passHref>
-            <YStack px="$3" opacity={0.6} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
-              <VisuallyHidden>
-                <Text>Github</Text>
-              </VisuallyHidden>
-              <GithubIcon width={22} />
-            </YStack>
           </NextLink>
 
           <Spacer size="$2" />

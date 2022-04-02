@@ -1,9 +1,9 @@
 ---
 title: Configuration
-description: Set up custom themes, tokens, shorthands, and media queries.
+description: Custom themes, tokens, shorthands, and media queries.
 ---
 
-You'll want to create a `tamagui.config.ts` in the root of your application code that sets up your design system properties.
+Create a `tamagui.config.ts` in the root of your application code that sets up your design system properties.
 
 ## Overview
 
@@ -308,9 +308,9 @@ For more full docs on media queries, see the [useMedia docs page](/docs/core/use
 
 ### Shorthands
 
-Shorthands are defined directly on your `createTamagui` call, rather than being attached to each component. The reason for this is that it de-couples shorthands from components - it forces component kits to standardize on the basic react-native style syntax, and lets the _user_ of the component kit decide their own "utility shorthands" as they see fit. We think this is a natural model.
+Shorthands are defined directly on your `createTamagui` call, rather than being attached to each component, to de-couple shorthands from components. This forces component kits to standardize on the basic react-native style syntax and ensures there's only one set of abbreviations defined ever.
 
-Here's an example of a complete shorthands configuration:
+Here's an example of a partial shorthands configuration:
 
 ```jsx
 const shorthands = {
@@ -324,36 +324,12 @@ const shorthands = {
   btlr: 'borderTopLeftRadius',
   btrr: 'borderTopRightRadius',
   f: 'flex',
-  fb: 'flexBasis',
-  fd: 'flexDirection',
-  fg: 'flexGrow',
-  fs: 'flexShrink',
-  fw: 'flexWrap',
-  h: 'height',
-  jc: 'justifyContent',
-  m: 'margin',
-  mb: 'marginBottom',
-  ml: 'marginLeft',
-  mr: 'marginRight',
-  mt: 'marginTop',
-  mx: 'marginHorizontal',
-  my: 'marginVertical',
-  p: 'padding',
-  pb: 'paddingBottom',
-  pe: 'pointerEvents',
-  pl: 'paddingLeft',
-  pr: 'paddingRight',
-  pt: 'paddingTop',
-  px: 'paddingHorizontal',
-  py: 'paddingVertical',
-  w: 'width',
-  zi: 'zIndex',
-  lh: 'lineHeight',
-  ta: 'textAlign',
-  fos: 'fontSize',
+  // ...
 } as const
 
 export default createTamagui({
   shorthands
 })
 ```
+
+For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.ts)
