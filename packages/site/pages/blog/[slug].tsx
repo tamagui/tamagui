@@ -1,5 +1,5 @@
 import { Container } from '@components/Container'
-import { Header } from '@components/Header'
+import { HeaderIndependent } from '@components/Header'
 import { components } from '@components/MDXComponents'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
@@ -9,7 +9,7 @@ import { format, parseISO } from 'date-fns'
 import { getMDXComponent } from 'mdx-bundler/client'
 import NextLink from 'next/link'
 import React from 'react'
-import { Button, H1, H2, H3, H6, Paragraph, Separator, Text, Theme, XStack, YStack } from 'tamagui'
+import { Button, H1, H2, H3, H6, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { Link } from '../../components/Link'
 import { Frontmatter } from '../../frontmatter'
@@ -34,7 +34,7 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
   return (
     <>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui`} poster={frontmatter.poster} />
-      <Header />
+      <HeaderIndependent disableNew />
 
       <Container>
         <YStack ai="flex-start">
@@ -45,6 +45,7 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
               tag="a"
               space="$2"
               ml="$-6"
+              theme="alt1"
             >
               Blog
             </Button>

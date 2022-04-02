@@ -27,10 +27,10 @@ export function HeroExampleCode() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack zi={1} space="$5">
-        <YStack space="$2">
-          <HomeH2>Next-generation compiler</HomeH2>
-          <HomeH3>Faster runtime 🤝 less code 🤝 more platforms</HomeH3>
+      <YStack zi={1} space="$4">
+        <YStack space="$1">
+          <HomeH2>DX, meet UX</HomeH2>
+          <HomeH3>Faster runtime 🤝 less code 🤝 more platforms.</HomeH3>
         </YStack>
 
         <InteractiveContainer maxWidth="100%" als="center">
@@ -54,26 +54,38 @@ export function HeroExampleCode() {
         <Theme name={tint}>
           <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
             <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$6">
+              <CodeExamples {...activeExample.input} />
               <Paragraph minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Input</CodeInline>
-                &nbsp;－&nbsp;
-                {activeExample.input.description}
+                <span style={{ opacity: 0.65 }}>
+                  &nbsp;－&nbsp;{activeExample.input.description}
+                </span>
               </Paragraph>
-
-              <CodeExamples {...activeExample.input} />
             </YStack>
-            <YStack $sm={{ display: 'none' }} mx={-30} zIndex={1000}>
-              <IconStack p="$3" mb={0}>
+            <YStack
+              $sm={{ display: 'none' }}
+              pos="absolute"
+              left={0}
+              right={0}
+              ai="center"
+              jc="center"
+              bottom={0}
+              mx={-30}
+              zIndex={1000}
+              pe="none"
+            >
+              <IconStack als="center" p="$3" mb={0}>
                 <FastForward color="var(--colorHover)" size={18} />
               </IconStack>
             </YStack>
             <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
+              <CodeExamples {...activeExample.output} />
               <Paragraph minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Output</CodeInline>
-                &nbsp;－&nbsp;
-                {activeExample.output.description}
+                <span style={{ opacity: 0.65 }}>
+                  &nbsp;－&nbsp;{activeExample.output.description}
+                </span>
               </Paragraph>
-              <CodeExamples {...activeExample.output} />
             </YStack>
           </XStack>
         </Theme>
@@ -88,7 +100,7 @@ const CodeExamples = memo(({ examples }: any) => {
 
   return (
     <YStack overflow="hidden" flex={1}>
-      <ThemeReset>
+      <>
         <InteractiveContainer zi={10} mb={-30} als="center">
           {examples.map((example, i) => (
             <Button
@@ -97,13 +109,16 @@ const CodeExamples = memo(({ examples }: any) => {
               size="$3"
               key={i}
               borderRadius="$0"
-              fontWeight={i === activeIndex ? '700' : '400'}
+              // fontWeight={i === activeIndex ? '700' : '400'}
+              {...(i === activeIndex && {
+                active: true,
+              })}
             >
               {example.name}
             </Button>
           ))}
         </InteractiveContainer>
-      </ThemeReset>
+      </>
       <XStack maxWidth="100%" flex={1}>
         <YStack flex={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemo

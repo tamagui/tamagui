@@ -1,9 +1,8 @@
-import { Header } from '@components/Header'
+import { HeaderIndependent } from '@components/Header'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
-import React from 'react'
 import { H1, H2, H3, Paragraph, ThemeReset, XStack, YStack } from 'tamagui'
 
 import { Container } from '../../components/Container'
@@ -13,7 +12,7 @@ export default function Blog({ frontmatters }) {
   return (
     <>
       <TitleAndMetaTags title="Blog — Tamagui" description="What's up with Tamagui." />
-      <Header />
+      <HeaderIndependent />
       <Container>
         <YStack space="$4" ai="center">
           <H1 size="$9" letterSpacing={-1} mb={-15}>

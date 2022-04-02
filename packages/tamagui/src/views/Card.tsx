@@ -9,7 +9,7 @@ import { getSizedElevation } from './Stacks'
 React['createElement']
 
 export const Card = styled(SizableStack, {
-  name: 'card',
+  name: 'Card',
   alignItems: 'flex-start',
   flexDirection: 'column',
   backgroundColor: '$background',
@@ -17,6 +17,8 @@ export const Card = styled(SizableStack, {
 
   variants: {
     size: {
+      // TODO add `elevated` boolean
+      // + elevatedHover ?
       '...size': (size, extras) => {
         const { tokens, theme } = extras
         const token = tokens.size[size]

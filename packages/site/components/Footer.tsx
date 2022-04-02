@@ -1,19 +1,14 @@
 import { TamaguiLogo } from '@components/TamaguiLogo'
-import React from 'react'
-import { H4, Paragraph, Separator, Text, XStack, YStack } from 'tamagui'
+import { H4, Paragraph, Text, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { ExternalIcon } from './ExternalIcon'
 import { Link } from './Link'
-import { PageSeparator } from './PageSeparator'
 
 export const Footer = () => {
   return (
     <ContainerLarge>
-      <YStack mt="$4" justifyContent="center">
-        <PageSeparator />
-      </YStack>
-      <XStack py="$8" $sm={{ flexDirection: 'column', ai: 'center' }}>
+      <XStack py="$10" $sm={{ flexDirection: 'column', ai: 'center' }}>
         <YStack
           $sm={{ ai: 'center' }}
           py="$5"

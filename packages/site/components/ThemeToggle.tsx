@@ -1,6 +1,5 @@
 import { useTheme } from '@components/NextTheme'
-import { Moon } from '@tamagui/feather-icons'
-import React from 'react'
+import { memo } from 'react'
 import { Button, ButtonProps } from 'tamagui'
 
 export const ThemeToggle = (props: ButtonProps) => {
@@ -17,7 +16,7 @@ export const ThemeToggle = (props: ButtonProps) => {
   )
 }
 
-const SunIcon = () => (
+const SunIcon = memo(() => (
   <svg
     style={{ marginBottom: -1 }}
     xmlns="http://www.w3.org/2000/svg"
@@ -64,4 +63,4 @@ const SunIcon = () => (
       fill="var(--colorHover)"
     />
   </svg>
-)
+))

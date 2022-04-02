@@ -1,11 +1,12 @@
 import { Play } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
   H2,
   H3,
+  H4,
   Paragraph,
   Separator,
   Square,
@@ -16,6 +17,7 @@ import {
 } from 'tamagui'
 
 import { animations } from '../constants/animations'
+import { Card } from './Card'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
@@ -63,55 +65,105 @@ const animationDescriptions = [
   },
 ] as const
 
+let hasScrolledOnce = false
+
 export function HeroExampleAnimations() {
   const [animationI, setAnimationI] = useState(0)
-  const [positionI, setPositionI] = useState(0)
+  const [positionI, setPositionI] = useState(2)
   const position = positions[positionI]
   const animation = animationDescriptions[animationI]
   const { tint } = useTint()
-  const next = () => {
-    setPositionI((x) => (x + 1) % positions.length)
+  const next = (to = 1) => {
+    setPositionI((x) => (x + to) % positions.length)
   }
+  const container = useRef(null)
 
   const settings = Object.entries(animation.settings)
+
+  useEffect(() => {
+    const node = container.current
+    if (!node) return
+    // only when carousel is fully in viewport
+    let dispose: Function | null = null
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        next()
+      }
+      if (e.key === 'ArrowLeft') {
+        next(-1)
+      }
+    }
+
+    const io = new IntersectionObserver(
+      ([{ isIntersecting }]) => {
+        if (isIntersecting) {
+          if (!hasScrolledOnce) {
+            hasScrolledOnce = true
+            // dont rush
+            setTimeout(() => {
+              next()
+            }, 400)
+          }
+          window.addEventListener('keydown', onKey)
+          dispose = () => {
+            window.removeEventListener('keydown', onKey)
+          }
+        } else {
+          dispose?.()
+        }
+      },
+      {
+        threshold: 1,
+      }
+    )
+
+    io.observe(node)
+
+    return () => {
+      dispose?.()
+      io.disconnect()
+    }
+  }, [container.current])
 
   return (
     <YStack>
       <ContainerLarge position="relative" space="$6">
-        <YStack zi={1} space="$2">
+        <YStack zi={1} space="$1">
           <HomeH2>First-class animations</HomeH2>
-          <HomeH3>Plug-and-play drivers for every platform</HomeH3>
+          <HomeH3>Plug-and-play drivers for every platform.</HomeH3>
         </YStack>
 
         <XStack
           bw={1}
           boc="$borderColor"
           w="100%"
-          theme="alt1"
           br="$6"
           ov="hidden"
           bc="$background"
-          h={320}
+          h={305}
           mw={880}
           als="center"
           x={0}
         >
           <Theme name={tint}>
             <YStack
+              ref={container}
               pos="relative"
-              className="hero-gradient"
+              // className="hero-gradient"
               ai="center"
               jc="center"
               width="60%"
               $sm={{ width: '100%' }}
             >
               <Square
+                className=""
                 animation={animation.animation}
                 elevation="$4"
                 size={110}
                 bc="$color"
                 br="$9"
-                onPress={next}
+                onPress={() => next()}
                 {...position}
               >
                 <ThemeReset>
@@ -123,10 +175,11 @@ export function HeroExampleAnimations() {
                 pos="absolute"
                 bottom={20}
                 right={20}
+                circular
                 iconAfter={Play}
                 theme={tint}
                 size="$6"
-                onPress={next}
+                onPress={() => next()}
               />
             </YStack>
           </Theme>
@@ -144,6 +197,7 @@ export function HeroExampleAnimations() {
                         bc: '$backgroundHover',
                       })}
                       px="$4"
+                      bc="$background"
                       py="$2"
                       cursor="pointer"
                       hoverStyle={{
@@ -168,7 +222,7 @@ export function HeroExampleAnimations() {
 
             <Separator />
 
-            <XStack p="$4" ai="center" jc="center">
+            <XStack theme="alt1" bc="$background" p="$4" ai="center" jc="center">
               {settings.map(([key, value], i) => {
                 return (
                   <React.Fragment key={key}>
@@ -186,11 +240,21 @@ export function HeroExampleAnimations() {
           </YStack>
         </XStack>
 
-        <Link href="/docs/core/animations" passHref>
-          <Button als="center" theme={tint} tag="a">
-            Animations docs &raquo;
+        <XStack als="center" space="$1">
+          <Button theme={tint} tag="a">
+            CSS &raquo;
           </Button>
-        </Link>
+          <Button theme={tint} tag="a">
+            Reanimated &raquo;
+          </Button>
+          <Button theme={tint} tag="a">
+            Motion &raquo;
+          </Button>
+
+          <Link href="/docs/core/animations" passHref>
+            <Button tag="a">Animations docs &raquo;</Button>
+          </Link>
+        </XStack>
       </ContainerLarge>
     </YStack>
   )

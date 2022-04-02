@@ -41,6 +41,16 @@ const ButtonFrame = styled(SizableStack, {
   pressable: true,
 
   variants: {
+    active: {
+      true: {
+        // avoids hover styles when active
+        // TODO not working?
+        hoverStyle: {
+          backgroundColor: '$background',
+        },
+      },
+    },
+
     circular: {
       true: (_, { props, tokens }) => {
         const sizeVal = props['size'] ?? '$4'
@@ -80,7 +90,20 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           ...rest
         } = props as ButtonProps
         const theme = useTheme()
-        const color = (colorProp || theme?.color)?.toString()
+
+        // get color from prop or theme
+        let color: any
+        // @ts-expect-error
+        if (theme && colorProp && colorProp in theme) {
+          // @ts-expect-error
+          color = theme[colorProp]
+        } else if (colorProp) {
+          color = colorProp
+        } else {
+          color = theme?.color
+        }
+        color = color?.toString()
+
         const addTheme = (el: any) => {
           if (isValidElement(el)) {
             return el

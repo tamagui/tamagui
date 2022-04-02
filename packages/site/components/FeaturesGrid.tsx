@@ -1,13 +1,9 @@
-import React from 'react'
-import { Grid, H2, H4, Paragraph, YStack } from 'tamagui'
-
-import { Features } from './Features'
-import { Highlights } from './Highlights'
+import { Grid, H4, Paragraph, YStack } from 'tamagui'
 
 export function FeaturesGrid() {
   return (
     <YStack maxWidth={790} mx="auto" space="$3">
-      <YStack pt="$6">
+      <YStack>
         <Grid gap={25} itemMinWidth={250}>
           <YStack padding="$4" space>
             <H4 fontFamily="$body">Ultra-modern design system</H4>

@@ -74,6 +74,7 @@ export default function App(props: AppProps) {
 function ContentInner({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const isDocs = router.pathname.includes('/docs')
+  const isDemo = router.pathname.includes('/responsive-demo')
   return (
     <YStack>
       {isDocs ? (
@@ -83,7 +84,7 @@ function ContentInner({ Component, pageProps }: AppProps) {
       ) : (
         <Component {...pageProps} />
       )}
-      {!isDocs && <Footer />}
+      {!isDocs && !isDemo && <Footer />}
     </YStack>
   )
 }

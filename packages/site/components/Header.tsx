@@ -1,14 +1,25 @@
 import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
 import NextLink from 'next/link'
-import React from 'react'
-import { Paragraph, Spacer, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import { Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { useTint } from './ColorToggleButton'
-import { GithubIcon } from './GithubIcon'
+import { ContainerLarge } from './Container'
+import { HeaderFloating } from './HeaderFloating'
 
-export function Header({ floating }: { floating?: boolean }) {
+export const HeaderIndependent = ({ disableNew }: { disableNew?: boolean }) => {
+  return (
+    <>
+      <ContainerLarge>
+        <Header disableNew={disableNew} />
+      </ContainerLarge>
+      <HeaderFloating disableNew={disableNew} />
+    </>
+  )
+}
+
+export function Header({ floating, disableNew }: { floating?: boolean; disableNew?: boolean }) {
   const { setNextTint } = useTint()
 
   return (
@@ -17,7 +28,6 @@ export function Header({ floating }: { floating?: boolean }) {
       position="relative"
       tag="header"
       py={floating ? 0 : '$2'}
-      px="$4"
       jc="space-between"
       p="relative"
       zi={1}
@@ -27,7 +37,7 @@ export function Header({ floating }: { floating?: boolean }) {
           <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
         </YStack>
 
-        {!floating && <AlphaButton />}
+        {!disableNew && <AlphaButton />}
       </XStack>
 
       <XStack

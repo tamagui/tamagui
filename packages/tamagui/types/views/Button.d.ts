@@ -516,7 +516,8 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}>>, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "circular"> & {
+}>>, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "active" | "circular"> & {
+    active?: boolean | undefined;
     circular?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;
@@ -1019,6 +1020,7 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>> & {
+    active?: boolean | undefined;
     circular?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;
@@ -1521,6 +1523,7 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>> & {
+    active?: boolean | undefined;
     circular?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;
@@ -2023,6 +2026,7 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>> & {
+    active?: boolean | undefined;
     circular?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;
@@ -2525,6 +2529,7 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>> & {
+    active?: boolean | undefined;
     circular?: boolean | undefined;
 }>>, void, any, import("@tamagui/core").StaticConfigParsed>;
 export declare const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>>;
