@@ -1,13 +1,14 @@
 import { isVariable, styled } from '@tamagui/core'
 import React from 'react'
 
-import { SizableFrame, getSize } from './SizableFrame'
+import { getSize } from '../helpers/getSize'
+import { SizableStack } from './SizableStack'
 import { getSizedElevation } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-export const Card = styled(SizableFrame, {
+export const Card = styled(SizableStack, {
   name: 'card',
   alignItems: 'flex-start',
   flexDirection: 'column',

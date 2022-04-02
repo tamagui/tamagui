@@ -1,17 +1,11 @@
-import { GetProps, VariantSpreadExtras } from '@tamagui/core';
-export declare const getSize: (sizeX?: number, sizeY?: number) => (val: any, { tokens, props }: VariantSpreadExtras<any>) => {
+import { GetProps } from '@tamagui/core';
+export declare const getButtonSize: (val: any, { tokens, props }: import("@tamagui/core").VariantSpreadExtras<any>) => {
     minHeight: any;
     paddingHorizontal: number;
     paddingVertical: number;
     borderRadius: import("@tamagui/core").VariableVal;
 };
-export declare const getButtonSize: (val: any, { tokens, props }: VariantSpreadExtras<any>) => {
-    minHeight: any;
-    paddingHorizontal: number;
-    paddingVertical: number;
-    borderRadius: import("@tamagui/core").VariableVal;
-};
-export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
+export declare const SizableStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
 } & import("@tamagui/core").MediaProps<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>> & {
@@ -512,5 +506,5 @@ export declare const SizableFrame: import("@tamagui/core").StaticComponent<Omit<
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>>, void, any, import("@tamagui/core").StaticConfigParsed>;
-export declare type SizableFrameProps = GetProps<typeof SizableFrame>;
-//# sourceMappingURL=SizableFrame.d.ts.map
+export declare type SizableFrameProps = GetProps<typeof SizableStack>;
+//# sourceMappingURL=SizableStack.d.ts.map

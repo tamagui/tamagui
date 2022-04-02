@@ -1,20 +1,4 @@
 import { GetProps } from '@tamagui/core';
-export declare const sizableTextSizeVariant: (val: string | undefined, { tokens, props }: {
-    tokens: any;
-    props: any;
-}) => {
-    fontFamily?: undefined;
-    fontWeight?: undefined;
-    letterSpacing?: undefined;
-    fontSize?: undefined;
-    lineHeight?: undefined;
-} | {
-    fontFamily: any;
-    fontWeight: any;
-    letterSpacing: any;
-    fontSize: any;
-    lineHeight: any;
-};
 export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | "size" | keyof import("@tamagui/core").PseudoProps<any>> & {
     size?: import("@tamagui/core").SizeTokens | null | undefined;
 } & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {

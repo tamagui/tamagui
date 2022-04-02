@@ -12,7 +12,7 @@ import React, { FunctionComponent, forwardRef, isValidElement } from 'react'
 import { View } from 'react-native'
 
 import { getFontSize } from '../helpers/getFontSize'
-import { SizableFrame } from './SizableFrame'
+import { SizableStack } from './SizableStack'
 import { SizableText, SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
@@ -32,10 +32,11 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     iconAfter?: IconProp
   }
 
-const ButtonFrame = styled(SizableFrame, {
+const ButtonFrame = styled(SizableStack, {
   name: 'Button',
   tag: 'button',
   borderWidth: 0,
+  borderColor: '$borderColor',
   hoverable: true,
   pressable: true,
 
@@ -81,14 +82,18 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
         const theme = useTheme()
         const color = (colorProp || theme?.color)?.toString()
         const addTheme = (el: any) => {
-          return isValidElement(el)
-            ? el
-            : !!el
-            ? React.createElement(el, {
-                color,
-                size: getFontSize(size, { relativeSize: -1 + scaleIcon }),
-              })
-            : null
+          if (isValidElement(el)) {
+            return el
+          }
+          if (el) {
+            const iconSize = getFontSize(size, { relativeSize: -1 + scaleIcon })
+            if (props['debug']) console.log('iconSize', iconSize, size)
+            return React.createElement(el, {
+              color,
+              size: iconSize,
+            })
+          }
+          return el
         }
         const themedIcon = icon ? addTheme(icon) : null
         const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
