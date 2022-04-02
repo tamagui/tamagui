@@ -1,42 +1,12 @@
+- make sure @tamagui/core doesn't require theme keys exactly
+
+- styled() fix types with react native web
+  - fix not needing `isText`, `isInput`, `isReactNativeWeb`
+
 - document $body being default font family
 - document injectCSS, mediaQueryDefaultActive, cssStyleSeparator, maxDarkLightNesting
 
-IF first level is dark/light
-  at each second level theme
-ELSE
-  at each first level theme
-DO
-  add a ._tr (theme reset) className in DOM
-
-THEN do styles like this:
-
-.tui_orange.tui_Button,
-.tui_orange .tui_Button,
-._tr .tui_orange.tui_Button,
-._tr .tui_orange .tui_Button,
-._tr ._tr .tui_orange.tui_Button,
-._tr ._tr .tui_orange .tui_Button,
-._tr ._tr ._tr .tui_orange.tui_Button,
-._tr ._tr ._tr .tui_orange .tui_Button {
-
-}
-
-that should let us do component themes without changing at runtime and then the only override we need is adding a few levels of theme-reset
-
-for alts, same way:
-
-.tui_orange_alt2.tui_Button,
-.tui_orange_alt2 .tui_Button,
-._tr .tui_orange_alt2.tui_Button,
-._tr .tui_orange_alt2 .tui_Button,
-._tr ._tr .tui_orange_alt2.tui_Button,
-._tr ._tr .tui_orange_alt2 .tui_Button,
-._tr ._tr ._tr .tui_orange_alt2.tui_Button,
-._tr ._tr ._tr .tui_orange_alt2 .tui_Button {
-
-}
-
-so yes *every* child <Theme /> of any <Theme /> has to re-render the whole every time a theme name changes. BUT this is ok because:
+- toggle/switch
 
 - note in starter kit adding react-native at version 0 + latest @types/react-native gives autocomplete
 
@@ -53,7 +23,7 @@ so yes *every* child <Theme /> of any <Theme /> has to re-render the whole every
   - all classnames: Tamagui.classes['_borderBottomColor-1go1dts'] => style
 - // TODO fix variant merge type
 - OmitShorthands<> helper (see ActiveCirlce in site)
-- toggle/switch, tabs, label, togglegroup
+
 - useTheme in createComponent could be in a feature save a ton of render perf
 - document fullscreen elevation onHoverIn onHoverOut onPress etc
 - fix types on color, not showing all
@@ -64,6 +34,8 @@ so yes *every* child <Theme /> of any <Theme /> has to re-render the whole every
 - tell b about "strict tokens"
 - split fonts into packages
 - document ThemeReverse
+
+- tabs, label, togglegroup
 
 - test component theme + alt theme (plus with compiled)
 

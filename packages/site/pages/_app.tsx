@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import React, { useMemo, useState } from 'react'
 import { PopoverProvider, SafeAreaProvider, YStack } from 'tamagui'
 
+import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
 
 globalThis['React'] = React
@@ -38,11 +39,13 @@ export default function App(props: AppProps) {
 
   const contents = useMemo(() => {
     return (
-      <SafeAreaProvider>
-        <PopoverProvider>
-          <ContentInner {...props} />
-        </PopoverProvider>
-      </SafeAreaProvider>
+      <SearchProvider>
+        <SafeAreaProvider>
+          <PopoverProvider>
+            <ContentInner {...props} />
+          </PopoverProvider>
+        </SafeAreaProvider>
+      </SearchProvider>
     )
   }, [props])
 

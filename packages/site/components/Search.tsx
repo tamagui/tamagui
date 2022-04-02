@@ -1,18 +1,19 @@
 import { DocSearchModal } from '@docsearch/react'
+import { ArrowRight, Compass, Cpu, Layers, Search as SearchIcon } from '@tamagui/feather-icons'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Button, Paragraph } from 'tamagui'
+import { Button, ButtonProps, Paragraph } from 'tamagui'
 
 const SearchContext = createContext<any>(null)
 
 const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
 const ACTION_KEY_APPLE = ['⌘', 'Command']
-const INDEX = ''
-const API_KEY = ''
-const APP_ID = ''
+const API_KEY = '701b99fa55d34c0875a49ec724bc8c6f'
+const APP_ID = 'AIE0I4P8ZS'
+const INDEX = 'tamagui'
 
 export function SearchProvider({ children }) {
   const router = useRouter()
@@ -115,7 +116,7 @@ const ResultItem = ({ hit, children }) => {
   )
 }
 
-export const SearchButton = ({ children, ...props }) => {
+export const SearchButton = (props: ButtonProps) => {
   const actionKey = useActionKey()
   const { onOpen, onInput } = useContext(SearchContext)
   const ref = useRef()
@@ -137,9 +138,20 @@ export const SearchButton = ({ children, ...props }) => {
   }, [onInput, ref])
 
   return (
-    <Button ref={ref as any} onClick={onOpen} {...props}>
-      {typeof children === 'function' ? children({ actionKey }) : children}
-    </Button>
+    <Button
+      ref={ref as any}
+      onClick={onOpen}
+      className="all ease-in ms400"
+      jc="flex-start"
+      borderWidth={1}
+      borderRadius={1000}
+      icon={SearchIcon}
+      elevation="$1"
+      hoverStyle={{
+        elevation: '$4',
+      }}
+      {...props}
+    />
   )
 }
 
