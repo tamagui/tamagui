@@ -1,8 +1,8 @@
 import { GetProps, styled } from '@tamagui/core'
 
-import { SizableFrame } from './SizableFrame'
+import { SizableStack } from './SizableStack'
 
-export const Square = styled(SizableFrame, {
+export const Square = styled(SizableStack, {
   borderRadius: '$0',
   alignItems: 'center',
   justifyContent: 'center',

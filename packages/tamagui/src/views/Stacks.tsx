@@ -19,6 +19,7 @@ export const YStack = styled(Stack, {
         const { tokens } = extras
         const token = tokens.size[size]
         const sizeNum = isVariable(token) ? +token.val : size
+        // TODO this could be configurable with require('tamagui').configure({ elevation: () => {} })
         return getSizedElevation(sizeNum, extras)
       },
     },

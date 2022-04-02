@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
 import { Paragraph } from './Paragraph'
-import { SizableFrame } from './SizableFrame'
+import { SizableStack } from './SizableStack'
 import { SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
@@ -17,7 +17,7 @@ export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
   showArrow?: boolean
 }
 
-const TooltipFrame = styled(SizableFrame, {
+const TooltipFrame = styled(SizableStack, {
   name: 'Tooltip',
   borderWidth: 0,
 })
