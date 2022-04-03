@@ -1,3 +1,5 @@
+- can move to react 18 only one release after beta and move to use react.useId and react.insertioneffect
+
 - write a "how the compiler works" blog post
 
 - document excludeReactNativeWebExports for regular webpack and recommend excluding Animated etc

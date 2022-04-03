@@ -2,7 +2,11 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
 import { useRef, useState } from 'react'
 import { LayoutChangeEvent, LayoutRectangle } from 'react-native'
 
-export const useLayout = (props: { stateless?: boolean; onLayout?: (rect: LayoutChangeEvent) => void } = {}) => {
+// TODO move to core and make it able to be run as feature (check this is same as rnw useLayout)
+
+export const useLayout = (
+  props: { stateless?: boolean; onLayout?: (rect: LayoutChangeEvent) => void } = {}
+) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null)
 
   if (!isWeb) {
