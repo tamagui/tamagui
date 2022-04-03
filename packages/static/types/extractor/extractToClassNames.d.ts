@@ -1,9 +1,10 @@
 /// <reference types="node" />
 import * as t from '@babel/types';
+import { LoaderContext } from 'webpack';
 import { TamaguiOptions } from '../types';
 import { Extractor } from './createExtractor';
 export declare function extractToClassNames({ loader, extractor, source, sourcePath, options, shouldPrintDebug, threaded, cssPath, }: {
-    loader: any;
+    loader: LoaderContext<any>;
     extractor: Extractor;
     source: string | Buffer;
     sourcePath: string;

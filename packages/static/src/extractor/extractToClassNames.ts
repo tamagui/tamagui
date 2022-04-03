@@ -7,8 +7,8 @@ import * as t from '@babel/types'
 import { getStylesAtomic } from '@tamagui/core-node'
 import { concatClassName } from '@tamagui/helpers'
 import invariant from 'invariant'
-import { getRemainingRequest } from 'loader-utils'
 import { ViewStyle } from 'react-native'
+import { LoaderContext } from 'webpack'
 
 import { CONCAT_CLASSNAME_IMPORT } from '../constants'
 import { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'
@@ -39,7 +39,7 @@ export function extractToClassNames({
   threaded,
   cssPath,
 }: {
-  loader: any
+  loader: LoaderContext<any>
   extractor: Extractor
   source: string | Buffer
   sourcePath: string
@@ -303,7 +303,7 @@ export function extractToClassNames({
     const cssQuery = threaded
       ? `cssData=${Buffer.from(styles).toString('base64')}`
       : `cssPath=${cssPath}`
-    const remReq = getRemainingRequest(loader)
+    const remReq = loader.remainingRequest
     const importPath = `${cssPath}!=!tamagui-loader?${cssQuery}!${remReq}`
     ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
   }

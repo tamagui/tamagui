@@ -4,6 +4,7 @@ import {
   extractToClassNames,
   patchReactNativeWeb,
 } from '@tamagui/static'
+import { LoaderContext } from 'webpack'
 
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
@@ -17,7 +18,7 @@ let hasPatched = false
 
 process.env.TAMAGUI_TARGET = 'web'
 
-export function loader(this: any, source: string) {
+export function loader(this: LoaderContext<any>, source: string) {
   this.cacheable()
   const callback = this.async()
 
