@@ -1,15 +1,22 @@
-import { Stack, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { useIsomorphicLayoutEffect } from '@tamagui/core'
 import React, { ReactElement, useState } from 'react'
 
 import { normalizeColor } from '../helpers/normalizeColor'
 import { useLayout } from '../hooks/useLayout'
 import { NativeLinearGradientPoint, NativeLinearGradientProps } from './NativeLinearGradientProps'
+import { StackProps, YStack } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-export const LinearGradient = Stack.extractable(
-  ({ colors = [], locations, start, end, ...props }: NativeLinearGradientProps): ReactElement => {
+export const LinearGradient = YStack.extractable(
+  ({
+    colors = [],
+    locations,
+    start,
+    end,
+    ...props
+  }: NativeLinearGradientProps & StackProps): ReactElement => {
     const [gradientColors, setGradientColors] = useState<string[]>([])
     const [pseudoAngle, setPseudoAngle] = useState<number>(0)
     const layoutProps = useLayout()
@@ -40,6 +47,10 @@ export const LinearGradient = Stack.extractable(
     }, [width, height, start, end])
 
     useIsomorphicLayoutEffect(() => {
+      if (!colors.length) {
+        return
+      }
+
       const nextGradientColors = colors.map((color, index): string => {
         const hexColor = normalizeColor(color)
         let output = hexColor
@@ -57,10 +68,11 @@ export const LinearGradient = Stack.extractable(
 
     const colorStyle = gradientColors.join(',')
     const backgroundImage = `linear-gradient(${pseudoAngle}deg, ${colorStyle})`
+
     // TODO(Bacon): In the future we could consider adding `backgroundRepeat: "no-repeat"`. For more
     // browser support.
     return (
-      <Stack
+      <YStack
         {...props}
         {...layoutProps}
         // @ts-ignore

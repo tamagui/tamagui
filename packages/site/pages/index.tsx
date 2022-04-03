@@ -3,11 +3,12 @@ import { FeaturesGrid } from '@components/FeaturesGrid'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useMemo } from 'react'
-import { Spacer, Theme, ThemeReset, XStack, YStack } from 'tamagui'
+import { XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
 import { HeaderFloating } from '../components/HeaderFloating'
+import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
 import { HeroExampleCode } from '../components/HeroExampleCode'
 import { HeroExampleProps } from '../components/HeroExampleProps'
@@ -16,7 +17,7 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
-import { PageSeparator } from '../components/PageSeparator'
+import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
@@ -25,34 +26,47 @@ export default function Home() {
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating />
       <YStack>
-        <YStack space="$6">
+        <YStack>
           <Hero />
-          <ContainerLarge>
-            <XStack mt="$2" jc="center" ai="center">
+          <XStack zi={100} theme="alt1" mt={-28} ai="center" jc="center">
+            <SearchButton width={350} size="$6">
+              Search Docs...
+            </SearchButton>
+          </XStack>
+          <YStack py="$7" pb="$10">
+            <HeroBelow />
+          </YStack>
+          <ContainerLarge zi={100}>
+            <XStack mb="$-4" jc="center" ai="center">
               <ThemeTint>
                 <InstallInput />
               </ThemeTint>
             </XStack>
           </ContainerLarge>
-          <TintedYStack>
+          <SectionTinted gradient>
             <HeroExampleThemes />
-          </TintedYStack>
-          <HeroResponsive />
-          <TintedYStack>
+          </SectionTinted>
+          <Section below>
+            <HeroResponsive />
+          </Section>
+          <SectionTinted gradient>
             <HeroPerformance />
-          </TintedYStack>
-          <HeroExampleCode />
-          <TintedYStack>
+          </SectionTinted>
+          <Section>
+            <HeroExampleCode />
+          </Section>
+          <SectionTinted>
             <HeroExampleAnimations />
-          </TintedYStack>
-          <HeroTypography />
-          <TintedYStack>
+          </SectionTinted>
+          <Section>
+            <HeroTypography />
+          </Section>
+          <SectionTinted gradient>
             <HeroExampleProps />
-          </TintedYStack>
-          <FeaturesGrid />
-          <Spacer />
-          <PageSeparator />
-          <Spacer />
+          </SectionTinted>
+          <Section>
+            <FeaturesGrid />
+          </Section>
           <Community />
         </YStack>
       </YStack>
@@ -60,19 +74,31 @@ export default function Home() {
   )
 }
 
-const TintedYStack = ({ children, ...props }: any) => {
+const Section = ({ children, below }: any) => {
+  return (
+    <YStack contain="paint" pos="relative" ov="hidden" py="$12" zi={below ? 0 : 1}>
+      {children}
+    </YStack>
+  )
+}
+
+const SectionTinted = ({ children, gradient, ...props }: any) => {
   const { tint } = useTint()
   const childrenMemo = useMemo(() => children, [children])
+  const className = gradient ? `gradient-${tint}` : ''
   return (
-    <YStack pos="relative" py="$9" my="$6" {...props}>
+    <YStack contain="paint" pos="relative" py="$12" {...props}>
       <YStack
         fullscreen
+        className={className}
+        // o={0.85}
         zi={-1}
+        // @ts-ignore
         bc={`$${tint}1`}
         btw={1}
         bbw={1}
+        // @ts-ignore
         boc={`$${tint}4`}
-        opacity={0.75}
       />
       {childrenMemo}
     </YStack>

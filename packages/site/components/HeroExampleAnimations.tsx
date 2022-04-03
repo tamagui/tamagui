@@ -22,6 +22,7 @@ import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { LogoIcon } from './TamaguiLogo'
+import { useOnIntersecting } from './useOnIntersecting'
 
 const positions = [
   {
@@ -80,12 +81,7 @@ export function HeroExampleAnimations() {
 
   const settings = Object.entries(animation.settings)
 
-  useEffect(() => {
-    const node = container.current
-    if (!node) return
-    // only when carousel is fully in viewport
-    let dispose: Function | null = null
-
+  useOnIntersecting(container, ({ isIntersecting, dispose }) => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
         next()
@@ -95,36 +91,22 @@ export function HeroExampleAnimations() {
       }
     }
 
-    const io = new IntersectionObserver(
-      ([{ isIntersecting }]) => {
-        if (isIntersecting) {
-          if (!hasScrolledOnce) {
-            hasScrolledOnce = true
-            // dont rush
-            setTimeout(() => {
-              next()
-            }, 400)
-          }
-          window.addEventListener('keydown', onKey)
-          dispose = () => {
-            window.removeEventListener('keydown', onKey)
-          }
-        } else {
-          dispose?.()
-        }
-      },
-      {
-        threshold: 1,
+    if (isIntersecting) {
+      if (!hasScrolledOnce) {
+        hasScrolledOnce = true
+        // dont rush
+        setTimeout(() => {
+          next()
+        }, 400)
       }
-    )
-
-    io.observe(node)
-
-    return () => {
+      window.addEventListener('keydown', onKey)
+      return () => {
+        window.removeEventListener('keydown', onKey)
+      }
+    } else {
       dispose?.()
-      io.disconnect()
     }
-  }, [container.current])
+  })
 
   return (
     <YStack>
@@ -136,11 +118,12 @@ export function HeroExampleAnimations() {
 
         <XStack
           bw={1}
-          boc="$borderColor"
+          boc={`$${tint}5`}
+          borderStyle="dashed"
           w="100%"
           br="$6"
           ov="hidden"
-          bc="$background"
+          // bc="$background"
           h={305}
           mw={880}
           als="center"
@@ -186,7 +169,7 @@ export function HeroExampleAnimations() {
 
           <Separator vertical />
 
-          <YStack $sm={{ display: 'none' }} width="40%">
+          <YStack blw={1} boc="$background" $sm={{ display: 'none' }} width="40%">
             <ScrollView>
               {animationDescriptions.map((item, i) => {
                 const isActive = item === animation
@@ -208,10 +191,10 @@ export function HeroExampleAnimations() {
                         next()
                       }}
                     >
-                      <Paragraph cursor="inherit" size="$4" fontWeight="800">
+                      <Paragraph selectable={false} cursor="inherit" size="$4" fontWeight="800">
                         {item.name}
                       </Paragraph>
-                      <Paragraph cursor="inherit" theme="alt2">
+                      <Paragraph selectable={false} size="$3" cursor="inherit" theme="alt2">
                         {item.description}
                       </Paragraph>
                     </YStack>

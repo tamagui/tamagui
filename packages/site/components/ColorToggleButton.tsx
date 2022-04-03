@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonProps, Circle, ThemeName, ThemeProps, YStack } from 'tamagui'
+import { Button, ButtonProps, Circle, Square, ThemeName, ThemeProps, YStack, styled } from 'tamagui'
 
 const colors: ThemeName[] = ['blue', 'pink', 'green', 'red', 'orange', 'violet', 'purple']
 // no localstorage because its not important to remember and causes a flicker
@@ -47,7 +47,11 @@ export const ColorToggleButton = (props: ButtonProps) => {
       {...props}
       aria-label="toggle a light and dark color scheme"
     >
-      <YStack m={2} width={7} height={7} rotate="45deg" backgroundColor={tint} />
+      <Diamond m={2} size={7} backgroundColor={tint} />
     </Button>
   )
 }
+
+const Diamond = styled(Square, {
+  rotate: '45deg',
+})

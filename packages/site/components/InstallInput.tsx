@@ -30,7 +30,7 @@ export const InstallInput = memo(() => {
         bc: '$backgroundHover',
       }}
     >
-      <Paragraph o={0.85} ta="center" size="$6" fontWeight="500" fontFamily="$mono">
+      <Paragraph o={0.85} ta="center" size="$4" fontWeight="500" fontFamily="$mono">
         npm install tamagui
       </Paragraph>
       <Spacer size="$6" />

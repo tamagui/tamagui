@@ -2,6 +2,7 @@ export declare const shorthands: {
     readonly ac: "alignContent";
     readonly ai: "alignItems";
     readonly als: "alignSelf";
+    readonly b: "bottom";
     readonly bbc: "borderBottomColor";
     readonly bblr: "borderBottomLeftRadius";
     readonly bbrr: "borderBottomRightRadius";
@@ -29,6 +30,7 @@ export declare const shorthands: {
     readonly fw: "flexWrap";
     readonly h: "height";
     readonly jc: "justifyContent";
+    readonly l: "left";
     readonly lh: "lineHeight";
     readonly m: "margin";
     readonly mb: "marginBottom";
@@ -50,6 +52,8 @@ export declare const shorthands: {
     readonly pt: "paddingTop";
     readonly px: "paddingHorizontal";
     readonly py: "paddingVertical";
+    readonly r: "right";
+    readonly t: "top";
     readonly ta: "textAlign";
     readonly w: "width";
     readonly zi: "zIndex";

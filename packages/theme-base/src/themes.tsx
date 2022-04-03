@@ -110,10 +110,18 @@ const themeCreator =
       backgroundPress: get(backgrounds, str + darkerDir * 1),
       backgroundFocus: get(backgrounds, str + darkerDir * 2),
       backgroundTransparent: tokens.color.grayA1,
-      borderColor: isLight ? colors[8 - str] : backgrounds[2 + str],
-      borderColorHover: isLight ? colors[7 - str] : backgrounds[3 + str],
-      borderColorPress: isLight ? colors[6 - str] : backgrounds[1 + str],
-      borderColorFocus: isLight ? colors[6 - str] : backgrounds[3 + str],
+      borderColor: isLight
+        ? get(colors, 8 - str, 'borderColor')
+        : get(backgrounds, 2 + str, 'borderColor'),
+      borderColorHover: isLight
+        ? get(colors, 7 - str, 'borderColor')
+        : get(backgrounds, 3 + str, 'borderColor'),
+      borderColorPress: isLight
+        ? get(colors, 6 - str, 'borderColor')
+        : get(backgrounds, 1 + str, 'borderColor'),
+      borderColorFocus: isLight
+        ? get(colors, 6 - str, 'borderColor')
+        : get(backgrounds, 3 + str, 'borderColor'),
       color: get(colors, 0 + str, 'color'),
       colorHover: get(colors, 1 + str, 'color'),
       colorPress: get(colors, 2 + str, 'color'),
@@ -147,7 +155,7 @@ export type ColorNames = typeof colorSchemes[number]['name']
 
 export const lightGradient = [
   '#fff',
-  '#f2f2f2',
+  '#f4f4f4',
   tokens.color.gray1,
   tokens.color.gray2,
   tokens.color.gray3,

@@ -1,4 +1,6 @@
 import '@docsearch/css'
+import '@tamagui/theme-base/inter.css'
+import '@tamagui/theme-base/fira-code.css'
 
 import '../app.css'
 
