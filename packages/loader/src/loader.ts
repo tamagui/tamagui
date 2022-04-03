@@ -4,7 +4,6 @@ import {
   extractToClassNames,
   patchReactNativeWeb,
 } from '@tamagui/static'
-import { getOptions } from 'loader-utils'
 
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
@@ -29,7 +28,7 @@ export function loader(this: any, source: string) {
 
   try {
     const threaded = this.emitFile === undefined
-    const options: TamaguiOptions = { ...getOptions(this) }
+    const options: TamaguiOptions = { ...this.getOptions() }
 
     if (
       options.disableExtraction &&

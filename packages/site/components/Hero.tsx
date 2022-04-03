@@ -7,12 +7,11 @@
 //   return <H4 size="$1">Input</H4>
 // }
 
-import { ArrowRight, Compass, Cpu, Layers } from '@tamagui/feather-icons'
+import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { memo } from 'react'
 import {
   Button,
-  H3,
   Paragraph,
   Spacer,
   Text,
@@ -29,37 +28,35 @@ import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
 import { Header } from './Header'
-import { IconStack } from './IconStack'
-import { SearchButton } from './Search'
 
 export function Hero() {
   const { tint } = useTint()
 
   return (
-    <>
-      <Theme name={tint}>
-        <HeroTop />
-      </Theme>
-
-      <XStack theme="alt1" mt={-28} ai="center" jc="center">
-        <SearchButton width={350} size="$6">
-          Search Docs...
-        </SearchButton>
-      </XStack>
-
-      <Spacer size="$7" />
-
-      <ContainerLarge>
-        <HeroBelow />
-      </ContainerLarge>
-    </>
+    <Theme name={tint}>
+      <HeroTop />
+    </Theme>
   )
 }
 
 const HeroTop = memo(() => {
   return (
-    <YStack className="hero-gradient" borderBottomWidth={1} borderColor="$borderColor">
-      <ContainerLarge>
+    <YStack
+      pos="relative"
+      className="hero-gradient"
+      borderBottomWidth={1}
+      borderColor="$borderColor"
+    >
+      <ContainerLarge pos="relative">
+        <YStack
+          className="bg-grid mask-gradient-up"
+          fullscreen
+          left={-1000}
+          right={-1000}
+          top={302}
+          opacity={0.6}
+        />
+
         <Header />
 
         <YStack
@@ -75,13 +72,11 @@ const HeroTop = memo(() => {
             <Title
               size="$9"
               $gtSm={{
-                size: '$10',
+                size: '$11',
                 ta: 'center',
-                maxWidth: 700,
-                mx: '$8',
               }}
               $gtMd={{
-                size: '$11',
+                size: '$12',
                 maxWidth: 900,
                 mx: '$4',
               }}
@@ -89,7 +84,7 @@ const HeroTop = memo(() => {
               <Tooltip contents="Works the same on iOS, Android, and web">
                 <span className="rainbow clip-text help">Universal</span>
               </Tooltip>{' '}
-              React design systems made faster on native&nbsp;&&nbsp;web
+              design systems for React&nbsp;Native&nbsp;&&nbsp;Web, faster.
             </Title>
 
             <YStack
@@ -121,8 +116,8 @@ const HeroTop = memo(() => {
                   fontWeight: '400',
                 }}
               >
-                Build faster apps faster with an optimizing compiler and UI kit.
-                Better,&nbsp;simpler&nbsp;code + unmatched performance.
+                Styles + components + compiler = performance with less code.
+                Write&nbsp;once,&nbsp;run&nbsp;everywhere, incredible speed.
               </Paragraph>
             </YStack>
           </YStack>
@@ -177,80 +172,5 @@ const HeroTop = memo(() => {
         <Spacer size="$10" />
       </ContainerLarge>
     </YStack>
-  )
-})
-
-const HeroBelow = memo(() => {
-  return (
-    <XStack
-      flex={1}
-      overflow="hidden"
-      maxWidth="100%"
-      space="$8"
-      flexWrap="nowrap"
-      px="$4"
-      $sm={{ flexDirection: 'column' }}
-    >
-      <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-        <Theme name="purple_alt2">
-          <IconStack>
-            <Cpu size={18} color="var(--colorHover)" />
-          </IconStack>
-        </Theme>
-        {/* TODO why weight is removed */}
-        <H3 fontWeight="700" size="$6" mb="$2">
-          Performant
-        </H3>
-        <Paragraph size="$3" theme="alt2">
-          The fastest UI kit thanks to an advanced compiler that handles styles, media queries, CSS
-          variables, and tree&nbsp;flattening.
-        </Paragraph>
-      </YStack>
-
-      <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-        <Theme name="green_alt2">
-          <IconStack>
-            <Compass size={18} color="var(--colorHover)" />
-          </IconStack>
-        </Theme>
-        <H3 fontWeight="700" size="$6" mb="$2">
-          Easy to adopt
-        </H3>
-        <Paragraph size="$3" theme="alt2">
-          Works with React Native and{' '}
-          <Text tag="a" href="https://necolas.github.io/react-native-web/">
-            Web
-          </Text>
-          . Use it as a style library or full component kit. Comes with beautiful themes, or bring
-          your own.
-        </Paragraph>
-      </YStack>
-
-      <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
-        <Theme name="pink_alt2">
-          <IconStack>
-            <Layers size={18} color="var(--colorHover)" />
-          </IconStack>
-        </Theme>
-        <H3 fontWeight="700" size="$6" mb="$2">
-          Productive
-        </H3>
-        <Paragraph size="$3" theme="alt2">
-          Typed inline styles without performance downside. Themes, tokens, shorthands, media
-          queries, and animations that run fast.
-        </Paragraph>
-      </YStack>
-
-      {/* <YStack flexShrink={1}>
-  <IconStack>
-    <FastForward size={18} color="var(--colorHover)" />
-  </IconStack>
-  <H3 mb="$2">Native</H3>
-  <Paragraph size="$3" theme="alt2">
-    On the web Tamagui extracts styles to atomic CSS using CSS variables for themes and
-    CSS media queries - even if you use hooks. On native, it extracts StyleSheet.
-  </Paragraph>
-</YStack> */}
-    </XStack>
   )
 })

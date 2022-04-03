@@ -10,8 +10,10 @@ import { HomeH2, HomeH3 } from './HomeH2'
 export function Community() {
   return (
     <ContainerLarge space="$3">
-      <HomeH2>Community</HomeH2>
-      <HomeH3>Join the community on these platforms</HomeH3>
+      <YStack zi={1} space="$1">
+        <HomeH2>Community</HomeH2>
+        <HomeH3>Join the community on these platforms</HomeH3>
+      </YStack>
 
       <YStack maxWidth="100%" fs={0} als="center" pt="$2" pb="$6">
         <EnsureFlexed />

@@ -28,7 +28,7 @@ export function BenchmarkChart({ data, large }) {
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
-    <YStack space="$2" my="$4">
+    <YStack space="$1" my="$4">
       {data.map((result, i) => (
         <XStack space="$2" key={i}>
           <YStack w={large ? 120 : 70}>
@@ -37,7 +37,7 @@ export function BenchmarkChart({ data, large }) {
               size="$2"
               whiteSpace="nowrap"
               ta="right"
-              my={-2}
+              my={-3}
               fontWeight={result.name === 'Tamagui' ? '700' : '400'}
             >
               {result.name}

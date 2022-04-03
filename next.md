@@ -1,3 +1,17 @@
+- write a "how the compiler works" blog post
+
+- document excludeReactNativeWebExports for regular webpack and recommend excluding Animated etc
+
+- document theme-base
+  - adding /inter.css /fira-code.css
+  - adding font-feature-settings
+  - customizing things
+
+- fix lineargradient
+
+- o="hidden" works when it should throw type warning
+- slow types
+
 - // TODO media queries on styled()
 
 - ScrollView isnt SSR compat

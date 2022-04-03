@@ -14,8 +14,8 @@ export const interFont = createFont({
     8: 24,
     9: 34,
     10: 48,
-    11: 62,
-    12: 76,
+    11: 58,
+    12: 68,
   },
   lineHeight: {
     1: 15,
@@ -46,12 +46,12 @@ export const interFont = createFont({
 })
 
 export const monoFont = createFont({
-  family: 'Monospace',
+  family: 'Fira Code, Monaco, Consolas, Ubuntu Mono, monospace;',
   size: {
-    1: 11,
-    2: 12,
-    3: 13,
-    4: 14,
+    1: 10,
+    2: 11,
+    3: 12,
+    4: 13,
     5: 15,
     6: 16,
     7: 17,
