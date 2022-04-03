@@ -22,7 +22,7 @@
     "@tamagui/core": "^1.0.0-alpha.68",
     "@tamagui/polyfill-dev": "^1.0.0-alpha.68",
     "react-native-gesture-handler": "^2.2.0",
-    "react-native-reanimated": "^2.4.1"
+    "react-native-reanimated": "^2.5.0"
   },
   "peerDependencies": {
     "react": "*",
