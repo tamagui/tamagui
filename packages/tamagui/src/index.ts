@@ -96,6 +96,8 @@ export {
   useDefaultThemeName,
   useIsomorphicLayoutEffect,
   useMedia,
+  useIsMounted,
+  useUnmountEffect,
   useTheme,
   useThemeName,
   useIsTouchDevice,
