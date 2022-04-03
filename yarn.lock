@@ -4252,7 +4252,7 @@ __metadata:
     browserslist: ^4.19.1
     css-minimizer-webpack-plugin: ^3.1.3
     esbuild-loader: ^2.18.0
-    next: ^12.1.0
+    next: ^12.1.4
     next-compose-plugins: ^2.2.1
     tamagui-loader: ^1.0.0-alpha.68
     thread-loader: ^3.0.4
@@ -4307,7 +4307,7 @@ __metadata:
     css-minimizer-webpack-plugin: ^3.1.3
     esbuild-loader: ^2.18.0
     html-webpack-plugin: ^5.5.0
-    mini-css-extract-plugin: ^2.4.3
+    mini-css-extract-plugin: ^2.6.0
     motion: ^10.6.2
     react: "*"
     react-dom: "*"
@@ -4350,7 +4350,7 @@ __metadata:
     "@types/react-native": ^0.67.3
     compare-versions: ^4.0.1
     copy-to-clipboard: ^3.3.1
-    css-minimizer-webpack-plugin: ^3.4.1
+    css-minimizer-webpack-plugin: ^3.1.3
     date-fns: ^2.26.0
     glob: ^7.1.6
     gray-matter: ^4.0.2
@@ -4419,7 +4419,6 @@ __metadata:
     fs-extra: ^9.1.0
     invariant: ^2.2.4
     jest: ^27.3.1
-    loader-utils: ^3.2.0
     lodash: ^4.17.21
     null-loader: ^4.0.1
     react: "*"
@@ -4910,16 +4909,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/loader-utils@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@types/loader-utils@npm:2.0.3"
-  dependencies:
-    "@types/node": "*"
-    "@types/webpack": ^4
-  checksum: f50cce4ddd91f80b3a41476079cf41bc81e66c50b82a4cd69912f648e4e9881bf323cfb03795c96d3b1379f4f5bd9ab21201cc06f2785919611ca05490b85440
-  languageName: node
-  linkType: hard
-
 "@types/lodash.throttle@npm:^4.1.6":
   version: 4.1.6
   resolution: "@types/lodash.throttle@npm:4.1.6"
@@ -5226,7 +5215,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack@npm:^4, @types/webpack@npm:^4.4.31, @types/webpack@npm:^4.41.26, @types/webpack@npm:^4.41.8":
+"@types/webpack@npm:^4.4.31, @types/webpack@npm:^4.41.26, @types/webpack@npm:^4.41.8":
   version: 4.41.32
   resolution: "@types/webpack@npm:4.41.32"
   dependencies:
@@ -7982,7 +7971,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-minimizer-webpack-plugin@npm:^3.1.3, css-minimizer-webpack-plugin@npm:^3.4.1":
+"css-minimizer-webpack-plugin@npm:^3.1.3":
   version: 3.4.1
   resolution: "css-minimizer-webpack-plugin@npm:3.4.1"
   dependencies:
@@ -13429,13 +13418,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "loader-utils@npm:3.2.0"
-  checksum: c7b9a8dc4b3bc19e9ef563c48e3a18ea9f8bb2da1ad38a12e4b88358cfba5f148a7baf12d78fe78ffcb718ce1e062ab31fcf5c148459f1247a672a4213471e80
-  languageName: node
-  linkType: hard
-
 "locate-path@npm:^2.0.0":
   version: 2.0.0
   resolution: "locate-path@npm:2.0.0"
@@ -14556,7 +14538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:^2.4.3, mini-css-extract-plugin@npm:^2.6.0":
+"mini-css-extract-plugin@npm:^2.6.0":
   version: 2.6.0
   resolution: "mini-css-extract-plugin@npm:2.6.0"
   dependencies:
@@ -19945,7 +19927,6 @@ __metadata:
   dependencies:
     "@manypkg/cli": ^0.19.1
     "@monorepo-utils/workspaces-to-typescript-project-references": ^2.7.4
-    "@types/loader-utils": 2.0.3
     "@types/node": ^16.11.9
     "@types/react": ^17.0.35
     esbuild: ^0.13.12

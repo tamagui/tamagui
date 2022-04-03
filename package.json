@@ -62,7 +62,6 @@
   "dependencies": {
     "@manypkg/cli": "^0.19.1",
     "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
-    "@types/loader-utils": "2.0.3",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "esbuild": "^0.13.12",

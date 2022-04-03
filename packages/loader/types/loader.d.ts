@@ -1,2 +1,3 @@
-export declare function loader(this: any, source: string): any;
+import { LoaderContext } from 'webpack';
+export declare function loader(this: LoaderContext<any>, source: string): void;
 //# sourceMappingURL=loader.d.ts.map
