@@ -35,6 +35,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           'react/jsx-runtime': jsxRuntime,
           'react/jsx-dev-runtime.js': jsxDevRuntime,
           'react/jsx-dev-runtime': jsxDevRuntime,
+          'react-dom/client': require.resolve('react-dom/client'),
           'react-native$': rnw,
           'react-native-reanimated': reanimated,
           '@testing-library/react-native': proxyWorm,
@@ -228,8 +229,11 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         }
 
         if (isNext12) {
-          const oneOfJSRules: any[] = webpackConfig.module.rules[2].oneOf
-          const swcLoaderIndex = 3
+          const firstOneOfRule = webpackConfig.module.rules.findIndex((x) => x && !!x.oneOf)
+          const oneOfJSRules: any[] = webpackConfig.module.rules[firstOneOfRule].oneOf
+          const swcLoaderIndex = oneOfJSRules.findIndex(
+            (x) => x && x.use && x.use.loader === 'next-swc-loader'
+          )
           const swcLoader = oneOfJSRules[swcLoaderIndex]
           // put an earlier loader where we just do tamagui stuff before regular swc
           oneOfJSRules.splice(
