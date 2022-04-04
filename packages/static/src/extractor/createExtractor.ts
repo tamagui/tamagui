@@ -227,10 +227,11 @@ export function createExtractor() {
 
           const shouldLog = !hasLogged
           if (shouldLog) {
+            const prefix = '      »'
             if (disableExtraction) {
-              console.log(prefixLogs || '      »', 'disableExtraction: not optimizing')
+              console.log(prefixLogs || prefix, 'disableExtraction: not optimizing')
             }
-            console.log(prefixLogs || '      »', '                    name | time |   opt · flat')
+            console.log(prefixLogs || prefix, ' ○ = optimized |  ◎ = flattened')
             hasLogged = true
           }
           if (disableExtraction) {

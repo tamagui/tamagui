@@ -76,7 +76,9 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         }
 
         if (process.env.IGNORE_TS_CONFIG_PATHS) {
-          console.log(prefix, 'ignoring tsconfig paths')
+          if (process.env.DEBUG) {
+            console.log(prefix, 'ignoring tsconfig paths')
+          }
           delete webpackConfig.resolve.plugins[0].paths['@tamagui/*']
           delete webpackConfig.resolve.plugins[0].paths['tamagui']
         }
