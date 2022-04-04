@@ -1,4 +1,4 @@
 export * from './AnimatePresence';
 export * from './usePresence';
-export * from './PresenceContext';
+export { AnimatePresenceContext } from './AnimatePresenceContext';
 //# sourceMappingURL=index.d.ts.map

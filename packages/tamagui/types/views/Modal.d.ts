@@ -1,7 +1,8 @@
 /// <reference types="react" />
-import { AnimatedStackProps } from '@tamagui/core';
-import { ModalProps as ModalPropsReact } from 'react-native';
-export declare type ModalProps = Omit<ModalPropsReact, 'children'> & AnimatedStackProps & {
+import { ModalBaseProps, ModalPropsAndroid, ModalPropsIOS } from 'react-native';
+import { StackProps } from './Stacks';
+declare type ModalPropsReact = ModalBaseProps & ModalPropsIOS & ModalPropsAndroid;
+export declare type ModalProps = Omit<ModalPropsReact, 'children'> & StackProps & {
     visible?: boolean;
     overlayBackground?: string;
     overlayDismisses?: boolean;
@@ -100,4 +101,5 @@ export declare const ModalYStack: import("@tamagui/core").StaticComponent<Omit<i
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
 }>>, void, any, import("@tamagui/core").StaticConfigParsed>;
+export {};
 //# sourceMappingURL=Modal.d.ts.map

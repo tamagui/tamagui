@@ -4062,9 +4062,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/animated-presence@^1.0.0-alpha.68, @tamagui/animated-presence@workspace:packages/animated-presence":
+"@tamagui/animate-presence@^1.0.0-alpha.68, @tamagui/animate-presence@workspace:packages/animate-presence":
   version: 0.0.0-use.local
-  resolution: "@tamagui/animated-presence@workspace:packages/animated-presence"
+  resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
   dependencies:
     "@tamagui/build": ^1.0.0-alpha.64
     "@tamagui/core": ^1.0.0-alpha.67
@@ -4093,7 +4093,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
-    "@tamagui/animated-presence": ^1.0.0-alpha.68
+    "@tamagui/animate-presence": ^1.0.0-alpha.68
     "@tamagui/build": ^1.0.0-alpha.64
     "@tamagui/core": ^1.0.0-alpha.67
     react-native-reanimated: ^2.4.1
@@ -19962,6 +19962,7 @@ __metadata:
     "@react-native-aria/focus": ^0.2.5
     "@react-native-aria/overlays": ^0.3.2
     "@react-native-community/blur": ^3.6.0
+    "@tamagui/animate-presence": ^1.0.0-alpha.68
     "@tamagui/build": ^1.0.0-alpha.64
     "@tamagui/core": ^1.0.0-alpha.68
     "@tamagui/fake-react-native": ^1.0.0-alpha.17

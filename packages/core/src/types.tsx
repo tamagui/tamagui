@@ -6,7 +6,6 @@ import {
   GestureResponderEvent,
   TextProps as ReactTextProps,
   TextStyle,
-  View,
   ViewProps,
   ViewStyle,
 } from 'react-native'
@@ -327,6 +326,7 @@ export type PseudoProps<A> = {
   hoverStyle?: A | null
   pressStyle?: A | null
   focusStyle?: A | null
+  exitStyle?: A | null
 }
 
 export type PsuedoPropKeys = keyof PseudoProps<any>
@@ -745,3 +745,29 @@ type CSSColorNames =
   | 'whitesmoke'
   | 'yellow'
   | 'yellowgreen'
+
+type AnimationConfig = {
+  [key: string]: any
+}
+
+export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
+  useAnimations: UseAnimationHook
+  animations: A
+  View?: any
+  Text?: any
+}
+
+export type UseAnimationProps = { animation: string; [key: string]: any }
+export type UseAnimationState = {
+  style: (ViewStyle | null)[]
+  isHovering: boolean
+  isFocusing: boolean
+  isPressing: boolean
+  hoverStyle?: ViewStyle
+  pressStyle?: ViewStyle
+  exitStyle?: ViewStyle
+  onDidAnimate?: any
+  delay?: number
+}
+
+export type UseAnimationHook = (props: UseAnimationProps, state: UseAnimationState) => any

@@ -1,4 +1,5 @@
-import { PresenceContext, usePresence } from '@tamagui/animated-presence'
+import { AnimatePresenceContext, usePresence } from '@tamagui/animate-presence'
+import { AnimationDriver, UseAnimationProps, UseAnimationState } from '@tamagui/core'
 import { createContext, useCallback, useContext, useEffect } from 'react'
 import {
   PerpectiveTransform,
@@ -34,17 +35,13 @@ const AnimatedText = Animated.Text
 AnimatedView['displayName'] = 'AnimatedView'
 AnimatedText['displayName'] = 'AnimatedText'
 
-export function createAnimations<A>(animations: A): {
-  useAnimations: any
-  animations: A
-  View: any
-  Text: any
-} {
+export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   // , isHovered, isPressed, isExiting
-  const useAnimations = (props: { animation: string; [key: string]: any }, extra) => {
-    const { style, hoverStyle, pressStyle, exitStyle, onDidAnimate, delay } = extra
+  const useAnimations = (props: UseAnimationProps, state: UseAnimationState) => {
+    const { style, hoverStyle, pressStyle, exitStyle, onDidAnimate, delay } = state
     const [isPresent, safeToUnmount] = usePresence()
-    const presence = useContext(PresenceContext)
+    const presence = useContext(AnimatePresenceContext)
+    console.log('', isPresent, safeToUnmount, presence)
     const isMounted = useSharedValue(false)
     const hasExitStyle = !!exitStyle
     const custom = useCallback(() => {
@@ -80,16 +77,22 @@ export function createAnimations<A>(animations: A): {
         transform: [] as any[],
       }
 
-      // const isExiting = !isPresent && !!exitStyle
-      // const transition = 100 as any
+      const isExiting = !isPresent && !!exitStyle
       const transition = animations[props.animation]
-      console.log('transition', transition)
 
       const mergedStyles = {
         ...style[0],
         ...hoverStyle,
         ...pressStyle,
         // ...isExiting && exitStyle(custom()),
+        ...(isExiting && exitStyle),
+      }
+
+      const exitingStyleProps: Record<string, boolean> = {}
+      if (exitStyle) {
+        for (const key of Object.keys(exitStyle)) {
+          exitingStyleProps[key] = true
+        }
       }
 
       for (const key in mergedStyles) {
@@ -105,16 +108,14 @@ export function createAnimations<A>(animations: A): {
               attemptedValue: value,
             })
           }
-          // if (isExiting) {
-          // exitingStyleProps[key] = false
-          // const areStylesExiting =Object.values(exitingStyleProps).some(
-          //   Boolean
-          // )
-          // // if this is true, then we've finished our exit animations
-          // if (!areStylesExiting) {
-          //   runOnJS(reanimatedSafeToUnmount)()
-          // }
-          // }
+          if (isExiting) {
+            exitingStyleProps[key] = false
+            const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
+            // if this is true, then we've finished our exit animations
+            if (!areStylesExiting) {
+              runOnJS(reanimatedSafeToUnmount)()
+            }
+          }
         }
 
         let { delayMs = null } = animationDelay(key, transition, delay)

@@ -21,6 +21,7 @@ type PseudoStyles = {
   hoverStyle?: ViewStyle
   pressStyle?: ViewStyle
   focusStyle?: ViewStyle
+  exitStyle?: ViewStyle
 }
 
 const skipKeys = {
@@ -41,7 +42,7 @@ export const getSplitStyles = (
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
-  const style: any[] = []
+  const style: (ViewStyle | null)[] = []
 
   let pseudos: PseudoStyles | null = null
   let cur: ViewStyle | null = null

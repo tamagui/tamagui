@@ -78,7 +78,7 @@ export {
   getHasConfigured,
   getMedia,
   getStylesAtomic,
-  getTamagui,
+  getConfig,
   getThemes,
   getTokens,
   isObj,

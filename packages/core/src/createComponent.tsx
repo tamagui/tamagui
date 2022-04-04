@@ -32,6 +32,7 @@ import {
   StaticConfig,
   StaticConfigParsed,
   TamaguiInternalConfig,
+  UseAnimationHook,
 } from './types'
 import { TextAncestorContext } from './views/TextAncestorContext'
 
@@ -212,7 +213,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     }, [])
 
-    const useAnimations = tamaguiConfig.animations?.useAnimations as any
+    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
 
     // element
@@ -228,29 +229,35 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const ViewComponent = isText ? ReactText : ReactView
 
     // styles
-    const isHovering = !disabled && !isTouchDevice && pseudos && state.hover
-    const isPressing = !disabled && pseudos && state.press
-    const isFocusing = !disabled && pseudos && state.focus
+    const isHovering = Boolean(!disabled && !isTouchDevice && pseudos && state.hover)
+    const isPressing = Boolean(!disabled && pseudos && state.press)
+    const isFocusing = Boolean(!disabled && pseudos && state.focus)
 
     const includeNativeStyle = !isWeb || isAnimated
 
     let styles = [
-      defaultNativeStyle ? defaultNativeStyle.base : null,
+      defaultNativeStyle ? (defaultNativeStyle.base as ViewStyle) : null,
       // parity w react-native-web, only for text in text
       // TODO this should be able to be done w css to replicate after extraction:
       //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
       // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-      style,
-      isHovering ? pseudos.hoverStyle || null : null,
-      isPressing ? pseudos.pressStyle || null : null,
-      isFocusing ? pseudos.focusStyle || null : null,
+      ...style,
+      isHovering ? pseudos!.hoverStyle || null : null,
+      isPressing ? pseudos!.pressStyle || null : null,
+      isFocusing ? pseudos!.focusStyle || null : null,
     ]
 
+    // TODO can be a feature
     if (isAnimated) {
       const res = useAnimations(props, {
         style,
+        isFocusing,
         isHovering,
         isPressing,
+        hoverStyle: pseudos?.hoverStyle,
+        pressStyle: pseudos?.pressStyle,
+        exitStyle: pseudos?.exitStyle,
+        // onDidAnimate, delay
       })
       styles = [res]
     }

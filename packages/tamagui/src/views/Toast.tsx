@@ -1,6 +1,7 @@
-import { AnimatedStack, Text, isWeb } from '@tamagui/core'
+import { AnimatePresence } from '@tamagui/animate-presence'
+import { Text, isWeb } from '@tamagui/core'
 import { useForceUpdate } from '@tamagui/use-force-update'
-import React, { memo, useCallback, useEffect, useRef } from 'react'
+import { memo, useCallback, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 import { YStack } from './Stacks'
@@ -85,9 +86,12 @@ export const ToastRoot = memo(function ToastRoot() {
       zIndex={10000000000}
       padding="5%"
     >
-      {state.show && !!state.content && (
-        <AnimatedStack>
+      <AnimatePresence>
+        {state.show && !!state.content && (
           <YStack
+            animated
+            // @ts-expect-error
+            animation="toast"
             backgroundColor={
               // TODO theme
               state.type === 'info'
@@ -107,8 +111,8 @@ export const ToastRoot = memo(function ToastRoot() {
               {state.content}
             </Text>
           </YStack>
-        </AnimatedStack>
-      )}
+        )}
+      </AnimatePresence>
     </YStack>
   )
 

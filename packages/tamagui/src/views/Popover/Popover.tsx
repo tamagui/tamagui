@@ -6,12 +6,11 @@ import { useId } from '@react-aria/utils'
 import { FocusScope } from '@react-native-aria/focus'
 import { withStaticProperties } from '@tamagui/core'
 import React, { forwardRef, memo, useCallback, useMemo } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 
 import { useControllableState } from '../../hooks/useControllableState'
 import { Overlay } from '../Overlay'
 import { Popper } from '../Popper'
-import { PresenceTransition } from '../Transitions/PresenceTransition'
 import { PopoverContent } from './PopoverContent'
 import { PopoverContext } from './PopoverContext'
 import type { IPopoverProps } from './types'
@@ -97,30 +96,21 @@ export const Popover = withStaticProperties(
             <View style={{ display: 'none' }} ref={ref}></View>
             {updatedTrigger()}
             <Overlay isOpen={isOpen} onRequestClose={handleClose} useRNModalOnAndroid>
-              <PresenceTransition
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, transition: { duration: 150 } }}
-                exit={{ opacity: 0, scale: 0.95, transition: { duration: 100 } }}
-                visible={isOpen}
-                style={StyleSheet.absoluteFill}
-              >
-                {/* @ts-ignore */}
-                <Popper onClose={handleClose} triggerRef={triggerRef} {...props}>
-                  {/* <AbsoluteYStack
+              <Popper onClose={handleClose} triggerRef={triggerRef} {...props}>
+                {/* <AbsoluteYStack
                   fullscreen
                   pointerEvents="auto"
                   backgroundColor="rgba(0,0,0,0.1)"
                   onPress={handleClose}
                 /> */}
-                  <PopoverContext.Provider
-                    value={useMemo(() => popoverContext, Object.values(popoverContext))}
-                  >
-                    <FocusScope contain={trapFocus} restoreFocus autoFocus>
-                      {childrenElements}
-                    </FocusScope>
-                  </PopoverContext.Provider>
-                </Popper>
-              </PresenceTransition>
+                <PopoverContext.Provider
+                  value={useMemo(() => popoverContext, Object.values(popoverContext))}
+                >
+                  <FocusScope contain={trapFocus} restoreFocus autoFocus>
+                    {childrenElements}
+                  </FocusScope>
+                </PopoverContext.Provider>
+              </Popper>
             </Overlay>
           </>
         )

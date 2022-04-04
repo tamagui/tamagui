@@ -1,7 +1,7 @@
 import { useId } from '@react-aria/utils'
 import { useContext, useEffect } from 'react'
 
-import { PresenceContext, PresenceContextProps } from './PresenceContext'
+import { AnimatePresenceContext, AnimatePresenceContextProps } from './AnimatePresenceContext'
 
 export type SafeToRemove = () => void
 
@@ -10,7 +10,9 @@ type Present = [true]
 type NotPresent = [false, SafeToRemove]
 
 export function usePresence(): AlwaysPresent | Present | NotPresent {
-  const context = useContext(PresenceContext)
+  const context = useContext(AnimatePresenceContext)
+
+  console.log('context', context)
 
   if (context === null) {
     return [true, null]
@@ -24,7 +26,10 @@ export function usePresence(): AlwaysPresent | Present | NotPresent {
   // Replace with useId when released in React
   const id = useId()
 
-  useEffect(() => register(id), [])
+  useEffect(() => {
+    console.log('registering')
+    register(id)
+  }, [])
 
   const safeToRemove = () => onExitComplete?.(id)
 
@@ -36,9 +41,9 @@ export function usePresence(): AlwaysPresent | Present | NotPresent {
  * There is no `safeToRemove` function. ```
  */
 export function useIsPresent() {
-  return isPresent(useContext(PresenceContext))
+  return isPresent(useContext(AnimatePresenceContext))
 }
 
-export function isPresent(context: PresenceContextProps | null) {
+export function isPresent(context: AnimatePresenceContextProps | null) {
   return context === null ? true : context.isPresent
 }
