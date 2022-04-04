@@ -112,7 +112,7 @@ export function HeroExampleAnimations() {
           ov="hidden"
           // bc="$backgroundHover"
           h={305}
-          mw={880}
+          maw={880}
           als="center"
           x={0}
         >

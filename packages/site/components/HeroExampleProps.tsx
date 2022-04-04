@@ -24,6 +24,7 @@ export const HeroExampleProps = () => {
       <XStack p="$6" space="$4" $sm={{ flexDirection: 'column' }}>
         <YStack w="50%" $sm={{ w: '100%' }}>
           <Features
+            space="$6"
             items={[
               <FeatureItem label="Press & hover events">
                 onHoverIn, onHoverOut, onPressIn, and onPressOut.
@@ -40,6 +41,7 @@ export const HeroExampleProps = () => {
         </YStack>
         <YStack w="50%" $sm={{ w: `100%` }}>
           <Features
+            space="$6"
             items={[
               <FeatureItem label="Themes">
                 Change themes with a single prop on all components.

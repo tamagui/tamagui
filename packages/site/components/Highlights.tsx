@@ -46,7 +46,7 @@ export function Highlights({ features }) {
         </H2>
 
         <YStack tag="ul" p={0} m={0} space>
-          <Features items={features} />
+          <Features space="$2" items={features} />
         </YStack>
       </YStack>
 

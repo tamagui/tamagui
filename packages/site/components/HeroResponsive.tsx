@@ -103,7 +103,7 @@ export const HeroResponsive = memo(() => {
             className="unselectable"
             pe={isDragging ? 'none' : 'auto'}
             // w="100%"
-            mw={width}
+            maw={width}
             f={1}
             ref={safariRef}
             theme={tint}

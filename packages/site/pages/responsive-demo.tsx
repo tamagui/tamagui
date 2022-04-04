@@ -47,13 +47,13 @@ export default function ResponsiveDemo() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui — Responsive Demo" />
-      <YStack mh="100vh" ov="hidden" p="$4">
+      <YStack mah="100vh" ov="hidden" p="$4">
         <YStack pos="relative" $gtXs={{ display: 'none' }}>
           {coverPhoto}
         </YStack>
         <YStack space="$6" $xs={{ display: 'none' }}>
           <XStack space>
-            <YStack mw={500}>{coverPhoto}</YStack>
+            <YStack maw={500}>{coverPhoto}</YStack>
             <Image y={0} br="$6" width={200} height={200} src={img2.src} />
             <Image y={0} br="$6" width={200} height={200} src={img3.src} />
           </XStack>

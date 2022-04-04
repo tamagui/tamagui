@@ -1,3 +1,4 @@
+- shorthands should be swapped key/val to ensure one shorthand per prop key
 - playground for animation
 
 - can move to react 18 only one release after beta and move to use react.useId and react.insertioneffect
