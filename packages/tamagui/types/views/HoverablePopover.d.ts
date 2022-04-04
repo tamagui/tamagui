@@ -1,18 +1,15 @@
 import React from 'react';
 import { IPopoverProps } from './Popover/types';
-import { StackProps } from './Stacks';
 export declare type HoverablePopoverHandle = {
     close: () => void;
 };
 export declare type HoverablePopoverProps = IPopoverProps & {
-    enterStyle?: StackProps['enterStyle'];
     delay?: number;
     fallbackToPress?: boolean;
     allowHoverOnContent?: boolean;
     disableUntilSettled?: boolean;
 };
 export declare const HoverablePopover: React.ForwardRefExoticComponent<IPopoverProps & {
-    enterStyle?: StackProps['enterStyle'];
     delay?: number | undefined;
     fallbackToPress?: boolean | undefined;
     allowHoverOnContent?: boolean | undefined;

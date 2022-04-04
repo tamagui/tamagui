@@ -6,6 +6,6 @@ interface IOverlayProps {
     onRequestClose?: (() => any) | undefined;
     isKeyboardDismissable?: boolean;
 }
-export declare function Overlay({ children, isOpen, useRNModalOnAndroid, isKeyboardDismissable, onRequestClose, }: IOverlayProps): JSX.Element;
+export declare function Overlay({ children, isOpen, useRNModalOnAndroid, isKeyboardDismissable, onRequestClose, }: IOverlayProps): JSX.Element | null;
 export {};
 //# sourceMappingURL=Overlay.d.ts.map

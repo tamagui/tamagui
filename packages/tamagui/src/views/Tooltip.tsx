@@ -11,6 +11,8 @@ import { YStack } from './Stacks'
 React['createElement']
 
 export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
+  enterStyle?: StackProps['enterStyle']
+  exitStyle?: StackProps['exitStyle']
   size?: SizableTextProps['size']
   contents?: string | any
   // TODO move this into a radix style separate components BUT make them optional:
@@ -35,6 +37,11 @@ const TooltipFrame = styled(SizableStack, {
   borderWidth: 0,
 })
 
+const defaultOutStyle = {
+  opacity: 0,
+  y: -10,
+}
+
 export const Tooltip = ({
   size = '$4',
   contents,
@@ -45,10 +52,8 @@ export const Tooltip = ({
   },
   alwaysDark,
   showArrow,
-  enterStyle = {
-    opacity: 0,
-    y: -10,
-  },
+  enterStyle = defaultOutStyle,
+  exitStyle = defaultOutStyle,
   ...props
 }: TooltipProps) => {
   const getContents = useCallback(
@@ -64,6 +69,8 @@ export const Tooltip = ({
           animation="tooltip"
           // @ts-ignore
           enterStyle={enterStyle}
+          // @ts-ignore
+          exitStyle={exitStyle}
           {...tooltipContainerProps}
         >
           {!!showArrow && (
@@ -73,6 +80,7 @@ export const Tooltip = ({
           <Theme name={alwaysDark ? 'dark' : null}>
             <TooltipFrame
               elevation={size}
+              pointerEvents="none"
               backgroundColor="$background"
               maxWidth={400}
               size={size}
