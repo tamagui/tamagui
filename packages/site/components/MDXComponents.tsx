@@ -109,21 +109,21 @@ export const components = {
   h1: (props) => <H1 mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2 color="$color" mt="$4" size="$9" letterSpacing={-0.5} data-heading {...props}>
+    <H2 color="$color" mt="$3" size="$8" letterSpacing={-0.5} data-heading {...props}>
       {children}
     </H2>
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading mt="$4" id={id}>
-      <H3 data-heading size="$8" {...props}>
+    <LinkHeading mt="$3" id={id}>
+      <H3 data-heading size="$7" {...props}>
         {children}
       </H3>
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mt="$4" size="$7" {...props} />,
-  h5: (props) => <H5 mt="$4" size="$6" {...props} />,
+  h4: (props) => <H4 mt="$3" size="$6" {...props} />,
+  h5: (props) => <H5 mt="$3" size="$5" {...props} />,
 
   p: (props) => (
     <Paragraph

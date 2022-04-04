@@ -19,7 +19,15 @@ export const HeaderIndependent = ({ disableNew }: { disableNew?: boolean }) => {
   )
 }
 
-export function Header({ floating, disableNew }: { floating?: boolean; disableNew?: boolean }) {
+export function Header({
+  floating,
+  disableNew,
+  isHome,
+}: {
+  floating?: boolean
+  disableNew?: boolean
+  isHome?: boolean
+}) {
   const { setNextTint } = useTint()
 
   return (
@@ -33,9 +41,17 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
       zi={1}
     >
       <XStack ai="center" space="$4">
-        <YStack cursor="pointer" tag="a" my={-20}>
-          <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
-        </YStack>
+        {isHome ? (
+          <YStack cursor="pointer" my={-20}>
+            <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
+          </YStack>
+        ) : (
+          <NextLink href="/" passHref>
+            <YStack cursor="pointer" tag="a" my={-20}>
+              <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
+            </YStack>
+          </NextLink>
+        )}
 
         {!disableNew && <AlphaButton />}
       </XStack>

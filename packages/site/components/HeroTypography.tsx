@@ -8,8 +8,8 @@ import { HomeH2, HomeH3 } from './HomeH2'
 export const HeroTypography = () => {
   return (
     <>
-      <YStack fullscreen className="bg-grid-big mask-gradient-down" />
-      <YStack theme="alt2" fullscreen className="hero-gradient-light mask-gradient-down" />
+      <YStack fullscreen className="bg-grid-big mask-gradient-both" o={0.5} />
+      {/* <YStack theme="alt2" fullscreen className="hero-gradient-light mask-gradient-down" /> */}
       <YStack pos="relative">
         <YStack>
           <ContainerLarge h={750} position="relative" space>
@@ -18,7 +18,7 @@ export const HeroTypography = () => {
               <HomeH3>Plug-and-play fonts with complete control.</HomeH3>
             </YStack>
 
-            <YStack pos="relative" ov="hidden">
+            <YStack className="mask-gradient-down" pos="relative" ov="hidden">
               {/* <YStack pe="none" fullscreen bc="$background" opacity={0.4} zi={1} /> */}
               <YStack o={0.25} pos="relative" scale={1.7} y={70} x={250} mb={70}>
                 <XStack mb={100} p="$6" space $sm={{ flexDirection: 'column' }}>
