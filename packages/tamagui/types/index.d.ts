@@ -39,7 +39,6 @@ export * from './views/TextArea';
 export * from './views/Toast';
 export * from './views/Tooltip';
 export * from './views/TouchableOpacity';
-export * from './views/Transitions';
 export * from './views/VisuallyHidden';
 export * from './helpers/prevent';
 export * from './helpers/getFontSize';

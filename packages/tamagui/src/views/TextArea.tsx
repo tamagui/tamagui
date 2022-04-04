@@ -18,6 +18,14 @@ export const TextArea = styled(
     paddingVertical: '$2',
     paddingHorizontal: '$2',
 
+    hoverStyle: {
+      borderColor: '$borderColorHover',
+    },
+
+    focusStyle: {
+      borderColor: '$borderColorFocus',
+    },
+
     variants: {
       size: {
         '...size': inputSizeVariant,
