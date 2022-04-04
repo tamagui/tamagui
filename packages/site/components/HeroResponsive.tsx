@@ -267,7 +267,7 @@ const Safari = memo(({ isSmall }: { isSmall: boolean }) => {
         </XStack>
       </YStack>
 
-      <XStack bbw={1} boc="$borderColor">
+      <XStack>
         <Tab btlr={0}>Tamagui - React Native & Web UI kits</Tab>
         <Tab active>Tamagui - React Native & Web UI kits</Tab>
         <Tab btrr={0}>Tamagui - React Native & Web UI kits</Tab>
@@ -288,6 +288,8 @@ const Tab = memo(({ active, children, ...props }: any) => {
         boc={active ? 'transparent' : '$borderColor'}
         blw={1}
         brw={1}
+        bbw={1}
+        bbc={active ? '$borderColorPress' : '$borderColor'}
         btlr={active ? 0 : 4}
         btrr={active ? 0 : 4}
         bc="$background"
@@ -310,6 +312,7 @@ const Tab = memo(({ active, children, ...props }: any) => {
 
 const BrowserPane = memo(() => {
   const [isMounted, setIsMounted] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   if (typeof document !== 'undefined') {
     // only load iframe after scroll + timeout
@@ -339,8 +342,18 @@ const BrowserPane = memo(() => {
   }
 
   return (
-    <YStack h="100%" pe="none">
-      {!!isMounted && <iframe width="100%" height={browserHeight} src="/responsive-demo" />}
+    <YStack h="100%" pe="none" bc="$background">
+      {!!isMounted && (
+        <iframe
+          style={{ display: isLoaded ? 'flex' : 'none' }}
+          onLoad={() => {
+            setIsLoaded(true)
+          }}
+          width="100%"
+          height={browserHeight}
+          src="/responsive-demo"
+        />
+      )}
     </YStack>
   )
 })
