@@ -1,3 +1,4 @@
+import { AnimatePresence } from '@tamagui/animate-presence'
 import {
   Theme,
   isTouchDevice,
@@ -58,7 +59,7 @@ export const Modal = (props: ModalProps) => {
     minWidth,
     maxWidth,
     maxHeight,
-    animation,
+    animation = 'modal',
     ...rest
   } = props
 
@@ -123,24 +124,28 @@ export const Modal = (props: ModalProps) => {
             onPressOut={overlayDismisses ? onRequestClose : undefined}
             onPress={onDismiss}
           >
-            <YStack
-              animated
-              {...{
-                height,
-                width,
-                minHeight,
-                minWidth,
-                maxWidth,
-                maxHeight,
-                pointerEvents,
-                animateState: modalVisible ? 'in' : 'out',
-                animation,
-              }}
-            >
-              <ModalYStack onPress={prevent} pointerEvents={pointerEvents} {...rest}>
-                {finalChildren}
-              </ModalYStack>
-            </YStack>
+            <AnimatePresence>
+              {visible && (
+                <YStack
+                  animated
+                  {...{
+                    height,
+                    width,
+                    minHeight,
+                    minWidth,
+                    maxWidth,
+                    maxHeight,
+                    pointerEvents,
+                    animateState: modalVisible ? 'in' : 'out',
+                    animation: animation as any,
+                  }}
+                >
+                  <ModalYStack onPress={prevent} pointerEvents={pointerEvents} {...rest}>
+                    {finalChildren}
+                  </ModalYStack>
+                </YStack>
+              )}
+            </AnimatePresence>
           </YStack>
         </Theme>
       </ModalNative>
