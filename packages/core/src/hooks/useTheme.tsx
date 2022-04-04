@@ -18,13 +18,21 @@ type UseThemeState = {
 export const useTheme = (
   themeName?: string | null,
   componentName?: string,
-  props?: any
+  props?: any,
+  forceUpdate?: any
 ): ThemeObject => {
   const { name, theme, themes, themeManager, className, didChangeTheme } = useChangeThemeEffect(
     themeName,
     componentName,
-    props
+    props,
+    forceUpdate
   )
+
+  if (process.env.NODE_ENV === 'development') {
+    if (props?.['debug']) {
+      console.log('» useTheme', { themeName, componentName, name, className })
+    }
+  }
 
   const state = useRef() as React.MutableRefObject<UseThemeState>
   if (!state.current) {
@@ -137,12 +145,17 @@ export const useDefaultThemeName = () => {
   return useContext(ThemeContext)?.defaultTheme
 }
 
-export const useChangeThemeEffect = (name?: string | null, componentName?: string, props?: any) => {
+export const useChangeThemeEffect = (
+  name?: string | null,
+  componentName?: string,
+  props?: any,
+  forceUpdateProp?: any
+) => {
   const debug = props && props['debug']
   const parentManager = useContext(ThemeManagerContext) || emptyManager
   const { themes } = useContext(ThemeContext)!
   const next = parentManager.getNextTheme({ name, componentName, themes }, props)
-  const forceUpdate = useForceUpdate()
+  const forceUpdate = forceUpdateProp || useForceUpdate()
   const themeManager = useConstant<ThemeManager | null>(() => {
     if (!next) {
       return null
