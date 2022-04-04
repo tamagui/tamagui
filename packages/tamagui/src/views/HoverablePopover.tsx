@@ -18,7 +18,6 @@ export type HoverablePopoverHandle = {
 }
 
 export type HoverablePopoverProps = IPopoverProps & {
-  enterStyle?: StackProps['enterStyle']
   delay?: number
   fallbackToPress?: boolean
   allowHoverOnContent?: boolean
@@ -75,8 +74,6 @@ export const HoverablePopover = withStaticProperties(
         return trigger(null as any, { open: false })
       }
 
-      console.log('render')
-
       return (
         <Popover
           isOpen={isActive}
@@ -96,7 +93,6 @@ export const HoverablePopover = withStaticProperties(
           }}
         >
           {(openProps) => {
-            console.log('openProps', openProps)
             const childrenElements = (
               // @ts-ignore
               <AnimatePresence>

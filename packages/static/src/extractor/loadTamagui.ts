@@ -37,7 +37,7 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     try {
       return og.apply(this, arguments)
     } catch (err: any) {
-      console.error(err.message)
+      console.error('Tamagui error loading config', err.message)
       console.error(err.stack)
       // avoid infinite loops
       process.exit(1)

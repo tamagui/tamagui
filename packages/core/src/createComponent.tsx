@@ -274,7 +274,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     // TODO can be a feature
     if (isAnimated) {
       const res = useAnimations(props, {
-        isMounted: internal.current!.isMounted,
+        isMounted: state.mounted,
         style,
         hoverStyle: isHovering ? pseudos!.hoverStyle : null,
         pressStyle: isPressing ? pseudos!.pressStyle : null,

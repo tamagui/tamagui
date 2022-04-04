@@ -232,7 +232,7 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
           return
         }
         forceRender()
-        onExitComplete && onExitComplete()
+        onExitComplete?.()
       }
     }
 
@@ -267,8 +267,6 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
       </PresenceChild>
     )
   })
-
-  console.log('AnimateP', [...childrenToRender])
 
   if (process.env.NODE_ENV !== 'production' && exitBeforeEnter && childrenToRender.length > 1) {
     console.warn(

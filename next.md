@@ -34,6 +34,8 @@
 
 - note in starter kit adding react-native at version 0 + latest @types/react-native gives autocomplete
 
+- fix memory leak causing OOM eventually on site
+
 - override react native web color values and add in types for css colors "red" etc
 
 - already have the themeParent.listener pattern just need to restore/fix it
