@@ -341,7 +341,7 @@ export function extractToClassNames({
     const memory = process.env.DEBUG && memUsed > 10 ? ` ${memUsed}MB` : ''
     const timingStr = `${timing}ms`.padStart(6)
     console.log(
-      `${getPrefixLogs(options)} ${path} ${timingStr} ׁ| ${numOptimized} ○ | ${
+      `${getPrefixLogs(options)} ${path} ${timingStr} ${numOptimized} ○ | ${
         res.flattened
       } ◎ ${memory}`
     )

@@ -22,7 +22,7 @@ import { Test } from '../components/Test'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
-  return <Test />
+  // return <Test />
 
   return (
     <>

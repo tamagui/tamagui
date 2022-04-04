@@ -1,4 +1,4 @@
-import type { ReactElement, RefObject } from 'react';
+import { ReactElement, RefObject } from 'react';
 import React from 'react';
 export declare type IPopoverArrowProps = {
     height?: any;
@@ -31,7 +31,7 @@ export declare const defaultArrowHeight = 11;
 export declare const defaultArrowWidth = 11;
 export declare const getDiagonalLength: (height: number, width: number) => number;
 export declare const Popper: {
-    (props: IPopperProps & {
+    ({ children, triggerRef, onClose, setOverlayRef, }: IPopperProps & {
         triggerRef: any;
         onClose: any;
         setOverlayRef?: ((overlayRef: any) => void) | undefined;

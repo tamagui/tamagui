@@ -92,7 +92,7 @@ export const HeroResponsive = memo(() => {
 
   return (
     <YStack y={0} my="$-12" py="$12" pos="relative">
-      <ContainerLarge mb={-26} pos="relative">
+      <ContainerLarge pos="relative">
         <Header />
 
         <Spacer size="$8" />
@@ -132,7 +132,8 @@ export const HeroResponsive = memo(() => {
         <YStack pos="absolute" zi={0} t={220} l={-1000} r={-1000} b={-75} ai="center" jc="center">
           <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.2} />
 
-          <YStack f={1} h="100%" w="100%" className="bg-grid">
+          <YStack pos="relative" f={1} h="100%" w="100%">
+            <YStack fullscreen className="bg-grid mask-gradient-down" zi={-1} />
             <ContainerLarge pos="relative">
               <YStack zi={-1} pe="none" pos="absolute" top={-100} right={0}>
                 <Glow />
@@ -190,7 +191,7 @@ const Header = memo(() => {
   return (
     <XStack f={1}>
       <XStack $sm={{ display: 'none' }}>
-        <IconStack mt={-10} theme="green_alt2" p="$4">
+        <IconStack y={-10} theme="green_alt2" p="$4">
           <Monitor size={20} />
         </IconStack>
         <Spacer size="$6" />
@@ -226,7 +227,7 @@ const Safari = memo(({ isSmall }: { isSmall: boolean }) => {
       borderWidth={1}
       w="100%"
     >
-      <YStack px="$4" jc="center" borderBottomWidth={0} h={50} bc="$backgroundHover">
+      <YStack px="$4" jc="center" borderBottomWidth={0} h={50} bc="$background">
         <XStack pos="relative" ai="center" space="$4">
           <XStack space="$2">
             <Circle bc="$red10" size={10} />
@@ -272,7 +273,7 @@ const Safari = memo(({ isSmall }: { isSmall: boolean }) => {
         <Tab btrr={0}>Tamagui - React Native & Web UI kits</Tab>
       </XStack>
 
-      <YStack bc="$backgroundHover" h={browserHeight}>
+      <YStack bc="$background" h={browserHeight}>
         <BrowserPane />
       </YStack>
     </YStack>
@@ -281,7 +282,7 @@ const Safari = memo(({ isSmall }: { isSmall: boolean }) => {
 
 const Tab = memo(({ active, children, ...props }: any) => {
   return (
-    <Theme name={active ? null : 'alt3'}>
+    <Theme name={active ? null : 'darker'}>
       <XStack
         btw={1}
         boc={active ? 'transparent' : '$borderColor'}
@@ -289,7 +290,7 @@ const Tab = memo(({ active, children, ...props }: any) => {
         brw={1}
         btlr={active ? 0 : 4}
         btrr={active ? 0 : 4}
-        bc="$backgroundHover"
+        bc="$background"
         ov="hidden"
         f={1}
         py="$0.5"

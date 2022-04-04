@@ -3,7 +3,7 @@
 // Copyright (c) 2021 GeekyAnts India Pvt Ltd
 
 import { useOverlayPosition } from '@react-native-aria/overlays'
-import type { ReactElement, RefObject } from 'react'
+import { ReactElement, RefObject, useMemo } from 'react'
 import React, { createContext, useContext, useEffect, useRef } from 'react'
 
 import { PopperArrow } from './PopperArrow'
@@ -63,7 +63,7 @@ export const getDiagonalLength = (height: number, width: number) => {
   return Math.pow(height * height + width * width, 0.5)
 }
 
-type PopperContext = IPopperProps & {
+type PopperContext = Omit<IPopperProps, 'children'> & {
   triggerRef: any
   onClose: any
   setOverlayRef?: (overlayRef: any) => void
@@ -71,21 +71,27 @@ type PopperContext = IPopperProps & {
 
 const PopperContext = createContext<PopperContext | null>(null)
 
-export const Popper = (
-  props: IPopperProps & {
-    triggerRef: any
-    onClose: any
-    setOverlayRef?: (overlayRef: any) => void
-  }
-) => {
-  return <PopperContext.Provider value={props}>{props.children}</PopperContext.Provider>
+export const Popper = ({
+  children,
+  triggerRef,
+  onClose,
+  setOverlayRef,
+}: IPopperProps & {
+  triggerRef: any
+  onClose: any
+  setOverlayRef?: (overlayRef: any) => void
+}) => {
+  const memoizedProps = useMemo(() => {
+    return { triggerRef, onClose, setOverlayRef }
+  }, [triggerRef, onClose, setOverlayRef])
+  return <PopperContext.Provider value={memoizedProps}>{children}</PopperContext.Provider>
 }
 
 export const PopperContent = React.forwardRef((props: any, ref: any) => {
   const { children, style, ...rest } = props
   const context = useContext(PopperContext)
   if (!context) {
-    throw new Error(`No PopperContext`)
+    throw new Error(`No <Popper /> above <Popper.Content />`)
   }
   const { setOverlayRef, triggerRef, ...restContext } = context
   const overlayRef = useRef(null)
@@ -97,6 +103,7 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
     containerPadding: 0,
     ...restContext,
   })
+  console.log('overlayPosition', overlayPosition)
 
   const {
     overlayProps: { style: overlayStyle, ...overlayProps },
@@ -120,10 +127,8 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
       // @ts-ignore
       child.type.displayName === 'PopperArrow'
     ) {
-      // omit children
-      const { children, ...restContext } = context
       arrowElement = React.cloneElement(child, {
-        ...restContext,
+        ...context,
         ...arrowProps,
         ...arrowStyle,
         // @ts-ignore
