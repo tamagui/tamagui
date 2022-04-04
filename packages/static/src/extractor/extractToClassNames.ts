@@ -337,12 +337,13 @@ export function extractToClassNames({
       : 0
     const timing = `${Date.now() - start}`.padStart(3)
     const path = basename(sourcePath).slice(0, 22).padStart(24)
-    const numOptimized = `${res.optimized}`.padStart(4)
-    const memory = memUsed > 10 ? ` ${memUsed}MB` : ''
+    const numOptimized = `${res.optimized}`.padStart(3)
+    const memory = process.env.DEBUG && memUsed > 10 ? ` ${memUsed}MB` : ''
+    const timingStr = `${timing}ms`.padStart(6)
     console.log(
-      `${getPrefixLogs(options)} ${path} ${timing}ms ׁ| ${numOptimized}␚ · ${
+      `${getPrefixLogs(options)} ${path} ${timingStr} ׁ| ${numOptimized} ○ | ${
         res.flattened
-      }␡${memory}`
+      } ◎ ${memory}`
     )
   }
 
