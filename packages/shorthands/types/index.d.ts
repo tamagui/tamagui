@@ -33,12 +33,14 @@ export declare const shorthands: {
     readonly l: "left";
     readonly lh: "lineHeight";
     readonly m: "margin";
+    readonly mah: "maxHeight";
+    readonly maw: "maxWidth";
     readonly mb: "marginBottom";
-    readonly mh: "maxHeight";
+    readonly mih: "minHeight";
+    readonly miw: "minWidth";
     readonly ml: "marginLeft";
     readonly mr: "marginRight";
     readonly mt: "marginTop";
-    readonly mw: "maxWidth";
     readonly mx: "marginHorizontal";
     readonly my: "marginVertical";
     readonly o: "opacity";
