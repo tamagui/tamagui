@@ -207,6 +207,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     useEffect(() => {
       internal.current!.isMounted = true
+      if (pseudos?.enterStyle) {
+        // force update when enterStyle is set to allow animation driver to handle that
+        forceUpdate()
+      }
       return () => {
         mouseUps.delete(unPress)
         internal.current!.isMounted = false
@@ -250,12 +254,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     // TODO can be a feature
     if (isAnimated) {
       const res = useAnimations(props, {
+        isMounted: internal.current!.isMounted,
         style,
-        isFocusing,
-        isHovering,
-        isPressing,
-        hoverStyle: pseudos?.hoverStyle,
-        pressStyle: pseudos?.pressStyle,
+        hoverStyle: isHovering ? pseudos!.hoverStyle : null,
+        pressStyle: isPressing ? pseudos!.pressStyle : null,
+        focusStyle: isFocusing ? pseudos!.focusStyle : null,
         exitStyle: pseudos?.exitStyle,
         // onDidAnimate, delay
       })

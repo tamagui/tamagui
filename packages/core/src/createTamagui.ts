@@ -7,18 +7,18 @@ import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { configureMedia } from './hooks/useMedia'
 import {
-  AnimationHook,
   CreateTamaguiConfig,
   GenericTamaguiConfig,
   MediaQueryKey,
   TamaguiInternalConfig,
+  UseAnimationHook,
 } from './types'
 
 export type CreateTamaguiProps =
   // user then re-defines the types after createTamagui returns the typed object they want
   Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
     animations?: {
-      useAnimations: AnimationHook
+      useAnimations: UseAnimationHook
       animations: {
         [key: string]: any
       }

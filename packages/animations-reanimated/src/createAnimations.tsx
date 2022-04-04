@@ -38,7 +38,7 @@ AnimatedText['displayName'] = 'AnimatedText'
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   // , isHovered, isPressed, isExiting
   const useAnimations = (props: UseAnimationProps, state: UseAnimationState) => {
-    const { style, hoverStyle, pressStyle, exitStyle, onDidAnimate, delay } = state
+    const { style, hoverStyle, pressStyle, focusStyle, exitStyle, onDidAnimate, delay } = state
     const [isPresent, safeToUnmount] = usePresence()
     const presence = useContext(AnimatePresenceContext)
     console.log('', isPresent, safeToUnmount, presence)
@@ -84,6 +84,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         ...style[0],
         ...hoverStyle,
         ...pressStyle,
+        ...focusStyle,
         // ...isExiting && exitStyle(custom()),
         ...(isExiting && exitStyle),
       }

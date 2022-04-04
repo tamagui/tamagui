@@ -130,19 +130,6 @@ export type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {}
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
 
-export type AnimationHook = (
-  props: any,
-  extra: {
-    style: any
-    hoverStyle?: any
-    pressStyle?: any
-    focusStyle?: any
-    exitStyle?: any
-    onDidAnimate?: any
-    delay?: number
-  }
-) => any
-
 // this is the config generated via createTamagui()
 export type TamaguiInternalConfig<
   A extends GenericTokens = GenericTokens,
@@ -746,6 +733,8 @@ type CSSColorNames =
   | 'yellow'
   | 'yellowgreen'
 
+// Animations:
+
 type AnimationConfig = {
   [key: string]: any
 }
@@ -760,12 +749,11 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 export type UseAnimationProps = { animation: string; [key: string]: any }
 export type UseAnimationState = {
   style: (ViewStyle | null)[]
-  isHovering: boolean
-  isFocusing: boolean
-  isPressing: boolean
-  hoverStyle?: ViewStyle
-  pressStyle?: ViewStyle
-  exitStyle?: ViewStyle
+  isMounted: boolean
+  hoverStyle?: ViewStyle | null
+  pressStyle?: ViewStyle | null
+  focusStyle?: ViewStyle | null
+  exitStyle?: ViewStyle | null
   onDidAnimate?: any
   delay?: number
 }

@@ -367,6 +367,7 @@ export declare const stylePropsAll: Readonly<{
     shadowRadius: boolean;
 }>;
 export declare const validStylesPseudo: Readonly<{
+    enterStyle: boolean;
     exitStyle: boolean;
     hoverStyle: boolean;
     pressStyle: boolean;
@@ -469,6 +470,7 @@ export declare const validStyles: Readonly<{
     shadowOffset: boolean;
     shadowOpacity: boolean;
     shadowRadius: boolean;
+    enterStyle: boolean;
     exitStyle: boolean;
     hoverStyle: boolean;
     pressStyle: boolean;

@@ -22,6 +22,7 @@ type PseudoStyles = {
   pressStyle?: ViewStyle
   focusStyle?: ViewStyle
   exitStyle?: ViewStyle
+  enterStyle?: ViewStyle
 }
 
 const skipKeys = {

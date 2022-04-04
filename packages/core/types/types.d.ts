@@ -85,15 +85,6 @@ export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeKeyVariables = `$${ThemeKeys}`;
 export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {};
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
-export declare type AnimationHook = (props: any, extra: {
-    style: any;
-    hoverStyle?: any;
-    pressStyle?: any;
-    focusStyle?: any;
-    exitStyle?: any;
-    onDidAnimate?: any;
-    delay?: number;
-}) => any;
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
     animations: E;
     Provider: (props: TamaguiProviderProps) => any;
@@ -303,12 +294,11 @@ export declare type UseAnimationProps = {
 };
 export declare type UseAnimationState = {
     style: (ViewStyle | null)[];
-    isHovering: boolean;
-    isFocusing: boolean;
-    isPressing: boolean;
-    hoverStyle?: ViewStyle;
-    pressStyle?: ViewStyle;
-    exitStyle?: ViewStyle;
+    isMounted: boolean;
+    hoverStyle?: ViewStyle | null;
+    pressStyle?: ViewStyle | null;
+    focusStyle?: ViewStyle | null;
+    exitStyle?: ViewStyle | null;
     onDidAnimate?: any;
     delay?: number;
 };
