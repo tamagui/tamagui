@@ -65,3 +65,75 @@ We can limit the properties animations apply to with the `animated` prop:
 ```tsx
 
 ```
+
+### CSS
+
+The `@tamagui/animations-css` package works with the tamagui compiler and runtime to give you simple ways to share typed animations across all your components.
+
+To install it add to your package.json:
+
+```bash
+yarn add @tamagui/animations-css
+```
+
+Then add it to your [config](/docs/intro/configuration):
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-css'
+
+export default createTamagui({
+  animations: createAnimations({
+    easeInFast: 'ease-in 150ms',
+    easeInMedium: 'ease-in 300ms',
+    easeInSlow: 'ease-in 450ms',
+  })
+  // ...
+})
+```
+
+At runtime, the plugin does very little except to set the `transition` property in CSS. At compile-time, the compiler do the same, ensuring you get all the benefits of prop removal and view flattening even when using animations.
+
+### Reanimated
+
+[Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an animation library that targets React Native, as well as React Native Web. It's claim to fame is running off-thread animations, providing a nicer syntax than React Native Animated, as well as a variety helpful hooks, helper functions, and other libraries that play along nicely. It does add more to your bundle size though, and some animations still wont run as well as CSS on the web. That's why Tamagui [allows using different drivers depending on the platform](#installing-an-animation-driver).
+
+The `@tamagui/animations-reanimated` package works with the tamagui compiler and runtime to give you simple ways to share typed animations across all your components.
+
+To install it add to your package.json:
+
+```bash
+yarn add @tamagui/animations-reanimated
+```
+
+Then add it to your [config](/docs/intro/configuration):
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-reanimated'
+
+export default createTamagui({
+  animations: createAnimations({
+    easeInFast: {
+      type: 'spring',
+      damping: 20,
+      mass: 1.2,
+      stiffness: 250,
+    },
+    easeInMedium: {
+      type: 'spring',
+      damping: 10,
+      mass: 0.9,
+      stiffness: 100,
+    },
+    easeInSlow: {
+      type: 'spring',
+      damping: 20,
+      stiffness: 60,
+    },
+  })
+  // ...
+})
+```
+
+At runtime, this plugin parses animatable style properties and hands them over to reanimated off-thread, using worklets. It doesn't do anything at compile time as reanimated must run via JS.

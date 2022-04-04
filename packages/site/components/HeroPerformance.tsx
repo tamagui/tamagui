@@ -38,7 +38,7 @@ export function HeroPerformance() {
 
         <Link href="/docs/intro/benchmarks" passHref>
           <Button theme="blue" tag="a">
-            See the benchmarks
+            Benchmarks &raquo;
           </Button>
         </Link>
       </YStack>
