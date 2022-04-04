@@ -1,19 +1,21 @@
-module.exports = empty()
+module.exports = worm(true)
 
-function empty() {
-  return new Proxy(
-    {
-      get default() {
-        return empty()
-      },
+function worm(root = false) {
+  const obj = root
+    ? {
+        get default() {
+          return worm()
+        },
+      }
+    : function () {
+        return worm()
+      }
+  return new Proxy(obj, {
+    get() {
+      return worm()
     },
-    {
-      get() {
-        return empty()
-      },
-      apply() {
-        return empty()
-      },
-    }
-  )
+    apply() {
+      return worm()
+    },
+  })
 }

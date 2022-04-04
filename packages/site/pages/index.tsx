@@ -7,6 +7,7 @@ import { XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
+import DrawerDemo from '../components/demos/DrawerDemo'
 import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
@@ -22,12 +23,13 @@ import { Test } from '../components/Test'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
+  // return <DrawerDemo />
   // return <Test />
 
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
-      <HeaderFloating />
+      <HeaderFloating isHome />
       <YStack>
         <YStack>
           <Hero />
@@ -46,7 +48,7 @@ export default function Home() {
               </ThemeTint>
             </XStack>
           </ContainerLarge>
-          <SectionTinted gradient>
+          <SectionTinted extraPad gradient pb="$10">
             <HeroExampleThemes />
           </SectionTinted>
           <Section below>
@@ -85,12 +87,12 @@ const Section = ({ children, below }: any) => {
   )
 }
 
-const SectionTinted = ({ children, gradient, ...props }: any) => {
+const SectionTinted = ({ children, gradient, extraPad, ...props }: any) => {
   const { tint } = useTint()
   const childrenMemo = useMemo(() => children, [children])
   const className = gradient ? `gradient-${tint}` : ''
   return (
-    <YStack contain="paint" pos="relative" py="$12" {...props}>
+    <YStack contain="paint" pos="relative" py={extraPad ? '$12' : '$10'} {...props}>
       <YStack
         fullscreen
         className={className}

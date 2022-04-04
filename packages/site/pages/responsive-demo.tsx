@@ -1,6 +1,17 @@
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { MapPin, Star } from '@tamagui/feather-icons'
-import { H3, H4, H5, Image, LinearGradient, Paragraph, Spacer, XStack, YStack } from 'tamagui'
+import {
+  H3,
+  H4,
+  H5,
+  Image,
+  LinearGradient,
+  Paragraph,
+  Spacer,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import img1 from '../public/photo1.webp'
 import img2 from '../public/photo2.webp'
@@ -8,27 +19,29 @@ import img3 from '../public/photo3.webp'
 
 export default function ResponsiveDemo() {
   const coverPhoto = (
-    <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">
-      <YStack>
-        <Image width={800} height={200} src={img1.src} />
-        <Overlay />
-      </YStack>
-      <XStack p="$3" px="$4" fullscreen>
-        <YStack f={1}>
-          <Spacer flex={1} />
-          <H3>Enchanting Garden</H3>
-          <XStack ai="center" space>
-            <MapPin size={12} color="var(--color)" />
-            <H5>Oakland, CA</H5>
-          </XStack>
+    <Theme name="dark">
+      <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">
+        <YStack>
+          <Image width={800} height={200} src={img1.src} />
+          <Overlay />
         </YStack>
-        <YStack ai="flex-end">
-          <Spacer flex={1} />
-          <H4>$45</H4>
-          <Paragraph>/night</Paragraph>
-        </YStack>
+        <XStack p="$3" px="$4" fullscreen>
+          <YStack f={1}>
+            <Spacer flex={1} />
+            <H3>Enchanting Garden</H3>
+            <XStack ai="center" space>
+              <MapPin size={12} color="var(--color)" />
+              <H5>Oakland, CA</H5>
+            </XStack>
+          </YStack>
+          <YStack ai="flex-end">
+            <Spacer flex={1} />
+            <H4>$45</H4>
+            <Paragraph>/night</Paragraph>
+          </YStack>
+        </XStack>
       </XStack>
-    </XStack>
+    </Theme>
   )
 
   return (

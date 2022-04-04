@@ -28,7 +28,7 @@ export default function DocsCorePage({ frontmatter, code }: Doc) {
       <Spacer />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
-      <QuickNav />
+      <QuickNav key={frontmatter.slug} />
     </>
   )
 }

@@ -6,6 +6,7 @@ import { setColorAlpha } from './colorUtils'
 import { tokens } from './tokens'
 
 type ThemeCreatorProps = {
+  shift?: number
   backgrounds: (string | Variable)[]
   colors?: (string | Variable)[]
   offsets?: {
@@ -19,7 +20,7 @@ type ThemeCreatorProps = {
 
 // helpers
 
-const alternates = [1, 2, 3, 4, 5] as const
+const alternates = [1, 2, 3, 4] as const
 type AltKeys = 1 | 2 | 3 | 4 // one less for dark_darker
 type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
 type ThemeCreator<A = any> = (str: number, props: ThemeCreatorProps) => A
@@ -35,10 +36,10 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     ? Theme
     : never
 } {
-  const shift = props.isLight ? 0 : 1
+  const { shift = 0 } = props
   let themeEntries: any[] = [
     [name, getTheme(0 + shift, props)],
-    [`${name}_darker`, getTheme(0, props)],
+    [`${name}_darker`, getTheme(Math.max(0, 0 + shift - 1), props)],
   ]
 
   for (const alt of alternates) {
@@ -169,6 +170,7 @@ const darkThemes = createThemesFrom('dark', createTheme, {
   backgrounds: darkGradient,
   colors: lightGradient,
   isLight: false,
+  shift: 1,
   offsets: {
     color: [0, 7, 8, 9, 10],
   },
@@ -214,13 +216,20 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
   const [altLightThemes, altDarkThemes] = [colors, darkColors].map((colors, i) => {
     const isLight = i === 0
     const scheme = isLight ? 'light' : 'dark'
+    const shift = isLight ? 0 : 1
+    const backgrounds = Object.values(colors) as any[]
+    if (!isLight) {
+      const [_, h, sp, lp] = backgrounds[0].match(/hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/)
+      backgrounds.unshift(`hsl(${h}, ${sp}%, ${parseFloat(lp) / 2}%)`)
+    }
     const themeWithAlts = createThemesFrom(name, createTheme, {
-      backgrounds: Object.values(colors),
+      backgrounds,
       isLight,
+      shift,
       isBase: false,
       offsets: {
         background: isLight ? [1, 1, 1, 1] : null,
-        color: isLight ? [0, -1, -1, -1] : null,
+        color: isLight ? [0, -1, -1, -1] : [-1, -1, -1, -1, -1, -1],
       },
     })
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])

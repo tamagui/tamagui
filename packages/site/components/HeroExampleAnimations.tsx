@@ -1,23 +1,10 @@
 import { Play } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H2,
-  H3,
-  H4,
-  Paragraph,
-  Separator,
-  Square,
-  Theme,
-  ThemeReset,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Paragraph, Separator, Square, Theme, ThemeReset, XStack, YStack } from 'tamagui'
 
 import { animations } from '../constants/animations'
-import { Card } from './Card'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
@@ -123,7 +110,7 @@ export function HeroExampleAnimations() {
           w="100%"
           br="$6"
           ov="hidden"
-          // bc="$background"
+          // bc="$backgroundHover"
           h={305}
           mw={880}
           als="center"
@@ -149,9 +136,7 @@ export function HeroExampleAnimations() {
                 onPress={() => next()}
                 {...position}
               >
-                <ThemeReset>
-                  <LogoIcon downscale={0.75} color="var(--background)" />
-                </ThemeReset>
+                <LogoIcon downscale={0.75} color="var(--green2)" />
               </Square>
 
               <Button
@@ -169,7 +154,8 @@ export function HeroExampleAnimations() {
 
           <Separator vertical />
 
-          <YStack blw={1} boc="$background" $sm={{ display: 'none' }} width="40%">
+          <YStack pos="relative" blw={1} boc="$borderColor" $sm={{ display: 'none' }} width="40%">
+            <YStack fullscreen zi={-1} theme="alt2" bc="$background" />
             <ScrollView>
               {animationDescriptions.map((item, i) => {
                 const isActive = item === animation
@@ -205,7 +191,7 @@ export function HeroExampleAnimations() {
 
             <Separator />
 
-            <XStack theme="alt1" bc="$background" p="$4" ai="center" jc="center">
+            <XStack bc="$background" p="$4" ai="center" jc="center">
               {settings.map(([key, value], i) => {
                 return (
                   <React.Fragment key={key}>
