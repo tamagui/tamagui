@@ -85,7 +85,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         // TODO document and make configurable
         // replace minifier with css-minimizer-webpack-plugin which handles deduping atomic styles
-        if (!isServer) {
+        if (!isServer && !dev) {
           const cssMin = webpackConfig.optimization.minimizer.find((x) =>
             x.toString().includes('css-minimizer-plugin')
           )
@@ -233,13 +233,15 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         if (isNext12) {
           const firstOneOfRule = webpackConfig.module.rules.findIndex((x) => x && !!x.oneOf)
           const oneOfJSRules: any[] = webpackConfig.module.rules[firstOneOfRule].oneOf
-          const swcLoaderIndex = oneOfJSRules.findIndex(
-            (x) => x && x.use && x.use.loader === 'next-swc-loader'
-          )
-          const swcLoader = oneOfJSRules[swcLoaderIndex]
+          const afterSWCLoaderIndex =
+            oneOfJSRules.findIndex(
+              (x) => x && x.use && x.use.loader === 'next-swc-loader' && x.issuerLayer !== 'api'
+            ) + 1
+          const swcLoader = oneOfJSRules[afterSWCLoaderIndex]
+
           // put an earlier loader where we just do tamagui stuff before regular swc
           oneOfJSRules.splice(
-            swcLoaderIndex,
+            afterSWCLoaderIndex,
             0,
             {
               test: /(bottom-sheet).*\.[tj]sx?$/,

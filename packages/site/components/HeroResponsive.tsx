@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Button, Circle, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
 import { useGet } from '../hooks/useGet'
@@ -14,7 +14,11 @@ import { useOnIntersecting } from './useOnIntersecting'
 
 let bounding: DOMRect | null = null
 let prevMove = 0
-const breakpoints = [660, 800, 1020]
+const breakpoints = [
+  { name: 'xs', at: 660 },
+  { name: 'sm', at: 800 },
+  { name: 'md', at: 1020 },
+]
 const browserHeight = 445
 
 export const HeroResponsive = memo(() => {
@@ -51,7 +55,13 @@ export const HeroResponsive = memo(() => {
       prevMove = 0
       if (width) {
         const nextSizeI =
-          width > breakpoints[2] ? 3 : width > breakpoints[1] ? 2 : width > breakpoints[0] ? 1 : 0
+          width > breakpoints[2].at
+            ? 3
+            : width > breakpoints[1].at
+            ? 2
+            : width > breakpoints[0].at
+            ? 1
+            : 0
         setSizeI(nextSizeI)
       }
     }, 16)
@@ -76,6 +86,10 @@ export const HeroResponsive = memo(() => {
   const isSmall = 500 + move < 680
   const { tint } = useTint()
 
+  const handleMarkerPress = useCallback((name) => {
+    // todo animate to width
+  }, [])
+
   return (
     <YStack y={0} my="$-12" py="$12" pos="relative">
       <ContainerLarge mb={-26} pos="relative">
@@ -88,7 +102,7 @@ export const HeroResponsive = memo(() => {
           <YStack
             className="unselectable"
             pe={isDragging ? 'none' : 'auto'}
-            w={width}
+            // w="100%"
             mw={width}
             f={1}
             ref={safariRef}
@@ -120,13 +134,28 @@ export const HeroResponsive = memo(() => {
 
           <YStack f={1} h="100%" w="100%" className="bg-grid">
             <ContainerLarge pos="relative">
-              <YStack pos="absolute" top={-100} right={0}>
+              <YStack zi={-1} pe="none" pos="absolute" top={-100} right={0}>
                 <Glow />
               </YStack>
               <XStack>
-                <Marker active={sizeI > 0} name="xs" l={breakpoints[0]} />
-                <Marker active={sizeI > 1} name="sm" l={breakpoints[1]} />
-                <Marker active={sizeI > 2} name="md" l={breakpoints[2]} />
+                <Marker
+                  onPress={handleMarkerPress}
+                  active={sizeI > 0}
+                  name={breakpoints[0].name}
+                  l={breakpoints[0].at}
+                />
+                <Marker
+                  onPress={handleMarkerPress}
+                  active={sizeI > 1}
+                  name={breakpoints[1].name}
+                  l={breakpoints[1].at}
+                />
+                <Marker
+                  onPress={handleMarkerPress}
+                  active={sizeI > 2}
+                  name={breakpoints[2].name}
+                  l={breakpoints[2].at}
+                />
               </XStack>
             </ContainerLarge>
           </YStack>
@@ -136,13 +165,19 @@ export const HeroResponsive = memo(() => {
   )
 })
 
-const Marker = memo(({ name, active, ...props }: any) => {
+const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <Theme className="unselectable" name={active ? 'blue' : null}>
       <YStack pos="absolute" l={800} {...props}>
-        <XStack y={-80} ai="flex-start" space>
+        <XStack pe="none" y={-80} ai="flex-start" space>
           <YStack w={1} h={80} bc="$colorHover" opacity={active ? 0.5 : 0.2} />
-          <Button borderWidth={1} size="$3">
+          <Button
+            borderWidth={1}
+            size="$3"
+            onPress={() => {
+              onPress(name)
+            }}
+          >
             {name}
           </Button>
         </XStack>
@@ -164,12 +199,12 @@ const Header = memo(() => {
       <YStack f={1} space="$2">
         <HomeH2 als="flex-start">Responsive, done right</HomeH2>
         <Paragraph maxWidth={500} size="$5" theme="alt2">
-          Sharing responsive designs between web and native saves time, but responive hooks are slow
-          to write, and slow to run.
+          Sharing responsive designs between web and native saves time, but hooks are slow to write,
+          and run.
         </Paragraph>
 
         <Paragraph maxWidth={500} size="$5" theme="alt2">
-          Tamagui's inline styles and hooks compile away to efficient CSS media queries or
+          Tamagui styles and hooks compile away to efficient CSS media queries, or hoist to
           StyleSheet.create on native.
         </Paragraph>
       </YStack>

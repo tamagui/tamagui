@@ -202,8 +202,6 @@ export function createAnimations<A>(animations: A): {
   }
 }
 
-const PresenceContext = createContext({ custom: null })
-
 function animationDelay<Animate>(
   key: string,
   transition: MotiTransition<Animate> | undefined,

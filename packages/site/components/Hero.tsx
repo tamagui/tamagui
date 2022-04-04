@@ -116,8 +116,8 @@ const HeroTop = memo(() => {
                   fontWeight: '400',
                 }}
               >
-                Styles + components + compiler = performance with less code.
-                Write&nbsp;once,&nbsp;run&nbsp;everywhere, incredible speed.
+                An optimizing compiler for 🔼 performance with 🔽 code.
+                Write&nbsp;once,&nbsp;run&nbsp;everywhere, easily.
               </Paragraph>
             </YStack>
           </YStack>
