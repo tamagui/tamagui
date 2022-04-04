@@ -1,5 +1,5 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { Text, isWeb } from '@tamagui/core'
+import { AnimationKeys, Text, isWeb } from '@tamagui/core'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { memo, useCallback, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
@@ -30,7 +30,7 @@ if (typeof window !== 'undefined') {
   window['Toast'] = Toast
 }
 
-export const ToastRoot = memo(function ToastRoot() {
+export const ToastRoot = memo(function ToastRoot(props: { animation?: AnimationKeys }) {
   const forceUpdate = useForceUpdate()
   const stateRef = useRef({
     show: false,
@@ -90,8 +90,7 @@ export const ToastRoot = memo(function ToastRoot() {
         {state.show && !!state.content && (
           <YStack
             animated
-            // @ts-expect-error
-            animation="toast"
+            animation={props.animation || ('toast' as any)}
             backgroundColor={
               // TODO theme
               state.type === 'info'
