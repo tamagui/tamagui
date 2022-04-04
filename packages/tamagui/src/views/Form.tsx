@@ -1,4 +1,4 @@
-import { Stack, isWeb, styled } from '@tamagui/core'
+import { Stack, styled } from '@tamagui/core'
 
 export const Form = styled(Stack, {
   name: 'Form',

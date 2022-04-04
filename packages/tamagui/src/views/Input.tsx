@@ -15,6 +15,14 @@ export const Input = styled(
     paddingVertical: '$2',
     paddingHorizontal: '$2',
 
+    hoverStyle: {
+      borderColor: '$borderColorHover',
+    },
+
+    focusStyle: {
+      borderColor: '$borderColorFocus',
+    },
+
     // fixes flex bug:
     // <XStack space="$1">
     //   <Input flex={1} size="$1" placeholder="Size 1..." />
