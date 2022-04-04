@@ -181,6 +181,7 @@ const Safari = memo(({ isSmall }: { isSmall: boolean }) => {
   return (
     <YStack
       className="unselectable"
+      contain="paint"
       bc="$background"
       f={1}
       ov="hidden"
@@ -278,11 +279,19 @@ const BrowserPane = memo(() => {
     // only load iframe after scroll + timeout
     useEffect(() => {
       let tm
+
+      if (window.scrollY > 800) {
+        tm = setTimeout(() => {
+          setIsMounted(true)
+        }, 30)
+        return
+      }
+
       const onScroll = () => {
         window.removeEventListener('scroll', onScroll)
         tm = setTimeout(() => {
           setIsMounted(true)
-        })
+        }, 30)
       }
 
       window.addEventListener('scroll', onScroll)
@@ -294,7 +303,7 @@ const BrowserPane = memo(() => {
   }
 
   return (
-    <YStack pe="none">
+    <YStack h="100%" pe="none">
       {!!isMounted && <iframe width="100%" height={browserHeight} src="/responsive-demo" />}
     </YStack>
   )

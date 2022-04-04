@@ -100,7 +100,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     const forceUpdate = useForceUpdate()
     const features = useFeatures(props, { forceUpdate })
-    const theme = useTheme(props.theme, componentName, props)
+    const theme = useTheme(props.theme, componentName, props, forceUpdate)
     const [state, set_] = useState<ComponentState>(defaultComponentState)
     const set = createShallowUpdate(set_)
 
@@ -115,10 +115,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
-
-    if (props['debug']) {
-      console.log('GET??', theme.color)
-    }
 
     const {
       viewProps: viewPropsIn,
@@ -287,7 +283,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('» styles', { pseudos, style, styles, classList, stylesClassNames, className: className.trim().split(' ') })
+          console.log('» styles', { pseudos, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
         }
       }
       viewProps.className = className

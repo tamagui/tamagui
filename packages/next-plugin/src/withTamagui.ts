@@ -35,7 +35,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           'react/jsx-runtime': jsxRuntime,
           'react/jsx-dev-runtime.js': jsxDevRuntime,
           'react/jsx-dev-runtime': jsxDevRuntime,
-          'react-dom/client': require.resolve('react-dom/client'),
+          // 'react-dom/client': require.resolve('react-dom/client'),
           'react-native$': rnw,
           'react-native-reanimated': reanimated,
           '@testing-library/react-native': proxyWorm,

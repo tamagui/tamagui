@@ -6,7 +6,7 @@ import ButtonDemo from './demos/ButtonDemo'
 export const Test = () => {
   return (
     <YStack p="$10">
-      <Button>hello222</Button>
+      <Button theme="light">hello2</Button>
       <ButtonDemo />
       <AnimationsDemo />
     </YStack>
