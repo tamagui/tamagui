@@ -61,17 +61,14 @@ function updateChildLookup(
 ) {
   const seenChildren = isDev ? new Set<ComponentKey>() : null
 
-  children.forEach((child) => {
+  for (const child of children) {
     const key = getChildKey(child)
-
     if (isDev && seenChildren && seenChildren.has(key)) {
       console.warn(`Children of AnimatePresence require unique keys. "${key}" is a duplicate.`)
-
       seenChildren.add(key)
     }
-
     allChildren.set(key, child)
-  })
+  }
 }
 
 function onlyElements(children: ReactNode): ReactElement<any>[] {
@@ -138,8 +135,6 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
   const filteredChildren = onlyElements(children)
   let childrenToRender = filteredChildren
 
-  console.log('filteredChildren', filteredChildren)
-
   const exiting = new Set<ComponentKey>()
 
   // Keep a living record of the children we're actually rendering so we
@@ -155,7 +150,6 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
 
   useIsomorphicLayoutEffect(() => {
     isInitialRender.current = false
-
     updateChildLookup(filteredChildren, allChildren)
     presentChildren.current = childrenToRender
   })
@@ -195,7 +189,6 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
   const numPresent = presentKeys.length
   for (let i = 0; i < numPresent; i++) {
     const key = presentKeys[i]
-
     if (targetKeys.indexOf(key) === -1) {
       exiting.add(key)
     }
@@ -209,12 +202,16 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
 
   // Loop through all currently exiting components and clone them to overwrite `animate`
   // with any `exit` prop they might have defined.
-  exiting.forEach((key) => {
+  for (const key of exiting) {
     // If this component is actually entering again, early return
-    if (targetKeys.indexOf(key) !== -1) return
+    if (targetKeys.indexOf(key) !== -1) {
+      continue
+    }
 
     const child = allChildren.get(key)
-    if (!child) return
+    if (!child) {
+      continue
+    }
 
     const insertionIndex = presentKeys.indexOf(key)
 
@@ -231,9 +228,9 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
       // Defer re-rendering until all exiting children have indeed left
       if (!exiting.size) {
         presentChildren.current = filteredChildren
-
-        if (isMounted.current === false) return
-
+        if (isMounted.current === false) {
+          return
+        }
         forceRender()
         onExitComplete && onExitComplete()
       }
@@ -252,7 +249,7 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
         {child}
       </PresenceChild>
     )
-  })
+  }
 
   // Add `MotionContext` even to children that don't need it to ensure we're rendering
   // the same tree between renders
@@ -270,6 +267,8 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
       </PresenceChild>
     )
   })
+
+  console.log('AnimateP', [...childrenToRender])
 
   if (process.env.NODE_ENV !== 'production' && exitBeforeEnter && childrenToRender.length > 1) {
     console.warn(

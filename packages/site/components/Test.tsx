@@ -10,9 +10,9 @@ export const Test = () => {
     <YStack p="$10" space="$10">
       <TooltipDemo />
       <MediaPlayer alt={1} />
-      <Button theme="light">hello2</Button>
-      <ButtonDemo />
-      <AnimationsDemo />
+      {/* <Button theme="light">hello2</Button> */}
+      {/* <ButtonDemo /> */}
+      {/* <AnimationsDemo /> */}
     </YStack>
   )
 }

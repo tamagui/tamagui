@@ -41,7 +41,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     const { style, hoverStyle, pressStyle, focusStyle, exitStyle, onDidAnimate, delay } = state
     const [isPresent, safeToUnmount] = usePresence()
     const presence = useContext(AnimatePresenceContext)
-    console.log('', isPresent, safeToUnmount, presence)
+    console.log('????????????', { style, isPresent, safeToUnmount, presence })
     const isMounted = useSharedValue(false)
     const hasExitStyle = !!exitStyle
     const custom = useCallback(() => {

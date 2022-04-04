@@ -75,10 +75,10 @@ export {
   createTheme,
   createTokens,
   createVariable,
+  getConfig,
   getHasConfigured,
   getMedia,
   getStylesAtomic,
-  getConfig,
   getThemes,
   getTokens,
   isObj,
@@ -94,14 +94,14 @@ export {
   // hooks
   useConstant,
   useDefaultThemeName,
-  useIsomorphicLayoutEffect,
-  useMedia,
   useIsMounted,
-  useUnmountEffect,
+  useIsomorphicLayoutEffect,
+  useIsTouchDevice,
+  useMedia,
+  usePressable,
   useTheme,
   useThemeName,
-  useIsTouchDevice,
-  usePressable,
+  useUnmountEffect,
 } from '@tamagui/core'
 
 export * from './viewTypes'

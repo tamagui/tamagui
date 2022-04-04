@@ -8,6 +8,7 @@ import { HoverOrToggle } from './HoverOrToggle'
 import { Popover } from './Popover/Popover'
 import { IPopoverProps } from './Popover/types'
 import { PopperArrow } from './PopperArrow'
+import { StackProps } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -17,6 +18,7 @@ export type HoverablePopoverHandle = {
 }
 
 export type HoverablePopoverProps = IPopoverProps & {
+  enterStyle?: StackProps['enterStyle']
   delay?: number
   fallbackToPress?: boolean
   allowHoverOnContent?: boolean
@@ -73,6 +75,8 @@ export const HoverablePopover = withStaticProperties(
         return trigger(null as any, { open: false })
       }
 
+      console.log('render')
+
       return (
         <Popover
           isOpen={isActive}
@@ -92,7 +96,9 @@ export const HoverablePopover = withStaticProperties(
           }}
         >
           {(openProps) => {
+            console.log('openProps', openProps)
             const childrenElements = (
+              // @ts-ignore
               <AnimatePresence>
                 {typeof children === 'function' ? children(openProps) : children}
               </AnimatePresence>

@@ -16,7 +16,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
-import { isTouchDevice, isWeb } from './constants/platform'
+import { isAndroid, isTouchDevice, isWeb } from './constants/platform'
 import { rnw } from './constants/rnw'
 import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
@@ -56,6 +56,8 @@ const defaultComponentState = {
   press: false,
   pressIn: false,
   focus: false,
+  // only used by enterStyle
+  mounted: false,
 }
 
 type ComponentState = typeof defaultComponentState
@@ -117,12 +119,35 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
 
+    const hasEnterStyle = !!props.enterStyle
+
+    // isMounted
+    const internal = useRef<{ isMounted: boolean }>()
+    if (!internal.current) {
+      internal.current = {
+        isMounted: true,
+      }
+    }
+    useEffect(() => {
+      if (hasEnterStyle) {
+        // we need to use state to properly have mounted go from false => true
+        set({
+          mounted: true,
+        })
+      }
+      internal.current!.isMounted = true
+      return () => {
+        mouseUps.delete(unPress)
+        internal.current!.isMounted = false
+      }
+    }, [])
+
     const {
       viewProps: viewPropsIn,
       pseudos,
       style,
       classNames,
-    } = getSplitStyles(props, staticConfig, theme)
+    } = getSplitStyles(props, staticConfig, theme, state.mounted)
 
     const {
       tag,
@@ -157,9 +182,14 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       onStartShouldSetResponderCapture,
       onMouseDown,
       onClick,
+      nativeID,
 
       accessible,
       accessibilityRole,
+
+      // android
+      collapsable,
+      focusable,
 
       // ignore from here on out
       theme: _themeProp,
@@ -170,6 +200,15 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     } = viewPropsIn
 
     let viewProps: StackProps = viewPropsRest
+
+    if (nativeID) {
+      viewProps.id = nativeID
+    }
+
+    if (isAndroid) {
+      if (collapsable) viewProps.collapsable = collapsable
+      if (focusable) viewProps.focusable = focusable
+    }
 
     if (!isWeb) {
       if (accessible) viewProps.accessible = accessible
@@ -197,25 +236,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         onStartShouldSetResponderCapture,
       })
     }
-
-    const internal = useRef<{ isMounted: boolean }>()
-    if (!internal.current) {
-      internal.current = {
-        isMounted: true,
-      }
-    }
-
-    useEffect(() => {
-      internal.current!.isMounted = true
-      if (pseudos?.enterStyle) {
-        // force update when enterStyle is set to allow animation driver to handle that
-        forceUpdate()
-      }
-      return () => {
-        mouseUps.delete(unPress)
-        internal.current!.isMounted = false
-      }
-    }, [])
 
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
