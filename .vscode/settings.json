@@ -1,7 +1,11 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.colorCustomizations": {
-    "titleBar.activeForeground": "#00ffff",
-    "titleBar.inactiveForeground": "#00ffff"
+    "[Nüshu]": {
+      "statusBar.background": "#e5d0b1",
+    },
+    "[ktrz-monokai]": {
+      "statusBar.background": "#383125"
+    }
   }
 }
