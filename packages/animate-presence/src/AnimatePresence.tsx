@@ -4,6 +4,7 @@ import {
   useIsomorphicLayoutEffect,
   useUnmountEffect,
 } from '@tamagui/core'
+import * as React from 'react'
 import {
   Children,
   ReactElement,
@@ -13,7 +14,6 @@ import {
   useContext,
   useRef,
 } from 'react'
-import * as React from 'react'
 
 import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'
@@ -22,21 +22,6 @@ export interface AnimatePresenceProps {
   /**
    * By passing `initial={false}`, `AnimatePresence` will disable any initial animations on children
    * that are present when the component is first rendered.
-   *
-   * ```jsx
-   * <AnimatePresence initial={false}>
-   *   {isVisible && (
-   *     <motion.div
-   *       key="modal"
-   *       initial={{ opacity: 0 }}
-   *       animate={{ opacity: 1 }}
-   *       exit={{ opacity: 0 }}
-   *     />
-   *   )}
-   * </AnimatePresence>
-   * ```
-   *
-   * @public
    */
   initial?: boolean
 
@@ -44,39 +29,23 @@ export interface AnimatePresenceProps {
    * When a component is removed, there's no longer a chance to update its props. So if a component's `exit`
    * prop is defined as a dynamic variant and you want to pass a new `custom` prop, you can do so via `AnimatePresence`.
    * This will ensure all leaving components animate using the latest data.
-   *
-   * @public
    */
   custom?: any
 
   /**
    * Fires when all exiting nodes have completed animating out.
-   *
-   * @public
    */
   onExitComplete?: () => void
 
   /**
    * If set to `true`, `AnimatePresence` will only render one component at a time. The exiting component
    * will finish its exit animation before the entering component is rendered.
-   *
-   * ```jsx
-   * const MyComponent = ({ currentItem }) => (
-   *   <AnimatePresence exitBeforeEnter>
-   *     <motion.div key={currentItem} exit={{ opacity: 0 }} />
-   *   </AnimatePresence>
-   * )
-   * ```
-   *
-   * @beta
    */
   exitBeforeEnter?: boolean
 
   /**
    * Used in Framer to flag that sibling children *shouldn't* re-render as a result of a
    * child being removed.
-   *
-   * @internal
    */
   presenceAffectsLayout?: boolean
 }
@@ -84,7 +53,6 @@ export interface AnimatePresenceProps {
 type ComponentKey = string | number
 
 const getChildKey = (child: ReactElement<any>): ComponentKey => child.key || ''
-
 const isDev = process.env.NODE_ENV !== 'production'
 
 function updateChildLookup(
@@ -122,7 +90,7 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
  *
  * When adding/removing more than a single child, every child **must** be given a unique `key` prop.
  *
- * Any `motion` components that have an `exit` property defined will animate out when removed from
+ * Any animated components that have an `exit` property defined will animate out when removed from
  * the tree.
  *
  * ```jsx
@@ -144,8 +112,8 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
  *
  * You can sequence exit animations throughout a tree using variants.
  *
- * If a child contains multiple `motion` components with `exit` props, it will only unmount the child
- * once all `motion` components have finished animating out. Likewise, any components using
+ * If a child contains multiple animated components with `exit` props, it will only unmount the child
+ * once all animated components have finished animating out. Likewise, any components using
  * `usePresence` all need to call `safeToRemove`.
  *
  * @public
@@ -169,6 +137,8 @@ export const AnimatePresence: React.FunctionComponent<AnimatePresenceProps> = ({
   // Filter out any children that aren't ReactElements. We can only track ReactElements with a props.key
   const filteredChildren = onlyElements(children)
   let childrenToRender = filteredChildren
+
+  console.log('filteredChildren', filteredChildren)
 
   const exiting = new Set<ComponentKey>()
 

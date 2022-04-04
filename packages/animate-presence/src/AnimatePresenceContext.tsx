@@ -2,7 +2,7 @@ import { createContext } from 'react'
 
 import { VariantLabels } from './types'
 
-export interface PresenceContextProps {
+export interface AnimatePresenceContextProps {
   id: string
   isPresent: boolean
   register: (id: string) => () => void
@@ -11,4 +11,4 @@ export interface PresenceContextProps {
   custom?: any
 }
 
-export const PresenceContext = createContext<PresenceContextProps | null>(null)
+export const AnimatePresenceContext = createContext<AnimatePresenceContextProps | null>(null)

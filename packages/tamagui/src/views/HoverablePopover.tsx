@@ -1,6 +1,7 @@
+import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsTouchDevice, withStaticProperties } from '@tamagui/core'
 import { useDebounce } from '@tamagui/use-debounce'
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import { Hoverable, HoverableHandle } from './Hoverable'
 import { HoverOrToggle } from './HoverOrToggle'
@@ -91,7 +92,11 @@ export const HoverablePopover = withStaticProperties(
           }}
         >
           {(openProps) => {
-            const childrenElements = typeof children === 'function' ? children(openProps) : children
+            const childrenElements = (
+              <AnimatePresence>
+                {typeof children === 'function' ? children(openProps) : children}
+              </AnimatePresence>
+            )
             return (
               <Popover.Content>
                 {isTouchDevice && fallbackToPress ? (

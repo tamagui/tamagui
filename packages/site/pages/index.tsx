@@ -18,9 +18,12 @@ import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
 import { SearchButton } from '../components/Search'
+import { Test } from '../components/Test'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
+  return <Test />
+
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />

@@ -1,7 +1,7 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
-import { getTamagui } from '../conf'
+import { getConfig } from '../conf'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { areEqualSets } from '../helpers/areEqualSets'
 import { ThemeContext } from '../ThemeContext'
@@ -59,7 +59,7 @@ export const useTheme = (
       if (process.env.NODE_ENV === 'development') {
         console.warn('No theme', { themeName, theme, componentName, className })
       }
-      return themes[getTamagui().defaultTheme || 'light' || Object.keys(themes)[0]]
+      return themes[getConfig().defaultTheme || 'light' || Object.keys(themes)[0]]
     }
     return new Proxy(theme, {
       has(_, key) {

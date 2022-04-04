@@ -1,7 +1,7 @@
 import { getStyleRules } from '@tamagui/helpers'
 
 import { configListeners, getHasConfigured, setConfig } from './conf'
-import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from './constants/constants'
+import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
@@ -38,8 +38,6 @@ export type CreateTamaguiProps =
     cssStyleSeparator?: string
     maxDarkLightNesting?: number
   }
-
-const PRE = THEME_CLASSNAME_PREFIX
 
 const createdConfigs = new WeakMap<any, boolean>()
 

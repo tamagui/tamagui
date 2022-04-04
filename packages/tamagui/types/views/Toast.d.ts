@@ -1,4 +1,4 @@
-import React from 'react';
+/// <reference types="react" />
 export declare type ToastOptions = {
     duration?: number;
     type?: 'info' | 'success' | 'error';
@@ -9,5 +9,5 @@ export declare const Toast: {
     error: (content: any, options?: Omit<ToastOptions, "type"> | undefined) => void;
     success: (content: any, options?: Omit<ToastOptions, "type"> | undefined) => void;
 };
-export declare const ToastRoot: React.NamedExoticComponent<object>;
+export declare const ToastRoot: import("react").NamedExoticComponent<object>;
 //# sourceMappingURL=Toast.d.ts.map

@@ -3,7 +3,7 @@ import { useConstant } from '@tamagui/core'
 import * as React from 'react'
 import { useMemo } from 'react'
 
-import { PresenceContext, PresenceContextProps } from './PresenceContext'
+import { AnimatePresenceContext, AnimatePresenceContextProps } from './AnimatePresenceContext'
 import { VariantLabels } from './types'
 
 interface PresenceChildProps {
@@ -27,7 +27,7 @@ export const PresenceChild = ({
   const id = useId()
 
   const context = useMemo(
-    (): PresenceContextProps => ({
+    (): AnimatePresenceContextProps => ({
       id,
       initial,
       isPresent,
@@ -59,14 +59,16 @@ export const PresenceChild = ({
   }, [isPresent])
 
   /**
-   * If there's no `motion` components to fire exit animations, we want to remove this
+   * If there's no animated components to fire exit animations, we want to remove this
    * component immediately.
    */
   React.useEffect(() => {
     !isPresent && !presenceChildren.size && onExitComplete?.()
   }, [isPresent])
 
-  return <PresenceContext.Provider value={context}>{children}</PresenceContext.Provider>
+  return (
+    <AnimatePresenceContext.Provider value={context}>{children}</AnimatePresenceContext.Provider>
+  )
 }
 
 function newChildrenMap(): Map<string, boolean> {

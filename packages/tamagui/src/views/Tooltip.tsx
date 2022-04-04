@@ -1,10 +1,11 @@
 import { StackProps, Text, Theme, isTamaguiElement, isWeb, styled } from '@tamagui/core'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 
 import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
 import { Paragraph } from './Paragraph'
 import { SizableStack } from './SizableStack'
 import { SizableTextProps } from './SizableText'
+import { YStack } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -35,23 +36,26 @@ export const Tooltip = ({
       if (!open) {
         return null
       }
-      return [
-        showArrow ? <HoverablePopover.Arrow backgroundColor="$background" /> : null,
-        <Theme name={alwaysDark ? 'dark' : null}>
-          <TooltipFrame
-            elevation={size}
-            backgroundColor="$background"
-            maxWidth={400}
-            size={size}
-            // TODO we could fix this i think with some fancy stuff
-            {...(tooltipFrameProps as any)}
-          >
-            <Paragraph textAlign="center" color="$color" size={size}>
-              {contents}
-            </Paragraph>
-          </TooltipFrame>
-        </Theme>,
-      ]
+      return (
+        // @ts-ignore
+        <YStack animated animation="tooltip">
+          {showArrow ? <HoverablePopover.Arrow backgroundColor="$background" /> : null}
+          <Theme name={alwaysDark ? 'dark' : null}>
+            <TooltipFrame
+              elevation={size}
+              backgroundColor="$background"
+              maxWidth={400}
+              size={size}
+              // TODO we could fix this i think with some fancy stuff
+              {...(tooltipFrameProps as any)}
+            >
+              <Paragraph textAlign="center" color="$color" size={size}>
+                {contents}
+              </Paragraph>
+            </TooltipFrame>
+          </Theme>
+        </YStack>
+      )
     },
     [showArrow, alwaysDark, contents, tooltipFrameProps, size]
   )

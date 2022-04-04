@@ -1,4 +1,4 @@
-import { getTamagui } from '../conf'
+import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { isVariable } from '../createVariable'
 import { StaticConfig, TamaguiInternalConfig } from '../types'
@@ -10,7 +10,7 @@ export const createPropMapper = (c: StaticConfig) => {
   const defaultProps = c.defaultProps || {}
 
   return (key: string, value: any, theme: any, props: any) => {
-    const conf = getTamagui()
+    const conf = getConfig()
     if (!conf) {
       console.trace('no conf! err')
       return

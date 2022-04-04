@@ -1,6 +1,4 @@
 import {
-  AnimatedStack,
-  AnimatedStackProps,
   Theme,
   isTouchDevice,
   isWeb,
@@ -10,16 +8,23 @@ import {
 } from '@tamagui/core'
 import { useDebounceValue } from '@tamagui/use-debounce'
 import React from 'react'
-import { Modal as ModalNative, ModalProps as ModalPropsReact } from 'react-native'
+import {
+  ModalBaseProps,
+  Modal as ModalNative,
+  ModalPropsAndroid,
+  ModalPropsIOS,
+} from 'react-native'
 
 import { prevent } from '../helpers/prevent'
-import { YStack } from './Stacks'
+import { StackProps, YStack } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
+type ModalPropsReact = ModalBaseProps & ModalPropsIOS & ModalPropsAndroid
+
 export type ModalProps = Omit<ModalPropsReact, 'children'> &
-  AnimatedStackProps & {
+  StackProps & {
     visible?: boolean
     overlayBackground?: string
     overlayDismisses?: boolean
@@ -53,7 +58,6 @@ export const Modal = (props: ModalProps) => {
     minWidth,
     maxWidth,
     maxHeight,
-    velocity,
     animation,
     ...rest
   } = props
@@ -119,7 +123,8 @@ export const Modal = (props: ModalProps) => {
             onPressOut={overlayDismisses ? onRequestClose : undefined}
             onPress={onDismiss}
           >
-            <AnimatedStack
+            <YStack
+              animated
               {...{
                 height,
                 width,
@@ -127,17 +132,15 @@ export const Modal = (props: ModalProps) => {
                 minWidth,
                 maxWidth,
                 maxHeight,
-                velocity,
                 pointerEvents,
                 animateState: modalVisible ? 'in' : 'out',
                 animation,
               }}
             >
-              {/* @ts-ignore */}
               <ModalYStack onPress={prevent} pointerEvents={pointerEvents} {...rest}>
                 {finalChildren}
               </ModalYStack>
-            </AnimatedStack>
+            </YStack>
           </YStack>
         </Theme>
       </ModalNative>
@@ -147,7 +150,6 @@ export const Modal = (props: ModalProps) => {
   return (
     <ModalNative animationType={animationType} {...modalProps}>
       <Theme name={themeName}>
-        {/* @ts-ignore */}
         <YStack flex={1} {...rest} backgroundColor="$background">
           {finalChildren}
         </YStack>

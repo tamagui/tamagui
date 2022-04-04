@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/animated-presence",
+  "name": "@tamagui/animate-presence",
   "version": "1.0.0-alpha.68",
   "source": "src/index.ts",
   "license": "MIT",

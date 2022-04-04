@@ -1,6 +1,6 @@
 import { ConfigListener, TamaguiInternalConfig } from './types'
 
-export let conf: TamaguiInternalConfig | null
+let conf: TamaguiInternalConfig | null
 
 export const setConfig = (next: TamaguiInternalConfig) => {
   conf = next
@@ -13,7 +13,7 @@ export const setConfig = (next: TamaguiInternalConfig) => {
 }
 
 export const getHasConfigured = () => !!conf
-export const getTamagui = () => conf!
+export const getConfig = () => conf!
 export const getTokens = () => conf!.tokensParsed
 export const getThemes = () => conf!.themes
 
