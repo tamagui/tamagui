@@ -189,6 +189,7 @@ export declare type PseudoProps<A> = {
     pressStyle?: A | null;
     focusStyle?: A | null;
     exitStyle?: A | null;
+    enterStyle?: A | null;
 };
 export declare type PsuedoPropKeys = keyof PseudoProps<any>;
 declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;

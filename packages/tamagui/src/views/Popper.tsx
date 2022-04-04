@@ -113,7 +113,7 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
   }, [overlayRef, setOverlayRef])
 
   // Might have performance impact if there are a lot of siblings!
-  // Shouldn't be an issue with popovers since it would have atmost 2. Arrow and Content.
+  // Shouldn't be an issue with popovers since it would have at most 2. Arrow and Content.
   React.Children.forEach(children, (child) => {
     if (
       React.isValidElement(child) &&

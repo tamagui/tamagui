@@ -12,13 +12,15 @@ type NotPresent = [false, SafeToRemove]
 export function usePresence(): AlwaysPresent | Present | NotPresent {
   const context = useContext(AnimatePresenceContext)
 
-  console.log('context', context)
-
   if (context === null) {
     return [true, null]
   }
 
   const { isPresent, onExitComplete, register } = context
+
+  if (!isPresent) {
+    console.log('BYE')
+  }
 
   // It's safe to call the following hooks conditionally (after an early return) because the context will always
   // either be null or non-null for the lifespan of the component.
@@ -27,7 +29,6 @@ export function usePresence(): AlwaysPresent | Present | NotPresent {
   const id = useId()
 
   useEffect(() => {
-    console.log('registering')
     register(id)
   }, [])
 

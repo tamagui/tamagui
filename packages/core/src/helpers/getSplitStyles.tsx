@@ -39,7 +39,8 @@ export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
-  theme: ThemeObject
+  theme: ThemeObject,
+  isMounted = false
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
@@ -75,6 +76,14 @@ export const getSplitStyles = (
       // pseudo
       if (isPseudo) {
         if (!val) continue
+        if (key === 'enterStyle') {
+          if (isMounted) {
+            // once mounted we can ignore enterStyle
+            continue
+          }
+          style.push(getSubStyle(val, staticConfig, theme, props))
+          continue
+        }
         pseudos = pseudos || {}
         pseudos[key] = pseudos[key] || {}
         Object.assign(pseudos[key], getSubStyle(val, staticConfig, theme, props))

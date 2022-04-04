@@ -1,7 +1,6 @@
 import { useId } from '@react-aria/utils'
 import { useConstant } from '@tamagui/core'
 import * as React from 'react'
-import { useMemo } from 'react'
 
 import { AnimatePresenceContext, AnimatePresenceContextProps } from './AnimatePresenceContext'
 import { VariantLabels } from './types'
@@ -26,7 +25,7 @@ export const PresenceChild = ({
   const presenceChildren = useConstant(newChildrenMap)
   const id = useId()
 
-  const context = useMemo(
+  const context = React.useMemo(
     (): AnimatePresenceContextProps => ({
       id,
       initial,
@@ -34,11 +33,11 @@ export const PresenceChild = ({
       custom,
       onExitComplete: (childId: string) => {
         presenceChildren.set(childId, true)
-
         for (const isComplete of presenceChildren.values()) {
-          if (!isComplete) return // can stop searching when any is incomplete
+          if (!isComplete) {
+            return // can stop searching when any is incomplete
+          }
         }
-
         onExitComplete?.()
       },
       register: (childId: string) => {
@@ -54,7 +53,8 @@ export const PresenceChild = ({
     presenceAffectsLayout ? undefined : [isPresent]
   )
 
-  useMemo(() => {
+  // cant this be a useEffect?
+  React.useMemo(() => {
     presenceChildren.forEach((_, key) => presenceChildren.set(key, false))
   }, [isPresent])
 
@@ -63,7 +63,10 @@ export const PresenceChild = ({
    * component immediately.
    */
   React.useEffect(() => {
-    !isPresent && !presenceChildren.size && onExitComplete?.()
+    if (!isPresent && !presenceChildren.size) {
+      console.log('on exit complete')
+      onExitComplete?.()
+    }
   }, [isPresent])
 
   return (

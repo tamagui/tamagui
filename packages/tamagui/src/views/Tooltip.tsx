@@ -13,7 +13,19 @@ React['createElement']
 export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
   size?: SizableTextProps['size']
   contents?: string | any
+  // TODO move this into a radix style separate components BUT make them optional:
+  //  so you can do:
+  //     <Tooltip contents="hello"><Button /></Tooltip>
+  //  but also do:
+  //     <Tooltip>
+  //       <Tooltip.Container animated animation="bounce" enterStyle={{}}>
+  //          <Tooltip.Arrow />
+  //          <Tooltip.Frame />
+  //       </Tooltip.Container>
+  //       <Tooltip.Trigger />
+  //     </Tooltip>
   tooltipFrameProps?: Omit<StackProps, 'children'>
+  tooltipContainerProps?: Omit<StackProps, 'children'>
   alwaysDark?: boolean
   showArrow?: boolean
 }
@@ -27,8 +39,16 @@ export const Tooltip = ({
   size = '$4',
   contents,
   tooltipFrameProps,
+  tooltipContainerProps = {
+    opacity: 1,
+    y: 0,
+  },
   alwaysDark,
   showArrow,
+  enterStyle = {
+    opacity: 0,
+    y: -10,
+  },
   ...props
 }: TooltipProps) => {
   const getContents = useCallback(
@@ -37,9 +57,19 @@ export const Tooltip = ({
         return null
       }
       return (
-        // @ts-ignore
-        <YStack animated animation="tooltip">
-          {showArrow ? <HoverablePopover.Arrow backgroundColor="$background" /> : null}
+        <YStack
+          key="tooltip-child"
+          animated
+          // @ts-ignore
+          animation="tooltip"
+          // @ts-ignore
+          enterStyle={enterStyle}
+          {...tooltipContainerProps}
+        >
+          {!!showArrow && (
+            //
+            <HoverablePopover.Arrow backgroundColor="$background" />
+          )}
           <Theme name={alwaysDark ? 'dark' : null}>
             <TooltipFrame
               elevation={size}

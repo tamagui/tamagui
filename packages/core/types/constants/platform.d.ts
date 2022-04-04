@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+export declare const isAndroid: boolean;
+export declare const isIOS: boolean;
 export declare const isWeb: boolean;
 export declare const isSSR: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;

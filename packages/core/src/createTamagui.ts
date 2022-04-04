@@ -39,29 +39,14 @@ export type CreateTamaguiProps =
     maxDarkLightNesting?: number
   }
 
+// config is re-run by the @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
-
-// for quick testing types:
-// const x = createTamagui({
-//   shorthands: {},
-//   media: {},
-//   themes: {},
-//   tokens: {
-//     font: {},
-//     color: {},
-//     radius: {},
-//     size: {},
-//     space: {},
-//     zIndex: {},
-//   },
-// })
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
 ): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E>>
   ? TamaguiInternalConfig<A, B, C, D, E>
   : unknown {
-  // config is re-run by the @tamagui/static, dont double validate
   if (createdConfigs.has(config)) {
     return config as any
   }
@@ -258,3 +243,18 @@ function ensureThemeVariable(theme: any, key: string) {
     }
   }
 }
+
+// for quick testing types:
+// const x = createTamagui({
+//   shorthands: {},
+//   media: {},
+//   themes: {},
+//   tokens: {
+//     font: {},
+//     color: {},
+//     radius: {},
+//     size: {},
+//     space: {},
+//     zIndex: {},
+//   },
+// })

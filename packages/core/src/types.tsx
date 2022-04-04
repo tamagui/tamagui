@@ -314,6 +314,7 @@ export type PseudoProps<A> = {
   pressStyle?: A | null
   focusStyle?: A | null
   exitStyle?: A | null
+  enterStyle?: A | null
 }
 
 export type PsuedoPropKeys = keyof PseudoProps<any>
