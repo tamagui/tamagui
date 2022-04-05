@@ -12,7 +12,7 @@ const tamaguiOptions = {
   config: './tamagui.config.ts',
   components: ['tamagui'],
   importsWhitelist: ['constants.js'],
-  disable: true, //NODE_ENV === 'development',
+  // disable: true, //NODE_ENV === 'development',
 }
 
 module.exports = {
@@ -67,8 +67,10 @@ module.exports = {
               {
                 loader: 'esbuild-loader',
                 options: {
+                  jsxFactory: 'createElement',
                   loader: 'tsx',
                   minify: false,
+                  banner: "import { createElement } from 'react';\n",
                 },
               },
               {

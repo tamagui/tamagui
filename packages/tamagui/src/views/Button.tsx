@@ -4,6 +4,7 @@ import {
   ThemeableProps,
   getTokens,
   getVariableValue,
+  spacedChildren,
   styled,
   themeable,
   useTheme,
@@ -23,13 +24,24 @@ type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
 export type ButtonProps = GetProps<typeof ButtonFrame> &
   ThemeableProps & {
+    // add icon before, passes color and size automatically if Component
+    icon?: IconProp
+    // add icon after, passes color and size automatically if Component
+    iconAfter?: IconProp
+    // adjust icon relative to size
+    // default: -1
     scaleIcon?: number
+    // dont wrap inner contents in a text element
+    noTextWrap?: boolean
+    // make the spacing elements flex
+    spaceFlex?: number | boolean
+    // adjust internal space relative to size
+    // default -3
+    scaleSpace?: number
+    // pass text properties:
     color?: SizableTextProps['color']
     fontWeight?: SizableTextProps['fontWeight']
     letterSpacing?: SizableTextProps['letterSpacing']
-    noTextWrap?: boolean
-    icon?: IconProp
-    iconAfter?: IconProp
   }
 
 const ButtonFrame = styled(SizableStack, {
@@ -83,10 +95,12 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           children,
           icon,
           iconAfter,
-          space,
           noTextWrap,
           theme: themeName,
-          scaleIcon = 0,
+          space,
+          spaceFlex = true,
+          scaleIcon = -1,
+          scaleSpace = -3,
           color: colorProp,
           fontWeight,
           letterSpacing,
@@ -113,7 +127,7 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
             return el
           }
           if (el) {
-            const iconSize = getFontSize(size, { relativeSize: -1 + scaleIcon })
+            const iconSize = getFontSize(size, { relativeSize: scaleIcon })
             return React.createElement(el, {
               color,
               size: iconSize,
@@ -149,7 +163,7 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
 
         return (
           // careful not to desctructure and re-order props, order is important
-          <ButtonFrame space={getSpaceSize(size, -3)} ref={ref as any} {...rest}>
+          <ButtonFrame ref={ref as any} {...rest}>
             {themedIcon}
             {contents}
             {themedIconAfter}

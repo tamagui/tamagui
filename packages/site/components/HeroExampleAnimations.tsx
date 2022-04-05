@@ -136,7 +136,7 @@ export function HeroExampleAnimations() {
                 onPress={() => next()}
                 {...position}
               >
-                <LogoIcon downscale={0.75} color="var(--green2)" />
+                <LogoIcon downscale={0.75} />
               </Square>
 
               <Button

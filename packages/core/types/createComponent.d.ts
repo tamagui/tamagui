@@ -8,10 +8,11 @@ export declare const Spacer: StaticComponent<{
     size?: SpaceTokens | undefined;
     flex?: number | boolean | undefined;
 }, void, View, StaticConfigParsed>;
-export declare function spacedChildren({ isZStack, children, space, flexDirection, }: {
+export declare function spacedChildren({ isZStack, children, space, flexDirection, spaceFlex, }: {
     isZStack?: boolean;
     children: any;
     space?: any;
+    spaceFlex?: boolean | number;
     flexDirection?: ViewStyle['flexDirection'];
 }): any;
 export declare const AbsoluteFill: (props: any) => JSX.Element;

@@ -11,10 +11,10 @@ export function HeroPerformance() {
     <ContainerLarge position="relative">
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$1">
-          <HomeH2>Lovable speed</HomeH2>
+          <HomeH2>Top Performance</HomeH2>
           <HomeH3 maw={580}>
-            Even with inline styles get amazing performance thanks to an advanced, multi-stage
-            optimizing compiler.
+            Get amazing performance thanks to an advanced, multi-stage optimizing compiler - even
+            with inline styling.
           </HomeH3>
         </YStack>
 

@@ -1,183 +1,131 @@
-- shorthands should be swapped key/val to ensure one shorthand per prop key
-- playground for animation
+- beta:
+  - finish blog post
+  - compiler 100% on site
+  - create-tamagui-app
+    - get some demos in that 100% pass compile / native
+  - animations
+    - css
+    - load animations in feature or compoler insert __hasAnimated?
+    - test hover/press styles + add to animations docs
+  - load theme hook via feature
+  - space => gap
+  - fix lineargradient
+  - shorthands should be swapped key/val to ensure one shorthand per prop key
+  - remove onClick just keep onPress (from types)
+  - check focusStyle works or remove docs
+  - styled() fix types with react native web
+    - fix not needing `isText`, `isInput`, `isReactNativeWeb`
+  - compiler
+    - check it with variants extracting fully
+    - props
+      - theme
+      - space/gap  (+ work with visually hidden)
+      - onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
+  - docs
+    - animations
+    - global Tamagui in dev mode (Dev Tools)
+      - Tamagui.classes['_borderBottomColor-1go1dts'] => style
+    - fullscreen elevation onHoverIn onHoverOut onPress
+    - excludeReactNativeWebExports recommend excluding Animated etc
+    - injectCSS, mediaQueryDefaultActive, cssStyleSeparator
+    - web-only strategy react-native v0.0.0 + @types/react-native
+    - add fonts section?
+      - document $body being default font family
+    - theme-base
+      - adding /inter.css /fira-code.css
+      - adding font-feature-settings
+      - customizing things
+  - bugs
+    - <Paragraph size={} /> not accepting simple numbers
+    - media queries in styled() not working
+    - fix image w/h shorthand not translating to width/height runtime
+    - Image SSR / site weirdness on some
+    - ScrollView isnt SSR compat
+    - // TODO check why hoverStyle not overriding
+    - o="hidden" works when it should throw type warning (its opacity)
 
-- can move to react 18 only one release after beta and move to use react.useId and react.insertioneffect
+- beta.1: 
+  - check theme change slow
+  - slow types
+  - fix memory leak causing OOM eventually on site
+  - test component theme + alt theme (plus with compiled)
+
+- beta.2:
+  - styleq / react-native-web 18 exploration
+  - OmitShorthands<> helper (see ActiveCirlce in site)
+  - split fonts into packages
+  - floating-ui
+
+- beta.3
+  - optional 18-only separate releases? beta.3.react18?
+    - react native doesn't support it yet except on new arch
+    - (useId/useInsertionEffect)
+  - escape hatch for html props `htmlProps` or tag={} => as={} + work better?
+  - bring back `onLayout` via features hooks
+    - press events?
+  - <LinearGradient />
+    - fix using theme values
+    - make extractable to css
+
+- v1
+  - github sponsor
+  - docs
+    - exported helpers getTokens, useThemeName
+    - exported hooks
+    - <SizableFrame />, <EnsureFlexed />
+  - fix bugs
+  - blog post
+
+- v2
+  - createTamagui({ defaultProps: { Button: {} } }) for any component
+  - document/release <ThemeReverse />
+  - <Tabs />
+  - <Label />
+  - <List /> (works with drawer + draggable + selectable)
+  - <List.Item />
+  - <Switch />
+    - to start no outputting to native but use radix style
+    - <Switch><Switch.Toogle /></Switch>
+    - support Switch.Toggle style extractions
+
+- v3
+  - basic styled() extraction to css at compile time
+  - catchall: { variants: '...' => {} } / styled(Text, () => ({}))
+  - ~button textProps => child selectors~
+    - See if this isn't too terribly hard:
+    - childStyle={{
+        [Text]: {
+          color: 'green',
+          hoverStyle: {
+            color: 'red'
+          }
+        }
+      }}
+
+- v4
+  - container queries
+  - <Scale />
+  - @tamagui/cli: 
+    - tamagui test ./packages/site/components/OffsetBox.tsx
+    - tamagui sandbox ./packages/site/components/OffsetBox.tsx
+    - tamagui compile ./packages/site/components/OffsetBox.tsx
+
+- v5
+  - auto skeleton components
+  - type variants [number] / [string] (test Text numberOfLines)
+  - <Menu />
+  - <MenuDrawer />
+
+- v6
+  - ios/android specific themes
+  - options to render to native components in more places
+
+- v7
+  - <Group />
+  - <Combobox />
 
 - write a "how the compiler works" blog post
-
-- document excludeReactNativeWebExports for regular webpack and recommend excluding Animated etc
-
-- document theme-base
-  - adding /inter.css /fira-code.css
-  - adding font-feature-settings
-  - customizing things
-
-- fix lineargradient
-
-- o="hidden" works when it should throw type warning
-- slow types
-
-- // TODO media queries on styled()
-
-- ScrollView isnt SSR compat
-
-- // TODO check why hoverStyle not overriding
-
-- make sure @tamagui/core doesn't require theme keys exactly
-
-- styled() fix types with react native web
-  - fix not needing `isText`, `isInput`, `isReactNativeWeb`
-
-- document $body being default font family
-- document injectCSS, mediaQueryDefaultActive, cssStyleSeparator, maxDarkLightNesting
-
-- toggle/switch
-
-- note in starter kit adding react-native at version 0 + latest @types/react-native gives autocomplete
-
-- fix memory leak causing OOM eventually on site
-
-- override react native web color values and add in types for css colors "red" etc
-
-- already have the themeParent.listener pattern just need to restore/fix it
-- can memoize <Theme /> children so only the specific middle nodes render
-- <Button /> dont have to re-render (expensive) due to above CSS
-
-
-- // TODO this is grabbing blue_alt it shold jsut be alt2
-- remove onClick just keep onPress (from types)
-- dev mode global Tamagui to see things
-  - all classnames: Tamagui.classes['_borderBottomColor-1go1dts'] => style
-- // TODO fix variant merge type
-- OmitShorthands<> helper (see ActiveCirlce in site)
-
-- useTheme in createComponent could be in a feature save a ton of render perf
-- document fullscreen elevation onHoverIn onHoverOut onPress etc
-- fix types on color, not showing all
-- fix type autocomplete not showing in menu on some
-- fix image w/h shorthand not translating to width/height runtime
-- extracted theme="" components will change how ThemeReset/Theme work with finding parent context, we'll need to have the equivalent web versions for all of them. something like MutationObserver(querySelector.closest('.theme--parent'))
-- github sponsor
-- tell b about "strict tokens"
-- split fonts into packages
-- document ThemeReverse
-
-- tabs, label, togglegroup
-
-- test component theme + alt theme (plus with compiled)
-
-- theme="" prop on any createComponent
-  - easy part is useTheme()
-  - decision:
-    - faster/simpler is non-contextual, but maybe not desirable
-    - a bit more complex it passes it to children, but maybe slow
-  - either way compiler probably wants to also handle theme prop
-
-- need to release a default theme
-  - `@tamagui/tamacolo`
-
-- createTamagui({ defaultProps: { Button: {} } }) for any component
-
-- site demo with toggles for animations:
-  - https://blog.maximeheckel.com/posts/framer-motion-layout-animations/
-
-- not adding data-displayname
-
-- can speed up non-flattened a lot by having compiler inject `disableTheme` prop when it detects no spread + no theme prop set
-  - because useTheme() hook has gotten heavy
-
-- document <SizableFrame />
-- document <EnsureFlexed />
-- fix theming
-- space => gap
-- ~button textProps => child selectors~
-
-- animations
-	- reanimated
-	- css
-
-- create-tamagui-app
-
-- <Scale />
-
-- @tamagui/cli: 
-  - tamagui test ./packages/site/components/OffsetBox.tsx
-  - tamagui sandbox ./packages/site/components/OffsetBox.tsx
-  - tamagui compile ./packages/site/components/OffsetBox.tsx
-
-- <Group />
-- <Selectable />
-- <Draggable />
-
-- floating-ui
-
-- <Menu />
-- <MenuDrawer />
-- <List /> (works with drawer + draggable + selectable)
-- <List.Item />
-
-- See if this isn't too terribly hard:
-- childStyle={{
-    [Text]: {
-      color: 'green',
-      hoverStyle: {
-        color: 'red'
-      }
-    }
-  }}
-
-- <Checkbox /> / <Switch />
 - popover add safety checks around using Popover.Content
-- fix: tooltip size bug
-
-- extract gap to css (+ work with visually hidden)
-
-- <Combobox />
-  - like vercel, make it adapt into a drawer on mobile
-    - option to render as native combo on ios/android
-
-- kitchen sink app
-- helper fns docs
-
-- <LinearGradient />
-  - fix using theme values
-  - make extractable to css
-
-- fix: media queries in styled() not working
-- fix: <Paragraph size={} /> not accepting simple numbers
-
 - Text selectColor
-
-- themes: mobile sizing separate :)
-
-- document: getTokens, useThemeName
-
-- static compilation can go further with variants because it knows they always only accept certain values... see mount-deep-tree
-
-- array shorthand values?
-
-- basic styled() extraction to css at compile time
-
-- type variants [number] / [string] (test Text numberOfLines)
-
-- catchall: { variants: '...' => {} } / styled(Text, () => ({}))
-
-- escape hatch for html props `htmlProps` or tag={} => as={} + work better?
-
-- bring back `onLayout` via features hooks
-  - press events?
-
-- focusStyle, focusWithinStyle
-
-- container queries
-
-- auto skeleton components
-
-
-----
-
-roadmap / votable features
-
-- accessibility upgrade
-- various components
-- native fixes
+- focusWithinStyle
+- accessibility upgrades (focus rings etc)

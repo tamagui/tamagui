@@ -118,7 +118,6 @@ const ResultItem = ({ hit, children }) => {
 }
 
 export const SearchButton = (props: ButtonProps) => {
-  const actionKey = useActionKey()
   const { onOpen, onInput } = useContext(SearchContext)
   const ref = useRef()
 
@@ -152,25 +151,10 @@ export const SearchButton = (props: ButtonProps) => {
       hoverStyle={{
         elevation: '$4',
       }}
+      iconAfter={<Button>/</Button>}
       {...props}
     />
   )
-}
-
-const useActionKey = () => {
-  let [actionKey, setActionKey] = useState<string[]>()
-
-  useEffect(() => {
-    if (typeof navigator !== 'undefined') {
-      if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
-        setActionKey(ACTION_KEY_APPLE)
-      } else {
-        setActionKey(ACTION_KEY_DEFAULT)
-      }
-    }
-  }, [])
-
-  return actionKey
 }
 
 const useSearchKeyboard = ({ isOpen, onOpen, onClose }: any) => {

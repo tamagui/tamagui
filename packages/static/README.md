@@ -1,18 +1,5 @@
-- onPress extraction
+- onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key extraction
 - bug with props after spread not applying, make them deopt:
   - <YStack {...baseStyle} cursor="default" /> wont be right rn
-- activeStyle may be desirable...
-- space
-  - SmallButton good example case of constant
-- hoverStyle/pressStyle (spread + constant too - TagButton, DishView)
-  - final step is hoverStyle={{ color: x, ...parent.hoverStyle, }}
-- pass in config to be able to create static extracted easily within web
-  - OverlayLinkButton
-- SmallCircleButton case spreads
-- Circle, EmojiButton, LinearGradient, VoteButton
-- LinkButton - getting this to just extract styles would be big
-  - just needs to tell compiler _never_ to go to just <div />
-- onPressIn/onPressOut etc can all be converted to inline functions still as divs (HomeAutocompleteBackground, SearchLocationButton, etc)
-- // TODO WHY SCALE NOT WORKING???
-- Link - can maybe fully extract, if we can just run the actual component and then return the results???
-- CSS variables for color!
+- hoverStyle/pressStyle spread + constant
+- LinearGradient

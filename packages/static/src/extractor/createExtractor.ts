@@ -746,9 +746,6 @@ export function createExtractor() {
                   inlinePropCount++
                 }
               }
-              if (shouldPrintDebug) {
-                console.log('????', out)
-              }
               if (inlinePropCount) {
                 return attr
               }
