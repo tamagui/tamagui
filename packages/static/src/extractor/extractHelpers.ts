@@ -20,7 +20,7 @@ export const attrStr = (attr: ExtractedAttr) => {
     : `${attr.type}(${objToStr(attr.value)})`
 }
 
-export const objToStr = (obj: any) => {
+export const objToStr = (obj: any, spacer = ', ') => {
   return `{${Object.entries(obj)
     .map(
       ([k, v]) =>
@@ -28,11 +28,11 @@ export const objToStr = (obj: any) => {
           Array.isArray(v)
             ? `[...]`
             : v && typeof v === 'object'
-            ? `{${objToStr(v)}}`
+            ? `${objToStr(v, ',')}`
             : JSON.stringify(v)
         }`
     )
-    .join(', ')}}`
+    .join(spacer)}}`
 }
 
 const getNameAttr = (attr: t.JSXAttribute | t.JSXSpreadAttribute) => {

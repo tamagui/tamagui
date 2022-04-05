@@ -140,7 +140,7 @@ export const stylePropsText = Object.freeze({
 
 export const stylePropsAll = stylePropsText
 
-export const validStylesPseudo = Object.freeze({
+export const validPseudoKeys = Object.freeze({
   enterStyle: true,
   exitStyle: true,
   hoverStyle: true,
@@ -149,6 +149,6 @@ export const validStylesPseudo = Object.freeze({
 })
 
 export const validStyles = Object.freeze({
-  ...validStylesPseudo,
+  ...validPseudoKeys,
   ...stylePropsView,
 })

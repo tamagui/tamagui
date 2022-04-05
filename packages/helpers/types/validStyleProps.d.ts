@@ -366,7 +366,7 @@ export declare const stylePropsAll: Readonly<{
     shadowOpacity: boolean;
     shadowRadius: boolean;
 }>;
-export declare const validStylesPseudo: Readonly<{
+export declare const validPseudoKeys: Readonly<{
     enterStyle: boolean;
     exitStyle: boolean;
     hoverStyle: boolean;

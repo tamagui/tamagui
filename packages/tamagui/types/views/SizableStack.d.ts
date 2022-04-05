@@ -3,7 +3,7 @@ export declare const getButtonSize: (val: any, { tokens, props }: import("@tamag
     minHeight: any;
     paddingHorizontal: number;
     paddingVertical: number;
-    borderRadius: import("@tamagui/core").VariableVal;
+    borderRadius: any;
 };
 export declare const SizableStack: import("@tamagui/core").StaticComponent<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;

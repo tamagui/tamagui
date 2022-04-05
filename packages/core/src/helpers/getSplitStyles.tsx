@@ -2,8 +2,8 @@ import {
   addRule,
   stylePropsText,
   stylePropsTransform,
+  validPseudoKeys,
   validStyles,
-  validStylesPseudo,
 } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
@@ -60,16 +60,16 @@ export const getSplitStyles = (
     }
 
     let isMedia = keyInit[0] === '$'
-    let isPseudo = validStylesPseudo[keyInit]
+    let isPseudo = validPseudoKeys[keyInit]
 
     const out = isMedia || isPseudo ? true : staticConfig.propMapper(keyInit, valInit, theme, props)
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
     for (const [key, val] of expanded) {
       isMedia = key[0] === '$'
-      isPseudo = validStylesPseudo[key]
+      isPseudo = validPseudoKeys[key]
 
-      if (staticConfig.deoptProps?.has(key)) {
+      if (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) {
         viewProps[key] = val
       }
 
@@ -93,7 +93,6 @@ export const getSplitStyles = (
       // media
       if (isMedia) {
         const mediaKey = key.slice(1)
-
         if (!mediaQueryConfig[mediaKey]) {
           // this isn't a media key, pass through
           viewProps[key] = valInit
@@ -130,9 +129,7 @@ export const getSplitStyles = (
         continue
       }
 
-      // const val = valueMap(valInit) ?? valInit
-      const keyFirstChar = key[0]
-      if (key === 'style' || (keyFirstChar === '_' && key.startsWith('_style'))) {
+      if (key === 'style' || key.startsWith('_style')) {
         if (cur) {
           // process last
           fixNativeShadow(cur)
@@ -175,6 +172,8 @@ export const getSplitStyles = (
       if (!staticConfig.variants || !(key in staticConfig.variants)) {
         if (key !== 'animation' && key !== 'debug') {
           viewProps[key] = val
+        } else {
+          console.warn('skipping animation??')
         }
       }
     }
