@@ -3,8 +3,7 @@
   "version": "1.0.0-alpha.68",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--no-deprecation' NODE_ENV=development next dev --port 5005",
-    "dev:clean": "rm -r .next && yarn dev",
+    "dev": "PORT=5005 NODE_OPTIONS='--no-deprecation' NODE_ENV=development next-remote-watch ./data",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start"
@@ -57,6 +56,7 @@
     "mini-css-extract-plugin": "^2.6.0",
     "next-compose-plugins": "^2.2.1",
     "next-fonts": "^1.5.1",
+    "next-remote-watch": "^1.0.0",
     "next-videos": "^1.4.0",
     "tamagui-loader": "^1.0.0-alpha.68",
     "webpack-bundle-analyzer": "^4.4.2"

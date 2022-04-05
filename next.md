@@ -172,3 +172,12 @@
 - container queries
 
 - auto skeleton components
+
+
+----
+
+roadmap / votable features
+
+- accessibility upgrade
+- various components
+- native fixes

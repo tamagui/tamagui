@@ -3,7 +3,7 @@ import { H4, Paragraph, Text, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { ExternalIcon } from './ExternalIcon'
-import { Link } from './Link'
+import { ParagraphLink } from './Link'
 
 export const Footer = () => {
   return (
@@ -19,7 +19,7 @@ export const Footer = () => {
           px="$4"
           space="$2"
         >
-          <Link href="/" marginBottom={20}>
+          <ParagraphLink href="/" marginBottom={20}>
             <Text
               className="clip-invisible"
               position="absolute"
@@ -32,59 +32,63 @@ export const Footer = () => {
               homepage
             </Text>
             <TamaguiLogo showWords />
-          </Link>
+          </ParagraphLink>
           <Paragraph size="$2" theme="alt2">
             by {/* @ts-ignore */}
-            <Link fontSize="inherit" href="https://twitter.com/natebirdman" target="_blank">
+            <ParagraphLink
+              fontSize="inherit"
+              href="https://twitter.com/natebirdman"
+              target="_blank"
+            >
               nate
-            </Link>
+            </ParagraphLink>
           </Paragraph>
           <Paragraph size="$2" theme="alt2">
             built with Tamagui
           </Paragraph>
           <Paragraph size="$2" theme="alt2">
             site forked from {/* @ts-ignore */}
-            <Link fontSize="inherit" href="https://github.com/modulz" target="_blank">
+            <ParagraphLink fontSize="inherit" href="https://github.com/modulz" target="_blank">
               modulz
-            </Link>
+            </ParagraphLink>
           </Paragraph>
         </YStack>
 
         <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
           <H4>Overview</H4>
-          <Link href="/docs/intro/introduction">Introduction</Link>
-          <Link href="/docs/intro/configuration">Configuration</Link>
-          <Link href="/docs/guides/design-systems">Guides</Link>
-          {/* <Link href="/docs/api">API</Link>
-          <Link href="/docs/frequently-asked-questions">FAQ</Link> */}
+          <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
+          <ParagraphLink href="/docs/intro/configuration">Configuration</ParagraphLink>
+          <ParagraphLink href="/docs/guides/design-systems">Guides</ParagraphLink>
+          {/* <ParagraphLink href="/docs/api">API</ParagraphLink>
+          <ParagraphLink href="/docs/frequently-asked-questions">FAQ</ParagraphLink> */}
         </YStack>
 
         <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
           <H4>Docs</H4>
-          <Link href="/docs/intro/installation">Installation</Link>
-          <Link href="/docs/intro/themes">Themes</Link>
-          <Link href="/docs/core/styled">Variants</Link>
+          <ParagraphLink href="/docs/intro/installation">Installation</ParagraphLink>
+          <ParagraphLink href="/docs/intro/themes">Themes</ParagraphLink>
+          <ParagraphLink href="/docs/core/styled">Variants</ParagraphLink>
         </YStack>
 
         <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space>
           <H4>Community</H4>
-          {/* <Link href="/blog">Blog</Link> */}
+          {/* <ParagraphLink href="/blog">Blog</ParagraphLink> */}
           <XStack space="$1" ai="center">
-            <Link ai="center" href="https://github.com/tamagui/tamagui" target="_blank">
+            <ParagraphLink href="https://github.com/tamagui/tamagui" target="_blank">
               GitHub
-            </Link>
+            </ParagraphLink>
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
-            <Link ai="center" href="https://twitter.com/tamagui_js" target="_blank">
+            <ParagraphLink href="https://twitter.com/tamagui_js" target="_blank">
               Twitter
-            </Link>
+            </ParagraphLink>
             <ExternalIcon />
           </XStack>
           <XStack space="$1" ai="center">
-            <Link ai="center" href="https://discord.gg/4qh6tdcVDa" target="_blank">
+            <ParagraphLink href="https://discord.gg/4qh6tdcVDa" target="_blank">
               Discord
-            </Link>
+            </ParagraphLink>
             <ExternalIcon />
           </XStack>
         </YStack>

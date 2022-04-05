@@ -37,22 +37,31 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     : never
 } {
   const { shift = 0 } = props
-  let themeEntries: any[] = [
-    [name, getTheme(0 + shift, props)],
-    [`${name}_darker`, getTheme(Math.max(0, 0 + shift - 1), props)],
+  const theme = getTheme(0 + shift, props)
+  let themeEntries: any[] = [[name, theme]]
+  const altThemes: any[] = alternates.map((alt) => [
+    `${name}_alt${alt}`,
+    getTheme(alt + shift, props),
+  ])
+  const altButtonThemes: any[] = alternates.map((_, i) => {
+    const [bName, bTheme] = [altThemes[i][0], (altThemes[i + 1] || altThemes[i])[1]]
+    return [`${bName}_Button` as any, bTheme]
+  })
+  // add these after alts since we rely on positioning
+  const darkerTheme = getTheme(Math.max(0, shift + (props.isLight ? 1 : -1)), props)
+  const activeTheme = makeActiveTheme(theme)
+  themeEntries = [
+    ...themeEntries,
+    ...altThemes,
+    ...altButtonThemes,
+    [`${name}_Button`, altThemes[0][1]],
+    [`${name}_darker`, darkerTheme],
+    [`${name}_active`, activeTheme],
   ]
-
-  for (const alt of alternates) {
-    themeEntries.push([`${name}_alt${alt}`, getTheme(alt + shift, props)])
-  }
-
-  // add button themes
-  for (const alt of alternates) {
-    const [btnThemeName] = themeEntries[alt]
-    const [_, btnTheme] = themeEntries[alt + 1]
-    themeEntries.push([`${btnThemeName}_Button` as any, btnTheme])
-  }
   const themes = Object.fromEntries(themeEntries)
+  // if (props.isLight) {
+  //   console.log('themes', themes)
+  // }
   return themes as any
 }
 
@@ -166,13 +175,14 @@ const lightThemes = createThemesFrom('light', createTheme, {
   backgrounds: lightGradient,
   isLight: true,
 })
+
 const darkThemes = createThemesFrom('dark', createTheme, {
   backgrounds: darkGradient,
   colors: lightGradient,
   isLight: false,
   shift: 1,
   offsets: {
-    color: [0, 7, 8, 9, 10],
+    color: [0, 6, 7, 7, 7, 7],
   },
 })
 
@@ -217,19 +227,22 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
     const isLight = i === 0
     const scheme = isLight ? 'light' : 'dark'
     const shift = isLight ? 0 : 1
-    const backgrounds = Object.values(colors) as any[]
+
+    let backgrounds = Object.values(colors) as any[]
     if (!isLight) {
       const [_, h, sp, lp] = backgrounds[0].match(/hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/)
       backgrounds.unshift(`hsl(${h}, ${sp}%, ${parseFloat(lp) / 2}%)`)
     }
+
     const themeWithAlts = createThemesFrom(name, createTheme, {
       backgrounds,
       isLight,
       shift,
       isBase: false,
       offsets: {
-        background: isLight ? [1, 1, 1, 1] : null,
-        color: isLight ? [0, -1, -1, -1] : [-1, -1, -1, -1, -1, -1],
+        background: isLight ? [1, 1, 1, 0, 0, 0] : null,
+        borderColor: isLight ? [0, 1, 1, 2, 2, -2] : null,
+        color: isLight ? [0, 0, -1, -2, -3, -3, -4] : [-1, -1, -1, -1, -1, -1],
       },
     })
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])

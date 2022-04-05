@@ -36,13 +36,26 @@ a {
   font-weight: 300;
 }
 
-p a,
-span a {
+:is(
+  div .paragraph-link,
+  p a,
+  span a
+) {
   text-decoration: underline;
   text-decoration-style: dotted;
-  color: var(--colorPress);
+  color: var(--color);
   text-decoration-color: var(--borderColorHover);
   text-underline-offset: 5px;
+}
+
+:is(
+  div .paragraph-link,
+  p a,
+  span a
+):hover {
+  text-decoration-style: solid;
+  color: var(--colorHover);
+  text-decoration-color: var(--borderColorHover);
 }
 
 input,
@@ -99,7 +112,16 @@ span._display-1adg3ll > span._display-xoduu5 {
   );
 }
 
-.hero-gradient-light {
+.hero-gradient-2 {
+  background: linear-gradient(
+    90deg,
+    var(--background) 10%,
+    var(--backgroundHover) 50%,
+    var(--background) 90%
+  );
+}
+
+.hero-gradient-white {
   background: linear-gradient(
     330deg,
     rgba(0,0,0,0) 0%,
@@ -255,17 +277,23 @@ iframe {
 }
 
 .bg-grid {
+  contain: paint;
   background-position: center center;
   background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='30' height='30' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 80 0 L 0 0 0 80' fill='none' stroke='rgba(127,127,127,0.2)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E");
 }
 
 .bg-grid-big {
+  contain: paint;
   background-position: center center;
   background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='50' height='50' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 80 0 L 0 0 0 80' fill='none' stroke='rgba(127,127,127,0.2)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23grid)' /%3E%3C/svg%3E");
 }
 
 .mask-gradient-both {
   mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent, rgba(0, 0, 0, 1.0));
+}
+
+.mask-gradient-right {
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 1.0), transparent);
 }
 
 .mask-gradient-down {

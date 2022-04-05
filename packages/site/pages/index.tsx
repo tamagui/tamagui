@@ -7,7 +7,6 @@ import { XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
-import DrawerDemo from '../components/demos/DrawerDemo'
 import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
@@ -19,13 +18,9 @@ import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
 import { SearchButton } from '../components/Search'
-import { Test } from '../components/Test'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
-  // return <DrawerDemo />
-  // return <Test />
-
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
@@ -34,7 +29,7 @@ export default function Home() {
         <YStack>
           <Hero />
           <XStack zi={100} theme="alt1" mt={-28} ai="center" jc="center">
-            <SearchButton width={350} size="$6">
+            <SearchButton color="$color" width={350} size="$6">
               Search Docs...
             </SearchButton>
           </XStack>

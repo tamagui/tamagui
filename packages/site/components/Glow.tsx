@@ -1,14 +1,14 @@
 import { Circle, styled } from 'tamagui'
 
 export const Glow = styled(Circle, {
-  // contain: 'strict',
+  // contain: 'paint',
   className: 'glow',
   rotate: '20deg',
-  bc: '$green10',
-  size: 680,
-  scaleX: 1.25,
+  bc: '$pink10',
+  size: 620,
+  scaleX: 0.4,
   scaleY: 1.75,
   y: 0,
-  o: 0.075,
+  o: 0.1,
   pe: 'none',
 })

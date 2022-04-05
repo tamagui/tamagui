@@ -142,7 +142,7 @@ export const SearchButton = (props: ButtonProps) => {
     <Button
       ref={ref as any}
       onClick={onOpen}
-      className="all ease-in ms100"
+      // className="all ease-in ms100"
       jc="flex-start"
       borderWidth={1}
       borderRadius={1000}

@@ -1,16 +1,26 @@
-import throttle from 'lodash.throttle'
-import { MutableRefObject, useEffect } from 'react'
+import { MutableRefObject, useEffect, useRef } from 'react'
 import { debounce } from 'tamagui'
 
 type DisposeFn = () => void
+type IntersectFn = (
+  props: IntersectionObserverEntry & { dispose?: DisposeFn | null },
+  didResize?: boolean
+) => void | DisposeFn
 
 export const useOnIntersecting = (
   ref: MutableRefObject<HTMLElement | null>,
-  cb: (
-    props: IntersectionObserverEntry & { dispose?: DisposeFn | null },
-    didResize?: boolean
-  ) => void | DisposeFn
+  incomingCb: IntersectFn,
+  options: IntersectionObserverInit = {
+    threshold: 1,
+  },
+  mountArgs: any[] = []
 ) => {
+  const cb = useRef<IntersectFn>()
+
+  useEffect(() => {
+    cb.current = incomingCb
+  }, [incomingCb])
+
   // arrow keys
   useEffect(() => {
     const node = ref.current
@@ -19,34 +29,30 @@ export const useOnIntersecting = (
     let dispose: DisposeFn | null = null
     let lastEntry: any
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          lastEntry = new Proxy(entry, {
-            get(target, key) {
-              if (key === 'dispose') {
-                return dispose
-              }
-              return Reflect.get(target, key)
-            },
-          })
-          dispose?.()
-          dispose = cb(lastEntry) || null
-        } else {
-          dispose?.()
-        }
-      },
-      {
-        threshold: 1,
+    const io = new IntersectionObserver(([entry]) => {
+      console.log(entry.isIntersecting)
+      if (entry.isIntersecting) {
+        lastEntry = new Proxy(entry, {
+          get(target, key) {
+            if (key === 'dispose') {
+              return dispose
+            }
+            return Reflect.get(target, key)
+          },
+        })
+        dispose?.()
+        dispose = cb.current?.(lastEntry) || null
+      } else {
+        dispose?.()
       }
-    )
+    }, options)
 
     const ro = new ResizeObserver(
       debounce(() => {
         if (!lastEntry) {
           return
         }
-        dispose = cb(lastEntry, true) || null
+        dispose = cb.current?.(lastEntry, true) || null
       }, 150)
     )
 
@@ -58,5 +64,5 @@ export const useOnIntersecting = (
       ro.disconnect()
       io.disconnect()
     }
-  }, [ref.current])
+  }, [ref.current, ...mountArgs])
 }

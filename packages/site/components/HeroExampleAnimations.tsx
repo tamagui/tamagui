@@ -127,7 +127,7 @@ export function HeroExampleAnimations() {
               $sm={{ width: '100%' }}
             >
               <Square
-                className=""
+                animated
                 animation={animation.animation}
                 elevation="$4"
                 size={110}
@@ -154,7 +154,7 @@ export function HeroExampleAnimations() {
 
           <Separator vertical />
 
-          <YStack pos="relative" blw={1} boc="$borderColor" $sm={{ display: 'none' }} width="40%">
+          <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
             <YStack fullscreen zi={-1} theme="alt2" bc="$background" />
             <ScrollView>
               {animationDescriptions.map((item, i) => {

@@ -86,6 +86,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   }
 
   const { Component, validStyles, isText, isZStack, componentName } = staticConfig
+  const componentClassName = `is_${componentName}`
   const validStyleProps = validStyles ?? stylePropsView
 
   // split out default styles vs props so we can assign it to component.defaultProps
@@ -287,26 +288,20 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     if (isWeb && !isAnimated) {
       const stylesClassNames = useStylesAsClassname(styles)
-      const classList = isText
-        ? [
-            // TODO
-            theme.className,
-            defaultsClassName,
-            // hasTextAncestor === true && cssText.textHasAncestor,
-            // TODO MOVE TO VARIANTS [number] [any]
-            // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
-            classNames,
-            stylesClassNames,
-            props.className,
-          ]
-        : [
-            //
-            theme.className,
-            defaultsClassName,
-            classNames,
-            stylesClassNames,
-            props.className,
-          ]
+      const classList = [
+        theme.className,
+        defaultsClassName,
+        classNames,
+        stylesClassNames,
+        props.className,
+      ]
+      if (componentName) {
+        classList.unshift(componentClassName)
+      }
+      // TODO restore this to isText classList
+      // hasTextAncestor === true && cssText.textHasAncestor,
+      // TODO MOVE TO VARIANTS [number] [any]
+      // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
 
       // @ts-ignore we are optimizing using arguments
       const className = concatClassName(...classList)

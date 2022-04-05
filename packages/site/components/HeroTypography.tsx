@@ -9,21 +9,21 @@ export const HeroTypography = () => {
   return (
     <>
       <YStack fullscreen className="bg-grid-big mask-gradient-both" o={0.5} />
-      {/* <YStack theme="alt2" fullscreen className="hero-gradient-light mask-gradient-down" /> */}
+      {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
       <YStack pos="relative">
         <YStack>
-          <ContainerLarge h={750} $sm={{ h: 500 }} position="relative" space>
+          <ContainerLarge h={650} $sm={{ h: 520 }} position="relative" space>
             <YStack ai="center" space="$1">
               <HomeH2>Typography made easy</HomeH2>
               <HomeH3>Plug-and-play fonts with complete control.</HomeH3>
             </YStack>
 
-            <YStack fullscreen>
+            <YStack fullscreen pe="none">
               <YStack
                 w={900}
                 als="center"
-                scale={1.7}
-                y={140}
+                scale={1.6}
+                y={130}
                 $sm={{
                   y: 110,
                   scale: 1.2,
@@ -39,7 +39,7 @@ export const HeroTypography = () => {
                 <YStack pos="relative" x={225} mb={70} ai="center" jc="center">
                   <XStack mb={100} p="$6" space>
                     <YStack
-                      o={0.25}
+                      o={0.2}
                       ai="flex-end"
                       p="$6"
                       maw="50%"
@@ -67,7 +67,7 @@ export const HeroTypography = () => {
                   </XStack>
 
                   <YStack
-                    o={0.25}
+                    o={0.2}
                     mt={-300}
                     x={-50}
                     mb={150}
@@ -109,10 +109,9 @@ export const HeroTypography = () => {
 
         <XStack
           pos="absolute"
-          t="50%"
+          b={40}
           l="50%"
           x={-200}
-          y={-180}
           zi={100}
           $sm={{
             l: 20,
@@ -139,9 +138,9 @@ const OverlayCard = () => {
     <Card br="$6" elevation="$4">
       <YStack jc="center" p="$6" space="$6" maw="calc(min(90vw, 400px))">
         <Paragraph ta="left" fontSize="$8" lineHeight="$7">
-          Typed fonts.
+          Typed fonts +
           <br />
-          Vertical rythyms.
+          Vertical rythyms +
           <br />
           Custom styles per-size.
         </Paragraph>
