@@ -24,7 +24,7 @@ import { SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
-import { getThemeManager, useTheme } from './hooks/useTheme'
+import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
   SpaceTokens,
   StackProps,
@@ -489,7 +489,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
             flexDirection: props.flexDirection || defaultProps?.flexDirection,
             isZStack: isZStack,
           }),
-          getThemeManager(theme)
+          getThemeManagerIfChanged(theme)
         )
 
     let content: any
@@ -632,9 +632,12 @@ export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: bool
     size: {
       '...size': (size, { tokens }) => {
         size = size == true ? '$true' : size
+        const sizePx = tokens.size[size] ?? size
         return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
+          width: sizePx,
+          height: sizePx,
+          minWidth: sizePx,
+          minHeight: sizePx,
         }
       },
     },
@@ -649,9 +652,11 @@ export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: bool
     direction: {
       horizontal: {
         height: 0,
+        minHeight: 0,
       },
       vertical: {
         width: 0,
+        minWidth: 0,
       },
     },
   },
@@ -662,10 +667,12 @@ export function spacedChildren({
   children,
   space,
   flexDirection,
+  spaceFlex,
 }: {
   isZStack?: boolean
   children: any
   space?: any
+  spaceFlex?: boolean | number
   flexDirection?: ViewStyle['flexDirection']
 }) {
   if (!space && !isZStack) {
@@ -703,6 +710,9 @@ export function spacedChildren({
               flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
             }
             size={space}
+            {...(spaceFlex && {
+              flex: spaceFlex,
+            })}
           />
         )
       }

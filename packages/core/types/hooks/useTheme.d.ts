@@ -1,7 +1,7 @@
 import { ThemeManager } from '../ThemeManager';
 import { ThemeObject } from '../types';
 export declare const useTheme: (themeName?: string | null | undefined, componentName?: string | undefined, props?: any, forceUpdate?: any) => ThemeObject;
-export declare const getThemeManager: (theme: any) => any;
+export declare const getThemeManagerIfChanged: (theme: any) => any;
 export declare const useThemeName: (opts?: {
     parent?: true | undefined;
 } | undefined) => string;

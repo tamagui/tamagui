@@ -8,13 +8,15 @@ declare type ButtonIconProps = {
 };
 declare type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
 export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps & {
+    icon?: IconProp;
+    iconAfter?: IconProp;
     scaleIcon?: number;
+    noTextWrap?: boolean;
+    spaceFlex?: number | boolean;
+    scaleSpace?: number;
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];
     letterSpacing?: SizableTextProps['letterSpacing'];
-    noTextWrap?: boolean;
-    icon?: IconProp;
-    iconAfter?: IconProp;
 };
 declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;

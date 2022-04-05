@@ -1,6 +1,6 @@
 ---
 title: Dev Tools
-description: Understand your views with helpful dev tools.
+description: Understand more with helpful dev tools.
 ---
 
 Tamagui has two ways of giving you a lot more insight into what's happening.
@@ -22,3 +22,11 @@ export default () => <Button debug>Hello world</Button>
 ```
 
 And you'll see props, styles, and a variety of variables relevant to processing them.
+
+## Global Tamagui
+
+In development mode, there's a global `Tamagui` with a lot of helpful internals, including your entire parsed config from `tamagui.config.ts`.
+
+Beyond your config, you have:
+
+- **insertedCSS**: All the selectors inserted by Tamagui (before runtime).

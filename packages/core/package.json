@@ -6,7 +6,8 @@
   "module": "dist/esm",
   "typings": "types",
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "global.ts"
   ],
   "scripts": {
     "build": "tamagui-build",

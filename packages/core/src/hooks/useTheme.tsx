@@ -121,7 +121,7 @@ export const useTheme = (
 
 const GetThemeManager = Symbol('GetThemeManager')
 
-export const getThemeManager = (theme: any) => {
+export const getThemeManagerIfChanged = (theme: any) => {
   return theme?.[GetThemeManager]
 }
 
