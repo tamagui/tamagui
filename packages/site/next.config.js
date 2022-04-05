@@ -21,8 +21,8 @@ const transform = withPlugins(
       components: ['tamagui'],
       importsWhitelist: ['constants.js', 'colors.js'],
       logTimings: true,
-      // disableExtraction: false,
-      disableExtraction: process.env.NODE_ENV === 'development',
+      disableExtraction: false,
+      // disableExtraction: process.env.NODE_ENV === 'development',
       excludeReactNativeWebExports: [
         'Switch',
         'ProgressBar',

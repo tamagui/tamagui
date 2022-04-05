@@ -1,38 +1,45 @@
+// debug
 import { FastForward, Pause, Rewind } from '@tamagui/feather-icons'
 import { colorNames } from '@tamagui/theme-base'
 import React, { useState } from 'react'
-import {
-  Button,
-  Card,
-  Image,
-  Paragraph,
-  Separator,
-  Square,
-  Theme,
-  ThemeInverse,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Card, Image, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
 export const Sandbox = () => {
   return (
     <Tamagui.Provider injectCSS defaultTheme="dark">
-      <XStack>
-        <ColorsTest />
-        <Theme name="light">
-          <ColorsTest />
-          <Theme name="dark">
-            <ColorsTest />
-            <Theme name="light">
-              <ColorsTest />
-            </Theme>
-          </Theme>
-        </Theme>
-      </XStack>
+      <Button
+        bordered
+        hoverStyle={{
+          elevation: '$6',
+          scale: 1.05,
+        }}
+        m="$4"
+        scaleIcon={2}
+        circular
+        size="$8"
+        elevation="$4"
+      />
     </Tamagui.Provider>
   )
+
+  // return (
+  //   <Tamagui.Provider injectCSS defaultTheme="dark">
+  //     <XStack>
+  //       <ColorsTest />
+  //       <Theme name="light">
+  //         <ColorsTest />
+  //         <Theme name="dark">
+  //           <ColorsTest />
+  //           <Theme name="light">
+  //             <ColorsTest />
+  //           </Theme>
+  //         </Theme>
+  //       </Theme>
+  //     </XStack>
+  //   </Tamagui.Provider>
+  // )
 
   // return (
   //   <Tamagui.Provider injectCSS>

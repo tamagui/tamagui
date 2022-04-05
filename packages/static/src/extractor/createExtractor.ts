@@ -1,6 +1,6 @@
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
-import type { StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core'
+import type { StackProps, StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core'
 import { mediaQueryConfig, postProcessStyles, pseudos } from '@tamagui/core-node'
 import { stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
@@ -724,10 +724,11 @@ export function createExtractor() {
             // only post prop-mapping
             if (!isStaticAttributeName(name)) {
               let keys = [name]
+              let out: any = null
               if (staticConfig.propMapper) {
                 // for now passing empty props {}, a bit odd, need to at least document
                 // for now we don't expose custom components so just noting behavior
-                const out = staticConfig.propMapper(
+                out = staticConfig.propMapper(
                   name,
                   styleValue,
                   defaultTheme,
@@ -744,6 +745,9 @@ export function createExtractor() {
                   }
                   inlinePropCount++
                 }
+              }
+              if (shouldPrintDebug) {
+                console.log('????', out)
               }
               if (inlinePropCount) {
                 return attr
@@ -1003,8 +1007,9 @@ export function createExtractor() {
 
           // insert overrides - this inserts null props for things that are set in classNames
           // only when not flattening, so the downstream component can skip applying those styles
+          const ensureOverridden = {}
           if (!shouldFlatten) {
-            attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
+            for (const cur of attrs) {
               if (cur.type === 'style') {
                 // TODO need to loop over initial props not just style props
                 for (const key in cur.value) {
@@ -1019,97 +1024,124 @@ export function createExtractor() {
                   if (!isSetInAttrsAlready) {
                     const isVariant = !!staticConfig.variants?.[cur.name || '']
                     if (isVariant || shouldEnsureOverridden) {
-                      acc.push({
-                        type: 'attr',
-                        value:
-                          cur.attr ||
-                          t.jsxAttribute(
-                            t.jsxIdentifier(key),
-                            t.jsxExpressionContainer(t.nullLiteral())
-                          ),
-                      })
+                      ensureOverridden[key] = true
                     }
                   }
                 }
               }
-              acc.push(cur)
-              return acc
-            }, [])
+            }
           }
 
           if (shouldPrintDebug) {
             console.log('  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', ')))
+            console.log('  - ensureOverriden:', Object.keys(ensureOverridden).join(', '))
           }
 
-          // evaluate away purely style props
+          // expand shorthands, de-opt variables
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
-            if (cur.type === 'style') {
-              let key = Object.keys(cur.value)[0]
-              let value = cur.value[key]
-              const nonShortKey = tamaguiConfig.shorthands[key]
-              // expand shorthand here
-              if (nonShortKey) {
-                cur.value = { [nonShortKey]: value }
-                key = nonShortKey
-              }
+            if (cur.type !== 'style') {
+              acc.push(cur)
+              return acc
+            }
 
-              if (!shouldFlatten) {
-                if (
-                  // de-opt transform styles so it merges properly if not flattened
-                  stylePropsTransform[key] ||
-                  // de-opt if non-style
-                  (!validStyles[key] && !pseudos[key] && !key.startsWith('data-'))
-                ) {
-                  acc.push({
-                    type: 'attr',
-                    value: t.jsxAttribute(
-                      t.jsxIdentifier(key),
-                      t.jsxExpressionContainer(
-                        typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
-                      )
-                    ),
-                  })
-                  return acc
-                }
-              }
+            let key = Object.keys(cur.value)[0]
+            const value = cur.value[key]
+            const fullKey = tamaguiConfig.shorthands[key]
 
-              // finally we have all styles + expansions, lets see if we need to skip
-              // any and keep them as attrs
-              if (disableExtractVariables) {
-                if (value[0] === '$') {
-                  if (shouldPrintDebug) {
-                    console.log(`   keeping variable inline: ${key} =`, value)
-                  }
-                  acc.push({
-                    type: 'attr',
-                    value: t.jsxAttribute(
-                      t.jsxIdentifier(key),
-                      t.jsxExpressionContainer(t.stringLiteral(value))
-                    ),
-                  })
-                  return acc
+            // expand shorthands
+            if (fullKey) {
+              cur.value = { [fullKey]: value }
+              key = fullKey
+            }
+
+            // finally we have all styles + expansions, lets see if we need to skip
+            // any and keep them as attrs
+            if (disableExtractVariables) {
+              if (value[0] === '$') {
+                if (shouldPrintDebug) {
+                  console.log(`   keeping variable inline: ${key} =`, value)
                 }
+                acc.push({
+                  type: 'attr',
+                  value: t.jsxAttribute(
+                    t.jsxIdentifier(key),
+                    t.jsxExpressionContainer(t.stringLiteral(value))
+                  ),
+                })
+                return acc
               }
             }
+
             acc.push(cur)
             return acc
           }, [])
 
           if (shouldPrintDebug) {
-            console.log('  - attrs (evaluated): \n', logLines(attrs.map(attrStr).join(', ')))
+            console.log('  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', ')))
           }
 
-          // combine styles, leave undefined values
+          // merge styles, leave undefined values
           let prev: ExtractedAttr | null = null
+
+          function mergeStyles(prev: StackProps, next: StackProps) {
+            for (const key in next) {
+              // merge pseudos
+              if (pseudos[key]) {
+                prev[key] = prev[key] || {}
+                Object.assign(prev[key], next[key])
+              } else {
+                prev[key] = next[key]
+              }
+            }
+          }
+
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
             if (cur.type === 'style') {
+              const key = Object.keys(cur.value)[0]
+              const value = cur.value[key]
+
+              const shouldKeepOriginalAttr =
+                // !isStyleAndAttr[key] &&
+                !shouldFlatten &&
+                // de-opt transform styles so it merges properly if not flattened
+                // we handle this later on
+                (stylePropsTransform[key] ||
+                  // de-opt if non-style
+                  (!validStyles[key] && !pseudos[key] && !key.startsWith('data-')))
+
+              if (shouldKeepOriginalAttr) {
+                if (shouldPrintDebug) {
+                  console.log('     - keeping as non-style', key)
+                }
+                acc.push({
+                  type: 'attr',
+                  value: t.jsxAttribute(
+                    t.jsxIdentifier(key),
+                    t.jsxExpressionContainer(
+                      typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
+                    )
+                  ),
+                })
+                return acc
+              }
+
+              if (ensureOverridden[key]) {
+                acc.push({
+                  type: 'attr',
+                  value:
+                    cur.attr ||
+                    t.jsxAttribute(t.jsxIdentifier(key), t.jsxExpressionContainer(t.nullLiteral())),
+                })
+              }
+
               if (prev?.type === 'style') {
-                Object.assign(prev.value, cur.value)
+                mergeStyles(prev.value as StackProps, cur.value as StackProps)
                 return acc
               }
             }
-            acc.push(cur)
+
             prev = cur
+            acc.push(cur)
             return acc
           }, [])
 

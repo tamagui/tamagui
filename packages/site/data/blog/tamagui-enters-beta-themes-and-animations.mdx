@@ -1,5 +1,5 @@
 ---
-title: Tamagui Beta
+title: Tamagui enters beta
 publishedAt: '2022-03-23'
 description: Introducting a new theme system, animations, and much more.
 by: nate
@@ -12,13 +12,18 @@ by: nate
   height={200}
 />
 
-Tamagui enters beta!
+<IntroParagraph>
+  Tamagui is **three things**. It's a style system for React Native and React Native Web. It's an
+  optimizing compiler that works alognside that, unlocking huge DX and performance benefits. And
+  finally, it's a suite of components built on top, designed to work well on both the web and native
+  apps.
+</IntroParagraph>
 
-Six months, hundreds of bugs, 3 demo apps, 1 benchmark suite, 2 big new features, and a refrshed site. We're finally releasing Tamagui into beta.
+And we've just released our first beta 🎉. Six months, hundreds of bugs, 3 demo apps, 1 benchmark suite, 2 big new features, and a totally refreshed site.
 
-Here's what's new:
+Lets take a look at the biggest changes.
 
-### Start faster
+## Start faster
 
 With **create-tamagui-app**, get started fast with Expo, Next.js, and Tamagui:
 
@@ -26,7 +31,7 @@ With **create-tamagui-app**, get started fast with Expo, Next.js, and Tamagui:
 npx create-tamagui-app@latest my-app
 ```
 
-### Themes v2
+## Themes v2
 
 Themes has been redone to add a ton of flexiblity and power. Tamagui now supports unlimited sub-themes, and per-component theming. Further, we've standardized the names of theme props, giving full control to customize any aspect of every component.
 
@@ -45,7 +50,7 @@ We've also fixed and improved a lot of how the `@tamagui/feather-icons`, the `Bu
 
 [Read the docs for more on how](/docs/intro/themes).
 
-### Animations
+## Animations
 
 Animations are making their way, experimentally, into `@tamagui/core`. They are unstable, but we want to get feedback and use them more in practice.
 
@@ -56,7 +61,7 @@ They're implemented as pluggable drivers, starting with two:
 
 Which means you can swap entire animation drivers depending on your platform. Want lighter bundles on web, but spring animations on native? Use both packages, and swap them out based on your environment.
 
-### New Components
+## New Components
 
 Over the last few months we've added:
 
@@ -74,30 +79,30 @@ These are big, helpful components and we've made sure each works fully with the 
 
 But this is also just the start. There's tons of room to grow and improve. We're looking at using [Floating UI]() to improve the various floating panels. We'll continue to add form components that can share fully consistent styles. And much more.
 
-### Focus styling
+## Focus styling
 
 We landed experimental support for the `focusStyle` prop, which works much like `pressStyle` and `hoverStyle`.
 
-### ThemeReset
+## ThemeReset
 
 Sometimes you want to have your theme reset to the one above it. ThemeReset does just this. Note: it's not SSR compatible if you're doing automatic light/dark themes - it will still work, but there may be a flash on first load. There's a fix for this that is a bit involved,so we think it's still useful to release as experimental until we land that.
 
-### Renaming space to gap
+## Renaming space to gap
 
 As we're moving from alpha to beta, we're going to take this chance to make breaking changes. To better align with the flexbox spec, `space` has been renamed to `gap`.
 
-### A pre-made base theme
+## A pre-made base theme
 
 Use the themes from the Tamagui site itself without any setup at all, simply install `@tamagui/theme-base` and add `themes` and `tokens` to `createTamagui()` in your `tamagui.config.ts`.
 
-### And much more...
+## And much more...
 
 - 🐛 Hundreds of bug-fixes.
 - ✨ Six new pages added to docs, and every docs page has been improved.
 - Smarter styled() function - now automatically detects Text/View components and properly handles their styling/types. It also detects Inputs and a wider range of react-native components for automatic styling.
 - ✨ `@tamagui/shorthands` - use our default shorthands
 
-### Acknowledgements
+## Acknowledgements
 
 This release once again is inspired by or forks code from a variety of other libraries and developers.
 

@@ -1,13 +1,9 @@
 import { Paragraph, XStack, YStack } from 'tamagui'
 
-const getBarColor = (name: string, skipOthers) => {
-  if (skipOthers && name !== 'Tamagui') {
-    return '$gray5'
-  }
-
+const getBarColor = (name: string) => {
   switch (name) {
     case 'Tamagui':
-      return '$yellow9'
+      return '$pink9'
     case 'Stitches':
       return '$violet9'
     case 'Stitches 0.1.9':
@@ -17,7 +13,7 @@ const getBarColor = (name: string, skipOthers) => {
       return '$red9'
     case 'react-native-web':
     case 'RNW':
-      return '$pink9'
+      return '$teal9'
     case 'Emotion':
       return '$green9'
     case 'Dripsy':
@@ -50,7 +46,8 @@ export function BenchmarkChart({ data, large, skipOthers = false }) {
           </YStack>
           <XStack pr={65} flex={1} ai="center">
             <YStack
-              bc={getBarColor(result.name, skipOthers)}
+              bc={getBarColor(result.name)}
+              o={result.name === 'Tamagui' ? 1 : skipOthers ? 0.7 : 1}
               width={`${(result.value / maxValue) * 100}%`}
               height="100%"
               position="relative"

@@ -47,7 +47,7 @@ export const ZStack = styled(
 )
 
 export const getSizedElevation = (val: number, { theme }: VariantSpreadExtras<any>) => {
-  const [height, shadowRadius] = [val / 3 + 1, val / 2 + 2]
+  const [height, shadowRadius] = [Math.round(val / 3 + 1), Math.round(val / 2 + 2)]
   const shadow = {
     shadowColor: theme.shadowColor,
     shadowRadius,

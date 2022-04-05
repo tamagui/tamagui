@@ -19,13 +19,13 @@ export function HeroExampleCode() {
 
   return (
     <>
-      <YStack pos="absolute" o={0.2} top={-400} left={0} right={0}>
+      <YStack pos="absolute" o={0.2} top={-800} left={0} right={0} ai="center">
         <CocentricCircles />
       </YStack>
       <ContainerLarge position="relative">
-        <YStack pos="absolute" zi={-1} top={-100} left={-200} rotate="-85deg">
-          <Glow bc="$pink10" />
-        </YStack>
+        {/* <YStack pos="absolute" zi={-1} top={-100} left={-200} rotate="-85deg">
+          <Glow contain="strict" bc="$pink10" />
+        </YStack> */}
 
         <YStack zi={1} space="$4">
           <YStack space="$1">
@@ -33,7 +33,7 @@ export function HeroExampleCode() {
             <HomeH3>Runs faster&nbsp; 🤝 &nbsp;less code&nbsp; 🤝 &nbsp;every platform.</HomeH3>
           </YStack>
 
-          <InteractiveContainer maxWidth="100%" als="center">
+          <InteractiveContainer theme={tint} maxWidth="100%" als="center">
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {examples.map((example, i) => {
                 return (
@@ -42,7 +42,7 @@ export function HeroExampleCode() {
                     theme={i === activeIndex ? 'active' : null}
                     key={i}
                     borderRadius="$0"
-                    fontWeight={i === activeIndex ? '700' : '400'}
+                    // fontWeight={i === activeIndex ? '700' : '400'}
                   >
                     {example.name}
                   </Button>
@@ -51,50 +51,43 @@ export function HeroExampleCode() {
             </ScrollView>
           </InteractiveContainer>
 
-          <Theme name={tint}>
-            <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
-              <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$6">
-                <CodeExamples {...activeExample.input} />
-                <Paragraph minHeight={50} ta="center" px="$7">
-                  <CodeInline size="$4">Input</CodeInline>
-                  <span style={{ opacity: 0.65 }}>
-                    &nbsp;－&nbsp;{activeExample.input.description}
-                  </span>
-                </Paragraph>
-              </YStack>
-              <YStack
-                $sm={{ display: 'none' }}
-                pos="absolute"
-                left={0}
-                right={0}
-                ai="center"
-                jc="center"
-                bottom={0}
-                mx={-30}
-                zIndex={1000}
-                pe="none"
-              >
-                <IconStack als="center" p="$3" mb={0}>
-                  <FastForward color="var(--colorHover)" size={18} />
-                </IconStack>
-              </YStack>
-              <YStack
-                flex={1}
-                maxWidth="50%"
-                $sm={{ maxWidth: '100%', mt: '$6' }}
-                px="$2"
-                space="$6"
-              >
-                <CodeExamples {...activeExample.output} />
-                <Paragraph minHeight={50} ta="center" px="$7">
-                  <CodeInline size="$4">Output</CodeInline>
-                  <span style={{ opacity: 0.65 }}>
-                    &nbsp;－&nbsp;{activeExample.output.description}
-                  </span>
-                </Paragraph>
-              </YStack>
-            </XStack>
-          </Theme>
+          <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
+            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$6">
+              <CodeExamples {...activeExample.input} />
+              <Paragraph minHeight={50} ta="center" px="$7">
+                <CodeInline size="$4">Input</CodeInline>
+                <span style={{ opacity: 0.65 }}>
+                  &nbsp;－&nbsp;{activeExample.input.description}
+                </span>
+              </Paragraph>
+            </YStack>
+
+            <YStack
+              $sm={{ display: 'none' }}
+              pos="absolute"
+              left={0}
+              right={0}
+              ai="center"
+              jc="center"
+              bottom={0}
+              mx={-30}
+              zIndex={1000}
+              pe="none"
+            >
+              <IconStack als="center" p="$3" mb={0}>
+                <FastForward color="var(--colorHover)" size={18} />
+              </IconStack>
+            </YStack>
+            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
+              <CodeExamples {...activeExample.output} />
+              <Paragraph minHeight={50} ta="center" px="$7">
+                <CodeInline size="$4">Output</CodeInline>
+                <span style={{ opacity: 0.65 }}>
+                  &nbsp;－&nbsp;{activeExample.output.description}
+                </span>
+              </Paragraph>
+            </YStack>
+          </XStack>
         </YStack>
       </ContainerLarge>
     </>
@@ -112,7 +105,7 @@ const CodeExamples = memo(({ examples }: any) => {
           {examples.map((example, i) => (
             <Button
               onPress={() => setActiveIndex(i)}
-              theme={i === activeIndex ? null : 'alt2'}
+              theme={i === activeIndex ? 'active' : 'alt1'}
               size="$3"
               key={i}
               borderRadius="$0"
@@ -129,6 +122,7 @@ const CodeExamples = memo(({ examples }: any) => {
       <XStack maxWidth="100%" flex={1}>
         <YStack flex={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemo
+            theme="Card"
             language={example.language as any}
             mode="interactive"
             line="3-20"

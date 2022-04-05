@@ -2,10 +2,18 @@ const path = require('path')
 const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { shouldExclude } = require('tamagui-loader')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 const target = process.env.TARGET || 'css'
+
+const tamaguiOptions = {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  importsWhitelist: ['constants.js'],
+  disable: false, //NODE_ENV === 'development',
+}
 
 module.exports = {
   context: __dirname,
@@ -52,36 +60,54 @@ module.exports = {
             ],
           },
           {
-            test: /\.[jt]sx?$/,
-            exclude: /node_modules\/(?!react-native-reanimated)/,
+            test: /\.(ts|js)x?$/,
+            exclude: (path) => shouldExclude(path, __dirname, tamaguiOptions),
             use: [
+              'thread-loader',
               {
-                loader: 'babel-loader',
+                loader: 'esbuild-loader',
                 options: {
-                  presets: ['@babel/preset-react', '@babel/preset-typescript'],
-                  plugins: ['react-refresh/babel'],
+                  loader: 'tsx',
+                  minify: false,
                 },
               },
-              // production
-              // {
-              //   loader: require.resolve('esbuild-loader'),
-              //   options: {
-              //     loader: 'tsx',
-              //     target: 'es2020',
-              //     keepNames: true,
-              //   },
-              // },
               {
-                loader: require.resolve('tamagui-loader'),
-                options: {
-                  config: './tamagui.config.ts',
-                  components: ['tamagui'],
-                  importsWhitelist: ['constants.js'],
-                  disable: NODE_ENV === 'development',
-                },
+                loader: 'tamagui-loader',
+                options: tamaguiOptions,
               },
             ],
           },
+          // {
+          //   test: /\.[jt]sx?$/,
+          //   exclude: /node_modules\/(?!react-native-reanimated)/,
+          //   use: [
+          //     // {
+          //     //   loader: 'babel-loader',
+          //     //   options: {
+          //     //     presets: ['@babel/preset-react', '@babel/preset-typescript'],
+          //     //     plugins: ['react-refresh/babel'],
+          //     //   },
+          //     // },
+          //     // production
+          //     // {
+          //     //   loader: require.resolve('esbuild-loader'),
+          //     //   options: {
+          //     //     loader: 'tsx',
+          //     //     target: 'es2020',
+          //     //     keepNames: true,
+          //     //   },
+          //     // },
+          //     // {
+          //     //   loader: require.resolve('tamagui-loader'),
+          //     //   options: {
+          //     //     config: './tamagui.config.ts',
+          //     //     components: ['tamagui'],
+          //     //     importsWhitelist: ['constants.js'],
+          //     //     disable: false, //NODE_ENV === 'development',
+          //     //   },
+          //     // },
+          //   ],
+          // },
           {
             test: /\.css$/,
             use: ['style-loader', 'css-loader'],

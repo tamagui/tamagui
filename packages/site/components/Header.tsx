@@ -106,7 +106,7 @@ export function Header({
 
           <Spacer size="$2" />
 
-          <ThemeToggle />
+          <ThemeToggle chromeless={floating} />
         </XStack>
       </XStack>
     </XStack>

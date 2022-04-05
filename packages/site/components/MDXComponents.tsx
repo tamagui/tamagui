@@ -55,6 +55,14 @@ export const components = {
   PropsTable,
   Description: SubTitle,
 
+  IntroParagraph: ({ children, ...props }) => {
+    return (
+      <Paragraph size="$6" className="paragraph" display="block" mt="$2" my="$4" {...props}>
+        {children.props.children}
+      </Paragraph>
+    )
+  },
+
   Note: (props) => (
     <YStack
       tag="aside"
@@ -130,9 +138,9 @@ export const components = {
       // color="$colorHover"
       className="paragraph"
       display="block"
-      {...props}
       mb="$1"
       mt="$1"
+      {...props}
     />
   ),
 
@@ -172,7 +180,7 @@ export const components = {
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => (
-    <YStack pb="$1">
+    <YStack pb="$0.5">
       <li>
         <Paragraph {...props} />
       </li>

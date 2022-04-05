@@ -4,6 +4,7 @@ import { H3, Paragraph, Text, Theme, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { IconStack } from './IconStack'
+import { Link } from './Link'
 
 export const HeroBelow = memo(() => {
   return (
@@ -15,6 +16,7 @@ export const HeroBelow = memo(() => {
         space="$8"
         flexWrap="nowrap"
         px="$2"
+        mb={-8}
         $sm={{ flexDirection: 'column' }}
       >
         <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
@@ -39,11 +41,8 @@ export const HeroBelow = memo(() => {
           </H3>
           <Paragraph size="$3" theme="alt2">
             Works with React Native and{' '}
-            <Text tag="a" href="https://necolas.github.io/react-native-web/">
-              Web
-            </Text>
-            . Use it as a style library or full component kit. Comes with beautiful themes, or bring
-            your own.
+            <Link href="https://necolas.github.io/react-native-web/">Web</Link>. Use it as a style
+            library or full component kit. Comes with beautiful themes, or bring your own.
           </Paragraph>
         </YStack>
 

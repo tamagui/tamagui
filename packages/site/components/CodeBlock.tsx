@@ -40,6 +40,7 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
     result = highlightWord(result)
     result = hastToHtml(result)
     const classes = `language-${language} ${className}`
+    console.log('classes', classes, language)
     if (mode === 'typewriter') {
       return <CodeTypewriter className={classes} css={css} variant="" value={result} {...props} />
     }

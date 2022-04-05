@@ -7,7 +7,10 @@ import { HomeH2, HomeH3 } from './HomeH2'
 const FeatureItem = ({ label, children }) => {
   return (
     <Paragraph>
-      <Text fow="800">{label}</Text>&nbsp;&nbsp;—&nbsp;&nbsp;
+      <Paragraph size="$6" fow="800">
+        {label}
+      </Paragraph>
+      &nbsp;&nbsp;—&nbsp;&nbsp;
       <Paragraph theme="alt2">{children}</Paragraph>
     </Paragraph>
   )
@@ -16,15 +19,15 @@ const FeatureItem = ({ label, children }) => {
 export const HeroExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <YStack ai="center" space="$2">
-        <HomeH2>Save time with every component</HomeH2>
-        <HomeH3>Big productivity wins with built-in props.</HomeH3>
+      <YStack ai="center" space="$1">
+        <HomeH2>Feature-packed props</HomeH2>
+        <HomeH3>More productivity with built-in props.</HomeH3>
       </YStack>
 
-      <XStack p="$6" space="$4" $sm={{ flexDirection: 'column' }}>
+      <XStack px="$6" pt="$8" space="$6" $sm={{ flexDirection: 'column' }}>
         <YStack w="50%" $sm={{ w: '100%' }}>
           <Features
-            space="$6"
+            space="$7"
             items={[
               <FeatureItem label="Press & hover events">
                 onHoverIn, onHoverOut, onPressIn, and onPressOut.
@@ -41,7 +44,7 @@ export const HeroExampleProps = () => {
         </YStack>
         <YStack w="50%" $sm={{ w: `100%` }}>
           <Features
-            space="$6"
+            space="$7"
             items={[
               <FeatureItem label="Themes">
                 Change themes with a single prop on all components.

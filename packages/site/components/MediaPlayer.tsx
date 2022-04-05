@@ -29,8 +29,8 @@ export const MediaPlayer = memo(
   }) => {
     const alt = altProp ?? 0
     const themeName = theme ?? (alt ? (`alt${alt}` as any) : null)
-    const mainButtonTheme = theme ?? (`alt${Math.min(4, alt + 2)}` as any)
     const barTheme = theme ?? (`alt${Math.min(4, alt + 1)}` as any)
+    const mainButtonTheme = theme ?? (`alt${Math.min(4, alt + 2)}` as any)
 
     return (
       <YStack>

@@ -33,144 +33,140 @@ export function Hero() {
   const { tint } = useTint()
 
   return (
-    <Theme name={tint}>
-      <HeroTop />
-    </Theme>
+    <YStack pos="relative" borderBottomWidth={1} borderColor="$borderColor">
+      <Theme name={tint}>
+        <YStack fullscreen zi={0} className="hero-gradient-2" opacity={1} />
+        <HeroTop />
+      </Theme>
+    </YStack>
   )
 }
 
 const HeroTop = memo(() => {
   return (
-    <YStack
-      pos="relative"
-      className="hero-gradient"
-      borderBottomWidth={1}
-      borderColor="$borderColor"
-    >
-      <ContainerLarge pos="relative">
-        <YStack
-          className="bg-grid mask-gradient-up"
-          fullscreen
-          left={-1000}
-          right={-1000}
-          top={302}
-          opacity={0.6}
-        />
+    <ContainerLarge pos="relative">
+      <YStack
+        className="bg-grid mask-gradient-up"
+        fullscreen
+        left={-1000}
+        right={-1000}
+        // top={302}
+        opacity={0.3}
+      />
 
-        <Header />
+      <Header />
 
-        <YStack
-          space="$6"
-          position="relative"
-          pt="$8"
-          $sm={{
-            maxWidth: 550,
-            mx: 'auto',
-          }}
-        >
-          <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
-            <Title
-              size="$9"
+      <YStack
+        space="$6"
+        position="relative"
+        pt="$8"
+        $sm={{
+          maxWidth: 550,
+          mx: 'auto',
+        }}
+      >
+        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
+          <Title
+            size="$9"
+            $gtSm={{
+              size: '$11',
+              ta: 'center',
+            }}
+            $gtMd={{
+              size: '$12',
+              maxWidth: 900,
+              mx: '$4',
+            }}
+          >
+            <Tooltip contents="Works the same on iOS, Android, and web">
+              <span className="rainbow clip-text help">Universal</span>
+            </Tooltip>{' '}
+            design systems for React&nbsp;Native&nbsp;&&nbsp;Web, faster.
+          </Title>
+
+          <YStack
+            px={0}
+            maxWidth={550}
+            $gtSm={{
+              px: 100,
+              maxWidth: 900,
+            }}
+            $gtMd={{
+              px: 90,
+            }}
+          >
+            <Paragraph
+              color="$color"
+              opacity={0.7}
+              size="$5"
+              letterSpacing={0}
               $gtSm={{
-                size: '$11',
                 ta: 'center',
+                size: '$6',
+                maxWidth: 600,
+                letterSpacing: 0,
+                fontWeight: '400',
               }}
               $gtMd={{
-                size: '$12',
-                maxWidth: 900,
-                mx: '$4',
+                size: '$8',
+                maxWidth: 700,
+                fontWeight: '400',
               }}
             >
-              <Tooltip contents="Works the same on iOS, Android, and web">
-                <span className="rainbow clip-text help">Universal</span>
-              </Tooltip>{' '}
-              design systems for React&nbsp;Native&nbsp;&&nbsp;Web, faster.
-            </Title>
-
-            <YStack
-              px={0}
-              maxWidth={550}
-              $gtSm={{
-                px: 100,
-                maxWidth: 900,
-              }}
-              $gtMd={{
-                px: 90,
-              }}
-            >
-              <Paragraph
-                color="$color"
-                opacity={0.7}
-                size="$5"
-                letterSpacing={0}
-                $gtSm={{
-                  ta: 'center',
-                  size: '$6',
-                  maxWidth: 600,
-                  letterSpacing: 0,
-                  fontWeight: '400',
-                }}
-                $gtMd={{
-                  size: '$8',
-                  maxWidth: 700,
-                  fontWeight: '400',
-                }}
-              >
-                An optimizing compiler for 🔼 performance with 🔽 code.
-                Write&nbsp;once,&nbsp;run&nbsp;everywhere, easily.
-              </Paragraph>
-            </YStack>
+              An optimizing compiler for 🔼 performance with 🔽 code.
+              Write&nbsp;once,&nbsp;run&nbsp;everywhere - easy.
+            </Paragraph>
           </YStack>
-
-          <XStack ai="center" jc="center" space="$2">
-            <NextLink href="/docs/intro/introduction" passHref>
-              <Button
-                // TODO check why hoverStyle not overriding
-                // hoverStyle={{
-                //   backgroundColor: 'red',
-                // }}
-                borderRadius={1000}
-                iconAfter={ArrowRight}
-                tag="a"
-                fontWeight="800"
-              >
-                Documentation
-              </Button>
-            </NextLink>
-
-            <NextLink href="https://github.com/tamagui/tamagui" passHref>
-              <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
-                <VisuallyHidden>
-                  <Text>Github</Text>
-                </VisuallyHidden>
-                <GithubIcon width={23} />
-              </YStack>
-            </NextLink>
-
-            <NextLink
-              href="https://discord.gg/4qh6tdcVDa"
-              passHref
-              // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
-            >
-              <YStack
-                p="$2"
-                $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
-                opacity={0.65}
-                hoverStyle={{ opacity: 1 }}
-                tag="a"
-                target="_blank"
-              >
-                <VisuallyHidden>
-                  <Text>Discord</Text>
-                </VisuallyHidden>
-                <DiscordIcon plain width={23} />
-              </YStack>
-            </NextLink>
-          </XStack>
         </YStack>
 
-        <Spacer size="$10" />
-      </ContainerLarge>
-    </YStack>
+        <XStack ai="center" jc="center" space="$2">
+          <NextLink href="/docs/intro/introduction" passHref>
+            <Button
+              // TODO check why hoverStyle not overriding
+              // hoverStyle={{
+              //   backgroundColor: 'red',
+              // }}
+              borderRadius={1000}
+              iconAfter={ArrowRight}
+              tag="a"
+              fontWeight="800"
+            >
+              Documentation
+            </Button>
+          </NextLink>
+
+          <NextLink href="https://github.com/tamagui/tamagui" passHref>
+            <YStack p="$2" opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">
+              <VisuallyHidden>
+                <Text>Github</Text>
+              </VisuallyHidden>
+              <GithubIcon width={23} />
+            </YStack>
+          </NextLink>
+
+          <NextLink
+            href="https://discord.gg/4qh6tdcVDa"
+            passHref
+            // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
+          >
+            <YStack
+              p="$2"
+              $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
+              opacity={0.65}
+              hoverStyle={{ opacity: 1 }}
+              tag="a"
+              target="_blank"
+            >
+              <VisuallyHidden>
+                <Text>Discord</Text>
+              </VisuallyHidden>
+              <DiscordIcon plain width={23} />
+            </YStack>
+          </NextLink>
+        </XStack>
+      </YStack>
+
+      <Spacer size="$10" />
+    </ContainerLarge>
   )
 })

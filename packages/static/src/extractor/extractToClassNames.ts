@@ -149,10 +149,6 @@ export function extractToClassNames({
             } else {
               finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
             }
-            if (shouldPrintDebug) {
-              // prettier-ignore
-              console.log('  classnames (after)\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
-            }
             break
           case 'attr':
             const val = attr.value
@@ -215,6 +211,11 @@ export function extractToClassNames({
             }
             break
         }
+      }
+
+      if (shouldPrintDebug) {
+        // prettier-ignore
+        console.log('  classnames (after)\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
       }
 
       function addTernaryStyle(ternary: Ternary, a: any, b: any) {

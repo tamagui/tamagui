@@ -14,9 +14,9 @@ If you'd rather build your own design system on top of core, [see the Design Sys
 Try out [create-tamagui-app](/docs/guides/create-tamagui-app) for a helpful starter template. You may also use `@tamagui/shorthands` and `@tamagui/theme-base` to set up nice defaults for shorthands, themes and tokens:
 
 ```tsx
-import { createTamagui } from 'tamagui'
-import { themes, tokens } from '@tamagui/theme-base'
 import { shorthands } from '@tamagui/shorthands'
+import { themes, tokens } from '@tamagui/theme-base'
+import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   themes,
@@ -50,29 +50,42 @@ We have a full example of a [plain, webpack-only repo here](https://github.com/t
 Add `tamagui-loader` and set up your `webpack.config.js`:
 
 ```js
-{
+const { shouldExclude } = require('tamagui-loader')
+
+const tamaguiOptions = {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  importsWhitelist: ['constants.js', 'colors.js'],
+  logTimings: true,
+  disableExtraction: process.env.NODE_ENV === 'development',
+}
+
+const projectRoot = __dirname
+
+module.exports = {
   module: {
     rules: [
       {
         test: /\.[jt]sx?$/,
-        // be sure to include tamagui
-        include: /tamagui/,
+        // you'll likely want to adjust this helper function,
+        // but it serves as a decent start that you can copy/paste from
+        exclude: path => shouldExclude(path, projectRoot, tamaguiOptions),
         use: [
           // optionally thread-loader for significantly faster compile!
           'thread-loader',
 
           // works nicely alongside esbuild
-          'esbuild-loader',
+          {
+            loader: 'esbuild-loader',
+            options: {
+              loader: 'tsx',
+              minify: process.env.NODE_ENV === 'production',
+            },
+          },
 
           {
             loader: 'tamagui-loader',
-            options: {
-              config: './tamagui.config.ts',
-              components: ['tamagui'],
-              importsWhitelist: ['constants.js', 'colors.js'],
-              logTimings: true,
-              disableExtraction: process.env.NODE_ENV === 'development',
-            },
+            options: tamaguiOptions,
           },
         ]
       }

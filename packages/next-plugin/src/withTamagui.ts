@@ -5,6 +5,7 @@ import browserslist from 'browserslist'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
+import { shouldExclude } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
@@ -208,28 +209,6 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           }
         }
 
-        // add loader
-        const shouldExclude = (x: string) => {
-          if (x.includes('react-native-reanimated')) {
-            return false
-          }
-          // analyze everything in our jsx dir
-          // analyze everything in the components dirs
-          const shouldInclude =
-            x.includes(options.dir) ||
-            tamaguiOptions.components.some(
-              (c) =>
-                x.includes(`/node_modules/${c}`) ||
-                x.includes(`${c}/dist/jsx/`) ||
-                // more generic catch-all for independent tamagui packages like drawer
-                (x.includes('tamagui') && x.includes('/dist/jsx/'))
-            )
-          if (!shouldInclude) {
-            return true
-          }
-          return false
-        }
-
         if (isNext12) {
           const firstOneOfRule = webpackConfig.module.rules.findIndex((x) => x && !!x.oneOf)
           const oneOfJSRules: any[] = webpackConfig.module.rules[firstOneOfRule].oneOf
@@ -259,7 +238,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
             },
             {
               test: /\.(jsx?|tsx?)$/,
-              exclude: shouldExclude,
+              exclude: (path: string) => shouldExclude(path, options.dir, tamaguiOptions),
               use: [
                 ...[].concat(swcLoader.use),
                 {
@@ -277,7 +256,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
             second,
             {
               test: /\.(tsx|jsx)$/,
-              exclude: shouldExclude,
+              exclude: (path: string) => shouldExclude(path, options.dir, tamaguiOptions),
               use: [
                 'thread-loader',
                 {
