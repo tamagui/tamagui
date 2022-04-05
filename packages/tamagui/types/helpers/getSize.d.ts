@@ -3,6 +3,6 @@ export declare const getSize: (sizeX?: number, sizeY?: number) => (val: any, { t
     minHeight: any;
     paddingHorizontal: number;
     paddingVertical: number;
-    borderRadius: import("@tamagui/core").VariableVal;
+    borderRadius: any;
 };
 //# sourceMappingURL=getSize.d.ts.map

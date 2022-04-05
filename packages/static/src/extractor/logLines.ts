@@ -1,4 +1,10 @@
-export const logLines = (str: string) => {
+const prefix = '           '
+
+export const logLines = (str: string, singleLine = false) => {
+  if (singleLine) {
+    const before = `\n${prefix}`
+    return before + str.split(' ').join(before)
+  }
   let lines: string[] = ['']
   const items = str.split(' ')
   for (const item of items) {
@@ -7,5 +13,5 @@ export const logLines = (str: string) => {
     }
     lines[lines.length - 1] += item + ' '
   }
-  return lines.map((line, i) => '           ' + (i == 0 ? '' : ' ') + line.trim()).join('\n')
+  return lines.map((line, i) => prefix + (i == 0 ? '' : ' ') + line.trim()).join('\n')
 }

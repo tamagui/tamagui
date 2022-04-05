@@ -7,7 +7,7 @@ export declare const inputSizeVariant: (val: string | undefined, props: any) => 
     minHeight: any;
     paddingHorizontal: number;
     paddingVertical: number;
-    borderRadius: import("@tamagui/core/types").VariableVal;
+    borderRadius: any;
 } | {
     fontFamily: any;
     fontWeight: any;
@@ -17,6 +17,6 @@ export declare const inputSizeVariant: (val: string | undefined, props: any) => 
     minHeight: any;
     paddingHorizontal: number;
     paddingVertical: number;
-    borderRadius: import("@tamagui/core/types").VariableVal;
+    borderRadius: any;
 };
 //# sourceMappingURL=inputHelpers.d.ts.map

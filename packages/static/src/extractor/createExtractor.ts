@@ -1113,6 +1113,7 @@ export function createExtractor() {
                 if (shouldPrintDebug) {
                   console.log('     - keeping as non-style', key)
                 }
+                acc.push(cur)
                 acc.push({
                   type: 'attr',
                   value: t.jsxAttribute(
@@ -1161,9 +1162,10 @@ export function createExtractor() {
             const out = postProcessStyles(props, staticConfig, defaultTheme)
             const next = out?.style ?? props
             if (shouldPrintDebug) {
-              console.log('  -- getStyles (viewProps):\n', logLines(objToStr(out.viewProps)))
               console.log('  -- getStyles (props):\n', logLines(objToStr(props)))
-              console.log('  -- getStyles (next):\n', logLines(objToStr(next)))
+              console.log('  -- getStyles (out.viewProps):\n', logLines(objToStr(out.viewProps)))
+              // prettier-ignore
+              console.log('  -- getStyles (out.style):\n', logLines(objToStr(out?.style || {}), true))
             }
             for (const key in next) {
               if (staticConfig.validStyles) {
@@ -1201,6 +1203,7 @@ export function createExtractor() {
           }
 
           if (shouldPrintDebug) {
+            console.log('   -- stylesToAddToInitialGroup', stylesToAddToInitialGroup.join(', '))
             // prettier-ignore
             console.log('   -- completeStaticProps:\n', logLines(objToStr(completeStaticProps)))
             // prettier-ignore

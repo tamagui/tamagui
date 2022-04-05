@@ -35,6 +35,7 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
 const ButtonFrame = styled(SizableStack, {
   name: 'Button',
   tag: 'button',
+  size: '$4',
   borderWidth: 0,
   borderColor: '$borderColor',
   hoverable: true,
@@ -77,6 +78,7 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
   ButtonFrame.extractable(
     themeable(
       forwardRef((props: any, ref) => {
+        // careful not to desctructure and re-order props, order is important
         const {
           children,
           icon,
@@ -84,7 +86,6 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           space,
           noTextWrap,
           theme: themeName,
-          size = '$4',
           scaleIcon = 0,
           color: colorProp,
           fontWeight,
@@ -92,6 +93,7 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           ...rest
         } = props as ButtonProps
         const theme = useTheme()
+        const size = props.size ?? '$4'
 
         // get color from prop or theme
         let color: any
@@ -112,7 +114,6 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           }
           if (el) {
             const iconSize = getFontSize(size, { relativeSize: -1 + scaleIcon })
-            if (props['debug']) console.log('iconSize', iconSize, size)
             return React.createElement(el, {
               color,
               size: iconSize,
@@ -147,12 +148,8 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
             })
 
         return (
-          <ButtonFrame
-            size={size}
-            space={space ?? getSpaceSize(size, -3)}
-            ref={ref as any}
-            {...rest}
-          >
+          // careful not to desctructure and re-order props, order is important
+          <ButtonFrame space={getSpaceSize(size, -3)} ref={ref as any} {...rest}>
             {themedIcon}
             {contents}
             {themedIconAfter}

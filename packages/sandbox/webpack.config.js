@@ -12,7 +12,7 @@ const tamaguiOptions = {
   config: './tamagui.config.ts',
   components: ['tamagui'],
   importsWhitelist: ['constants.js'],
-  disable: false, //NODE_ENV === 'development',
+  disable: true, //NODE_ENV === 'development',
 }
 
 module.exports = {
