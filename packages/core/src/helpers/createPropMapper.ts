@@ -26,11 +26,22 @@ export const createPropMapper = (c: StaticConfig) => {
     // expand variants
     const variant = variantsParsed && variantsParsed[key]
     if (variant && typeof value !== 'undefined') {
-      const val =
+      let variantValue =
         value === true
-          ? variant['$true'] || variant['true']
-          : variant[value] ?? variant['...'] ?? value
-      let res = val
+          ? variant['$true'] || variant['true'] || variant[':boolean']
+          : value === false
+          ? variant['$false'] || variant['false'] || variant[':boolean']
+          : variant[value]
+
+      if (!variantValue) {
+        if (variant[':number'] && !isNaN(value)) {
+          variantValue = variant[':number']
+        } else if (variant[':string'] && typeof value === 'string') {
+          variantValue = variant[':string']
+        }
+      }
+
+      let res = variantValue
       if (typeof res === 'function') {
         res = res(value, { tokens: conf.tokensParsed, theme, props })
       }

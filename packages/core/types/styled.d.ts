@@ -19,6 +19,6 @@ export declare type GetVariants<Props> = void | {
     };
 };
 export declare type GetVariantProps<Variants> = Variants extends void ? {} : {
-    [Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof Tokens ? ThemeValueByCategory<VariantSpread> | null : unknown : keyof Variants[Key] extends 'true' ? boolean : keyof Variants[Key] extends ':string' ? string : keyof Variants[Key] extends ':boolean' ? boolean : keyof Variants[Key] extends ':number' ? number : keyof Variants[Key] extends ':string?' ? string | undefined | null : keyof Variants[Key] extends ':boolean?' ? boolean | undefined | null : keyof Variants[Key] extends ':number?' ? number | undefined | null : any;
+    [Key in keyof Variants]?: keyof Variants[Key] extends `...${infer VariantSpread}` ? VariantSpread extends keyof Tokens ? ThemeValueByCategory<VariantSpread> | null : unknown : keyof Variants[Key] extends 'true' | 'false' ? boolean : keyof Variants[Key] extends ':string' ? string : keyof Variants[Key] extends ':boolean' ? boolean : keyof Variants[Key] extends ':number' ? number : any;
 };
 //# sourceMappingURL=styled.d.ts.map
