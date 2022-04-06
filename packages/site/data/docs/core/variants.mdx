@@ -1,0 +1,184 @@
+---
+title: Variants
+description: Simple typed prop styles through styled()
+---
+
+Variants let you create typed props quickly on your styled() components.
+
+Here's an example:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const Circle = styled(Stack, {
+  borderRadius: 100_000_000,
+
+  variants: {
+    pin: {
+      top: {
+        position: 'absolute',
+        top: 0,
+      },
+    },
+
+    centered: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+})
+```
+
+We can use these like so:
+
+```jsx
+<Circle pin="top" centered size="$lg" />
+```
+
+We're showing off a few different styles of variants here. We'll expand on them below:
+
+### Typed Variants
+
+#### Boolean
+
+The special keys `true` and `false` will map to a boolean. So the `centered` prop will be typed to accept true or false, and when true it will apply it's styles.
+
+#### Other types
+
+You can use a pseudo Typescript syntax for other variants:
+
+- `:string` - Accepts a `string`
+- `:boolean` - Accepts a `boolean` (less precendence than `true` or `false`)
+- `:number` - Accepts a `number`
+
+Example:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const ColorfulStack = styled(Stack, {
+  variants: {
+    color: {
+      ':string': (color) => {
+        // color is of type "string"
+        return {
+          color,
+          borderColor: color,
+        }
+      }
+    }
+  },
+})
+```
+
+### Spread Variants
+
+When you write variants, you have to be explicit so Typescript and the runtime know exactly which props you accept. This can be especially cumbersome when you want to "gather" all the values of a specific token. For example, without spread variants, if you wanted to have a `pad` property that accepted all the keys from `tokens.size`, you'd have to write this:
+
+```jsx
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
+    // ...
+  }
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(Stack, {
+  variants: {
+    pad: {
+      sm: {
+        padding: tokens.size.sm,
+      },
+      md: {
+        padding: tokens.size.md,
+      },
+      lg: {
+        padding: tokens.size.lg,
+      },
+      // ...
+    }
+  }
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+This is verbose, and only gets more verbose if you add more sizes. It would require always updating every component every time you change the tokens.
+
+Spread variants solve this problem. Instead, we can write:
+
+```jsx
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
+    // ...
+  }
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(Stack, {
+  variants: {
+    pad: {
+      '...size': (val, { tokens }) => ({
+        padding: tokens.size[val]
+      }),
+    }
+  }
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+Spread variants save you from having to define hardcoded styles for every key (`sm`, `md`, `lg`) in your token object. They collect values from any of your top level token categories. So you can only use `...color`, `...size`, `...space`, `...font`, `...fontSize`, `...lineHeight`, `...radius`, `...letterSpace`, or `...zIndex`. They must be prefixed with `...` as that is how they are typed properly and assembled for runtime.
+
+The Spread variant function will receive two arguments: the first is the value given to the property (`"$lg"`), and the second is an object with `{ theme, tokens, props }`.
+
+- `theme` a proxy to your theme that lets you access all theme values using normal keys, or with a `$` prefix.
+- `tokens` of type TokensParsed, the tokens from `createTokens`, but the keys all start with `$`.
+
+Because you can expand them to any number of styles, they can save a ton of code:
+
+```jsx
+const MyButton = styled(Stack, {
+  variants: {
+    square: {
+      '...size': (size, { tokens }) => {
+        // size === '$lg'
+        // tokens.size.$lg === 25
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  }
+})
+```

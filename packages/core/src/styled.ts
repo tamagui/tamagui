@@ -89,7 +89,7 @@ export type GetVariantProps<Variants> = Variants extends void
         ? VariantSpread extends keyof Tokens
           ? ThemeValueByCategory<VariantSpread> | null
           : unknown
-        : keyof Variants[Key] extends 'true'
+        : keyof Variants[Key] extends 'true' | 'false'
         ? boolean
         : keyof Variants[Key] extends ':string'
         ? string
@@ -97,12 +97,6 @@ export type GetVariantProps<Variants> = Variants extends void
         ? boolean
         : keyof Variants[Key] extends ':number'
         ? number
-        : keyof Variants[Key] extends ':string?'
-        ? string | undefined | null
-        : keyof Variants[Key] extends ':boolean?'
-        ? boolean | undefined | null
-        : keyof Variants[Key] extends ':number?'
-        ? number | undefined | null
         : any
     }
 

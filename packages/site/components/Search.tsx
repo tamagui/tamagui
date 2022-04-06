@@ -153,7 +153,7 @@ export const SearchButton = (props: ButtonProps) => {
         elevation: '$4',
       }}
       iconAfter={
-        <Button size="$2" theme="alt2">
+        <Button size="$2" theme="alt2" hoverable={false}>
           /
         </Button>
       }
