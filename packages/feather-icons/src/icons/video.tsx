@@ -22,43 +22,45 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const Video = memo<IconProps>(
-  themed((props) => {
-    const { color = 'black', size = 24, ...otherProps } = props
-    return (
-      <Svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
+const Icon = (props) => {
+  const { color = 'black', size = 24, ...otherProps } = props
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={`${color}`}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...otherProps}
+    >
+      <Polygon
+        points="23 7 16 12 23 17 23 7"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        {...otherProps}
-      >
-        <Polygon
-          points="23 7 16 12 23 17 23 7"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Rect
-          x="1"
-          y="5"
-          width="15"
-          height="14"
-          rx="2"
-          ry="2"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </Svg>
-    )
-  })
-)
+      />
+      <Rect
+        x="1"
+        y="5"
+        width="15"
+        height="14"
+        rx="2"
+        ry="2"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+Icon.displayName = 'Video'
+
+export const Video = memo<IconProps>(themed(Icon))

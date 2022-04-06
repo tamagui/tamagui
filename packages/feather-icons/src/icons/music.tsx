@@ -22,50 +22,52 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const Music = memo<IconProps>(
-  themed((props) => {
-    const { color = 'black', size = 24, ...otherProps } = props
-    return (
-      <Svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
+const Icon = (props) => {
+  const { color = 'black', size = 24, ...otherProps } = props
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={`${color}`}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...otherProps}
+    >
+      <Path
+        d="M9 18V5l12-2v13"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        {...otherProps}
-      >
-        <Path
-          d="M9 18V5l12-2v13"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <_Circle
-          cx="6"
-          cy="18"
-          r="3"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <_Circle
-          cx="18"
-          cy="16"
-          r="3"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </Svg>
-    )
-  })
-)
+      />
+      <_Circle
+        cx="6"
+        cy="18"
+        r="3"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <_Circle
+        cx="18"
+        cy="16"
+        r="3"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+Icon.displayName = 'Music'
+
+export const Music = memo<IconProps>(themed(Icon))

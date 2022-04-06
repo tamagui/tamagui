@@ -71,6 +71,7 @@
   - github sponsor
   - docs
     - exported helpers getTokens, useThemeName
+      - spacedChildren
     - exported hooks
     - <SizableFrame />, <EnsureFlexed />
   - fix bugs

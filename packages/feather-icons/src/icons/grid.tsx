@@ -22,66 +22,68 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const Grid = memo<IconProps>(
-  themed((props) => {
-    const { color = 'black', size = 24, ...otherProps } = props
-    return (
-      <Svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
+const Icon = (props) => {
+  const { color = 'black', size = 24, ...otherProps } = props
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={`${color}`}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...otherProps}
+    >
+      <Rect
+        x="3"
+        y="3"
+        width="7"
+        height="7"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        {...otherProps}
-      >
-        <Rect
-          x="3"
-          y="3"
-          width="7"
-          height="7"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Rect
-          x="14"
-          y="3"
-          width="7"
-          height="7"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Rect
-          x="14"
-          y="14"
-          width="7"
-          height="7"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Rect
-          x="3"
-          y="14"
-          width="7"
-          height="7"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </Svg>
-    )
-  })
-)
+      />
+      <Rect
+        x="14"
+        y="3"
+        width="7"
+        height="7"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Rect
+        x="14"
+        y="14"
+        width="7"
+        height="7"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Rect
+        x="3"
+        y="14"
+        width="7"
+        height="7"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+Icon.displayName = 'Grid'
+
+export const Grid = memo<IconProps>(themed(Icon))

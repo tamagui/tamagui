@@ -22,54 +22,56 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const XCircle = memo<IconProps>(
-  themed((props) => {
-    const { color = 'black', size = 24, ...otherProps } = props
-    return (
-      <Svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
+const Icon = (props) => {
+  const { color = 'black', size = 24, ...otherProps } = props
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={`${color}`}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...otherProps}
+    >
+      <_Circle
+        cx="12"
+        cy="12"
+        r="10"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        {...otherProps}
-      >
-        <_Circle
-          cx="12"
-          cy="12"
-          r="10"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Line
-          x1="15"
-          y1="9"
-          x2="9"
-          y2="15"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Line
-          x1="9"
-          y1="9"
-          x2="15"
-          y2="15"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </Svg>
-    )
-  })
-)
+      />
+      <Line
+        x1="15"
+        y1="9"
+        x2="9"
+        y2="15"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Line
+        x1="9"
+        y1="9"
+        x2="15"
+        y2="15"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+Icon.displayName = 'XCircle'
+
+export const XCircle = memo<IconProps>(themed(Icon))

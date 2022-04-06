@@ -17,6 +17,7 @@ export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps 
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];
     letterSpacing?: SizableTextProps['letterSpacing'];
+    textAlign?: SizableTextProps['textAlign'];
 };
 declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core").StackProps, `$${string}` | "elevation" | "fullscreen" | keyof import("@tamagui/core").PseudoProps<any>> & {
     fullscreen?: boolean | undefined;

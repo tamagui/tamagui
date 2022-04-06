@@ -22,38 +22,40 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const CornerDownRight = memo<IconProps>(
-  themed((props) => {
-    const { color = 'black', size = 24, ...otherProps } = props
-    return (
-      <Svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
+const Icon = (props) => {
+  const { color = 'black', size = 24, ...otherProps } = props
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={`${color}`}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...otherProps}
+    >
+      <Polyline
+        points="15 10 20 15 15 20"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        {...otherProps}
-      >
-        <Polyline
-          points="15 10 20 15 15 20"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Path
-          d="M4 4v7a4 4 0 0 0 4 4h12"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </Svg>
-    )
-  })
-)
+      />
+      <Path
+        d="M4 4v7a4 4 0 0 0 4 4h12"
+        fill="none"
+        stroke={`${color}`}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  )
+}
+
+Icon.displayName = 'CornerDownRight'
+
+export const CornerDownRight = memo<IconProps>(themed(Icon))

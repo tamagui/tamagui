@@ -49,11 +49,13 @@ export function Overlay({
     callback: onRequestClose ? onRequestClose : () => {},
   })
 
-  useLayoutEffect(() => {
-    if (isOpen) {
-      setOpenedOnce(true)
-    }
-  }, [isOpen])
+  if (typeof document !== 'undefined') {
+    useLayoutEffect(() => {
+      if (isOpen) {
+        setOpenedOnce(true)
+      }
+    }, [isOpen])
+  }
 
   if (!openedOnce) {
     return null

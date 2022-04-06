@@ -1,4 +1,5 @@
 import {
+  ButtonInsideButtonContext,
   GetProps,
   StaticComponent,
   ThemeableProps,
@@ -9,7 +10,7 @@ import {
   themeable,
   useTheme,
 } from '@tamagui/core'
-import React, { FunctionComponent, forwardRef, isValidElement } from 'react'
+import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
 import { View } from 'react-native'
 
 import { getFontSize } from '../helpers/getFontSize'
@@ -42,6 +43,7 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     color?: SizableTextProps['color']
     fontWeight?: SizableTextProps['fontWeight']
     letterSpacing?: SizableTextProps['letterSpacing']
+    textAlign?: SizableTextProps['textAlign']
   }
 
 const ButtonFrame = styled(SizableStack, {
@@ -98,14 +100,16 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           noTextWrap,
           theme: themeName,
           space,
-          spaceFlex = true,
+          spaceFlex,
           scaleIcon = -1,
-          scaleSpace = -3,
+          scaleSpace = -2,
           color: colorProp,
           fontWeight,
           letterSpacing,
+          textAlign,
           ...rest
         } = props as ButtonProps
+        const isInsideButton = useContext(ButtonInsideButtonContext)
         const theme = useTheme()
         const size = props.size ?? '$4'
 
@@ -152,7 +156,8 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
                   letterSpacing={letterSpacing}
                   size={size}
                   color={color}
-                  flexGrow={0}
+                  textAlign={textAlign}
+                  flexGrow={1}
                   flexShrink={1}
                   ellipse
                 >
@@ -163,11 +168,23 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
 
         return (
           // careful not to desctructure and re-order props, order is important
-          <ButtonFrame ref={ref as any} {...rest}>
-            {themedIcon}
-            {contents}
-            {themedIconAfter}
-          </ButtonFrame>
+          <ButtonInsideButtonContext.Provider value={true}>
+            <ButtonFrame
+              // fixes SSR issue + DOM nesting issue of not allowing button in button
+              {...(isInsideButton && {
+                tag: 'span',
+              })}
+              ref={ref as any}
+              {...rest}
+            >
+              {spacedChildren({
+                space: getSpaceSize(space, scaleSpace),
+                spaceFlex,
+                flexDirection: props.flexDirection,
+                children: [themedIcon, contents, themedIconAfter],
+              })}
+            </ButtonFrame>
+          </ButtonInsideButtonContext.Provider>
         )
       })
     )

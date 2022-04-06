@@ -21,6 +21,8 @@ export * from './helpers/themeable'
 export * from './helpers/withStaticProperties'
 export * from './helpers/isTamaguiElement'
 
+export * from './contexts/ButtonInsideButtonContext'
+
 export * from './hooks/useIsTouchDevice'
 export * from './hooks/useConstant'
 export * from './hooks/usePressable'
