@@ -47,7 +47,7 @@ export const ColorToggleButton = (props: ButtonProps) => {
       {...props}
       aria-label="toggle a light and dark color scheme"
     >
-      {/* @ts-ignore TODO too deep err :( */}
+      {/* @ts-ignore TODO too deep */}
       <Diamond m={2} size={7} backgroundColor={tint} />
     </Button>
   )

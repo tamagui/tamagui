@@ -2,6 +2,7 @@ import CSS from 'csstype';
 import React from 'react';
 import { GestureResponderEvent, TextProps as ReactTextProps, TextStyle, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
+import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
@@ -231,7 +232,7 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
 };
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
-    propMapper: (key: string, value: any, theme: ThemeObject, props: any) => undefined | boolean | {
+    propMapper: (key: string, value: any, theme: ThemeObject, props: any, resolveVariablesAs?: ResolveVariableTypes) => undefined | boolean | {
         [key: string]: any;
     };
     variantsParsed?: {
@@ -292,12 +293,12 @@ export declare type UseAnimationProps = {
     [key: string]: any;
 };
 export declare type UseAnimationState = {
-    style: (StackStyleProps | TextStyleProps | null)[];
+    style: ViewStyle;
     isMounted: boolean;
-    hoverStyle?: StackStyleProps | TextStyleProps | null;
-    pressStyle?: StackStyleProps | TextStyleProps | null;
-    focusStyle?: StackStyleProps | TextStyleProps | null;
-    exitStyle?: StackStyleProps | TextStyleProps | null;
+    hoverStyle?: ViewStyle | null;
+    pressStyle?: ViewStyle | null;
+    focusStyle?: ViewStyle | null;
+    exitStyle?: ViewStyle | null;
     onDidAnimate?: any;
     delay?: number;
 };

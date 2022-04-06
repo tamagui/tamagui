@@ -1,6 +1,6 @@
 import { PropTypes } from '@tamagui/core';
 export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -67,7 +67,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -134,7 +134,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -201,7 +201,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -268,7 +268,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare type ParagraphProps = PropTypes<typeof Paragraph>;
 //# sourceMappingURL=Paragraph.d.ts.map

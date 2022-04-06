@@ -1,6 +1,6 @@
 import { GetProps } from '@tamagui/core';
 export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -67,7 +67,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -134,7 +134,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -201,7 +201,7 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -268,9 +268,9 @@ export declare const SizableText: import("@tamagui/core").StaticComponent<Omit<i
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">, any, import("@tamagui/core").StaticConfigParsed>;
 export declare type SizableTextProps = GetProps<typeof SizableText>;
 //# sourceMappingURL=SizableText.d.ts.map

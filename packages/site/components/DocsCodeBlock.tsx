@@ -1,6 +1,7 @@
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
 import React, { forwardRef, useContext, useEffect, useRef, useState } from 'react'
+import { ScrollView } from 'react-native-gesture-handler'
 import { Button, Paragraph, Text, YStack } from 'tamagui'
 
 import { Code } from './Code'
@@ -89,12 +90,15 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             data-invert-line-highlight={isHighlightingLines}
             data-line-numbers={showLineNumbers}
             className={className}
+            p={0}
             // @ts-ignore
             id={id}
           >
-            <Code backgroundColor="transparent" className={className}>
-              {children}
-            </Code>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <Code p="$4" backgroundColor="transparent" className={className}>
+                {children}
+              </Code>
+            </ScrollView>
           </Pre>
           <Button
             aria-label="Copy code to clipboard"

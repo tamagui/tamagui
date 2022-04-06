@@ -290,7 +290,7 @@ export function HeroExampleThemes() {
             </XStack>
           </XStack>
 
-          <YStack pe="none" fullscreen ai="center" jc="center" $sm={{ scale: 0.85 }}>
+          <YStack pe="none" fullscreen ai="center" jc="center" $xs={{ scale: 0.7 }}>
             <Theme name={colorName}>
               <MediaPlayer pointerEvents="none" pointerEventsControls="auto" alt={curShadeI} />
             </Theme>

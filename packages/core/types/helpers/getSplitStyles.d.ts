@@ -1,5 +1,6 @@
 import { ViewStyle } from 'react-native';
 import { StackProps, StaticConfigParsed, ThemeObject } from '../types';
+import { ResolveVariableTypes } from './createPropMapper';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
 declare type PseudoStyles = {
     hoverStyle?: ViewStyle;
@@ -11,9 +12,9 @@ declare type PseudoStyles = {
 export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 export declare const getSplitStyles: (props: {
     [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeObject, isMounted?: boolean) => {
+}, staticConfig: StaticConfigParsed, theme: ThemeObject, isMounted?: boolean, resolveVariablesAs?: ResolveVariableTypes | undefined) => {
     viewProps: StackProps;
-    style: (ViewStyle | null)[];
+    style: ViewStyle;
     pseudos: PseudoStyles | null;
     classNames: string[] | null;
 };

@@ -1,4 +1,5 @@
 import React from 'react'
+import { ViewStyle } from 'react-native'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ComponentState } from '../defaultComponentState'
@@ -16,7 +17,7 @@ type FeatureUtils = {
   setStateShallow: (next: Partial<ComponentState>) => void
   useAnimations?: UseAnimationHook
   pseudos: any
-  style: any[]
+  style: ViewStyle
   isHovering: boolean
   isPressing: boolean
   isFocusing: boolean

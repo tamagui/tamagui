@@ -18,6 +18,7 @@ import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isAndroid, isTouchDevice, isWeb } from './constants/platform'
 import { rnw } from './constants/rnw'
+import { isVariable } from './createVariable'
 import { ComponentState, defaultComponentState } from './defaultComponentState'
 import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
@@ -80,11 +81,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   const validStyleProps = validStyles ?? stylePropsView
 
   // split out default styles vs props so we can assign it to component.defaultProps
-  let defaultProps = null as any
   let tamaguiConfig: TamaguiInternalConfig
 
   // web uses className, native uses style
-  let defaultNativeStyle: StyleSheet.NamedStyles<{ base: {} }> | null = null
+  let defaultNativeStyle: any
+  let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }> | null = null
   let defaultsClassName = ''
   let initialTheme: any
   let splitStyleResult: SplitStyleResult | null = null
@@ -110,6 +111,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       style,
       classNames,
     } = getSplitStyles(props, staticConfig, theme, state.mounted)
+
+    if (props.debug) console.log({ pseudos, viewPropsIn, state, classNames })
 
     const {
       tag,
@@ -192,7 +195,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
-
     const hasEnterStyle = !!props.enterStyle
 
     // isMounted
@@ -267,12 +269,12 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const includeNativeStyle = !isWeb || isAnimated
 
     let styles = [
-      defaultNativeStyle ? (defaultNativeStyle.base as ViewStyle) : null,
+      defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
       // parity w react-native-web, only for text in text
       // TODO this should be able to be done w css to replicate after extraction:
       //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
       // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-      ...style,
+      style,
       isHovering ? pseudos!.hoverStyle || null : null,
       isPressing ? pseudos!.pressStyle || null : null,
       isFocusing ? pseudos!.focusStyle || null : null,
@@ -284,7 +286,13 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     if (isWeb && !isAnimated) {
       const stylesClassNames = useStylesAsClassname(styles)
+      const fontFamilyName = isText
+        ? props.fontFamily ?? staticConfig.defaultProps.fontFamily
+        : null
+      const fontFamily =
+        fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
       const classList = [
+        fontFamily ? `font_${fontFamily}` : null,
         theme.className,
         defaultsClassName,
         classNames,
@@ -316,7 +324,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         }
       }
       if (isAnimated) {
-        viewProps.style = [defaultNativeStyle?.base, styles]
+        viewProps.style = [defaultNativeStyleSheet?.base, styles]
       } else {
         viewProps.style = styles
       }
@@ -393,42 +401,42 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           }),
           ...(isWeb &&
             !isTouchDevice && {
-              onMouseEnter:
-                attachHover || attachPress
-                  ? (e) => {
-                      let next: Partial<typeof state> = {}
-                      if (attachHover) {
-                        next.hover = true
-                      }
-                      if (state.pressIn) {
-                        next.press = true
-                      }
-                      if (Object.keys(next).length) {
-                        setStateShallow(next)
-                      }
-                      onHoverIn?.(e)
-                      onMouseEnter?.(e)
+              onMouseEnter: true
+                ? (e) => {
+                    console.log('is it adsdas')
+                    let next: Partial<typeof state> = {}
+                    if (attachHover) {
+                      next.hover = true
                     }
-                  : undefined,
-              onMouseLeave:
-                attachHover || attachPress
-                  ? (e) => {
-                      let next: Partial<typeof state> = {}
-                      mouseUps.add(unPress)
-                      if (attachHover) {
-                        next.hover = false
-                      }
-                      if (state.pressIn) {
-                        next.press = false
-                        next.pressIn = false
-                      }
-                      if (Object.keys(next).length) {
-                        setStateShallow(next)
-                      }
-                      onHoverOut?.(e)
-                      onMouseLeave?.(e)
+                    if (state.pressIn) {
+                      next.press = true
                     }
-                  : undefined,
+                    if (Object.keys(next).length) {
+                      setStateShallow(next)
+                    }
+                    onHoverIn?.(e)
+                    onMouseEnter?.(e)
+                  }
+                : undefined,
+              onMouseLeave: true
+                ? (e) => {
+                    let next: Partial<typeof state> = {}
+                    mouseUps.add(unPress)
+                    if (attachHover) {
+                      next.hover = false
+                    }
+                    if (state.pressIn) {
+                      next.press = false
+                      next.pressIn = false
+                    }
+                    console.log('next', next)
+                    if (Object.keys(next).length) {
+                      setStateShallow(next)
+                    }
+                    onHoverOut?.(e)
+                    onMouseLeave?.(e)
+                  }
+                : undefined,
             }),
           onMouseDown: attachPress
             ? (e) => {
@@ -452,6 +460,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         }
       : null
 
+    if (props['debug']) console.log('!!!!!!!!!!!!!!!!!!!', events)
+
     if (events) {
       if (typeof ViewComponent !== 'string') {
         // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
@@ -462,6 +472,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           onPressOut: events.onPressOut,
           onPress: events.onPress,
         })
+        console.log(viewProps, 'pressProps', pressProps)
         Object.assign(viewProps, pressProps)
       } else {
         Object.assign(viewProps, events)
@@ -474,7 +485,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           spacedChildren({
             children,
             space,
-            flexDirection: props.flexDirection || defaultProps?.flexDirection,
+            flexDirection: props.flexDirection || staticConfig.defaultProps?.flexDirection,
             isZStack: isZStack,
           }),
           getThemeManagerIfChanged(theme)
@@ -551,13 +562,26 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const shouldDebug = staticConfig.defaultProps?.debug
     tamaguiConfig = conf
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-    splitStyleResult = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme)
+    splitStyleResult = getSplitStyles(
+      staticConfig.defaultProps,
+      staticConfig,
+      initialTheme,
+      true,
+      'variable'
+    )
+
     const { classNames, pseudos, style, viewProps } = splitStyleResult
+
     if (isWeb) {
       if (classNames) {
         defaultsClassName += classNames + ' '
       }
-      defaultsClassName += addStylesUsingClassname([style, pseudos])
+      const stylesObj = {}
+      for (const k in style) {
+        const v = style[k]
+        stylesObj[k] = isVariable(v) ? v.variable : v
+      }
+      defaultsClassName += addStylesUsingClassname([stylesObj, pseudos])
       if (process.env.NODE_ENV === 'development' && shouldDebug) {
         // prettier-ignore
         console.log('tamagui 🐛:', { defaultsClassName: defaultsClassName.split(' ') })
@@ -566,13 +590,16 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     // for animations and native
     // TODO handle pseudos
-    const sheetStyles = {}
-    for (const styleObj of style) {
-      Object.assign(sheetStyles, styleObj)
+    defaultNativeStyle = {}
+    for (const key in style) {
+      const v = style[key]
+      defaultNativeStyle[key] = isVariable(v) ? v.val : v
     }
-    defaultNativeStyle = StyleSheet.create({
-      base: sheetStyles,
+    defaultNativeStyleSheet = StyleSheet.create({
+      base: defaultNativeStyle,
     })
+
+    // console.log('wutfasda', defaultNativeStyle)
 
     // @ts-ignore
     component.defaultProps = {

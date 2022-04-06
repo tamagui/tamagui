@@ -138,4 +138,37 @@ export default createTamagui({
 
 At runtime, this plugin parses animatable style properties and hands them over to reanimated off-thread, using worklets. It doesn't do anything at compile time as reanimated must run via JS.
 
-### AnimatedPresence
+### AnimatePresence <Beta />
+
+Oftentimes you want to animate something as it is unmounted. AnimatePresence does just this. It's inspired by and forked from [Framer Motion], but works with any animation in Tamagui.
+
+To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
+
+```tsx
+import { Square, AnimatePresence } from 'tamagui'
+
+export const MyComponent = ({ isVisible }) => (
+  <AnimatePresence>
+    {isVisible && (
+      <Square
+        key="my-square"
+        animation="bounce"
+        backgroundColor="green"
+        size={50}
+        exitStyle={{
+          size: 100,
+        }}
+      />
+    )}
+  </AnimatePresence>
+)
+```
+
+Wrap one or more tamagui components with AnimatePresence. This enables the use the exitStyle prop, which accepts all style properties and variants, which will be animated to using the `animation` defined before the component is unmounted.
+
+<Notice>
+  Animated child components must each have a unique key prop so AnimatePresence can track their
+  presence in the tree.
+</Notice>
+
+TODO slideshow like framer https://www.framer.com/docs/animate-presence/

@@ -9,12 +9,12 @@ export const postProcessStyles = (
   theme: ThemeObject
 ) => {
   const { style, viewProps, pseudos, classNames } = getSplitStyles(inStyles, staticConfig, theme)
-  // flattening
-  const next = {}
-  for (const s of style) {
-    if (!s) continue
-    Object.assign(next, s)
+  return {
+    style: {
+      ...style,
+      ...pseudos,
+    },
+    viewProps,
+    classNames,
   }
-  Object.assign(next, pseudos)
-  return { style: next, viewProps, classNames }
 }

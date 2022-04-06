@@ -1,3 +1,7 @@
+.font_mono {
+  font-feature-settings:"liga","tnum","zero","ss01","locl","calt";
+}
+
 @font-face {
   font-family: 'Inter';
   font-weight: 400;

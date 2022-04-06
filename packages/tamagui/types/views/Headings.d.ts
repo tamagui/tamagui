@@ -1,5 +1,5 @@
 export declare const Title: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -66,7 +66,7 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -133,7 +133,7 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -200,7 +200,7 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -267,10 +267,10 @@ export declare const Title: import("@tamagui/core").StaticComponent<Omit<import(
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -337,7 +337,7 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -404,7 +404,7 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -471,7 +471,7 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -538,10 +538,10 @@ export declare const H1: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -608,7 +608,7 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -675,7 +675,7 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -742,7 +742,7 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -809,10 +809,10 @@ export declare const H2: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -879,7 +879,7 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -946,7 +946,7 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1013,7 +1013,7 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1080,10 +1080,10 @@ export declare const H3: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1150,7 +1150,7 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1217,7 +1217,7 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1284,7 +1284,7 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1351,10 +1351,10 @@ export declare const H4: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1421,7 +1421,7 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1488,7 +1488,7 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1555,7 +1555,7 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1622,10 +1622,10 @@ export declare const H5: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1692,7 +1692,7 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1759,7 +1759,7 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1826,7 +1826,7 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
@@ -1893,6 +1893,6 @@ export declare const H6: import("@tamagui/core").StaticComponent<Omit<import("@t
     wordWrap?: import("csstype").Property.WordWrap | undefined;
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
-    size?: import("@tamagui/core").SizeTokens | null | undefined;
+    size?: unknown;
 } & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 //# sourceMappingURL=Headings.d.ts.map
