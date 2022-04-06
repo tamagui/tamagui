@@ -106,7 +106,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             // css={{
             //   '*:hover > &, &:focus': { opacity: 1, transition: '150ms linear' },
             // }}
-            onClick={() => setHasCopied(true)}
+            onPress={() => setHasCopied(true)}
           >
             {hasCopied ? <CheckCircle /> : <Clipboard />}
           </Button>

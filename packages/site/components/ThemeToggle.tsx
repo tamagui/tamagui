@@ -6,7 +6,7 @@ export const ThemeToggle = (props: ButtonProps) => {
   const { theme, setTheme } = useTheme()
   return (
     <Button
-      onClick={() => (theme === 'dark' ? setTheme('light') : setTheme('dark'))}
+      onPress={() => (theme === 'dark' ? setTheme('light') : setTheme('dark'))}
       {...props}
       aria-label="toggle a light and dark color scheme"
     >

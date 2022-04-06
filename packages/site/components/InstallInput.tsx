@@ -48,7 +48,7 @@ export const InstallInput = memo(() => {
             )
           }
           aria-label="Copy the install snippet to Clipboard"
-          onClick={() => {
+          onPress={() => {
             copy('npm install tamagui')
             setHasCopied(true)
           }}

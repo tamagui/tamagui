@@ -43,7 +43,7 @@ export const ColorToggleButton = (props: ButtonProps) => {
   return (
     <Button
       chromeless
-      onClick={setNextTint}
+      onPress={setNextTint}
       {...props}
       aria-label="toggle a light and dark color scheme"
     >
