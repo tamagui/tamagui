@@ -14,7 +14,7 @@ export declare const PopoverContent: React.ForwardRefExoticComponent<Omit<import
     onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-    space?: boolean | import("@tamagui/core/types").VariableVal | undefined;
+    space?: import("@tamagui/core/types").SpaceTokens | undefined;
 } & {
     children?: any;
 } & React.RefAttributes<unknown>>;

@@ -76,6 +76,7 @@
   - blog post
 
 - v2
+  - `space` should work with media queries
   - createTamagui({ defaultProps: { Button: {} } }) for any component
   - document/release <ThemeReverse />
   - <Tabs />

@@ -25,6 +25,7 @@ export const TableHead = styled(Stack, {
 export const TableHeadCell = styled(Stack, {
   name: 'TableHeadCell',
   tag: 'th',
+  // @ts-ignore
   display: isWeb ? 'table-head' : 'flex',
   flexDirection: 'row',
 })
@@ -49,6 +50,7 @@ export const TableCell = styled(Stack, {
   alignSelf: 'stretch',
   alignItems: 'center',
   tag: 'td',
+  // @ts-ignore
   display: isWeb ? 'table-cell' : 'flex',
   // borderBottomWidth: 1,
   // borderBottomColor: '$borderColor',

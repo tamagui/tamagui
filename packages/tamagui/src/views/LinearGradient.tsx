@@ -16,7 +16,8 @@ export const LinearGradient = YStack.extractable(
     start,
     end,
     ...props
-  }: NativeLinearGradientProps & StackProps): ReactElement => {
+  }: NativeLinearGradientProps &
+    Omit<StackProps, keyof NativeLinearGradientProps>): ReactElement => {
     const [gradientColors, setGradientColors] = useState<string[]>([])
     const [pseudoAngle, setPseudoAngle] = useState<number>(0)
     const layoutProps = useLayout()

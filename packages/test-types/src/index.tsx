@@ -4,6 +4,7 @@ import {
   GetVariantProps,
   GetVariants,
   Shorthands,
+  SpaceTokens,
   Stack,
   StackProps,
   TamaguiConfig,
@@ -96,6 +97,9 @@ const ZStack = styled(YStack, {
 type abc = ColorTokens
 
 type z1 = GetProps<typeof YStack>
+
+type abc123 = z1['lala']
+
 type z11 = z1['bc']
 type z111 = z1['backgroundColor']
 type z12 = ThemeObject
@@ -191,7 +195,7 @@ export const x = (props: StackProps) => {
     <>
       <Paragraph ta="center" />
       <EmptyExtension elevation="" asd="asds" />
-      <Stack bc="$background" asdsadasd="sadsd" />
+      <Stack space="$0.5" padding="" bc="$background" shadowOpacity={0} asdsadasd="sadsd" />
       <YStack asdsadasd="sadsd" />
       <YStack $lg={{ notValid: 1, x: 10 }} />
       <InteractiveFrame asdsadasd="sadsd" />
@@ -222,12 +226,13 @@ export const x = (props: StackProps) => {
           x: 10,
           width: 10,
         }}
-        p={10}
+        padding=""
         width="$1"
         x="$2"
         y="$s"
         borderColor="$red"
         bg="ok wut"
+        space=""
         aok="err"
         {...props}
       >

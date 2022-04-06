@@ -1,6 +1,6 @@
-import { Box, styled } from 'tamagui'
+import { YStack, styled } from 'tamagui'
 
-export const Card = styled(Box, {
+export const Card = styled(YStack, {
   name: 'Card',
   className: 'transition all ease-in ms100',
   borderRadius: '$2',

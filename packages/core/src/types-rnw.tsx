@@ -153,23 +153,6 @@ export interface RNWTextProps {
   onStartShouldSetResponderCapture?: unknown
 }
 
-interface TouchableOpacityProps {
-  accessibilityRole?: RNWWebAccessibilityRole
-  href?: string
-  hrefAttrs?: {
-    target?: '_blank' | '_self' | '_top' | 'blank' | 'self' | 'top'
-    rel?: string
-    download?: boolean
-  }
-  nativeID?: string
-  onMouseEnter?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  onMouseLeave?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-}
-
-interface CheckBoxProps {
-  color?: string | null
-}
-
 export interface RNWViewStyle {
   cursor?: RNWCursorValue
   transitionProperty?: string

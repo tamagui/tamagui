@@ -89,4 +89,4 @@ export const SizableStack = styled(XStack, {
   },
 })
 
-export type SizableFrameProps = GetProps<typeof SizableStack>
+export type SizableStackProps = GetProps<typeof SizableStack>

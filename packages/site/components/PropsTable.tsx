@@ -36,6 +36,7 @@ export function PropsTable({
       <thead>
         <tr>
           <YStack
+            // @ts-ignore
             display="table-head"
             tag="th"
             borderBottomWidth={1}
@@ -48,6 +49,7 @@ export function PropsTable({
             </Paragraph>
           </YStack>
           <YStack
+            // @ts-ignore
             display="table-head"
             tag="th"
             borderBottomWidth={1}
@@ -60,6 +62,7 @@ export function PropsTable({
             </Paragraph>
           </YStack>
           <YStack
+            // @ts-ignore
             display="table-head"
             tag="th"
             borderBottomWidth={1}
@@ -120,6 +123,7 @@ export function PropsTable({
 }
 
 const TD = styled(XStack, {
+  // @ts-ignore
   display: 'table-cell',
   tag: 'td',
   paddingTop: 10,

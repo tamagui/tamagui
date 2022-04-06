@@ -134,7 +134,6 @@ export function HeroExampleAnimations() {
                 bc="$green10"
                 br="$9"
                 onPress={() => next()}
-                debug
                 {...position}
               >
                 <LogoIcon downscale={0.75} />
