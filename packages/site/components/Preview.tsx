@@ -5,7 +5,7 @@ export const Preview = (props: StackProps) => (
   <YStack
     data-preview
     margin={0}
-    overflow="auto"
+    overflow="visible"
     borderWidth={1}
     borderColor="$borderColor"
     borderTopLeftRadius="$3"

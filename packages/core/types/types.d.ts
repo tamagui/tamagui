@@ -160,7 +160,7 @@ declare type ComponentPropsBase = Something<{
     onPressOut?: (e: GestureResponderEvent) => any;
     onMouseEnter?: (e: GestureResponderEvent) => any;
     onMouseLeave?: (e: GestureResponderEvent) => any;
-    space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number;
+    space?: SpaceTokens;
 }>;
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
@@ -170,15 +170,14 @@ export declare type FontSizeTokens = `$${GetTokenFontKeysFor<'size'>}` | number;
 export declare type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
 export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
 export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
-export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number;
+export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
 export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
-export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']>;
+export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
 export declare type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeKeyVariables : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
-export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeKeyVariables : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : {};
+export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeKeyVariables : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
 export declare type ThemeValueFallback = UnionableString | Variable;
-declare type ThemeValue<A> = A | ThemeValueFallback;
 export declare type WithThemeValues<T extends object> = {
-    [K in keyof T]: ThemeValue<T[K]> | ThemeValueGet<K>;
+    [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback;
 };
 export declare type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
@@ -293,12 +292,12 @@ export declare type UseAnimationProps = {
     [key: string]: any;
 };
 export declare type UseAnimationState = {
-    style: (ViewStyle | null)[];
+    style: (StackStyleProps | TextStyleProps | null)[];
     isMounted: boolean;
-    hoverStyle?: ViewStyle | null;
-    pressStyle?: ViewStyle | null;
-    focusStyle?: ViewStyle | null;
-    exitStyle?: ViewStyle | null;
+    hoverStyle?: StackStyleProps | TextStyleProps | null;
+    pressStyle?: StackStyleProps | TextStyleProps | null;
+    focusStyle?: StackStyleProps | TextStyleProps | null;
+    exitStyle?: StackStyleProps | TextStyleProps | null;
     onDidAnimate?: any;
     delay?: number;
 };

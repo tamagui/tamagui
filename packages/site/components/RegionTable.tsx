@@ -7,6 +7,7 @@ export function RegionTable(props: StackProps) {
       theme="alt1"
       bc="$background"
       tag="table"
+      // @ts-ignore
       display="table"
       // @ts-ignore
       role="region"

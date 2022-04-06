@@ -5,7 +5,6 @@ import rangeParser from 'parse-numeric-range'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import {
-  Box,
   EnsureFlexed,
   H1,
   H2,
@@ -43,7 +42,6 @@ export const components = {
   Paragraph,
   YStack,
   XStack,
-  Box,
   BenchmarkChart,
   Separator,
   Code,

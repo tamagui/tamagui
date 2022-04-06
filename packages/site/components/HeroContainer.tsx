@@ -20,7 +20,7 @@ export function HeroContainer({
       display="flex"
       alignItems="center"
       justifyContent="center"
-      overflow="auto"
+      overflow="visible"
       pt={30}
       pb={50}
       minHeight={380}

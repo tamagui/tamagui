@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Button, ButtonProps, Paragraph } from 'tamagui'
+import { Button, ButtonProps, Paragraph, isTouchDevice } from 'tamagui'
 
 const SearchContext = createContext<any>(null)
 
@@ -153,9 +153,11 @@ export const SearchButton = (props: ButtonProps) => {
         elevation: '$4',
       }}
       iconAfter={
-        <Button size="$2" theme="alt2" hoverable={false}>
-          /
-        </Button>
+        isTouchDevice ? null : (
+          <Button size="$2" theme="alt2" hoverable={false}>
+            /
+          </Button>
+        )
       }
       {...props}
     />

@@ -56,6 +56,7 @@ export function QuickNav() {
         width: 230,
         flexShrink: 0,
         zIndex: 1,
+        // @ts-ignore
         position: 'fixed',
         right: 0,
         top: 94,

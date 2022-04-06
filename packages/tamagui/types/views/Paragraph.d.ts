@@ -1,7 +1,7 @@
 import { PropTypes } from '@tamagui/core';
-export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | "size" | keyof import("@tamagui/core").PseudoProps<any>> & {
+export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").TextProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "size"> & {
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-} & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
+} & Omit<{}, "size"> & import("@tamagui/core").MediaProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
@@ -56,7 +56,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-    space?: boolean | import("@tamagui/core").VariableVal | undefined;
+    space?: import("@tamagui/core").SpaceTokens | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -68,7 +68,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-} & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
+} & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
@@ -123,7 +123,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-    space?: boolean | import("@tamagui/core").VariableVal | undefined;
+    space?: import("@tamagui/core").SpaceTokens | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -135,7 +135,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-}>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
+} & Omit<{}, "size">>> & import("@tamagui/core").PseudoProps<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
@@ -190,7 +190,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-    space?: boolean | import("@tamagui/core").VariableVal | undefined;
+    space?: import("@tamagui/core").SpaceTokens | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -202,7 +202,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-} & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
+} & Omit<{}, "size"> & import("@tamagui/core").WithShorthands<import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<Omit<import("react-native").TextStyle, "display" | "backfaceVisibility"> & import("@tamagui/core").TransformStyleProps & {
     cursor?: string | undefined;
     contain?: string | undefined;
     display?: "flex" | "none" | "inherit" | "inline" | "block" | "contents" | "inline-flex" | undefined;
@@ -257,7 +257,7 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-    space?: boolean | import("@tamagui/core").VariableVal | undefined;
+    space?: import("@tamagui/core").SpaceTokens | undefined;
 } & {
     ellipse?: boolean | undefined;
     selectable?: boolean | undefined;
@@ -269,6 +269,6 @@ export declare const Paragraph: import("@tamagui/core").StaticComponent<Omit<imp
     cursor?: import("csstype").Property.Cursor | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | null | undefined;
-}>>, void, any, import("@tamagui/core").StaticConfigParsed>;
+} & Omit<{}, "size">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
 export declare type ParagraphProps = PropTypes<typeof Paragraph>;
 //# sourceMappingURL=Paragraph.d.ts.map

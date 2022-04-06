@@ -54,13 +54,7 @@ export function BenchmarkChart({ data, large, skipOthers = false }) {
               jc="center"
               br="$1"
             >
-              <Paragraph
-                size="$1"
-                whiteSpace="nowrap"
-                position="absolute"
-                right="$-1"
-                transform="translateX(100%)"
-              >
+              <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
                 {result.value}ms
               </Paragraph>
             </YStack>

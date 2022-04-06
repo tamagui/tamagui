@@ -113,7 +113,6 @@ export * from './hooks/useLayout'
 export * from './hooks/useKeyboardDismissable'
 
 export * from './views/BlurView'
-export * from './views/Box'
 export * from './views/Button'
 export * from './views/Card'
 export * from './views/Circle'

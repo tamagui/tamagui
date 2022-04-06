@@ -205,6 +205,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           borderRightWidth={1}
           overflow="hidden"
           $gtSm={{
+            // @ts-ignore
             position: 'fixed',
             top: 0,
             left: 0,

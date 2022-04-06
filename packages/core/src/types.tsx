@@ -221,7 +221,7 @@ type ComponentPropsBase = Something<{
   onMouseEnter?: (e: GestureResponderEvent) => any
   // WEB ONLY
   onMouseLeave?: (e: GestureResponderEvent) => any
-  space?: Tokens['space'][keyof Tokens['space']] | boolean | string | number
+  space?: SpaceTokens
 }>
 
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =
@@ -237,12 +237,12 @@ export type FontWeightTokens =
   | `$${GetTokenFontKeysFor<'weight'>}`
   | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number
-export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number
+export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean
 export type ColorTokens =
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeObject>
   | CSSColorNames
-export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']>
+export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 
 //
 // adds theme short values to relevant props
@@ -290,14 +290,14 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   ? FontWeightTokens
   : K extends FontLetterSpacingKeys
   ? FontLetterSpacingTokens
-  : {}
+  : never
 
 export type ThemeValueFallback = UnionableString | Variable
 
-type ThemeValue<A> = A | ThemeValueFallback //Exclude<A, string> | ThemeValueFallback
-
 export type WithThemeValues<T extends object> = {
-  [K in keyof T]: ThemeValue<T[K]> | ThemeValueGet<K>
+  [K in keyof T]: ThemeValueGet<K> extends never
+    ? T[K]
+    : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback
 }
 
 // adds shorthand props
@@ -748,12 +748,12 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 
 export type UseAnimationProps = { animation: string; [key: string]: any }
 export type UseAnimationState = {
-  style: (ViewStyle | null)[]
+  style: (StackStyleProps | TextStyleProps | null)[]
   isMounted: boolean
-  hoverStyle?: ViewStyle | null
-  pressStyle?: ViewStyle | null
-  focusStyle?: ViewStyle | null
-  exitStyle?: ViewStyle | null
+  hoverStyle?: StackStyleProps | TextStyleProps | null
+  pressStyle?: StackStyleProps | TextStyleProps | null
+  focusStyle?: StackStyleProps | TextStyleProps | null
+  exitStyle?: StackStyleProps | TextStyleProps | null
   onDidAnimate?: any
   delay?: number
 }

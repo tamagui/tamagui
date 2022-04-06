@@ -16,10 +16,12 @@ import {
   WithShorthands,
 } from './types'
 
+type EmptyVariants = { __EMPTY_VARIANT__: string }
+
 export function styled<
   Props,
   ParentComponent extends StaticComponent | React.Component<any> = React.Component<Partial<Props>>,
-  Variants extends GetVariants<GetProps<ParentComponent>> = GetVariants<GetProps<ParentComponent>>
+  Variants extends Object = {}
 >(
   Component: ParentComponent,
   options?: GetProps<ParentComponent> & {
@@ -38,8 +40,12 @@ export function styled<
   const config = extendStaticConfig(Component, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
 
-  type VariantProps = GetVariantProps<Variants>
+  type MyVariants = Variants extends EmptyVariants ? {} : GetVariantProps<Variants>
+  type ParentVariants = ParentComponent extends StaticComponent<void, infer V> ? V : EmptyVariants
+  type MyParentVariants = ParentVariants extends EmptyVariants ? {} : ParentVariants
+  type VariantProps = MyVariants & Omit<MyParentVariants, keyof MyVariants>
   type BaseProps = Props extends Object ? Props : GetProps<ParentComponent>
+  type FullStyleProps = BaseProps & VariantProps & WithShorthands<BaseProps & VariantProps>
 
   return component as StaticComponent<
     // if not options/variants passed just styled(Text):
@@ -48,9 +54,9 @@ export function styled<
       : // if options passed: styled(Text, { ... })
         Omit<BaseProps, keyof VariantProps | MediaPropKeys | PsuedoPropKeys> &
           VariantProps &
-          MediaProps<BaseProps & VariantProps & WithShorthands<BaseProps & VariantProps>> &
-          PseudoProps<BaseProps & VariantProps & WithShorthands<BaseProps & VariantProps>>,
-    void
+          MediaProps<FullStyleProps> &
+          PseudoProps<FullStyleProps>,
+    VariantProps
   >
 }
 
@@ -97,7 +103,7 @@ export type GetVariantProps<Variants> = Variants extends void
         ? boolean
         : keyof Variants[Key] extends ':number'
         ? number
-        : any
+        : keyof Variants[Key]
     }
 
 // type X = { ok: 1 }

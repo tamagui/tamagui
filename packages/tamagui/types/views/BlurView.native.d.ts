@@ -1,2 +1,2 @@
-export declare const BlurView: import("@tamagui/core").StaticComponent<any, void, any, import("@tamagui/core").StaticConfigParsed>;
+export declare const BlurView: import("@tamagui/core").StaticComponent<Omit<any, string | number | symbol> & {} & Omit<any, never> & import("@tamagui/core").MediaProps<any> & import("@tamagui/core").PseudoProps<any>, {} & Omit<any, never>, any, import("@tamagui/core").StaticConfigParsed>;
 //# sourceMappingURL=BlurView.native.d.ts.map
