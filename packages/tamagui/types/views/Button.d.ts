@@ -29,7 +29,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -51,7 +50,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -73,7 +71,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -95,7 +92,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -129,7 +125,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -151,7 +146,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -173,7 +167,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -195,7 +188,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -229,7 +221,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -251,7 +242,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -273,7 +263,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -295,7 +284,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -329,7 +317,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -351,7 +338,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -373,7 +359,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -395,7 +380,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -429,7 +413,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -451,7 +434,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -473,7 +455,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -495,7 +476,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -532,7 +512,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -554,7 +533,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -576,7 +554,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -598,7 +575,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -632,7 +608,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -654,7 +629,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -676,7 +650,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -698,7 +671,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -732,7 +704,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -754,7 +725,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -776,7 +746,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -798,7 +767,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -832,7 +800,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -854,7 +821,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -876,7 +842,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -898,7 +863,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -932,7 +896,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -954,7 +917,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -976,7 +938,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -998,7 +959,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1035,7 +995,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1057,7 +1016,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1079,7 +1037,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1101,7 +1058,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1135,7 +1091,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1157,7 +1112,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1179,7 +1133,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1201,7 +1154,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1235,7 +1187,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1257,7 +1208,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1279,7 +1229,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1301,7 +1250,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1335,7 +1283,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1357,7 +1304,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1379,7 +1325,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1401,7 +1346,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1435,7 +1379,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1457,7 +1400,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1479,7 +1421,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1501,7 +1442,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1538,7 +1478,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1560,7 +1499,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1582,7 +1520,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1604,7 +1541,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1638,7 +1574,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1660,7 +1595,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1682,7 +1616,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1704,7 +1637,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1738,7 +1670,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1760,7 +1691,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1782,7 +1712,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1804,7 +1733,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1838,7 +1766,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1860,7 +1787,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1882,7 +1808,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1904,7 +1829,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1938,7 +1862,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1960,7 +1883,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1982,7 +1904,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2004,7 +1925,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2041,7 +1961,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2063,7 +1982,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2085,7 +2003,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2107,7 +2024,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2141,7 +2057,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2163,7 +2078,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2185,7 +2099,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2207,7 +2120,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2241,7 +2153,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2263,7 +2174,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2285,7 +2195,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2307,7 +2216,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2341,7 +2249,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2363,7 +2270,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2385,7 +2291,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2407,7 +2312,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2441,7 +2345,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2463,7 +2366,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2485,7 +2387,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2507,7 +2408,6 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;

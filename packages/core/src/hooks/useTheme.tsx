@@ -30,7 +30,7 @@ export const useTheme = (
 
   if (process.env.NODE_ENV === 'development') {
     if (props?.['debug']) {
-      console.log('» useTheme', { themeName, componentName, name, className })
+      console.log('  » useTheme', { themeName, componentName, name, className })
     }
   }
 
@@ -83,6 +83,11 @@ export const useTheme = (
           // console.log('DID CHANGE THEME')
           return themeManager
         }
+        if (process.env.NODE_ENV === 'development') {
+          if (key === '__state') {
+            return state.current
+          }
+        }
         if (key === 'name') {
           return name
         }
@@ -97,6 +102,14 @@ export const useTheme = (
           }
           activeTheme = theme
         }
+
+        if (process.env.NODE_ENV === 'development') {
+          if (props?.['debug']) {
+            // @ts-ignore
+            console.log('  » accessing theme val', key, activeTheme[key], { ...state.current })
+          }
+        }
+
         if (typeof key === 'string') {
           // auto convert variables to plain
           if (key[0] === '$') {

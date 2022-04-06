@@ -127,13 +127,14 @@ export function HeroExampleAnimations() {
               $sm={{ width: '100%' }}
             >
               <Square
-                animated
                 animation={animation.animation}
                 elevation="$4"
                 size={110}
-                bc="$color"
+                // bc={`$${tint}10`}
+                bc="$green10"
                 br="$9"
                 onPress={() => next()}
+                debug
                 {...position}
               >
                 <LogoIcon downscale={0.75} />

@@ -27,32 +27,34 @@ export const createPropMapper = (c: StaticConfig) => {
     const variant = variantsParsed && variantsParsed[key]
     if (variant && typeof value !== 'undefined') {
       let variantValue =
-        value === true
-          ? variant['$true'] || variant['true'] || variant[':boolean']
+        variant[value] ||
+        (value === true
+          ? variant['true'] || variant[':boolean']
           : value === false
-          ? variant['$false'] || variant['false'] || variant[':boolean']
-          : variant[value]
+          ? variant['false'] || variant[':boolean']
+          : variant[value])
 
       if (!variantValue) {
         if (variant[':number'] && !isNaN(value)) {
           variantValue = variant[':number']
         } else if (variant[':string'] && typeof value === 'string') {
           variantValue = variant[':string']
+        } else {
+          variantValue = variant['...']
         }
       }
 
       if (!variantValue) {
-        variantValue = variant['...'] ?? value
+        return value
       }
 
-      let res = variantValue
-      if (typeof res === 'function') {
-        res = res(value, { tokens: conf.tokensParsed, theme, props })
+      if (typeof variantValue === 'function') {
+        variantValue = variantValue(value, { tokens: conf.tokensParsed, theme, props })
       }
-      if (isObj(res)) {
-        res = resolveTokens(res, conf, theme, fontFamily, isAnimated)
+      if (isObj(variantValue)) {
+        variantValue = resolveTokens(variantValue, conf, theme, fontFamily, isAnimated)
       }
-      return res
+      return variantValue
     }
 
     let shouldReturn = false

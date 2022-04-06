@@ -10,7 +10,6 @@ export declare const Popover: React.NamedExoticComponent<IPopoverProps & React.R
         className?: string | undefined;
         id?: string | undefined;
         tag?: string | undefined;
-        animated?: boolean | undefined;
         theme?: import("@tamagui/core").ThemeName | null | undefined;
         onHoverIn?: ((e: MouseEvent) => any) | undefined;
         onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -32,7 +31,6 @@ export declare const Popover: React.NamedExoticComponent<IPopoverProps & React.R
         className?: string | undefined;
         id?: string | undefined;
         tag?: string | undefined;
-        animated?: boolean | undefined;
         theme?: import("@tamagui/core").ThemeName | null | undefined;
         onHoverIn?: ((e: MouseEvent) => any) | undefined;
         onHoverOut?: ((e: MouseEvent) => any) | undefined;

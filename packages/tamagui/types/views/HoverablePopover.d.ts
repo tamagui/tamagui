@@ -22,7 +22,6 @@ export declare const HoverablePopover: React.ForwardRefExoticComponent<IPopoverP
         className?: string | undefined;
         id?: string | undefined;
         tag?: string | undefined;
-        animated?: boolean | undefined;
         theme?: import("@tamagui/core").ThemeName | null | undefined;
         onHoverIn?: ((e: MouseEvent) => any) | undefined;
         onHoverOut?: ((e: MouseEvent) => any) | undefined;

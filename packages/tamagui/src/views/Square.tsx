@@ -3,6 +3,7 @@ import { GetProps, styled } from '@tamagui/core'
 import { SizableStack } from './SizableStack'
 
 export const Square = styled(SizableStack, {
+  name: 'Square',
   borderRadius: '$0',
   alignItems: 'center',
   justifyContent: 'center',
