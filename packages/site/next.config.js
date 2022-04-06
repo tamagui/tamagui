@@ -9,6 +9,13 @@ Error.stackTraceLimit = Infinity
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 
+// const disableExtraction = false
+const disableExtraction = process.env.DISABLE_EXTRACTION
+  ? Boolean(+process.env.DISABLE_EXTRACTION)
+  : process.env.NODE_ENV === 'development'
+
+console.log('disableExtraction', disableExtraction)
+
 const transform = withPlugins(
   [
     withBundleAnalyzer({
@@ -21,10 +28,7 @@ const transform = withPlugins(
       components: ['tamagui'],
       importsWhitelist: ['constants.js', 'colors.js'],
       logTimings: true,
-      disableExtraction: process.env.DISABLE_EXTRACTION
-        ? Boolean(+process.env.DISABLE_EXTRACTION)
-        : process.env.NODE_ENV === 'development',
-      // disableExtraction: true,
+      disableExtraction,
       excludeReactNativeWebExports: [
         'Switch',
         'ProgressBar',

@@ -145,13 +145,18 @@ export const SearchButton = (props: ButtonProps) => {
       jc="flex-start"
       borderWidth={1}
       borderRadius={1000}
+      textAlign="left"
       icon={SearchIcon}
       elevation="$1"
       color="$colorTranslucent"
       hoverStyle={{
         elevation: '$4',
       }}
-      iconAfter={<Button>/</Button>}
+      iconAfter={
+        <Button size="$2" theme="alt2">
+          /
+        </Button>
+      }
       {...props}
     />
   )

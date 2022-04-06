@@ -22,30 +22,32 @@ import {
 import { IconProps } from '../IconProps'
 import { themed } from '../themed'
 
-export const Zap = memo<IconProps>(
-  themed((props) => {
-    const { color = 'black', size = 24, ...otherProps } = props
-    return (
-      <Svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
+const Icon = (props) => {
+  const { color = 'black', size = 24, ...otherProps } = props
+  return (
+    <Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={`${color}`}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...otherProps}
+    >
+      <Polygon
+        points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
         fill="none"
         stroke={`${color}`}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        {...otherProps}
-      >
-        <Polygon
-          points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
-          fill="none"
-          stroke={`${color}`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </Svg>
-    )
-  })
-)
+      />
+    </Svg>
+  )
+}
+
+Icon.displayName = 'Zap'
+
+export const Zap = memo<IconProps>(themed(Icon))

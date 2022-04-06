@@ -62,7 +62,6 @@ if (shouldClean || shouldCleanBuildOnly) {
       // but to build things nicely we need here to reset a few things:
       //  baseUrl: ., outDir: types, rootDir: src
       // now we can have the best of both worlds
-      await fs.remove('types')
 
       // NOTE: to get intellisense to *not* suggest importing from the index file when it re-exports another package...
       // (like tamagui does with @tamagui/core...)

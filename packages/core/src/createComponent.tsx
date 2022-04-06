@@ -643,11 +643,11 @@ export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: bool
     },
 
     // TODO should fallback to regular style value
-    // flex: {
-    //   true: {
-    //     flex: 1,
-    //   },
-    // },
+    flex: {
+      true: {
+        flex: 1,
+      },
+    },
 
     direction: {
       horizontal: {

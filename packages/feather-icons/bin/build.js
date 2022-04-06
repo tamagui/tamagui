@@ -55,6 +55,8 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
       }
     })
 
+    const cname = uppercamelcase(id)
+
     const element = `
       import React, { memo } from 'react'
       import PropTypes from 'prop-types'
@@ -79,7 +81,7 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
       } from 'react-native-svg'
       import { themed } from '../themed'
 
-      export const ${uppercamelcase(id)} = memo<IconProps>(themed((props) => {
+      const Icon = (props) => {
         const { color = 'black', size = 24, ...otherProps } = props
         return (
           ${$('svg')
@@ -123,7 +125,11 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
             .replace(new RegExp('</stop', 'g'), '</Stop')
             .replace(new RegExp('px', 'g'), '')}
         )
-      }))
+      }
+
+      Icon.displayName = '${cname}'
+
+      export const ${cname} = memo<IconProps>(themed(Icon))
     `
 
     const component = prettier.format(element, {
@@ -137,7 +143,6 @@ glob(`${featherIconsDir}/**.svg`, (err, icons) => {
 
     fs.writeFileSync(location, component, 'utf-8')
 
-    const cname = uppercamelcase(id)
     const exportString = `export { ${cname} } from './icons/${id}'\n`
 
     fs.appendFileSync(path.join(rootDir, 'src', 'index.ts'), exportString, 'utf-8')

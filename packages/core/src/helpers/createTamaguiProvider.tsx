@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TamaguiProviderProps } from '../types'
 import { TextAncestorProvider } from '../views/TextAncestorContext'
 import { ThemeProvider, ThemeProviderProps } from '../views/ThemeProvider'
@@ -31,11 +32,13 @@ export function createTamaguiProvider({
     }
 
     return (
-      <TextAncestorProvider>
-        <ThemeProvider {...themeProps} {...themePropsProvider}>
-          <React.Suspense fallback={fallback || null}>{children}</React.Suspense>
-        </ThemeProvider>
-      </TextAncestorProvider>
+      <ButtonInsideButtonContext.Provider value={false}>
+        <TextAncestorProvider>
+          <ThemeProvider {...themeProps} {...themePropsProvider}>
+            <React.Suspense fallback={fallback || null}>{children}</React.Suspense>
+          </ThemeProvider>
+        </TextAncestorProvider>
+      </ButtonInsideButtonContext.Provider>
     )
   }
 }
