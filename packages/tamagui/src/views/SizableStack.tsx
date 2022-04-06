@@ -7,6 +7,7 @@ import { XStack } from './Stacks'
 export const getButtonSize = getSize()
 
 export const SizableStack = styled(XStack, {
+  name: 'SizableStack',
   borderRadius: '$1',
   paddingVertical: '$2',
   paddingHorizontal: '$3',

@@ -89,7 +89,6 @@ export const ToastRoot = memo(function ToastRoot(props: { animation?: AnimationK
       <AnimatePresence>
         {state.show && !!state.content && (
           <YStack
-            animated
             animation={props.animation || ('toast' as any)}
             backgroundColor={
               // TODO theme

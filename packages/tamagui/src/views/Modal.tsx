@@ -127,7 +127,6 @@ export const Modal = (props: ModalProps) => {
             <AnimatePresence>
               {visible && (
                 <YStack
-                  animated
                   {...{
                     height,
                     width,
@@ -136,7 +135,6 @@ export const Modal = (props: ModalProps) => {
                     maxWidth,
                     maxHeight,
                     pointerEvents,
-                    animateState: modalVisible ? 'in' : 'out',
                     animation: animation as any,
                   }}
                 >

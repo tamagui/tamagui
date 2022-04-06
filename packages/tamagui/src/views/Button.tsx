@@ -132,6 +132,7 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
           }
           if (el) {
             const iconSize = getFontSize(size, { relativeSize: scaleIcon })
+            console.log('iconSize', iconSize, size)
             return React.createElement(el, {
               color,
               size: iconSize,

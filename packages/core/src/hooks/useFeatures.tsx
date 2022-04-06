@@ -1,6 +1,8 @@
 import React from 'react'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { ComponentState } from '../defaultComponentState'
+import { UseAnimationHook } from '../types'
 import { addMediaQueryListener, mediaState, removeMediaQueryListener } from './useMedia'
 
 type FeatureDefinition = {
@@ -8,11 +10,23 @@ type FeatureDefinition = {
   Component: any
 }
 
+type FeatureUtils = {
+  forceUpdate: Function
+  state: ComponentState
+  setStateShallow: (next: Partial<ComponentState>) => void
+  useAnimations?: UseAnimationHook
+  pseudos: any
+  style: any[]
+  isHovering: boolean
+  isPressing: boolean
+  isFocusing: boolean
+}
+
 const createDefinition = ({
   Component,
   propNames,
 }: {
-  Component: any
+  Component: (props: { _utils: FeatureUtils; [key: string]: any }) => void
   propNames: string[]
 }): FeatureDefinition => ({
   isEnabled: (props: any) => propNames.some((name) => !!props[name]),
@@ -21,7 +35,7 @@ const createDefinition = ({
 
 let featureDefinitions: Record<string, FeatureDefinition> | null = null
 
-export const useFeatures = (props: any, utils?: { forceUpdate?: Function }) => {
+export const useFeatures = (props: any, utils?: FeatureUtils) => {
   if (!featureDefinitions) {
     featureDefinitions = loadFeatures()
   }
@@ -46,12 +60,56 @@ function loadFeatures(): Record<string, FeatureDefinition> {
     //   propNames: ['onLayout'],
     // }),
 
+    // loads animations and sets state with the results
+    animation: loadAnimationFeature(),
+
     // will update the parent whenever media query changes
     // no need on web, media queries are inserted and run in css
     ...(!isWeb && {
       mediaQuery: loadMediaQueryFeature(),
     }),
   }
+}
+
+function loadAnimationFeature() {
+  return createDefinition({
+    Component: ({ _utils, ...props }) => {
+      const {
+        state,
+        useAnimations,
+        isHovering,
+        isPressing,
+        isFocusing,
+        pseudos,
+        style,
+        setStateShallow,
+      } = _utils
+
+      if (!useAnimations) {
+        console.error('no useAnimations hook provided')
+        return null
+      }
+
+      const animatedStyle = useAnimations(props as any, {
+        isMounted: state.mounted,
+        style,
+        hoverStyle: isHovering ? pseudos!.hoverStyle : null,
+        pressStyle: isPressing ? pseudos!.pressStyle : null,
+        focusStyle: isFocusing ? pseudos!.focusStyle : null,
+        exitStyle: pseudos?.exitStyle,
+        // onDidAnimate, delay
+      })
+
+      useIsomorphicLayoutEffect(() => {
+        setStateShallow({
+          animatedStyle,
+        })
+      }, [JSON.stringify(style)])
+
+      return null
+    },
+    propNames: ['animation'],
+  })
 }
 
 function loadMediaQueryFeature() {

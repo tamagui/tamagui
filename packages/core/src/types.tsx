@@ -211,7 +211,6 @@ type ComponentPropsBase = Something<{
   className?: string
   id?: string
   tag?: string
-  animated?: boolean
   theme?: ThemeName | null
   onHoverIn?: (e: MouseEvent) => any
   onHoverOut?: (e: MouseEvent) => any

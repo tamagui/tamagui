@@ -18,6 +18,7 @@ import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isAndroid, isTouchDevice, isWeb } from './constants/platform'
 import { rnw } from './constants/rnw'
+import { ComponentState, defaultComponentState } from './defaultComponentState'
 import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
@@ -50,17 +51,6 @@ if (typeof document !== 'undefined') {
 }
 
 type DefaultProps = {}
-
-const defaultComponentState = {
-  hover: false,
-  press: false,
-  pressIn: false,
-  focus: false,
-  // only used by enterStyle
-  mounted: false,
-}
-
-type ComponentState = typeof defaultComponentState
 
 function createShallowUpdate(setter: React.Dispatch<React.SetStateAction<ComponentState>>) {
   return (next: Partial<ComponentState>) => {
@@ -102,46 +92,17 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   // see onConfiguredOnce below which attaches a name then to this component
 
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug']) {
+        // prettier-ignore
+        console.log(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', ' debug prop on:')
+      }
+    }
+
     const forceUpdate = useForceUpdate()
-    const features = useFeatures(props, { forceUpdate })
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
     const [state, set_] = useState<ComponentState>(defaultComponentState)
-    const set = createShallowUpdate(set_)
-
-    // from react-native-web
-    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
-      Children.toArray(props.children).forEach((item) => {
-        if (typeof item === 'string') {
-          console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
-        }
-      })
-    }
-
-    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
-    const hostRef = useRef(null)
-
-    const hasEnterStyle = !!props.enterStyle
-
-    // isMounted
-    const internal = useRef<{ isMounted: boolean }>()
-    if (!internal.current) {
-      internal.current = {
-        isMounted: true,
-      }
-    }
-    useEffect(() => {
-      if (hasEnterStyle) {
-        // we need to use state to properly have mounted go from false => true
-        set({
-          mounted: true,
-        })
-      }
-      internal.current!.isMounted = true
-      return () => {
-        mouseUps.delete(unPress)
-        internal.current!.isMounted = false
-      }
-    }, [])
+    const setStateShallow = createShallowUpdate(set_)
 
     const {
       viewProps: viewPropsIn,
@@ -202,6 +163,60 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     let viewProps: StackProps = viewPropsRest
 
+    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
+    const isAnimated = !!(useAnimations && props.animation)
+
+    const isHovering = Boolean(!disabled && !isTouchDevice && pseudos && state.hover)
+    const isPressing = Boolean(!disabled && pseudos && state.press)
+    const isFocusing = Boolean(!disabled && pseudos && state.focus)
+
+    const features = useFeatures(props, {
+      forceUpdate,
+      setStateShallow,
+      useAnimations,
+      state,
+      style,
+      pseudos,
+      isHovering,
+      isPressing,
+      isFocusing,
+    })
+
+    // from react-native-web
+    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
+      Children.toArray(props.children).forEach((item) => {
+        if (typeof item === 'string') {
+          console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
+        }
+      })
+    }
+
+    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
+    const hostRef = useRef(null)
+
+    const hasEnterStyle = !!props.enterStyle
+
+    // isMounted
+    const internal = useRef<{ isMounted: boolean }>()
+    if (!internal.current) {
+      internal.current = {
+        isMounted: true,
+      }
+    }
+    useEffect(() => {
+      if (hasEnterStyle) {
+        // we need to use state to properly have mounted go from false => true
+        setStateShallow({
+          mounted: true,
+        })
+      }
+      internal.current!.isMounted = true
+      return () => {
+        mouseUps.delete(unPress)
+        internal.current!.isMounted = false
+      }
+    }, [])
+
     if (nativeID) {
       viewProps.id = nativeID
     }
@@ -238,9 +253,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       })
     }
 
-    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
-    const isAnimated = !!(useAnimations && props.animation)
-
     // element
     const isInternalComponent = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
@@ -252,11 +264,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       (isAnimated ? (tamaguiConfig?.animations?.Text as any) : null) ??
       (!isWeb ? Text : element || 'span')
     const ViewComponent = isText ? ReactText : ReactView
-
-    // styles
-    const isHovering = Boolean(!disabled && !isTouchDevice && pseudos && state.hover)
-    const isPressing = Boolean(!disabled && pseudos && state.press)
-    const isFocusing = Boolean(!disabled && pseudos && state.focus)
 
     const includeNativeStyle = !isWeb || isAnimated
 
@@ -272,18 +279,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       isFocusing ? pseudos!.focusStyle || null : null,
     ]
 
-    // TODO can be a feature
     if (isAnimated) {
-      const res = useAnimations(props, {
-        isMounted: state.mounted,
-        style,
-        hoverStyle: isHovering ? pseudos!.hoverStyle : null,
-        pressStyle: isPressing ? pseudos!.pressStyle : null,
-        focusStyle: isFocusing ? pseudos!.focusStyle : null,
-        exitStyle: pseudos?.exitStyle,
-        // onDidAnimate, delay
-      })
-      styles = [res]
+      styles = [state.animatedStyle]
     }
 
     if (isWeb && !isAnimated) {
@@ -308,7 +305,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('» styles', { pseudos, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
+          console.log('  » styles', { pseudos, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
         }
       }
       viewProps.className = className
@@ -316,7 +313,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('» animations', props.animation, { style, styles, includeNativeStyle, defaultNativeStyle, splitStyleResult })
+          console.log('  » animations', props.animation, { style, styles, includeNativeStyle, defaultNativeStyle, splitStyleResult })
         }
       }
       if (isAnimated) {
@@ -387,7 +384,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     const unPress = useCallback(() => {
       if (!internal.current!.isMounted) return
-      set({
+      setStateShallow({
         press: false,
         pressIn: false,
       })
@@ -415,7 +412,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                         next.press = true
                       }
                       if (Object.keys(next).length) {
-                        set(next)
+                        setStateShallow(next)
                       }
                       onHoverIn?.(e)
                       onMouseEnter?.(e)
@@ -434,7 +431,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                         next.pressIn = false
                       }
                       if (Object.keys(next).length) {
-                        set(next)
+                        setStateShallow(next)
                       }
                       onHoverOut?.(e)
                       onMouseLeave?.(e)
@@ -443,7 +440,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
             }),
           onMouseDown: attachPress
             ? (e) => {
-                set({
+                setStateShallow({
                   press: true,
                   pressIn: true,
                 })
@@ -528,14 +525,19 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         viewProps['debug'] = true
-        console.log('» props in:', props, 'classnames', props.className?.split(' '))
-        console.log('» props out:', { ...viewProps }, 'classnames', viewProps.className?.split(' '))
+        console.log('  » props in:', props, 'classnames', props.className?.split(' '))
+        console.log(
+          '  » props out:',
+          { ...viewProps },
+          'classnames',
+          viewProps.className?.split(' ')
+        )
         // prettier-ignore
-        console.log('» etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
+        console.log('  » etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
         if (typeof window !== 'undefined') {
-          console.log('» theme', theme, 'className', theme.className)
-          console.log('» component info', { staticConfig, tamaguiConfig })
+          console.log('  » theme', theme, 'state', theme.__state, 'className', theme.className)
+          console.log('  » component info', { staticConfig, tamaguiConfig })
         }
       }
     }

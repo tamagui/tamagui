@@ -8,7 +8,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -30,7 +29,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -52,7 +50,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -74,7 +71,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -108,7 +104,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -130,7 +125,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -152,7 +146,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -174,7 +167,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -208,7 +200,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -230,7 +221,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -252,7 +242,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -274,7 +263,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -308,7 +296,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -330,7 +317,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -352,7 +338,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -374,7 +359,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -408,7 +392,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -430,7 +413,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -452,7 +434,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -474,7 +455,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -510,7 +490,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -532,7 +511,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -554,7 +532,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -576,7 +553,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -610,7 +586,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -632,7 +607,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -654,7 +628,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -676,7 +649,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -710,7 +682,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -732,7 +703,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -754,7 +724,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -776,7 +745,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -810,7 +778,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -832,7 +799,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -854,7 +820,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -876,7 +841,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -910,7 +874,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -932,7 +895,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -954,7 +916,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -976,7 +937,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1012,7 +972,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1034,7 +993,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1056,7 +1014,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1078,7 +1035,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1112,7 +1068,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1134,7 +1089,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1156,7 +1110,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1178,7 +1131,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1212,7 +1164,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1234,7 +1185,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1256,7 +1206,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1278,7 +1227,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1312,7 +1260,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1334,7 +1281,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1356,7 +1302,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1378,7 +1323,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1412,7 +1356,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1434,7 +1377,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1456,7 +1398,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1478,7 +1419,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1514,7 +1454,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1536,7 +1475,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1558,7 +1496,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1580,7 +1517,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1614,7 +1550,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1636,7 +1571,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1658,7 +1592,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1680,7 +1613,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1714,7 +1646,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1736,7 +1667,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1758,7 +1688,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1780,7 +1709,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1814,7 +1742,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1836,7 +1763,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1858,7 +1784,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1880,7 +1805,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1914,7 +1838,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1936,7 +1859,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1958,7 +1880,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -1980,7 +1901,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2016,7 +1936,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2038,7 +1957,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2060,7 +1978,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2082,7 +1999,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2116,7 +2032,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2138,7 +2053,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2160,7 +2074,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2182,7 +2095,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2216,7 +2128,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2238,7 +2149,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2260,7 +2170,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2282,7 +2191,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2316,7 +2224,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2338,7 +2245,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2360,7 +2266,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2382,7 +2287,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2416,7 +2320,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2438,7 +2341,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2460,7 +2362,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;
@@ -2482,7 +2383,6 @@ export declare const Card: import("@tamagui/core").StaticComponent<Omit<Omit<Omi
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;

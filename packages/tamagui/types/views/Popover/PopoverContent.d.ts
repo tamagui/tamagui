@@ -6,7 +6,6 @@ export declare const PopoverContent: React.ForwardRefExoticComponent<Omit<import
     className?: string | undefined;
     id?: string | undefined;
     tag?: string | undefined;
-    animated?: boolean | undefined;
     theme?: import("@tamagui/core/types").ThemeName | null | undefined;
     onHoverIn?: ((e: MouseEvent) => any) | undefined;
     onHoverOut?: ((e: MouseEvent) => any) | undefined;

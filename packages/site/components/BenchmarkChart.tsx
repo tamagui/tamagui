@@ -47,7 +47,7 @@ export function BenchmarkChart({ data, large, skipOthers = false }) {
           <XStack pr={65} flex={1} ai="center">
             <YStack
               bc={getBarColor(result.name)}
-              o={result.name === 'Tamagui' ? 1 : skipOthers ? 0.7 : 1}
+              o={result.name === 'Tamagui' ? 1 : skipOthers ? 0.33 : 1}
               width={`${(result.value / maxValue) * 100}%`}
               height="100%"
               position="relative"

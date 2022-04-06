@@ -5,10 +5,8 @@
     - get some demos in that 100% pass compile / native
   - animations
     - css
-    - load animations in feature or compoler insert __hasAnimated?
     - test hover/press styles + add to animations docs
   - load theme hook via feature
-  - space => gap
   - fix lineargradient
   - shorthands should be swapped key/val to ensure one shorthand per prop key
   - remove onClick just keep onPress (from types)
@@ -44,19 +42,20 @@
     - // TODO check why hoverStyle not overriding
     - o="hidden" works when it should throw type warning (its opacity)
 
-- beta.1: 
+- beta.2: 
+  - space => gap
   - check theme change slow
   - slow types
   - fix memory leak causing OOM eventually on site
   - test component theme + alt theme (plus with compiled)
 
-- beta.2:
+- beta.3:
   - styleq / react-native-web 18 exploration
   - OmitShorthands<> helper (see ActiveCirlce in site)
   - split fonts into packages
   - floating-ui
 
-- beta.3
+- beta.4
   - optional 18-only separate releases? beta.3.react18?
     - react native doesn't support it yet except on new arch
     - (useId/useInsertionEffect)
@@ -70,7 +69,7 @@
 - v1
   - github sponsor
   - docs
-    - exported helpers getTokens, useThemeName
+    - exported helpers getTokens, useThemeName, getFontSize
       - spacedChildren
     - exported hooks
     - <SizableFrame />, <EnsureFlexed />
