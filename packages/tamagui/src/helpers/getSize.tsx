@@ -18,6 +18,6 @@ export const getSize =
       minHeight,
       paddingHorizontal: px,
       paddingVertical: py,
-      borderRadius: props.borderRadius ?? (props.circular ? 100_000 : radius),
+      borderRadius: props.circular ? 100_000 : props.borderRadius ?? radius,
     }
   }

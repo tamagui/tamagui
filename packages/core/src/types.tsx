@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 
 import { Variable } from './createVariable'
+import { ResolveVariableTypes } from './helpers/createPropMapper'
 import { RNWTextProps, RNWViewProps } from './types-rnw'
 import { ThemeProviderProps } from './views/ThemeProvider'
 
@@ -425,7 +426,8 @@ export type StaticConfigParsed = StaticConfig & {
     key: string,
     value: any,
     theme: ThemeObject,
-    props: any
+    props: any,
+    resolveVariablesAs?: ResolveVariableTypes
   ) => undefined | boolean | { [key: string]: any }
   variantsParsed?: {
     [key: string]: {
@@ -748,12 +750,12 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 
 export type UseAnimationProps = { animation: string; [key: string]: any }
 export type UseAnimationState = {
-  style: (StackStyleProps | TextStyleProps | null)[]
+  style: ViewStyle
   isMounted: boolean
-  hoverStyle?: StackStyleProps | TextStyleProps | null
-  pressStyle?: StackStyleProps | TextStyleProps | null
-  focusStyle?: StackStyleProps | TextStyleProps | null
-  exitStyle?: StackStyleProps | TextStyleProps | null
+  hoverStyle?: ViewStyle | null
+  pressStyle?: ViewStyle | null
+  focusStyle?: ViewStyle | null
+  exitStyle?: ViewStyle | null
   onDidAnimate?: any
   delay?: number
 }

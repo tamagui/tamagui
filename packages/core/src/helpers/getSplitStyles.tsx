@@ -11,6 +11,7 @@ import { isWeb } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import { StackProps, StaticConfigParsed, ThemeObject } from '../types'
 import { createMediaStyle } from './createMediaStyle'
+import { ResolveVariableTypes } from './createPropMapper'
 import { fixNativeShadow } from './fixNativeShadow'
 import { getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule } from './insertStyleRule'
@@ -40,11 +41,12 @@ export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
-  isMounted = false
+  isMounted = false,
+  resolveVariablesAs?: ResolveVariableTypes
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
-  const style: (ViewStyle | null)[] = []
+  const style: ViewStyle = {}
 
   let pseudos: PseudoStyles | null = null
   let cur: ViewStyle | null = null
@@ -62,7 +64,11 @@ export const getSplitStyles = (
     let isMedia = keyInit[0] === '$'
     let isPseudo = validPseudoKeys[keyInit]
 
-    const out = isMedia || isPseudo ? true : staticConfig.propMapper(keyInit, valInit, theme, props)
+    const out =
+      isMedia || isPseudo
+        ? true
+        : staticConfig.propMapper(keyInit, valInit, theme, props, resolveVariablesAs)
+
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
     for (const [key, val] of expanded) {
@@ -81,7 +87,7 @@ export const getSplitStyles = (
             // once mounted we can ignore enterStyle
             continue
           }
-          style.push(getSubStyle(val, staticConfig, theme, props))
+          Object.assign(style, getSubStyle(val, staticConfig, theme, props))
           continue
         }
         pseudos = pseudos || {}
@@ -123,7 +129,8 @@ export const getSplitStyles = (
           }
         } else {
           if (mediaState[mediaKey]) {
-            style.push(mediaStyle)
+            // TODO i think media + pseudo needs handling here
+            Object.assign(style, mediaStyle)
           }
         }
         continue
@@ -133,11 +140,11 @@ export const getSplitStyles = (
         if (cur) {
           // process last
           fixNativeShadow(cur)
-          style.push(cur)
+          Object.assign(style, cur)
           cur = null
         }
         fixNativeShadow(val)
-        style.push(val)
+        Object.assign(style, val)
         continue
       }
       // expand flex so it merged with flexShrink etc properly
@@ -172,16 +179,15 @@ export const getSplitStyles = (
       if (!staticConfig.variants || !(key in staticConfig.variants)) {
         if (key !== 'animation' && key !== 'debug') {
           viewProps[key] = val
-        } else {
-          console.warn('skipping animation??')
         }
       }
     }
   }
+
   // push last style
   if (cur) {
     fixNativeShadow(cur)
-    style.push(cur)
+    Object.assign(style, cur)
   }
 
   if (process.env.NODE_ENV === 'development') {
@@ -202,13 +208,14 @@ const getSubStyle = (
   styleIn: Object,
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
-  props: any
+  props: any,
+  resolveVariablesAs?: ResolveVariableTypes
 ): ViewStyle => {
   const styleOut: ViewStyle = {}
   for (const key in styleIn) {
     // be sure to sync next few lines below to loop above (*1)
     const val = styleIn[key]
-    const out = staticConfig.propMapper(key, val, theme, props)
+    const out = staticConfig.propMapper(key, val, theme, props, resolveVariablesAs)
     const expanded = out === true || !out ? [[key, val]] : Object.entries(out)
     for (const [skey, sval] of expanded) {
       if (skey in stylePropsTransform) {

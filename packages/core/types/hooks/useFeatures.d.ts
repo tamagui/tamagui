@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import { ViewStyle } from 'react-native';
 import { ComponentState } from '../defaultComponentState';
 import { UseAnimationHook } from '../types';
 declare type FeatureUtils = {
@@ -7,7 +8,7 @@ declare type FeatureUtils = {
     setStateShallow: (next: Partial<ComponentState>) => void;
     useAnimations?: UseAnimationHook;
     pseudos: any;
-    style: any[];
+    style: ViewStyle;
     isHovering: boolean;
     isPressing: boolean;
     isFocusing: boolean;

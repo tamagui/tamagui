@@ -81,9 +81,10 @@ export const MediaPlayer = memo(
                   >
                     <Rewind />
                     <Button
-                      // animation="bouncy"
+                      animation="bouncy"
                       theme={mainButtonTheme}
                       bordered
+                      // debug
                       // bc="$background"
                       hoverStyle={{
                         elevation: '$6',
@@ -91,9 +92,9 @@ export const MediaPlayer = memo(
                       }}
                       my="$-6"
                       icon={Pause}
-                      scaleIcon={2}
-                      circular
+                      // scaleIcon={2}
                       size="$8"
+                      circular
                       elevation="$4"
                       pointerEvents={pointerEventsControls}
                     />

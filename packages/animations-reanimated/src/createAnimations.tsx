@@ -80,13 +80,15 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       const transition = animations[props.animation]
 
       const mergedStyles = {
-        ...style[0],
+        ...style,
         ...hoverStyle,
         ...pressStyle,
         ...focusStyle,
         // ...isExiting && exitStyle(custom()),
         ...(isExiting && exitStyle),
       }
+
+      console.log('wut', style, hoverStyle, pressStyle, isExiting)
 
       const exitingStyleProps: Record<string, boolean> = {}
       if (exitStyle) {

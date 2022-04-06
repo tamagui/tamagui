@@ -20,6 +20,7 @@
       - onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
   - docs
     - animations
+    - classnames is_Pagraph , font_body
     - global Tamagui in dev mode (Dev Tools)
       - Tamagui.classes['_borderBottomColor-1go1dts'] => style
     - fullscreen elevation onHoverIn onHoverOut onPress
@@ -33,12 +34,19 @@
       - adding font-feature-settings
       - customizing things
   - bugs
-    - <Paragraph size={} /> not accepting simple numbers
+    - // TODO not working?
+    - slow types (tried fixing but made them more accurate but worse :/)
+    - get sizableTextSizeVarianty types working and ...fontSize
+    - // TODO this should be ...fontSize type not working
+    - // TODO can we make it work using its own variants with types?
+    - // TODO if not then we need to add defaultVariants: {}
     - media queries in styled() not working
     - fix image w/h shorthand not translating to width/height runtime
     - Image SSR / site weirdness on some
     - ScrollView isnt SSR compat
     - // TODO check why hoverStyle not overriding
+    - // TODO handle pseudos
+    - // TODO i think media + pseudo needs handling here
     - o="hidden" works when it should throw type warning (its opacity)
 
 - beta.2: 

@@ -5,6 +5,7 @@ import rangeParser from 'parse-numeric-range'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import {
+  Button,
   EnsureFlexed,
   H1,
   H2,
@@ -53,6 +54,12 @@ export const components = {
   PropsTable,
   Description: SubTitle,
 
+  Beta: () => (
+    <Button size="$3" theme="yellow" hoverable={false}>
+      Beta
+    </Button>
+  ),
+
   IntroParagraph: ({ children, ...props }) => {
     return (
       <Paragraph size="$6" className="paragraph" display="block" mt="$2" my="$4" {...props}>
@@ -91,9 +98,8 @@ export const components = {
           space="$3"
           {...props}
         >
-          {/* TODO could unwrapText to get proper coloring */}
           <Paragraph py="$1" theme="alt1" mt={-3} mb={-3} className="paragraph-parent" size="$3">
-            {children}
+            {unwrapText(children)}
           </Paragraph>
           <YStack
             ml="auto"
@@ -122,14 +128,15 @@ export const components = {
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading mt="$3" id={id}>
-      <H3 data-heading size="$7" {...props}>
+      <H3 fow="800" data-heading size="$7" {...props}>
         {children}
       </H3>
+      {getNonTextChildren(children)}
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mt="$3" size="$6" {...props} />,
-  h5: (props) => <H5 mt="$3" size="$5" {...props} />,
+  h4: (props) => <H4 mt="$3" size="$6" fow="800" {...props} />,
+  h5: (props) => <H5 mt="$3" size="$5" fow="800" {...props} />,
 
   p: (props) => (
     <Paragraph
@@ -394,3 +401,15 @@ export function MDXProvider(props) {
     </>
   )
 }
+
+function unwrapText(children: any) {
+  return React.Children.toArray(children).map((x) => {
+    // @ts-ignore
+    return x?.props?.children ? x.props.children : x
+  })
+}
+
+const getTextChildren = (children) =>
+  React.Children.map(children, (x) => (typeof x === 'string' ? x : null)).flat()
+const getNonTextChildren = (children) =>
+  React.Children.map(children, (x) => (typeof x !== 'string' ? x : null)).flat()

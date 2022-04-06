@@ -1,21 +1,28 @@
 import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
-import { isVariable } from '../createVariable'
+import { Variable, isVariable } from '../createVariable'
 import { StaticConfig, TamaguiInternalConfig } from '../types'
 import { isObj } from './isObj'
+
+export type ResolveVariableTypes = 'auto' | 'value' | 'variable'
 
 export const createPropMapper = (c: StaticConfig) => {
   const variants = c.variants
   let variantsParsed
   const defaultProps = c.defaultProps || {}
 
-  return (key: string, value: any, theme: any, props: any) => {
+  return (
+    key: string,
+    value: any,
+    theme: any,
+    props: any,
+    returnVariablesAs: ResolveVariableTypes = !!props.animation ? 'value' : 'auto'
+  ) => {
     const conf = getConfig()
     if (!conf) {
       console.trace('no conf! err')
       return
     }
-    const isAnimated = !!props.animation
     if (variants && !variantsParsed) {
       variantsParsed = parseVariants(variants, conf)
     }
@@ -52,7 +59,7 @@ export const createPropMapper = (c: StaticConfig) => {
         variantValue = variantValue(value, { tokens: conf.tokensParsed, theme, props })
       }
       if (isObj(variantValue)) {
-        variantValue = resolveTokens(variantValue, conf, theme, fontFamily, isAnimated)
+        variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
       }
       return variantValue
     }
@@ -65,14 +72,13 @@ export const createPropMapper = (c: StaticConfig) => {
       key = conf.shorthands[key]
     }
 
-    if (value && value[0] === '$') {
+    if (value) {
       shouldReturn = true
-      value = getToken(key, value, conf, theme, fontFamily, isAnimated)
-    }
-
-    if (isVariable(value)) {
-      shouldReturn = true
-      value = value.variable
+      if (value[0] === '$') {
+        value = getToken(key, value, conf, theme, fontFamily, returnVariablesAs)
+      } else if (isVariable(value)) {
+        value = getVariableValue(value, returnVariablesAs)
+      }
     }
 
     if (shouldReturn) {
@@ -88,21 +94,22 @@ const resolveTokens = (
   conf: TamaguiInternalConfig,
   theme: any,
   fontFamily: any,
-  isAnimated = false
+  resolveAs?: ResolveVariableTypes
 ) => {
   let res = {}
   for (const rKey in input) {
     const fKey = conf.shorthands[rKey] || rKey
     const val = input[rKey]
     if (isVariable(val)) {
-      res[fKey] = val.variable
+      res[fKey] =
+        resolveAs === 'variable' ? val : !isWeb || resolveAs === 'value' ? val.val : val.variable
     } else if (typeof val === 'string') {
-      const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily, isAnimated) : val
+      const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily, resolveAs) : val
       res[fKey] = fVal
     } else {
       if (isObj(val)) {
         // for things like shadowOffset, hoverStyle which is a sub-object
-        res[fKey] = resolveTokens(val, conf, theme, fontFamily, isAnimated)
+        res[fKey] = resolveTokens(val, conf, theme, fontFamily, resolveAs)
       } else {
         // nullish values cant be tokens so need no exrta parsing
         res[fKey] = input[fKey]
@@ -123,7 +130,7 @@ const getToken = (
   { tokensParsed }: TamaguiInternalConfig,
   theme: any,
   fontFamily: string | undefined = '$body',
-  isAnimated = false
+  resolveAs?: ResolveVariableTypes
 ) => {
   let valOrVar: any
   let hasSet = false
@@ -172,13 +179,7 @@ const getToken = (
     }
   }
   if (hasSet) {
-    if (isVariable(valOrVar)) {
-      if (!isWeb || isAnimated) {
-        return valOrVar.val
-      }
-      return valOrVar.variable
-    }
-    return valOrVar
+    return getVariableValue(valOrVar, resolveAs)
   }
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
@@ -187,6 +188,19 @@ const getToken = (
     }
   }
   return value
+}
+
+function getVariableValue(valOrVar: Variable | any, resolveAs: ResolveVariableTypes = 'auto') {
+  if (isVariable(valOrVar)) {
+    if (resolveAs === 'variable') {
+      return valOrVar
+    }
+    if (!isWeb || resolveAs === 'value') {
+      return valOrVar.val
+    }
+    return valOrVar.variable
+  }
+  return valOrVar
 }
 
 // just specificy the least costly, all else go to `space` (most keys - we can exclude)

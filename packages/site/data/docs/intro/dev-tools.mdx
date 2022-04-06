@@ -30,3 +30,19 @@ In development mode, there's a global `Tamagui` with a lot of helpful internals,
 Beyond your config, you have:
 
 - **insertedCSS**: All the selectors inserted by Tamagui (before runtime).
+
+## Inspecting Components
+
+Any `styled()` component will have a `staticConfig` property attached to it:
+
+```tsx
+const Circle = styled(Stack, {
+  borderRadius: 1000
+})
+
+console.log(Circle.staticConfig) // lots of helpful information
+```
+
+- `componentName` is taken from the `name` key
+- `variants` contains the merged variants including parents.
+- `defaultProps` is the extracted props left to use as defaults on the component.
