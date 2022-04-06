@@ -9,7 +9,6 @@
   - load theme hook via feature
   - fix lineargradient
   - shorthands should be swapped key/val to ensure one shorthand per prop key
-  - remove onClick just keep onPress (from types)
   - check focusStyle works or remove docs
   - styled() fix types with react native web
     - fix not needing `isText`, `isInput`, `isReactNativeWeb`

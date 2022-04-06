@@ -143,7 +143,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       onStartShouldSetResponder,
       onStartShouldSetResponderCapture,
       onMouseDown,
-      onClick,
       nativeID,
 
       accessible,
@@ -352,13 +351,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     }
 
-    const attachPress = !!(
-      (pseudos && pseudos.pressStyle) ||
-      onPress ||
-      onPressOut ||
-      onPressIn ||
-      onClick
-    )
+    const attachPress = !!((pseudos && pseudos.pressStyle) || onPress || onPressOut || onPressIn)
     const attachHover =
       isWeb &&
       !isTouchDevice &&
@@ -376,7 +369,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       'onPressOut' in props ||
       (isWeb &&
         ('hoverStyle' in props ||
-          'onClick' in props ||
           'onHoverIn' in props ||
           'onHoverOut' in props ||
           'onMouseEnter' in props ||
@@ -448,12 +440,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                 onMouseDown?.(e)
               }
             : null,
-          onClick: attachPress
+          onPress: attachPress
             ? (e) => {
                 // this caused issue with next.js passing href
                 // e.preventDefault()
                 onPress?.(e)
-                onClick?.(e)
                 unPress()
                 onPressOut?.(e)
               }
@@ -469,7 +460,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           hitSlop,
           onPressIn: events.onMouseDown,
           onPressOut: events.onPressOut,
-          onPress: events.onClick,
+          onPress: events.onPress,
         })
         Object.assign(viewProps, pressProps)
       } else {

@@ -99,7 +99,6 @@ export interface RNWViewProps {
   onMouseUp?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onMouseEnter?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onMouseLeave?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void
   onScroll?: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void
   // For compatibility with RNW internals
@@ -134,7 +133,6 @@ export interface RNWTextProps {
   }
   onMouseEnter?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onMouseLeave?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void
   // For compatibility with RNW internals
   onMoveShouldSetResponder?: unknown
