@@ -48,7 +48,7 @@ We can use these like so:
 
 We're showing off a few different styles of variants here. We'll expand on them below:
 
-### Typed Variants
+### Typed variants
 
 #### Boolean
 
@@ -180,5 +180,29 @@ const MyButton = styled(Stack, {
       },
     },
   }
+})
+```
+
+#### Catch-all spread variant
+
+Using '...' lets you use a function to grab all variants that don't match:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const ColorfulStack = styled(Stack, {
+  variants: {
+    colorful: {
+      true: {
+        color: 'red',
+      },
+      '...': (val) => {
+        // this will catch any other values that don't match
+        return {
+          color: val
+        }
+      }
+    },
+  },
 })
 ```

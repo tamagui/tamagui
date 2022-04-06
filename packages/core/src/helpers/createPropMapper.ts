@@ -41,6 +41,10 @@ export const createPropMapper = (c: StaticConfig) => {
         }
       }
 
+      if (!variantValue) {
+        variantValue = variant['...'] ?? value
+      }
+
       let res = variantValue
       if (typeof res === 'function') {
         res = res(value, { tokens: conf.tokensParsed, theme, props })
