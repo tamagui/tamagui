@@ -43,9 +43,8 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
           '@gorhom/bottom-sheet$': require
             .resolve('@gorhom/bottom-sheet')
             .replace('commonjs', 'module'),
-          'react-native-web/src/modules/normalizeColor': require.resolve(
-            'react-native-web/dist/cjs/modules/normalizeColor'
-          ),
+          // expo fix https://github.com/expo/expo/issues/9999
+          'react-native-web/src': require.resolve('react-native-web/dist'),
           react: require.resolve('react'),
           'react-dom': require.resolve('react-dom'),
         }
@@ -110,6 +109,9 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         const includeModule = (context: string, request: string) => {
           const fullPath = request[0] === '.' ? path.join(context, request) : request
+          if (fullPath === '@tamagui/expo-linear-gradient') {
+            return 'inline'
+          }
           if (/^\@?react-native-/.test(request)) {
             return false
           }

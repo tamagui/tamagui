@@ -1,5 +1,7 @@
-import { ReactElement } from 'react';
-import { NativeLinearGradientProps } from './NativeLinearGradientProps';
+import { LinearGradientProps } from '@tamagui/expo-linear-gradient';
+import * as React from 'react';
 import { StackProps } from './Stacks';
-export declare const LinearGradient: ({ colors, locations, start, end, ...props }: NativeLinearGradientProps & Omit<StackProps, keyof NativeLinearGradientProps>) => ReactElement;
+declare type Props = LinearGradientProps & Omit<StackProps, 'children' | keyof LinearGradientProps>;
+export declare const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAttributes<any>>;
+export {};
 //# sourceMappingURL=LinearGradient.d.ts.map

@@ -3,6 +3,7 @@ import { styled } from '@tamagui/core'
 import { Paragraph } from './Paragraph'
 
 export const Title = styled(Paragraph, {
+  tag: 'span',
   name: 'Title',
   accessibilityRole: 'header',
   fontFamily: '$title',

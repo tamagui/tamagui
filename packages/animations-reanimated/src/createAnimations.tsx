@@ -88,7 +88,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         ...(isExiting && exitStyle),
       }
 
-      console.log('wut', style, hoverStyle, pressStyle, isExiting)
+      // console.log('wut', style, hoverStyle, pressStyle, isExiting)
 
       const exitingStyleProps: Record<string, boolean> = {}
       if (exitStyle) {

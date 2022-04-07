@@ -1,88 +1,49 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/core'
-import React, { ReactElement, useState } from 'react'
+import { themeable, useTheme } from '@tamagui/core'
+import {
+  LinearGradient as LinearGradientNative,
+  LinearGradientProps,
+} from '@tamagui/expo-linear-gradient'
+import * as React from 'react'
+import { StyleSheet } from 'react-native'
 
-import { normalizeColor } from '../helpers/normalizeColor'
-import { useLayout } from '../hooks/useLayout'
-import { NativeLinearGradientPoint, NativeLinearGradientProps } from './NativeLinearGradientProps'
 import { StackProps, YStack } from './Stacks'
 
-// bugfix esbuild strips react jsx: 'preserve'
+// // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-export const LinearGradient = YStack.extractable(
-  ({
-    colors = [],
-    locations,
-    start,
-    end,
-    ...props
-  }: NativeLinearGradientProps &
-    Omit<StackProps, keyof NativeLinearGradientProps>): ReactElement => {
-    const [gradientColors, setGradientColors] = useState<string[]>([])
-    const [pseudoAngle, setPseudoAngle] = useState<number>(0)
-    const layoutProps = useLayout()
-    const { width = 1, height = 1 } = layoutProps.layout ?? {}
+// TODO type theme values on colors
+type Props = LinearGradientProps & Omit<StackProps, 'children' | keyof LinearGradientProps>
 
-    useIsomorphicLayoutEffect(() => {
-      const getControlPoints = (): NativeLinearGradientPoint[] => {
-        let correctedStart: NativeLinearGradientPoint = [0, 0]
-        if (Array.isArray(start)) {
-          correctedStart = [start[0] != null ? start[0] : 0.0, start[1] != null ? start[1] : 0.0]
-        }
-        let correctedEnd: NativeLinearGradientPoint = [0.0, 1.0]
-        if (Array.isArray(end)) {
-          correctedEnd = [end[0] != null ? end[0] : 0.0, end[1] != null ? end[1] : 1.0]
-        }
-        return [correctedStart, correctedEnd]
-      }
-
-      const [start_, end_] = getControlPoints()
-      start_[0] *= width
-      end_[0] *= width
-      start_[1] *= height
-      end_[1] *= height
-      const py = end_[1] - start_[1]
-      const px = end_[0] - start_[0]
-
-      setPseudoAngle(90 + (Math.atan2(py, px) * 180) / Math.PI)
-    }, [width, height, start, end])
-
-    useIsomorphicLayoutEffect(() => {
-      if (!colors.length) {
-        return
-      }
-
-      const nextGradientColors = colors.map((color, index): string => {
-        const hexColor = normalizeColor(color)
-        let output = hexColor
-        if (locations && locations[index]) {
-          const location = Math.max(0, Math.min(1, locations[index]))
-          // Convert 0...1 to 0...100
-          const percentage = location * 100
-          output += ` ${percentage}%`
-        }
-        return output || ''
+export const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAttributes<any>> =
+  YStack.extractable(
+    themeable(
+      React.forwardRef((props: any, ref) => {
+        const { start, end, colors: colorsProp, locations, ...stackProps } = props
+        const colors = useLinearGradientColors(colorsProp)
+        console.log('colors', colors)
+        return (
+          <YStack ref={ref} {...props}>
+            <LinearGradientNative
+              start={start}
+              end={end}
+              colors={colors}
+              locations={locations}
+              style={[StyleSheet.absoluteFill]}
+            />
+          </YStack>
+        )
       })
-
-      setGradientColors(nextGradientColors)
-    }, [colors, locations])
-
-    const colorStyle = gradientColors.join(',')
-    const backgroundImage = `linear-gradient(${pseudoAngle}deg, ${colorStyle})`
-
-    // TODO(Bacon): In the future we could consider adding `backgroundRepeat: "no-repeat"`. For more
-    // browser support.
-    return (
-      <YStack
-        {...props}
-        {...layoutProps}
-        // @ts-ignore
-        style={[
-          props.style,
-          // @ts-ignore: [ts] Property 'backgroundImage' does not exist on type 'ViewStyle'.
-          { backgroundImage },
-        ]}
-      />
     )
-  }
-)
+  ) as any
+
+// resolve tamagui theme values
+const useLinearGradientColors = (colors: string[]) => {
+  const theme = useTheme()
+  console.log('theme', theme['red10'], theme['$red10'])
+  return colors.map((color) => {
+    if (color[0] === '$') {
+      return theme[color]?.toString() || color
+    }
+    return color
+  })
+}

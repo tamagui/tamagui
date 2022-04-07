@@ -5,6 +5,6 @@ export declare const Menu: (({ children, trigger, onChangeOpen }: {
     onChangeOpen: any;
 }) => JSX.Element) & {
     Item: (props: any) => any;
-    Provider: any;
+    Provider: ({ children, }: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModalProvider/types").BottomSheetModalProviderProps) => JSX.Element;
 };
 //# sourceMappingURL=Menu.d.ts.map
