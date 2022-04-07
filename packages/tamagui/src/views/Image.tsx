@@ -1,14 +1,14 @@
 import { GetProps, StackProps, styled } from '@tamagui/core'
 import React from 'react'
-import { Image as RNImage, ImageProps as RNImageProps } from 'react-native'
+import { Image as RNImage } from 'react-native'
 
 React['createElement']
 
-const StyledImage = styled<RNImageProps>(
-  RNImage as any,
+const StyledImage = styled(
+  RNImage,
   {
-    // @ts-ignore
     className: 'tamagui-image',
+    source: null as any,
   },
   {
     isReactNativeWeb: true,

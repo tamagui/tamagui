@@ -4,7 +4,6 @@ import { TextInput } from 'react-native'
 import { inputSizeVariant } from '../helpers/inputHelpers'
 
 export const Input = styled(
-  // @ts-ignore
   TextInput,
   {
     name: 'Input',
