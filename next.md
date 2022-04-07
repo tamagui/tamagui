@@ -1,6 +1,5 @@
 - beta:
   - fix on native + simple native demo (maybe with starters repo)
-  - finish blog post
   - compiler 100% on site
   - create-tamagui-app
     - get some demos in that 100% pass compile / native
