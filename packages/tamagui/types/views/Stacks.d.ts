@@ -270,7 +270,7 @@ export declare const ZStack: import("@tamagui/core").StaticComponent<Omit<import
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | null | undefined;
 } & Omit<{}, "elevation" | "fullscreen">>>, {} & Omit<{}, never>, any, import("@tamagui/core").StaticConfigParsed>;
-export declare const getSizedElevation: (val: number, { theme }: VariantSpreadExtras<any>) => {
+export declare const getSizedElevation: (val: number | boolean, { theme, tokens }: VariantSpreadExtras<any>) => {
     shadowColor: import("@tamagui/core").VariableColorVal | undefined;
     shadowRadius: number;
     shadowOffset: {

@@ -52,6 +52,11 @@ const ButtonFrame = styled(SizableStack, {
   size: '$4',
   borderWidth: 0,
   borderColor: '$borderColor',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '$1',
+  cursor: 'pointer',
+  flexWrap: 'nowrap',
   hoverable: true,
   pressable: true,
 

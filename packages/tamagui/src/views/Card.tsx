@@ -17,10 +17,8 @@ export const Card = styled(SizableStack, {
 
   variants: {
     size: {
-      // TODO add `elevated` boolean
-      // + elevatedHover ?
       '...size': (size, extras) => {
-        const { tokens, theme } = extras
+        const { tokens } = extras
         const token = tokens.size[size]
         const sizeNum = isVariable(token) ? +token.val : size
         return {

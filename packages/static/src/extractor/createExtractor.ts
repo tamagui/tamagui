@@ -1,7 +1,7 @@
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { StackProps, StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core'
-import { mediaQueryConfig, postProcessStyles, pseudos } from '@tamagui/core-node'
+import { getSplitStyles, mediaQueryConfig, pseudos } from '@tamagui/core-node'
 import { stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
 
@@ -235,9 +235,10 @@ export function createExtractor() {
             if (disableExtraction) {
               console.log(prefixLogs || prefix, 'disableExtraction: not optimizing')
             }
-            console.log(prefixLogs || prefix, '🏷  = total ')
-            console.log(prefixLogs || prefix, '🏎  = optimized props')
-            console.log(prefixLogs || prefix, '🚀  = flattened')
+            console.log(
+              prefixLogs || prefix,
+              '                          total · optimized · flattened '
+            )
             hasLogged = true
           }
           if (disableExtraction) {
@@ -407,6 +408,7 @@ export function createExtractor() {
           let shouldDeopt = false
           let inlinePropCount = 0
           let isFlattened = false
+          let hasSetOptimized = false
 
           // RUN first pass
 
@@ -451,130 +453,6 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             console.log('  - attrs (before):\n', logLines(attrs.map(attrStr).join(', ')))
-          }
-
-          function isStaticAttributeName(name: string) {
-            return !!(
-              !!validStyles[name] ||
-              staticConfig.validPropsExtra?.[name] ||
-              !!pseudos[name] ||
-              staticConfig.variants?.[name] ||
-              tamaguiConfig.shorthands[name] ||
-              (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
-            )
-          }
-
-          function isExtractable(obj: t.Node): obj is t.ObjectExpression {
-            return (
-              t.isObjectExpression(obj) &&
-              obj.properties.every((prop) => {
-                if (!t.isObjectProperty(prop)) {
-                  console.log('not object prop', prop)
-                  return false
-                }
-                const propName = prop.key['name']
-                if (!isStaticAttributeName(propName) && propName !== 'tag') {
-                  if (shouldPrintDebug) {
-                    console.log('  not a valid style prop!', propName)
-                  }
-                  return false
-                }
-                return true
-              })
-            )
-          }
-
-          // side = {
-          //   color: 'red',
-          //   background: x ? 'red' : 'green',
-          //   $gtSm: { color: 'green' }
-          // }
-          // => Ternary<test, { color: 'red' }, null>
-          // => Ternary<test && x, { background: 'red' }, null>
-          // => Ternary<test && !x, { background: 'green' }, null>
-          // => Ternary<test && '$gtSm', { color: 'green' }, null>
-          function createTernariesFromObjectProperties(
-            test: t.Expression,
-            side: t.Expression | null,
-            ternaryPartial: Partial<Ternary> = {}
-          ): null | Ternary[] {
-            if (!side) {
-              return null
-            }
-            if (!isExtractable(side)) {
-              throw new Error('not extractable')
-            }
-            return side.properties.flatMap((property) => {
-              if (!t.isObjectProperty(property)) {
-                throw new Error('expected object property')
-              }
-              // handle media queries inside spread/conditional objects
-              if (t.isIdentifier(property.key)) {
-                const key = property.key.name
-                const mediaQueryKey = key.slice(1)
-                const isMediaQuery = key[0] === '$' && mediaQueryConfig[mediaQueryKey]
-                if (isMediaQuery) {
-                  if (t.isExpression(property.value)) {
-                    const ternaries = createTernariesFromObjectProperties(
-                      t.stringLiteral(mediaQueryKey),
-                      property.value,
-                      {
-                        inlineMediaQuery: mediaQueryKey,
-                      }
-                    )
-                    if (ternaries) {
-                      return ternaries.map((value) => ({
-                        ...ternaryPartial,
-                        ...value,
-                        // ensure media query test stays on left side (see getMediaQueryTernary)
-                        test: t.logicalExpression('&&', value.test, test),
-                      }))
-                    } else {
-                      console.log('⚠️ no ternaries?', property)
-                    }
-                  } else {
-                    console.log('⚠️ not expression', property)
-                  }
-                }
-              }
-              // this could be a recurse here if we want to get fancy
-              if (t.isConditionalExpression(property.value)) {
-                // merge up into the parent conditional, split into two
-                const [truthy, falsy] = [
-                  t.objectExpression([t.objectProperty(property.key, property.value.consequent)]),
-                  t.objectExpression([t.objectProperty(property.key, property.value.alternate)]),
-                ].map((x) => attemptEval(x))
-                return [
-                  createTernary({
-                    remove() {},
-                    ...ternaryPartial,
-                    test: t.logicalExpression('&&', test, property.value.test),
-                    consequent: truthy,
-                    alternate: null,
-                  }),
-                  createTernary({
-                    ...ternaryPartial,
-                    test: t.logicalExpression(
-                      '&&',
-                      test,
-                      t.unaryExpression('!', property.value.test)
-                    ),
-                    consequent: falsy,
-                    alternate: null,
-                    remove() {},
-                  }),
-                ]
-              }
-              const obj = t.objectExpression([t.objectProperty(property.key, property.value)])
-              const consequent = attemptEval(obj)
-              return createTernary({
-                remove() {},
-                ...ternaryPartial,
-                test,
-                consequent,
-                alternate: null,
-              })
-            })
           }
 
           // START function evaluateAttribute
@@ -738,7 +616,8 @@ export function createExtractor() {
                   name,
                   styleValue,
                   defaultTheme,
-                  staticConfig.defaultProps
+                  staticConfig.defaultProps,
+                  staticConfig
                 )
                 if (out) {
                   keys = Object.keys(out)
@@ -761,6 +640,12 @@ export function createExtractor() {
             if (styleValue !== FAILED_EVAL) {
               if (shouldPrintDebug) {
                 console.log(`  style: ${name} =`, styleValue)
+              }
+              if (!(name in staticConfig.defaultProps)) {
+                if (!hasSetOptimized) {
+                  res.optimized++
+                  hasSetOptimized = true
+                }
               }
               return {
                 type: 'style',
@@ -908,6 +793,130 @@ export function createExtractor() {
               return null
             }
           } // END function evaluateAttribute
+
+          function isStaticAttributeName(name: string) {
+            return !!(
+              !!validStyles[name] ||
+              staticConfig.validPropsExtra?.[name] ||
+              !!pseudos[name] ||
+              staticConfig.variants?.[name] ||
+              tamaguiConfig.shorthands[name] ||
+              (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
+            )
+          }
+
+          function isExtractable(obj: t.Node): obj is t.ObjectExpression {
+            return (
+              t.isObjectExpression(obj) &&
+              obj.properties.every((prop) => {
+                if (!t.isObjectProperty(prop)) {
+                  console.log('not object prop', prop)
+                  return false
+                }
+                const propName = prop.key['name']
+                if (!isStaticAttributeName(propName) && propName !== 'tag') {
+                  if (shouldPrintDebug) {
+                    console.log('  not a valid style prop!', propName)
+                  }
+                  return false
+                }
+                return true
+              })
+            )
+          }
+
+          // side = {
+          //   color: 'red',
+          //   background: x ? 'red' : 'green',
+          //   $gtSm: { color: 'green' }
+          // }
+          // => Ternary<test, { color: 'red' }, null>
+          // => Ternary<test && x, { background: 'red' }, null>
+          // => Ternary<test && !x, { background: 'green' }, null>
+          // => Ternary<test && '$gtSm', { color: 'green' }, null>
+          function createTernariesFromObjectProperties(
+            test: t.Expression,
+            side: t.Expression | null,
+            ternaryPartial: Partial<Ternary> = {}
+          ): null | Ternary[] {
+            if (!side) {
+              return null
+            }
+            if (!isExtractable(side)) {
+              throw new Error('not extractable')
+            }
+            return side.properties.flatMap((property) => {
+              if (!t.isObjectProperty(property)) {
+                throw new Error('expected object property')
+              }
+              // handle media queries inside spread/conditional objects
+              if (t.isIdentifier(property.key)) {
+                const key = property.key.name
+                const mediaQueryKey = key.slice(1)
+                const isMediaQuery = key[0] === '$' && mediaQueryConfig[mediaQueryKey]
+                if (isMediaQuery) {
+                  if (t.isExpression(property.value)) {
+                    const ternaries = createTernariesFromObjectProperties(
+                      t.stringLiteral(mediaQueryKey),
+                      property.value,
+                      {
+                        inlineMediaQuery: mediaQueryKey,
+                      }
+                    )
+                    if (ternaries) {
+                      return ternaries.map((value) => ({
+                        ...ternaryPartial,
+                        ...value,
+                        // ensure media query test stays on left side (see getMediaQueryTernary)
+                        test: t.logicalExpression('&&', value.test, test),
+                      }))
+                    } else {
+                      console.log('⚠️ no ternaries?', property)
+                    }
+                  } else {
+                    console.log('⚠️ not expression', property)
+                  }
+                }
+              }
+              // this could be a recurse here if we want to get fancy
+              if (t.isConditionalExpression(property.value)) {
+                // merge up into the parent conditional, split into two
+                const [truthy, falsy] = [
+                  t.objectExpression([t.objectProperty(property.key, property.value.consequent)]),
+                  t.objectExpression([t.objectProperty(property.key, property.value.alternate)]),
+                ].map((x) => attemptEval(x))
+                return [
+                  createTernary({
+                    remove() {},
+                    ...ternaryPartial,
+                    test: t.logicalExpression('&&', test, property.value.test),
+                    consequent: truthy,
+                    alternate: null,
+                  }),
+                  createTernary({
+                    ...ternaryPartial,
+                    test: t.logicalExpression(
+                      '&&',
+                      test,
+                      t.unaryExpression('!', property.value.test)
+                    ),
+                    consequent: falsy,
+                    alternate: null,
+                    remove() {},
+                  }),
+                ]
+              }
+              const obj = t.objectExpression([t.objectProperty(property.key, property.value)])
+              const consequent = attemptEval(obj)
+              return createTernary({
+                remove() {},
+                ...ternaryPartial,
+                test,
+                consequent,
+                alternate: null,
+              })
+            })
+          }
 
           // now update to new values
           node.attributes = attrs.filter(isAttr).map((x) => x.value)
@@ -1162,22 +1171,25 @@ export function createExtractor() {
                 if (isExcludedProp(key)) delete props[key]
               }
             }
-            const out = postProcessStyles(props, staticConfig, defaultTheme)
-            const next = out?.style ?? props
+            const out = getSplitStyles(props, staticConfig, defaultTheme)
+            const outStyle = {
+              ...out.style,
+              ...out.pseudos,
+            }
             if (shouldPrintDebug) {
               console.log('  -- getStyles (props):\n', logLines(objToStr(props)))
               console.log('  -- getStyles (out.viewProps):\n', logLines(objToStr(out.viewProps)))
               // prettier-ignore
-              console.log('  -- getStyles (out.style):\n', logLines(objToStr(out?.style || {}), true))
+              console.log('  -- getStyles (out.style):\n', logLines(objToStr(outStyle || {}), true))
             }
-            for (const key in next) {
+            for (const key in outStyle) {
               if (staticConfig.validStyles) {
                 if (!staticConfig.validStyles[key] && !pseudos[key]) {
-                  delete next[key]
+                  delete outStyle[key]
                 }
               }
             }
-            return next
+            return outStyle
           }
 
           // used to ensure we pass the entire prop bundle to getStyles
@@ -1278,8 +1290,6 @@ export function createExtractor() {
             console.log(` ❊❊ inline props (${inlinePropCount}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : '')
             console.log('  - attrs (end):\n', logLines(attrs.map(attrStr).join(', ')))
           }
-
-          res.optimized++
 
           onExtractTag({
             attrs,

@@ -231,7 +231,7 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
 };
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
-    propMapper: (key: string, value: any, theme: ThemeObject, props: any, resolveVariablesAs?: ResolveVariableTypes) => undefined | boolean | {
+    propMapper: (key: string, value: any, theme: ThemeObject, props: any, staticConfig: StaticConfig, resolveVariablesAs?: ResolveVariableTypes) => undefined | boolean | {
         [key: string]: any;
     };
     variantsParsed?: {

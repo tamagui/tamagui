@@ -8,6 +8,7 @@
     - test hover/press styles + add to animations docs
   - load theme hook via feature
   - check focusStyle works or remove docs
+  - type variant function arg if we can
   - compiler
     - check it with variants extracting fully
     - props
@@ -19,6 +20,7 @@
     - add fonts section? to guides
       - document $body being default font family
   - bugs
+    - // debug
     - // TODO why
     - // TODO not working?
     - slow types (tried fixing but made them more accurate but worse :/)
@@ -121,7 +123,9 @@
   - <Combobox />
   - <UL /> <LI /> <OL />
 
-- write a "how the compiler works" blog post
+- write a "why a compiler" blog post
+  - keeps you honest
+    - having to implement things twice sucks in a way, in another way its a lot like having two browsers or having tests - i often find bugs in both directions - runtime or compile, and fixing them to align force you to make sure the logic is right.
 - popover add safety checks around using Popover.Content
 - Text selectColor
 - focusWithinStyle

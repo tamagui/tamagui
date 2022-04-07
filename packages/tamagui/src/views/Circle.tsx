@@ -8,8 +8,6 @@ export const Circle = styled(SizableStack, {
   justifyContent: 'center',
   borderRadius: 100_000_000,
   overflow: 'hidden',
-  paddingHorizontal: 0,
-  paddingVertical: 0,
 
   variants: {
     size: {

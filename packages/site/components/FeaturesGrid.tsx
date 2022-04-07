@@ -19,10 +19,9 @@ export function FeaturesGrid() {
       >
         <CocentricCircles />
       </YStack>
-      <ContainerLarge space="$4">
+      <ContainerLarge space="$6">
         <YStack zi={1} space="$1">
-          <HomeH2>Features</HomeH2>
-          <HomeH3>Everything you need.</HomeH3>
+          <HomeH2>All-in-one</HomeH2>
         </YStack>
 
         <YStack>
@@ -59,7 +58,7 @@ export function FeaturesGrid() {
 
             <YStack space p="$4">
               <H4 ta="center" fontFamily="$body">
-                Avanced dev tools
+                Built-in dev tools
               </H4>
               <Paragraph theme="alt2">
                 A fully-typed API, completely extensible, token-aware properties, debug props and

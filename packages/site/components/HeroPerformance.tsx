@@ -11,10 +11,10 @@ export function HeroPerformance() {
     <ContainerLarge position="relative">
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$1">
-          <HomeH2>A word with our racing team</HomeH2>
+          <HomeH2>Automatic performance</HomeH2>
           <HomeH3 maw={580}>
-            They're proud of the achievement. Tamagui extracts 90% of reachable properties to css,
-            and fully flattens 30% of all views down to just a DOM property.
+            Write natural, typed inline styles as normal React props. Get&nbsp;back clean, fast
+            atomic CSS.
           </HomeH3>
         </YStack>
 

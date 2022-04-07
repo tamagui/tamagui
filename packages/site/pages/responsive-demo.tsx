@@ -88,16 +88,3 @@ export default function ResponsiveDemo() {
 const Overlay = () => {
   return <LinearGradient w={800} h={300} fullscreen colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']} />
 }
-
-// {/* <Image
-//               $sm={{
-//                 // TODO
-//                 // width: 200,
-//                 display: 'none',
-//               }}
-//               y={0}
-//               br="$6"
-//               width={100}
-//               height={200}
-//               src={img1.src}
-//             /> */}

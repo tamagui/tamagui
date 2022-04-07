@@ -67,7 +67,7 @@ export const getSplitStyles = (
     const out =
       isMedia || isPseudo
         ? true
-        : staticConfig.propMapper(keyInit, valInit, theme, props, resolveVariablesAs)
+        : staticConfig.propMapper(keyInit, valInit, theme, props, staticConfig, resolveVariablesAs)
 
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
@@ -215,7 +215,7 @@ const getSubStyle = (
   for (const key in styleIn) {
     // be sure to sync next few lines below to loop above (*1)
     const val = styleIn[key]
-    const out = staticConfig.propMapper(key, val, theme, props, resolveVariablesAs)
+    const out = staticConfig.propMapper(key, val, theme, props, staticConfig, resolveVariablesAs)
     const expanded = out === true || !out ? [[key, val]] : Object.entries(out)
     for (const [skey, sval] of expanded) {
       if (skey in stylePropsTransform) {
