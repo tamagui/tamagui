@@ -23,10 +23,28 @@ export class ThemeManager {
     public name: string | null = null,
     public theme: ThemeObject | null = null,
     public parentManager: ThemeManager | null = null
-  ) {}
+  ) {
+    // find the nearest different parentManager
+    let parent = parentManager
+    let tries = 0
+    while (true) {
+      tries++
+      if (tries > 10) {
+        throw new Error(`Nested 10 of the same theme in a row, likely error`)
+      }
+      if (!parent) break
+      if (parent.name === name) {
+        // go up if same
+        parent = parent.parentManager
+      } else {
+        this.parentManager = parent
+        break
+      }
+    }
+  }
 
   get parentName() {
-    return this.parentManager?.name ?? null
+    return this.parentManager?.name || null
   }
 
   get fullName(): string {
@@ -47,10 +65,15 @@ export class ThemeManager {
         return theme[key]
       }
       manager = this.parentManager
+      console.log('go to parent', this.name, manager?.name)
       if (!manager) {
         return
       }
+      if (manager.theme === theme) {
+        return
+      }
       theme = manager.theme
+      console.log('getting parent')
     }
   }
 

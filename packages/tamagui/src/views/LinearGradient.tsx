@@ -20,9 +20,8 @@ export const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAt
       React.forwardRef((props: any, ref) => {
         const { start, end, colors: colorsProp, locations, ...stackProps } = props
         const colors = useLinearGradientColors(colorsProp)
-        console.log('colors', colors)
         return (
-          <YStack ref={ref} {...props}>
+          <YStack ref={ref} {...props} position="relative">
             <LinearGradientNative
               start={start}
               end={end}
