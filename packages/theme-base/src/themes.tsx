@@ -83,6 +83,7 @@ const createTheme: ThemeCreator = (
   const darkColors = isLight ? colors : backgrounds
   const lighterDir = isLight ? -1 : 1
   const darkerDir = -lighterDir
+  const strongerDir = isLight ? darkerDir : lighterDir
   const get = (arr: any[], index: number, name = 'background') => {
     return arr[Math.max(0, Math.min(index + (offsets[name][str] || 0), arr.length - 1))]
   }
@@ -91,6 +92,7 @@ const createTheme: ThemeCreator = (
 
   return {
     background: get(backgrounds, str),
+    backgroundStronger: get(backgrounds, str + strongerDir),
     backgroundSoft: get(backgrounds, str + 3),
     backgroundHover: get(backgrounds, str + lighterDir),
     backgroundPress: get(backgrounds, str + darkerDir * 1),

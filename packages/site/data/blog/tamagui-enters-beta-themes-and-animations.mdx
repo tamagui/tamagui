@@ -1,6 +1,6 @@
 ---
 title: Tamagui enters beta
-publishedAt: '2022-03-23'
+publishedAt: '2022-04-23'
 description: Introducting a new theme system, animations, and much more.
 by: nate
 ---
@@ -24,7 +24,7 @@ by: nate
   </UL>
 </IntroParagraph>
 
-Since the first alpha it's been six months, several hundred of bugfixes, three demo apps, several huge new features, a totally refreshed site, and a benchmark suite.
+Since the first alpha it's been six months, several hundred of bugfixes, three demo apps, and several huge new features. Plus, a totally [refreshed site](/), and a [benchmark suite](/docs/intro/benchmarks).
 
 Lets take a look at the changes in the beta:
 
@@ -40,7 +40,7 @@ You can even clone + deploy it instantly with Vercel and Github:
 
 <XStack my="$4" jc="center">
   <a
-    href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fimg%2Fog.png"
+    href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next-expo-solito&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fblog%2Fintroducing-tamagui%2Fhero.png"
     target="_blank"
     alt="Deploy with Vercel"
   >
@@ -79,9 +79,9 @@ We've also fixed and improved a lot of how the `@tamagui/feather-icons`, the `Bu
 
 ### Why it matters
 
-I'm really happy with how this landed. We could have focused on more components, but in working on Tooltip/Popover/Drawer, it became clear how critical is was to get the fundamentals right first. Animations and themes both have a big influence on everything above them.
+I'm really happy with how this landed. The focus could have been on components, but while working on Tooltip/Popover/Drawer, it became clear how important is is to get the fundamentals right first. **Animations and themes both have an oversized influence on everything above them**.
 
-In general, UI kits are hard because they are like balancing hundreds of stones - each layer has a huge influence on the next, and allowing for all customization you want while still maintaining performance and nice interfaces is hard. The new themes (alongside the new Animations) really lay a great foundation.
+In general, UI kits are hard because they are like balancing stones; each layer has a huge influence on the next. The interfaces are especially hard, and once they're locked in they're harder to change.
 
 <XStack mt="$4" mb="$6" height={260} w="80%" maxWidth={500} px="$5" als="center">
   <Image
@@ -92,6 +92,8 @@ In general, UI kits are hard because they are like balancing hundreds of stones 
 </XStack>
 
 > How it feels building a UI kit
+
+This release lays much better foundational stones in themes and animations.
 
 [Read the docs for much more on themes](/docs/intro/themes).
 
@@ -154,7 +156,7 @@ Use the themes from the Tamagui site itself without any setup at all, simply ins
 
 - 🐛 Hundreds of bug-fixes.
 - ✨ Six new pages added to docs, and every docs page has been improved.
-- Smarter styled() function - now automatically detects Text/View components and properly handles their styling/types. It also detects Inputs and a wider range of react-native components for automatic styling.
+- ✨ Smarter styled() function - now automatically detects Text/View components and properly handles their styling/types. It also detects Inputs and a wider range of react-native components for automatic styling.
 - ✨ `@tamagui/shorthands` - use our default shorthands
 
 ## Acknowledgements
@@ -163,6 +165,6 @@ This release once again is inspired by or forks code from a variety of other lib
 
 I'd like to thank:
 
-- Fenando Rojo and [Moti]() for the elegant reanimated animation driver that served as the starting point of `@tamagui/animations-reanimated`.
-- \_ and [Framer Motion](https://github.com/framer/motion) for the base of AnimatePresence in `@tamagui/animate-presence`.
-- Tailwind for the inspiration of using a nice resizable browser to demo responsive design.
+- [Fenando Rojo](https://twitter.com/fernandotherojo) and [Moti](https://moti.fyi) for the elegant reanimated animation driver that served as the starting point of `@tamagui/animations-reanimated`.
+- [Matt Perry](https://twitter.com/mattgperry) and [Framer Motion](https://github.com/framer/motion) for the base of AnimatePresence in `@tamagui/animate-presence`.
+- [Tailwind](https://tailwindcss.com) for the inspiration of using a nice resizable browser to demo responsive design.

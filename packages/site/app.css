@@ -119,7 +119,7 @@ span._display-1adg3ll > span._display-xoduu5 {
   background: linear-gradient(
     330deg,
     var(--background) 10%,
-    var(--backgroundHover) 50%,
+    var(--backgroundStronger) 50%,
     var(--background) 90%
   );
 }
@@ -128,7 +128,7 @@ span._display-1adg3ll > span._display-xoduu5 {
   background: linear-gradient(
     90deg,
     var(--background) 10%,
-    var(--backgroundHover) 50%,
+    var(--backgroundStronger) 50%,
     var(--background) 90%
   );
 }
