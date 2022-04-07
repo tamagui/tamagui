@@ -1,4 +1,4 @@
-// //! debug
+// debug
 
 // import React from 'react'
 // import { H3, H4, Paragraph, Text, YStack, useMedia } from 'tamagui'
@@ -121,16 +121,7 @@ const HeroTop = memo(() => {
 
         <XStack ai="center" jc="center" space="$2">
           <NextLink href="/docs/intro/introduction" passHref>
-            <Button
-              // TODO check why hoverStyle not overriding
-              // hoverStyle={{
-              //   backgroundColor: 'red',
-              // }}
-              borderRadius={1000}
-              iconAfter={ArrowRight}
-              tag="a"
-              fontWeight="800"
-            >
+            <Button borderRadius={1000} iconAfter={ArrowRight} tag="a" fontWeight="800">
               Documentation
             </Button>
           </NextLink>

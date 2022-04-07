@@ -58,12 +58,15 @@ export function concatClassName(_cn: any) {
       // MEDIA_SEP
       const isMediaQuery = nextChar === '_'
       // PSEUDO_SEP
-      const isPsuedoQuery = nextChar === '-'
-      const styleKey = name.slice(1, splitIndex)
-      const mediaKey =
-        isMediaQuery || isPsuedoQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
+      // commenting out three things to make pseudos override properly
+      // (leave in for a bit to see if other bugs pop up later):
+      // 1. const isPsuedoQuery = nextChar === '0'
+      const styleKey = name.slice(1, name.lastIndexOf('-'))
+      // 2. isMediaQuery || isPsuedoQuery
+      const mediaKey = isMediaQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
       const uid = mediaKey ? styleKey + mediaKey : styleKey
-      if (!isMediaQuery && !isPsuedoQuery) {
+      // 3. && !isPsuedoQuery
+      if (!isMediaQuery) {
         if (usedPrefixes.indexOf(uid) > -1) {
           // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
           continue

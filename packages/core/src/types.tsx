@@ -402,8 +402,8 @@ export type StaticComponent<
 > = React.ForwardRefExoticComponent<React.PropsWithoutRef<Props> & React.RefAttributes<Ref>> &
   StaticComponentObject<StaticConfParsed, VariantProps>
 
-type StaticComponentObject<StaticConfig extends StaticConfigParsed, VariantProps extends any> = {
-  staticConfig: StaticConfig
+type StaticComponentObject<Conf extends StaticConfigParsed, VariantProps extends any> = {
+  staticConfig: Conf
   variantProps?: VariantProps
   /*
    * Only needed for more complex components

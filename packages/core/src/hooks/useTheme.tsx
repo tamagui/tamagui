@@ -174,12 +174,12 @@ export const useChangeThemeEffect = (
     useLayoutEffect(() => {
       if (!themeManager) return
       if (next?.name) {
-        themeManager.update({ ...next, parentManager })
+        themeManager.update(next)
       }
       return parentManager.onChangeTheme(() => {
         const next = parentManager.getNextTheme({ name, componentName, themes }, debug)
         if (!next) return
-        if (themeManager.update({ ...next, parentManager })) {
+        if (themeManager.update(next)) {
           forceUpdate()
         }
       })

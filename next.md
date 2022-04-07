@@ -32,7 +32,6 @@
     - fix image w/h shorthand not translating to width/height runtime
     - Image SSR / site weirdness on some
     - ScrollView isnt SSR compat
-    - // TODO check why hoverStyle not overriding
     - // TODO handle pseudos
     - // TODO i think media + pseudo needs handling here
 
@@ -43,6 +42,7 @@
   - slow types
   - fix memory leak causing OOM eventually on site
   - test component theme + alt theme (plus with compiled)
+  - docs: extractable(), deoptProps
 
 - beta.3:
   - styleq / react-native-web 18 exploration

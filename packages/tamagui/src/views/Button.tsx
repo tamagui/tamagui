@@ -39,6 +39,7 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     // adjust internal space relative to size
     // default -3
     scaleSpace?: number
+
     // pass text properties:
     color?: SizableTextProps['color']
     fontWeight?: SizableTextProps['fontWeight']
@@ -93,107 +94,114 @@ const ButtonFrame = styled(SizableStack, {
   },
 })
 
-export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>> =
-  ButtonFrame.extractable(
-    themeable(
-      forwardRef((props: any, ref) => {
-        // careful not to desctructure and re-order props, order is important
-        const {
-          children,
-          icon,
-          iconAfter,
-          noTextWrap,
-          theme: themeName,
-          space,
-          spaceFlex,
-          scaleIcon = 1,
-          scaleSpace = -2,
-          color: colorProp,
-          fontWeight,
-          letterSpacing,
-          textAlign,
-          ...rest
-        } = props as ButtonProps
-        const isInsideButton = useContext(ButtonInsideButtonContext)
-        const theme = useTheme()
-        const size = props.size ?? '$4'
+const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
+  // careful not to desctructure and re-order props, order is important
+  const {
+    children,
+    icon,
+    iconAfter,
+    noTextWrap,
+    theme: themeName,
+    space,
+    spaceFlex,
+    scaleIcon = 1,
+    scaleSpace = -2,
+    color: colorProp,
+    fontWeight,
+    letterSpacing,
+    textAlign,
+    ...rest
+  } = props as ButtonProps
+  const isInsideButton = useContext(ButtonInsideButtonContext)
+  const theme = useTheme()
+  const size = props.size ?? '$4'
 
-        // get color from prop or theme
-        let color: any
-        // @ts-expect-error
-        if (theme && colorProp && colorProp in theme) {
-          // @ts-expect-error
-          color = theme[colorProp]
-        } else if (colorProp) {
-          color = colorProp
-        } else {
-          color = theme?.color
+  // get color from prop or theme
+  let color: any
+  // @ts-expect-error
+  if (theme && colorProp && colorProp in theme) {
+    // @ts-expect-error
+    color = theme[colorProp]
+  } else if (colorProp) {
+    color = colorProp
+  } else {
+    color = theme?.color
+  }
+  color = color?.toString()
+
+  const addTheme = (el: any) => {
+    if (isValidElement(el)) {
+      return el
+    }
+    if (el) {
+      const iconSize = getFontSize(size, { relativeSize: scaleIcon })
+      return React.createElement(el, {
+        color,
+        size: iconSize,
+      })
+    }
+    return el
+  }
+  const themedIcon = icon ? addTheme(icon) : null
+  const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
+
+  const contents = noTextWrap
+    ? children
+    : React.Children.map(children, (child) => {
+        const component = typeof child !== 'string' ? (child['type'] as StaticComponent) : null
+        if (component?.staticConfig?.isText) {
+          return child
         }
-        color = color?.toString()
-
-        const addTheme = (el: any) => {
-          if (isValidElement(el)) {
-            return el
-          }
-          if (el) {
-            const iconSize = getFontSize(size, { relativeSize: scaleIcon })
-            return React.createElement(el, {
-              color,
-              size: iconSize,
-            })
-          }
-          return el
-        }
-        const themedIcon = icon ? addTheme(icon) : null
-        const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
-
-        const contents = noTextWrap
-          ? children
-          : React.Children.map(children, (child) => {
-              const component =
-                typeof child !== 'string' ? (child['type'] as StaticComponent) : null
-              if (component?.staticConfig?.isText) {
-                return child
-              }
-              return (
-                <SizableText
-                  fontWeight={fontWeight}
-                  letterSpacing={letterSpacing}
-                  size={size}
-                  color={color}
-                  textAlign={textAlign}
-                  flexGrow={1}
-                  flexShrink={1}
-                  ellipse
-                >
-                  {children}
-                </SizableText>
-              )
-            })
-
         return (
-          // careful not to desctructure and re-order props, order is important
-          <ButtonInsideButtonContext.Provider value={true}>
-            <ButtonFrame
-              // fixes SSR issue + DOM nesting issue of not allowing button in button
-              {...(isInsideButton && {
-                tag: 'span',
-              })}
-              ref={ref as any}
-              {...rest}
-            >
-              {spacedChildren({
-                space: getSpaceSize(space, scaleSpace),
-                spaceFlex,
-                flexDirection: props.flexDirection,
-                children: [themedIcon, contents, themedIconAfter],
-              })}
-            </ButtonFrame>
-          </ButtonInsideButtonContext.Provider>
+          <SizableText
+            fontWeight={fontWeight}
+            letterSpacing={letterSpacing}
+            size={size}
+            color={color}
+            textAlign={textAlign}
+            flexGrow={1}
+            flexShrink={1}
+            ellipse
+          >
+            {children}
+          </SizableText>
         )
       })
-    )
-  ) as any
+  if (props['debug']) {
+    console.log('>>>>>>', props, rest)
+  }
+  return (
+    // careful not to desctructure and re-order props, order is important
+    <ButtonInsideButtonContext.Provider value={true}>
+      <ButtonFrame
+        // fixes SSR issue + DOM nesting issue of not allowing button in button
+        {...(isInsideButton && {
+          tag: 'span',
+        })}
+        ref={ref as any}
+        {...rest}
+      >
+        {spacedChildren({
+          space: getSpaceSize(space, scaleSpace),
+          spaceFlex,
+          flexDirection: props.flexDirection,
+          children: [themedIcon, contents, themedIconAfter],
+        })}
+      </ButtonFrame>
+    </ButtonInsideButtonContext.Provider>
+  )
+})
+
+export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>> =
+  ButtonFrame.extractable(themeable(ButtonComponent as any) as any, {
+    deoptProps: new Set([
+      // text props go here (can't really optimize them, but we never fully extract button anyway)
+      'color',
+      'fontWeight',
+      'letterSpacing',
+      'textAlign',
+    ]),
+  })
 
 export const getSpaceSize = (size: any, sizeUpOrDownBy = 0) => {
   const sizes = getTokens().size

@@ -275,9 +275,13 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
       // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
       style,
-      isHovering ? pseudos!.hoverStyle || null : null,
-      isPressing ? pseudos!.pressStyle || null : null,
-      isFocusing ? pseudos!.focusStyle || null : null,
+      // nesting these because we need to be sure concatClassNames overrides the right className
+      // prettier-ignore
+      isHovering ? (isWeb ? { hoverStyle: pseudos!.hoverStyle } as any : pseudos!.hoverStyle) || null : null,
+      // prettier-ignore
+      isPressing ? (isWeb ? { pressStyle: pseudos!.pressStyle } as any : pseudos!.pressStyle) || null : null,
+      // prettier-ignore
+      isFocusing ? (isWeb ? { focusStyle: pseudos!.focusStyle } as any : pseudos!.focusStyle) || null : null,
     ]
 
     if (isAnimated) {
@@ -312,7 +316,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       if (process.env.NODE_ENV === 'development') {
         if (props['debug']) {
           // prettier-ignore
-          console.log('  » styles', { pseudos, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
+          console.log('  » styles', { pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
         }
       }
       viewProps.className = className
@@ -360,9 +364,9 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     }
 
     const attachPress = !!((pseudos && pseudos.pressStyle) || onPress || onPressOut || onPressIn)
+    const isHoverable = isWeb && !isTouchDevice
     const attachHover =
-      isWeb &&
-      !isTouchDevice &&
+      isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
 
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
@@ -399,43 +403,42 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
               onPressOut?.(e)
             },
           }),
-          ...(isWeb &&
-            !isTouchDevice && {
-              onMouseEnter: true
-                ? (e) => {
-                    let next: Partial<typeof state> = {}
-                    if (attachHover) {
-                      next.hover = true
-                    }
-                    if (state.pressIn) {
-                      next.press = true
-                    }
-                    if (Object.keys(next).length) {
-                      setStateShallow(next)
-                    }
-                    onHoverIn?.(e)
-                    onMouseEnter?.(e)
+          ...(isHoverable && {
+            onMouseEnter: true
+              ? (e) => {
+                  let next: Partial<typeof state> = {}
+                  if (attachHover) {
+                    next.hover = true
                   }
-                : undefined,
-              onMouseLeave: true
-                ? (e) => {
-                    let next: Partial<typeof state> = {}
-                    mouseUps.add(unPress)
-                    if (attachHover) {
-                      next.hover = false
-                    }
-                    if (state.pressIn) {
-                      next.press = false
-                      next.pressIn = false
-                    }
-                    if (Object.keys(next).length) {
-                      setStateShallow(next)
-                    }
-                    onHoverOut?.(e)
-                    onMouseLeave?.(e)
+                  if (state.pressIn) {
+                    next.press = true
                   }
-                : undefined,
-            }),
+                  if (Object.keys(next).length) {
+                    setStateShallow(next)
+                  }
+                  onHoverIn?.(e)
+                  onMouseEnter?.(e)
+                }
+              : undefined,
+            onMouseLeave: true
+              ? (e) => {
+                  let next: Partial<typeof state> = {}
+                  mouseUps.add(unPress)
+                  if (attachHover) {
+                    next.hover = false
+                  }
+                  if (state.pressIn) {
+                    next.press = false
+                    next.pressIn = false
+                  }
+                  if (Object.keys(next).length) {
+                    setStateShallow(next)
+                  }
+                  onHoverOut?.(e)
+                  onMouseLeave?.(e)
+                }
+              : undefined,
+          }),
           onMouseDown: attachPress
             ? (e) => {
                 setStateShallow({
@@ -514,6 +517,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       content = createElement(ViewComponent, viewProps, childEls)
     }
 
+    // this can be done with CSS entirely right?
     // const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
     // if (shouldWrapTextAncestor) {
     //   // from react-native-web
@@ -523,13 +527,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         viewProps['debug'] = true
-        console.log('  » props in:', props, 'classnames', props.className?.split(' '))
-        console.log(
-          '  » props out:',
-          { ...viewProps },
-          'classnames',
-          viewProps.className?.split(' ')
-        )
+        // prettier-ignore
+        console.log('  » props in:', { ...props }, 'classnames', props.className?.split(' '))
+        // prettier-ignore
+        console.log('  » props out:', { ...viewProps }, 'classnames', viewProps.className?.split(' '))
         // prettier-ignore
         console.log('  » etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
