@@ -38,7 +38,6 @@ export {
   TamaguiInternalConfig,
   TamaguiProviderProps,
   TextProps,
-  ThemeableHOC,
   ThemeValueFallback,
   ThemeKeys,
   ThemeName,

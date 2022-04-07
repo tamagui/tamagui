@@ -1,4 +1,5 @@
 - beta:
+  - fix on native + simple native demo (maybe with starters repo)
   - finish blog post
   - compiler 100% on site
   - create-tamagui-app
@@ -7,8 +8,6 @@
     - css
     - test hover/press styles + add to animations docs
   - load theme hook via feature
-  - fix lineargradient
-  - shorthands should be swapped key/val to ensure one shorthand per prop key
   - check focusStyle works or remove docs
   - styled() fix types with react native web
     - fix not needing `isText`, `isInput`, `isReactNativeWeb`
@@ -20,20 +19,12 @@
       - onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
   - docs
     - animations
-    - classnames is_Pagraph , font_body
-    - global Tamagui in dev mode (Dev Tools)
-      - Tamagui.classes['_borderBottomColor-1go1dts'] => style
-    - fullscreen elevation onHoverIn onHoverOut onPress
-    - excludeReactNativeWebExports recommend excluding Animated etc
-    - injectCSS, mediaQueryDefaultActive, cssStyleSeparator
-    - web-only strategy react-native v0.0.0 + @types/react-native
-    - add fonts section?
+    - add fonts section? to guides
       - document $body being default font family
-    - theme-base
-      - adding /inter.css /fira-code.css
-      - adding font-feature-settings
-      - customizing things
   - bugs
+    - fix lineargradient
+    - fix Image
+    - // TODO why
     - // TODO not working?
     - slow types (tried fixing but made them more accurate but worse :/)
     - get sizableTextSizeVarianty types working and ...fontSize
@@ -47,7 +38,6 @@
     - // TODO check why hoverStyle not overriding
     - // TODO handle pseudos
     - // TODO i think media + pseudo needs handling here
-    - o="hidden" works when it should throw type warning (its opacity)
 
 - beta.2: 
   - space => gap
@@ -72,6 +62,8 @@
   - <LinearGradient />
     - fix using theme values
     - make extractable to css
+  - bugs:
+    - // TODO adding fontWeight here doesn't override SizableText variant
 
 - v1
   - github sponsor
@@ -84,13 +76,13 @@
   - blog post
 
 - v2
+  - Text numberOfLines / context fix
   - `space` should work with media queries
   - createTamagui({ defaultProps: { Button: {} } }) for any component
   - document/release <ThemeReverse />
   - <Tabs />
   - <Label />
-  - <List /> (works with drawer + draggable + selectable)
-  - <List.Item />
+  - <ListItem />
   - <Switch />
     - to start no outputting to native but use radix style
     - <Switch><Switch.Toogle /></Switch>
@@ -120,7 +112,7 @@
 
 - v5
   - auto skeleton components
-  - type variants [number] / [string] (test Text numberOfLines)
+  - <List /> (works with drawer + draggable + selectable)
   - <Menu />
   - <MenuDrawer />
 
@@ -131,9 +123,16 @@
 - v7
   - <Group />
   - <Combobox />
+  - <UL /> <LI /> <OL />
 
 - write a "how the compiler works" blog post
 - popover add safety checks around using Popover.Content
 - Text selectColor
 - focusWithinStyle
 - accessibility upgrades (focus rings etc)
+- JSDocs
+- VSCode integrations:
+  - move from functional component to styled() and back
+  - built in jsx => css converter
+  - "move to my design system" (finds tamagui package.json and moves there)
+- much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)

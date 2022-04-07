@@ -64,7 +64,7 @@
     "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
-    "esbuild": "^0.14.31",
+    "esbuild": "^0.13.12",
     "esbuild-jest": "^0.5.0",
     "import-sort-style-module": "^6.0.0",
     "lerna": "^4.0.0",

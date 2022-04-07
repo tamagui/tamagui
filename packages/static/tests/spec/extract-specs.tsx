@@ -314,17 +314,3 @@ export function Test16(props: TestProps) {
     />
   )
 }
-
-// // TODO can't do this because it renders null on native
-// // need to patch expo-linear-gradient for now
-// export function TestLinearGradient() {
-//   return (
-//     <>
-//       <YStack backgroundColor="red" width={10} height={10} />
-//       <LinearGradient
-//         style={[StyleSheet.absoluteFill]}
-//         colors={['red', 'blue']}
-//       />
-//     </>
-//   )
-// }
