@@ -9,6 +9,7 @@ export default function LinearGradientDemo() {
       height={100}
       colors={['$red10', '$yellow10']}
       start={[0, 1]}
+      br="$4"
       end={[0, 0]}
     />
   )

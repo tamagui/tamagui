@@ -22,8 +22,6 @@
     - add fonts section? to guides
       - document $body being default font family
   - bugs
-    - fix lineargradient
-    - fix Image
     - // TODO why
     - // TODO not working?
     - slow types (tried fixing but made them more accurate but worse :/)
@@ -40,6 +38,7 @@
     - // TODO i think media + pseudo needs handling here
 
 - beta.2: 
+  - <BlurView />
   - space => gap
   - check theme change slow
   - slow types
@@ -60,7 +59,7 @@
   - bring back `onLayout` via features hooks
     - press events?
   - <LinearGradient />
-    - fix using theme values
+    - fix ssr
     - make extractable to css
   - bugs:
     - // TODO adding fontWeight here doesn't override SizableText variant

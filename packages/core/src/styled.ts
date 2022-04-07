@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Image, ImageProps, TextInput, TextInputProps } from 'react-native'
 
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
@@ -7,20 +8,27 @@ import {
   MediaProps,
   PseudoProps,
   PsuedoPropKeys,
+  StackProps,
   StaticComponent,
   StaticConfig,
   TamaguiConfig,
+  TextProps,
   ThemeValueByCategory,
   Themes,
   Tokens,
   WithShorthands,
 } from './types'
 
+// this is necessary to match the react-native type defs
+type RNComponent = new (...args: any[]) => any
+
 type EmptyVariants = { __EMPTY_VARIANT__: string }
 
 export function styled<
   Props,
-  ParentComponent extends StaticComponent | React.Component<any> = React.Component<Partial<Props>>,
+  ParentComponent extends StaticComponent | React.Component<any> | RNComponent = React.Component<
+    Partial<Props>
+  >,
   Variants extends Object = {}
 >(
   Component: ParentComponent,
@@ -37,7 +45,7 @@ export function styled<
     }
     return {}
   })()
-  const config = extendStaticConfig(Component, staticConfigProps)
+  const config = extendStaticConfig(Component as any, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
 
   type MyVariants = Variants extends EmptyVariants ? {} : GetVariantProps<Variants>
@@ -65,9 +73,15 @@ export function styled<
 export type GetProps<A> = A extends StaticComponent<infer Props>
   ? Props
   : A extends React.Component<infer Props>
-  ? Props
-  : A extends (props: infer Props) => any
-  ? Props
+  ? Props & StackProps
+  : A extends new (props: infer Props) => any
+  ? Props & StackProps
+  : A extends typeof TextInput
+  ? Partial<TextInputProps> & TextProps
+  : A extends typeof Image
+  ? Partial<ImageProps> & StackProps
+  : A extends typeof Image
+  ? Partial<ImageProps> & StackProps
   : {}
 
 export type VariantSpreadExtras<Props> = {
