@@ -37,6 +37,23 @@ export class ThemeManager {
     // return parts.join('_')
   }
 
+  // gets value going up to parents
+  getValue(key: string) {
+    let theme = this.theme
+    let manager = this as ThemeManager | null
+    while (true) {
+      if (!theme) return
+      if (key in theme) {
+        return theme[key]
+      }
+      manager = this.parentManager
+      if (!manager) {
+        return
+      }
+      theme = manager.theme
+    }
+  }
+
   update({ name, theme, className, parentManager = null }: SetActiveThemeProps = {}) {
     const sameParentManager = parentManager === this.parentManager
     // className compare on web, avoids light/dark re-renders

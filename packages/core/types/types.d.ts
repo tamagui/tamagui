@@ -226,7 +226,6 @@ declare type StaticComponentObject<StaticConfig extends StaticConfigParsed, Vari
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     injectCSS?: boolean;
-    initialWindowMetrics?: any;
     fallback?: any;
     children?: any;
 };

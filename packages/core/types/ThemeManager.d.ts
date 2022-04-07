@@ -19,6 +19,7 @@ export declare class ThemeManager {
     constructor(name?: string | null, theme?: ThemeObject | null, parentManager?: ThemeManager | null);
     get parentName(): string | null;
     get fullName(): string;
+    getValue(key: string): import("./types").VariableVal | undefined;
     update({ name, theme, className, parentManager }?: SetActiveThemeProps): boolean;
     getNextTheme(opts?: {
         themes?: Themes;

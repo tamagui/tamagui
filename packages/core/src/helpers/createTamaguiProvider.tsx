@@ -13,7 +13,6 @@ export function createTamaguiProvider({
 }) {
   return function TamaguiProvider({
     injectCSS,
-    initialWindowMetrics,
     fallback,
     children,
     ...themePropsProvider
