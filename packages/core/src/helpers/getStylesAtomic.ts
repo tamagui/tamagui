@@ -62,7 +62,7 @@ function getAtomicStyle(
     const val = all[key]
     const hash = val.identifier.slice(`${val.identifier}`.lastIndexOf('-') + 1)
     // pseudos have a `--` to be easier to find with concatClassNames
-    const psuedoPrefix = pseudo ? `-${pseudo.name}-` : ''
+    const psuedoPrefix = pseudo ? `0${pseudo.name}-` : ''
     const identifier = `_${val.property}-${psuedoPrefix}${hash}`
     const className = `.${identifier}`
     const rules = val.rules.map((rule) => {

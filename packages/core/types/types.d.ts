@@ -219,8 +219,8 @@ export declare type TextProps = ReactTextProps & RNWTextProps & TextStyleProps &
     cursor?: CSS.Properties['cursor'];
 };
 export declare type StaticComponent<Props = any, VariantProps = any, Ref = any, StaticConfParsed extends StaticConfigParsed = StaticConfigParsed> = React.ForwardRefExoticComponent<React.PropsWithoutRef<Props> & React.RefAttributes<Ref>> & StaticComponentObject<StaticConfParsed, VariantProps>;
-declare type StaticComponentObject<StaticConfig extends StaticConfigParsed, VariantProps extends any> = {
-    staticConfig: StaticConfig;
+declare type StaticComponentObject<Conf extends StaticConfigParsed, VariantProps extends any> = {
+    staticConfig: Conf;
     variantProps?: VariantProps;
     extractable: <X>(a: X, opts?: StaticConfig) => X;
 };

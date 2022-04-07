@@ -77,18 +77,18 @@ export class ThemeManager {
     }
   }
 
-  update({ name, theme, className, parentManager = null }: SetActiveThemeProps = {}) {
-    const sameParentManager = parentManager === this.parentManager
+  update({ name, theme, className }: SetActiveThemeProps = {}) {
     // className compare on web, avoids light/dark re-renders
-    const sameNameOrClassName = this.className ? className === this.className : name === this.name
-    if (sameNameOrClassName && sameParentManager) {
+    const sameNameOrClassName = this.className
+      ? // == instead of === (sometimes its undefined/null)
+        className == this.className
+      : name === this.name
+    if (sameNameOrClassName) {
       return false
     }
-    console.log('changing', this.name, name, this.className, className, sameParentManager)
     this.className = className || null
     this.name = name || null
     this.theme = theme
-    this.parentManager = parentManager
     this.notifyListeners()
     return true
   }
