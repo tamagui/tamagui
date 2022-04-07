@@ -94,32 +94,27 @@ export const useTheme = (
         if (key === 'className') {
           return className
         }
-        let activeTheme = themes[name]
-        if (!activeTheme) {
-          if (process.env.NODE_ENV !== 'test') {
-            // prettier-ignore
-            console.error('No theme by name', name, 'keeping current theme')
-          }
-          activeTheme = theme
+        if (!themeManager) {
+          console.error('No themeManager')
+          return
         }
-
         if (process.env.NODE_ENV === 'development') {
           if (props?.['debug']) {
             // @ts-ignore
             console.log('  » accessing theme val', key, activeTheme[key], { ...state.current })
           }
         }
-
         if (typeof key === 'string') {
           // auto convert variables to plain
           if (key[0] === '$') {
             key = key.slice(1)
           }
-          if (key in activeTheme) {
+          const val = themeManager.getValue(key)
+          if (val) {
             if (state.current.isRendering) {
               state.current.keys.add(key)
             }
-            return activeTheme[key]
+            return val
           }
           if (process.env.NODE_ENV === 'development') {
             console.warn(`No theme value "${String(key)}" in ${name}`)

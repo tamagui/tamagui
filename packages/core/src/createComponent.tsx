@@ -448,7 +448,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                 onMouseDown?.(e)
               }
             : null,
-          onPress: attachPress
+          // TODO why
+          [isWeb ? 'onClick' : 'onPress']: attachPress
             ? (e) => {
                 // this caused issue with next.js passing href
                 // e.preventDefault()
@@ -460,8 +461,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         }
       : null
 
-    if (props['debug']) console.log('!!!!!!!!!!!!!!!!!!!', events)
-
     if (events) {
       if (typeof ViewComponent !== 'string') {
         // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
@@ -470,9 +469,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           hitSlop,
           onPressIn: events.onMouseDown,
           onPressOut: events.onPressOut,
-          onPress: events.onPress,
+          onPress: events[isWeb ? 'onClick' : 'onPress'],
         })
-        console.log(viewProps, 'pressProps', pressProps)
         Object.assign(viewProps, pressProps)
       } else {
         Object.assign(viewProps, events)

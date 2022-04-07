@@ -3,7 +3,7 @@ import { getStyleRules } from '@tamagui/helpers'
 import { configListeners, getHasConfigured, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
-import { Variable, createVariable, isVariable } from './createVariable'
+import { Variable, createCSSVariable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { configureMedia } from './hooks/useMedia'
 import {
@@ -32,10 +32,20 @@ export type CreateTamaguiProps =
       }
     }
 
-    // TODO document
-    // for ssr/native, will default to active
+    // for the first render, determines which media queries are true
+    // useful for SSR
     mediaQueryDefaultActive?: MediaQueryKey[]
+
+    // what's between each CSS style rule, set to "\n" to be easier to read
+    // defaults: "\n" when NODE_ENV=development, "" otherwise
     cssStyleSeparator?: string
+
+    // (Advanced)
+    // on the web, tamagui treats `dark` and `light` themes as special and
+    // generates extra CSS to avoid having to re-render the entire page.
+    // this CSS relies on specificity hacks that multiply by your sub-themes.
+    // this sets the maxiumum number of nested dark/light themes you can do
+    // defaults to 3 for a balance, but can be higher if you nest them deeply.
     maxDarkLightNesting?: number
   }
 
@@ -72,7 +82,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       const addVar = (v: Variable) => {
         varsByValue[v.val] = v
-        const rule = `--${v.name}:${typeof v.val === 'number' ? `${v.val}px` : v.val}`
+        const rule = `--${createCSSVariable(v.name, false)}:${
+          typeof v.val === 'number' ? `${v.val}px` : v.val
+        }`
         tokenRules.add(rule)
       }
 
@@ -115,7 +127,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           const val = theme[themeKey]
           // TODO sanity check is necessary
           const varName = val instanceof Variable ? val.name : varsByValue[val]?.name
-          vars += `--${themeKey}:${varName ? `var(--${varName})` : `${val}`};`
+          vars += `--${themeKey}:${varName ? createCSSVariable(varName) : `${val}`};`
         }
 
         // make sure properly names theme variables

@@ -16,7 +16,7 @@ export class Variable {
     // converting to px breaks rn
     this.val = isVariable(val) ? val.val : val
     this.name = name
-    this.variable = isWeb ? `var(--${name})` : this.val
+    this.variable = isWeb ? createCSSVariable(name) : this.val
   }
 
   toString() {
@@ -37,4 +37,10 @@ export function getVariableValue(v: Variable | any) {
     return v.val
   }
   return v
+}
+
+// bugfix { space: { 0.5: 10 } } was generating var(--space-0.5) (invalid CSS):
+export const createCSSVariable = (val: string, includeVar = true) => {
+  const name = val.replace(/[^a-z0-9\_\-]+/i, '_')
+  return includeVar ? `var(--${name})` : name
 }

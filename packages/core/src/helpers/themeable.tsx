@@ -9,38 +9,32 @@ export type ThemeableProps = {
   themeInverse?: boolean
 }
 
-export const themeable: ThemeableHOC = function graphql<
-  R extends ReactElement<any, any> | null,
-  P extends ThemeableProps = {}
->(component: (props: P) => R) {
+export function themeable<Component extends (props: any) => any>(component: Component) {
   const withThemeComponent = forwardRef(function WithTheme(
-    { themeInverse, theme, ...rest }: P,
+    { themeInverse, theme, ...rest }: any,
     ref
   ) {
-    const element = React.createElement(component, { ...rest, ref } as any) as R
+    const element = React.createElement(component, { ...rest, ref } as any)
     if (themeInverse) {
-      return (<ThemeInverse>{element}</ThemeInverse>) as R
+      return <ThemeInverse>{element}</ThemeInverse>
     }
     if (theme) {
-      return (<Theme name={(theme as any) || null}>{element}</Theme>) as R
+      return <Theme name={(theme as any) || null}>{element}</Theme>
     }
     return element
   })
 
-  const withTheme: {
-    (props: P): R
-    displayName: string
-  } = withThemeComponent as any
-
+  const withTheme: any = withThemeComponent
   withTheme.displayName = `Themed(${
     (component as any)?.displayName || (component as any)?.name || 'Anonymous'
   })`
 
-  return withTheme
-}
-
-export interface ThemeableHOC {
-  <R extends ReactElement<any, any> | null, P extends ThemeableProps = {}>(
-    component: (props: P) => R
-  ): (props: P) => R
+  return withTheme as Component extends (props: infer P) => infer R
+    ? (
+        props: Omit<P, 'theme' | 'themeInverse'> & {
+          theme?: ThemeName | null
+          themeInverse?: boolean
+        }
+      ) => R
+    : unknown
 }
