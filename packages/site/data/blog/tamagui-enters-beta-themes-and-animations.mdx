@@ -12,28 +12,51 @@ by: nate
   height={200}
 />
 
+<IntroParagraph>Tamagui enters beta 🎉!</IntroParagraph>
+
+<IntroParagraph>What is Tamagui? Well, it's **three things**:</IntroParagraph>
+
 <IntroParagraph>
-  Tamagui is **three things**. It's a style system for React Native and React Native Web. It's an
-  optimizing compiler that works alognside that, unlocking huge DX and performance benefits. And
-  finally, it's a suite of components built on top, designed to work well on both the web and native
-  apps.
+  <UL>
+    <LI>A style library for design systems on React Native + Web.</LI>
+    <LI>An optimizing compiler on top, for huge performance and DX gains.</LI>
+    <LI>A suite of components built on both.</LI>
+  </UL>
 </IntroParagraph>
 
-And we've just released our first beta 🎉. Six months, hundreds of bugs, 3 demo apps, 1 benchmark suite, 2 big new features, and a totally refreshed site.
+Since the first alpha it's been six months, several hundred of bugfixes, three demo apps, several huge new features, a totally refreshed site, and a benchmark suite.
 
-Lets take a look at the biggest changes.
+Lets take a look at the changes in the beta:
 
 ## Start faster
 
-With **create-tamagui-app**, get started fast with Expo, Next.js, and Tamagui:
+Introducing **create-tamagui-app**, to get started much faster with Expo, Next.js, and Tamagui:
 
 ```bash
 npx create-tamagui-app@latest my-app
 ```
 
-## Themes v2
+You can even clone + deploy it instantly with Vercel and Github:
 
-Themes has been redone to add a ton of flexiblity and power. Tamagui now supports unlimited sub-themes, and per-component theming. Further, we've standardized the names of theme props, giving full control to customize any aspect of every component.
+<XStack my="$4" jc="center">
+  <a
+    href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fimg%2Fog.png"
+    target="_blank"
+    alt="Deploy with Vercel"
+  >
+    <img src="https://vercel.com/button" />
+  </a>
+</XStack>
+
+A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo we borrowed from.
+
+## Themes 🎨
+
+Themes have been completely redone and I'm really excited about them, they are a big step forward and I haven't seen any system really give the power and flexibility Tamagui has now.
+
+### Sub-themes
+
+Tamagui already supported sub-themes, with various edge cases. With the rewrite, sub-themes now work much better, and the `theme` prop is available on every component, including ones you create using the `styled` factory function.
 
 <ScrollView horizontal showsHorizontalScrollbars={false}>
   <XStack py="$4">
@@ -46,13 +69,41 @@ Themes has been redone to add a ton of flexiblity and power. Tamagui now support
   </XStack>
 </ScrollView>
 
+### Component themes
+
+Not only that, but you can give any `styled` component a `name` and it ensure that sub-theme applies. Theme props are now normalized to match React Native style properties as well.
+
+### Tons of small improvements
+
 We've also fixed and improved a lot of how the `@tamagui/feather-icons`, the `Button` component, and the theme engine all work together to automatically handle passing values between each other.
 
-[Read the docs for more on how](/docs/intro/themes).
+### Why it matters
+
+I'm really happy with how this landed. We could have focused on more components, but in working on Tooltip/Popover/Drawer, it became clear how critical is was to get the fundamentals right first. Animations and themes both have a big influence on everything above them.
+
+In general, UI kits are hard because they are like balancing hundreds of stones - each layer has a huge influence on the next, and allowing for all customization you want while still maintaining performance and nice interfaces is hard. The new themes (alongside the new Animations) really lay a great foundation.
+
+<XStack mt="$4" mb="$6" height={260} w="80%" maxWidth={500} px="$5" als="center">
+  <Image
+    title="Layout tools image"
+    src="/blog/tamagui-enters-beta-themes-and-animations/balancing-stones.jpg"
+    height={260}
+  />
+</XStack>
+
+> How it feels building a UI kit
+
+[Read the docs for much more on themes](/docs/intro/themes).
 
 ## Animations
 
 Animations are making their way, experimentally, into `@tamagui/core`. They are unstable, but we want to get feedback and use them more in practice.
+
+<OffsetBox size="hero">
+  <XStack py="$4">
+    <ExampleAnimations />
+  </XStack>
+</OffsetBox>
 
 They're implemented as pluggable drivers, starting with two:
 
@@ -60,6 +111,8 @@ They're implemented as pluggable drivers, starting with two:
 - [Reanimated](/docs/core/animations#css)
 
 Which means you can swap entire animation drivers depending on your platform. Want lighter bundles on web, but spring animations on native? Use both packages, and swap them out based on your environment.
+
+[Read the docs on animations](/docs/core/animations) to get started.
 
 ## New Components
 
@@ -75,9 +128,11 @@ Over the last few months we've added:
 - [Square and Circle](/docs/components/shapes)
 - [HTML Elements](/docs/components/html-elements)
 
-These are big, helpful components and we've made sure each works fully with the optimizing compiler and full suite of react-native and Tamagui properties.
+And we're just getting started!
 
-But this is also just the start. There's tons of room to grow and improve. We're looking at using [Floating UI]() to improve the various floating panels. We'll continue to add form components that can share fully consistent styles. And much more.
+There's tons of room to grow and improve. We're looking at using [Floating UI](https://floating-ui.com/) to improve our floating panels, and getting essential form elements in next.
+
+[Join our Discord to voice which ones you'd like to see](https://discord.gg/4qh6tdcVDa).
 
 ## Focus styling
 

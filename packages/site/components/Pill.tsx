@@ -1,6 +1,7 @@
 import { Paragraph, styled } from 'tamagui'
 
 export const Pill = styled(Paragraph, {
+  tag: 'span',
   bc: '$backgroundHover',
   py: '$1',
   px: '$4',

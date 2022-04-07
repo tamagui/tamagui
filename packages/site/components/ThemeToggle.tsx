@@ -18,7 +18,7 @@ export const ThemeToggle = (props: ButtonProps) => {
 
 const SunIcon = memo(() => (
   <svg
-    style={{ marginBottom: -1 }}
+    style={{ transform: 'translateY(2.5px)' }}
     xmlns="http://www.w3.org/2000/svg"
     width="15"
     height="15"

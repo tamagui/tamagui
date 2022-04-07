@@ -1,10 +1,15 @@
 import React from 'react'
-import { LinearGradient, XStack } from 'tamagui'
+import { LinearGradient } from 'tamagui'
 
 export default function LinearGradientDemo() {
   return (
-    <XStack als="center" space width={100} height={100}>
-      <LinearGradient colors={['red', 'yellow']} start={[0, 1]} end={[0, 0]} />
-    </XStack>
+    <LinearGradient
+      als="center"
+      width={100}
+      height={100}
+      colors={['$red10', '$yellow10']}
+      start={[0, 1]}
+      end={[0, 0]}
+    />
   )
 }

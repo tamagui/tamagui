@@ -1,8 +1,8 @@
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
-import React, { forwardRef, useContext, useEffect, useRef, useState } from 'react'
+import { forwardRef, useContext, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Button, Paragraph, Text, YStack } from 'tamagui'
+import { Button, YStack } from 'tamagui'
 
 import { Code } from './Code'
 import { FrontmatterContext } from './MDXComponents'
@@ -62,7 +62,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           alignItems="center"
           justifyContent="flex-end"
           space="$1"
-          top={-70}
+          top={-58}
           right="$2"
           $gtSm={{
             right: 50,
@@ -72,7 +72,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           }}
         >
           <Button
-            size="$3"
+            size="$2"
             color="$color"
             className="text-shadow"
             chromeless
