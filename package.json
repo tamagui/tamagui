@@ -30,6 +30,7 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish": "lerna publish",
     "site": "yarn workspace @tamagui/site dev",
+    "site:compile": "yarn workspace @tamagui/site dev:compile",
     "site:prod": "yarn workspace @tamagui/site next:build && yarn workspace @tamagui/site next:start",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "fix": "yarn manypkg fix"
