@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "PORT=5005 NODE_OPTIONS='--no-deprecation' NODE_ENV=development next-remote-watch ./data",
-    "dev:extract": "DISABLE_EXTRACTION=1 yarn dev",
+    "dev:compile": "DISABLE_EXTRACTION=0 yarn dev",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start"

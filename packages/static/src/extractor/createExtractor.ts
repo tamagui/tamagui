@@ -159,6 +159,7 @@ export function createExtractor() {
         flattened: 0,
         optimized: 0,
         modified: 0,
+        found: 0,
       }
 
       callTraverse({
@@ -201,6 +202,9 @@ export function createExtractor() {
 
           const originalNodeName = node.name.name
 
+          // found a valid tag
+          res.found++
+
           if (shouldPrintDebug) {
             console.log(`\n<${originalNodeName} />`)
           }
@@ -231,7 +235,9 @@ export function createExtractor() {
             if (disableExtraction) {
               console.log(prefixLogs || prefix, 'disableExtraction: not optimizing')
             }
-            console.log(prefixLogs || prefix, ' ○ = optimized |  ◎ = flattened')
+            console.log(prefixLogs || prefix, '🏷  = total ')
+            console.log(prefixLogs || prefix, '🏎  = optimized props')
+            console.log(prefixLogs || prefix, '🚀  = flattened')
             hasLogged = true
           }
           if (disableExtraction) {

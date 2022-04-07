@@ -21,6 +21,7 @@ export declare function createExtractor(): {
         flattened: number;
         optimized: number;
         modified: number;
+        found: number;
     } | null;
 };
 //# sourceMappingURL=createExtractor.d.ts.map
