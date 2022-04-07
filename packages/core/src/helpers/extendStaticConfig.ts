@@ -39,9 +39,10 @@ export function extendStaticConfig(
   return parseStaticConfig({
     ...parent.staticConfig,
     ...config,
-    isZStack: config.isZStack || parent.staticConfig.isZStack,
     variants,
+    isZStack: config.isZStack || parent.staticConfig.isZStack,
     isText: config.isText || parent.staticConfig.isText || false,
+    isInput: config.isInput || parent.staticConfig.isInput || false,
     neverFlatten: config.neverFlatten ?? parent.staticConfig.neverFlatten,
     ensureOverriddenProp: config.ensureOverriddenProp ?? parent.staticConfig.ensureOverriddenProp,
     validStyles: config.validStyles

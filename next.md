@@ -9,8 +9,6 @@
     - test hover/press styles + add to animations docs
   - load theme hook via feature
   - check focusStyle works or remove docs
-  - styled() fix types with react native web
-    - fix not needing `isText`, `isInput`, `isReactNativeWeb`
   - compiler
     - check it with variants extracting fully
     - props
