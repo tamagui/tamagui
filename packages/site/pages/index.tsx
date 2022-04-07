@@ -22,6 +22,11 @@ import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
+  // return (
+  //   <YStack p="$10">
+  //     <MediaPlayer />
+  //   </YStack>
+  // )
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />

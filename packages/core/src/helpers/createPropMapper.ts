@@ -16,6 +16,7 @@ export const createPropMapper = (c: StaticConfig) => {
     value: any,
     theme: any,
     props: any,
+    staticConfig: StaticConfig,
     returnVariablesAs: ResolveVariableTypes = !!props.animation ? 'value' : 'auto'
   ) => {
     const conf = getConfig()
@@ -56,7 +57,22 @@ export const createPropMapper = (c: StaticConfig) => {
       }
 
       if (typeof variantValue === 'function') {
-        variantValue = variantValue(value, { tokens: conf.tokensParsed, theme, props })
+        variantValue = variantValue(value, {
+          tokens: conf.tokensParsed,
+          theme,
+          props: new Proxy(props, {
+            get(target, key) {
+              if (Reflect.has(target, key)) {
+                return Reflect.get(target, key)
+              }
+              // these props may be extracted into classNames, but we still want to access them
+              // at runtime, so we proxy back to defaultProps but don't pass them
+              if (staticConfig.defaultProps) {
+                return Reflect.get(staticConfig.defaultProps, key)
+              }
+            },
+          }),
+        })
       }
       if (isObj(variantValue)) {
         variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)

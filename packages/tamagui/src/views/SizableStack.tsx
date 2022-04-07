@@ -8,14 +8,7 @@ export const getButtonSize = getSize()
 
 export const SizableStack = styled(XStack, {
   name: 'SizableStack',
-  borderRadius: '$1',
-  paddingVertical: '$2',
-  paddingHorizontal: '$3',
   backgroundColor: '$background',
-  justifyContent: 'center',
-  alignItems: 'center',
-  cursor: 'pointer',
-  flexWrap: 'nowrap',
   flexDirection: 'row',
   flexShrink: 1,
 

@@ -255,9 +255,9 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     }
 
     // element
-    const isInternalComponent = !Component || typeof Component === 'string'
+    const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isInternalComponent ? tag || Component : Component) : Component
+    const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
     const ReactView =
       (isAnimated ? (tamaguiConfig?.animations?.View as any) : null) ??
       (!isWeb ? View : element || (hasTextAncestor ? 'span' : 'div'))
@@ -403,7 +403,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
             !isTouchDevice && {
               onMouseEnter: true
                 ? (e) => {
-                    console.log('is it adsdas')
                     let next: Partial<typeof state> = {}
                     if (attachHover) {
                       next.hover = true
@@ -429,7 +428,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                       next.press = false
                       next.pressIn = false
                     }
-                    console.log('next', next)
                     if (Object.keys(next).length) {
                       setStateShallow(next)
                     }

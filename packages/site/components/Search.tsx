@@ -154,7 +154,7 @@ export const SearchButton = (props: ButtonProps) => {
       }}
       iconAfter={
         isTouchDevice ? null : (
-          <Button size="$2" theme="alt2" hoverable={false}>
+          <Button tag="span" size="$2" theme="alt2" hoverable={false}>
             /
           </Button>
         )

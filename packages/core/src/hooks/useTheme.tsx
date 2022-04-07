@@ -100,8 +100,7 @@ export const useTheme = (
         }
         if (process.env.NODE_ENV === 'development') {
           if (props?.['debug']) {
-            // @ts-ignore
-            console.log('  » accessing theme val', key, activeTheme[key], { ...state.current })
+            console.log('  » accessing theme val', key, { ...state.current })
           }
         }
         if (typeof key === 'string') {

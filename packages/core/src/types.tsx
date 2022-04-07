@@ -426,6 +426,7 @@ export type StaticConfigParsed = StaticConfig & {
     value: any,
     theme: ThemeObject,
     props: any,
+    staticConfig: StaticConfig,
     resolveVariablesAs?: ResolveVariableTypes
   ) => undefined | boolean | { [key: string]: any }
   variantsParsed?: {

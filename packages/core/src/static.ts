@@ -16,7 +16,3 @@ export * from './helpers/getSplitStyles'
 export * from '@tamagui/helpers'
 
 export * from './constants/pseudos'
-
-// -- below exports are only bundled compile-time --
-
-export * from './static/postProcessStyles'

@@ -35,6 +35,12 @@ export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
 const TooltipFrame = styled(SizableStack, {
   name: 'Tooltip',
   borderWidth: 0,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '$1',
+  paddingVertical: '$2',
+  paddingHorizontal: '$3',
+  flexWrap: 'nowrap',
 })
 
 const defaultOutStyle = {

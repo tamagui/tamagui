@@ -4,12 +4,9 @@ import { SizableStack } from './SizableStack'
 
 export const Square = styled(SizableStack, {
   name: 'Square',
-  borderRadius: '$0',
   alignItems: 'center',
   justifyContent: 'center',
   overflow: 'hidden',
-  paddingHorizontal: 0,
-  paddingVertical: 0,
 
   variants: {
     size: {

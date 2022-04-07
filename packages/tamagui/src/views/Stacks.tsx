@@ -1,4 +1,11 @@
-import { GetProps, Stack, VariantSpreadExtras, isVariable, styled } from '@tamagui/core'
+import {
+  GetProps,
+  Stack,
+  VariantSpreadExtras,
+  getVariableValue,
+  isVariable,
+  styled,
+} from '@tamagui/core'
 
 export const YStack = styled(Stack, {
   flexDirection: 'column',
@@ -46,8 +53,24 @@ export const ZStack = styled(
   }
 )
 
-export const getSizedElevation = (val: number, { theme }: VariantSpreadExtras<any>) => {
-  const [height, shadowRadius] = [Math.round(val / 3 + 1), Math.round(val / 2 + 2)]
+export const getSizedElevation = (
+  val: number | boolean,
+  { theme, tokens }: VariantSpreadExtras<any>
+) => {
+  const num =
+    val === false
+      ? 0
+      : val === true
+      ? // handles true
+        (() => {
+          const val = getVariableValue(tokens.size['true'])
+          if (typeof val === 'number') {
+            return val
+          }
+          return 10
+        })()
+      : val
+  const [height, shadowRadius] = [Math.round(num / 3 + 1), Math.round(num / 2 + 2)]
   const shadow = {
     shadowColor: theme.shadowColor,
     shadowRadius,
