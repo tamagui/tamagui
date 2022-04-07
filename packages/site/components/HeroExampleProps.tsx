@@ -1,4 +1,4 @@
-import { Paragraph, Text, XStack, YStack } from 'tamagui'
+import { SizableText, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { Features } from './Features'
@@ -6,13 +6,15 @@ import { HomeH2, HomeH3 } from './HomeH2'
 
 const FeatureItem = ({ label, children }) => {
   return (
-    <Paragraph>
-      <Paragraph size="$6" fow="800">
+    <SizableText>
+      <SizableText size="$6" fow="800">
         {label}
-      </Paragraph>
+      </SizableText>
       &nbsp;&nbsp;—&nbsp;&nbsp;
-      <Paragraph theme="alt2">{children}</Paragraph>
-    </Paragraph>
+      <SizableText tag="span" theme="alt2">
+        {children}
+      </SizableText>
+    </SizableText>
   )
 }
 

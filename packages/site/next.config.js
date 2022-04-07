@@ -1,6 +1,6 @@
+/** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withPlugins = require('next-compose-plugins')
-const withFonts = require('next-fonts')
 const withVideos = require('next-videos')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 
@@ -22,7 +22,6 @@ const transform = withPlugins(
       enabled: process.env.ANALYZE === 'true',
     }),
     withVideos,
-    withFonts,
     withTamagui({
       config: './tamagui.config.ts',
       components: ['tamagui'],

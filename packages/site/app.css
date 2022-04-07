@@ -36,6 +36,10 @@ a {
   font-weight: 300;
 }
 
+.is_Paragraph:has(> ul) {
+  margin-bottom: 0;
+}
+
 :is(
   div .paragraph-link,
   p a,
@@ -58,6 +62,9 @@ a {
   text-decoration-color: var(--borderColorHover);
 }
 
+
+
+p,
 input,
 textarea,
 select,
@@ -101,6 +108,11 @@ span._display-1adg3ll > span._display-xoduu5 {
 
 .text-shadow {
   text-shadow: 0 2px 2px rgb(0 0 0 / 12%);
+}
+
+.hero-scroll {
+  overflow: hidden;
+  overflow-x: auto;
 }
 
 .hero-gradient {

@@ -3,7 +3,7 @@ import { Button, InteractiveContainer, XStack, YStack } from 'tamagui'
 
 export default function ButtonDemo(props) {
   return (
-    <YStack py="$3" space="$2" {...props}>
+    <YStack p="$3" space="$2" {...props}>
       <Button>Plain</Button>
       <Button icon={Airplay} size="$6">
         Large

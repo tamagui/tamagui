@@ -50,6 +50,12 @@ export const animations = createAnimations({
 
 Note the keys match, so you can swap them out.
 
+<Notice>
+  If you are using an animation driver and aren't relying on `react-native` Animated with Next.js,
+  you should use add `Animated` and `AnimatedFlatList` to the [excludeReactNativeWebExports`
+  option](/docs/core/installation#next.js).
+</Notice>
+
 ## Using animations
 
 The `animation` prop will now have `springy` as a valid value. By default, animations will apply to all animatable styles. This is a lot like setting `all` in a CSS animation.

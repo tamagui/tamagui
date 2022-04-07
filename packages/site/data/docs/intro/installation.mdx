@@ -43,6 +43,10 @@ yarn add react-native-safe-area-context
 
 For more information on the options, see the [compiler options](#compiler-options). Whether using Webpack or Next.js, **be sure to not use the Tamagui babel plugin in your web build!** They are either-or: the babel plugin only for React Native, and tamagui-loader or next plugin only for web.
 
+<Notice>
+  Be sure to set the environment variable TAMAGUI_TARGET to "web" or "native" appropriately.
+</Notice>
+
 #### Webpack
 
 We have a full example of a [plain, webpack-only repo here](https://github.com/tamagui/tamagui/tree/master/packages/sandbox), which should capture the complete configuration more accurately.
@@ -131,6 +135,8 @@ export default withPlugins([
   })
 ])
 ```
+
+Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS` to "true" fixes some issues with Tamagui being resolved incorrectly.
 
 #### React Native
 
@@ -283,8 +289,26 @@ export default function App() {
     </Tamagui.Provider>
   )
 }
-
 ```
+
+Tamagui.Provider has optional props:
+
+<PropsTable
+  data={[
+    {
+      name: 'injectCSS',
+      required: false,
+      type: 'boolean',
+      description: `When true, injects Tamagui generated CSS into the head on mount.`,
+    },
+    {
+      name: 'fallback',
+      required: false,
+      type: 'boolean',
+      description: `TamaguiProvider wraps Suspense inside to prevent theme flickering, provide a fallback here.`,
+    },
+  ]}
+/>
 
 ### Use any views
 
@@ -303,3 +327,7 @@ export default function Demo() {
   )
 }
 ```
+
+### Web-only configurations
+
+If you want autocompleted imports of `react-native` without having to install the large package, you can set `react-native` version to `0.0.0`, and then add `@types/react-native` at the latest version.

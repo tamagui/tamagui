@@ -10,17 +10,13 @@ export function HeroContainer({
 }) {
   return (
     <YStack
-      // In case any semantic content sneaks through in a hero, let's hide it
-      // from the a11y tree since this is a presentational component.
-      // role="presentation"
-      className="hero-gradient"
+      className="hero-gradient hero-scroll"
       mt="$2"
       mb="$4"
       position="relative"
       display="flex"
       alignItems="center"
       justifyContent="center"
-      overflow="visible"
       pt={30}
       pb={50}
       minHeight={380}
@@ -28,9 +24,6 @@ export function HeroContainer({
       $gtLg={{
         mx: '$-2',
       }}
-      // $notXl={{
-      //   mx: '$-6',
-      // }}
     >
       {demoMultiple ? (
         <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
@@ -77,16 +70,3 @@ const Card = styled(YStack, {
   minHeight: 220,
   br: '$4',
 })
-
-// not ssr safe
-// function ResetTheme({ children }: { children?: any }) {
-//   const themeName = useThemeName({ parent: true })
-//   const parentThemeBaseName = themeName.replace(/[a-z]+\-/, '')
-//   console.log('resetting to', themeName, parentThemeBaseName)
-
-//   return (
-//     <Theme debug name={parentThemeBaseName as any}>
-//       {children}
-//     </Theme>
-//   )
-// }

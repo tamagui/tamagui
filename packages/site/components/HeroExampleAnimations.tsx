@@ -1,8 +1,8 @@
 import { Play } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import React, { useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, Separator, Square, Theme, ThemeReset, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
 
 import { animations } from '../constants/animations'
 import { useTint } from './ColorToggleButton'
@@ -56,6 +56,39 @@ const animationDescriptions = [
 let hasScrolledOnce = false
 
 export function HeroExampleAnimations() {
+  const { tint } = useTint()
+
+  return (
+    <YStack>
+      <ContainerLarge position="relative" space="$6">
+        <YStack zi={1} space="$1">
+          <HomeH2>First-class animations</HomeH2>
+          <HomeH3>Plug-and-play drivers for every platform.</HomeH3>
+        </YStack>
+
+        <ExampleAnimations />
+
+        <XStack als="center" space="$1">
+          <Link href="/docs/core/animations#css" passHref>
+            <Button theme={tint} tag="a">
+              CSS &raquo;
+            </Button>
+          </Link>
+          <Link href="/docs/core/animations#reanimated" passHref>
+            <Button theme={tint} tag="a">
+              Reanimated &raquo;
+            </Button>
+          </Link>
+          <Link href="/docs/core/animations" passHref>
+            <Button tag="a">Docs &raquo;</Button>
+          </Link>
+        </XStack>
+      </ContainerLarge>
+    </YStack>
+  )
+}
+
+export const ExampleAnimations = memo(() => {
   const [animationI, setAnimationI] = useState(0)
   const [positionI, setPositionI] = useState(2)
   const position = positions[positionI]
@@ -96,136 +129,114 @@ export function HeroExampleAnimations() {
   })
 
   return (
-    <YStack>
-      <ContainerLarge position="relative" space="$6">
-        <YStack zi={1} space="$1">
-          <HomeH2>First-class animations</HomeH2>
-          <HomeH3>Plug-and-play drivers for every platform.</HomeH3>
-        </YStack>
-
-        <XStack
-          bw={1}
-          boc={`$${tint}5`}
-          borderStyle="dashed"
-          w="100%"
-          br="$6"
-          ov="hidden"
-          // bc="$backgroundHover"
-          h={305}
-          maw={880}
-          als="center"
-          x={0}
+    <XStack
+      bw={1}
+      boc={`$${tint}5`}
+      borderStyle="dashed"
+      w="100%"
+      br="$6"
+      ov="hidden"
+      // bc="$backgroundHover"
+      h={305}
+      maw={880}
+      als="center"
+      x={0}
+    >
+      <Theme name={tint}>
+        <YStack
+          ref={container}
+          pos="relative"
+          // className="hero-gradient"
+          ai="center"
+          jc="center"
+          width="60%"
+          $sm={{ width: '100%' }}
         >
-          <Theme name={tint}>
-            <YStack
-              ref={container}
-              pos="relative"
-              // className="hero-gradient"
-              ai="center"
-              jc="center"
-              width="60%"
-              $sm={{ width: '100%' }}
-            >
-              <Square
-                // debug
-                animation={animation.animation}
-                elevation="$4"
-                size={110}
-                // bc={`$${tint}10`}
-                bc="$green10"
-                br="$9"
-                onPress={() => next()}
-                {...position}
-              >
-                <LogoIcon downscale={0.75} />
-              </Square>
+          <Square
+            // debug
+            animation={animation.animation}
+            elevation="$4"
+            size={110}
+            // bc={`$${tint}10`}
+            bc="$green10"
+            br="$9"
+            onPress={() => next()}
+            {...position}
+          >
+            <LogoIcon downscale={0.75} />
+          </Square>
 
-              <Button
-                pos="absolute"
-                bottom={20}
-                right={20}
-                circular
-                iconAfter={Play}
-                theme={tint}
-                size="$6"
-                onPress={() => next()}
-              />
-            </YStack>
-          </Theme>
+          <Button
+            pos="absolute"
+            bottom={20}
+            right={20}
+            circular
+            iconAfter={Play}
+            theme={tint}
+            size="$6"
+            onPress={() => next()}
+          />
+        </YStack>
+      </Theme>
 
-          <Separator vertical />
+      <Separator vertical />
 
-          <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-            <YStack fullscreen zi={-1} theme="alt2" bc="$background" />
-            <ScrollView>
-              {animationDescriptions.map((item, i) => {
-                const isActive = item === animation
-                return (
-                  <Theme key={item.name} name={isActive ? null : 'alt2'}>
-                    <YStack
-                      {...(isActive && {
-                        bc: '$backgroundHover',
-                      })}
-                      px="$4"
-                      bc="$background"
-                      py="$2"
-                      cursor="pointer"
-                      hoverStyle={{
-                        bc: '$backgroundHover',
-                      }}
-                      onPress={() => {
-                        setAnimationI(i)
-                        next()
-                      }}
-                    >
-                      <Paragraph selectable={false} cursor="inherit" size="$4" fontWeight="800">
-                        {item.name}
-                      </Paragraph>
-                      <Paragraph selectable={false} size="$3" cursor="inherit" theme="alt2">
-                        {item.description}
-                      </Paragraph>
-                    </YStack>
-                  </Theme>
-                )
-              })}
-            </ScrollView>
+      <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
+        <YStack fullscreen zi={-1} theme="alt2" bc="$background" />
+        <ScrollView>
+          {animationDescriptions.map((item, i) => {
+            const isActive = item === animation
+            return (
+              <Theme key={item.name} name={isActive ? null : 'alt2'}>
+                <YStack
+                  {...(isActive && {
+                    bc: '$backgroundHover',
+                  })}
+                  px="$4"
+                  bc="$background"
+                  py="$2"
+                  cursor="pointer"
+                  hoverStyle={{
+                    bc: '$backgroundHover',
+                  }}
+                  onPress={() => {
+                    setAnimationI(i)
+                    next()
+                  }}
+                >
+                  <Paragraph selectable={false} cursor="inherit" size="$4" fontWeight="800">
+                    {item.name}
+                  </Paragraph>
+                  <Paragraph selectable={false} size="$3" cursor="inherit" theme="alt2">
+                    {item.description}
+                  </Paragraph>
+                </YStack>
+              </Theme>
+            )
+          })}
+        </ScrollView>
 
-            <Separator />
+        <Separator />
 
-            <XStack bc="$background" p="$4" ai="center" jc="center">
-              {settings.map(([key, value], i) => {
-                return (
-                  <React.Fragment key={key}>
-                    <YStack>
-                      <Paragraph size="$2" fow="800">
-                        {key}
-                      </Paragraph>
-                      <Paragraph>{value}</Paragraph>
-                    </YStack>
-                    {i < settings.length - 1 && <Separator vertical mx={20} />}
-                  </React.Fragment>
-                )
-              })}
-            </XStack>
-          </YStack>
+        <XStack bc="$background" p="$4" ai="center" jc="center">
+          {settings.map(([key, value], i) => {
+            if (key === 'type') {
+              return null
+            }
+            return (
+              <React.Fragment key={key}>
+                <YStack>
+                  <Paragraph size="$2" fow="800">
+                    {key}
+                  </Paragraph>
+                  <Paragraph>{value}</Paragraph>
+                </YStack>
+                {i < settings.length - 1 && <Separator vertical mx={15} />}
+              </React.Fragment>
+            )
+          })}
         </XStack>
-
-        <XStack als="center" space="$1">
-          <Link href="/docs/core/animations#css" passHref>
-            <Button theme={tint} tag="a">
-              CSS &raquo;
-            </Button>
-          </Link>
-          <Link href="/docs/core/animations#reanimated" passHref>
-            <Button theme={tint} tag="a">
-              Reanimated &raquo;
-            </Button>
-          </Link>
-          <Link href="/docs/core/animations" passHref>
-            <Button tag="a">Docs &raquo;</Button>
-          </Link>
-        </XStack>
-      </ContainerLarge>
-    </YStack>
+      </YStack>
+    </XStack>
   )
-}
+})

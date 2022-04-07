@@ -30,17 +30,22 @@ import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
 import { HeroContainer } from './HeroContainer'
+import { ExampleAnimations } from './HeroExampleAnimations'
 import { Highlights } from './Highlights'
+import { LI } from './LI'
 import { MediaPlayer } from './MediaPlayer'
 import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
 import { SubTitle } from './SubTitle'
+import { UL } from './UL'
 
 export const components = {
+  ExampleAnimations,
   ScrollView,
   Text,
   Paragraph,
+  OffsetBox,
   YStack,
   XStack,
   BenchmarkChart,
@@ -53,6 +58,8 @@ export const components = {
   Highlights,
   PropsTable,
   Description: SubTitle,
+  UL,
+  LI,
 
   Beta: () => (
     <Button size="$3" theme="yellow" hoverable={false}>
@@ -62,8 +69,16 @@ export const components = {
 
   IntroParagraph: ({ children, ...props }) => {
     return (
-      <Paragraph size="$6" className="paragraph" display="block" mt="$2" my="$4" {...props}>
-        {children.props.children}
+      <Paragraph
+        tag="span"
+        size="$6"
+        className="paragraph"
+        display="block"
+        mt={0}
+        my="$4"
+        {...props}
+      >
+        {children}
       </Paragraph>
     )
   },
@@ -121,22 +136,22 @@ export const components = {
   h1: (props) => <H1 mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2 color="$color" mt="$3" size="$8" letterSpacing={-0.5} data-heading {...props}>
+    <H2 color="$color" mt="$4" size="$8" letterSpacing={-0.5} data-heading {...props}>
       {children}
     </H2>
   ),
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading mt="$3" id={id}>
-      <H3 fow="800" data-heading size="$7" {...props}>
+      <H3 data-heading size="$6" fow="800" {...props}>
         {children}
       </H3>
       {getNonTextChildren(children)}
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mt="$3" size="$6" fow="800" {...props} />,
-  h5: (props) => <H5 mt="$3" size="$5" fow="800" {...props} />,
+  h4: (props) => <H4 mt="$3" size="$5" fow="800" {...props} />,
+  h5: (props) => <H5 mt="$3" size="$4" fow="800" {...props} />,
 
   p: (props) => (
     <Paragraph
@@ -152,6 +167,7 @@ export const components = {
   a: ({ href = '', children, ...props }) => {
     return (
       <NextLink href={href} passHref>
+        {/* @ts-ignore */}
         <Text tag="a" display="inline" {...props}>
           {children}
           {href.startsWith('http') ? (
@@ -176,20 +192,16 @@ export const components = {
 
   ul: ({ children }) => {
     return (
-      <YStack tag="ul" my="$1">
-        {React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}
-      </YStack>
+      <UL>{React.Children.toArray(children).map((x) => (typeof x === 'string' ? null : x))}</UL>
     )
   },
 
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => (
-    <YStack pb="$0.5">
-      <li>
-        <Paragraph {...props} />
-      </li>
-    </YStack>
+    <LI>
+      <Paragraph {...props} />
+    </LI>
   ),
 
   strong: (props) => <Text {...props} fontWeight="700" />,
@@ -225,7 +237,7 @@ export const components = {
   },
 
   Image: ({ children, size, ...props }) => (
-    <YStack tag="figure" mx={0} mb="$3">
+    <YStack tag="figure" f={1} mx={0} mb="$3">
       <OffsetBox size={size}>
         <Image maxWidth="100%" {...props} />
       </OffsetBox>

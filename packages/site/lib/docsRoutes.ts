@@ -7,7 +7,6 @@ export const docsRoutes = [
       { title: 'Configuration', route: '/docs/intro/configuration' },
       { title: 'Themes', route: '/docs/intro/themes' },
       { title: 'Props', route: '/docs/intro/props' },
-      { title: 'Dev Tools', route: '/docs/intro/dev-tools' },
       { title: 'Benchmarks', route: '/docs/intro/benchmarks' },
       { title: 'Releases', route: 'https://github.com/tamagui/tamagui/releases' },
     ],
@@ -54,6 +53,7 @@ export const docsRoutes = [
     label: 'Guides',
     pages: [
       { title: 'Design Systems', route: '/docs/guides/design-systems' },
+      { title: 'Developing', route: '/docs/intro/dev-tools' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'create-tamagui-app', route: '/docs/guides/create-tamagui-app' },

@@ -351,3 +351,30 @@ export default createTamagui({
 ```
 
 For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/tamagui/blob/master/packages/shorthands/src/index.ts)
+
+### Others
+
+<PropsTable
+  data={[
+    {
+      name: 'mediaQueryDefaultActive',
+      required: false,
+      type: 'string[',
+      description: `For the first render, determines which media queries are true (useful for SSR).`,
+    },
+    {
+      name: 'cssStyleSeparator',
+      required: false,
+      type: 'string',
+      default: '"\n" when NODE_ENV=development, "" otherwise',
+      description: `What's between each generated CSS style rule.`,
+    },
+    {
+      name: 'maxDarkLightNesting',
+      required: false,
+      type: 'number',
+      default: 3,
+      description: `(Advanced) On the web, tamagui treats `dark` and `light` themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maxiumum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
+    },
+  ]}
+/>

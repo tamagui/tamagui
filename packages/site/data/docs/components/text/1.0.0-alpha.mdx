@@ -77,3 +77,9 @@ export const Paragraph = styled(SizableText, {
   selectable: true,
 })
 ```
+
+<Notice>
+  Note: Paragraph renders to a `p` tag on web, which can cause issues when you nest them during SSR.
+  If you don't mind rendring to a span, use `SizableText`, otherwise, be careful when nesting items
+  inside a Paragraph.
+</Notice>
