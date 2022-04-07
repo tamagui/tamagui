@@ -500,12 +500,12 @@ export type StaticConfig = {
   ensureOverriddenProp?: { [key: string]: boolean }
 
   /*
-   * We need to wrap children
+   * Auto-detected, but can ovverride. Wraps children to space them on top
    */
   isZStack?: boolean
 
   /*
-   * To account for style adjustments
+   * Auto-detect, but can ovverride, passes styles properly to react-native-web
    */
   isReactNativeWeb?: boolean
 

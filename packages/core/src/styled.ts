@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Image, ImageProps, TextInput, TextInputProps } from 'react-native'
+import { Image, ImageProps, Text, TextInput, TextInputProps, View, ViewProps } from 'react-native'
+import * as ReactNative from 'react-native'
 
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
@@ -22,6 +23,17 @@ import {
 // this is necessary to match the react-native type defs
 type RNComponent = new (...args: any[]) => any
 
+// bye bye tree shaking... but only way to properly detect react-native components...
+// also neither rnw nor react support tree shaking atm
+// this takes about 0.1ms in node console so not bad
+const RNComponents = new WeakMap()
+for (const key in ReactNative) {
+  const val = ReactNative[key]
+  if (typeof val === 'object') {
+    RNComponents.set(val, true)
+  }
+}
+
 type EmptyVariants = { __EMPTY_VARIANT__: string }
 
 export function styled<
@@ -41,7 +53,20 @@ export function styled<
   const staticConfigProps: StaticConfig = (() => {
     if (options) {
       const { variants, name, ...defaultProps } = options
-      return { ...staticExtractionOptions, variants, defaultProps, componentName: name }
+      const isReactNativeWeb = RNComponents.has(Component)
+      const isTamagui = 'staticConfig' in Component
+      const isInput =
+        defaultProps.isInput || (!isTamagui ? Component === (TextInput as any) : undefined)
+      const isText = defaultProps.isText || (!isTamagui ? isInput || Component === Text : undefined)
+      return {
+        ...staticExtractionOptions,
+        variants,
+        defaultProps,
+        componentName: name,
+        isReactNativeWeb,
+        isInput,
+        isText,
+      }
     }
     return {}
   })()
@@ -76,6 +101,10 @@ export type GetProps<A> = A extends StaticComponent<infer Props>
   ? Props & StackProps
   : A extends new (props: infer Props) => any
   ? Props & StackProps
+  : A extends typeof View
+  ? ViewProps
+  : A extends typeof Text
+  ? TextProps
   : A extends typeof TextInput
   ? Partial<TextInputProps> & TextProps
   : A extends typeof Image
