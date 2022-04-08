@@ -101,6 +101,8 @@ function loadAnimationFeature() {
         // onDidAnimate, delay
       })
 
+      console.log('got back', res)
+
       useIsomorphicLayoutEffect(() => {
         setStateShallow({
           animation: res,

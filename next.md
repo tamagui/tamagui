@@ -17,11 +17,6 @@
     - animations
   - bugs
     - // TODO not working?
-    - slow types (tried fixing but made them more accurate but worse :/)
-    - get sizableTextSizeVariant types working and ...fontSize
-    - // TODO this should be ...fontSize type not working
-    - // TODO can we make it work using its own variants with types?
-    - // TODO if not then we need to add defaultVariants: {}
     - media queries in styled() not working
     - fix image w/h shorthand not translating to width/height runtime
     - Image SSR / site weirdness on some
@@ -137,6 +132,7 @@
 - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
 - <Select />
 - colored cli output
+- have tamagui watch the tamagui.config.ts file and report if types break
 
 // defaultProps: {
   //   Button: {

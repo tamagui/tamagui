@@ -1,14 +1,7 @@
 import { Variable } from './createVariable';
-import { CreateTamaguiConfig, GenericTamaguiConfig, MediaQueryKey, TamaguiInternalConfig, UseAnimationHook } from './types';
+import { AnimationDriver, CreateTamaguiConfig, GenericTamaguiConfig, MediaQueryKey, TamaguiInternalConfig } from './types';
 export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
-    animations?: {
-        useAnimations: UseAnimationHook;
-        animations: {
-            [key: string]: any;
-        };
-        View?: any;
-        Text?: any;
-    };
+    animations?: AnimationDriver<any>;
     tokens: GenericTamaguiConfig['tokens'];
     themes: {
         [key: string]: {

@@ -111,7 +111,7 @@ export type CreateTamaguiConfig<
   themes: B
   shorthands: C
   media: D
-  animations: E
+  animations: AnimationDriver<E>
 }
 
 // for use in creation functions so it doesnt get overwrtitten
@@ -144,8 +144,9 @@ export type TamaguiInternalConfig<
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations
-> = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
-  animations: E
+> = CreateTamaguiConfig<A, B, C, D, E> & {
+  // TODO need to make it this but this breaks types, revisit
+  // animations: E //AnimationDriver<E>
   Provider: (props: TamaguiProviderProps) => any
   // with $ prefixes for fast lookups (one time cost at startup vs every render)
   tokensParsed: CreateTokens<Variable>
@@ -872,6 +873,7 @@ type AnimationConfig = {
 }
 
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
+  avoidClasses?: boolean
   useAnimations: UseAnimationHook
   animations: A
   View?: any
@@ -895,5 +897,4 @@ export type UseAnimationHook = (
   state: UseAnimationState
 ) => {
   style?: StackStylePropsBase
-  avoidClasses?: boolean
 }

@@ -84,6 +84,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   let tamaguiConfig: TamaguiInternalConfig
   let AnimatedText: any
   let AnimatedView: any
+  let avoidClasses = false
 
   // web uses className, native uses style
   let defaultNativeStyle: any
@@ -259,14 +260,15 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     // get the right component
     const isTaggable = !Component || typeof Component === 'string'
-    const avoidClasses = state.animation && state.animation.avoidClasses
+    const shouldAvoidClasses = !!(state.animation && avoidClasses)
+
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
     const BaseTextComponent = !isWeb ? Text : element || 'span'
     const BaseViewComponent = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
     const ViewComponent = isText
-      ? (isAnimated && !avoidClasses ? AnimatedText || Text : null) || BaseTextComponent
-      : (isAnimated && !avoidClasses ? AnimatedView || View : null) || BaseViewComponent
+      ? (isAnimated ? AnimatedText || Text : null) || BaseTextComponent
+      : (isAnimated ? AnimatedView || View : null) || BaseViewComponent
 
     let styles: any[]
 
@@ -274,49 +276,55 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const shouldWrapHoverable = isWeb && isStringElement
     const animationStyles = state.animation ? state.animation.style : null
 
-    if (avoidClasses) {
-      // styles = [state.animatedStyle]
-      if (isWeb) {
-        styles = {
-          ...defaultNativeStyle,
-          ...animationStyles,
-        }
-      } else {
-        styles = [defaultNativeStyleSheet?.base, animationStyles]
-      }
-    } else {
-      const hoverStyle = isHovering ? pseudos!.hoverStyle : null
-      const pressStyle = isPressing ? pseudos!.pressStyle : null
-      const focusStyle = isFocusing ? pseudos!.focusStyle : null
-      styles = [
-        defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
-        // parity w react-native-web, only for text in text
-        // TODO this should be able to be done w css to replicate after extraction:
-        //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
-        // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-        style,
-        // nesting these on web because we need to be sure concatClassNames overrides the right className
-        isWeb && hoverStyle ? ({ hoverStyle } as any) : hoverStyle,
-        isWeb && pressStyle ? ({ pressStyle } as any) : pressStyle,
-        isWeb && focusStyle ? ({ focusStyle } as any) : focusStyle,
-        animationStyles,
-      ]
-    }
+    const hoverStyle = isHovering ? pseudos!.hoverStyle : null
+    const pressStyle = isPressing ? pseudos!.pressStyle : null
+    const focusStyle = isFocusing ? pseudos!.focusStyle : null
+    styles = [
+      defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
+      // parity w react-native-web, only for text in text
+      // TODO this should be able to be done w css to replicate after extraction:
+      //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
+      // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
+      style,
+      // nesting these on web because we need to be sure concatClassNames overrides the right className
+      isWeb && hoverStyle ? ({ hoverStyle } as any) : hoverStyle,
+      isWeb && pressStyle ? ({ pressStyle } as any) : pressStyle,
+      isWeb && focusStyle ? ({ focusStyle } as any) : focusStyle,
+      animationStyles,
+    ]
+    // if (isWeb && !shouldAvoidClasses) {
+    //   if (isStringElement) {
+    //     styles = {
+    //       ...defaultNativeStyle,
+    //       ...animationStyles,
+    //     }
+    //   } else {
+    //     styles = [defaultNativeStyleSheet?.base, animationStyles]
+    //   }
+    // } else {
+
+    // }
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.log('  » ', { avoidClasses, animation: props.animation, style, styles, defaultNativeStyle, splitStyleResult })
+        console.log('  » ', { shouldAvoidClasses, animation: props.animation, style, styles, defaultNativeStyle, splitStyleResult })
       }
     }
 
     // TODO i think can still render this first part using reanimated
     // that way we get some of the classnames we probably want here (componentName/font/etc)
-    // can just remove  && !avoidClasses and add in a viewProps.style = styles in isWeb
+    // can just remove  && !shouldAvoidClasses and add in a viewProps.style = styles in isWeb
 
     if (isWeb) {
-      const stylesClassNames = useStylesAsClassname(styles, avoidClasses || false, props.debug)
-      if (!avoidClasses) {
+      const hasntSetInitialAnimationState = props.animation && !state.animation
+      const disableInsertStyles = hasntSetInitialAnimationState || shouldAvoidClasses || false
+      const stylesClassNames = useStylesAsClassname(
+        Array.isArray(styles) ? styles : [styles],
+        disableInsertStyles,
+        props.debug
+      )
+      if (!shouldAvoidClasses) {
         const fontFamilyName = isText
           ? props.fontFamily || staticConfig.defaultProps.fontFamily
           : null
@@ -502,16 +510,22 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           getThemeManagerIfChanged(theme)
         )
 
-    if (events) {
-      // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
-      const [pressProps] = usePressable({
-        disabled,
-        hitSlop,
-        onPressIn: events.onMouseDown,
-        onPressOut: events.onPressOut,
-        onPress: events[isWeb ? 'onClick' : 'onPress'],
-      })
+    // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
+    const [pressProps] = usePressable(
+      events
+        ? {
+            disabled: disabled,
+            hitSlop,
+            onPressIn: events.onMouseDown,
+            onPressOut: events.onPressOut,
+            onPress: events[isWeb ? 'onClick' : 'onPress'],
+          }
+        : {
+            disabled: true,
+          }
+    )
 
+    if (events) {
       if (isStringElement) {
         Object.assign(viewProps, pressProps)
 
@@ -598,6 +612,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   onConfiguredOnce((conf) => {
     const shouldDebug = staticConfig.defaultProps?.debug
     tamaguiConfig = conf
+    avoidClasses = !!tamaguiConfig.animations?.avoidClasses
     AnimatedText = tamaguiConfig.animations?.Text
     AnimatedView = tamaguiConfig?.animations?.View
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]

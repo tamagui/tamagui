@@ -12,7 +12,7 @@ let added = new Set<string>()
 
 export function useStylesAsClassname(styles: any[], disable = false, debug = false) {
   if (!useInsertionEffect) {
-    return addStylesUsingClassname(styles, debug)
+    return addStylesUsingClassname(disable ? styles : [], debug)
   } else {
     const insertions: any[] = []
     const className = addStylesUsingClassname(disable ? [] : styles, debug, (identifier, rules) => {

@@ -37,6 +37,7 @@ AnimatedText['displayName'] = 'AnimatedText'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
   return {
+    avoidClasses: true,
     animations,
     View: AnimatedView,
     Text: AnimatedText,
@@ -179,6 +180,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           // end for (key in mergedStyles)
         }
 
+        console.log('final', final)
+
         return final
       }, [
         style,
@@ -202,7 +205,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
       return {
         style: animatedStyle,
-        avoidClasses: true,
       }
     },
   }
