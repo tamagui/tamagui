@@ -5,17 +5,15 @@ import { Button, Circle, Image, Paragraph, Spacer, Theme, XStack, YStack } from 
 
 import { useGet } from '../hooks/useGet'
 import favicon from '../public/favicon.svg'
-import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
-import { Glow } from './Glow'
 import { HomeH2 } from './HomeH2'
 import { IconStack } from './IconStack'
 import { useOnIntersecting } from './useOnIntersecting'
 
 const breakpoints = [
-  { name: 'xs', at: 660 },
-  { name: 'sm', at: 800 },
-  { name: 'md', at: 1020 },
+  { name: 'sm', at: 660 },
+  { name: 'md', at: 800 },
+  { name: 'lg', at: 1020 },
 ]
 const browserHeight = 445
 
@@ -33,7 +31,6 @@ export const HeroResponsive = memo(() => {
 
   function updateBoundings() {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
-    console.log('rect', rect)
     setBounding(rect)
   }
 
@@ -194,10 +191,17 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
     <Theme className="unselectable" name={active ? 'blue' : null}>
       <YStack pos="absolute" l={800} {...props}>
         <XStack pe="none" y={-80} ai="flex-start" space>
-          <YStack w={1} h={80} bc="$colorHover" opacity={active ? 0.5 : 0.2} />
+          <YStack w={1} h={80} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
           <Button
             borderWidth={1}
-            size="$3"
+            size="$4"
+            circular
+            pos="absolute"
+            top={0}
+            left={0}
+            y={-20}
+            x={-19}
+            fontSize={12}
             onPress={() => {
               onPress(name)
             }}

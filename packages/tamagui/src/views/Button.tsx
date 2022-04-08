@@ -43,6 +43,8 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     // pass text properties:
     color?: SizableTextProps['color']
     fontWeight?: SizableTextProps['fontWeight']
+    fontSize?: SizableTextProps['fontSize']
+    fontFamily?: SizableTextProps['fontFamily']
     letterSpacing?: SizableTextProps['letterSpacing']
     textAlign?: SizableTextProps['textAlign']
   }
@@ -108,6 +110,8 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     color: colorProp,
     fontWeight,
     letterSpacing,
+    fontSize,
+    fontFamily,
     textAlign,
     ...rest
   } = props as ButtonProps
@@ -158,6 +162,8 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
             size={size}
             color={color}
             textAlign={textAlign}
+            fontSize={fontSize}
+            fontFamily={fontFamily}
             flexGrow={1}
             flexShrink={1}
             ellipse
@@ -195,6 +201,8 @@ export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttr
       // text props go here (can't really optimize them, but we never fully extract button anyway)
       'color',
       'fontWeight',
+      'fontSize',
+      'fontFamily',
       'letterSpacing',
       'textAlign',
     ]),
