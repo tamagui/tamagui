@@ -1,6 +1,6 @@
 import CSS from 'csstype';
 import React from 'react';
-import { GestureResponderEvent, TextProps as ReactTextProps, TextStyle, ViewProps, ViewStyle } from 'react-native';
+import { GestureResponderEvent, Image, ImageProps, TextProps as ReactTextProps, Text, TextInput, TextInputProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
@@ -83,7 +83,7 @@ export declare type Media = TamaguiConfig['media'];
 export declare type Themes = TamaguiConfig['themes'];
 export declare type ThemeName = GetAltThemeNames<keyof Themes>;
 export declare type ThemeKeys = keyof ThemeObject;
-export declare type ThemeKeyVariables = `$${ThemeKeys}`;
+export declare type ThemeTokens = `$${ThemeKeys}`;
 export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {};
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
@@ -175,8 +175,8 @@ export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpa
 export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
 export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
 export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
-export declare type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeKeyVariables : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
-export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeKeyVariables : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
+export declare type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
+export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
 export declare type ThemeValueFallback = UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback;
@@ -208,7 +208,8 @@ export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<S
 export declare type StackProps = Omit<ViewProps, 'display' | 'children'> & RNWViewProps & StackStyleProps & ComponentPropsBase & {
     children?: any | any[];
 };
-declare type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps>;
+export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps;
+export declare type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
 export declare type TextProps = ReactTextProps & RNWTextProps & TextStyleProps & ComponentPropsBase & {
     ellipse?: boolean;
     selectable?: boolean;
@@ -269,6 +270,58 @@ export declare type StaticConfig = {
     isReactNativeWeb?: boolean;
     memo?: boolean;
 };
+export declare type StylableComponent = StaticComponent | React.Component | React.ForwardRefExoticComponent<any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
+export declare type GetProps<A extends StylableComponent> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Omit<Props, keyof StackProps> & StackProps : A extends new (props: infer Props) => any ? Omit<Props, keyof StackProps> & StackProps : A extends typeof View ? ViewProps : A extends typeof Text ? TextProps : A extends typeof TextInput ? Partial<TextInputProps> & TextProps : A extends typeof Image ? Partial<ImageProps> & StackProps : {};
+export declare type VariantDefinitions<MyProps> = {
+    [propName: string]: {
+        [Key in '...fontSize']?: FontSizeVariantSpreadFunction<MyProps>;
+    } | {
+        [Key in '...size']?: SizeVariantSpreadFunction<MyProps>;
+    } | {
+        [Key in '...color']?: ColorVariantSpreadFunction<MyProps>;
+    } | {
+        [Key in '...lineHeight']?: FontLineHeightVariantSpreadFunction<MyProps>;
+    } | {
+        [Key in '...letterSpacing']?: FontLetterSpacingVariantSpreadFunction<MyProps>;
+    } | {
+        [Key in '...zIndex']?: ZIndexVariantSpreadFunction<MyProps>;
+    } | {
+        [Key in '...theme']?: ThemeVariantSpreadFunction<MyProps>;
+    } | {
+        [Key in string]: MyProps;
+    } | {
+        [Key in number]: MyProps;
+    };
+};
+export declare type GetVariantProps<Variants extends Object> = {
+    [key in keyof Variants]?: GetVariantValues<keyof Variants[key], keyof Variants[key]>;
+};
+export declare type VariantSpreadExtras<Props> = {
+    tokens: TamaguiConfig['tokens'];
+    theme: Themes extends {
+        [key: string]: infer B;
+    } ? B : unknown;
+    props: Props;
+};
+export declare type VariantSpreadFunction<Props, Val = any> = (val: Val, config: VariantSpreadExtras<Props>) => WithVariableValues<TextStylePropsBase> | WithVariableValues<StackStylePropsBase> | null | undefined;
+declare type WithVariableValues<A extends {
+    [key: string]: any;
+}> = {
+    [Key in keyof A]: A[Key] | Variable;
+};
+export declare type GetVariants<Props> = void | {
+    [key: string]: {
+        [key: string]: Partial<Props> | VariantSpreadFunction<Props>;
+    };
+};
+export declare type GetVariantValues<Key, Val> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Val;
+export declare type FontSizeVariantSpreadFunction<A> = VariantSpreadFunction<A, FontSizeTokens>;
+export declare type SizeVariantSpreadFunction<A> = VariantSpreadFunction<A, SizeTokens>;
+export declare type ColorVariantSpreadFunction<A> = VariantSpreadFunction<A, ColorTokens>;
+export declare type FontLineHeightVariantSpreadFunction<A> = VariantSpreadFunction<A, FontLineHeightTokens>;
+export declare type FontLetterSpacingVariantSpreadFunction<A> = VariantSpreadFunction<A, FontLetterSpacingTokens>;
+export declare type ZIndexVariantSpreadFunction<A> = VariantSpreadFunction<A, ZIndexTokens>;
+export declare type ThemeVariantSpreadFunction<A> = VariantSpreadFunction<A, ThemeTokens>;
 declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight';
 declare type FontKeys = 'fontFamily';
 declare type FontSizeKeys = 'fontSize';

@@ -1,7 +1,7 @@
 import React from 'react'
-import { StackProps, YStack } from 'tamagui'
+import { YStack, YStackProps } from 'tamagui'
 
-export const Preview = (props: StackProps) => (
+export const Preview = (props: YStackProps) => (
   <YStack
     data-preview
     margin={0}

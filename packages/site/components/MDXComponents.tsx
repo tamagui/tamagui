@@ -16,10 +16,10 @@ import {
   Image,
   Paragraph,
   Separator,
-  StackProps,
   Text,
   Theme,
   XStack,
+  XStackProps,
   YStack,
 } from 'tamagui'
 
@@ -370,7 +370,7 @@ export const components = {
   },
 }
 
-const LinkHeading = ({ id, children, ...props }: { id: string } & StackProps) => (
+const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (
   <XStack
     tag="a"
     href={`#${id}`}
@@ -422,7 +422,5 @@ function unwrapText(children: any) {
   })
 }
 
-const getTextChildren = (children) =>
-  React.Children.map(children, (x) => (typeof x === 'string' ? x : null)).flat()
 const getNonTextChildren = (children) =>
   React.Children.map(children, (x) => (typeof x !== 'string' ? x : null)).flat()

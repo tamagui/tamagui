@@ -12,6 +12,7 @@ export const SizableText = styled(Text, {
   variants: {
     size: {
       '...fontSize': sizableTextSizeVariant,
+      '...size': sizableTextSizeVariant,
     },
   },
 })

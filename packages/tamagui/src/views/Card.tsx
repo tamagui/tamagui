@@ -1,4 +1,4 @@
-import { isVariable, styled } from '@tamagui/core'
+import { GetProps, isVariable, styled } from '@tamagui/core'
 import React from 'react'
 
 import { getSize } from '../helpers/getSize'

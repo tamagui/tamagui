@@ -654,7 +654,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     ...staticConfig,
   }
 
-  let res: StaticComponent<ComponentPropTypes, void, Ref> = component as any
+  let res: StaticComponent<ComponentPropTypes, {}, Ref> = component as any
 
   if (configIn.memo) {
     res = memo(res) as any
