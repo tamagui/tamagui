@@ -73,7 +73,7 @@ export declare type CreateTamaguiConfig<A extends GenericTokens, B extends Gener
     themes: B;
     shorthands: C;
     media: D;
-    animations: E;
+    animations: AnimationDriver<E>;
 };
 export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations>;
 export declare type ThemeObject = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
@@ -86,8 +86,7 @@ export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeTokens = `$${ThemeKeys}`;
 export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {};
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
-export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Omit<CreateTamaguiConfig<A, B, C, D, E>, 'animations'> & {
-    animations: E;
+export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = CreateTamaguiConfig<A, B, C, D, E> & {
     Provider: (props: TamaguiProviderProps) => any;
     tokensParsed: CreateTokens<Variable>;
     themeConfig: any;
@@ -336,6 +335,7 @@ declare type AnimationConfig = {
     [key: string]: any;
 };
 export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
+    avoidClasses?: boolean;
     useAnimations: UseAnimationHook;
     animations: A;
     View?: any;
@@ -357,7 +357,6 @@ export declare type UseAnimationState = {
 };
 export declare type UseAnimationHook = (props: UseAnimationProps, state: UseAnimationState) => {
     style?: StackStylePropsBase;
-    avoidClasses?: boolean;
 };
 export {};
 //# sourceMappingURL=types.d.ts.map

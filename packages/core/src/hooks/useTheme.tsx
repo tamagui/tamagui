@@ -71,7 +71,7 @@ export const useTheme = (
         return Reflect.has(theme, key)
       },
       get(_, key) {
-        if (!name) {
+        if (!name || key === '__proto__') {
           return Reflect.get(_, key)
         }
         // TODO make this pattern better

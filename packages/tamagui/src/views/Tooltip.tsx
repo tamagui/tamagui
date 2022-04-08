@@ -70,12 +70,8 @@ export const Tooltip = ({
       return (
         <YStack
           key="tooltip-child"
-          animated
-          // @ts-ignore
           animation="tooltip"
-          // @ts-ignore
           enterStyle={enterStyle}
-          // @ts-ignore
           exitStyle={exitStyle}
           {...tooltipContainerProps}
         >
