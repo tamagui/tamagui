@@ -17,16 +17,10 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
-import { MediaPlayer } from '../components/MediaPlayer'
 import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
-  // return (
-  //   <YStack p="$10">
-  //     <MediaPlayer />
-  //   </YStack>
-  // )
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />

@@ -42,7 +42,7 @@ export const HeroBelow = memo(() => {
           <Paragraph size="$3" theme="alt2">
             Works with React Native and{' '}
             <Link href="https://necolas.github.io/react-native-web/">Web</Link>. Use it as a style
-            library or full component kit. Comes with beautiful themes, or bring your own.
+            library or full component kit. Comes with beautiful themes, or BYO.
           </Paragraph>
         </YStack>
 
@@ -54,8 +54,8 @@ export const HeroBelow = memo(() => {
             Productive
           </H3>
           <Paragraph size="$3" theme="alt2">
-            Typed inline styles without performance downside. Themes, tokens, shorthands, media
-            queries, and animations that run fast.
+            Typed inline styles without performance downside with themes, tokens, shorthands, media
+            queries, and animations.
           </Paragraph>
         </YStack>
 

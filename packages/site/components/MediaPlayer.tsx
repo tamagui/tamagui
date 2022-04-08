@@ -14,6 +14,8 @@ import {
   YStack,
 } from 'tamagui'
 
+import image from '../public/tamagui-icon.png'
+
 export const MediaPlayer = memo(
   ({
     theme,
@@ -48,7 +50,7 @@ export const MediaPlayer = memo(
         >
           <XStack ai="center" p="$3" space="$5">
             <Square br="$6" size="$11">
-              <Image width={150} height={150} src="http://placekitten.com/200/200" />
+              <Image width={150} height={150} src={image.src} />
             </Square>
 
             <YStack mt={-10} jc="center">
@@ -79,7 +81,7 @@ export const MediaPlayer = memo(
             >
               <Rewind />
               <Button
-                animation="bouncy"
+                // animation="bouncy"
                 theme={mainButtonTheme}
                 bordered
                 // debug

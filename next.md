@@ -36,6 +36,7 @@
     - // TODO i think media + pseudo needs handling here
 
 - beta.2: 
+  - do a series of small demo videos to share on twitter etc
   - <BlurView />
   - space => gap
   - check theme change slow
@@ -136,3 +137,5 @@
   - built in jsx => css converter
   - "move to my design system" (finds tamagui package.json and moves there)
 - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
+- <Select />
+- colored cli output
