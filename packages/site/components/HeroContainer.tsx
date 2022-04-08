@@ -4,9 +4,11 @@ import { Theme, XStack, YStack, styled } from 'tamagui'
 export function HeroContainer({
   children,
   demoMultiple,
+  smaller,
 }: {
   demoMultiple?: boolean
   children?: React.ReactNode
+  smaller?: boolean
 }) {
   return (
     <YStack
@@ -17,12 +19,11 @@ export function HeroContainer({
       display="flex"
       alignItems="center"
       justifyContent="center"
-      pt={30}
-      pb={50}
+      py={50}
       minHeight={380}
-      borderRadius="$3"
-      $gtLg={{
-        mx: '$-2',
+      borderRadius="$4"
+      $gtMd={{
+        mx: smaller ? 0 : '$-4',
       }}
     >
       {demoMultiple ? (

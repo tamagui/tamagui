@@ -1,26 +1,29 @@
 import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Button, Circle, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
+import { demoMedia, media } from '../constants/media'
 import { useGet } from '../hooks/useGet'
 import favicon from '../public/favicon.svg'
-import { ContainerLarge } from './Container'
+import { Container, ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
 import { IconStack } from './IconStack'
 import { useOnIntersecting } from './useOnIntersecting'
 
 const breakpoints = [
-  { name: 'sm', at: 660 },
-  { name: 'md', at: 800 },
-  { name: 'lg', at: 1020 },
+  { name: 'xs', at: demoMedia[0] },
+  { name: 'sm', at: demoMedia[1] },
+  { name: 'md', at: demoMedia[2] },
+  { name: 'lg', at: demoMedia[3] },
 ]
 const browserHeight = 445
 
 export const HeroResponsive = memo(() => {
   const [bounding, setBounding] = useState<DOMRect | null>(null)
   const [prevMove, setPrevMove] = useState(0)
-  const initialWidth = 500
+  const initialWidth =
+    typeof window !== 'undefined' ? Math.max(400, Math.min(500, window.innerWidth / 2)) : 500
   const [hasIntersected, setHasIntersected] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [move, setMove] = useState(0)
@@ -29,35 +32,47 @@ export const HeroResponsive = memo(() => {
   const getState = useGet({ move, isDragging })
   const [sizeI, setSizeI] = useState(0)
 
+  useEffect(() => {
+    if (!bounding) {
+      updateBoundings()
+      return
+    }
+    const width = bounding.width + move - 10
+    for (let i = breakpoints.length - 1; i >= 0; i--) {
+      if (width > breakpoints[i].at) {
+        console.log('were at', width, i)
+        setSizeI(i + 1)
+        return
+      }
+    }
+  }, [move, bounding])
+
   function updateBoundings() {
+    console.log('update', safariRef.current)
     const rect = safariRef.current?.getBoundingClientRect() ?? null
     setBounding(rect)
   }
 
   const onMove = throttle((e: MouseEvent) => {
-    console.log('ok', getState().isDragging)
-    if (!getState().isDragging || !bounding) return
+    if (!getState().isDragging) return
+    if (!bounding) {
+      updateBoundings()
+      return
+    }
+    if (!bounding) return
     const right = bounding.width + bounding.x
     const x = e.pageX - right
-    const maxMove = breakpoints[2].at - initialWidth + 10
+    const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 30
     const nextMove = Math.min(maxMove, Math.max(0, x))
     const next = nextMove + (prevMove || 0)
-    const width = bounding.width + x - 10
-    console.log('w', width, bounding.width, bounding.x, e.pageX, maxMove)
     setMove(next)
     setPrevMove(0)
-    if (width) {
-      const nextSizeI =
-        width > breakpoints[2].at
-          ? 3
-          : width > breakpoints[1].at
-          ? 2
-          : width > breakpoints[0].at
-          ? 1
-          : 0
-      setSizeI(nextSizeI)
-    }
   }, 16)
+
+  const stop = () => {
+    setPrevMove(getState().move)
+    setIsDragging(false)
+  }
 
   useOnIntersecting(
     ref,
@@ -76,6 +91,7 @@ export const HeroResponsive = memo(() => {
         onMove.cancel()
         dispose?.()
         window.removeEventListener('mousemove', onMove)
+        stop()
       }
     },
     {
@@ -84,13 +100,11 @@ export const HeroResponsive = memo(() => {
   )
 
   useEffect(() => {
-    const handler = (_e: MouseEvent) => {
-      setPrevMove(getState().move)
-      setIsDragging(false)
-    }
-    window.addEventListener('mouseup', handler)
+    window.addEventListener('mouseup', stop)
+    window.addEventListener('blur', stop)
     return () => {
-      window.removeEventListener('mouseup', handler)
+      window.removeEventListener('mouseup', stop)
+      window.removeEventListener('blur', stop)
     }
   }, [])
 
@@ -105,11 +119,8 @@ export const HeroResponsive = memo(() => {
     <YStack ref={ref} y={0} my="$-12" py="$12" pos="relative">
       <ContainerLarge pos="relative">
         <Header />
-
         <Spacer size="$8" />
-
         <YStack h={browserHeight + 50} />
-
         <XStack b={-20} pos="absolute" zi={1} f={1} space>
           <YStack
             className="unselectable"
@@ -119,8 +130,26 @@ export const HeroResponsive = memo(() => {
             ref={safariRef}
             theme="alt1"
           >
-            <Safari shouldLoad={hasIntersected} isSmall={isSmall} />
+            <Theme name="pink">
+              <Safari shouldLoad={hasIntersected} isSmall={isSmall} />
+            </Theme>
           </YStack>
+
+          <Container zi={-1} pos="absolute">
+            <XStack x={-8} y={20}>
+              {breakpoints.map((bp, i) => {
+                return (
+                  <Marker
+                    key={i}
+                    onPress={handleMarkerPress}
+                    active={sizeI > i}
+                    name={breakpoints[i].name}
+                    l={breakpoints[i].at}
+                  />
+                )
+              })}
+            </XStack>
+          </Container>
 
           <YStack
             jc="center"
@@ -142,7 +171,6 @@ export const HeroResponsive = memo(() => {
 
         <YStack pos="absolute" zi={0} t={220} l={-1000} r={-1000} b={-75} ai="center" jc="center">
           <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.1} />
-
           <YStack pos="relative" f={1} h="100%" w="100%">
             <YStack
               theme="darker"
@@ -153,32 +181,6 @@ export const HeroResponsive = memo(() => {
             >
               <YStack fullscreen className="bg-grid" />
             </YStack>
-
-            <ContainerLarge pos="relative">
-              {/* <YStack zi={-2} pe="none" pos="absolute" y={50} right={0} x={450} o={0.1}>
-                <Glow />
-              </YStack> */}
-              <XStack x={2}>
-                <Marker
-                  onPress={handleMarkerPress}
-                  active={sizeI > 0}
-                  name={breakpoints[0].name}
-                  l={breakpoints[0].at}
-                />
-                <Marker
-                  onPress={handleMarkerPress}
-                  active={sizeI > 1}
-                  name={breakpoints[1].name}
-                  l={breakpoints[1].at}
-                />
-                <Marker
-                  onPress={handleMarkerPress}
-                  active={sizeI > 2}
-                  name={breakpoints[2].name}
-                  l={breakpoints[2].at}
-                />
-              </XStack>
-            </ContainerLarge>
           </YStack>
         </YStack>
       </ContainerLarge>
@@ -188,7 +190,7 @@ export const HeroResponsive = memo(() => {
 
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
-    <Theme className="unselectable" name={active ? 'blue' : null}>
+    <Theme className="unselectable" name={active ? 'pink' : null}>
       <YStack pos="absolute" l={800} {...props}>
         <XStack pe="none" y={-80} ai="flex-start" space>
           <YStack w={1} h={80} bc="$colorHover" opacity={active ? 0.5 : 0.1} />

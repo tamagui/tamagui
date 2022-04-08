@@ -97,6 +97,9 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
+        if (props['debug'] === 'break') {
+          debugger
+        }
         // prettier-ignore
         console.log(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', ' debug prop on:')
       }
@@ -256,28 +259,23 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     // get the right component
     const isTaggable = !Component || typeof Component === 'string'
+    const avoidClasses = state.animation && state.animation.avoidClasses
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
+    const BaseTextComponent = !isWeb ? Text : element || 'span'
+    const BaseViewComponent = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
     const ViewComponent = isText
-      ? // ensure animated resolves to View/Text
-        (isAnimated ? AnimatedText || Text : null) ||
-        // prettier-ignore
-        !isWeb
-        ? Text
-        : element || 'span'
-      : // ensure animated resolves to View/Text
-      (isAnimated ? AnimatedView || View : null) ||
-        // prettier-ignore
-        !isWeb
-      ? View
-      : element || (hasTextAncestor ? 'span' : 'div')
+      ? (isAnimated && !avoidClasses ? AnimatedText || Text : null) || BaseTextComponent
+      : (isAnimated && !avoidClasses ? AnimatedView || View : null) || BaseViewComponent
 
     let styles: any[]
-    const avoidClasses = state.animation && state.animation.avoidClasses
+
+    const isStringElement = typeof ViewComponent !== 'string'
+    const shouldWrapHoverable = isWeb && isStringElement
+    const animationStyles = state.animation ? state.animation.style : null
 
     if (avoidClasses) {
       // styles = [state.animatedStyle]
-      const animationStyles = state.animation ? state.animation.style : null
       if (isWeb) {
         styles = {
           ...defaultNativeStyle,
@@ -301,13 +299,14 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         isWeb && hoverStyle ? ({ hoverStyle } as any) : hoverStyle,
         isWeb && pressStyle ? ({ pressStyle } as any) : pressStyle,
         isWeb && focusStyle ? ({ focusStyle } as any) : focusStyle,
+        animationStyles,
       ]
     }
 
     if (process.env.NODE_ENV === 'development') {
-      if (props['debug'] && state.animation) {
+      if (props['debug']) {
         // prettier-ignore
-        console.log('  » animations', props.animation, { style, styles, defaultNativeStyle, splitStyleResult })
+        console.log('  » ', { avoidClasses, animation: props.animation, style, styles, defaultNativeStyle, splitStyleResult })
       }
     }
 
@@ -316,7 +315,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     // can just remove  && !avoidClasses and add in a viewProps.style = styles in isWeb
 
     if (isWeb) {
-      const stylesClassNames = useStylesAsClassname(styles, avoidClasses || false)
+      const stylesClassNames = useStylesAsClassname(styles, avoidClasses || false, props.debug)
       if (!avoidClasses) {
         const fontFamilyName = isText
           ? props.fontFamily || staticConfig.defaultProps.fontFamily
@@ -433,9 +432,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
             },
           }),
           ...(isHoverable && {
-            onMouseEnter: true
+            onMouseEnter: attachHover
               ? (e) => {
                   let next: Partial<typeof state> = {}
+                  console.log('hoverin')
                   if (attachHover) {
                     next.hover = true
                   }
@@ -449,7 +449,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                   onMouseEnter?.(e)
                 }
               : undefined,
-            onMouseLeave: true
+            onMouseLeave: attachHover
               ? (e) => {
                   let next: Partial<typeof state> = {}
                   mouseUps.add(unPress)
@@ -478,7 +478,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                 onMouseDown?.(e)
               }
             : null,
-          // TODO why
           [isWeb ? 'onClick' : 'onPress']: attachPress
             ? (e) => {
                 // this caused issue with next.js passing href
@@ -491,23 +490,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         }
       : null
 
-    if (events) {
-      if (typeof ViewComponent !== 'string') {
-        // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
-        const [pressProps] = usePressable({
-          disabled,
-          hitSlop,
-          onPressIn: events.onMouseDown,
-          onPressOut: events.onPressOut,
-          onPress: events[isWeb ? 'onClick' : 'onPress'],
-        })
-        Object.assign(viewProps, pressProps)
-      } else {
-        Object.assign(viewProps, events)
-      }
-    }
-
-    const childEls = !children
+    let childEls = !children
       ? children
       : wrapThemeManagerContext(
           spacedChildren({
@@ -518,6 +501,38 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           }),
           getThemeManagerIfChanged(theme)
         )
+
+    if (events) {
+      // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
+      const [pressProps] = usePressable({
+        disabled,
+        hitSlop,
+        onPressIn: events.onMouseDown,
+        onPressOut: events.onPressOut,
+        onPress: events[isWeb ? 'onClick' : 'onPress'],
+      })
+
+      if (isStringElement) {
+        Object.assign(viewProps, pressProps)
+
+        // handle hoverable
+        if (shouldWrapHoverable) {
+          childEls = (
+            <span
+              style={{
+                display: 'contents',
+              }}
+              onMouseEnter={events.onMouseEnter}
+              onMouseLeave={events.onMouseLeave}
+            >
+              {children}
+            </span>
+          )
+        }
+      } else {
+        Object.assign(viewProps, events)
+      }
+    }
 
     let content: any
 
@@ -557,15 +572,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       if (props['debug']) {
         viewProps['debug'] = true
         // prettier-ignore
-        console.log('  » props in:', { ...props }, 'classnames', props.className?.split(' '))
-        // prettier-ignore
-        console.log('  » props out:', { ...viewProps }, 'classnames', viewProps.className?.split(' '))
-        // prettier-ignore
-        console.log('  » etc:', { shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls })
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), shouldAttach, ViewComponent, viewProps, state, styles, pseudos, content, childEls })
         // only on browser because node expands it huge
         if (typeof window !== 'undefined') {
-          console.log('  » theme', theme, 'state', theme.__state, 'className', theme.className)
-          console.log('  » component info', { staticConfig, tamaguiConfig })
+          // prettier-ignore
+          console.log('  » ', { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig })
         }
       }
     }
@@ -626,8 +637,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     defaultNativeStyleSheet = StyleSheet.create({
       base: defaultNativeStyle,
     })
-
-    // console.log('wutfasda', defaultNativeStyle)
 
     // @ts-ignore
     component.defaultProps = {
@@ -696,7 +705,6 @@ export const Spacer = createComponent<
       },
     },
 
-    // TODO should fallback to regular style value
     flex: {
       true: {
         flex: 1,

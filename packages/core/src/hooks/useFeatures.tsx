@@ -91,7 +91,7 @@ function loadAnimationFeature() {
         return null
       }
 
-      const animatedStyle = useAnimations(props as any, {
+      const res = useAnimations(props as any, {
         isMounted: state.mounted,
         style,
         hoverStyle: isHovering ? pseudos!.hoverStyle : null,
@@ -103,10 +103,7 @@ function loadAnimationFeature() {
 
       useIsomorphicLayoutEffect(() => {
         setStateShallow({
-          animation: {
-            style: animatedStyle,
-            avoidClasses: true,
-          },
+          animation: res,
         })
       }, [JSON.stringify(style)])
 

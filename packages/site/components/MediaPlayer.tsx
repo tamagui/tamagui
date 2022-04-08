@@ -1,4 +1,3 @@
-// debug
 import { FastForward, Pause, Rewind } from '@tamagui/feather-icons'
 import React, { memo } from 'react'
 import {
@@ -81,18 +80,14 @@ export const MediaPlayer = memo(
             >
               <Rewind />
               <Button
-                // animation="bouncy"
                 theme={mainButtonTheme}
                 bordered
-                // debug
-                // bc="$background"
                 hoverStyle={{
                   elevation: '$6',
                   scale: 1.025,
                 }}
                 my="$-6"
                 icon={Pause}
-                // scaleIcon={2}
                 size="$8"
                 circular
                 elevation="$4"

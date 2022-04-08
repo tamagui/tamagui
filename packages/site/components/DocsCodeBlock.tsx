@@ -20,7 +20,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     variant,
     isHighlightingLines,
   } = props
-  const [isCollapsed, setIsCollapsed] = useState(isHero)
+  const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
   const [hasCopied, setHasCopied] = useState(false)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
@@ -50,7 +50,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
       position="relative"
       {...(isHero && {
         px: '$4',
-        $gtSm: {
+        mx: '$-4',
+        $gtMd: {
           mx: '$-7',
         },
       })}
@@ -61,23 +62,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           display="inline-flex"
           alignItems="center"
           justifyContent="flex-end"
-          space="$1"
           top={-58}
-          right="$2"
-          $gtSm={{
-            right: 50,
-          }}
-          $gtMd={{
-            right: 50,
-          }}
+          right="$6"
         >
-          <Button
-            size="$2"
-            color="$color"
-            className="text-shadow"
-            chromeless
-            onPress={() => setIsCollapsed((x) => !x)}
-          >
+          <Button size="$2" onPress={() => setIsCollapsed((x) => !x)}>
             {isCollapsed ? 'Show code' : 'Hide code'}
           </Button>
         </YStack>

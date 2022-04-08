@@ -7,6 +7,7 @@ import { XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
+import AnimationsHoverDemo from '../components/demos/AnimationsHoverDemo'
 import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
@@ -21,6 +22,12 @@ import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
+  return (
+    <YStack p="$10">
+      <AnimationsHoverDemo />
+    </YStack>
+  )
+
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />

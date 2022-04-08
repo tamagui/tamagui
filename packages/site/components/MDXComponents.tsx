@@ -6,6 +6,7 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
+  Circle,
   EnsureFlexed,
   H1,
   H2,
@@ -104,30 +105,21 @@ export const components = {
         <XStack
           borderWidth={1}
           borderColor="$borderColor"
-          p="$5"
-          py="$4"
+          p="$4"
+          py="$3"
           bc="$background"
           br="$2"
-          mb="$2"
-          mt="$2"
+          my="$4"
           space="$3"
+          pos="relative"
           {...props}
         >
           <Paragraph py="$1" theme="alt1" mt={-3} mb={-3} className="paragraph-parent" size="$3">
             {unwrapText(children)}
           </Paragraph>
-          <YStack
-            ml="auto"
-            mt={-2}
-            w={30}
-            h={30}
-            ai="center"
-            jc="center"
-            bc="$backgroundFocus"
-            br={100}
-          >
-            <HelpCircle size={18} color="var(--yellow11)" />
-          </YStack>
+          <Circle pos="absolute" t="$-3" r="$-3" bc="$backgroundPress" size="$7">
+            <HelpCircle size={22} color="var(--yellow11)" />
+          </Circle>
         </XStack>
       </Theme>
     )
@@ -216,8 +208,17 @@ export const components = {
   pre: ({ children }) => <>{children}</>,
 
   code: (props) => {
-    const { hero, line, scrollable, className, children, id, showLineNumbers, collapsed, ...rest } =
-      props
+    const {
+      hero,
+      line,
+      scrollable,
+      className,
+      children,
+      id,
+      showLineNumbers,
+      collapsible,
+      ...rest
+    } = props
     if (!className) {
       return <CodeInline>{children}</CodeInline>
     }
@@ -226,7 +227,7 @@ export const components = {
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
-        isCollapsible={hero !== undefined || collapsed !== undefined}
+        isCollapsible={hero !== undefined || collapsible !== undefined}
         isScrollable={scrollable !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
         {...(rest as any)}

@@ -6,36 +6,30 @@
   - animations
     - css
     - test hover/press styles + add to animations docs
-  - load theme hook via feature
   - check focusStyle works or remove docs
   - type variant function arg if we can
   - compiler
     - check it with variants extracting fully
     - props
-      - theme
-      - space/gap  (+ work with visually hidden)
+      - theme, space/gap  (+ work with visually hidden)
       - onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
   - docs
     - animations
-    - add fonts section? to guides
-      - document $body being default font family
   - bugs
-    - // debug
-    - // TODO why
     - // TODO not working?
     - slow types (tried fixing but made them more accurate but worse :/)
-    - get sizableTextSizeVarianty types working and ...fontSize
+    - get sizableTextSizeVariant types working and ...fontSize
     - // TODO this should be ...fontSize type not working
     - // TODO can we make it work using its own variants with types?
     - // TODO if not then we need to add defaultVariants: {}
     - media queries in styled() not working
     - fix image w/h shorthand not translating to width/height runtime
     - Image SSR / site weirdness on some
-    - ScrollView isnt SSR compat
-    - // TODO handle pseudos
     - // TODO i think media + pseudo needs handling here
 
 - beta.2: 
+  - // TODO handle pseudos
+  - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
   - <BlurView />
   - space => gap
@@ -46,12 +40,16 @@
   - docs: extractable(), deoptProps
 
 - beta.3:
+  - load theme hook via feature if possible
+  - add fonts section to guides
+  - document $body being default font family
   - styleq / react-native-web 18 exploration
   - OmitShorthands<> helper (see ActiveCirlce in site)
   - split fonts into packages
   - floating-ui
 
 - beta.4
+  - useLayout feature hook
   - optional 18-only separate releases? beta.3.react18?
     - react native doesn't support it yet except on new arch
     - (useId/useInsertionEffect)
@@ -69,7 +67,7 @@
   - docs
     - exported helpers getTokens, useThemeName, getFontSize
       - spacedChildren
-    - exported hooks
+    - exported hooks - useControllableState, useLayout
     - <SizableFrame />, <EnsureFlexed />
   - fix bugs
   - blog post
@@ -139,3 +137,13 @@
 - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
 - <Select />
 - colored cli output
+
+// defaultProps: {
+  //   Button: {
+  //     scaleIcon: 2,
+  //   },
+  // },
+  // mediaScale: {
+  //   horizontal: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+  //   vertical: ['short', 'tall'],
+  // },

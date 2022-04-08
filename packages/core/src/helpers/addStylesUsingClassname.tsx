@@ -10,12 +10,12 @@ import { insertStyleRule } from './insertStyleRule'
 // could be cleared occasionally
 let added = new Set<string>()
 
-export function useStylesAsClassname(styles: any[], disable = false) {
+export function useStylesAsClassname(styles: any[], disable = false, debug = false) {
   if (!useInsertionEffect) {
-    return addStylesUsingClassname(styles)
+    return addStylesUsingClassname(styles, debug)
   } else {
     const insertions: any[] = []
-    const className = addStylesUsingClassname(disable ? [] : styles, (identifier, rules) => {
+    const className = addStylesUsingClassname(disable ? [] : styles, debug, (identifier, rules) => {
       for (const rule of rules) {
         insertions.push({ identifier, rule })
       }
@@ -31,6 +31,7 @@ export function useStylesAsClassname(styles: any[], disable = false) {
 
 export function addStylesUsingClassname(
   styles: any[],
+  debug = false,
   onAdd?: (identifier: string, rules: string[]) => any
 ) {
   let className = ''
@@ -40,10 +41,21 @@ export function addStylesUsingClassname(
       className += ' ' + addStylesUsingClassname(style)
       continue
     }
-    for (const { identifier, rules } of getStylesAtomic(style)) {
+    const atomicStyles = getStylesAtomic(style)
+    if (process.env.NODE_ENV === 'development') {
+      if (debug) {
+        console.log(' atomicStyles ', atomicStyles)
+      }
+    }
+    for (const { identifier, rules } of atomicStyles) {
       className += ` ${identifier}`
       if (added.has(identifier)) {
         continue
+      }
+      if (process.env.NODE_ENV === 'development') {
+        if (debug) {
+          console.log(' inserting ', rules[0])
+        }
       }
       added.add(identifier)
       if (onAdd) {

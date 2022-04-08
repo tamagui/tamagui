@@ -107,6 +107,8 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = -2,
+
+    // text props
     color: colorProp,
     fontWeight,
     letterSpacing,
@@ -157,13 +159,15 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
         }
         return (
           <SizableText
-            fontWeight={fontWeight}
-            letterSpacing={letterSpacing}
-            size={size}
-            color={color}
-            textAlign={textAlign}
-            fontSize={fontSize}
-            fontFamily={fontFamily}
+            {...{
+              color,
+              fontWeight,
+              letterSpacing,
+              fontSize,
+              fontFamily,
+              textAlign,
+              size,
+            }}
             flexGrow={1}
             flexShrink={1}
             ellipse

@@ -109,6 +109,7 @@ export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 
 export * from './hooks/useLayout'
+export * from './hooks/useControllableState'
 export * from './hooks/useKeyboardDismissable'
 
 export * from './views/BlurView'
