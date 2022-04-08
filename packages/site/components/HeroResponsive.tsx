@@ -38,6 +38,7 @@ export const HeroResponsive = memo(() => {
   }
 
   const onMove = throttle((e: MouseEvent) => {
+    console.log('ok', getState().isDragging)
     if (!getState().isDragging || !bounding) return
     const right = bounding.width + bounding.x
     const x = e.pageX - right
@@ -45,7 +46,7 @@ export const HeroResponsive = memo(() => {
     const nextMove = Math.min(maxMove, Math.max(0, x))
     const next = nextMove + (prevMove || 0)
     const width = bounding.width + x - 10
-    // console.log('w', width, bounding.width, bounding.x, e.pageX, maxMove)
+    console.log('w', width, bounding.width, bounding.x, e.pageX, maxMove)
     setMove(next)
     setPrevMove(0)
     if (width) {

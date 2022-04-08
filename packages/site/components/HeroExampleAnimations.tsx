@@ -99,7 +99,12 @@ export const ExampleAnimations = memo(() => {
   }
   const container = useRef(null)
 
-  const settings = Object.entries(animation.settings)
+  console.log('positionI', positionI, position)
+
+  const settings =
+    typeof animation.settings === 'string'
+      ? [['transition', animation.settings]]
+      : Object.entries(animation.settings)
 
   useOnIntersecting(container, ({ isIntersecting, dispose }) => {
     const onKey = (e: KeyboardEvent) => {
@@ -146,18 +151,16 @@ export const ExampleAnimations = memo(() => {
         <YStack
           ref={container}
           pos="relative"
-          // className="hero-gradient"
+          className="hero-gradient"
           ai="center"
           jc="center"
           width="60%"
           $sm={{ width: '100%' }}
         >
           <Square
-            // debug
             animation={animation.animation}
             elevation="$4"
             size={110}
-            // bc={`$${tint}10`}
             bc="$green10"
             br="$9"
             onPress={() => next()}

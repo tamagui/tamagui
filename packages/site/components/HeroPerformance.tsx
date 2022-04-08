@@ -11,7 +11,7 @@ export function HeroPerformance() {
     <ContainerLarge position="relative">
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$1">
-          <HomeH2>Automatic performance</HomeH2>
+          <HomeH2>Effortless performance</HomeH2>
           <HomeH3 maw={580}>
             Write natural, typed inline styles as normal React props. Get&nbsp;back clean, fast
             atomic CSS.
@@ -19,7 +19,7 @@ export function HeroPerformance() {
         </YStack>
 
         <YStack pos="relative" px="$2" h={181} br="$8" width="100%" ai="stretch" jc="center">
-          <YStack fullscreen zi={-1} className="bg-grid mask-gradient-right" />
+          {/* <YStack fullscreen zi={-1} className="bg-grid mask-gradient-right" /> */}
 
           <Paragraph
             pos="absolute"

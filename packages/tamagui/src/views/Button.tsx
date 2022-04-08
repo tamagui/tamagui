@@ -55,7 +55,6 @@ const ButtonFrame = styled(SizableStack, {
   borderColor: '$borderColor',
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: '$1',
   cursor: 'pointer',
   flexWrap: 'nowrap',
   hoverable: true,
@@ -167,9 +166,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
           </SizableText>
         )
       })
-  if (props['debug']) {
-    console.log('>>>>>>', props, rest)
-  }
+
   return (
     // careful not to desctructure and re-order props, order is important
     <ButtonInsideButtonContext.Provider value={true}>
