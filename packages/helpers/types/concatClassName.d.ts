@@ -1,2 +1,2 @@
-export declare function concatClassName(_cn: any): string;
+export declare function concatClassName(...args: any[]): any;
 //# sourceMappingURL=concatClassName.d.ts.map

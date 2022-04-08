@@ -46,7 +46,6 @@ export function spacedChildren({
         next.push(
           <Spacer
             key={`${key}_spacer`}
-            // @ts-ignore TODO
             direction={
               flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
             }

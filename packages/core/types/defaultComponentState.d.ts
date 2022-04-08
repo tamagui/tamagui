@@ -5,6 +5,9 @@ export declare const defaultComponentState: {
     pressIn: boolean;
     focus: boolean;
     mounted: boolean;
-    animatedStyle: any;
+    animation: {
+        style?: any;
+        avoidClasses?: boolean | undefined;
+    } | null;
 };
 //# sourceMappingURL=defaultComponentState.d.ts.map

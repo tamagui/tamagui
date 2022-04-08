@@ -7,5 +7,8 @@ export const defaultComponentState = {
   focus: false,
   // only used by enterStyle
   mounted: false,
-  animatedStyle: null as any,
+  animation: null as null | {
+    style?: any
+    avoidClasses?: boolean
+  },
 }

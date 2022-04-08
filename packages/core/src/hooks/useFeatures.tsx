@@ -103,7 +103,10 @@ function loadAnimationFeature() {
 
       useIsomorphicLayoutEffect(() => {
         setStateShallow({
-          animatedStyle,
+          animation: {
+            style: animatedStyle,
+            avoidClasses: true,
+          },
         })
       }, [JSON.stringify(style)])
 
