@@ -1,7 +1,7 @@
 import React from 'react'
-import { StackProps, YStack } from 'tamagui'
+import { YStack, YStackProps } from 'tamagui'
 
-export const Container = (props: StackProps) => {
+export const Container = (props: YStackProps) => {
   return (
     <YStack
       mx="auto"
@@ -18,7 +18,7 @@ export const Container = (props: StackProps) => {
   )
 }
 
-export const ContainerLarge = (props: StackProps) => {
+export const ContainerLarge = (props: YStackProps) => {
   return (
     <YStack
       mx="auto"

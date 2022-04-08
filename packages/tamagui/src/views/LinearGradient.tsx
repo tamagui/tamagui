@@ -6,13 +6,13 @@ import {
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
 
-import { StackProps, YStack } from './Stacks'
+import { YStack, YStackProps } from './Stacks'
 
 // // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
 // TODO type theme values on colors
-type Props = LinearGradientProps & Omit<StackProps, 'children' | keyof LinearGradientProps>
+type Props = LinearGradientProps & Omit<YStackProps, 'children' | keyof LinearGradientProps>
 
 export const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAttributes<any>> =
   YStack.extractable(
@@ -38,7 +38,6 @@ export const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAt
 // resolve tamagui theme values
 const useLinearGradientColors = (colors: string[]) => {
   const theme = useTheme()
-  console.log('theme', theme['red10'], theme['$red10'])
   return colors.map((color) => {
     if (color[0] === '$') {
       return theme[color]?.toString() || color

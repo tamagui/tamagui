@@ -4,8 +4,14 @@ import CSS from 'csstype'
 import React from 'react'
 import {
   GestureResponderEvent,
+  Image,
+  ImageProps,
   TextProps as ReactTextProps,
+  Text,
+  TextInput,
+  TextInputProps,
   TextStyle,
+  View,
   ViewProps,
   ViewStyle,
 } from 'react-native'
@@ -126,7 +132,7 @@ export type Themes = TamaguiConfig['themes']
 export type ThemeName = GetAltThemeNames<keyof Themes>
 // export type ThemeNameWithSubThemes = GetSubThemes<ThemeName>
 export type ThemeKeys = keyof ThemeObject
-export type ThemeKeyVariables = `$${ThemeKeys}`
+export type ThemeTokens = `$${ThemeKeys}`
 export type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {}
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
@@ -251,7 +257,7 @@ export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 //
 
 export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme'
-  ? ThemeKeyVariables
+  ? ThemeTokens
   : K extends 'size'
   ? SizeTokens
   : K extends 'font'
@@ -273,7 +279,7 @@ export type ThemeValueByCategory<K extends string | number | symbol> = K extends
   : {}
 
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
-  ? ThemeKeyVariables
+  ? ThemeTokens
   : K extends SizeKeys
   ? SizeTokens
   : K extends FontKeys
@@ -373,9 +379,11 @@ export type StackProps = Omit<ViewProps, 'display' | 'children'> &
 // Text props
 //
 
-type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<
-  Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps
->
+export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> &
+  TransformStyleProps &
+  WebOnlyStyleProps
+
+export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
 
 export type TextProps = ReactTextProps &
   RNWTextProps &
@@ -516,6 +524,127 @@ export type StaticConfig = {
    */
   memo?: boolean
 }
+
+/**
+ * --------------------------------------------
+ *   variants
+ * --------------------------------------------
+ */
+
+export type StylableComponent =
+  | StaticComponent
+  | React.Component
+  | React.ForwardRefExoticComponent<any>
+  | (new (props: any) => any)
+  | typeof View
+  | typeof Text
+  | typeof TextInput
+  | typeof Image
+
+export type GetProps<A extends StylableComponent> = A extends StaticComponent<infer Props>
+  ? Props
+  : A extends React.Component<infer Props>
+  ? Omit<Props, keyof StackProps> & StackProps
+  : A extends new (props: infer Props) => any
+  ? Omit<Props, keyof StackProps> & StackProps
+  : A extends typeof View
+  ? ViewProps
+  : A extends typeof Text
+  ? TextProps
+  : A extends typeof TextInput
+  ? Partial<TextInputProps> & TextProps
+  : A extends typeof Image
+  ? Partial<ImageProps> & StackProps
+  : {}
+
+export type VariantDefinitions<MyProps> = {
+  [propName: string]:
+    | {
+        [Key in '...fontSize']?: FontSizeVariantSpreadFunction<MyProps>
+      }
+    | {
+        [Key in '...size']?: SizeVariantSpreadFunction<MyProps>
+      }
+    | {
+        [Key in '...color']?: ColorVariantSpreadFunction<MyProps>
+      }
+    | {
+        [Key in '...lineHeight']?: FontLineHeightVariantSpreadFunction<MyProps>
+      }
+    | {
+        [Key in '...letterSpacing']?: FontLetterSpacingVariantSpreadFunction<MyProps>
+      }
+    | {
+        [Key in '...zIndex']?: ZIndexVariantSpreadFunction<MyProps>
+      }
+    | {
+        [Key in '...theme']?: ThemeVariantSpreadFunction<MyProps>
+      }
+    | {
+        [Key in string]: MyProps
+      }
+    | {
+        [Key in number]: MyProps
+      }
+}
+
+export type GetVariantProps<Variants extends Object> = {
+  [key in keyof Variants]?: GetVariantValues<keyof Variants[key], keyof Variants[key]>
+}
+
+export type VariantSpreadExtras<Props> = {
+  tokens: TamaguiConfig['tokens']
+  theme: Themes extends { [key: string]: infer B } ? B : unknown
+  props: Props
+}
+
+export type VariantSpreadFunction<Props, Val = any> = (
+  val: Val,
+  config: VariantSpreadExtras<Props>
+) =>
+  | WithVariableValues<TextStylePropsBase>
+  | WithVariableValues<StackStylePropsBase>
+  | null
+  | undefined
+
+type WithVariableValues<A extends { [key: string]: any }> = {
+  [Key in keyof A]: A[Key] | Variable
+}
+
+export type GetVariants<Props> = void | {
+  [key: string]: {
+    [key: string]: Partial<Props> | VariantSpreadFunction<Props>
+  }
+}
+
+export type GetVariantValues<Key, Val> = Key extends `...${infer VariantSpread}`
+  ? ThemeValueByCategory<VariantSpread>
+  : Key extends 'true' | 'false'
+  ? boolean
+  : Key extends ':string'
+  ? string
+  : Key extends ':boolean'
+  ? boolean
+  : Key extends ':number'
+  ? number
+  : Val
+
+export type FontSizeVariantSpreadFunction<A> = VariantSpreadFunction<A, FontSizeTokens>
+export type SizeVariantSpreadFunction<A> = VariantSpreadFunction<A, SizeTokens>
+export type ColorVariantSpreadFunction<A> = VariantSpreadFunction<A, ColorTokens>
+export type FontLineHeightVariantSpreadFunction<A> = VariantSpreadFunction<A, FontLineHeightTokens>
+export type FontLetterSpacingVariantSpreadFunction<A> = VariantSpreadFunction<
+  A,
+  FontLetterSpacingTokens
+>
+export type ZIndexVariantSpreadFunction<A> = VariantSpreadFunction<A, ZIndexTokens>
+export type ThemeVariantSpreadFunction<A> = VariantSpreadFunction<A, ThemeTokens>
+
+/**
+ * --------------------------------------------
+ *   end variants
+ * --------------------------------------------
+ */
 
 type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight'
 

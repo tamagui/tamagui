@@ -1,7 +1,7 @@
 import React from 'react'
-import { StackProps, YStack } from 'tamagui'
+import { YStack, YStackProps } from 'tamagui'
 
-export const OffsetBox = (props: StackProps & { size?: 'hero' }) => {
+export const OffsetBox = (props: YStackProps & { size?: 'hero' }) => {
   return (
     <YStack
       {...(props.size === 'hero' && {

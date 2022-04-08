@@ -1,5 +1,4 @@
-import { GetProps, Variable } from '@tamagui/core'
-import { styled } from '@tamagui/core'
+import { GetProps, styled } from '@tamagui/core'
 
 import { getSize } from '../helpers/getSize'
 import { XStack } from './Stacks'

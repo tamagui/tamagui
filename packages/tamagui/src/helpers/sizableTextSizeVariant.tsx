@@ -1,6 +1,15 @@
-import { isVariable } from '@tamagui/core'
+import {
+  FontSizeTokens,
+  SizeTokens,
+  TextProps,
+  VariantSpreadFunction,
+  isVariable,
+} from '@tamagui/core'
 
-export const sizableTextSizeVariant = (val = '$4', { tokens, props }) => {
+export const sizableTextSizeVariant: VariantSpreadFunction<
+  TextProps,
+  SizeTokens | FontSizeTokens
+> = (val = '$4', { tokens, props }) => {
   const family = (
     typeof props.fontFamily === 'string'
       ? props.fontFamily
@@ -24,5 +33,6 @@ export const sizableTextSizeVariant = (val = '$4', { tokens, props }) => {
     letterSpacing,
     fontSize,
     lineHeight,
-  }
+    // TODO fix this should be able to return token typs
+  } as any
 }

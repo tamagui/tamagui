@@ -1,17 +1,3 @@
-export declare const sizableTextSizeVariant: (val: string | undefined, { tokens, props }: {
-    tokens: any;
-    props: any;
-}) => {
-    fontFamily?: undefined;
-    fontWeight?: undefined;
-    letterSpacing?: undefined;
-    fontSize?: undefined;
-    lineHeight?: undefined;
-} | {
-    fontFamily: any;
-    fontWeight: any;
-    letterSpacing: any;
-    fontSize: any;
-    lineHeight: any;
-};
+import { FontSizeTokens, SizeTokens, TextProps, VariantSpreadFunction } from '@tamagui/core';
+export declare const sizableTextSizeVariant: VariantSpreadFunction<TextProps, SizeTokens | FontSizeTokens>;
 //# sourceMappingURL=sizableTextSizeVariant.d.ts.map

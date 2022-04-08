@@ -17,7 +17,7 @@ import {
 } from 'react-native'
 
 import { prevent } from '../helpers/prevent'
-import { StackProps, YStack } from './Stacks'
+import { YStack, YStackProps } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -25,7 +25,7 @@ React['createElement']
 type ModalPropsReact = ModalBaseProps & ModalPropsIOS & ModalPropsAndroid
 
 export type ModalProps = Omit<ModalPropsReact, 'children'> &
-  StackProps & {
+  YStackProps & {
     visible?: boolean
     overlayBackground?: string
     overlayDismisses?: boolean
@@ -138,6 +138,7 @@ export const Modal = (props: ModalProps) => {
                     animation: animation as any,
                   }}
                 >
+                  {/* @ts-ignore */}
                   <ModalYStack onPress={prevent} pointerEvents={pointerEvents} {...rest}>
                     {finalChildren}
                   </ModalYStack>

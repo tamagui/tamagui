@@ -1,7 +1,7 @@
 import React from 'react'
-import { StackProps, YStack } from 'tamagui'
+import { YStack, YStackProps } from 'tamagui'
 
-export function RegionTable(props: StackProps) {
+export function RegionTable(props: YStackProps) {
   return (
     <YStack
       theme="alt1"

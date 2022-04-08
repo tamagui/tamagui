@@ -8,7 +8,6 @@ import { HoverOrToggle } from './HoverOrToggle'
 import { Popover } from './Popover/Popover'
 import { IPopoverProps } from './Popover/types'
 import { PopperArrow } from './PopperArrow'
-import { StackProps } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
