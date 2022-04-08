@@ -8,6 +8,7 @@
 //   recently.clear()
 // }, 1000)
 
+export function concatClassName(...args: any[]): any
 export function concatClassName(_cn: any) {
   // if (arguments.length === 1) {
   //   if (recently.has(arguments[0])) {

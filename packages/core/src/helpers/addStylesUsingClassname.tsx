@@ -10,23 +10,21 @@ import { insertStyleRule } from './insertStyleRule'
 // could be cleared occasionally
 let added = new Set<string>()
 
-export function useStylesAsClassname(styles: any[]) {
+export function useStylesAsClassname(styles: any[], disable = false) {
   if (!useInsertionEffect) {
     return addStylesUsingClassname(styles)
   } else {
     const insertions: any[] = []
-    const className = addStylesUsingClassname(styles, (identifier, rules) => {
+    const className = addStylesUsingClassname(disable ? [] : styles, (identifier, rules) => {
       for (const rule of rules) {
         insertions.push({ identifier, rule })
       }
     })
-
     useInsertionEffect(() => {
       for (const { identifier, rule } of insertions) {
         insertStyleRule(identifier, rule)
       }
     })
-
     return className
   }
 }

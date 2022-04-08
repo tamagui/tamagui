@@ -78,10 +78,12 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
   const { Component, validStyles, isText, isZStack, componentName } = staticConfig
   const componentClassName = `is_${componentName}`
-  const validStyleProps = validStyles ?? stylePropsView
+  const validStyleProps = validStyles || stylePropsView
 
   // split out default styles vs props so we can assign it to component.defaultProps
   let tamaguiConfig: TamaguiInternalConfig
+  let AnimatedText: any
+  let AnimatedView: any
 
   // web uses className, native uses style
   let defaultNativeStyle: any
@@ -111,8 +113,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       style,
       classNames,
     } = getSplitStyles(props, staticConfig, theme, state.mounted)
-
-    if (props.debug) console.log({ pseudos, viewPropsIn, state, classNames })
 
     const {
       tag,
@@ -254,96 +254,125 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       })
     }
 
-    // element
+    // get the right component
     const isTaggable = !Component || typeof Component === 'string'
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
-    const ReactView =
-      (isAnimated ? (tamaguiConfig?.animations?.View as any) : null) ??
-      (!isWeb ? View : element || (hasTextAncestor ? 'span' : 'div'))
-    const ReactText =
-      (isAnimated ? (tamaguiConfig?.animations?.Text as any) : null) ??
-      (!isWeb ? Text : element || 'span')
-    const ViewComponent = isText ? ReactText : ReactView
+    const ViewComponent = isText
+      ? // ensure animated resolves to View/Text
+        (isAnimated ? AnimatedText || Text : null) ||
+        // prettier-ignore
+        !isWeb
+        ? Text
+        : element || 'span'
+      : // ensure animated resolves to View/Text
+      (isAnimated ? AnimatedView || View : null) ||
+        // prettier-ignore
+        !isWeb
+      ? View
+      : element || (hasTextAncestor ? 'span' : 'div')
 
-    const includeNativeStyle = !isWeb || isAnimated
+    let styles: any[]
+    const avoidClasses = state.animation && state.animation.avoidClasses
 
-    let styles = [
-      defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
-      // parity w react-native-web, only for text in text
-      // TODO this should be able to be done w css to replicate after extraction:
-      //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
-      // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-      style,
-      // nesting these because we need to be sure concatClassNames overrides the right className
-      // prettier-ignore
-      isHovering ? (isWeb ? { hoverStyle: pseudos!.hoverStyle } as any : pseudos!.hoverStyle) || null : null,
-      // prettier-ignore
-      isPressing ? (isWeb ? { pressStyle: pseudos!.pressStyle } as any : pseudos!.pressStyle) || null : null,
-      // prettier-ignore
-      isFocusing ? (isWeb ? { focusStyle: pseudos!.focusStyle } as any : pseudos!.focusStyle) || null : null,
-    ]
-
-    if (isAnimated) {
-      styles = [state.animatedStyle]
+    if (avoidClasses) {
+      // styles = [state.animatedStyle]
+      const animationStyles = state.animation ? state.animation.style : null
+      if (isWeb) {
+        styles = {
+          ...defaultNativeStyle,
+          ...animationStyles,
+        }
+      } else {
+        styles = [defaultNativeStyleSheet?.base, animationStyles]
+      }
+    } else {
+      const hoverStyle = isHovering ? pseudos!.hoverStyle : null
+      const pressStyle = isPressing ? pseudos!.pressStyle : null
+      const focusStyle = isFocusing ? pseudos!.focusStyle : null
+      styles = [
+        defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
+        // parity w react-native-web, only for text in text
+        // TODO this should be able to be done w css to replicate after extraction:
+        //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
+        // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
+        style,
+        // nesting these on web because we need to be sure concatClassNames overrides the right className
+        isWeb && hoverStyle ? ({ hoverStyle } as any) : hoverStyle,
+        isWeb && pressStyle ? ({ pressStyle } as any) : pressStyle,
+        isWeb && focusStyle ? ({ focusStyle } as any) : focusStyle,
+      ]
     }
 
-    if (isWeb && !isAnimated) {
-      const stylesClassNames = useStylesAsClassname(styles)
-      const fontFamilyName = isText
-        ? props.fontFamily ?? staticConfig.defaultProps.fontFamily
-        : null
-      const fontFamily =
-        fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
-      const classList = [
-        fontFamily ? `font_${fontFamily}` : null,
-        theme.className,
-        defaultsClassName,
-        classNames,
-        stylesClassNames,
-        props.className,
-      ]
-      if (componentName) {
-        classList.unshift(componentClassName)
+    if (process.env.NODE_ENV === 'development') {
+      if (props['debug'] && state.animation) {
+        // prettier-ignore
+        console.log('  » animations', props.animation, { style, styles, defaultNativeStyle, splitStyleResult })
       }
-      // TODO restore this to isText classList
-      // hasTextAncestor === true && cssText.textHasAncestor,
-      // TODO MOVE TO VARIANTS [number] [any]
-      // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
+    }
 
-      // @ts-ignore we are optimizing using arguments
-      const className = concatClassName(...classList)
-      if (process.env.NODE_ENV === 'development') {
-        if (props['debug']) {
-          // prettier-ignore
-          console.log('  » styles', { pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
+    // TODO i think can still render this first part using reanimated
+    // that way we get some of the classnames we probably want here (componentName/font/etc)
+    // can just remove  && !avoidClasses and add in a viewProps.style = styles in isWeb
+
+    if (isWeb) {
+      const stylesClassNames = useStylesAsClassname(styles, avoidClasses || false)
+      if (!avoidClasses) {
+        const fontFamilyName = isText
+          ? props.fontFamily || staticConfig.defaultProps.fontFamily
+          : null
+        const fontFamily =
+          fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
+        const classList = [
+          fontFamily ? `font_${fontFamily}` : null,
+          theme.className,
+          defaultsClassName,
+          classNames,
+          stylesClassNames,
+          props.className,
+        ]
+        if (componentName) {
+          classList.unshift(componentClassName)
         }
-      }
-      viewProps.className = className
-    } else {
-      if (process.env.NODE_ENV === 'development') {
-        if (props['debug']) {
-          // prettier-ignore
-          console.log('  » animations', props.animation, { style, styles, includeNativeStyle, defaultNativeStyle, splitStyleResult })
+        // TODO restore this to isText classList
+        // hasTextAncestor === true && cssText.textHasAncestor,
+        // TODO MOVE TO VARIANTS [number] [any]
+        // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
+
+        const className = concatClassName(...classList)
+        if (process.env.NODE_ENV === 'development') {
+          if (props['debug']) {
+            // prettier-ignore
+            console.log('  » styles', { pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
+          }
         }
-      }
-      if (isAnimated) {
-        viewProps.style = [defaultNativeStyleSheet?.base, styles]
+        viewProps.className = className
       } else {
         viewProps.style = styles
       }
+    } else {
+      viewProps.style = styles
     }
 
     if (pointerEvents) {
       viewProps.pointerEvents = pointerEvents
     }
 
-    if (isWeb && !isAnimated) {
+    if (isWeb) {
       // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(viewProps)
       const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
-      // @ts-ignore
-      viewProps.ref = setRef
+
+      if (!isAnimated) {
+        // @ts-ignore
+        viewProps.ref = setRef
+      } else {
+        if (forwardedRef) {
+          // @ts-ignore
+          viewProps.ref = forwardedRef
+        }
+      }
+
       if (props.href != null && hrefAttrs != null) {
         const { download, rel, target } = hrefAttrs
         if (download != null) {
@@ -558,6 +587,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   onConfiguredOnce((conf) => {
     const shouldDebug = staticConfig.defaultProps?.debug
     tamaguiConfig = conf
+    AnimatedText = tamaguiConfig.animations?.Text
+    AnimatedView = tamaguiConfig?.animations?.View
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
     splitStyleResult = getSplitStyles(
       staticConfig.defaultProps,
@@ -639,7 +670,13 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 
-export const Spacer = createComponent<{ size?: number | SpaceTokens; flex?: boolean | number }>({
+export const Spacer = createComponent<
+  Omit<StackProps, 'flex' | 'direction'> & {
+    size?: number | SpaceTokens
+    flex?: boolean | number
+    direction?: 'horizontal' | 'vertical'
+  }
+>({
   memo: true,
   defaultProps: {
     ...stackDefaultStyles,
@@ -692,13 +729,10 @@ export function spacedChildren({
   spaceFlex?: boolean | number
   flexDirection?: ViewStyle['flexDirection']
 }) {
-  if (!space && !isZStack) {
-    return children
-  }
   const childrenList = Children.toArray(children)
   const len = childrenList.length
   if (len === 1) {
-    return children
+    return childrenList
   }
   const next: any[] = []
   for (const [index, child] of childrenList.entries()) {
@@ -706,14 +740,16 @@ export function spacedChildren({
       continue
     }
 
-    const key = `${child?.['key'] ?? index}`
-
-    next.push(
-      <Fragment key={key}>{isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}</Fragment>
-    )
+    if (!child || (child['key'] && !isZStack)) {
+      next.push(child)
+    } else {
+      next.push(
+        <Fragment key={index}>{isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}</Fragment>
+      )
+    }
 
     // allows for custom visually hidden components that dont insert spacing
-    if (child?.['type']?.['isVisuallyHidden']) {
+    if (child['type']?.['isVisuallyHidden']) {
       continue
     }
 
@@ -721,8 +757,7 @@ export function spacedChildren({
       if (space) {
         next.push(
           <Spacer
-            key={`${key}_spacer`}
-            // @ts-ignore TODO
+            key={`_${index}_spacer`}
             direction={
               flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
             }
