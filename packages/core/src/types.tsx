@@ -208,6 +208,7 @@ export type TransformStyleProps = {
 type Something<A> = A extends symbol ? Something<{}> : A
 
 type ComponentPropsBase = Something<{
+  debug?: boolean | 'break'
   disabled?: boolean
   className?: string
   id?: string
@@ -760,4 +761,10 @@ export type UseAnimationState = {
   delay?: number
 }
 
-export type UseAnimationHook = (props: UseAnimationProps, state: UseAnimationState) => any
+export type UseAnimationHook = (
+  props: UseAnimationProps,
+  state: UseAnimationState
+) => {
+  style?: StackStylePropsBase
+  avoidClasses?: boolean
+}

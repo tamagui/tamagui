@@ -7,70 +7,25 @@ description: Pluggable animation drivers.
   <AnimationsDemo />
 </HeroContainer>
 
-By default, Tamagui ships without animations. Now in beta, you can plug-in whichever animation driver you'd like, or write your own.
-
-Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using more advanced libraries like `reanimated` on native - all without changing any of your view code.
-
-## Installing an animation driver
-
-To your `tamagui.config.ts` file add:
-
-```tsx
-import { animations } from './animations'
-
-export default createTamagui({
-  animations,
-  ...theRestOfYourConfig,
-})
-```
-
-Now, in your `animations.ts` file:
-
-```tsx
-import { createAnimations } from '@tamagui/animations-css'
-
-export const animations = createAnimations({
-  springy: 'ease-in-out 300ms',
-})
-```
-
-If you want reanimated on native, add a `animations.native.ts` file:
-
-```tsx
-import { createAnimations } from '@tamagui/animations-reanimated'
-
-export const animations = createAnimations({
-  springy: {
-    type: 'spring',
-    damping: 20,
-    stiffness: 90,
-  },
-})
-```
-
-Note the keys match, so you can swap them out.
-
-<Notice>
-  If you are using an animation driver and aren't relying on `react-native` Animated with Next.js,
-  you should use add `Animated` and `AnimatedFlatList` to the [excludeReactNativeWebExports`
-  option](/docs/core/installation#next.js).
-</Notice>
-
-## Using animations
-
-The `animation` prop will now have `springy` as a valid value. By default, animations will apply to all animatable styles. This is a lot like setting `all` in a CSS animation.
-
-Let's addding some hover styles to see them animate:
-
-```tsx
+```jsx hero template=Animations
 
 ```
 
-We can limit the properties animations apply to with the `animated` prop:
+<Highlights
+  disableLinks
+  features={[
+    `Pluggable drivers, fully typed and easy to swap.`,
+    `Support hover, press, and focus animations.`,
+    `Supports enter animation on mount.`,
+    `Supports exit animation with AnimatePresence.`,
+  ]}
+/>
 
-```tsx
+Add animations to Tamagui with an animation driver.
 
-```
+Animation drivers are designed to be swappable, so you can use lightweight CSS animations or other web-focused animation libraries on the web, while using larger but more advanced libraries like `reanimated` on native - all without having to change a line outside of configuration.
+
+## Installation
 
 ### CSS
 
@@ -102,9 +57,7 @@ At runtime, the plugin does very little except to set the `transition` property 
 
 ### Reanimated
 
-[Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an animation library that targets React Native, as well as React Native Web. It's claim to fame is running off-thread animations, providing a nicer syntax than React Native Animated, as well as a variety helpful hooks, helper functions, and other libraries that play along nicely. It does add more to your bundle size though, and some animations still wont run as well as CSS on the web. That's why Tamagui [allows using different drivers depending on the platform](#installing-an-animation-driver).
-
-The `@tamagui/animations-reanimated` package works with the tamagui compiler and runtime to give you simple ways to share typed animations across all your components.
+[Reanimated](https://docs.swmansion.com/react-native-reanimated/) is an animation library that targets React Native and React Native Web. It runs off-thread animations, and provides nicer syntax and hooks. It weighs over 100Kb minified though, which makes it not always useful for the web.
 
 To install it add to your package.json:
 
@@ -142,11 +95,59 @@ export default createTamagui({
 })
 ```
 
-At runtime, this plugin parses animatable style properties and hands them over to reanimated off-thread, using worklets. It doesn't do anything at compile time as reanimated must run via JS.
+At runtime, this plugin parses animatable style properties and hands them over to reanimated off-thread, using worklets. It doesn't do anything at compile time - reanimated must run via JS.
 
-### AnimatePresence <Beta />
+---
 
-Oftentimes you want to animate something as it is unmounted. AnimatePresence does just this. It's inspired by and forked from [Framer Motion], but works with any animation in Tamagui.
+Note the keys match between CSS and reanimated, so you can swap them out.
+
+<Notice>
+  **Save bundle size** by removing `Animated` and `AnimatedFlatList` from react-native-web. On
+  Next.js, use the [excludeReactNativeWebExports` option](/docs/intro/installation#next.js) config
+  option.
+</Notice>
+
+## Usage
+
+The `animation` prop will now have `springy` as a valid value. By default, animations will apply to all animatable styles. This is a lot like setting `all` in a CSS animation.
+
+Let's adding some hover styles to see them animate:
+
+```tsx
+
+```
+
+We can limit the properties animations apply to with the `animated` prop:
+
+```tsx
+
+```
+
+Here's a working demo:
+
+<HeroContainer smaller>
+  <AnimationsHoverDemo />
+</HeroContainer>
+
+```jsx collapsible template=AnimationsHover
+
+```
+
+### enterStyle
+
+Setting `enterStyle` styles on any component tell it to start with those styles, and immediately transition into their regular styles:
+
+<HeroContainer smaller>
+  <AnimationsEnterDemo />
+</HeroContainer>
+
+```jsx collapsible template=AnimationsEnter
+
+```
+
+### AnimatePresence and exitStyle
+
+AnimatePresence animates direct children before they unmount. It's inspired by and forked from [Framer Motion](https://github.com/framer/motion), but works with any animation in Tamagui.
 
 To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
 

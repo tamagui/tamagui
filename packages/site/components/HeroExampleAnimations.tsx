@@ -1,36 +1,14 @@
-import { Play } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import React, { memo, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { animations } from '../constants/animations'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
+import AnimationsDemo from './demos/AnimationsDemo'
 import { HomeH2, HomeH3 } from './HomeH2'
-import { LogoIcon } from './TamaguiLogo'
 import { useOnIntersecting } from './useOnIntersecting'
-
-const positions = [
-  {
-    x: 0,
-    y: 0,
-    scale: 1,
-    rotate: '0deg',
-  },
-  {
-    x: -50,
-    y: -50,
-    scale: 0.5,
-    rotate: '-45deg',
-  },
-  {
-    x: 50,
-    y: 50,
-    scale: 1,
-    rotate: '180deg',
-  },
-]
 
 const animationDescriptions = [
   {
@@ -90,16 +68,13 @@ export function HeroExampleAnimations() {
 
 export const ExampleAnimations = memo(() => {
   const [animationI, setAnimationI] = useState(0)
-  const [positionI, setPositionI] = useState(2)
-  const position = positions[positionI]
   const animation = animationDescriptions[animationI]
   const { tint } = useTint()
-  const next = (to = 1) => {
-    setPositionI((x) => (x + to) % positions.length)
-  }
   const container = useRef(null)
-
-  console.log('positionI', positionI, position)
+  const [positionI, setPositionI] = useState(2)
+  const next = (to = 1) => {
+    setPositionI((x) => (x + to) % 3)
+  }
 
   const settings =
     typeof animation.settings === 'string'
@@ -157,28 +132,7 @@ export const ExampleAnimations = memo(() => {
           width="60%"
           $sm={{ width: '100%' }}
         >
-          <Square
-            animation={animation.animation}
-            elevation="$4"
-            size={110}
-            bc="$green10"
-            br="$9"
-            onPress={() => next()}
-            {...position}
-          >
-            <LogoIcon downscale={0.75} />
-          </Square>
-
-          <Button
-            pos="absolute"
-            bottom={20}
-            right={20}
-            circular
-            iconAfter={Play}
-            theme={tint}
-            size="$6"
-            onPress={() => next()}
-          />
+          <AnimationsDemo position={positionI} animation={animation.animation} />
         </YStack>
       </Theme>
 

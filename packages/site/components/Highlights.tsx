@@ -20,7 +20,7 @@ import { FrontmatterContext } from './MDXComponents'
 // TODO
 const Select = (props) => <select {...props} />
 
-export function Highlights({ features }) {
+export function Highlights({ features, disableLinks }: any) {
   const router = useRouter()
   const frontmatter = React.useContext(FrontmatterContext)
   // @ts-ignore
@@ -50,94 +50,96 @@ export function Highlights({ features }) {
         </YStack>
       </YStack>
 
-      <YStack space="$2" tag="nav" aria-labelledby="site-component-info-header">
-        <VisuallyHidden>
-          <h2 id="site-component-info-heading">Component Reference Links</h2>
-        </VisuallyHidden>
+      {!disableLinks && (
+        <YStack space="$2" tag="nav" aria-labelledby="site-component-info-header">
+          <VisuallyHidden>
+            <h2 id="site-component-info-heading">Component Reference Links</h2>
+          </VisuallyHidden>
 
-        <YStack py="$1" ai="center">
-          <Select
-            // @ts-ignore
-            value={frontmatter.version}
-            // @ts-ignore
-            onChange={(e) => router.push(`./${frontmatter.name}/${e.target.value}`)}
-          >
-            {/* @ts-ignore */}
-            {(frontmatter.versions || []).map((v, i) => {
-              return (
-                <option key={v} value={v}>
-                  {v}
-                  {i === 0 && ' (latest)'}
-                </option>
-              )
-            })}
-          </Select>
-        </YStack>
-
-        <Separator />
-
-        <YStack py="$2" space="$1">
-          <YStack>
-            <Link
-              // /${publishedName}/src
-              href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views`}
+          <YStack py="$1" ai="center">
+            <Select
               // @ts-ignore
-              target="_blank"
-            >
-              <XStack ai="center" space="$1">
-                <SizableText size="$2">View source</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
-                </YStack>
-              </XStack>
-            </Link>
-          </YStack>
-          <YStack>
-            <Link
-              // @tamagui/react-${publishedName}
-              href={`https://www.npmjs.com/package/tamagui`}
+              value={frontmatter.version}
               // @ts-ignore
-              target="_blank"
+              onChange={(e) => router.push(`./${frontmatter.name}/${e.target.value}`)}
             >
-              <XStack ai="center" space="$1">
-                <SizableText size="$2">View on npm</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
-                </YStack>
-              </XStack>
-            </Link>
-          </YStack>
-          <YStack>
-            <Link href="https://github.com/tamagui/tamagui/issues/new/choose" target="_blank">
-              <XStack ai="center" space="$1">
-                <SizableText size="$2">Report an issue</SizableText>
-                <YStack opacity={0.5} ml="$0.5">
-                  <ExternalLink size={12} color="var(--colorHover)" />
-                </YStack>
-              </XStack>
-            </Link>
-          </YStack>
-
-          {/* @ts-ignore */}
-          {frontmatter.aria && (
-            <YStack mb="$2">
               {/* @ts-ignore */}
-              <Link theme="blue" href={frontmatter.aria} target="_blank">
-                <XStack position="relative">
-                  <Paragraph size="$2" theme="alt1">
-                    ARIA design pattern
-                  </Paragraph>
-                  <YStack ml="$1">
-                    <Text theme="alt2">
-                      <ExternalLink size={12} color="var(--color)" />
-                    </Text>
+              {(frontmatter.versions || []).map((v, i) => {
+                return (
+                  <option key={v} value={v}>
+                    {v}
+                    {i === 0 && ' (latest)'}
+                  </option>
+                )
+              })}
+            </Select>
+          </YStack>
+
+          <Separator />
+
+          <YStack py="$2" space="$1">
+            <YStack>
+              <Link
+                // /${publishedName}/src
+                href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views`}
+                // @ts-ignore
+                target="_blank"
+              >
+                <XStack ai="center" space="$1">
+                  <SizableText size="$2">View source</SizableText>
+                  <YStack opacity={0.5} ml="$0.5">
+                    <ExternalLink size={12} color="var(--colorHover)" />
                   </YStack>
                 </XStack>
               </Link>
             </YStack>
-          )}
+            <YStack>
+              <Link
+                // @tamagui/react-${publishedName}
+                href={`https://www.npmjs.com/package/tamagui`}
+                // @ts-ignore
+                target="_blank"
+              >
+                <XStack ai="center" space="$1">
+                  <SizableText size="$2">View on npm</SizableText>
+                  <YStack opacity={0.5} ml="$0.5">
+                    <ExternalLink size={12} color="var(--colorHover)" />
+                  </YStack>
+                </XStack>
+              </Link>
+            </YStack>
+            <YStack>
+              <Link href="https://github.com/tamagui/tamagui/issues/new/choose" target="_blank">
+                <XStack ai="center" space="$1">
+                  <SizableText size="$2">Report an issue</SizableText>
+                  <YStack opacity={0.5} ml="$0.5">
+                    <ExternalLink size={12} color="var(--colorHover)" />
+                  </YStack>
+                </XStack>
+              </Link>
+            </YStack>
+
+            {/* @ts-ignore */}
+            {frontmatter.aria && (
+              <YStack mb="$2">
+                {/* @ts-ignore */}
+                <Link theme="blue" href={frontmatter.aria} target="_blank">
+                  <XStack position="relative">
+                    <Paragraph size="$2" theme="alt1">
+                      ARIA design pattern
+                    </Paragraph>
+                    <YStack ml="$1">
+                      <Text theme="alt2">
+                        <ExternalLink size={12} color="var(--color)" />
+                      </Text>
+                    </YStack>
+                  </XStack>
+                </Link>
+              </YStack>
+            )}
+          </YStack>
         </YStack>
-      </YStack>
+      )}
     </YStack>
   )
 }

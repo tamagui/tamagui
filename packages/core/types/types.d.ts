@@ -149,6 +149,7 @@ export declare type TransformStyleProps = {
 };
 declare type Something<A> = A extends symbol ? Something<{}> : A;
 declare type ComponentPropsBase = Something<{
+    debug?: boolean | 'break';
     disabled?: boolean;
     className?: string;
     id?: string;
@@ -301,6 +302,9 @@ export declare type UseAnimationState = {
     onDidAnimate?: any;
     delay?: number;
 };
-export declare type UseAnimationHook = (props: UseAnimationProps, state: UseAnimationState) => any;
+export declare type UseAnimationHook = (props: UseAnimationProps, state: UseAnimationState) => {
+    style?: StackStylePropsBase;
+    avoidClasses?: boolean;
+};
 export {};
 //# sourceMappingURL=types.d.ts.map

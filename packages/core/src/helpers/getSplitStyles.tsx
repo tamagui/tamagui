@@ -190,12 +190,6 @@ export const getSplitStyles = (
     Object.assign(style, cur)
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    if (props['debug']) {
-      console.log('  splitProps:', { props, viewProps, style })
-    }
-  }
-
   return {
     viewProps,
     style,

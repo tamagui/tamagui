@@ -1,5 +1,3 @@
-// debug
-
 // import React from 'react'
 // import { H3, H4, Paragraph, Text, YStack, useMedia } from 'tamagui'
 

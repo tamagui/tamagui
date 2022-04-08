@@ -36,173 +36,175 @@ AnimatedView['displayName'] = 'AnimatedView'
 AnimatedText['displayName'] = 'AnimatedText'
 
 export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
-  // , isHovered, isPressed, isExiting
-  const useAnimations = (props: UseAnimationProps, state: UseAnimationState) => {
-    const { style, hoverStyle, pressStyle, focusStyle, exitStyle, onDidAnimate, delay } = state
-    const [isPresent, safeToUnmount] = usePresence()
-    const presence = useContext(AnimatePresenceContext)
-    const isMounted = useSharedValue(false)
-    const hasExitStyle = !!exitStyle
-    const custom = useCallback(() => {
-      'worklet'
-      return presence?.custom
-    }, [presence])
+  return {
+    animations,
+    View: AnimatedView,
+    Text: AnimatedText,
+    useAnimations: (props: UseAnimationProps, state: UseAnimationState) => {
+      const { style, hoverStyle, pressStyle, focusStyle, exitStyle, onDidAnimate, delay } = state
+      const [isPresent, safeToUnmount] = usePresence()
+      const presence = useContext(AnimatePresenceContext)
+      const isMounted = useSharedValue(false)
+      const hasExitStyle = !!exitStyle
+      const custom = useCallback(() => {
+        'worklet'
+        return presence?.custom
+      }, [presence])
 
-    const reanimatedOnDidAnimated = useCallback<NonNullable<typeof onDidAnimate>>(
-      (...args) => {
-        onDidAnimate?.(...args)
-      },
-      [onDidAnimate]
-    )
-    const reanimatedSafeToUnmount = useCallback(() => {
-      safeToUnmount?.()
-    }, [safeToUnmount])
+      const reanimatedOnDidAnimated = useCallback<NonNullable<typeof onDidAnimate>>(
+        (...args) => {
+          onDidAnimate?.(...args)
+        },
+        [onDidAnimate]
+      )
+      const reanimatedSafeToUnmount = useCallback(() => {
+        safeToUnmount?.()
+      }, [safeToUnmount])
 
-    useEffect(() => {
-      isMounted.value = true
-    }, [isMounted])
+      useEffect(() => {
+        isMounted.value = true
+      }, [isMounted])
 
-    useEffect(
-      function allowUnMountIfMissingExit() {
-        if (!isPresent && !hasExitStyle) {
-          reanimatedSafeToUnmount()
-        }
-      },
-      [hasExitStyle, isPresent, reanimatedSafeToUnmount]
-    )
-
-    return useAnimatedStyle(() => {
-      const final = {
-        transform: [] as any[],
-      }
-
-      const isExiting = !isPresent && !!exitStyle
-      const transition = animations[props.animation]
-
-      const mergedStyles = {
-        ...style,
-        ...hoverStyle,
-        ...pressStyle,
-        ...focusStyle,
-        // ...isExiting && exitStyle(custom()),
-        ...(isExiting && exitStyle),
-      }
-
-      // console.log('wut', style, hoverStyle, pressStyle, isExiting)
-
-      const exitingStyleProps: Record<string, boolean> = {}
-      if (exitStyle) {
-        for (const key of Object.keys(exitStyle)) {
-          exitingStyleProps[key] = true
-        }
-      }
-
-      for (const key in mergedStyles) {
-        const value = mergedStyles[key]
-        const { animation, config, shouldRepeat, repeatCount, repeatReverse } = animationConfig(
-          key,
-          transition
-        )
-
-        const callback: (completed: boolean, value?: any) => void = (completed, recentValue) => {
-          if (onDidAnimate) {
-            runOnJS(reanimatedOnDidAnimated)(key as any, completed, recentValue, {
-              attemptedValue: value,
-            })
+      useEffect(
+        function allowUnMountIfMissingExit() {
+          if (!isPresent && !hasExitStyle) {
+            reanimatedSafeToUnmount()
           }
-          if (isExiting) {
-            exitingStyleProps[key] = false
-            const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
-            // if this is true, then we've finished our exit animations
-            if (!areStylesExiting) {
-              runOnJS(reanimatedSafeToUnmount)()
+        },
+        [hasExitStyle, isPresent, reanimatedSafeToUnmount]
+      )
+
+      const animatedStyle = useAnimatedStyle(() => {
+        const final = {
+          transform: [] as any[],
+        }
+
+        const isExiting = !isPresent && !!exitStyle
+        const transition = animations[props.animation]
+
+        const mergedStyles = {
+          ...style,
+          ...hoverStyle,
+          ...pressStyle,
+          ...focusStyle,
+          // ...isExiting && exitStyle(custom()),
+          ...(isExiting && exitStyle),
+        }
+
+        // console.log('wut', style, hoverStyle, pressStyle, isExiting)
+
+        const exitingStyleProps: Record<string, boolean> = {}
+        if (exitStyle) {
+          for (const key of Object.keys(exitStyle)) {
+            exitingStyleProps[key] = true
+          }
+        }
+
+        for (const key in mergedStyles) {
+          const value = mergedStyles[key]
+          const { animation, config, shouldRepeat, repeatCount, repeatReverse } = animationConfig(
+            key,
+            transition
+          )
+
+          const callback: (completed: boolean, value?: any) => void = (completed, recentValue) => {
+            if (onDidAnimate) {
+              runOnJS(reanimatedOnDidAnimated)(key as any, completed, recentValue, {
+                attemptedValue: value,
+              })
+            }
+            if (isExiting) {
+              exitingStyleProps[key] = false
+              const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
+              // if this is true, then we've finished our exit animations
+              if (!areStylesExiting) {
+                runOnJS(reanimatedSafeToUnmount)()
+              }
             }
           }
-        }
 
-        let { delayMs = null } = animationDelay(key, transition, delay)
+          let { delayMs = null } = animationDelay(key, transition, delay)
 
-        if (key === 'transform') {
-          if (!Array.isArray(value)) {
-            console.error(`Invalid transform value. Needs to be an array.`)
-          } else {
-            for (const transformObject of value) {
-              const key = Object.keys(transformObject)[0]
-              const transformValue = transformObject[key]
-              const transform = {} as any
-              if (transition?.[key]?.delay != null) {
-                delayMs = transition?.[key]?.delay ?? null
+          if (key === 'transform') {
+            if (!Array.isArray(value)) {
+              console.error(`Invalid transform value. Needs to be an array.`)
+            } else {
+              for (const transformObject of value) {
+                const key = Object.keys(transformObject)[0]
+                const transformValue = transformObject[key]
+                const transform = {} as any
+                if (transition?.[key]?.delay != null) {
+                  delayMs = transition?.[key]?.delay ?? null
+                }
+                let finalValue = animation(transformValue, config, callback)
+                if (shouldRepeat) {
+                  finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
+                }
+                if (delayMs != null) {
+                  transform[key] = withDelay(delayMs, finalValue)
+                } else {
+                  transform[key] = finalValue
+                }
+                if (Object.keys(transform).length) {
+                  final['transform'].push(transform)
+                }
               }
-              let finalValue = animation(transformValue, config, callback)
+            }
+          } else if (typeof value === 'object') {
+            // shadows
+            final[key] = {}
+            for (const innerStyleKey of Object.keys(value || {})) {
+              let finalValue = animation(value, config, callback)
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
               }
               if (delayMs != null) {
-                transform[key] = withDelay(delayMs, finalValue)
+                final[key][innerStyleKey] = withDelay(delayMs, finalValue)
               } else {
-                transform[key] = finalValue
-              }
-              if (Object.keys(transform).length) {
-                final['transform'].push(transform)
+                final[key][innerStyleKey] = finalValue
               }
             }
-          }
-        } else if (typeof value === 'object') {
-          // shadows
-          final[key] = {}
-          for (const innerStyleKey of Object.keys(value || {})) {
+          } else {
             let finalValue = animation(value, config, callback)
             if (shouldRepeat) {
               finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
             }
-            if (delayMs != null) {
-              final[key][innerStyleKey] = withDelay(delayMs, finalValue)
+            if (delayMs != null && typeof delayMs === 'number') {
+              final[key] = withDelay(delayMs, finalValue)
             } else {
-              final[key][innerStyleKey] = finalValue
+              final[key] = finalValue
             }
           }
-        } else {
-          let finalValue = animation(value, config, callback)
-          if (shouldRepeat) {
-            finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
-          }
-          if (delayMs != null && typeof delayMs === 'number') {
-            final[key] = withDelay(delayMs, finalValue)
-          } else {
-            final[key] = finalValue
-          }
+
+          // end for (key in mergedStyles)
         }
 
-        // end for (key in mergedStyles)
+        return final
+      }, [
+        style,
+        custom,
+        delay,
+        // disableInitialAnimation,
+        // exitProp,
+        // exitTransitionProp,
+        // fromProp,
+        isPresent,
+        hasExitStyle,
+        isMounted,
+        isPresent,
+        onDidAnimate,
+        reanimatedOnDidAnimated,
+        reanimatedSafeToUnmount,
+        // state,
+        // stylePriority,
+        // transitionProp,
+      ])
+
+      return {
+        style: animatedStyle,
+        avoidClasses: true,
       }
-
-      return final
-    }, [
-      style,
-      custom,
-      delay,
-      // disableInitialAnimation,
-      // exitProp,
-      // exitTransitionProp,
-      // fromProp,
-      isPresent,
-      hasExitStyle,
-      isMounted,
-      isPresent,
-      onDidAnimate,
-      reanimatedOnDidAnimated,
-      reanimatedSafeToUnmount,
-      // state,
-      // stylePriority,
-      // transitionProp,
-    ])
-  }
-
-  return {
-    useAnimations,
-    animations,
-    View: AnimatedView,
-    Text: AnimatedText,
+    },
   }
 }
 

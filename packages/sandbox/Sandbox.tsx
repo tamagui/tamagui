@@ -1,6 +1,5 @@
-// debug
-import { useCallback, useState } from 'react'
-import { Button, Theme, XStack, YStack } from 'tamagui'
+import { useState } from 'react'
+import { Button, Theme, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 

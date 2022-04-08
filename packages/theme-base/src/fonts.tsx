@@ -20,9 +20,9 @@ export const interFont = createFont({
   lineHeight: {
     1: 15,
     2: 20,
-    3: 23,
-    4: 26,
-    5: 27,
+    3: 25,
+    4: 27,
+    5: 28,
     6: 30,
     7: 36,
     8: 40,
@@ -40,8 +40,8 @@ export const interFont = createFont({
     4: 0,
     7: -1,
     9: -2,
-    10: -4,
-    12: -5,
+    10: -3,
+    12: -4,
   },
 })
 
