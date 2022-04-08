@@ -16,6 +16,8 @@ export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps 
     scaleSpace?: number;
     color?: SizableTextProps['color'];
     fontWeight?: SizableTextProps['fontWeight'];
+    fontSize?: SizableTextProps['fontSize'];
+    fontFamily?: SizableTextProps['fontFamily'];
     letterSpacing?: SizableTextProps['letterSpacing'];
     textAlign?: SizableTextProps['textAlign'];
 };
