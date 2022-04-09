@@ -23,11 +23,11 @@ export declare const tokens: {
             };
             weight: {
                 4: import("@tamagui/core").Variable;
-                7: import("@tamagui/core").Variable;
-                8: import("@tamagui/core").Variable;
+                6: import("@tamagui/core").Variable;
             } | {
                 4: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
+                7: import("@tamagui/core").Variable;
+                8: import("@tamagui/core").Variable;
             };
             family: string;
         };
@@ -54,11 +54,11 @@ export declare const tokens: {
             };
             weight: {
                 4: import("@tamagui/core").Variable;
-                7: import("@tamagui/core").Variable;
-                8: import("@tamagui/core").Variable;
+                6: import("@tamagui/core").Variable;
             } | {
                 4: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
+                7: import("@tamagui/core").Variable;
+                8: import("@tamagui/core").Variable;
             };
             family: string;
         };
@@ -85,11 +85,11 @@ export declare const tokens: {
             };
             weight: {
                 4: import("@tamagui/core").Variable;
-                7: import("@tamagui/core").Variable;
-                8: import("@tamagui/core").Variable;
+                6: import("@tamagui/core").Variable;
             } | {
                 4: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
+                7: import("@tamagui/core").Variable;
+                8: import("@tamagui/core").Variable;
             };
             family: string;
         };

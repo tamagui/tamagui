@@ -1,6 +1,6 @@
 /// <reference types="react" />
 export declare function useControllableState<T>({ prop, defaultProp, onChange, strategy, }: {
-    prop?: T;
+    prop?: T | undefined;
     defaultProp: T;
     onChange?: (next: T) => void;
     strategy?: 'prop-wins' | 'most-recent-wins';

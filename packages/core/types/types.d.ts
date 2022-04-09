@@ -148,7 +148,7 @@ export declare type TransformStyleProps = {
 };
 declare type Something<A> = A extends symbol ? Something<{}> : A;
 declare type ComponentPropsBase = Something<{
-    debug?: boolean | 'break';
+    debug?: boolean | 'break' | 'verbose';
     disabled?: boolean;
     className?: string;
     id?: string;
@@ -175,7 +175,10 @@ export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number
 export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
 export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
 export declare type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
-export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
+export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
+    width: SpaceTokens;
+    height: SpaceTokens;
+} : SpaceTokens : K extends ColorKeys ? ColorTokens : K extends ZIndexKeys ? ZIndexTokens : K extends LineHeightKeys ? FontLineHeightTokens : K extends FontWeightKeys ? FontWeightTokens : K extends FontLetterSpacingKeys ? FontLetterSpacingTokens : never;
 export declare type ThemeValueFallback = UnionableString | Variable;
 export declare type WithThemeValues<T extends object> = {
     [K in keyof T]: ThemeValueGet<K> extends never ? T[K] : ThemeValueGet<K> | Exclude<T[K], string> | ThemeValueFallback;
@@ -207,9 +210,7 @@ export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<S
 export declare type StackProps = Omit<ViewProps, 'display' | 'children'> & RNWViewProps & StackStyleProps & ComponentPropsBase & {
     children?: any | any[];
 };
-export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps;
-export declare type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
-export declare type TextProps = ReactTextProps & RNWTextProps & TextStyleProps & ComponentPropsBase & {
+export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps & {
     ellipse?: boolean;
     selectable?: boolean;
     textDecorationDistance?: number;
@@ -219,6 +220,9 @@ export declare type TextProps = ReactTextProps & RNWTextProps & TextStyleProps &
     wordWrap?: CSS.Properties['wordWrap'];
     cursor?: CSS.Properties['cursor'];
 };
+export declare type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
+export declare type TextProps = ReactTextProps & RNWTextProps & TextStyleProps & ComponentPropsBase;
+export declare type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase>;
 export declare type StaticComponent<Props = any, VariantProps = any, Ref = any, StaticConfParsed extends StaticConfigParsed = StaticConfigParsed> = React.ForwardRefExoticComponent<React.PropsWithoutRef<Props> & React.RefAttributes<Ref>> & StaticComponentObject<StaticConfParsed, VariantProps>;
 declare type StaticComponentObject<Conf extends StaticConfigParsed, VariantProps extends any> = {
     staticConfig: Conf;
@@ -268,6 +272,7 @@ export declare type StaticConfig = {
     isZStack?: boolean;
     isReactNativeWeb?: boolean;
     memo?: boolean;
+    isTamagui?: boolean;
 };
 export declare type StylableComponent = StaticComponent | React.Component | React.ForwardRefExoticComponent<any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
 export declare type GetProps<A extends StylableComponent> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Omit<Props, keyof StackProps> & StackProps : A extends new (props: infer Props) => any ? Omit<Props, keyof StackProps> & StackProps : A extends typeof View ? ViewProps : A extends typeof Text ? TextProps : A extends typeof TextInput ? Partial<TextInputProps> & TextProps : A extends typeof Image ? Partial<ImageProps> & StackProps : {};
@@ -346,11 +351,8 @@ export declare type UseAnimationProps = {
     [key: string]: any;
 };
 export declare type UseAnimationState = {
-    style: ViewStyle;
+    style: ViewStyle | null | undefined;
     isMounted: boolean;
-    hoverStyle?: ViewStyle | null;
-    pressStyle?: ViewStyle | null;
-    focusStyle?: ViewStyle | null;
     exitStyle?: ViewStyle | null;
     onDidAnimate?: any;
     delay?: number;

@@ -36,7 +36,7 @@ export function loader(this: LoaderContext<any>, source: string) {
       (options.disableDebugAttr || process.env.NODE_ENV !== 'development')
     ) {
       if (!hasLogged) {
-        console.log(' » disableExtraction: no optimizations running')
+        console.log(' » disableExtraction:', options.disableExtraction)
         hasLogged = true
       }
       return callback(null, source)

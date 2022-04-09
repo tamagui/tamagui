@@ -42,7 +42,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     View: AnimatedView,
     Text: AnimatedText,
     useAnimations: (props: UseAnimationProps, state: UseAnimationState) => {
-      const { style, hoverStyle, pressStyle, focusStyle, exitStyle, onDidAnimate, delay } = state
+      const { style, exitStyle, onDidAnimate, delay } = state
+      console.log('useAnimations', props.animation, style)
       const [isPresent, safeToUnmount] = usePresence()
       const presence = useContext(AnimatePresenceContext)
       const isMounted = useSharedValue(false)
@@ -85,9 +86,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
         const mergedStyles = {
           ...style,
-          ...hoverStyle,
-          ...pressStyle,
-          ...focusStyle,
           // ...isExiting && exitStyle(custom()),
           ...(isExiting && exitStyle),
         }
@@ -180,8 +178,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           // end for (key in mergedStyles)
         }
 
-        console.log('final', final)
-
         return final
       }, [
         style,
@@ -191,7 +187,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // exitProp,
         // exitTransitionProp,
         // fromProp,
-        isPresent,
         hasExitStyle,
         isMounted,
         isPresent,
@@ -202,6 +197,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // stylePriority,
         // transitionProp,
       ])
+
+      console.log('animatedStyle', animatedStyle)
 
       return {
         style: animatedStyle,
@@ -218,8 +215,8 @@ function animationDelay<Animate>(
   'worklet'
   let delayMs: TransitionConfig['delay'] = defaultDelay
 
-  if ((transition as any)?.[key as keyof Animate]?.delay != null) {
-    delayMs = (transition as any)?.[key as keyof Animate]?.delay
+  if (transition[key as keyof Animate]?.delay != null) {
+    delayMs = transition[key as keyof Animate]?.delay
   } else if (transition?.delay != null) {
     delayMs = transition.delay
   }
@@ -306,49 +303,50 @@ function animationConfig<Animate>(
   const key = styleProp
   let repeatCount = 0
   let repeatReverse = true
-
   let animationType: Required<TransitionConfig>['type'] = 'spring'
-  if (isColor(key) || key === 'opacity') animationType = 'timing'
+
+  if (isColor(key) || key === 'opacity') {
+    animationType = 'timing'
+  }
 
   // say that we're looking at `width`
   // first, check if we have transition.width.type
-  if ((transition as any)?.[key as keyof Animate]?.type) {
+  if (transition[key as keyof Animate]?.type) {
     animationType = (transition as any)[key]?.type
   } else if (transition?.type) {
     // otherwise, fallback to transition.type
     animationType = transition.type
   }
 
-  const loop = (transition as any)?.[key as keyof Animate]?.loop ?? transition?.loop
+  const loop = transition[key as keyof Animate]?.loop ?? transition?.loop
 
   if (loop != null) {
     repeatCount = loop ? -1 : 0
   }
 
-  if ((transition as any)?.[key as keyof Animate]?.repeat != null) {
-    repeatCount = (transition as any)?.[key as keyof Animate]?.repeat
+  if (transition[key as keyof Animate]?.repeat != null) {
+    repeatCount = transition[key as keyof Animate]?.repeat
   } else if (transition?.repeat != null) {
     repeatCount = transition.repeat
   }
 
-  if ((transition as any)?.[key as keyof Animate]?.repeatReverse != null) {
-    repeatReverse = (transition as any)?.[key as keyof Animate]?.repeatReverse
+  if (transition[key as keyof Animate]?.repeatReverse != null) {
+    repeatReverse = transition[key as keyof Animate]?.repeatReverse
   } else if (transition?.repeatReverse != null) {
     repeatReverse = transition.repeatReverse
   }
 
-  // debug({ loop, key, repeatCount, animationType })
   let config = {}
   // so sad, but fix it later :(
   let animation = (...props: any): any => props
 
   if (animationType === 'timing') {
     const duration =
-      ((transition as any)?.[key as keyof Animate] as WithTimingConfig)?.duration ??
+      (transition[key as keyof Animate] as WithTimingConfig)?.duration ??
       (transition as WithTimingConfig)?.duration
 
     const easing =
-      ((transition as any)?.[key as keyof Animate] as WithTimingConfig)?.easing ??
+      (transition[key as keyof Animate] as WithTimingConfig)?.easing ??
       (transition as WithTimingConfig)?.easing
 
     if (easing) {

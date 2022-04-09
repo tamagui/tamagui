@@ -43,12 +43,16 @@ export function styled<
     if (options) {
       const { variants, name, ...defaultProps } = options
       const isReactNativeWeb = RNComponents.has(Component)
-      const isTamagui = 'staticConfig' in Component
+      const isTamagui = !isReactNativeWeb && 'staticConfig' in Component
       const isInput =
         defaultProps.isInput || (!isTamagui ? Component === (TextInput as any) : undefined)
       const isText = defaultProps.isText || (!isTamagui ? isInput || Component === Text : undefined)
-      return {
+      const conf = {
         ...staticExtractionOptions,
+        ...(!isTamagui && {
+          Component,
+        }),
+        isTamagui,
         variants,
         defaultProps,
         componentName: name,
@@ -56,11 +60,20 @@ export function styled<
         isInput,
         isText,
       }
+      return conf
     }
     return {}
   })()
-  const config = extendStaticConfig(Component as any, staticConfigProps)
+  const config = extendStaticConfig(Component, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
+
+  if (process.env.NODE_ENV === 'development' && options?.debug) {
+    console.log(`🐛 tamagui styled(${staticConfigProps.componentName})`, {
+      options,
+      staticConfigProps,
+      config,
+    })
+  }
 
   type ParentProps = GetProps<ParentComponent>
   type VariantProps = Variants extends symbol ? {} : Expand<GetVariantProps<Variants>>

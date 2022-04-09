@@ -14,8 +14,6 @@ const disableExtraction = process.env.DISABLE_EXTRACTION
   ? Boolean(+process.env.DISABLE_EXTRACTION)
   : process.env.NODE_ENV === 'development'
 
-console.log('disableExtraction', disableExtraction)
-
 const transform = withPlugins(
   [
     withBundleAnalyzer({

@@ -1,5 +1,6 @@
-import * as fs from 'fs'
 import path from 'path'
+
+import * as fs from 'fs-extra'
 
 // were patching react-native-web so we can use some internal methods
 // we do it this way because we need to rely on webpack or bundler config to determine cjs vs esm
@@ -11,44 +12,53 @@ export function patchReactNativeWeb() {
   const rootDir = require.resolve('react-native-web').replace(/\/dist.*/, '')
   const modulePath = path.join(rootDir, 'dist', 'tamagui-exports.js')
   const cjsPath = path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js')
-  if (process.env.DEBUG) {
-    console.log('      » + react-native-web/' + path.relative(rootDir, modulePath))
-    console.log('      » + react-native-web/' + path.relative(rootDir, cjsPath))
+  const shouldPatchExports =
+    fs.existsSync(modulePath) &&
+    fs.readFileSync(modulePath, 'utf-8') === moduleExports &&
+    fs.existsSync(cjsPath) &&
+    fs.readFileSync(cjsPath, 'utf-8') === cjsExports
+  if (!shouldPatchExports) {
+    console.log('      | patch ' + path.relative(rootDir, modulePath))
+    console.log('      | patch ' + path.relative(rootDir, cjsPath))
+    fs.writeFileSync(modulePath, moduleExports)
+    fs.writeFileSync(cjsPath, cjsExports)
   }
-  fs.writeFileSync(modulePath, moduleExports)
-  fs.writeFileSync(cjsPath, cjsExports)
 
   // patch to allow className prop
-  const classNamePatch = `if (props.dataSet && props.dataSet['cn']) { domProps.className = className ? className + ' ' + props.dataSet['cn'] : props.dataSet['cn']; delete props.dataSet['cn'] }`
-  const domPropsPath = ['modules', 'createDOMProps', 'index.js']
-  const domPropsModulePath = path.join(rootDir, 'dist', ...domPropsPath)
-  const domPropsCjsPath = path.join(rootDir, 'dist', 'cjs', ...domPropsPath)
-  const patchClassName = (file: string) => {
+  const patches = [
+    {
+      replacee: `  if (dataSet != null) {`,
+      replacer: `if (props.dataSet?.className) {
+    classList = props.dataSet['className'];
+    delete props.dataSet['className'];
+  }
+  if (dataSet != null) {`,
+    },
+  ]
+
+  const dataSetPath = ['modules', 'createDOMProps', 'index.js']
+  const dataSetModulePath = path.join(rootDir, 'dist', ...dataSetPath)
+  const dataSetCjsPath = path.join(rootDir, 'dist', 'cjs', ...dataSetPath)
+
+  for (const file of [dataSetModulePath, dataSetCjsPath]) {
     const contents = fs.readFileSync(file, 'utf-8')
-    if (!contents.includes(classNamePatch)) {
-      const needle = `domProps.className = className`
-      const patchLocation = contents.indexOf(needle) + needle.length + 5
-      // its far down the file
-      if (patchLocation < 100) {
-        console.warn(
-          `⚠️ Couldn't apply className patch! Maybe using incompatible react-native-web version.`
-        )
-      } else {
-        const before = contents.slice(0, patchLocation)
-        const after = contents.slice(patchLocation)
-        const patched = before + '\n' + classNamePatch + '\n' + after
-        console.log('   > adding className support to react-native-web', file)
-        fs.writeFileSync(file, patched)
+    for (const { replacee, replacer } of patches) {
+      if (contents.includes(replacer)) {
+        continue
       }
+      if (!contents.includes(replacee)) {
+        console.warn(
+          `⚠️ Error: couldn't apply className patch! Maybe using incompatible react-native-web version.`,
+          {
+            replacee,
+            contents,
+          }
+        )
+        continue
+      }
+      fs.writeFileSync(file, contents.replaceAll(replacee, replacer))
     }
   }
-  patchClassName(domPropsModulePath)
-  patchClassName(domPropsCjsPath)
-
-  // if (props.className) {
-  //   domProps.className = className ? className + ' ' + props.className : props.className
-  // }
-
   // if entry files not patched, patch them:
   const moduleEntry = path.join(rootDir, 'dist', 'index.js')
   const moduleEntrySrc = fs.readFileSync(moduleEntry, 'utf-8')

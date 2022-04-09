@@ -3785,7 +3785,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-use-callback-ref@npm:0.1.0":
+"@radix-ui/react-use-callback-ref@npm:^0.1.0":
   version: 0.1.0
   resolution: "@radix-ui/react-use-callback-ref@npm:0.1.0"
   dependencies:
@@ -3793,18 +3793,6 @@ __metadata:
   peerDependencies:
     react: ^16.8 || ^17.0
   checksum: 5356971123d7bbc66a208eca4709483190d0927a6817089f885d4538cd701a174d76830ba36cfaa6336b340415aaefaddc606a575246b0cbcb4b1f2897075203
-  languageName: node
-  linkType: hard
-
-"@radix-ui/react-use-controllable-state@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@radix-ui/react-use-controllable-state@npm:0.1.0"
-  dependencies:
-    "@babel/runtime": ^7.13.10
-    "@radix-ui/react-use-callback-ref": 0.1.0
-  peerDependencies:
-    react: ^16.8 || ^17.0
-  checksum: 2ddd05854af227b74e8b4a76d0d3c49e83b481b059fad68b769f76b46faa4db8eeb68e1ccf15cf6c4c54a89e6debc6440ee492ccac64570bdf12173e49b2fddc
   languageName: node
   linkType: hard
 
@@ -20063,7 +20051,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
-    "@radix-ui/react-use-controllable-state": ^0.1.0
+    "@radix-ui/react-use-callback-ref": ^0.1.0
     "@react-aria/ssr": ^3.1.0
     "@react-aria/utils": ^3.10.0
     "@react-native-aria/focus": ^0.2.5

@@ -32,7 +32,7 @@ export const docsRoutes = [
       { title: 'Button', route: '/docs/components/button' },
       { title: 'Headings', route: '/docs/components/headings' },
       { title: 'Image', route: '/docs/components/image' },
-      { title: 'Forms', route: '/docs/components/forms' },
+      { title: 'Inputs', route: '/docs/components/inputs' },
       { title: 'Shapes', route: '/docs/components/shapes' },
       { title: 'Separator', route: '/docs/components/separator' },
       { title: 'Popover', route: '/docs/components/popover' },

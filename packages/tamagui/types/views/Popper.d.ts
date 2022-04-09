@@ -40,7 +40,7 @@ export declare const Popper: {
     Arrow: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>> & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>>> & import("@tamagui/core/types").MediaProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>> & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>>>> & {
         animation?: import("@tamagui/core/types").AnimationKeys | undefined;
     } & {
-        debug?: boolean | "break" | undefined;
+        debug?: boolean | "break" | "verbose" | undefined;
         disabled?: boolean | undefined;
         className?: string | undefined;
         id?: string | undefined;
