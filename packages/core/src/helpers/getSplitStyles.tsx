@@ -8,8 +8,9 @@ import {
 import { ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
+import { ComponentState } from '../defaultComponentState'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
-import { StackProps, StaticConfigParsed, ThemeObject } from '../types'
+import { MediaKeys, StackProps, StaticConfigParsed, ThemeObject } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { ResolveVariableTypes } from './createPropMapper'
 import { fixNativeShadow } from './fixNativeShadow'
@@ -17,14 +18,6 @@ import { getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule } from './insertStyleRule'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
-
-type PseudoStyles = {
-  hoverStyle?: ViewStyle
-  pressStyle?: ViewStyle
-  focusStyle?: ViewStyle
-  exitStyle?: ViewStyle
-  enterStyle?: ViewStyle
-}
 
 const skipKeys = {
   // could put events in here
@@ -41,16 +34,26 @@ export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
-  isMounted = false,
+  state: Partial<ComponentState>,
   resolveVariablesAs?: ResolveVariableTypes
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
   const style: ViewStyle = {}
 
-  let pseudos: PseudoStyles | null = null
   let cur: ViewStyle | null = null
   let classNames: string[] | null = null
+  const pseudos: {
+    hoverStyle?: ViewStyle
+    pressStyle?: ViewStyle
+    focusStyle?: ViewStyle
+    enterStyle?: ViewStyle
+    exitStyle?: ViewStyle
+  } = {}
+
+  const medias: {
+    [key in MediaKeys]: ViewStyle
+  } = {}
 
   for (const keyInit in props) {
     // be sure to sync next few lines below to getSubStyle (*1)
@@ -82,23 +85,23 @@ export const getSplitStyles = (
       // pseudo
       if (isPseudo) {
         if (!val) continue
-        if (key === 'enterStyle') {
-          if (isMounted) {
-            // once mounted we can ignore enterStyle
-            continue
-          }
-          Object.assign(style, getSubStyle(val, staticConfig, theme, props))
+        if (key === 'enterStyle' && state.mounted) {
+          // once mounted we can ignore enterStyle
           continue
         }
-        pseudos = pseudos || {}
         pseudos[key] = pseudos[key] || {}
-        Object.assign(pseudos[key], getSubStyle(val, staticConfig, theme, props))
+        const out = getSubStyle(val, staticConfig, theme, props)
+        Object.assign(pseudos[key], out)
+
+        // Object.assign(style, out)
         continue
       }
 
       // media
       if (isMedia) {
         const mediaKey = key.slice(1)
+        console.log('mediaQueryConfig[mediaKey]', mediaQueryConfig[mediaKey])
+
         if (!mediaQueryConfig[mediaKey]) {
           // this isn't a media key, pass through
           viewProps[key] = valInit
@@ -115,17 +118,25 @@ export const getSplitStyles = (
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
           if (process.env.NODE_ENV === 'development') {
-            if (props['debug']) console.log('mediaStyles', key, { mediaProps, mediaStyle })
+            if (props['debug'])
+              console.log('mediaStyles', key, mediaStyles, { mediaProps, mediaStyle })
           }
+          console.log('wtf')
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
             classNames = classNames || []
             classNames.push(out.identifier)
             addRule(out.styleRule)
-            insertStyleRule(out.identifier, out.styleRule)
+            const identifier = insertStyleRule(out.identifier, out.styleRule)
+            if (identifier) {
+              console.log('inserting', identifier)
+            }
             if (process.env.NODE_ENV === 'development') {
               if (props['debug']) console.log('mediaProp', style.identifier, out.styleRule)
             }
+          }
+          if (mediaState[mediaKey]) {
+            Object.assign(medias, mediaStyle)
           }
         } else {
           if (mediaState[mediaKey]) {
@@ -193,6 +204,7 @@ export const getSplitStyles = (
   return {
     viewProps,
     style,
+    medias,
     pseudos,
     classNames,
   }

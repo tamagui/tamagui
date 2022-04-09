@@ -16,14 +16,13 @@
   - docs
     - animations
   - bugs
-    - // TODO not working?
-    - media queries in styled() not working
+    - TODO handle pseudos
     - fix image w/h shorthand not translating to width/height runtime
     - Image SSR / site weirdness on some
     - // TODO i think media + pseudo needs handling here
 
-- beta.2: 
-  - // TODO handle pseudos
+- 1: 
+  - // @ts-expect-error TODO
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
   - <BlurView />
@@ -34,7 +33,7 @@
   - test component theme + alt theme (plus with compiled)
   - docs: extractable(), deoptProps
 
-- beta.3:
+- 2:
   - load theme hook via feature if possible
   - add fonts section to guides
   - document $body being default font family
@@ -43,7 +42,8 @@
   - split fonts into packages
   - floating-ui
 
-- beta.4
+- 3
+  - // this can be done with CSS entirely right?
   - useLayout feature hook
   - optional 18-only separate releases? beta.3.react18?
     - react native doesn't support it yet except on new arch
@@ -57,17 +57,12 @@
   - bugs:
     - // TODO adding fontWeight here doesn't override SizableText variant
 
-- v1
-  - github sponsor
-  - docs
-    - exported helpers getTokens, useThemeName, getFontSize
-      - spacedChildren
-    - exported hooks - useControllableState, useLayout
-    - <SizableFrame />, <EnsureFlexed />
-  - fix bugs
-  - blog post
 
-- v2
+- exported helpers getTokens, useThemeName, getFontSize
+  - spacedChildren
+- exported hooks - useControllableState, useLayout
+- <SizableFrame />, <EnsureFlexed />
+
   - Text numberOfLines / context fix
   - `space` should work with media queries
   - createTamagui({ defaultProps: { Button: {} } }) for any component
@@ -80,7 +75,6 @@
     - <Switch><Switch.Toogle /></Switch>
     - support Switch.Toggle style extractions
 
-- v3
   - basic styled() extraction to css at compile time
   - catchall: { variants: '...' => {} } / styled(Text, () => ({}))
   - ~button textProps => child selectors~
@@ -94,7 +88,6 @@
         }
       }}
 
-- v4
   - container queries
   - <Scale />
   - @tamagui/cli: 
@@ -102,24 +95,18 @@
     - tamagui sandbox ./packages/site/components/OffsetBox.tsx
     - tamagui compile ./packages/site/components/OffsetBox.tsx
 
-- v5
   - auto skeleton components
   - <List /> (works with drawer + draggable + selectable)
   - <Menu />
   - <MenuDrawer />
 
-- v6
   - ios/android specific themes
   - options to render to native components in more places
 
-- v7
   - <Group />
   - <Combobox />
   - <UL /> <LI /> <OL />
 
-- write a "why a compiler" blog post
-  - keeps you honest
-    - having to implement things twice sucks in a way, in another way its a lot like having two browsers or having tests - i often find bugs in both directions - runtime or compile, and fixing them to align force you to make sure the logic is right.
 - popover add safety checks around using Popover.Content
 - Text selectColor
 - focusWithinStyle
@@ -133,6 +120,7 @@
 - <Select />
 - colored cli output
 - have tamagui watch the tamagui.config.ts file and report if types break
+- smart responsive scaling system (<Scale /> basically)
 
 // defaultProps: {
   //   Button: {
@@ -143,3 +131,5 @@
   //   horizontal: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
   //   vertical: ['short', 'tall'],
   // },
+
+animation popup 

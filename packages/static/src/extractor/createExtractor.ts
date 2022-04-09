@@ -231,10 +231,7 @@ export function createExtractor() {
 
           const shouldLog = !hasLogged
           if (shouldLog) {
-            const prefix = '      »'
-            if (disableExtraction) {
-              console.log(prefixLogs || prefix, 'disableExtraction: not optimizing')
-            }
+            const prefix = '      |'
             console.log(
               prefixLogs || prefix,
               '                          total · optimized · flattened '
@@ -337,7 +334,7 @@ export function createExtractor() {
                 flattenedAttrs.push(attr)
                 return
               }
-              if (typeof arg !== 'undefined') {
+              if (arg !== undefined) {
                 try {
                   if (typeof arg !== 'object' || arg == null) {
                     if (shouldPrintDebug) {

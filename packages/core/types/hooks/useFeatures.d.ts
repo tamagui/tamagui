@@ -8,10 +8,7 @@ declare type FeatureUtils = {
     setStateShallow: (next: Partial<ComponentState>) => void;
     useAnimations?: UseAnimationHook;
     pseudos: any;
-    style: ViewStyle;
-    isHovering: boolean;
-    isPressing: boolean;
-    isFocusing: boolean;
+    style: ViewStyle | null | undefined;
 };
 export declare const useFeatures: (props: any, utils?: FeatureUtils | undefined) => JSX.Element[];
 export {};

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Theme, YStack } from 'tamagui'
+import { Button, H2, Theme, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -19,8 +19,25 @@ export const Sandbox = () => {
   )
 }
 
+export const HomeH2 = styled(H2, {
+  debug: true,
+
+  mt: -20,
+  ta: 'center',
+  als: 'center',
+  size: '$10',
+  letterSpacing: -2,
+  fontSize: 40,
+
+  $sm: {
+    fontSize: 32,
+    bc: 'red',
+    letterSpacing: -1,
+  },
+})
+
 export const Test = () => {
-  return <Button tag="a">Benchmarks &raquo;</Button>
+  return <HomeH2>Hello world lorm impsum</HomeH2>
 }
 
 // export const Test2 = () => {

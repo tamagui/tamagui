@@ -7,7 +7,7 @@ import { LogoIcon } from '../TamaguiLogo'
 
 export default (props: { position?: number; animation?: AnimationKeys }) => {
   const { tint } = useTint()
-  const [positionI, setPositionI] = useControllableState<number>({
+  const [positionI, setPositionI] = useControllableState({
     prop: props.position,
     defaultProp: 0,
   })
@@ -21,20 +21,19 @@ export default (props: { position?: number; animation?: AnimationKeys }) => {
   return (
     <>
       <Square
-        debug
         animation={props.animation || 'bouncy'}
         elevation="$4"
         size={110}
         bc="$green10"
         br="$9"
+        {...position}
         hoverStyle={{
           scale: 1.1,
         }}
         pressStyle={{
-          scale: 0.1,
+          scale: 0.9,
         }}
         onPress={() => next()}
-        {...position}
       >
         <LogoIcon downscale={0.75} />
       </Square>
@@ -43,10 +42,10 @@ export default (props: { position?: number; animation?: AnimationKeys }) => {
         pos="absolute"
         bottom={20}
         left={20}
-        circular
         iconAfter={Play}
         theme={tint}
         size="$6"
+        circular
         onPress={() => next()}
       />
     </>

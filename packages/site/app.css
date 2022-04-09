@@ -513,13 +513,34 @@ iframe {
 }
 
 .DocSearch-Modal {
-  border-radius: 18px;
+  border-radius: 10px;
 }
 
 .DocSearch-SearchBar {
   border-bottom: 0.5px solid var(--borderColor);
-  padding: var(--space-1);
+  padding-left: var(--space-1);
+  padding-right: var(--space-1);
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
   font-size: var(--size-3);
+}
+
+input, textarea {
+  outline: none;
+  color: var(--color);
+}
+
+@media (max-width: 750px) {
+  .DocSearch-Modal {
+    margin: 10px;
+    width: auto;
+    height: auto;
+    flex: 1;
+  }
+}
+
+.DocSearch-Cancel {
+  margin-right: var(--space-2)
 }
 
 .DocSearch-Container {

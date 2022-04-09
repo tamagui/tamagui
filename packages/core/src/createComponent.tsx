@@ -98,11 +98,9 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        if (props['debug'] === 'break') {
-          debugger
-        }
         // prettier-ignore
-        console.log(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', ' debug prop on:')
+        console.warn(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', ' debug prop on:')
+        if (props['debug'] === 'break') debugger
       }
     }
 
@@ -114,9 +112,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const {
       viewProps: viewPropsIn,
       pseudos,
+      medias,
       style,
       classNames,
-    } = getSplitStyles(props, staticConfig, theme, state.mounted)
+    } = getSplitStyles(props, staticConfig, theme, state)
 
     const {
       tag,
@@ -171,22 +170,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
-
-    const isHovering = Boolean(!disabled && !isTouchDevice && pseudos && state.hover)
-    const isPressing = Boolean(!disabled && pseudos && state.press)
-    const isFocusing = Boolean(!disabled && pseudos && state.focus)
-
-    const features = useFeatures(props, {
-      forceUpdate,
-      setStateShallow,
-      useAnimations,
-      state,
-      style,
-      pseudos,
-      isHovering,
-      isPressing,
-      isFocusing,
-    })
 
     // from react-native-web
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
@@ -258,6 +241,25 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       })
     }
 
+    const styleWithPseudos = props.animation
+      ? merge(
+          { ...defaultNativeStyle, ...style },
+          state.hover && pseudos.hoverStyle,
+          state.press && pseudos.pressStyle,
+          state.focus && pseudos.focusStyle,
+          ...Object.values(medias)
+        )
+      : null
+
+    const features = useFeatures(props, {
+      forceUpdate,
+      setStateShallow,
+      useAnimations,
+      state,
+      style: styleWithPseudos,
+      pseudos,
+    })
+
     // get the right component
     const isTaggable = !Component || typeof Component === 'string'
     const shouldAvoidClasses = !!(state.animation && avoidClasses)
@@ -266,44 +268,44 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
     const BaseTextComponent = !isWeb ? Text : element || 'span'
     const BaseViewComponent = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
-    const ViewComponent = isText
+    let ViewComponent = isText
       ? (isAnimated ? AnimatedText || Text : null) || BaseTextComponent
       : (isAnimated ? AnimatedView || View : null) || BaseViewComponent
 
+    ViewComponent = Component || ViewComponent
+
     let styles: any[]
 
-    const isStringElement = typeof ViewComponent !== 'string'
-    const shouldWrapHoverable = isWeb && isStringElement
+    const isStringElement = typeof ViewComponent === 'string'
     const animationStyles = state.animation ? state.animation.style : null
+
+    console.log('medias', medias)
 
     if (isStringElement && shouldAvoidClasses) {
       styles = {
         ...defaultNativeStyle,
         ...animationStyles,
+        ...medias,
       }
     } else {
-      const hoverStyle = isHovering ? pseudos!.hoverStyle : null
-      const pressStyle = isPressing ? pseudos!.pressStyle : null
-      const focusStyle = isFocusing ? pseudos!.focusStyle : null
       styles = [
         defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
         // parity w react-native-web, only for text in text
         // TODO this should be able to be done w css to replicate after extraction:
         //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
         // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-        style,
-        // nesting these on web because we need to be sure concatClassNames overrides the right className
-        animationStyles ? null : isWeb && hoverStyle ? ({ hoverStyle } as any) : hoverStyle,
-        animationStyles ? null : isWeb && pressStyle ? ({ pressStyle } as any) : pressStyle,
-        animationStyles ? null : isWeb && focusStyle ? ({ focusStyle } as any) : focusStyle,
-        animationStyles,
+        // style,
+        animationStyles ? animationStyles : style,
+        medias,
       ]
-    }
-
-    if (process.env.NODE_ENV === 'development') {
-      if (props['debug']) {
-        // prettier-ignore
-        console.log('  » ', { shouldAvoidClasses, animation: props.animation, style, styles, defaultNativeStyle, splitStyleResult })
+      if (!animationStyles && pseudos) {
+        // on web use pseudo object to keep specificity with concatClassName
+        if (state.hover && pseudos.hoverStyle)
+          styles.push(isWeb ? { hoverStyle: pseudos.hoverStyle } : pseudos.hoverStyle)
+        if (state.focus && pseudos.focusStyle)
+          styles.push(isWeb ? { focusStyle: pseudos.focusStyle } : pseudos.focusStyle)
+        if (state.press && pseudos.pressStyle)
+          styles.push(isWeb ? { pressStyle: pseudos.pressStyle } : pseudos.pressStyle)
       }
     }
 
@@ -345,7 +347,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         if (process.env.NODE_ENV === 'development') {
           if (props['debug']) {
             // prettier-ignore
-            console.log('  » styles', { pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
+            console.log('  » styles', { isStringElement, pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
           }
         }
         viewProps.className = className
@@ -394,11 +396,13 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     }
 
+    // TODO need to loop active variants and see if they have matchin pseudos and apply as well
     const attachPress = !!((pseudos && pseudos.pressStyle) || onPress || onPressOut || onPressIn)
     const isHoverable = isWeb && !isTouchDevice
     const attachHover =
       isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
+    const pressEventKey = isStringElement ? 'onClick' : 'onPress'
 
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
     // while avoiding reparenting...
@@ -438,7 +442,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
             onMouseEnter: attachHover
               ? (e) => {
                   let next: Partial<typeof state> = {}
-                  console.log('hoverin')
                   if (attachHover) {
                     next.hover = true
                   }
@@ -481,7 +484,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
                 onMouseDown?.(e)
               }
             : null,
-          [isWeb ? 'onClick' : 'onPress']: attachPress
+          [pressEventKey]: attachPress
             ? (e) => {
                 // this caused issue with next.js passing href
                 // e.preventDefault()
@@ -509,11 +512,13 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const [pressProps] = usePressable(
       events
         ? {
-            disabled: disabled,
-            hitSlop,
+            disabled,
+            ...(hitSlop && {
+              hitSlop,
+            }),
             onPressIn: events.onMouseDown,
             onPressOut: events.onPressOut,
-            onPress: events[isWeb ? 'onClick' : 'onPress'],
+            onPress: events[pressEventKey],
           }
         : {
             disabled: true,
@@ -521,72 +526,59 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     )
 
     if (events) {
-      if (isStringElement) {
+      if (!isStringElement) {
         Object.assign(viewProps, pressProps)
-
-        // handle hoverable
-        if (shouldWrapHoverable) {
-          childEls = (
-            <span
-              style={{
-                display: 'contents',
-              }}
-              onMouseEnter={events.onMouseEnter}
-              onMouseLeave={events.onMouseLeave}
-            >
-              {children}
-            </span>
-          )
-        }
       } else {
         Object.assign(viewProps, events)
+      }
+      if (isWeb && isHoverable) {
+        childEls = (
+          <span
+            style={{
+              display: 'contents',
+            }}
+            onMouseEnter={events.onMouseEnter}
+            onMouseLeave={events.onMouseLeave}
+          >
+            {children}
+          </span>
+        )
       }
     }
 
     let content: any
 
     // replicate react-native-web's `createElement`
-    if (isWeb && rnw && !isAnimated) {
-      const domProps = rnw.createDOMProps(viewProps)
-      const className =
-        domProps.className && domProps.className !== viewProps.className
-          ? `${domProps.className} ${viewProps.className}`
-          : viewProps.className
-      Object.assign(viewProps, domProps)
-
+    if (isWeb) {
       if (staticConfig.isReactNativeWeb) {
         viewProps.dataSet = {
-          ...(viewProps.dataSet || {}),
-          cn: className,
+          ...viewProps.dataSet,
+          className: viewProps.className,
         }
       } else {
+        const rnProps = rnw.createDOMProps(viewProps)
+        const className =
+          rnProps.className && rnProps.className !== viewProps.className
+            ? `${rnProps.className} ${viewProps.className}`
+            : viewProps.className
+
+        // additive
+        Object.assign(viewProps, rnProps)
+
         // we already handle Text/View properly
         if (className) {
           viewProps.className = className
         }
       }
-      content = createElement(ViewComponent, viewProps, childEls)
-    } else {
-      content = createElement(ViewComponent, viewProps, childEls)
     }
 
-    // this can be done with CSS entirely right?
-    // const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
-    // if (shouldWrapTextAncestor) {
-    //   // from react-native-web
-    //   content = createElement(TextAncestorContext.Provider, { value: true }, content)
-    // }
+    content = createElement(ViewComponent, viewProps, childEls)
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         viewProps['debug'] = true
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), shouldAttach, ViewComponent, viewProps, state, styles, pseudos, content, childEls })
-        // only on browser because node expands it huge
-        if (typeof window !== 'undefined') {
-          // prettier-ignore
-          console.log('  » ', { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig })
-        }
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, state, styles, pseudos, content, childEls, shouldAvoidClasses, animation: props.animation, style, defaultNativeStyle, splitStyleResult, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
       }
     }
 
@@ -615,11 +607,15 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       staticConfig.defaultProps,
       staticConfig,
       initialTheme,
-      true,
+      { mounted: true },
       'variable'
     )
 
     const { classNames, pseudos, style, viewProps } = splitStyleResult
+
+    if (staticConfig.defaultProps?.debug) {
+      console.log('??', classNames, staticConfig, addStylesUsingClassname)
+    }
 
     if (isWeb) {
       if (classNames) {
@@ -631,14 +627,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         stylesObj[k] = isVariable(v) ? v.variable : v
       }
       defaultsClassName += addStylesUsingClassname([stylesObj, pseudos])
-      if (process.env.NODE_ENV === 'development' && shouldDebug) {
-        // prettier-ignore
-        console.log('tamagui 🐛:', { defaultsClassName: defaultsClassName.split(' ') })
-      }
     }
 
     // for animations and native
     // TODO handle pseudos
+
     defaultNativeStyle = {}
     for (const key in style) {
       const v = style[key]
@@ -648,14 +641,20 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       base: defaultNativeStyle,
     })
 
+    component.displayName = staticConfig.componentName
+
     // @ts-ignore
     component.defaultProps = {
       ...viewProps,
       ...component.defaultProps,
     }
-    if (process.env.NODE_ENV === 'development' && shouldDebug) {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      shouldDebug &&
+      process.env.IS_STATIC !== 'is_static'
+    ) {
       // prettier-ignore
-      console.log('tamagui 🐛:', { initialTheme, classNames, pseudos, style, viewProps, defaultsClassName, component })
+      console.log('tamagui 🐛:', { classNames, pseudos, style, viewProps, component, defaultsClassName })
     }
   })
 
@@ -791,9 +790,58 @@ export function spacedChildren({
   return next
 }
 
+const merge = (...styles: (ViewStyle | null | false | undefined)[]) => {
+  console.log('mergin', styles)
+  // ensure transforms get merged without duplicates:
+  // so if you have a:
+  //  transform: [{ scale: 1 }]
+  // rest[0]:
+  //  transform: [{ scale: 1.1 }]
+  // it gets properly merged so that rest[0] overwrites a
+  if (!styles[0]) return // never happens
+  const res: ViewStyle = {}
+
+  const len = styles.length
+  for (let i = len - 1; i >= 0; i--) {
+    const cur = styles[i]
+    if (!cur) continue
+
+    for (const key in cur) {
+      const val = cur[key]
+      if (key !== 'transform') {
+        if (!(key in res)) {
+          res[key] = val
+        }
+        continue
+      }
+      if (!res.transform) {
+        res.transform = val
+        continue
+      }
+      // transform
+      for (const t of val) {
+        const tkey = Object.keys(t)[0]
+        if (res.transform.find((existing) => tkey in existing)) {
+          continue
+        }
+        res.transform.push(t)
+      }
+    }
+  }
+
+  return res
+}
+
 export const AbsoluteFill = (props: any) =>
   isWeb ? (
     <div className="tamagui-absolute-fill">{props.children}</div>
   ) : (
     <View style={StyleSheet.absoluteFill}>{props.child}</View>
   )
+
+// this can be done with CSS entirely right?
+// const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor
+// if (shouldWrapTextAncestor) {
+//   // from react-native-web
+//   content = createElement(TextAncestorContext.Provider, { value: true }, content)
+// }

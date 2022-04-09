@@ -5,7 +5,7 @@ export declare const EnsureFlexed: import("@tamagui/core").StaticComponent<impor
 } & import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>>> & {
     animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
-    debug?: boolean | "break" | undefined;
+    debug?: boolean | "break" | "verbose" | undefined;
     disabled?: boolean | undefined;
     className?: string | undefined;
     id?: string | undefined;
@@ -19,21 +19,12 @@ export declare const EnsureFlexed: import("@tamagui/core").StaticComponent<impor
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: import("@tamagui/core").SpaceTokens | undefined;
-} & {
-    ellipse?: boolean | undefined;
-    selectable?: boolean | undefined;
-    textDecorationDistance?: number | undefined;
-    userSelect?: import("csstype").Property.UserSelect | undefined;
-    textOverflow?: import("csstype").Property.TextOverflow | undefined;
-    whiteSpace?: import("csstype").Property.WhiteSpace | undefined;
-    wordWrap?: import("csstype").Property.WordWrap | undefined;
-    cursor?: import("csstype").Property.Cursor | undefined;
 }> & import("@tamagui/core").PseudoProps<{
     [x: string]: undefined;
 } & import("react-native").TextProps & import("@tamagui/core/types/types-rnw").RNWTextProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>> & import("@tamagui/core").MediaProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>>> & {
     animation?: import("@tamagui/core").AnimationKeys | undefined;
 } & {
-    debug?: boolean | "break" | undefined;
+    debug?: boolean | "break" | "verbose" | undefined;
     disabled?: boolean | undefined;
     className?: string | undefined;
     id?: string | undefined;
@@ -47,15 +38,6 @@ export declare const EnsureFlexed: import("@tamagui/core").StaticComponent<impor
     onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
     space?: import("@tamagui/core").SpaceTokens | undefined;
-} & {
-    ellipse?: boolean | undefined;
-    selectable?: boolean | undefined;
-    textDecorationDistance?: number | undefined;
-    userSelect?: import("csstype").Property.UserSelect | undefined;
-    textOverflow?: import("csstype").Property.TextOverflow | undefined;
-    whiteSpace?: import("csstype").Property.WhiteSpace | undefined;
-    wordWrap?: import("csstype").Property.WordWrap | undefined;
-    cursor?: import("csstype").Property.Cursor | undefined;
 }>), {} | {
     [x: string]: undefined;
 }, any, import("@tamagui/core").StaticConfigParsed>;

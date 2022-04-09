@@ -68,7 +68,7 @@ const ButtonFrame = styled(SizableStack, {
         // avoids hover styles when active
         // TODO not working?
         hoverStyle: {
-          backgroundColor: '$background',
+          backgroundColor: 'red',
         },
       },
     },
@@ -119,7 +119,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   } = props as ButtonProps
   const isInsideButton = useContext(ButtonInsideButtonContext)
   const theme = useTheme()
-  const size = props.size ?? '$4'
+  const size = props.size || '$4'
 
   // get color from prop or theme
   let color: any
@@ -140,6 +140,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     }
     if (el) {
       const iconSize = getFontSize(size, { relativeSize: scaleIcon })
+      console.log('got', props.size, size, iconSize)
       return React.createElement(el, {
         color,
         size: iconSize,

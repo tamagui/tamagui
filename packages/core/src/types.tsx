@@ -215,7 +215,7 @@ export type TransformStyleProps = {
 type Something<A> = A extends symbol ? Something<{}> : A
 
 type ComponentPropsBase = Something<{
-  debug?: boolean | 'break'
+  debug?: boolean | 'break' | 'verbose'
   disabled?: boolean
   className?: string
   id?: string
@@ -288,7 +288,9 @@ export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme
   : K extends FontSizeKeys
   ? FontSizeTokens
   : K extends SpaceKeys
-  ? SpaceTokens
+  ? K extends 'shadowOffset'
+    ? { width: SpaceTokens; height: SpaceTokens }
+    : SpaceTokens
   : K extends ColorKeys
   ? ColorTokens
   : K extends ZIndexKeys
@@ -382,14 +384,7 @@ export type StackProps = Omit<ViewProps, 'display' | 'children'> &
 
 export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> &
   TransformStyleProps &
-  WebOnlyStyleProps
-
-export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
-
-export type TextProps = ReactTextProps &
-  RNWTextProps &
-  TextStyleProps &
-  ComponentPropsBase & {
+  WebOnlyStyleProps & {
     ellipse?: boolean
     selectable?: boolean
     textDecorationDistance?: number
@@ -399,6 +394,15 @@ export type TextProps = ReactTextProps &
     wordWrap?: CSS.Properties['wordWrap']
     cursor?: CSS.Properties['cursor']
   }
+
+export type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>
+
+export type TextProps = ReactTextProps & RNWTextProps & TextStyleProps & ComponentPropsBase
+
+// could actually infer from parent
+export type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<
+  Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase
+>
 
 //
 // StaticComponent
@@ -459,50 +463,50 @@ export type StaticConfig = {
     }
   }
 
-  /*
+  /**
    * Used for applying sub theme style
    */
   componentName?: string
 
-  /*
+  /**
    * If you need to pass context or something, prevents from ever
    * flattening. The 'jsx' option means it will never flatten. if you
    * pass JSX as a children (if its purely string, it will still flatten).
    */
   neverFlatten?: boolean | 'jsx'
 
-  /*
+  /**
    * Determines ultimate output tag (Text vs View)
    */
   isText?: boolean
 
-  /*
+  /**
    * Attempts to attach focus styles at runtime (useful for native)
    */
   isInput?: boolean
 
-  /*
+  /**
    * Which style keys are allowed to be extracted.
    */
   validStyles?: { [key: string]: boolean }
 
-  /*
+  /**
    * Allows for defining extra valid props to be extracted beyond
    * the default ones.
    */
   validPropsExtra?: { [key: string]: any }
 
-  /*
+  /**
    * Same as React.defaultProps, be sure to sync
    */
   defaultProps?: any
 
-  /*
+  /**
    * If this prop is encountered, bail on all optimization.
    */
   deoptProps?: Set<string>
 
-  /*
+  /**
    * A bit odd, only for more advanced heirarchies.
    * Indicates that the component will set this prop so the
    * static extraction can ensure it sets them to ={undefined}
@@ -510,20 +514,25 @@ export type StaticConfig = {
    */
   ensureOverriddenProp?: { [key: string]: boolean }
 
-  /*
+  /**
    * Auto-detected, but can ovverride. Wraps children to space them on top
    */
   isZStack?: boolean
 
-  /*
+  /**
    * Auto-detect, but can ovverride, passes styles properly to react-native-web
    */
   isReactNativeWeb?: boolean
 
-  /*
+  /**
    * Memoize the component
    */
   memo?: boolean
+
+  /**
+   * Auto-detect, but can ovverride, passes styles properly to react-native-web
+   */
+  isTamagui?: boolean
 }
 
 /**
@@ -882,11 +891,8 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 
 export type UseAnimationProps = { animation: string; [key: string]: any }
 export type UseAnimationState = {
-  style: ViewStyle
+  style: ViewStyle | null | undefined
   isMounted: boolean
-  hoverStyle?: ViewStyle | null
-  pressStyle?: ViewStyle | null
-  focusStyle?: ViewStyle | null
   exitStyle?: ViewStyle | null
   onDidAnimate?: any
   delay?: number

@@ -41,7 +41,3 @@ export * from './views/ThemeProvider'
 export * from './views/TextAncestorContext'
 
 export * from '@tamagui/helpers'
-
-if (process.env.NODE_ENV === 'development') {
-  require('./devtools')
-}

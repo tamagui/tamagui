@@ -17,10 +17,7 @@ type FeatureUtils = {
   setStateShallow: (next: Partial<ComponentState>) => void
   useAnimations?: UseAnimationHook
   pseudos: any
-  style: ViewStyle
-  isHovering: boolean
-  isPressing: boolean
-  isFocusing: boolean
+  style: ViewStyle | null | undefined
 }
 
 const createDefinition = ({
@@ -52,15 +49,6 @@ export const useFeatures = (props: any, utils?: FeatureUtils) => {
 
 function loadFeatures(): Record<string, FeatureDefinition> {
   return {
-    // TODO
-    // measureLayout: createDefinition({
-    //   Component: (props) => {
-    //     console.log('measure', props)
-    //     return null
-    //   },
-    //   propNames: ['onLayout'],
-    // }),
-
     // loads animations and sets state with the results
     animation: loadAnimationFeature(),
 
@@ -75,16 +63,7 @@ function loadFeatures(): Record<string, FeatureDefinition> {
 function loadAnimationFeature() {
   return createDefinition({
     Component: ({ _utils, ...props }) => {
-      const {
-        state,
-        useAnimations,
-        isHovering,
-        isPressing,
-        isFocusing,
-        pseudos,
-        style,
-        setStateShallow,
-      } = _utils
+      const { state, useAnimations, pseudos, style, setStateShallow } = _utils
 
       if (!useAnimations) {
         console.error('no useAnimations hook provided')
@@ -94,16 +73,12 @@ function loadAnimationFeature() {
       const res = useAnimations(props as any, {
         isMounted: state.mounted,
         style,
-        hoverStyle: isHovering ? pseudos!.hoverStyle : null,
-        pressStyle: isPressing ? pseudos!.pressStyle : null,
-        focusStyle: isFocusing ? pseudos!.focusStyle : null,
         exitStyle: pseudos?.exitStyle,
         // onDidAnimate, delay
       })
 
-      console.log('got back', res)
-
       useIsomorphicLayoutEffect(() => {
+        console.log('set it')
         setStateShallow({
           animation: res,
         })
@@ -138,3 +113,12 @@ function loadMediaQueryFeature() {
     propNames: mediaPropNames,
   })
 }
+
+// TODO
+// measureLayout: createDefinition({
+//   Component: (props) => {
+//     console.log('measure', props)
+//     return null
+//   },
+//   propNames: ['onLayout'],
+// }),

@@ -1,6 +1,6 @@
 import React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom'
 
 import { Sandbox } from './Sandbox'
 
-render(<Sandbox />, document.querySelector('#root'))
+createRoot(document.querySelector('#root')).render(<Sandbox />)

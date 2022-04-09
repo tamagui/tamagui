@@ -32,7 +32,7 @@ const getChunksFromString = (st: string, chunkSize = 0) =>
 const convertHexUnitTo256 = (hexStr: string) => parseInt(hexStr.repeat(2 / hexStr.length), 16)
 
 const getAlphaFloat = (a: any, alpha = 1) => {
-  if (typeof a !== 'undefined') {
+  if (a !== undefined) {
     return a / 255
   }
   if (typeof alpha != 'number' || alpha < 0 || alpha > 1) {

@@ -16,8 +16,8 @@ export const getSize =
     const minHeight = getVariableValue(lineHeight) + py * 2
     return {
       minHeight,
-      paddingHorizontal: px,
-      paddingVertical: py,
+      paddingHorizontal: props.circular ? 0 : px,
+      paddingVertical: props.circular ? 0 : py,
       borderRadius: props.circular ? 100_000 : props.borderRadius ?? radius,
     }
   }

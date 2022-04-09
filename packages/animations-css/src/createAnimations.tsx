@@ -6,7 +6,7 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     View: 'div',
     Text: 'span',
     animations,
-    useAnimations: (props, { style, hoverStyle, pressStyle, focusStyle, exitStyle }) => {
+    useAnimations: (props, { style, exitStyle }) => {
       const animation = animations[props.animation]
       if (!animation) {
         throw new Error(`no animation found: ${props.animation}`)
@@ -15,9 +15,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         style: {
           transition: `all ${animation}`,
           ...style,
-          ...focusStyle,
-          ...hoverStyle,
-          ...pressStyle,
           ...exitStyle,
         },
       }

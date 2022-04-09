@@ -29,7 +29,7 @@ export const useTheme = (
   )
 
   if (process.env.NODE_ENV === 'development') {
-    if (props?.['debug']) {
+    if (props?.['debug'] === 'verbose') {
       console.log('  » useTheme', { themeName, componentName, name, className })
     }
   }
@@ -99,7 +99,7 @@ export const useTheme = (
           return
         }
         if (process.env.NODE_ENV === 'development') {
-          if (props?.['debug']) {
+          if (props?.['debug'] === 'verbose') {
             console.log('  » accessing theme val', key, { ...state.current })
           }
         }

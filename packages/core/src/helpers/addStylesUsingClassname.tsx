@@ -31,7 +31,7 @@ export function useStylesAsClassname(styles: any[], disable = false, debug = fal
 
 export function addStylesUsingClassname(
   styles: any[],
-  debug = false,
+  debug: boolean | 'verbose' = false,
   onAdd?: (identifier: string, rules: string[]) => any
 ) {
   let className = ''
@@ -43,7 +43,7 @@ export function addStylesUsingClassname(
     }
     const atomicStyles = getStylesAtomic(style)
     if (process.env.NODE_ENV === 'development') {
-      if (debug) {
+      if (debug === 'verbose') {
         console.log(' atomicStyles ', atomicStyles)
       }
     }
@@ -51,11 +51,6 @@ export function addStylesUsingClassname(
       className += ` ${identifier}`
       if (added.has(identifier)) {
         continue
-      }
-      if (process.env.NODE_ENV === 'development') {
-        if (debug) {
-          console.log(' inserting ', rules[0])
-        }
       }
       added.add(identifier)
       if (onAdd) {

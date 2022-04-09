@@ -3,10 +3,11 @@ import { TextInput } from 'react-native'
 
 import { inputSizeVariant } from '../helpers/inputHelpers'
 
-export const Input = styled(TextInput, {
-  name: 'Input',
+export const inputStyle = {
   borderRadius: '$3',
   borderWidth: 1,
+  // @ts-ignore TODO
+  color: '$color',
   borderColor: '$borderColor',
   backgroundColor: '$background',
   paddingVertical: '$2',
@@ -18,6 +19,13 @@ export const Input = styled(TextInput, {
 
   focusStyle: {
     borderColor: '$borderColorFocus',
+    shadowColor: '$borderColorFocus',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10,
   },
 
   variants: {
@@ -25,6 +33,11 @@ export const Input = styled(TextInput, {
       '...size': inputSizeVariant,
     },
   },
+}
+
+export const Input = styled(TextInput, {
+  name: 'Input',
+  ...inputStyle,
 })
 
 export type InputProps = GetProps<typeof Input>

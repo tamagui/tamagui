@@ -67,13 +67,14 @@ export function concatClassName(_cn: any) {
       const mediaKey = isMediaQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
       const uid = mediaKey ? styleKey + mediaKey : styleKey
       // 3. && !isPsuedoQuery
-      if (!isMediaQuery) {
-        if (usedPrefixes.indexOf(uid) > -1) {
-          // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
-          continue
-        }
-        usedPrefixes.push(uid)
+
+      console.log(isMediaQuery, name, uid)
+
+      if (usedPrefixes.indexOf(uid) > -1) {
+        // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
+        continue
       }
+      usedPrefixes.push(uid)
 
       // overrides for full safety
       const propName = styleKey

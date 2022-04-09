@@ -19,23 +19,18 @@ if (typeof window !== 'undefined') {
   }
 }
 
+const newRulesStyleTag =
+  typeof window !== 'undefined' ? document.head.appendChild(document.createElement('style')) : null
+
 export function insertStyleRule(identifier: string, rule: string) {
-  if (typeof window === 'undefined') {
+  if (!newRulesStyleTag) {
     return
-  }
-  if (process.env.NODE_ENV === 'development') {
-    if (!isWeb) {
-      console.warn('non web platform, dont use this')
-      return
-    }
   }
   if (insertedSelectors[identifier]) {
     return
   }
-  const sheet = window.document.styleSheets[0]
-  if (!sheet) {
-    return
-  }
-  insertedSelectors
+  const sheet = newRulesStyleTag.sheet!
   sheet.insertRule(rule, sheet.cssRules.length)
+  insertedSelectors[identifier] = true
+  return identifier
 }

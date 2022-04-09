@@ -1,21 +1,21 @@
 import { stylePropsView } from '@tamagui/helpers'
 import React from 'react'
 
-import { StaticComponent, StaticConfig, StaticConfigParsed } from '../types'
+import { StaticComponent, StaticConfig, StaticConfigParsed, StylableComponent } from '../types'
 import { createPropMapper } from './createPropMapper'
 
 export function extendStaticConfig(
   // can be undefined when loading with @tamagui/fake-react-native
   // could be fixed a bit cleaner
-  Component?: StaticComponent | React.Component<any> | ((props: any) => any),
+  parent?: StylableComponent,
   config: StaticConfig = {}
 ): StaticConfigParsed | null {
-  const parent = (Component || {}) as any
-  if (!parent.staticConfig) {
-    // if no static config, we are extending an external component
-    parent.staticConfig = {
-      Component,
-    }
+  if (!parent) {
+    throw new Error('no parent')
+  }
+
+  if (!('staticConfig' in parent)) {
+    return parseStaticConfig(config)
   }
 
   const variants = {
@@ -40,9 +40,9 @@ export function extendStaticConfig(
     ...parent.staticConfig,
     ...config,
     variants,
-    isZStack: config.isZStack || parent.staticConfig.isZStack,
-    isText: config.isText || parent.staticConfig.isText || false,
-    isInput: config.isInput || parent.staticConfig.isInput || false,
+    isZStack: config.isZStack ?? parent.staticConfig.isZStack,
+    isText: config.isText ?? parent.staticConfig.isText ?? false,
+    isInput: config.isInput ?? parent.staticConfig.isInput ?? false,
     neverFlatten: config.neverFlatten ?? parent.staticConfig.neverFlatten,
     ensureOverriddenProp: config.ensureOverriddenProp ?? parent.staticConfig.ensureOverriddenProp,
     validStyles: config.validStyles
