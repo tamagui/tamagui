@@ -8,12 +8,14 @@ import { LogoIcon } from '../TamaguiLogo'
 export default (props: { position?: number; animation?: AnimationKeys }) => {
   const { tint } = useTint()
   const [positionI, setPositionI] = useControllableState<number>({
-    value: props.position,
-    defaultValue: 0,
+    prop: props.position,
+    defaultProp: 0,
   })
   const position = positions[positionI]
   const next = (to = 1) => {
-    setPositionI((x) => (x + to) % positions.length)
+    setPositionI((x) => {
+      return (x + to) % positions.length
+    })
   }
 
   return (

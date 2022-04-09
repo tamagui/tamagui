@@ -75,6 +75,7 @@ export const LogoWords = ({ color, downscale = 1 }: { color?: string; downscale?
 export const LogoIcon = ({ downscale = 2, color = 'var(--color)' }: any) => {
   return (
     <YStack
+      als="center"
       marginVertical={-10}
       pressStyle={{
         opacity: 0.7,

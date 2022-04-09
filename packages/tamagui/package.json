@@ -21,6 +21,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@radix-ui/react-use-callback-ref": "^0.1.0",
     "@react-aria/ssr": "^3.1.0",
     "@react-aria/utils": "^3.10.0",
     "@react-native-aria/focus": "^0.2.5",

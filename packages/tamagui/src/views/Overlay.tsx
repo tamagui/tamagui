@@ -44,12 +44,12 @@ export function Overlay({
 }: IOverlayProps) {
   const [openedOnce, setOpenedOnce] = React.useState(false)
 
-  useKeyboardDismissable({
-    enabled: isOpen && isKeyboardDismissable,
-    callback: onRequestClose ? onRequestClose : () => {},
-  })
-
   if (typeof document !== 'undefined') {
+    useKeyboardDismissable({
+      enabled: isOpen && isKeyboardDismissable,
+      callback: onRequestClose ? onRequestClose : () => {},
+    })
+
     useLayoutEffect(() => {
       if (isOpen) {
         setOpenedOnce(true)
