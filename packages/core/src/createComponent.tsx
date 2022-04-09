@@ -276,34 +276,29 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const shouldWrapHoverable = isWeb && isStringElement
     const animationStyles = state.animation ? state.animation.style : null
 
-    const hoverStyle = isHovering ? pseudos!.hoverStyle : null
-    const pressStyle = isPressing ? pseudos!.pressStyle : null
-    const focusStyle = isFocusing ? pseudos!.focusStyle : null
-    styles = [
-      defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
-      // parity w react-native-web, only for text in text
-      // TODO this should be able to be done w css to replicate after extraction:
-      //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
-      // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-      style,
-      // nesting these on web because we need to be sure concatClassNames overrides the right className
-      isWeb && hoverStyle ? ({ hoverStyle } as any) : hoverStyle,
-      isWeb && pressStyle ? ({ pressStyle } as any) : pressStyle,
-      isWeb && focusStyle ? ({ focusStyle } as any) : focusStyle,
-      animationStyles,
-    ]
-    // if (isWeb && !shouldAvoidClasses) {
-    //   if (isStringElement) {
-    //     styles = {
-    //       ...defaultNativeStyle,
-    //       ...animationStyles,
-    //     }
-    //   } else {
-    //     styles = [defaultNativeStyleSheet?.base, animationStyles]
-    //   }
-    // } else {
-
-    // }
+    if (isStringElement && shouldAvoidClasses) {
+      styles = {
+        ...defaultNativeStyle,
+        ...animationStyles,
+      }
+    } else {
+      const hoverStyle = isHovering ? pseudos!.hoverStyle : null
+      const pressStyle = isPressing ? pseudos!.pressStyle : null
+      const focusStyle = isFocusing ? pseudos!.focusStyle : null
+      styles = [
+        defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
+        // parity w react-native-web, only for text in text
+        // TODO this should be able to be done w css to replicate after extraction:
+        //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
+        // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
+        style,
+        // nesting these on web because we need to be sure concatClassNames overrides the right className
+        animationStyles ? null : isWeb && hoverStyle ? ({ hoverStyle } as any) : hoverStyle,
+        animationStyles ? null : isWeb && pressStyle ? ({ pressStyle } as any) : pressStyle,
+        animationStyles ? null : isWeb && focusStyle ? ({ focusStyle } as any) : focusStyle,
+        animationStyles,
+      ]
+    }
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {

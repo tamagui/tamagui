@@ -22,6 +22,7 @@ import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
+  return <HeroExampleAnimations />
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />

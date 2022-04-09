@@ -1,10 +1,8 @@
-import React from 'react';
-export declare function useControllableProp<T>(prop: T | undefined, state: T): readonly [boolean, T];
-export interface UseControllableStateProps<T> {
-    value?: T;
-    defaultValue?: T | (() => T);
-    onChange?: (value: T) => void;
-    name?: string;
-}
-export declare function useControllableState<T>(props: UseControllableStateProps<T>): [T, React.Dispatch<React.SetStateAction<T>>];
+/// <reference types="react" />
+export declare function useControllableState<T>({ prop, defaultProp, onChange, strategy, }: {
+    prop?: T;
+    defaultProp: T;
+    onChange?: (next: T) => void;
+    strategy?: 'prop-wins' | 'most-recent-wins';
+}): [T, React.Dispatch<React.SetStateAction<T>>];
 //# sourceMappingURL=useControllableState.d.ts.map

@@ -39,8 +39,8 @@ export const Popover = withStaticProperties(
       ) => {
         const triggerRef = React.useRef(null)
         const [isOpen, setIsOpen] = useControllableState({
-          value: isOpenProp,
-          defaultValue: defaultIsOpen,
+          prop: isOpenProp,
+          defaultProp: defaultIsOpen || false,
           onChange: (value) => {
             onChangeOpen?.(value)
             value ? onOpen && onOpen() : onClose && onClose()
