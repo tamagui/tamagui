@@ -1,4 +1,3 @@
-/// <reference types="react" />
 declare type StringRecord = {
     [key: string]: string;
 };

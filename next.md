@@ -6,8 +6,6 @@
   - animations
     - css
     - test hover/press styles + add to animations docs
-  - check focusStyle works or remove docs
-  - type variant function arg if we can
   - compiler
     - check it with variants extracting fully
     - props
