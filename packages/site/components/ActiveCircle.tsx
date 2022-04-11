@@ -10,6 +10,7 @@ export const ActiveCircle = ({ isActive, ...props }) => {
       ai="center"
       jc="center"
       borderColor="transparent"
+      cursor="pointer"
       {...(!!isActive && {
         borderColor: '$color',
       })}

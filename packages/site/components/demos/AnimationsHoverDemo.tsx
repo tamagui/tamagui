@@ -13,7 +13,6 @@ export default () => {
       br="$9"
       hoverStyle={{
         size: 130,
-        bc: 'red',
         x: 10,
       }}
       pressStyle={{

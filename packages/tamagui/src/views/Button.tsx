@@ -65,10 +65,8 @@ const ButtonFrame = styled(SizableStack, {
   variants: {
     active: {
       true: {
-        // avoids hover styles when active
-        // TODO not working?
         hoverStyle: {
-          backgroundColor: 'red',
+          backgroundColor: '$background',
         },
       },
     },

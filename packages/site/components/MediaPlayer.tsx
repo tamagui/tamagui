@@ -48,7 +48,7 @@ export const MediaPlayer = memo(
           ai="stretch"
         >
           <XStack ai="center" p="$3" space="$5">
-            <Square br="$6" size="$11">
+            <Square pos="relative" ov="hidden" br="$6" size="$11">
               <Image width={150} height={150} src={image.src} />
             </Square>
 
