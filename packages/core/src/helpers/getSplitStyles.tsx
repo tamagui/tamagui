@@ -117,23 +117,19 @@ export const getSplitStyles = (
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
+
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'])
               console.log('mediaStyles', key, mediaStyles, { mediaProps, mediaStyle })
           }
-          console.log('wtf')
+
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
             classNames = classNames || []
             classNames.push(out.identifier)
+            console.log('out', out.identifier, out.styleRule)
             addRule(out.styleRule)
-            const identifier = insertStyleRule(out.identifier, out.styleRule)
-            if (identifier) {
-              console.log('inserting', identifier)
-            }
-            if (process.env.NODE_ENV === 'development') {
-              if (props['debug']) console.log('mediaProp', style.identifier, out.styleRule)
-            }
+            insertStyleRule(out.identifier, out.styleRule)
           }
           if (mediaState[mediaKey]) {
             Object.assign(medias, mediaStyle)

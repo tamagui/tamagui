@@ -3,11 +3,10 @@ import { FeaturesGrid } from '@components/FeaturesGrid'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useMemo } from 'react'
-import { SizableText, XStack, YStack } from 'tamagui'
+import { XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
-import AnimationsHoverDemo from '../components/demos/AnimationsHoverDemo'
 import { HeaderFloating } from '../components/HeaderFloating'
 import { HeroBelow } from '../components/HeroBelow'
 import { HeroExampleAnimations } from '../components/HeroExampleAnimations'
@@ -22,8 +21,6 @@ import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
-  return <HeroResponsive />
-
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />

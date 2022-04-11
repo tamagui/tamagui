@@ -1,5 +1,7 @@
 // perf sensitive so doing some weird stuff
 
+import { ViewStyle } from 'react-native'
+
 // testing caching
 // because we can hit these recent ones a ton of times in common cases
 // we're caching the simple case, this shouldn't be bad on memory either
@@ -9,23 +11,15 @@
 // }, 1000)
 
 export function concatClassName(...args: any[]): any
-export function concatClassName(_cn: any) {
-  // if (arguments.length === 1) {
-  //   if (recently.has(arguments[0])) {
-  //     return recently.get(arguments[0])
-  //   }
-  // }
-
-  // const shouldDebug = _cn.includes('_right-_gtMd_hxu0ph')
-  // if (shouldDebug) console.log('debug:', _cn)
-  const classNamesOrPropObjects = arguments
+export function concatClassName(_cn: ViewStyle | null | undefined): string {
+  const cnOrPropObjcet = arguments
   const usedPrefixes: string[] = []
   let final = ''
 
-  const len = classNamesOrPropObjects.length
+  const len = cnOrPropObjcet.length
   let propObjects: any = null
   for (let x = len; x >= 0; x--) {
-    const cns = classNamesOrPropObjects[x]
+    const cns = cnOrPropObjcet[x]
 
     if (!cns) continue
     if (!Array.isArray(cns) && typeof cns !== 'string') {
@@ -47,6 +41,8 @@ export function concatClassName(_cn: any) {
         continue
       }
 
+      console.log('name', name)
+
       const splitIndex = name.indexOf('-')
       if (splitIndex < 1) {
         final = name + ' ' + final
@@ -67,8 +63,6 @@ export function concatClassName(_cn: any) {
       const mediaKey = isMediaQuery ? name.slice(splitIndex + 2, splitIndex + 7) : null
       const uid = mediaKey ? styleKey + mediaKey : styleKey
       // 3. && !isPsuedoQuery
-
-      console.log(isMediaQuery, name, uid)
 
       if (usedPrefixes.indexOf(uid) > -1) {
         // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
@@ -93,6 +87,7 @@ export function concatClassName(_cn: any) {
           continue
         }
       }
+      console.log('propName', propName, styleKey)
 
       final = name + ' ' + final
     }

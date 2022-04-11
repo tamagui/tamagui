@@ -117,6 +117,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       classNames,
     } = getSplitStyles(props, staticConfig, theme, state)
 
+    if (props.debug) {
+      console.log('splits', classNames, medias)
+    }
+
     const {
       tag,
       hitSlop,
@@ -279,13 +283,16 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const isStringElement = typeof ViewComponent === 'string'
     const animationStyles = state.animation ? state.animation.style : null
 
-    console.log('medias', medias)
+    console.log('medias', isStringElement, shouldAvoidClasses, medias, state.animation)
 
     if (isStringElement && shouldAvoidClasses) {
       styles = {
         ...defaultNativeStyle,
         ...animationStyles,
         ...medias,
+      }
+      if (medias) {
+        debugger
       }
     } else {
       styles = [
@@ -619,7 +626,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     if (isWeb) {
       if (classNames) {
-        defaultsClassName += classNames + ' '
+        defaultsClassName += Array.isArray(classNames) ? classNames.join(' ') : ''
       }
       const stylesObj = {}
       for (const k in style) {

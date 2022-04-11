@@ -6,12 +6,11 @@ export const HomeH2 = styled(H2, {
   mt: -20,
   ta: 'center',
   als: 'center',
-  size: '$10',
   letterSpacing: -2,
-  fontSize: 40,
+  size: '$10',
 
   $sm: {
-    fontSize: 32,
+    size: '$8',
     letterSpacing: -1,
   },
 })
@@ -25,6 +24,7 @@ export const HomeH3 = styled(H3, {
 
   // TODO media queries on styled()}
   $sm: {
-    size: '$4',
+    size: '$6',
+    fontWeight: '400',
   },
 })
