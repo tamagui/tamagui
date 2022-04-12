@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ViewStyle } from 'react-native'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { ComponentState } from '../defaultComponentState'
+import { PseudoStyles } from '../static'
 import { UseAnimationHook } from '../types'
 import { addMediaQueryListener, mediaState, removeMediaQueryListener } from './useMedia'
 
@@ -16,7 +17,7 @@ type FeatureUtils = {
   state: ComponentState
   setStateShallow: (next: Partial<ComponentState>) => void
   useAnimations?: UseAnimationHook
-  pseudos: any
+  pseudos: PseudoStyles
   style: ViewStyle | null | undefined
 }
 
@@ -70,9 +71,17 @@ function loadAnimationFeature() {
         return null
       }
 
+      const animatedStyleIn = {
+        ...style,
+        ...(state.hover && pseudos.hoverStyle),
+        ...(state.focus && pseudos.focusStyle),
+        ...(state.press && pseudos.pressStyle),
+      }
+      console.log('animatedStyleIn', animatedStyleIn)
+
       const res = useAnimations(props as any, {
         isMounted: state.mounted,
-        style,
+        style: animatedStyleIn,
         exitStyle: pseudos?.exitStyle,
         // onDidAnimate, delay
       })

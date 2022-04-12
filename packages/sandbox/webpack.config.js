@@ -8,14 +8,22 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 
 const target = process.env.TARGET || 'css'
 
+const boolVals = {
+  true: true,
+  false: false,
+}
+const disableExtraction =
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 const tamaguiOptions = {
   config: './tamagui.config.ts',
   components: ['tamagui'],
   importsWhitelist: ['constants.js'],
-  // disable: true, //NODE_ENV === 'development',
+  disableExtraction,
 }
 
-module.exports = {
+console.log('disableExtraction', disableExtraction)
+
+module.exports = /** @type { import('webpack').Configuration } */ {
   context: __dirname,
   mode: 'development',
   entry: ['./index.tsx'],
@@ -79,37 +87,6 @@ module.exports = {
               },
             ],
           },
-          // {
-          //   test: /\.[jt]sx?$/,
-          //   exclude: /node_modules\/(?!react-native-reanimated)/,
-          //   use: [
-          //     // {
-          //     //   loader: 'babel-loader',
-          //     //   options: {
-          //     //     presets: ['@babel/preset-react', '@babel/preset-typescript'],
-          //     //     plugins: ['react-refresh/babel'],
-          //     //   },
-          //     // },
-          //     // production
-          //     // {
-          //     //   loader: require.resolve('esbuild-loader'),
-          //     //   options: {
-          //     //     loader: 'tsx',
-          //     //     target: 'es2020',
-          //     //     keepNames: true,
-          //     //   },
-          //     // },
-          //     // {
-          //     //   loader: require.resolve('tamagui-loader'),
-          //     //   options: {
-          //     //     config: './tamagui.config.ts',
-          //     //     components: ['tamagui'],
-          //     //     importsWhitelist: ['constants.js'],
-          //     //     disable: false, //NODE_ENV === 'development',
-          //     //   },
-          //     // },
-          //   ],
-          // },
           {
             test: /\.css$/,
             use: ['style-loader', 'css-loader'],
