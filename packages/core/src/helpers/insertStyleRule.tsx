@@ -1,6 +1,6 @@
-import { isWeb } from '../constants/platform'
-
 // this needs to check if its inserted already? 99% of the time it is
+// this should avoid re-inserts, but need to test the perf trade-offs
+// i tested with the site itself and the initial insert was trivial
 
 export const insertedSelectors = {}
 
@@ -31,6 +31,6 @@ export function insertStyleRule(identifier: string, rule: string) {
   }
   const sheet = newRulesStyleTag.sheet!
   sheet.insertRule(rule, sheet.cssRules.length)
-  insertedSelectors[identifier] = process.env.NODE_ENV === 'development' ? sheet.cssRules : true
+  insertedSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
   return identifier
 }

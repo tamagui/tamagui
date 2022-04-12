@@ -28,6 +28,14 @@ const skipKeys = {
   ref: true,
 }
 
+export type PseudoStyles = {
+  hoverStyle?: ViewStyle
+  pressStyle?: ViewStyle
+  focusStyle?: ViewStyle
+  enterStyle?: ViewStyle
+  exitStyle?: ViewStyle
+}
+
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
 export const getSplitStyles = (
@@ -43,13 +51,7 @@ export const getSplitStyles = (
 
   let cur: ViewStyle | null = null
   let classNames: string[] | null = null
-  const pseudos: {
-    hoverStyle?: ViewStyle
-    pressStyle?: ViewStyle
-    focusStyle?: ViewStyle
-    enterStyle?: ViewStyle
-    exitStyle?: ViewStyle
-  } = {}
+  const pseudos: PseudoStyles = {}
 
   const medias: {
     [key in MediaKeys]: ViewStyle
@@ -110,16 +112,17 @@ export const getSplitStyles = (
         // dont check if media is active, we just apply *all* media styles
         // we combine the media props on top regular props, could proxy this
         // TODO test proxy here instead of merge
-        const mediaProps = { ...props, ...valInit }
-        // TODO media + hover
-        const mediaStyle = getSubStyle(valInit, staticConfig, theme, props)
+        // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
+        // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
+        const mediaStyle = getSubStyle(valInit, staticConfig, theme, valInit, undefined, true)
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
+          console.log('get media', { valInit, mediaStyle, mediaStyles, props })
 
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'])
-              console.log('mediaStyles', key, mediaStyles, { mediaProps, mediaStyle })
+              console.log('mediaStyles', key, mediaStyles, { valInit, mediaStyle })
           }
 
           for (const style of mediaStyles) {
@@ -209,13 +212,22 @@ const getSubStyle = (
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
   props: any,
-  resolveVariablesAs?: ResolveVariableTypes
+  resolveVariablesAs?: ResolveVariableTypes,
+  avoidDefaultProps?: boolean
 ): ViewStyle => {
   const styleOut: ViewStyle = {}
   for (const key in styleIn) {
     // be sure to sync next few lines below to loop above (*1)
     const val = styleIn[key]
-    const out = staticConfig.propMapper(key, val, theme, props, staticConfig, resolveVariablesAs)
+    const out = staticConfig.propMapper(
+      key,
+      val,
+      theme,
+      props,
+      staticConfig,
+      resolveVariablesAs,
+      avoidDefaultProps
+    )
     const expanded = out === true || !out ? [[key, val]] : Object.entries(out)
     for (const [skey, sval] of expanded) {
       if (skey in stylePropsTransform) {

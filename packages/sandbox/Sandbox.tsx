@@ -30,7 +30,7 @@ export const HomeH2 = styled(H2, {
   fontSize: 40,
 
   $sm: {
-    fontSize: 32,
+    size: '$2',
     bc: 'red',
     letterSpacing: -1,
   },
