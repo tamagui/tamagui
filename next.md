@@ -1,15 +1,14 @@
 - beta:
   - fix on native + simple native demo (maybe with starters repo)
   - compiler 100% on site
-  - create-tamagui-app
-    - get some demos in that 100% pass compile / native
   - animations
+    - enterStyle/exitStyle + docs
     - css
     - test hover/press styles + add to animations docs
   - compiler
     - check it with variants extracting fully
     - props
-      - theme, space/gap  (+ work with visually hidden)
+      - theme (+ work with visually hidden)
       - onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
   - docs
     - animations
@@ -18,13 +17,14 @@
     - // TODO i think media + pseudo needs handling here
 
 - 1: 
+  - create-tamagui-app
+      - get some demos in that 100% pass compile / native
   - animateProps={[]} (basically transition-properties)
   - // @ts-ignore TODO we need to make GetProps only use StackStylePropsBase and then later build that up better in styled()
   - // @ts-expect-error TODO
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
   - <BlurView />
-  - space => gap
   - check theme change slow
   - slow types
   - fix memory leak causing OOM eventually on site
@@ -105,6 +105,10 @@
   - <Combobox />
   - <UL /> <LI /> <OL />
 
+- transformOrigin
+  - may be able to translate to matrix https://www.jianshu.com/p/c67559b8f691
+  - https://github.com/sueLan/react-native-anchor-point
+- space => gap (blocked https://github.com/facebook/yoga/pull/1116)
 - popover add safety checks around using Popover.Content
 - Text selectColor
 - focusWithinStyle

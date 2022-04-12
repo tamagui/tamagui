@@ -106,7 +106,7 @@ export function HeroExampleThemes() {
       const listener = debounce(() => {
         setScrollLock(null)
       }, 200)
-      node.addEventListener('scroll', listener)
+      node.addEventListener('scroll', listener, { passive: true })
       return () => {
         node.removeEventListener('scroll', listener)
       }
