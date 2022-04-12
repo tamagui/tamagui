@@ -22,7 +22,7 @@ export function extendStaticConfig(
     ...parent.staticConfig.variants,
   }
 
-  // merge variants without clobbering previous... can we tho (typed??
+  // merge variants... can we type this?
   if (config.variants) {
     for (const key in config.variants) {
       if (variants[key]) {

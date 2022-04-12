@@ -271,6 +271,9 @@ export declare type StaticConfig = {
         [key: string]: boolean;
     };
     isZStack?: boolean;
+    defaultVariants?: {
+        [key: string]: any;
+    };
     isReactNativeWeb?: boolean;
     memo?: boolean;
     isTamagui?: boolean;

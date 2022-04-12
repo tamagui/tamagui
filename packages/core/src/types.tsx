@@ -529,6 +529,11 @@ export type StaticConfig = {
   isZStack?: boolean
 
   /**
+   * Merges into defaultProps later on, used internally yonly
+   */
+  defaultVariants?: { [key: string]: any }
+
+  /**
    * Auto-detect, but can ovverride, passes styles properly to react-native-web
    */
   isReactNativeWeb?: boolean

@@ -129,10 +129,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       classNames,
     } = getSplitStyles(props, staticConfig, theme, state)
 
-    if (props.debug) {
-      console.log('splits', classNames, medias)
-    }
-
     const {
       tag,
       hitSlop,
@@ -176,6 +172,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
       // ignore from here on out
       theme: _themeProp,
+      // @ts-ignore
+      defaultVariants,
 
       // TODO feature load layout hook
       onLayout,
@@ -301,9 +299,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         ...animationStyles,
         ...medias,
       }
-      if (medias) {
-        debugger
-      }
     } else {
       styles = [
         defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
@@ -345,8 +340,12 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
           theme.className,
           defaultsClassName,
           classNames,
-          stylesClassNames,
+          // TODO the order of this seems ill-defined.......
+          // having props props.className before stylesClassNames fixes <Button fontWeight="800" />
+          // need to see what this breaks, but likely solution is to figure out which actually come first
+          // we have the defaultProps / defaultsClassName so we have the info to figure it out...
           props.className,
+          stylesClassNames,
         ]
         if (componentName) {
           classList.unshift(componentClassName)
@@ -360,7 +359,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         if (process.env.NODE_ENV === 'development') {
           if (props['debug']) {
             // prettier-ignore
-            console.log('  » styles', { isStringElement, pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
+            console.log('  » className', { isStringElement, pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
           }
         }
         viewProps.className = className
