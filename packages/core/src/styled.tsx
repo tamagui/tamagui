@@ -42,14 +42,14 @@ export function styled<
 ) {
   const staticConfigProps: StaticConfig = (() => {
     if (options) {
-      const { variants, name, ...defaultProps } = options
+      const { variants, name, defaultVariants, ...defaultProps } = options
       const isReactNativeWeb = RNComponents.has(Component)
       const isTamagui = !isReactNativeWeb && 'staticConfig' in Component
       const isInput =
         defaultProps.isInput || (!isTamagui ? Component === (TextInput as any) : undefined)
       const isText = defaultProps.isText || (!isTamagui ? isInput || Component === Text : undefined)
-      if (options.defaultVariants) {
-        Object.assign(defaultProps, options.defaultVariants)
+      if (defaultVariants) {
+        Object.assign(defaultProps, defaultVariants)
       }
       const conf = {
         ...staticExtractionOptions,

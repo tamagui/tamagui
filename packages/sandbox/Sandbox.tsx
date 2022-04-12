@@ -11,9 +11,7 @@ export const Sandbox = () => {
     <Tamagui.Provider injectCSS defaultTheme="light">
       <Theme name={theme}>
         <YStack w="100%" h="100%" bc="$background" p="$5" space="$5">
-          <Button onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-            Switch theme
-          </Button>
+          <a onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>Switch theme</a>
           <Test />
         </YStack>
       </Theme>

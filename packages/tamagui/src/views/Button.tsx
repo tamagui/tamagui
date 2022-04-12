@@ -115,6 +115,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     textAlign,
     ...rest
   } = props as ButtonProps
+
   const isInsideButton = useContext(ButtonInsideButtonContext)
   const theme = useTheme()
   const size = props.size || '$4'
@@ -169,6 +170,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
             flexGrow={1}
             flexShrink={1}
             ellipse
+            debug
           >
             {children}
           </SizableText>
