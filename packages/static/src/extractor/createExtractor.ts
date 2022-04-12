@@ -518,10 +518,11 @@ export function createExtractor() {
 
             // can still optimize the object... see hoverStyle on native
             if (isDeoptedProp(name)) {
-              if (shouldPrintDebug) {
-                console.log('  ! inlining, deopt prop', name)
-              }
+              shouldDeopt = true
               inlinePropCount++
+              if (shouldPrintDebug) {
+                console.log('  ! inlining, deopted prop', name)
+              }
               return attr
             }
 
@@ -918,9 +919,9 @@ export function createExtractor() {
           // now update to new values
           node.attributes = attrs.filter(isAttr).map((x) => x.value)
 
-          if (couldntParse) {
+          if (couldntParse || shouldDeopt) {
             if (shouldPrintDebug) {
-              console.log(`  cancel:`, { couldntParse, shouldDeopt })
+              console.log(`  avoid optimizing:`, { couldntParse, shouldDeopt })
             }
             node.attributes = ogAttributes
             return

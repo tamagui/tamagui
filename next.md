@@ -131,3 +131,10 @@
   // },
 
 animation popup 
+
+- https://github.com/react-native-menu/menu
+- compiler could insert special props like:
+  - __noAnimations, __noTheme, __noSpace
+  - it would change key={} alongside that
+  - that way HMR still works, but loads less hooks
+  - works in production for extra perf

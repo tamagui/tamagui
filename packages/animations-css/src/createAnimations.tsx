@@ -11,6 +11,13 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
       if (!animation) {
         throw new Error(`no animation found: ${props.animation}`)
       }
+
+      console.log('now it is', {
+        transition: `all ${animation}`,
+        ...style,
+        ...exitStyle,
+      })
+
       return {
         style: {
           transition: `all ${animation}`,

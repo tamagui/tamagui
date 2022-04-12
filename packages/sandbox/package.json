@@ -3,7 +3,8 @@
   "version": "1.0.0-alpha.67",
   "private": true,
   "scripts": {
-    "dev": "TARGET=css NODE_ENV=development webpack serve",
+    "dev": "DISABLE_EXTRACTION=true TARGET=css NODE_ENV=development webpack serve",
+    "dev:extract": "DISABLE_EXTRACTION=false TARGET=css NODE_ENV=development webpack serve",
     "dev:reanimated": "TARGET=reanimated NODE_ENV=development webpack serve",
     "dev:motion": "TARGET=motion NODE_ENV=development webpack serve"
   },

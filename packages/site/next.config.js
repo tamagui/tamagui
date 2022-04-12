@@ -9,10 +9,13 @@ Error.stackTraceLimit = Infinity
 process.env.IGNORE_TS_CONFIG_PATHS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 
-// const disableExtraction = false
-const disableExtraction = process.env.DISABLE_EXTRACTION
-  ? Boolean(+process.env.DISABLE_EXTRACTION)
-  : process.env.NODE_ENV === 'development'
+const boolVals = {
+  true: true,
+  false: false,
+}
+
+const disableExtraction =
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
 const transform = withPlugins(
   [

@@ -52,6 +52,16 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   const tamaguiConfig = (tamaguiConfigExport['default'] ||
     tamaguiConfigExport) as TamaguiInternalConfig
 
+  if (!tamaguiConfig || !tamaguiConfig.parsed) {
+    try {
+      const confPath = require.resolve(configPath)
+      console.log(`Received:`, tamaguiConfigExport)
+      throw new Error(`Can't find valid config in ${confPath}`)
+    } catch (err) {
+      throw err
+    }
+  }
+
   // import components
   const components = {}
   for (const module of props.components) {
