@@ -22,7 +22,7 @@ export declare const inputStyle: {
     };
     variants: {
         size: {
-            '...size': import("../core/types").SizeVariantSpreadFunction<import("../core/types").TextProps>;
+            '...size': import("@tamagui/core").SizeVariantSpreadFunction<import("@tamagui/core").TextProps>;
         };
     };
 };

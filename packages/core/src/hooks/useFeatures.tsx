@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { ViewStyle } from 'react-native'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'

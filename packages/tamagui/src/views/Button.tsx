@@ -170,7 +170,6 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
             flexGrow={1}
             flexShrink={1}
             ellipse
-            debug
           >
             {children}
           </SizableText>

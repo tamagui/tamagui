@@ -7,8 +7,31 @@ import { isObj } from './isObj'
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable'
 
 export const createPropMapper = (c: StaticConfig) => {
-  const variants = c.variants
-  let variantsParsed
+  const variants = c.variants || {}
+
+  // goes through specificity finding best matching variant function
+  function getVariantFunction(variant: any, key: string, value: any) {
+    for (const cat in tokenCategories) {
+      if (key in tokenCategories[cat]) {
+        const spreadVariant = variant[`...${cat}`]
+        if (spreadVariant) {
+          return spreadVariant
+        }
+      }
+    }
+    let fn: any
+    if (typeof value === 'number') {
+      fn = variant[':number']
+    } else if (typeof value === 'string') {
+      fn = variant[':string']
+    } else if (value === true || value === false) {
+      fn = variant[':boolean']
+    }
+    fn = fn || variant[value]
+    // fallback to size ultimately - could do token level detection
+    return fn || variant['...'] || variant['...size']
+  }
+
   const defaultProps = c.defaultProps || {}
 
   return (
@@ -25,33 +48,15 @@ export const createPropMapper = (c: StaticConfig) => {
       console.trace('no conf! err')
       return
     }
-    if (variants && !variantsParsed) {
-      variantsParsed = parseVariants(variants, conf)
-    }
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     let fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
 
     // expand variants
-    const variant = variantsParsed && variantsParsed[key]
-    if (variant && typeof value !== 'undefined') {
-      let variantValue =
-        variant[value] ||
-        (value === true
-          ? variant['true'] || variant[':boolean']
-          : value === false
-          ? variant['false'] || variant[':boolean']
-          : variant[value])
+    const variant = variants && variants[key]
 
-      if (!variantValue) {
-        if (variant[':number'] && !isNaN(value)) {
-          variantValue = variant[':number']
-        } else if (variant[':string'] && typeof value === 'string') {
-          variantValue = variant[':string']
-        } else {
-          variantValue = variant['...']
-        }
-      }
+    if (variant && value !== undefined) {
+      let variantValue = getVariantFunction(variant, key, value)
 
       if (!variantValue) {
         return value
@@ -78,9 +83,11 @@ export const createPropMapper = (c: StaticConfig) => {
               }),
         })
       }
+
       if (isObj(variantValue)) {
         variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
       }
+
       return variantValue
     }
 
@@ -245,26 +252,4 @@ const tokenCategories = {
     borderLeftColor: true,
     borderRightColor: true,
   },
-}
-
-// turns variant spreads into individual lookups
-function parseVariants(variants: any, conf: TamaguiInternalConfig) {
-  return Object.keys(variants).reduce((acc, key) => {
-    acc[key] = Object.keys(variants[key]).reduce((vacc, vkey) => {
-      const variantVal = variants[key][vkey]
-      if (vkey.startsWith('...')) {
-        // set the default one at '...' for easy fallback on non-exact-variant-match
-        vacc['...'] = variantVal
-        const tokenKey = vkey.slice(3)
-        const tokens = conf.tokens[tokenKey]
-        for (const tkey in tokens) {
-          vacc[`$${tkey}`] = variantVal
-        }
-      } else {
-        vacc[vkey] = variantVal
-      }
-      return vacc
-    }, {})
-    return acc
-  }, {})
 }

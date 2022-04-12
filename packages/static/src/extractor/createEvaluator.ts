@@ -4,7 +4,7 @@ import generate from '@babel/generator'
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { TamaguiConfig } from '@tamagui/core'
-import { createVariableValue } from '@tamagui/core-node'
+import { createCSSVariable } from '@tamagui/core-node'
 
 import { FAILED_EVAL } from '../constants'
 import { evaluateAstNode } from './evaluateAstNode'
@@ -39,7 +39,7 @@ export function createEvaluator({
       // if (!themeKeys.has(key)) {
       //   throw new Error(`    > accessing non-existent theme key: ${key}`)
       // }
-      return createVariableValue(key)
+      return createCSSVariable(key)
     }
     // variable
     if (t.isIdentifier(n) && staticNamespace.hasOwnProperty(n.name)) {

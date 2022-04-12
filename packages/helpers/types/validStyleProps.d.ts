@@ -1,3 +1,4 @@
+import { ViewStyle } from 'react-native';
 export declare const stylePropsTransform: Readonly<{
     x: boolean;
     y: boolean;
@@ -14,11 +15,14 @@ export declare const stylePropsTransform: Readonly<{
     rotateZ: boolean;
 }>;
 export declare const stylePropsView: Readonly<{
+    overflowX?: boolean | undefined;
+    overflowY?: boolean | undefined;
     userSelect?: boolean | undefined;
     cursor?: boolean | undefined;
     contain?: boolean | undefined;
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
+    boxShadow?: boolean | undefined;
     x: boolean;
     y: boolean;
     scale: boolean;
@@ -35,6 +39,10 @@ export declare const stylePropsView: Readonly<{
     backfaceVisibility: boolean;
     backgroundColor: boolean;
     borderBottomColor: boolean;
+    borderBottomStyle: boolean;
+    borderTopStyle: boolean;
+    borderLeftStyle: boolean;
+    borderRightStyle: boolean;
     borderBottomEndRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
@@ -152,11 +160,14 @@ export declare const stylePropsText: Readonly<{
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     textTransform: boolean;
+    overflowX?: boolean | undefined;
+    overflowY?: boolean | undefined;
     userSelect?: boolean | undefined;
     cursor?: boolean | undefined;
     contain?: boolean | undefined;
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
+    boxShadow?: boolean | undefined;
     x: boolean;
     y: boolean;
     scale: boolean;
@@ -173,6 +184,10 @@ export declare const stylePropsText: Readonly<{
     backfaceVisibility: boolean;
     backgroundColor: boolean;
     borderBottomColor: boolean;
+    borderBottomStyle: boolean;
+    borderTopStyle: boolean;
+    borderLeftStyle: boolean;
+    borderRightStyle: boolean;
     borderBottomEndRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
@@ -269,11 +284,14 @@ export declare const stylePropsAll: Readonly<{
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     textTransform: boolean;
+    overflowX?: boolean | undefined;
+    overflowY?: boolean | undefined;
     userSelect?: boolean | undefined;
     cursor?: boolean | undefined;
     contain?: boolean | undefined;
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
+    boxShadow?: boolean | undefined;
     x: boolean;
     y: boolean;
     scale: boolean;
@@ -290,6 +308,10 @@ export declare const stylePropsAll: Readonly<{
     backfaceVisibility: boolean;
     backgroundColor: boolean;
     borderBottomColor: boolean;
+    borderBottomStyle: boolean;
+    borderTopStyle: boolean;
+    borderLeftStyle: boolean;
+    borderRightStyle: boolean;
     borderBottomEndRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
@@ -374,11 +396,14 @@ export declare const validPseudoKeys: Readonly<{
     focusStyle: boolean;
 }>;
 export declare const validStyles: Readonly<{
+    overflowX?: boolean | undefined;
+    overflowY?: boolean | undefined;
     userSelect?: boolean | undefined;
     cursor?: boolean | undefined;
     contain?: boolean | undefined;
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
+    boxShadow?: boolean | undefined;
     x: boolean;
     y: boolean;
     scale: boolean;
@@ -395,6 +420,10 @@ export declare const validStyles: Readonly<{
     backfaceVisibility: boolean;
     backgroundColor: boolean;
     borderBottomColor: boolean;
+    borderBottomStyle: boolean;
+    borderTopStyle: boolean;
+    borderLeftStyle: boolean;
+    borderRightStyle: boolean;
     borderBottomEndRadius: boolean;
     borderBottomLeftRadius: boolean;
     borderBottomRightRadius: boolean;
@@ -476,4 +505,5 @@ export declare const validStyles: Readonly<{
     pressStyle: boolean;
     focusStyle: boolean;
 }>;
+export declare const mergeTransform: (obj: ViewStyle, key: string, val: any) => void;
 //# sourceMappingURL=validStyleProps.d.ts.map

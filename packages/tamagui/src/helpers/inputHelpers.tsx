@@ -1,6 +1,5 @@
-import { TextInputProps } from 'react-native'
+import { SizeVariantSpreadFunction, TextProps } from '@tamagui/core'
 
-import { SizeVariantSpreadFunction, TextProps } from '../../../core/types'
 import { getSize } from './getSize'
 import { sizableTextSizeVariant } from './sizableTextSizeVariant'
 

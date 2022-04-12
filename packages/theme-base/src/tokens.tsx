@@ -5,9 +5,9 @@ import { firaFont } from './firaFont'
 import { interFont } from './interFont'
 
 const size = {
-  true: 10, // for space boolean true
-  '0.5': 1,
-  0: 2,
+  true: 20, // for space boolean true
+  0: 0,
+  '0.5': 2,
   1: 6,
   2: 10,
   3: 15,
@@ -20,12 +20,17 @@ const size = {
   10: 75,
   11: 85,
   12: 100,
-}
+} as const
 
-const space = {
+type Sizes = typeof size
+type SizeKeys = keyof Sizes
+
+const space: {
+  [Key in `-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
+} = {
   ...size,
   ...Object.fromEntries(Object.entries(size).map(([k, v]) => [`-${k}`, -v])),
-}
+} as any
 
 export const tokens = createTokens({
   size,

@@ -2,6 +2,7 @@
   "name": "@tamagui/core-node",
   "version": "1.0.0-alpha.64",
   "main": "index.js",
+  "types": "types",
   "scripts": {
     "build": "./build.js",
     "watch": "./build.js --watch"
@@ -18,7 +19,8 @@
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.13.12",
+    "esbuild": "^0.14.36",
+    "esbuild-plugin-alias": "^0.2.1",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.7",
     "fs-extra": "^9.1.0",

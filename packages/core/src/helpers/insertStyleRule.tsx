@@ -2,7 +2,11 @@
 // this should avoid re-inserts, but need to test the perf trade-offs
 // i tested with the site itself and the initial insert was trivial
 
-export const insertedSelectors = {}
+const allSelectors = {}
+const insertedSelectors = {}
+
+export const getAllSelectors = () => allSelectors
+export const getInsertedRules = () => Object.values(insertedSelectors)
 
 if (typeof window !== 'undefined') {
   const sheets = window.document.styleSheets
@@ -13,7 +17,7 @@ if (typeof window !== 'undefined') {
       // @ts-ignore
       for (const rule of rules) {
         if (!rule.selectorText) continue
-        insertedSelectors[rule.selectorText.slice(1)] = true
+        allSelectors[rule.selectorText.slice(1)] = true
       }
     }
   }
@@ -26,11 +30,12 @@ export function insertStyleRule(identifier: string, rule: string) {
   if (!newRulesStyleTag) {
     return
   }
-  if (insertedSelectors[identifier]) {
+  if (allSelectors[identifier]) {
     return
   }
   const sheet = newRulesStyleTag.sheet!
   sheet.insertRule(rule, sheet.cssRules.length)
-  insertedSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
+  allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
+  insertedSelectors[identifier] = rule
   return identifier
 }

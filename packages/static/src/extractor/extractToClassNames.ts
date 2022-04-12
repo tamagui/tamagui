@@ -16,10 +16,11 @@ import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
 import { Extractor } from './createExtractor'
 import { ensureImportingConcat } from './ensureImportingConcat'
-import { isSimpleSpread } from './extractHelpers'
+import { attrStr, isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
 import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
+import { literalToAst } from './literalToAst'
 import { logLines } from './logLines'
 
 const mergeStyleGroups = {
@@ -27,6 +28,14 @@ const mergeStyleGroups = {
   shadowRadius: true,
   shadowColor: true,
   shadowOffset: true,
+}
+
+export type ExtractedResponse = {
+  js: string | Buffer
+  styles: string
+  stylesPath?: string
+  ast: t.File
+  map: any // RawSourceMap from 'source-map'
 }
 
 export function extractToClassNames({
@@ -47,13 +56,7 @@ export function extractToClassNames({
   shouldPrintDebug: boolean
   cssPath: string
   threaded?: boolean
-}): null | {
-  js: string | Buffer
-  styles: string
-  stylesPath?: string
-  ast: t.File
-  map: any // RawSourceMap from 'source-map'
-} {
+}): ExtractedResponse | null {
   if (typeof source !== 'string') {
     throw new Error('`source` must be a string of javascript')
   }
@@ -99,6 +102,7 @@ export function extractToClassNames({
       filePath,
       lineNumbers,
       programPath,
+      isFlattened,
     }) => {
       let finalClassNames: ClassNameObject[] = []
       let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
@@ -140,15 +144,51 @@ export function extractToClassNames({
       for (const attr of attrs) {
         switch (attr.type) {
           case 'style':
-            const styles = addStyles(attr.value)
-            const newClassNames = concatClassName(styles.map((x) => x.identifier).join(' '))
-            // prettier-ignore
-            const existing = finalClassNames.find((x) => x.type == 'StringLiteral') as t.StringLiteral | null
-            if (existing) {
-              existing.value = `${existing.value} ${newClassNames}`
+            if (!isFlattened) {
+              if (!attr.name) {
+                throw new Error(`No name`)
+              }
+
+              // only ever one at a time i believe so we can be lazy with this access
+              const { hoverStyle, pressStyle, focusStyle } = attr.value
+              const pseudos = [
+                ['hoverStyle', hoverStyle],
+                ['pressStyle', pressStyle],
+                ['focusStyle', focusStyle],
+              ] as const
+
+              const styles = getStylesAtomic(attr.value)
+              finalStyles = [...finalStyles, ...styles]
+
+              for (const [key, value] of pseudos) {
+                if (value && Object.keys(value).length) {
+                  finalAttrs.push(
+                    t.jsxAttribute(
+                      t.jsxIdentifier(key),
+                      t.jsxExpressionContainer(literalToAst(value))
+                    )
+                  )
+                }
+              }
+
+              for (const style of styles) {
+                // leave them as attributes
+                finalAttrs.push(
+                  t.jsxAttribute(t.jsxIdentifier(style.property), t.stringLiteral(style.identifier))
+                )
+              }
             } else {
-              finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
+              const styles = addStyles(attr.value)
+              const newClassNames = concatClassName(styles.map((x) => x.identifier).join(' '))
+              // prettier-ignore
+              const existing = finalClassNames.find((x) => x.type == 'StringLiteral') as t.StringLiteral | null
+              if (existing) {
+                existing.value = `${existing.value} ${newClassNames}`
+              } else {
+                finalClassNames = [...finalClassNames, t.stringLiteral(newClassNames)]
+              }
             }
+
             break
           case 'attr':
             const val = attr.value
@@ -215,7 +255,8 @@ export function extractToClassNames({
 
       if (shouldPrintDebug) {
         // prettier-ignore
-        console.log('  classnames (after)\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
+        console.log('  finalClassNames\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
+        console.log('  finalAttrs', finalAttrs)
       }
 
       function addTernaryStyle(ternary: Ternary, a: any, b: any) {

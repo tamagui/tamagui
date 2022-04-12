@@ -1,5 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
+import { PseudoStyles } from '@tamagui/core-node';
+import { ViewStyle } from 'react-native';
 export declare type ClassNameObject = t.StringLiteral | t.Expression;
 export interface CacheObject {
     [key: string]: any;
@@ -30,7 +32,7 @@ export declare type ExtractedAttrAttr = {
 };
 export declare type ExtractedAttrStyle = {
     type: 'style';
-    value: Object;
+    value: ViewStyle & PseudoStyles;
     attr?: t.JSXAttribute | t.JSXSpreadAttribute;
     name?: string;
 };

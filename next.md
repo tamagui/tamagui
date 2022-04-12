@@ -1,22 +1,20 @@
 - beta:
-  - fix on native + simple native demo (maybe with starters repo)
-  - compiler 100% on site
-  - animations
-    - enterStyle/exitStyle + docs
-    - css
-    - test hover/press styles + add to animations docs
-  - compiler
-    - check it with variants extracting fully
-    - props
-      - theme (+ work with visually hidden)
-      - onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
-  - docs
-    - animations
-  - bugs
-    - Image SSR / site weirdness on some
-    - // TODO i think media + pseudo needs handling here
+  - 0% fix on native + simple native demo (maybe with starters repo)
+  - 90% compiler 100% on site
+  - 50% animation enterStyle/exitStyle + docs
+  - 75% animation css
+  - 75% animation test hover/press styles + add to animations docs
+  - 0% compiler theme (+ work with visually hidden)
+  - 0% onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
+  - 80% animations docs
+  - 0% bug image ssr / site weirdness on some
+  - 0% bug // TODO i think media + pseudo needs handling here
+  - 0% bug // continue (?) see if breaks anything
+  - 0% bug // Object.assign(style, out) see what this was
 
 - 1: 
+  - auto skeleton components
+  - <Avatar />, <Checkbox />/ <Switch />, <Label />, <Select />, <Tabs />
   - create-tamagui-app
       - get some demos in that 100% pass compile / native
   - animateProps={[]} (basically transition-properties)
@@ -27,11 +25,11 @@
   - <BlurView />
   - check theme change slow
   - slow types
-  - fix memory leak causing OOM eventually on site
   - test component theme + alt theme (plus with compiled)
   - docs: extractable(), deoptProps, getExpandedShorthands
 
-- 2:
+- 2: 
+  - <Toast />, <Card />
   - load theme hook via feature if possible
   - add fonts section to guides
   - document $body being default font family
@@ -41,6 +39,8 @@
   - floating-ui
 
 - 3
+  - <Video />, <Spinner />
+  - fix memory leak causing OOM eventually on site
   - // this can be done with CSS entirely right?
   - useLayout feature hook
   - optional 18-only separate releases? beta.3.react18?
@@ -93,7 +93,7 @@
     - tamagui sandbox ./packages/site/components/OffsetBox.tsx
     - tamagui compile ./packages/site/components/OffsetBox.tsx
 
-  - auto skeleton components
+  
   - <List /> (works with drawer + draggable + selectable)
   - <Menu />
   - <MenuDrawer />
@@ -142,3 +142,4 @@ animation popup 
   - it would change key={} alongside that
   - that way HMR still works, but loads less hooks
   - works in production for extra perf
+- compiler hot reload (shouldn't be too hard for basic case)

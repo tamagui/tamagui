@@ -1,12 +1,25 @@
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
-import type { StackProps, StaticConfigParsed, TamaguiInternalConfig } from '@tamagui/core'
-import { getSplitStyles, mediaQueryConfig, pseudos } from '@tamagui/core-node'
+import {
+  StackProps,
+  StaticConfigParsed,
+  TamaguiInternalConfig,
+  getSplitStyles,
+  mediaQueryConfig,
+  pseudos,
+  rnw,
+} from '@tamagui/core-node'
 import { stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
 
 import { FAILED_EVAL } from '../constants'
-import { ExtractedAttr, ExtractedAttrAttr, ExtractorParseProps, Ternary } from '../types'
+import {
+  ExtractedAttr,
+  ExtractedAttrAttr,
+  ExtractedAttrStyle,
+  ExtractorParseProps,
+  Ternary,
+} from '../types'
 import { createEvaluator, createSafeEvaluator } from './createEvaluator'
 import { evaluateAstNode } from './evaluateAstNode'
 import { attrStr, findComponentName, isInsideTamagui, isPresent, objToStr } from './extractHelpers'
@@ -17,6 +30,7 @@ import { loadTamagui } from './loadTamagui'
 import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
+import { validHTMLAttributes } from './validHTMLAttributes'
 
 const UNTOUCHED_PROPS = {
   key: true,
@@ -247,6 +261,16 @@ export function createExtractor() {
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
 
+          function isValidStyleKey(name: string) {
+            return !!(
+              !!validStyles[name] ||
+              !!pseudos[name] ||
+              staticConfig.variants?.[name] ||
+              tamaguiConfig.shorthands[name] ||
+              (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
+            )
+          }
+
           // find tag="a" tag="main" etc dom indicators
           let tagName = staticConfig.defaultProps?.tag ?? (isTextView ? 'span' : 'div')
           traversePath
@@ -364,11 +388,10 @@ export function createExtractor() {
           // set flattened
           node.attributes = flattenedAttrs
 
-          // add in default props
+          // add in NON-STYLE default props
           if (staticConfig.defaultProps) {
             for (const key in staticConfig.defaultProps) {
-              if (key === 'StyleSheet') {
-                // temp bugfix when wrapping styled(require('react-native-web').Input)
+              if (isValidStyleKey(key)) {
                 continue
               }
               const serialize = require('babel-literal-to-ast')
@@ -397,7 +420,6 @@ export function createExtractor() {
           let attrs: ExtractedAttr[] = []
           let shouldDeopt = false
           let inlinePropCount = 0
-          let isFlattened = false
           let hasSetOptimized = false
 
           // RUN first pass
@@ -608,7 +630,7 @@ export function createExtractor() {
 
             // never flatten if a prop isn't a valid static attribute
             // only post prop-mapping
-            if (!isStaticAttributeName(name)) {
+            if (!isValidStyleKey(name)) {
               let keys = [name]
               let out: any = null
               if (staticConfig.propMapper) {
@@ -622,20 +644,47 @@ export function createExtractor() {
                   staticConfig
                 )
                 if (out) {
+                  // translate to DOM-compat
+                  out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
+                  // remove className - we dont use rnw styling
+                  delete out.className
+
                   keys = Object.keys(out)
                 }
               }
-              for (const key of keys) {
-                if (!isStaticAttributeName(key)) {
+
+              const attributes = keys.map((key) => {
+                const val = out[key]
+                if (!isValidStyleKey(key)) {
+                  if (validHTMLAttributes[key]) {
+                    return {
+                      type: 'attr',
+                      value: t.jsxAttribute(
+                        t.jsxIdentifier(key),
+                        t.jsxExpressionContainer(literalToAst(val))
+                      ),
+                    } as const
+                  }
                   if (shouldPrintDebug) {
                     console.log('  ! inlining, non-static', key)
                   }
                   inlinePropCount++
                 }
-              }
+                return {
+                  type: 'style',
+                  value: { [name]: styleValue },
+                  name,
+                  attr: path.node,
+                } as const
+              })
+
               if (inlinePropCount) {
+                // bail
                 return attr
               }
+
+              // return evaluated attributes
+              return attributes
             }
 
             // FAILED = dynamic or ternary, keep going
@@ -796,17 +845,6 @@ export function createExtractor() {
             }
           } // END function evaluateAttribute
 
-          function isStaticAttributeName(name: string) {
-            return !!(
-              !!validStyles[name] ||
-              staticConfig.validPropsExtra?.[name] ||
-              !!pseudos[name] ||
-              staticConfig.variants?.[name] ||
-              tamaguiConfig.shorthands[name] ||
-              (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
-            )
-          }
-
           function isExtractable(obj: t.Node): obj is t.ObjectExpression {
             return (
               t.isObjectExpression(obj) &&
@@ -816,7 +854,7 @@ export function createExtractor() {
                   return false
                 }
                 const propName = prop.key['name']
-                if (!isStaticAttributeName(propName) && propName !== 'tag') {
+                if (!isValidStyleKey(propName) && propName !== 'tag') {
                   if (shouldPrintDebug) {
                     console.log('  not a valid style prop!', propName)
                   }
@@ -1019,6 +1057,40 @@ export function createExtractor() {
             staticConfig.neverFlatten !== true &&
             (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
 
+          // only if we flatten, ensure the default styles are there
+          if (shouldFlatten && staticConfig.defaultProps) {
+            const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap((key) => {
+              if (!isValidStyleKey(key)) {
+                return
+              }
+              try {
+                const serialize = require('babel-literal-to-ast')
+                const val = staticConfig.defaultProps[key]
+                const value = serialize(val)
+                const name = tamaguiConfig.shorthands[key] || key
+                return {
+                  type: 'style',
+                  name,
+                  value,
+                } as ExtractedAttrStyle
+              } catch (err) {
+                console.warn(
+                  `⚠️ Error evaluating default style for component, prop ${key}\n error: ${err}`
+                )
+                shouldDeopt = true
+              }
+            }) as ExtractedAttr[]
+
+            if (defaultStyleAttrs.length) {
+              attrs = [...defaultStyleAttrs, ...attrs]
+            }
+          }
+
+          if (shouldDeopt) {
+            node.attributes = ogAttributes
+            return
+          }
+
           // insert overrides - this inserts null props for things that are set in classNames
           // only when not flattening, so the downstream component can skip applying those styles
           const ensureOverridden = {}
@@ -1053,6 +1125,20 @@ export function createExtractor() {
 
           // expand shorthands, de-opt variables
           attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
+            if (!cur) {
+              return acc
+            }
+
+            if (
+              shouldFlatten &&
+              cur.type === 'attr' &&
+              !t.isJSXSpreadAttribute(cur.value) &&
+              cur.value.name.name === 'tag'
+            ) {
+              // remove tag=""
+              return acc
+            }
+
             if (cur.type !== 'style') {
               acc.push(cur)
               return acc
@@ -1175,7 +1261,9 @@ export function createExtractor() {
                 }
               }
             }
-            const out = getSplitStyles(props, staticConfig, defaultTheme)
+            const out = getSplitStyles(props, staticConfig, defaultTheme, {
+              noClassNames: true,
+            })
             const outStyle = {
               ...out.style,
               ...out.pseudos,
@@ -1202,11 +1290,14 @@ export function createExtractor() {
             ...completeStaticProps,
           })
 
+          if (!completeStylesProcessed) {
+            throw new Error(`Impossible, no styles`)
+          }
+
           // any extra styles added in postprocess should be added to first group as they wont be overriden
-          const stylesToAddToInitialGroup = difference(
-            Object.keys(completeStylesProcessed),
-            Object.keys(completeStaticProps)
-          )
+          const stylesToAddToInitialGroup = shouldFlatten
+            ? difference(Object.keys(completeStylesProcessed), Object.keys(completeStaticProps))
+            : []
 
           if (stylesToAddToInitialGroup.length) {
             const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
@@ -1222,7 +1313,8 @@ export function createExtractor() {
           }
 
           if (shouldPrintDebug) {
-            console.log('   -- stylesToAddToInitialGroup', stylesToAddToInitialGroup.join(', '))
+            // prettier-ignore
+            console.log('   -- stylesToAddToInitialGroup', stylesToAddToInitialGroup.join(', '), { shouldFlatten })
             // prettier-ignore
             console.log('   -- completeStaticProps:\n', logLines(objToStr(completeStaticProps)))
             // prettier-ignore
@@ -1239,25 +1331,37 @@ export function createExtractor() {
                 case 'ternary':
                   const a = getStyles(attr.value.alternate)
                   const c = getStyles(attr.value.consequent)
-                  attr.value.alternate = a
-                  attr.value.consequent = c
+                  if (a) attr.value.alternate = a
+                  if (c) attr.value.consequent = c
                   if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
                   continue
                 case 'style':
-                  for (const keyIn in attr.value) {
-                    const [key, value] = (() => {
-                      if (keyIn in stylePropsTransform) {
-                        // TODO this logic needs to be a bit more right, because could have spread in between transforms...
-                        // could just output flat transforms as webkit now supports on recent versions
-                        return ['transform', completeStylesProcessed['transform']] as const
-                      } else {
-                        return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
-                      }
-                    })()
-                    // if (shouldPrintDebug) console.log('style', { keyIn, key, value })
-                    delete attr.value[keyIn]
-                    attr.value[key] = value
+                  // expand variants and such
+                  // get the keys we need
+                  const styles = getStyles(attr.value)
+                  if (styles) {
+                    // but actually resolve them to the full object
+                    // TODO media/psuedo merging
+                    attr.value = Object.fromEntries(
+                      Object.keys(styles).map((k) => [k, completeStylesProcessed[k]])
+                    )
+                  } else {
+                    console.warn('?????????')
                   }
+                  // for (const keyIn in attr.value) {
+                  //   const [key, value] = (() => {
+                  //     if (keyIn in stylePropsTransform) {
+                  //       // TODO this logic needs to be a bit more right, because could have spread in between transforms...
+                  //       // could just output flat transforms as webkit now supports on recent versions
+                  //       return ['transform', completeStylesProcessed['transform']] as const
+                  //     } else {
+                  //       return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
+                  //     }
+                  //   })()
+                  //   // if (shouldPrintDebug) console.log('style', { keyIn, key, value })
+                  //   delete attr.value[keyIn]
+                  //   attr.value[key] = value
+                  // }
                   continue
               }
             } catch (err) {
@@ -1272,6 +1376,25 @@ export function createExtractor() {
             return node
           }
 
+          // final lazy extra loop: remove duplicate styles
+          // so if you have:
+          //   style({ color: 'red' }), ...someProps, style({ color: 'green' })
+          // this will mutate:
+          //   style({}), ...someProps, style({ color: 'green' })
+          const existingStyleKeys = new Set()
+          for (let i = attrs.length - 1; i >= 0; i--) {
+            const attr = attrs[i]
+            if (attr.type === 'style') {
+              for (const key in attr.value) {
+                if (existingStyleKeys.has(key)) {
+                  delete attr.value[key]
+                } else {
+                  existingStyleKeys.add(key)
+                }
+              }
+            }
+          }
+
           if (shouldPrintDebug) {
             console.log('  - attrs (after):\n', logLines(attrs.map(attrStr).join(', ')))
           }
@@ -1281,7 +1404,6 @@ export function createExtractor() {
             if (shouldPrintDebug) {
               console.log('  [✅] flattening', originalNodeName, flatNode)
             }
-            isFlattened = true
             node.name.name = flatNode
             res.flattened++
             if (closingElement) {
@@ -1303,7 +1425,7 @@ export function createExtractor() {
             attemptEval,
             jsxPath: traversePath,
             originalNodeName,
-            isFlattened,
+            isFlattened: shouldFlatten,
             programPath,
           })
         },
