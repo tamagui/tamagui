@@ -13,7 +13,7 @@ export const HeaderFloating = (props: any) => {
       const onScroll = throttle(() => {
         setIsScrolled(window.scrollY > 250)
       }, 50)
-      window.addEventListener('scroll', onScroll)
+      window.addEventListener('scroll', onScroll, { passive: true })
       return () => {
         window.removeEventListener('scroll', onScroll)
       }

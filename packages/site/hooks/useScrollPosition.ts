@@ -47,7 +47,7 @@ const scrollListen = (cb: ScrollListenerFn) => {
         listener(e)
       })
     }
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     disposeScrollListen = () => {
       window.removeEventListener('scroll', onScroll)
     }
