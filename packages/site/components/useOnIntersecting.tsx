@@ -30,7 +30,6 @@ export const useOnIntersecting = (
     let lastEntry: any
 
     const io = new IntersectionObserver(([entry]) => {
-      console.log(entry.isIntersecting)
       if (entry.isIntersecting) {
         lastEntry = new Proxy(entry, {
           get(target, key) {

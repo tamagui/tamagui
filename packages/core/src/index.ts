@@ -20,6 +20,7 @@ export * from './helpers/matchMedia'
 export * from './helpers/themeable'
 export * from './helpers/withStaticProperties'
 export * from './helpers/isTamaguiElement'
+export * from './helpers/getExpandedShorthands'
 
 export * from './contexts/ButtonInsideButtonContext'
 

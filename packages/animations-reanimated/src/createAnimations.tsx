@@ -43,7 +43,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     Text: AnimatedText,
     useAnimations: (props: UseAnimationProps, state: UseAnimationState) => {
       const { style, exitStyle, onDidAnimate, delay } = state
-      console.log('useAnimations', props.animation, style)
       const [isPresent, safeToUnmount] = usePresence()
       const presence = useContext(AnimatePresenceContext)
       const isMounted = useSharedValue(false)
@@ -197,8 +196,6 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         // stylePriority,
         // transitionProp,
       ])
-
-      console.log('animatedStyle', animatedStyle)
 
       return {
         style: animatedStyle,

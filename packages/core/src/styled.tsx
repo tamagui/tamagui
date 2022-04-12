@@ -96,17 +96,4 @@ export function styled<
 }
 
 type ImpossibleKey = 1234556123312321
-
 type Expand<T> = T extends infer O ? { [K in keyof O]?: O[K] } : never
-
-// export function styled<
-//   ParentComponent extends StylableComponent = StaticComponent<StackProps>,
-//   Variants extends VariantDefinitions<any> = VariantDefinitions<any>
-// >(
-//   Component: ParentComponent,
-//   options?: GetProps<ParentComponent> & {
-//     name?: string
-//     variants?: Variants | undefined
-//   },
-//   staticExtractionOptions?: StaticConfig
-// ): StaticComponent<Props, VariantProps>

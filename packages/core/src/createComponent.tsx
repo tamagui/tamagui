@@ -283,8 +283,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const isStringElement = typeof ViewComponent === 'string'
     const animationStyles = state.animation ? state.animation.style : null
 
-    console.log('medias', isStringElement, shouldAvoidClasses, medias, state.animation)
-
     if (isStringElement && shouldAvoidClasses) {
       styles = {
         ...defaultNativeStyle,
@@ -620,10 +618,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
 
     const { classNames, pseudos, style, viewProps } = splitStyleResult
 
-    if (staticConfig.defaultProps?.debug) {
-      console.log('??', classNames, staticConfig, addStylesUsingClassname)
-    }
-
     if (isWeb) {
       if (classNames) {
         defaultsClassName += Array.isArray(classNames) ? classNames.join(' ') : ''
@@ -797,8 +791,8 @@ export function spacedChildren({
   return next
 }
 
+// TODO this can be removed likey for bundle size, didnt help reanimated fix as i thought
 const merge = (...styles: (ViewStyle | null | false | undefined)[]) => {
-  console.log('mergin', styles)
   // ensure transforms get merged without duplicates:
   // so if you have a:
   //  transform: [{ scale: 1 }]
