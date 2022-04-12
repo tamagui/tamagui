@@ -144,7 +144,6 @@ export const SearchButton = (props: ButtonProps) => {
       // className="all ease-in ms100"
       jc="flex-start"
       borderWidth={1}
-      borderRadius={1000}
       textAlign="left"
       icon={SearchIcon}
       elevation="$1"
@@ -160,6 +159,7 @@ export const SearchButton = (props: ButtonProps) => {
         )
       }
       {...props}
+      borderRadius={1000}
     />
   )
 }

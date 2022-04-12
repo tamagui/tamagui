@@ -3,6 +3,13 @@ import * as t from '@babel/types';
 import { LoaderContext } from 'webpack';
 import { TamaguiOptions } from '../types';
 import { Extractor } from './createExtractor';
+export declare type ExtractedResponse = {
+    js: string | Buffer;
+    styles: string;
+    stylesPath?: string;
+    ast: t.File;
+    map: any;
+};
 export declare function extractToClassNames({ loader, extractor, source, sourcePath, options, shouldPrintDebug, threaded, cssPath, }: {
     loader: LoaderContext<any>;
     extractor: Extractor;
@@ -12,11 +19,5 @@ export declare function extractToClassNames({ loader, extractor, source, sourceP
     shouldPrintDebug: boolean;
     cssPath: string;
     threaded?: boolean;
-}): null | {
-    js: string | Buffer;
-    styles: string;
-    stylesPath?: string;
-    ast: t.File;
-    map: any;
-};
+}): ExtractedResponse | null;
 //# sourceMappingURL=extractToClassNames.d.ts.map

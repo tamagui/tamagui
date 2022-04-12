@@ -3,27 +3,29 @@
 const watch = process.argv.includes('--watch')
 const fs = require('fs-extra')
 const exec = require('execa')
+const esbuild = require('esbuild')
+const alias = require('esbuild-plugin-alias')
 const _ = require('lodash')
-const path = require('path')
 
 async function build() {
   console.log('building core-node...')
   try {
     await fs.remove('dist')
     await exec('npx', ['ttsc', '--skipLibCheck', '--skipDefaultLibCheck'])
-    await fs.copyFile(
-      path.join(__dirname, '../core/src/tamagui-base.css'),
-      path.join(__dirname, './dist/core/src/tamagui-base.css')
-    )
-    await exec('npx', [
-      'esbuild',
-      '--bundle',
-      '--outdir=dist',
-      '--format=cjs',
-      '--target=node16',
-      './dist/core/src/static.js',
-    ])
+    await esbuild.build({
+      bundle: true,
+      entryPoints: ['./dist/core/src/static.js'],
+      outdir: 'dist',
+      format: 'cjs',
+      target: 'node16',
+      plugins: [
+        alias({
+          'react-native': '@tamagui/proxy-worm',
+        }),
+      ],
+    })
     await fs.remove('dist/core')
+    await fs.copy('../core/types', './types')
   } catch (err) {
     console.error('Error building core-node:', err.message)
   }

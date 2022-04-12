@@ -1,4 +1,4 @@
-import React, { ReactElement, forwardRef } from 'react'
+import React, { forwardRef } from 'react'
 
 import { ThemeName } from '../types'
 import { Theme } from '../views/Theme'

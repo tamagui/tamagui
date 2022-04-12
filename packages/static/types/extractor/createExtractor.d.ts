@@ -1,12 +1,12 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { TamaguiInternalConfig } from '@tamagui/core';
+import { TamaguiInternalConfig } from '@tamagui/core-node';
 import { ExtractorParseProps } from '../types';
 export declare type Extractor = ReturnType<typeof createExtractor>;
 export declare function createExtractor(): {
-    getTamagui(): TamaguiInternalConfig<import("@tamagui/core").CreateTokens<import("@tamagui/core").VariableVal>, {
-        [key: string]: Partial<import("@tamagui/core").TamaguiBaseTheme> & {
-            [key: string]: import("@tamagui/core").VariableVal;
+    getTamagui(): TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<import("@tamagui/core-node").VariableVal>, {
+        [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
+            [key: string]: import("@tamagui/core-node").VariableVal;
         };
     }, {}, {
         [x: string]: {

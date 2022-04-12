@@ -1,3 +1,5 @@
+import { ViewStyle } from 'react-native'
+
 // flat transform props
 export const stylePropsTransform = Object.freeze({
   x: true,
@@ -19,6 +21,10 @@ export const stylePropsView = Object.freeze({
   backfaceVisibility: true,
   backgroundColor: true,
   borderBottomColor: true,
+  borderBottomStyle: true,
+  borderTopStyle: true,
+  borderLeftStyle: true,
+  borderRightStyle: true,
   borderBottomEndRadius: true,
   borderBottomLeftRadius: true,
   borderBottomRightRadius: true,
@@ -98,11 +104,14 @@ export const stylePropsView = Object.freeze({
 
   // allow a few web only ones
   ...(process.env.TAMAGUI_TARGET === 'web' && {
+    overflowX: true,
+    overflowY: true,
     userSelect: true,
     cursor: true,
     contain: true,
     pointerEvents: true,
     boxSizing: true,
+    boxShadow: true,
   }),
 })
 
@@ -152,3 +161,14 @@ export const validStyles = Object.freeze({
   ...validPseudoKeys,
   ...stylePropsView,
 })
+
+const mapTransformKeys = {
+  x: 'translateX',
+  y: 'translateY',
+}
+
+export const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
+  obj.transform ||= []
+  // @ts-ignore
+  obj.transform.push({ [mapTransformKeys[key] || key]: val })
+}

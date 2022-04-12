@@ -1,10 +1,9 @@
-import { getStyleRules } from '@tamagui/helpers'
-
 import { configListeners, getHasConfigured, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { Variable, createCSSVariable, createVariable, isVariable } from './createVariable'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
+import { getInsertedRules } from './helpers/insertStyleRule'
 import { configureMedia } from './hooks/useMedia'
 import {
   AnimationDriver,
@@ -167,7 +166,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const tokensParsed: any = parseTokens(config.tokens)
 
   const getCSS = () => {
-    return `${themeConfig.css}\n${[...getStyleRules()].join('\n')}`
+    return `${themeConfig.css}\n${getInsertedRules().join('\n')}`
   }
 
   const next: TamaguiInternalConfig = {

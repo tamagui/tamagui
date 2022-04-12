@@ -1,5 +1,7 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
+import { PseudoStyles } from '@tamagui/core-node'
+import { ViewStyle } from 'react-native'
 
 export type ClassNameObject = t.StringLiteral | t.Expression
 
@@ -39,7 +41,7 @@ export type ExtractedAttrAttr = {
 
 export type ExtractedAttrStyle = {
   type: 'style'
-  value: Object
+  value: ViewStyle & PseudoStyles
   attr?: t.JSXAttribute | t.JSXSpreadAttribute
   name?: string
 }

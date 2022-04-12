@@ -12,8 +12,10 @@ export function isSimpleSpread(node: t.JSXSpreadAttribute) {
   return t.isIdentifier(node.argument) || t.isMemberExpression(node.argument)
 }
 
-export const attrStr = (attr: ExtractedAttr) => {
-  return attr.type === 'attr'
+export const attrStr = (attr?: ExtractedAttr) => {
+  return !attr
+    ? ''
+    : attr.type === 'attr'
     ? getNameAttr(attr.value)
     : attr.type === 'ternary'
     ? `...${ternaryStr(attr.value)}`
@@ -21,6 +23,9 @@ export const attrStr = (attr: ExtractedAttr) => {
 }
 
 export const objToStr = (obj: any, spacer = ', ') => {
+  if (!obj) {
+    return `${obj}`
+  }
   return `{${Object.entries(obj)
     .map(
       ([k, v]) =>

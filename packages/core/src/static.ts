@@ -15,4 +15,4 @@ export * from './helpers/getStylesAtomic'
 export * from './helpers/getSplitStyles'
 export * from '@tamagui/helpers'
 
-export * from './constants/pseudos'
+export * from './constants/rnw'

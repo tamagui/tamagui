@@ -27,6 +27,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
   context: __dirname,
   mode: 'development',
   entry: ['./index.tsx'],
+  devtool: 'source-map',
   resolve: {
     extensions: [`${target}.ts`, `${target}.tsx`, '.web.js', '.ts', '.tsx', '.js'],
     mainFields: ['module:jsx', 'browser', 'module', 'main'],

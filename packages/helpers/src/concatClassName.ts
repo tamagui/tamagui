@@ -82,10 +82,6 @@ export function concatClassName(_cn: ViewStyle | null | undefined): string {
     }
   }
 
-  // if (arguments.length === 1) {
-  //   recently.set(arguments[0], final)
-  // }
-
   return final
 }
 

@@ -1,4 +1,5 @@
 import {
+  ExtractedResponse,
   TamaguiOptions,
   createExtractor,
   extractToClassNames,
@@ -9,7 +10,7 @@ import { LoaderContext } from 'webpack'
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
 
-const stylesByFile = new Map<string, string>()
+const extractedInfoByFile = new Map<string, ExtractedResponse>()
 const stylePathToFilePath = new Map<string, string>()
 
 let index = 0
@@ -52,12 +53,20 @@ export function loader(this: LoaderContext<any>, source: string) {
 
     // if outputted css
     if (options.cssPath || options.cssData) {
+      // get in memory info
+      const pathKey = stylePathToFilePath.get(sourcePath) ?? sourcePath
+      const info = extractedInfoByFile.get(pathKey)
+      // clear memory
+      stylePathToFilePath.delete(sourcePath)
+      extractedInfoByFile.delete(pathKey)
+      // get output CSS
       const out = options.cssData
         ? Buffer.from(options.cssData, 'base64').toString('utf-8')
-        : stylesByFile.get(stylePathToFilePath.get(sourcePath) ?? sourcePath)
+        : info?.styles
       if (!out) {
-        console.warn(`no styles... ${stylesByFile.keys} ${sourcePath}`)
+        console.warn(`no styles... ${extractedInfoByFile.keys} ${sourcePath}`)
       }
+      // use original JS sourcemap
       return callback(null, out || '')
     }
 
@@ -85,12 +94,11 @@ export function loader(this: LoaderContext<any>, source: string) {
       return callback(null, source)
     }
 
+    extractedInfoByFile.set(sourcePath, extracted)
+
     if (!threaded) {
       if (extracted.stylesPath) {
         stylePathToFilePath.set(extracted.stylesPath, sourcePath)
-      }
-      if (extracted.styles) {
-        stylesByFile.set(sourcePath, extracted.styles)
       }
     }
 

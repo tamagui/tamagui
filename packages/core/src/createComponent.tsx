@@ -1,4 +1,4 @@
-import { concatClassName, stylePropsView } from '@tamagui/helpers'
+import { stylePropsView } from '@tamagui/helpers'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
   Children,
@@ -20,9 +20,13 @@ import { isAndroid, isTouchDevice, isWeb } from './constants/platform'
 import { rnw } from './constants/rnw'
 import { isVariable } from './createVariable'
 import { ComponentState, defaultComponentState } from './defaultComponentState'
-import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import { PseudoStyles, SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
+import {
+  ClassNamesObject,
+  PseudoStyles,
+  SplitStyleResult,
+  getSplitStyles,
+} from './helpers/getSplitStyles'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
@@ -37,10 +41,6 @@ import {
   UseAnimationHook,
 } from './types'
 import { TextAncestorContext } from './views/TextAncestorContext'
-
-if (process.env.TAMAGUI_TARGET === 'web') {
-  require('./tamagui-base.css')
-}
 
 export const mouseUps = new Set<Function>()
 
@@ -90,7 +90,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   let defaultPseudos: PseudoStyles = {}
   let defaultNativeStyle: any
   let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }> | null = null
-  let defaultsClassName = ''
+  let defaultsClassName: ClassNamesObject | null = null
   let initialTheme: any
   let splitStyleResult: SplitStyleResult | null = null
 
@@ -111,7 +111,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.warn(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', ' debug prop on:')
+        console.warn(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', ' debug prop on:', { props: Object.entries(props) })
         if (props['debug'] === 'break') debugger
       }
     }
@@ -127,7 +127,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       medias,
       style,
       classNames,
-    } = getSplitStyles(props, staticConfig, theme, state)
+    } = getSplitStyles(props, staticConfig, theme, state, defaultsClassName)
 
     const {
       tag,
@@ -301,7 +301,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       }
     } else {
       styles = [
-        defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
+        isWeb ? null : defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
         // parity w react-native-web, only for text in text
         // TODO this should be able to be done w css to replicate after extraction:
         //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
@@ -322,13 +322,13 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     // can just remove  && !shouldAvoidClasses and add in a viewProps.style = styles in isWeb
 
     if (isWeb) {
-      const hasntSetInitialAnimationState = props.animation && !state.animation
-      const disableInsertStyles = hasntSetInitialAnimationState || shouldAvoidClasses || false
-      const stylesClassNames = useStylesAsClassname(
-        Array.isArray(styles) ? styles : [styles],
-        disableInsertStyles,
-        props.debug
-      )
+      // const hasntSetInitialAnimationState = props.animation && !state.animation
+      // const disableInsertStyles = hasntSetInitialAnimationState || shouldAvoidClasses || false
+      // const stylesClassNames = useStylesAsClassname(
+      //   Array.isArray(styles) ? styles : [styles],
+      //   disableInsertStyles,
+      //   props.debug
+      // )
       if (!shouldAvoidClasses) {
         const fontFamilyName = isText
           ? props.fontFamily || staticConfig.defaultProps.fontFamily
@@ -336,30 +336,22 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         const fontFamily =
           fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
         const classList = [
-          fontFamily ? `font_${fontFamily}` : null,
+          componentName ? componentClassName : '',
+          fontFamily ? `font_${fontFamily}` : '',
           theme.className,
-          defaultsClassName,
-          classNames,
-          // TODO the order of this seems ill-defined.......
-          // having props props.className before stylesClassNames fixes <Button fontWeight="800" />
-          // need to see what this breaks, but likely solution is to figure out which actually come first
-          // we have the defaultProps / defaultsClassName so we have the info to figure it out...
-          props.className,
-          stylesClassNames,
+          classNames ? Object.values(classNames).join(' ') : '',
         ]
-        if (componentName) {
-          classList.unshift(componentClassName)
-        }
+
         // TODO restore this to isText classList
         // hasTextAncestor === true && cssText.textHasAncestor,
         // TODO MOVE TO VARIANTS [number] [any]
         // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
 
-        const className = concatClassName(...classList)
+        const className = classList.join(' ')
         if (process.env.NODE_ENV === 'development') {
           if (props['debug']) {
             // prettier-ignore
-            console.log('  » className', { isStringElement, pseudos, state, style, styles, classList, stylesClassNames, className: className.trim().split(' '), themeClassName: theme.className })
+            console.log('  » className', { isStringElement, pseudos, state, defaultsClassName, classNames, propsClassName: props.className, style, classList, className: className.trim().split(' '), themeClassName: theme.className })
           }
         }
         viewProps.className = className
@@ -615,26 +607,19 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     AnimatedText = tamaguiConfig.animations?.Text
     AnimatedView = tamaguiConfig?.animations?.View
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-    splitStyleResult = getSplitStyles(
-      staticConfig.defaultProps,
-      staticConfig,
-      initialTheme,
-      { mounted: true },
-      'variable'
-    )
+    splitStyleResult = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, {
+      mounted: true,
+      resolveVariablesAs: 'variable',
+    })
+
+    if (process.env.NODE_ENV === 'development' && shouldDebug) {
+      console.log('splitStyleResult', splitStyleResult, initialTheme)
+    }
 
     const { classNames, pseudos, style, viewProps } = splitStyleResult
 
     if (isWeb) {
-      if (classNames) {
-        defaultsClassName += Array.isArray(classNames) ? classNames.join(' ') : ''
-      }
-      const stylesObj = {}
-      for (const k in style) {
-        const v = style[k]
-        stylesObj[k] = isVariable(v) ? v.variable : v
-      }
-      defaultsClassName += addStylesUsingClassname([stylesObj, pseudos])
+      defaultsClassName = classNames
     }
 
     // for use in animations + native
@@ -665,15 +650,15 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     }
   })
 
-  component['staticConfig'] = {
-    validStyles: validStyleProps,
-    ...staticConfig,
-  }
-
   let res: StaticComponent<ComponentPropTypes, {}, Ref> = component as any
 
   if (configIn.memo) {
     res = memo(res) as any
+  }
+
+  res['staticConfig'] = {
+    validStyles: validStyleProps,
+    ...staticConfig,
   }
 
   // res.extractable HoC
@@ -841,7 +826,17 @@ const merge = (...styles: (ViewStyle | null | false | undefined)[]) => {
 
 export const AbsoluteFill = (props: any) =>
   isWeb ? (
-    <div className="tamagui-absolute-fill">{props.children}</div>
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+      }}
+    >
+      {props.children}
+    </div>
   ) : (
     <View style={StyleSheet.absoluteFill}>{props.child}</View>
   )

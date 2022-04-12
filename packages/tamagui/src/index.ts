@@ -82,6 +82,7 @@ export {
   getTokens,
   isObj,
   isTamaguiElement,
+  isVariable,
   matchMedia,
   mediaObjectToString,
   mediaState,
@@ -147,3 +148,4 @@ export * from './views/VisuallyHidden'
 
 export * from './helpers/prevent'
 export * from './helpers/getFontSize'
+export * from './helpers/getSize'

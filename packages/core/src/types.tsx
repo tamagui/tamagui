@@ -495,12 +495,6 @@ export type StaticConfig = {
   validStyles?: { [key: string]: boolean }
 
   /**
-   * Allows for defining extra valid props to be extracted beyond
-   * the default ones.
-   */
-  validPropsExtra?: { [key: string]: any }
-
-  /**
    * Same as React.defaultProps, be sure to sync
    */
   defaultProps?: any

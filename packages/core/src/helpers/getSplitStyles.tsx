@@ -1,5 +1,5 @@
 import {
-  addRule,
+  mergeTransform,
   stylePropsText,
   stylePropsTransform,
   validPseudoKeys,
@@ -14,7 +14,7 @@ import { MediaKeys, StackProps, StaticConfigParsed, ThemeObject } from '../types
 import { createMediaStyle } from './createMediaStyle'
 import { ResolveVariableTypes } from './createPropMapper'
 import { fixNativeShadow } from './fixNativeShadow'
-import { getStylesAtomic } from './getStylesAtomic'
+import { ViewStyleWithPseudos, getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule } from './insertStyleRule'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
@@ -36,26 +36,70 @@ export type PseudoStyles = {
   exitStyle?: ViewStyle
 }
 
+export type ClassNamesObject = Record<string, string>
+
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
+
+function normalizeStyleObject(style: any) {
+  // fix flex to match web
+  // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+  if (typeof style.flex === 'number') {
+    const val = style.flex
+    delete style.flex
+    style.flexGrow = style.flexGrow ?? val
+    style.flexShrink = style.flexShrink ?? 1
+  }
+
+  if (!isWeb) {
+    fixNativeShadow(style)
+  }
+}
 
 export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
-  state: Partial<ComponentState>,
-  resolveVariablesAs?: ResolveVariableTypes
+  state: Partial<ComponentState> & {
+    noClassNames?: boolean
+    resolveVariablesAs?: ResolveVariableTypes
+  },
+  defaultClassNames?: ClassNamesObject | null
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
   const style: ViewStyle = {}
-
-  let cur: ViewStyle | null = null
-  let classNames: string[] | null = null
+  const classNames: ClassNamesObject = {
+    ...defaultClassNames,
+  }
   const pseudos: PseudoStyles = {}
+  const medias: Record<MediaKeys, ViewStyle> = {}
+  let cur: ViewStyleWithPseudos | null = null
 
-  const medias: {
-    [key in MediaKeys]: ViewStyle
-  } = {}
+  function push() {
+    if (!cur) return
+    normalizeStyleObject(cur)
+    if (isWeb) {
+      const atomic = getStylesAtomic(cur)
+      for (const atomicStyle of atomic) {
+        if (!state.noClassNames) {
+          classNames[atomicStyle.property] = atomicStyle.identifier
+          insertStyleRule(atomicStyle.identifier, atomicStyle.rules[0])
+        } else {
+          style[atomicStyle.property] = atomicStyle.value
+        }
+      }
+    } else {
+      for (const key in cur) {
+        if (key in stylePropsTransform) {
+          mergeTransform(style, key, cur[key])
+        } else {
+          style[key] = cur[key]
+        }
+      }
+    }
+    // reset it for next group of styles
+    cur = null
+  }
 
   for (const keyInit in props) {
     // be sure to sync next few lines below to getSubStyle (*1)
@@ -66,18 +110,48 @@ export const getSplitStyles = (
       continue
     }
 
+    if (
+      // isPropClassName
+      keyInit === 'className' ||
+      // isExtractedClassName
+      (valInit && valInit[0] === '_')
+    ) {
+      if (keyInit === 'className' || validStyleProps[keyInit]) {
+        push()
+        classNames[keyInit] = valInit
+        if (cur) {
+          delete cur[keyInit]
+        }
+        continue
+      } else {
+        // target="_blank" etc
+      }
+    }
+
     let isMedia = keyInit[0] === '$'
     let isPseudo = validPseudoKeys[keyInit]
 
     const out =
       isMedia || isPseudo
         ? true
-        : staticConfig.propMapper(keyInit, valInit, theme, props, staticConfig, resolveVariablesAs)
+        : staticConfig.propMapper(
+            keyInit,
+            valInit,
+            theme,
+            props,
+            staticConfig,
+            state.resolveVariablesAs
+          )
 
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
     for (const [key, val] of expanded) {
       if (val === undefined) {
+        continue
+      }
+
+      if (val[0] === '_') {
+        classNames[key] = val
         continue
       }
 
@@ -89,6 +163,7 @@ export const getSplitStyles = (
         (staticConfig.inlineProps && staticConfig.inlineProps.has(key))
       ) {
         viewProps[key] = val
+        // continue (?)
       }
 
       // pseudo
@@ -99,10 +174,15 @@ export const getSplitStyles = (
           continue
         }
         pseudos[key] = pseudos[key] || {}
-        const out = getSubStyle(val, staticConfig, theme, props)
-        Object.assign(pseudos[key], out)
-
-        // Object.assign(style, out)
+        if (state.noClassNames) {
+          pseudos[key] = val
+        } else {
+          const pseudoStyles = getStylesAtomic({ [key]: val })
+          for (const style of pseudoStyles) {
+            classNames[`${style.property}-${key}`] = style.identifier
+            insertStyleRule(style.identifier, style.rules[0])
+          }
+        }
         continue
       }
 
@@ -125,15 +205,9 @@ export const getSplitStyles = (
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
-          if (process.env.NODE_ENV === 'development') {
-            if (props['debug'])
-              console.log('mediaStyles', key, mediaStyles, { valInit, mediaStyle })
-          }
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
-            classNames = classNames || []
-            classNames.push(out.identifier)
-            addRule(out.styleRule)
+            classNames[`${out.identifier}-${mediaKey}`] = out.identifier
             insertStyleRule(out.identifier, out.styleRule)
           }
           if (mediaState[mediaKey]) {
@@ -145,43 +219,23 @@ export const getSplitStyles = (
             Object.assign(style, mediaStyle)
           }
         }
+        console.log('what is', 'media', mediaState, key)
         continue
       }
 
+      // TODO
       if (key === 'style' || key.startsWith('_style')) {
-        if (cur) {
-          // process last
-          fixNativeShadow(cur)
-          Object.assign(style, cur)
-          cur = null
-        }
-        fixNativeShadow(val)
+        push()
         Object.assign(style, val)
         continue
       }
-      // expand flex so it merged with flexShrink etc properly
-      // TODO this shouldn't be here...
-      if (key === 'flex') {
-        cur = cur || {}
-        // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-        // TODO this fixed a behavior but need to find / document / test
-        Object.assign(cur, {
-          flexGrow: val,
-          flexShrink: 1,
-        })
-        continue
-      }
+
       if (!isWeb && key === 'pointerEvents') {
         viewProps[key] = val
         continue
       }
+
       if (validStyleProps[key]) {
-        // transforms
-        if (key in stylePropsTransform) {
-          cur = cur || {}
-          mergeTransform(cur, key, val)
-          continue
-        }
         cur = cur || {}
         cur[key] = val
         continue
@@ -190,17 +244,14 @@ export const getSplitStyles = (
       // pass to view props
       if (!staticConfig.variants || !(key in staticConfig.variants)) {
         if (key !== 'animation' && key !== 'debug') {
+          push()
           viewProps[key] = val
         }
       }
     }
   }
 
-  // push last style
-  if (cur) {
-    fixNativeShadow(cur)
-    Object.assign(style, cur)
-  }
+  push()
 
   return {
     viewProps,
@@ -241,21 +292,6 @@ const getSubStyle = (
       }
     }
   }
-  fixNativeShadow(styleOut)
+  normalizeStyleObject(styleOut)
   return styleOut
-}
-
-const mapTransformKeys = {
-  x: 'translateX',
-  y: 'translateY',
-}
-
-const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
-  const transform: any[] = obj.transform
-    ? Array.isArray(obj.transform)
-      ? obj.transform
-      : [obj.transform]
-    : []
-  transform.push({ [mapTransformKeys[key] || key]: val })
-  obj.transform = transform
 }

@@ -1,3 +1,4 @@
+// debug
 // import React from 'react'
 // import { H3, H4, Paragraph, Text, YStack, useMedia } from 'tamagui'
 
@@ -112,7 +113,7 @@ const HeroTop = memo(() => {
               }}
             >
               An optimizing compiler for 🔼 performance with 🔽 code.
-              Write&nbsp;once,&nbsp;run&nbsp;everywhere - easy.
+              Write&nbsp;once,&nbsp;run&nbsp;everywhere, easy.
             </Paragraph>
           </YStack>
         </YStack>
@@ -133,11 +134,7 @@ const HeroTop = memo(() => {
             </YStack>
           </NextLink>
 
-          <NextLink
-            href="https://discord.gg/4qh6tdcVDa"
-            passHref
-            // css={{ mr: '$5', '@bp2': { mr: '$7' } }}
-          >
+          <NextLink href="https://discord.gg/4qh6tdcVDa" passHref>
             <YStack
               p="$2"
               $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
