@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { ViewStyle } from 'react-native';
 import { ComponentState } from '../defaultComponentState';
 import { UseAnimationHook } from '../types';

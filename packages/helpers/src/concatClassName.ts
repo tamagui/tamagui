@@ -2,14 +2,6 @@
 
 import { ViewStyle } from 'react-native'
 
-// testing caching
-// because we can hit these recent ones a ton of times in common cases
-// we're caching the simple case, this shouldn't be bad on memory either
-// const recently = new Map()
-// setInterval(() => {
-//   recently.clear()
-// }, 1000)
-
 export function concatClassName(...args: any[]): any
 export function concatClassName(_cn: ViewStyle | null | undefined): string {
   const cnOrPropObjcet = arguments
@@ -40,8 +32,6 @@ export function concatClassName(_cn: ViewStyle | null | undefined): string {
         final = name + ' ' + final
         continue
       }
-
-      console.log('name', name)
 
       const splitIndex = name.indexOf('-')
       if (splitIndex < 1) {
@@ -87,7 +77,6 @@ export function concatClassName(_cn: ViewStyle | null | undefined): string {
           continue
         }
       }
-      console.log('propName', propName, styleKey)
 
       final = name + ' ' + final
     }

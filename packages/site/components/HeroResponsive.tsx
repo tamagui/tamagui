@@ -40,7 +40,6 @@ export const HeroResponsive = memo(() => {
     const width = bounding.width + move - 10
     for (let i = breakpoints.length - 1; i >= 0; i--) {
       if (width > breakpoints[i].at) {
-        console.log('were at', width, i)
         setSizeI(i + 1)
         return
       }
@@ -48,7 +47,6 @@ export const HeroResponsive = memo(() => {
   }, [move, bounding])
 
   function updateBoundings() {
-    console.log('update', safariRef.current)
     const rect = safariRef.current?.getBoundingClientRect() ?? null
     setBounding(rect)
   }

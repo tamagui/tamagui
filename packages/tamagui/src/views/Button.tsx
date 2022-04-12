@@ -138,7 +138,6 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     }
     if (el) {
       const iconSize = getFontSize(size, { relativeSize: scaleIcon })
-      console.log('got', props.size, size, iconSize)
       return React.createElement(el, {
         color,
         size: iconSize,

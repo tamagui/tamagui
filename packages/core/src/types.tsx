@@ -69,7 +69,10 @@ type GenericThemes = {
         [key: string]: VariableVal
       }
 }
-type GenericShorthands = {}
+type GenericShorthands = {
+  // [key: string]: string
+}
+
 type GenericMedia<K extends string = string> = {
   // name => media shorthand name (camelCase) => value
   [key in K]: {

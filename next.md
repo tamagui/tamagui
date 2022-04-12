@@ -20,6 +20,8 @@
     - // TODO i think media + pseudo needs handling here
 
 - 1: 
+  - animateProps={[]} (basically transition-properties)
+  - // @ts-ignore TODO we need to make GetProps only use StackStylePropsBase and then later build that up better in styled()
   - // @ts-expect-error TODO
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
@@ -29,7 +31,7 @@
   - slow types
   - fix memory leak causing OOM eventually on site
   - test component theme + alt theme (plus with compiled)
-  - docs: extractable(), deoptProps
+  - docs: extractable(), deoptProps, getExpandedShorthands
 
 - 2:
   - load theme hook via feature if possible

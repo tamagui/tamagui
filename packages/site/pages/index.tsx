@@ -3,7 +3,7 @@ import { FeaturesGrid } from '@components/FeaturesGrid'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useMemo } from 'react'
-import { XStack, YStack } from 'tamagui'
+import { Image, XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'

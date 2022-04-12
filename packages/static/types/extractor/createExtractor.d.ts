@@ -8,7 +8,9 @@ export declare function createExtractor(): {
         [key: string]: Partial<import("@tamagui/core").TamaguiBaseTheme> & {
             [key: string]: import("@tamagui/core").VariableVal;
         };
-    }, {}, {
+    }, {
+        [key: string]: string;
+    }, {
         [x: string]: {
             [key: string]: string | number;
         };

@@ -22,8 +22,6 @@ if (typeof window !== 'undefined') {
 const newRulesStyleTag =
   typeof window !== 'undefined' ? document.head.appendChild(document.createElement('style')) : null
 
-console.log(newRulesStyleTag)
-
 export function insertStyleRule(identifier: string, rule: string) {
   if (!newRulesStyleTag) {
     return
@@ -32,7 +30,6 @@ export function insertStyleRule(identifier: string, rule: string) {
     return
   }
   const sheet = newRulesStyleTag.sheet!
-  console.log('inserting', rule)
   sheet.insertRule(rule, sheet.cssRules.length)
   insertedSelectors[identifier] = process.env.NODE_ENV === 'development' ? sheet.cssRules : true
   return identifier

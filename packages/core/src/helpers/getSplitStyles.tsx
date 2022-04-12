@@ -100,7 +100,6 @@ export const getSplitStyles = (
       // media
       if (isMedia) {
         const mediaKey = key.slice(1)
-        console.log('mediaQueryConfig[mediaKey]', mediaQueryConfig[mediaKey])
 
         if (!mediaQueryConfig[mediaKey]) {
           // this isn't a media key, pass through
@@ -127,7 +126,6 @@ export const getSplitStyles = (
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
             classNames = classNames || []
             classNames.push(out.identifier)
-            console.log('out', out.identifier, out.styleRule)
             addRule(out.styleRule)
             insertStyleRule(out.identifier, out.styleRule)
           }
