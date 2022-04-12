@@ -61,8 +61,8 @@ export function FeaturesGrid() {
                 Built-in dev tools
               </H4>
               <Paragraph theme="alt2">
-                A fully-typed API, completely extensible, token-aware properties, debug props and
-                pragmas, dev-time filename and line numbers on each html tag.
+                Debug prop and a debug pragmas, dev-time filename:linenumber props added on every
+                element, global Tamagui for state introspection.
               </Paragraph>
             </YStack>
 

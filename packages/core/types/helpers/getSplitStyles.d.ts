@@ -3,6 +3,13 @@ import { ComponentState } from '../defaultComponentState';
 import { StackProps, StaticConfigParsed, ThemeObject } from '../types';
 import { ResolveVariableTypes } from './createPropMapper';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
+export declare type PseudoStyles = {
+    hoverStyle?: ViewStyle;
+    pressStyle?: ViewStyle;
+    focusStyle?: ViewStyle;
+    enterStyle?: ViewStyle;
+    exitStyle?: ViewStyle;
+};
 export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 export declare const getSplitStyles: (props: {
     [key: string]: any;
@@ -12,13 +19,7 @@ export declare const getSplitStyles: (props: {
     medias: {
         [x: string]: ViewStyle;
     };
-    pseudos: {
-        hoverStyle?: ViewStyle | undefined;
-        pressStyle?: ViewStyle | undefined;
-        focusStyle?: ViewStyle | undefined;
-        enterStyle?: ViewStyle | undefined;
-        exitStyle?: ViewStyle | undefined;
-    };
+    pseudos: PseudoStyles;
     classNames: string[] | null;
 };
 //# sourceMappingURL=getSplitStyles.d.ts.map

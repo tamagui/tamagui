@@ -14,8 +14,6 @@
   - docs
     - animations
   - bugs
-    - TODO handle pseudos
-    - fix image w/h shorthand not translating to width/height runtime
     - Image SSR / site weirdness on some
     - // TODO i think media + pseudo needs handling here
 

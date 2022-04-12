@@ -17,7 +17,8 @@ export const createPropMapper = (c: StaticConfig) => {
     theme: any,
     props: any,
     staticConfig: StaticConfig,
-    returnVariablesAs: ResolveVariableTypes = !!props.animation ? 'value' : 'auto'
+    returnVariablesAs: ResolveVariableTypes = !!props.animation ? 'value' : 'auto',
+    avoidDefaultProps = false
   ) => {
     const conf = getConfig()
     if (!conf) {
@@ -60,18 +61,21 @@ export const createPropMapper = (c: StaticConfig) => {
         variantValue = variantValue(value, {
           tokens: conf.tokensParsed,
           theme,
-          props: new Proxy(props, {
-            get(target, key) {
-              if (Reflect.has(target, key)) {
-                return Reflect.get(target, key)
-              }
-              // these props may be extracted into classNames, but we still want to access them
-              // at runtime, so we proxy back to defaultProps but don't pass them
-              if (staticConfig.defaultProps) {
-                return Reflect.get(staticConfig.defaultProps, key)
-              }
-            },
-          }),
+          // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
+          props: avoidDefaultProps
+            ? props
+            : new Proxy(props, {
+                get(target, key) {
+                  if (Reflect.has(target, key)) {
+                    return Reflect.get(target, key)
+                  }
+                  // these props may be extracted into classNames, but we still want to access them
+                  // at runtime, so we proxy back to defaultProps but don't pass them
+                  if (staticConfig.defaultProps) {
+                    return Reflect.get(staticConfig.defaultProps, key)
+                  }
+                },
+              }),
         })
       }
       if (isObj(variantValue)) {

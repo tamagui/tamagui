@@ -48,7 +48,7 @@
     "react-test-renderer": "18.0.0-beta-149b420f6-20211119",
     "style-loader": "^3.3.0",
     "typescript": "^4.5.2",
-    "webpack": "^5.68.0"
+    "webpack": "^5.72.0"
   },
   "dependencies": {
     "@babel/core": "^7.15.5",

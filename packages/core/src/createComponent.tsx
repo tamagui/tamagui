@@ -22,7 +22,7 @@ import { isVariable } from './createVariable'
 import { ComponentState, defaultComponentState } from './defaultComponentState'
 import { addStylesUsingClassname, useStylesAsClassname } from './helpers/addStylesUsingClassname'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import { SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
+import { PseudoStyles, SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
@@ -87,14 +87,26 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
   let avoidClasses = false
 
   // web uses className, native uses style
+  let defaultPseudos: PseudoStyles = {}
   let defaultNativeStyle: any
   let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }> | null = null
   let defaultsClassName = ''
   let initialTheme: any
   let splitStyleResult: SplitStyleResult | null = null
 
-  // see onConfiguredOnce below which attaches a name then to this component
+  function addPseudoToStyles(styles: any[], name: string, pseudos: any) {
+    // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
+    const pseudoStyle = pseudos[name]
+    if (pseudoStyle) {
+      styles.push(isWeb ? { [name]: pseudoStyle } : pseudoStyle)
+    }
+    const defaultPseudoStyle = defaultPseudos[name]
+    if (defaultPseudoStyle) {
+      styles.push(isWeb ? { [name]: defaultPseudoStyle } : defaultPseudoStyle)
+    }
+  }
 
+  // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
@@ -303,14 +315,10 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
         animationStyles ? animationStyles : style,
         medias,
       ]
-      if (!animationStyles && pseudos) {
-        // on web use pseudo object to keep specificity with concatClassName
-        if (state.hover && pseudos.hoverStyle)
-          styles.push(isWeb ? { hoverStyle: pseudos.hoverStyle } : pseudos.hoverStyle)
-        if (state.focus && pseudos.focusStyle)
-          styles.push(isWeb ? { focusStyle: pseudos.focusStyle } : pseudos.focusStyle)
-        if (state.press && pseudos.pressStyle)
-          styles.push(isWeb ? { pressStyle: pseudos.pressStyle } : pseudos.pressStyle)
+      if (!animationStyles) {
+        state.hover && addPseudoToStyles(styles, 'hoverStyle', pseudos)
+        state.focus && addPseudoToStyles(styles, 'focusStyle', pseudos)
+        state.press && addPseudoToStyles(styles, 'pressStyle', pseudos)
       }
     }
 
@@ -630,9 +638,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       defaultsClassName += addStylesUsingClassname([stylesObj, pseudos])
     }
 
-    // for animations and native
-    // TODO handle pseudos
-
+    // for use in animations + native
+    defaultPseudos = defaultPseudos
     defaultNativeStyle = {}
     for (const key in style) {
       const v = style[key]
