@@ -80,7 +80,10 @@ export const getSplitStyles = (
       isMedia = key[0] === '$'
       isPseudo = validPseudoKeys[key]
 
-      if (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) {
+      if (
+        (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) ||
+        (staticConfig.inlineProps && staticConfig.inlineProps.has(key))
+      ) {
         viewProps[key] = val
       }
 
@@ -118,13 +121,10 @@ export const getSplitStyles = (
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
-          console.log('get media', { valInit, mediaStyle, mediaStyles, props })
-
           if (process.env.NODE_ENV === 'development') {
             if (props['debug'])
               console.log('mediaStyles', key, mediaStyles, { valInit, mediaStyle })
           }
-
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
             classNames = classNames || []

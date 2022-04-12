@@ -506,9 +506,14 @@ export type StaticConfig = {
   defaultProps?: any
 
   /**
-   * If this prop is encountered, bail on all optimization.
+   * If these props are encountered, bail on all optimization.
    */
   deoptProps?: Set<string>
+
+  /**
+   * If these props are encountered, leave them un-extracted.
+   */
+  inlineProps?: Set<string>
 
   /**
    * A bit odd, only for more advanced heirarchies.

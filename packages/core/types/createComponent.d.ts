@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { View, ViewStyle } from 'react-native';
 import { SpaceTokens, StackProps, StaticComponent, StaticConfig, StaticConfigParsed } from './types';
 export declare const mouseUps: Set<Function>;

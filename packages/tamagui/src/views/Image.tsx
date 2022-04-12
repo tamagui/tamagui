@@ -11,7 +11,7 @@ const StyledImage = styled(
     name: 'Image',
   },
   {
-    deoptProps: new Set(['src', 'width', 'height']),
+    inlineProps: new Set(['src', 'width', 'height']),
   }
 )
 

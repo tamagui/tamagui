@@ -167,9 +167,9 @@ The Spread variant function will receive two arguments: the first is the value g
 Because you can expand them to any number of styles, they can save a ton of code:
 
 ```jsx
-const MyButton = styled(Stack, {
+const Square = styled(Stack, {
   variants: {
-    square: {
+    size: {
       '...size': (size, { tokens }) => {
         // size === '$lg'
         // tokens.size.$lg === 25
@@ -204,5 +204,33 @@ export const ColorfulStack = styled(Stack, {
       }
     },
   },
+})
+```
+
+### defaultVariants
+
+Sometimes you'd like to set a default value for a variant you've just set on your styled() component. Due to the way Typescript types parse from left to right, we can't properly type variants directly on the object you define them on.
+
+The `defaultVariants` option allows you to set these, properly typed:
+
+```jsx
+const Square = styled(Stack, {
+  variants: {
+    size: {
+      '...size': (size, { tokens }) => {
+        // size === '$lg'
+        // tokens.size.$lg === 25
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+
+  // <Square /> will get size '$10' from size tokens automatically
+  defaultVariants: {
+    size: '$10'
+  }
 })
 ```

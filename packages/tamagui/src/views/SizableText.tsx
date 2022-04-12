@@ -6,14 +6,16 @@ export const SizableText = styled(Text, {
   name: 'SizableText',
   fontFamily: '$body',
   color: '$color',
-  // @ts-ignore
-  size: '$4',
 
   variants: {
     size: {
       '...fontSize': sizableTextSizeVariant,
       '...size': sizableTextSizeVariant,
     },
+  },
+
+  defaultVariants: {
+    size: '$4',
   },
 })
 

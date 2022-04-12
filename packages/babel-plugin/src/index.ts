@@ -93,7 +93,7 @@ export default declare(function snackBabelPlugin(
             shouldPrintDebug,
             importsWhitelist: ['constants.js', 'colors.js'],
             deoptProps: new Set(['focusStyle', 'hoverStyle', 'pressStyle', 'pointerEvents']),
-            excludeProps: [
+            excludeProps: new Set([
               'className',
               'display',
               'userSelect',
@@ -102,7 +102,7 @@ export default declare(function snackBabelPlugin(
               'textOverflow',
               'cursor',
               'contain',
-            ],
+            ]),
             ...options,
             // disable this extraction for now at least, need to figure out merging theme vs non-theme
             // because theme need to stay in render(), whereas non-theme can be extracted
