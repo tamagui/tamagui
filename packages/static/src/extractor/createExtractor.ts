@@ -72,6 +72,7 @@ export function createExtractor() {
         disableExtractVariables,
         disableDebugAttr,
         prefixLogs,
+        excludeProps,
         ...props
       }: ExtractorParseProps
     ) => {
@@ -262,22 +263,14 @@ export function createExtractor() {
 
           const flatNode = getFlattenedNode({ isTextView, tag: tagName })
 
-          const deoptProps = new Set([
-            ...(props.deoptProps ?? []),
-            ...(staticConfig.deoptProps ?? []),
+          const inlineProps = new Set([
+            ...(props.inlineProps || []),
+            ...(staticConfig.inlineProps || []),
           ])
-          const excludeProps = new Set(props.excludeProps ?? [])
-          const isExcludedProp = (name: string) => {
-            const res = excludeProps.has(name)
-            if (res && shouldPrintDebug) console.log(`  excluding ${name}`)
-            return res
-          }
-
-          const isDeoptedProp = (name: string) => {
-            const res = deoptProps.has(name)
-            if (res && shouldPrintDebug) console.log(`  deopting ${name}`)
-            return res
-          }
+          const deoptProps = new Set([
+            ...(props.deoptProps || []),
+            ...(staticConfig.deoptProps || []),
+          ])
 
           // Generate scope object at this level
           const staticNamespace = getStaticBindingsForScope(
@@ -508,16 +501,23 @@ export function createExtractor() {
 
             const name = attribute.name.name
 
-            if (name.startsWith('data-')) {
-              return attr
-            }
-
-            if (isExcludedProp(name)) {
+            if (excludeProps?.has(name)) {
+              if (shouldPrintDebug) {
+                console.log('  excluding prop', name)
+              }
               return null
             }
 
+            if (inlineProps.has(name)) {
+              inlinePropCount++
+              if (shouldPrintDebug) {
+                console.log('  ! inlining, inline prop', name)
+              }
+              return attr
+            }
+
             // can still optimize the object... see hoverStyle on native
-            if (isDeoptedProp(name)) {
+            if (deoptProps.has(name)) {
               shouldDeopt = true
               inlinePropCount++
               if (shouldPrintDebug) {
@@ -528,6 +528,10 @@ export function createExtractor() {
 
             // pass className, key, and style props through untouched
             if (UNTOUCHED_PROPS[name]) {
+              return attr
+            }
+
+            if (name.startsWith('data-')) {
               return attr
             }
 
@@ -1164,9 +1168,11 @@ export function createExtractor() {
           const getStyles = (props: Object | null) => {
             if (!props) return
             if (!Object.keys(props).length) return
-            if (!!excludeProps.size) {
+            if (excludeProps && !!excludeProps.size) {
               for (const key in props) {
-                if (isExcludedProp(key)) delete props[key]
+                if (excludeProps.has(key)) {
+                  delete props[key]
+                }
               }
             }
             const out = getSplitStyles(props, staticConfig, defaultTheme)

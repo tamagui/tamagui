@@ -22,7 +22,12 @@ export const Sandbox = () => {
 }
 
 export const Test = () => {
-  return <AnimationTest />
+  // return <AnimationTest />
+  return (
+    <Button borderRadius={1000} tag="a" fontWeight="800">
+      Documentation
+    </Button>
+  )
 }
 
 const AnimationTest = () => {

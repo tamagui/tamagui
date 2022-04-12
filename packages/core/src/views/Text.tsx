@@ -24,7 +24,7 @@ export const Text = createComponent<TextProps, TextView>({
     numberOfLines: {
       1: ellipseStyle,
       // TODO imply fn, test 1, could do types `>1` `<2`
-      '[number]': (lines) => (lines > 1 ? { WebkitLineClamp: 1 } : null),
+      ':number': (lines) => (lines > 1 ? { WebkitLineClamp: 1 } : null),
     },
 
     selectable: {

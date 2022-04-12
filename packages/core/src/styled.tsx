@@ -36,6 +36,7 @@ export function styled<
   options?: GetProps<ParentComponent> & {
     name?: string
     variants?: Variants | undefined
+    defaultVariants?: Variants extends Object ? GetVariantProps<Variants> : never
   },
   staticExtractionOptions?: StaticConfig
 ) {
@@ -47,6 +48,9 @@ export function styled<
       const isInput =
         defaultProps.isInput || (!isTamagui ? Component === (TextInput as any) : undefined)
       const isText = defaultProps.isText || (!isTamagui ? isInput || Component === Text : undefined)
+      if (options.defaultVariants) {
+        Object.assign(defaultProps, options.defaultVariants)
+      }
       const conf = {
         ...staticExtractionOptions,
         ...(!isTamagui && {

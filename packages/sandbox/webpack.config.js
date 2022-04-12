@@ -76,6 +76,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
                 loader: 'esbuild-loader',
                 options: {
                   jsxFactory: 'createElement',
+                  target: 'es2020',
                   loader: 'tsx',
                   minify: false,
                   banner: "import { createElement } from 'react';\n",

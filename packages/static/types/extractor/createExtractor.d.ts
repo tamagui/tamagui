@@ -17,7 +17,7 @@ export declare function createExtractor(): {
             [key: string]: any;
         };
     }>;
-    parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disable, disableExtraction, disableExtractInlineMedia, disableExtractVariables, disableDebugAttr, prefixLogs, ...props }: ExtractorParseProps) => {
+    parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disable, disableExtraction, disableExtractInlineMedia, disableExtractVariables, disableDebugAttr, prefixLogs, excludeProps, ...props }: ExtractorParseProps) => {
         flattened: number;
         optimized: number;
         modified: number;

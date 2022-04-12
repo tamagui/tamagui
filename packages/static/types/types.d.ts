@@ -21,7 +21,8 @@ export interface TamaguiOptions {
     cssPath?: string;
     cssData?: any;
     deoptProps?: Set<string>;
-    excludeProps?: string[];
+    excludeProps?: Set<string>;
+    inlineProps?: Set<string>;
 }
 export declare type ExtractedAttrAttr = {
     type: 'attr';
