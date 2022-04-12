@@ -77,6 +77,10 @@ export const getSplitStyles = (
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
     for (const [key, val] of expanded) {
+      if (val === undefined) {
+        continue
+      }
+
       isMedia = key[0] === '$'
       isPseudo = validPseudoKeys[key]
 
