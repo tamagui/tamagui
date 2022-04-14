@@ -1,7 +1,7 @@
 import { Community } from '@components/Community'
-import { FeaturesGrid } from '@components/FeaturesGrid'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useMemo } from 'react'
 import { Image, Separator, XStack, YStack } from 'tamagui'
 
@@ -22,6 +22,7 @@ import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
+  // return <HeroPerformance />
   // return <MediaPlayer />
 
   return (
@@ -43,7 +44,7 @@ export default function Home() {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <Section extraPad gradient>
+      <Section>
         <YStack fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>

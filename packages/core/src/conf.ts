@@ -24,7 +24,3 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
     configListeners.add(cb)
   }
 }
-
-if (process.env.NODE_ENV === 'development') {
-  require('./devtools')
-}

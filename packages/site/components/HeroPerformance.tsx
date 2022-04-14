@@ -39,6 +39,7 @@ export function HeroPerformance() {
           </Paragraph>
 
           <BenchmarkChart
+            animateEnter
             skipOthers
             large
             data={[

@@ -153,7 +153,7 @@ export const getSplitStyles = (
         continue
       }
 
-      if (val[0] === '_') {
+      if (val && val[0] === '_') {
         classNames[key] = val
         continue
       }

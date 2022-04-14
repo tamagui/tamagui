@@ -16,7 +16,7 @@ import { babelParse } from './babelParse'
 import { buildClassName } from './buildClassName'
 import { Extractor } from './createExtractor'
 import { ensureImportingConcat } from './ensureImportingConcat'
-import { attrStr, isSimpleSpread } from './extractHelpers'
+import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
 import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
@@ -307,7 +307,20 @@ export function extractToClassNames({
 
       const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
 
-      for (const { className, rules } of finalStyles) {
+      for (const { className, rules, identifier, value } of finalStyles) {
+        // console.log('backvalue', identifier, value)
+        // ast.program.body.unshift(
+        //   t.expressionStatement(
+        //     t.callExpression(
+        //       t.memberExpression(
+        //         t.callExpression(t.identifier('require'), [t.stringLiteral('@tamagui/core')]),
+        //         t.identifier('setIdentifierValue')
+        //       ),
+        //       [t.stringLiteral(identifier), t.stringLiteral(value)]
+        //     )
+        //   )
+        // )
+
         if (cssMap.has(className)) {
           if (comment) {
             const val = cssMap.get(className)!

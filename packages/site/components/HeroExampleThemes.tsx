@@ -150,6 +150,7 @@ export function HeroExampleThemes() {
 
   return (
     <YStack>
+      <TintBg colorName={colorName} />
       {useMemo(() => {
         return (
           <ContainerLarge position="relative" space="$2">
@@ -331,3 +332,7 @@ const Bottom = memo(() => {
     </ContainerLarge>
   )
 })
+
+const TintBg = ({ colorName }) => {
+  return <YStack fullscreen bc={`$${colorName}9`} o={0.05} className="mask-gradient-down" />
+}

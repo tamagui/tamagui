@@ -121,13 +121,37 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     const [state, set_] = useState<ComponentState>(defaultComponentState)
     const setStateShallow = createShallowUpdate(set_)
 
-    const {
-      viewProps: viewPropsIn,
+    const shouldAvoidClasses = !!(state.animation && avoidClasses)
+    const splitInfo = getSplitStyles(
+      props,
+      staticConfig,
+      theme,
+      shouldAvoidClasses ? { ...state, noClassNames: true, resolveVariablesAs: 'value' } : state,
+      defaultsClassName
+    )
+
+    const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitInfo
+    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
+    const isAnimated = !!(useAnimations && props.animation)
+
+    const styleWithPseudos = props.animation
+      ? merge(
+          { ...defaultNativeStyle, ...style },
+          state.hover && pseudos.hoverStyle,
+          state.press && pseudos.pressStyle,
+          state.focus && pseudos.focusStyle,
+          ...Object.values(medias)
+        )
+      : null
+
+    const features = useFeatures(props, {
+      forceUpdate,
+      setStateShallow,
+      useAnimations,
+      state,
+      style: styleWithPseudos,
       pseudos,
-      medias,
-      style,
-      classNames,
-    } = getSplitStyles(props, staticConfig, theme, state, defaultsClassName)
+    })
 
     const {
       tag,
@@ -181,9 +205,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     } = viewPropsIn
 
     let viewProps: StackProps = viewPropsRest
-
-    const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
-    const isAnimated = !!(useAnimations && props.animation)
 
     // from react-native-web
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
@@ -255,28 +276,8 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       })
     }
 
-    const styleWithPseudos = props.animation
-      ? merge(
-          { ...defaultNativeStyle, ...style },
-          state.hover && pseudos.hoverStyle,
-          state.press && pseudos.pressStyle,
-          state.focus && pseudos.focusStyle,
-          ...Object.values(medias)
-        )
-      : null
-
-    const features = useFeatures(props, {
-      forceUpdate,
-      setStateShallow,
-      useAnimations,
-      state,
-      style: styleWithPseudos,
-      pseudos,
-    })
-
     // get the right component
     const isTaggable = !Component || typeof Component === 'string'
-    const shouldAvoidClasses = !!(state.animation && avoidClasses)
 
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
@@ -582,7 +583,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       if (props['debug']) {
         viewProps['debug'] = true
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, state, styles, pseudos, content, childEls, shouldAvoidClasses, animation: props.animation, style, defaultNativeStyle, splitStyleResult, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, state, styles, pseudos, content, childEls, shouldAvoidClasses, animation: props.animation, style, defaultNativeStyle, splitStyleResult, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
       }
     }
 

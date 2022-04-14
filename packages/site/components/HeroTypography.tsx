@@ -14,7 +14,9 @@ export const HeroTypography = () => {
         <YStack>
           <ContainerLarge h={650} $sm={{ h: 520 }} position="relative" space>
             <YStack ai="center" space="$2">
-              <HomeH2>Typography&nbsp; ➟ &nbsp;easy</HomeH2>
+              <HomeH2>
+                <span className="rainbow clip-text">Typography</span>&nbsp; ➟ &nbsp;easy
+              </HomeH2>
               <HomeH3>Plug-and-play fonts with complete control.</HomeH3>
             </YStack>
 

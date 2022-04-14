@@ -25,7 +25,7 @@ const getBarColor = (name: string) => {
   }
 }
 
-export function BenchmarkChart({ data, large, skipOthers = false }) {
+export function BenchmarkChart({ data, large, skipOthers = false, animateEnter = false }) {
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
@@ -50,9 +50,16 @@ export function BenchmarkChart({ data, large, skipOthers = false }) {
               o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
               width={`${(result.value / maxValue) * 100}%`}
               height="100%"
+              minHeight={40}
+              minWidth={100}
               position="relative"
               jc="center"
-              br="$1"
+              animation="bouncy"
+              debug
+              scale={1}
+              enterStyle={{
+                scale: 0,
+              }}
             >
               <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
                 {result.value}ms
