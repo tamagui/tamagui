@@ -45,18 +45,31 @@ export function Hero() {
 const HeroTop = memo(() => {
   return (
     <ContainerLarge pos="relative">
-      <Image
+      {/* casuing hydration mismatch... */}
+      <img
+        src={require('../public/tamaguy2.png').default.src}
+        style={{
+          position: 'absolute',
+          bottom: -270,
+          left: -10,
+          transform: 'scale(0.125)',
+          width: 544,
+          height: 569,
+        }}
+      />
+      {/* <Image
         className="tamaguy"
         pos="absolute"
-        bottom={0}
-        left={0}
-        x={-500}
-        y={200}
-        scale={0.25}
+        bottom={-250}
+        left={-50}
+        // not merging at compile time right
+        // x={-500}
+        // y={200}
+        scale={0.2}
         src={require('../public/tamaguy2.png').default.src}
         width={544}
         height={569}
-      />
+      /> */}
 
       <YStack
         className="bg-grid mask-gradient-up"
@@ -64,7 +77,7 @@ const HeroTop = memo(() => {
         left={-1000}
         right={-1000}
         // top={302}
-        opacity={0.2}
+        opacity={0.3}
       />
 
       <Header />

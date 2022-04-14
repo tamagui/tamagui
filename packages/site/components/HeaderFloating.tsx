@@ -24,6 +24,7 @@ export const HeaderFloating = (props: any) => {
     <XStack
       className="ease-out all ms200"
       y={isScrolled ? -1 : -60}
+      o={isScrolled ? 1 : 0}
       py={0}
       bbw={1}
       bbc="$borderColor"

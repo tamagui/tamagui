@@ -1,3 +1,4 @@
+export * from './Tamagui';
 export * from './createComponent';
 export * from './createShorthands';
 export * from './createTheme';

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ViewStyle } from 'react-native';
 import { ComponentState } from '../defaultComponentState';
 import { PseudoStyles } from '../static';

@@ -177,7 +177,7 @@ export const HeroResponsive = memo(() => {
               className="mask-gradient-down"
               zi={-1}
             >
-              <YStack fullscreen className="bg-grid" />
+              <YStack fullscreen className="bg-grid" opacity={0.5} />
             </YStack>
           </YStack>
         </YStack>

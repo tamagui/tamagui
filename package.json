@@ -49,8 +49,8 @@
     "mdx-bundler": "patch:mdx-bundler@npm:8.0.1#.yarn/patches/mdx-bundler.diff",
     "webpack": "5.72.0",
     "prettier": "2.5.1",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
+    "react": "18.0.0-beta-f320ef88f-20211116",
+    "react-dom": "18.0.0-beta-f320ef88f-20211116",
     "react-refresh": "0.11.0",
     "react-native-web": "0.17.5"
   },

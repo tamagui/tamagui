@@ -17603,15 +17603,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.0.0":
-  version: 18.0.0
-  resolution: "react-dom@npm:18.0.0"
+"react-dom@npm:18.0.0-beta-f320ef88f-20211116":
+  version: 18.0.0-beta-f320ef88f-20211116
+  resolution: "react-dom@npm:18.0.0-beta-f320ef88f-20211116"
   dependencies:
     loose-envify: ^1.1.0
-    scheduler: ^0.21.0
+    object-assign: ^4.1.1
+    scheduler: 0.21.0-beta-f320ef88f-20211116
   peerDependencies:
-    react: ^18.0.0
-  checksum: dd0ba9f2f31dd728076c892a95b2f5a8dfe79136431b0289afb46eec39d0ca6b6f0f40a60fd8aa6ef702c98ce7c26100d3d4dbc35c7c9e87429cd04f84cb58bd
+    react: 18.0.0-beta-f320ef88f-20211116
+  checksum: f6717f3596bd2dad69574a9b8cb4a4c367b63fa10173470d4967b19a6ee6933b2611acd55d4e8465c4ca911fcccd9e778fe5f209f327f8aa14d33277c802aeb7
   languageName: node
   linkType: hard
 
@@ -17849,12 +17850,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.0.0":
-  version: 18.0.0
-  resolution: "react@npm:18.0.0"
+"react@npm:18.0.0-beta-f320ef88f-20211116":
+  version: 18.0.0-beta-f320ef88f-20211116
+  resolution: "react@npm:18.0.0-beta-f320ef88f-20211116"
   dependencies:
     loose-envify: ^1.1.0
-  checksum: 293020b96536b3c7113ee57ca5c990a3f25649d1751b1c7a3aabd16dff0691fe9f1eed1206616d0906d05933536052037340a0c8d0941ff870b0eb469a2f975b
+    object-assign: ^4.1.1
+  checksum: a3d400ff28d0c5e1f7259b562778f5d9aaccd54454cb7e282eebb65cfad00effbaf8c1e87e7b53d1f5205877fb83c233b65815cded9259751fcc7a53dd5ecd54
   languageName: node
   linkType: hard
 
@@ -18722,12 +18724,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "scheduler@npm:0.21.0"
+"scheduler@npm:0.21.0-beta-f320ef88f-20211116":
+  version: 0.21.0-beta-f320ef88f-20211116
+  resolution: "scheduler@npm:0.21.0-beta-f320ef88f-20211116"
   dependencies:
     loose-envify: ^1.1.0
-  checksum: 4f8285076041ed2c81acdd1faa987f1655fdbd30554bc667c1ea64743fc74fb3a04ca7d27454b3d678735df5a230137a3b84756061b43dc5796e80701b66d124
+    object-assign: ^4.1.1
+  checksum: 9586346cc511b1a2f9071e30c666d26c01b15717e81828eb645b6e5cbdb820a8c48d5c546e2e3c7ec0f0e158541a552d7c701c668f92b5f85ab2eb0afa442fa2
   languageName: node
   linkType: hard
 

@@ -13,7 +13,7 @@ import {
   YStack,
 } from 'tamagui'
 
-import image from '../public/tamagui-icon.png'
+import image from '../public/kanye.jpg'
 
 export const MediaPlayer = memo(
   ({
