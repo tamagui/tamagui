@@ -8,6 +8,8 @@ const insertedSelectors = {}
 export const getAllSelectors = () => allSelectors
 export const getInsertedRules = () => Object.values(insertedSelectors)
 
+// gets existing ones (client side)
+// takes ~0.1ms for a fairly large page
 if (typeof window !== 'undefined') {
   const sheets = window.document.styleSheets
   for (let i = 0; i < sheets.length; i++) {
@@ -27,15 +29,15 @@ const newRulesStyleTag =
   typeof window !== 'undefined' ? document.head.appendChild(document.createElement('style')) : null
 
 export function insertStyleRule(identifier: string, rule: string) {
-  if (!newRulesStyleTag) {
+  if (allSelectors[identifier]) {
     return
   }
-  if (allSelectors[identifier]) {
+  insertedSelectors[identifier] = rule
+  allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
+  if (!newRulesStyleTag) {
     return
   }
   const sheet = newRulesStyleTag.sheet!
   sheet.insertRule(rule, sheet.cssRules.length)
-  allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
-  insertedSelectors[identifier] = rule
   return identifier
 }

@@ -11,6 +11,7 @@ import NextLink from 'next/link'
 import { memo } from 'react'
 import {
   Button,
+  Image,
   Paragraph,
   Spacer,
   Text,
@@ -44,13 +45,26 @@ export function Hero() {
 const HeroTop = memo(() => {
   return (
     <ContainerLarge pos="relative">
+      <Image
+        className="tamaguy"
+        pos="absolute"
+        bottom={0}
+        left={0}
+        x={-500}
+        y={200}
+        scale={0.25}
+        src={require('../public/tamaguy2.png').default.src}
+        width={544}
+        height={569}
+      />
+
       <YStack
         className="bg-grid mask-gradient-up"
         fullscreen
         left={-1000}
         right={-1000}
         // top={302}
-        opacity={0.3}
+        opacity={0.2}
       />
 
       <Header />
@@ -78,9 +92,11 @@ const HeroTop = memo(() => {
             }}
           >
             <Tooltip contents="Works the same on iOS, Android, and web">
-              <span className="rainbow clip-text help">Universal</span>
+              <span className="universal">
+                <span className="rainbow clip-text help">Universal</span>
+              </span>
             </Tooltip>{' '}
-            design systems for React&nbsp;Native&nbsp;&&nbsp;Web, faster.
+            design systems for React&nbsp;Native&nbsp;&&nbsp;Web, faster
           </Title>
 
           <YStack
@@ -96,7 +112,7 @@ const HeroTop = memo(() => {
           >
             <Paragraph
               color="$color"
-              opacity={0.7}
+              opacity={0.5}
               size="$5"
               letterSpacing={0}
               $gtSm={{

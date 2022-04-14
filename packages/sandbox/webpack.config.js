@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { shouldExclude } = require('tamagui-loader')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
@@ -98,10 +99,12 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     ],
   },
   plugins: [
+    // new BundleAnalyzerPlugin(),
     new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({
       process: {
         env: {
+          IS_STATIC: '""',
           NODE_ENV: JSON.stringify(NODE_ENV),
           TAMAGUI_TARGET: JSON.stringify('web'),
           DEBUG: JSON.stringify(process.env.DEBUG || 0),

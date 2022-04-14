@@ -31,6 +31,7 @@ export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => 
     // placeholder with customizability
     return null
   }
+
   // must set defaultSource to allow SSR, default it to the same as src
   // @ts-ignore
   return <StyledImage defaultSource={sourceProp as any} source={sourceProp} {...rest} />

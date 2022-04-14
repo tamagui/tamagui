@@ -4,13 +4,18 @@ import { Button, Paragraph, YStack } from 'tamagui'
 import { BenchmarkChart } from '../components/BenchmarkChart'
 import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
+import { CocentricCircles } from './CocentricCircles'
 import { useTint } from './ColorToggleButton'
 
 export function HeroPerformance() {
   return (
     <ContainerLarge position="relative">
+      <YStack pos="absolute" o={0.1} top={-1000} left={0} right={0} ai="center">
+        <CocentricCircles />
+      </YStack>
+
       <YStack ai="center" zi={1} space="$4">
-        <YStack ai="center" space="$1">
+        <YStack ai="center" space="$2">
           <HomeH2>Effortless performance</HomeH2>
           <HomeH3 maw={580}>
             Write natural, typed inline styles as normal React props. Get&nbsp;back clean, fast

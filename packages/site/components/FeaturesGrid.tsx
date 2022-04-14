@@ -7,21 +7,12 @@ import { HomeH2, HomeH3 } from './HomeH2'
 export function FeaturesGrid() {
   return (
     <>
-      <YStack
-        pe="none"
-        zi={-1}
-        scale={0.75}
-        pos="absolute"
-        o={0.2}
-        top={-820}
-        left={0}
-        right={-1500}
-      >
+      <YStack pos="absolute" o={0.1} top={-1000} left={0} right={0} ai="center">
         <CocentricCircles />
       </YStack>
       <ContainerLarge space="$6">
         <YStack zi={1} space="$1">
-          <HomeH2>All-in-one</HomeH2>
+          <HomeH2 className="rainbow clip-text">All-in-one</HomeH2>
         </YStack>
 
         <YStack>

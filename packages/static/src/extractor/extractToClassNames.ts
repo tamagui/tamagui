@@ -256,7 +256,6 @@ export function extractToClassNames({
       if (shouldPrintDebug) {
         // prettier-ignore
         console.log('  finalClassNames\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
-        console.log('  finalAttrs', finalAttrs)
       }
 
       function addTernaryStyle(ternary: Ternary, a: any, b: any) {

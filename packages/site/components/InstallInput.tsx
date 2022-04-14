@@ -19,7 +19,7 @@ export const InstallInput = memo(() => {
     <XStack
       borderWidth={1}
       borderColor="$borderColor"
-      px="$6"
+      px="$7"
       height={48}
       ai="center"
       als="center"
@@ -30,15 +30,22 @@ export const InstallInput = memo(() => {
         bc: '$background',
       }}
     >
-      <Paragraph o={0.85} ta="center" size="$5" fontWeight="500" fontFamily="$mono">
+      <Paragraph
+        o={0.5}
+        ta="center"
+        size="$4"
+        letterSpacing={0.5}
+        fontWeight="500"
+        fontFamily="$mono"
+      >
         npm install tamagui
       </Paragraph>
       <Spacer size="$6" />
       <Tooltip contents="Copy to clipboard">
         <Button
           borderRadius="$8"
-          mr="$-6"
-          x={-3.5}
+          mr="$-7"
+          x={-3}
           // TODO broken in latest
           icon={
             hasCopied ? (

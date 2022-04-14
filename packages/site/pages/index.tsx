@@ -3,7 +3,7 @@ import { FeaturesGrid } from '@components/FeaturesGrid'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { useMemo } from 'react'
-import { Image, XStack, YStack } from 'tamagui'
+import { Image, Separator, XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
@@ -28,58 +28,62 @@ export default function Home() {
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating isHome />
-      <YStack>
-        <YStack>
-          <Hero />
-          <XStack zi={100} theme="alt1" mt={-28} ai="center" jc="center">
-            <SearchButton color="$color" width={350} size="$6">
-              Search Docs...
-            </SearchButton>
-          </XStack>
-          <YStack py="$7" pb="$10">
-            <HeroBelow />
-          </YStack>
-          <ContainerLarge zi={100}>
-            <XStack mb="$-4" jc="center" ai="center">
-              <ThemeTint>
-                <InstallInput />
-              </ThemeTint>
-            </XStack>
-          </ContainerLarge>
-          <SectionTinted extraPad gradient pb="$10">
-            <HeroExampleThemes />
-          </SectionTinted>
-          <Section below>
-            <HeroResponsive />
-          </Section>
-          <SectionTinted gradient>
-            <HeroPerformance />
-          </SectionTinted>
-          <Section>
-            <HeroExampleCode />
-          </Section>
-          <SectionTinted>
-            <HeroExampleAnimations />
-          </SectionTinted>
-          <Section>
-            <HeroTypography />
-          </Section>
-          <SectionTinted gradient>
-            <HeroExampleProps />
-          </SectionTinted>
-          <Section>
-            <FeaturesGrid />
-          </Section>
-          <Community />
-        </YStack>
+      <Hero />
+      <XStack zi={100} theme="alt1" mt={-28} ai="center" jc="center">
+        <SearchButton color="$color" width={350} size="$6">
+          Search Docs...
+        </SearchButton>
+      </XStack>
+      <YStack py="$7" pb="$11">
+        <HeroBelow />
       </YStack>
+      <Separator />
+      <ContainerLarge zi={100}>
+        <XStack mt={-28} mb="$-4" jc="center" ai="center">
+          <InstallInput />
+        </XStack>
+      </ContainerLarge>
+      <Section extraPad gradient>
+        <YStack fullscreen className="bg-dot-grid mask-gradient-down" />
+        <HeroExampleThemes />
+      </Section>
+      <Section>
+        <HeroResponsive />
+      </Section>
+      <SectionTinted gradient>
+        <HeroPerformance />
+      </SectionTinted>
+      <Section>
+        <YStack fullscreen className="bg-dot-grid mask-gradient-down" />
+        <HeroExampleCode />
+      </Section>
+      <SectionTinted gradient>
+        <HeroExampleAnimations />
+      </SectionTinted>
+      <Section>
+        <HeroTypography />
+      </Section>
+      <SectionTinted gradient>
+        <HeroExampleProps />
+      </SectionTinted>
+      <Section>
+        <FeaturesGrid />
+      </Section>
+      <Community />
     </>
   )
 }
 
-const Section = ({ children, below }: any) => {
+const Section = ({ children, below, className }: any) => {
   return (
-    <YStack contain="paint" pos="relative" ov="hidden" py="$12" zi={below ? 0 : 1}>
+    <YStack
+      className={className}
+      contain="paint"
+      pos="relative"
+      ov="hidden"
+      py="$12"
+      zi={below ? 0 : 1}
+    >
       {children}
     </YStack>
   )
@@ -90,18 +94,18 @@ const SectionTinted = ({ children, gradient, extraPad, ...props }: any) => {
   const childrenMemo = useMemo(() => children, [children])
   const className = gradient ? `gradient-${tint}` : ''
   return (
-    <YStack contain="paint" pos="relative" py={extraPad ? '$12' : '$10'} {...props}>
+    <YStack contain="paint" pos="relative" py={extraPad ? '$12' : '$11'} {...props}>
       <YStack
         fullscreen
         className={className}
         // o={0.85}
         zi={-1}
         // @ts-ignore
-        bc={`$${tint}1`}
-        btw={1}
-        bbw={1}
+        // bc={`$${tint}1`}
+        btw={0.5}
+        bbw={0.5}
         // @ts-ignore
-        boc={`$${tint}4`}
+        boc={`$${tint}3`}
       />
       {childrenMemo}
     </YStack>
