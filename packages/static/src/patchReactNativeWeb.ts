@@ -28,9 +28,11 @@ export function patchReactNativeWeb() {
   const patches = [
     {
       replacee: `  if (dataSet != null) {`,
-      replacer: `if (props.dataSet?.className) {
-    classList = props.dataSet['className'];
-    delete props.dataSet['className'];
+      replacer: `
+  if (props.dataSet && props.dataSet.className) {
+    const { className, ...dataSetRest } = props.dataSet
+    classList = className
+    dataSet = dataSetRest
   }
   if (dataSet != null) {`,
     },
@@ -56,6 +58,7 @@ export function patchReactNativeWeb() {
         )
         continue
       }
+      console.log('      | patch ' + path.relative(rootDir, file))
       fs.writeFileSync(file, contents.replaceAll(replacee, replacer))
     }
   }

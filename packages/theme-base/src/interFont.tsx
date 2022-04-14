@@ -16,6 +16,10 @@ export const interFont = createFont({
     10: 46,
     11: 58,
     12: 68,
+    13: 82,
+    14: 102,
+    15: 124,
+    16: 144,
   },
   lineHeight: {
     1: 15,
@@ -30,6 +34,10 @@ export const interFont = createFont({
     10: 50,
     11: 70,
     12: 80,
+    13: 100,
+    14: 120,
+    15: 150,
+    16: 170,
   },
   weight: {
     4: '300',
@@ -41,6 +49,9 @@ export const interFont = createFont({
     7: -1,
     9: -2,
     10: -3,
-    12: -4,
+    12: -5,
+    13: -6,
+    14: -7,
+    15: -8,
   },
 })

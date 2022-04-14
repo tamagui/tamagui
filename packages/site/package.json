@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "PORT=5005 NODE_OPTIONS='--no-deprecation' NODE_ENV=development next-remote-watch ./data",
+    "clean:build": "rm -r .next || true; rm -r node_modules/.cache || true",
+    "dev:analyze": "ANALYZE=true yarn dev",
     "dev:inspect": "PORT=5005 NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",
     "dev:extract": "DISABLE_EXTRACTION=false yarn dev",
     "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
@@ -60,6 +62,6 @@
     "next-remote-watch": "^1.0.0",
     "next-videos": "^1.4.0",
     "tamagui-loader": "^1.0.0-alpha.68",
-    "webpack-bundle-analyzer": "^4.4.2"
+    "webpack-bundle-analyzer": "^4.5.0"
   }
 }

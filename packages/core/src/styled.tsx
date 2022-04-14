@@ -1,5 +1,5 @@
 import * as ReactNative from 'react-native'
-import { Text, TextInput } from 'react-native'
+import { Image, Text, TextInput } from 'react-native'
 
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
@@ -40,21 +40,22 @@ export function styled<
   },
   staticExtractionOptions?: StaticConfig
 ) {
-  const staticConfigProps: StaticConfig = (() => {
+  const staticConfigProps = (() => {
     if (options) {
       const { variants, name, defaultVariants, ...defaultProps } = options
-      const isReactNativeWeb = RNComponents.has(Component)
-      const isTamagui = !isReactNativeWeb && 'staticConfig' in Component
-      const isInput =
-        defaultProps.isInput || (!isTamagui ? Component === (TextInput as any) : undefined)
-      const isText = defaultProps.isText || (!isTamagui ? isInput || Component === Text : undefined)
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
-      const conf = {
+      const isReactNativeWeb = RNComponents.has(Component)
+      const isTamagui = !isReactNativeWeb && 'staticConfig' in Component
+      const Comp = Component as any
+      const isImage = !!(defaultProps.isImage || (!isTamagui ? Comp === Image : false))
+      const isInput = !!(defaultProps.isInput || (!isTamagui ? Comp === TextInput : false))
+      const isText = !!(defaultProps.isText || (!isTamagui ? isInput || Comp === Text : false))
+      const conf: StaticConfig = {
         ...staticExtractionOptions,
         ...(!isTamagui && {
-          Component,
+          Component: Comp,
         }),
         isTamagui,
         variants,
@@ -63,6 +64,7 @@ export function styled<
         isReactNativeWeb,
         isInput,
         isText,
+        isImage,
       }
       return conf
     }

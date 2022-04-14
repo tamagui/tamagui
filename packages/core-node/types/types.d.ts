@@ -258,6 +258,7 @@ export declare type StaticConfig = {
     neverFlatten?: boolean | 'jsx';
     isText?: boolean;
     isInput?: boolean;
+    isImage?: boolean;
     validStyles?: {
         [key: string]: boolean;
     };

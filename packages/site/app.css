@@ -126,10 +126,9 @@ span._display-1adg3ll > span._display-xoduu5 {
 
 .hero-gradient-2 {
   background: linear-gradient(
-    90deg,
-    var(--background) 10%,
-    var(--backgroundStronger) 50%,
-    var(--background) 90%
+    180deg,
+    var(--backgroundStronger) 0%,
+    transparent 90%
   );
 }
 
@@ -227,43 +226,39 @@ pre {
 }
 
 .gradient-blue {
-  background: linear-gradient(90deg, var(--blue1), var(--purple1));
+  background: linear-gradient(90deg, transparent, var(--blue1), var(--purple1), transparent);
 }
 
 .gradient-pink {
-  background: linear-gradient(90deg, var(--pink1), var(--red1));
+  background: linear-gradient(90deg, transparent, var(--pink1), var(--red1), transparent);
 }
 
 .gradient-red {
-  background: linear-gradient(90deg, var(--red1), var(--orange1));
+  background: linear-gradient(90deg, transparent, var(--red1), var(--orange1), transparent);
 }
 
 .gradient-orange {
-  background: linear-gradient(90deg, var(--orange1), var(--yellow1));
+  background: linear-gradient(90deg, transparent, var(--orange1), var(--yellow1), transparent);
 }
 
 .gradient-purple {
-  background: linear-gradient(90deg, var(--purple1), var(--green1));
+  background: linear-gradient(90deg, transparent, var(--purple1), var(--green1), transparent);
 }
 
 .gradient-green {
-  background: linear-gradient(90deg, var(--green1), var(--teal1));
+  background: linear-gradient(90deg, transparent, var(--green1), var(--teal1), transparent);
 }
 
 .gradient-teal {
-  background: linear-gradient(90deg, var(--teal1), var(--yellow1));
+  background: linear-gradient(90deg, transparent, var(--teal1), var(--yellow1), transparent);
 }
 
 .rainbow {
   background: -webkit-linear-gradient(
-    -190deg,
-    var(--green9),
-    var(--yellow9),
-    var(--red9),
-    var(--orange9),
-    var(--blue9),
-    var(--purple9),
-    var(--teal9)
+    90deg,
+    var(--yellow10) 1%,
+    var(--red10) 71%,
+    var(--pink10) 71%
   );
 }
 
@@ -286,6 +281,12 @@ iframe {
   mix-blend-mode: multiply;
   /* backdrop-filter: blur(10px); */
   filter: blur(170px);
+}
+
+.bg-dot-grid {
+  contain: paint;
+  background-position: center center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30px' height='30px' viewBox='0 0 30 30' fill='none'%3E%3Ccircle cx='29' cy='29' r='1' fill='rgba(127,127,127,0.175)' /%3E%3C/svg%3E%0A");
 }
 
 .bg-grid {
@@ -472,10 +473,6 @@ iframe {
   padding-left: var(--space-4);
 }
 
-.transition-test {
-  transition: all ease-in 300ms;
-}
-
 .typewriter {
   opacity: 0;
 }
@@ -570,3 +567,26 @@ input, textarea {
   --docsearch-hit-background: #333;
   --docsearch-key-gradient: linear-gradient(-26.5deg, #161618, #4a4a4a);
 }
+
+.universal {
+  position: relative;
+}
+
+.universal::before {
+  content: ' ';
+  display: flex;
+  position: absolute;
+  top: 60%;
+  bottom: 4px;
+  left: -4px;
+  right: -8px;
+  z-index: -1;
+  background-color: var(--yellow6);
+  display: inline-flex;
+  transform: rotate(-1.25deg);
+}
+
+.universal:hover::before {
+  top: 24%;
+}
+

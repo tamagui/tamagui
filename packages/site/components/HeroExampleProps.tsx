@@ -21,9 +21,9 @@ const FeatureItem = ({ label, children }) => {
 export const HeroExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <YStack ai="center" space="$1">
-        <HomeH2>Feature-packed props</HomeH2>
-        <HomeH3>More productivity with built-in props.</HomeH3>
+      <YStack ai="center" space="$2">
+        <HomeH2>More props</HomeH2>
+        <HomeH3>More productivity with powerful built-in props.</HomeH3>
       </YStack>
 
       <XStack px="$6" pt="$8" space="$6" $sm={{ flexDirection: 'column' }}>

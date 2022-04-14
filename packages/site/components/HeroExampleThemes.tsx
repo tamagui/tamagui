@@ -152,11 +152,9 @@ export function HeroExampleThemes() {
     <YStack>
       {useMemo(() => {
         return (
-          <ContainerLarge space="$3" position="relative">
-            <YStack zi={1} space="$1">
-              <HomeH2>Flexible, fast themes</HomeH2>
-              <HomeH3>Unlimited nested alternate/component themes.</HomeH3>
-            </YStack>
+          <ContainerLarge position="relative" space="$2">
+            <HomeH2 className="rainbow clip-text">Flexible, fast themes</HomeH2>
+            <HomeH3>Unlimited nested alternate/component themes.</HomeH3>
           </ContainerLarge>
         )
       }, [])}
@@ -267,7 +265,6 @@ export function HeroExampleThemes() {
                         // mx={-scale * 180}
                         scale={scale}
                         cursor="pointer"
-                        className="transition-test"
                         opacity={0.5}
                         hoverStyle={{
                           scale: scale + 0.025,
@@ -334,27 +331,3 @@ const Bottom = memo(() => {
     </ContainerLarge>
   )
 })
-
-// const onScroll = useMemo(
-//   () =>
-//     throttle(
-//       ({ percent }) => {
-//         if (getLock() !== null) return
-//         const node = scrollView.current
-//         if (!node) return
-//         const x = 20 * percent
-//         // @ts-ignore
-//         node.scrollTo(0, x, false)
-//       },
-//       10,
-//       {
-//         leading: true,
-//       }
-//     ),
-//   []
-// )
-
-// useScrollPosition({
-//   ref: scrollView,
-//   onScroll,
-// })

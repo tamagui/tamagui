@@ -114,7 +114,7 @@ export const HeroResponsive = memo(() => {
   }, [])
 
   return (
-    <YStack ref={ref} y={0} my="$-12" py="$12" pos="relative">
+    <YStack ref={ref} y={0} my="$-12" py="$12" pt="$6" pos="relative">
       <ContainerLarge pos="relative">
         <Header />
         <Spacer size="$8" />
@@ -227,8 +227,8 @@ const Header = memo(() => {
       <YStack f={1} space="$2">
         <HomeH2 als="flex-start">Responsive, done right</HomeH2>
         <Paragraph maxWidth={500} size="$5" theme="alt2">
-          Sharing responsive designs between web and native saves time, but hooks are slow to write,
-          and run.
+          Sharing responsive designs between web and native saves time, but hooks are verbose and
+          expensive to run.
         </Paragraph>
 
         <Paragraph maxWidth={500} size="$5" theme="alt2">

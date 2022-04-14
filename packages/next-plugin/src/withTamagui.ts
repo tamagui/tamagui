@@ -52,6 +52,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         webpackConfig.plugins.push(
           new webpack.DefinePlugin({
+            'process.env.IS_STATIC': '""',
             'process.env.TAMAGUI_TARGET': '"web"',
             __DEV__: JSON.stringify(dev),
           })

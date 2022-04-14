@@ -1,6 +1,6 @@
 // debug 1232
 import React, { useState } from 'react'
-import { Paragraph, Theme, XStack, YStack } from 'tamagui'
+import { Image, Paragraph, Theme, XStack, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -21,20 +21,21 @@ export const Sandbox = () => {
 }
 
 export const Test = (props) => {
-  const isScrolled = false
+  // 123 123
   return (
     <>
-      <Paragraph
-        p="$2"
-        px="$3"
-        cursor="pointer"
-        size="$3"
-        opacity={0.5}
-        hoverStyle={{ opacity: 1 }}
-        tag="a"
-      >
-        Docs
-      </Paragraph>
+      <Image
+        // debug
+        pos="absolute"
+        bottom={0}
+        left={0}
+        x={-10}
+        y={10}
+        scale={0.75}
+        src="http://placekitten.com/800/800"
+        width={544}
+        height={569}
+      />
     </>
   )
 }

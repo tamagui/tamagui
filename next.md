@@ -12,7 +12,10 @@
   - 0% bug // continue (?) see if breaks anything
   - 0% bug // Object.assign(style, out) see what this was
 
-- 1: 
+- whenever switch over to styleq or own internal css generator:
+  - remove getStylesAtomic altogether - loop only once over props/styles
+
+- 1:
   - auto skeleton components
   - <Avatar />, <Checkbox />/ <Switch />, <Label />, <Select />, <Tabs />
   - create-tamagui-app

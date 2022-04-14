@@ -232,13 +232,13 @@ export function createExtractor() {
 
           // add data-is
           if (shouldAddDebugProp && !disableDebugAttr) {
-            const preName = componentName ? `${componentName}:` : ''
+            const preName = componentName ? `${componentName}.` : ''
             res.modified++
             node.attributes.unshift(
               t.jsxAttribute(
                 t.jsxIdentifier('data-is'),
                 t.stringLiteral(
-                  `  ${preName}${node.name.name}   ${filePath.replace('./', '')}:${lineNumbers}  `
+                  `${preName}${node.name.name}@${filePath.replace('./', '')}:${lineNumbers}`
                 )
               )
             )

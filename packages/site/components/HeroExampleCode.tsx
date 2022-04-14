@@ -19,18 +19,15 @@ export function HeroExampleCode() {
 
   return (
     <>
-      <YStack pos="absolute" o={0.2} top={-800} left={0} right={0} ai="center">
-        <CocentricCircles />
-      </YStack>
       <ContainerLarge position="relative">
         {/* <YStack pos="absolute" zi={-1} top={-100} left={-200} rotate="-85deg">
           <Glow contain="strict" bc="$pink10" />
         </YStack> */}
 
-        <YStack zi={1} space="$4">
-          <YStack space="$1">
-            <HomeH2>DX, meet UX</HomeH2>
-            <HomeH3>Runs faster&nbsp; 🤝 &nbsp;less code&nbsp; 🤝 &nbsp;every platform.</HomeH3>
+        <YStack zi={1} space="$6">
+          <YStack space="$2">
+            <HomeH2 className="rainbow clip-text">DX, meet UX</HomeH2>
+            <HomeH3>Faster&nbsp; 🤝 &nbsp;less code&nbsp; 🤝 &nbsp;more platforms</HomeH3>
           </YStack>
 
           <InteractiveContainer theme={tint} maxWidth="100%" als="center">

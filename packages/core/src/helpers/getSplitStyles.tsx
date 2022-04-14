@@ -81,6 +81,9 @@ export const getSplitStyles = (
     if (isWeb) {
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
+        if (atomicStyle.property === 'transform' && classNames.transform) {
+          console.log('TODO figure out merging transforms..........')
+        }
         if (!state.noClassNames) {
           classNames[atomicStyle.property] = atomicStyle.identifier
           insertStyleRule(atomicStyle.identifier, atomicStyle.rules[0])
