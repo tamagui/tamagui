@@ -73,14 +73,6 @@ export function styled<
   const config = extendStaticConfig(Component, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
 
-  if (process.env.NODE_ENV === 'development' && options?.debug) {
-    console.log(`🐛 tamagui styled(${staticConfigProps.componentName})`, {
-      options,
-      staticConfigProps,
-      config,
-    })
-  }
-
   type ParentProps = GetProps<ParentComponent>
   type VariantProps = Variants extends symbol ? {} : Expand<GetVariantProps<Variants>>
   type VariantKeys = Variants extends symbol ? never : keyof Variants[keyof Variants]

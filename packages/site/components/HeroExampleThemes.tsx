@@ -151,7 +151,7 @@ export function HeroExampleThemes() {
 
   return (
     <YStack>
-      <TintBg colorName={colorName} />
+      {/* <TintBg colorName={colorName} /> */}
       {useMemo(() => {
         return (
           <ContainerLarge position="relative" space="$2">

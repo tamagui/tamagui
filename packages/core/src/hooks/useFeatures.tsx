@@ -77,7 +77,6 @@ function loadAnimationFeature() {
         ...(state.focus && pseudos.focusStyle),
         ...(state.press && pseudos.pressStyle),
       }
-      console.log('animatedStyleIn', animatedStyleIn)
 
       const res = useAnimations(props as any, {
         isMounted: state.mounted,

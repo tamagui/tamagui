@@ -46,7 +46,7 @@ const HeroTop = memo(() => {
   return (
     <ContainerLarge pos="relative">
       {/* casuing hydration mismatch... */}
-      <img
+      {/* <img
         src={require('../public/tamaguy2.png').default.src}
         style={{
           position: 'absolute',
@@ -56,7 +56,7 @@ const HeroTop = memo(() => {
           width: 544,
           height: 569,
         }}
-      />
+      /> */}
       {/* <Image
         className="tamaguy"
         pos="absolute"

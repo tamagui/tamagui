@@ -1,17 +1,6 @@
 // debug-verbose
 import React, { useState } from 'react'
-import {
-  Button,
-  Circle,
-  Image,
-  InteractiveContainer,
-  Spacer,
-  Square,
-  Theme,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { Theme, XStack, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -39,37 +28,76 @@ export const Sandbox = () => {
 export const Test = (props) => {
   return (
     <>
-      <Image
-        debug
-        pos="absolute"
-        bottom={0}
-        left={0}
-        x={-100}
-        y={100}
-        scale={0.75}
-        src="http://placekitten.com/800/800"
-        width={544}
-        height={569}
-      />
+      <XStack ai="center" jc="center" space="$2">
+        <Card
+          width="33.33%"
+          $sm={{ width: 'auto' }}
+          space="$2"
+          tag="a"
+          href="https://twitter.com/tamagui_js"
+          target="_blank"
+          rel="noopener noreferrer"
+          p="$4"
+        >
+          hello
+        </Card>
+      </XStack>
     </>
   )
 }
 
-//      <AnimationTest />
-
 export const Card = styled(YStack, {
   name: 'Card',
+  debug: true,
   className: 'transition all ease-in ms100',
   borderRadius: '$2',
   backgroundColor: '$background',
   flexShrink: 1,
   elevation: '$2',
   hoverStyle: {
-    backgroundColor: '$color',
+    backgroundColor: '$backgroundHover',
     elevation: '$4',
     y: -4,
   },
 })
+
+//<YStack
+//  bc={getBarColor(result.name)}
+//  o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
+//  width={`${(result.value / maxValue) * 100}%`}
+//  height={10}
+//  minWidth={100}
+//  position="relative"
+//  jc="center"
+//  animation="bouncy"
+//  scaleX={1}
+//  {...(animateEnter && {
+//    enterStyle: {
+//      scaleX: 0,
+//    },
+//  })}
+//>
+//  <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
+//    {result.value}ms
+//  </Paragraph>
+//</YStack>
+//
+
+//      <AnimationTest />
+
+// export const Card = styled(YStack, {
+//   name: 'Card',
+//   className: 'transition all ease-in ms100',
+//   borderRadius: '$2',
+//   backgroundColor: '$background',
+//   flexShrink: 1,
+//   elevation: '$2',
+//   hoverStyle: {
+//     backgroundColor: '$color',
+//     elevation: '$4',
+//     y: -4,
+//   },
+// })
 
 // const AnimationTest = () => {
 //   const [positionI, setPositionI] = useState(0)

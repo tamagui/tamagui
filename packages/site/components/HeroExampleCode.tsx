@@ -80,7 +80,7 @@ export function HeroExampleCode() {
             </YStack>
             <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
               <CodeExamples {...activeExample.output} />
-              <Paragraph minHeight={50} ta="center" px="$7">
+              <Paragraph minHeight={50} ta="center" px="$6">
                 <CodeInline size="$4">Output</CodeInline>
                 <span style={{ opacity: 0.65 }}>
                   &nbsp;－&nbsp;{activeExample.output.description}
@@ -109,10 +109,6 @@ const CodeExamples = memo(({ examples }: any) => {
               size="$3"
               key={i}
               borderRadius="$0"
-              // fontWeight={i === activeIndex ? '700' : '400'}
-              {...(i === activeIndex && {
-                active: true,
-              })}
             >
               {example.name}
             </Button>
@@ -124,10 +120,7 @@ const CodeExamples = memo(({ examples }: any) => {
           <CodeDemo
             theme="Card"
             language={example.language as any}
-            mode="interactive"
-            line="3-20"
-            maxHeight={500}
-            py="$6"
+            maxHeight={400}
             flex={1}
             value={example.code}
           />

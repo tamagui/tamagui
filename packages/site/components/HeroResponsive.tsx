@@ -114,7 +114,7 @@ export const HeroResponsive = memo(() => {
   }, [])
 
   return (
-    <YStack ref={ref} y={0} my="$-12" py="$12" pt="$6" pos="relative">
+    <YStack ref={ref} y={0} mt="$-10" pt="$6" pos="relative">
       <ContainerLarge pos="relative">
         <Header />
         <Spacer size="$8" />
@@ -189,7 +189,7 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <Theme className="unselectable" name={active ? 'pink' : null}>
-      <YStack pos="absolute" l={800} {...props}>
+      <YStack className="test123" pos="absolute" l={800} {...props}>
         <XStack pe="none" y={-80} ai="flex-start" space>
           <YStack w={1} h={80} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
           <Button

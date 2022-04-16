@@ -1211,11 +1211,21 @@ export function createExtractor() {
                 !pseudos[key] &&
                 !key.startsWith('data-')
 
+              if (shouldPrintDebug) {
+                console.log('go', {
+                  key,
+                  value,
+                  prevType: prev?.type,
+                  shouldKeepOriginalAttr,
+                  ensureOverridden: ensureOverridden[key],
+                })
+              }
+
               if (shouldKeepOriginalAttr) {
                 if (shouldPrintDebug) {
                   console.log('     - keeping as non-style', key)
                 }
-                acc.push(cur)
+                prev = cur
                 acc.push({
                   type: 'attr',
                   value: t.jsxAttribute(
@@ -1225,6 +1235,7 @@ export function createExtractor() {
                     )
                   ),
                 })
+                acc.push(cur)
                 return acc
               }
 

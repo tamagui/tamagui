@@ -613,10 +613,6 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       resolveVariablesAs: 'variable',
     })
 
-    if (process.env.NODE_ENV === 'development' && shouldDebug) {
-      console.log('splitStyleResult', splitStyleResult)
-    }
-
     const { classNames, pseudos, style, viewProps } = splitStyleResult
 
     if (isWeb) {
@@ -624,7 +620,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     }
 
     // for use in animations + native
-    defaultPseudos = defaultPseudos
+    defaultPseudos = pseudos
     defaultNativeStyle = {}
     for (const key in style) {
       const v = style[key]
@@ -641,13 +637,11 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
       ...viewProps,
       ...component.defaultProps,
     }
-    if (
-      process.env.NODE_ENV === 'development' &&
-      shouldDebug &&
-      process.env.IS_STATIC !== 'is_static'
-    ) {
+
+    // prettier-ignore
+    if (process.env.NODE_ENV === 'development' && shouldDebug && process.env.IS_STATIC !== 'is_static') {
       // prettier-ignore
-      console.log('tamagui 🐛:', { classNames, pseudos, style, viewProps, component, defaultsClassName })
+      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, ...splitStyleResult })
     }
   })
 

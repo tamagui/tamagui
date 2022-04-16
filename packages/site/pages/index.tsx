@@ -22,6 +22,8 @@ import { SearchButton } from '../components/Search'
 import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
+  // return <HeroExampleThemes />
+  // return <Hero />
   // return <HeroPerformance />
   // return <MediaPlayer />
 
@@ -93,16 +95,16 @@ const Section = ({ children, below, className }: any) => {
 const SectionTinted = ({ children, gradient, extraPad, ...props }: any) => {
   const { tint } = useTint()
   const childrenMemo = useMemo(() => children, [children])
-  const className = gradient ? `gradient-${tint}` : ''
+  // const className = gradient ? `gradient-${tint}` : ''
   return (
-    <YStack contain="paint" pos="relative" py={extraPad ? '$12' : '$11'} {...props}>
+    <YStack contain="paint" pos="relative" py="$12" {...props}>
       <YStack
         fullscreen
-        className={className}
+        // className={className}
         // o={0.85}
         zi={-1}
         // @ts-ignore
-        // bc={`$${tint}1`}
+        bc={gradient ? `$${tint}1` : null}
         btw={0.5}
         bbw={0.5}
         // @ts-ignore

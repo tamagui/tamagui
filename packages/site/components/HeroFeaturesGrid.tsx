@@ -21,17 +21,17 @@ export function FeaturesGrid() {
           <Grid gap={25} itemMinWidth={250}>
             <YStack space p="$4">
               <H4 ta="center" fontFamily="$body">
-                Modern design system
+                Fully typed
               </H4>
               <Paragraph theme="alt2">
-                Inline typed styles, typed themes, tokens, shorthands, media queries and animations,
-                plus a full suite of accessible components.
+                Inline typed styles, typed themes, tokens, shorthands, media queries, animations,
+                plus hooks for themes and media queries.
               </Paragraph>
             </YStack>
 
             <YStack space p="$4">
               <H4 ta="center" fontFamily="$body">
-                Fast by default
+                Fast, all ways
               </H4>
               <Paragraph theme="alt2">
                 Tamagui saves you time writing code because it optimizes even inline styles, even
