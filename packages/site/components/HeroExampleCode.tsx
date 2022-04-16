@@ -26,7 +26,10 @@ export function HeroExampleCode() {
 
         <YStack zi={1} space="$6">
           <YStack space="$2">
-            <HomeH2 className="rainbow clip-text">DX, meet UX</HomeH2>
+            <HomeH2 className="">
+              <span className="rainbow clip-text">DX</span>, meet{' '}
+              <span className="rainbow clip-text">UX</span>
+            </HomeH2>
             <HomeH3>Faster&nbsp; 🤝 &nbsp;less code&nbsp; 🤝 &nbsp;more platforms</HomeH3>
           </YStack>
 

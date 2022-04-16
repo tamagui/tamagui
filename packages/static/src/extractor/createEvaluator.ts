@@ -21,7 +21,7 @@ export function createEvaluator({
   staticNamespace: Record<string, any>
   sourcePath: string
   traversePath: NodePath<t.JSXElement>
-  shouldPrintDebug: boolean
+  shouldPrintDebug: boolean | 'verbose'
 }) {
   // called when evaluateAstNode encounters a dynamic-looking prop
   const evalFn = (n: t.Node) => {

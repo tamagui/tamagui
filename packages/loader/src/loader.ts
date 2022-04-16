@@ -45,11 +45,16 @@ export function loader(this: LoaderContext<any>, source: string) {
 
     const sourcePath = `${this.resourcePath}`
     const startsWithComment = source[0] === '/' && source[1] === '/'
-    const shouldPrintDebug =
+
+    let shouldPrintDebug: boolean | 'verbose' =
       (!!process.env.DEBUG &&
         (process.env.DEBUG_FILE ? sourcePath.includes(process.env.DEBUG_FILE) : true)) ||
       // supports esbuild style //! comments
       (startsWithComment && (source.startsWith('// debug') || source.startsWith('//! debug')))
+
+    if (shouldPrintDebug && source.startsWith('// debug-verbose')) {
+      shouldPrintDebug = 'verbose'
+    }
 
     // if outputted css
     if (options.cssPath || options.cssData) {

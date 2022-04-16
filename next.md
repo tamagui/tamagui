@@ -11,6 +11,7 @@
   - 0% bug // TODO i think media + pseudo needs handling here
   - 0% bug // continue (?) see if breaks anything
   - 0% bug // Object.assign(style, out) see what this was
+  - 0% bug // @ts-ignore TODO we need to make GetProps only use
 
 - whenever switch over to styleq or own internal css generator:
   - remove getStylesAtomic altogether - loop only once over props/styles

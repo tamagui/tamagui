@@ -14,7 +14,7 @@ export function extractMediaStyle(
   tamaguiConfig: TamaguiInternalConfig,
   sourcePath: string,
   importance = 0,
-  shouldPrintDebug = false
+  shouldPrintDebug: boolean | 'verbose' = false
 ) {
   const mt = getMediaQueryTernary(ternary, jsxPath, sourcePath)
   if (!mt) {

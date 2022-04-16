@@ -614,7 +614,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     })
 
     if (process.env.NODE_ENV === 'development' && shouldDebug) {
-      console.log('splitStyleResult', splitStyleResult, initialTheme)
+      console.log('splitStyleResult', splitStyleResult)
     }
 
     const { classNames, pseudos, style, viewProps } = splitStyleResult

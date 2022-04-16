@@ -240,6 +240,7 @@ export const components = {
   Image: ({ children, size, ...props }) => (
     <YStack tag="figure" f={1} mx={0} mb="$3">
       <OffsetBox size={size}>
+        {/* @ts-ignore */}
         <Image maxWidth="100%" {...props} />
       </OffsetBox>
       <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">

@@ -162,9 +162,14 @@ export const validStyles = Object.freeze({
   ...stylePropsView,
 })
 
-const mapTransformKeys = {
+export const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
+}
+
+export const invertMapTransformKeys = {
+  translateX: 'x',
+  translateY: 'y',
 }
 
 export const mergeTransform = (obj: ViewStyle, key: string, val: any) => {

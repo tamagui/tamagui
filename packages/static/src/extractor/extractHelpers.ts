@@ -1,3 +1,4 @@
+import generate from '@babel/generator'
 import type { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 
@@ -52,27 +53,19 @@ export const ternaryStr = (x: Ternary) => {
     ? x.test.name
     : t.isMemberExpression(x.test)
     ? [x.test.object['name'], x.test.property['name']]
-    : astToLiteral(x.test) ??
-      [
-        x.test['type'],
-        astToLiteral(x.test['left']),
-        x.test['operator'],
-        astToLiteral(x.test['right']),
-        x.test['value'],
-        x.test['name'],
-      ]
-        .filter((x) => typeof x !== 'undefined')
-        .join(' ')
+    : generate(x.test).code
   return [
     'ternary(',
     conditional,
-    x.consequent ? ` ? ${objToStr(x.consequent)}` : ' ? 🚫',
-    x.alternate ? ` : ${objToStr(x.alternate)}` : ' : 🚫',
+    isFilledObj(x.consequent) ? ` ? ${objToStr(x.consequent)}` : ' ? 🚫',
+    isFilledObj(x.alternate) ? ` : ${objToStr(x.alternate)}` : ' : 🚫',
     ')',
   ]
     .flat()
     .join('')
 }
+
+const isFilledObj = (obj: any) => obj && Object.keys(obj).length
 
 export function findComponentName(scope) {
   let componentName = ''

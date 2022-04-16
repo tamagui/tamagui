@@ -78,7 +78,7 @@ export const getSplitStyles = (
   function push() {
     if (!cur) return
     normalizeStyleObject(cur)
-    if (isWeb) {
+    if (isWeb && !state.noClassNames) {
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
         if (atomicStyle.property === 'transform' && classNames.transform) {
@@ -177,10 +177,9 @@ export const getSplitStyles = (
           continue
         }
         pseudos[key] = pseudos[key] || {}
-        if (state.noClassNames) {
-          pseudos[key] = val
-        } else {
-          const pseudoStyles = getStylesAtomic({ [key]: val })
+        pseudos[key] = getSubStyle(val, staticConfig, theme, props, state.resolveVariablesAs, true)
+        if (!state.noClassNames) {
+          const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
             classNames[`${style.property}-${key}`] = style.identifier
             insertStyleRule(style.identifier, style.rules[0])
@@ -204,7 +203,14 @@ export const getSplitStyles = (
         // TODO test proxy here instead of merge
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-        const mediaStyle = getSubStyle(valInit, staticConfig, theme, valInit, undefined, true)
+        const mediaStyle = getSubStyle(
+          valInit,
+          staticConfig,
+          theme,
+          props,
+          state.resolveVariablesAs,
+          true
+        )
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
@@ -222,7 +228,6 @@ export const getSplitStyles = (
             Object.assign(style, mediaStyle)
           }
         }
-        console.log('what is', 'media', mediaState, key)
         continue
       }
 

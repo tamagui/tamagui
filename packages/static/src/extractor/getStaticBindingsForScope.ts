@@ -36,7 +36,7 @@ export function getStaticBindingsForScope(
   whitelist: string[] = [],
   sourcePath: string,
   bindingCache: Record<string, string | null>,
-  shouldPrintDebug: boolean
+  shouldPrintDebug: boolean | 'verbose'
 ): Record<string, any> {
   const bindings: Record<string, Binding> = scope.getAllBindings() as any
   const ret: Record<string, any> = {}

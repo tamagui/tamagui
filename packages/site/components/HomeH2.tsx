@@ -1,8 +1,6 @@
 import { H2, H3, styled } from 'tamagui'
 
 export const HomeH2 = styled(H2, {
-  debug: true,
-
   mt: -20,
   ta: 'center',
   als: 'center',
@@ -22,7 +20,6 @@ export const HomeH3 = styled(H3, {
   fow: '400',
   size: '$8',
 
-  // TODO media queries on styled()}
   $sm: {
     size: '$6',
     fontWeight: '400',

@@ -3,7 +3,7 @@ import * as t from '@babel/types'
 export function evaluateAstNode(
   exprNode: t.Node | undefined | null,
   evalFn?: (node: t.Node) => any,
-  shouldPrintDebug?: boolean
+  shouldPrintDebug?: boolean | 'verbose'
 ): any {
   if (exprNode === undefined) {
     return undefined

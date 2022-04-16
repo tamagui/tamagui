@@ -5,7 +5,10 @@ import invariant from 'invariant'
 import { Ternary } from '../types'
 
 export function normalizeTernaries(ternaries: Ternary[]) {
-  invariant(Array.isArray(ternaries), 'extractStaticTernaries expects param 1 to be an array of ternaries')
+  invariant(
+    Array.isArray(ternaries),
+    'extractStaticTernaries expects param 1 to be an array of ternaries'
+  )
 
   if (ternaries.length === 0) {
     return []
@@ -48,8 +51,8 @@ export function normalizeTernaries(ternaries: Ternary[]) {
     }
     const altStyle = (shouldSwap ? consequent : alternate) ?? {}
     const consStyle = (shouldSwap ? alternate : consequent) ?? {}
-    Object.assign(ternariesByKey[key].alternate, altStyle)
-    Object.assign(ternariesByKey[key].consequent, consStyle)
+    Object.assign(ternariesByKey[key].alternate!, altStyle)
+    Object.assign(ternariesByKey[key].consequent!, consStyle)
   }
 
   const ternaryExpression = Object.keys(ternariesByKey).map((key) => {

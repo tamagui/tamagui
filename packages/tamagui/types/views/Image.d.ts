@@ -106,8 +106,10 @@ declare const StyledImage: import("@tamagui/core").StaticComponent<(Omit<import(
     [x: string]: undefined;
 }, any, import("@tamagui/core").StaticConfigParsed>;
 declare type StyledImageProps = GetProps<typeof StyledImage>;
-export declare type ImageProps = StackProps & Omit<StyledImageProps, 'source'> & {
-    src?: string | StyledImageProps['source'];
+export declare type ImageProps = Omit<StackProps, 'width' | 'height'> & Omit<StyledImageProps, 'source' | 'width' | 'height'> & {
+    width: number;
+    height: number;
+    src: string | StyledImageProps['source'];
 };
 export declare const Image: React.FC<ImageProps>;
 export {};
