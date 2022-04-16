@@ -49,17 +49,17 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
               bc={getBarColor(result.name)}
               o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
               width={`${(result.value / maxValue) * 100}%`}
-              height="100%"
-              minHeight={40}
+              height={10}
               minWidth={100}
               position="relative"
               jc="center"
               animation="bouncy"
-              debug
-              scale={1}
-              enterStyle={{
-                scale: 0,
-              }}
+              scaleX={1}
+              {...(animateEnter && {
+                enterStyle: {
+                  scaleX: 0,
+                },
+              })}
             >
               <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
                 {result.value}ms

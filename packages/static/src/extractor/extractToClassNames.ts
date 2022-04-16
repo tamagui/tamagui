@@ -160,6 +160,7 @@ export function extractToClassNames({
               const styles = getStylesAtomic(attr.value, {
                 splitTransforms: true,
               })
+
               finalStyles = [...finalStyles, ...styles]
 
               for (const [key, value] of pseudos) {

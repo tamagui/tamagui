@@ -10,12 +10,19 @@ import { ViewStyle } from 'react-native'
 import { isWeb } from '../constants/platform'
 import { ComponentState } from '../defaultComponentState'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
-import { MediaKeys, StackProps, StaticConfigParsed, ThemeObject } from '../types'
+import {
+  MediaKeys,
+  MediaQueryKey,
+  PsuedoPropKeys,
+  StackProps,
+  StaticConfigParsed,
+  ThemeObject,
+} from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { ResolveVariableTypes } from './createPropMapper'
 import { fixNativeShadow } from './fixNativeShadow'
 import { ViewStyleWithPseudos, getStylesAtomic } from './getStylesAtomic'
-import { insertStyleRule } from './insertStyleRule'
+import { insertStyleRule, insertedTransforms, updateInserted } from './insertStyleRule'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
@@ -55,6 +62,10 @@ function normalizeStyleObject(style: any) {
   }
 }
 
+type TransformNamespaceKey = 'transform' | PsuedoPropKeys | MediaQueryKey
+
+// TODO can make a few of these objects lazy if profiling seems slow
+
 export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
@@ -75,6 +86,38 @@ export const getSplitStyles = (
   const medias: Record<MediaKeys, ViewStyle> = {}
   let cur: ViewStyleWithPseudos | null = null
 
+  // we need to gather these specific to each media query / pseudo
+  // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
+  let transforms: Record<TransformNamespaceKey, [string, string]> = {}
+
+  function mergeClassName(key: string, val: string) {
+    if (!val) return
+    if (val.startsWith('_transform-')) {
+      const isMediaOrPseudo = key !== 'transform'
+      const isMedia = isMediaOrPseudo && key[11] === '_'
+      const isPsuedo = isMediaOrPseudo && !isMedia
+      const namespace: TransformNamespaceKey = isMedia
+        ? key.split('_')[2]
+        : isPsuedo
+        ? key.split('-')[1]
+        : 'transform'
+      if (!insertedTransforms[val]) {
+        // HMR or loaded a new chunk
+        updateInserted()
+      }
+      const transform = insertedTransforms[val]
+      // if (!transform) {
+      //   console.error('NO TRANSFORM', key, val)
+      //   return
+      // }
+      transforms[namespace] = transforms[namespace] || ['', '']
+      transforms[namespace][0] += val.replace('_transform', '')
+      transforms[namespace][1] += transform
+    } else {
+      classNames[key] = val
+    }
+  }
+
   function push() {
     if (!cur) return
     normalizeStyleObject(cur)
@@ -85,7 +128,7 @@ export const getSplitStyles = (
           console.log('TODO figure out merging transforms..........')
         }
         if (!state.noClassNames) {
-          classNames[atomicStyle.property] = atomicStyle.identifier
+          mergeClassName(atomicStyle.property, atomicStyle.identifier)
           insertStyleRule(atomicStyle.identifier, atomicStyle.rules[0])
         } else {
           style[atomicStyle.property] = atomicStyle.value
@@ -105,7 +148,6 @@ export const getSplitStyles = (
   }
 
   for (const keyInit in props) {
-    // be sure to sync next few lines below to getSubStyle (*1)
     const valInit = props[keyInit]
 
     if (skipKeys[keyInit]) {
@@ -117,18 +159,15 @@ export const getSplitStyles = (
       // isPropClassName
       keyInit === 'className' ||
       // isExtractedClassName
-      (valInit && valInit[0] === '_')
+      (validStyleProps[keyInit] && valInit && valInit[0] === '_')
     ) {
-      if (keyInit === 'className' || validStyleProps[keyInit]) {
-        push()
-        classNames[keyInit] = valInit
-        if (cur) {
-          delete cur[keyInit]
-        }
-        continue
-      } else {
-        // target="_blank" etc
+      push()
+      mergeClassName(keyInit, valInit)
+      if (cur) {
+        if (cur[keyInit]) console.warn('just want to see how used')
+        delete cur[keyInit]
       }
+      continue
     }
 
     let isMedia = keyInit[0] === '$'
@@ -154,7 +193,7 @@ export const getSplitStyles = (
       }
 
       if (val && val[0] === '_') {
-        classNames[key] = val
+        mergeClassName(key, val)
         continue
       }
 
@@ -166,7 +205,6 @@ export const getSplitStyles = (
         (staticConfig.inlineProps && staticConfig.inlineProps.has(key))
       ) {
         viewProps[key] = val
-        // continue (?)
       }
 
       // pseudo
@@ -180,8 +218,9 @@ export const getSplitStyles = (
         pseudos[key] = getSubStyle(val, staticConfig, theme, props, state.resolveVariablesAs, true)
         if (!state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
+          if (props['debug']) console.log('gogo', key, val, state.noClassNames, pseudoStyles)
           for (const style of pseudoStyles) {
-            classNames[`${style.property}-${key}`] = style.identifier
+            mergeClassName(`${style.property}-${key}`, style.identifier)
             insertStyleRule(style.identifier, style.rules[0])
           }
         }
@@ -216,7 +255,7 @@ export const getSplitStyles = (
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
-            classNames[`${out.identifier}-${mediaKey}`] = out.identifier
+            mergeClassName(`${out.identifier}-${mediaKey}`, out.identifier)
             insertStyleRule(out.identifier, out.styleRule)
           }
           if (mediaState[mediaKey]) {
@@ -261,6 +300,18 @@ export const getSplitStyles = (
 
   push()
 
+  if (transforms) {
+    for (const namespace in transforms) {
+      const [hash, val] = transforms[namespace]
+      const identifier = `_transform${hash}`
+      if (!insertedTransforms[identifier]) {
+        const rule = `.${identifier} { transform: ${val}; }`
+        insertStyleRule(identifier, rule)
+      }
+      classNames[namespace] = identifier
+    }
+  }
+
   return {
     viewProps,
     style,
@@ -280,7 +331,6 @@ const getSubStyle = (
 ): ViewStyle => {
   const styleOut: ViewStyle = {}
   for (const key in styleIn) {
-    // be sure to sync next few lines below to loop above (*1)
     const val = styleIn[key]
     const out = staticConfig.propMapper(
       key,

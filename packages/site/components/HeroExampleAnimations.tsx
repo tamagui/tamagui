@@ -126,7 +126,6 @@ export const ExampleAnimations = memo(() => {
         <YStack
           ref={container}
           pos="relative"
-          className="hero-gradient"
           ai="center"
           jc="center"
           width="60%"

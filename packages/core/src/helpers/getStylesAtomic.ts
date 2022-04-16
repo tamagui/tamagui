@@ -74,19 +74,17 @@ function getAtomicStyle(
 
   let atomicStyles: { [key: string]: StyleObject & { transformProperty?: string } } = {}
 
-  if (options.splitTransforms) {
-    if (style.transform) {
-      let { transform, ...rest } = style
-      Object.assign(atomicStyles, generateAtomicStyles(rest))
-      for (const t of transform) {
-        const tKey = Object.keys(t)[0]
-        const transformProperty = invertMapTransformKeys[tKey] || tKey
-        const out = generateAtomicStyles({ transform: [t] })
-        const key = Object.keys(out)[0]
-        atomicStyles[key] = {
-          ...out[key],
-          transformProperty,
-        }
+  if (options.splitTransforms && style.transform) {
+    let { transform, ...rest } = style
+    Object.assign(atomicStyles, generateAtomicStyles(rest))
+    for (const t of transform) {
+      const tKey = Object.keys(t)[0]
+      const transformProperty = invertMapTransformKeys[tKey] || tKey
+      const out = generateAtomicStyles({ transform: [t] })
+      const key = Object.keys(out)[0]
+      atomicStyles[key] = {
+        ...out[key],
+        transformProperty,
       }
     }
   } else {

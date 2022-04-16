@@ -4,31 +4,48 @@
 
 const allSelectors = {}
 const insertedSelectors = {}
-const transforms = {}
+export const insertedTransforms = {}
 
 export const getAllSelectors = () => allSelectors
 export const getInsertedRules = () => Object.values(insertedSelectors)
-export const getAllTransforms = () => transforms
+export const getAllTransforms = () => insertedTransforms
 
 // keep transforms in map for merging later
 function addTransform(identifier: string, rule: string) {
   const s = rule.indexOf('transform:')
-  if (s === -1) throw new Error(`not a transform ${rule}`)
+  if (s === -1) {
+    console.error(`not a transform ${identifier} ${rule}`)
+    return
+  }
   const startI = s + 'transform:'.length
   const endI = rule.indexOf(';')
   const value = rule.slice(startI, endI)
-  transforms[identifier] = value
+  insertedTransforms[identifier] = value
 }
 
 // gets existing ones (client side)
 // takes ~0.1ms for a fairly large page
-if (typeof window !== 'undefined') {
+// used now for three things:
+//   1. debugging at dev time
+//   2. avoid duplicate insert styles at runtime
+//   3. used now for merging transforms atomically
+let hasInsertedSinceUpdate = true
+export function updateInserted() {
+  if (typeof window === 'undefined') {
+    return
+  }
+  if (!hasInsertedSinceUpdate) {
+    console.warn('hasnt inserted since')
+    return
+  }
   const sheets = window.document.styleSheets
   for (let i = 0; i < sheets.length; i++) {
     const rules = sheets[i].cssRules
     const firstRule = rules[0]
-
-    if (firstRule?.['selectorText'] === ':root' || firstRule?.['selectorText'].startsWith('._')) {
+    if (!firstRule) continue
+    const firstSelector = firstRule['selectorText']
+    if (!firstSelector) continue
+    if (firstSelector === ':root' || firstSelector.startsWith('._')) {
       for (const rule of rules as any) {
         if (!rule.selectorText) continue
         const identifier = rule.selectorText.slice(1)
@@ -39,7 +56,10 @@ if (typeof window !== 'undefined') {
       }
     }
   }
+  hasInsertedSinceUpdate = false
 }
+
+updateInserted()
 
 const newRulesStyleTag =
   typeof window !== 'undefined' ? document.head.appendChild(document.createElement('style')) : null
@@ -48,6 +68,7 @@ export function insertStyleRule(identifier: string, rule: string) {
   if (allSelectors[identifier]) {
     return
   }
+  hasInsertedSinceUpdate = true
   insertedSelectors[identifier] = rule
   allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
   if (identifier.startsWith('_transform')) {

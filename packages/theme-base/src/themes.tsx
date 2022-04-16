@@ -195,7 +195,7 @@ const baseThemes = {
     ...allLightColors,
     ...lightThemes.light,
   },
-  light_active: makeActiveTheme(darkThemes.dark),
+  light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
   light_Button: lightThemes.light_alt1,
 
@@ -205,7 +205,7 @@ const baseThemes = {
     ...allDarkColors,
     ...darkThemes.dark,
   },
-  dark_active: makeActiveTheme(lightThemes.light),
+  dark_active: makeActiveTheme(darkThemes.dark),
   dark_Card: darkThemes.dark_alt1,
   dark_Button: darkThemes.dark_alt1,
 }
