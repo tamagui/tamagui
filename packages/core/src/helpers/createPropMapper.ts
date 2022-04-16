@@ -84,6 +84,13 @@ export const createPropMapper = (c: StaticConfig) => {
         })
       }
 
+      // console.log(
+      //   'GOGO',
+      //   variantValue,
+      //   'now',
+      //   resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
+      // )
+
       if (isObj(variantValue)) {
         variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
       }

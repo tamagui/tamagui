@@ -53,7 +53,7 @@ export declare type ExtractTagProps = {
 };
 export declare type ExtractorParseProps = TamaguiOptions & {
     sourcePath?: string;
-    shouldPrintDebug?: boolean;
+    shouldPrintDebug?: boolean | 'verbose';
     onExtractTag: (props: ExtractTagProps) => void;
     getFlattenedNode: (props: {
         isTextView: boolean;

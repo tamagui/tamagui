@@ -28,7 +28,7 @@ export const LogoWords = ({ color, downscale = 1 }: { color?: string; downscale?
   //   // <img className="crisp-edges" style={{ width: 206 / downscale, margin: -2 }} src={icon.src} />
   // )
   return (
-    <YStack h={41 / 3} $gtMd={{ h: 41 / 2.5 }}>
+    <YStack h={41 / 3.5} $gtMd={{ h: 41 / 3 }}>
       <svg width={373} height={41} viewBox="0 0 373 41">
         <polygon
           shapeRendering="crispEdges"

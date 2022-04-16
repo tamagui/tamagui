@@ -102,13 +102,13 @@ const createTheme: ThemeCreator = (
       ? get(colors, 8 - str, 'borderColor')
       : get(backgrounds, 2 + str, 'borderColor'),
     borderColorHover: isLight
-      ? get(colors, 7 - str, 'borderColor')
+      ? get(colors, 6 - str, 'borderColor')
       : get(backgrounds, 3 + str, 'borderColor'),
     borderColorPress: isLight
-      ? get(colors, 6 - str, 'borderColor')
+      ? get(colors, 5 - str, 'borderColor')
       : get(backgrounds, 1 + str, 'borderColor'),
     borderColorFocus: isLight
-      ? get(colors, 6 - str, 'borderColor')
+      ? get(colors, 4 - str, 'borderColor')
       : get(backgrounds, 3 + str, 'borderColor'),
     color: get(colors, 0 + str, 'color'),
     colorHover: get(colors, 1 + str, 'color'),

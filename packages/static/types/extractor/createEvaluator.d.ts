@@ -6,7 +6,7 @@ export declare function createEvaluator({ tamaguiConfig, staticNamespace, source
     staticNamespace: Record<string, any>;
     sourcePath: string;
     traversePath: NodePath<t.JSXElement>;
-    shouldPrintDebug: boolean;
+    shouldPrintDebug: boolean | 'verbose';
 }): (n: t.Node) => any;
 export declare function createSafeEvaluator(attemptEval: (n: t.Node) => any): (n: t.Node) => any;
 //# sourceMappingURL=createEvaluator.d.ts.map

@@ -3,6 +3,7 @@ declare class TamaguiManager {
     config: TamaguiInternalConfig | null;
     rnw: Record<string, any>;
     get allSelectors(): {};
+    get allTransforms(): {};
     get identifierToValue(): Map<string, any>;
 }
 export declare const Tamagui: TamaguiManager;

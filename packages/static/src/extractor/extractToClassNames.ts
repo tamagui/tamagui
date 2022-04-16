@@ -53,7 +53,7 @@ export function extractToClassNames({
   source: string | Buffer
   sourcePath: string
   options: TamaguiOptions
-  shouldPrintDebug: boolean
+  shouldPrintDebug: boolean | 'verbose'
   cssPath: string
   threaded?: boolean
 }): ExtractedResponse | null {
@@ -157,7 +157,9 @@ export function extractToClassNames({
                 ['focusStyle', focusStyle],
               ] as const
 
-              const styles = getStylesAtomic(attr.value)
+              const styles = getStylesAtomic(attr.value, {
+                splitTransforms: true,
+              })
               finalStyles = [...finalStyles, ...styles]
 
               for (const [key, value] of pseudos) {
@@ -226,8 +228,10 @@ export function extractToClassNames({
               shouldPrintDebug
             )
             if (shouldPrintDebug) {
-              // prettier-ignore
-              console.log('ternary (mediaStyles)', mediaExtraction?.ternaryWithoutMedia?.inlineMediaQuery ?? '', mediaExtraction?.mediaStyles.map((x) => x.identifier).join('.'))
+              if (mediaExtraction) {
+                // prettier-ignore
+                console.log('ternary (mediaStyles)', mediaExtraction.ternaryWithoutMedia?.inlineMediaQuery ?? '', mediaExtraction.mediaStyles.map((x) => x.identifier).join('.'))
+              }
             }
             if (!mediaExtraction) {
               addTernaryStyle(

@@ -1,6 +1,5 @@
-import { onConfiguredOnce } from './conf'
 import { rnw } from './constants/rnw'
-import { getAllSelectors } from './helpers/insertStyleRule'
+import { getAllSelectors, getAllTransforms } from './helpers/insertStyleRule'
 import { TamaguiInternalConfig } from './types'
 
 // serves a central store for state
@@ -11,6 +10,10 @@ class TamaguiManager {
 
   get allSelectors() {
     return getAllSelectors()
+  }
+
+  get allTransforms() {
+    return getAllTransforms()
   }
 
   get identifierToValue() {
@@ -28,12 +31,4 @@ export const getValueFromIdentifier = (identifier: string) => {
 
 export const setIdentifierValue = (identifier: string, value: any) => {
   identifierToValue.set(identifier, value)
-}
-
-onConfiguredOnce((conf) => {
-  Tamagui.config = conf
-})
-
-if (!globalThis['Tamagui']) {
-  globalThis['Tamagui'] = Tamagui
 }

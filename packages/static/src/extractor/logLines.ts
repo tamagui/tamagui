@@ -2,8 +2,7 @@ const prefix = '           '
 
 export const logLines = (str: string, singleLine = false) => {
   if (singleLine) {
-    const before = `\n${prefix}`
-    return before + str.split(' ').join(before)
+    return prefix + str.split(' ').join(`\n${prefix}`)
   }
   let lines: string[] = ['']
   const items = str.split(' ')

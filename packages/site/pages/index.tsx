@@ -1,6 +1,6 @@
-import { Community } from '@components/Community'
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useMemo } from 'react'
 import { Image, Separator, XStack, YStack } from 'tamagui'

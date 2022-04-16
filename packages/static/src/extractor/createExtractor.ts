@@ -1205,9 +1205,11 @@ export function createExtractor() {
                 !shouldFlatten &&
                 // de-opt transform styles so it merges properly if not flattened
                 // we handle this later on
-                (stylePropsTransform[key] ||
-                  // de-opt if non-style
-                  (!validStyles[key] && !pseudos[key] && !key.startsWith('data-')))
+                // (stylePropsTransform[key] ||
+                // de-opt if non-style
+                !validStyles[key] &&
+                !pseudos[key] &&
+                !key.startsWith('data-')
 
               if (shouldKeepOriginalAttr) {
                 if (shouldPrintDebug) {
@@ -1251,7 +1253,7 @@ export function createExtractor() {
           }
 
           // post process
-          const getStyles = (props: Object | null) => {
+          const getStyles = (props: Object | null, debugName = '') => {
             if (!props) return
             if (!Object.keys(props).length) return
             if (excludeProps && !!excludeProps.size) {
@@ -1261,18 +1263,31 @@ export function createExtractor() {
                 }
               }
             }
-            const out = getSplitStyles(props, staticConfig, defaultTheme, {
-              noClassNames: true,
-            })
+            const out = getSplitStyles(
+              props,
+              staticConfig,
+              defaultTheme,
+              {
+                noClassNames: true,
+              }
+              //   , {
+              //   noClassNames: process.env.TAMAGUI_TARGET !== 'web',
+              // }
+            )
             const outStyle = {
               ...out.style,
               ...out.pseudos,
             }
-            if (shouldPrintDebug) {
-              console.log('  -- getStyles (props):\n', logLines(objToStr(props)))
-              console.log('  -- getStyles (out.viewProps):\n', logLines(objToStr(out.viewProps)))
+            if (shouldPrintDebug === 'verbose') {
+              // // prettier-ignore
+              console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
+              // // prettier-ignore
+              console.log(
+                `       getStyles ${debugName} (out.viewProps):\n`,
+                logLines(objToStr(out.viewProps))
+              )
               // prettier-ignore
-              console.log('  -- getStyles (out.style):\n', logLines(objToStr(outStyle || {}), true))
+              console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
             }
             for (const key in outStyle) {
               if (staticConfig.validStyles) {
@@ -1285,10 +1300,13 @@ export function createExtractor() {
           }
 
           // used to ensure we pass the entire prop bundle to getStyles
-          const completeStylesProcessed = getStyles({
-            ...staticConfig.defaultProps,
-            ...completeStaticProps,
-          })
+          const completeStylesProcessed = getStyles(
+            {
+              ...staticConfig.defaultProps,
+              ...completeStaticProps,
+            },
+            'completeStylesProcessed'
+          )
 
           if (!completeStylesProcessed) {
             throw new Error(`Impossible, no styles`)
@@ -1329,8 +1347,8 @@ export function createExtractor() {
               if (shouldPrintDebug) console.log('  *', attrStr(attr))
               switch (attr.type) {
                 case 'ternary':
-                  const a = getStyles(attr.value.alternate)
-                  const c = getStyles(attr.value.consequent)
+                  const a = getStyles(attr.value.alternate, 'ternary.alternate')
+                  const c = getStyles(attr.value.consequent, 'ternary.consequent')
                   if (a) attr.value.alternate = a
                   if (c) attr.value.consequent = c
                   if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
@@ -1338,7 +1356,7 @@ export function createExtractor() {
                 case 'style':
                   // expand variants and such
                   // get the keys we need
-                  const styles = getStyles(attr.value)
+                  const styles = getStyles(attr.value, 'style')
                   if (styles) {
                     // but actually resolve them to the full object
                     // TODO media/psuedo merging

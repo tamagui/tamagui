@@ -16,7 +16,7 @@ export declare function extractToClassNames({ loader, extractor, source, sourceP
     source: string | Buffer;
     sourcePath: string;
     options: TamaguiOptions;
-    shouldPrintDebug: boolean;
+    shouldPrintDebug: boolean | 'verbose';
     cssPath: string;
     threaded?: boolean;
 }): ExtractedResponse | null;
