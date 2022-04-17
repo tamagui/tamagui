@@ -1,6 +1,6 @@
 import CSS from 'csstype';
 import React from 'react';
-import { GestureResponderEvent, Image, ImageProps, TextProps as ReactTextProps, Text, TextInput, TextInputProps, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import { GestureResponderEvent, Image, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
@@ -277,7 +277,7 @@ export declare type StaticConfig = {
     isTamagui?: boolean;
 };
 export declare type StylableComponent = StaticComponent | React.Component | React.ForwardRefExoticComponent<any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
-export declare type GetProps<A extends StylableComponent> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Omit<Props, keyof StackProps> & StackProps : A extends new (props: infer Props) => any ? Omit<Props, keyof StackProps> & StackProps : A extends typeof View ? ViewProps : A extends typeof Text ? TextProps : A extends typeof TextInput ? Partial<TextInputProps> & TextProps : A extends typeof Image ? Partial<ImageProps> & StackProps : {};
+export declare type GetProps<A extends StylableComponent> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Omit<Props, keyof StackProps> & StackProps : A extends new (props: infer Props) => any ? Omit<Props, keyof StackProps> & StackProps : {};
 export declare type VariantDefinitions<MyProps> = {
     [propName: string]: {
         [Key in '...fontSize']?: FontSizeVariantSpreadFunction<MyProps>;
@@ -294,9 +294,7 @@ export declare type VariantDefinitions<MyProps> = {
     } | {
         [Key in '...theme']?: ThemeVariantSpreadFunction<MyProps>;
     } | {
-        [Key in string]: MyProps;
-    } | {
-        [Key in number]: MyProps;
+        [Key in string]: MyProps | VariantSpreadFunction<MyProps, any>;
     };
 };
 export declare type GetVariantProps<Variants extends Object> = {

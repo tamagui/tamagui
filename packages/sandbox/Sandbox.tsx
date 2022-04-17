@@ -1,6 +1,18 @@
 // debug-verbose
-import React, { useState } from 'react'
-import { Theme, XStack, YStack, styled } from 'tamagui'
+import { ChevronLeft, ChevronRight, Lock } from '@tamagui/feather-icons'
+import React, { memo, useRef, useState } from 'react'
+import {
+  Button,
+  Circle,
+  H2,
+  Image,
+  Paragraph,
+  Spacer,
+  Theme,
+  XStack,
+  YStack,
+  YStackProps,
+} from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -26,40 +38,8 @@ export const Sandbox = () => {
 }
 
 export const Test = (props) => {
-  return (
-    <>
-      <XStack ai="center" jc="center" space="$2">
-        <Card
-          width="33.33%"
-          $sm={{ width: 'auto' }}
-          space="$2"
-          tag="a"
-          href="https://twitter.com/tamagui_js"
-          target="_blank"
-          rel="noopener noreferrer"
-          p="$4"
-        >
-          hello
-        </Card>
-      </XStack>
-    </>
-  )
+  return <></>
 }
-
-export const Card = styled(YStack, {
-  name: 'Card',
-  debug: true,
-  className: 'transition all ease-in ms100',
-  borderRadius: '$2',
-  backgroundColor: '$background',
-  flexShrink: 1,
-  elevation: '$2',
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    elevation: '$4',
-    y: -4,
-  },
-})
 
 //<YStack
 //  bc={getBarColor(result.name)}

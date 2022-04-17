@@ -1,5 +1,5 @@
-import { GetProps, GetVariantProps, MediaProps, PseudoProps, StackProps, StaticComponent, StaticConfig, StylableComponent, VariantDefinitions } from './types';
-export declare function styled<ParentComponent extends StylableComponent = StaticComponent<StackProps>, Variants extends VariantDefinitions<any> | symbol = VariantDefinitions<any> | symbol>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
+import { GetProps, GetVariantProps, MediaProps, PseudoProps, StaticComponent, StaticConfig, StylableComponent, VariantDefinitions } from './types';
+export declare function styled<ParentComponent extends StylableComponent, Variants extends VariantDefinitions<any> | symbol = VariantDefinitions<GetProps<ParentComponent>> | symbol>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
     name?: string;
     variants?: Variants | undefined;
     defaultVariants?: Variants extends Object ? GetVariantProps<Variants> : never;

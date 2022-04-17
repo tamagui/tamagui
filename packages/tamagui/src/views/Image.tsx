@@ -6,10 +6,10 @@ React['createElement']
 
 const StyledImage = styled(
   RNImage,
-  // @ts-ignore TODO we need to make GetProps only use StackStylePropsBase and then later build that up better in styled()
   {
     name: 'Image',
     position: 'relative',
+    source: { uri: '' },
   },
   {
     inlineProps: new Set(['src', 'width', 'height']),

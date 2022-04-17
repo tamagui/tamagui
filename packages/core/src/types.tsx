@@ -570,14 +570,6 @@ export type GetProps<A extends StylableComponent> = A extends StaticComponent<in
   ? Omit<Props, keyof StackProps> & StackProps
   : A extends new (props: infer Props) => any
   ? Omit<Props, keyof StackProps> & StackProps
-  : A extends typeof View
-  ? ViewProps
-  : A extends typeof Text
-  ? TextProps
-  : A extends typeof TextInput
-  ? Partial<TextInputProps> & TextProps
-  : A extends typeof Image
-  ? Partial<ImageProps> & StackProps
   : {}
 
 export type VariantDefinitions<MyProps> = {
@@ -604,10 +596,7 @@ export type VariantDefinitions<MyProps> = {
         [Key in '...theme']?: ThemeVariantSpreadFunction<MyProps>
       }
     | {
-        [Key in string]: MyProps
-      }
-    | {
-        [Key in number]: MyProps
+        [Key in string]: MyProps | VariantSpreadFunction<MyProps, any>
       }
 }
 
