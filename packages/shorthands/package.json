@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.0.0-alpha.68",
+  "version": "1.0.0-beta.172+0f3fd8dc",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -17,9 +17,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.64"
+    "@tamagui/build": "^1.0.0-beta.172+0f3fd8dc"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "0f3fd8dc83eede20419fb180704eb9ad1d63e814"
 }

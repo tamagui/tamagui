@@ -29,7 +29,7 @@
     "test": "turbo run test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish": "lerna publish",
-    "publish:canary": "lerna publish --canary",
+    "publish:canary": "lerna publish --canary --preid beta --force-publish",
     "site": "yarn workspace @tamagui/site dev",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "yarn workspace @tamagui/site next:build && yarn workspace @tamagui/site next:start",

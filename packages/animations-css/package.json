@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-css",
-  "version": "1.0.0-alpha.67",
+  "version": "1.0.0-beta.172+0f3fd8dc",
   "source": "src/index.ts",
   "license": "MIT",
   "typings": "types",
@@ -12,10 +12,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/core": "^1.0.0-alpha.67"
+    "@tamagui/core": "^1.0.0-beta.172+0f3fd8dc"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-alpha.64"
+    "@tamagui/build": "^1.0.0-beta.172+0f3fd8dc"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -25,5 +25,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "0f3fd8dc83eede20419fb180704eb9ad1d63e814"
 }
