@@ -40,7 +40,7 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card br="$6" elevation="$6" shadowRadius={60} shadowColor="rgba(0,0,0,0.35)">
+    <Card br="$6" elevation="$6" shadowRadius={60}>
       <YStack jc="center" p="$6" space="$4" maw="calc(min(90vw, 400px))">
         <Paragraph ta="left" size="$8" fow="400">
           Typed fonts,

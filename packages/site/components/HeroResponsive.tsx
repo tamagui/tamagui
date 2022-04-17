@@ -118,7 +118,7 @@ export const HeroResponsive = memo(() => {
       <ContainerLarge pos="relative">
         <Header />
         <Spacer size="$8" />
-        <YStack h={browserHeight + 50} />
+        <YStack h={browserHeight + 40} />
         <XStack b={-20} pos="absolute" zi={1} f={1} space>
           <YStack
             className="unselectable"
@@ -226,12 +226,12 @@ const Header = memo(() => {
 
       <YStack f={1} space="$2">
         <HomeH2 als="flex-start">Responsive, done right</HomeH2>
-        <Paragraph maxWidth={500} size="$5" theme="alt2">
+        <Paragraph maxWidth={450} size="$5" theme="alt2">
           Sharing responsive designs between web and native saves time, but hooks are verbose and
           expensive to run.
         </Paragraph>
 
-        <Paragraph maxWidth={500} size="$5" theme="alt2">
+        <Paragraph maxWidth={450} size="$5" theme="alt2">
           Tamagui styles and hooks compile away to efficient CSS media queries, or hoist to
           StyleSheet.create on native.
         </Paragraph>

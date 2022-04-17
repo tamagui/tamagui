@@ -1,15 +1,16 @@
 - beta:
   - 0% fix on native + simple native demo (maybe with starters repo)
-  - 95% compiler 100% on site
   - 50% animation enterStyle/exitStyle + docs
   - 75% animation css
   - 75% animation test hover/press styles + add to animations docs
   - 0% compiler theme (+ work with visually hidden)
   - 0% onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
   - 80% animations docs
+  - 0% bug type regression variants styled() style props
   - 0% bug image ssr / site weirdness on some
   - 0% bug // TODO i think media + pseudo needs handling here
   - 0% bug // @ts-ignore TODO we need to make GetProps only use
+  - checkout old 1.0.0.mdx docs, rename current ones to beta
 
 - whenever switch over to styleq or own internal css generator:
   - remove getStylesAtomic altogether - loop only once over props/styles

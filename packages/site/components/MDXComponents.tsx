@@ -72,11 +72,11 @@ export const components = {
     return (
       <Paragraph
         tag="span"
-        size="$6"
+        size="$5"
         className="paragraph"
         display="block"
-        mt="$2"
-        mb="$2"
+        mt="$1"
+        mb="$1"
         {...props}
       >
         {children}
@@ -190,11 +190,14 @@ export const components = {
 
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
-  li: (props) => (
-    <LI>
-      <Paragraph {...props} />
-    </LI>
-  ),
+  li: (props) => {
+    console.log('props.children', props.children)
+    return (
+      <LI>
+        <Paragraph>{props.children}</Paragraph>
+      </LI>
+    )
+  },
 
   strong: (props) => <Text {...props} fontWeight="700" />,
 
@@ -240,8 +243,7 @@ export const components = {
   Image: ({ children, size, ...props }) => (
     <YStack tag="figure" f={1} mx={0} mb="$3">
       <OffsetBox size={size}>
-        {/* @ts-ignore */}
-        <Image maxWidth="100%" {...props} />
+        <Image maxWidth="100%" width={100} height={100} src="" {...props} />
       </OffsetBox>
       <Text tag="figcaption" lineHeight={23} color="$colorPress" mt="$2">
         {children}
@@ -417,7 +419,9 @@ export function MDXProvider(props) {
 }
 
 function unwrapText(children: any) {
+  // console.log('React.Children.toArray(children)', React.Children.toArray(children))
   return React.Children.toArray(children).map((x) => {
+    // console.log('x', x.type)
     // @ts-ignore
     return x?.props?.children ? x.props.children : x
   })

@@ -46,10 +46,12 @@ a {
   span a
 ) {
   text-decoration: underline;
-  text-decoration-style: dotted;
-  color: var(--color);
+  background-color: var(--backgroundPress);
+  color: var(--colorHover);
   text-decoration-color: var(--borderColorHover);
-  text-underline-offset: 5px;
+  padding: 2px;
+  border-radius: 4px;
+  text-underline-offset: 3px;
 }
 
 :is(
@@ -58,8 +60,9 @@ a {
   span a
 ):hover {
   text-decoration-style: solid;
-  color: var(--colorHover);
-  text-decoration-color: var(--borderColorHover);
+  background-color: var(--backgroundFocus);
+  color: var(--colorPress);
+  text-decoration-color: var(--borderColorPress);
 }
 
 
