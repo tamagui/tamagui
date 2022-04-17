@@ -33,7 +33,7 @@ export function Hero() {
   const { tint } = useTint()
 
   return (
-    <YStack pos="relative" borderBottomWidth={1} borderColor="$borderColor">
+    <YStack pos="relative">
       <Theme name={tint}>
         <YStack fullscreen zi={0} className="hero-gradient-2" opacity={1} />
         <HeroTop />
@@ -76,8 +76,7 @@ const HeroTop = memo(() => {
         fullscreen
         left={-1000}
         right={-1000}
-        // top={302}
-        opacity={0.3}
+        opacity={0.4}
       />
 
       <Header />

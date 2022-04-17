@@ -1,28 +1,34 @@
 ---
 title: Tamagui enters beta
 publishedAt: '2022-04-23'
-description: Introducting a new theme system, animations, and much more.
+description: Animations, a new theme system, starter apps, and much more.
 by: nate
 ---
+
+<IntroParagraph>Tamagui is now in beta 🎉</IntroParagraph>
+
+<IntroParagraph>
+  What is Tamagui? It's a suite of libraries for making cross platform app interfaces with React and
+  React Native, the main parts being **three things**:
+</IntroParagraph>
+
+<IntroParagraph>
+  <UL>
+    <LI>A style library for creating React Native + Web components.</LI>
+    <LI>An optimizing compiler on top, for big performance gains.</LI>
+    <LI>
+      A suite of <span className="rainbow clip-text">universal</span> components.
+    </LI>
+  </UL>
+</IntroParagraph>
 
 <Image
   title="Layout tools image"
   src="/blog/introducing-tamagui/hero.png"
   size="hero"
-  height={200}
+  height={150}
+  width={900}
 />
-
-<IntroParagraph>Tamagui enters beta 🎉!</IntroParagraph>
-
-<IntroParagraph>What is Tamagui? Well, it's **three things**:</IntroParagraph>
-
-<IntroParagraph>
-  <UL>
-    <LI>A style library for design systems on React Native + Web.</LI>
-    <LI>An optimizing compiler on top, for huge performance and DX gains.</LI>
-    <LI>A suite of components built on both.</LI>
-  </UL>
-</IntroParagraph>
 
 Since the first alpha it's been six months, several hundred of bugfixes, three demo apps, and several huge new features. Plus, a totally [refreshed site](/), and a [benchmark suite](/docs/intro/benchmarks).
 
@@ -83,15 +89,24 @@ I'm really happy with how this landed. The focus could have been on components, 
 
 In general, UI kits are hard because they are like balancing stones; each layer has a huge influence on the next. The interfaces are especially hard, and once they're locked in they're harder to change.
 
-<XStack mt="$4" mb="$6" height={260} w="80%" maxWidth={500} px="$5" als="center">
+<XStack
+  mt="$4"
+  mb="$6"
+  height={200}
+  maxWidth={500}
+  ov="hidden"
+  ai="center"
+  jc="center"
+  px="$5"
+  als="center"
+>
   <Image
     title="Layout tools image"
     src="/blog/tamagui-enters-beta-themes-and-animations/balancing-stones.jpg"
-    height={260}
+    width={520 * 0.5}
+    height={402 * 0.5}
   />
 </XStack>
-
-> How it feels building a UI kit
 
 This release lays much better foundational stones in themes and animations.
 
