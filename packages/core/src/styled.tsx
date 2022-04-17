@@ -16,6 +16,7 @@ import {
   StylableComponent,
   VariantDefinitions,
 } from './types'
+import { Stack } from './views/Stack'
 
 // bye bye tree shaking... but only way to properly detect react-native components...
 // also neither rnw nor react support tree shaking atm
@@ -29,10 +30,15 @@ for (const key in ReactNative) {
 }
 
 export function styled<
-  ParentComponent extends StylableComponent = StaticComponent<StackProps>,
-  Variants extends VariantDefinitions<any> | symbol = VariantDefinitions<any> | symbol
+  ParentComponent extends StylableComponent,
+  // = VariantDefinitions<GetProps<ParentComponent>> gives type inference to variants: { true: { ... } }
+  // but causes "Type instantiation is excessively deep and possibly infinite."...
+  Variants extends VariantDefinitions<any> | symbol =
+    | VariantDefinitions<GetProps<ParentComponent>>
+    | symbol
 >(
   Component: ParentComponent,
+  // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
   options?: GetProps<ParentComponent> & {
     name?: string
     variants?: Variants | undefined
@@ -58,6 +64,8 @@ export function styled<
           Component: Comp,
         }),
         isTamagui,
+        // this type gets messed up by options?: Partial<GetProps<ParentComponent>> above
+        // take away the Partial<> and it's fine
         variants,
         defaultProps,
         componentName: name,
