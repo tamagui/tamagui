@@ -18,8 +18,9 @@ export function HeroPerformance() {
         <YStack ai="center" space="$2">
           <HomeH2>Effortless performance</HomeH2>
           <HomeH3 maw={580}>
-            Write natural, typed inline styles as normal React props. Get&nbsp;back clean, fast
-            atomic CSS.
+            Use typed inline props for styling.
+            <br />
+            Get&nbsp;back clean, fast atomic CSS.
           </HomeH3>
         </YStack>
 
