@@ -47,7 +47,6 @@
     "react-native": "0.0.0",
     "typescript": "4.6.3",
     "next": "12.1.0",
-    "mdx-bundler": "patch:mdx-bundler@npm:8.0.1#.yarn/patches/mdx-bundler.diff",
     "webpack": "5.72.0",
     "prettier": "2.5.1",
     "react": "18.0.0-beta-f320ef88f-20211116",

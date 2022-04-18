@@ -366,7 +366,7 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       name: 'cssStyleSeparator',
       required: false,
       type: 'string',
-      default: '"\n" when NODE_ENV=development, "" otherwise',
+      default: `"\n" when NODE_ENV=development, "" otherwise`,
       description: `What's between each generated CSS style rule.`,
     },
     {
@@ -374,7 +374,7 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       required: false,
       type: 'number',
       default: 3,
-      description: `(Advanced) On the web, tamagui treats `dark` and `light` themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maxiumum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
+      description: `(Advanced) On the web, tamagui treats "dark" and "light" themes as special and generates extra CSS to avoid having to re-render the entire page. This CSS relies on specificity hacks that multiply by your sub-themes. This prop sets the maxiumum number of nested dark/light themes you can do. Defaults to 3 for a balance, but can be higher if you nest them deeply.`,
     },
   ]}
 />

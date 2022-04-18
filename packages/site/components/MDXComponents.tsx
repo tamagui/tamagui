@@ -191,7 +191,6 @@ export const components = {
   ol: (props) => <YStack {...props} tag="ol" mb="$3" />,
 
   li: (props) => {
-    console.log('props.children', props.children)
     return (
       <LI>
         <Paragraph>{props.children}</Paragraph>
