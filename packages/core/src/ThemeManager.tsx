@@ -65,7 +65,6 @@ export class ThemeManager {
         return theme[key]
       }
       manager = this.parentManager
-      console.log('go to parent', this.name, manager?.name)
       if (!manager) {
         return
       }
@@ -73,7 +72,6 @@ export class ThemeManager {
         return
       }
       theme = manager.theme
-      console.log('getting parent')
     }
   }
 

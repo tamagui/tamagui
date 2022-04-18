@@ -124,9 +124,6 @@ export const getSplitStyles = (
     if (isWeb && !state.noClassNames) {
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
-        if (atomicStyle.property === 'transform' && classNames.transform) {
-          console.log('TODO figure out merging transforms..........')
-        }
         if (!state.noClassNames) {
           mergeClassName(atomicStyle.property, atomicStyle.identifier)
           insertStyleRule(atomicStyle.identifier, atomicStyle.rules[0])
@@ -218,7 +215,9 @@ export const getSplitStyles = (
         pseudos[key] = getSubStyle(val, staticConfig, theme, props, state.resolveVariablesAs, true)
         if (!state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
-          if (props['debug']) console.log('gogo', key, val, state.noClassNames, pseudoStyles)
+          if (pseudoStyles[0]?.identifier?.includes('undefined')) {
+            console.warn('undefined bug?', pseudoStyles[0]?.identifier)
+          }
           for (const style of pseudoStyles) {
             mergeClassName(`${style.property}-${key}`, style.identifier)
             insertStyleRule(style.identifier, style.rules[0])

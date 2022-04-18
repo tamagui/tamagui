@@ -30,7 +30,7 @@
     "hast-util-to-html": "^7.1.2",
     "hast-util-to-string": "^1.0.4",
     "lodash.throttle": "^4.1.1",
-    "mdx-bundler": "^8.0.1",
+    "mdx-bundler": "^9.0.0",
     "mdx-prism": "^0.3.4",
     "next": "^12.1.4",
     "parse-numeric-range": "^1.2.0",

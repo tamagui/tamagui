@@ -1,5 +1,5 @@
 - beta:
-  - compiler is inserting default props, maybe not necessary
+  - compiler is inserting default props check effects
   - 0% fix on native + simple native demo (maybe with starters repo)
   - 50% animation enterStyle/exitStyle + docs
   - 75% animation css
