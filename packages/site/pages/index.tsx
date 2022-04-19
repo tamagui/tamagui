@@ -25,7 +25,7 @@ export default function Home() {
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating isHome />
       <Hero />
-      <Separator borderStyle="dotted" borderColor="$backgroundHover" />
+      <Separator borderStyle="dotted" />
       <XStack zi={100} theme="alt1" mt={-28} ai="center" jc="center">
         <SearchButton color="$color" width={350} size="$6">
           Search Docs...

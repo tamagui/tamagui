@@ -24,7 +24,7 @@ export function HeroExampleCode() {
           <Glow contain="strict" bc="$pink10" />
         </YStack> */}
 
-        <YStack zi={1} space="$6">
+        <YStack zi={1} space="$4">
           <YStack space="$2">
             <HomeH2 className="">
               <span className="rainbow clip-text">DX</span>, meet{' '}
@@ -42,6 +42,8 @@ export function HeroExampleCode() {
                     theme={i === activeIndex ? 'active' : null}
                     key={i}
                     borderRadius="$0"
+                    size="$3"
+                    fontFamily="$silkscreen"
                     // fontWeight={i === activeIndex ? '700' : '400'}
                   >
                     {example.name}

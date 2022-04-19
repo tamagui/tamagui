@@ -48,17 +48,19 @@ export function HeroExampleAnimations() {
 
         <XStack als="center" space="$1">
           <Link href="/docs/core/animations#css" passHref>
-            <Button theme={tint} tag="a">
+            <Button fontFamily="$silkscreen" theme={tint} tag="a">
               CSS &raquo;
             </Button>
           </Link>
           <Link href="/docs/core/animations#reanimated" passHref>
-            <Button theme={tint} tag="a">
+            <Button fontFamily="$silkscreen" theme={tint} tag="a">
               Reanimated &raquo;
             </Button>
           </Link>
           <Link href="/docs/core/animations" passHref>
-            <Button tag="a">Docs &raquo;</Button>
+            <Button fontFamily="$silkscreen" tag="a">
+              Docs &raquo;
+            </Button>
           </Link>
         </XStack>
       </ContainerLarge>

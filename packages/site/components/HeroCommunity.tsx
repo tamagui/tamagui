@@ -49,7 +49,7 @@ export function Community() {
                 </clipPath>
               </defs>
             </svg>
-            <H4 cursor="pointer" fontFamily="$body">
+            <H4 cursor="pointer" fontFamily="$silkscreen">
               Twitter
             </H4>
             <Paragraph cursor="pointer" theme="alt2">
@@ -67,7 +67,7 @@ export function Community() {
             p="$4"
           >
             <DiscordIcon />
-            <H4 cursor="pointer" fontFamily="$body">
+            <H4 cursor="pointer" fontFamily="$silkscreen">
               Discord
             </H4>
             <Paragraph cursor="pointer" theme="alt2">
@@ -85,7 +85,7 @@ export function Community() {
             p="$4"
           >
             <GithubIcon />
-            <H4 cursor="pointer" fontFamily="$body">
+            <H4 cursor="pointer" fontFamily="$silkscreen">
               GitHub
             </H4>
             <Paragraph cursor="pointer" theme="alt2">

@@ -3,6 +3,7 @@ import { createTokens } from '@tamagui/core'
 import { allLightColors, darkColorsPostfixed } from './colors'
 import { firaFont } from './firaFont'
 import { interFont } from './interFont'
+import { silkscreenFont } from './silkscreenFont'
 
 const size = {
   true: 20, // for space boolean true
@@ -39,6 +40,7 @@ export const tokens = createTokens({
     title: interFont,
     body: interFont,
     mono: firaFont,
+    silkscreen: silkscreenFont,
   },
   zIndex: {
     0: 0,

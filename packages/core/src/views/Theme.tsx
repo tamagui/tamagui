@@ -23,35 +23,29 @@ export const Theme = memo(function Theme(props: ThemeProps) {
     props
   )
 
-  // memo here, changing theme without re-rendering all children is a critical optimization
-  // may require some effort of end user to memoize but without this memo they'd have no option
-  const contents = useMemo(() => {
-    if (!name || !theme) {
-      return props.children
-    }
-    return wrapThemeManagerContext(props.children, themeManager)
-  }, [props.children, themeManager])
-
-  if (!themes) {
-    console.warn('Error, no themes in context', props)
-    return props.children
-  }
-
-  if (!name || !theme) {
-    if (process.env.NODE_ENV === 'development' && name && !theme) {
+  if (!themes || !name || !theme) {
+    if (name && !theme && process.env.NODE_ENV === 'development') {
       console.warn(`No theme found by name ${name}`)
     }
     return props.children
   }
 
+  // memo here, changing theme without re-rendering all children is a critical optimization
+  // may require some effort of end user to memoize but without this memo they'd have no option
+  const contents = useMemo(
+    () => wrapThemeManagerContext(props.children, themeManager),
+    [props.children, themeManager]
+  )
+
   if (isWeb) {
-    if (props.disableThemeClass) {
-      return contents
-    }
     return (
       <div
         className={
-          props.className ? `${className || ''} ${props.className || ''}` : className || ''
+          props.disableThemeClass
+            ? ''
+            : props.className
+            ? `${className || ''} ${props.className || ''}`
+            : className || ''
         }
         style={{
           display: 'contents',

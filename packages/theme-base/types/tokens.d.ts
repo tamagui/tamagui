@@ -11,23 +11,13 @@ export declare const tokens: {
                 7: import("@tamagui/core").Variable;
             };
             lineHeight: {
-                1: import("@tamagui/core").Variable;
-                2: import("@tamagui/core").Variable;
-                3: import("@tamagui/core").Variable;
-                4: import("@tamagui/core").Variable;
-                5: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
+                [x: string]: import("@tamagui/core").Variable;
             };
             letterSpacing: {
                 4: import("@tamagui/core").Variable;
             };
             weight: {
                 4: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
-            } | {
-                4: import("@tamagui/core").Variable;
-                7: import("@tamagui/core").Variable;
-                8: import("@tamagui/core").Variable;
             };
             family: string;
         };
@@ -42,23 +32,13 @@ export declare const tokens: {
                 7: import("@tamagui/core").Variable;
             };
             lineHeight: {
-                1: import("@tamagui/core").Variable;
-                2: import("@tamagui/core").Variable;
-                3: import("@tamagui/core").Variable;
-                4: import("@tamagui/core").Variable;
-                5: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
+                [x: string]: import("@tamagui/core").Variable;
             };
             letterSpacing: {
                 4: import("@tamagui/core").Variable;
             };
             weight: {
                 4: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
-            } | {
-                4: import("@tamagui/core").Variable;
-                7: import("@tamagui/core").Variable;
-                8: import("@tamagui/core").Variable;
             };
             family: string;
         };
@@ -73,23 +53,34 @@ export declare const tokens: {
                 7: import("@tamagui/core").Variable;
             };
             lineHeight: {
-                1: import("@tamagui/core").Variable;
-                2: import("@tamagui/core").Variable;
-                3: import("@tamagui/core").Variable;
-                4: import("@tamagui/core").Variable;
-                5: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
+                [x: string]: import("@tamagui/core").Variable;
             };
             letterSpacing: {
                 4: import("@tamagui/core").Variable;
             };
             weight: {
                 4: import("@tamagui/core").Variable;
-                6: import("@tamagui/core").Variable;
-            } | {
+            };
+            family: string;
+        };
+        silkscreen: {
+            size: {
+                1: import("@tamagui/core").Variable;
+                2: import("@tamagui/core").Variable;
+                3: import("@tamagui/core").Variable;
                 4: import("@tamagui/core").Variable;
+                5: import("@tamagui/core").Variable;
+                6: import("@tamagui/core").Variable;
                 7: import("@tamagui/core").Variable;
-                8: import("@tamagui/core").Variable;
+            };
+            lineHeight: {
+                [x: string]: import("@tamagui/core").Variable;
+            };
+            letterSpacing: {
+                4: import("@tamagui/core").Variable;
+            };
+            weight: {
+                4: import("@tamagui/core").Variable;
             };
             family: string;
         };

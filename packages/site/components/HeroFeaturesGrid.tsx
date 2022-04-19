@@ -20,7 +20,7 @@ export function FeaturesGrid() {
         <YStack>
           <Grid gap={25} itemMinWidth={250}>
             <YStack space p="$4">
-              <H4 ta="center" fontFamily="$body">
+              <H4 fontFamily="$silkscreen" ta="center">
                 Fully typed
               </H4>
               <Paragraph theme="alt2">
@@ -30,7 +30,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space p="$4">
-              <H4 ta="center" fontFamily="$body">
+              <H4 fontFamily="$silkscreen" ta="center">
                 Fast, all ways
               </H4>
               <Paragraph theme="alt2">
@@ -40,7 +40,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space p="$4">
-              <H4 ta="center" fontFamily="$body">
+              <H4 fontFamily="$silkscreen" ta="center">
                 SSR
               </H4>
               <Paragraph theme="alt2">
@@ -50,7 +50,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space p="$4">
-              <H4 ta="center" fontFamily="$body">
+              <H4 fontFamily="$silkscreen" ta="center">
                 Built-in dev tools
               </H4>
               <Paragraph theme="alt2">
@@ -60,7 +60,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space p="$4">
-              <H4 ta="center" fontFamily="$body">
+              <H4 fontFamily="$silkscreen" ta="center">
                 Accessible
               </H4>
               <Paragraph theme="alt2">
@@ -70,7 +70,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space p="$4">
-              <H4 ta="center" fontFamily="$body">
+              <H4 fontFamily="$silkscreen" ta="center">
                 Compatible
               </H4>
               <Paragraph theme="alt2">

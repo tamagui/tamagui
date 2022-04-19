@@ -69,7 +69,7 @@ const OverlayCard = () => {
         </Paragraph>
 
         <Link href="/docs/intro/configuration" passHref>
-          <Button tag="a" als="flex-end" theme={tint}>
+          <Button fontFamily="$silkscreen" tag="a" als="flex-end" theme={tint}>
             Learn more &raquo;
           </Button>
         </Link>

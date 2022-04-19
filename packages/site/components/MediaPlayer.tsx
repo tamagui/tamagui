@@ -67,6 +67,7 @@ export const MediaPlayer = memo(
 
           <Theme name={barTheme}>
             <XStack
+              zi={1000}
               w="100%"
               px="$8"
               py="$2"

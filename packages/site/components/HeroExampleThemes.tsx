@@ -326,7 +326,7 @@ const Bottom = memo(() => {
         </Paragraph>
         <XStack>
           <Link href="/docs/intro/themes" passHref>
-            <Button theme={tint} tag="a">
+            <Button theme={tint} tag="a" fontFamily="$silkscreen">
               How themes work &raquo;
             </Button>
           </Link>
