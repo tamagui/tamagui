@@ -9,7 +9,6 @@
   - 0% bug image ssr / site weirdness on some
   - 0% bug // TODO i think media + pseudo needs handling here
   - compiler is inserting default props check effects
-  - checkout old 1.0.0.mdx docs, rename current ones to beta
   - figure out good react version (17) to ship with / test on site
 
 - 1:
@@ -146,3 +145,4 @@ animation popup 
   - that way HMR still works, but loads less hooks
   - works in production for extra perf
 - compiler hot reload (shouldn't be too hard for basic case)
+- upgrade expo/match-media (there was some problem before)
