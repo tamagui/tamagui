@@ -8,10 +8,19 @@ import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/lo
 import { shouldExclude } from 'tamagui-loader'
 import webpack from 'webpack'
 
-export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
+export type WithTamaguiProps = TamaguiOptions & {
+  shouldIncludeModuleServer?: (props: {
+    context: string
+    request: string
+    fullPath: string
+  }) => boolean | string | undefined
+}
+
+export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
-    return Object.assign({}, nextConfig, {
-      webpack: (webpackConfig: any, options) => {
+    return {
+      ...nextConfig,
+      webpack: (webpackConfig: any, options: any) => {
         const { dir, config, dev, isServer } = options
 
         // @ts-ignore
@@ -21,6 +30,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         }
 
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
+        const isWebpack5 = !!(config.future?.webpack5 || config.webpack5)
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         const jsxRuntime = require.resolve('react/jsx-runtime')
@@ -109,32 +119,44 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
         // look for compiled js with jsx intact as specified by module:jsx
         webpackConfig.resolve.mainFields.unshift('module:jsx')
 
-        const isWebpack5 = !!config.future?.webpack5 || typeof config.webpack5 === 'undefined'
-
-        const includeModule = (context: string, request: string) => {
-          const fullPath = request[0] === '.' ? path.join(context, request) : request
-          if (fullPath === '@tamagui/expo-linear-gradient') {
-            return 'inline'
-          }
-          if (/^\@?react-native-/.test(request)) {
-            return false
-          }
-          if (fullPath === '@gorhom/bottom-sheet') {
-            return 'inline'
-          }
-          if (
-            fullPath.startsWith('react-native-web') ||
-            fullPath.includes('node_modules/react-native-web')
-          ) {
-            return `commonjs ${fullPath}`
-          }
-          if (/^(react-dom|react)$/.test(fullPath)) {
-            return `commonjs ${fullPath}`
-          }
-          return true
-        }
-
         if (isServer) {
+          const includeModule = (context: string, request: string) => {
+            const fullPath = request[0] === '.' ? path.join(context, request) : request
+
+            const userRes = tamaguiOptions.shouldIncludeModuleServer?.({
+              context,
+              request,
+              fullPath,
+            })
+
+            if (userRes !== undefined) {
+              return userRes
+            }
+
+            if (
+              fullPath.startsWith('react-native-web') ||
+              fullPath.includes('node_modules/react-native-web') ||
+              /^(react-dom|react)$/.test(fullPath)
+            ) {
+              return `commonjs ${fullPath}`
+            }
+            if (
+              fullPath.includes('/moti/') ||
+              fullPath.includes('/solito/') ||
+              fullPath === 'tamagui' ||
+              fullPath.startsWith('@tamagui/') ||
+              fullPath === 'react-native-safe-area-context' ||
+              fullPath.startsWith('@react-navigation') ||
+              fullPath === '@gorhom/bottom-sheet'
+            ) {
+              return 'inline'
+            }
+            if (/^\@?react-native-/.test(request)) {
+              return false
+            }
+            return true
+          }
+
           // externalize react native things from bundle
           webpackConfig.externals = [
             ...webpackConfig.externals.map((external) => {
@@ -143,18 +165,18 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
               }
               // only runs on server
               if (isWebpack5) {
-                return (ctx, cb) => {
-                  const res = includeModule(ctx.context, ctx.request)
+                return async (opts: { context: string; request: string }) => {
+                  const { request, context } = opts
+                  const res = includeModule(context, request)
                   if (res === 'inline') {
-                    return cb()
+                    return
                   }
                   if (typeof res === 'string') {
-                    return cb(null, res)
+                    return res
                   }
                   if (res) {
-                    return external(ctx, cb)
+                    return await external(opts)
                   }
-                  return cb()
                 }
               }
               return (ctx, req, cb) => {
@@ -291,7 +313,7 @@ export const withTamagui = (tamaguiOptions: TamaguiOptions) => {
 
         return webpackConfig
       },
-    })
+    }
   }
 }
 
