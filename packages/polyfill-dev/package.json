@@ -1,9 +1,9 @@
 {
   "name": "@tamagui/polyfill-dev",
-  "version": "1.0.0-beta.172+0f3fd8dc",
+  "version": "1.0.0-beta.179+a2bba1a8",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "0f3fd8dc83eede20419fb180704eb9ad1d63e814"
+  "gitHead": "a2bba1a86895896d70f8d1b91a5faf94adf776e4"
 }
