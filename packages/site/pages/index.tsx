@@ -3,7 +3,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useMemo } from 'react'
-import { Image, Separator, XStack, YStack } from 'tamagui'
+import { Separator, XStack, YStack } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
@@ -17,16 +17,9 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
-import { MediaPlayer } from '../components/MediaPlayer'
 import { SearchButton } from '../components/Search'
-import { ThemeTint } from '../components/ThemeTint'
 
 export default function Home() {
-  // return <HeroExampleThemes />
-  // return <Hero />
-  // return <HeroPerformance />
-  // return <MediaPlayer />
-
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
@@ -65,15 +58,18 @@ export default function Home() {
         <HeroExampleAnimations />
       </SectionTinted>
       <Section>
-        <HeroTypography />
-      </Section>
-      <SectionTinted gradient>
-        <HeroExampleProps />
-      </SectionTinted>
-      <Section>
         <FeaturesGrid />
       </Section>
-      <Community />
+      <SectionTinted gradient>
+        <HeroTypography />
+      </SectionTinted>
+      <Section>
+        <HeroExampleProps />
+      </Section>
+      <Separator />
+      <Section>
+        <Community />
+      </Section>
     </>
   )
 }

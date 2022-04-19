@@ -36,7 +36,7 @@ export const Footer = () => {
               <TamaguiLogo showWords />
             </ParagraphLink>
             <Paragraph size="$2" theme="alt2">
-              by {/* @ts-ignore */}
+              by
               <ParagraphLink
                 fontSize="inherit"
                 href="https://twitter.com/natebirdman"

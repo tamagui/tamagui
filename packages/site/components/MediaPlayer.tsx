@@ -49,7 +49,7 @@ export const MediaPlayer = memo(
         >
           <XStack ai="center" p="$3" space="$5">
             <Square pos="relative" ov="hidden" br="$6" size="$11">
-              <Image width={150} height={150} src={image.src} />
+              <Image width={90} height={90} src={image.src} />
             </Square>
 
             <YStack mt={-10} jc="center">

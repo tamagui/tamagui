@@ -10,7 +10,7 @@ import { useTint } from './ColorToggleButton'
 export function HeroPerformance() {
   return (
     <ContainerLarge position="relative">
-      <YStack pos="absolute" o={0.1} top={-1000} left={0} right={0} ai="center">
+      <YStack pos="absolute" o={0.1} top={-1000} left={0} right={0} x={500} ai="center">
         <CocentricCircles />
       </YStack>
 
