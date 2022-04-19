@@ -30,7 +30,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
-        const isWebpack5 = true
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
 
         const safeResolves = (
@@ -149,7 +148,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             if (
               fullPath.startsWith('react-native-web') ||
               fullPath.includes('node_modules/react-native-web') ||
-              /^(react-dom|react)$/.test(fullPath)
+              /^(react-dom|react)\/$/.test(fullPath)
             ) {
               return `commonjs ${fullPath}`
             }
@@ -162,7 +161,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               fullPath.startsWith('@react-navigation') ||
               fullPath === '@gorhom/bottom-sheet'
             ) {
-              return 'inline'
+              return
             }
             if (/^\@?react-native-/.test(request)) {
               return false
@@ -178,17 +177,22 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
               // only runs on server
               return (ctx, cb) => {
+                const isCb = typeof cb === 'function'
                 const res = includeModule(ctx.context, ctx.request)
-                if (res === 'inline') {
+                if (isCb) {
+                  if (typeof res === 'string') {
+                    return cb(null, res)
+                  }
+                  if (res) {
+                    return external(ctx, cb)
+                  }
                   return cb()
                 }
-                if (typeof res === 'string') {
-                  return cb(null, res)
-                }
-                if (res) {
-                  return external(ctx, cb)
-                }
-                return cb()
+                return !res
+                  ? Promise.resolve(undefined)
+                  : typeof res === 'string'
+                  ? Promise.resolve(res)
+                  : external(ctx)
               }
             }),
           ]
