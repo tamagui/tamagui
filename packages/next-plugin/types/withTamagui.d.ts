@@ -1,4 +1,4 @@
-import { TamaguiOptions } from '@tamagui/static';
+import type { TamaguiOptions } from '@tamagui/static';
 export declare type WithTamaguiProps = TamaguiOptions & {
     shouldIncludeModuleServer?: (props: {
         context: string;

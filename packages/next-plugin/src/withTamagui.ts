@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
@@ -31,34 +31,47 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
         const isWebpack5 = true
-
-        // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
-        const jsxRuntime = require.resolve('react/jsx-runtime')
-        const jsxDevRuntime = require.resolve('react/jsx-dev-runtime')
-        const rnw = require.resolve('react-native-web')
-        const reanimated = require.resolve('react-native-reanimated')
-        const proxyWorm = require.resolve('@dish/proxy-worm')
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
 
-        webpackConfig.resolve.alias = {
+        const safeResolves = (
+          ...resolves: ([string, string] | [string, string, [string, string]])[]
+        ) => {
+          let res: string[][] = []
+          for (const [out, mod, replace] of resolves) {
+            try {
+              const next = [out, require.resolve(mod)]
+              if (replace) {
+                next[1] = next[1].replace(...replace)
+              }
+              res.push(next)
+            } catch (err) {
+              console.log(prefix, `withTamagui skipping resolving ${out}`)
+            }
+          }
+          return Object.fromEntries(res)
+        }
+
+        const alias = {
           ...(webpackConfig.resolve.alias || {}),
-          'react/jsx-runtime.js': jsxRuntime,
-          'react/jsx-runtime': jsxRuntime,
-          'react/jsx-dev-runtime.js': jsxDevRuntime,
-          'react/jsx-dev-runtime': jsxDevRuntime,
-          // 'react-dom/client': require.resolve('react-dom/client'),
-          'react-native$': rnw,
-          'react-native-reanimated': reanimated,
-          'react-native-web$': rnw,
-          '@testing-library/react-native': proxyWorm,
-          '@gorhom/bottom-sheet$': require
-            .resolve('@gorhom/bottom-sheet')
-            .replace('commonjs', 'module'),
+          ...safeResolves(
+            // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
+            ['react/jsx-runtime.js', 'react/jsx-runtime'],
+            ['react/jsx-runtime', 'react/jsx-runtime'],
+            ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
+            ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
+            ['react-native$', 'react-native-web'],
+            ['react-native-reanimated', 'react-native-reanimated'],
+            ['react-native-web$', 'react-native-web'],
+            ['@testing-library/react-native', '@dish/proxy-worm'],
+            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']]
+          ),
           // expo fix https://github.com/expo/expo/issues/9999
           'react-native-web/src': require.resolve('react-native-web/dist'),
           react: require.resolve('react'),
           'react-dom': require.resolve('react-dom'),
         }
+
+        webpackConfig.resolve.alias = alias
 
         webpackConfig.plugins.push(
           new webpack.DefinePlugin({
@@ -164,7 +177,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 return external
               }
               // only runs on server
-              console.log('isWebpack5', isWebpack5)
               return (ctx, cb) => {
                 const res = includeModule(ctx.context, ctx.request)
                 if (res === 'inline') {
