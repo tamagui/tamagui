@@ -26,8 +26,8 @@ export const TamaguiLogo = ({
 export const LogoWords = ({ color, downscale = 1 }: { color?: string; downscale?: number }) => {
   return (
     <svg
-      width={373 * downscale * 0.333333334}
-      height={41 * downscale * 0.333333334}
+      width={373 * (1 / downscale) * 0.333333334}
+      height={41 * (1 / downscale) * 0.333333334}
       viewBox="0 0 373 41"
     >
       <polygon

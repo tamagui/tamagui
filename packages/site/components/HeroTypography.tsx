@@ -10,7 +10,7 @@ export const HeroTypography = () => {
     <>
       <YStack fullscreen className="bg-grid mask-gradient-both" o={0.25} />
       {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
-      <ContainerLarge h={650} $sm={{ h: 520 }} position="relative" space="$8">
+      <ContainerLarge position="relative" space="$8">
         <YStack ai="center" space="$2">
           <HomeH2>
             <span className="rainbow clip-text">Typography</span> (easier)
@@ -18,8 +18,19 @@ export const HeroTypography = () => {
           <HomeH3>Plug-and-play fonts, individually tuned.</HomeH3>
         </YStack>
 
-        <XStack ai="center" jc="center" pos="relative" space="$8">
-          <YStack ai="flex-end" scale={1.4} zi={-1} x={-40}>
+        <XStack
+          ai="center"
+          jc="center"
+          pos="relative"
+          space="$8"
+          flexDirection="row-reverse"
+          $sm={{
+            flexDirection: 'row',
+          }}
+        >
+          <OverlayCard />
+
+          <YStack ai="flex-end" scale={1.2} zi={-1} x={-40}>
             <H1 theme="blue_alt2">Hot-swappable</H1>
             <H2 theme="purple_alt2">individually-styled</H2>
             <H3 theme="pink_alt2">typed and optimized</H3>
@@ -27,8 +38,6 @@ export const HeroTypography = () => {
             <H5 theme="orange_alt2">easy to author</H5>
             <H6 theme="yellow_alt2">font themes</H6>
           </YStack>
-
-          <OverlayCard />
         </XStack>
       </ContainerLarge>
     </>
@@ -40,7 +49,7 @@ const OverlayCard = () => {
 
   // {/* TODO elevation not overriding? */}
   return (
-    <Card br="$6" elevation="$6" shadowRadius={60}>
+    <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
       <YStack jc="center" p="$6" space="$4" maw="calc(min(90vw, 400px))">
         <Paragraph ta="left" size="$8" fow="400">
           Typed fonts,
