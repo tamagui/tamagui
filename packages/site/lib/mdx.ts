@@ -43,7 +43,7 @@ export const getMdxBySlug = async (basePath, slug) => {
   const source = fs.readFileSync(path.join(DATA_PATH, basePath, `${mdxPath}.mdx`), 'utf8')
   const { frontmatter, code } = await bundleMDX({
     source,
-    xdmOptions(options) {
+    mdxOptions(options) {
       // @ts-ignore
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkSlug, remarkHeroTemplate]
       options.rehypePlugins = [

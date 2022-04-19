@@ -1,14 +1,17 @@
 import '@docsearch/css'
-import '@tamagui/theme-base/inter.css'
 import '@tamagui/theme-base/fira-code.css'
+import '@tamagui/theme-base/inter.css'
 
 import '../app.css'
 
 import { DocsPage } from '@components/DocsPage'
 import { Footer } from '@components/Footer'
 import * as NextThemes from '@components/NextTheme'
+import { gtagUrl, renderSnippet } from '@lib/analytics'
 import { AppProps } from 'next/app'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 import React, { useMemo, useState } from 'react'
 import { PopoverProvider, SafeAreaProvider, YStack } from 'tamagui'
 
@@ -55,21 +58,28 @@ export default function App(props: AppProps) {
 
   // cant do system them because next SSR
   return (
-    <NextThemes.ThemeProvider
-      enableSystem
-      disableTransitionOnChange
-      attribute="class"
-      defaultTheme="system"
-      value={{
-        dark: 'tui_dark',
-        light: 'tui_light',
-      }}
-      onChangeTheme={(x) => setTheme(x.replace('tui_', ''))}
-    >
-      <Tamagui.Provider disableRootThemeClass defaultTheme={theme}>
-        {contents}
-      </Tamagui.Provider>
-    </NextThemes.ThemeProvider>
+    <>
+      <Head>
+        {/* TODO bye google */}
+        <Script async src={gtagUrl} />
+        <Script dangerouslySetInnerHTML={{ __html: renderSnippet() || '' }} />
+      </Head>
+      <NextThemes.ThemeProvider
+        enableSystem
+        disableTransitionOnChange
+        attribute="class"
+        defaultTheme="system"
+        value={{
+          dark: 'tui_dark',
+          light: 'tui_light',
+        }}
+        onChangeTheme={(x) => setTheme(x.replace('tui_', ''))}
+      >
+        <Tamagui.Provider disableRootThemeClass defaultTheme={theme}>
+          {contents}
+        </Tamagui.Provider>
+      </NextThemes.ThemeProvider>
+    </>
   )
 }
 

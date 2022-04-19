@@ -10,21 +10,20 @@ import {
   MediaProps,
   PseudoProps,
   PsuedoPropKeys,
-  StackProps,
   StaticComponent,
   StaticConfig,
   StylableComponent,
   VariantDefinitions,
 } from './types'
-import { Stack } from './views/Stack'
 
 // bye bye tree shaking... but only way to properly detect react-native components...
 // also neither rnw nor react support tree shaking atm
-// this takes about 0.1ms in node console so not bad
 const RNComponents = new WeakMap()
-for (const key in ReactNative) {
+// I was looping over all of them, but casuses deprecation warnings and there's only a few
+// we realistically support - lets whitelist rather than blacklist
+for (const key of ['Image', 'TextInput', 'Text', 'View']) {
   const val = ReactNative[key]
-  if (typeof val === 'object') {
+  if (val && typeof val === 'object') {
     RNComponents.set(val, true)
   }
 }

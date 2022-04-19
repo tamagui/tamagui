@@ -1,4 +1,4 @@
-export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, `$${string}` | "true" | keyof import("@tamagui/core").PseudoProps<any>> & {
+export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "true"> & {
     visible?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<{
     visible?: boolean | undefined;

@@ -5,11 +5,9 @@ import React from 'react'
 import {
   GestureResponderEvent,
   Image,
-  ImageProps,
   TextProps as ReactTextProps,
   Text,
   TextInput,
-  TextInputProps,
   TextStyle,
   View,
   ViewProps,
@@ -20,6 +18,10 @@ import { Variable } from './createVariable'
 import { ResolveVariableTypes } from './helpers/createPropMapper'
 import { RNWTextProps, RNWViewProps } from './types-rnw'
 import { ThemeProviderProps } from './views/ThemeProvider'
+
+export type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<
+  Props & React.RefAttributes<Ref>
+>
 
 export type ConfigListener = (conf: TamaguiInternalConfig) => void
 

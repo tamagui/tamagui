@@ -1,6 +1,4 @@
-import { gtagUrl, renderSnippet } from '@lib/analytics'
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
-import Script from 'next/script'
 import { Children } from 'react'
 
 import Tamagui from '../tamagui.config'
@@ -15,10 +13,7 @@ export default class Document extends NextDocument {
   render() {
     return (
       <Html>
-        <Head>
-          <Script async src={gtagUrl} />
-          <Script dangerouslySetInnerHTML={{ __html: renderSnippet() || '' }} />
-        </Head>
+        <Head></Head>
         <body>
           <Main />
           <NextScript />

@@ -116,7 +116,7 @@ const { withTamagui } = require('@tamagui/next-plugin')
 
 export default withPlugins([
   withTamagui({
-    // your tamagui config
+    // all props are optional except config:
     config: './tamagui.config.ts',
     // your design system (npm module name)
     components: ['tamagui'],
@@ -130,13 +130,24 @@ export default withPlugins([
     // disableExtraction only disables optimizations but keeps the debug ability and output
     // if you want faster builds, you can disable tamagui entirely with this:
     disable: false,
-    // optionally exclude some react-native-web imports to lighten bundle
+    // exclude react-native-web modules to lighten bundle
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker'],
+    // many packages give difficulty to the nextjs server-side (node) runtime when un-bundled.
+    // for example, tamagui configures aliases like `react-native` => `react-native-web`.
+    // if you're running into a module that has errors importing react-native, you'll want to
+    // use a custom shouldIncludeModuleServer function to include it (or override the default).
+    // this is the exact same return type as webpack.externals.
+    // returning undefined will let tamagui handle it, boolean or other values to override.
+    shouldIncludeModuleServer: ({ fullPath }) => {
+      if (fullPath.includes('my-module')) {
+        return `commonjs ${commonjs}`
+      }
+    }
   })
 ])
 ```
 
-Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS` to "true" fixes some issues with Tamagui being resolved incorrectly.
+Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS` to "true" can fix issues with Tamagui being resolved incorrectly.
 
 #### React Native
 

@@ -1,5 +1,5 @@
-import { GetProps, StaticComponent, ThemeableProps } from '@tamagui/core';
-import React, { FunctionComponent } from 'react';
+import { GetProps, ReactComponentWithRef, StaticComponent, ThemeableProps } from '@tamagui/core';
+import { FunctionComponent } from 'react';
 import { View } from 'react-native';
 import { SizableTextProps } from './SizableText';
 declare type ButtonIconProps = {
@@ -189,7 +189,7 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     space?: import("@tamagui/core").SpaceTokens | undefined;
 } & {
     children?: any;
-}>>, `$${string}` | "true" | keyof import("@tamagui/core").PseudoProps<any>> & {
+}>>, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "true"> & {
     active?: boolean | undefined;
     circular?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<{
@@ -538,7 +538,7 @@ declare const ButtonFrame: StaticComponent<Omit<Omit<Omit<import("@tamagui/core"
     active?: boolean | undefined;
     circular?: boolean | undefined;
 }, any, import("@tamagui/core").StaticConfigParsed>;
-export declare const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>>;
+export declare const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View>;
 export declare const getSpaceSize: (size: any, sizeUpOrDownBy?: number) => import("@tamagui/core").Variable;
 export {};
 //# sourceMappingURL=Button.d.ts.map
