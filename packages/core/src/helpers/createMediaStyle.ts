@@ -4,7 +4,6 @@ import { mediaObjectToString } from '../hooks/useMedia'
 import { MediaQueries } from '../types'
 
 // TODO have this be used by extractMediaStyle in tamagui static
-
 // not synced to static/constants for now
 export const MEDIA_SEP = '_'
 
@@ -13,13 +12,14 @@ export const createMediaStyle = (
   mediaKey: string,
   mediaQueries: MediaQueries,
   negate?: boolean,
-  importance = 0
+  importance?: number
 ) => {
   const mediaKeys = Object.keys(mediaQueries)
-  const mediaKeyPrecendence = mediaKeys.reduce((acc, cur, i) => {
-    acc[cur] = new Array(importance + 1).fill(':root').join('')
-    return acc
-  }, {})
+  const importance_ = Math.max(
+    0,
+    importance == undefined ? mediaKeys.indexOf(mediaKey) : importance || 0
+  )
+  const precendencePrefix = new Array(importance_ + 1).fill(':root').join('')
   const negKey = negate ? '0' : ''
   const ogPrefix = identifier.slice(0, identifier.indexOf('-') + 1)
   const nextIdentifier = `${identifier.replace(
@@ -29,7 +29,6 @@ export const createMediaStyle = (
   const screenStr = negate ? 'not all' : 'screen'
   const mediaSelector = mediaObjectToString(mediaQueries[mediaKey])
   const mediaQuery = `${screenStr} and ${mediaSelector}`
-  const precendencePrefix = mediaKeyPrecendence[mediaKey]
   const styleInner = rules[0].replace(identifier, nextIdentifier)
   // combines media queries if they already exist
   let styleRule = ''

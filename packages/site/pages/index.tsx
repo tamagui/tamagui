@@ -34,7 +34,7 @@ export default function Home() {
       <YStack py="$7" pb="$11">
         <HeroBelow />
       </YStack>
-      <Separator borderStyle="dotted" borderColor="$backgroundHover" />
+      <Separator borderStyle="dotted" />
       <ContainerLarge zi={100}>
         <XStack mt={-28} mb="$-4" jc="center" ai="center">
           <InstallInput />

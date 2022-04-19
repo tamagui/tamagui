@@ -23,38 +23,10 @@ export const removeMediaQueryListener = (key: string, cb: any) => {
   mediaQueryListeners[key]?.delete(cb)
 }
 
-let conf: MediaQueries | null = null
-
-export const mediaQueryConfig = new Proxy<MediaQueries>({} as any, {
-  get(target, key) {
-    if (key === '$$typeof') {
-      return Reflect.get(target, key)
-    }
-    if (!conf) {
-      console.warn('Tamagui: accessing media query before init')
-      return null
-    }
-    return Reflect.get(conf, key)
-  },
-  ownKeys() {
-    if (!conf) {
-      console.warn('Tamagui: accessing media query before init')
-      return []
-    }
-    return Object.keys(conf)
-  },
-  getOwnPropertyDescriptor() {
-    return {
-      enumerable: true,
-      configurable: true,
-    }
-  },
-})
+let hasConfigured = false
+export const mediaQueryConfig: MediaQueries = {}
 
 export const getMedia = () => {
-  if (!conf) {
-    throw new Error(`not configured yet`)
-  }
   return mediaState
 }
 
@@ -62,14 +34,15 @@ export const configureMedia = ({
   queries,
   defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions = {}) => {
-  if (conf) {
+  if (hasConfigured) {
     console.warn(
       `Already configured mediaQueries once (you may have called getMedia() before configureMedia())`
     )
   }
 
   if (queries) {
-    conf = queries
+    Object.assign(mediaQueryConfig, queries)
+    hasConfigured = true
   }
 
   // setup

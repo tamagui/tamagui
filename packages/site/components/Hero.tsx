@@ -85,7 +85,7 @@ const HeroTop = memo(() => {
         position="relative"
         pt="$8"
         $sm={{
-          maxWidth: 550,
+          maxWidth: 500,
           mx: 'auto',
         }}
       >
@@ -122,25 +122,27 @@ const HeroTop = memo(() => {
             }}
           >
             <Paragraph
-              color="$color"
-              opacity={0.5}
+              debug
+              color="$gray10"
+              // opacity={0.5}
               size="$5"
               letterSpacing={0}
               fontFamily="$silkscreen"
               $gtSm={{
                 ta: 'center',
                 size: '$6',
-                maxWidth: 800,
+                maxWidth: 500,
                 letterSpacing: 0,
                 fontWeight: '400',
               }}
               $gtMd={{
                 size: '$8',
+                maxWidth: 900,
                 fontWeight: '400',
               }}
             >
-              Write&nbsp;once,&nbsp;run&nbsp;everywhere with an optimizing compiler for 🔼 perf with
-              🔽 code.
+              Write&nbsp;once,&nbsp;run&nbsp;everywhere thanks to an optimizing compiler. 🔼 perf
+              with 🔽 code.
             </Paragraph>
           </YStack>
         </YStack>
