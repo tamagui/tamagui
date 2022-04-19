@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.0-beta.179+a2bba1a8",
+  "version": "1.0.0-beta.187+b4ae9217",
   "main": "index.js",
   "types": "types",
   "scripts": {
@@ -13,7 +13,7 @@
     ]
   },
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-beta.179+a2bba1a8"
+    "@tamagui/helpers": "^1.0.0-beta.187+b4ae9217"
   },
   "devDependencies": {
     "@types/node": "^16.11.9",
@@ -32,5 +32,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a2bba1a86895896d70f8d1b91a5faf94adf776e4"
+  "gitHead": "b4ae92179a688f73380c8f41296ecfc881b1cbc0"
 }
