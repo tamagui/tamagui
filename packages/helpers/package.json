@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers",
-  "version": "1.0.0-beta.187+b4ae9217",
+  "version": "1.0.0-beta.189+64107267",
   "source": "src/index.ts",
   "types": "types",
   "main": "dist/cjs",
@@ -17,7 +17,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.187+b4ae9217",
+    "@tamagui/build": "^1.0.0-beta.189+64107267",
     "react-native": "*"
   },
   "peerDependencies": {
@@ -26,5 +26,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b4ae92179a688f73380c8f41296ecfc881b1cbc0"
+  "gitHead": "6410726774260b4de48c270c81a17b168995a3b7"
 }
