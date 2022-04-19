@@ -126,29 +126,35 @@ const HeroTop = memo(() => {
               opacity={0.5}
               size="$5"
               letterSpacing={0}
+              fontFamily="$silkscreen"
               $gtSm={{
                 ta: 'center',
                 size: '$6',
-                maxWidth: 600,
+                maxWidth: 800,
                 letterSpacing: 0,
                 fontWeight: '400',
               }}
               $gtMd={{
                 size: '$8',
-                maxWidth: 700,
                 fontWeight: '400',
               }}
             >
-              An optimizing compiler for 🔼 performance with 🔽 code.
-              Write&nbsp;once,&nbsp;run&nbsp;everywhere, easy.
+              Write&nbsp;once,&nbsp;run&nbsp;everywhere with an optimizing compiler for 🔼 perf with
+              🔽 code.
             </Paragraph>
           </YStack>
         </YStack>
 
         <XStack ai="center" jc="center" space="$2">
           <NextLink href="/docs/intro/introduction" passHref>
-            <Button borderRadius={1000} iconAfter={ArrowRight} tag="a" fontWeight="800">
-              Documentation
+            <Button
+              fontFamily="$silkscreen"
+              borderRadius={1000}
+              iconAfter={ArrowRight}
+              tag="a"
+              fontWeight="800"
+            >
+              Docs
             </Button>
           </NextLink>
 

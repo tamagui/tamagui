@@ -65,7 +65,7 @@ const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/benchmarks" passHref>
-      <Button theme={tint} tag="a">
+      <Button fontFamily="$silkscreen" theme={tint} tag="a">
         Benchmarks &raquo;
       </Button>
     </Link>
