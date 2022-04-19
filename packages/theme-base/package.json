@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-base",
-  "version": "1.0.0-beta.179+a2bba1a8",
+  "version": "1.0.0-beta.187+b4ae9217",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,12 +16,12 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.179+a2bba1a8",
-    "@tamagui/colors": "^1.0.0-beta.179+a2bba1a8",
-    "@tamagui/core": "^1.0.0-beta.179+a2bba1a8"
+    "@tamagui/build": "^1.0.0-beta.187+b4ae9217",
+    "@tamagui/colors": "^1.0.0-beta.187+b4ae9217",
+    "@tamagui/core": "^1.0.0-beta.187+b4ae9217"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a2bba1a86895896d70f8d1b91a5faf94adf776e4"
+  "gitHead": "b4ae92179a688f73380c8f41296ecfc881b1cbc0"
 }
