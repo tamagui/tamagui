@@ -30,7 +30,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         }
 
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
-        const isWebpack5 = !!(config.future?.webpack5 || config.webpack5)
+        const isWebpack5 = true
 
         // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
         const jsxRuntime = require.resolve('react/jsx-runtime')
@@ -164,23 +164,12 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 return external
               }
               // only runs on server
-              if (isWebpack5) {
-                return async (opts: { context: string; request: string }) => {
-                  const { request, context } = opts
-                  const res = includeModule(context, request)
-                  if (res === 'inline') {
-                    return
-                  }
-                  if (typeof res === 'string') {
-                    return res
-                  }
-                  if (res) {
-                    return await external(opts)
-                  }
+              console.log('isWebpack5', isWebpack5)
+              return (ctx, cb) => {
+                const res = includeModule(ctx.context, ctx.request)
+                if (res === 'inline') {
+                  return cb()
                 }
-              }
-              return (ctx, req, cb) => {
-                const res = includeModule(ctx, req)
                 if (typeof res === 'string') {
                   return cb(null, res)
                 }

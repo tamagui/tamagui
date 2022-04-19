@@ -151,6 +151,10 @@ There's tons of room to grow and improve. We're looking at using [Floating UI](h
 
 [Join our Discord to voice which ones you'd like to see](https://discord.gg/4qh6tdcVDa).
 
+## Upgraded Components
+
+[LinearGradient](/docs/components/linear-gradient), [Image](/docs/components/image), and [Button](/docs/components/button) have received lots of love. LinearGradient now fully supports all theme values and the compiler will help it extract any style properties. Image should still be considered beta, but has gone through many rounds of bugfixes and improvements. And Button now handles passing more text properties down, themes and sizes icons more reliably, and has many fixes for variants like `circular`.
+
 ## Focus styling
 
 We landed experimental support for the `focusStyle` prop, which works much like `pressStyle` and `hoverStyle`.
@@ -159,20 +163,17 @@ We landed experimental support for the `focusStyle` prop, which works much like 
 
 Sometimes you want to have your theme reset to the one above it. ThemeReset does just this. Note: it's not SSR compatible if you're doing automatic light/dark themes - it will still work, but there may be a flash on first load. There's a fix for this that is a bit involved,so we think it's still useful to release as experimental until we land that.
 
-## Renaming space to gap
-
-As we're moving from alpha to beta, we're going to take this chance to make breaking changes. To better align with the flexbox spec, `space` has been renamed to `gap`.
-
 ## A pre-made base theme
 
 Use the themes from the Tamagui site itself without any setup at all, simply install `@tamagui/theme-base` and add `themes` and `tokens` to `createTamagui()` in your `tamagui.config.ts`.
 
+Likewise, `@tamagui/shorthands` is new an gives you a nice set of shorthands to use out of the box.
+
 ## And much more...
 
-- 🐛 Hundreds of bug-fixes.
-- ✨ Six new pages added to docs, and every docs page has been improved.
-- ✨ Smarter styled() function - now automatically detects Text/View components and properly handles their styling/types. It also detects Inputs and a wider range of react-native components for automatic styling.
-- ✨ `@tamagui/shorthands` - use our default shorthands
+- 🐛 [Hundreds of bug-fixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.1).
+- ✨ Many docs improvements: new pages, more examples, more props documented, and search.
+- ✨ Smarter styled() function - now automatically detects Text/View and other React Native Web components and properly handles their styling/types.
 
 ## Acknowledgements
 
@@ -180,6 +181,6 @@ This release once again is inspired by or forks code from a variety of other lib
 
 I'd like to thank:
 
-- [Fenando Rojo](https://twitter.com/fernandotherojo) and [Moti](https://moti.fyi) for the elegant reanimated animation driver that served as the starting point of `@tamagui/animations-reanimated`.
+- [Fenando Rojo](https://twitter.com/fernandotherojo) and [Moti](https://moti.fyi) for the elegant reanimated animation driver that served as the starting point of `@tamagui/animations-reanimated`, as well as for putting together [Solito](https://solito.dev) that powers the first template in create-tamagui-app.
 - [Matt Perry](https://twitter.com/mattgperry) and [Framer Motion](https://github.com/framer/motion) for the base of AnimatePresence in `@tamagui/animate-presence`.
 - [Tailwind](https://tailwindcss.com) for the inspiration of using a nice resizable browser to demo responsive design.
