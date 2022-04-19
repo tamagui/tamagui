@@ -213,7 +213,7 @@ export const getSplitStyles = (
         }
         pseudos[key] = pseudos[key] || {}
         pseudos[key] = getSubStyle(val, staticConfig, theme, props, state.resolveVariablesAs, true)
-        if (!state.noClassNames) {
+        if (isWeb && !state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           if (pseudoStyles[0]?.identifier?.includes('undefined')) {
             console.warn('undefined bug?', pseudoStyles[0]?.identifier)

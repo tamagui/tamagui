@@ -1,6 +1,5 @@
 - beta:
-  - compiler is inserting default props check effects
-  - 0% fix on native + simple native demo (maybe with starters repo)
+  - 30% fix on native + simple native demo (maybe with starters repo)
   - 50% animation enterStyle/exitStyle + docs
   - 75% animation css
   - 75% animation test hover/press styles + add to animations docs
@@ -9,7 +8,9 @@
   - 80% animations docs
   - 0% bug image ssr / site weirdness on some
   - 0% bug // TODO i think media + pseudo needs handling here
+  - compiler is inserting default props check effects
   - checkout old 1.0.0.mdx docs, rename current ones to beta
+  - figure out good react version (17) to ship with / test on site
 
 - 1:
   - auto skeleton components

@@ -111,7 +111,7 @@ if (shouldClean || shouldCleanBuildOnly) {
                       outdir: 'dist/cjs',
                       bundle: false,
                       sourcemap: true,
-                      target: 'node16',
+                      target: 'node14',
                       keepNames: true,
                       format: 'cjs',
                       color: true,

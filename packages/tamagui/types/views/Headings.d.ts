@@ -1,4 +1,4 @@
-export declare const Title: import("@tamagui/core").StaticComponent<(Omit<import("@tamagui/core").TextProps, `$${string}` | "...fontSize" | "...size" | keyof import("@tamagui/core").PseudoProps<any>> & {
+export declare const Heading: import("@tamagui/core").StaticComponent<(Omit<import("@tamagui/core").TextProps, `$${string}` | "...fontSize" | "...size" | keyof import("@tamagui/core").PseudoProps<any>> & {
     size?: number | `$${string}` | `$${number}` | undefined;
 } & import("@tamagui/core").MediaProps<{
     size?: number | `$${string}` | `$${number}` | undefined;

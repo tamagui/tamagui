@@ -11,12 +11,11 @@ import NextLink from 'next/link'
 import { memo } from 'react'
 import {
   Button,
-  Image,
+  Heading,
   Paragraph,
   Spacer,
   Text,
   Theme,
-  Title,
   Tooltip,
   VisuallyHidden,
   XStack,
@@ -91,7 +90,7 @@ const HeroTop = memo(() => {
         }}
       >
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
-          <Title
+          <Heading
             size="$9"
             $gtSm={{
               size: '$11',
@@ -109,7 +108,7 @@ const HeroTop = memo(() => {
               </span>
             </Tooltip>{' '}
             design systems for React&nbsp;Native&nbsp;&&nbsp;Web, faster
-          </Title>
+          </Heading>
 
           <YStack
             px={0}

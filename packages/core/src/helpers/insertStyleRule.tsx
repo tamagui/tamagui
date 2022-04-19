@@ -31,14 +31,15 @@ function addTransform(identifier: string, rule: string) {
 //   3. used now for merging transforms atomically
 let hasInsertedSinceUpdate = true
 export function updateInserted() {
-  if (typeof window === 'undefined') {
+  if (typeof document === 'undefined') {
     return
   }
   if (!hasInsertedSinceUpdate) {
     console.warn('hasnt inserted since')
     return
   }
-  const sheets = window.document.styleSheets
+  const sheets = document.styleSheets
+  if (!sheets) return
   for (let i = 0; i < sheets.length; i++) {
     const rules = sheets[i].cssRules
     const firstRule = rules[0]
@@ -62,7 +63,9 @@ export function updateInserted() {
 updateInserted()
 
 const newRulesStyleTag =
-  typeof window !== 'undefined' ? document.head.appendChild(document.createElement('style')) : null
+  typeof document !== 'undefined'
+    ? document.head.appendChild(document.createElement('style'))
+    : null
 
 export function insertStyleRule(identifier: string, rule: string) {
   if (allSelectors[identifier]) {

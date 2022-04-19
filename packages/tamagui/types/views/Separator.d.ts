@@ -1,4 +1,4 @@
-export declare const Separator: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, `$${string}` | "true" | keyof import("@tamagui/core").PseudoProps<any>> & {
+export declare const Separator: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "true"> & {
     vertical?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<{
     vertical?: boolean | undefined;

@@ -1,6 +1,7 @@
 import {
   ButtonInsideButtonContext,
   GetProps,
+  ReactComponentWithRef,
   StaticComponent,
   ThemeableProps,
   getTokens,
@@ -198,7 +199,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   )
 })
 
-export const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<View>> =
+export const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View> =
   ButtonFrame.extractable(themeable(ButtonComponent as any) as any, {
     inlineProps: new Set([
       // text props go here (can't really optimize them, but we never fully extract button anyway)
