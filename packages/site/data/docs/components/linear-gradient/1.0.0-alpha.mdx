@@ -8,6 +8,8 @@ name: html
 
 <Description>Linear Gradient that works with Tamagui style props.</Description>
 
+<Notice>In beta, currently doesn't resolve theme values for the colors property.</Notice>
+
 <HeroContainer>
   <LinearGradientDemo />
 </HeroContainer>
@@ -19,53 +21,11 @@ name: html
 <Highlights
   features={[
     'Works on native and web.',
-    'Accepts Tamagui style props and theme colors.',
-    'Bundles easily with webpack.',
+    'Bundles nicely with webpack.',
+    'Accepts Tamagui style props.',
   ]}
 />
 
 ## Usage
 
-We've forked [expo-linear-gradient](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) into `@tamagui/expo-linear-gradient` to use a slightly newer and more easy to install version (and made it easier to use with webpack by turning import into require).
-
-To use with native properly you'll want to add `@tamagui/expo-linear-gradient` to your app package.json.
-
-It's wrapped with a YStack so it accepts all Tamagui style props as well as theme colors.
-
-### LinearGradient props
-
-See the [expo docs](https://docs.expo.dev/versions/latest/sdk/linear-gradient/) for more complete information.
-
-LinearGradient extends YStack, inheriting [Stack props](/docs/components/stacks) and therefore the [Tamagui standard props](/docs/intro/props), plus:
-
-<PropsTable
-  data={[
-    {
-      name: 'colors',
-      required: true,
-      type: 'string[]',
-      description: `Two or more colors.`,
-    },
-    {
-      name: 'locations',
-      required: false,
-      type: 'number[] | null',
-      description: `An array that contains numbers ranging from 0 to 1, inclusive, and is the same length as the colors property. Each number indicates a color-stop location where each respective color should be located.`,
-      default: '[0.0, 1.0]',
-    },
-    {
-      name: 'start',
-      required: false,
-      type: 'LinearGradientPoint | null',
-      default: '{ x: 0.5, y: 0.0 }',
-      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will start 10% from the left and 20% from the top.`,
-    },
-    {
-      name: 'end',
-      required: false,
-      type: 'LinearGradientPoint | null',
-      default: '{ x: 0.5, y: 1.0 }',
-      description: `For example, { x: 0.1, y: 0.2 } means that the gradient will end 10% from the left and 20% from the bottom.`,
-    },
-  ]}
-/>
+We've included `<LinearGradient />` so it can accept Tamagui style props, and to patch a bug with the current expo version with some Webpack configurations.

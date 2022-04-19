@@ -1,14 +1,14 @@
 ---
 title: Text
-description: Text primitives with themes custom to each font.
+description: Text, Sized Text and Paragraph show one way to build a design system.
 name: text
 ---
 
 # Text
 
-<Description>Text primitives with themes custom to each font.</Description>
+<Description>Text, Sized Text and Paragraph show one way to build a design system.</Description>
 
-<HeroContainer demoMultiple>
+<HeroContainer>
   <TextDemo />
 </HeroContainer>
 
@@ -18,9 +18,9 @@ name: text
 
 <Highlights
   features={[
-    'Themes that give you control over spacing, weights, and sizes custom to each font.',
-    'Size prop that automatically matches all theme values.',
-    'Media query styles, hoverStyle, pressStyle, focusStyle.',
+    'Supports all react-native-web props and Tamagui styling props.',
+    'Media query styles, hoverStyle, pressStyle.',
+    'Paragraph uses themes and spread variants for a nicer default.',
   ]}
 />
 
@@ -42,7 +42,7 @@ export default () => (
       // or just use direct values
       fontSize={20}
       hoverStyle={{
-        color: '$colorHover',
+        color: '$color2',
       }}
     >
       Lorem ipsum
@@ -53,33 +53,25 @@ export default () => (
 
 ## SizableText
 
-One unique feature to Tamagui that doesn't exist in many UI kits is that your themes define font sizing, spacing, line height, and letter spacing - all - custom for each font. This gives you the necessary control to have beautiful fonts with the right styles without having to resort to ugly hacks.
+[Seeing how SizableText is defined](https://github.com/tamagui/tamagui/blob/master/packages/tamagui/src/views/SizableText.tsx) is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
 
-SizableText does this with the `size` property, which looks into your theme and sets the following, so long as the keys for each value match:
+SizableText simply adds a single `size` property to maniplulate all of:
 
 - fontSize
 - lineHeight
 - fontWeight
 - letterSpacing
 
-It uses [spread variants](/docs/core/styled#spread-variants) to achieve this.
-
-[Seeing how SizableText is defined](https://github.com/tamagui/tamagui/blob/master/packages/tamagui/src/views/SizableText.tsx) is helpful for understanding Tamagui. They serve as a good example of how you can extend and compose components.
+Based on the values set in your tokens. It uses [spread variants](/docs/core/styled#spread-variants) feature. Then Paragraph extends that and ensures it defaults to values from your theme - fontSize, lineHeight, color and fontFamily.
 
 ## Paragraph
 
-Finally Paragraph extends `SizableText` and simply makes the text selectable, which is a property from the Text props that sets `userSelect` to `true` and `cursor` to `text`:
+Finally Paragraph extends `SizableText` and simply sets some default values from your theme:
 
 ```jsx
-
 export const Paragraph = styled(SizableText, {
-  name: 'Paragraph',
-  selectable: true,
+  fontFamily: '$body',
+  color: '$color',
+  size: '$4',
 })
 ```
-
-<Notice>
-  Note: Paragraph renders to a `p` tag on web, which can cause issues when you nest them during SSR.
-  If you don't mind rendring to a span, use `SizableText`, otherwise, be careful when nesting items
-  inside a Paragraph.
-</Notice>
