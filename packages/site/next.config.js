@@ -76,7 +76,9 @@ const transform = withPlugins(
 module.exports = function (name, { defaultConfig }) {
   defaultConfig.webpack5 = true
   defaultConfig.swcMinify = true
-  defaultConfig.experimental.reactRoot = 'concurrent'
+  defaultConfig.wait = true
+  defaultConfig.useSuspense = false
+  // defaultConfig.experimental.reactRoot = 'concurrent'
   defaultConfig.typescript.ignoreBuildErrors = true
   return transform(name, { defaultConfig })
 }

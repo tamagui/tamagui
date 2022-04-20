@@ -13,7 +13,6 @@ export function createTamaguiProvider({
 }) {
   return function TamaguiProvider({
     injectCSS,
-    fallback,
     children,
     ...themePropsProvider
   }: TamaguiProviderProps) {
@@ -34,7 +33,7 @@ export function createTamaguiProvider({
       <ButtonInsideButtonContext.Provider value={false}>
         <TextAncestorProvider>
           <ThemeProvider {...themeProps} {...themePropsProvider}>
-            <React.Suspense fallback={fallback || null}>{children}</React.Suspense>
+            {children}
           </ThemeProvider>
         </TextAncestorProvider>
       </ButtonInsideButtonContext.Provider>

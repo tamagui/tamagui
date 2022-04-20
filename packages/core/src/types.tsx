@@ -430,8 +430,7 @@ type StaticComponentObject = {
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
   injectCSS?: boolean
-  fallback?: any
-  children?: any
+  children?: React.ReactNode
 }
 
 export type StaticConfigParsed = StaticConfig & {
