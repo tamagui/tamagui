@@ -3,7 +3,7 @@
   - 75% animation enterStyle/exitStyle + docs
   - 75% animation css
   - 75% animation test hover/press styles + add to animations docs
-  - 0% compiler theme (+ work with visually hidden)
+  - 80% compiler theme (+ work with visually hidden)
   - 80% animations docs
   - 0% bug // TODO i think media + pseudo needs handling here
   - compiler is inserting default props check effects

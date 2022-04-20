@@ -3,5 +3,5 @@ import { TamaguiProviderProps } from '../types';
 import { ThemeProviderProps } from '../views/ThemeProvider';
 export declare function createTamaguiProvider({ getCSS, ...themeProps }: ThemeProviderProps & {
     getCSS: () => string;
-}): ({ injectCSS, fallback, children, ...themePropsProvider }: TamaguiProviderProps) => JSX.Element;
+}): ({ injectCSS, children, ...themePropsProvider }: TamaguiProviderProps) => JSX.Element;
 //# sourceMappingURL=createTamaguiProvider.d.ts.map

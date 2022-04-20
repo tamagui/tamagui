@@ -137,8 +137,6 @@ export function createComponent<
     const isAnimated = !!(useAnimations && props.animation)
     const hasEnterStyle = !!props.enterStyle
 
-    console.log('state.hover', state.hover)
-
     const styleWithPseudos = props.animation
       ? merge(
           { ...defaultNativeStyle, ...style },
