@@ -86,7 +86,7 @@ export function createComponent<
   let tamaguiConfig: TamaguiInternalConfig
   let AnimatedText: any
   let AnimatedView: any
-  let avoidClasses = false
+  let avoidClasses = true
 
   // web uses className, native uses style
   let defaultPseudos: PseudoStyles = {}
@@ -135,6 +135,9 @@ export function createComponent<
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitInfo
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
+    const hasEnterStyle = !!props.enterStyle
+
+    console.log('state.hover', state.hover)
 
     const styleWithPseudos = props.animation
       ? merge(
@@ -142,6 +145,7 @@ export function createComponent<
           state.hover && pseudos.hoverStyle,
           state.press && pseudos.pressStyle,
           state.focus && pseudos.focusStyle,
+          hasEnterStyle && !state.mounted && pseudos.enterStyle,
           ...Object.values(medias)
         )
       : null
@@ -219,7 +223,6 @@ export function createComponent<
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
     const hostRef = useRef(null)
-    const hasEnterStyle = !!props.enterStyle
 
     // isMounted
     const internal = useRef<{ isMounted: boolean }>()
@@ -358,6 +361,7 @@ export function createComponent<
           }
         }
         viewProps.className = className
+        viewProps.style = animationStyles
       } else {
         viewProps.style = styles
       }
@@ -435,6 +439,8 @@ export function createComponent<
         pressIn: false,
       })
     }, [])
+
+    console.log('attachHover, attachHover', attachHover, pseudos && pseudos.hoverStyle)
 
     const events = shouldAttach
       ? {
@@ -532,27 +538,6 @@ export function createComponent<
           }
     )
 
-    if (events) {
-      if (!isStringElement) {
-        Object.assign(viewProps, pressProps)
-      } else {
-        Object.assign(viewProps, events)
-      }
-      if (isWeb && isHoverable) {
-        childEls = (
-          <span
-            style={{
-              display: 'contents',
-            }}
-            onMouseEnter={events.onMouseEnter}
-            onMouseLeave={events.onMouseLeave}
-          >
-            {children}
-          </span>
-        )
-      }
-    }
-
     let content: any
 
     // replicate react-native-web's `createElement`
@@ -579,7 +564,30 @@ export function createComponent<
       }
     }
 
+    if (events) {
+      if (!isStringElement) {
+        Object.assign(viewProps, pressProps)
+      } else {
+        Object.assign(viewProps, events)
+      }
+    }
+
     content = createElement(ViewComponent, viewProps, childEls)
+
+    console.log('should', attachHover)
+    if (isWeb && events && attachHover) {
+      content = (
+        <span
+          style={{
+            display: 'contents',
+          }}
+          onMouseEnter={events.onMouseEnter}
+          onMouseLeave={events.onMouseLeave}
+        >
+          {content}
+        </span>
+      )
+    }
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {

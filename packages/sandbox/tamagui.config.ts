@@ -2,7 +2,8 @@ import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
 import { createTamagui } from 'tamagui'
 
-import { animations } from './animations.css'
+// import { animations } from './animations.css'
+import { animations } from './animations.reanimated'
 
 // in animations.ts:
 // import { createAnimations } from '@tamagui/css-animations'

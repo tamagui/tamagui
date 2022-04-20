@@ -215,9 +215,6 @@ export const getSplitStyles = (
         pseudos[key] = getSubStyle(val, staticConfig, theme, props, state.resolveVariablesAs, true)
         if (isWeb && !state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
-          if (pseudoStyles[0]?.identifier?.includes('undefined')) {
-            console.warn('undefined bug?', pseudoStyles[0]?.identifier)
-          }
           for (const style of pseudoStyles) {
             mergeClassName(`${style.property}-${key}`, style.identifier)
             insertStyleRule(style.identifier, style.rules[0])

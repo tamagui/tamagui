@@ -1,7 +1,6 @@
 import { Tag } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
-import React from 'react'
-import { Button, Paragraph, YStack } from 'tamagui'
+import { Button, YStack } from 'tamagui'
 
 export const AlphaButton = () => (
   <YStack $sm={{ width: 0, height: 0, overflow: 'hidden', mx: -4 }}>

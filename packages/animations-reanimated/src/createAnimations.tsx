@@ -85,11 +85,8 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
 
         const mergedStyles = {
           ...style,
-          // ...isExiting && exitStyle(custom()),
           ...(isExiting && exitStyle),
         }
-
-        // console.log('wut', style, hoverStyle, pressStyle, isExiting)
 
         const exitingStyleProps: Record<string, boolean> = {}
         if (exitStyle) {
@@ -126,29 +123,33 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           if (key === 'transform') {
             if (!Array.isArray(value)) {
               console.error(`Invalid transform value. Needs to be an array.`)
-            } else {
-              for (const transformObject of value) {
-                const key = Object.keys(transformObject)[0]
-                const transformValue = transformObject[key]
-                const transform = {} as any
-                if (transition?.[key]?.delay != null) {
-                  delayMs = transition?.[key]?.delay ?? null
-                }
-                let finalValue = animation(transformValue, config, callback)
-                if (shouldRepeat) {
-                  finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
-                }
-                if (delayMs != null) {
-                  transform[key] = withDelay(delayMs, finalValue)
-                } else {
-                  transform[key] = finalValue
-                }
-                if (Object.keys(transform).length) {
-                  final['transform'].push(transform)
-                }
+              continue
+            }
+
+            for (const transformObject of value) {
+              const key = Object.keys(transformObject)[0]
+              const transformValue = transformObject[key]
+              const transform = {} as any
+              if (transition?.[key]?.delay != null) {
+                delayMs = transition?.[key]?.delay ?? null
+              }
+              let finalValue = animation(transformValue, config, callback)
+              if (shouldRepeat) {
+                finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
+              }
+              if (delayMs != null) {
+                transform[key] = withDelay(delayMs, finalValue)
+              } else {
+                transform[key] = finalValue
+              }
+              if (Object.keys(transform).length) {
+                final['transform'].push(transform)
               }
             }
-          } else if (typeof value === 'object') {
+            continue
+          }
+
+          if (typeof value === 'object') {
             // shadows
             final[key] = {}
             for (const innerStyleKey of Object.keys(value || {})) {
@@ -162,16 +163,17 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
                 final[key][innerStyleKey] = finalValue
               }
             }
+            continue
+          }
+
+          let finalValue = animation(value, config, callback)
+          if (shouldRepeat) {
+            finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
+          }
+          if (delayMs != null && typeof delayMs === 'number') {
+            final[key] = withDelay(delayMs, finalValue)
           } else {
-            let finalValue = animation(value, config, callback)
-            if (shouldRepeat) {
-              finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
-            }
-            if (delayMs != null && typeof delayMs === 'number') {
-              final[key] = withDelay(delayMs, finalValue)
-            } else {
-              final[key] = finalValue
-            }
+            final[key] = finalValue
           }
 
           // end for (key in mergedStyles)
