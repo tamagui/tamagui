@@ -3,7 +3,7 @@ import { Text as TextView } from 'react-native'
 
 import { isWeb } from '../constants/platform'
 import { createComponent } from '../createComponent'
-import { TextProps } from '../types'
+import { TextProps, TextPropsBase } from '../types'
 
 const ellipseStyle = {
   maxWidth: '100%',
@@ -12,7 +12,7 @@ const ellipseStyle = {
   whiteSpace: 'nowrap',
 }
 
-export const Text = createComponent<TextProps, TextView>({
+export const Text = createComponent<TextProps, TextView, TextPropsBase>({
   isText: true,
   defaultProps: {
     display: isWeb ? 'inline' : 'flex',

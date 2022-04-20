@@ -37,26 +37,7 @@ export declare const Popper: {
         setOverlayRef?: ((overlayRef: any) => void) | undefined;
     }): JSX.Element;
     Content: React.ForwardRefExoticComponent<Pick<any, string | number | symbol> & React.RefAttributes<unknown>>;
-    Arrow: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>> & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>>> & import("@tamagui/core/types").MediaProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>> & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>>>> & {
-        animation?: import("@tamagui/core/types").AnimationKeys | undefined;
-    } & {
-        debug?: boolean | "break" | "verbose" | undefined;
-        disabled?: boolean | undefined;
-        className?: string | undefined;
-        id?: string | undefined;
-        tag?: string | undefined;
-        theme?: import("@tamagui/core/types").ThemeName | null | undefined;
-        onHoverIn?: ((e: MouseEvent) => any) | undefined;
-        onHoverOut?: ((e: MouseEvent) => any) | undefined;
-        onPress?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        onMouseEnter?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        onMouseLeave?: ((e: import("react-native").GestureResponderEvent) => any) | undefined;
-        space?: import("@tamagui/core/types").SpaceTokens | undefined;
-    } & {
-        children?: any;
-    } & {
+    Arrow: React.MemoExoticComponent<React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core/types").TamaguiComponentPropsBase & import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>> & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>>> & import("@tamagui/core/types").MediaProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>> & import("@tamagui/core/types").PseudoProps<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase> & import("@tamagui/core/types").WithShorthands<import("@tamagui/core/types").WithThemeValues<import("@tamagui/core/types").StackStylePropsBase>>>> & {
         placement?: IPlacement | undefined;
     } & React.RefAttributes<unknown>>>;
 };

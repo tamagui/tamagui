@@ -1,40 +1,25 @@
-import * as ReactNative from 'react-native'
 import { Image, Text, TextInput } from 'react-native'
 
 import { createComponent } from './createComponent'
 import { extendStaticConfig } from './helpers/extendStaticConfig'
+import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,
   GetVariantProps,
-  MediaPropKeys,
+  GetVariantValues,
   MediaProps,
   PseudoProps,
-  PsuedoPropKeys,
-  StaticComponent,
   StaticConfig,
   StylableComponent,
+  TamaguiComponent,
   VariantDefinitions,
 } from './types'
-
-// bye bye tree shaking... but only way to properly detect react-native components...
-// also neither rnw nor react support tree shaking atm
-const RNComponents = new WeakMap()
-// I was looping over all of them, but casuses deprecation warnings and there's only a few
-// we realistically support - lets whitelist rather than blacklist
-for (const key of ['Image', 'TextInput', 'Text', 'View']) {
-  const val = ReactNative[key]
-  if (val && typeof val === 'object') {
-    RNComponents.set(val, true)
-  }
-}
 
 export function styled<
   ParentComponent extends StylableComponent,
   // = VariantDefinitions<GetProps<ParentComponent>> gives type inference to variants: { true: { ... } }
   // but causes "Type instantiation is excessively deep and possibly infinite."...
-  Variants extends VariantDefinitions<any> | symbol =
-    | VariantDefinitions<GetProps<ParentComponent>>
-    | symbol
+  Variants extends VariantDefinitions<{}> = {}
 >(
   Component: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -80,25 +65,90 @@ export function styled<
   const config = extendStaticConfig(Component, staticConfigProps)
   const component = createComponent(config!) // error is good here its on init
 
-  type ParentProps = GetProps<ParentComponent>
-  type VariantProps = Variants extends symbol ? {} : Expand<GetVariantProps<Variants>>
-  type VariantKeys = Variants extends symbol ? never : keyof Variants[keyof Variants]
-  type ParentPropsWithoutOurVariants = VariantKeys extends never
-    ? ParentProps
-    : Omit<ParentProps, VariantKeys>
-  type StyleProps = VariantProps & ParentPropsWithoutOurVariants
-  type Props = Variants extends undefined | symbol
-    ? ParentProps
-    : Omit<
-        ParentProps extends Object ? ParentProps : {},
-        (VariantKeys extends never ? ImpossibleKey : VariantKeys) | MediaPropKeys | PsuedoPropKeys
-      > &
-        VariantProps &
-        MediaProps<StyleProps> &
-        PseudoProps<StyleProps>
+  // get parent props without pseudos and medias so we can rebuild both with new variants
+  type ParentPropsBase = ParentComponent extends TamaguiComponent<any, any, infer P>
+    ? P
+    : GetProps<ParentComponent>
+  type ParentVariants = ParentComponent extends TamaguiComponent<any, any, any, infer V>
+    ? V
+    : Object
 
-  return component as StaticComponent<Props, VariantProps>
+  // sprinkle in our variants
+  type OurVariants = Variants extends Object
+    ? {
+        [Key in keyof Variants]?: GetVariantValues<keyof Variants[Key]>
+      }
+    : {}
+
+  type VariantProps = ParentVariants & OurVariants
+  type OurPropsBase = ParentPropsBase & VariantProps
+
+  type Props = Variants extends void | symbol
+    ? GetProps<ParentComponent>
+    : // start with base props
+      OurPropsBase &
+        // add in media (+ pseudos nested)
+        MediaProps<OurPropsBase> &
+        // add in pseudos
+        PseudoProps<OurPropsBase>
+
+  return component as TamaguiComponent<
+    Props,
+    // TODO infer ref
+    any,
+    ParentPropsBase,
+    ParentVariants & OurVariants
+  >
 }
 
-type ImpossibleKey = 1234556123312321
-type Expand<T> = T extends infer O ? { [K in keyof O]?: O[K] } : never
+// type Merge<A, B> = Omit<A, keyof B> & B
+// import { Stack } from './views/Stack'
+// export const SizableText = styled(Stack, {
+//   name: 'SizableText',
+//   backgroundColor: 'red',
+//   variants: {
+//     size: {
+//       '...fontSize': (val, { props }) => {
+//         return {
+//           backgroundColor: '',
+//         }
+//       },
+//     },
+//   },
+// })
+// export const Paragraph = styled(SizableText, {
+//   name: 'Paragraph',
+//   tag: 'p',
+//   // variants: {
+//   //   another: {
+//   //     true: {}
+//   //   }
+//   // }
+// })
+// export const Paragraph2 = styled(Paragraph, {
+//   name: 'Paragraph',
+//   tag: 'p',
+//   variants: {
+//     another: {
+//       true: {
+//         color: 'red'
+//       },
+//     }
+//   }
+// })
+// const a = <SizableText size="$10" />
+// const y = <Paragraph2 size="$10" another />
+// export const SizableText2 = styled(SizableText, {
+// })
+// const xx = <SizableText2 abc />
+// export const Paragraph = styled(SizableText, {
+//   name: 'Paragraph',
+// })
+// export const Heading = styled(Paragraph, {
+//   tag: 'span',
+//   margin: 0,
+// })
+// export const H2 = styled(Heading, {
+//   name: 'H2',
+// })
+// const x = <H2 color="red" />

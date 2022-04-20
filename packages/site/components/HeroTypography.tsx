@@ -1,5 +1,19 @@
 import Link from 'next/link'
-import { Button, Card, H1, H2, H3, H4, H5, H6, Paragraph, Separator, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Card,
+  FontSizeTokens,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Paragraph,
+  Separator,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'

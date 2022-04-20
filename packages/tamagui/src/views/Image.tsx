@@ -18,8 +18,8 @@ const StyledImage = styled(
 
 type StyledImageProps = GetProps<typeof StyledImage>
 
-export type ImageProps = Omit<StackProps, 'width' | 'height'> &
-  Omit<StyledImageProps, 'source' | 'width' | 'height'> & {
+export type ImageProps = Omit<StackProps, keyof StyledImageProps> &
+  Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
     width: number
     height: number
     src: string | StyledImageProps['source']
@@ -37,5 +37,6 @@ export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => 
   }
 
   // must set defaultSource to allow SSR, default it to the same as src
+  // @ts-ignore we pass all react-native-web props down
   return <StyledImage defaultSource={defaultSource} source={source} {...rest} />
 })

@@ -4,7 +4,7 @@ import { authors } from '@data/authors'
 import { getAllFrontmatter } from '@lib/mdx'
 import { format, parseISO } from 'date-fns'
 import Link from 'next/link'
-import { H1, H2, H3, Paragraph, Spacer, ThemeReset, XStack, YStack } from 'tamagui'
+import { H1, H2, H3, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { Card } from '../../components/Card'
 import { Container, ContainerLarge } from '../../components/Container'

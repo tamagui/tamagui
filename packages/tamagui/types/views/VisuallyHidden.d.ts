@@ -1,10 +1,10 @@
-export declare const VisuallyHidden: import("@tamagui/core").StaticComponent<Omit<import("@tamagui/core").StackProps, `$${string}` | keyof import("@tamagui/core").PseudoProps<any> | "true"> & {
+export declare const VisuallyHidden: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & {
     visible?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<{
+} & import("@tamagui/core").MediaProps<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & {
     visible?: boolean | undefined;
-} & Omit<import("@tamagui/core").StackProps, "true">> & import("@tamagui/core").PseudoProps<{
+}> & import("@tamagui/core").PseudoProps<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & {
     visible?: boolean | undefined;
-} & Omit<import("@tamagui/core").StackProps, "true">>, {
+}>, any, import("@tamagui/core").StackPropsBase, {
     visible?: boolean | undefined;
-}, any, import("@tamagui/core").StaticConfigParsed>;
+}>;
 //# sourceMappingURL=VisuallyHidden.d.ts.map

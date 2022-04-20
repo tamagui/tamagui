@@ -22,7 +22,9 @@ const size = {
 export const silkscreenFont = createFont({
   family: 'Silkscreen, Fira Code, Monaco, Consolas, Ubuntu Mono, monospace',
   size,
-  lineHeight: Object.fromEntries(Object.entries(size).map(([k, v]) => [k, v * 1.75])),
+  lineHeight: Object.fromEntries(
+    Object.entries(size).map(([k, v]) => [k, v * 1.75])
+  ) as typeof size,
   weight: {
     4: '300',
   },

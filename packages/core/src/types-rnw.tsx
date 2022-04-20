@@ -126,11 +126,12 @@ export interface RNWTextProps {
     selected?: boolean
   }
   href?: string
-  hrefAttrs?: {
-    target?: '_blank' | '_self' | '_top' | 'blank' | 'self' | 'top'
-    rel?: string
-    download?: boolean
-  }
+  // TODO hrefAttrs or come up with proper html escape hatch
+  // hrefAttrs?: {
+  //   target?: '_blank' | '_self' | '_top' | 'blank' | 'self' | 'top'
+  //   rel?: string
+  //   download?: boolean
+  // }
   onMouseEnter?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onMouseLeave?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void

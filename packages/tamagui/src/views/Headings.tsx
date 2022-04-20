@@ -2,6 +2,8 @@ import { styled } from '@tamagui/core'
 
 import { Paragraph } from './Paragraph'
 
+// avoid nesting too much
+
 export const Heading = styled(Paragraph, {
   tag: 'span',
   name: 'Heading',

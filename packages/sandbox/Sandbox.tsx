@@ -7,7 +7,10 @@ import {
   H2,
   Image,
   Paragraph,
+  ParagraphProps,
+  SizableText,
   Spacer,
+  Text,
   Theme,
   XStack,
   YStack,
@@ -17,6 +20,10 @@ import {
 import Tamagui from './tamagui.config'
 
 React['keep']
+
+// type y = ParagraphProps['size']
+// const x = <SizableText size="$1" />
+// const x2 = <Paragraph size="$1" />
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as any)

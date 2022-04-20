@@ -34,9 +34,9 @@ import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
   SpaceTokens,
   StackProps,
-  StaticComponent,
   StaticConfig,
   StaticConfigParsed,
+  TamaguiComponent,
   TamaguiInternalConfig,
   UseAnimationHook,
 } from './types'
@@ -66,9 +66,11 @@ function createShallowUpdate(setter: React.Dispatch<React.SetStateAction<Compone
   }
 }
 
-export function createComponent<ComponentPropTypes extends Object = DefaultProps, Ref = View>(
-  configIn: Partial<StaticConfig> | StaticConfigParsed
-) {
+export function createComponent<
+  ComponentPropTypes extends Object = DefaultProps,
+  Ref = View,
+  BaseProps = never
+>(configIn: Partial<StaticConfig> | StaticConfigParsed) {
   let staticConfig: StaticConfigParsed
   if ('parsed' in configIn) {
     staticConfig = configIn
@@ -645,7 +647,7 @@ export function createComponent<ComponentPropTypes extends Object = DefaultProps
     }
   })
 
-  let res: StaticComponent<ComponentPropTypes, {}, Ref> = component as any
+  let res: TamaguiComponent<ComponentPropTypes, Ref, BaseProps> = component as any
 
   if (configIn.memo) {
     res = memo(res) as any
@@ -822,13 +824,15 @@ const merge = (...styles: (ViewStyle | null | false | undefined)[]) => {
 export const AbsoluteFill = (props: any) =>
   isWeb ? (
     <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-      }}
+      style={
+        {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        } as any
+      }
     >
       {props.children}
     </div>

@@ -2,7 +2,6 @@ import {
   ButtonInsideButtonContext,
   GetProps,
   ReactComponentWithRef,
-  StaticComponent,
   ThemeableProps,
   getTokens,
   getVariableValue,
@@ -153,7 +152,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   const contents = noTextWrap
     ? children
     : React.Children.map(children, (child) => {
-        const component = typeof child !== 'string' ? (child['type'] as StaticComponent) : null
+        const component = typeof child !== 'string' ? child?.['type'] : null
         if (component?.staticConfig?.isText) {
           return child
         }
