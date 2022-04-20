@@ -4,9 +4,7 @@
   - 75% animation css
   - 75% animation test hover/press styles + add to animations docs
   - 0% compiler theme (+ work with visually hidden)
-  - 0% onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key
   - 80% animations docs
-  - 0% bug image ssr / site weirdness on some
   - 0% bug // TODO i think media + pseudo needs handling here
   - compiler is inserting default props check effects
 

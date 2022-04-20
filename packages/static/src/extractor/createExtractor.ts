@@ -38,6 +38,16 @@ const UNTOUCHED_PROPS = {
   className: true,
 }
 
+const INLINE_EXTRACTABLE = {
+  ref: 'ref',
+  key: 'key',
+  onPress: 'onClick',
+  onHoverIn: 'onMouseEnter',
+  onHoverOut: 'onMouseLeave',
+  onPressIn: 'onMouseDown',
+  onPressOut: 'onMouseUp',
+}
+
 const isAttr = (x: ExtractedAttr): x is ExtractedAttrAttr => x.type === 'attr'
 
 const validHooks = {
@@ -419,7 +429,7 @@ export function createExtractor() {
 
           let attrs: ExtractedAttr[] = []
           let shouldDeopt = false
-          let inlinePropCount = 0
+          const inlined = new Map<string, boolean | string>()
           let hasSetOptimized = false
 
           // RUN first pass
@@ -517,7 +527,7 @@ export function createExtractor() {
               if (shouldPrintDebug) {
                 console.log('  ! inlining, spread attr')
               }
-              inlinePropCount++
+              inlined.set(`${Math.random()}`, 'spread')
               return attr
             }
 
@@ -531,7 +541,7 @@ export function createExtractor() {
             }
 
             if (inlineProps.has(name)) {
-              inlinePropCount++
+              inlined.set(name, true)
               if (shouldPrintDebug) {
                 console.log('  ! inlining, inline prop', name)
               }
@@ -541,7 +551,7 @@ export function createExtractor() {
             // can still optimize the object... see hoverStyle on native
             if (deoptProps.has(name)) {
               shouldDeopt = true
-              inlinePropCount++
+              inlined.set(name, true)
               if (shouldPrintDebug) {
                 console.log('  ! inlining, deopted prop', name)
               }
@@ -550,6 +560,11 @@ export function createExtractor() {
 
             // pass className, key, and style props through untouched
             if (UNTOUCHED_PROPS[name]) {
+              return attr
+            }
+
+            if (INLINE_EXTRACTABLE[name]) {
+              inlined.set(name, INLINE_EXTRACTABLE[name])
               return attr
             }
 
@@ -601,7 +616,7 @@ export function createExtractor() {
               if (shouldPrintDebug) {
                 console.log('  ! inlining, ref', name)
               }
-              inlinePropCount++
+              inlined.set('ref', 'ref')
               return attr
             }
 
@@ -619,7 +634,7 @@ export function createExtractor() {
                   if (shouldPrintDebug) {
                     console.log(`  ! inlining, native disable extract: ${name} =`, value.value)
                   }
-                  inlinePropCount++
+                  inlined.set(name, true)
                   return attr
                 }
               }
@@ -653,6 +668,7 @@ export function createExtractor() {
                 }
               }
 
+              let didInline = false
               const attributes = keys.map((key) => {
                 const val = out[key]
                 if (!isValidStyleKey(key)) {
@@ -668,7 +684,8 @@ export function createExtractor() {
                   if (shouldPrintDebug) {
                     console.log('  ! inlining, non-static', key)
                   }
-                  inlinePropCount++
+                  didInline = true
+                  inlined.set(key, true)
                 }
                 return {
                   type: 'style',
@@ -678,7 +695,9 @@ export function createExtractor() {
                 } as const
               })
 
-              if (inlinePropCount) {
+              // weird logic whats going on here
+              if (didInline) {
+                console.log('we inlined something off', attributes)
                 // bail
                 return attr
               }
@@ -733,7 +752,7 @@ export function createExtractor() {
               if (shouldPrintDebug) {
                 console.log(`  evalBinaryExpression cant extract`)
               }
-              inlinePropCount++
+              inlined.set(name, true)
               return attr
             }
 
@@ -753,14 +772,10 @@ export function createExtractor() {
               return { type: 'ternary', value: staticLogical }
             }
 
-            if (shouldPrintDebug) {
-              console.log('  ! inline prop via no match', name, value.type)
-            }
             // if we've made it this far, the prop stays inline
-            inlinePropCount++
-
+            inlined.set(name, true)
             if (shouldPrintDebug) {
-              console.log(` inlining ${name} = `, value)
+              console.log(` ! inline no match ${name}`, value)
             }
 
             //
@@ -1045,14 +1060,20 @@ export function createExtractor() {
           // flatten logic!
           // fairly simple check to see if all children are text
           const hasSpread = node.attributes.some((x) => t.isJSXSpreadAttribute(x))
+
           const hasOnlyStringChildren =
             !hasSpread &&
             (node.selfClosing ||
               (traversePath.node.children &&
                 traversePath.node.children.every((x) => x.type === 'JSXText')))
+
+          const allInlinePropsAreExtractable = [...inlined].every(([k]) => INLINE_EXTRACTABLE[k])
+
+          if (shouldPrintDebug) console.log('allInlinePropsAreExtractable', [...inlined])
+
           const shouldFlatten =
             !shouldDeopt &&
-            inlinePropCount === 0 &&
+            (inlined.size === 0 || allInlinePropsAreExtractable) &&
             !hasSpread &&
             staticConfig.neverFlatten !== true &&
             (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
@@ -1129,14 +1150,19 @@ export function createExtractor() {
               return acc
             }
 
-            if (
-              shouldFlatten &&
-              cur.type === 'attr' &&
-              !t.isJSXSpreadAttribute(cur.value) &&
-              cur.value.name.name === 'tag'
-            ) {
-              // remove tag=""
-              return acc
+            if (cur.type === 'attr' && !t.isJSXSpreadAttribute(cur.value)) {
+              if (shouldFlatten) {
+                if (cur.value.name.name === 'tag') {
+                  // remove tag=""
+                  return acc
+                }
+                if (typeof cur.value.name.name === 'string') {
+                  const extractTo = INLINE_EXTRACTABLE[cur.value.name.name]
+                  if (extractTo) {
+                    console.log('should leave alone', extractTo)
+                  }
+                }
+              }
             }
 
             if (cur.type !== 'style') {
@@ -1395,14 +1421,32 @@ export function createExtractor() {
             return node
           }
 
-          // final lazy extra loop: remove duplicate styles
-          // so if you have:
-          //   style({ color: 'red' }), ...someProps, style({ color: 'green' })
-          // this will mutate:
-          //   style({}), ...someProps, style({ color: 'green' })
+          // final lazy extra loop:
           const existingStyleKeys = new Set()
           for (let i = attrs.length - 1; i >= 0; i--) {
             const attr = attrs[i]
+
+            // if flattening map inline props to proper flattened names
+            if (shouldFlatten && allInlinePropsAreExtractable) {
+              if (attr.type === 'attr') {
+                if (t.isJSXAttribute(attr.value)) {
+                  console.log('attr.value', attr.value)
+                  if (t.isJSXIdentifier(attr.value.name)) {
+                    const name = attr.value.name.name
+                    if (INLINE_EXTRACTABLE[name]) {
+                      // map to HTML only name
+                      attr.value.name.name = INLINE_EXTRACTABLE[name]
+                    }
+                  }
+                }
+              }
+            }
+
+            // remove duplicate styles
+            // so if you have:
+            //   style({ color: 'red' }), ...someProps, style({ color: 'green' })
+            // this will mutate:
+            //   style({}), ...someProps, style({ color: 'green' })
             if (attr.type === 'style') {
               for (const key in attr.value) {
                 if (existingStyleKeys.has(key)) {
@@ -1432,7 +1476,7 @@ export function createExtractor() {
 
           if (shouldPrintDebug) {
             // prettier-ignore
-            console.log(` ❊❊ inline props (${inlinePropCount}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : '')
+            console.log(` ❊❊ inline props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : '')
             console.log('  - attrs (end):\n', logLines(attrs.map(attrStr).join(', ')))
           }
 
