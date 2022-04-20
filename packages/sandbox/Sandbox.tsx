@@ -10,8 +10,10 @@ import {
   ParagraphProps,
   SizableText,
   Spacer,
+  Stack,
   Text,
   Theme,
+  VisuallyHidden,
   XStack,
   YStack,
   YStackProps,
@@ -44,30 +46,75 @@ export const Sandbox = () => {
   )
 }
 
+// export const Test = (props) => {
+//   const ref = useRef()
+
+//   return (
+//     <>
+//       <YStack key={props.ley} ref={ref} onPress={props.onPress} />
+//       <Button rotate="-5deg" theme="pink_alt2" tag="a" size="$3">
+//         Beta.0
+//       </Button>
+//       <Button rotate="-5deg" theme="pink_alt2" tag="a" size="$3">
+//         Beta.0
+//       </Button>
+//       <Paragraph size="$2" theme="alt2">
+//         by
+//         <Button>nate</Button>
+//       </Paragraph>
+//       <Paragraph theme="alt2">
+//         Cross-browser server-side rendering, even for responsive styles and variants out of the box.
+//         Next.js plugin and example apps.
+//       </Paragraph>
+//       <VisuallyHidden>something</VisuallyHidden>
+//     </>
+//   )
+// }
+
 export const Test = (props) => {
-  return <></>
+  const [positionI, setPositionI] = useState(0)
+  return (
+    <>
+      <YStack
+        bc="blue"
+        o={1}
+        debug
+        width={`${1 * 50}%`}
+        height={10}
+        minWidth={100}
+        position="relative"
+        jc="center"
+        animation="bouncy"
+        scale={positionI * 1 + 1}
+        opacity={1}
+        enterStyle={{
+          scale: 0.3,
+          opacity: 0.5,
+        }}
+        hoverStyle={{
+          scale: 2,
+          backgroundColor: 'red',
+        }}
+        pressStyle={{
+          scale: 0.5,
+          backgroundColor: 'green',
+        }}
+      >
+        <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
+          123ms
+        </Paragraph>
+      </YStack>
+      <Button
+        onPress={() => {
+          setPositionI((x) => (x + 1) % 4)
+        }}
+      >
+        pressStyle
+      </Button>
+    </>
+  )
 }
 
-//<YStack
-//  bc={getBarColor(result.name)}
-//  o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
-//  width={`${(result.value / maxValue) * 100}%`}
-//  height={10}
-//  minWidth={100}
-//  position="relative"
-//  jc="center"
-//  animation="bouncy"
-//  scaleX={1}
-//  {...(animateEnter && {
-//    enterStyle: {
-//      scaleX: 0,
-//    },
-//  })}
-//>
-//  <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
-//    {result.value}ms
-//  </Paragraph>
-//</YStack>
 //
 
 //      <AnimationTest />
