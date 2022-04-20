@@ -1,3 +1,4 @@
+import { Tag } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import React from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
@@ -5,7 +6,8 @@ import { Button, Paragraph, YStack } from 'tamagui'
 export const AlphaButton = () => (
   <YStack $sm={{ width: 0, height: 0, overflow: 'hidden', mx: -4 }}>
     <NextLink href="/blog/tamagui-enters-beta-themes-and-animations" passHref>
-      <Paragraph
+      <Button
+        rotate="-5deg"
         theme="pink_alt2"
         p="$2"
         px="$3"
@@ -14,9 +16,10 @@ export const AlphaButton = () => (
         hoverStyle={{ opacity: 1 }}
         tag="a"
         size="$3"
+        icon={Tag}
       >
-        New
-      </Paragraph>
+        Beta.0
+      </Button>
     </NextLink>
   </YStack>
 )

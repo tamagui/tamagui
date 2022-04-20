@@ -6,7 +6,7 @@ export const Glow = styled(Circle, {
   rotate: '20deg',
   bc: '$pink10',
   size: 620,
-  scaleX: 0.4,
+  scaleX: 0.8,
   scaleY: 1.75,
   y: 0,
   o: 0.1,

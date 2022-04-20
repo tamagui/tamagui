@@ -11,7 +11,7 @@ const FeatureItem = ({ label, children }) => {
       <SizableText size="$4" fow="800">
         {label}
       </SizableText>
-      &nbsp;&nbsp;—&nbsp;&nbsp;
+      &nbsp;&nbsp;-&nbsp;&nbsp;
       <SizableText size="$5" tag="span" theme="alt2">
         {children}
       </SizableText>
@@ -23,7 +23,7 @@ const Features = ({ items, ...props }: any) => {
   return (
     <YStack space {...props}>
       {items.map((feature, i) => (
-        <Card key={i} p="$4">
+        <Card br="$8" key={i} p="$4" py="$6">
           <XStack tag="li">
             <Text color="$green9">
               <CheckCircle />
