@@ -139,6 +139,7 @@ export function createExtractor() {
         }, {})
 
       let doesUseValidImport = false
+      let hasImportedTheme = false
 
       for (const bodyPath of body) {
         if (bodyPath.type !== 'ImportDeclaration') continue
@@ -541,7 +542,7 @@ export function createExtractor() {
             }
 
             if (inlineProps.has(name)) {
-              inlined.set(name, true)
+              inlined.set(name, name)
               if (shouldPrintDebug) {
                 console.log('  ! inlining, inline prop', name)
               }
@@ -551,7 +552,7 @@ export function createExtractor() {
             // can still optimize the object... see hoverStyle on native
             if (deoptProps.has(name)) {
               shouldDeopt = true
-              inlined.set(name, true)
+              inlined.set(name, name)
               if (shouldPrintDebug) {
                 console.log('  ! inlining, deopted prop', name)
               }
@@ -671,33 +672,34 @@ export function createExtractor() {
               let didInline = false
               const attributes = keys.map((key) => {
                 const val = out[key]
-                if (!isValidStyleKey(key)) {
-                  if (validHTMLAttributes[key]) {
-                    return {
-                      type: 'attr',
-                      value: t.jsxAttribute(
-                        t.jsxIdentifier(key),
-                        t.jsxExpressionContainer(literalToAst(val))
-                      ),
-                    } as const
-                  }
-                  if (shouldPrintDebug) {
-                    console.log('  ! inlining, non-static', key)
-                  }
-                  didInline = true
-                  inlined.set(key, true)
+                if (isValidStyleKey(key)) {
+                  return {
+                    type: 'style',
+                    value: { [name]: styleValue },
+                    name,
+                    attr: path.node,
+                  } as const
                 }
-                return {
-                  type: 'style',
-                  value: { [name]: styleValue },
-                  name,
-                  attr: path.node,
-                } as const
+                if (validHTMLAttributes[key]) {
+                  return {
+                    type: 'attr',
+                    value: t.jsxAttribute(
+                      t.jsxIdentifier(key),
+                      t.jsxExpressionContainer(literalToAst(val))
+                    ),
+                  } as const
+                }
+                if (shouldPrintDebug) {
+                  console.log('  ! inlining, non-static', key)
+                }
+                didInline = true
+                inlined.set(key, val)
+                return val
               })
 
               // weird logic whats going on here
               if (didInline) {
-                console.log('we inlined something off', attributes)
+                console.log('we inlined something off', { attributes })
                 // bail
                 return attr
               }
@@ -708,20 +710,25 @@ export function createExtractor() {
 
             // FAILED = dynamic or ternary, keep going
             if (styleValue !== FAILED_EVAL) {
-              if (shouldPrintDebug) {
-                console.log(`  style: ${name} =`, styleValue)
-              }
-              if (!(name in staticConfig.defaultProps)) {
-                if (!hasSetOptimized) {
-                  res.optimized++
-                  hasSetOptimized = true
+              if (isValidStyleKey(name)) {
+                if (shouldPrintDebug) {
+                  console.log(`  style: ${name} =`, styleValue)
                 }
-              }
-              return {
-                type: 'style',
-                value: { [name]: styleValue },
-                name,
-                attr: path.node,
+                if (!(name in staticConfig.defaultProps)) {
+                  if (!hasSetOptimized) {
+                    res.optimized++
+                    hasSetOptimized = true
+                  }
+                }
+                return {
+                  type: 'style',
+                  value: { [name]: styleValue },
+                  name,
+                  attr: path.node,
+                }
+              } else {
+                inlined.set(name, true)
+                return attr
               }
             }
 
@@ -1067,16 +1074,56 @@ export function createExtractor() {
               (traversePath.node.children &&
                 traversePath.node.children.every((x) => x.type === 'JSXText')))
 
-          const allInlinePropsAreExtractable = [...inlined].every(([k]) => INLINE_EXTRACTABLE[k])
+          const themeVal = inlined.get('theme')
+          inlined.delete('theme')
+          const allOtherPropsExtractable = [...inlined].every(([k, v]) => INLINE_EXTRACTABLE[k])
+          const shouldWrapInnerTheme = !!(hasOnlyStringChildren && themeVal)
+          const canFlattenProps =
+            inlined.size === 0 ||
+            (allOtherPropsExtractable && shouldWrapInnerTheme) ||
+            allOtherPropsExtractable
 
-          if (shouldPrintDebug) console.log('allInlinePropsAreExtractable', [...inlined])
-
-          const shouldFlatten =
+          let shouldFlatten =
             !shouldDeopt &&
-            (inlined.size === 0 || allInlinePropsAreExtractable) &&
+            canFlattenProps &&
             !hasSpread &&
             staticConfig.neverFlatten !== true &&
             (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+
+          // wrap theme around children on flatten
+          if (shouldWrapInnerTheme) {
+            const parents = traversePath.parentPath.node
+            if (!t.isJSXElement(parents) && !t.isJSXFragment(parents)) {
+              // cant support this bail
+              shouldFlatten = false
+            } else {
+              if (typeof themeVal === 'string') {
+                // insert import
+                if (!hasImportedTheme) {
+                  hasImportedTheme = true
+                  programPath.node.body.push(
+                    t.importDeclaration(
+                      [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
+                      t.stringLiteral('@tamagui/core')
+                    )
+                  )
+                }
+
+                const children = parents.children
+                parents.children = [
+                  t.jsxElement(
+                    t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
+                      t.jsxAttribute(t.jsxIdentifier('name'), t.stringLiteral(`${themeVal}`)),
+                    ]),
+                    t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
+                    children
+                  ),
+                ]
+              } else {
+                // failed eval
+              }
+            }
+          }
 
           // only if we flatten, ensure the default styles are there
           if (shouldFlatten && staticConfig.defaultProps) {
@@ -1155,12 +1202,6 @@ export function createExtractor() {
                 if (cur.value.name.name === 'tag') {
                   // remove tag=""
                   return acc
-                }
-                if (typeof cur.value.name.name === 'string') {
-                  const extractTo = INLINE_EXTRACTABLE[cur.value.name.name]
-                  if (extractTo) {
-                    console.log('should leave alone', extractTo)
-                  }
                 }
               }
             }
@@ -1427,10 +1468,9 @@ export function createExtractor() {
             const attr = attrs[i]
 
             // if flattening map inline props to proper flattened names
-            if (shouldFlatten && allInlinePropsAreExtractable) {
+            if (shouldFlatten && canFlattenProps) {
               if (attr.type === 'attr') {
                 if (t.isJSXAttribute(attr.value)) {
-                  console.log('attr.value', attr.value)
                   if (t.isJSXIdentifier(attr.value.name)) {
                     const name = attr.value.name.name
                     if (INLINE_EXTRACTABLE[name]) {

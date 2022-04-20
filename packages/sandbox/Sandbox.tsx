@@ -52,7 +52,7 @@ export const Test = (props) => {
   return (
     <>
       <YStack key={props.ley} ref={ref} onPress={props.onPress} />
-      <YStack theme="pink_alt2" tag="a">
+      <YStack theme="pink_alt2" tag="a" bc="$color" w={100} h={100}>
         Beta.0
       </YStack>
       <Paragraph size="$2" theme="alt2">
