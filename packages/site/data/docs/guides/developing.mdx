@@ -46,6 +46,8 @@ export default () => <Button debug>Hello world</Button>
 
 And you'll see props, styles, and a variety of variables relevant to processing them.
 
+You can do `<Button debug="break" />` to have it break at the beginning of rendering, or `<Button debug="verbose" />` to have it output more detailed debug information.
+
 ### Global Tamagui
 
 In development mode, there's a global `Tamagui` with a lot of helpful internals, including your entire parsed config from `tamagui.config.ts`.
@@ -60,7 +62,7 @@ Any `styled()` component will have a `staticConfig` property attached to it:
 
 ```tsx
 const Circle = styled(Stack, {
-  borderRadius: 1000
+  borderRadius: 1000,
 })
 
 console.log(Circle.staticConfig) // lots of helpful information

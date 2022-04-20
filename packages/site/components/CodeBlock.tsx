@@ -10,7 +10,7 @@ import css from 'refractor/lang/css'
 import diff from 'refractor/lang/diff'
 import js from 'refractor/lang/javascript'
 import jsx from 'refractor/lang/jsx'
-import { Theme } from 'tamagui'
+import { GetProps } from 'tamagui'
 
 import { Code } from './Code'
 import { Pre } from './Pre'
@@ -21,7 +21,7 @@ refractor.register(bash)
 refractor.register(css)
 refractor.register(diff)
 
-type PreProps = Omit<React.ComponentProps<typeof Pre>, 'css'>
+type PreProps = Omit<GetProps<typeof Pre>, 'css'>
 
 type CodeBlockProps = PreProps & {
   language: 'js' | 'jsx' | 'bash' | 'css' | 'diff'
@@ -44,8 +44,10 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
     if (mode === 'typewriter') {
       return <CodeTypewriter className={classes} css={css} variant="" value={result} {...props} />
     }
+
     return (
       // <Theme name="alt1">
+      // @ts-ignore
       <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
         <Code
           className={classes}

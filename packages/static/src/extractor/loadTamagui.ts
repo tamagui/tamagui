@@ -1,12 +1,12 @@
 import { join } from 'path'
 
-import type { StaticComponent, TamaguiInternalConfig } from '@tamagui/core'
+import type { TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core'
 import { createTamagui } from '@tamagui/core-node'
 
 let loadedTamagui: any = null
 
 export function loadTamagui(props: { components: string[]; config: string }): {
-  components: Record<string, StaticComponent>
+  components: Record<string, TamaguiComponent>
   tamaguiConfig: TamaguiInternalConfig
 } {
   if (loadedTamagui) {

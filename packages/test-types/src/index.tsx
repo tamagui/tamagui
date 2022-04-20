@@ -2,14 +2,11 @@ import {
   ColorTokens,
   GetProps,
   GetVariantProps,
-  GetVariants,
   Shorthands,
-  SpaceTokens,
   Stack,
   StackProps,
   TamaguiConfig,
   Text,
-  ThemeKeyVariables,
   ThemeObject,
   Variable,
   createTamagui,
@@ -23,7 +20,6 @@ type x = Shorthands['p']
 type x3 = Shorthands['s']
 type y = Shorthands['asdasd']
 type x22 = StackProps['borderColor']
-type sz = ThemeKeyVariables
 type asdsad = keyof TamaguiConfig['themes']
 
 const config = createTamagui({
@@ -108,7 +104,6 @@ type themekeys = keyof themes
 type z123 = themes[themekeys]
 
 type z2 = GetProps<typeof ZStack>
-type zSV = GetVariants<typeof ZStack>
 type zVP = GetVariantProps<zSV>
 type z2222 = z2['bg']
 type z22222 = z2['shoulderr']

@@ -97,7 +97,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
 export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations'];
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
-export declare type PropTypes<A extends StaticComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;
+export declare type PropTypes<A extends TamaguiComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;
 export declare type GenericFont = {
     size: {
         [key: string | number]: number | Variable;
@@ -147,8 +147,9 @@ export declare type TransformStyleProps = {
     rotateX?: string;
     rotateZ?: string;
 };
-declare type Something<A> = A extends symbol ? Something<{}> : A;
-declare type ComponentPropsBase = Something<{
+export declare type TamaguiComponentPropsBase = {
+    animation?: AnimationKeys;
+    children?: any | any[];
     debug?: boolean | 'break' | 'verbose';
     disabled?: boolean;
     className?: string;
@@ -163,7 +164,7 @@ declare type ComponentPropsBase = Something<{
     onMouseEnter?: (e: GestureResponderEvent) => any;
     onMouseLeave?: (e: GestureResponderEvent) => any;
     space?: SpaceTokens;
-}>;
+};
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
@@ -197,9 +198,7 @@ export declare type PseudoProps<A> = {
 export declare type PsuedoPropKeys = keyof PseudoProps<any>;
 declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
 declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
-declare type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>> & {
-    animation?: AnimationKeys;
-};
+declare type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
 declare type WebOnlyStyleProps = {
     cursor?: string;
     contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'paint' | string;
@@ -207,10 +206,10 @@ declare type WebOnlyStyleProps = {
     pointerEvents?: ViewProps['pointerEvents'];
 };
 export declare type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibility' | 'elevation'> & TransformStyleProps & WebOnlyStyleProps;
+export declare type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children'> & RNWViewProps & TamaguiComponentPropsBase;
 export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
-export declare type StackProps = Omit<ViewProps, 'display' | 'children'> & RNWViewProps & StackStyleProps & ComponentPropsBase & {
-    children?: any | any[];
-};
+export declare type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>;
+export declare type StackProps = StackPropsBaseShared & StackStyleProps;
 export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps & {
     ellipse?: boolean;
     selectable?: boolean;
@@ -221,13 +220,14 @@ export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVi
     wordWrap?: CSS.Properties['wordWrap'];
     cursor?: CSS.Properties['cursor'];
 };
+export declare type TextPropsBaseShared = Omit<ReactTextProps, 'children'> & RNWTextProps & TamaguiComponentPropsBase;
+export declare type TextPropsBase = TextPropsBaseShared & WithThemeAndShorthands<TextStylePropsBase>;
 export declare type TextStyleProps = WithThemeShorthandsPseudosMediaAnimation<TextStylePropsBase>;
-export declare type TextProps = ReactTextProps & RNWTextProps & TextStyleProps & ComponentPropsBase;
+export declare type TextProps = TextPropsBaseShared & TextStyleProps;
 export declare type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<Omit<TextStylePropsBase, keyof StackStylePropsBase> & StackStylePropsBase>;
-export declare type StaticComponent<Props = any, VariantProps = any, Ref = any, StaticConfParsed extends StaticConfigParsed = StaticConfigParsed> = React.ForwardRefExoticComponent<React.PropsWithoutRef<Props> & React.RefAttributes<Ref>> & StaticComponentObject<StaticConfParsed, VariantProps>;
-declare type StaticComponentObject<Conf extends StaticConfigParsed, VariantProps extends any> = {
-    staticConfig: Conf;
-    variantProps?: VariantProps;
+export declare type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject;
+declare type StaticComponentObject = {
+    staticConfig: StaticConfig;
     extractable: <X>(a: X, opts?: StaticConfig) => X;
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
@@ -247,7 +247,7 @@ export declare type StaticConfigParsed = StaticConfig & {
     };
 };
 export declare type StaticConfig = {
-    Component?: React.FunctionComponent<any> & StaticComponentObject<any, any>;
+    Component?: React.FunctionComponent<any> & StaticComponentObject;
     variants?: {
         [key: string]: {
             [key: string]: ((a: any, b: any) => any) | {
@@ -277,29 +277,19 @@ export declare type StaticConfig = {
     memo?: boolean;
     isTamagui?: boolean;
 };
-export declare type StylableComponent = StaticComponent | React.Component | React.ForwardRefExoticComponent<any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
-export declare type GetProps<A extends StylableComponent> = A extends StaticComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Omit<Props, keyof StackProps> & StackProps : A extends new (props: infer Props) => any ? Omit<Props, keyof StackProps> & StackProps : {};
-export declare type VariantDefinitions<MyProps> = {
+export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
+export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
+export declare type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Omit<Props, keyof StackProps> & StackProps : A extends new (props: infer Props) => any ? Omit<Props, keyof StackProps> & StackProps : {};
+export declare type SpreadKeys = '...fontSize' | '...size' | '...color' | '...lineHeight' | '...letterSpacing' | '...zIndex' | '...theme';
+export declare type VariantDefinitions<MyProps = {}> = MyProps extends Object ? {
     [propName: string]: {
-        [Key in '...fontSize']?: FontSizeVariantSpreadFunction<MyProps>;
-    } | {
-        [Key in '...size']?: SizeVariantSpreadFunction<MyProps>;
-    } | {
-        [Key in '...color']?: ColorVariantSpreadFunction<MyProps>;
-    } | {
-        [Key in '...lineHeight']?: FontLineHeightVariantSpreadFunction<MyProps>;
-    } | {
-        [Key in '...letterSpacing']?: FontLetterSpacingVariantSpreadFunction<MyProps>;
-    } | {
-        [Key in '...zIndex']?: ZIndexVariantSpreadFunction<MyProps>;
-    } | {
-        [Key in '...theme']?: ThemeVariantSpreadFunction<MyProps>;
-    } | {
-        [Key in string]: MyProps | VariantSpreadFunction<MyProps, any>;
+        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
+    } & {
+        [Key in string]?: MyProps | VariantSpreadFunction<MyProps, any>;
     };
-};
+} : never;
 export declare type GetVariantProps<Variants extends Object> = {
-    [key in keyof Variants]?: GetVariantValues<keyof Variants[key], keyof Variants[key]>;
+    [Key in keyof Variants]?: GetVariantValues<keyof Variants[Key]>;
 };
 export declare type VariantSpreadExtras<Props> = {
     tokens: TamaguiConfig['tokens'];
@@ -308,25 +298,20 @@ export declare type VariantSpreadExtras<Props> = {
     } ? B : unknown;
     props: Props;
 };
-export declare type VariantSpreadFunction<Props, Val = any> = (val: Val, config: VariantSpreadExtras<Props>) => WithVariableValues<TextStylePropsBase> | WithVariableValues<StackStylePropsBase> | null | undefined;
-declare type WithVariableValues<A extends {
+declare type PropLike = {
     [key: string]: any;
-}> = {
-    [Key in keyof A]: A[Key] | Variable;
 };
-export declare type GetVariants<Props> = void | {
-    [key: string]: {
-        [key: string]: Partial<Props> | VariantSpreadFunction<Props>;
-    };
-};
-export declare type GetVariantValues<Key, Val> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Val;
-export declare type FontSizeVariantSpreadFunction<A> = VariantSpreadFunction<A, FontSizeTokens>;
-export declare type SizeVariantSpreadFunction<A> = VariantSpreadFunction<A, SizeTokens>;
-export declare type ColorVariantSpreadFunction<A> = VariantSpreadFunction<A, ColorTokens>;
-export declare type FontLineHeightVariantSpreadFunction<A> = VariantSpreadFunction<A, FontLineHeightTokens>;
-export declare type FontLetterSpacingVariantSpreadFunction<A> = VariantSpreadFunction<A, FontLetterSpacingTokens>;
-export declare type ZIndexVariantSpreadFunction<A> = VariantSpreadFunction<A, ZIndexTokens>;
-export declare type ThemeVariantSpreadFunction<A> = VariantSpreadFunction<A, ThemeTokens>;
+export declare type VariantSpreadFunction<Props extends PropLike, Val = any> = (val: Val, config: VariantSpreadExtras<Props>) => {
+    [Key in keyof Props]: Props[Key] | Variable;
+} | null | undefined;
+export declare type GetVariantValues<Key> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Key;
+export declare type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontSizeTokens>;
+export declare type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>;
+export declare type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ColorTokens>;
+export declare type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLineHeightTokens>;
+export declare type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLetterSpacingTokens>;
+export declare type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>;
+export declare type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ThemeTokens>;
 declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight';
 declare type FontKeys = 'fontFamily';
 declare type FontSizeKeys = 'fontSize';

@@ -1,9 +1,9 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React from 'react'
-import { Paragraph, ParagraphProps, Text } from 'tamagui'
+import { Paragraph, Text, TextProps } from 'tamagui'
 
 export type LinkProps = Omit<NextLinkProps, 'passHref' | 'as'> &
-  ParagraphProps & {
+  TextProps & {
     target?: any
     rel?: any
     title?: any

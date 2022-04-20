@@ -13,6 +13,7 @@ import {
   Button,
   Heading,
   Paragraph,
+  SizeTokens,
   Spacer,
   Text,
   Theme,
@@ -98,6 +99,7 @@ const HeroTop = memo(() => {
             }}
             $gtMd={{
               size: '$12',
+              m: '$-0',
               maxWidth: 900,
               mx: '$4',
             }}

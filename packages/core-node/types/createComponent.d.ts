@@ -1,14 +1,14 @@
 /// <reference types="react" />
 import { View, ViewStyle } from 'react-native';
-import { SpaceTokens, StackProps, StaticComponent, StaticConfig, StaticConfigParsed } from './types';
+import { SpaceTokens, StackProps, StaticConfig, StaticConfigParsed, TamaguiComponent } from './types';
 export declare const mouseUps: Set<Function>;
 declare type DefaultProps = {};
-export declare function createComponent<ComponentPropTypes extends Object = DefaultProps, Ref = View>(configIn: Partial<StaticConfig> | StaticConfigParsed): StaticComponent<ComponentPropTypes, {}, Ref, StaticConfigParsed>;
-export declare const Spacer: StaticComponent<Omit<StackProps, "flex" | "direction"> & {
+export declare function createComponent<ComponentPropTypes extends Object = DefaultProps, Ref = View, BaseProps = never>(configIn: Partial<StaticConfig> | StaticConfigParsed): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>;
+export declare const Spacer: TamaguiComponent<Omit<StackProps, "flex" | "direction"> & {
     size?: SpaceTokens | undefined;
     flex?: number | boolean | undefined;
     direction?: "horizontal" | "vertical" | undefined;
-}, {}, View, StaticConfigParsed>;
+}, View, never, {}>;
 export declare function spacedChildren({ isZStack, children, space, flexDirection, spaceFlex, }: {
     isZStack?: boolean;
     children: any;
