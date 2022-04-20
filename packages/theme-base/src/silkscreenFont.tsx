@@ -30,6 +30,6 @@ export const silkscreenFont = createFont({
   },
   letterSpacing: {
     4: 1,
-    6: 0,
+    6: 3,
   },
 })

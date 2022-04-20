@@ -119,7 +119,7 @@ export const HeroResponsive = memo(() => {
         <Header />
         <Spacer size="$8" />
         <YStack h={browserHeight + 40} />
-        <XStack b={-20} pos="absolute" zi={1} f={1} space>
+        <XStack b={-20} pos="absolute" zi={1} f={1} space="$1">
           <YStack
             className="unselectable"
             pe={isDragging ? 'none' : 'auto'}

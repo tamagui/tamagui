@@ -75,15 +75,16 @@ export function Header({
       </XStack>
 
       <XStack pointerEvents="auto" tag="nav">
-        <XStack ai="center">
+        <XStack ai="center" space="$2">
           <NextLink href="/docs/intro/installation" passHref>
             <Paragraph
               fontFamily="$silkscreen"
               p="$2"
-              px="$3"
               cursor="pointer"
-              size="$3"
-              opacity={0.5}
+              size="$6"
+              letterSpacing={3}
+              theme="alt2"
+              o={0.8}
               hoverStyle={{ opacity: 1 }}
               tag="a"
             >
@@ -95,10 +96,11 @@ export function Header({
             <Paragraph
               fontFamily="$silkscreen"
               p="$2"
-              px="$3"
               cursor="pointer"
-              size="$3"
-              opacity={0.5}
+              size="$6"
+              letterSpacing={3}
+              theme="alt2"
+              o={0.8}
               hoverStyle={{ opacity: 1 }}
               tag="a"
             >

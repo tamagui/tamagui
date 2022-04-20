@@ -13,7 +13,6 @@ import {
   Button,
   Heading,
   Paragraph,
-  SizeTokens,
   Spacer,
   Text,
   Theme,
@@ -99,7 +98,6 @@ const HeroTop = memo(() => {
             }}
             $gtMd={{
               size: '$12',
-              m: '$-0',
               maxWidth: 900,
               mx: '$4',
             }}
@@ -134,7 +132,6 @@ const HeroTop = memo(() => {
                 ta: 'center',
                 size: '$6',
                 maxWidth: 500,
-                letterSpacing: 0,
                 fontWeight: '400',
               }}
               $gtMd={{
@@ -143,8 +140,8 @@ const HeroTop = memo(() => {
                 fontWeight: '400',
               }}
             >
-              Write&nbsp;once,&nbsp;run&nbsp;everywhere thanks to an optimizing compiler. 🔼 perf
-              with 🔽 code.
+              Write&nbsp;once,&nbsp;run&nbsp;everywhere with an optimizing compiler = 🔼 perf 🔽
+              code.
             </Paragraph>
           </YStack>
         </YStack>
@@ -156,9 +153,10 @@ const HeroTop = memo(() => {
               borderRadius={1000}
               iconAfter={ArrowRight}
               tag="a"
+              size="$6"
               fontWeight="800"
             >
-              Docs
+              Get started
             </Button>
           </NextLink>
 

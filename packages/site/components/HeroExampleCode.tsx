@@ -26,11 +26,11 @@ export function HeroExampleCode() {
 
         <YStack zi={1} space="$4">
           <YStack space="$2">
-            <HomeH2 className="">
-              <span className="rainbow clip-text">DX</span>, meet{' '}
+            <HomeH2 size="$12">
+              <span className="rainbow clip-text">DX</span> 🤝{' '}
               <span className="rainbow clip-text">UX</span>
             </HomeH2>
-            <HomeH3>Faster&nbsp; 🤝 &nbsp;less code&nbsp; 🤝 &nbsp;more platforms</HomeH3>
+            <HomeH3>Maintance&nbsp; * &nbsp;Performance&nbsp; * &nbsp;Platforms</HomeH3>
           </YStack>
 
           <InteractiveContainer theme={tint} maxWidth="100%" als="center">
@@ -42,7 +42,7 @@ export function HeroExampleCode() {
                     theme={i === activeIndex ? 'active' : null}
                     key={i}
                     borderRadius="$0"
-                    size="$3"
+                    size="$4"
                     fontFamily="$silkscreen"
                     // fontWeight={i === activeIndex ? '700' : '400'}
                   >
@@ -53,15 +53,15 @@ export function HeroExampleCode() {
             </ScrollView>
           </InteractiveContainer>
 
-          <XStack $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
-            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$6">
-              <CodeExamples {...activeExample.input} />
+          <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
+            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$4">
               <Paragraph minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Input</CodeInline>
                 <span style={{ opacity: 0.65 }}>
                   &nbsp;－&nbsp;{activeExample.input.description}
                 </span>
               </Paragraph>
+              <CodeExamples {...activeExample.input} />
             </YStack>
 
             <YStack
@@ -71,23 +71,23 @@ export function HeroExampleCode() {
               right={0}
               ai="center"
               jc="center"
-              bottom={0}
-              mx={-30}
+              top={70}
+              theme="alt2"
               zIndex={1000}
               pe="none"
             >
               <IconStack als="center" p="$3" mb={0}>
-                <FastForward color="var(--colorHover)" size={18} />
+                <FastForward color="var(--colorHover)" size={22} />
               </IconStack>
             </YStack>
-            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$6">
-              <CodeExamples {...activeExample.output} />
+            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$4">
               <Paragraph minHeight={50} ta="center" px="$6">
                 <CodeInline size="$4">Output</CodeInline>
                 <span style={{ opacity: 0.65 }}>
                   &nbsp;－&nbsp;{activeExample.output.description}
                 </span>
               </Paragraph>
+              <CodeExamples {...activeExample.output} />
             </YStack>
           </XStack>
         </YStack>
@@ -108,7 +108,7 @@ const CodeExamples = memo(({ examples }: any) => {
             <Button
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
-              size="$3"
+              size="$4"
               key={i}
               borderRadius="$0"
             >
@@ -134,10 +134,10 @@ const CodeExamples = memo(({ examples }: any) => {
 
 const examples = [
   {
-    name: 'Inline',
+    name: 'Shorthands',
     input: {
       description:
-        'write styles naturally, without having to name everything. Use your own typed theme values.',
+        'Fully typed shorthands you can set up yourself work with all the features of Tamagui.',
       examples: [
         {
           name: 'app.tsx',
@@ -145,11 +145,8 @@ const examples = [
           code: `import { YStack, Text } from 'tamagui'
 
 const App = () => (
-  <YStack
-    paddingHorizontal="$1"
-    width={550}
-  >
-    <Text fontSize="$1" color="$color">
+  <YStack px="$2" w={550} $gtSm={{ px: '$6' }}>
+    <Text fs="$2">
       Lorem ipsum dolor.
     </Text>
   </YStack>
@@ -157,41 +154,34 @@ const App = () => (
         },
 
         {
-          name: 'tamagui.config.tsx',
+          name: 'tamagui.config.ts',
           language: 'jsx',
-          code: `const tokens = createTokens({
-  space: { 1: 5, 2: 10, 3: 20 },
-  fontSize: { 1: 12, 2: 14, 3: 16 },
-  color: { white: '#fff' }
-})
-
-export default createTamagui({
-  tokens,
-  theme: {
-    light: {
-      color: tokens.color.white,
-    }
-  },
+          code: `export default createTamagui({
+  shorthands: {
+    px: 'paddingHorizontal',
+    w: 'width',
+    c: 'color',
+    fs: 'fontSize',
+  }
 })`,
         },
       ],
     },
-
     output: {
       description:
-        'the compiler optimizes inline styles to atomic CSS and flattens components to HTML tags.',
+        'Shorthands work with the compiler support of media queries, psuedo styling and conditional logic.',
       examples: [
         {
           name: 'app.js',
-          code: `const _cn2 = " _color-1gcmrwd _display-1471scf _fontFamily-187pbxx _fontSize-mmgcxm"
-const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-1vvdr1v _paddingRight-9myuio _width-11mp6g5"
-import { Text, YStack } from 'tamagui'
-
-const App = () => <div className={_cn}>
-    <span className={_cn2}>
-      Lorem ipsum dolor.
-    </span>
-  </div>`,
+          code: `const _cn2 = " _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p"
+  const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
+  import { Text, YStack } from 'tamagui'
+  
+  const App = () => <div className={_cn}>
+      <span className={_cn2}>
+        Lorem ipsum dolor.
+      </span>
+    </div>`,
           language: 'jsx',
         },
         {
@@ -199,14 +189,14 @@ const App = () => <div className={_cn}>
           code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
 ._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 ._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
-._paddingLeft-1vvdr1v{padding-left:var(--space-1);}
-._paddingRight-9myuio{padding-right:var(--space-1);}
+._paddingLeft-11jtx42{padding-left:var(--space-2);}
+._paddingRight-4a8ukp{padding-right:var(--space-2);}
 ._width-11mp6g5{width:550px;}
-._color-1gcmrwd{color:var(--color);}
+@media screen and (min-width: 861px) { :root:root ._paddingLeft-_gtSm_1hxi05q{padding-left:var(--space-6);} }
+@media screen and (min-width: 861px) { :root:root ._paddingRight-_gtSm_poy3ov{padding-right:var(--space-6);} }
 ._display-1471scf{display:inline;}
 ._fontFamily-187pbxx{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
-._fontSize-mmgcxm{font-size:var(--fontSize-1);}
-`,
+._fontSize-7uzi8p{font-size:var(--fontSize-2);}`,
           language: 'css',
         },
       ],
@@ -241,7 +231,7 @@ const App = (props) => (
     },
     output: {
       description:
-        'the compiler evaluates ternaries, spreads, even deeply nested logic and turns heavy objects into simple strings.',
+        'the compiler evaluates ternaries, spreads, and nested logic, reducing objects and runtime CSS insertion.',
       examples: [
         {
           name: 'app.js',
@@ -336,76 +326,6 @@ const App = () => <div className={_cn} />`,
 @media not all and (hover: none) { :root  ._backgroundColor--hover-57dg7b:hover{background-color:rgba(0,0,255,1.00);} }
 @media screen and (min-width: 861px) { :root:root ._backgroundColor-_gtSm_1542mo4{background-color:rgba(0,128,0,1.00);} }
 @media screen and (min-width: 861px) { :root:root :root:root  ._backgroundColor-_gtSm_-active-98uye2:active{background-color:rgba(255,255,0,1.00);} }`,
-          language: 'css',
-        },
-      ],
-    },
-  },
-
-  {
-    name: 'Shorthand',
-    input: {
-      description:
-        'Fully typed shorthands you can set up yourself work with all the features of Tamagui.',
-      examples: [
-        {
-          name: 'app.tsx',
-          language: 'jsx',
-          code: `import { YStack, Text } from 'tamagui'
-
-const App = () => (
-  <YStack px="$2" w={550} $gtSm={{ px: '$6' }}>
-    <Text fs="$2">
-      Lorem ipsum dolor.
-    </Text>
-  </YStack>
-)`,
-        },
-
-        {
-          name: 'tamagui.config.ts',
-          language: 'jsx',
-          code: `export default createTamagui({
-  shorthands: {
-    px: 'paddingHorizontal',
-    w: 'width',
-    c: 'color',
-    fs: 'fontSize',
-  }
-})`,
-        },
-      ],
-    },
-    output: {
-      description:
-        'Shorthands work with the compiler support of media queries, psuedo styling and conditional logic.',
-      examples: [
-        {
-          name: 'app.js',
-          code: `const _cn2 = " _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p"
-  const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
-  import { Text, YStack } from 'tamagui'
-  
-  const App = () => <div className={_cn}>
-      <span className={_cn2}>
-        Lorem ipsum dolor.
-      </span>
-    </div>`,
-          language: 'jsx',
-        },
-        {
-          name: 'app.css',
-          code: `._display-6koalj{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;}
-._flexDirection-eqz5dr{-ms-flex-direction:column;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
-._flexShrink-1q142lx{-ms-flex-negative:0;-webkit-flex-shrink:0;flex-shrink:0;}
-._paddingLeft-11jtx42{padding-left:var(--space-2);}
-._paddingRight-4a8ukp{padding-right:var(--space-2);}
-._width-11mp6g5{width:550px;}
-@media screen and (min-width: 861px) { :root:root ._paddingLeft-_gtSm_1hxi05q{padding-left:var(--space-6);} }
-@media screen and (min-width: 861px) { :root:root ._paddingRight-_gtSm_poy3ov{padding-right:var(--space-6);} }
-._display-1471scf{display:inline;}
-._fontFamily-187pbxx{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
-._fontSize-7uzi8p{font-size:var(--fontSize-2);}`,
           language: 'css',
         },
       ],
