@@ -15,6 +15,7 @@
   "dependencies": {
     "@docsearch/css": "^3.0.0",
     "@docsearch/react": "^3.0.0",
+    "@tamagui/animate-presence": "^1.0.0-beta.172",
     "@tamagui/animations-reanimated": "^1.0.0-alpha.68",
     "@tamagui/colors": "^1.0.0-alpha.68",
     "@tamagui/drawer": "^1.0.0-alpha.68",

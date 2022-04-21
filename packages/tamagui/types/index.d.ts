@@ -8,7 +8,7 @@ export * from '@tamagui/use-force-update';
 export * from './hooks/useLayout';
 export * from './hooks/useControllableState';
 export * from './hooks/useKeyboardDismissable';
-export * from './views/A';
+export * from './views/Anchor';
 export * from './views/BlurView';
 export * from './views/Button';
 export * from './views/Card';

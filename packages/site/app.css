@@ -41,44 +41,30 @@ a {
 }
 
 :is(
-  div .paragraph-link,
   p a,
-  span a
+  span:not(.tui_Theme, .tui_Hoverable) a
 ) {
   text-decoration: underline;
-  background-color: var(--backgroundPress);
-  color: var(--colorHover);
-  text-decoration-color: var(--borderColorHover);
-  padding: 2px;
+  background-color: var(--blue2);
+  color: var(--blue10);
+  text-decoration-color: var(--blue6);
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top: 4px;
+  padding-bottom: 6px;
+  margin: -2px;
   border-radius: 4px;
   text-underline-offset: 3px;
 }
 
 :is(
-  div .paragraph-link,
   p a,
-  span a
+  span:not(.tui_Theme, .tui_Hoverable) a
 ):hover {
   text-decoration-style: solid;
-  background-color: var(--backgroundFocus);
-  color: var(--colorPress);
-  text-decoration-color: var(--borderColorPress);
-}
-
-
-
-p,
-input,
-textarea,
-select,
-button {
-  margin: 0;
-}
-
-p a:hover,
-span a:hover {
-  color: var(--blue12);
-  text-decoration-color: var(--borderColorHover);
+  background-color: var(--blue4);
+  color: var(--blue12) !important;
+  text-decoration-color: var(--blue7);
 }
 
 /* display block > display inline-flex bug */
@@ -91,27 +77,11 @@ span._display-1adg3ll > span._display-xoduu5 {
   background-color: #843cc733;
 }
 
-.crisp-edges,
-.crisp-edges * {
-  shape-rendering: crispEdges;
-  image-rendering: optimizeSpeed;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: pixelated;
-  image-rendering: optimize-contrast;
-  -ms-interpolation-mode: nearest-neighbor;
-}
-
 .paragraph-parent .paragraph {
   margin: 0;
 }
 
 /*  */
-
-.text-shadow {
-  text-shadow: 0 2px 2px rgb(0 0 0 / 12%);
-}
 
 .hero-scroll {
   overflow: hidden;
@@ -146,14 +116,17 @@ span._display-1adg3ll > span._display-xoduu5 {
 
 /* reset */
 
+p,
+input,
+textarea,
+select,
+button,
 ul,
 ol,
 li,
 pre {
   margin: 0;
 }
-
-/* .transition {} */
 
 .all {
   transition-property: all;
@@ -229,39 +202,42 @@ pre {
 }
 
 .gradient-blue {
-  background: linear-gradient(90deg, transparent, var(--blue1), var(--purple1), transparent);
+  background: linear-gradient(110deg, var(--blue2), var(--purple2), var(--blue2));
 }
 
 .gradient-pink {
-  background: linear-gradient(90deg, transparent, var(--pink1), var(--red1), transparent);
+  background: linear-gradient(110deg, var(--pink2), var(--red2), var(--pink2));
 }
 
 .gradient-red {
-  background: linear-gradient(90deg, transparent, var(--red1), var(--orange1), transparent);
+  background: linear-gradient(110deg, var(--red2), var(--orange2), var(--red2));
 }
 
 .gradient-orange {
-  background: linear-gradient(90deg, transparent, var(--orange1), var(--yellow1), transparent);
+  background: linear-gradient(110deg, var(--orange2), var(--yellow2), var(--orange2));
 }
 
 .gradient-purple {
-  background: linear-gradient(90deg, transparent, var(--purple1), var(--green1), transparent);
+  background: linear-gradient(110deg, var(--purple2), var(--green2), var(--purple2));
 }
 
 .gradient-green {
-  background: linear-gradient(90deg, transparent, var(--green1), var(--teal1), transparent);
+  background: linear-gradient(110deg, var(--green2), var(--teal2), var(--green2));
 }
 
 .gradient-teal {
-  background: linear-gradient(90deg, transparent, var(--teal1), var(--yellow1), transparent);
+  background: linear-gradient(110deg, var(--teal2), var(--yellow2), var(--teal2));
 }
 
 .rainbow {
   background: -webkit-linear-gradient(
-    90deg,
-    var(--yellow10) 1%,
-    var(--red10) 71%,
-    var(--pink10) 71%
+    45deg,
+    var(--red10),
+    var(--orange10),
+    var(--green10),
+    var(--blue10),
+    var(--purple10),
+    var(--pink10)
   );
 }
 
@@ -289,7 +265,7 @@ iframe {
 .bg-dot-grid {
   contain: paint;
   background-position: center center;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25px' height='25px' viewBox='0 0 25 25' fill='none'%3E%3Ccircle cx='24' cy='24' r='1' fill='rgba(127,127,127,0.1)' /%3E%3C/svg%3E%0A");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='23px' height='23px' viewBox='0 0 23 23' fill='none'%3E%3Ccircle cx='22' cy='22' r='0.88' fill='rgba(127,127,127,0.3)' /%3E%3C/svg%3E%0A");
 }
 
 .bg-grid {
@@ -593,3 +569,6 @@ input, textarea {
   top: 24%;
 }
 
+.ta-right {
+  text-align: right;
+}

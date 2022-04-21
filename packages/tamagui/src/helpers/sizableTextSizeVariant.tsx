@@ -33,6 +33,5 @@ export const sizableTextSizeVariant: VariantSpreadFunction<
     letterSpacing,
     fontSize,
     lineHeight,
-    // TODO fix this should be able to return token typs
   } as any
 }

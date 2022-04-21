@@ -1,6 +1,6 @@
 import { Compass, Cpu, Layers } from '@tamagui/feather-icons'
 import { memo } from 'react'
-import { H3, Paragraph, Text, Theme, XStack, YStack } from 'tamagui'
+import { H3, Paragraph, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { IconStack } from './IconStack'
@@ -23,7 +23,7 @@ export const HeroBelow = memo(() => {
           <IconStack theme="purple_alt2">
             <Cpu size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 fontFamily="$silkscreen" fontWeight="700" size="$6" mb="$2">
+          <H3 fontWeight="700" size="$6" mt="$3" mb="$2">
             Performant
           </H3>
           <Paragraph size="$3" theme="alt2">
@@ -36,13 +36,15 @@ export const HeroBelow = memo(() => {
           <IconStack theme="green_alt2">
             <Compass size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 fontFamily="$silkscreen" fontWeight="700" size="$6" mb="$2">
+          <H3 fontWeight="700" size="$6" mt="$3" mb="$2">
             Easy to adopt
           </H3>
           <Paragraph size="$3" theme="alt2">
             Works with React Native and{' '}
-            <Link href="https://necolas.github.io/react-native-web/">Web</Link>. Use it as a style
-            library or full component kit. Comes with beautiful themes, or BYO.
+            <Link target="_blank" href="https://necolas.github.io/react-native-web/">
+              Web
+            </Link>
+            . Use it as a style library or full component kit. Comes with beautiful themes, or BYO.
           </Paragraph>
         </YStack>
 
@@ -50,7 +52,7 @@ export const HeroBelow = memo(() => {
           <IconStack theme="pink_alt2">
             <Layers size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 fontFamily="$silkscreen" fontWeight="700" size="$6" mb="$2">
+          <H3 fontWeight="700" size="$6" mt="$3" mb="$2">
             Productive
           </H3>
           <Paragraph size="$3" theme="alt2">
@@ -58,17 +60,6 @@ export const HeroBelow = memo(() => {
             queries, and animations.
           </Paragraph>
         </YStack>
-
-        {/* <YStack flexShrink={1}>
-      <IconStack>
-        <FastForward size={18} color="var(--colorHover)" />
-      </IconStack>
-      <H3 mb="$2">Native</H3>
-      <Paragraph size="$3" theme="alt2">
-        On the web Tamagui extracts styles to atomic CSS using CSS variables for themes and
-        CSS media queries - even if you use hooks. On native, it extracts StyleSheet.
-      </Paragraph>
-    </YStack> */}
       </XStack>
     </ContainerLarge>
   )

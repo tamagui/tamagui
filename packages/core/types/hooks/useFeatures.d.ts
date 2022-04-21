@@ -1,15 +1,17 @@
 /// <reference types="react" />
 import { ViewStyle } from 'react-native';
-import { ComponentState } from '../defaultComponentState';
-import { PseudoStyles } from '../static';
-import { UseAnimationHook } from '../types';
+import { PseudoStyles, SplitStyleState } from '../types';
+import { StaticConfigParsed, TamaguiComponentState, UseAnimationHook } from '../types';
 declare type FeatureUtils = {
     forceUpdate: Function;
-    state: ComponentState;
-    setStateShallow: (next: Partial<ComponentState>) => void;
+    state: SplitStyleState;
+    setStateShallow: (next: Partial<TamaguiComponentState>) => void;
     useAnimations?: UseAnimationHook;
     pseudos: PseudoStyles;
     style: ViewStyle | null | undefined;
+    staticConfig: StaticConfigParsed;
+    theme: any;
+    onDidAnimate?: () => void;
 };
 export declare const useFeatures: (props: any, utils?: FeatureUtils | undefined) => JSX.Element[];
 export {};

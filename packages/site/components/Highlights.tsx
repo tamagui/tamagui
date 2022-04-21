@@ -23,8 +23,6 @@ const Select = (props) => <select {...props} />
 export function Highlights({ features, disableLinks }: any) {
   const router = useRouter()
   const frontmatter = React.useContext(FrontmatterContext)
-  // @ts-ignore
-  const publishedName = frontmatter.publishedName || frontmatter.name || ''
 
   return (
     <YStack
@@ -51,12 +49,12 @@ export function Highlights({ features, disableLinks }: any) {
       </YStack>
 
       {!disableLinks && (
-        <YStack space="$2" tag="nav" aria-labelledby="site-component-info-header">
+        <YStack space="$4" tag="nav" aria-labelledby="site-component-info-header">
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
 
-          <YStack py="$1" ai="center">
+          <YStack ai="center">
             <Select
               // @ts-ignore
               value={frontmatter.version}
@@ -77,47 +75,34 @@ export function Highlights({ features, disableLinks }: any) {
 
           <Separator />
 
-          <YStack py="$2" space="$1">
-            <YStack>
-              <Link
-                // /${publishedName}/src
-                href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views`}
-                // @ts-ignore
-                target="_blank"
-              >
-                <XStack ai="center" space="$1">
-                  <SizableText size="$2">View source</SizableText>
-                  <YStack opacity={0.5} ml="$0.5">
-                    <ExternalLink size={12} color="var(--colorHover)" />
-                  </YStack>
-                </XStack>
-              </Link>
-            </YStack>
-            <YStack>
-              <Link
-                // @tamagui/react-${publishedName}
-                href={`https://www.npmjs.com/package/tamagui`}
-                // @ts-ignore
-                target="_blank"
-              >
-                <XStack ai="center" space="$1">
-                  <SizableText size="$2">View on npm</SizableText>
-                  <YStack opacity={0.5} ml="$0.5">
-                    <ExternalLink size={12} color="var(--colorHover)" />
-                  </YStack>
-                </XStack>
-              </Link>
-            </YStack>
-            <YStack>
-              <Link href="https://github.com/tamagui/tamagui/issues/new/choose" target="_blank">
-                <XStack ai="center" space="$1">
-                  <SizableText size="$2">Report an issue</SizableText>
-                  <YStack opacity={0.5} ml="$0.5">
-                    <ExternalLink size={12} color="var(--colorHover)" />
-                  </YStack>
-                </XStack>
-              </Link>
-            </YStack>
+          <YStack space="$3">
+            <Link
+              href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views/${frontmatter.component}.tsx`}
+              target="_blank"
+            >
+              <XStack ai="center" space="$1">
+                <SizableText size="$2">View source</SizableText>
+                <YStack opacity={0.5} ml="$0.5">
+                  <ExternalLink size={12} color="var(--colorHover)" />
+                </YStack>
+              </XStack>
+            </Link>
+            <Link href={`https://www.npmjs.com/package/tamagui`} target="_blank">
+              <XStack ai="center" space="$1">
+                <SizableText size="$2">View on npm</SizableText>
+                <YStack opacity={0.5} ml="$0.5">
+                  <ExternalLink size={12} color="var(--colorHover)" />
+                </YStack>
+              </XStack>
+            </Link>
+            <Link href="https://github.com/tamagui/tamagui/issues/new/choose" target="_blank">
+              <XStack ai="center" space="$1">
+                <SizableText size="$2">Report an issue</SizableText>
+                <YStack opacity={0.5} ml="$0.5">
+                  <ExternalLink size={12} color="var(--colorHover)" />
+                </YStack>
+              </XStack>
+            </Link>
 
             {/* @ts-ignore */}
             {frontmatter.aria && (

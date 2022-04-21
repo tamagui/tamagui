@@ -19,7 +19,9 @@ export function styled<
   ParentComponent extends StylableComponent,
   // = VariantDefinitions<GetProps<ParentComponent>> gives type inference to variants: { true: { ... } }
   // but causes "Type instantiation is excessively deep and possibly infinite."...
-  Variants extends VariantDefinitions<{}> = {}
+  Variants extends VariantDefinitions<ParentComponent> | symbol =
+    | VariantDefinitions<ParentComponent>
+    | symbol
 >(
   Component: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -74,13 +76,13 @@ export function styled<
     : Object
 
   // sprinkle in our variants
-  type OurVariants = Variants extends Object
-    ? {
+  type OurVariants = Variants extends symbol
+    ? {}
+    : {
         [Key in keyof Variants]?: GetVariantValues<keyof Variants[Key]>
       }
-    : {}
 
-  type VariantProps = ParentVariants & OurVariants
+  type VariantProps = Omit<ParentVariants, keyof OurVariants> & OurVariants
   type OurPropsBase = ParentPropsBase & VariantProps
 
   type Props = Variants extends void | symbol
@@ -88,9 +90,9 @@ export function styled<
     : // start with base props
       OurPropsBase &
         // add in media (+ pseudos nested)
-        MediaProps<OurPropsBase> &
+        MediaProps<Partial<OurPropsBase>> &
         // add in pseudos
-        PseudoProps<OurPropsBase>
+        PseudoProps<Partial<OurPropsBase>>
 
   return component as TamaguiComponent<
     Props,
@@ -101,8 +103,8 @@ export function styled<
   >
 }
 
-// type Merge<A, B> = Omit<A, keyof B> & B
-// import { Stack } from './views/Stack'
+// test types:
+
 // export const SizableText = styled(Stack, {
 //   name: 'SizableText',
 //   backgroundColor: 'red',
@@ -116,28 +118,35 @@ export function styled<
 //     },
 //   },
 // })
+// export const Heading = styled(SizableText, {
+//   tag: 'span',
+//   name: 'Heading',
+//   accessibilityRole: 'header',
+//   size: '$8',
+//   margin: 0,
+// })
 // export const Paragraph = styled(SizableText, {
-//   name: 'Paragraph',
 //   tag: 'p',
-//   // variants: {
-//   //   another: {
-//   //     true: {}
-//   //   }
-//   // }
+//   margin: 10,
+//   variants: {
+//     another: {
+//       true: {},
+//     },
+//   },
 // })
 // export const Paragraph2 = styled(Paragraph, {
-//   name: 'Paragraph',
 //   tag: 'p',
 //   variants: {
 //     another: {
-//       true: {
-//         color: 'red'
-//       },
-//     }
-//   }
+//       '...color': (val) => ({
+//         backgroundColor: 'red',
+//       }),
+//     },
+//   },
 // })
 // const a = <SizableText size="$10" />
-// const y = <Paragraph2 size="$10" another />
+// const b = <Paragraph size="$10" another />
+// const c = <Paragraph2 size="$10" another="aliceblue" />
 // export const SizableText2 = styled(SizableText, {
 // })
 // const xx = <SizableText2 abc />

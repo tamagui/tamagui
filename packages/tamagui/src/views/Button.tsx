@@ -57,10 +57,13 @@ const ButtonFrame = styled(SizableStack, {
   borderColor: '$borderColor',
   justifyContent: 'center',
   alignItems: 'center',
-  cursor: 'pointer',
   flexWrap: 'nowrap',
   hoverable: true,
   pressable: true,
+
+  // TODO only on hoverable/pressable!
+  // would need to merge variants
+  cursor: 'pointer',
 
   variants: {
     active: {
@@ -148,6 +151,8 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   }
   const themedIcon = icon ? addTheme(icon) : null
   const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
+
+  ;<SizableText flexGrow={1} />
 
   const contents = noTextWrap
     ? children

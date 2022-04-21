@@ -1,6 +1,6 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import React from 'react'
-import { Paragraph, Text, TextProps } from 'tamagui'
+import { Paragraph, SizableText, Text, TextProps } from 'tamagui'
 
 export type LinkProps = Omit<NextLinkProps, 'passHref' | 'as'> &
   TextProps & {
@@ -22,9 +22,15 @@ export const Link = ({
   const allChildrenStrings = React.Children.toArray(children).every((x) => typeof x === 'string')
   return (
     <NextLink passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
-      <Text cursor="pointer" tag="a" color="$color" hoverStyle={{ color: '$color' }} {...props}>
+      <SizableText
+        cursor="pointer"
+        tag="a"
+        color="$color"
+        hoverStyle={{ color: '$color' }}
+        {...props}
+      >
         {allChildrenStrings ? children : children}
-      </Text>
+      </SizableText>
     </NextLink>
   )
 }

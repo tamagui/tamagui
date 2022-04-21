@@ -81,10 +81,8 @@ export function Header({
               fontFamily="$silkscreen"
               p="$2"
               cursor="pointer"
-              size="$6"
-              letterSpacing={3}
-              theme="alt2"
-              o={0.8}
+              size="$4"
+              o={0.7}
               hoverStyle={{ opacity: 1 }}
               tag="a"
             >
@@ -97,18 +95,14 @@ export function Header({
               fontFamily="$silkscreen"
               p="$2"
               cursor="pointer"
-              size="$6"
-              letterSpacing={3}
-              theme="alt2"
-              o={0.8}
+              size="$4"
+              o={0.7}
               hoverStyle={{ opacity: 1 }}
               tag="a"
             >
               Blog
             </Paragraph>
           </NextLink>
-
-          <Spacer size="$2" />
 
           <ThemeToggle chromeless={floating} />
         </XStack>

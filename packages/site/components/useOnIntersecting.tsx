@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from 'react'
+import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { debounce } from 'tamagui'
 
 type DisposeFn = () => void
@@ -6,6 +6,18 @@ type IntersectFn = (
   props: IntersectionObserverEntry & { dispose?: DisposeFn | null },
   didResize?: boolean
 ) => void | DisposeFn
+
+export const useHasIntersectedOnce = (ref: MutableRefObject<HTMLElement | null>) => {
+  const [val, setVal] = useState(false)
+
+  useOnIntersecting(ref, ({ isIntersecting }) => {
+    if (isIntersecting) {
+      setVal(true)
+    }
+  })
+
+  return val
+}
 
 export const useOnIntersecting = (
   ref: MutableRefObject<HTMLElement | null>,

@@ -19,9 +19,9 @@ import img3 from '../public/photo3.webp'
 
 export default function ResponsiveDemo() {
   const header = (
-    <XStack $sm={{ p: '$3', px: '$4', fullscreen: true }}>
+    <XStack f={1}>
       <YStack f={1}>
-        <Spacer $gtSm={{ display: 'none' }} flex={1} />
+        <Spacer $gtSmall={{ display: 'none' }} flex />
         <H3>Enchanting Garden</H3>
         <XStack ai="center" space>
           <MapPin size={12} color="var(--color)" />
@@ -29,7 +29,7 @@ export default function ResponsiveDemo() {
         </XStack>
       </YStack>
       <YStack ai="flex-end">
-        <Spacer flex={1} />
+        <Spacer flex $gtSmall={{ display: 'none' }} />
         <H4>$45</H4>
         <Paragraph>/night</Paragraph>
       </YStack>
@@ -41,9 +41,11 @@ export default function ResponsiveDemo() {
       <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">
         <YStack>
           <Image width={800} height={200} src={img1.src} />
-          <Overlay $gtSm={{ display: 'none' }} />
+          <Overlay $gtSmall={{ display: 'none' }} />
         </YStack>
-        <YStack $gtSm={{ display: 'none' }}>{header}</YStack>
+        <YStack $small={{ p: '$3', px: '$4', fullscreen: true }} $gtSmall={{ display: 'none' }}>
+          {header}
+        </YStack>
       </XStack>
     </Theme>
   )
@@ -51,25 +53,40 @@ export default function ResponsiveDemo() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui — Responsive Demo" />
-      <YStack mah="100vh" ov="hidden" p="$4" $gtSm={{ flexDirection: 'row-reverse' }}>
-        <YStack pos="relative" $gtXs={{ display: 'none' }}>
+      <YStack mah="100vh" ov="hidden" p="$4" $gtLarge={{ flexDirection: 'row-reverse' }}>
+        <YStack pos="relative" $gtSmall={{ display: 'none' }}>
           {coverPhoto}
         </YStack>
 
-        <XStack space $xs={{ display: 'none' }} $gtSm={{ flexDirection: 'column', maw: 400 }}>
-          <YStack ov="hidden" f={2} maw={400} $gtSm={{ maw: '100%' }}>
+        <XStack space $small={{ display: 'none' }} $gtLarge={{ flexDirection: 'column', maw: 450 }}>
+          <YStack ov="hidden" f={2} maw={400} $gtMedium={{ maw: '100%', f: 0 }}>
             {coverPhoto}
           </YStack>
-          <YStack ai="center" y={0} br="$6" ov="hidden" f={1}>
-            <Image width={400} height={200} src={img2.src} />
-          </YStack>
-          <YStack ai="center" y={0} br="$6" ov="hidden" f={1}>
-            <Image width={400} height={200} src={img3.src} />
-          </YStack>
+          <XStack flex={1} maw="50%" $gtLarge={{ maw: '100%' }}>
+            <YStack ai="center" h={200} y={0} br="$6" ov="hidden" f={1}>
+              <Image width={450} height={200} src={img2.src} />
+            </YStack>
+            <YStack
+              ai="center"
+              h={200}
+              y={0}
+              br="$6"
+              ov="hidden"
+              f={1}
+              display="none"
+              $gtMedium={{ display: 'flex', ml: '$4' }}
+              // $small={{ display: 'none' }}
+              // $gtLarge={{ display: 'none' }}
+            >
+              <Image width={450} height={200} src={img3.src} />
+            </YStack>
+          </XStack>
         </XStack>
 
-        <YStack f={1} p="$4" $gtSm={{ p: 0, pr: '$6' }}>
-          <YStack $sm={{ display: 'none' }}>{header}</YStack>
+        <YStack f={1} p="$4" $gtLarge={{ p: 0, pr: '$6' }}>
+          <YStack display="none" $gtSmall={{ display: 'flex' }}>
+            {header}
+          </YStack>
           <YStack f={1} space="$4">
             <XStack>
               <XStack ai="center" space>
@@ -91,7 +108,7 @@ export default function ResponsiveDemo() {
               destinations.
             </Paragraph>
 
-            <Paragraph $sm={{ display: 'none' }} theme="alt1" size="$4">
+            <Paragraph $medium={{ display: 'none' }} theme="alt1" size="$4">
               A lovely, private and very clean cottage with all amenities for a comfortable and
               peaceful stay. We are a 20 minute walk from the Hawaii Tropical Botanical Garden and
               well situated for touring to Akaka Falls, Volcano National Park, and many other

@@ -41,6 +41,7 @@ export const docsRoutes = [
       { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
       { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },
       { title: 'HTML Elements', route: '/docs/components/html-elements' },
+      { title: 'Anchor', route: '/docs/components/anchor' },
     ],
   },
 

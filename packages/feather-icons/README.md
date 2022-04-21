@@ -12,7 +12,7 @@ The main difference between them is that this project outputs React Native SVG c
 
 You will also need to ensure you have installed [React Native SVG](https://github.com/react-native-community/react-native-svg) into your project.
 
-### Usage
+#### Usage
 
 ```javascript
 import { Camera } from '@tamagui/react-feather';

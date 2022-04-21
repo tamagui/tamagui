@@ -41,6 +41,7 @@ export declare const silkscreenFont: {
     };
     letterSpacing: {
         4: number;
+        5: number;
         6: number;
     };
 };

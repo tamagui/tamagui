@@ -2,6 +2,7 @@
 title: HTML Elements
 description: Components that map to accessible HTML elements.
 name: html-elements
+component: Layouts
 ---
 
 # HTML Elements
@@ -19,33 +20,6 @@ To assist in creating accessible web apps, the following components are exported
 - `Nav` (html `nav`)
 
 On native, these elements will render the same.
-
-## A
-
-The `<A />` component extends (SizableText)[/docs/components/text#sizable-text], adding the `href`, `target`, and `rel` attributes.
-
-On native, it will use React Native `Linking.openURL`, on web it will render to an `a` element with `href` set appropriately.
-
-<PropsTable
-  data={[
-    {
-      name: 'href',
-      required: false,
-      type: 'string',
-      description: `Location to link to.`,
-    },
-    {
-      name: 'target',
-      required: false,
-      type: 'string',
-    },
-    {
-      name: 'rel',
-      required: false,
-      type: 'string',
-    },
-  ]}
-/>
 
 ### HTML element props
 

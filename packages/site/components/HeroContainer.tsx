@@ -5,10 +5,12 @@ export function HeroContainer({
   children,
   demoMultiple,
   smaller,
+  noPad,
 }: {
   demoMultiple?: boolean
   children?: React.ReactNode
   smaller?: boolean
+  noPad?: boolean
 }) {
   return (
     <YStack
@@ -20,8 +22,12 @@ export function HeroContainer({
       alignItems="center"
       justifyContent="center"
       py={50}
-      minHeight={380}
+      minHeight={300}
+      y={0}
       borderRadius="$4"
+      {...(noPad && {
+        py: 0,
+      })}
       $gtMd={{
         mx: smaller ? 0 : '$-4',
       }}

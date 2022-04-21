@@ -21,7 +21,7 @@ export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps 
     letterSpacing?: SizableTextProps['letterSpacing'];
     textAlign?: SizableTextProps['textAlign'];
 };
-declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & {
+declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -33,10 +33,10 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-} & {
+}, "active" | "circular"> & {
     active?: boolean | undefined;
     circular?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & {
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -48,10 +48,10 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-} & {
+}, "active" | "circular"> & {
     active?: boolean | undefined;
     circular?: boolean | undefined;
-}> & import("@tamagui/core").PseudoProps<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & {
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -63,10 +63,10 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-} & {
+}, "active" | "circular"> & {
     active?: boolean | undefined;
     circular?: boolean | undefined;
-}>, any, import("@tamagui/core").StackPropsBase, {
+}>>, any, import("@tamagui/core").StackPropsBase, {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {

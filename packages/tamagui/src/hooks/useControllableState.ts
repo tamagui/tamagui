@@ -20,7 +20,6 @@ export function useControllableState<T>({
   const propWins = strategy === 'prop-wins'
 
   useEffect(() => {
-    console.warn('prop cahnge', prop)
     setVal((prev) => getNextStateWithCallback(prev, prop, handleChange))
   }, [prop])
 
@@ -28,19 +27,10 @@ export function useControllableState<T>({
     val,
     useCallback(
       (next: any) => {
-        console.log('huh')
         if (propWins && prop !== undefined) {
           return
         }
         setVal((prev) => {
-          console.log(
-            'next',
-            getNextStateWithCallback(
-              prev,
-              typeof next === 'function' ? next(prev) : next,
-              handleChange
-            )
-          )
           return getNextStateWithCallback(
             prev,
             typeof next === 'function' ? next(prev) : next,

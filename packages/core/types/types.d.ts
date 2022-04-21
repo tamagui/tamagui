@@ -149,6 +149,7 @@ export declare type TransformStyleProps = {
 };
 export declare type TamaguiComponentPropsBase = {
     animation?: AnimationKeys;
+    animateOnly?: string[];
     children?: any | any[];
     debug?: boolean | 'break' | 'verbose';
     disabled?: boolean;
@@ -196,6 +197,13 @@ export declare type PseudoProps<A> = {
     enterStyle?: A | null;
 };
 export declare type PsuedoPropKeys = keyof PseudoProps<any>;
+export declare type PseudoStyles = {
+    hoverStyle?: ViewStyle;
+    pressStyle?: ViewStyle;
+    focusStyle?: ViewStyle;
+    enterStyle?: ViewStyle;
+    exitStyle?: ViewStyle;
+};
 declare type WithThemeAndShorthands<A extends object> = WithThemeValues<A> & WithShorthands<WithThemeValues<A>>;
 declare type WithThemeShorthandsAndPseudos<A extends object> = WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>;
 declare type WithThemeShorthandsPseudosMediaAnimation<A extends object> = WithThemeShorthandsAndPseudos<A> & MediaProps<WithThemeShorthandsAndPseudos<A>>;
@@ -236,7 +244,7 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
 };
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
-    propMapper: (key: string, value: any, theme: ThemeObject, props: any, staticConfig: StaticConfig, resolveVariablesAs?: ResolveVariableTypes, avoidDefaultProps?: boolean) => undefined | boolean | {
+    propMapper: (key: string, value: any, theme: ThemeObject, props: any, resolveVariablesAs?: ResolveVariableTypes, avoidDefaultProps?: boolean) => undefined | boolean | {
         [key: string]: any;
     };
     variantsParsed?: {
@@ -280,7 +288,7 @@ export declare type StylableComponent = TamaguiComponent | React.Component | Rea
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
 export declare type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends React.Component<infer Props> ? Omit<Props, keyof StackProps> & StackProps : A extends new (props: infer Props) => any ? Omit<Props, keyof StackProps> & StackProps : {};
 export declare type SpreadKeys = '...fontSize' | '...size' | '...color' | '...lineHeight' | '...letterSpacing' | '...zIndex' | '...theme';
-export declare type VariantDefinitions<MyProps = {}> = MyProps extends Object ? {
+export declare type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, MyProps = GetProps<Parent>> = MyProps extends Object ? {
     [propName: string]: {
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
     } & {
@@ -321,6 +329,22 @@ declare type ZIndexKeys = 'zIndex';
 declare type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor';
 declare type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'x' | 'y' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset';
 declare type CSSColorNames = 'aliceblue' | 'antiquewhite' | 'aqua' | 'aquamarine' | 'azure' | 'beige' | 'bisque' | 'black' | 'blanchedalmond' | 'blue' | 'blueviolet' | 'brown' | 'burlywood' | 'cadetblue' | 'chartreuse' | 'chocolate' | 'coral' | 'cornflowerblue' | 'cornsilk' | 'crimson' | 'cyan' | 'darkblue' | 'darkcyan' | 'darkgoldenrod' | 'darkgray' | 'darkgreen' | 'darkkhaki' | 'darkmagenta' | 'darkolivegreen' | 'darkorange' | 'darkorchid' | 'darkred' | 'darksalmon' | 'darkseagreen' | 'darkslateblue' | 'darkslategray' | 'darkturquoise' | 'darkviolet' | 'deeppink' | 'deepskyblue' | 'dimgray' | 'dodgerblue' | 'firebrick' | 'floralwhite' | 'forestgreen' | 'fuchsia' | 'gainsboro' | 'ghostwhite' | 'gold' | 'goldenrod' | 'gray' | 'green' | 'greenyellow' | 'honeydew' | 'hotpink' | 'indianred ' | 'indigo  ' | 'ivory' | 'khaki' | 'lavender' | 'lavenderblush' | 'lawngreen' | 'lemonchiffon' | 'lightblue' | 'lightcoral' | 'lightcyan' | 'lightgoldenrodyellow' | 'lightgrey' | 'lightgreen' | 'lightpink' | 'lightsalmon' | 'lightseagreen' | 'lightskyblue' | 'lightslategray' | 'lightsteelblue' | 'lightyellow' | 'lime' | 'limegreen' | 'linen' | 'magenta' | 'maroon' | 'mediumaquamarine' | 'mediumblue' | 'mediumorchid' | 'mediumpurple' | 'mediumseagreen' | 'mediumslateblue' | 'mediumspringgreen' | 'mediumturquoise' | 'mediumvioletred' | 'midnightblue' | 'mintcream' | 'mistyrose' | 'moccasin' | 'navajowhite' | 'navy' | 'oldlace' | 'olive' | 'olivedrab' | 'orange' | 'orangered' | 'orchid' | 'palegoldenrod' | 'palegreen' | 'paleturquoise' | 'palevioletred' | 'papayawhip' | 'peachpuff' | 'peru' | 'pink' | 'plum' | 'powderblue' | 'purple' | 'red' | 'rosybrown' | 'royalblue' | 'saddlebrown' | 'salmon' | 'sandybrown' | 'seagreen' | 'seashell' | 'sienna' | 'silver' | 'skyblue' | 'slateblue' | 'slategray' | 'snow' | 'springgreen' | 'steelblue' | 'tan' | 'teal' | 'thistle' | 'tomato' | 'turquoise' | 'violet' | 'wheat' | 'white' | 'whitesmoke' | 'yellow' | 'yellowgreen';
+export declare type TamaguiComponentState = {
+    hover: boolean;
+    press: boolean;
+    pressIn: boolean;
+    focus: boolean;
+    mounted: boolean;
+    animation?: null | {
+        style?: any;
+        avoidClasses?: boolean;
+    };
+};
+export declare type SplitStyleState = TamaguiComponentState & {
+    noClassNames?: boolean;
+    resolveVariablesAs?: ResolveVariableTypes;
+    fallbackProps?: Object;
+};
 declare type AnimationConfig = {
     [key: string]: any;
 };
@@ -331,19 +355,24 @@ export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig>
     View?: any;
     Text?: any;
 };
-export declare type UseAnimationProps = {
+export declare type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any> & {
     animation: string;
-    [key: string]: any;
 };
-export declare type UseAnimationState = {
-    style: ViewStyle | null | undefined;
-    isMounted: boolean;
-    exitStyle?: ViewStyle | null;
+export declare type UseAnimationHelpers = {
+    staticConfig: StaticConfigParsed;
+    getStyle: (props?: {
+        isEntering?: boolean;
+        exitVariant?: string | null;
+        enterVariant?: string | null;
+    }) => ViewStyle;
+    state: SplitStyleState;
+    pseudos: PseudoProps<ViewStyle>;
     onDidAnimate?: any;
     delay?: number;
 };
-export declare type UseAnimationHook = (props: UseAnimationProps, state: UseAnimationState) => {
-    style?: StackStylePropsBase;
+export declare type UseAnimationHook = (props: UseAnimationProps, helpers: UseAnimationHelpers) => {
+    style?: StackStylePropsBase | StackStylePropsBase[];
+    safeToUnmount?: () => void;
 };
 export {};
 //# sourceMappingURL=types.d.ts.map

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRef, useState } from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
 
 import { BenchmarkChart } from '../components/BenchmarkChart'
@@ -6,9 +7,18 @@ import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
 import { CocentricCircles } from './CocentricCircles'
 import { useTint } from './ColorToggleButton'
-import { Glow } from './Glow'
+import { useOnIntersecting } from './useOnIntersecting'
 
 export function HeroPerformance() {
+  const ref = useRef<HTMLElement>(null)
+  const [show, setShow] = useState(false)
+
+  useOnIntersecting(ref, ({ isIntersecting }) => {
+    if (isIntersecting) {
+      setShow(true)
+    }
+  })
+
   return (
     <ContainerLarge position="relative">
       <YStack pos="absolute" o={0.1} top={-1000} left={0} right={0} x={500} ai="center">
@@ -17,20 +27,19 @@ export function HeroPerformance() {
 
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
-          <HomeH2>Effortless performance</HomeH2>
+          <HomeH2 ref={ref}>Next-level performance</HomeH2>
           <HomeH3 maw={580}>
-            Use typed inline props for styling.
-            <br />
-            Get&nbsp;back clean, fast atomic CSS.
+            Media queries, themes & inline styles - even with logic - all compile to clean, fast
+            atomic CSS.
           </HomeH3>
         </YStack>
 
         <YStack pos="relative" px="$2" h={181} br="$8" width="100%" ai="stretch" jc="center">
-          <YStack fullscreen zi={-1} className="bg-grid mask-gradient-right" />
-
+          {/* <YStack fullscreen zi={-1} className="bg-grid mask-gradient-right" /> */}
+          {/* 
           <YStack fullscreen rotateY="-10deg" x={300} zi={-1}>
             <Glow />
-          </YStack>
+          </YStack> */}
 
           <Paragraph
             pos="absolute"
@@ -44,20 +53,22 @@ export function HeroPerformance() {
             Lower is better. As of February 2022.
           </Paragraph>
 
-          <BenchmarkChart
-            animateEnter
-            skipOthers
-            large
-            data={[
-              { name: 'Tamagui', value: 0.02 },
-              { name: 'react-native-web', value: 0.063 },
-              { name: 'Dripsy', value: 0.108 },
-              { name: 'NativeBase', value: 0.73 },
-              { name: 'Stitches', value: 0.037 },
-              { name: 'Emotion', value: 0.069 },
-              { name: 'Styled Components', value: 0.081 },
-            ]}
-          />
+          {show && (
+            <BenchmarkChart
+              animateEnter
+              skipOthers
+              large
+              data={[
+                { name: 'Tamagui', value: 0.02 },
+                { name: 'react-native-web', value: 0.063 },
+                { name: 'Dripsy', value: 0.108 },
+                { name: 'NativeBase', value: 0.73 },
+                { name: 'Stitches', value: 0.037 },
+                { name: 'Emotion', value: 0.069 },
+                { name: 'Styled Components', value: 0.081 },
+              ]}
+            />
+          )}
         </YStack>
 
         <BenchmarksLink />

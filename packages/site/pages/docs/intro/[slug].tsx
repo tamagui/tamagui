@@ -25,7 +25,7 @@ export default function DocIntroPage({ frontmatter, code }: Doc) {
       <H1 letterSpacing={-1} fontWeight="700">
         {frontmatter.title}
       </H1>
-      <Spacer />
+      <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
       <QuickNav key={frontmatter.slug} />

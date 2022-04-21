@@ -45,9 +45,9 @@ import { createAnimations } from '@tamagui/animations-css'
 
 export default createTamagui({
   animations: createAnimations({
-    easeInFast: 'ease-in 150ms',
-    easeInMedium: 'ease-in 300ms',
-    easeInSlow: 'ease-in 450ms',
+    fast: 'ease-in 150ms',
+    medium: 'ease-in 300ms',
+    slow: 'ease-in 450ms',
   })
   // ...
 })
@@ -73,19 +73,19 @@ import { createAnimations } from '@tamagui/animations-reanimated'
 
 export default createTamagui({
   animations: createAnimations({
-    easeInFast: {
+    fast: {
       type: 'spring',
       damping: 20,
       mass: 1.2,
       stiffness: 250,
     },
-    easeInMedium: {
+    medium: {
       type: 'spring',
       damping: 10,
       mass: 0.9,
       stiffness: 100,
     },
-    easeInSlow: {
+    slow: {
       type: 'spring',
       damping: 20,
       stiffness: 60,
@@ -107,25 +107,13 @@ Note the keys match between CSS and reanimated, so you can swap them out.
   option.
 </Notice>
 
-## Usage
+### Usage
 
-The `animation` prop will now have `springy` as a valid value. By default, animations will apply to all animatable styles. This is a lot like setting `all` in a CSS animation.
+The `animation` can now accept `slow` as a value. By default, animations will apply to all animatable styles, a lot like setting `all` in a CSS `transition`. Let's test this by setting `hoverStyle`:
 
-Let's adding some hover styles to see them animate:
+Here's an example animating `hoverStyle`:
 
-```tsx
-
-```
-
-We can limit the properties animations apply to with the `animated` prop:
-
-```tsx
-
-```
-
-Here's a working demo:
-
-<HeroContainer smaller>
+<HeroContainer>
   <AnimationsHoverDemo />
 </HeroContainer>
 
@@ -178,4 +166,49 @@ Wrap one or more tamagui components with AnimatePresence. This enables the use t
   presence in the tree.
 </Notice>
 
-TODO slideshow like framer https://www.framer.com/docs/animate-presence/
+<HeroContainer smaller noPad>
+  <AnimationsPresenceDemo />
+</HeroContainer>
+
+```jsx collapsible template=AnimationsPresence
+
+```
+
+AnimatePresence takes two optional special properties, `enterVariant` and `exitVariant`, which allow you to override enterStyle and exitStyle conditionally. These properties would be impossible to change otherwise. This is a simple example, hit "Show Code" for the carousel demo above to see a more practical usage of it:
+
+```tsx
+import { Square, AnimatePresence, styled } from 'tamagui'
+
+const AnimatableSquare = styled(Square, {
+  variants: {
+    fromRight: {
+      true: {
+        x: 1000
+      },
+    },
+    fromLeft: {
+      true: {
+        x: -1000
+      }
+    }
+  }
+})
+
+export const MyComponent = ({ isVisible }) => (
+  <AnimatePresence enterVariant="fromLeft" exitVariant="fromRight">
+    {isVisible && (
+      <Square
+        key="my-square"
+        animation="bounce"
+        backgroundColor="green"
+        size={50}
+        exitStyle={{
+          opacity: 0,
+        }}
+      />
+    )}
+  </AnimatePresence>
+)
+```
+
+Note that it will always find the `true` variant and use that. In the future, Tamagui may be able to add support for more flexible variants here.

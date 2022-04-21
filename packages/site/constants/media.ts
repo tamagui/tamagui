@@ -1,16 +1,24 @@
-const isResponsiveDemo = typeof window !== 'undefined' && location.pathname === '/demo-responsive'
-
-export const demoMedia = [475, 620, 780, 950, 1200]
+export const demoMedia = [500, 620, 780, 900]
+export const widths = [660, 800, 1020, 1280]
 
 export const media = {
-  xs: { maxWidth: isResponsiveDemo ? demoMedia[0] : 660 },
-  sm: { maxWidth: isResponsiveDemo ? demoMedia[1] : 800 },
-  md: { maxWidth: isResponsiveDemo ? demoMedia[2] : 1020 },
-  lg: { maxWidth: isResponsiveDemo ? demoMedia[3] : 1280 },
-  xl: { maxWidth: 1420 },
+  // for site
+  xs: { maxWidth: 660 },
+  sm: { maxWidth: 800 },
+  md: { maxWidth: 1020 },
+  lg: { maxWidth: 1280 },
   gtXs: { minWidth: 660 + 1 },
   gtSm: { minWidth: 800 + 1 },
   gtMd: { minWidth: 1020 + 1 },
   gtLg: { minWidth: 1280 + 1 },
-  short: { maxHeight: 820 },
+
+  // for responsive demo only
+  tiny: { maxWidth: 500 },
+  gtTiny: { minWidth: 500 + 1 },
+  small: { maxWidth: 620 },
+  gtSmall: { minWidth: 620 + 1 },
+  medium: { maxWidth: 780 },
+  gtMedium: { minWidth: 780 + 1 },
+  large: { maxWidth: 900 },
+  gtLarge: { minWidth: 900 + 1 },
 }

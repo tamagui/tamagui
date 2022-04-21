@@ -26,13 +26,15 @@ export default (props: { position?: number; animation?: AnimationKeys }) => {
         size={110}
         bc="$green10"
         br="$9"
-        {...position}
+        bw={2}
+        boc="transparent"
         hoverStyle={{
           scale: 1.1,
         }}
         pressStyle={{
           scale: 0.9,
         }}
+        {...position}
         onPress={() => next()}
       >
         <LogoIcon downscale={0.75} />
@@ -64,11 +66,23 @@ export const positions = [
     y: -50,
     scale: 0.5,
     rotate: '-45deg',
+    hoverStyle: {
+      scale: 0.6,
+    },
+    pressStyle: {
+      scale: 0.4,
+    },
   },
   {
     x: 50,
     y: 50,
     scale: 1,
     rotate: '180deg',
+    hoverStyle: {
+      scale: 1.1,
+    },
+    pressStyle: {
+      scale: 0.9,
+    },
   },
 ]

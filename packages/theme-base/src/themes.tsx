@@ -110,6 +110,7 @@ const createTheme: ThemeCreator = (
     borderColorFocus: isLight
       ? get(colors, 4 - str, 'borderColor')
       : get(backgrounds, 3 + str, 'borderColor'),
+    // colorStronger: get(colors, str + strongerDir),
     color: get(colors, 0 + str, 'color'),
     colorHover: get(colors, 1 + str, 'color'),
     colorPress: get(colors, 2 + str, 'color'),
@@ -159,18 +160,18 @@ export const lightGradient = [
 ]
 
 export const darkGradient = [
-  '#0f0f0f',
   '#111111',
-  '#141414',
+  '#151515',
   '#191919',
-  '#242424',
-  '#292929',
+  '#232323',
+  '#282828',
   '#323232',
   '#383838',
   '#424242',
   '#494949',
   '#545454',
   '#626262',
+  '#777777',
 ]
 
 const lightThemes = createThemesFrom('light', createTheme, {

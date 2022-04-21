@@ -4,7 +4,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getMdxBySlug } from '@lib/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
-import { H1 } from 'tamagui'
+import { H1, Spacer } from 'tamagui'
 
 import { SubTitle } from '../../../components/SubTitle'
 import type { Frontmatter } from '../../../frontmatter'
@@ -25,6 +25,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
       <H1 letterSpacing={-1} fontWeight="700">
         {frontmatter.title}
       </H1>
+      <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />
       <QuickNav />

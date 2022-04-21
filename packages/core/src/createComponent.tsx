@@ -8,7 +8,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from 'react'
@@ -16,34 +15,43 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
-import { isAndroid, isTouchDevice, isWeb } from './constants/platform'
+import { isAndroid, isTouchDevice, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { rnw } from './constants/rnw'
 import { isVariable } from './createVariable'
-import { ComponentState, defaultComponentState } from './defaultComponentState'
+import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import {
-  ClassNamesObject,
-  PseudoStyles,
-  SplitStyleResult,
-  getSplitStyles,
-} from './helpers/getSplitStyles'
+import { ClassNamesObject, SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
+import { getAllSelectors } from './helpers/insertStyleRule'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
+  PseudoStyles,
   SpaceTokens,
   StackProps,
   StaticConfig,
   StaticConfigParsed,
   TamaguiComponent,
+  TamaguiComponentState,
   TamaguiInternalConfig,
   UseAnimationHook,
 } from './types'
 import { TextAncestorContext } from './views/TextAncestorContext'
 
-export const mouseUps = new Set<Function>()
+React['keep']
 
+export const defaultComponentState: TamaguiComponentState = {
+  hover: false,
+  press: false,
+  pressIn: false,
+  focus: false,
+  // only used by enterStyle
+  mounted: false,
+  animation: null,
+}
+
+export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
   document.addEventListener('mouseup', () => {
     mouseUps.forEach((x) => x())
@@ -51,23 +59,8 @@ if (typeof document !== 'undefined') {
   })
 }
 
-type DefaultProps = {}
-
-function createShallowUpdate(setter: React.Dispatch<React.SetStateAction<ComponentState>>) {
-  return (next: Partial<ComponentState>) => {
-    setter((prev) => {
-      for (const key in next) {
-        if (prev[key] !== next[key]) {
-          return { ...prev, ...next }
-        }
-      }
-      return prev
-    })
-  }
-}
-
 export function createComponent<
-  ComponentPropTypes extends Object = DefaultProps,
+  ComponentPropTypes extends Object = {},
   Ref = View,
   BaseProps = never
 >(configIn: Partial<StaticConfig> | StaticConfigParsed) {
@@ -94,7 +87,7 @@ export function createComponent<
   let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }> | null = null
   let defaultsClassName: ClassNamesObject | null = null
   let initialTheme: any
-  let splitStyleResult: SplitStyleResult | null = null
+  let defaultSplitStyleResult: SplitStyleResult | null = null
 
   function addPseudoToStyles(styles: any[], name: string, pseudos: any) {
     // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
@@ -120,41 +113,33 @@ export function createComponent<
 
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
-    const [state, set_] = useState<ComponentState>(defaultComponentState)
+    const [state, set_] = useState<TamaguiComponentState>(defaultComponentState)
     const setStateShallow = createShallowUpdate(set_)
 
-    const shouldAvoidClasses = !!(state.animation && avoidClasses)
-    const splitInfo = getSplitStyles(
+    const shouldAvoidClasses = !!(props.animation && avoidClasses)
+    const splitStyles = getSplitStyles(
       props,
       staticConfig,
       theme,
       shouldAvoidClasses ? { ...state, noClassNames: true, resolveVariablesAs: 'value' } : state,
-      defaultsClassName
+      shouldAvoidClasses ? null : defaultsClassName
     )
 
-    const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitInfo
+    const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitStyles
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
     const hasEnterStyle = !!props.enterStyle
-
-    const styleWithPseudos = props.animation
-      ? merge(
-          { ...defaultNativeStyle, ...style },
-          state.hover && pseudos.hoverStyle,
-          state.press && pseudos.pressStyle,
-          state.focus && pseudos.focusStyle,
-          hasEnterStyle && !state.mounted && pseudos.enterStyle,
-          ...Object.values(medias)
-        )
-      : null
 
     const features = useFeatures(props, {
       forceUpdate,
       setStateShallow,
       useAnimations,
       state,
-      style: styleWithPseudos,
+      style: props.animation ? { ...defaultNativeStyle, ...style } : null,
       pseudos,
+      staticConfig,
+      theme,
+      onDidAnimate: props.onDidAnimate,
     })
 
     const {
@@ -229,19 +214,18 @@ export function createComponent<
         isMounted: true,
       }
     }
-    useEffect(() => {
-      if (hasEnterStyle) {
-        // we need to use state to properly have mounted go from false => true
-        setStateShallow({
-          mounted: true,
-        })
-      }
+
+    useIsomorphicLayoutEffect(() => {
+      // we need to use state to properly have mounted go from false => true
+      setStateShallow({
+        mounted: true,
+      })
       internal.current!.isMounted = true
       return () => {
         mouseUps.delete(unPress)
         internal.current!.isMounted = false
       }
-    }, [])
+    }, [hasEnterStyle])
 
     if (nativeID) {
       viewProps.id = nativeID
@@ -355,7 +339,7 @@ export function createComponent<
         if (process.env.NODE_ENV === 'development') {
           if (props['debug']) {
             // prettier-ignore
-            console.log('  » className', { isStringElement, pseudos, state, defaultsClassName, classNames, propsClassName: props.className, style, classList, className: className.trim().split(' '), themeClassName: theme.className })
+            console.log('  » className', { isStringElement, pseudos, state, defaultsClassName, classNames, propsClassName: props.className, style, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
           }
         }
         viewProps.className = className
@@ -437,8 +421,6 @@ export function createComponent<
         pressIn: false,
       })
     }, [])
-
-    console.log('attachHover, attachHover', attachHover, pseudos && pseudos.hoverStyle)
 
     const events = shouldAttach
       ? {
@@ -572,10 +554,10 @@ export function createComponent<
 
     content = createElement(ViewComponent, viewProps, childEls)
 
-    console.log('should', attachHover)
     if (isWeb && events && attachHover) {
       content = (
         <span
+          className="tui_Hoverable"
           style={{
             display: 'contents',
           }}
@@ -591,7 +573,7 @@ export function createComponent<
       if (props['debug']) {
         viewProps['debug'] = true
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, state, styles, pseudos, content, childEls, shouldAvoidClasses, animation: props.animation, style, defaultNativeStyle, splitStyleResult, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, defaultsClassName, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, defaultSplitStyleResult, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
       }
     }
 
@@ -610,18 +592,31 @@ export function createComponent<
   // Once configuration is run and all components are registered
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
+    if (process.env.IS_STATIC === 'is_static') {
+      // in static mode we just use these to lookup configuration
+      return
+    }
     const shouldDebug = staticConfig.defaultProps?.debug
     tamaguiConfig = conf
     avoidClasses = !!tamaguiConfig.animations?.avoidClasses
     AnimatedText = tamaguiConfig.animations?.Text
     AnimatedView = tamaguiConfig?.animations?.View
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-    splitStyleResult = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, {
-      mounted: true,
-      resolveVariablesAs: 'variable',
-    })
+    defaultSplitStyleResult = getSplitStyles(
+      staticConfig.defaultProps,
+      staticConfig,
+      initialTheme,
+      {
+        mounted: true,
+        hover: false,
+        press: false,
+        pressIn: false,
+        focus: false,
+        resolveVariablesAs: 'both',
+      }
+    )
 
-    const { classNames, pseudos, style, viewProps } = splitStyleResult
+    const { classNames, pseudos, style, viewProps } = defaultSplitStyleResult
 
     if (isWeb) {
       defaultsClassName = classNames
@@ -649,7 +644,7 @@ export function createComponent<
     // prettier-ignore
     if (process.env.NODE_ENV === 'development' && shouldDebug && process.env.IS_STATIC !== 'is_static') {
       // prettier-ignore
-      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, ...splitStyleResult })
+      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, ...defaultSplitStyleResult })
     }
   })
 
@@ -658,6 +653,8 @@ export function createComponent<
   if (configIn.memo) {
     res = memo(res) as any
   }
+
+  res['whyDidYouRender'] = true
 
   res['staticConfig'] = {
     validStyles: validStyleProps,
@@ -691,6 +688,7 @@ export const Spacer = createComponent<
   }
 >({
   memo: true,
+  componentName: 'Spacer',
   defaultProps: {
     ...stackDefaultStyles,
     size: true,
@@ -783,48 +781,6 @@ export function spacedChildren({
     }
   }
   return next
-}
-
-// TODO this can be removed likey for bundle size, didnt help reanimated fix as i thought
-const merge = (...styles: (ViewStyle | null | false | undefined)[]) => {
-  // ensure transforms get merged without duplicates:
-  // so if you have a:
-  //  transform: [{ scale: 1 }]
-  // rest[0]:
-  //  transform: [{ scale: 1.1 }]
-  // it gets properly merged so that rest[0] overwrites a
-  if (!styles[0]) return // never happens
-  const res: ViewStyle = {}
-
-  const len = styles.length
-  for (let i = len - 1; i >= 0; i--) {
-    const cur = styles[i]
-    if (!cur) continue
-
-    for (const key in cur) {
-      const val = cur[key]
-      if (key !== 'transform') {
-        if (!(key in res)) {
-          res[key] = val
-        }
-        continue
-      }
-      if (!res.transform) {
-        res.transform = val
-        continue
-      }
-      // transform
-      for (const t of val) {
-        const tkey = Object.keys(t)[0]
-        if (res.transform.find((existing) => tkey in existing)) {
-          continue
-        }
-        res.transform.push(t)
-      }
-    }
-  }
-
-  return res
 }
 
 export const AbsoluteFill = (props: any) =>
