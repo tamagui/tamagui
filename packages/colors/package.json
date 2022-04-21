@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/colors",
-  "version": "1.0.0-beta.189+64107267",
+  "version": "1.0.0-beta.207+3fd10ea6",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -17,10 +17,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.189+64107267"
+    "@tamagui/build": "^1.0.0-beta.207+3fd10ea6"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "6410726774260b4de48c270c81a17b168995a3b7"
+  "gitHead": "3fd10ea6d026fac0339fbc1a501ee304f4985b05"
 }

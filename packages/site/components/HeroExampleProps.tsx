@@ -1,6 +1,5 @@
-import { Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
+import { Card, Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
 
-import { Card } from './Card'
 import { CheckCircle } from './CheckCircle'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
@@ -8,7 +7,7 @@ import { HomeH2, HomeH3 } from './HomeH2'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText size="$4" fow="800">
+      <SizableText size="$5" fow="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
@@ -23,7 +22,7 @@ const Features = ({ items, ...props }: any) => {
   return (
     <YStack space {...props}>
       {items.map((feature, i) => (
-        <Card br="$8" key={i} p="$4" py="$6">
+        <Card elevation="$1" key={i} p="$4" py="$6">
           <XStack tag="li">
             <Text color="$green9">
               <CheckCircle />
@@ -40,11 +39,11 @@ export const HeroExampleProps = () => {
   return (
     <ContainerLarge position="relative">
       <YStack ai="center" space="$2">
-        <HomeH2>More in every component</HomeH2>
-        <HomeH3>Productivity with powerful built-in props.</HomeH3>
+        <HomeH2 className="rainbow clip-text">&lt;Propful /&gt;</HomeH2>
+        <HomeH3>More built-in props.</HomeH3>
       </YStack>
 
-      <XStack px="$6" pt="$8" space="$4" $sm={{ flexDirection: 'column' }}>
+      <XStack px="$6" pt="$4" space="$4" $sm={{ flexDirection: 'column' }}>
         <YStack w="50%" $sm={{ w: '100%' }}>
           <Features
             space="$4"

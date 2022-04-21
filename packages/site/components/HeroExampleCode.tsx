@@ -1,14 +1,12 @@
 import { FastForward } from '@tamagui/feather-icons'
 import { memo, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, InteractiveContainer, Paragraph, Theme, XStack, YStack } from 'tamagui'
+import { Button, InteractiveContainer, Paragraph, XStack, YStack } from 'tamagui'
 
-import { CocentricCircles } from './CocentricCircles'
 import { CodeInline } from './Code'
 import { CodeDemo } from './CodeDemo'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
-import { Glow } from './Glow'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { IconStack } from './IconStack'
 
@@ -20,17 +18,13 @@ export function HeroExampleCode() {
   return (
     <>
       <ContainerLarge position="relative">
-        {/* <YStack pos="absolute" zi={-1} top={-100} left={-200} rotate="-85deg">
-          <Glow contain="strict" bc="$pink10" />
-        </YStack> */}
-
         <YStack zi={1} space="$4">
           <YStack space="$2">
             <HomeH2 size="$12">
               <span className="rainbow clip-text">DX</span> 🤝{' '}
               <span className="rainbow clip-text">UX</span>
             </HomeH2>
-            <HomeH3>Maintance&nbsp; * &nbsp;Performance&nbsp; * &nbsp;Platforms</HomeH3>
+            <HomeH3>Syntax&nbsp; * &nbsp;Performance&nbsp; * &nbsp;Compatibility</HomeH3>
           </YStack>
 
           <InteractiveContainer theme={tint} maxWidth="100%" als="center">
@@ -108,7 +102,7 @@ const CodeExamples = memo(({ examples }: any) => {
             <Button
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
-              size="$4"
+              size="$2"
               key={i}
               borderRadius="$0"
             >

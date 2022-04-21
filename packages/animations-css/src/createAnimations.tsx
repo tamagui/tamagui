@@ -6,23 +6,18 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
     View: 'div',
     Text: 'span',
     animations,
-    useAnimations: (props, { style, exitStyle }) => {
+    useAnimations: (props, { getStyle }) => {
       const animation = animations[props.animation]
       if (!animation) {
         throw new Error(`no animation found: ${props.animation}`)
       }
 
-      console.log('now it is', {
-        transition: `all ${animation}`,
-        ...style,
-        ...exitStyle,
-      })
+      const keys = props.animateOnly ? props.animateOnly.join(' ') : 'all'
 
       return {
         style: {
-          transition: `all ${animation}`,
-          ...style,
-          ...exitStyle,
+          transition: `${keys} ${animation}`,
+          ...getStyle(),
         },
       }
     },

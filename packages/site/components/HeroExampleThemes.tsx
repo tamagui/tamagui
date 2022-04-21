@@ -1,4 +1,3 @@
-// debug
 import { useTheme } from '@components/NextTheme'
 import Link from 'next/link'
 import { SetStateAction, memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
@@ -156,9 +155,11 @@ export function HeroExampleThemes() {
         return (
           <ContainerLarge position="relative" space="$2">
             <HomeH2>
-              <span className="rainbow clip-text">Powerful</span> themes
+              A <span className="rainbow clip-text">new</span> theme engine
             </HomeH2>
-            <HomeH3>Unlimited nested alternate/component themes.</HomeH3>
+            <HomeH3>
+              Themes that customize down to the component, with&nbsp;unlimited alternate shades.
+            </HomeH3>
           </ContainerLarge>
         )
       }, [])}

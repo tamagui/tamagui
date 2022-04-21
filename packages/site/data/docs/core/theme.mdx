@@ -10,7 +10,7 @@ description: Changing themes in your app.
 
 Changing themes in Tamagui is as easy as passing their name to the Theme component.
 
-## Usage
+### Usage
 
 Change themes anywhere in your app like so:
 
@@ -30,7 +30,7 @@ A good example of this setup is [the source of this site itself](https://github.
 
 There is one special property of themes that's very helpful for what is essentially sub-themes, or tints.
 
-Basically, if you have a base `dark` theme and a `light` theme, you may want to have "tinted" versions of those themes. For example `pink-light` and `pink-dark`. That way, instead of having hard-coded color values like `$pink3`, you can use generic theme values like `$background2` and instead wrap that component tree in `<Theme name="pink" />`.
+Basically, if you have a base `dark` theme and a `light` theme, you may want to have "tinted" versions of those themes. For example `pink_light` and `pink_dark`. That way, instead of having hard-coded color values like `$pink3`, you can use generic theme values like `$background` and instead wrap that component tree in `<Theme name="pink" />`.
 
 It's easier to understand with an example. First, define your tokens and themes:
 
@@ -48,26 +48,26 @@ export default createTamagui({
   tokens,
   themes: {
     dark: {
-      bg: '#000',
+      background: '#000',
       color: '#fff',
     },
     light: {
       color: '#000',
-      bg: '#fff',
+      background: '#fff',
     },
-    'pink-dark': {
-      bg: tokens.color.pinkDark,
+    dark_pink: {
+      background: tokens.color.pinkDark,
       color: tokens.color.pinkLight,
     },
-    'pink-light': {
-      bg: tokens.color.pinkLight,
+    light_pink: {
+      background: tokens.color.pinkLight,
       color: tokens.color.pinkDark,
     }
   }
 })
 ```
 
-Using the `-dark` and `-light` suffixes, the `Theme` component will now let us automatically do subsetting:
+Using the `_pink` suffix, the `Theme` component will now let us automatically do subsetting:
 
 ```jsx
 import { Theme, Button } from 'tamagui'
@@ -84,7 +84,7 @@ export default () => {
 }
 ```
 
-Notice we just use the name `pink`. Because theres no `pink` theme, the Theme component will automatically check if theres a theme that matches the pattern `[givenThemeName]-[parentThemeName]`, in this case `pink-dark`. This is really useful for things like having an `active` or `error` theme that match your parent theme styles.
+Notice we just use the name `pink`. Because theres no `pink` theme, the Theme component will automatically check if theres a theme that matches the pattern `[currentThemeName]_[givenName]`, in this case `dark_pink`. This is really useful for things like having an `active` or `error` theme that match your parent theme styles.
 
 ---
 

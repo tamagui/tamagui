@@ -98,11 +98,11 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           top={15}
           right={30}
           ai="center"
-          space="$2"
+          space="$4"
         >
-          <SearchButton />
-
           <AlphaButton />
+
+          <SearchButton />
 
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
             <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">

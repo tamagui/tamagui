@@ -219,6 +219,7 @@ export type TransformStyleProps = {
 //
 export type TamaguiComponentPropsBase = {
   animation?: AnimationKeys
+  animateOnly?: string[]
   children?: any | any[]
   debug?: boolean | 'break' | 'verbose'
   disabled?: boolean
@@ -334,6 +335,14 @@ export type PseudoProps<A> = {
 
 export type PsuedoPropKeys = keyof PseudoProps<any>
 
+export type PseudoStyles = {
+  hoverStyle?: ViewStyle
+  pressStyle?: ViewStyle
+  focusStyle?: ViewStyle
+  enterStyle?: ViewStyle
+  exitStyle?: ViewStyle
+}
+
 //
 // add both theme and shorthands
 //
@@ -440,7 +449,6 @@ export type StaticConfigParsed = StaticConfig & {
     value: any,
     theme: ThemeObject,
     props: any,
-    staticConfig: StaticConfig,
     resolveVariablesAs?: ResolveVariableTypes,
     avoidDefaultProps?: boolean
   ) => undefined | boolean | { [key: string]: any }
@@ -586,7 +594,10 @@ export type SpreadKeys =
   | '...zIndex'
   | '...theme'
 
-export type VariantDefinitions<MyProps = {}> = MyProps extends Object
+export type VariantDefinitions<
+  Parent extends StylableComponent = TamaguiComponent,
+  MyProps = GetProps<Parent>
+> = MyProps extends Object
   ? {
       [propName: string]:
         | {
@@ -887,6 +898,24 @@ type CSSColorNames =
   | 'yellow'
   | 'yellowgreen'
 
+export type TamaguiComponentState = {
+  hover: boolean
+  press: boolean
+  pressIn: boolean
+  focus: boolean
+  mounted: boolean
+  animation?: null | {
+    style?: any
+    avoidClasses?: boolean
+  }
+}
+
+export type SplitStyleState = TamaguiComponentState & {
+  noClassNames?: boolean
+  resolveVariablesAs?: ResolveVariableTypes
+  fallbackProps?: Object
+}
+
 // Animations:
 
 type AnimationConfig = {
@@ -901,18 +930,32 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   Text?: any
 }
 
-export type UseAnimationProps = { animation: string; [key: string]: any }
-export type UseAnimationState = {
-  style: ViewStyle | null | undefined
-  isMounted: boolean
-  exitStyle?: ViewStyle | null
+export type UseAnimationProps = TamaguiComponentPropsBase &
+  Record<string, any> & {
+    animation: string
+  }
+
+export type UseAnimationHelpers = {
+  staticConfig: StaticConfigParsed
+  getStyle: (props?: {
+    isEntering?: boolean
+    exitVariant?: string | null
+    enterVariant?: string | null
+  }) => ViewStyle
+  state: SplitStyleState
+  pseudos: PseudoProps<ViewStyle>
+  // style: ViewStyle | null | undefined
+  // isMounted: boolean
+  // exitStyle?: ViewStyle | null
   onDidAnimate?: any
   delay?: number
+  // mergedStyles(props?: { isExiting?: boolean }): ViewStyle
 }
 
 export type UseAnimationHook = (
   props: UseAnimationProps,
-  state: UseAnimationState
+  helpers: UseAnimationHelpers
 ) => {
-  style?: StackStylePropsBase
+  style?: StackStylePropsBase | StackStylePropsBase[]
+  safeToUnmount?: () => void
 }

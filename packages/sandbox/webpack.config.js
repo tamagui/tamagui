@@ -81,7 +81,8 @@ module.exports = /** @type { import('webpack').Configuration } */ {
                   target: 'es2020',
                   loader: 'tsx',
                   minify: false,
-                  banner: "import { createElement } from 'react';\n",
+                  banner:
+                    "import { createElement } from '@welldone-software/why-did-you-render';\n",
                 },
               },
               {

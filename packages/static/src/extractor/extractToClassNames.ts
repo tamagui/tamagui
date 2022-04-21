@@ -145,10 +145,6 @@ export function extractToClassNames({
         switch (attr.type) {
           case 'style':
             if (!isFlattened) {
-              if (!attr.name) {
-                throw new Error(`No name`)
-              }
-
               // only ever one at a time i believe so we can be lazy with this access
               const { hoverStyle, pressStyle, focusStyle } = attr.value
               const pseudos = [

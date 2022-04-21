@@ -13,6 +13,7 @@ const ellipseStyle = {
 }
 
 export const Text = createComponent<TextProps, TextView, TextPropsBase>({
+  componentName: 'Text',
   isText: true,
   defaultProps: {
     display: isWeb ? 'inline' : 'flex',

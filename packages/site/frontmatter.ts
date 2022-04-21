@@ -9,4 +9,5 @@ export type Frontmatter = {
   poster?: string
   slug: string
   image?: string
+  component?: string
 }

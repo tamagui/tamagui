@@ -1,31 +1,15 @@
 // debug-verbose
-import { ChevronLeft, ChevronRight, Lock } from '@tamagui/feather-icons'
-import React, { memo, useRef, useState } from 'react'
-import {
-  Button,
-  Circle,
-  H2,
-  Image,
-  Paragraph,
-  ParagraphProps,
-  SizableText,
-  Spacer,
-  Stack,
-  Text,
-  Theme,
-  VisuallyHidden,
-  XStack,
-  YStack,
-  YStackProps,
-} from 'tamagui'
+
+import { AnimatePresence } from '@tamagui/animate-presence'
+import { ArrowLeft, ArrowRight } from '@tamagui/feather-icons'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
+import { Button, Circle, Square, Theme, VisuallyHidden, XStack, YStack, styled } from 'tamagui'
+import { Image } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
 React['keep']
-
-// type y = ParagraphProps['size']
-// const x = <SizableText size="$1" />
-// const x2 = <Paragraph size="$1" />
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as any)
@@ -47,44 +31,109 @@ export const Sandbox = () => {
 }
 
 export const Test = (props) => {
-  const ref = useRef()
-
   return (
     <>
-      <YStack key={props.ley} ref={ref} onPress={props.onPress} />
-      <YStack theme="pink_alt2" tag="a" bc="$color" w={100} h={100}>
-        Beta.0
-      </YStack>
-      <Paragraph size="$2" theme="alt2">
-        by
-        <Button>nate</Button>
-      </Paragraph>
-      <Paragraph theme="alt2">
-        Cross-browser server-side rendering, even for responsive styles and variants out of the box.
-        Next.js plugin and example apps.
-      </Paragraph>
       <VisuallyHidden>something</VisuallyHidden>
+      <AnimationTest />
     </>
   )
 }
 
-//
+// adapted from Framer Motion
+// https://codesandbox.io/s/framer-motion-image-gallery-pqvx3?from-embed=&file=/src/Example.tsx:1422-1470
 
-//      <AnimationTest />
+const AnimationTest = () => {
+  const [[page, direction], setPage] = useState([0, 0])
 
-// export const Card = styled(YStack, {
-//   name: 'Card',
-//   className: 'transition all ease-in ms100',
-//   borderRadius: '$2',
-//   backgroundColor: '$background',
-//   flexShrink: 1,
-//   elevation: '$2',
-//   hoverStyle: {
-//     backgroundColor: '$color',
-//     elevation: '$4',
-//     y: -4,
+  const imageIndex = wrap(0, images.length, page)
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection])
+  }
+
+  const enterVariant = direction === 1 || direction === 0 ? 'isRight' : 'isLeft'
+  const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
+
+  return (
+    <>
+      <XStack pos="relative" w={700} h={300} ai="center">
+        <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
+          <YStackEnterable
+            key={page}
+            animation="bouncy"
+            fullscreen
+            x={0}
+            o={1}
+            // enterStyle={{ x: 0, y: -100 }}
+            // exitStyle={{ x: 0, y: 100 }}
+          >
+            <Image src={images[imageIndex]} width={700} height={300} />
+          </YStackEnterable>
+        </AnimatePresence>
+        <Button
+          icon={ArrowLeft}
+          circular
+          size="$5"
+          pos="absolute"
+          l="$4"
+          onPress={() => paginate(-1)}
+        />
+        <Button
+          icon={ArrowRight}
+          circular
+          size="$5"
+          pos="absolute"
+          r="$4"
+          onPress={() => paginate(1)}
+        />
+      </XStack>
+    </>
+  )
+}
+
+const YStackEnterable = styled(YStack, {
+  variants: {
+    isLeft: { true: { x: -300, opacity: 0 } },
+    isRight: { true: { x: 300, opacity: 0 } },
+  },
+})
+
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
+// const variants = {
+//   enter: (direction: number) => {
+//     return {
+//       x: direction > 0 ? 1000 : -1000,
+//       opacity: 0
+//     };
 //   },
-// })
+//   center: {
+//     zIndex: 1,
+//     x: 0,
+//     opacity: 1
+//   },
+//   exit: (direction: number) => {
+//     return {
+//       zIndex: 0,
+//       x: direction < 0 ? 1000 : -1000,
+//       opacity: 0
+//     };
+//   }
+// };
+
+// const swipeConfidenceThreshold = 10000;
+// const swipePower = (offset: number, velocity: number) => {
+//   return Math.abs(offset) * velocity;
+// };
+
+export const images = [
+  'https://images.unsplash.com/photo-1618472609777-b038f1f04b8d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3164&q=80',
+  'https://images.unsplash.com/photo-1649350319582-e7cea99c9c67?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3143&q=80',
+  'https://images.unsplash.com/photo-1650018943477-781416d478cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2982&q=80',
+]
 
 // const AnimationTest = () => {
 //   const [positionI, setPositionI] = useState(0)
@@ -104,6 +153,9 @@ export const Test = (props) => {
 //         size={110}
 //         bc="red"
 //         br="$9"
+//         enterStyle={{
+//           scale: 0,
+//         }}
 //         hoverStyle={{
 //           scale: 1.1,
 //         }}
@@ -112,44 +164,102 @@ export const Test = (props) => {
 //         }}
 //         {...position}
 //         onPress={() => next()}
-//       />
+//       >
+//         <Circle size={50} bc="blue" />
+//       </Square>
 
 //       <Button pos="absolute" bottom={20} left={20} size="$6" circular onPress={() => next()} />
 //     </>
 //   )
 // }
 
-// export const positions = [
-//   {
-//     x: 0,
-//     y: 0,
-//     scale: 1,
-//     rotate: '0deg',
-//   },
-//   {
-//     x: -50,
-//     y: -50,
-//     scale: 0.5,
-//     rotate: '-45deg',
-//     hoverStyle: {
-//       scale: 0.6,
-//       x: -85,
-//       y: -85,
-//     },
-//     pressStyle: {
-//       scale: 0.4,
-//     },
-//   },
-//   {
-//     x: 50,
-//     y: 50,
-//     scale: 1,
-//     rotate: '180deg',
-//     hoverStyle: {
-//       scale: 1,
-//     },
-//     pressStyle: {
-//       scale: 1,
-//     },
-//   },
-// ]
+// const Feature = (props: any) => {
+//   const position = positions[props.pos]
+//   useLayoutEffect(() => {
+//     props.onChange(position)
+//   }, [position])
+//   return null
+// }
+
+// const AnimationTest = () => {
+//   const [positionI, setPositionI] = useState(0)
+//   const [position, setNow] = useState({})
+//   const [scale, setScale] = useState(0)
+
+//   useLayoutEffect(() => {
+//     setScale(1)
+//   }, [])
+
+//   const style = useAnimatedStyle(
+//     () => ({
+//       transform: [{ scale: withSpring(scale) }, { translateX: withSpring(position.x) }],
+//     }),
+//     [scale, position]
+//   )
+
+//   return (
+//     <>
+//       <Feature pos={positionI} onChange={setNow} />
+//       <Animated.View
+//         style={[
+//           {
+//             width: 100,
+//             height: 100,
+//             alignItems: 'center',
+//             justifyContent: 'center',
+//             backgroundColor: 'red',
+//           },
+//           style,
+//         ]}
+//       >
+//         <Circle size={50} bc="blue" />
+//       </Animated.View>
+
+//       <Button
+//         pos="absolute"
+//         bottom={20}
+//         left={20}
+//         size="$6"
+//         circular
+//         onPress={() => {
+//           setPositionI((x) => (x + 1) % positions.length)
+//         }}
+//       />
+//     </>
+//   )
+// }
+
+export const positions = [
+  {
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotate: '0deg',
+  },
+  {
+    x: -50,
+    y: -50,
+    scale: 0.5,
+    rotate: '-45deg',
+    hoverStyle: {
+      scale: 0.6,
+      x: -85,
+      y: -85,
+    },
+    pressStyle: {
+      scale: 0.4,
+    },
+  },
+  {
+    x: 50,
+    y: 50,
+    scale: 1,
+    rotate: '180deg',
+    hoverStyle: {
+      scale: 1,
+    },
+    pressStyle: {
+      scale: 1,
+    },
+  },
+]

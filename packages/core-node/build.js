@@ -11,7 +11,7 @@ async function build() {
   console.log('building core-node...')
   try {
     await fs.remove('dist')
-    await exec('npx', ['ttsc', '--skipLibCheck', '--skipDefaultLibCheck'])
+    await exec('yarn', ['ttsc', '--skipLibCheck', '--skipDefaultLibCheck'])
     await esbuild.build({
       bundle: true,
       entryPoints: ['./dist/core/src/static.js'],

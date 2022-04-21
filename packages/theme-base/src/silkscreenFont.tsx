@@ -1,11 +1,11 @@
 import { createFont } from '@tamagui/core'
 
 const size = {
-  1: 10,
-  2: 11,
-  3: 12,
-  4: 13,
-  5: 14,
+  1: 11,
+  2: 12,
+  3: 13,
+  4: 14,
+  5: 15,
   6: 16,
   7: 20,
   8: 22,
@@ -22,14 +22,13 @@ const size = {
 export const silkscreenFont = createFont({
   family: 'Silkscreen, Fira Code, Monaco, Consolas, Ubuntu Mono, monospace',
   size,
-  lineHeight: Object.fromEntries(
-    Object.entries(size).map(([k, v]) => [k, v * 1.75])
-  ) as typeof size,
+  lineHeight: Object.fromEntries(Object.entries(size).map(([k, v]) => [k, v * 1.5])) as typeof size,
   weight: {
     4: '300',
   },
   letterSpacing: {
-    4: 1,
-    6: 3,
+    4: 0,
+    5: 1,
+    6: 2,
   },
 })

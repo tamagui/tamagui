@@ -1,27 +1,20 @@
 - beta:
+  - <Spacer /> doesnt work w media query display none
   - 30% fix on native + simple native demo (maybe with starters repo)
-  - 75% animation enterStyle/exitStyle + docs
-  - 75% animation css
-  - 75% animation test hover/press styles + add to animations docs
-  - 80% compiler theme (+ work with visually hidden)
-  - 80% animations docs
+  - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here
   - compiler is inserting default props check effects
 
 - 1:
+  - fonts become factory functions to allow customization
   - auto skeleton components
   - <Avatar />, <Checkbox />/ <Switch />, <Label />, <Select />, <Tabs />
   - create-tamagui-app
       - get some demos in that 100% pass compile / native
-  - animateProps={[]} (basically transition-properties)
-  - // @ts-ignore TODO we need to make GetProps only use StackStylePropsBase and then later build that up better in styled()
-  - // @ts-expect-error TODO
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
   - <BlurView />
   - check theme change slow
-  - slow types
-  - test component theme + alt theme (plus with compiled)
   - docs: extractable(), deoptProps, getExpandedShorthands
 
 - 2: 
@@ -97,6 +90,7 @@
   - <Menu />
   - <MenuDrawer />
 
+  - // TODO only on hoverable/pressable!
   - ios/android specific themes
   - options to render to native components in more places
 
@@ -143,3 +137,5 @@ animation popup 
   - works in production for extra perf
 - compiler hot reload (shouldn't be too hard for basic case)
 - upgrade expo/match-media (there was some problem before)
+
+- vscode plugin to highlight the current node your cursors inside of in dom

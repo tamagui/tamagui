@@ -44,17 +44,17 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
               {result.name}
             </Paragraph>
           </YStack>
-          <XStack pr={65} flex={1} ai="center">
+          <XStack mr={65} flex={1} ai="center">
             <YStack
               bc={getBarColor(result.name)}
               o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
               width={`${(result.value / maxValue) * 100}%`}
               height={10}
-              minWidth={100}
+              br="$1"
               position="relative"
               jc="center"
-              animation="bouncy"
               scaleX={1}
+              animation="bouncy"
               {...(animateEnter && {
                 enterStyle: {
                   scaleX: 0,

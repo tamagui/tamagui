@@ -7,67 +7,72 @@ import { VariantLabels } from './types'
 
 interface PresenceChildProps {
   children: React.ReactElement<any>
-  isPresent: boolean
+  isEntering: boolean | undefined
   onExitComplete?: () => void
   initial?: false | VariantLabels
-  custom?: any
+  exitVariant?: string | null
+  enterVariant?: string | null
   presenceAffectsLayout: boolean
 }
 
 export const PresenceChild = ({
   children,
   initial,
-  isPresent,
+  isEntering,
   onExitComplete,
-  custom,
+  exitVariant,
+  enterVariant,
   presenceAffectsLayout,
 }: PresenceChildProps) => {
   const presenceChildren = useConstant(newChildrenMap)
   const id = useId()
 
   const context = React.useMemo(
-    (): AnimatePresenceContextProps => ({
-      id,
-      initial,
-      isPresent,
-      custom,
-      onExitComplete: (childId: string) => {
-        presenceChildren.set(childId, true)
-        for (const isComplete of presenceChildren.values()) {
-          if (!isComplete) {
-            return // can stop searching when any is incomplete
+    (): AnimatePresenceContextProps => {
+      return {
+        id,
+        initial,
+        isEntering,
+        exitVariant,
+        enterVariant,
+        onExitComplete: (childId: string) => {
+          console.log('on exist complete', childId)
+          presenceChildren.set(childId, true)
+          for (const isComplete of presenceChildren.values()) {
+            if (!isComplete) {
+              return // can stop searching when any is incomplete
+            }
           }
-        }
-        onExitComplete?.()
-      },
-      register: (childId: string) => {
-        presenceChildren.set(childId, false)
-        return () => presenceChildren.delete(childId)
-      },
-    }),
+          onExitComplete?.()
+        },
+        register: (childId: string) => {
+          presenceChildren.set(childId, false)
+          return () => presenceChildren.delete(childId)
+        },
+      }
+    },
     /**
      * If the presence of a child affects the layout of the components around it,
      * we want to make a new context value to ensure they get re-rendered
      * so they can detect that layout change.
      */
-    presenceAffectsLayout ? undefined : [isPresent]
+    presenceAffectsLayout ? undefined : [isEntering, onExitComplete, exitVariant, enterVariant]
   )
 
   // cant this be a useEffect?
   React.useMemo(() => {
     presenceChildren.forEach((_, key) => presenceChildren.set(key, false))
-  }, [isPresent])
+  }, [isEntering])
 
   /**
    * If there's no animated components to fire exit animations, we want to remove this
    * component immediately.
    */
   React.useEffect(() => {
-    if (!isPresent && !presenceChildren.size) {
-      console.log('on exit complete')
+    if (isEntering === false && !presenceChildren.size) {
       onExitComplete?.()
     }
-  }, [isPresent])
+  }, [isEntering])
 
   return (
     <AnimatePresenceContext.Provider value={context}>{children}</AnimatePresenceContext.Provider>

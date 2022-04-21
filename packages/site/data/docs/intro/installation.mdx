@@ -47,6 +47,8 @@ For more information on the options, see the [compiler options](#compiler-option
   Be sure to set the environment variable TAMAGUI_TARGET to "web" or "native" appropriately.
 </Notice>
 
+### Web
+
 #### Webpack
 
 We have a full example of a [plain, webpack-only repo here](https://github.com/tamagui/tamagui/tree/master/packages/sandbox), which should capture the complete configuration more accurately.
@@ -151,6 +153,10 @@ In order to get React to play nicely with next, we've been using `react` and `re
 
 Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS` to "true" can fix issues with Tamagui being resolved incorrectly.
 
+See the [Next.js Guide](/docs/guides/next-js) for more details on setting up your app.
+
+### Native
+
 #### React Native
 
 Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
@@ -175,6 +181,12 @@ module.exports = {
 We've noticed errors in other versions (`0.65.5`), so you may want to pin `@types/react-native` to `0.66.6`.
 
 You'll also need to configure support for unimodules either using [the old method](https://docs.expo.dev/bare/installing-unimodules/), or using the [expo package](https://docs.expo.dev/bare/installing-expo-modules/).
+
+Tamagui uses `@expo/match-media` to power media queries, which in turn relies on `@unimodules/core`. Add version `7.1.2` to your package.json.
+
+#### Expo
+
+[Check out the Expo guide](/docs/guides/expo) for more information on setting up Expo.
 
 ### Compiler options
 
@@ -326,6 +338,17 @@ Tamagui.Provider has optional props:
     },
   ]}
 />
+
+Note, you'll need to handle injecting CSS either through `injectCSS`, or by gathering it yourself and inserting it:
+
+```tsx
+import Tamagui from './tamagui.config'
+
+const css = Tamagui.getCSS()
+// insert into your head
+```
+
+Even when using Webpack, some CSS won't be extracted and so will need to come from this helper.
 
 ### Use any views
 

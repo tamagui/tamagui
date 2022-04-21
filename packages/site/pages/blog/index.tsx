@@ -40,22 +40,22 @@ export default function Blog({ frontmatters }) {
                 mb="$6"
               >
                 <YStack space="$2">
-                  <YStack>
-                    <H3 size="$8" color="$color" cursor="pointer">
+                  <YStack space="$2">
+                    <H3 fontFamily="$silkscreen" size="$6" color="$color" cursor="pointer">
                       {frontmatter.title}
                     </H3>
                     <XStack>
-                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt2">
+                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt4">
                         {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
                       </Paragraph>
-                      <Paragraph cursor="inherit" fow="800" theme="alt2" size="$3">
+                      <Paragraph cursor="inherit" fow="800" theme="alt4" size="$3">
                         &nbsp;by {authors[frontmatter.by].name}
                       </Paragraph>
                       {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}
                     </XStack>
                   </YStack>
 
-                  <Paragraph cursor="inherit" theme="alt1">
+                  <Paragraph cursor="inherit" theme="alt2">
                     {frontmatter.description}
                   </Paragraph>
                 </YStack>

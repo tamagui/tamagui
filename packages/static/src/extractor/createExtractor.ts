@@ -60,6 +60,11 @@ export type Extractor = ReturnType<typeof createExtractor>
 const createTernary = (x: Ternary) => x
 
 export function createExtractor() {
+  if (!process.env.TAMAGUI_TARGET) {
+    console.log('⚠️ Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
+    process.exit(1)
+  }
+
   const shouldAddDebugProp =
     // really basic disable this for next.js because it messes with ssr
     !process.env.npm_package_dependencies_next &&
@@ -118,7 +123,7 @@ export function createExtractor() {
         components: props.components || ['tamagui'],
       })
 
-      loadedTamaguiConfig = tamaguiConfig
+      loadedTamaguiConfig = tamaguiConfig as any
 
       const defaultTheme = tamaguiConfig.themes[Object.keys(tamaguiConfig.themes)[0]]
       const body = fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
@@ -231,27 +236,23 @@ export function createExtractor() {
           // found a valid tag
           res.found++
 
-          if (shouldPrintDebug) {
-            console.log(`\n<${originalNodeName} />`)
-          }
-
           const filePath = sourcePath.replace(process.cwd(), '.')
           const lineNumbers = node.loc
             ? node.loc.start.line +
               (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
             : ''
+          const preName = componentName ? `${componentName}.` : ''
+          const tagId = `${preName}${node.name.name}@${filePath.replace('./', '')}:${lineNumbers}`
+
+          if (shouldPrintDebug) {
+            console.log(`\n<${originalNodeName} /> (${tagId})`)
+          }
 
           // add data-is
           if (shouldAddDebugProp && !disableDebugAttr) {
-            const preName = componentName ? `${componentName}.` : ''
             res.modified++
             node.attributes.unshift(
-              t.jsxAttribute(
-                t.jsxIdentifier('data-is'),
-                t.stringLiteral(
-                  `${preName}${node.name.name}@${filePath.replace('./', '')}:${lineNumbers}`
-                )
-              )
+              t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(tagId))
             )
           }
 
@@ -303,6 +304,8 @@ export function createExtractor() {
             ...(staticConfig.inlineProps || []),
           ])
           const deoptProps = new Set([
+            // always de-opt animation
+            'animation',
             ...(props.deoptProps || []),
             ...(staticConfig.deoptProps || []),
           ])
@@ -657,7 +660,7 @@ export function createExtractor() {
                   styleValue,
                   defaultTheme,
                   staticConfig.defaultProps,
-                  staticConfig
+                  'auto'
                 )
                 if (out) {
                   // translate to DOM-compat
@@ -672,6 +675,10 @@ export function createExtractor() {
               let didInline = false
               const attributes = keys.map((key) => {
                 const val = out[key]
+                if (key === 'theme') {
+                  inlined.set(key, val)
+                  return attr
+                }
                 if (isValidStyleKey(key)) {
                   return {
                     type: 'style',
@@ -681,13 +688,7 @@ export function createExtractor() {
                   } as const
                 }
                 if (validHTMLAttributes[key]) {
-                  return {
-                    type: 'attr',
-                    value: t.jsxAttribute(
-                      t.jsxIdentifier(key),
-                      t.jsxExpressionContainer(literalToAst(val))
-                    ),
-                  } as const
+                  return attr
                 }
                 if (shouldPrintDebug) {
                   console.log('  ! inlining, non-static', key)
@@ -699,7 +700,9 @@ export function createExtractor() {
 
               // weird logic whats going on here
               if (didInline) {
-                console.log('we inlined something off', { attributes })
+                if (shouldPrintDebug) {
+                  console.log('  bailing flattening due to attributes', attributes)
+                }
                 // bail
                 return attr
               }
@@ -1077,11 +1080,10 @@ export function createExtractor() {
           const themeVal = inlined.get('theme')
           inlined.delete('theme')
           const allOtherPropsExtractable = [...inlined].every(([k, v]) => INLINE_EXTRACTABLE[k])
-          const shouldWrapInnerTheme = !!(hasOnlyStringChildren && themeVal)
+          const shouldWrapInnerTheme =
+            allOtherPropsExtractable && !!(hasOnlyStringChildren && themeVal)
           const canFlattenProps =
-            inlined.size === 0 ||
-            (allOtherPropsExtractable && shouldWrapInnerTheme) ||
-            allOtherPropsExtractable
+            inlined.size === 0 || shouldWrapInnerTheme || allOtherPropsExtractable
 
           let shouldFlatten =
             !shouldDeopt &&
@@ -1091,38 +1093,36 @@ export function createExtractor() {
             (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
 
           // wrap theme around children on flatten
-          if (shouldWrapInnerTheme) {
-            const parents = traversePath.parentPath.node
-            if (!t.isJSXElement(parents) && !t.isJSXFragment(parents)) {
-              // cant support this bail
-              shouldFlatten = false
-            } else {
-              if (typeof themeVal === 'string') {
-                // insert import
-                if (!hasImportedTheme) {
-                  hasImportedTheme = true
-                  programPath.node.body.push(
-                    t.importDeclaration(
-                      [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
-                      t.stringLiteral('@tamagui/core')
-                    )
-                  )
-                }
-
-                const children = parents.children
-                parents.children = [
-                  t.jsxElement(
-                    t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
-                      t.jsxAttribute(t.jsxIdentifier('name'), t.stringLiteral(`${themeVal}`)),
-                    ]),
-                    t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
-                    children
-                  ),
-                ]
-              } else {
-                // failed eval
-              }
+          if (shouldFlatten && shouldWrapInnerTheme) {
+            if (typeof themeVal !== 'string') {
+              console.warn('??')
+              return
             }
+
+            if (shouldPrintDebug) {
+              console.log('  - wrapping theme', allOtherPropsExtractable, themeVal)
+            }
+
+            // add import
+            if (!hasImportedTheme) {
+              hasImportedTheme = true
+              programPath.node.body.push(
+                t.importDeclaration(
+                  [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
+                  t.stringLiteral('@tamagui/core')
+                )
+              )
+            }
+
+            traversePath.replaceWith(
+              t.jsxElement(
+                t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
+                  t.jsxAttribute(t.jsxIdentifier('name'), t.stringLiteral(`${themeVal}`)),
+                ]),
+                t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
+                [traversePath.node]
+              )
+            )
           }
 
           // only if we flatten, ensure the default styles are there
@@ -1320,6 +1320,11 @@ export function createExtractor() {
             console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
           }
 
+          const completeProps = {
+            ...staticConfig.defaultProps,
+            ...completeStaticProps,
+          }
+
           // post process
           const getStyles = (props: Object | null, debugName = '') => {
             if (!props) return
@@ -1331,31 +1336,18 @@ export function createExtractor() {
                 }
               }
             }
-            const out = getSplitStyles(
-              props,
-              staticConfig,
-              defaultTheme,
-              {
-                noClassNames: true,
-              }
-              //   , {
-              //   noClassNames: process.env.TAMAGUI_TARGET !== 'web',
-              // }
-            )
+            const out = getSplitStyles(props, staticConfig, defaultTheme, {
+              noClassNames: true,
+              fallbackProps: completeProps,
+              focus: false,
+              hover: false,
+              mounted: true,
+              press: false,
+              pressIn: false,
+            })
             const outStyle = {
               ...out.style,
               ...out.pseudos,
-            }
-            if (shouldPrintDebug === 'verbose') {
-              // // prettier-ignore
-              console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
-              // // prettier-ignore
-              console.log(
-                `       getStyles ${debugName} (out.viewProps):\n`,
-                logLines(objToStr(out.viewProps))
-              )
-              // prettier-ignore
-              console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
             }
             for (const key in outStyle) {
               if (staticConfig.validStyles) {
@@ -1364,23 +1356,29 @@ export function createExtractor() {
                 }
               }
             }
+            if (shouldPrintDebug === 'verbose') {
+              // prettier-ignore
+              console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
+              // prettier-ignore
+              console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
+              // prettier-ignore
+              console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
+            }
             return outStyle
           }
 
           // used to ensure we pass the entire prop bundle to getStyles
-          const completeStylesProcessed = getStyles(
-            {
-              ...staticConfig.defaultProps,
-              ...completeStaticProps,
-            },
-            'completeStylesProcessed'
-          )
+          const completeStylesProcessed = getStyles(completeProps, 'completeStylesProcessed')
 
           if (!completeStylesProcessed) {
             throw new Error(`Impossible, no styles`)
           }
 
           // any extra styles added in postprocess should be added to first group as they wont be overriden
+          // const stylesToAddToInitialGroup = difference(
+          //   Object.keys(completeStylesProcessed),
+          //   Object.keys(completeStaticProps)
+          // )
           const stylesToAddToInitialGroup = shouldFlatten
             ? difference(Object.keys(completeStylesProcessed), Object.keys(completeStaticProps))
             : []
@@ -1496,10 +1494,6 @@ export function createExtractor() {
                 }
               }
             }
-          }
-
-          if (shouldPrintDebug) {
-            console.log('  - attrs (after):\n', logLines(attrs.map(attrStr).join(', ')))
           }
 
           if (shouldFlatten) {

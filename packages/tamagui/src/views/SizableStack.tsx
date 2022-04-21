@@ -19,6 +19,12 @@ export const SizableStack = styled(XStack, {
           borderColor: '$borderColorHover',
         },
       },
+      false: {
+        hoverStyle: {
+          backgroundColor: '$background',
+          borderColor: '$borderColor',
+        },
+      },
     },
 
     pressable: {
@@ -26,6 +32,12 @@ export const SizableStack = styled(XStack, {
         pressStyle: {
           backgroundColor: '$backgroundPress',
           borderColor: '$borderColorPress',
+        },
+      },
+      false: {
+        pressStyle: {
+          backgroundColor: '$background',
+          borderColor: '$borderColor',
         },
       },
     },

@@ -20,6 +20,7 @@ export const InstallInput = memo(() => {
       borderWidth={1}
       borderColor="$borderColor"
       px="$7"
+      pl="$6"
       height={48}
       ai="center"
       als="center"
@@ -30,14 +31,7 @@ export const InstallInput = memo(() => {
         bc: '$background',
       }}
     >
-      <Paragraph
-        o={0.5}
-        ta="center"
-        size="$4"
-        letterSpacing={0.5}
-        fontWeight="500"
-        fontFamily="$mono"
-      >
+      <Paragraph ta="center" size="$5" letterSpacing={0.5} fontWeight="500" fontFamily="$mono">
         npm install tamagui
       </Paragraph>
       <Spacer size="$6" />

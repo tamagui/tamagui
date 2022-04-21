@@ -28,6 +28,7 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^5.2.4",
     "esbuild-loader": "^2.18.0",

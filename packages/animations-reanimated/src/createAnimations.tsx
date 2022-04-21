@@ -1,27 +1,12 @@
-import { AnimatePresenceContext, usePresence } from '@tamagui/animate-presence'
-import { AnimationDriver, UseAnimationProps, UseAnimationState } from '@tamagui/core'
-import { createContext, useCallback, useContext, useEffect } from 'react'
-import {
-  PerpectiveTransform,
-  RotateTransform,
-  RotateXTransform,
-  RotateYTransform,
-  RotateZTransform,
-  ScaleTransform,
-  ScaleXTransform,
-  ScaleYTransform,
-  SkewXTransform,
-  SkewYTransform,
-  TranslateXTransform,
-  TranslateYTransform,
-} from 'react-native'
+import { AnimatePresenceContext, useEntering } from '@tamagui/animate-presence'
+import { AnimationDriver } from '@tamagui/core'
+import { useCallback, useContext, useEffect, useMemo } from 'react'
 import Animated, {
   WithDecayConfig,
   WithSpringConfig,
   WithTimingConfig,
   runOnJS,
   useAnimatedStyle,
-  useSharedValue,
   withDecay,
   withDelay,
   withRepeat,
@@ -29,28 +14,36 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
+type AnimationsConfig<A extends Object = any> = {
+  [Key in keyof A]: AnimationConfig
+}
+
+type AnimationConfig =
+  | ({ type: 'timing'; loop?: number } & WithTimingConfig)
+  | ({ type: 'spring'; loop?: number } & WithSpringConfig)
+  | ({ type: 'decay'; loop?: number } & WithDecayConfig)
+// | ({ type: 'transition' } & TransitionProps)
+
 const AnimatedView = Animated.View
 const AnimatedText = Animated.Text
 
 AnimatedView['displayName'] = 'AnimatedView'
 AnimatedText['displayName'] = 'AnimatedText'
 
-export function createAnimations<A extends Object>(animations: A): AnimationDriver<A> {
+export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
   return {
     avoidClasses: true,
     animations,
     View: AnimatedView,
     Text: AnimatedText,
-    useAnimations: (props: UseAnimationProps, state: UseAnimationState) => {
-      const { style, exitStyle, onDidAnimate, delay } = state
-      const [isPresent, safeToUnmount] = usePresence()
+    useAnimations: (props, helpers) => {
+      const { pseudos, onDidAnimate, delay, getStyle, state, staticConfig } = helpers
+      const [isEntering, safeToUnmount] = useEntering()
       const presence = useContext(AnimatePresenceContext)
-      const isMounted = useSharedValue(false)
-      const hasExitStyle = !!exitStyle
-      const custom = useCallback(() => {
-        'worklet'
-        return presence?.custom
-      }, [presence])
+
+      const exitStyle = presence?.exitVariant
+        ? staticConfig.variantsParsed?.[presence.exitVariant]?.true || pseudos.exitStyle
+        : pseudos.exitStyle
 
       const reanimatedOnDidAnimated = useCallback<NonNullable<typeof onDidAnimate>>(
         (...args) => {
@@ -58,35 +51,49 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
         },
         [onDidAnimate]
       )
-      const reanimatedSafeToUnmount = useCallback(() => {
-        safeToUnmount?.()
-      }, [safeToUnmount])
 
-      useEffect(() => {
-        isMounted.value = true
-      }, [isMounted])
+      const all = getStyle({
+        isEntering,
+        exitVariant: presence?.exitVariant,
+        enterVariant: presence?.enterVariant,
+      })
+      const [animatedStyles, nonAnimatedStyle] = [{}, {}]
+      const animatedStyleKey = {
+        transform: true,
+        opacity: true,
+      }
+      for (const key of Object.keys(all)) {
+        if (animatedStyleKey[key]) {
+          animatedStyles[key] = all[key]
+        } else {
+          nonAnimatedStyle[key] = all[key]
+        }
+      }
 
-      useEffect(
-        function allowUnMountIfMissingExit() {
-          if (!isPresent && !hasExitStyle) {
-            reanimatedSafeToUnmount()
-          }
-        },
-        [hasExitStyle, isPresent, reanimatedSafeToUnmount]
-      )
+      const args = [
+        JSON.stringify(animatedStyles),
+        state.mounted,
+        state.hover,
+        state.press,
+        state.pressIn,
+        state.focus,
+        delay,
+        isEntering,
+        onDidAnimate,
+        reanimatedOnDidAnimated,
+        presence?.exitVariant,
+        presence?.enterVariant,
+      ]
 
       const animatedStyle = useAnimatedStyle(() => {
+        const style = animatedStyles
+
         const final = {
           transform: [] as any[],
         }
 
-        const isExiting = !isPresent && !!exitStyle
+        const isExiting = isEntering === false
         const transition = animations[props.animation]
-
-        const mergedStyles = {
-          ...style,
-          ...(isExiting && exitStyle),
-        }
 
         const exitingStyleProps: Record<string, boolean> = {}
         if (exitStyle) {
@@ -95,25 +102,23 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           }
         }
 
-        for (const key in mergedStyles) {
-          const value = mergedStyles[key]
-          const { animation, config, shouldRepeat, repeatCount, repeatReverse } = animationConfig(
-            key,
-            transition
-          )
+        for (const key in style) {
+          const value = style[key]
+          const aconf = animationConfig(key, transition)
+          const { animation, config, shouldRepeat, repeatCount, repeatReverse } = aconf
 
           const callback: (completed: boolean, value?: any) => void = (completed, recentValue) => {
-            if (onDidAnimate) {
-              runOnJS(reanimatedOnDidAnimated)(key as any, completed, recentValue, {
-                attemptedValue: value,
-              })
-            }
+            runOnJS(reanimatedOnDidAnimated)(key, completed, recentValue, {
+              attemptedValue: value,
+            })
             if (isExiting) {
               exitingStyleProps[key] = false
               const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
               // if this is true, then we've finished our exit animations
               if (!areStylesExiting) {
-                runOnJS(reanimatedSafeToUnmount)()
+                if (safeToUnmount) {
+                  runOnJS(safeToUnmount)()
+                }
               }
             }
           }
@@ -129,22 +134,13 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
             for (const transformObject of value) {
               const key = Object.keys(transformObject)[0]
               const transformValue = transformObject[key]
-              const transform = {} as any
-              if (transition?.[key]?.delay != null) {
-                delayMs = transition?.[key]?.delay ?? null
-              }
               let finalValue = animation(transformValue, config, callback)
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
               }
-              if (delayMs != null) {
-                transform[key] = withDelay(delayMs, finalValue)
-              } else {
-                transform[key] = finalValue
-              }
-              if (Object.keys(transform).length) {
-                final['transform'].push(transform)
-              }
+              final['transform'].push({
+                [key]: finalValue,
+              })
             }
             continue
           }
@@ -179,65 +175,43 @@ export function createAnimations<A extends Object>(animations: A): AnimationDriv
           // end for (key in mergedStyles)
         }
 
-        return final
-      }, [
-        style,
-        custom,
-        delay,
-        // disableInitialAnimation,
-        // exitProp,
-        // exitTransitionProp,
-        // fromProp,
-        hasExitStyle,
-        isMounted,
-        isPresent,
-        onDidAnimate,
-        reanimatedOnDidAnimated,
-        reanimatedSafeToUnmount,
-        // state,
-        // stylePriority,
-        // transitionProp,
-      ])
+        if (process.env.NODE_ENV === 'development' && props['debug']) {
+          console.log('animation style', final)
+        }
 
-      return {
-        style: animatedStyle,
-      }
+        return final
+      }, args)
+
+      return useMemo(() => {
+        return {
+          style: [nonAnimatedStyle, animatedStyle],
+        }
+      }, args)
     },
   }
 }
 
-function animationDelay<Animate>(
+function animationDelay(
   key: string,
-  transition: MotiTransition<Animate> | undefined,
+  transition: AnimationConfig | undefined,
   defaultDelay?: number
 ) {
   'worklet'
-  let delayMs: TransitionConfig['delay'] = defaultDelay
-
-  if (transition[key as keyof Animate]?.delay != null) {
-    delayMs = transition[key as keyof Animate]?.delay
-  } else if (transition?.delay != null) {
-    delayMs = transition.delay
+  if (
+    !transition ||
+    !transition[key] ||
+    transition[key].delayMs === undefined ||
+    transition[key].delayMs === null
+  ) {
+    return {
+      delayMs: null,
+    }
   }
-
   return {
-    delayMs,
+    delayMs: transition[key].delayMs as TransitionConfig['delay'],
   }
 }
 
-type MotiTransition<A> = any
-type Transforms = PerpectiveTransform &
-  RotateTransform &
-  RotateXTransform &
-  RotateYTransform &
-  RotateZTransform &
-  ScaleTransform &
-  ScaleXTransform &
-  ScaleYTransform &
-  TranslateXTransform &
-  TranslateYTransform &
-  SkewXTransform &
-  SkewYTransform
 type TransitionConfigWithoutRepeats = (
   | ({ type?: 'spring' } & WithSpringConfig)
   | ({ type: 'timing' } & WithTimingConfig)
@@ -294,10 +268,7 @@ const isColor = (styleKey: string) => {
   ].includes(styleKey)
 }
 
-function animationConfig<Animate>(
-  styleProp: string,
-  transition: MotiTransition<Animate> | undefined
-) {
+function animationConfig<Animate>(styleProp: string, transition: AnimationConfig | undefined) {
   'worklet'
   const key = styleProp
   let repeatCount = 0
@@ -308,45 +279,47 @@ function animationConfig<Animate>(
     animationType = 'timing'
   }
 
+  if (!transition) {
+    return {}
+  }
+
   // say that we're looking at `width`
   // first, check if we have transition.width.type
-  if (transition[key as keyof Animate]?.type) {
-    animationType = (transition as any)[key]?.type
-  } else if (transition?.type) {
+  if (transition[key]?.type) {
+    animationType = transition[key]?.type
+  } else if (transition.type) {
     // otherwise, fallback to transition.type
     animationType = transition.type
   }
 
-  const loop = transition[key as keyof Animate]?.loop ?? transition?.loop
+  const loop = transition[key]?.loop || transition.loop || null
 
   if (loop != null) {
     repeatCount = loop ? -1 : 0
   }
 
-  if (transition[key as keyof Animate]?.repeat != null) {
-    repeatCount = transition[key as keyof Animate]?.repeat
-  } else if (transition?.repeat != null) {
-    repeatCount = transition.repeat
-  }
+  // if (transition[key]?.repeat != null) {
+  //   repeatCount = transition[key]?.repeat
+  // } else if (transition?.repeat != null) {
+  //   repeatCount = transition.repeat
+  // }
 
-  if (transition[key as keyof Animate]?.repeatReverse != null) {
-    repeatReverse = transition[key as keyof Animate]?.repeatReverse
-  } else if (transition?.repeatReverse != null) {
-    repeatReverse = transition.repeatReverse
-  }
+  // if (transition[key]?.repeatReverse != null) {
+  //   repeatReverse = transition[key]?.repeatReverse
+  // } else if (transition?.repeatReverse != null) {
+  //   repeatReverse = transition.repeatReverse
+  // }
 
   let config = {}
   // so sad, but fix it later :(
-  let animation = (...props: any): any => props
+  let animation: any
 
   if (animationType === 'timing') {
     const duration =
-      (transition[key as keyof Animate] as WithTimingConfig)?.duration ??
-      (transition as WithTimingConfig)?.duration
+      (transition[key] as WithTimingConfig)?.duration ?? (transition as WithTimingConfig)?.duration
 
     const easing =
-      (transition[key as keyof Animate] as WithTimingConfig)?.easing ??
-      (transition as WithTimingConfig)?.easing
+      (transition[key] as WithTimingConfig)?.easing ?? (transition as WithTimingConfig)?.easing
 
     if (easing) {
       config['easing'] = easing

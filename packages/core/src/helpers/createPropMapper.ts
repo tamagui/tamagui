@@ -4,10 +4,10 @@ import { Variable, isVariable } from '../createVariable'
 import { StaticConfig, TamaguiInternalConfig } from '../types'
 import { isObj } from './isObj'
 
-export type ResolveVariableTypes = 'auto' | 'value' | 'variable'
+export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
 
-export const createPropMapper = (c: StaticConfig) => {
-  const variants = c.variants || {}
+export const createPropMapper = (staticConfig: StaticConfig) => {
+  const variants = staticConfig.variants || {}
 
   // goes through specificity finding best matching variant function
   function getVariantFunction(variant: any, key: string, value: any) {
@@ -32,14 +32,13 @@ export const createPropMapper = (c: StaticConfig) => {
     return fn || variant['...'] || variant['...size']
   }
 
-  const defaultProps = c.defaultProps || {}
+  const defaultProps = staticConfig.defaultProps || {}
 
   return (
     key: string,
     value: any,
     theme: any,
     props: any,
-    staticConfig: StaticConfig,
     returnVariablesAs: ResolveVariableTypes = !!props.animation ? 'value' : 'auto',
     avoidDefaultProps = false
   ) => {
@@ -58,44 +57,35 @@ export const createPropMapper = (c: StaticConfig) => {
     if (variant && value !== undefined) {
       let variantValue = getVariantFunction(variant, key, value)
 
-      if (!variantValue) {
-        return value
+      if (variantValue) {
+        if (typeof variantValue === 'function') {
+          variantValue = variantValue(value, {
+            tokens: conf.tokensParsed,
+            theme,
+            // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
+            props: avoidDefaultProps
+              ? props
+              : new Proxy(props, {
+                  get(target, key) {
+                    if (Reflect.has(target, key)) {
+                      return Reflect.get(target, key)
+                    }
+                    // these props may be extracted into classNames, but we still want to access them
+                    // at runtime, so we proxy back to defaultProps but don't pass them
+                    if (staticConfig.defaultProps) {
+                      return Reflect.get(staticConfig.defaultProps, key)
+                    }
+                  },
+                }),
+          })
+        }
+
+        if (isObj(variantValue)) {
+          variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
+        }
+
+        return variantValue
       }
-
-      if (typeof variantValue === 'function') {
-        variantValue = variantValue(value, {
-          tokens: conf.tokensParsed,
-          theme,
-          // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-          props: avoidDefaultProps
-            ? props
-            : new Proxy(props, {
-                get(target, key) {
-                  if (Reflect.has(target, key)) {
-                    return Reflect.get(target, key)
-                  }
-                  // these props may be extracted into classNames, but we still want to access them
-                  // at runtime, so we proxy back to defaultProps but don't pass them
-                  if (staticConfig.defaultProps) {
-                    return Reflect.get(staticConfig.defaultProps, key)
-                  }
-                },
-              }),
-        })
-      }
-
-      // console.log(
-      //   'GOGO',
-      //   variantValue,
-      //   'now',
-      //   resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
-      // )
-
-      if (isObj(variantValue)) {
-        variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
-      }
-
-      return variantValue
     }
 
     let shouldReturn = false

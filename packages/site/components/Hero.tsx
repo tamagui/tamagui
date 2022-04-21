@@ -1,11 +1,3 @@
-// debug
-// import React from 'react'
-// import { H3, H4, Paragraph, Text, YStack, useMedia } from 'tamagui'
-
-// export function Hero() {
-//   return <H4 size="$1">Input</H4>
-// }
-
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { memo } from 'react'
@@ -73,23 +65,28 @@ const HeroTop = memo(() => {
       <YStack
         className="bg-grid mask-gradient-up"
         fullscreen
+        top="auto"
+        height={420}
         left={-1000}
         right={-1000}
-        opacity={0.4}
+        opacity={0.6}
+        pe="none"
       />
 
       <Header />
 
       <YStack
-        space="$6"
+        f={1}
+        ov="hidden"
+        space="$7"
         position="relative"
         pt="$8"
         $sm={{
-          maxWidth: 500,
+          maxWidth: '100%',
           mx: 'auto',
         }}
       >
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
+        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$4">
           <Heading
             size="$9"
             $gtSm={{
@@ -107,7 +104,7 @@ const HeroTop = memo(() => {
                 <span className="rainbow clip-text help">Universal</span>
               </span>
             </Tooltip>{' '}
-            design systems for React&nbsp;Native&nbsp;&&nbsp;Web, faster
+            design systems for React&nbsp;Native &&nbsp;Web, faster
           </Heading>
 
           <YStack
@@ -122,26 +119,24 @@ const HeroTop = memo(() => {
             }}
           >
             <Paragraph
-              debug
               color="$gray10"
-              // opacity={0.5}
               size="$5"
-              letterSpacing={0}
               fontFamily="$silkscreen"
+              letterSpacing={-1.5}
               $gtSm={{
                 ta: 'center',
                 size: '$6',
-                maxWidth: 500,
                 fontWeight: '400',
+                maw: 450,
               }}
               $gtMd={{
-                size: '$8',
-                maxWidth: 900,
+                size: '$7',
                 fontWeight: '400',
+                maw: 550,
               }}
             >
-              Write&nbsp;once,&nbsp;run&nbsp;everywhere with an optimizing compiler = 🔼 perf 🔽
-              code.
+              <span className="rainbow clip-text">Write&nbsp;once,&nbsp;run&nbsp;everywhere</span>{' '}
+              without downside thanks to an optimizing&nbsp;compiler.
             </Paragraph>
           </YStack>
         </YStack>
@@ -153,7 +148,7 @@ const HeroTop = memo(() => {
               borderRadius={1000}
               iconAfter={ArrowRight}
               tag="a"
-              size="$6"
+              size="$5"
               fontWeight="800"
             >
               Get started
@@ -187,7 +182,7 @@ const HeroTop = memo(() => {
         </XStack>
       </YStack>
 
-      <Spacer size="$10" />
+      <Spacer size="$11" />
     </ContainerLarge>
   )
 })

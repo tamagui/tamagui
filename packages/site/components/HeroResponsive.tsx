@@ -3,7 +3,7 @@ import throttle from 'lodash.throttle'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Button, Circle, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
-import { demoMedia, media } from '../constants/media'
+import { demoMedia } from '../constants/media'
 import { useGet } from '../hooks/useGet'
 import favicon from '../public/favicon.svg'
 import { Container, ContainerLarge } from './Container'
@@ -46,6 +46,13 @@ export const HeroResponsive = memo(() => {
     }
   }, [move, bounding])
 
+  useEffect(() => {
+    window.addEventListener('resize', updateBoundings)
+    return () => {
+      window.removeEventListener('resize', updateBoundings)
+    }
+  }, [])
+
   function updateBoundings() {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
     setBounding(rect)
@@ -60,7 +67,7 @@ export const HeroResponsive = memo(() => {
     if (!bounding) return
     const right = bounding.width + bounding.x
     const x = e.pageX - right
-    const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 30
+    const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 120
     const nextMove = Math.min(maxMove, Math.max(0, x))
     const next = nextMove + (prevMove || 0)
     setMove(next)
@@ -114,11 +121,11 @@ export const HeroResponsive = memo(() => {
   }, [])
 
   return (
-    <YStack ref={ref} y={0} mt="$-10" pt="$6" pos="relative">
+    <YStack ref={ref} y={0} mt={-110} pt="$6" pos="relative">
       <ContainerLarge pos="relative">
         <Header />
-        <Spacer size="$8" />
-        <YStack h={browserHeight + 40} />
+        <Spacer size="$6" />
+        <YStack h={browserHeight + 80} />
         <XStack b={-20} pos="absolute" zi={1} f={1} space="$1">
           <YStack
             className="unselectable"
@@ -140,7 +147,7 @@ export const HeroResponsive = memo(() => {
                   <Marker
                     key={i}
                     onPress={handleMarkerPress}
-                    active={sizeI > i}
+                    active={i === 0 ? true : sizeI > i}
                     name={breakpoints[i].name}
                     l={breakpoints[i].at}
                   />
@@ -167,7 +174,16 @@ export const HeroResponsive = memo(() => {
           </YStack>
         </XStack>
 
-        <YStack pos="absolute" zi={0} t={220} l={-1000} r={-1000} b={-75} ai="center" jc="center">
+        <YStack
+          pos="absolute"
+          zi={0}
+          h={browserHeight + 120}
+          l={-1000}
+          r={-1000}
+          b={-75}
+          ai="center"
+          jc="center"
+        >
           <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.1} />
           <YStack pos="relative" f={1} h="100%" w="100%">
             <YStack
@@ -216,27 +232,28 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
 
 const Header = memo(() => {
   return (
-    <XStack f={1}>
-      <XStack $md={{ display: 'none' }}>
-        <IconStack y={-10} theme="pink_alt2" p="$4" ml={-85}>
-          <Monitor size={20} />
-        </IconStack>
-        <Spacer size="$6" />
+    <YStack f={1} space="$3">
+      <XStack>
+        <HomeH2 als="flex-start">Responsive.</HomeH2>
+
+        <XStack jc="center" ai="center" $sm={{ display: 'none' }}>
+          <IconStack als="center" x={40} theme="alt2" p="$3">
+            <Monitor size={18} />
+          </IconStack>
+          <Spacer size="$6" />
+        </XStack>
       </XStack>
 
-      <YStack f={1} space="$2">
-        <HomeH2 als="flex-start">Responsive, done right</HomeH2>
-        <Paragraph maxWidth={450} size="$5" theme="alt2">
-          Sharing responsive designs between web and native saves time, but hooks are verbose and
-          expensive to run.
-        </Paragraph>
+      <Paragraph maxWidth={450} size="$5" theme="alt2">
+        Sharing responsive designs between web and native saves time, but hooks are verbose and
+        expensive to run.
+      </Paragraph>
 
-        <Paragraph maxWidth={450} size="$5" theme="alt2">
-          Tamagui styles and hooks compile away to efficient CSS media queries, or hoist to
-          StyleSheet.create on native.
-        </Paragraph>
-      </YStack>
-    </XStack>
+      <Paragraph maxWidth={450} size="$5" theme="alt2">
+        Tamagui inline styles compile to CSS media queries on web, or hoist to StyleSheet on native
+        for 🚀 performance.
+      </Paragraph>
+    </YStack>
   )
 })
 

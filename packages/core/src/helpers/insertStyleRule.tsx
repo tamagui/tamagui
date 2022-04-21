@@ -30,8 +30,9 @@ function addTransform(identifier: string, rule: string) {
 //   2. avoid duplicate insert styles at runtime
 //   3. used now for merging transforms atomically
 let hasInsertedSinceUpdate = true
+const isClient = typeof document !== 'undefined'
 export function updateInserted() {
-  if (typeof document === 'undefined') {
+  if (!isClient) {
     return
   }
   if (!hasInsertedSinceUpdate) {
@@ -43,14 +44,15 @@ export function updateInserted() {
   for (let i = 0; i < sheets.length; i++) {
     const rules = sheets[i].cssRules
     const firstRule = rules[0]
-    if (!firstRule) continue
-    const firstSelector = firstRule['selectorText']
+    if (!(firstRule instanceof CSSStyleRule)) continue
+    const firstSelector = firstRule.selectorText
     if (!firstSelector) continue
     if (firstSelector === ':root' || firstSelector.startsWith('._')) {
-      for (const rule of rules as any) {
-        if (!rule.selectorText) continue
+      for (let i = 0; i < rules.length; i++) {
+        const rule = rules.item(i)
+        if (!(rule instanceof CSSStyleRule)) continue
         const identifier = rule.selectorText.slice(1)
-        allSelectors[identifier] = true
+        allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule.cssText : true
         if (identifier.startsWith('_transform')) {
           addTransform(identifier, rule.cssText)
         }
@@ -72,6 +74,9 @@ export function insertStyleRule(identifier: string, rule: string) {
     return
   }
   hasInsertedSinceUpdate = true
+  if (identifier === '_transform-1abwpjw') {
+    console.trace('inserting', identifier, rule)
+  }
   insertedSelectors[identifier] = rule
   allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
   if (identifier.startsWith('_transform')) {

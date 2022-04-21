@@ -1,3 +1,3 @@
 export * from './AnimatePresence'
-export * from './usePresence'
+export * from './useEntering'
 export { AnimatePresenceContext } from './AnimatePresenceContext'

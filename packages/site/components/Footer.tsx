@@ -8,7 +8,7 @@ import { ParagraphLink } from './Link'
 export const Footer = () => {
   return (
     <YStack pos="relative">
-      <YStack fullscreen className="bg-dot-grid mask-gradient-up" />
+      <YStack fullscreen className="bg-dot-grid mask-gradient-up" pe="none" zi={-1} />
       <ContainerLarge>
         <XStack py="$10" $sm={{ flexDirection: 'column', ai: 'center' }}>
           <YStack
@@ -35,8 +35,8 @@ export const Footer = () => {
               </Text>
               <TamaguiLogo showWords downscale={1} />
             </ParagraphLink>
-            <Paragraph size="$2" theme="alt2">
-              by
+            <Paragraph size="$3">
+              by{' '}
               <ParagraphLink
                 fontSize="inherit"
                 href="https://twitter.com/natebirdman"
@@ -45,10 +45,8 @@ export const Footer = () => {
                 nate
               </ParagraphLink>
             </Paragraph>
-            <Paragraph size="$2" theme="alt2">
-              built with Tamagui
-            </Paragraph>
-            <Paragraph size="$2" theme="alt2">
+            <Paragraph size="$3">built with Tamagui</Paragraph>
+            <Paragraph size="$3">
               site forked from {/* @ts-ignore */}
               <ParagraphLink fontSize="inherit" href="https://github.com/modulz" target="_blank">
                 modulz
@@ -57,7 +55,9 @@ export const Footer = () => {
           </YStack>
 
           <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$2">
-            <H4 fontFamily="$silkscreen">Overview</H4>
+            <H4 mb="$3" size="$4" fontFamily="$silkscreen">
+              Overview
+            </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
             <ParagraphLink href="/docs/intro/configuration">Configuration</ParagraphLink>
             <ParagraphLink href="/docs/guides/design-systems">Guides</ParagraphLink>
@@ -66,14 +66,18 @@ export const Footer = () => {
           </YStack>
 
           <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$2">
-            <H4 fontFamily="$silkscreen">Docs</H4>
+            <H4 mb="$3" size="$4" fontFamily="$silkscreen">
+              Docs
+            </H4>
             <ParagraphLink href="/docs/intro/installation">Installation</ParagraphLink>
             <ParagraphLink href="/docs/intro/themes">Themes</ParagraphLink>
             <ParagraphLink href="/docs/core/styled">Variants</ParagraphLink>
           </YStack>
 
           <YStack $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$2">
-            <H4 fontFamily="$silkscreen">Community</H4>
+            <H4 mb="$3" size="$4" fontFamily="$silkscreen">
+              Community
+            </H4>
             {/* <ParagraphLink href="/blog">Blog</ParagraphLink> */}
             <XStack space="$1" ai="center">
               <ParagraphLink href="https://github.com/tamagui/tamagui" target="_blank">

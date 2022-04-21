@@ -86,6 +86,7 @@ function getAtomicStyle(
         ...out[key],
         transformProperty,
       }
+      console.log('got', JSON.stringify({ t, tKey, out, key, atomicStyles }, null, 2))
     }
   } else {
     // TODO we can do this all in one loop likely inside getSplitStyles in existing loop and avoid O(n^3)...

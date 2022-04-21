@@ -5,18 +5,16 @@ import { LogoIcon } from '../TamaguiLogo'
 export default () => {
   return (
     <Square
-      debug
       animation="bouncy"
       elevation="$4"
       size={110}
       bc="$background"
       br="$9"
       hoverStyle={{
-        size: 130,
-        x: 10,
+        scale: 1.2,
       }}
       pressStyle={{
-        size: 100,
+        scale: 0.9,
       }}
     >
       <LogoIcon downscale={0.75} />

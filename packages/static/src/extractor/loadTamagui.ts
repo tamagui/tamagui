@@ -74,7 +74,7 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   Mod.prototype.require = og
 
   // set up core-node
-  createTamagui(tamaguiConfig)
+  createTamagui(tamaguiConfig as any)
 
   loadedTamagui = {
     components,

@@ -71,17 +71,17 @@ export const useTheme = (
         return Reflect.has(theme, key)
       },
       get(_, key) {
-        if (!name || key === '__proto__') {
-          return Reflect.get(_, key)
-        }
-        // TODO make this pattern better
-        if (key === GetThemeManager) {
-          if (!didChangeTheme) {
-            return null
+        if (!name || key === '__proto__' || typeof key === 'symbol') {
+          // TODO make this pattern better
+          if (key === GetThemeManager) {
+            if (!didChangeTheme) {
+              return null
+            }
+            // TODO
+            // console.log('DID CHANGE THEME')
+            return themeManager
           }
-          // TODO
-          // console.log('DID CHANGE THEME')
-          return themeManager
+          return Reflect.get(_, key)
         }
         if (process.env.NODE_ENV === 'development') {
           if (key === '__state') {

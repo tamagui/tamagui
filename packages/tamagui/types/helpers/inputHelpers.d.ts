@@ -1,3 +1,3 @@
-import { SizeVariantSpreadFunction, TextProps } from '@tamagui/core';
-export declare const inputSizeVariant: SizeVariantSpreadFunction<TextProps>;
+import { SizeVariantSpreadFunction } from '@tamagui/core';
+export declare const inputSizeVariant: SizeVariantSpreadFunction<any>;
 //# sourceMappingURL=inputHelpers.d.ts.map

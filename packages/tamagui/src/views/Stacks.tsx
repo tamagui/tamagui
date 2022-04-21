@@ -32,6 +32,7 @@ const fullscreenStyle = {
 
 export const YStack = styled(Stack, {
   flexDirection: 'column',
+  name: 'YStack',
   variants: {
     fullscreen: {
       true: fullscreenStyle,
@@ -44,6 +45,7 @@ export const YStack = styled(Stack, {
 
 export const XStack = styled(Stack, {
   flexDirection: 'row',
+  name: 'XStack',
   variants: {
     fullscreen: {
       true: fullscreenStyle,
@@ -57,6 +59,7 @@ export const XStack = styled(Stack, {
 export const ZStack = styled(
   YStack,
   {
+    name: 'ZStack',
     position: 'relative',
   },
   {

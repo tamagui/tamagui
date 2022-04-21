@@ -8,12 +8,13 @@ import {
 import { ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
-import { ComponentState } from '../defaultComponentState'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import {
   MediaKeys,
   MediaQueryKey,
+  PseudoStyles,
   PsuedoPropKeys,
+  SplitStyleState,
   StackProps,
   StaticConfigParsed,
   ThemeObject,
@@ -33,14 +34,6 @@ const skipKeys = {
   children: true,
   key: true,
   ref: true,
-}
-
-export type PseudoStyles = {
-  hoverStyle?: ViewStyle
-  pressStyle?: ViewStyle
-  focusStyle?: ViewStyle
-  enterStyle?: ViewStyle
-  exitStyle?: ViewStyle
 }
 
 export type ClassNamesObject = Record<string, string>
@@ -70,10 +63,7 @@ export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
-  state: Partial<ComponentState> & {
-    noClassNames?: boolean
-    resolveVariablesAs?: ResolveVariableTypes
-  },
+  state: SplitStyleState,
   defaultClassNames?: ClassNamesObject | null
 ) => {
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
@@ -95,21 +85,22 @@ export const getSplitStyles = (
     if (val.startsWith('_transform-')) {
       const isMediaOrPseudo = key !== 'transform'
       const isMedia = isMediaOrPseudo && key[11] === '_'
-      const isPsuedo = isMediaOrPseudo && !isMedia
+      const isPsuedo = isMediaOrPseudo && key[11] === '0'
       const namespace: TransformNamespaceKey = isMedia
         ? key.split('_')[2]
         : isPsuedo
         ? key.split('-')[1]
         : 'transform'
+
       if (!insertedTransforms[val]) {
         // HMR or loaded a new chunk
         updateInserted()
       }
       const transform = insertedTransforms[val]
-      // if (!transform) {
-      //   console.error('NO TRANSFORM', key, val)
-      //   return
-      // }
+      if (!transform || transform === 'undefined') {
+        console.trace('NO TRANSFORM', { key, val }, state)
+        return
+      }
       transforms[namespace] = transforms[namespace] || ['', '']
       transforms[namespace][0] += val.replace('_transform', '')
       transforms[namespace][1] += transform
@@ -121,6 +112,7 @@ export const getSplitStyles = (
   function push() {
     if (!cur) return
     normalizeStyleObject(cur)
+
     if (isWeb && !state.noClassNames) {
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
@@ -131,7 +123,13 @@ export const getSplitStyles = (
           style[atomicStyle.property] = atomicStyle.value
         }
       }
-    } else {
+    }
+
+    if (
+      state.noClassNames ||
+      state.resolveVariablesAs === 'value' ||
+      state.resolveVariablesAs === 'both'
+    ) {
       for (const key in cur) {
         if (key in stylePropsTransform) {
           mergeTransform(style, key, cur[key])
@@ -140,6 +138,7 @@ export const getSplitStyles = (
         }
       }
     }
+
     // reset it for next group of styles
     cur = null
   }
@@ -177,19 +176,22 @@ export const getSplitStyles = (
             keyInit,
             valInit,
             theme,
-            props,
-            staticConfig,
+            state.fallbackProps || props,
             state.resolveVariablesAs
           )
 
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
+
+    if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+      console.log('split style', keyInit, expanded)
+    }
 
     for (const [key, val] of expanded) {
       if (val === undefined) {
         continue
       }
 
-      if (val && val[0] === '_') {
+      if (key !== 'target' && val && val[0] === '_') {
         mergeClassName(key, val)
         continue
       }
@@ -212,7 +214,7 @@ export const getSplitStyles = (
           continue
         }
         pseudos[key] = pseudos[key] || {}
-        pseudos[key] = getSubStyle(val, staticConfig, theme, props, state.resolveVariablesAs, true)
+        pseudos[key] = getSubStyle(val, staticConfig, theme, props, state, true)
         if (isWeb && !state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
@@ -229,7 +231,7 @@ export const getSplitStyles = (
 
         if (!mediaQueryConfig[mediaKey]) {
           // this isn't a media key, pass through
-          viewProps[key] = valInit
+          viewProps[key] = val
           continue
         }
 
@@ -238,14 +240,7 @@ export const getSplitStyles = (
         // TODO test proxy here instead of merge
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-        const mediaStyle = getSubStyle(
-          valInit,
-          staticConfig,
-          theme,
-          props,
-          state.resolveVariablesAs,
-          true
-        )
+        const mediaStyle = getSubStyle(val, staticConfig, theme, props, state, true)
 
         if (isWeb) {
           const mediaStyles = getStylesAtomic(mediaStyle)
@@ -308,6 +303,10 @@ export const getSplitStyles = (
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+    console.log('out', pseudos)
+  }
+
   return {
     viewProps,
     style,
@@ -317,12 +316,12 @@ export const getSplitStyles = (
   }
 }
 
-const getSubStyle = (
+export const getSubStyle = (
   styleIn: Object,
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
   props: any,
-  resolveVariablesAs?: ResolveVariableTypes,
+  state: SplitStyleState,
   avoidDefaultProps?: boolean
 ): ViewStyle => {
   const styleOut: ViewStyle = {}
@@ -332,9 +331,8 @@ const getSubStyle = (
       key,
       val,
       theme,
-      props,
-      staticConfig,
-      resolveVariablesAs,
+      state.fallbackProps || props,
+      state.resolveVariablesAs,
       avoidDefaultProps
     )
     const expanded = out === true || !out ? [[key, val]] : Object.entries(out)

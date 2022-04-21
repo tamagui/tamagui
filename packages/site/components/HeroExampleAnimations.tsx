@@ -40,7 +40,12 @@ export function HeroExampleAnimations() {
     <YStack>
       <ContainerLarge position="relative" space="$6">
         <YStack zi={1} space="$2">
-          <HomeH2>First-class animations</HomeH2>
+          <HomeH2 pos="relative">
+            Animations
+            <Button pe="none" size="$3" theme="pink" pos="absolute" t={-10} r={-70} rotate="5deg">
+              New
+            </Button>
+          </HomeH2>
           <HomeH3>Plug-and-play drivers for every platform.</HomeH3>
         </YStack>
 
@@ -114,7 +119,8 @@ export const ExampleAnimations = memo(() => {
     <XStack
       bw={1}
       boc={`$${tint}5`}
-      borderStyle="dashed"
+      // borderStyle="dashed"
+      elevation="$1"
       w="100%"
       br="$6"
       ov="hidden"

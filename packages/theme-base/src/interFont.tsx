@@ -12,7 +12,7 @@ export const interFont = createFont({
     6: 17,
     7: 21,
     8: 25,
-    9: 32,
+    9: 30,
     10: 45,
     11: 58,
     12: 68,

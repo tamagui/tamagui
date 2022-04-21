@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 export interface AnimatePresenceProps {
     initial?: boolean;
-    custom?: any;
+    exitVariant?: string | null;
+    enterVariant?: string | null;
     onExitComplete?: () => void;
     exitBeforeEnter?: boolean;
     presenceAffectsLayout?: boolean;
 }
-export declare const AnimatePresence: React.FunctionComponent<AnimatePresenceProps>;
+export declare const AnimatePresence: React.FunctionComponent<React.PropsWithChildren<AnimatePresenceProps>>;
 //# sourceMappingURL=AnimatePresence.d.ts.map

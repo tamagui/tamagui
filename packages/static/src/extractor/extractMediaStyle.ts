@@ -77,9 +77,9 @@ export function extractMediaStyle(
         rules: [styleRule],
       }
     })
-    if (shouldPrintDebug) {
+    if (shouldPrintDebug === 'verbose') {
       // prettier-ignore
-      console.log('  media styles:', importance, singleMediaStyles.map(x => x.identifier).join(', '))
+      console.log('  media styles:', importance, styleObj, singleMediaStyles.map(x => x.identifier).join(', '))
     }
     // add to output
     mediaStyles = [...mediaStyles, ...singleMediaStyles]

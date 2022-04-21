@@ -40,13 +40,10 @@ export const Theme = memo(function Theme(props: ThemeProps) {
   if (isWeb) {
     return (
       <div
-        className={
-          props.disableThemeClass
-            ? ''
-            : props.className
-            ? `${className || ''} ${props.className || ''}`
-            : className || ''
-        }
+        className={[
+          `tui_Theme`,
+          ...(!props.disableThemeClass ? [props.className, className].filter(Boolean) : []),
+        ].join(' ')}
         style={{
           display: 'contents',
           // in order to provide currentColor, set color by default

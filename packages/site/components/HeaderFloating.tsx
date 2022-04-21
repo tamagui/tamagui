@@ -28,7 +28,7 @@ export const HeaderFloating = (props: any) => {
       py={0}
       bbw={1}
       bbc="$borderColor"
-      zi={1000}
+      zi={10000000}
       // @ts-ignore
       pos="fixed"
       top={0}

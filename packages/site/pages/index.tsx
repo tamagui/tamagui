@@ -16,11 +16,11 @@ import { HeroExampleThemes } from '../components/HeroExampleThemes'
 import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
+import { HR } from '../components/HR'
 import { InstallInput } from '../components/InstallInput'
 import { SearchButton } from '../components/Search'
 
 export default function Home() {
-  // return <HeroResponsive />
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
@@ -36,7 +36,7 @@ export default function Home() {
         <HeroBelow />
       </YStack>
       <Separator borderStyle="dotted" />
-      <ContainerLarge zi={100}>
+      <ContainerLarge zi={100000}>
         <XStack mt={-28} mb="$-4" jc="center" ai="center">
           <InstallInput />
         </XStack>
@@ -45,21 +45,23 @@ export default function Home() {
         <YStack fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>
-      <Section pb="$0">
+      <Section pb="$0" zi={10}>
         <HeroResponsive />
       </Section>
       <SectionTinted gradient>
         <HeroPerformance />
       </SectionTinted>
-      <SectionTinted gradient>
+      <SectionTinted zi={100}>
+        {/* <YStack fullscreen className="bg-dot-grid mask-gradient-up" /> */}
         <HeroExampleAnimations />
       </SectionTinted>
-      <Section>
+      <Section zi={10}>
         <YStack fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode />
       </Section>
-      <Section>
+      <Section mt={-100}>
         <FeaturesGrid />
+        <YStack fullscreen className="bg-dot-grid mask-gradient-up" />
       </Section>
       <SectionTinted gradient>
         <HeroTypography />
@@ -67,7 +69,7 @@ export default function Home() {
       <Section>
         <HeroExampleProps />
       </Section>
-      <Separator />
+      <HR />
       <Section>
         <Community />
       </Section>
@@ -78,11 +80,12 @@ export default function Home() {
 const Section = styled(YStack, {
   pos: 'relative',
   py: '$12',
+  zi: 2,
 
   variants: {
     below: {
       true: {
-        zi: -1,
+        zi: 1,
       },
     },
   },
@@ -91,18 +94,18 @@ const Section = styled(YStack, {
 const SectionTinted = ({ children, gradient, extraPad, ...props }: any) => {
   const { tint } = useTint()
   const childrenMemo = useMemo(() => children, [children])
-  // const className = gradient ? `gradient-${tint}` : ''
+  const className = gradient ? `gradient-${tint}` : ''
   return (
-    <YStack contain="paint" pos="relative" py="$12" {...props}>
+    <YStack zi={2} contain="paint" pos="relative" py="$12" {...props}>
       <YStack
         fullscreen
         // className={className}
         // o={0.85}
         zi={-1}
         // @ts-ignore
-        // bc={gradient ? `$${tint}1` : null}
-        btw={0.5}
-        bbw={0.5}
+        bc={gradient ? `$${tint}1` : null}
+        btw={1}
+        bbw={1}
         // @ts-ignore
         boc={`$${tint}3`}
       />
