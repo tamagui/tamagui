@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.0-beta.230+fab00413",
+  "version": "1.0.0-beta.200+9591831d",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -19,10 +19,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-beta.230+fab00413",
+    "@tamagui/helpers": "^1.0.0-beta.200+9591831d",
     "@tamagui/ow": "^0.28.1",
-    "@tamagui/use-debounce": "^1.0.0-beta.230+fab00413",
-    "@tamagui/use-force-update": "^1.0.0-beta.230+fab00413",
+    "@tamagui/use-debounce": "^1.0.0-beta.200+9591831d",
+    "@tamagui/use-force-update": "^1.0.0-beta.200+9591831d",
     "react": "*",
     "react-dom": "*"
   },
@@ -30,7 +30,7 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.230+fab00413",
+    "@tamagui/build": "^1.0.0-beta.200+9591831d",
     "@types/react": "^17.0.35",
     "csstype": "^3.0.10",
     "esbuild": "^0.14.36",
@@ -40,5 +40,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "fab0041356da84bd32620811a57a156d11514d2b"
+  "gitHead": "9591831d7d4a58cc4e01846e68a0d3324570b5c8"
 }
