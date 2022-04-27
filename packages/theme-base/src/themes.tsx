@@ -3,7 +3,7 @@ import { Variable, getVariableValue } from '@tamagui/core'
 
 import { allDarkColors, allLightColors } from './colors'
 import { setColorAlpha } from './colorUtils'
-import { tokens } from './tokens'
+import { color } from './tokens'
 
 type ThemeCreatorProps = {
   shift?: number
@@ -97,7 +97,7 @@ const createTheme: ThemeCreator = (
     backgroundHover: get(backgrounds, str + lighterDir),
     backgroundPress: get(backgrounds, str + darkerDir * 1),
     backgroundFocus: get(backgrounds, str + darkerDir * 2),
-    backgroundTransparent: tokens.color.grayA1,
+    backgroundTransparent: color.grayA1,
     borderColor: isLight
       ? get(colors, 8 - str, 'borderColor')
       : get(backgrounds, 2 + str, 'borderColor'),
@@ -117,7 +117,7 @@ const createTheme: ThemeCreator = (
     colorFocus: get(colors, 3 + str, 'color'),
     colorTranslucent,
     colorMid: colors[Math.floor(colors.length / 2)],
-    shadowColor: isLight ? tokens.color.grayA3 : tokens.color.grayA8,
+    shadowColor: isLight ? color.grayA3 : color.grayA8,
     shadowColorHover: darkColors[!isLight ? 1 : 8],
     shadowColorPress: darkColors[!isLight ? 1 : 8],
     shadowColorFocus: darkColors[!isLight ? 1 : 8],
@@ -145,18 +145,18 @@ export type ColorNames = typeof colorSchemes[number]['name']
 export const lightGradient = [
   '#fff',
   '#f4f4f4',
-  tokens.color.gray1,
-  tokens.color.gray2,
-  tokens.color.gray3,
-  tokens.color.gray4,
-  tokens.color.gray5,
-  tokens.color.gray6,
-  tokens.color.gray7,
-  tokens.color.gray8,
-  tokens.color.gray9,
-  tokens.color.gray10,
-  tokens.color.gray11,
-  tokens.color.gray12,
+  color.gray1,
+  color.gray2,
+  color.gray3,
+  color.gray4,
+  color.gray5,
+  color.gray6,
+  color.gray7,
+  color.gray8,
+  color.gray9,
+  color.gray10,
+  color.gray11,
+  color.gray12,
 ]
 
 export const darkGradient = [
