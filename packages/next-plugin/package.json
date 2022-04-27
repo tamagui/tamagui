@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-plugin",
-  "version": "1.0.0-beta.207+3fd10ea6",
+  "version": "1.0.0-beta.230+fab00413",
   "source": "src/index.ts",
   "license": "MIT",
   "typings": "types",
@@ -18,17 +18,17 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/proxy-worm": "^1.0.0-beta.207+3fd10ea6",
-    "@tamagui/static": "^1.0.0-beta.207+3fd10ea6",
+    "@tamagui/proxy-worm": "^1.0.0-beta.230+fab00413",
+    "@tamagui/static": "^1.0.0-beta.230+fab00413",
     "browserslist": "^4.19.1",
     "css-minimizer-webpack-plugin": "^3.1.3",
     "esbuild-loader": "^2.18.0",
     "next-compose-plugins": "^2.2.1",
-    "tamagui-loader": "^1.0.0-beta.207+3fd10ea6",
+    "tamagui-loader": "^1.0.0-beta.230+fab00413",
     "thread-loader": "^3.0.4"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.207+3fd10ea6",
+    "@tamagui/build": "^1.0.0-beta.230+fab00413",
     "next": "^12.1.4"
   },
   "peerDependencies": {
@@ -37,5 +37,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "3fd10ea6d026fac0339fbc1a501ee304f4985b05"
+  "gitHead": "fab0041356da84bd32620811a57a156d11514d2b"
 }

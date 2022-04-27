@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "1.0.0-beta.207+3fd10ea6",
+  "version": "1.0.0-beta.230+fab00413",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -57,10 +57,10 @@
     "@babel/parser": "^7.15.7",
     "@babel/traverse": "^7.15.4",
     "@expo/match-media": "^0.1.0",
-    "@tamagui/build": "^1.0.0-beta.207+3fd10ea6",
-    "@tamagui/core-node": "^1.0.0-beta.207+3fd10ea6",
-    "@tamagui/fake-react-native": "^1.0.0-beta.207+3fd10ea6",
-    "@tamagui/helpers": "^1.0.0-beta.207+3fd10ea6",
+    "@tamagui/build": "^1.0.0-beta.230+fab00413",
+    "@tamagui/core-node": "^1.0.0-beta.230+fab00413",
+    "@tamagui/fake-react-native": "^1.0.0-beta.230+fab00413",
+    "@tamagui/helpers": "^1.0.0-beta.230+fab00413",
     "babel-literal-to-ast": "^2.1.0",
     "esbuild": "^0.14.36",
     "esbuild-register": "^3.1.2",
@@ -68,10 +68,10 @@
     "fs-extra": "^9.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
-    "tamagui": "^1.0.0-beta.207+3fd10ea6"
+    "tamagui": "^1.0.0-beta.230+fab00413"
   },
   "peerDependencies": {
     "react-native-web": "*"
   },
-  "gitHead": "3fd10ea6d026fac0339fbc1a501ee304f4985b05"
+  "gitHead": "fab0041356da84bd32620811a57a156d11514d2b"
 }
