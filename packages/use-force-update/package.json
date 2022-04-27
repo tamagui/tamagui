@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-force-update",
-  "version": "1.0.0-beta.213+13eaf4df",
+  "version": "1.0.0-beta.214+0a0e3130",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,7 +16,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.213+13eaf4df"
+    "@tamagui/build": "^1.0.0-beta.214+0a0e3130"
   },
   "dependencies": {
     "react": "*"
@@ -24,5 +24,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "13eaf4dfc9d0019024aa48fab616e22191735c17"
+  "gitHead": "0a0e31304cd75221ebee46d62d4b7b714364f607"
 }
