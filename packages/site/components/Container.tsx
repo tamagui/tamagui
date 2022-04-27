@@ -20,10 +20,10 @@ export const ContainerLarge = styled(YStack, {
   width: '100%',
 
   $gtSm: {
-    maxWidth: 960,
+    maxWidth: 980,
   },
 
   $gtMd: {
-    maxWidth: 1040,
+    maxWidth: 1140,
   },
 })

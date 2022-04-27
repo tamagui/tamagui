@@ -3,7 +3,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useMemo } from 'react'
-import { FontSizeTokens, Paragraph, Separator, XStack, YStack, styled } from 'tamagui'
+import { Separator, XStack, YStack, styled } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'
@@ -42,7 +42,7 @@ export default function Home() {
         </XStack>
       </ContainerLarge>
       <Section pos="relative" zi={1000}>
-        <YStack fullscreen className="bg-dot-grid mask-gradient-down" />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>
       <Section pb="$0" zi={10}>
@@ -56,12 +56,12 @@ export default function Home() {
         <HeroExampleAnimations />
       </SectionTinted>
       <Section zi={10}>
-        <YStack fullscreen className="bg-dot-grid mask-gradient-down" />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode />
       </Section>
       <Section mt={-100}>
         <FeaturesGrid />
-        <YStack fullscreen className="bg-dot-grid mask-gradient-up" />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
       </Section>
       <SectionTinted gradient>
         <HeroTypography />

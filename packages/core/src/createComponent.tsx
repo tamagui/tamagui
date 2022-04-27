@@ -92,12 +92,13 @@ export function createComponent<
   function addPseudoToStyles(styles: any[], name: string, pseudos: any) {
     // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
     const pseudoStyle = pseudos[name]
+    const shouldNestObject = isWeb && name !== 'enterStyle' && name !== 'exitStyle'
     if (pseudoStyle) {
-      styles.push(isWeb ? { [name]: pseudoStyle } : pseudoStyle)
+      styles.push(shouldNestObject ? { [name]: pseudoStyle } : pseudoStyle)
     }
     const defaultPseudoStyle = defaultPseudos[name]
     if (defaultPseudoStyle) {
-      styles.push(isWeb ? { [name]: defaultPseudoStyle } : defaultPseudoStyle)
+      styles.push(shouldNestObject ? { [name]: defaultPseudoStyle } : defaultPseudoStyle)
     }
   }
 
@@ -219,9 +220,13 @@ export function createComponent<
 
     useIsomorphicLayoutEffect(() => {
       // we need to use state to properly have mounted go from false => true
-      setStateShallow({
-        mounted: true,
-      })
+      if (typeof window !== 'undefined') {
+        // for SSR we never set mounted, ensuring enterStyle={{}} is set by default
+        setStateShallow({
+          mounted: true,
+        })
+      }
+
       internal.current!.isMounted = true
       return () => {
         mouseUps.delete(unPress)
@@ -301,6 +306,7 @@ export function createComponent<
         medias,
       ]
       if (!animationStyles) {
+        !state.mounted && addPseudoToStyles(styles, 'enterStyle', pseudos)
         state.hover && addPseudoToStyles(styles, 'hoverStyle', pseudos)
         state.focus && addPseudoToStyles(styles, 'focusStyle', pseudos)
         state.press && addPseudoToStyles(styles, 'pressStyle', pseudos)

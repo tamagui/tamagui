@@ -385,6 +385,7 @@ export function extractToClassNames({
     )
     console.log('\n -------- output style -------- \n\n', styles)
   }
+  console.log(sourcePath, styles)
 
   if (shouldLogTiming) {
     const memUsed = mem

@@ -244,1287 +244,1320 @@ export function createExtractor() {
           const preName = componentName ? `${componentName}.` : ''
           const tagId = `${preName}${node.name.name}@${filePath.replace('./', '')}:${lineNumbers}`
 
-          if (shouldPrintDebug) {
-            console.log(`\n<${originalNodeName} /> (${tagId})`)
-          }
-
-          // add data-is
-          if (shouldAddDebugProp && !disableDebugAttr) {
-            res.modified++
-            node.attributes.unshift(
-              t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(tagId))
-            )
-          }
-
-          const shouldLog = !hasLogged
-          if (shouldLog) {
-            const prefix = '      |'
-            console.log(
-              prefixLogs || prefix,
-              '                          total · optimized · flattened '
-            )
-            hasLogged = true
-          }
-          if (disableExtraction) {
-            return
-          }
-
-          const { staticConfig } = component
-          const isTextView = staticConfig.isText || false
-          const validStyles = staticConfig?.validStyles ?? {}
-
-          function isValidStyleKey(name: string) {
-            return !!(
-              !!validStyles[name] ||
-              !!pseudos[name] ||
-              staticConfig.variants?.[name] ||
-              tamaguiConfig.shorthands[name] ||
-              (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
-            )
-          }
-
-          // find tag="a" tag="main" etc dom indicators
-          let tagName = staticConfig.defaultProps?.tag ?? (isTextView ? 'span' : 'div')
-          traversePath
-            .get('openingElement')
-            .get('attributes')
-            .forEach((path) => {
-              const attr = path.node
-              if (t.isJSXSpreadAttribute(attr)) return
-              if (attr.name.name !== 'tag') return
-              const val = attr.value
-              if (!t.isStringLiteral(val)) return
-              tagName = val.value
-            })
-
-          const flatNode = getFlattenedNode({ isTextView, tag: tagName })
-
-          const inlineProps = new Set([
-            ...(props.inlineProps || []),
-            ...(staticConfig.inlineProps || []),
-          ])
-          const deoptProps = new Set([
-            // always de-opt animation
-            'animation',
-            ...(props.deoptProps || []),
-            ...(staticConfig.deoptProps || []),
-          ])
-
-          // Generate scope object at this level
-          const staticNamespace = getStaticBindingsForScope(
-            traversePath.scope,
-            importsWhitelist,
-            sourcePath,
-            bindingCache,
-            shouldPrintDebug
+          // debug just one
+          const hasBooleanDebugTrue = node.attributes.some(
+            (n) =>
+              t.isJSXAttribute(n) &&
+              t.isJSXIdentifier(n.name) &&
+              n.name.name === 'debug' &&
+              n.value === null
           )
+          if (hasBooleanDebugTrue) {
+            shouldPrintDebug = true
+          }
 
-          const attemptEval = !evaluateVars
-            ? evaluateAstNode
-            : createEvaluator({
-                // @ts-ignore
-                tamaguiConfig,
-                staticNamespace,
-                sourcePath,
-                traversePath,
-                shouldPrintDebug,
+          try {
+            node.attributes.find(
+              (n) =>
+                t.isJSXAttribute(n) &&
+                t.isJSXIdentifier(n.name) &&
+                n.name.name === 'debug' &&
+                n.value === null
+            )
+
+            if (shouldPrintDebug) {
+              console.log(`\n<${originalNodeName} /> (${tagId})`)
+            }
+
+            // add data-is
+            if (shouldAddDebugProp && !disableDebugAttr) {
+              res.modified++
+              node.attributes.unshift(
+                t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(tagId))
+              )
+            }
+
+            const shouldLog = !hasLogged
+            if (shouldLog) {
+              const prefix = '      |'
+              console.log(
+                prefixLogs || prefix,
+                '                          total · optimized · flattened '
+              )
+              hasLogged = true
+            }
+            if (disableExtraction) {
+              return
+            }
+
+            const { staticConfig } = component
+            const isTextView = staticConfig.isText || false
+            const validStyles = staticConfig?.validStyles ?? {}
+
+            function isValidStyleKey(name: string) {
+              return !!(
+                !!validStyles[name] ||
+                !!pseudos[name] ||
+                staticConfig.variants?.[name] ||
+                tamaguiConfig.shorthands[name] ||
+                (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
+              )
+            }
+
+            // find tag="a" tag="main" etc dom indicators
+            let tagName = staticConfig.defaultProps?.tag ?? (isTextView ? 'span' : 'div')
+            traversePath
+              .get('openingElement')
+              .get('attributes')
+              .forEach((path) => {
+                const attr = path.node
+                if (t.isJSXSpreadAttribute(attr)) return
+                if (attr.name.name !== 'tag') return
+                const val = attr.value
+                if (!t.isStringLiteral(val)) return
+                tagName = val.value
               })
-          const attemptEvalSafe = createSafeEvaluator(attemptEval)
 
-          if (shouldPrintDebug) {
-            console.log('  staticNamespace', Object.keys(staticNamespace).join(', '))
-          }
+            const flatNode = getFlattenedNode({ isTextView, tag: tagName })
 
-          //
-          //  SPREADS SETUP
-          //
+            const inlineProps = new Set([
+              ...(props.inlineProps || []),
+              ...(staticConfig.inlineProps || []),
+            ])
+            const deoptProps = new Set([
+              // always de-opt animation
+              'animation',
+              ...(props.deoptProps || []),
+              ...(staticConfig.deoptProps || []),
+            ])
 
-          // TODO restore
-          // const hasDeopt = (obj: Object) => {
-          //   return Object.keys(obj).some(isDeoptedProp)
-          // }
+            // Generate scope object at this level
+            const staticNamespace = getStaticBindingsForScope(
+              traversePath.scope,
+              importsWhitelist,
+              sourcePath,
+              bindingCache,
+              shouldPrintDebug
+            )
 
-          // flatten any easily evaluatable spreads
-          const flattenedAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
-          traversePath
-            .get('openingElement')
-            .get('attributes')
-            .forEach((path) => {
-              const attr = path.node
-              if (!t.isJSXSpreadAttribute(attr)) {
-                flattenedAttrs.push(attr)
-                return
-              }
-              let arg: any
-              try {
-                arg = attemptEval(attr.argument)
-              } catch (e: any) {
-                if (shouldPrintDebug) {
-                  console.log('  couldnt parse spread', e.message)
+            const attemptEval = !evaluateVars
+              ? evaluateAstNode
+              : createEvaluator({
+                  // @ts-ignore
+                  tamaguiConfig,
+                  staticNamespace,
+                  sourcePath,
+                  traversePath,
+                  shouldPrintDebug,
+                })
+            const attemptEvalSafe = createSafeEvaluator(attemptEval)
+
+            if (shouldPrintDebug) {
+              console.log('  staticNamespace', Object.keys(staticNamespace).join(', '))
+            }
+
+            //
+            //  SPREADS SETUP
+            //
+
+            // TODO restore
+            // const hasDeopt = (obj: Object) => {
+            //   return Object.keys(obj).some(isDeoptedProp)
+            // }
+
+            // flatten any easily evaluatable spreads
+            const flattenedAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
+            traversePath
+              .get('openingElement')
+              .get('attributes')
+              .forEach((path) => {
+                const attr = path.node
+                if (!t.isJSXSpreadAttribute(attr)) {
+                  flattenedAttrs.push(attr)
+                  return
                 }
-                flattenedAttrs.push(attr)
-                return
-              }
-              if (arg !== undefined) {
+                let arg: any
                 try {
-                  if (typeof arg !== 'object' || arg == null) {
-                    if (shouldPrintDebug) {
-                      console.log('  non object or null arg', arg)
-                    }
-                    flattenedAttrs.push(attr)
-                  } else {
-                    for (const k in arg) {
-                      const value = arg[k]
-                      // this is a null prop:
-                      if (!value && typeof value === 'object') {
-                        console.log('shouldnt we handle this?', k, value, arg)
-                        continue
-                      }
-                      flattenedAttrs.push(
-                        t.jsxAttribute(
-                          t.jsxIdentifier(k),
-                          t.jsxExpressionContainer(literalToAst(value))
-                        )
-                      )
-                    }
-                  }
-                } catch (err) {
-                  console.warn('cant parse spread, caught err', err)
-                  couldntParse = true
-                }
-              }
-            })
-
-          if (couldntParse) {
-            return
-          }
-
-          // set flattened
-          node.attributes = flattenedAttrs
-
-          // add in NON-STYLE default props
-          if (staticConfig.defaultProps) {
-            for (const key in staticConfig.defaultProps) {
-              if (isValidStyleKey(key)) {
-                continue
-              }
-              const serialize = require('babel-literal-to-ast')
-              const val = staticConfig.defaultProps[key]
-              try {
-                const serializedDefaultProp = serialize(val)
-                node.attributes.unshift(
-                  t.jsxAttribute(
-                    t.jsxIdentifier(key),
-                    typeof val === 'string'
-                      ? t.stringLiteral(val)
-                      : t.jsxExpressionContainer(serializedDefaultProp)
-                  )
-                )
-              } catch (err) {
-                console.warn(
-                  `⚠️ Error evaluating default prop for component ${node.name.name}, prop ${key}\n error: ${err}\n value:`,
-                  val,
-                  '\n defaultProps:',
-                  staticConfig.defaultProps
-                )
-              }
-            }
-          }
-
-          let attrs: ExtractedAttr[] = []
-          let shouldDeopt = false
-          const inlined = new Map<string, boolean | string>()
-          let hasSetOptimized = false
-
-          // RUN first pass
-
-          // normalize all conditionals so we can evaluate away easier later
-          // at the same time lets normalize shorthand media queries into spreads:
-          // that way we can parse them with the same logic later on
-          //
-          // {...media.sm && { color: x ? 'red' : 'blue' }}
-          // => {...media.sm && x && { color: 'red' }}
-          // => {...media.sm && !x && { color: 'blue' }}
-          //
-          // $sm={{ color: 'red' }}
-          // => {...media.sm && { color: 'red' }}
-          //
-          // $sm={{ color: x ? 'red' : 'blue' }}
-          // => {...media.sm && x && { color: 'red' }}
-          // => {...media.sm && !x && { color: 'blue' }}
-
-          attrs = traversePath
-            .get('openingElement')
-            .get('attributes')
-            .flatMap((path) => {
-              try {
-                const res = evaluateAttribute(path)
-                if (!res) {
-                  path.remove()
-                }
-                return res
-              } catch (err: any) {
-                if (shouldPrintDebug) {
-                  console.log('Error extracting attribute', err.message, err.stack)
-                  console.log('node', path.node)
-                }
-                return {
-                  type: 'attr',
-                  value: path.node,
-                } as const
-              }
-            })
-            .flat(4)
-            .filter(isPresent)
-
-          if (shouldPrintDebug) {
-            console.log('  - attrs (before):\n', logLines(attrs.map(attrStr).join(', ')))
-          }
-
-          // START function evaluateAttribute
-          function evaluateAttribute(
-            path: NodePath<t.JSXAttribute | t.JSXSpreadAttribute>
-          ): ExtractedAttr | ExtractedAttr[] | null {
-            const attribute = path.node
-            const attr: ExtractedAttr = { type: 'attr', value: attribute }
-            // ...spreads
-            if (t.isJSXSpreadAttribute(attribute)) {
-              const arg = attribute.argument
-              const conditional = t.isConditionalExpression(arg)
-                ? // <YStack {...isSmall ? { color: 'red } : { color: 'blue }}
-                  ([arg.test, arg.consequent, arg.alternate] as const)
-                : t.isLogicalExpression(arg) && arg.operator === '&&'
-                ? // <YStack {...isSmall && { color: 'red }}
-                  ([arg.left, arg.right, null] as const)
-                : null
-
-              if (conditional) {
-                const [test, alt, cons] = conditional
-                if (!test) throw new Error(`no test`)
-                if ([alt, cons].some((side) => side && !isExtractable(side))) {
+                  arg = attemptEval(attr.argument)
+                } catch (e: any) {
                   if (shouldPrintDebug) {
-                    console.log('not extractable', alt, cons)
+                    console.log('  couldnt parse spread', e.message)
                   }
-                  return attr
+                  flattenedAttrs.push(attr)
+                  return
                 }
-                // split into individual ternaries per object property
-                return [
-                  ...(createTernariesFromObjectProperties(test, alt) || []),
-                  ...((cons &&
-                    createTernariesFromObjectProperties(t.unaryExpression('!', test), cons)) ||
-                    []),
-                ].map((ternary) => ({
-                  type: 'ternary',
-                  value: ternary,
-                }))
+                if (arg !== undefined) {
+                  try {
+                    if (typeof arg !== 'object' || arg == null) {
+                      if (shouldPrintDebug) {
+                        console.log('  non object or null arg', arg)
+                      }
+                      flattenedAttrs.push(attr)
+                    } else {
+                      for (const k in arg) {
+                        const value = arg[k]
+                        // this is a null prop:
+                        if (!value && typeof value === 'object') {
+                          console.log('shouldnt we handle this?', k, value, arg)
+                          continue
+                        }
+                        flattenedAttrs.push(
+                          t.jsxAttribute(
+                            t.jsxIdentifier(k),
+                            t.jsxExpressionContainer(literalToAst(value))
+                          )
+                        )
+                      }
+                    }
+                  } catch (err) {
+                    console.warn('cant parse spread, caught err', err)
+                    couldntParse = true
+                  }
+                }
+              })
+
+            if (couldntParse) {
+              return
+            }
+
+            // set flattened
+            node.attributes = flattenedAttrs
+
+            // add in NON-STYLE default props
+            if (staticConfig.defaultProps) {
+              for (const key in staticConfig.defaultProps) {
+                if (isValidStyleKey(key)) {
+                  continue
+                }
+                const serialize = require('babel-literal-to-ast')
+                const val = staticConfig.defaultProps[key]
+                try {
+                  const serializedDefaultProp = serialize(val)
+                  node.attributes.unshift(
+                    t.jsxAttribute(
+                      t.jsxIdentifier(key),
+                      typeof val === 'string'
+                        ? t.stringLiteral(val)
+                        : t.jsxExpressionContainer(serializedDefaultProp)
+                    )
+                  )
+                } catch (err) {
+                  console.warn(
+                    `⚠️ Error evaluating default prop for component ${node.name.name}, prop ${key}\n error: ${err}\n value:`,
+                    val,
+                    '\n defaultProps:',
+                    staticConfig.defaultProps
+                  )
+                }
               }
             }
-            // END ...spreads
 
-            // directly keep these
-            // couldn't evaluate spread, undefined name, or name is not string
-            if (
-              t.isJSXSpreadAttribute(attribute) ||
-              !attribute.name ||
-              typeof attribute.name.name !== 'string'
-            ) {
-              if (shouldPrintDebug) {
-                console.log('  ! inlining, spread attr')
+            let attrs: ExtractedAttr[] = []
+            let shouldDeopt = false
+            const inlined = new Map<string, boolean | string>()
+            let hasSetOptimized = false
+
+            // RUN first pass
+
+            // normalize all conditionals so we can evaluate away easier later
+            // at the same time lets normalize shorthand media queries into spreads:
+            // that way we can parse them with the same logic later on
+            //
+            // {...media.sm && { color: x ? 'red' : 'blue' }}
+            // => {...media.sm && x && { color: 'red' }}
+            // => {...media.sm && !x && { color: 'blue' }}
+            //
+            // $sm={{ color: 'red' }}
+            // => {...media.sm && { color: 'red' }}
+            //
+            // $sm={{ color: x ? 'red' : 'blue' }}
+            // => {...media.sm && x && { color: 'red' }}
+            // => {...media.sm && !x && { color: 'blue' }}
+
+            attrs = traversePath
+              .get('openingElement')
+              .get('attributes')
+              .flatMap((path) => {
+                try {
+                  const res = evaluateAttribute(path)
+                  if (!res) {
+                    path.remove()
+                  }
+                  return res
+                } catch (err: any) {
+                  if (shouldPrintDebug) {
+                    console.log('Error extracting attribute', err.message, err.stack)
+                    console.log('node', path.node)
+                  }
+                  return {
+                    type: 'attr',
+                    value: path.node,
+                  } as const
+                }
+              })
+              .flat(4)
+              .filter(isPresent)
+
+            if (shouldPrintDebug) {
+              console.log('  - attrs (before):\n', logLines(attrs.map(attrStr).join(', ')))
+            }
+
+            // START function evaluateAttribute
+            function evaluateAttribute(
+              path: NodePath<t.JSXAttribute | t.JSXSpreadAttribute>
+            ): ExtractedAttr | ExtractedAttr[] | null {
+              const attribute = path.node
+              const attr: ExtractedAttr = { type: 'attr', value: attribute }
+              // ...spreads
+              if (t.isJSXSpreadAttribute(attribute)) {
+                const arg = attribute.argument
+                const conditional = t.isConditionalExpression(arg)
+                  ? // <YStack {...isSmall ? { color: 'red } : { color: 'blue }}
+                    ([arg.test, arg.consequent, arg.alternate] as const)
+                  : t.isLogicalExpression(arg) && arg.operator === '&&'
+                  ? // <YStack {...isSmall && { color: 'red }}
+                    ([arg.left, arg.right, null] as const)
+                  : null
+
+                if (conditional) {
+                  const [test, alt, cons] = conditional
+                  if (!test) throw new Error(`no test`)
+                  if ([alt, cons].some((side) => side && !isExtractable(side))) {
+                    if (shouldPrintDebug) {
+                      console.log('not extractable', alt, cons)
+                    }
+                    return attr
+                  }
+                  // split into individual ternaries per object property
+                  return [
+                    ...(createTernariesFromObjectProperties(test, alt) || []),
+                    ...((cons &&
+                      createTernariesFromObjectProperties(t.unaryExpression('!', test), cons)) ||
+                      []),
+                  ].map((ternary) => ({
+                    type: 'ternary',
+                    value: ternary,
+                  }))
+                }
               }
-              inlined.set(`${Math.random()}`, 'spread')
-              return attr
-            }
+              // END ...spreads
 
-            const name = attribute.name.name
-
-            if (excludeProps?.has(name)) {
-              if (shouldPrintDebug) {
-                console.log('  excluding prop', name)
-              }
-              return null
-            }
-
-            if (inlineProps.has(name)) {
-              inlined.set(name, name)
-              if (shouldPrintDebug) {
-                console.log('  ! inlining, inline prop', name)
-              }
-              return attr
-            }
-
-            // can still optimize the object... see hoverStyle on native
-            if (deoptProps.has(name)) {
-              shouldDeopt = true
-              inlined.set(name, name)
-              if (shouldPrintDebug) {
-                console.log('  ! inlining, deopted prop', name)
-              }
-              return attr
-            }
-
-            // pass className, key, and style props through untouched
-            if (UNTOUCHED_PROPS[name]) {
-              return attr
-            }
-
-            if (INLINE_EXTRACTABLE[name]) {
-              inlined.set(name, INLINE_EXTRACTABLE[name])
-              return attr
-            }
-
-            if (name.startsWith('data-')) {
-              return attr
-            }
-
-            // shorthand media queries
-            if (name[0] === '$' && t.isJSXExpressionContainer(attribute?.value)) {
-              // allow disabling this extraction
-              if (disableExtractInlineMedia) {
+              // directly keep these
+              // couldn't evaluate spread, undefined name, or name is not string
+              if (
+                t.isJSXSpreadAttribute(attribute) ||
+                !attribute.name ||
+                typeof attribute.name.name !== 'string'
+              ) {
+                if (shouldPrintDebug) {
+                  console.log('  ! inlining, spread attr')
+                }
+                inlined.set(`${Math.random()}`, 'spread')
                 return attr
               }
 
-              const shortname = name.slice(1)
-              if (mediaQueryConfig[shortname]) {
-                const expression = attribute.value.expression
-                if (!t.isJSXEmptyExpression(expression)) {
-                  const ternaries = createTernariesFromObjectProperties(
-                    t.stringLiteral(shortname),
-                    expression,
-                    {
-                      inlineMediaQuery: shortname,
+              const name = attribute.name.name
+
+              if (excludeProps?.has(name)) {
+                if (shouldPrintDebug) {
+                  console.log('  excluding prop', name)
+                }
+                return null
+              }
+
+              if (inlineProps.has(name)) {
+                inlined.set(name, name)
+                if (shouldPrintDebug) {
+                  console.log('  ! inlining, inline prop', name)
+                }
+                return attr
+              }
+
+              // can still optimize the object... see hoverStyle on native
+              if (deoptProps.has(name)) {
+                shouldDeopt = true
+                inlined.set(name, name)
+                if (shouldPrintDebug) {
+                  console.log('  ! inlining, deopted prop', name)
+                }
+                return attr
+              }
+
+              // pass className, key, and style props through untouched
+              if (UNTOUCHED_PROPS[name]) {
+                return attr
+              }
+
+              if (INLINE_EXTRACTABLE[name]) {
+                inlined.set(name, INLINE_EXTRACTABLE[name])
+                return attr
+              }
+
+              if (name.startsWith('data-')) {
+                return attr
+              }
+
+              // shorthand media queries
+              if (name[0] === '$' && t.isJSXExpressionContainer(attribute?.value)) {
+                // allow disabling this extraction
+                if (disableExtractInlineMedia) {
+                  return attr
+                }
+
+                const shortname = name.slice(1)
+                if (mediaQueryConfig[shortname]) {
+                  const expression = attribute.value.expression
+                  if (!t.isJSXEmptyExpression(expression)) {
+                    const ternaries = createTernariesFromObjectProperties(
+                      t.stringLiteral(shortname),
+                      expression,
+                      {
+                        inlineMediaQuery: shortname,
+                      }
+                    )
+                    if (ternaries) {
+                      return ternaries.map((value) => ({
+                        type: 'ternary',
+                        value,
+                      }))
                     }
+                  }
+                }
+              }
+
+              const [value, valuePath] = (() => {
+                if (t.isJSXExpressionContainer(attribute?.value)) {
+                  return [attribute.value.expression!, path.get('value')!] as const
+                } else {
+                  return [attribute.value!, path.get('value')!] as const
+                }
+              })()
+
+              const remove = () => {
+                Array.isArray(valuePath) ? valuePath.map((p) => p.remove()) : valuePath.remove()
+              }
+
+              if (name === 'ref') {
+                if (shouldPrintDebug) {
+                  console.log('  ! inlining, ref', name)
+                }
+                inlined.set('ref', 'ref')
+                return attr
+              }
+
+              if (name === 'tag') {
+                return {
+                  type: 'attr',
+                  value: path.node,
+                }
+              }
+
+              // native shouldn't extract variables
+              if (disableExtractVariables) {
+                if (value) {
+                  if (value.type === 'StringLiteral' && value.value[0] === '$') {
+                    if (shouldPrintDebug) {
+                      console.log(`  ! inlining, native disable extract: ${name} =`, value.value)
+                    }
+                    inlined.set(name, true)
+                    return attr
+                  }
+                }
+              }
+
+              // if value can be evaluated, extract it and filter it out
+              const styleValue = attemptEvalSafe(value)
+
+              // never flatten if a prop isn't a valid static attribute
+              // only post prop-mapping
+              if (!isValidStyleKey(name)) {
+                let keys = [name]
+                let out: any = null
+                if (staticConfig.propMapper) {
+                  // for now passing empty props {}, a bit odd, need to at least document
+                  // for now we don't expose custom components so just noting behavior
+                  out = staticConfig.propMapper(
+                    name,
+                    styleValue,
+                    defaultTheme,
+                    staticConfig.defaultProps,
+                    'auto'
                   )
-                  if (ternaries) {
-                    return ternaries.map((value) => ({
-                      type: 'ternary',
-                      value,
-                    }))
+                  if (out) {
+                    // translate to DOM-compat
+                    out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
+                    // remove className - we dont use rnw styling
+                    delete out.className
+
+                    keys = Object.keys(out)
                   }
                 }
-              }
-            }
 
-            const [value, valuePath] = (() => {
-              if (t.isJSXExpressionContainer(attribute?.value)) {
-                return [attribute.value.expression!, path.get('value')!] as const
-              } else {
-                return [attribute.value!, path.get('value')!] as const
-              }
-            })()
-
-            const remove = () => {
-              Array.isArray(valuePath) ? valuePath.map((p) => p.remove()) : valuePath.remove()
-            }
-
-            if (name === 'ref') {
-              if (shouldPrintDebug) {
-                console.log('  ! inlining, ref', name)
-              }
-              inlined.set('ref', 'ref')
-              return attr
-            }
-
-            if (name === 'tag') {
-              return {
-                type: 'attr',
-                value: path.node,
-              }
-            }
-
-            // native shouldn't extract variables
-            if (disableExtractVariables) {
-              if (value) {
-                if (value.type === 'StringLiteral' && value.value[0] === '$') {
+                let didInline = false
+                const attributes = keys.map((key) => {
+                  const val = out[key]
+                  if (key === 'theme') {
+                    inlined.set(key, val)
+                    return attr
+                  }
+                  if (isValidStyleKey(key)) {
+                    return {
+                      type: 'style',
+                      value: { [name]: styleValue },
+                      name,
+                      attr: path.node,
+                    } as const
+                  }
+                  if (validHTMLAttributes[key]) {
+                    return attr
+                  }
                   if (shouldPrintDebug) {
-                    console.log(`  ! inlining, native disable extract: ${name} =`, value.value)
+                    console.log('  ! inlining, non-static', key)
                   }
-                  inlined.set(name, true)
-                  return attr
-                }
-              }
-            }
-
-            // if value can be evaluated, extract it and filter it out
-            const styleValue = attemptEvalSafe(value)
-
-            // never flatten if a prop isn't a valid static attribute
-            // only post prop-mapping
-            if (!isValidStyleKey(name)) {
-              let keys = [name]
-              let out: any = null
-              if (staticConfig.propMapper) {
-                // for now passing empty props {}, a bit odd, need to at least document
-                // for now we don't expose custom components so just noting behavior
-                out = staticConfig.propMapper(
-                  name,
-                  styleValue,
-                  defaultTheme,
-                  staticConfig.defaultProps,
-                  'auto'
-                )
-                if (out) {
-                  // translate to DOM-compat
-                  out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
-                  // remove className - we dont use rnw styling
-                  delete out.className
-
-                  keys = Object.keys(out)
-                }
-              }
-
-              let didInline = false
-              const attributes = keys.map((key) => {
-                const val = out[key]
-                if (key === 'theme') {
+                  didInline = true
                   inlined.set(key, val)
+                  return val
+                })
+
+                // weird logic whats going on here
+                if (didInline) {
+                  if (shouldPrintDebug) {
+                    console.log('  bailing flattening due to attributes', attributes)
+                  }
+                  // bail
                   return attr
                 }
-                if (isValidStyleKey(key)) {
+
+                // return evaluated attributes
+                return attributes
+              }
+
+              // FAILED = dynamic or ternary, keep going
+              if (styleValue !== FAILED_EVAL) {
+                if (isValidStyleKey(name)) {
+                  if (shouldPrintDebug) {
+                    console.log(`  style: ${name} =`, styleValue)
+                  }
+                  if (!(name in staticConfig.defaultProps)) {
+                    if (!hasSetOptimized) {
+                      res.optimized++
+                      hasSetOptimized = true
+                    }
+                  }
                   return {
                     type: 'style',
                     value: { [name]: styleValue },
                     name,
                     attr: path.node,
-                  } as const
-                }
-                if (validHTMLAttributes[key]) {
+                  }
+                } else {
+                  inlined.set(name, true)
                   return attr
                 }
-                if (shouldPrintDebug) {
-                  console.log('  ! inlining, non-static', key)
-                }
-                didInline = true
-                inlined.set(key, val)
-                return val
-              })
-
-              // weird logic whats going on here
-              if (didInline) {
-                if (shouldPrintDebug) {
-                  console.log('  bailing flattening due to attributes', attributes)
-                }
-                // bail
-                return attr
               }
 
-              // return evaluated attributes
-              return attributes
-            }
+              // ternaries!
 
-            // FAILED = dynamic or ternary, keep going
-            if (styleValue !== FAILED_EVAL) {
-              if (isValidStyleKey(name)) {
+              // binary ternary, we can eventually make this smarter but step 1
+              // basically for the common use case of:
+              // opacity={(conditional ? 0 : 1) * scale}
+              if (t.isBinaryExpression(value)) {
                 if (shouldPrintDebug) {
-                  console.log(`  style: ${name} =`, styleValue)
+                  console.log(` binary expression ${name} = `, value)
                 }
-                if (!(name in staticConfig.defaultProps)) {
-                  if (!hasSetOptimized) {
-                    res.optimized++
-                    hasSetOptimized = true
-                  }
+                const { operator, left, right } = value
+                // if one side is a ternary, and the other side is evaluatable, we can maybe extract
+                const lVal = attemptEvalSafe(left)
+                const rVal = attemptEvalSafe(right)
+                if (shouldPrintDebug) {
+                  console.log(`  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(rVal)}`)
                 }
-                return {
-                  type: 'style',
-                  value: { [name]: styleValue },
-                  name,
-                  attr: path.node,
+                if (lVal !== FAILED_EVAL && t.isConditionalExpression(right)) {
+                  const ternary = addBinaryConditional(operator, left, right)
+                  if (ternary) return ternary
                 }
-              } else {
+                if (rVal !== FAILED_EVAL && t.isConditionalExpression(left)) {
+                  const ternary = addBinaryConditional(operator, right, left)
+                  if (ternary) return ternary
+                }
+                if (shouldPrintDebug) {
+                  console.log(`  evalBinaryExpression cant extract`)
+                }
                 inlined.set(name, true)
                 return attr
               }
-            }
 
-            // ternaries!
-
-            // binary ternary, we can eventually make this smarter but step 1
-            // basically for the common use case of:
-            // opacity={(conditional ? 0 : 1) * scale}
-            if (t.isBinaryExpression(value)) {
-              if (shouldPrintDebug) {
-                console.log(` binary expression ${name} = `, value)
-              }
-              const { operator, left, right } = value
-              // if one side is a ternary, and the other side is evaluatable, we can maybe extract
-              const lVal = attemptEvalSafe(left)
-              const rVal = attemptEvalSafe(right)
-              if (shouldPrintDebug) {
-                console.log(`  evalBinaryExpression lVal ${String(lVal)}, rVal ${String(rVal)}`)
-              }
-              if (lVal !== FAILED_EVAL && t.isConditionalExpression(right)) {
-                const ternary = addBinaryConditional(operator, left, right)
-                if (ternary) return ternary
-              }
-              if (rVal !== FAILED_EVAL && t.isConditionalExpression(left)) {
-                const ternary = addBinaryConditional(operator, right, left)
-                if (ternary) return ternary
-              }
-              if (shouldPrintDebug) {
-                console.log(`  evalBinaryExpression cant extract`)
-              }
-              inlined.set(name, true)
-              return attr
-            }
-
-            const staticConditional = getStaticConditional(value)
-            if (staticConditional) {
-              if (shouldPrintDebug) {
-                console.log(` static conditional ${name} = `, value)
-              }
-              return { type: 'ternary', value: staticConditional }
-            }
-
-            const staticLogical = getStaticLogical(value)
-            if (staticLogical) {
-              if (shouldPrintDebug) {
-                console.log(` static ternary ${name} = `, value)
-              }
-              return { type: 'ternary', value: staticLogical }
-            }
-
-            // if we've made it this far, the prop stays inline
-            inlined.set(name, true)
-            if (shouldPrintDebug) {
-              console.log(` ! inline no match ${name}`, value)
-            }
-
-            //
-            // RETURN ATTR
-            //
-            return attr
-
-            // attr helpers:
-            function addBinaryConditional(
-              operator: any,
-              staticExpr: any,
-              cond: t.ConditionalExpression
-            ): ExtractedAttr | null {
-              if (getStaticConditional(cond)) {
-                const alt = attemptEval(t.binaryExpression(operator, staticExpr, cond.alternate))
-                const cons = attemptEval(t.binaryExpression(operator, staticExpr, cond.consequent))
+              const staticConditional = getStaticConditional(value)
+              if (staticConditional) {
                 if (shouldPrintDebug) {
-                  console.log('  binaryConditional', cond.test, cons, alt)
+                  console.log(` static conditional ${name} = `, value)
                 }
-                return {
-                  type: 'ternary',
-                  value: {
-                    test: cond.test,
-                    remove,
-                    alternate: { [name]: alt },
-                    consequent: { [name]: cons },
-                  },
-                }
+                return { type: 'ternary', value: staticConditional }
               }
-              return null
-            }
 
-            function getStaticConditional(value: t.Node): Ternary | null {
-              if (t.isConditionalExpression(value)) {
-                try {
+              const staticLogical = getStaticLogical(value)
+              if (staticLogical) {
+                if (shouldPrintDebug) {
+                  console.log(` static ternary ${name} = `, value)
+                }
+                return { type: 'ternary', value: staticLogical }
+              }
+
+              // if we've made it this far, the prop stays inline
+              inlined.set(name, true)
+              if (shouldPrintDebug) {
+                console.log(` ! inline no match ${name}`, value)
+              }
+
+              //
+              // RETURN ATTR
+              //
+              return attr
+
+              // attr helpers:
+              function addBinaryConditional(
+                operator: any,
+                staticExpr: any,
+                cond: t.ConditionalExpression
+              ): ExtractedAttr | null {
+                if (getStaticConditional(cond)) {
+                  const alt = attemptEval(t.binaryExpression(operator, staticExpr, cond.alternate))
+                  const cons = attemptEval(
+                    t.binaryExpression(operator, staticExpr, cond.consequent)
+                  )
                   if (shouldPrintDebug) {
-                    console.log('attempt', value.alternate, value.consequent)
-                  }
-                  const aVal = attemptEval(value.alternate)
-                  const cVal = attemptEval(value.consequent)
-                  if (shouldPrintDebug) {
-                    const type = value.test.type
-                    console.log('      static ternary', type, cVal, aVal)
+                    console.log('  binaryConditional', cond.test, cons, alt)
                   }
                   return {
-                    test: value.test,
-                    remove,
-                    consequent: { [name]: cVal },
-                    alternate: { [name]: aVal },
-                  }
-                } catch (err: any) {
-                  if (shouldPrintDebug) {
-                    console.log('       cant eval ternary', err.message)
-                  }
-                }
-              }
-              return null
-            }
-
-            function getStaticLogical(value: t.Node): Ternary | null {
-              if (t.isLogicalExpression(value)) {
-                if (value.operator === '&&') {
-                  try {
-                    const val = attemptEval(value.right)
-                    if (shouldPrintDebug) {
-                      console.log('  staticLogical', value.left, name, val)
-                    }
-                    return {
-                      test: value.left,
+                    type: 'ternary',
+                    value: {
+                      test: cond.test,
                       remove,
-                      consequent: { [name]: val },
-                      alternate: null,
-                    }
-                  } catch (err) {
+                      alternate: { [name]: alt },
+                      consequent: { [name]: cons },
+                    },
+                  }
+                }
+                return null
+              }
+
+              function getStaticConditional(value: t.Node): Ternary | null {
+                if (t.isConditionalExpression(value)) {
+                  try {
                     if (shouldPrintDebug) {
-                      console.log('  cant static eval logical', err)
+                      console.log('attempt', value.alternate, value.consequent)
                     }
-                  }
-                }
-              }
-              return null
-            }
-          } // END function evaluateAttribute
-
-          function isExtractable(obj: t.Node): obj is t.ObjectExpression {
-            return (
-              t.isObjectExpression(obj) &&
-              obj.properties.every((prop) => {
-                if (!t.isObjectProperty(prop)) {
-                  console.log('not object prop', prop)
-                  return false
-                }
-                const propName = prop.key['name']
-                if (!isValidStyleKey(propName) && propName !== 'tag') {
-                  if (shouldPrintDebug) {
-                    console.log('  not a valid style prop!', propName)
-                  }
-                  return false
-                }
-                return true
-              })
-            )
-          }
-
-          // side = {
-          //   color: 'red',
-          //   background: x ? 'red' : 'green',
-          //   $gtSm: { color: 'green' }
-          // }
-          // => Ternary<test, { color: 'red' }, null>
-          // => Ternary<test && x, { background: 'red' }, null>
-          // => Ternary<test && !x, { background: 'green' }, null>
-          // => Ternary<test && '$gtSm', { color: 'green' }, null>
-          function createTernariesFromObjectProperties(
-            test: t.Expression,
-            side: t.Expression | null,
-            ternaryPartial: Partial<Ternary> = {}
-          ): null | Ternary[] {
-            if (!side) {
-              return null
-            }
-            if (!isExtractable(side)) {
-              throw new Error('not extractable')
-            }
-            return side.properties.flatMap((property) => {
-              if (!t.isObjectProperty(property)) {
-                throw new Error('expected object property')
-              }
-              // handle media queries inside spread/conditional objects
-              if (t.isIdentifier(property.key)) {
-                const key = property.key.name
-                const mediaQueryKey = key.slice(1)
-                const isMediaQuery = key[0] === '$' && mediaQueryConfig[mediaQueryKey]
-                if (isMediaQuery) {
-                  if (t.isExpression(property.value)) {
-                    const ternaries = createTernariesFromObjectProperties(
-                      t.stringLiteral(mediaQueryKey),
-                      property.value,
-                      {
-                        inlineMediaQuery: mediaQueryKey,
-                      }
-                    )
-                    if (ternaries) {
-                      return ternaries.map((value) => ({
-                        ...ternaryPartial,
-                        ...value,
-                        // ensure media query test stays on left side (see getMediaQueryTernary)
-                        test: t.logicalExpression('&&', value.test, test),
-                      }))
-                    } else {
-                      console.log('⚠️ no ternaries?', property)
+                    const aVal = attemptEval(value.alternate)
+                    const cVal = attemptEval(value.consequent)
+                    if (shouldPrintDebug) {
+                      const type = value.test.type
+                      console.log('      static ternary', type, cVal, aVal)
                     }
-                  } else {
-                    console.log('⚠️ not expression', property)
-                  }
-                }
-              }
-              // this could be a recurse here if we want to get fancy
-              if (t.isConditionalExpression(property.value)) {
-                // merge up into the parent conditional, split into two
-                const [truthy, falsy] = [
-                  t.objectExpression([t.objectProperty(property.key, property.value.consequent)]),
-                  t.objectExpression([t.objectProperty(property.key, property.value.alternate)]),
-                ].map((x) => attemptEval(x))
-                return [
-                  createTernary({
-                    remove() {},
-                    ...ternaryPartial,
-                    test: t.logicalExpression('&&', test, property.value.test),
-                    consequent: truthy,
-                    alternate: null,
-                  }),
-                  createTernary({
-                    ...ternaryPartial,
-                    test: t.logicalExpression(
-                      '&&',
-                      test,
-                      t.unaryExpression('!', property.value.test)
-                    ),
-                    consequent: falsy,
-                    alternate: null,
-                    remove() {},
-                  }),
-                ]
-              }
-              const obj = t.objectExpression([t.objectProperty(property.key, property.value)])
-              const consequent = attemptEval(obj)
-              return createTernary({
-                remove() {},
-                ...ternaryPartial,
-                test,
-                consequent,
-                alternate: null,
-              })
-            })
-          }
-
-          // now update to new values
-          node.attributes = attrs.filter(isAttr).map((x) => x.value)
-
-          if (couldntParse || shouldDeopt) {
-            if (shouldPrintDebug) {
-              console.log(`  avoid optimizing:`, { couldntParse, shouldDeopt })
-            }
-            node.attributes = ogAttributes
-            return
-          }
-
-          // before deopt, can still optimize
-          const parentFn = findTopmostFunction(traversePath)
-          if (parentFn) {
-            modifiedComponents.add(parentFn)
-          }
-
-          // combine ternaries
-          let ternaries: Ternary[] = []
-          attrs = attrs
-            .reduce<(ExtractedAttr | ExtractedAttr[])[]>((out, cur) => {
-              const next = attrs[attrs.indexOf(cur) + 1]
-              if (cur.type === 'ternary') {
-                ternaries.push(cur.value)
-              }
-              if ((!next || next.type !== 'ternary') && ternaries.length) {
-                // finish, process
-                const normalized = normalizeTernaries(ternaries).map(
-                  ({ alternate, consequent, ...rest }) => {
                     return {
-                      type: 'ternary' as const,
-                      value: {
-                        ...rest,
-                        alternate: alternate || null,
-                        consequent: consequent || null,
-                      },
+                      test: value.test,
+                      remove,
+                      consequent: { [name]: cVal },
+                      alternate: { [name]: aVal },
+                    }
+                  } catch (err: any) {
+                    if (shouldPrintDebug) {
+                      console.log('       cant eval ternary', err.message)
                     }
                   }
-                )
-                try {
-                  return [...out, ...normalized]
-                } finally {
-                  if (shouldPrintDebug) {
-                    console.log(
-                      `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
-                    )
+                }
+                return null
+              }
+
+              function getStaticLogical(value: t.Node): Ternary | null {
+                if (t.isLogicalExpression(value)) {
+                  if (value.operator === '&&') {
+                    try {
+                      const val = attemptEval(value.right)
+                      if (shouldPrintDebug) {
+                        console.log('  staticLogical', value.left, name, val)
+                      }
+                      return {
+                        test: value.left,
+                        remove,
+                        consequent: { [name]: val },
+                        alternate: null,
+                      }
+                    } catch (err) {
+                      if (shouldPrintDebug) {
+                        console.log('  cant static eval logical', err)
+                      }
+                    }
                   }
-                  ternaries = []
                 }
+                return null
               }
-              if (cur.type === 'ternary') {
-                return out
-              }
-              out.push(cur)
-              return out
-            }, [])
-            .flat()
+            } // END function evaluateAttribute
 
-          // evaluates all static attributes into a simple object
-          const completeStaticProps = {
-            ...Object.keys(attrs).reduce((acc, index) => {
-              const cur = attrs[index] as ExtractedAttr
-              if (cur.type === 'style') {
-                Object.assign(acc, cur.value)
+            function isExtractable(obj: t.Node): obj is t.ObjectExpression {
+              return (
+                t.isObjectExpression(obj) &&
+                obj.properties.every((prop) => {
+                  if (!t.isObjectProperty(prop)) {
+                    console.log('not object prop', prop)
+                    return false
+                  }
+                  const propName = prop.key['name']
+                  if (!isValidStyleKey(propName) && propName !== 'tag') {
+                    if (shouldPrintDebug) {
+                      console.log('  not a valid style prop!', propName)
+                    }
+                    return false
+                  }
+                  return true
+                })
+              )
+            }
+
+            // side = {
+            //   color: 'red',
+            //   background: x ? 'red' : 'green',
+            //   $gtSm: { color: 'green' }
+            // }
+            // => Ternary<test, { color: 'red' }, null>
+            // => Ternary<test && x, { background: 'red' }, null>
+            // => Ternary<test && !x, { background: 'green' }, null>
+            // => Ternary<test && '$gtSm', { color: 'green' }, null>
+            function createTernariesFromObjectProperties(
+              test: t.Expression,
+              side: t.Expression | null,
+              ternaryPartial: Partial<Ternary> = {}
+            ): null | Ternary[] {
+              if (!side) {
+                return null
               }
-              if (cur.type === 'attr') {
-                if (t.isJSXSpreadAttribute(cur.value)) {
-                  return acc
+              if (!isExtractable(side)) {
+                throw new Error('not extractable')
+              }
+              return side.properties.flatMap((property) => {
+                if (!t.isObjectProperty(property)) {
+                  throw new Error('expected object property')
                 }
-                if (!t.isJSXIdentifier(cur.value.name)) {
-                  return acc
+                // handle media queries inside spread/conditional objects
+                if (t.isIdentifier(property.key)) {
+                  const key = property.key.name
+                  const mediaQueryKey = key.slice(1)
+                  const isMediaQuery = key[0] === '$' && mediaQueryConfig[mediaQueryKey]
+                  if (isMediaQuery) {
+                    if (t.isExpression(property.value)) {
+                      const ternaries = createTernariesFromObjectProperties(
+                        t.stringLiteral(mediaQueryKey),
+                        property.value,
+                        {
+                          inlineMediaQuery: mediaQueryKey,
+                        }
+                      )
+                      if (ternaries) {
+                        return ternaries.map((value) => ({
+                          ...ternaryPartial,
+                          ...value,
+                          // ensure media query test stays on left side (see getMediaQueryTernary)
+                          test: t.logicalExpression('&&', value.test, test),
+                        }))
+                      } else {
+                        console.log('⚠️ no ternaries?', property)
+                      }
+                    } else {
+                      console.log('⚠️ not expression', property)
+                    }
+                  }
                 }
-                const key = cur.value.name.name
-                // undefined = boolean true
-                const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
-                if (value === FAILED_EVAL) {
-                  return acc
+                // this could be a recurse here if we want to get fancy
+                if (t.isConditionalExpression(property.value)) {
+                  // merge up into the parent conditional, split into two
+                  const [truthy, falsy] = [
+                    t.objectExpression([t.objectProperty(property.key, property.value.consequent)]),
+                    t.objectExpression([t.objectProperty(property.key, property.value.alternate)]),
+                  ].map((x) => attemptEval(x))
+                  return [
+                    createTernary({
+                      remove() {},
+                      ...ternaryPartial,
+                      test: t.logicalExpression('&&', test, property.value.test),
+                      consequent: truthy,
+                      alternate: null,
+                    }),
+                    createTernary({
+                      ...ternaryPartial,
+                      test: t.logicalExpression(
+                        '&&',
+                        test,
+                        t.unaryExpression('!', property.value.test)
+                      ),
+                      consequent: falsy,
+                      alternate: null,
+                      remove() {},
+                    }),
+                  ]
                 }
-                acc[key] = value
+                const obj = t.objectExpression([t.objectProperty(property.key, property.value)])
+                const consequent = attemptEval(obj)
+                return createTernary({
+                  remove() {},
+                  ...ternaryPartial,
+                  test,
+                  consequent,
+                  alternate: null,
+                })
+              })
+            }
+
+            // now update to new values
+            node.attributes = attrs.filter(isAttr).map((x) => x.value)
+
+            if (couldntParse || shouldDeopt) {
+              if (shouldPrintDebug) {
+                console.log(`  avoid optimizing:`, { couldntParse, shouldDeopt })
               }
-              return acc
-            }, {}),
-          }
-
-          // flatten logic!
-          // fairly simple check to see if all children are text
-          const hasSpread = node.attributes.some((x) => t.isJSXSpreadAttribute(x))
-
-          const hasOnlyStringChildren =
-            !hasSpread &&
-            (node.selfClosing ||
-              (traversePath.node.children &&
-                traversePath.node.children.every((x) => x.type === 'JSXText')))
-
-          const themeVal = inlined.get('theme')
-          inlined.delete('theme')
-          const allOtherPropsExtractable = [...inlined].every(([k, v]) => INLINE_EXTRACTABLE[k])
-          const shouldWrapInnerTheme =
-            allOtherPropsExtractable && !!(hasOnlyStringChildren && themeVal)
-          const canFlattenProps =
-            inlined.size === 0 || shouldWrapInnerTheme || allOtherPropsExtractable
-
-          let shouldFlatten =
-            !shouldDeopt &&
-            canFlattenProps &&
-            !hasSpread &&
-            staticConfig.neverFlatten !== true &&
-            (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
-
-          // wrap theme around children on flatten
-          if (shouldFlatten && shouldWrapInnerTheme) {
-            if (typeof themeVal !== 'string') {
-              console.warn('??')
+              node.attributes = ogAttributes
               return
             }
 
-            if (shouldPrintDebug) {
-              console.log('  - wrapping theme', allOtherPropsExtractable, themeVal)
+            // before deopt, can still optimize
+            const parentFn = findTopmostFunction(traversePath)
+            if (parentFn) {
+              modifiedComponents.add(parentFn)
             }
 
-            // add import
-            if (!hasImportedTheme) {
-              hasImportedTheme = true
-              programPath.node.body.push(
-                t.importDeclaration(
-                  [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
-                  t.stringLiteral('@tamagui/core')
-                )
-              )
+            // combine ternaries
+            let ternaries: Ternary[] = []
+            attrs = attrs
+              .reduce<(ExtractedAttr | ExtractedAttr[])[]>((out, cur) => {
+                const next = attrs[attrs.indexOf(cur) + 1]
+                if (cur.type === 'ternary') {
+                  ternaries.push(cur.value)
+                }
+                if ((!next || next.type !== 'ternary') && ternaries.length) {
+                  // finish, process
+                  const normalized = normalizeTernaries(ternaries).map(
+                    ({ alternate, consequent, ...rest }) => {
+                      return {
+                        type: 'ternary' as const,
+                        value: {
+                          ...rest,
+                          alternate: alternate || null,
+                          consequent: consequent || null,
+                        },
+                      }
+                    }
+                  )
+                  try {
+                    return [...out, ...normalized]
+                  } finally {
+                    if (shouldPrintDebug) {
+                      console.log(
+                        `    normalizeTernaries (${ternaries.length} => ${normalized.length})`
+                      )
+                    }
+                    ternaries = []
+                  }
+                }
+                if (cur.type === 'ternary') {
+                  return out
+                }
+                out.push(cur)
+                return out
+              }, [])
+              .flat()
+
+            // evaluates all static attributes into a simple object
+            const completeStaticProps = {
+              ...Object.keys(attrs).reduce((acc, index) => {
+                const cur = attrs[index] as ExtractedAttr
+                if (cur.type === 'style') {
+                  Object.assign(acc, cur.value)
+                }
+                if (cur.type === 'attr') {
+                  if (t.isJSXSpreadAttribute(cur.value)) {
+                    return acc
+                  }
+                  if (!t.isJSXIdentifier(cur.value.name)) {
+                    return acc
+                  }
+                  const key = cur.value.name.name
+                  // undefined = boolean true
+                  const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
+                  if (value === FAILED_EVAL) {
+                    return acc
+                  }
+                  acc[key] = value
+                }
+                return acc
+              }, {}),
             }
 
-            traversePath.replaceWith(
-              t.jsxElement(
-                t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
-                  t.jsxAttribute(t.jsxIdentifier('name'), t.stringLiteral(`${themeVal}`)),
-                ]),
-                t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
-                [traversePath.node]
-              )
-            )
-          }
+            // flatten logic!
+            // fairly simple check to see if all children are text
+            const hasSpread = node.attributes.some((x) => t.isJSXSpreadAttribute(x))
 
-          // only if we flatten, ensure the default styles are there
-          if (shouldFlatten && staticConfig.defaultProps) {
-            const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap((key) => {
-              if (!isValidStyleKey(key)) {
+            const hasOnlyStringChildren =
+              !hasSpread &&
+              (node.selfClosing ||
+                (traversePath.node.children &&
+                  traversePath.node.children.every((x) => x.type === 'JSXText')))
+
+            const themeVal = inlined.get('theme')
+            inlined.delete('theme')
+            const allOtherPropsExtractable = [...inlined].every(([k, v]) => INLINE_EXTRACTABLE[k])
+            const shouldWrapInnerTheme =
+              allOtherPropsExtractable && !!(hasOnlyStringChildren && themeVal)
+            const canFlattenProps =
+              inlined.size === 0 || shouldWrapInnerTheme || allOtherPropsExtractable
+
+            let shouldFlatten =
+              !shouldDeopt &&
+              canFlattenProps &&
+              !hasSpread &&
+              staticConfig.neverFlatten !== true &&
+              (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+
+            // wrap theme around children on flatten
+            if (shouldFlatten && shouldWrapInnerTheme) {
+              if (typeof themeVal !== 'string') {
+                console.warn('??')
                 return
               }
-              try {
-                const serialize = require('babel-literal-to-ast')
-                const val = staticConfig.defaultProps[key]
-                const value = serialize(val)
-                const name = tamaguiConfig.shorthands[key] || key
-                return {
-                  type: 'style',
-                  name,
-                  value,
-                } as ExtractedAttrStyle
-              } catch (err) {
-                console.warn(
-                  `⚠️ Error evaluating default style for component, prop ${key}\n error: ${err}`
-                )
-                shouldDeopt = true
+
+              if (shouldPrintDebug) {
+                console.log('  - wrapping theme', allOtherPropsExtractable, themeVal)
               }
-            }) as ExtractedAttr[]
 
-            if (defaultStyleAttrs.length) {
-              attrs = [...defaultStyleAttrs, ...attrs]
-            }
-          }
-
-          if (shouldDeopt) {
-            node.attributes = ogAttributes
-            return
-          }
-
-          // insert overrides - this inserts null props for things that are set in classNames
-          // only when not flattening, so the downstream component can skip applying those styles
-          const ensureOverridden = {}
-          if (!shouldFlatten) {
-            for (const cur of attrs) {
-              if (cur.type === 'style') {
-                // TODO need to loop over initial props not just style props
-                for (const key in cur.value) {
-                  const shouldEnsureOverridden = !!staticConfig.ensureOverriddenProp?.[key]
-                  const isSetInAttrsAlready = attrs.some(
-                    (x) =>
-                      x.type === 'attr' &&
-                      x.value.type === 'JSXAttribute' &&
-                      x.value.name.name === key
+              // add import
+              if (!hasImportedTheme) {
+                hasImportedTheme = true
+                programPath.node.body.push(
+                  t.importDeclaration(
+                    [t.importSpecifier(t.identifier('_TamaguiTheme'), t.identifier('Theme'))],
+                    t.stringLiteral('@tamagui/core')
                   )
+                )
+              }
 
-                  if (!isSetInAttrsAlready) {
-                    const isVariant = !!staticConfig.variants?.[cur.name || '']
-                    if (isVariant || shouldEnsureOverridden) {
-                      ensureOverridden[key] = true
+              traversePath.replaceWith(
+                t.jsxElement(
+                  t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
+                    t.jsxAttribute(t.jsxIdentifier('name'), t.stringLiteral(`${themeVal}`)),
+                  ]),
+                  t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
+                  [traversePath.node]
+                )
+              )
+            }
+
+            // only if we flatten, ensure the default styles are there
+            if (shouldFlatten && staticConfig.defaultProps) {
+              const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap((key) => {
+                if (!isValidStyleKey(key)) {
+                  return
+                }
+                try {
+                  const serialize = require('babel-literal-to-ast')
+                  const val = staticConfig.defaultProps[key]
+                  const value = serialize(val)
+                  const name = tamaguiConfig.shorthands[key] || key
+                  return {
+                    type: 'style',
+                    name,
+                    value,
+                  } as ExtractedAttrStyle
+                } catch (err) {
+                  console.warn(
+                    `⚠️ Error evaluating default style for component, prop ${key}\n error: ${err}`
+                  )
+                  shouldDeopt = true
+                }
+              }) as ExtractedAttr[]
+
+              if (defaultStyleAttrs.length) {
+                attrs = [...defaultStyleAttrs, ...attrs]
+              }
+            }
+
+            if (shouldDeopt) {
+              node.attributes = ogAttributes
+              return
+            }
+
+            // insert overrides - this inserts null props for things that are set in classNames
+            // only when not flattening, so the downstream component can skip applying those styles
+            const ensureOverridden = {}
+            if (!shouldFlatten) {
+              for (const cur of attrs) {
+                if (cur.type === 'style') {
+                  // TODO need to loop over initial props not just style props
+                  for (const key in cur.value) {
+                    const shouldEnsureOverridden = !!staticConfig.ensureOverriddenProp?.[key]
+                    const isSetInAttrsAlready = attrs.some(
+                      (x) =>
+                        x.type === 'attr' &&
+                        x.value.type === 'JSXAttribute' &&
+                        x.value.name.name === key
+                    )
+
+                    if (!isSetInAttrsAlready) {
+                      const isVariant = !!staticConfig.variants?.[cur.name || '']
+                      if (isVariant || shouldEnsureOverridden) {
+                        ensureOverridden[key] = true
+                      }
                     }
                   }
                 }
               }
             }
-          }
 
-          if (shouldPrintDebug) {
-            console.log('  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', ')))
-            console.log('  - ensureOverriden:', Object.keys(ensureOverridden).join(', '))
-          }
-
-          // expand shorthands, de-opt variables
-          attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
-            if (!cur) {
-              return acc
+            if (shouldPrintDebug) {
+              console.log('  - attrs (flattened): \n', logLines(attrs.map(attrStr).join(', ')))
+              console.log('  - ensureOverriden:', Object.keys(ensureOverridden).join(', '))
             }
 
-            if (cur.type === 'attr' && !t.isJSXSpreadAttribute(cur.value)) {
-              if (shouldFlatten) {
-                if (cur.value.name.name === 'tag') {
-                  // remove tag=""
-                  return acc
-                }
-              }
-            }
-
-            if (cur.type !== 'style') {
-              acc.push(cur)
-              return acc
-            }
-
-            let key = Object.keys(cur.value)[0]
-            const value = cur.value[key]
-            const fullKey = tamaguiConfig.shorthands[key]
-
-            // expand shorthands
-            if (fullKey) {
-              cur.value = { [fullKey]: value }
-              key = fullKey
-            }
-
-            // finally we have all styles + expansions, lets see if we need to skip
-            // any and keep them as attrs
-            if (disableExtractVariables) {
-              if (value[0] === '$') {
-                if (shouldPrintDebug) {
-                  console.log(`   keeping variable inline: ${key} =`, value)
-                }
-                acc.push({
-                  type: 'attr',
-                  value: t.jsxAttribute(
-                    t.jsxIdentifier(key),
-                    t.jsxExpressionContainer(t.stringLiteral(value))
-                  ),
-                })
+            // expand shorthands, de-opt variables
+            attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
+              if (!cur) {
                 return acc
               }
-            }
 
-            acc.push(cur)
-            return acc
-          }, [])
-
-          if (shouldPrintDebug) {
-            console.log('  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', ')))
-          }
-
-          // merge styles, leave undefined values
-          let prev: ExtractedAttr | null = null
-
-          function mergeStyles(prev: StackProps, next: StackProps) {
-            for (const key in next) {
-              // merge pseudos
-              if (pseudos[key]) {
-                prev[key] = prev[key] || {}
-                Object.assign(prev[key], next[key])
-              } else {
-                prev[key] = next[key]
-              }
-            }
-          }
-
-          attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
-            if (cur.type === 'style') {
-              const key = Object.keys(cur.value)[0]
-              const value = cur.value[key]
-
-              const shouldKeepOriginalAttr =
-                // !isStyleAndAttr[key] &&
-                !shouldFlatten &&
-                // de-opt transform styles so it merges properly if not flattened
-                // we handle this later on
-                // (stylePropsTransform[key] ||
-                // de-opt if non-style
-                !validStyles[key] &&
-                !pseudos[key] &&
-                !key.startsWith('data-')
-
-              if (shouldKeepOriginalAttr) {
-                if (shouldPrintDebug) {
-                  console.log('     - keeping as non-style', key)
+              if (cur.type === 'attr' && !t.isJSXSpreadAttribute(cur.value)) {
+                if (shouldFlatten) {
+                  if (cur.value.name.name === 'tag') {
+                    // remove tag=""
+                    return acc
+                  }
                 }
-                prev = cur
-                acc.push({
-                  type: 'attr',
-                  value: t.jsxAttribute(
-                    t.jsxIdentifier(key),
-                    t.jsxExpressionContainer(
-                      typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
-                    )
-                  ),
-                })
+              }
+
+              if (cur.type !== 'style') {
                 acc.push(cur)
                 return acc
               }
 
-              if (ensureOverridden[key]) {
-                acc.push({
-                  type: 'attr',
-                  value:
-                    cur.attr ||
-                    t.jsxAttribute(t.jsxIdentifier(key), t.jsxExpressionContainer(t.nullLiteral())),
-                })
+              let key = Object.keys(cur.value)[0]
+              const value = cur.value[key]
+              const fullKey = tamaguiConfig.shorthands[key]
+
+              // expand shorthands
+              if (fullKey) {
+                cur.value = { [fullKey]: value }
+                key = fullKey
               }
 
-              if (prev?.type === 'style') {
-                mergeStyles(prev.value as StackProps, cur.value as StackProps)
-                return acc
-              }
-            }
-
-            prev = cur
-            acc.push(cur)
-            return acc
-          }, [])
-
-          if (shouldPrintDebug) {
-            console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
-          }
-
-          const completeProps = {
-            ...staticConfig.defaultProps,
-            ...completeStaticProps,
-          }
-
-          // post process
-          const getStyles = (props: Object | null, debugName = '') => {
-            if (!props) return
-            if (!Object.keys(props).length) return
-            if (excludeProps && !!excludeProps.size) {
-              for (const key in props) {
-                if (excludeProps.has(key)) {
-                  delete props[key]
-                }
-              }
-            }
-            const out = getSplitStyles(props, staticConfig, defaultTheme, {
-              noClassNames: true,
-              fallbackProps: completeProps,
-              focus: false,
-              hover: false,
-              mounted: true,
-              press: false,
-              pressIn: false,
-            })
-            const outStyle = {
-              ...out.style,
-              ...out.pseudos,
-            }
-            for (const key in outStyle) {
-              if (staticConfig.validStyles) {
-                if (!staticConfig.validStyles[key] && !pseudos[key]) {
-                  delete outStyle[key]
-                }
-              }
-            }
-            if (shouldPrintDebug === 'verbose') {
-              // prettier-ignore
-              console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
-              // prettier-ignore
-              console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
-              // prettier-ignore
-              console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
-            }
-            return outStyle
-          }
-
-          // used to ensure we pass the entire prop bundle to getStyles
-          const completeStylesProcessed = getStyles(completeProps, 'completeStylesProcessed')
-
-          if (!completeStylesProcessed) {
-            throw new Error(`Impossible, no styles`)
-          }
-
-          // any extra styles added in postprocess should be added to first group as they wont be overriden
-          // const stylesToAddToInitialGroup = difference(
-          //   Object.keys(completeStylesProcessed),
-          //   Object.keys(completeStaticProps)
-          // )
-          const stylesToAddToInitialGroup = shouldFlatten
-            ? difference(Object.keys(completeStylesProcessed), Object.keys(completeStaticProps))
-            : []
-
-          if (stylesToAddToInitialGroup.length) {
-            const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
-            const firstGroup = attrs.find((x) => x.type === 'style')
-            if (shouldPrintDebug) {
-              console.log('    toAdd', objToStr(toAdd))
-            }
-            if (!firstGroup) {
-              attrs.unshift({ type: 'style', value: toAdd })
-            } else {
-              Object.assign(firstGroup.value, toAdd)
-            }
-          }
-
-          if (shouldPrintDebug) {
-            // prettier-ignore
-            console.log('   -- stylesToAddToInitialGroup', stylesToAddToInitialGroup.join(', '), { shouldFlatten })
-            // prettier-ignore
-            console.log('   -- completeStaticProps:\n', logLines(objToStr(completeStaticProps)))
-            // prettier-ignore
-            console.log('   -- completeStylesProcessed:\n', logLines(objToStr(completeStylesProcessed)))
-          }
-
-          let getStyleError: any = null
-
-          // fix up ternaries, combine final style values
-          for (const attr of attrs) {
-            try {
-              if (shouldPrintDebug) console.log('  *', attrStr(attr))
-              switch (attr.type) {
-                case 'ternary':
-                  const a = getStyles(attr.value.alternate, 'ternary.alternate')
-                  const c = getStyles(attr.value.consequent, 'ternary.consequent')
-                  if (a) attr.value.alternate = a
-                  if (c) attr.value.consequent = c
-                  if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
-                  continue
-                case 'style':
-                  // expand variants and such
-                  // get the keys we need
-                  const styles = getStyles(attr.value, 'style')
-                  if (styles) {
-                    // but actually resolve them to the full object
-                    // TODO media/psuedo merging
-                    attr.value = Object.fromEntries(
-                      Object.keys(styles).map((k) => [k, completeStylesProcessed[k]])
-                    )
-                  } else {
-                    console.warn('?????????')
+              // finally we have all styles + expansions, lets see if we need to skip
+              // any and keep them as attrs
+              if (disableExtractVariables) {
+                if (value[0] === '$') {
+                  if (shouldPrintDebug) {
+                    console.log(`   keeping variable inline: ${key} =`, value)
                   }
-                  // for (const keyIn in attr.value) {
-                  //   const [key, value] = (() => {
-                  //     if (keyIn in stylePropsTransform) {
-                  //       // TODO this logic needs to be a bit more right, because could have spread in between transforms...
-                  //       // could just output flat transforms as webkit now supports on recent versions
-                  //       return ['transform', completeStylesProcessed['transform']] as const
-                  //     } else {
-                  //       return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
-                  //     }
-                  //   })()
-                  //   // if (shouldPrintDebug) console.log('style', { keyIn, key, value })
-                  //   delete attr.value[keyIn]
-                  //   attr.value[key] = value
-                  // }
-                  continue
+                  acc.push({
+                    type: 'attr',
+                    value: t.jsxAttribute(
+                      t.jsxIdentifier(key),
+                      t.jsxExpressionContainer(t.stringLiteral(value))
+                    ),
+                  })
+                  return acc
+                }
               }
-            } catch (err) {
-              // any error de-opt
-              getStyleError = err
+
+              acc.push(cur)
+              return acc
+            }, [])
+
+            if (shouldPrintDebug) {
+              console.log('  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', ')))
             }
-          }
 
-          if (getStyleError) {
-            console.log(' ⚠️ postprocessing error, deopt', getStyleError)
-            node.attributes = ogAttributes
-            return node
-          }
+            // merge styles, leave undefined values
+            let prev: ExtractedAttr | null = null
 
-          // final lazy extra loop:
-          const existingStyleKeys = new Set()
-          for (let i = attrs.length - 1; i >= 0; i--) {
-            const attr = attrs[i]
+            function mergeStyles(prev: StackProps, next: StackProps) {
+              for (const key in next) {
+                // merge pseudos
+                if (pseudos[key]) {
+                  prev[key] = prev[key] || {}
+                  Object.assign(prev[key], next[key])
+                } else {
+                  prev[key] = next[key]
+                }
+              }
+            }
 
-            // if flattening map inline props to proper flattened names
-            if (shouldFlatten && canFlattenProps) {
-              if (attr.type === 'attr') {
-                if (t.isJSXAttribute(attr.value)) {
-                  if (t.isJSXIdentifier(attr.value.name)) {
-                    const name = attr.value.name.name
-                    if (INLINE_EXTRACTABLE[name]) {
-                      // map to HTML only name
-                      attr.value.name.name = INLINE_EXTRACTABLE[name]
+            attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
+              if (cur.type === 'style') {
+                const key = Object.keys(cur.value)[0]
+                const value = cur.value[key]
+
+                const shouldKeepOriginalAttr =
+                  // !isStyleAndAttr[key] &&
+                  !shouldFlatten &&
+                  // de-opt transform styles so it merges properly if not flattened
+                  // we handle this later on
+                  // (stylePropsTransform[key] ||
+                  // de-opt if non-style
+                  !validStyles[key] &&
+                  !pseudos[key] &&
+                  !key.startsWith('data-')
+
+                if (shouldKeepOriginalAttr) {
+                  if (shouldPrintDebug) {
+                    console.log('     - keeping as non-style', key)
+                  }
+                  prev = cur
+                  acc.push({
+                    type: 'attr',
+                    value: t.jsxAttribute(
+                      t.jsxIdentifier(key),
+                      t.jsxExpressionContainer(
+                        typeof value === 'string' ? t.stringLiteral(value) : literalToAst(value)
+                      )
+                    ),
+                  })
+                  acc.push(cur)
+                  return acc
+                }
+
+                if (ensureOverridden[key]) {
+                  acc.push({
+                    type: 'attr',
+                    value:
+                      cur.attr ||
+                      t.jsxAttribute(
+                        t.jsxIdentifier(key),
+                        t.jsxExpressionContainer(t.nullLiteral())
+                      ),
+                  })
+                }
+
+                if (prev?.type === 'style') {
+                  mergeStyles(prev.value as StackProps, cur.value as StackProps)
+                  return acc
+                }
+              }
+
+              prev = cur
+              acc.push(cur)
+              return acc
+            }, [])
+
+            if (shouldPrintDebug) {
+              console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
+            }
+
+            const completeProps = {
+              ...staticConfig.defaultProps,
+              ...completeStaticProps,
+            }
+
+            // post process
+            const getStyles = (props: Object | null, debugName = '') => {
+              if (!props) return
+              if (!Object.keys(props).length) return
+              if (excludeProps && !!excludeProps.size) {
+                for (const key in props) {
+                  if (excludeProps.has(key)) {
+                    delete props[key]
+                  }
+                }
+              }
+              const out = getSplitStyles(props, staticConfig, defaultTheme, {
+                noClassNames: true,
+                fallbackProps: completeProps,
+                focus: false,
+                hover: false,
+                mounted: true,
+                press: false,
+                pressIn: false,
+              })
+              const outStyle = {
+                ...out.style,
+                ...out.pseudos,
+              }
+              for (const key in outStyle) {
+                if (staticConfig.validStyles) {
+                  if (!staticConfig.validStyles[key] && !pseudos[key]) {
+                    delete outStyle[key]
+                  }
+                }
+              }
+              if (shouldPrintDebug === 'verbose') {
+                // prettier-ignore
+                console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
+                // prettier-ignore
+                console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
+                // prettier-ignore
+                console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
+              }
+              return outStyle
+            }
+
+            // used to ensure we pass the entire prop bundle to getStyles
+            const completeStylesProcessed = getStyles(completeProps, 'completeStylesProcessed')
+
+            if (!completeStylesProcessed) {
+              throw new Error(`Impossible, no styles`)
+            }
+
+            // any extra styles added in postprocess should be added to first group as they wont be overriden
+            // const stylesToAddToInitialGroup = difference(
+            //   Object.keys(completeStylesProcessed),
+            //   Object.keys(completeStaticProps)
+            // )
+            const stylesToAddToInitialGroup = shouldFlatten
+              ? difference(Object.keys(completeStylesProcessed), Object.keys(completeStaticProps))
+              : []
+
+            if (stylesToAddToInitialGroup.length) {
+              const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
+              const firstGroup = attrs.find((x) => x.type === 'style')
+              if (shouldPrintDebug) {
+                console.log('    toAdd', objToStr(toAdd))
+              }
+              if (!firstGroup) {
+                attrs.unshift({ type: 'style', value: toAdd })
+              } else {
+                Object.assign(firstGroup.value, toAdd)
+              }
+            }
+
+            if (shouldPrintDebug) {
+              // prettier-ignore
+              console.log('   -- stylesToAddToInitialGroup', stylesToAddToInitialGroup.join(', '), { shouldFlatten })
+              // prettier-ignore
+              console.log('   -- completeStaticProps:\n', logLines(objToStr(completeStaticProps)))
+              // prettier-ignore
+              console.log('   -- completeStylesProcessed:\n', logLines(objToStr(completeStylesProcessed)))
+            }
+
+            let getStyleError: any = null
+
+            // fix up ternaries, combine final style values
+            for (const attr of attrs) {
+              try {
+                if (shouldPrintDebug) console.log('  *', attrStr(attr))
+                switch (attr.type) {
+                  case 'ternary':
+                    const a = getStyles(attr.value.alternate, 'ternary.alternate')
+                    const c = getStyles(attr.value.consequent, 'ternary.consequent')
+                    if (a) attr.value.alternate = a
+                    if (c) attr.value.consequent = c
+                    if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
+                    continue
+                  case 'style':
+                    // expand variants and such
+                    // get the keys we need
+                    const styles = getStyles(attr.value, 'style')
+                    if (styles) {
+                      // but actually resolve them to the full object
+                      // TODO media/psuedo merging
+                      attr.value = Object.fromEntries(
+                        Object.keys(styles).map((k) => [k, completeStylesProcessed[k]])
+                      )
+                    } else {
+                      console.warn('?????????')
+                    }
+                    // for (const keyIn in attr.value) {
+                    //   const [key, value] = (() => {
+                    //     if (keyIn in stylePropsTransform) {
+                    //       // TODO this logic needs to be a bit more right, because could have spread in between transforms...
+                    //       // could just output flat transforms as webkit now supports on recent versions
+                    //       return ['transform', completeStylesProcessed['transform']] as const
+                    //     } else {
+                    //       return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
+                    //     }
+                    //   })()
+                    //   // if (shouldPrintDebug) console.log('style', { keyIn, key, value })
+                    //   delete attr.value[keyIn]
+                    //   attr.value[key] = value
+                    // }
+                    continue
+                }
+              } catch (err) {
+                // any error de-opt
+                getStyleError = err
+              }
+            }
+
+            if (getStyleError) {
+              console.log(' ⚠️ postprocessing error, deopt', getStyleError)
+              node.attributes = ogAttributes
+              return node
+            }
+
+            // final lazy extra loop:
+            const existingStyleKeys = new Set()
+            for (let i = attrs.length - 1; i >= 0; i--) {
+              const attr = attrs[i]
+
+              // if flattening map inline props to proper flattened names
+              if (shouldFlatten && canFlattenProps) {
+                if (attr.type === 'attr') {
+                  if (t.isJSXAttribute(attr.value)) {
+                    if (t.isJSXIdentifier(attr.value.name)) {
+                      const name = attr.value.name.name
+                      if (INLINE_EXTRACTABLE[name]) {
+                        // map to HTML only name
+                        attr.value.name.name = INLINE_EXTRACTABLE[name]
+                      }
                     }
                   }
                 }
               }
-            }
 
-            // remove duplicate styles
-            // so if you have:
-            //   style({ color: 'red' }), ...someProps, style({ color: 'green' })
-            // this will mutate:
-            //   style({}), ...someProps, style({ color: 'green' })
-            if (attr.type === 'style') {
-              for (const key in attr.value) {
-                if (existingStyleKeys.has(key)) {
-                  delete attr.value[key]
-                } else {
-                  existingStyleKeys.add(key)
+              // remove duplicate styles
+              // so if you have:
+              //   style({ color: 'red' }), ...someProps, style({ color: 'green' })
+              // this will mutate:
+              //   style({}), ...someProps, style({ color: 'green' })
+              if (attr.type === 'style') {
+                for (const key in attr.value) {
+                  if (existingStyleKeys.has(key)) {
+                    delete attr.value[key]
+                  } else {
+                    existingStyleKeys.add(key)
+                  }
                 }
               }
             }
-          }
 
-          if (shouldFlatten) {
-            // DO FLATTEN
+            if (shouldFlatten) {
+              // DO FLATTEN
+              if (shouldPrintDebug) {
+                console.log('  [✅] flattening', originalNodeName, flatNode)
+              }
+              node.name.name = flatNode
+              res.flattened++
+              if (closingElement) {
+                closingElement.name.name = flatNode
+              }
+            }
+
             if (shouldPrintDebug) {
-              console.log('  [✅] flattening', originalNodeName, flatNode)
+              // prettier-ignore
+              console.log(` ❊❊ inline props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : '')
+              console.log('  - attrs (end):\n', logLines(attrs.map(attrStr).join(', ')))
             }
-            node.name.name = flatNode
-            res.flattened++
-            if (closingElement) {
-              closingElement.name.name = flatNode
+
+            onExtractTag({
+              attrs,
+              node,
+              lineNumbers,
+              filePath,
+              attemptEval,
+              jsxPath: traversePath,
+              originalNodeName,
+              isFlattened: shouldFlatten,
+              programPath,
+            })
+          } catch (err) {
+            throw err
+          } finally {
+            if (hasBooleanDebugTrue) {
+              shouldPrintDebug = false
             }
           }
-
-          if (shouldPrintDebug) {
-            // prettier-ignore
-            console.log(` ❊❊ inline props (${inlined.size}):`, shouldDeopt ? ' deopted' : '', hasSpread ? ' has spread' : '', staticConfig.neverFlatten ? 'neverFlatten' : '')
-            console.log('  - attrs (end):\n', logLines(attrs.map(attrStr).join(', ')))
-          }
-
-          onExtractTag({
-            attrs,
-            node,
-            lineNumbers,
-            filePath,
-            attemptEval,
-            jsxPath: traversePath,
-            originalNodeName,
-            isFlattened: shouldFlatten,
-            programPath,
-          })
         },
       })
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "1.0.0-beta.222+464bca9b",
+  "version": "1.0.0-beta.225+79278a33",
   "bin": {
     "tamagui-build": "tamagui-build.js"
   },
@@ -23,5 +23,5 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.13"
   },
-  "gitHead": "464bca9bb632fcd9557a632d8e8dc49db243753c"
+  "gitHead": "79278a336a83bc37b2fd40038ccbbfdfb4a565cd"
 }

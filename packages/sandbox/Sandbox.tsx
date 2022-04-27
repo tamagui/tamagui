@@ -4,7 +4,7 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/feather-icons'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
-import { Button, Circle, Square, Theme, VisuallyHidden, XStack, YStack, styled } from 'tamagui'
+import { Button, Circle, H1, Square, Theme, VisuallyHidden, XStack, YStack, styled } from 'tamagui'
 import { Image } from 'tamagui'
 
 import Tamagui from './tamagui.config'
@@ -16,7 +16,15 @@ export const Sandbox = () => {
   return (
     <Tamagui.Provider injectCSS defaultTheme="light">
       <Theme name={theme}>
-        <div style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <a
             style={{ marginBottom: 20 }}
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
@@ -34,7 +42,25 @@ export const Test = (props) => {
   return (
     <>
       <VisuallyHidden>something</VisuallyHidden>
-      <AnimationTest />
+      <H1
+        animation="bouncy"
+        enterStyle={{
+          opacity: 0,
+        }}
+        opacity={1}
+        size="$9"
+        $gtSm={{
+          size: '$11',
+          ta: 'center',
+        }}
+        $gtMd={{
+          size: '$12',
+          maxWidth: 900,
+          mx: '$4',
+        }}
+      >
+        Universal design systems for React&nbsp;Native &&nbsp;Web, faster
+      </H1>
     </>
   )
 }

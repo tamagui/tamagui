@@ -64,9 +64,7 @@ function loadFeatures(): Record<string, FeatureDefinition> {
 
     // will update the parent whenever media query changes
     // no need on web, media queries are inserted and run in css
-    ...(!isWeb && {
-      mediaQuery: loadMediaQueryFeature(),
-    }),
+    mediaQuery: loadMediaQueryFeature(),
   }
 }
 
@@ -237,7 +235,7 @@ function loadMediaQueryFeature() {
 
   return createDefinition({
     Component: (props: any) => {
-      const keys = mediaPropNames.flatMap((x) => (x in props ? x.slice(1) : []))
+      const keys = mediaPropNames.filter((x) => x in props)
 
       useIsomorphicLayoutEffect(() => {
         for (const key of keys) {

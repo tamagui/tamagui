@@ -14,8 +14,13 @@ export const animations = createAnimations({
   },
   lazy: {
     type: 'spring',
-    damping: 20,
-    stiffness: 60,
+    damping: 18,
+    stiffness: 50,
+  },
+  slow: {
+    type: 'spring',
+    damping: 15,
+    stiffness: 40,
   },
   quick: {
     type: 'spring',

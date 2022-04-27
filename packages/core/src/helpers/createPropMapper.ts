@@ -6,32 +6,34 @@ import { isObj } from './isObj'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
 
-export const createPropMapper = (staticConfig: StaticConfig) => {
-  const variants = staticConfig.variants || {}
-
-  // goes through specificity finding best matching variant function
-  function getVariantFunction(variant: any, key: string, value: any) {
-    for (const cat in tokenCategories) {
-      if (key in tokenCategories[cat]) {
-        const spreadVariant = variant[`...${cat}`]
-        if (spreadVariant) {
-          return spreadVariant
-        }
+// goes through specificity finding best matching variant function
+function getVariantFunction(variant: any, key: string, value: any) {
+  if (typeof variant === 'function') {
+    return variant
+  }
+  for (const cat in tokenCategories) {
+    if (key in tokenCategories[cat]) {
+      const spreadVariant = variant[`...${cat}`]
+      if (spreadVariant) {
+        return spreadVariant
       }
     }
-    let fn: any
-    if (typeof value === 'number') {
-      fn = variant[':number']
-    } else if (typeof value === 'string') {
-      fn = variant[':string']
-    } else if (value === true || value === false) {
-      fn = variant[':boolean']
-    }
-    fn = fn || variant[value]
-    // fallback to size ultimately - could do token level detection
-    return fn || variant['...'] || variant['...size']
   }
+  let fn: any
+  if (typeof value === 'number') {
+    fn = variant[':number']
+  } else if (typeof value === 'string') {
+    fn = variant[':string']
+  } else if (value === true || value === false) {
+    fn = variant[':boolean']
+  }
+  fn = fn || variant[value]
+  // fallback to size ultimately - could do token level detection
+  return fn || variant['...'] || variant['...size']
+}
 
+export const createPropMapper = (staticConfig: StaticConfig) => {
+  const variants = staticConfig.variants || {}
   const defaultProps = staticConfig.defaultProps || {}
 
   return (
@@ -50,8 +52,6 @@ export const createPropMapper = (staticConfig: StaticConfig) => {
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     let fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
-
-    // expand variants
     const variant = variants && variants[key]
 
     if (variant && value !== undefined) {
@@ -72,8 +72,8 @@ export const createPropMapper = (staticConfig: StaticConfig) => {
                     }
                     // these props may be extracted into classNames, but we still want to access them
                     // at runtime, so we proxy back to defaultProps but don't pass them
-                    if (staticConfig.defaultProps) {
-                      return Reflect.get(staticConfig.defaultProps, key)
+                    if (defaultProps) {
+                      return Reflect.get(defaultProps, key)
                     }
                   },
                 }),

@@ -85,7 +85,7 @@ export declare type Themes = TamaguiConfig['themes'];
 export declare type ThemeName = GetAltThemeNames<keyof Themes>;
 export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeTokens = `$${ThemeKeys}`;
-export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {};
+export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig>;
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = CreateTamaguiConfig<A, B, C, D, E> & {
     Provider: (props: TamaguiProviderProps) => any;

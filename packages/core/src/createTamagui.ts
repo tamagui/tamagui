@@ -53,6 +53,15 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return config as any
   }
 
+  if (process.env.NODE_ENV === 'development') {
+    if (!config.tokens) {
+      throw new Error(`No tokens provided to Tamagui config`)
+    }
+    if (!config.themes) {
+      throw new Error(`No themes provided to Tamagui config`)
+    }
+  }
+
   // test env loads a few times as it runs diff tests
   if (getHasConfigured()) {
     console.warn('Called createTamagui twice! Should never do so')

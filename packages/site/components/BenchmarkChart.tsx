@@ -30,44 +30,47 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
 
   return (
     <YStack space="$1" my="$4">
-      {data.map((result, i) => (
-        <XStack space="$2" key={i}>
-          <YStack w={large ? 120 : 70}>
-            <Paragraph
-              key={result.name}
-              size="$2"
-              whiteSpace="nowrap"
-              ta="right"
-              my={-3}
-              fontWeight={result.name === 'Tamagui' ? '700' : '400'}
-            >
-              {result.name}
-            </Paragraph>
-          </YStack>
-          <XStack mr={65} flex={1} ai="center">
-            <YStack
-              bc={getBarColor(result.name)}
-              o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
-              width={`${(result.value / maxValue) * 100}%`}
-              height={10}
-              br="$1"
-              position="relative"
-              jc="center"
-              scaleX={1}
-              animation="bouncy"
-              {...(animateEnter && {
-                enterStyle: {
-                  scaleX: 0,
-                },
-              })}
-            >
-              <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
-                {result.value}ms
+      {data.map((result, i) => {
+        const width = `${(result.value / maxValue) * 100}%`
+        return (
+          <XStack space="$2" key={i}>
+            <YStack w={large ? 120 : 70}>
+              <Paragraph
+                key={result.name}
+                size="$2"
+                whiteSpace="nowrap"
+                ta="right"
+                my={-3}
+                fontWeight={result.name === 'Tamagui' ? '700' : '400'}
+              >
+                {result.name}
               </Paragraph>
             </YStack>
+            <XStack mr={65} flex={1} ai="center">
+              <YStack
+                bc={getBarColor(result.name)}
+                o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
+                width={width}
+                height={10}
+                br="$1"
+                position="relative"
+                jc="center"
+                scaleX={1}
+                animation="lazy"
+                {...(animateEnter && {
+                  enterStyle: {
+                    scaleX: 0,
+                  },
+                })}
+              >
+                <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
+                  {result.value}ms
+                </Paragraph>
+              </YStack>
+            </XStack>
           </XStack>
-        </XStack>
-      ))}
+        )
+      })}
     </YStack>
   )
 }

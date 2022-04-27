@@ -48,6 +48,24 @@ We can use these like so:
 
 We're showing off a few different styles of variants here. We'll expand on them below:
 
+### Functional variant
+
+If you need more complex types, or simply prefer a shorter syntax, you can use a single function instead of using the object syntax for variants:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const MyStack = styled(Stack, {
+  variants: {
+    doubleMargin: (val: number) => ({
+      margin: val * 2
+    }),
+  },
+})
+```
+
+Alternatively, Tamagui provides helpers that let you quickly accept certain types:
+
 ### Typed variants
 
 #### Boolean
@@ -82,7 +100,7 @@ export const ColorfulStack = styled(Stack, {
 })
 ```
 
-### Spread Variants
+### Typed spread variants
 
 When you write variants, you have to be explicit so Typescript and the runtime know exactly which props you accept. This can be especially cumbersome when you want to "gather" all the values of a specific token. For example, without spread variants, if you wanted to have a `pad` property that accepted all the keys from `tokens.size`, you'd have to write this:
 
