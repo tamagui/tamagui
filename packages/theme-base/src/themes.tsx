@@ -1,7 +1,7 @@
 import * as Colors from '@tamagui/colors'
+import { allDarkColors, allLightColors } from '@tamagui/colors'
 import { Variable, getVariableValue } from '@tamagui/core'
 
-import { allDarkColors, allLightColors } from './colors'
 import { setColorAlpha } from './colorUtils'
 import { color } from './tokens'
 

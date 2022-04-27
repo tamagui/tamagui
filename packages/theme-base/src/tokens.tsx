@@ -1,4 +1,4 @@
-import { allLightColors, darkColorsPostfixed } from './colors'
+import { allLightColors, darkColorsPostfixed } from '@tamagui/colors'
 
 export const size = {
   true: 20, // for space boolean true
