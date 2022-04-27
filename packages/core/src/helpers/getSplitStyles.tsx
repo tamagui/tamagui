@@ -92,13 +92,14 @@ export const getSplitStyles = (
         ? key.split('-')[1]
         : 'transform'
 
-      if (!insertedTransforms[val]) {
+      let transform = insertedTransforms[val]
+      if (!transform) {
         // HMR or loaded a new chunk
         updateInserted()
       }
-      const transform = insertedTransforms[val]
+      transform = insertedTransforms[val]
       if (!transform || transform === 'undefined') {
-        console.trace('NO TRANSFORM', { key, val }, state)
+        console.log('NO TRANSFORM', { key, val, transform })
         return
       }
       transforms[namespace] = transforms[namespace] || ['', '']
@@ -138,10 +139,6 @@ export const getSplitStyles = (
           style[key] = cur[key]
         }
       }
-    }
-
-    if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-      console.log('getSplitStyles.push', { state, cur })
     }
 
     // reset it for next group of styles
@@ -232,9 +229,9 @@ export const getSplitStyles = (
 
       // media
       if (isMedia) {
-        const mediaKey = key.slice(1)
+        const mediaKey = key
 
-        if (!mediaQueryConfig[mediaKey]) {
+        if (!mediaQueryConfig[mediaKey.slice(1)]) {
           // this isn't a media key, pass through
           viewProps[key] = val
           continue
@@ -247,20 +244,21 @@ export const getSplitStyles = (
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
         const mediaStyle = getSubStyle(val, staticConfig, theme, props, state, true)
 
-        if (isWeb) {
+        const shouldDoClasses = isWeb && !state.noClassNames
+        if (shouldDoClasses) {
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
-            const out = createMediaStyle(style, mediaKey, mediaQueryConfig)
+            const out = createMediaStyle(style, mediaKey.slice(1), mediaQueryConfig)
             mergeClassName(`${out.identifier}-${mediaKey}`, out.identifier)
             insertStyleRule(out.identifier, out.styleRule)
           }
-          if (mediaState[mediaKey]) {
-            Object.assign(medias, mediaStyle)
-          }
         } else {
           if (mediaState[mediaKey]) {
-            // TODO i think media + pseudo needs handling here
-            Object.assign(style, mediaStyle)
+            push()
+            if (process.env.NODE_ENV === 'development' && props['debug']) {
+              console.log('apply media style', mediaKey, mediaState)
+            }
+            Object.assign(shouldDoClasses ? medias : style, mediaStyle)
           }
         }
         continue

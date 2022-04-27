@@ -1,22 +1,28 @@
+import { createInterFont } from '@tamagui/font-inter'
 import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/theme-base'
-import { createTamagui } from 'tamagui'
+import { color, radius, size, space, themes, zIndex } from '@tamagui/theme-base'
+import { createTamagui, createTokens } from 'tamagui'
 
-// import { animations } from './animations.css'
 import { animations } from './animations.reanimated'
 
-// in animations.ts:
-// import { createAnimations } from '@tamagui/css-animations'
-// export const animations = createAnimations({
-//   springy: 'ease-in-out 300ms',
-// })
+const interFont = createInterFont()
 
 const config = createTamagui({
   animations,
   defaultTheme: 'light',
   shorthands,
   themes,
-  tokens,
+  tokens: createTokens({
+    font: {
+      title: interFont,
+      body: interFont,
+    },
+    size,
+    space,
+    zIndex,
+    color,
+    radius,
+  }),
   media: {
     xs: { maxWidth: 660 },
     gtXs: { minWidth: 660 + 1 },
@@ -27,11 +33,6 @@ const config = createTamagui({
     lg: { minWidth: 1120 },
     gtLg: { minWidth: 1120 + 1 },
     xl: { minWidth: 1280 },
-    xxl: { minWidth: 1420 },
-    short: { maxHeight: 820 },
-    tall: { minHeight: 820 },
-    hoverNone: { hover: 'none' },
-    pointerCoarse: { pointer: 'coarse' },
   },
 })
 

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/fake-react-native",
-  "version": "1.0.0-beta.222+464bca9b",
+  "version": "1.0.0-beta.225+79278a33",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
@@ -9,5 +9,5 @@
     "build": "true",
     "watch": "true"
   },
-  "gitHead": "464bca9bb632fcd9557a632d8e8dc49db243753c"
+  "gitHead": "79278a336a83bc37b2fd40038ccbbfdfb4a565cd"
 }

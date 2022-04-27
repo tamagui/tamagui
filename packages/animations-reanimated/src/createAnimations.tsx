@@ -71,7 +71,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       }
 
       const args = [
-        JSON.stringify(animatedStyles),
+        JSON.stringify(all),
         state.mounted,
         state.hover,
         state.press,

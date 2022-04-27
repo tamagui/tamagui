@@ -48,6 +48,7 @@ export const configureMedia = ({
   // setup
   for (const key in queries) {
     const str = mediaObjectToString(queries[key])
+    const propKey = `$${key}`
     try {
       const getMatch = () => matchMedia(str)
       const match = getMatch()
@@ -55,22 +56,26 @@ export const configureMedia = ({
         // caught below
         throw new Error('⚠️ No match (seeing this in RN sometimes)')
       }
-      mediaState[key] = !!match.matches
-      match.addListener(() => {
+      mediaState[propKey] = !!match.matches
+      match.addListener(update)
+
+      function update() {
         const next = !!getMatch().matches
-        if (next === mediaState[key]) return
-        mediaState[key] = next
-        const listeners = mediaQueryListeners[key]
+        if (next === mediaState[propKey]) return
+        mediaState[propKey] = next
+        const listeners = mediaQueryListeners[propKey]
         if (listeners?.size) {
           for (const cb of [...listeners]) {
             cb()
           }
         }
-      })
+      }
+
+      update()
     } catch (err: any) {
       console.error('Error running media query', str, err.message, err.stack)
       const isDefaultActive = defaultActive?.includes(key as any) ?? true
-      mediaState[key] = isDefaultActive
+      mediaState[propKey] = isDefaultActive
     }
   }
 }

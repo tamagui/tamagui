@@ -65,7 +65,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   return themes as any
 }
 
-const createTheme: ThemeCreator = (
+const createTheme = (
   str = 1,
   {
     backgrounds,

@@ -67,7 +67,6 @@
     - support Switch.Toggle style extractions
 
   - basic styled() extraction to css at compile time
-  - catchall: { variants: '...' => {} } / styled(Text, () => ({}))
   - ~button textProps => child selectors~
     - See if this isn't too terribly hard:
     - childStyle={{

@@ -20,6 +20,7 @@ function addTransform(identifier: string, rule: string) {
   const startI = s + 'transform:'.length
   const endI = rule.indexOf(';')
   const value = rule.slice(startI, endI)
+  console.log('add', identifier, value)
   insertedTransforms[identifier] = value
 }
 

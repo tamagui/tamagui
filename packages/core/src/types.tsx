@@ -139,7 +139,7 @@ export type ThemeName = GetAltThemeNames<keyof Themes>
 // export type ThemeNameWithSubThemes = GetSubThemes<ThemeName>
 export type ThemeKeys = keyof ThemeObject
 export type ThemeTokens = `$${ThemeKeys}`
-export type AnimationKeys = GetAnimationKeys<TamaguiConfig> & {}
+export type AnimationKeys = GetAnimationKeys<TamaguiConfig>
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
 

@@ -1,8 +1,11 @@
+import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { memo } from 'react'
 import {
+  AnimationKeys,
   Button,
+  H1,
   Heading,
   Paragraph,
   Spacer,
@@ -80,23 +83,40 @@ const HeroTop = memo(() => {
         ov="hidden"
         space="$7"
         position="relative"
-        pt="$8"
+        pt="$9"
+        pb="$2"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
         }}
       >
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$4">
-          <Heading
+          <H1
+            // TODO
+            // animation="slow"
+            // enterStyle={{
+            //   opacity: 0.5,
+            //   y: -10,
+            // }}
+            opacity={1}
+            y={0}
+            ta="left"
             size="$9"
+            als="center"
+            maw={500}
             $gtSm={{
+              mx: 0,
+              maxWidth: 950,
               size: '$11',
               ta: 'center',
             }}
             $gtMd={{
+              ta: 'center',
               size: '$12',
-              maxWidth: 900,
-              mx: '$4',
+            }}
+            $gtLg={{
+              size: '$13',
+              maxWidth: 1200,
             }}
           >
             <Tooltip contents="Works the same on iOS, Android, and web">
@@ -105,38 +125,44 @@ const HeroTop = memo(() => {
               </span>
             </Tooltip>{' '}
             design systems for React&nbsp;Native &&nbsp;Web, faster
-          </Heading>
+          </H1>
 
           <YStack
             px={0}
-            maxWidth={550}
-            $gtSm={{
-              px: 100,
-              maxWidth: 900,
+            maw={500}
+            animation="bouncy"
+            debug="verbose"
+            enterStyle={{
+              o: 0.5,
+              y: -10,
             }}
+            o={1}
+            y={0}
             $gtMd={{
               px: 90,
+              maw: 1000,
             }}
           >
             <Paragraph
               color="$gray10"
-              size="$5"
+              size="$6"
               fontFamily="$silkscreen"
+              ta="left"
               letterSpacing={-1.5}
               $gtSm={{
                 ta: 'center',
-                size: '$6',
-                fontWeight: '400',
-                maw: 450,
-              }}
-              $gtMd={{
                 size: '$7',
                 fontWeight: '400',
-                maw: 550,
+                maw: 650,
+              }}
+              $gtMd={{
+                size: '$8',
+                fontWeight: '400',
+                maw: 650,
               }}
             >
               <span className="rainbow clip-text">Write&nbsp;once,&nbsp;run&nbsp;everywhere</span>{' '}
-              without downside thanks to an optimizing&nbsp;compiler.
+              without downside thanks&nbsp;to&nbsp;an optimizing&nbsp;compiler.
             </Paragraph>
           </YStack>
         </YStack>
