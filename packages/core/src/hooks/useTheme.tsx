@@ -116,10 +116,8 @@ export const useTheme = (
             return val
           }
           // react native debuger uses toJSON
-          if (key !== 'toJSON') {
-            if (process.env.NODE_ENV === 'development') {
-              console.log(`No theme value "${String(key)}" in ${name}`)
-            }
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`No theme value "${String(key)}" in ${name}`)
           }
         }
         return Reflect.get(_, key)

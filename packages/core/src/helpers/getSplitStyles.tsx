@@ -126,6 +126,7 @@ export const getSplitStyles = (
     }
 
     if (
+      !isWeb ||
       state.noClassNames ||
       state.resolveVariablesAs === 'value' ||
       state.resolveVariablesAs === 'both'
@@ -137,6 +138,10 @@ export const getSplitStyles = (
           style[key] = cur[key]
         }
       }
+    }
+
+    if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+      console.log('getSplitStyles.push', { state, cur })
     }
 
     // reset it for next group of styles
