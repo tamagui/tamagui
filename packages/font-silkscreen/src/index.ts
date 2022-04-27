@@ -1,7 +1,9 @@
 import { GenericFont, createFont } from '@tamagui/core'
 import { Platform } from 'react-native'
 
-export const createSilkscreenFont = <A extends GenericFont>(font: Partial<A> = {}): A => {
+export const createSilkscreenFont = <A extends GenericFont<keyof typeof size>>(
+  font: Partial<A> = {}
+): A => {
   return createFont({
     family:
       Platform.OS == 'web'
@@ -40,4 +42,4 @@ const size = {
   14: 92,
   15: 114,
   16: 124,
-}
+} as const

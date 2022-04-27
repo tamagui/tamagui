@@ -1,3 +1,5 @@
+import * as Helpers from '@tamagui/helpers'
+
 import { rnw } from './constants/rnw'
 import { getAllSelectors, getAllTransforms } from './helpers/insertStyleRule'
 import { TamaguiInternalConfig } from './types'
@@ -7,6 +9,7 @@ import { TamaguiInternalConfig } from './types'
 class TamaguiManager {
   config: TamaguiInternalConfig | null = null
   rnw = rnw
+  Helpers = Helpers
 
   get allSelectors() {
     return getAllSelectors()
