@@ -8,10 +8,7 @@ export const SizableText = styled(Text, {
   color: '$color',
 
   variants: {
-    size: {
-      '...fontSize': sizableTextSizeVariant,
-      '...size': sizableTextSizeVariant,
-    },
+    size: sizableTextSizeVariant,
   },
 
   defaultVariants: {
