@@ -8,6 +8,7 @@ import {
   TextProps as ReactTextProps,
   Text,
   TextInput,
+  TextInputProps,
   TextStyle,
   View,
   ViewProps,
@@ -581,10 +582,13 @@ export type GetBaseProps<A extends StylableComponent> = A extends TamaguiCompone
 export type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props>
   ? Props
   : A extends React.Component<infer Props>
-  ? Omit<Props, keyof StackProps> & StackProps
+  ? GetGenericComponentTamaguiProps<Props>
   : A extends new (props: infer Props) => any
-  ? Omit<Props, keyof StackProps> & StackProps
+  ? GetGenericComponentTamaguiProps<Props>
   : {}
+
+type GetGenericComponentTamaguiProps<P> = P &
+  Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>
 
 export type SpreadKeys =
   | '...fontSize'
