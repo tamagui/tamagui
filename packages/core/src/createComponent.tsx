@@ -106,7 +106,9 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.warn(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', ' debug prop on:', { props: Object.entries(props) })
+        console.warn(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
+        // keep separate react native warn touches every value on prop causing weird behavior
+        console.log('props in:', props)
         if (props['debug'] === 'break') debugger
       }
     }
@@ -390,7 +392,13 @@ export function createComponent<
     }
 
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
-    const attachPress = !!((pseudos && pseudos.pressStyle) || onPress || onPressOut || onPressIn)
+    const attachPress = !!(
+      (pseudos && pseudos.pressStyle) ||
+      (defaultPseudos && defaultPseudos.pressStyle) ||
+      onPress ||
+      onPressOut ||
+      onPressIn
+    )
     const isHoverable = isWeb && !isTouchDevice
     const attachHover =
       isHoverable &&
