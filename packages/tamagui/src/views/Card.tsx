@@ -29,3 +29,5 @@ export const Card = styled(SizableStack, {
     },
   },
 })
+
+export type CardProps = GetProps<typeof Card>
