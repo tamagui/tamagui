@@ -7,7 +7,9 @@
   "module:jsx": "dist/jsx",
   "files": [
     "types",
-    "dist"
+    "dist",
+    "css",
+    "ttf"
   ],
   "scripts": {
     "build": "tamagui-build",
