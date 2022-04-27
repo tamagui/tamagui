@@ -1,11 +1,6 @@
-import { createTokens } from '@tamagui/core'
-
 import { allLightColors, darkColorsPostfixed } from './colors'
-import { firaFont } from './firaFont'
-import { interFont } from './interFont'
-import { silkscreenFont } from './silkscreenFont'
 
-const size = {
+export const size = {
   true: 20, // for space boolean true
   0: 0,
   '0.5': 2,
@@ -26,44 +21,36 @@ const size = {
 type Sizes = typeof size
 type SizeKeys = keyof Sizes
 
-const space: {
+export const space: {
   [Key in `-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...size,
   ...Object.fromEntries(Object.entries(size).map(([k, v]) => [`-${k}`, -v])),
 } as any
 
-export const tokens = createTokens({
-  size,
-  space,
-  font: {
-    title: interFont,
-    body: interFont,
-    mono: firaFont,
-    silkscreen: silkscreenFont,
-  },
-  zIndex: {
-    0: 0,
-    1: 100,
-    2: 200,
-    3: 300,
-    4: 400,
-    5: 500,
-  },
-  color: {
-    ...allLightColors,
-    ...darkColorsPostfixed,
-  },
-  radius: {
-    0: 0,
-    1: 3,
-    2: 5,
-    3: 7,
-    4: 9,
-    5: 10,
-    6: 12,
-    7: 16,
-    8: 20,
-    9: 30,
-  },
-})
+export const zIndex = {
+  0: 0,
+  1: 100,
+  2: 200,
+  3: 300,
+  4: 400,
+  5: 500,
+}
+
+export const color = {
+  ...allLightColors,
+  ...darkColorsPostfixed,
+}
+
+export const radius = {
+  0: 0,
+  1: 3,
+  2: 5,
+  3: 7,
+  4: 9,
+  5: 10,
+  6: 12,
+  7: 16,
+  8: 20,
+  9: 30,
+}

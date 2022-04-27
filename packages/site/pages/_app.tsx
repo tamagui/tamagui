@@ -1,7 +1,8 @@
 import '@docsearch/css'
-import '@tamagui/theme-base/fira-code.css'
-import '@tamagui/theme-base/inter.css'
-import '@tamagui/theme-base/silkscreen.css'
+import '@tamagui/font-fira-mono/css/400.css'
+import '@tamagui/font-inter/css/400.css'
+import '@tamagui/font-inter/css/700.css'
+import '@tamagui/font-silkscreen/css/400.css'
 
 import '../app.css'
 

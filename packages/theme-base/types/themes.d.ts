@@ -1,4 +1,3 @@
-import { Variable } from '@tamagui/core';
 export declare const colorSchemes: readonly [{
     readonly name: "blue";
     readonly colors: {
@@ -391,7 +390,7 @@ export declare const colorSchemes: readonly [{
     };
 }];
 export declare type ColorNames = typeof colorSchemes[number]['name'];
-export declare const lightGradient: (string | Variable)[];
+export declare const lightGradient: string[];
 export declare const darkGradient: string[];
 declare const baseThemes: {
     dark: any;
