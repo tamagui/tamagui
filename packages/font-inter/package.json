@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-inter",
-  "version": "1.0.0-beta.230+fab00413",
+  "version": "1.0.0-beta.200+9591831d",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,11 +18,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.230+fab00413",
-    "@tamagui/colors": "^1.0.0-beta.230+fab00413"
+    "@tamagui/build": "^1.0.0-beta.200+9591831d",
+    "@tamagui/colors": "^1.0.0-beta.200+9591831d"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "fab0041356da84bd32620811a57a156d11514d2b"
+  "gitHead": "9591831d7d4a58cc4e01846e68a0d3324570b5c8"
 }
