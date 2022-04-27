@@ -5,7 +5,7 @@ import { Linking, View } from 'react-native'
 import { SizableText, SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
-React['createElement']
+React['keep']
 
 export type AnchorProps = SizableTextProps & {
   href?: string
