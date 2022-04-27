@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.205+6a67c74d",
   "bin": "./run.js",
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "yarn ts-node index.ts",
     "test": "rimraf ./create-test-app/ && yarn release && node dist/index.js create-test-app",
     "dev": "ncc build ./index.ts -w -o dist/",
     "prerelease": "rimraf ./dist/",
