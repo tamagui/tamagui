@@ -2,6 +2,10 @@
   "name": "create-tamagui-app",
   "version": "1.0.0-beta.208+f5ae07b4",
   "bin": "./run.js",
+  "files": [
+    "run.js",
+    "dist"
+  ],
   "scripts": {
     "start": "yarn ts-node index.ts",
     "test": "rimraf ./create-test-app/ && yarn release && node dist/index.js create-test-app",
