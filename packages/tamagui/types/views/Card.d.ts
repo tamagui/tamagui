@@ -1,3 +1,4 @@
+import { GetProps } from '@tamagui/core';
 export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core/types/types-rnw").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -55,4 +56,5 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
+export declare type CardProps = GetProps<typeof Card>;
 //# sourceMappingURL=Card.d.ts.map
