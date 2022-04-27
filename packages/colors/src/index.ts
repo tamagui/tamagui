@@ -1,5 +1,30 @@
 // all exports here for better tree shaking compat
 
+import { blue as blueDark } from './dark/blue'
+import { gray as grayDark } from './dark/gray'
+import { grayA as grayDarkA } from './dark/grayA'
+import { green as greenDark } from './dark/green'
+import { indigo as indigoDark } from './dark/indigo'
+import { orange as orangeDark } from './dark/orange'
+import { pink as pinkDark } from './dark/pink'
+import { purple as purpleDark } from './dark/purple'
+import { red as redDark } from './dark/red'
+import { teal as tealDark } from './dark/teal'
+import { violet as violetDark } from './dark/violet'
+import { yellow as yellowDark } from './dark/yellow'
+import { blue } from './light/blue'
+import { gray } from './light/gray'
+import { grayA } from './light/grayA'
+import { green } from './light/green'
+import { indigo } from './light/indigo'
+import { orange } from './light/orange'
+import { pink } from './light/pink'
+import { purple } from './light/purple'
+import { red } from './light/red'
+import { teal } from './light/teal'
+import { violet } from './light/violet'
+import { yellow } from './light/yellow'
+
 export { amber as amberDark } from './dark/amber'
 export { blue as blueDark } from './dark/blue'
 export { bronze as bronzeDark } from './dark/bronze'
@@ -118,3 +143,61 @@ export { yellowA } from './light/yellowA'
 
 export { blackA } from './blackA'
 export { whiteA } from './whiteA'
+
+// nice and flat
+export const colorNames = [
+  'blue',
+  'gray',
+  'green',
+  'indigo',
+  'orange',
+  'pink',
+  'purple',
+  'red',
+  'violet',
+  'yellow',
+  'teal',
+] as const
+
+export const allLightColors = {
+  ...blue,
+  ...gray,
+  ...grayA,
+  ...green,
+  ...indigo,
+  ...orange,
+  ...pink,
+  ...purple,
+  ...red,
+  ...violet,
+  ...yellow,
+  ...teal,
+}
+
+export const allDarkColors = {
+  ...blueDark,
+  ...grayDark,
+  ...grayDarkA,
+  ...greenDark,
+  ...indigoDark,
+  ...orangeDark,
+  ...pinkDark,
+  ...purpleDark,
+  ...redDark,
+  ...violetDark,
+  ...yellowDark,
+  ...tealDark,
+}
+
+export const darkColorsPostfixed = Object.fromEntries(
+  // Dark
+  Object.entries(allDarkColors).map(([k, v]) => [`${k}Dark`, v])
+) as {
+  [key in `${keyof typeof allDarkColors}Dark`]: string
+}
+
+export type ColorNamesLight = keyof typeof allLightColors
+export type ColorNamesDark = keyof typeof allDarkColors
+
+export const colorNamesLight = Object.keys(allLightColors) as ColorNamesLight[]
+export const colorNamesDark = Object.keys(allDarkColors) as ColorNamesDark[]
