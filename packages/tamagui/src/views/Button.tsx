@@ -47,6 +47,9 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     fontFamily?: SizableTextProps['fontFamily']
     letterSpacing?: SizableTextProps['letterSpacing']
     textAlign?: SizableTextProps['textAlign']
+
+    // all the other text controls
+    textProps?: Partial<SizableTextProps>
   }
 
 const ButtonFrame = styled(SizableStack, {
@@ -116,6 +119,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     fontSize,
     fontFamily,
     textAlign,
+    textProps,
     ...rest
   } = props as ButtonProps
 
@@ -175,6 +179,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
             flexGrow={1}
             flexShrink={1}
             ellipse
+            {...textProps}
           >
             {children}
           </SizableText>
