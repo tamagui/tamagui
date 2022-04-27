@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-motion",
-  "version": "1.0.0-beta.214+0a0e3130",
+  "version": "1.0.0-beta.217+24ee22ad",
   "source": "src/index.ts",
   "license": "MIT",
   "typings": "types",
@@ -12,10 +12,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/core": "^1.0.0-beta.214+0a0e3130"
+    "@tamagui/core": "^1.0.0-beta.217+24ee22ad"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.214+0a0e3130"
+    "@tamagui/build": "^1.0.0-beta.217+24ee22ad"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -26,5 +26,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "0a0e31304cd75221ebee46d62d4b7b714364f607"
+  "gitHead": "24ee22ad09da9dfdc614f59dec6eb44069ce9f6b"
 }
