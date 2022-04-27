@@ -98,18 +98,18 @@ export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['
 export declare type UnionableString = string & {};
 export declare type UnionableNumber = number & {};
 export declare type PropTypes<A extends TamaguiComponent> = A extends React.FunctionComponent<infer Props> ? Props : unknown;
-export declare type GenericFont = {
+export declare type GenericFont<Key extends number | string = number | string> = {
     size: {
-        [key: string | number]: number | Variable;
+        [key in Key]: number | Variable;
     };
     lineHeight: {
-        [key: string | number]: number | Variable;
+        [key in Key]: number | Variable;
     };
     letterSpacing: {
-        [key: string | number]: number | Variable;
+        [key in Key]: number | Variable;
     };
     weight: {
-        [key: string | number]: number | string | Variable;
+        [key in Key]: number | string | Variable;
     };
     family: string | Variable;
 };

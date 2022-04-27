@@ -1,30 +1,15 @@
 import { GenericFont, createFont } from '@tamagui/core'
 import { Platform } from 'react-native'
 
-export const createInterFont = <A extends GenericFont>(font: Partial<A> = {}): A => {
+export const createInterFont = <A extends GenericFont<keyof typeof size>>(
+  font: Partial<A> = {}
+): A => {
   return createFont({
     family:
       Platform.OS == 'web'
         ? 'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
         : 'Inter',
-    size: {
-      1: 10,
-      2: 12,
-      3: 14,
-      4: 15,
-      5: 16,
-      6: 17,
-      7: 21,
-      8: 25,
-      9: 30,
-      10: 45,
-      11: 58,
-      12: 68,
-      13: 82,
-      14: 102,
-      15: 124,
-      16: 144,
-    },
+    size,
     lineHeight: {
       1: 15,
       2: 20,
@@ -63,3 +48,22 @@ export const createInterFont = <A extends GenericFont>(font: Partial<A> = {}): A
     ...(font as any),
   })
 }
+
+const size = {
+  1: 10,
+  2: 12,
+  3: 14,
+  4: 15,
+  5: 16,
+  6: 17,
+  7: 21,
+  8: 25,
+  9: 30,
+  10: 45,
+  11: 58,
+  12: 68,
+  13: 82,
+  14: 102,
+  15: 124,
+  16: 144,
+} as const

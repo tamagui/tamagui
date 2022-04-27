@@ -1,7 +1,9 @@
 import { GenericFont, createFont } from '@tamagui/core'
 import { Platform } from 'react-native'
 
-export const createFiraMonoFont = <A extends GenericFont>(font: Partial<A> = {}): A => {
+export const createFiraMonoFont = <A extends GenericFont<keyof typeof size>>(
+  font: Partial<A> = {}
+): A => {
   return createFont({
     family: Platform.OS == 'web' ? 'Fira Code, Monaco, Consolas, Ubuntu Mono, monospace' : 'Fira',
     size,
@@ -37,4 +39,4 @@ const size = {
   14: 92,
   15: 114,
   16: 124,
-}
+} as const

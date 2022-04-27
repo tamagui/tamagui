@@ -207,7 +207,7 @@ const getToken = (
   }
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
-      console.warn(`⚠️ Missing token in theme:`, value, theme)
+      console.warn(`⚠️ Missing token in theme ${theme.name}:`, value)
       return null
     }
   }

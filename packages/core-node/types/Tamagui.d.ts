@@ -1,7 +1,9 @@
+import * as Helpers from '@tamagui/helpers';
 import { TamaguiInternalConfig } from './types';
 declare class TamaguiManager {
     config: TamaguiInternalConfig | null;
     rnw: Record<string, any>;
+    Helpers: typeof Helpers;
     get allSelectors(): {};
     get allTransforms(): {};
     get identifierToValue(): Map<string, any>;

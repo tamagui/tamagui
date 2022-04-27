@@ -304,7 +304,7 @@ export const getSplitStyles = (
   }
 
   if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-    console.log('out', pseudos)
+    console.log('out', { style, pseudos, medias, classNames, viewProps })
   }
 
   return {

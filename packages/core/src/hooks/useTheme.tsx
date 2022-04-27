@@ -98,11 +98,6 @@ export const useTheme = (
           console.error('No themeManager')
           return
         }
-        if (process.env.NODE_ENV === 'development') {
-          if (props?.['debug'] === 'verbose') {
-            console.log('  » accessing theme val', key, { ...state.current })
-          }
-        }
         if (typeof key === 'string') {
           // auto convert variables to plain
           if (key[0] === '$') {
@@ -112,12 +107,19 @@ export const useTheme = (
           if (val) {
             if (state.current.isRendering) {
               state.current.keys.add(key)
+              if (process.env.NODE_ENV === 'development') {
+                if (props?.['debug'] === 'verbose') {
+                  console.log('  » tracking theme key', key)
+                }
+              }
             }
             return val
           }
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(`No theme value "${String(key)}" in ${name}`)
-            return null
+          // react native debuger uses toJSON
+          if (key !== 'toJSON') {
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`No theme value "${String(key)}" in ${name}`)
+            }
           }
         }
         return Reflect.get(_, key)
