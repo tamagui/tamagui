@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui-app",
-  "version": "1.0.0-beta.207+3fd10ea6",
+  "version": "1.0.0-beta.230+fab00413",
   "bin": "./run.js",
   "scripts": {
     "start": "ts-node index.ts",
@@ -42,5 +42,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "3fd10ea6d026fac0339fbc1a501ee304f4985b05"
+  "gitHead": "fab0041356da84bd32620811a57a156d11514d2b"
 }
