@@ -246,7 +246,7 @@ type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
 export type SizeTokens = GetTokenString<keyof Tokens['size']> | number
 export type FontTokens = GetTokenString<keyof Tokens['font']>
-export type FontSizeTokens = `$${GetTokenFontKeysFor<'size'>}` | number
+export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
 export type FontWeightTokens =
   | `$${GetTokenFontKeysFor<'weight'>}`
@@ -258,6 +258,7 @@ export type ColorTokens =
   | GetTokenString<keyof ThemeObject>
   | CSSColorNames
 export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
+export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
 
 //
 // adds theme short values to relevant props
@@ -593,13 +594,16 @@ export type SpreadKeys =
   | '...letterSpacing'
   | '...zIndex'
   | '...theme'
+  | '...radius'
 
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
-  MyProps = GetProps<Parent>
+  MyProps = GetProps<Parent>,
+  Val = any
 > = MyProps extends Object
   ? {
       [propName: string]:
+        | VariantSpreadFunction<MyProps, Val>
         | {
             [Key in SpreadKeys]?: Key extends '...fontSize'
               ? FontSizeVariantSpreadFunction<MyProps>
@@ -613,17 +617,22 @@ export type VariantDefinitions<
               ? FontLetterSpacingVariantSpreadFunction<MyProps>
               : Key extends '...zIndex'
               ? ZIndexVariantSpreadFunction<MyProps>
+              : Key extends '...radius'
+              ? RadiusVariantSpreadFunction<MyProps>
               : Key extends '...theme'
               ? ThemeVariantSpreadFunction<MyProps>
               : never
-          } & {
+          }
+        | {
             [Key in string]?: MyProps | VariantSpreadFunction<MyProps, any>
           }
     }
   : never
 
 export type GetVariantProps<Variants extends Object> = {
-  [Key in keyof Variants]?: GetVariantValues<keyof Variants[Key]>
+  [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>
+    ? Val
+    : GetVariantValues<keyof Variants[Key]>
 }
 
 export type VariantSpreadExtras<Props> = {
@@ -671,6 +680,7 @@ export type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = Variant
   FontLetterSpacingTokens
 >
 export type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>
+export type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, RadiusTokens>
 export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ThemeTokens>
 
 /**

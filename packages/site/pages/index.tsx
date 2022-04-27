@@ -3,7 +3,7 @@ import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useMemo } from 'react'
-import { Separator, XStack, YStack, styled } from 'tamagui'
+import { FontSizeTokens, Paragraph, Separator, XStack, YStack, styled } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'

@@ -13,6 +13,7 @@ import {
   StylableComponent,
   TamaguiComponent,
   VariantDefinitions,
+  VariantSpreadFunction,
 } from './types'
 
 export function styled<
@@ -75,11 +76,12 @@ export function styled<
     ? V
     : Object
 
-  // sprinkle in our variants
   type OurVariants = Variants extends symbol
     ? {}
     : {
-        [Key in keyof Variants]?: GetVariantValues<keyof Variants[Key]>
+        [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>
+          ? Val
+          : GetVariantValues<keyof Variants[Key]>
       }
 
   type VariantProps = Omit<ParentVariants, keyof OurVariants> & OurVariants

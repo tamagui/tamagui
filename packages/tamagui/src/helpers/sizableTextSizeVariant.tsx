@@ -1,15 +1,9 @@
-import {
-  FontSizeTokens,
-  SizeTokens,
-  TextProps,
-  VariantSpreadFunction,
-  isVariable,
-} from '@tamagui/core'
+import { FontSizeTokens, TextProps, VariantSpreadFunction, isVariable } from '@tamagui/core'
 
-export const sizableTextSizeVariant: VariantSpreadFunction<
-  TextProps,
-  SizeTokens | FontSizeTokens
-> = (val = '$4', { tokens, props }) => {
+export const sizableTextSizeVariant: VariantSpreadFunction<TextProps, FontSizeTokens> = (
+  val = '$4',
+  { tokens, props }
+) => {
   const family = (
     typeof props.fontFamily === 'string'
       ? props.fontFamily
