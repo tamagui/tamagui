@@ -66,10 +66,10 @@ const HeroTop = memo(() => {
       /> */}
 
       <YStack
-        className="bg-grid mask-gradient-up"
+        className="bg-grid-big mask-gradient-up"
         fullscreen
         top="auto"
-        height={420}
+        height={500}
         left={-1000}
         right={-1000}
         opacity={0.6}
@@ -98,7 +98,7 @@ const HeroTop = memo(() => {
             maw={500}
             $gtSm={{
               mx: 0,
-              maxWidth: 950,
+              maxWidth: 800,
               size: '$10',
               ta: 'center',
             }}

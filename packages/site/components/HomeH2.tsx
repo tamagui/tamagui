@@ -5,6 +5,7 @@ export const HomeH2 = styled(H2, {
   als: 'center',
   letterSpacing: -2,
   size: '$10',
+  maw: 500,
 
   $sm: {
     size: '$8',
