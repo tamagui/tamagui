@@ -4,9 +4,7 @@ import { TextInput } from 'react-native'
 import { inputSizeVariant } from '../helpers/inputHelpers'
 
 export const inputStyle = {
-  borderRadius: '$3',
   borderWidth: 1,
-  // @ts-ignore TODO
   color: '$color',
   borderColor: '$borderColor',
   backgroundColor: '$background',
@@ -33,7 +31,11 @@ export const inputStyle = {
       '...size': inputSizeVariant,
     },
   },
-}
+
+  defaultVariants: {
+    size: '$4',
+  },
+} as const
 
 export const Input = styled(TextInput, {
   name: 'Input',

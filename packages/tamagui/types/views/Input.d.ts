@@ -1,39 +1,41 @@
 import { GetProps } from '@tamagui/core';
 export declare const inputStyle: {
-    borderRadius: string;
-    borderWidth: number;
-    color: string;
-    borderColor: string;
-    backgroundColor: string;
-    paddingVertical: string;
-    paddingHorizontal: string;
-    hoverStyle: {
-        borderColor: string;
+    readonly borderWidth: 1;
+    readonly color: "$color";
+    readonly borderColor: "$borderColor";
+    readonly backgroundColor: "$background";
+    readonly paddingVertical: "$2";
+    readonly paddingHorizontal: "$2";
+    readonly hoverStyle: {
+        readonly borderColor: "$borderColorHover";
     };
-    focusStyle: {
-        borderColor: string;
-        shadowColor: string;
-        shadowOffset: {
-            width: number;
-            height: number;
+    readonly focusStyle: {
+        readonly borderColor: "$borderColorFocus";
+        readonly shadowColor: "$borderColorFocus";
+        readonly shadowOffset: {
+            readonly width: 0;
+            readonly height: 0;
         };
-        shadowOpacity: number;
-        shadowRadius: number;
+        readonly shadowOpacity: 1;
+        readonly shadowRadius: 10;
     };
-    variants: {
-        size: {
-            '...size': import("@tamagui/core").SizeVariantSpreadFunction<any>;
+    readonly variants: {
+        readonly size: {
+            readonly '...size': import("@tamagui/core").SizeVariantSpreadFunction<any>;
         };
+    };
+    readonly defaultVariants: {
+        readonly size: "$4";
     };
 };
 export declare const Input: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<Object, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<Object, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<Object, "size"> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>>, any, import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps>, Object & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
+    readonly size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
 export declare type InputProps = GetProps<typeof Input>;
 //# sourceMappingURL=Input.d.ts.map

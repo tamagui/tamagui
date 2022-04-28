@@ -92,14 +92,6 @@ const HeroTop = memo(() => {
       >
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$4">
           <H1
-            // TODO
-            // animation="slow"
-            // enterStyle={{
-            //   opacity: 0.5,
-            //   y: -10,
-            // }}
-            opacity={1}
-            y={0}
             ta="left"
             size="$9"
             als="center"
@@ -130,14 +122,6 @@ const HeroTop = memo(() => {
           <YStack
             px={0}
             maw={500}
-            animation="bouncy"
-            debug="verbose"
-            enterStyle={{
-              o: 0.5,
-              y: -10,
-            }}
-            o={1}
-            y={0}
             $gtMd={{
               px: 90,
               maw: 1000,
