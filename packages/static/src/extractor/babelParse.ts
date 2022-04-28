@@ -14,8 +14,6 @@ export const parserOptions: babelParser.ParserOptions = Object.freeze({
     'typescript',
     'optionalChaining',
     'nullishCoalescingOperator',
-    // 'objectRestSpread',
-    // 'dynamicImport'
   ],
   sourceType: 'module',
 })

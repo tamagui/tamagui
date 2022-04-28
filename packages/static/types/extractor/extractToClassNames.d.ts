@@ -10,8 +10,9 @@ export declare type ExtractedResponse = {
     ast: t.File;
     map: any;
 };
-export declare function extractToClassNames({ loader, extractor, source, sourcePath, options, shouldPrintDebug, threaded, cssPath, }: {
+export declare function extractToClassNames({ loader, extractor, source, sourcePath, options, shouldPrintDebug, cssLoaderPath, threaded, cssPath, }: {
     loader: LoaderContext<any>;
+    cssLoaderPath: string;
     extractor: Extractor;
     source: string | Buffer;
     sourcePath: string;

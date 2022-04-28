@@ -3888,7 +3888,7 @@ __metadata:
     css-loader: ^5.2.4
     esbuild: ^0.14.36
     esbuild-loader: ^2.18.0
-    esbuild-register: ^3.1.2
+    esbuild-register: ^3.3.2
     find-cache-dir: ^3.3.2
     fs-extra: ^9.1.0
     invariant: ^2.2.4
@@ -8896,7 +8896,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-register@npm:^3.1.2":
+"esbuild-register@npm:^3.3.2":
   version: 3.3.2
   resolution: "esbuild-register@npm:3.3.2"
   peerDependencies:

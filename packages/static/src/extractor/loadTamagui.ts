@@ -1,7 +1,10 @@
+import { readFileSync, stat, statSync, writeFileSync } from 'fs'
 import { join } from 'path'
 
 import type { TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core'
 import { createTamagui } from '@tamagui/core-node'
+
+import { cacheDir } from '../constants'
 
 let loadedTamagui: any = null
 
@@ -13,73 +16,114 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     return loadedTamagui
   }
 
-  // lets shim require and avoid importing react-native + react-native-web
-  // we just need to read the config around them
-  process.env.IS_STATIC = 'is_static'
-  const proxyWorm = require('@tamagui/proxy-worm')
-  const rnw = require('react-native-web')
-  const Mod = require('module')
-  const og = Mod.prototype.require
-  Mod.prototype.require = function (path: string) {
-    if (path.endsWith('.css')) {
-      return {}
-    }
-    if (path === '@gorhom/bottom-sheet' || path.startsWith('react-native-reanimated')) {
-      return proxyWorm
-    }
-    if (
-      path.startsWith('react-native') &&
-      // allow our rnw.tsx imports through
-      !path.startsWith('react-native-web/dist/cjs/exports')
-    ) {
-      return rnw
-    }
-    try {
-      return og.apply(this, arguments)
-    } catch (err: any) {
-      console.error('Tamagui error loading file:\n')
-      console.log('   ', path, '\n')
-      console.log(err.message)
-      console.log(err.stack)
-      // avoid infinite loops
-      process.exit(1)
-    }
-  }
-
-  // import config
+  // threaded caching avoiding 1s loading of large configs every save
   const configPath = join(process.cwd(), props.config)
-  const tamaguiConfigExport = require(configPath)
-  const tamaguiConfig = (tamaguiConfigExport['default'] ||
-    tamaguiConfigExport) as TamaguiInternalConfig
+  const cachePath = join(cacheDir, 'tamagui-conf-cached.json')
+  const confStat = statSync(configPath)
 
-  if (!tamaguiConfig || !tamaguiConfig.parsed) {
-    try {
-      const confPath = require.resolve(configPath)
-      console.log(`Received:`, tamaguiConfigExport)
-      throw new Error(`Can't find valid config in ${confPath}`)
-    } catch (err) {
-      throw err
+  // TODO may want to disable, its pretty optimistic at caching...
+  try {
+    const confCache = readFileSync(cachePath, 'utf-8')
+    const confParsed = JSON.parse(confCache)
+    if (confParsed && confParsed.mtime === confStat.mtime) {
+      return confParsed.value
     }
+  } catch {
+    // ok, no cache
   }
 
-  // import components
-  const components = {}
-  for (const module of props.components) {
-    const exported = require(module)
-    Object.assign(components, exported)
+  const { unregister } = require('esbuild-register/dist/node').register({
+    target: 'es2019',
+    format: 'cjs',
+  })
+
+  try {
+    // lets shim require and avoid importing react-native + react-native-web
+    // we just need to read the config around them
+    process.env.IS_STATIC = 'is_static'
+    const proxyWorm = require('@tamagui/proxy-worm')
+    const rnw = require('react-native-web')
+    const Mod = require('module')
+    const og = Mod.prototype.require
+    Mod.prototype.require = function (path: string) {
+      if (path.endsWith('.css')) {
+        return {}
+      }
+      if (path === '@gorhom/bottom-sheet' || path.startsWith('react-native-reanimated')) {
+        return proxyWorm
+      }
+      if (
+        path.startsWith('react-native') &&
+        // allow our rnw.tsx imports through
+        !path.startsWith('react-native-web/dist/cjs/exports')
+      ) {
+        return rnw
+      }
+      try {
+        return og.apply(this, arguments)
+      } catch (err: any) {
+        console.error('Tamagui error loading file:\n')
+        console.log('   ', path, '\n')
+        console.log(err.message)
+        console.log(err.stack)
+        // avoid infinite loops
+        process.exit(1)
+      }
+    }
+
+    // import config
+    const tamaguiConfigExport = require(configPath)
+    const tamaguiConfig = (tamaguiConfigExport['default'] ||
+      tamaguiConfigExport) as TamaguiInternalConfig
+
+    if (!tamaguiConfig || !tamaguiConfig.parsed) {
+      try {
+        const confPath = require.resolve(configPath)
+        console.log(`Received:`, tamaguiConfigExport)
+        throw new Error(`Can't find valid config in ${confPath}`)
+      } catch (err) {
+        throw err
+      }
+    }
+
+    // import components
+    const components = {}
+    for (const module of props.components) {
+      const exported = require(module)
+      Object.assign(components, {
+        staticConfig: exported.staticConfig,
+      })
+    }
+
+    // undo shims
+    process.env.IS_STATIC = undefined
+    Mod.prototype.require = og
+
+    // set up core-node
+    createTamagui(tamaguiConfig as any)
+
+    loadedTamagui = {
+      components,
+      tamaguiConfig,
+    }
+
+    // save cache
+    try {
+      writeFileSync(
+        cachePath,
+        JSON.stringify({
+          value: loadedTamagui,
+          mtime: confStat.mtime,
+        })
+      )
+    } catch (err: any) {
+      console.log(`Error: tamagui config not stringifiable, caching disabled "${err.message}"`)
+    }
+
+    return loadedTamagui
+  } catch (err) {
+    throw err
+  } finally {
+    unregister()
   }
-
-  // undo shims
-  process.env.IS_STATIC = undefined
-  Mod.prototype.require = og
-
-  // set up core-node
-  createTamagui(tamaguiConfig as any)
-
-  loadedTamagui = {
-    components,
-    tamaguiConfig,
-  }
-
-  return loadedTamagui
 }
