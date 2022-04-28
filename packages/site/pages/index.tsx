@@ -52,11 +52,11 @@ export default function Home() {
         <HeroPerformance />
       </SectionTinted>
       <SectionTinted zi={100}>
-        {/* <YStack fullscreen className="bg-dot-grid mask-gradient-up" /> */}
+        <YStack fullscreen className="bg-grid-big mask-gradient-up" />
         <HeroExampleAnimations />
       </SectionTinted>
       <Section zi={10}>
-        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
         <HeroExampleCode />
       </Section>
       <Section mt={-100}>

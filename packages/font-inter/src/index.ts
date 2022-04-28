@@ -4,6 +4,25 @@ import { Platform } from 'react-native'
 export const createInterFont = <A extends GenericFont<keyof typeof size>>(
   font: Partial<A> = {}
 ): A => {
+  const size = {
+    1: 10,
+    2: 12,
+    3: 14,
+    4: 15,
+    5: 16,
+    6: 17,
+    7: 21,
+    8: 25,
+    9: 30,
+    10: 45,
+    11: 58,
+    12: 68,
+    13: 76,
+    14: 102,
+    15: 124,
+    16: 144,
+  } as const
+
   return createFont({
     family:
       Platform.OS == 'web'
@@ -23,7 +42,7 @@ export const createInterFont = <A extends GenericFont<keyof typeof size>>(
       10: 54,
       11: 72,
       12: 80,
-      13: 100,
+      13: 90,
       14: 120,
       15: 150,
       16: 170,
@@ -48,22 +67,3 @@ export const createInterFont = <A extends GenericFont<keyof typeof size>>(
     ...(font as any),
   })
 }
-
-const size = {
-  1: 10,
-  2: 12,
-  3: 14,
-  4: 15,
-  5: 16,
-  6: 17,
-  7: 21,
-  8: 25,
-  9: 30,
-  10: 45,
-  11: 58,
-  12: 68,
-  13: 82,
-  14: 102,
-  15: 124,
-  16: 144,
-} as const

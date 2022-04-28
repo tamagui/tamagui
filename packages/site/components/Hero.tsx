@@ -1,3 +1,4 @@
+// debug-verbose
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
@@ -39,32 +40,6 @@ export function Hero() {
 const HeroTop = memo(() => {
   return (
     <ContainerLarge pos="relative">
-      {/* casuing hydration mismatch... */}
-      {/* <img
-        src={require('../public/tamaguy2.png').default.src}
-        style={{
-          position: 'absolute',
-          bottom: -270,
-          left: -10,
-          transform: 'scale(0.125)',
-          width: 544,
-          height: 569,
-        }}
-      /> */}
-      {/* <Image
-        className="tamaguy"
-        pos="absolute"
-        bottom={-250}
-        left={-50}
-        // not merging at compile time right
-        // x={-500}
-        // y={200}
-        scale={0.2}
-        src={require('../public/tamaguy2.png').default.src}
-        width={544}
-        height={569}
-      /> */}
-
       <YStack
         className="bg-grid-big mask-gradient-up"
         fullscreen
@@ -93,21 +68,22 @@ const HeroTop = memo(() => {
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$4">
           <H1
             ta="left"
-            size="$9"
+            size="$10"
             als="center"
             maw={500}
             $gtSm={{
               mx: 0,
               maxWidth: 800,
-              size: '$10',
+              size: '$11',
               ta: 'center',
             }}
             $gtMd={{
+              maxWidth: 900,
               ta: 'center',
-              size: '$11',
+              size: '$12',
             }}
             $gtLg={{
-              size: '$12',
+              size: '$13',
               maxWidth: 1200,
             }}
           >
@@ -116,7 +92,7 @@ const HeroTop = memo(() => {
                 <span className="rainbow clip-text help">Universal</span>
               </span>
             </Tooltip>{' '}
-            design systems for React&nbsp;Native &&nbsp;Web, faster
+            design systems for React Native &&nbsp;Web, faster
           </H1>
 
           <YStack

@@ -1,10 +1,7 @@
-import { readFileSync, stat, statSync, writeFileSync } from 'fs'
 import { join } from 'path'
 
 import type { TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core'
 import { createTamagui } from '@tamagui/core-node'
-
-import { cacheDir } from '../constants'
 
 let loadedTamagui: any = null
 
@@ -16,21 +13,22 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     return loadedTamagui
   }
 
-  // threaded caching avoiding 1s loading of large configs every save
   const configPath = join(process.cwd(), props.config)
-  const cachePath = join(cacheDir, 'tamagui-conf-cached.json')
-  const confStat = statSync(configPath)
 
-  // TODO may want to disable, its pretty optimistic at caching...
-  try {
-    const confCache = readFileSync(cachePath, 'utf-8')
-    const confParsed = JSON.parse(confCache)
-    if (confParsed && confParsed.mtime === confStat.mtime) {
-      return confParsed.value
-    }
-  } catch {
-    // ok, no cache
-  }
+  // threaded caching avoiding 1s loading of large configs every save
+  // const cachePath = join(cacheDir, 'tamagui-conf-cached.json')
+  // const confStat = statSync(configPath)
+
+  // // TODO may want to disable, its pretty optimistic at caching...
+  // try {
+  //   const confCache = readFileSync(cachePath, 'utf-8')
+  //   const confParsed = JSON.parse(confCache)
+  //   if (confParsed && confParsed.mtime === confStat.mtime) {
+  //     return confParsed.value
+  //   }
+  // } catch {
+  //   // ok, no cache
+  // }
 
   const { unregister } = require('esbuild-register/dist/node').register({
     target: 'es2019',
@@ -72,14 +70,13 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     }
 
     // import config
-    const tamaguiConfigExport = require(configPath)
-    const tamaguiConfig = (tamaguiConfigExport['default'] ||
-      tamaguiConfigExport) as TamaguiInternalConfig
+    const exp = require(configPath)
+    const tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
 
     if (!tamaguiConfig || !tamaguiConfig.parsed) {
       try {
         const confPath = require.resolve(configPath)
-        console.log(`Received:`, tamaguiConfigExport)
+        console.log(`Received:`, tamaguiConfig)
         throw new Error(`Can't find valid config in ${confPath}`)
       } catch (err) {
         throw err
@@ -88,11 +85,15 @@ export function loadTamagui(props: { components: string[]; config: string }): {
 
     // import components
     const components = {}
-    for (const module of props.components) {
-      const exported = require(module)
-      Object.assign(components, {
-        staticConfig: exported.staticConfig,
-      })
+    for (const moduleName of props.components) {
+      const exported = require(moduleName)
+      for (const Name in exported) {
+        const val = exported[Name]
+        const staticConfig = val?.staticConfig
+        if (staticConfig) {
+          Object.assign(components, { [Name]: { staticConfig } })
+        }
+      }
     }
 
     // undo shims
@@ -108,17 +109,17 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     }
 
     // save cache
-    try {
-      writeFileSync(
-        cachePath,
-        JSON.stringify({
-          value: loadedTamagui,
-          mtime: confStat.mtime,
-        })
-      )
-    } catch (err: any) {
-      console.log(`Error: tamagui config not stringifiable, caching disabled "${err.message}"`)
-    }
+    // try {
+    //   writeFileSync(
+    //     cachePath,
+    //     JSON.stringify({
+    //       value: loadedTamagui,
+    //       mtime: confStat.mtime,
+    //     })
+    //   )
+    // } catch (err: any) {
+    //   console.log(`Error: tamagui config not stringifiable, caching disabled "${err.message}"`)
+    // }
 
     return loadedTamagui
   } catch (err) {

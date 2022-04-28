@@ -39,8 +39,16 @@ export const HeroExampleProps = () => {
   return (
     <ContainerLarge position="relative">
       <YStack ai="center" space="$2">
-        <HomeH2 className="rainbow clip-text">&lt;Propful /&gt;</HomeH2>
-        <HomeH3>More built-in props.</HomeH3>
+        <HomeH2 fow="300">
+          &lt;
+          <span style={{ fontWeight: '800' }} className="rainbow clip-text">
+            Propful
+          </span>{' '}
+          /&gt;
+        </HomeH2>
+        <HomeH3>
+          Properly powerful props on every component, all&nbsp;out&nbsp;of&nbsp;the&nbsp;box.
+        </HomeH3>
       </YStack>
 
       <XStack px="$6" pt="$4" space="$4" $sm={{ flexDirection: 'column' }}>

@@ -118,6 +118,10 @@ export function createExtractor() {
         components: props.components || ['tamagui'],
       })
 
+      if (shouldPrintDebug === 'verbose') {
+        console.log('tamagui.config.ts:', { components, config })
+      }
+
       tm.mark('load-tamagui', shouldPrintDebug === 'verbose')
 
       loadedTamaguiConfig = tamaguiConfig as any
@@ -140,6 +144,10 @@ export function createExtractor() {
           return obj
         }, {})
 
+      if (shouldPrintDebug === 'verbose') {
+        console.log('validComponents', Object.keys(validComponents))
+      }
+
       let doesUseValidImport = false
       let hasImportedTheme = false
 
@@ -147,13 +155,16 @@ export function createExtractor() {
         if (bodyPath.type !== 'ImportDeclaration') continue
         const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as any
         const from = node.source.value
-        if (props.components.includes(from) || isInternalImport(from)) {
-          if (
-            node.specifiers.some((specifier) => {
-              const name = specifier.local.name
-              return validComponents[name] || validHooks[name]
-            })
-          ) {
+        const isValidImport = props.components.includes(from) || isInternalImport(from)
+        if (isValidImport) {
+          const isValidComponent = node.specifiers.some((specifier) => {
+            const name = specifier.local.name
+            return validComponents[name] || validHooks[name]
+          })
+          if (shouldPrintDebug === 'verbose') {
+            console.log('import from', from, { isValidComponent })
+          }
+          if (isValidComponent) {
             doesUseValidImport = true
             break
           }

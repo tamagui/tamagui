@@ -658,7 +658,7 @@ export function createComponent<
     // prettier-ignore
     if (process.env.NODE_ENV === 'development' && shouldDebug && process.env.IS_STATIC !== 'is_static') {
       // prettier-ignore
-      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, ...defaultSplitStyleResult })
+      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, defaultSplitStyleResult })
     }
   })
 

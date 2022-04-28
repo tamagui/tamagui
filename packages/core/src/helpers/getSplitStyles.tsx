@@ -85,7 +85,7 @@ export const getSplitStyles = (
     if (val.startsWith('_transform-')) {
       const isMediaOrPseudo = key !== 'transform'
       const isMedia = isMediaOrPseudo && key[11] === '_'
-      const isPsuedo = isMediaOrPseudo && key[11] === '0'
+      const isPsuedo = (isMediaOrPseudo && key[11] === '0') || key.endsWith('Style')
       const namespace: TransformNamespaceKey = isMedia
         ? key.split('_')[2]
         : isPsuedo
@@ -98,6 +98,10 @@ export const getSplitStyles = (
         updateInserted()
       }
       transform = insertedTransforms[val]
+      if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+        // prettier-ignore
+        console.log('mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
+      }
       if (!transform || transform === 'undefined') {
         console.log('NO TRANSFORM', { key, val, transform })
         return
