@@ -17,6 +17,7 @@ export {
   FontSizeTokens,
   FontTokens,
   FontWeightTokens,
+  GenericFont,
   GenericTamaguiConfig,
   GetAnimationKeys,
   GetProps,
