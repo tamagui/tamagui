@@ -26,8 +26,7 @@ export const HeroTypography = () => {
       {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
       <ContainerLarge position="relative" space="$8">
         <YStack ai="center" space="$2">
-          <HomeH2>Typography, easy.</HomeH2>
-          <HomeH3>Plug-and-play fonts, individually tuned.</HomeH3>
+          <HomeH2>Plug-and-play fonts, individually tuned.</HomeH2>
         </YStack>
 
         <XStack

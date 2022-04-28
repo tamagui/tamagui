@@ -25,7 +25,8 @@ export function HeroExampleCode() {
               <span className="rainbow clip-text">UX</span>
             </HomeH2>
             <HomeH3>
-              Choose two: nice syntax, performance, cross-platform support - or don't, with Tamagui.
+              Stop having to choose between nice syntax and features, good performance, and
+              multi-platform.
             </HomeH3>
           </YStack>
 
@@ -51,13 +52,13 @@ export function HeroExampleCode() {
 
           <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
             <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$4">
-              <Paragraph minHeight={50} ta="center" px="$7">
+              <CodeExamples {...activeExample.input} />
+              <Paragraph size="$5" minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Input</CodeInline>
                 <span style={{ opacity: 0.65 }}>
                   &nbsp;－&nbsp;{activeExample.input.description}
                 </span>
               </Paragraph>
-              <CodeExamples {...activeExample.input} />
             </YStack>
 
             <YStack
@@ -67,7 +68,7 @@ export function HeroExampleCode() {
               right={0}
               ai="center"
               jc="center"
-              top={70}
+              top={95}
               theme="alt2"
               zIndex={1000}
               pe="none"
@@ -77,13 +78,13 @@ export function HeroExampleCode() {
               </IconStack>
             </YStack>
             <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$4">
-              <Paragraph minHeight={50} ta="center" px="$6">
+              <CodeExamples {...activeExample.output} />
+              <Paragraph size="$5" minHeight={50} ta="center" px="$6">
                 <CodeInline size="$4">Output</CodeInline>
                 <span style={{ opacity: 0.65 }}>
                   &nbsp;－&nbsp;{activeExample.output.description}
                 </span>
               </Paragraph>
-              <CodeExamples {...activeExample.output} />
             </YStack>
           </XStack>
         </YStack>
@@ -104,9 +105,10 @@ const CodeExamples = memo(({ examples }: any) => {
             <Button
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
-              size="$2"
+              size="$3"
               key={i}
               borderRadius="$0"
+              fontWeight="800"
             >
               {example.name}
             </Button>
