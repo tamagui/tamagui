@@ -27,6 +27,8 @@ export {
   MediaQueries,
   mediaQueryConfig,
   MediaQueryState,
+  RNWTextProps,
+  RNWViewProps,
   Shorthands,
   SizeTokens,
   SpaceTokens,
