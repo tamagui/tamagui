@@ -1,8 +1,9 @@
 import { StackProps } from '@tamagui/core'
 import React from 'react'
 
-import { IPlacement, defaultArrowHeight, defaultArrowWidth, getDiagonalLength } from './Popper'
-import { YStack } from './Stacks'
+import { YStack } from '../Stacks'
+import { defaultArrowHeight, defaultArrowWidth, getDiagonalLength } from './shared'
+import { IPlacement } from './types'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

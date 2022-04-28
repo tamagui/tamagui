@@ -24,7 +24,7 @@ import React, { useEffect } from 'react'
 import { Platform } from 'react-native'
 
 import { useKeyboardDismissable } from '../../hooks/useKeyboardDismissable'
-import { Popper } from '../Popper'
+import { Popper } from '../Popper/Popper'
 import { PopoverContext } from './PopoverContext'
 import type { IPopoverContentProps } from './types'
 
