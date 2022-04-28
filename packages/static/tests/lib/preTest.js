@@ -17,9 +17,9 @@ module.exports = async function main() {
 
 const alias = {
   'react-native$': 'react-native-web',
-  'react-native-reanimated$': '@dish/proxy-worm',
-  'react-native-gesture-handler$': '@dish/proxy-worm',
-  '@gorhom/bottom-sheet$': '@dish/proxy-worm',
+  'react-native-reanimated$': '@tamagui/proxy-worm',
+  'react-native-gesture-handler$': '@tamagui/proxy-worm',
+  '@gorhom/bottom-sheet$': '@tamagui/proxy-worm',
 }
 
 async function extractStaticAppBabel() {

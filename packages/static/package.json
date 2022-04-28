@@ -31,7 +31,7 @@
     "@babel/plugin-syntax-typescript": "^7.14.5",
     "@babel/types": "^7.15.6",
     "@dish/babel-preset": "^0.0.6",
-    "@dish/proxy-worm": "^0.0.4",
+    "@tamagui/proxy-worm": "^1.0.0-beta.149+a95e53bb",
     "@testing-library/react": "13.0.0-alpha.4",
     "@types/jest": "*",
     "@types/node": "^16.11.9",
