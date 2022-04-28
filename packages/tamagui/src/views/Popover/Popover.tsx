@@ -10,7 +10,7 @@ import { View } from 'react-native'
 
 import { useControllableState } from '../../hooks/useControllableState'
 import { Overlay } from '../Overlay'
-import { Popper } from '../Popper'
+import { Popper } from '../Popper/Popper'
 import { PopoverContent } from './PopoverContent'
 import { PopoverContext } from './PopoverContext'
 import type { IPopoverProps } from './types'

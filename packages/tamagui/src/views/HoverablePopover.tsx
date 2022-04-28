@@ -7,7 +7,7 @@ import { Hoverable, HoverableHandle } from './Hoverable'
 import { HoverOrToggle } from './HoverOrToggle'
 import { Popover } from './Popover/Popover'
 import { IPopoverProps } from './Popover/types'
-import { PopperArrow } from './PopperArrow'
+import { PopperArrow } from './Popper/PopperArrow'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

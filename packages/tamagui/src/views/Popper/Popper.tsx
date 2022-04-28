@@ -3,73 +3,17 @@
 // Copyright (c) 2021 GeekyAnts India Pvt Ltd
 
 import { useOverlayPosition } from '@react-native-aria/overlays'
-import { ReactElement, RefObject, useMemo } from 'react'
-import React, { createContext, useContext, useEffect, useRef } from 'react'
+import { useMemo } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 
+import { YStack } from '../Stacks'
 import { PopperArrow } from './PopperArrow'
-import { YStack } from './Stacks'
+import { PopperContext } from './PopperContext'
+import { defaultArrowHeight, defaultArrowWidth, getDiagonalLength } from './shared'
+import { IPopperProps } from './types'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
-
-export type IPopoverArrowProps = {
-  height?: any
-  width?: any
-  children?: any
-  color?: any
-  style?: any
-}
-
-export type IPlacement =
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top left'
-  | 'top right'
-  | 'bottom left'
-  | 'bottom right'
-  | 'right top'
-  | 'right bottom'
-  | 'left top'
-  | 'left bottom'
-
-export type IPopperProps = {
-  shouldFlip?: boolean
-  crossOffset?: number
-  offset?: number
-  children: React.ReactNode
-  shouldOverlapWithTrigger?: boolean
-  trigger?: ReactElement | RefObject<any>
-  placement?: IPlacement
-}
-
-export type IArrowStyles = {
-  placement?: string
-  height?: number
-  width?: number
-}
-
-export type IScrollContentStyle = {
-  placement?: string
-  arrowHeight: number
-  arrowWidth: number
-}
-
-export const defaultArrowHeight = 11
-export const defaultArrowWidth = 11
-
-export const getDiagonalLength = (height: number, width: number) => {
-  return Math.pow(height * height + width * width, 0.5)
-}
-
-type PopperContext = Omit<IPopperProps, 'children'> & {
-  triggerRef: any
-  onClose: any
-  setOverlayRef?: (overlayRef: any) => void
-}
-
-const PopperContext = createContext<PopperContext | null>(null)
 
 export const Popper = ({
   children,

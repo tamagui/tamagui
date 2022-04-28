@@ -41,7 +41,7 @@ import { TextAncestorContext } from './views/TextAncestorContext'
 
 React['keep']
 
-export const defaultComponentState: TamaguiComponentState = {
+const defaultComponentState: TamaguiComponentState = {
   hover: false,
   press: false,
   pressIn: false,
@@ -797,8 +797,8 @@ export function spacedChildren({
   return next
 }
 
-export const AbsoluteFill = (props: any) =>
-  isWeb ? (
+export function AbsoluteFill(props: any) {
+  return isWeb ? (
     <div
       style={
         {
@@ -815,6 +815,7 @@ export const AbsoluteFill = (props: any) =>
   ) : (
     <View style={StyleSheet.absoluteFill}>{props.child}</View>
   )
+}
 
 // this can be done with CSS entirely right?
 // const shouldWrapTextAncestor = isWeb && isText && !hasTextAncestor

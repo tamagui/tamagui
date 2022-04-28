@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react'
 
 import { isWeb } from '../constants/platform'
 import { wrapThemeManagerContext } from '../helpers/wrapThemeManagerContext'
-import { useChangeThemeEffect } from '../static'
+import { useChangeThemeEffect } from '../hooks/useTheme'
 import { ThemeName } from '../types'
 
 // bugfix esbuild strips react jsx: 'preserve'

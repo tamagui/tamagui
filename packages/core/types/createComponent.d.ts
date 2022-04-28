@@ -1,7 +1,6 @@
 /// <reference types="react" />
 import { View, ViewStyle } from 'react-native';
-import { SpaceTokens, StackProps, StaticConfig, StaticConfigParsed, TamaguiComponent, TamaguiComponentState } from './types';
-export declare const defaultComponentState: TamaguiComponentState;
+import { SpaceTokens, StackProps, StaticConfig, StaticConfigParsed, TamaguiComponent } from './types';
 export declare const mouseUps: Set<Function>;
 export declare function createComponent<ComponentPropTypes extends Object = {}, Ref = View, BaseProps = never>(configIn: Partial<StaticConfig> | StaticConfigParsed): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>;
 export declare const Spacer: TamaguiComponent<Omit<StackProps, "flex" | "direction"> & {
@@ -16,5 +15,5 @@ export declare function spacedChildren({ isZStack, children, space, flexDirectio
     spaceFlex?: boolean | number;
     flexDirection?: ViewStyle['flexDirection'];
 }): any[];
-export declare const AbsoluteFill: (props: any) => JSX.Element;
+export declare function AbsoluteFill(props: any): JSX.Element;
 //# sourceMappingURL=createComponent.d.ts.map

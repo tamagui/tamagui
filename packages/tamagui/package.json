@@ -18,7 +18,9 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "lint": "yarn lint-circular-deps",
+    "lint-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
     "@radix-ui/react-use-callback-ref": "^0.1.0",
