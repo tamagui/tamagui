@@ -1,7 +1,7 @@
 import { GetProps, isVariable, styled } from '@tamagui/core'
 import React from 'react'
 
-import { getSize } from '../helpers/getSize'
+import { getButtonSize } from '../helpers/getButtonSize'
 import { SizableStack } from './SizableStack'
 import { getSizedElevation } from './Stacks'
 
@@ -22,7 +22,7 @@ export const Card = styled(SizableStack, {
         const token = tokens.size[size]
         const sizeNum = isVariable(token) ? +token.val : size
         return {
-          ...getSize(1, 0.9)(size, extras),
+          ...getButtonSize(1, 0.9)(size, extras),
           ...getSizedElevation(sizeNum, extras),
         }
       },

@@ -1,4 +1,6 @@
-import { GetProps } from '@tamagui/core';
+import { GetProps, SizeVariantSpreadFunction } from '@tamagui/core';
+import { SizableStackProps } from './SizableStack';
+export declare const getSquareSize: SizeVariantSpreadFunction<SizableStackProps>;
 export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;

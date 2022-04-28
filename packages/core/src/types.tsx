@@ -601,13 +601,15 @@ export type SpreadKeys =
 
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
-  MyProps = GetProps<Parent>,
+  MyProps extends Object = GetProps<Parent>,
   Val = any
-> = MyProps extends Object
+> = VariantDefinitionFromProps<MyProps, Val>
+
+export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
   ? {
       [propName: string]:
         | VariantSpreadFunction<MyProps, Val>
-        | {
+        | ({
             [Key in SpreadKeys]?: Key extends '...fontSize'
               ? FontSizeVariantSpreadFunction<MyProps>
               : Key extends '...size'
@@ -625,14 +627,21 @@ export type VariantDefinitions<
               : Key extends '...theme'
               ? ThemeVariantSpreadFunction<MyProps>
               : never
-          }
-        | {
-            [Key in string]?: MyProps | VariantSpreadFunction<MyProps, any>
-          }
+          } & {
+            [Key in string | number]?: MyProps | VariantSpreadFunction<MyProps, Val>
+          } & {
+            [Key in VariantTypeKeys]?: Key extends ':number'
+              ? VariantSpreadFunction<MyProps, number>
+              : Key extends ':boolean'
+              ? VariantSpreadFunction<MyProps, boolean>
+              : Key extends ':string'
+              ? VariantSpreadFunction<MyProps, string>
+              : never
+          })
     }
   : never
 
-export type GetVariantProps<Variants extends Object> = {
+export type GetVariantProps<Variants> = {
   [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>
     ? Val
     : GetVariantValues<keyof Variants[Key]>
@@ -655,6 +664,8 @@ export type VariantSpreadFunction<Props extends PropLike, Val = any> = (
     }
   | null
   | undefined
+
+export type VariantTypeKeys = ':string' | ':boolean' | ':number'
 
 export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}`
   ? ThemeValueByCategory<VariantSpread>

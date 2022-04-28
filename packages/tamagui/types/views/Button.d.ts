@@ -84,6 +84,5 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     circular?: boolean | undefined;
 }>;
 export declare const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View>;
-export declare const getSpaceSize: (size: any, sizeUpOrDownBy?: number) => import("@tamagui/core").Variable;
 export {};
 //# sourceMappingURL=Button.d.ts.map

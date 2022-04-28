@@ -1,52 +1,71 @@
 // via radix
 // https://github.com/radix-ui/primitives/blob/main/packages/react/switch/src/Switch.tsx
 
-import { GetProps, ReactComponentWithRef, styled, themeable } from '@tamagui/core'
+import {
+  GetProps,
+  ReactComponentWithRef,
+  SizeTokens,
+  SizeVariantSpreadFunction,
+  getVariableValue,
+  styled,
+  themeable,
+} from '@tamagui/core'
 import * as React from 'react'
 import { View } from 'react-native'
 
 import { useComposedRefs } from '../helpers/composeRefs'
-// import { useComposedRefs } from '@radix-ui/react-compose-refs';
-// import { createContextScope } from '@radix-ui/react-context';
-// import { useControllableState } from '@radix-ui/react-use-controllable-state';
-// import { usePrevious } from '@radix-ui/react-use-previous';
-// import { useSize } from '@radix-ui/react-use-size';
-// import { Primitive } from '@radix-ui/react-primitive';
-// import { useLabelContext } from '@radix-ui/react-label';
 import { Scope, createContextScope } from '../helpers/createContext'
+import { getSize } from '../helpers/getSize'
 import { useControllableState } from '../hooks/useControllableState'
 import { usePrevious } from '../hooks/usePrevious'
-import { Circle } from './Circle'
 import { useLabelContext } from './Label'
-import { SizableStack, getButtonSize } from './SizableStack'
-import { XStack, YStack, YStackProps } from './Stacks'
+import { getSquareSize } from './Square'
+import { XStack, YStackProps } from './Stacks'
 
 const SWITCH_NAME = 'Switch'
 
 type ScopedProps<P> = P & { __scopeSwitch?: Scope }
-const [createSwitchContext, createSwitchScope] = createContextScope(SWITCH_NAME)
+const scopeContexts = createContextScope(SWITCH_NAME)
+const [createSwitchContext] = scopeContexts
+export const createSwitchScope = scopeContexts[1]
 
-type SwitchContextValue = { checked: boolean; disabled?: boolean }
+type SwitchContextValue = { checked: boolean; disabled?: boolean; size: SizeTokens }
 const [SwitchProvider, useSwitchContext] = createSwitchContext<SwitchContextValue>(SWITCH_NAME)
 
 /* -------------------------------------------------------------------------------------------------
  * Switch
  * -----------------------------------------------------------------------------------------------*/
 
+const WIDTH_SIZE = 3
+const HEIGHT_SIZE = 1
+
+const getSwitchHeight: SizeVariantSpreadFunction<any> = (val, extras) =>
+  getSquareSize(getSize(val, HEIGHT_SIZE), extras)
+const getSwitchWidth: SizeVariantSpreadFunction<any> = (val, extras) =>
+  getSquareSize(getSize(val, WIDTH_SIZE), extras)
+
 const SwitchFrame = styled(XStack, {
   name: 'Switch',
   tag: 'button',
-  borderRadius: 100,
+  borderRadius: 1000,
   borderWidth: 0,
 
   variants: {
-    '...size': (val, extras) => getButtonSize(val, extras),
-    // '...size': (val) => {
-    //   return {
-    //     width: 100,
-    //     height: 40,
-    //   }
-    // },
+    size: {
+      '...size': (val, extras) => {
+        console.log(getSwitchHeight(val, extras), getSwitchWidth(val, extras))
+        const { height, minHeight, maxHeight } = getSwitchHeight(val, extras)!
+        const { width, minWidth, maxWidth } = getSwitchWidth(val, extras)!
+        return {
+          height,
+          minHeight,
+          maxHeight,
+          width,
+          minWidth,
+          maxWidth,
+        }
+      },
+    },
   },
 
   defaultVariants: {
@@ -78,6 +97,7 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
       disabled,
       value = 'on',
       onCheckedChange,
+      size = '$4',
       ...switchProps
     } = props
     const [button, setButton] = React.useState<HTMLButtonElement | null>(null)
@@ -94,8 +114,9 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
     })
 
     return (
-      <SwitchProvider scope={__scopeSwitch} checked={checked} disabled={disabled}>
+      <SwitchProvider scope={__scopeSwitch} checked={checked} disabled={disabled} size={size}>
         <SwitchFrame
+          size={size}
           // @ts-ignore
           role="switch"
           aria-checked={checked}
@@ -156,23 +177,37 @@ const THUMB_NAME = 'SwitchThumb'
 
 export type SwitchThumbProps = YStackProps
 
-const SwitchThumbFrame = styled(Circle, {
+const SwitchThumbFrame = styled(XStack, {
   name: 'SwitchThumb',
-  size: '$4',
+  backgroundColor: '$color',
+  borderRadius: 1000,
+
+  variants: {
+    size: {
+      '...size': getSwitchHeight,
+    },
+  },
+
+  defaultVariants: {
+    size: '$4',
+  },
 })
 
 const SwitchThumb = SwitchThumbFrame.extractable(
   React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(
     (props: ScopedProps<SwitchThumbProps>, forwardedRef) => {
       const { __scopeSwitch, ...thumbProps } = props
-      const context = useSwitchContext(THUMB_NAME, __scopeSwitch)
+      const { size, disabled, checked } = useSwitchContext(THUMB_NAME, __scopeSwitch)
       return (
         <SwitchThumbFrame
-          data-state={getState(context.checked)}
-          data-disabled={context.disabled ? '' : undefined}
+          size={size}
+          data-state={getState(checked)}
+          data-disabled={disabled ? '' : undefined}
           {...thumbProps}
-          {...(context.checked && {
-            x: 20,
+          {...(checked && {
+            x:
+              getVariableValue(getSize(size, WIDTH_SIZE)) -
+              getVariableValue(getSize(size, HEIGHT_SIZE)),
           })}
           ref={forwardedRef}
         />

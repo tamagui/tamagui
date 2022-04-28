@@ -159,4 +159,7 @@ export * from './views/VisuallyHidden'
 
 export * from './helpers/prevent'
 export * from './helpers/getFontSize'
+export * from './helpers/getButtonSize'
 export * from './helpers/getSize'
+export * from './helpers/composeRefs'
+export * from './helpers/createContext'

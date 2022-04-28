@@ -1,6 +1,7 @@
 import { GetProps, styled } from '@tamagui/core'
 
 import { SizableStack } from './SizableStack'
+import { getSquareSize } from './Square'
 
 export const Circle = styled(SizableStack, {
   name: 'Circle',
@@ -11,18 +12,7 @@ export const Circle = styled(SizableStack, {
 
   variants: {
     size: {
-      '...size': (size, { tokens }) => {
-        const width = tokens.size[size] ?? size
-        const height = tokens.size[size] ?? size
-        return {
-          width,
-          height,
-          minWidth: width,
-          maxWidth: width,
-          maxHeight: height,
-          minHeight: height,
-        }
-      },
+      '...size': getSquareSize,
     },
   },
 })

@@ -1,10 +1,4 @@
 import { GetProps } from '@tamagui/core';
-export declare const getButtonSize: (val: any, { tokens, props }: import("@tamagui/core").VariantSpreadExtras<any>) => {
-    minHeight: any;
-    paddingHorizontal: number;
-    paddingVertical: number;
-    borderRadius: any;
-};
 export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
