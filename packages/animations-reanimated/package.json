@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-reanimated",
-  "version": "1.0.0-beta.225+79278a33",
+  "version": "1.0.0-beta.147+6d63af55",
   "source": "src/index.ts",
   "license": "MIT",
   "typings": "types",
@@ -12,12 +12,12 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/animate-presence": "^1.0.0-beta.225+79278a33",
-    "@tamagui/core": "^1.0.0-beta.225+79278a33",
+    "@tamagui/animate-presence": "^1.0.0-beta.147+6d63af55",
+    "@tamagui/core": "^1.0.0-beta.147+6d63af55",
     "react-native-reanimated": "^2.4.1"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.225+79278a33"
+    "@tamagui/build": "^1.0.0-beta.147+6d63af55"
   },
   "scripts": {
     "build": "tamagui-build",
@@ -28,5 +28,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "79278a336a83bc37b2fd40038ccbbfdfb4a565cd"
+  "gitHead": "6d63af55317e3c878ea0b61995728fa480776ffc"
 }
