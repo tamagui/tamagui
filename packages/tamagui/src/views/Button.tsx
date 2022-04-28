@@ -3,7 +3,6 @@ import {
   GetProps,
   ReactComponentWithRef,
   ThemeableProps,
-  getTokens,
   getVariableValue,
   spacedChildren,
   styled,
@@ -14,6 +13,7 @@ import React, { FunctionComponent, forwardRef, isValidElement, useContext } from
 import { View } from 'react-native'
 
 import { getFontSize } from '../helpers/getFontSize'
+import { getSpace } from '../helpers/getSpace'
 import { SizableStack } from './SizableStack'
 import { SizableText, SizableTextProps } from './SizableText'
 
@@ -199,7 +199,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
         {...rest}
       >
         {spacedChildren({
-          space: getSpaceSize(space, scaleSpace),
+          space: getSpace(space, scaleSpace),
           spaceFlex,
           flexDirection: props.flexDirection,
           children: [themedIcon, contents, themedIconAfter],
@@ -221,11 +221,3 @@ export const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View
       'textAlign',
     ]),
   })
-
-export const getSpaceSize = (size: any, sizeUpOrDownBy = 0) => {
-  const sizes = getTokens().size
-  const sizeNames = Object.keys(sizes)
-  const sizeDown =
-    sizes[sizeNames[Math.max(0, sizeNames.indexOf(size || '$4') + sizeUpOrDownBy)]] || '$4'
-  return sizeDown
-}

@@ -1,14 +1,14 @@
 import { GetProps, StackProps } from '@tamagui/core';
 import React from 'react';
-declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>) | (import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<Object, string | number> & {
+declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>) | (import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
     [x: string]: undefined;
-} & import("@tamagui/core").MediaProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<Object, string | number> & {
+} & import("@tamagui/core").MediaProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<Object, string | number> & {
+}>> & import("@tamagui/core").PseudoProps<Partial<import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps> & Omit<{}, string | number> & {
     [x: string]: undefined;
-}>>), any, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, Object & ({} | {
+}>>), any, import("react-native").ImageProps & Omit<StackProps, keyof import("react-native").ImageProps>, {} | {
     [x: string]: undefined;
-})>;
+}>;
 declare type StyledImageProps = GetProps<typeof StyledImage>;
 export declare type ImageProps = Omit<StackProps, keyof StyledImageProps> & Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
     width: number;

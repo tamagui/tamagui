@@ -26,7 +26,6 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
           backgroundColor: '$backgroundPress',
           opacity: 1,
         }}
-        minHeight="$6"
         pointerEvents={pending ? 'none' : 'auto'}
         {...(active && {
           theme: 'alt3',

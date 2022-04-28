@@ -1,6 +1,19 @@
-import { GetProps, styled } from '@tamagui/core'
+import { GetProps, SizeVariantSpreadFunction, styled } from '@tamagui/core'
 
-import { SizableStack } from './SizableStack'
+import { SizableStack, SizableStackProps } from './SizableStack'
+
+export const getSquareSize: SizeVariantSpreadFunction<SizableStackProps> = (size, { tokens }) => {
+  const width = tokens.size[size] ?? size
+  const height = tokens.size[size] ?? size
+  return {
+    width,
+    height,
+    minWidth: width,
+    maxWidth: width,
+    maxHeight: height,
+    minHeight: height,
+  }
+}
 
 export const Square = styled(SizableStack, {
   name: 'Square',
@@ -10,12 +23,7 @@ export const Square = styled(SizableStack, {
 
   variants: {
     size: {
-      '...size': (size, { tokens }) => {
-        return {
-          width: tokens.size[size] ?? size,
-          height: tokens.size[size] ?? size,
-        }
-      },
+      '...size': getSquareSize,
     },
   },
 })

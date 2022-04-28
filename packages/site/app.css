@@ -127,6 +127,7 @@ ol,
 li,
 pre {
   margin: 0;
+  padding: 0;
 }
 
 .all {

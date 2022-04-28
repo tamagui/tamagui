@@ -5,7 +5,6 @@ import { extendStaticConfig } from './helpers/extendStaticConfig'
 import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,
-  GetVariantProps,
   GetVariantValues,
   MediaProps,
   PseudoProps,
@@ -18,8 +17,6 @@ import {
 
 export function styled<
   ParentComponent extends StylableComponent,
-  // = VariantDefinitions<GetProps<ParentComponent>> gives type inference to variants: { true: { ... } }
-  // but causes "Type instantiation is excessively deep and possibly infinite."...
   Variants extends VariantDefinitions<ParentComponent> | symbol =
     | VariantDefinitions<ParentComponent>
     | symbol
@@ -29,7 +26,8 @@ export function styled<
   options?: GetProps<ParentComponent> & {
     name?: string
     variants?: Variants | undefined
-    defaultVariants?: Variants extends Object ? GetVariantProps<Variants> : never
+    // thought i had this typed, but can't get it linked
+    defaultVariants?: { [key: string]: any }
   },
   staticExtractionOptions?: StaticConfig
 ) {
@@ -72,9 +70,7 @@ export function styled<
   type ParentPropsBase = ParentComponent extends TamaguiComponent<any, any, infer P>
     ? P
     : GetProps<ParentComponent>
-  type ParentVariants = ParentComponent extends TamaguiComponent<any, any, any, infer V>
-    ? V
-    : Object
+  type ParentVariants = ParentComponent extends TamaguiComponent<any, any, any, infer V> ? V : {}
 
   type OurVariants = Variants extends symbol
     ? {}
@@ -106,7 +102,54 @@ export function styled<
 }
 
 // test types:
+// // variants
+// export const XStack = styled(Stack, {
+//   flexDirection: 'row',
+//   name: 'XStack',
+//   variants: {
+//     fullscreen: {
+//       true: {},
+//     },
+//     elevation: {
+//       '...size': (val) => ({}),
+//     },
+//   },
+// })
+// const InBetween = styled(XStack, {})
+// type INBVariants = typeof InBetween extends TamaguiComponent<any, any, any, infer Variants> ? Variants: never
+// const SwitchFrame = styled(InBetween, {
+//   name: 'Switch',
+//   tag: 'button',
+//   borderRadius: 100,
+//   borderWidth: 0,
+//   variants: {
+//     name: {
+//       true: {
+//         backgroundColor: 'aliceblue'
+//       },
+//       // 1: {
 
+//       // },
+//       // ':number': (val) => {
+//       //   return {}
+//       // },
+//       // "...fontSize": (val) => {
+//       //   return {}
+//       // },
+//       // "...color": (val) => {
+//       //   return {}
+//       // }
+//     }
+//   },
+//   defaultVariants: {
+//     size: '$4',
+//   },
+// })
+// const x = <XStack fullscreen />
+// const y = <XStack fullscreen />
+// const z = <SwitchFrame fullscreen name />
+
+// depth:
 // export const SizableText = styled(Stack, {
 //   name: 'SizableText',
 //   backgroundColor: 'red',
