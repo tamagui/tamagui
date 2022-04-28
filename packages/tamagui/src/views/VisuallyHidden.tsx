@@ -7,10 +7,18 @@ export const VisuallyHidden = styled(Stack, {
   margin: -1,
   zIndex: -10000,
   overflow: 'hidden',
-  opacity: 0.0001,
+  opacity: 0.00000001,
   pointerEvents: 'none',
 
   variants: {
+    preserveDimensions: {
+      true: {
+        position: 'relative',
+        width: 'auto',
+        height: 'auto',
+      },
+    },
+
     visible: {
       true: {
         position: 'relative',

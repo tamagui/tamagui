@@ -1,28 +1,32 @@
 import Link from 'next/link'
-import {
-  Button,
-  Card,
-  FontSizeTokens,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  H6,
-  Paragraph,
-  Separator,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { useEffect, useState } from 'react'
+import { Button, Card, H1, H2, H3, H4, H5, H6, Paragraph, TextProps, XStack, YStack } from 'tamagui'
 
+import { AnimatePresence } from '../../animate-presence'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
-import { HomeH2, HomeH3 } from './HomeH2'
+import { HomeH2 } from './HomeH2'
+
+const families = ['silkscreen', 'mono', 'inter']
 
 export const HeroTypography = () => {
+  const [family, setFamily] = useState(`silkscreen`)
+
+  useEffect(() => {
+    const tm = setInterval(() => {
+      setFamily((cur) => {
+        return families[(families.indexOf(cur) + 1) % families.length]
+      })
+    }, 3000)
+
+    return () => {
+      clearInterval(tm)
+    }
+  }, [])
+
   return (
     <>
-      <YStack fullscreen className="bg-grid mask-gradient-both" o={0.5} />
+      <YStack fullscreen className="bg-grid-big mask-gradient-both" o={0.5} />
       {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
       <ContainerLarge position="relative" space="$8">
         <YStack ai="center" space="$2">
@@ -36,18 +40,77 @@ export const HeroTypography = () => {
           space="$8"
           flexDirection="row-reverse"
           $sm={{
-            flexDirection: 'row',
+            flexDirection: 'column-reverse',
           }}
         >
           <OverlayCard />
 
-          <YStack className="rainbow clip-text ta-right" display="block" zi={-1} space="$0.5">
-            <H1>Hot-swappable</H1>
-            <H2>individually-styled</H2>
-            <H3>typed and optimized</H3>
-            <H4>premade or custom</H4>
-            <H5>easy to author</H5>
-            <H6>font themes</H6>
+          <YStack
+            h={300}
+            w="40%"
+            mt={40}
+            space="$0.5"
+            ai="flex-end"
+            scale={1.2}
+            x={-40}
+            $sm={{ w: '100%', ai: 'center', x: 0, scale: 1 }}
+          >
+            <AnimatePresence exitBeforeEnter>
+              <AnimatedHeading
+                key={`${family}1`}
+                index={0}
+                Component={H1}
+                family={family}
+                color="$pink10"
+              >
+                Hot-swappable
+              </AnimatedHeading>
+              <AnimatedHeading
+                key={`${family}2`}
+                index={1}
+                Component={H2}
+                family={family}
+                color="$purple10"
+              >
+                individually-styled
+              </AnimatedHeading>
+              <AnimatedHeading
+                key={`${family}3`}
+                index={2}
+                Component={H3}
+                family={family}
+                color="$blue10"
+              >
+                typed and optimized
+              </AnimatedHeading>
+              <AnimatedHeading
+                key={`${family}4`}
+                index={3}
+                Component={H4}
+                family={family}
+                color="$green10"
+              >
+                premade or custom
+              </AnimatedHeading>
+              <AnimatedHeading
+                key={`${family}5`}
+                index={4}
+                Component={H5}
+                family={family}
+                color="$orange10"
+              >
+                easy to author
+              </AnimatedHeading>
+              <AnimatedHeading
+                key={`${family}6`}
+                index={5}
+                Component={H6}
+                family={family}
+                color="$red10"
+              >
+                font themes
+              </AnimatedHeading>
+            </AnimatePresence>
           </YStack>
         </XStack>
       </ContainerLarge>
@@ -84,4 +147,44 @@ const OverlayCard = () => {
       </YStack>
     </Card>
   )
+}
+
+const AnimatedHeading = ({
+  Component,
+  children,
+  family,
+  index,
+  ...rest
+}: {
+  family: string
+  Component: any
+  children: any
+  index: number
+} & TextProps) => {
+  return (
+    <Delay by={index * 200}>
+      <Component
+        animation="bouncy"
+        enterStyle={{ o: 0, y: -10 }}
+        exitStyle={{ o: 0, y: 10 }}
+        o={1}
+        y={0}
+        fontFamily={`$${family}`}
+        {...rest}
+      >
+        {children}
+      </Component>
+    </Delay>
+  )
+}
+
+const Delay = ({ children, by }) => {
+  const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    const showTimer = setTimeout(() => setDone(true), by)
+    return () => clearTimeout(showTimer)
+  })
+
+  return done ? children : null
 }
