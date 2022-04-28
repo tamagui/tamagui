@@ -1,0 +1,89 @@
+---
+title: Switch
+description: A simple switch component
+name: text
+component: Switch
+---
+
+# Switch
+
+<Description>Use in forms to toggle between two states.</Description>
+
+<HeroContainer>
+  <SwitchDemo />
+</HeroContainer>
+
+```jsx hero template=Switch
+
+```
+
+<Highlights
+  features={[
+    `Accessible and based on Radix primitives.`,
+    `Style the frame and toggle.`,
+    `Sizable.`,
+  ]}
+/>
+
+### Usage
+
+```jsx
+import { Switch, Button } from 'tamagui'
+
+export default () => (
+  <Switch contents="Text in switch">
+    <Button>Hover to open</Button>
+  </Switch>
+)
+```
+
+### Switch props
+
+Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'contents',
+      required: true,
+      type: 'string',
+      description: `What's shown in the switch.`,
+    },
+    {
+      name: 'switchFrameProps',
+      required: false,
+      type: 'StackProps',
+      description: `Change style of the switch frame`,
+    },
+    {
+      name: 'size',
+      required: true,
+      type: 'Size',
+      description: `Size it up or down.`,
+    },
+    {
+      name: 'alwaysDark',
+      required: false,
+      type: 'Boolean',
+      description: `Make sure the frame is dark`,
+    },
+    {
+      name: 'delay',
+      required: false,
+      type: 'number',
+      description: `Set the delay before appearing`,
+    },
+    {
+      name: 'allowHoverOnContent',
+      required: false,
+      type: 'Boolean',
+      description: `Allow hover on switch content`,
+    },
+    {
+      name: 'disableUntilSettled',
+      required: false,
+      type: 'Boolean',
+      description: `Override hover only on settled`,
+    },
+  ]}
+/>

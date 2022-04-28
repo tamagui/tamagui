@@ -7,6 +7,7 @@ import {
 } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
+import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import {
@@ -17,10 +18,10 @@ import {
   SplitStyleState,
   StackProps,
   StaticConfigParsed,
+  TamaguiInternalConfig,
   ThemeObject,
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
-import { ResolveVariableTypes } from './createPropMapper'
 import { fixNativeShadow } from './fixNativeShadow'
 import { ViewStyleWithPseudos, getStylesAtomic } from './getStylesAtomic'
 import { insertStyleRule, insertedTransforms, updateInserted } from './insertStyleRule'
@@ -59,6 +60,8 @@ type TransformNamespaceKey = 'transform' | PsuedoPropKeys | MediaQueryKey
 
 // TODO can make a few of these objects lazy if profiling seems slow
 
+let conf: TamaguiInternalConfig
+
 export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
@@ -66,6 +69,7 @@ export const getSplitStyles = (
   state: SplitStyleState,
   defaultClassNames?: ClassNamesObject | null
 ) => {
+  conf = conf || getConfig()
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
   const style: ViewStyle = {}
@@ -152,10 +156,8 @@ export const getSplitStyles = (
   for (const keyInit in props) {
     const valInit = props[keyInit]
 
-    if (skipKeys[keyInit]) {
-      viewProps[keyInit] = valInit
-      continue
-    }
+    let isMedia = keyInit[0] === '$'
+    let isPseudo = validPseudoKeys[keyInit]
 
     if (
       // isPropClassName
@@ -172,8 +174,16 @@ export const getSplitStyles = (
       continue
     }
 
-    let isMedia = keyInit[0] === '$'
-    let isPseudo = validPseudoKeys[keyInit]
+    if (
+      !isMedia &&
+      !isPseudo &&
+      !staticConfig.variants?.[keyInit] &&
+      !validStyleProps[keyInit] &&
+      !conf.shorthands[keyInit]
+    ) {
+      viewProps[keyInit] = valInit
+      continue
+    }
 
     const out =
       isMedia || isPseudo
