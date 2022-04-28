@@ -716,6 +716,7 @@ type ColorKeys =
   | 'borderLeftColor'
   | 'borderRightColor'
   | 'shadowColor'
+  | 'textShadowColor'
 
 type SpaceKeys =
   | 'space'
