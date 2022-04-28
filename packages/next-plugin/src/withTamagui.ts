@@ -61,7 +61,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ['react-native$', 'react-native-web'],
             ['react-native-reanimated', 'react-native-reanimated'],
             ['react-native-web$', 'react-native-web'],
-            ['@testing-library/react-native', '@dish/proxy-worm'],
+            ['@testing-library/react-native', '@tamagui/proxy-worm'],
             ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']]
           ),
           // expo fix https://github.com/expo/expo/issues/9999

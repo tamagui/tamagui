@@ -1,4 +1,6 @@
 - beta:
+  - <LinearGradient /> colors accept theme types
+  - $sm={{ hoverStyle: {} }} types failing and test
   - types for full theme values, color doesnt show $blue10
   - <Spacer /> doesnt work w media query display none
   - 30% fix on native + simple native demo (maybe with starters repo)
