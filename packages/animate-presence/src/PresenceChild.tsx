@@ -36,7 +36,6 @@ export const PresenceChild = ({
         exitVariant,
         enterVariant,
         onExitComplete: (childId: string) => {
-          console.log('on exist complete', childId)
           presenceChildren.set(childId, true)
           for (const isComplete of presenceChildren.values()) {
             if (!isComplete) {

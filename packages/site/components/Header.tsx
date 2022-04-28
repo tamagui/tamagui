@@ -1,6 +1,7 @@
 import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
@@ -19,15 +20,9 @@ export const HeaderIndependent = ({ disableNew }: { disableNew?: boolean }) => {
   )
 }
 
-export function Header({
-  floating,
-  disableNew,
-  isHome,
-}: {
-  floating?: boolean
-  disableNew?: boolean
-  isHome?: boolean
-}) {
+export function Header({ floating, disableNew }: { floating?: boolean; disableNew?: boolean }) {
+  const router = useRouter()
+  const isHome = router.pathname === '/'
   const { setNextTint } = useTint()
 
   return (
@@ -43,12 +38,12 @@ export function Header({
       <XStack ai="center" space="$4">
         {isHome ? (
           <YStack cursor="pointer" my={-20}>
-            <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
+            <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 1.5} />
           </YStack>
         ) : (
           <NextLink href="/" passHref>
             <YStack cursor="pointer" tag="a" my={-20}>
-              <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 2} />
+              <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 1.5} />
             </YStack>
           </NextLink>
         )}

@@ -12,12 +12,9 @@ export function FeaturesGrid() {
       </YStack>
       <ContainerLarge space="$8">
         <YStack zi={1} space="$1">
-          <HomeH2 className="rainbow clip-text" size="$12">
-            All-in-one
-          </HomeH2>
-          <HomeH3 maw={600}>
-            Low-level primitives designed to let you rapidly iterate on truly cross-platform apps
-            without fuss.
+          <HomeH2 className="rainbow clip-text">All-in-one</HomeH2>
+          <HomeH3>
+            Low-level primitives designed to let you rapidly iterate on truly cross-platform apps.
           </HomeH3>
         </YStack>
 

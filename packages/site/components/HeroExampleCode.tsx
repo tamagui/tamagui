@@ -20,14 +20,11 @@ export function HeroExampleCode() {
       <ContainerLarge position="relative">
         <YStack zi={1} space="$4">
           <YStack space="$2">
-            <HomeH2 size="$12">
+            <HomeH2>
               <span className="rainbow clip-text">DX</span> 🤝{' '}
               <span className="rainbow clip-text">UX</span>
             </HomeH2>
-            <HomeH3>
-              Stop having to choose between nice syntax and features, good performance, and
-              multi-platform.
-            </HomeH3>
+            <HomeH3>Choose great syntax & features & performance & cross-platform support.</HomeH3>
           </YStack>
 
           <InteractiveContainer theme={tint} maxWidth="100%" als="center">

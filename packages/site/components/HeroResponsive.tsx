@@ -204,29 +204,27 @@ export const HeroResponsive = memo(() => {
 
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
-    <Theme className="unselectable" name={active ? 'pink' : null}>
-      <YStack className="test123" pos="absolute" l={800} {...props}>
-        <XStack pe="none" y={-80} ai="flex-start" space>
-          <YStack w={1} h={80} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
-          <Button
-            borderWidth={1}
-            size="$4"
-            circular
-            pos="absolute"
-            top={0}
-            left={0}
-            y={-20}
-            x={-19}
-            fontSize={12}
-            onPress={() => {
-              onPress(name)
-            }}
-          >
-            {name}
-          </Button>
-        </XStack>
-      </YStack>
-    </Theme>
+    <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
+      <XStack pe="none" y={-80} ai="flex-start" space>
+        <YStack w={1} h={100} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
+        <Button
+          borderWidth={1}
+          size="$4"
+          circular
+          pos="absolute"
+          top={0}
+          left={0}
+          y={-20}
+          x={-19}
+          fontSize={12}
+          onPress={() => {
+            onPress(name)
+          }}
+        >
+          {name}
+        </Button>
+      </XStack>
+    </YStack>
   )
 })
 
@@ -236,22 +234,21 @@ const Header = memo(() => {
       <XStack>
         <HomeH2 als="flex-start">Responsive.</HomeH2>
 
+        <Spacer size="$6" />
+
         <XStack jc="center" ai="center" $sm={{ display: 'none' }}>
-          <IconStack als="center" x={40} theme="alt2" p="$3">
-            <Monitor size={18} />
+          <IconStack als="center" theme="alt2" p="$3">
+            <Monitor size={26} />
           </IconStack>
-          <Spacer size="$6" />
         </XStack>
       </XStack>
 
-      <Paragraph maxWidth={450} size="$5" theme="alt2">
-        Sharing responsive designs between web and native saves time, but hooks are verbose and
-        expensive to run.
+      <Paragraph maxWidth={450} size="$7" theme="alt2">
+        Sharing responsive designs saves time, but hooks are verbose and expensive to run.
       </Paragraph>
 
       <Paragraph maxWidth={450} size="$5" theme="alt2">
-        Tamagui inline styles compile to CSS media queries on web, or hoist to StyleSheet on native
-        for 🚀 performance.
+        Tamagui compiles to CSS media queries and hoists dynamic media style outside the render.
       </Paragraph>
     </YStack>
   )

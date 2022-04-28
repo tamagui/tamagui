@@ -4,10 +4,11 @@ export const Code = styled(Paragraph, {
   name: 'Code',
   tag: 'code',
   fontFamily: '$mono',
-  lineHeight: 18,
+  lineHeight: 21,
+  fontSize: 15,
   whiteSpace: 'pre',
   padding: '$1',
-  borderRadius: '$3',
+  borderRadius: '$4',
 
   variants: {
     colored: {

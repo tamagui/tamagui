@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import React, { memo, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { animations } from '../constants/animations'
+import { CodeDemo } from './CodeDemo'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import AnimationsDemo from './demos/AnimationsDemo'
@@ -36,10 +37,31 @@ let hasScrolledOnce = false
 export function HeroExampleAnimations() {
   const { tint } = useTint()
 
+  const [disableScroll, setDisableScroll] = useState(false)
+  console.log('disableScroll', disableScroll)
+
+  useEffect(() => {
+    let tm
+    const disable = () => {
+      if (!disableScroll) {
+        setDisableScroll(true)
+      }
+      clearTimeout(tm)
+      tm = setTimeout(() => {
+        setDisableScroll(false)
+      }, 300)
+    }
+    window.addEventListener('scroll', disable, { passive: true })
+    return () => {
+      clearTimeout(tm)
+      window.removeEventListener('scroll', disable)
+    }
+  }, [disableScroll])
+
   return (
     <YStack>
       <ContainerLarge position="relative" space="$6">
-        <YStack zi={1} space="$2">
+        <YStack zi={1} space="$1">
           <HomeH2 pos="relative">
             Animations
             <Button pe="none" size="$3" theme="pink" pos="absolute" t={-10} r={-70} rotate="5deg">
@@ -49,7 +71,98 @@ export function HeroExampleAnimations() {
           <HomeH3>Plug-and-play drivers for every platform.</HomeH3>
         </YStack>
 
-        <ExampleAnimations />
+        <XStack>
+          <YStack
+            f={2}
+            miw="50%"
+            als="center"
+            mr="$-2"
+            bc="$backgroundHover"
+            zi={100}
+            elevation="$4"
+            br="$4"
+          >
+            <ExampleAnimations />
+          </YStack>
+
+          <YStack pe={disableScroll ? 'none' : 'auto'} $sm={{ display: 'none' }}>
+            <CodeDemo
+              maxHeight={500}
+              language="jsx"
+              value={`import { Play } from '@tamagui/feather-icons'
+import React from 'react'
+import { AnimationKeys, Button, Square,  } from 'tamagui'
+import { LogoIcon } from '../TamaguiLogo'
+
+export default (props) => {
+  const [positionI, setPositionI] = React.useState(0)
+  return (
+    <>
+      <Square
+        animation={props.animation || 'bouncy'}
+        size={110}
+        bc="$green10"
+        br="$9"
+        hoverStyle={{
+          scale: 1.1,
+        }}
+        pressStyle={{
+          scale: 0.9,
+        }}
+        {...positions[positionI]}
+      >
+        <LogoIcon downscale={0.75} />
+      </Square>
+
+      <Button
+        pos="absolute"
+        b={20}
+        l={20}
+        iconAfter={Play}
+        size="$6"
+        circular
+        onPress={() => setPositionI(i => (i + 1) % positions.length)}
+      />
+    </>
+  )
+}
+
+export const positions = [
+  {
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotate: '0deg',
+  },
+  {
+    x: -50,
+    y: -50,
+    scale: 0.5,
+    rotate: '-45deg',
+    hoverStyle: {
+      scale: 0.6,
+    },
+    pressStyle: {
+      scale: 0.4,
+    },
+  },
+  {
+    x: 50,
+    y: 50,
+    scale: 1,
+    rotate: '180deg',
+    hoverStyle: {
+      scale: 1.1,
+    },
+    pressStyle: {
+      scale: 0.9,
+    },
+  },
+]
+`}
+            />
+          </YStack>
+        </XStack>
 
         <XStack als="center" space="$1">
           <Link href="/docs/core/animations#css" passHref>
@@ -119,16 +232,14 @@ export const ExampleAnimations = memo(() => {
     <XStack
       bw={1}
       boc={`$${tint}5`}
-      // borderStyle="dashed"
       elevation="$1"
       w="100%"
       br="$6"
       ov="hidden"
-      // bc="$backgroundHover"
       h={305}
-      maw={880}
       als="center"
       x={0}
+      flexDirection="row-reverse"
     >
       <Theme name={tint}>
         <YStack
@@ -147,11 +258,11 @@ export const ExampleAnimations = memo(() => {
 
       <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
         <YStack fullscreen zi={-1} theme="alt2" bc="$background" />
-        <ScrollView>
+        <>
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
-              <Theme key={item.name} name={isActive ? null : 'alt2'}>
+              <Theme key={item.name} name={isActive ? 'active' : 'alt1'}>
                 <YStack
                   {...(isActive && {
                     bc: '$backgroundHover',
@@ -171,14 +282,14 @@ export const ExampleAnimations = memo(() => {
                   <Paragraph selectable={false} cursor="inherit" size="$4" fontWeight="800">
                     {item.name}
                   </Paragraph>
-                  <Paragraph selectable={false} size="$3" cursor="inherit" theme="alt2">
+                  <Paragraph ellipse selectable={false} size="$3" cursor="inherit" theme="alt2">
                     {item.description}
                   </Paragraph>
                 </YStack>
               </Theme>
             )
           })}
-        </ScrollView>
+        </>
 
         <Separator />
 

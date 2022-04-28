@@ -1,6 +1,20 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Button, Card, H1, H2, H3, H4, H5, H6, Paragraph, TextProps, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Card,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  H6,
+  Heading,
+  Paragraph,
+  TextProps,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { AnimatePresence } from '../../animate-presence'
 import { useTint } from './ColorToggleButton'
@@ -53,7 +67,7 @@ export const HeroTypography = () => {
             ai="flex-end"
             scale={1.2}
             x={-40}
-            $sm={{ w: '100%', ai: 'center', x: 0, scale: 1 }}
+            $sm={{ miw: '110%', ai: 'center', x: 0, scale: 0.8 }}
           >
             <AnimatePresence exitBeforeEnter>
               <AnimatedHeading
@@ -125,9 +139,8 @@ const OverlayCard = () => {
   return (
     <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
       <YStack jc="center" p="$6" space="$4" maw="calc(min(90vw, 400px))">
-        <Paragraph ta="left" size="$8" fow="400" maw="75%">
-          Every font prop,
-          <br /> tuned to each size.
+        <Paragraph ta="left" size="$8" fow="400">
+          Every font prop tuned at every size across weight, spacing, line height, and more.
         </Paragraph>
 
         <Paragraph ta="left" size="$5" theme="alt2">
@@ -157,7 +170,7 @@ const AnimatedHeading = ({
   ...rest
 }: {
   family: string
-  Component: any
+  Component: typeof Heading
   children: any
   index: number
 } & TextProps) => {
@@ -170,6 +183,10 @@ const AnimatedHeading = ({
         o={1}
         y={0}
         fontFamily={`$${family}`}
+        textShadowColor="$background"
+        textShadowRadius={10}
+        textShadowOffset={{ width: 0, height: 5 }}
+        ellipse
         {...rest}
       >
         {children}

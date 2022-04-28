@@ -258,26 +258,23 @@ export function HeroExampleThemes() {
                   const [colorI, shadeI] = flatToSplit(i)
                   const [color, alt] = name.split('_')
                   return (
-                    <XStack key={i} width={width}>
-                      <XStack
-                        // TODO merging hoverStyle scale wrong
-                        scale={scale}
-                        cursor="pointer"
-                        opacity={0.5}
-                        hoverStyle={{
-                          scale: scale + 0.025,
-                        }}
-                        onPress={() => {
-                          updateActiveI([colorI, shadeI])
-                        }}
-                      >
-                        <Theme name={color as any}>
-                          <MediaPlayer
-                            pointerEvents="none"
-                            alt={alt ? +alt.replace('alt', '') : 0}
-                          />
-                        </Theme>
-                      </XStack>
+                    <XStack
+                      key={i}
+                      width={width}
+                      // TODO merging hoverStyle scale wrong
+                      scale={scale}
+                      cursor="pointer"
+                      opacity={0.5}
+                      hoverStyle={{
+                        scale: scale + 0.025,
+                      }}
+                      onPress={() => {
+                        updateActiveI([colorI, shadeI])
+                      }}
+                    >
+                      <Theme name={color as any}>
+                        <MediaPlayer pointerEvents="none" alt={alt ? +alt.replace('alt', '') : 0} />
+                      </Theme>
                     </XStack>
                   )
                 })

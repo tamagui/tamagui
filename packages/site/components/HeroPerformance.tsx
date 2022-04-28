@@ -29,8 +29,8 @@ export function HeroPerformance() {
         <YStack ai="center" space="$2">
           <HomeH2 ref={ref}>Next-level performance</HomeH2>
           <HomeH3 maw={580}>
-            Media queries, themes & inline styles - even with logic - all compile to clean, fast
-            atomic CSS.
+            Media queries, themes & inline styles (even with logic) compile to clean, fast atomic
+            CSS.
           </HomeH3>
         </YStack>
 
