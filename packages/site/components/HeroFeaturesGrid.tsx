@@ -22,7 +22,7 @@ export function FeaturesGrid() {
         </YStack>
 
         <YStack>
-          <Grid gap={25} itemMinWidth={250}>
+          <Grid gap={25} itemMinWidth={280}>
             <YStack space="$2" p="$4">
               <H4 fontFamily="$silkscreen" ta="center">
                 Fully typed

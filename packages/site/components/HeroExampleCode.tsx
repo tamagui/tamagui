@@ -24,7 +24,9 @@ export function HeroExampleCode() {
               <span className="rainbow clip-text">DX</span> 🤝{' '}
               <span className="rainbow clip-text">UX</span>
             </HomeH2>
-            <HomeH3>Syntax&nbsp; * &nbsp;Performance&nbsp; * &nbsp;Compatibility</HomeH3>
+            <HomeH3>
+              Choose two: nice syntax, performance, cross-platform support - or don't, with Tamagui.
+            </HomeH3>
           </YStack>
 
           <InteractiveContainer theme={tint} maxWidth="100%" als="center">

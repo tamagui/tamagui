@@ -1,4 +1,6 @@
 - beta:
+  - {/* TODO this is using $body for other attributes not $silkscreen */}
+  - // TODO merging hoverStyle scale wrong
   - <LinearGradient /> colors accept theme types
   - $sm={{ hoverStyle: {} }} types failing and test
   - types for full theme values, color doesnt show $blue10

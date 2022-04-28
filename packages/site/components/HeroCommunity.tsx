@@ -53,7 +53,7 @@ export function Community() {
               Twitter
             </H4>
             <Paragraph cursor="pointer" theme="alt2">
-              For news, announcements, and general updates.
+              Announcements and general updates.
             </Paragraph>
           </Card>
           <Card
@@ -67,6 +67,7 @@ export function Community() {
             p="$4"
           >
             <DiscordIcon />
+            {/* TODO this is using $body for other attributes not $silkscreen */}
             <H4 cursor="pointer" fontFamily="$silkscreen">
               Discord
             </H4>
@@ -89,7 +90,7 @@ export function Community() {
               GitHub
             </H4>
             <Paragraph cursor="pointer" theme="alt2">
-              Bring up issues, request features, and contribute.
+              Issues, feature requests, and contributing.
             </Paragraph>
           </Card>
         </XStack>

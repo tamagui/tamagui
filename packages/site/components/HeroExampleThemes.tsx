@@ -260,14 +260,7 @@ export function HeroExampleThemes() {
                   return (
                     <XStack key={i} width={width}>
                       <XStack
-                        // zi={(isActive ? 1000 : isBeforeActive ? i : 1000 - i) + (isActiveGroup ? 1000 : 0)}
-                        // pos="absolute"
-                        // x={
-                        //   i * offset + 0 // (isActiveGroup ? (isBeforeActive ? -1 : 0) * 20 * i : 0)
-                        //   // (!isTransitioning && isActiveGroup ? offsetActive * shadeI : 0)
-                        // }
-                        // scale={isTransitioning ? 0.6 : 1 + (isActiveGroup ? -0.1 : -0.5) + (isActive ? 0.1 : 0)}
-                        // mx={-scale * 180}
+                        // TODO merging hoverStyle scale wrong
                         scale={scale}
                         cursor="pointer"
                         opacity={0.5}
