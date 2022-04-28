@@ -9,7 +9,6 @@ import {
   pseudos,
   rnw,
 } from '@tamagui/core-node'
-import { stylePropsTransform } from '@tamagui/helpers'
 import { difference, pick } from 'lodash'
 
 import { FAILED_EVAL } from '../constants'
@@ -30,6 +29,7 @@ import { loadTamagui } from './loadTamagui'
 import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
+import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
 
 const UNTOUCHED_PROPS = {
@@ -72,12 +72,6 @@ export function createExtractor() {
     process.env.IDENTIFY_TAGS !== 'false' &&
     (process.env.NODE_ENV === 'development' || process.env.DEBUG || process.env.IDENTIFY_TAGS)
 
-  // ts imports
-  require('esbuild-register/dist/node').register({
-    target: 'es2019',
-    format: 'cjs',
-  })
-
   let loadedTamaguiConfig: TamaguiInternalConfig
   let hasLogged = false
 
@@ -108,7 +102,6 @@ export function createExtractor() {
       if (disable) {
         return null
       }
-
       if (sourcePath === '') {
         throw new Error(`Must provide a source file name`)
       }
@@ -116,12 +109,16 @@ export function createExtractor() {
         throw new Error(`Must provide components array with list of Tamagui component modules`)
       }
 
+      const tm = timer()
+
       // we require it after parse because we need to set some global/env stuff before importing
       // otherwise we'd import `rnw` and cause it to evaluate react-native-web which causes errors
       const { components, tamaguiConfig } = loadTamagui({
         config,
         components: props.components || ['tamagui'],
       })
+
+      tm.mark('load-tamagui', shouldPrintDebug === 'verbose')
 
       loadedTamaguiConfig = tamaguiConfig as any
 
@@ -171,6 +168,8 @@ export function createExtractor() {
         return null
       }
 
+      tm.mark('import-check', shouldPrintDebug === 'verbose')
+
       let couldntParse = false
       const modifiedComponents = new Set<NodePath<any>>()
 
@@ -200,6 +199,8 @@ export function createExtractor() {
           },
         },
         JSXElement(traversePath) {
+          tm.mark('jsx-element', shouldPrintDebug === 'verbose')
+
           const node = traversePath.node.openingElement
           const ogAttributes = node.attributes
           const componentName = findComponentName(traversePath.scope)
@@ -420,6 +421,8 @@ export function createExtractor() {
               return
             }
 
+            tm.mark('jsx-element-flattened', shouldPrintDebug === 'verbose')
+
             // set flattened
             node.attributes = flattenedAttrs
 
@@ -480,6 +483,7 @@ export function createExtractor() {
               .flatMap((path) => {
                 try {
                   const res = evaluateAttribute(path)
+                  tm.mark('jsx-element-evaluate-attr', shouldPrintDebug === 'verbose')
                   if (!res) {
                     path.remove()
                   }
@@ -1266,6 +1270,7 @@ export function createExtractor() {
               return acc
             }, [])
 
+            tm.mark('jsx-element-expanded', shouldPrintDebug === 'verbose')
             if (shouldPrintDebug) {
               console.log('  - attrs (expanded): \n', logLines(attrs.map(attrStr).join(', ')))
             }
@@ -1480,6 +1485,8 @@ export function createExtractor() {
               }
             }
 
+            tm.mark('jsx-element-styles', shouldPrintDebug === 'verbose')
+
             if (getStyleError) {
               console.log(' ⚠️ postprocessing error, deopt', getStyleError)
               node.attributes = ogAttributes
@@ -1561,6 +1568,8 @@ export function createExtractor() {
         },
       })
 
+      tm.mark('jsx-done', shouldPrintDebug === 'verbose')
+
       /**
        * Step 3: Remove dead code from removed media query / theme hooks
        */
@@ -1573,6 +1582,8 @@ export function createExtractor() {
           removeUnusedHooks(comp, shouldPrintDebug)
         }
       }
+
+      tm.done(shouldPrintDebug === 'verbose')
 
       return res
     },

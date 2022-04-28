@@ -22,6 +22,7 @@ import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
 import { literalToAst } from './literalToAst'
 import { logLines } from './logLines'
+import { timer } from './timer'
 
 const mergeStyleGroups = {
   shadowOpacity: true,
@@ -45,10 +46,12 @@ export function extractToClassNames({
   sourcePath,
   options,
   shouldPrintDebug,
+  cssLoaderPath,
   threaded,
   cssPath,
 }: {
   loader: LoaderContext<any>
+  cssLoaderPath: string
   extractor: Extractor
   source: string | Buffer
   sourcePath: string
@@ -57,6 +60,8 @@ export function extractToClassNames({
   cssPath: string
   threaded?: boolean
 }): ExtractedResponse | null {
+  const tm = timer()
+
   if (typeof source !== 'string') {
     throw new Error('`source` must be a string of javascript')
   }
@@ -79,6 +84,8 @@ export function extractToClassNames({
     console.error('babel parse error:', sourcePath)
     throw err
   }
+
+  tm.mark(`babel-parse`, shouldPrintDebug === 'verbose')
 
   const cssMap = new Map<string, { css: string; commentTexts: string[] }>()
   const existingHoists: { [key: string]: t.Identifier } = {}
@@ -359,7 +366,7 @@ export function extractToClassNames({
       ? `cssData=${Buffer.from(styles).toString('base64')}`
       : `cssPath=${cssPath}`
     const remReq = loader.remainingRequest
-    const importPath = `${cssPath}!=!tamagui-loader?${cssQuery}!${remReq}`
+    const importPath = `${cssPath}!=!${cssLoaderPath}?${cssQuery}!${remReq}`
     ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
   }
 
@@ -385,13 +392,11 @@ export function extractToClassNames({
     )
     console.log('\n -------- output style -------- \n\n', styles)
   }
-  console.log(sourcePath, styles)
 
   if (shouldLogTiming) {
     const memUsed = mem
       ? Math.round(((process.memoryUsage().heapUsed - mem.heapUsed) / 1024 / 1204) * 10) / 10
       : 0
-    const timing = `${Date.now() - start}`.padStart(3)
     const path = basename(sourcePath)
       .replace(/\.[jt]sx?$/, '')
       .slice(0, 22)
@@ -401,7 +406,9 @@ export function extractToClassNames({
     const numFound = `${res.found}`.padStart(3)
     const numFlattened = `${res.flattened}`.padStart(3)
     const memory = process.env.DEBUG && memUsed > 10 ? ` ${memUsed}MB` : ''
-    const timingStr = `${timing}ms`.padStart(6)
+    const timing = Date.now() - start
+    const timingWarning = timing > 50 ? '⚠️' : timing > 150 ? '☢️' : ''
+    const timingStr = `${timing}ms${timingWarning}`.padStart(6)
     console.log(
       `${getPrefixLogs(
         options

@@ -11,5 +11,6 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = '$4', pro
   return {
     ...frame,
     ...font,
+    minHeight: 'auto',
   }
 }

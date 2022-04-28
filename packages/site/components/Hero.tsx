@@ -99,15 +99,15 @@ const HeroTop = memo(() => {
             $gtSm={{
               mx: 0,
               maxWidth: 950,
-              size: '$11',
+              size: '$10',
               ta: 'center',
             }}
             $gtMd={{
               ta: 'center',
-              size: '$12',
+              size: '$11',
             }}
             $gtLg={{
-              size: '$13',
+              size: '$12',
               maxWidth: 1200,
             }}
           >
@@ -151,7 +151,7 @@ const HeroTop = memo(() => {
           </YStack>
         </YStack>
 
-        <XStack ai="center" jc="center" space="$2">
+        <XStack ai="center" jc="center" space="$4">
           <NextLink href="/docs/intro/introduction" passHref>
             <Button
               fontFamily="$silkscreen"
@@ -177,6 +177,7 @@ const HeroTop = memo(() => {
           <NextLink href="https://discord.gg/4qh6tdcVDa" passHref>
             <YStack
               p="$2"
+              ml="$-2"
               $sm={{ height: 0, width: 0, overflow: 'hidden', mx: -18 }}
               opacity={0.65}
               hoverStyle={{ opacity: 1 }}
