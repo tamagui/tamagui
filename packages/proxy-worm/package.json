@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/proxy-worm",
-  "version": "1.0.0-beta.149+a95e53bb",
+  "version": "1.0.0-beta.153+a49c2588",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
@@ -9,5 +9,5 @@
     "build": "true",
     "watch": "true"
   },
-  "gitHead": "a95e53bb6c4678962ef84a59bf5bac74e7f4f32f"
+  "gitHead": "a49c2588898b6db5660f9b3346078cd87f585dcf"
 }

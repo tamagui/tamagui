@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/drawer",
-  "version": "1.0.0-beta.149+a95e53bb",
+  "version": "1.0.0-beta.153+a49c2588",
   "sideEffects": true,
   "source": "src/index.ts",
   "typings": "types",
@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.1.5",
-    "@tamagui/core": "^1.0.0-beta.149+a95e53bb",
-    "@tamagui/polyfill-dev": "^1.0.0-beta.149+a95e53bb",
+    "@tamagui/core": "^1.0.0-beta.153+a49c2588",
+    "@tamagui/polyfill-dev": "^1.0.0-beta.153+a49c2588",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-reanimated": "^2.4.1"
   },
@@ -27,12 +27,12 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.149+a95e53bb",
+    "@tamagui/build": "^1.0.0-beta.153+a49c2588",
     "react": "*",
     "react-dom": "*"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a95e53bb6c4678962ef84a59bf5bac74e7f4f32f"
+  "gitHead": "a49c2588898b6db5660f9b3346078cd87f585dcf"
 }
