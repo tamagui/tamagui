@@ -9,28 +9,45 @@ import { animations } from './constants/animations'
 import { media } from './constants/media'
 
 const silkscreenFont = createSilkscreenFont()
-const interFont = createInterFont()
+const headingFont = createInterFont({
+  weight: {
+    4: '700',
+  },
+  letterSpacing: {
+    4: 0,
+    7: 0,
+    8: -1,
+    9: -2,
+    10: -3,
+    12: -4,
+    14: -5,
+    15: -6,
+  },
+})
+const bodyFont = createInterFont()
 const firaFont = createFiraMonoFont()
+
+const tokens = createTokens({
+  font: {
+    heading: headingFont,
+    body: bodyFont,
+    mono: firaFont,
+    silkscreen: silkscreenFont,
+  },
+  size,
+  space,
+  zIndex,
+  color,
+  radius,
+})
 
 const config = createTamagui({
   animations,
+  media,
   defaultTheme: 'light',
   shorthands,
   themes,
-  tokens: createTokens({
-    font: {
-      title: interFont,
-      body: interFont,
-      mono: firaFont,
-      silkscreen: silkscreenFont,
-    },
-    size,
-    space,
-    zIndex,
-    color,
-    radius,
-  }),
-  media,
+  tokens,
 })
 
 export type Conf = typeof config

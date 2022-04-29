@@ -10,10 +10,11 @@ export function CodeDemo({ css, line, maxHeight, ...props }: CodeDemoProps) {
   return (
     <YStack
       br="$8"
-      skewY="30%"
       className="scroll-vertical"
       maxHeight={maxHeight}
       bc="$backgroundHover"
+      boc="$borderColor"
+      bw={1}
     >
       <CodeBlock
         backgroundColor="transparent"

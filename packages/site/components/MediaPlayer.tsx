@@ -40,6 +40,7 @@ export const MediaPlayer = memo(
           overflow="visible"
           bordered
           size="$6"
+          br="$7"
           pointerEvents={pointerEvents}
           pl={0}
           pr={0}
@@ -48,11 +49,11 @@ export const MediaPlayer = memo(
           ai="stretch"
         >
           <XStack ai="center" p="$3" space="$5">
-            <Square pos="relative" ov="hidden" br="$6" size="$11">
+            <Square pos="relative" ov="hidden" br="$6" size={90}>
               <Image width={90} height={90} src={image.src} />
             </Square>
 
-            <YStack mt={-10} jc="center">
+            <YStack miw={150} mt={-10} jc="center">
               <Paragraph fontWeight="700">Spaceship</Paragraph>
               <Paragraph theme={barTheme} size="$3">
                 Kanye West
@@ -69,17 +70,17 @@ export const MediaPlayer = memo(
             <XStack
               zi={1000}
               w="100%"
-              px="$8"
-              py="$2"
+              px="$6"
+              py="$4"
               bc="$background"
               bbrr="$2"
               bblr="$2"
               ai="center"
-              space="$7"
+              space="$5"
               jc="center"
               pointerEvents={pointerEvents}
             >
-              <Rewind />
+              <Rewind size={20} />
               <Button
                 theme={mainButtonTheme}
                 bordered
@@ -89,12 +90,12 @@ export const MediaPlayer = memo(
                 }}
                 my="$-6"
                 icon={Pause}
-                size="$8"
+                size="$7"
                 circular
                 elevation="$4"
                 pointerEvents={pointerEventsControls}
               />
-              <FastForward />
+              <FastForward size={20} />
             </XStack>
           </Theme>
         </Card>

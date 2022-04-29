@@ -53,6 +53,7 @@ export function styled<
         // take away the Partial<> and it's fine
         variants,
         defaultProps,
+        defaultVariants,
         componentName: name,
         isReactNativeWeb,
         isInput,

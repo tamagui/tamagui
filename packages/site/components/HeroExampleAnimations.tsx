@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import { ScrollView } from 'react-native'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
 import { animations } from '../constants/animations'
@@ -26,7 +25,7 @@ const animationDescriptions = [
   },
   {
     name: 'Quick',
-    description: 'A quick, straightforward spring',
+    description: 'A super fast spring',
     animation: 'quick',
     settings: animations.animations.quick,
   },
@@ -36,9 +35,7 @@ let hasScrolledOnce = false
 
 export function HeroExampleAnimations() {
   const { tint } = useTint()
-
   const [disableScroll, setDisableScroll] = useState(false)
-  console.log('disableScroll', disableScroll)
 
   useEffect(() => {
     let tm
@@ -85,14 +82,18 @@ export function HeroExampleAnimations() {
             <ExampleAnimations />
           </YStack>
 
-          <YStack pe={disableScroll ? 'none' : 'auto'} $sm={{ display: 'none' }}>
+          <YStack
+            perspective={1000}
+            rotateY="-5deg"
+            x={-10}
+            pe={disableScroll ? 'none' : 'auto'}
+            $sm={{ display: 'none' }}
+          >
             <CodeDemo
               maxHeight={500}
+              maxWidth={530}
               language="jsx"
-              value={`import { Play } from '@tamagui/feather-icons'
-import React from 'react'
-import { AnimationKeys, Button, Square,  } from 'tamagui'
-import { LogoIcon } from '../TamaguiLogo'
+              value={`import { Button, Square } from 'tamagui'
 
 export default (props) => {
   const [positionI, setPositionI] = React.useState(0)
@@ -101,7 +102,7 @@ export default (props) => {
       <Square
         animation={props.animation || 'bouncy'}
         size={110}
-        bc="$green10"
+        bc="$pink10"
         br="$9"
         hoverStyle={{
           scale: 1.1,
@@ -111,14 +112,14 @@ export default (props) => {
         }}
         {...positions[positionI]}
       >
-        <LogoIcon downscale={0.75} />
+        <LogoIcon />
       </Square>
 
       <Button
         pos="absolute"
         b={20}
         l={20}
-        iconAfter={Play}
+        icon={require('@tamagui/feather-icons').Play}
         size="$6"
         circular
         onPress={() => setPositionI(i => (i + 1) % positions.length)}
@@ -245,6 +246,7 @@ export const ExampleAnimations = memo(() => {
         <YStack
           ref={container}
           pos="relative"
+          bc="$background"
           ai="center"
           jc="center"
           width="60%"
@@ -257,8 +259,8 @@ export const ExampleAnimations = memo(() => {
       <Separator vertical />
 
       <YStack pos="relative" $sm={{ display: 'none' }} width="40%">
-        <YStack fullscreen zi={-1} theme="alt2" bc="$background" />
-        <>
+        <YStack fullscreen zi={-1} theme="alt2" bc="$backgroundPress" />
+        <YStack f={1}>
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
@@ -289,7 +291,7 @@ export const ExampleAnimations = memo(() => {
               </Theme>
             )
           })}
-        </>
+        </YStack>
 
         <Separator />
 

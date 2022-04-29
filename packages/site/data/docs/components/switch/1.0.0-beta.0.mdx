@@ -19,20 +19,20 @@ component: Switch
 
 <Highlights
   features={[
-    `Accessible and based on Radix primitives.`,
-    `Style the frame and toggle.`,
-    `Sizable.`,
+    `Accessible, easy to compose and customize.`,
+    `Style and animate both frame and thumb.`,
+    `Sizable & works controlled or uncontrolled.`,
   ]}
 />
 
 ### Usage
 
 ```jsx
-import { Switch, Button } from 'tamagui'
+import { Switch } from 'tamagui'
 
 export default () => (
-  <Switch contents="Text in switch">
-    <Button>Hover to open</Button>
+  <Switch size="$4">
+    <Switch.Thumb animation="bouncy" />
   </Switch>
 )
 ```
@@ -44,46 +44,38 @@ Switchs extend Stack views inheriting all the [Tamagui standard props](/docs/int
 <PropsTable
   data={[
     {
-      name: 'contents',
-      required: true,
+      name: 'labeledBy',
       type: 'string',
-      description: `What's shown in the switch.`,
+      description: `Set aria-labeled-by.`,
     },
     {
-      name: 'switchFrameProps',
-      required: false,
-      type: 'StackProps',
-      description: `Change style of the switch frame`,
+      name: 'name',
+      type: 'string',
+      description: `Equivalent to input name.`,
     },
     {
-      name: 'size',
-      required: true,
-      type: 'Size',
-      description: `Size it up or down.`,
+      name: 'value',
+      type: 'string',
+      description: `Give it a value (for use in HTML forms).`,
     },
     {
-      name: 'alwaysDark',
-      required: false,
-      type: 'Boolean',
-      description: `Make sure the frame is dark`,
+      name: 'checked',
+      type: 'boolean',
+      description: `Control the input.`,
     },
     {
-      name: 'delay',
-      required: false,
-      type: 'number',
-      description: `Set the delay before appearing`,
+      name: 'defaultChecked',
+      type: 'boolean',
+      description: `Uncontrolled default value.`,
     },
     {
-      name: 'allowHoverOnContent',
-      required: false,
-      type: 'Boolean',
-      description: `Allow hover on switch content`,
+      name: 'required',
+      type: 'boolean',
+      description: `Sets aria-required.`,
     },
     {
-      name: 'disableUntilSettled',
-      required: false,
-      type: 'Boolean',
-      description: `Override hover only on settled`,
+      name: 'onCheckedChange',
+      type: '(checked: boolean) => void',
     },
   ]}
 />

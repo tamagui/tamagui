@@ -24,7 +24,9 @@ export function HeroExampleCode() {
               <span className="rainbow clip-text">DX</span> 🤝{' '}
               <span className="rainbow clip-text">UX</span>
             </HomeH2>
-            <HomeH3>Choose great syntax & features & performance & cross-platform support.</HomeH3>
+            <HomeH3>
+              Maintainability, ergonomics, performance - while working on every platform.
+            </HomeH3>
           </YStack>
 
           <InteractiveContainer theme={tint} maxWidth="100%" als="center">
@@ -97,7 +99,7 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <InteractiveContainer zi={10} mb={-30} als="center">
+        <InteractiveContainer zi={10} mb="$-4" als="center">
           {examples.map((example, i) => (
             <Button
               onPress={() => setActiveIndex(i)}
@@ -169,14 +171,14 @@ const App = () => (
         {
           name: 'app.js',
           code: `const _cn2 = " _color-scmqyp _display-1471scf _fontFamily-187pbxx _fontSize-7uzi8p"
-  const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
-  import { Text, YStack } from 'tamagui'
-  
-  const App = () => <div className={_cn}>
-      <span className={_cn2}>
-        Lorem ipsum dolor.
-      </span>
-    </div>`,
+const _cn = " _display-6koalj _flexDirection-eqz5dr _flexShrink-1q142lx _paddingLeft-11jtx42 _paddingRight-4a8ukp _width-11mp6g5 _paddingLeft-_gtSm_1hxi05q _paddingRight-_gtSm_poy3ov"
+import { Text, YStack } from 'tamagui'
+
+const App = () => <div className={_cn}>
+  <span className={_cn2}>
+    Lorem ipsum dolor.
+  </span>
+</div>`,
           language: 'jsx',
         },
         {

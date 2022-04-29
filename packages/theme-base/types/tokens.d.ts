@@ -1,19 +1,7 @@
+export declare const sizeKeys: readonly ["true", "0", "0.25", "0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "9", "10", "11", "12", "13", "14"];
+export declare const getSizeAt: (index: number) => number;
 export declare const size: {
-    readonly true: 20;
-    readonly 0: 0;
-    readonly '0.5': 2;
-    readonly 1: 6;
-    readonly 2: 10;
-    readonly 3: 15;
-    readonly 4: 20;
-    readonly 5: 35;
-    readonly 6: 50;
-    readonly 7: 75;
-    readonly 8: 100;
-    readonly 9: 125;
-    readonly 10: 150;
-    readonly 11: 200;
-    readonly 12: 250;
+    [key in typeof sizeKeys[any]]: number;
 };
 declare type Sizes = typeof size;
 declare type SizeKeys = keyof Sizes;

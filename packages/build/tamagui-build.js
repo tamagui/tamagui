@@ -118,7 +118,7 @@ if (shouldClean || shouldCleanBuildOnly) {
                       logLevel: 'error',
                       plugins: [externalPlugin],
                       minify: false,
-                      platform: 'neutral',
+                      platform: 'node',
                     })
                     .then(() => {
                       console.log(' >-> commonjs')

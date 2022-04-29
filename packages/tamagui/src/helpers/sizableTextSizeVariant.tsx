@@ -1,17 +1,11 @@
-import { FontSizeTokens, TextProps, VariantSpreadFunction, isVariable } from '@tamagui/core'
+import { FontSizeTokens, TextProps, VariantSpreadFunction, getVariableValue } from '@tamagui/core'
 
 export const sizableTextSizeVariant: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   val = '$4',
   { tokens, props }
 ) => {
-  const family = (
-    typeof props.fontFamily === 'string'
-      ? props.fontFamily
-      : isVariable(props.fontFamily)
-      ? props.fontFamily.val
-      : props.fontFamily || '$body'
-  ) as any
-  const font = tokens.font[family] ?? tokens.font['$body']
+  const family = getVariableValue(props.fontFamily) || '$body'
+  const font = tokens.font[family] || tokens.font['$body']
   if (!font) {
     console.warn('⚠️ no font found', { family, fontTokens: Object.keys(tokens.font), val })
     return {}

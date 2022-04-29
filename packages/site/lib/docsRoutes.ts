@@ -32,6 +32,7 @@ export const docsRoutes = [
       { title: 'Button', route: '/docs/components/button' },
       { title: 'Headings', route: '/docs/components/headings' },
       { title: 'Image', route: '/docs/components/image' },
+      { title: 'Label', route: '/docs/components/label' },
       { title: 'Inputs', route: '/docs/components/inputs' },
       { title: 'Switch', route: '/docs/components/switch' },
       { title: 'Shapes', route: '/docs/components/shapes' },

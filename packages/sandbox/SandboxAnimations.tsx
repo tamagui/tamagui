@@ -39,7 +39,7 @@ const animationDescriptions = [
   },
   {
     name: 'Quick',
-    description: 'A quick, straightforward spring',
+    description: 'A super fast spring',
     animation: 'quick',
     settings: animations.animations.quick,
   },

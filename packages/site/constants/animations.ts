@@ -8,9 +8,9 @@ export const animations = createAnimations({
   // tooltip: 'ease-in 150ms',
   bouncy: {
     type: 'spring',
-    damping: 10,
+    damping: 9,
     mass: 0.9,
-    stiffness: 100,
+    stiffness: 150,
   },
   lazy: {
     type: 'spring',

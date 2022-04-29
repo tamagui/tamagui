@@ -59,7 +59,7 @@ export function patchReactNativeWeb() {
         continue
       }
       console.log('      | patch ' + path.relative(rootDir, file))
-      fs.writeFileSync(file, contents.replaceAll(replacee, replacer))
+      fs.writeFileSync(file, contents.replace(replacee, replacer))
     }
   }
   // if entry files not patched, patch them:

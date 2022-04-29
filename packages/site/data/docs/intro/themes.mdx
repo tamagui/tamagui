@@ -5,9 +5,9 @@ description: How to create and use themes in Tamagui.
 
 Themes in Tamagui are powerful because they can compose off each other nicely. They are meant to be fairly small, with tokens doing much of the heavy lifting.
 
-Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color1`, `colorHover`, `background1`, and `backgroundHover`. We also have a set of light and dark colors, which we define onto their respective `dark` and `light` base themes.
+Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color`, `colorHover`, `background`, and `backgroundHover`.
 
-Tamagui lets you access themes and tokens both in the same way.
+Themes make assumptions about `light` and `dark`, if you define these two base themes, you'll avoid full-tree re-renders when they're changed on web.
 
 ### Quick start with @tamagui/theme-base
 
@@ -16,13 +16,36 @@ To get started quickly, you can use the themes we've developed alongside this si
 To install, just add import it and add it to your `tamagui.config.ts`:
 
 ```tsx
-import { createTamagui } from 'tamagui'
-import { themes, tokens } from '@tamagui/theme-base'
+import { createInterFont } from '@tamagui/font-inter'
+import { color, radius, size, space, themes, zIndex } from '@tamagui/theme-base'
+import { createTamagui, createTokens } from 'tamagui'
 
-export default createTamagui({
+const inter = createInterFont()
+
+const tokens = createTokens({
+  font: {
+    heading: inter,
+    body: inter,
+  },
+  size,
+  space,
+  zIndex,
+  color,
+  radius,
+})
+
+const config = createTamagui({
   themes,
   tokens,
 })
+
+export type Conf = typeof config
+
+declare module 'tamagui' {
+  interface TamaguiCustomConfig extends Conf {}
+}
+
+export default config
 ```
 
 ### Example
@@ -97,8 +120,6 @@ export const App = () => (
 ```
 
 ### Ensuring valid types
-
-It's easy for types to get mixed up with themes, there are patterns and helpers to make this better.
 
 Here's what we've landed on which helps ensure everything is typed properly. Use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. Keep themes in a separate `themes.ts` file, and structure it like this:
 
@@ -215,5 +236,3 @@ The `name` attribute will be removed from the defaultProps and used internally b
 - `dark_Button`
 - `dark_green_Button`
 - `dark_green_subtle_Button`
-
-For more on this, see the [Theme docs](/docs/core/Theme).

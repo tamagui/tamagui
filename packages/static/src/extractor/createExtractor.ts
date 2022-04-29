@@ -96,6 +96,7 @@ export function createExtractor() {
         disableDebugAttr,
         prefixLogs,
         excludeProps,
+        noClassNames = false,
         ...props
       }: ExtractorParseProps
     ) => {
@@ -1379,7 +1380,7 @@ export function createExtractor() {
                 }
               }
               const out = getSplitStyles(props, staticConfig, defaultTheme, {
-                noClassNames: true,
+                noClassNames,
                 fallbackProps: completeProps,
                 focus: false,
                 hover: false,

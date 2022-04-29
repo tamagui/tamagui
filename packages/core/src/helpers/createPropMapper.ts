@@ -51,7 +51,7 @@ export const createPropMapper = (staticConfig: StaticConfig) => {
     }
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
-    let fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
+    const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
     const variant = variants && variants[key]
 
     if (variant && value !== undefined) {
@@ -62,6 +62,7 @@ export const createPropMapper = (staticConfig: StaticConfig) => {
           variantValue = variantValue(value, {
             tokens: conf.tokensParsed,
             theme,
+            // TODO do this in splitstlye
             // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
             props: avoidDefaultProps
               ? props

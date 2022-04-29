@@ -53,7 +53,6 @@ const SwitchFrame = styled(XStack, {
   variants: {
     size: {
       '...size': (val, extras) => {
-        console.log(getSwitchHeight(val, extras), getSwitchWidth(val, extras))
         const { height, minHeight, maxHeight } = getSwitchHeight(val, extras)!
         const { width, minWidth, maxWidth } = getSwitchWidth(val, extras)!
         return {
@@ -76,7 +75,7 @@ const SwitchFrame = styled(XStack, {
 type SwitchButtonProps = GetProps<typeof SwitchFrame>
 
 export type SwitchProps = SwitchButtonProps & {
-  'aria-labelledby'?: any
+  labeledBy?: string
   name?: string
   value?: string
   checked?: boolean
@@ -89,7 +88,7 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
   (props: ScopedProps<SwitchProps>, forwardedRef) => {
     const {
       __scopeSwitch,
-      'aria-labelledby': ariaLabelledby,
+      labeledBy: ariaLabelledby,
       name,
       checked: checkedProp,
       defaultChecked,
@@ -193,7 +192,7 @@ const SwitchThumbFrame = styled(XStack, {
   },
 })
 
-const SwitchThumb = SwitchThumbFrame.extractable(
+export const SwitchThumb = SwitchThumbFrame.extractable(
   React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(
     (props: ScopedProps<SwitchThumbProps>, forwardedRef) => {
       const { __scopeSwitch, ...thumbProps } = props
@@ -204,11 +203,12 @@ const SwitchThumb = SwitchThumbFrame.extractable(
           data-state={getState(checked)}
           data-disabled={disabled ? '' : undefined}
           {...thumbProps}
-          {...(checked && {
-            x:
-              getVariableValue(getSize(size, WIDTH_SIZE)) -
-              getVariableValue(getSize(size, HEIGHT_SIZE)),
-          })}
+          x={
+            checked
+              ? getVariableValue(getSize(size, WIDTH_SIZE)) -
+                getVariableValue(getSize(size, HEIGHT_SIZE))
+              : 0
+          }
           ref={forwardedRef}
         />
       )
@@ -274,14 +274,3 @@ const BubbleInput = (props: BubbleInputProps) => {
 function getState(checked: boolean) {
   return checked ? 'checked' : 'unchecked'
 }
-
-// export {
-//   createSwitchScope,
-//   //
-//   Switch,
-//   SwitchThumb,
-//   //
-//   Root,
-//   Thumb,
-// }
-// export type { SwitchProps, SwitchThumbProps }

@@ -6,6 +6,7 @@ import {
 } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
+import { getConfig } from '../conf'
 import { rnw } from '../constants/rnw'
 import { isVariable } from '../createVariable'
 
@@ -56,6 +57,8 @@ const generateAtomicStyles = (style: ViewStyle) => {
   }
 }
 
+let reversedShorthands: Record<string, string> | null = null
+
 function getAtomicStyle(
   style: ViewStyle,
   pseudo: { name: string; priority: number } | undefined,
@@ -86,21 +89,33 @@ function getAtomicStyle(
         ...out[key],
         transformProperty,
       }
-      console.log('got', JSON.stringify({ t, tKey, out, key, atomicStyles }, null, 2))
     }
   } else {
     // TODO we can do this all in one loop likely inside getSplitStyles in existing loop and avoid O(n^3)...
     atomicStyles = generateAtomicStyles(style)
   }
 
+  if (!reversedShorthands) {
+    reversedShorthands = {}
+    const conf = getConfig()
+    if (conf.shorthands) {
+      for (const key in conf.shorthands) {
+        reversedShorthands[conf.shorthands[key]] = key
+      }
+    }
+  }
+
   // TODO ... and then also avoid this loop! n^4
   return Object.keys(atomicStyles).map((key) => {
     const val = atomicStyles[key]
     // r-transform-1ns13n
-    const [_, ogProperty, hash] = val.identifier.split('-')
+    const [_, a, b] = val.identifier.split('-')
+    // dev mode its "r-transform-1ns13n", prod its "r-1ns13n", normalize them
+    const hash = b || a
     // pseudos have a `--` to be easier to find with concatClassNames
     const psuedoPrefix = pseudo ? `0${pseudo.name}-` : ''
-    const identifier = `_${ogProperty}-${psuedoPrefix}${hash}`
+    const shortProp = reversedShorthands![val.property] || val.property
+    const identifier = `_${shortProp}-${psuedoPrefix}${hash}`
     const className = `.${identifier}`
     const rules = val.rules.map((rule) => {
       if (pseudo) {

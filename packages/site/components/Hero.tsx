@@ -1,13 +1,9 @@
-// debug-verbose
-import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { memo } from 'react'
 import {
-  AnimationKeys,
   Button,
   H1,
-  Heading,
   Paragraph,
   Spacer,
   Text,
@@ -56,9 +52,9 @@ const HeroTop = memo(() => {
       <YStack
         f={1}
         ov="hidden"
-        space="$7"
+        space="$6"
         position="relative"
-        pt="$9"
+        pt="$8"
         pb="$2"
         $sm={{
           maxWidth: '100%',
@@ -68,7 +64,7 @@ const HeroTop = memo(() => {
         <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$4">
           <H1
             ta="left"
-            size="$10"
+            size="$9"
             als="center"
             maw={500}
             $gtSm={{
@@ -169,7 +165,7 @@ const HeroTop = memo(() => {
         </XStack>
       </YStack>
 
-      <Spacer size="$11" />
+      <Spacer size="$9" />
     </ContainerLarge>
   )
 })

@@ -96,6 +96,7 @@ export function extractToClassNames({
     sourcePath,
     shouldPrintDebug,
     ...options,
+    noClassNames: false,
     getFlattenedNode: ({ tag }) => {
       hasFlattened = true
       return tag
@@ -375,7 +376,7 @@ export function extractToClassNames({
     {
       concise: false,
       filename: sourcePath,
-      retainLines: false,
+      retainLines: true,
       sourceFileName: sourcePath,
       sourceMaps: true,
     },

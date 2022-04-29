@@ -201,7 +201,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const oneOfRule = webpackConfig.module.rules.find((x) => !!x.oneOf)
 
         if (oneOfRule) {
-          if (!dev && !isServer) {
+          if (!dev) {
             // replace nextjs picky style rules with simple minicssextract
             const MiniCssExtractPlugin = require('mini-css-extract-plugin')
             oneOfRule.oneOf.unshift({
@@ -218,6 +218,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               new MiniCssExtractPlugin({
                 filename: 'static/css/[name].[contenthash].css',
                 ignoreOrder: true,
+                runtime: false,
               })
             )
           } else {
@@ -232,7 +233,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                   experimental: nextConfig.experimental || {},
                   isClient: !isServer,
                   isServer,
-                  isDevelopment: true,
+                  isDevelopment: dev,
                 },
                 // @ts-ignore
                 () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),

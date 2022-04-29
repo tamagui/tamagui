@@ -14,13 +14,14 @@ export const getAllTransforms = () => insertedTransforms
 function addTransform(identifier: string, rule: string) {
   const s = rule.indexOf('transform:')
   if (s === -1) {
-    console.error(`not a transform ${identifier} ${rule}`)
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`Invalid transform, likely used deg/% improperly ${identifier} ${rule}`)
+    }
     return
   }
   const startI = s + 'transform:'.length
   const endI = rule.indexOf(';')
   const value = rule.slice(startI, endI)
-  console.log('add', identifier, value)
   insertedTransforms[identifier] = value
 }
 
@@ -55,6 +56,9 @@ export function updateInserted() {
         const identifier = rule.selectorText.slice(1)
         allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule.cssText : true
         if (identifier.startsWith('_transform')) {
+          if (identifier === '_transform-18yurpa') {
+            debugger
+          }
           addTransform(identifier, rule.cssText)
         }
       }
@@ -75,9 +79,6 @@ export function insertStyleRule(identifier: string, rule: string) {
     return
   }
   hasInsertedSinceUpdate = true
-  if (identifier === '_transform-1abwpjw') {
-    console.trace('inserting', identifier, rule)
-  }
   insertedSelectors[identifier] = rule
   allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
   if (identifier.startsWith('_transform')) {
