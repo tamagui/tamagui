@@ -3,6 +3,7 @@ import path from 'path'
 import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import MiniCSSPlugin from 'mini-css-extract-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
 import { shouldExclude } from 'tamagui-loader'
@@ -203,19 +204,13 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         if (oneOfRule) {
           if (!dev) {
             // replace nextjs picky style rules with simple minicssextract
-            const MiniCssExtractPlugin = require('mini-css-extract-plugin')
             oneOfRule.oneOf.unshift({
               test: /\.css$/i,
-              use: [MiniCssExtractPlugin.loader, 'css-loader'],
+              use: [MiniCSSPlugin.loader, 'css-loader'],
               sideEffects: true,
             })
-            const idx = webpackConfig.plugins.findIndex(
-              (x) => x.constructor.name === 'NextMiniCssExtractPlugin'
-            )
-            webpackConfig.plugins.splice(
-              idx,
-              1,
-              new MiniCssExtractPlugin({
+            webpackConfig.plugins.push(
+              new MiniCSSPlugin({
                 filename: 'static/css/[name].[contenthash].css',
                 ignoreOrder: true,
                 runtime: false,

@@ -96,7 +96,6 @@ export function extractToClassNames({
     sourcePath,
     shouldPrintDebug,
     ...options,
-    noClassNames: false,
     getFlattenedNode: ({ tag }) => {
       hasFlattened = true
       return tag
@@ -164,7 +163,6 @@ export function extractToClassNames({
               const styles = getStylesAtomic(attr.value, {
                 splitTransforms: true,
               })
-
               finalStyles = [...finalStyles, ...styles]
 
               for (const [key, value] of pseudos) {
@@ -179,16 +177,34 @@ export function extractToClassNames({
               }
 
               for (const style of styles) {
-                // leave them as attributes
+                //  leave them  as attributes
                 finalAttrs.push(
                   t.jsxAttribute(t.jsxIdentifier(style.property), t.stringLiteral(style.identifier))
                 )
               }
+
+              // for (const key in attr.value) {
+              //   if (pseudos.some((x) => x[0] === key)) {
+              //     // we handled pseudos above...
+              //     continue
+              //   }
+              //   // leave them as attributes
+              //   finalAttrs.push(
+              //     t.jsxAttribute(t.jsxIdentifier(key), t.stringLiteral(attr.value[key]))
+              //   )
+              // }
             } else {
               const styles = addStyles(attr.value)
               const newClassNames = concatClassName(styles.map((x) => x.identifier).join(' '))
-              // prettier-ignore
-              const existing = finalClassNames.find((x) => x.type == 'StringLiteral') as t.StringLiteral | null
+              const existing = finalClassNames.find(
+                (x) => x.type == 'StringLiteral'
+              ) as t.StringLiteral | null
+
+              // const newClassNames = concatClassName(Object.values(attr.value))
+              // const existing = finalClassNames.find(
+              //   (x) => x.type == 'StringLiteral'
+              // ) as t.StringLiteral | null
+
               if (existing) {
                 existing.value = `${existing.value} ${newClassNames}`
               } else {
@@ -376,7 +392,8 @@ export function extractToClassNames({
     {
       concise: false,
       filename: sourcePath,
-      retainLines: true,
+      // this makes the debug output terrible, and i think sourcemap works already
+      retainLines: false,
       sourceFileName: sourcePath,
       sourceMaps: true,
     },

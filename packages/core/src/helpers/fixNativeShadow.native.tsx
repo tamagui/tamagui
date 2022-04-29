@@ -21,8 +21,8 @@ export function fixNativeShadow(props: any) {
   if ((c[0] === 'r' || c[0] === 'h') && c[3] === 'a') {
     const [_, type, _1, _2, _3, a] = c.match(matchRgbaHsla) || []
     if (typeof a !== 'string') {
-      console.warn('invalid', c, type)
-      return
+      console.trace('invalid', c, type)
+      throw new Error(`invalid style`)
     }
     props.shadowColor = `${type.replace('a', '')}(${_1},${_2},${_3})`
     props.shadowOpacity = +a

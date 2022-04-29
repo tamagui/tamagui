@@ -1,3 +1,4 @@
+// debug
 import { Compass, Cpu, Layers } from '@tamagui/feather-icons'
 import { memo } from 'react'
 import { H3, Paragraph, XStack, YStack } from 'tamagui'

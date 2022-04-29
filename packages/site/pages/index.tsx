@@ -82,6 +82,7 @@ export default function Home() {
 }
 
 const Section = styled(YStack, {
+  name: 'Section',
   pos: 'relative',
   py: '$10',
   zi: 2,

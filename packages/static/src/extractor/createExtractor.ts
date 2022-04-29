@@ -1,6 +1,7 @@
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
+  PseudoStyles,
   StackProps,
   StaticConfigParsed,
   TamaguiInternalConfig,
@@ -10,6 +11,7 @@ import {
   rnw,
 } from '@tamagui/core-node'
 import { difference, pick } from 'lodash'
+import type { ViewStyle } from 'react-native'
 
 import { FAILED_EVAL } from '../constants'
 import {
@@ -96,7 +98,6 @@ export function createExtractor() {
         disableDebugAttr,
         prefixLogs,
         excludeProps,
-        noClassNames = false,
         ...props
       }: ExtractorParseProps
     ) => {
@@ -1134,7 +1135,7 @@ export function createExtractor() {
             // wrap theme around children on flatten
             if (shouldFlatten && shouldWrapInnerTheme) {
               if (typeof themeVal !== 'string') {
-                console.warn('??')
+                // failed eval
                 return
               }
 
@@ -1168,24 +1169,23 @@ export function createExtractor() {
             if (shouldFlatten && staticConfig.defaultProps) {
               const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap((key) => {
                 if (!isValidStyleKey(key)) {
-                  return
+                  return []
                 }
-                try {
-                  const serialize = require('babel-literal-to-ast')
-                  const val = staticConfig.defaultProps[key]
-                  const value = serialize(val)
-                  const name = tamaguiConfig.shorthands[key] || key
-                  return {
-                    type: 'style',
-                    name,
-                    value,
-                  } as ExtractedAttrStyle
-                } catch (err) {
+                const value = staticConfig.defaultProps[key]
+                const name = tamaguiConfig.shorthands[key] || key
+                if (value === undefined) {
                   console.warn(
-                    `⚠️ Error evaluating default style for component, prop ${key}\n error: ${err}`
+                    `⚠️ Error evaluating default style for component, prop ${key} ${value}`
                   )
                   shouldDeopt = true
+                  return
                 }
+                const attr: ExtractedAttrStyle = {
+                  type: 'style',
+                  name,
+                  value: { [name]: value },
+                }
+                return attr
               }) as ExtractedAttr[]
 
               if (defaultStyleAttrs.length) {
@@ -1290,11 +1290,16 @@ export function createExtractor() {
             // merge styles, leave undefined values
             let prev: ExtractedAttr | null = null
 
-            function mergeStyles(prev: StackProps, next: StackProps) {
+            function mergeStyles(prev: ViewStyle & PseudoStyles, next: ViewStyle & PseudoStyles) {
               for (const key in next) {
                 // merge pseudos
                 if (pseudos[key]) {
                   prev[key] = prev[key] || {}
+                  if (shouldPrintDebug) {
+                    if (!next[key] || !prev[key]) {
+                      console.log('warn: missing', key, prev, next)
+                    }
+                  }
                   Object.assign(prev[key], next[key])
                 } else {
                   prev[key] = next[key]
@@ -1349,7 +1354,7 @@ export function createExtractor() {
                 }
 
                 if (prev?.type === 'style') {
-                  mergeStyles(prev.value as StackProps, cur.value as StackProps)
+                  mergeStyles(prev.value, cur.value)
                   return acc
                 }
               }
@@ -1370,44 +1375,57 @@ export function createExtractor() {
 
             // post process
             const getStyles = (props: Object | null, debugName = '') => {
-              if (!props) return
-              if (!Object.keys(props).length) return
+              if (!props || !Object.keys(props).length) {
+                if (shouldPrintDebug) console.log(' getStyles() no props')
+                return {}
+              }
               if (excludeProps && !!excludeProps.size) {
                 for (const key in props) {
                   if (excludeProps.has(key)) {
+                    if (shouldPrintDebug) console.log(' delete excluded', key)
                     delete props[key]
                   }
                 }
               }
-              const out = getSplitStyles(props, staticConfig, defaultTheme, {
-                noClassNames,
-                fallbackProps: completeProps,
-                focus: false,
-                hover: false,
-                mounted: true,
-                press: false,
-                pressIn: false,
-              })
-              const outStyle = {
-                ...out.style,
-                ...out.pseudos,
-              }
-              for (const key in outStyle) {
+              try {
+                const out = getSplitStyles(props, staticConfig, defaultTheme, {
+                  noClassNames: true,
+                  fallbackProps: completeProps,
+                  focus: false,
+                  hover: false,
+                  mounted: true, // TODO match logic in createComponent
+                  press: false,
+                  pressIn: false,
+                })
+                const outStyle = {
+                  ...out.style,
+                  ...out.pseudos,
+                }
                 if (staticConfig.validStyles) {
-                  if (!staticConfig.validStyles[key] && !pseudos[key]) {
-                    delete outStyle[key]
+                  for (const key in outStyle) {
+                    if (
+                      !staticConfig.validStyles[key] &&
+                      !pseudos[key] &&
+                      !/(hover|focus|press)Style$/.test(key)
+                    ) {
+                      if (shouldPrintDebug) console.log(' delete invalid style', key)
+                      delete outStyle[key]
+                    }
                   }
                 }
+                if (shouldPrintDebug) {
+                  // prettier-ignore
+                  console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
+                  // prettier-ignore
+                  console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
+                  // prettier-ignore
+                  console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
+                }
+                return outStyle
+              } catch (err: any) {
+                console.log('error', err.message, err.stack)
+                return {}
               }
-              if (shouldPrintDebug === 'verbose') {
-                // prettier-ignore
-                console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
-                // prettier-ignore
-                console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
-                // prettier-ignore
-                console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
-              }
-              return outStyle
             }
 
             // used to ensure we pass the entire prop bundle to getStyles
@@ -1463,32 +1481,20 @@ export function createExtractor() {
                     if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
                     continue
                   case 'style':
+                    // prettier-ignore
+                    if (shouldPrintDebug) console.log('  * styles in', logLines(objToStr(attr.value)))
                     // expand variants and such
                     // get the keys we need
                     const styles = getStyles(attr.value, 'style')
+                    // prettier-ignore
+                    if (shouldPrintDebug) console.log('  * styles out', logLines(objToStr(styles)))
                     if (styles) {
                       // but actually resolve them to the full object
                       // TODO media/psuedo merging
                       attr.value = Object.fromEntries(
                         Object.keys(styles).map((k) => [k, completeStylesProcessed[k]])
                       )
-                    } else {
-                      console.warn('?????????')
                     }
-                    // for (const keyIn in attr.value) {
-                    //   const [key, value] = (() => {
-                    //     if (keyIn in stylePropsTransform) {
-                    //       // TODO this logic needs to be a bit more right, because could have spread in between transforms...
-                    //       // could just output flat transforms as webkit now supports on recent versions
-                    //       return ['transform', completeStylesProcessed['transform']] as const
-                    //     } else {
-                    //       return [keyIn, completeStylesProcessed[keyIn] ?? attr.value[keyIn]] as const
-                    //     }
-                    //   })()
-                    //   // if (shouldPrintDebug) console.log('style', { keyIn, key, value })
-                    //   delete attr.value[keyIn]
-                    //   attr.value[key] = value
-                    // }
                     continue
                 }
               } catch (err) {
@@ -1533,6 +1539,9 @@ export function createExtractor() {
               if (attr.type === 'style') {
                 for (const key in attr.value) {
                   if (existingStyleKeys.has(key)) {
+                    if (shouldPrintDebug) {
+                      console.log('  >> delete existing', key)
+                    }
                     delete attr.value[key]
                   } else {
                     existingStyleKeys.add(key)

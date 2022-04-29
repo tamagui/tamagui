@@ -85,6 +85,7 @@ function getAtomicStyle(
       const transformProperty = invertMapTransformKeys[tKey] || tKey
       const out = generateAtomicStyles({ transform: [t] })
       const key = Object.keys(out)[0]
+      console.log('key', key, out, tKey, transformProperty)
       atomicStyles[key] = {
         ...out[key],
         transformProperty,

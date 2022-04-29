@@ -7,11 +7,10 @@ import {
 } from '@tamagui/static'
 import { LoaderContext } from 'webpack'
 
+import { extractedInfoByFile, stylePathToFilePath } from './css'
+
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
-
-const extractedInfoByFile = new Map<string, ExtractedResponse>()
-const stylePathToFilePath = new Map<string, string>()
 
 let index = 0
 let hasLogged = false
@@ -32,10 +31,7 @@ export function loader(this: LoaderContext<any>, source: string) {
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
 
-    if (
-      options.disableExtraction &&
-      (options.disableDebugAttr || process.env.NODE_ENV !== 'development')
-    ) {
+    if (options.disableExtraction || options.disableDebugAttr) {
       if (!hasLogged) {
         console.log(' » disableExtraction:', options.disableExtraction)
         hasLogged = true

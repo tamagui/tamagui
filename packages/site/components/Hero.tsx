@@ -67,6 +67,7 @@ const HeroTop = memo(() => {
             size="$9"
             als="center"
             maw={500}
+            debug
             $gtSm={{
               mx: 0,
               maxWidth: 800,
