@@ -14,6 +14,7 @@ export declare const shorthands: {
     readonly blw: "borderLeftWidth";
     readonly boc: "borderColor";
     readonly boxs: "boxSizing";
+    readonly boxsha: "boxShadow";
     readonly br: "borderRadius";
     readonly brc: "borderRightColor";
     readonly brs: "borderRightStyle";
@@ -24,11 +25,14 @@ export declare const shorthands: {
     readonly bts: "borderTopStyle";
     readonly btw: "borderTopWidth";
     readonly bw: "borderWidth";
+    readonly col: "color";
+    readonly cur: "cursor";
     readonly disp: "display";
     readonly f: "flex";
     readonly fb: "flexBasis";
     readonly fd: "flexDirection";
     readonly fg: "flexGrow";
+    readonly fofam: "fontFamily";
     readonly fos: "fontSize";
     readonly fost: "fontStyle";
     readonly fow: "fontWeight";
@@ -37,6 +41,7 @@ export declare const shorthands: {
     readonly h: "height";
     readonly jc: "justifyContent";
     readonly l: "left";
+    readonly letsp: "letterSpacing";
     readonly lh: "lineHeight";
     readonly m: "margin";
     readonly mah: "maxHeight";
@@ -51,6 +56,8 @@ export declare const shorthands: {
     readonly my: "marginVertical";
     readonly o: "opacity";
     readonly ov: "overflow";
+    readonly ovx: "overflowX";
+    readonly ovy: "overflowY";
     readonly p: "padding";
     readonly pb: "paddingBottom";
     readonly pe: "pointerEvents";
@@ -67,7 +74,9 @@ export declare const shorthands: {
     readonly shop: "shadowOpacity";
     readonly t: "top";
     readonly ta: "textAlign";
+    readonly ussel: "userSelect";
     readonly w: "width";
+    readonly ww: "wordWrap";
     readonly zi: "zIndex";
 };
 //# sourceMappingURL=index.d.ts.map

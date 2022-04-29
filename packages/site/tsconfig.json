@@ -49,7 +49,7 @@
   ],
   "exclude": [
     "node_modules",
-    "site/out"
+    "_next/**/*"
   ],
   "references": [
     {

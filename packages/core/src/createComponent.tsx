@@ -621,7 +621,6 @@ export function createComponent<
       // in static mode we just use these to lookup configuration
       return
     }
-    const shouldDebug = staticConfig.defaultProps?.debug
     tamaguiConfig = conf
     avoidClasses = !!tamaguiConfig.animations?.avoidClasses
     AnimatedText = tamaguiConfig.animations?.Text
@@ -666,10 +665,18 @@ export function createComponent<
       ...component.defaultProps,
     }
 
-    // prettier-ignore
-    if (process.env.NODE_ENV === 'development' && shouldDebug && process.env.IS_STATIC !== 'is_static') {
-      // prettier-ignore
-      console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, { staticConfig, defaultSplitStyleResult })
+    // debug
+    if (process.env.NODE_ENV === 'development') {
+      if (staticConfig.defaultProps?.debug) {
+        // @ts-ignore
+        component.defaultProps.debug = true
+        if (process.env.IS_STATIC !== 'is_static') {
+          console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+            staticConfig,
+            defaultSplitStyleResult,
+          })
+        }
+      }
     }
   })
 
@@ -679,7 +686,9 @@ export function createComponent<
     res = memo(res) as any
   }
 
-  res['whyDidYouRender'] = true
+  if (process.env.NODE_ENV === 'development') {
+    res['whyDidYouRender'] = true
+  }
 
   res['staticConfig'] = {
     validStyles: validStyleProps,

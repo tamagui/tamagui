@@ -56,9 +56,6 @@ export function updateInserted() {
         const identifier = rule.selectorText.slice(1)
         allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule.cssText : true
         if (identifier.startsWith('_transform')) {
-          if (identifier === '_transform-18yurpa') {
-            debugger
-          }
           addTransform(identifier, rule.cssText)
         }
       }

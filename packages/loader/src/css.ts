@@ -1,12 +1,11 @@
 import { ExtractedResponse, TamaguiOptions } from '@tamagui/static'
 import { LoaderContext } from 'webpack'
 
-const extractedInfoByFile = new Map<string, ExtractedResponse>()
-const stylePathToFilePath = new Map<string, string>()
+export const extractedInfoByFile = new Map<string, ExtractedResponse>()
+export const stylePathToFilePath = new Map<string, string>()
 
 export default function loader(this: LoaderContext<any>, source: string) {
-  const callback = this.async()
-  const threaded = this.emitFile === undefined
+  this.async()
   const options: TamaguiOptions = { ...this.getOptions() }
   const sourcePath = `${this.resourcePath}`
   let out = ''
@@ -18,6 +17,7 @@ export default function loader(this: LoaderContext<any>, source: string) {
     stylePathToFilePath.delete(sourcePath)
     extractedInfoByFile.delete(pathKey)
     const out = info?.styles
+    return this.callback(null, out || '')
   } else if (options.cssData) {
     // get output CSS
     out = Buffer.from(options.cssData, 'base64').toString('utf-8')
