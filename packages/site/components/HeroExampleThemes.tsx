@@ -1,21 +1,9 @@
 import { useTheme } from '@components/NextTheme'
-import Link from 'next/link'
-import { SetStateAction, memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import {
-  Button,
-  InteractiveContainer,
-  Paragraph,
-  Theme,
-  ThemeName,
-  XStack,
-  YStack,
-  debounce,
-  useDebounceValue,
-} from 'tamagui'
+import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { InteractiveContainer, Theme, ThemeName, XStack, YStack, debounce } from 'tamagui'
 
 import { useGet } from '../hooks/useGet'
 import { ActiveCircle } from './ActiveCircle'
-import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { MediaPlayer } from './MediaPlayer'
@@ -52,10 +40,6 @@ export function HeroExampleThemes() {
   const [curColorI, curShadeI] = activeI
   const [theme, setSelTheme] = useState('')
   const nextIndex = splitToFlat(activeI)
-  const curIndex = useDebounceValue(nextIndex, 300)
-  // const isTransitioning = curIndex !== nextIndex
-  // const isMidTransition = useDebounceValue(isTransitioning, 150)
-  // const altName = themes[1][curShadeI]
   const colorName = themes[0][curColorI]
   const scrollView = useRef<HTMLElement | null>(null)
   const [scrollLock, setScrollLock] = useState<null | 'shouldAnimate' | 'animate' | 'scroll'>(null)
@@ -79,7 +63,7 @@ export function HeroExampleThemes() {
   }
 
   const width = 180
-  const scale = 0.6
+  const scale = 0.65
 
   function scrollToIndex(index: number, force = false) {
     const node = scrollView.current
@@ -150,7 +134,6 @@ export function HeroExampleThemes() {
 
   return (
     <YStack>
-      {/* <TintBg colorName={colorName} /> */}
       {useMemo(() => {
         return (
           <ContainerLarge position="relative" space="$2">
@@ -158,7 +141,7 @@ export function HeroExampleThemes() {
               A <span className="rainbow clip-text">new</span> theme engine
             </HomeH2>
             <HomeH3>
-              Themes that customize down to the component, with&nbsp;unlimited alternate shades.
+              Themes that customize down to the component + unlimited alternate shades.
             </HomeH3>
           </ContainerLarge>
         )
@@ -250,11 +233,6 @@ export function HeroExampleThemes() {
             >
               {useMemo(() => {
                 return themeCombos.map((name, i) => {
-                  // const isCurActive = curIndex === i
-                  // const isNextActive = nextIndex === i
-                  // const isActive = isMidTransition ? isNextActive : isCurActive
-                  // const isBeforeActive = i < curIndex
-                  // const isActiveGroup = colorI === curColorI
                   const [colorI, shadeI] = flatToSplit(i)
                   const [color, alt] = name.split('_')
                   return (
@@ -288,45 +266,7 @@ export function HeroExampleThemes() {
             </Theme>
           </YStack>
         </YStack>
-
-        {/* <Theme name={colorName}>
-          <CodeInline my="$2" br="$3" size="$5">
-          causing ssr issues
-          {theme}
-          {colorName ? `_${colorName}` : ''}
-          {altName ? `_${altName}` : ''}
-          {hoverSectionName ? `_${hoverSectionName}` : ''}
-          </CodeInline>
-        </Theme> */}
       </YStack>
-
-      <Bottom />
     </YStack>
   )
-}
-
-const Bottom = memo(() => {
-  const { tint } = useTint()
-
-  return (
-    <ContainerLarge position="relative">
-      <YStack ai="center" als="center" jc="center" maw={580} space="$4">
-        <Paragraph theme="alt2" ta="center" size="$6">
-          Tamagui themes are fully typed based on your custom tokens, compiling into clean atomic
-          CSS that avoids deep re-renders.
-        </Paragraph>
-        <XStack>
-          <Link href="/docs/intro/themes" passHref>
-            <Button theme={tint} tag="a" fontFamily="$silkscreen">
-              How themes work &raquo;
-            </Button>
-          </Link>
-        </XStack>
-      </YStack>
-    </ContainerLarge>
-  )
-})
-
-const TintBg = ({ colorName }) => {
-  return <YStack fullscreen bc={`$${colorName}9`} o={0.05} className="mask-gradient-down" />
 }

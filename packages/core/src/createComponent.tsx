@@ -8,6 +8,8 @@ import React, {
   memo,
   useCallback,
   useContext,
+  useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -57,6 +59,15 @@ if (typeof document !== 'undefined') {
     mouseUps.forEach((x) => x())
     mouseUps.clear()
   })
+}
+
+const useMemoDebug = (cb, args) => {
+  const key = useRef(`${Math.random()}`)
+  console.log('render', key.current)
+  return useMemo(() => {
+    console.log('memo update', key.current)
+    return cb()
+  }, args)
 }
 
 export function createComponent<
@@ -220,7 +231,7 @@ export function createComponent<
 
     useIsomorphicLayoutEffect(() => {
       // we need to use state to properly have mounted go from false => true
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && (hasEnterStyle || props.animation)) {
         // for SSR we never set mounted, ensuring enterStyle={{}} is set by default
         setStateShallow({
           mounted: true,
@@ -232,7 +243,7 @@ export function createComponent<
         mouseUps.delete(unPress)
         internal.current!.isMounted = false
       }
-    }, [hasEnterStyle])
+    }, [hasEnterStyle, props.animation])
 
     if (nativeID) {
       viewProps.id = nativeID

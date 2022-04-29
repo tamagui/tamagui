@@ -5,6 +5,7 @@ import { View } from 'react-native'
 
 import { useComposedRefs } from '../helpers/composeRefs'
 import { createContext } from '../helpers/createContext'
+import { SizableStack } from './SizableStack'
 import { XStack } from './Stacks'
 
 const NAME = 'Label'
@@ -19,7 +20,16 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
-export const LabelFrame = styled(XStack)
+export const LabelFrame = styled(SizableStack, {
+  size: '$4',
+  backgroundColor: 'transparent',
+  alignItems: 'center',
+  cursor: 'default',
+  pressable: true,
+  pressStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+})
 
 export type LabelProps = GetProps<typeof LabelFrame> & {
   htmlFor: string
@@ -37,6 +47,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>((props, f
       if (htmlFor) {
         const element = document.getElementById(htmlFor)
         const label = ref.current
+        console.log('l', label, element)
         if (label && element) {
           const getAriaLabel = () => element.getAttribute('aria-labelledby')
           const ariaLabelledBy = [id, getAriaLabel()].filter(Boolean).join(' ')

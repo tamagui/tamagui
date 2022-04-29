@@ -2,11 +2,11 @@ import { useRef, useState } from 'react'
 import { Button, Square, YStack } from 'tamagui'
 
 import { LogoIcon } from '../TamaguiLogo'
-import { useHasIntersectedOnce } from '../useOnIntersecting'
+import { useIsIntersecting } from '../useOnIntersecting'
 
 export default () => {
   const ref = useRef<HTMLElement>(null)
-  const hasIntersected = useHasIntersectedOnce(ref)
+  const hasIntersected = useIsIntersecting(ref, { once: true })
   const [key, setKey] = useState(0)
 
   if (!hasIntersected) {

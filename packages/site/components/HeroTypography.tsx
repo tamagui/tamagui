@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -20,29 +20,36 @@ import { AnimatePresence } from '../../animate-presence'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
+import { useIsIntersecting } from './useOnIntersecting'
 
 const families = ['silkscreen', 'mono', 'inter']
 
 export const HeroTypography = () => {
   const [family, setFamily] = useState(`silkscreen`)
+  const ref = useRef<any>()
+  const isIntersecting = useIsIntersecting(ref)
 
   useEffect(() => {
-    const tm = setInterval(() => {
+    if (!isIntersecting) {
+      return
+    }
+    const next = () => {
       setFamily((cur) => {
         return families[(families.indexOf(cur) + 1) % families.length]
       })
-    }, 3000)
-
+    }
+    const tm = setInterval(next, 4500)
+    next()
     return () => {
       clearInterval(tm)
     }
-  }, [])
+  }, [isIntersecting])
 
   return (
     <>
       <YStack fullscreen className="bg-grid-big mask-gradient-both" o={0.5} />
       {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
-      <ContainerLarge position="relative" space="$8">
+      <ContainerLarge ref={ref} position="relative" space="$8">
         <YStack ai="center" space="$2">
           <HomeH2>Plug-and-play fonts, individually tuned.</HomeH2>
         </YStack>
@@ -62,12 +69,12 @@ export const HeroTypography = () => {
           <YStack
             h={300}
             w="40%"
-            mt={40}
+            mt={50}
             space="$0.5"
             ai="flex-end"
-            scale={1.2}
-            x={-40}
-            $sm={{ miw: '110%', ai: 'center', x: 0, scale: 0.8 }}
+            scale={1.3}
+            x={-30}
+            $sm={{ mt: 0, miw: '110%', ai: 'center', x: 0, scale: 0.8 }}
           >
             <AnimatePresence exitBeforeEnter>
               <AnimatedHeading
@@ -140,16 +147,15 @@ const OverlayCard = () => {
     <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
       <YStack jc="center" p="$6" space="$4" maw="calc(min(90vw, 400px))">
         <Paragraph ta="left" size="$8" fow="400">
-          Every font prop tuned at every size across weight, spacing, line height, and more.
+          Plug-in or create fonts, as&nbsp;easy as npm install.
+        </Paragraph>
+
+        <Paragraph ta="left" size="$7" theme="alt1" fow="400">
+          Tune families across every size step - weights, spacing, line-height, and letter-spacing.
         </Paragraph>
 
         <Paragraph ta="left" size="$5" theme="alt2">
-          Each font family can define independent styles for everything from weight to spacing,
-          unique to each font size.
-        </Paragraph>
-
-        <Paragraph ta="left" size="$5" theme="alt2">
-          This enables fully-typed, shareable fonts as easy as an npm install.
+          Fully-typed, shareable fonts!
         </Paragraph>
 
         <Link href="/docs/intro/configuration" passHref>
@@ -175,13 +181,14 @@ const AnimatedHeading = ({
   index: number
 } & TextProps) => {
   return (
-    <Delay by={index * 200}>
+    <Delay by={index * 180}>
       <Component
-        animation="bouncy"
+        animation="lazy"
         enterStyle={{ o: 0, y: -10 }}
         exitStyle={{ o: 0, y: 10 }}
         o={1}
         y={0}
+        pr="$1"
         fontFamily={`$${family}`}
         textShadowColor="$background"
         textShadowRadius={10}

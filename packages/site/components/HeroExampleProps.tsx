@@ -46,12 +46,10 @@ export const HeroExampleProps = () => {
           </span>{' '}
           /&gt;
         </HomeH2>
-        <HomeH3>
-          Properly powerful props on every component, all&nbsp;out&nbsp;of&nbsp;the&nbsp;box.
-        </HomeH3>
+        <HomeH3>Properly powerful props on every component.</HomeH3>
       </YStack>
 
-      <XStack px="$6" pt="$4" space="$4" $sm={{ flexDirection: 'column' }}>
+      <XStack px="$6" pt="$6" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
         <YStack w="50%" $sm={{ w: '100%' }}>
           <Features
             space="$4"

@@ -102,15 +102,15 @@ export declare type GenericFont<Key extends number | string = number | string> =
     size: {
         [key in Key]: number | Variable;
     };
-    lineHeight: {
+    lineHeight: Partial<{
         [key in Key]: number | Variable;
-    };
-    letterSpacing: {
+    }>;
+    letterSpacing: Partial<{
         [key in Key]: number | Variable;
-    };
-    weight: {
+    }>;
+    weight: Partial<{
         [key in Key]: number | string | Variable;
-    };
+    }>;
     family: string | Variable;
 };
 export declare type MediaKeys = keyof Media;
@@ -291,15 +291,15 @@ export declare type GetProps<A extends StylableComponent> = A extends TamaguiCom
 declare type GetGenericComponentTamaguiProps<P> = P & Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>;
 export declare type SpreadKeys = '...fontSize' | '...size' | '...color' | '...lineHeight' | '...letterSpacing' | '...zIndex' | '...theme' | '...radius';
 export declare type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, MyProps extends Object = GetProps<Parent>, Val = any> = VariantDefinitionFromProps<MyProps, Val>;
-export declare type VariantDefinitionFromProps<MyProps, Val> = {
+export declare type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
     } & {
-        [Key in string]?: MyProps | VariantSpreadFunction<MyProps, Val>;
+        [Key in string | number]?: MyProps | VariantSpreadFunction<MyProps, Val>;
     } & {
         [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
     });
-};
+} : never;
 export declare type GetVariantProps<Variants> = {
     [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof Variants[Key]>;
 };

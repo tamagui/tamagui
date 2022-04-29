@@ -99,7 +99,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             </Paragraph>
           </NextLink>
 
-          <ThemeToggle chromeless={floating} />
+          <ThemeToggle ml="$2" chromeless={floating} />
         </XStack>
       </XStack>
     </XStack>

@@ -171,9 +171,9 @@ export type PropTypes<A extends TamaguiComponent> = A extends React.FunctionComp
 
 export type GenericFont<Key extends number | string = number | string> = {
   size: { [key in Key]: number | Variable }
-  lineHeight: { [key in Key]: number | Variable }
-  letterSpacing: { [key in Key]: number | Variable }
-  weight: { [key in Key]: number | string | Variable }
+  lineHeight: Partial<{ [key in Key]: number | Variable }>
+  letterSpacing: Partial<{ [key in Key]: number | Variable }>
+  weight: Partial<{ [key in Key]: number | string | Variable }>
   family: string | Variable
 }
 

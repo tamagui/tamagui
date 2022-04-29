@@ -1,6 +1,5 @@
 - beta:
-  - {/* TODO this is using $body for other attributes not $silkscreen */}
-  - // TODO merging hoverStyle scale wrong
+  - types for $blue10 etc
   - <LinearGradient /> colors accept theme types
   - $sm={{ hoverStyle: {} }} types failing and test
   - types for full theme values, color doesnt show $blue10
@@ -8,29 +7,23 @@
   - 30% fix on native + simple native demo (maybe with starters repo)
   - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here
-  - compiler is inserting default props check effects
 
 - 1:
-  - fonts become factory functions to allow customization
   - auto skeleton components
-  - <Avatar />, <Checkbox />/ <Switch />, <Label />, <Select />, <Tabs />
-  - create-tamagui-app
-      - get some demos in that 100% pass compile / native
+  - <Avatar />, <Select />, <Tabs />
+  - redo popover/popper to use floating-ui
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
   - <BlurView />
-  - check theme change slow
   - docs: extractable(), deoptProps, getExpandedShorthands
 
 - 2: 
-  - <Toast />, <Card />
+  - <Toast />, <Card />, <Carousel />
   - load theme hook via feature if possible
   - add fonts section to guides
   - document $body being default font family
   - styleq / react-native-web 18 exploration
-  - OmitShorthands<> helper (see ActiveCirlce in site)
-  - split fonts into packages
-  - floating-ui
+  - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
 
 - 3
   - <Video />, <Spinner />
@@ -44,11 +37,7 @@
   - bring back `onLayout` via features hooks
     - press events?
   - <LinearGradient />
-    - fix ssr
     - make extractable to css
-  - bugs:
-    - // TODO adding fontWeight here doesn't override SizableText variant
-
 
 - whenever switch over to styleq or own internal css generator:
   - remove getStylesAtomic altogether - loop only once over props/styles
@@ -62,13 +51,7 @@
   - `space` should work with media queries
   - createTamagui({ defaultProps: { Button: {} } }) for any component
   - document/release <ThemeReverse />
-  - <Tabs />
-  - <Label />
   - <ListItem />
-  - <Switch />
-    - to start no outputting to native but use radix style
-    - <Switch><Switch.Toogle /></Switch>
-    - support Switch.Toggle style extractions
 
   - basic styled() extraction to css at compile time
   - ~button textProps => child selectors~
@@ -84,11 +67,11 @@
 
   - container queries
   - <Scale />
+
   - @tamagui/cli: 
     - tamagui test ./packages/site/components/OffsetBox.tsx
     - tamagui sandbox ./packages/site/components/OffsetBox.tsx
     - tamagui compile ./packages/site/components/OffsetBox.tsx
-
   
   - <List /> (works with drawer + draggable + selectable)
   - <Menu />
@@ -116,23 +99,11 @@
   - built in jsx => css converter
   - "move to my design system" (finds tamagui package.json and moves there)
 - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
-- <Select />
 - colored cli output
 - have tamagui watch the tamagui.config.ts file and report if types break
 - smart responsive scaling system (<Scale /> basically)
 
-// defaultProps: {
-  //   Button: {
-  //     scaleIcon: 2,
-  //   },
-  // },
-  // mediaScale: {
-  //   horizontal: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
-  //   vertical: ['short', 'tall'],
-  // },
-
-animation popup 
-
+- design system hosting
 - https://github.com/react-native-menu/menu
 - compiler could insert special props like:
   - __noAnimations, __noTheme, __noSpace
@@ -143,3 +114,4 @@ animation popup 
 - upgrade expo/match-media (there was some problem before)
 
 - vscode plugin to highlight the current node your cursors inside of in dom
+- blur prop built in ?

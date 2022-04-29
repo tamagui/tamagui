@@ -43,16 +43,17 @@ a {
 
 :is(
   p a,
-  span:not(.tui_Theme, .tui_Hoverable) a
+  span:not(.tui_Theme, .tui_Hoverable) a,
+  footer a
 ) {
   text-decoration: underline;
-  background-color: var(--blue2);
-  color: var(--blue10);
-  text-decoration-color: var(--blue6);
+  background-color: var(--pink2);
+  color: var(--pink10);
+  text-decoration-color: var(--pink6);
   padding-left: 3px;
   padding-right: 3px;
-  padding-top: 4px;
-  padding-bottom: 6px;
+  padding-top: 1px;
+  padding-bottom: 4px;
   margin: -2px;
   border-radius: 4px;
   text-underline-offset: 3px;
@@ -63,9 +64,9 @@ a {
   span:not(.tui_Theme, .tui_Hoverable) a
 ):hover {
   text-decoration-style: solid;
-  background-color: var(--blue4);
-  color: var(--blue12) !important;
-  text-decoration-color: var(--blue7);
+  background-color: var(--pink1);
+  color: var(--pink11) !important;
+  text-decoration-color: var(--pink6);
 }
 
 /* display block > display inline-flex bug */
@@ -247,6 +248,11 @@ pre {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* prevents clip on negative letter-spacing */
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-left: -3px;
+  margin-right: -3px;
 }
 
 iframe {

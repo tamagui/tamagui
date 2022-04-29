@@ -1,22 +1,20 @@
 import { allLightColors, darkColorsPostfixed } from '@tamagui/colors'
 
-export const size = {
-  true: 20, // for space boolean true
-  0: 0,
-  '0.5': 2,
-  1: 6,
-  2: 10,
-  3: 15,
-  4: 20,
-  5: 35,
-  6: 50,
-  7: 75,
-  8: 100,
-  9: 125,
-  10: 150,
-  11: 200,
-  12: 250,
-} as const
+// acknowledge you need more granularity at the smaller sizes with .5s
+// prettier-ignore
+export const sizeKeys = ['true', '0', '0.25', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '9', '10', '11', '12', '13', '14'] as const
+
+// slightly more than double every 2 indices apart
+export const getSizeAt = (index: number) =>
+  index === 0 ? 0 : Math.round(Math.pow(1.6, index)) + Math.floor(3 * index)
+
+export const size: {
+  [key in typeof sizeKeys[any]]: number
+} = Object.fromEntries(
+  sizeKeys.map((key) => {
+    return [key, getSizeAt(key === 'true' ? 4 : +key)]
+  })
+) as any
 
 type Sizes = typeof size
 type SizeKeys = keyof Sizes

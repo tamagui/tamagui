@@ -18,6 +18,7 @@ async function build() {
       outdir: 'dist',
       format: 'cjs',
       target: 'node16',
+      platform: 'node',
       plugins: [
         alias({
           'react-native': '@tamagui/proxy-worm',

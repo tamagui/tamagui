@@ -24,7 +24,6 @@ export const getAllFrontmatter = (fromPath: string) => {
     .map((filePath) => {
       const source = fs.readFileSync(path.join(filePath), 'utf8')
       const { data, content } = matter(source)
-      console.log('data', data)
       return {
         ...(data as Frontmatter),
         slug: filePath.replace(`${DATA_PATH}/`, '').replace('.mdx', ''),

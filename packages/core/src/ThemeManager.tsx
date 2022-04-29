@@ -144,7 +144,7 @@ export class ThemeManager {
     }
 
     if (process.env.NODE_ENV === 'development' && props && props['debug']) {
-      console.log('getNextTheme', { opts, nextName, parentName }, this)
+      console.log('getNextTheme', { name: opts.name, nextName, parentName })
     }
 
     return {

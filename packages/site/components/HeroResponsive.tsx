@@ -121,7 +121,7 @@ export const HeroResponsive = memo(() => {
   }, [])
 
   return (
-    <YStack ref={ref} y={0} mt={-110} pt="$6" pos="relative">
+    <YStack ref={ref} y={0} mt={-180} pos="relative">
       <ContainerLarge pos="relative">
         <Header />
         <Spacer size="$6" />
@@ -141,7 +141,7 @@ export const HeroResponsive = memo(() => {
           </YStack>
 
           <Container zi={-1} pos="absolute">
-            <XStack x={-8} y={20}>
+            <XStack x={-10}>
               {breakpoints.map((bp, i) => {
                 return (
                   <Marker

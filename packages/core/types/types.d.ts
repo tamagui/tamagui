@@ -102,15 +102,15 @@ export declare type GenericFont<Key extends number | string = number | string> =
     size: {
         [key in Key]: number | Variable;
     };
-    lineHeight: {
+    lineHeight: Partial<{
         [key in Key]: number | Variable;
-    };
-    letterSpacing: {
+    }>;
+    letterSpacing: Partial<{
         [key in Key]: number | Variable;
-    };
-    weight: {
+    }>;
+    weight: Partial<{
         [key in Key]: number | string | Variable;
-    };
+    }>;
     family: string | Variable;
 };
 export declare type MediaKeys = keyof Media;

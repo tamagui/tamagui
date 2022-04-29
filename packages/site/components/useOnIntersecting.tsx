@@ -7,15 +7,16 @@ type IntersectFn = (
   didResize?: boolean
 ) => void | DisposeFn
 
-export const useHasIntersectedOnce = (ref: MutableRefObject<HTMLElement | null>) => {
+export const useIsIntersecting = (
+  ref: MutableRefObject<HTMLElement | null>,
+  { once }: { once?: boolean } = {}
+) => {
   const [val, setVal] = useState(false)
-
   useOnIntersecting(ref, ({ isIntersecting }) => {
-    if (isIntersecting) {
-      setVal(true)
+    if ((once && isIntersecting) || !once) {
+      setVal(isIntersecting)
     }
   })
-
   return val
 }
 
