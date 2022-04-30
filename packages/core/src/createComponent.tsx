@@ -192,6 +192,9 @@ export function createComponent<
       focusable,
 
       // ignore from here on out
+      // for next/link compat etc
+      // @ts-ignore
+      onClick,
       theme: _themeProp,
       // @ts-ignore
       defaultVariants,
@@ -398,7 +401,8 @@ export function createComponent<
       (initialPseudos && initialPseudos.pressStyle) ||
       onPress ||
       onPressOut ||
-      onPressIn
+      onPressIn ||
+      onClick
     )
     const isHoverable = isWeb && !isTouchDevice
     const attachHover =
@@ -488,11 +492,10 @@ export function createComponent<
             : null,
           [pressEventKey]: attachPress
             ? (e) => {
-                // this caused issue with next.js passing href
-                // e.preventDefault()
                 onPress?.(e)
                 unPress()
                 onPressOut?.(e)
+                onClick?.(e)
               }
             : null,
         }

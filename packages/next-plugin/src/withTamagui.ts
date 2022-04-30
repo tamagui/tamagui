@@ -67,8 +67,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           ),
           // expo fix https://github.com/expo/expo/issues/9999
           'react-native-web/src': require.resolve('react-native-web/dist'),
-          react: require.resolve('react'),
-          'react-dom': require.resolve('react-dom'),
+          // react: require.resolve('react'),
+          // 'react-dom': require.resolve('react-dom'),
         }
 
         webpackConfig.resolve.alias = alias
