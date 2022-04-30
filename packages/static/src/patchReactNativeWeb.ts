@@ -27,6 +27,7 @@ export function patchReactNativeWeb() {
   // patch to allow className prop
   const patches = [
     {
+      id: 'dom-props',
       filePath: ['modules', 'createDOMProps', 'index.js'],
       replacee: `  if (dataSet != null) {`,
       replacer: `
@@ -35,9 +36,13 @@ export function patchReactNativeWeb() {
     classList = className
     dataSet = dataSetRest
   }
+  if (props.dataSet && props.dataSet.id) {
+    domProps['id'] = props.dataSet.id
+  }
   if (dataSet != null) {`,
     },
     {
+      id: 'forward-props',
       filePath: ['modules', 'forwardedProps', 'index.js'],
       replacee: `dataSet: true,`,
       replacer: `id: true, dataSet: true,`,
