@@ -11,17 +11,22 @@ export const getInsertedRules = () => Object.values(insertedSelectors)
 export const getAllTransforms = () => insertedTransforms
 
 // keep transforms in map for merging later
-function addTransform(identifier: string, rule: string) {
-  const s = rule.indexOf('transform:')
+function addTransform(identifier: string, css: string, rule?: CSSRule) {
+  const s = css.indexOf('transform:')
   if (s === -1) {
     if (process.env.NODE_ENV === 'development') {
-      console.error(`Invalid transform, likely used deg/% improperly ${identifier} ${rule}`)
+      console.groupCollapsed(`❌ Invalid transform, likely used deg/% improperly ${identifier}`)
+      console.log('rule:', rule)
+      console.trace()
+      console.groupEnd()
+    } else {
+      console.error(`Missing transform`, identifier)
     }
     return
   }
   const startI = s + 'transform:'.length
-  const endI = rule.indexOf(';')
-  const value = rule.slice(startI, endI)
+  const endI = css.indexOf(';')
+  const value = css.slice(startI, endI)
   insertedTransforms[identifier] = value
 }
 
@@ -54,9 +59,11 @@ export function updateInserted() {
         const rule = rules.item(i)
         if (!(rule instanceof CSSStyleRule)) continue
         const identifier = rule.selectorText.slice(1)
-        allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule.cssText : true
-        if (identifier.startsWith('_transform')) {
-          addTransform(identifier, rule.cssText)
+        if (!allSelectors[identifier]) {
+          allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule.cssText : true
+          if (identifier.startsWith('_transform')) {
+            addTransform(identifier, rule.cssText, rule)
+          }
         }
       }
     }
@@ -71,19 +78,20 @@ const newRulesStyleTag =
     ? document.head.appendChild(document.createElement('style'))
     : null
 
-export function insertStyleRule(identifier: string, rule: string) {
-  if (allSelectors[identifier]) {
-    return
-  }
+export function updateInsertedCache(identifier: string, rule: string) {
+  if (allSelectors[identifier]) return
   hasInsertedSinceUpdate = true
   insertedSelectors[identifier] = rule
   allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
   if (identifier.startsWith('_transform')) {
     addTransform(identifier, rule)
   }
-  if (!newRulesStyleTag) {
-    return
-  }
+}
+
+export function insertStyleRule(identifier: string, rule: string) {
+  if (allSelectors[identifier]) return
+  if (!newRulesStyleTag) return
+  updateInsertedCache(identifier, rule)
   const sheet = newRulesStyleTag.sheet!
   sheet.insertRule(rule, sheet.cssRules.length)
   return identifier

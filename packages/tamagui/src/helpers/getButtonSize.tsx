@@ -13,7 +13,7 @@ export const getButtonSize =
     const font = tokens.font[props.fontFamily] || tokens.font['$body']
     const lineHeights = font.lineHeight
     const lineHeight = lineHeights[val] ?? lineHeights['$4']
-    const minHeight = getVariableValue(lineHeight) + py * 2
+    const minHeight = Math.round(getVariableValue(lineHeight) + py * 2)
     if (process.env.NODE_ENV === 'development' && props['debug']) {
       console.log('getButtonSize', props.fontFamily, { size, py, val, lineHeight, minHeight })
     }

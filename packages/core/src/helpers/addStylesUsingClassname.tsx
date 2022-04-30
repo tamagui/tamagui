@@ -2,7 +2,7 @@
 import { useInsertionEffect } from 'react'
 
 import { getStylesAtomic } from './getStylesAtomic'
-import { insertStyleRule } from './insertStyleRule'
+import { insertStyleRule, updateInsertedCache } from './insertStyleRule'
 
 // TODO can drop most of this code once we drop support for 17
 // uses new useInsertionEffect for better perf if available
@@ -20,6 +20,10 @@ export function useStylesAsClassname(styles: any[], disable = false, debug = fal
         insertions.push({ identifier, rule })
       }
     })
+    // avoid race conditions in lookups because useInsertionEffect is delayed
+    for (const { identifier, rule } of insertions) {
+      updateInsertedCache(identifier, rule)
+    }
     useInsertionEffect(() => {
       for (const { identifier, rule } of insertions) {
         insertStyleRule(identifier, rule)

@@ -1,7 +1,7 @@
 import * as Helpers from '@tamagui/helpers'
 
 import { rnw } from './constants/rnw'
-import { getAllSelectors, getAllTransforms } from './helpers/insertStyleRule'
+import { getAllSelectors, getAllTransforms, getInsertedRules } from './helpers/insertStyleRule'
 import { TamaguiInternalConfig } from './types'
 
 // serves a central store for state
@@ -10,6 +10,10 @@ class TamaguiManager {
   config: TamaguiInternalConfig | null = null
   rnw = rnw
   Helpers = Helpers
+
+  get insertedRules() {
+    return getInsertedRules()
+  }
 
   get allSelectors() {
     return getAllSelectors()

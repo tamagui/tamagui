@@ -45,16 +45,9 @@ export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
     }
 
     return (
-      // <Theme name="alt1">
-      // @ts-ignore
       <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
-        <Code
-          className={classes}
-          // @ts-ignore
-          dangerouslySetInnerHTML={{ __html: result }}
-        />
+        <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
       </Pre>
-      // </Theme>
     )
   }
 )
