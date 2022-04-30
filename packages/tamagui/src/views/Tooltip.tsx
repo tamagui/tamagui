@@ -20,7 +20,7 @@ export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
   //     <Tooltip contents="hello"><Button /></Tooltip>
   //  but also do:
   //     <Tooltip>
-  //       <Tooltip.Container animated animation="bounce" enterStyle={{}}>
+  //       <Tooltip.Container animation="bounce" enterStyle={{}}>
   //          <Tooltip.Arrow />
   //          <Tooltip.Frame />
   //       </Tooltip.Container>
@@ -75,10 +75,7 @@ export const Tooltip = ({
           exitStyle={exitStyle}
           {...tooltipContainerProps}
         >
-          {!!showArrow && (
-            //
-            <HoverablePopover.Arrow backgroundColor="$background" />
-          )}
+          {!!showArrow && <HoverablePopover.Arrow backgroundColor="$background" />}
           <Theme name={alwaysDark ? 'dark' : null}>
             <TooltipFrame
               elevation={size}

@@ -25,10 +25,15 @@ export const Popper = ({
   onClose: any
   setOverlayRef?: (overlayRef: any) => void
 }) => {
-  const memoizedProps = useMemo(() => {
-    return { triggerRef, onClose, setOverlayRef }
-  }, [triggerRef, onClose, setOverlayRef])
-  return <PopperContext.Provider value={memoizedProps}>{children}</PopperContext.Provider>
+  return (
+    <PopperContext.Provider
+      value={useMemo(() => {
+        return { triggerRef, onClose, setOverlayRef }
+      }, [triggerRef, onClose, setOverlayRef])}
+    >
+      {children}
+    </PopperContext.Provider>
+  )
 }
 
 export const PopperContent = React.forwardRef((props: any, ref: any) => {
@@ -47,7 +52,6 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
     containerPadding: 0,
     ...restContext,
   })
-  console.log('overlayPosition', overlayPosition)
 
   const {
     overlayProps: { style: overlayStyle, ...overlayProps },
@@ -71,11 +75,10 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
       // @ts-ignore
       child.type.displayName === 'PopperArrow'
     ) {
-      arrowElement = React.cloneElement(child, {
+      arrowElement = React.cloneElement(child as any, {
         ...context,
         ...arrowProps,
         ...arrowStyle,
-        // @ts-ignore
         placement,
       })
     } else {
@@ -102,6 +105,8 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
   }
 
   const diagonalLength = getDiagonalLength(arrowHeight, arrowWidth) / 2
+
+  console.log('overlayProps', placement, overlayProps, overlayStyle, context)
 
   return (
     <YStack

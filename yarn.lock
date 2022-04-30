@@ -3700,6 +3700,7 @@ __metadata:
     "@tamagui/build": ^1.0.0-beta.153+a49c2588
     "@tamagui/core": ^1.0.0-beta.153+a49c2588
     "@tamagui/polyfill-dev": ^1.0.0-beta.153+a49c2588
+    "@tamagui/use-controllable-state": ^1.0.0-beta.153+a49c2588
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: ^2.2.0
@@ -3915,6 +3916,20 @@ __metadata:
     "@tamagui/build": ^1.0.0-beta.153+a49c2588
     "@tamagui/colors": ^1.0.0-beta.153+a49c2588
     "@tamagui/core": ^1.0.0-beta.153+a49c2588
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/use-controllable-state@^1.0.0-beta.153+a49c2588, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
+  dependencies:
+    "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@tamagui/build": ^1.0.0-beta.153+a49c2588
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -19892,6 +19907,7 @@ __metadata:
     "@tamagui/expo-linear-gradient": 11.2.7
     "@tamagui/fake-react-native": ^1.0.0-beta.153+a49c2588
     "@tamagui/helpers": ^1.0.0-beta.153+a49c2588
+    "@tamagui/use-controllable-state": ^1.0.0-beta.153+a49c2588
     "@tamagui/use-debounce": ^1.0.0-beta.153+a49c2588
     "@tamagui/use-force-update": ^1.0.0-beta.153+a49c2588
     "@types/node": ^16.11.9

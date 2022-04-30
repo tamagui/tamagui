@@ -6,6 +6,6 @@ export const NavHeading = styled(H4, {
   size: '$3',
   px: '$4',
   py: '$1',
-  mb: '$2',
-  my: '$2',
+  fow: '700',
+  mt: '$2',
 })
