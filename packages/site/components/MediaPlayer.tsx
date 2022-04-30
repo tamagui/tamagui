@@ -48,12 +48,12 @@ export const MediaPlayer = memo(
           pt={0}
           ai="stretch"
         >
-          <XStack ai="center" p="$3" space="$5">
+          <XStack ai="center" p="$4" space="$5">
             <Square pos="relative" ov="hidden" br="$6" size={90}>
               <Image width={90} height={90} src={image.src} />
             </Square>
 
-            <YStack miw={150} mt={-10} jc="center">
+            <YStack miw={165} mt={-10} jc="center">
               <Paragraph fontWeight="700">Spaceship</Paragraph>
               <Paragraph theme={barTheme} size="$3">
                 Kanye West

@@ -130,7 +130,7 @@ export const components = {
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading mt="$4" mb="$1" id={id}>
+    <LinkHeading mt="$6" mb="$1" id={id}>
       <H3 data-heading {...props}>
         {children}
       </H3>

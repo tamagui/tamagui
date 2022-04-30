@@ -28,17 +28,17 @@ export default function Home() {
       <HeaderFloating isHome />
       <Hero />
       <Separator borderStyle="dotted" />
-      <XStack zi={100} theme="alt1" mt={-28} ai="center" jc="center">
+      <XStack zi={100} theme="alt1" my={-28} ai="center" jc="center">
         <SearchButton color="$color" width={320} size="$6">
           Search Docs...
         </SearchButton>
       </XStack>
-      <YStack py="$7" pb="$9">
+      <YStack elevation="$5" py="$8" pb="$9">
         <HeroBelow />
       </YStack>
       <Separator borderStyle="dotted" />
       <ContainerLarge zi={100000}>
-        <XStack mt={-28} mb="$-4" jc="center" ai="center">
+        <XStack mt={-28} mb={-100} jc="center" ai="center">
           <InstallInput />
         </XStack>
       </ContainerLarge>
@@ -70,9 +70,8 @@ export default function Home() {
       <Section>
         <HeroExampleProps />
       </Section>
-      <HR />
-      <Section zi={0}>
-        <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={-575} left={0} right={0} ai="center">
+      <Section mt={-70} zi={0}>
+        <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={-615} left={0} right={0} ai="center">
           <CocentricCircles />
         </YStack>
         <Community />

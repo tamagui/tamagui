@@ -148,6 +148,7 @@ export declare type TransformStyleProps = {
     rotateZ?: string;
 };
 export declare type TamaguiComponentPropsBase = {
+    space?: SpaceTokens;
     dangerouslySetInnerHTML?: {
         __html: string;
     };
@@ -165,9 +166,9 @@ export declare type TamaguiComponentPropsBase = {
     onPress?: (e: GestureResponderEvent) => any;
     onPressIn?: (e: GestureResponderEvent) => any;
     onPressOut?: (e: GestureResponderEvent) => any;
-    onMouseEnter?: (e: GestureResponderEvent) => any;
-    onMouseLeave?: (e: GestureResponderEvent) => any;
-    space?: SpaceTokens;
+    onMouseEnter?: (e: MouseEvent) => any;
+    onMouseLeave?: (e: MouseEvent) => any;
+    onMouseDown?: (e: MouseEvent) => any;
 };
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;

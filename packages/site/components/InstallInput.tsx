@@ -24,6 +24,7 @@ export const InstallInput = memo(() => {
       height={48}
       ai="center"
       als="center"
+      elevation="$4"
       br="$10"
       bc="$backgroundHover"
       // elevation="$1"

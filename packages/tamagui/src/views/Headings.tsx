@@ -9,7 +9,6 @@ export const Heading = styled(Paragraph, {
   name: 'Heading',
   accessibilityRole: 'header',
   fontFamily: '$heading',
-  fontWeight: '700',
   size: '$8',
   margin: 0,
 })
@@ -30,7 +29,6 @@ export const H3 = styled(Heading, {
   name: 'H3',
   tag: 'h3',
   size: '$8',
-  fontWeight: '700',
 })
 
 export const H4 = styled(Heading, {
@@ -43,12 +41,10 @@ export const H5 = styled(Heading, {
   name: 'H5',
   tag: 'h5',
   size: '$5',
-  fontWeight: '600',
 })
 
 export const H6 = styled(Heading, {
   name: 'H6',
   tag: 'h6',
   size: '$4',
-  fontWeight: '600',
 })

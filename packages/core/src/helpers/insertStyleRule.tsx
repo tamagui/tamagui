@@ -30,6 +30,8 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
   insertedTransforms[identifier] = value
 }
 
+const isClient = typeof document !== 'undefined'
+
 // gets existing ones (client side)
 // takes ~0.1ms for a fairly large page
 // used now for three things:
@@ -37,11 +39,9 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
 //   2. avoid duplicate insert styles at runtime
 //   3. used now for merging transforms atomically
 let hasInsertedSinceUpdate = true
-const isClient = typeof document !== 'undefined'
+
 export function updateInserted() {
-  if (!isClient) {
-    return
-  }
+  if (!isClient) return
   if (!hasInsertedSinceUpdate) {
     console.warn('hasnt inserted since')
     return
@@ -73,16 +73,11 @@ export function updateInserted() {
 
 updateInserted()
 
-const newRulesStyleTag =
-  typeof document !== 'undefined'
-    ? document.head.appendChild(document.createElement('style'))
-    : null
+const sheet = isClient ? document.head.appendChild(document.createElement('style')).sheet : null
 
 export function updateInsertedCache(identifier: string, rule: string) {
-  if (allSelectors[identifier]) return
-  hasInsertedSinceUpdate = true
+  if (insertedSelectors[identifier]) return
   insertedSelectors[identifier] = rule
-  allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
   if (identifier.startsWith('_transform')) {
     addTransform(identifier, rule)
   }
@@ -90,9 +85,7 @@ export function updateInsertedCache(identifier: string, rule: string) {
 
 export function insertStyleRule(identifier: string, rule: string) {
   if (allSelectors[identifier]) return
-  if (!newRulesStyleTag) return
+  hasInsertedSinceUpdate = true
   updateInsertedCache(identifier, rule)
-  const sheet = newRulesStyleTag.sheet!
-  sheet.insertRule(rule, sheet.cssRules.length)
-  return identifier
+  sheet?.insertRule(rule, sheet.cssRules.length)
 }

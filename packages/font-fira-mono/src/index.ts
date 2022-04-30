@@ -8,7 +8,7 @@ export const createFiraMonoFont = <A extends GenericFont<keyof typeof size>>(
     family: Platform.OS == 'web' ? 'Fira Code, Monaco, Consolas, Ubuntu Mono, monospace' : 'Fira',
     size,
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, v * 1.4])
+      Object.entries(size).map(([k, v]) => [k, v * 1.35])
     ) as typeof size,
     weight: {
       4: '300',

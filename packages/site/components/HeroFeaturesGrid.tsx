@@ -16,7 +16,7 @@ export function FeaturesGrid() {
           <HomeH3>Rapidly iterate on truly cross-platform apps.</HomeH3>
         </YStack>
 
-        <YStack>
+        <YStack maw={950} als="center">
           <Grid gap={25} itemMinWidth={280}>
             <YStack space="$2" p="$4">
               <H4 fontFamily="$silkscreen" ta="center">
