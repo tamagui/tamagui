@@ -87,13 +87,12 @@ export const getSplitStyles = (
         transform = insertedTransforms[val]
       }
       if (!transform) {
-        if (isWeb) {
+        if (isWeb && val[0] !== '_') {
           // runtime insert
           transform = val
-          // console.log('INSERT', key, rule, val)
         } else {
           // todo?
-          console.log('?')
+          console.log('?', key, val)
         }
       }
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
@@ -106,7 +105,9 @@ export const getSplitStyles = (
         }
       }
       transforms[namespace] = transforms[namespace] || ['', '']
-      transforms[namespace][0] += val.replace('_transform', '')
+      const identifier = val.replace('_transform', '')
+      console.warn('?bug2', key, val, transform, insertedTransforms[val])
+      transforms[namespace][0] += identifier
       transforms[namespace][1] += transform
     } else {
       classNames[key] = val
@@ -317,6 +318,7 @@ export const getSplitStyles = (
       const identifier = `_transform${hash}`
       if (!insertedTransforms[identifier]) {
         const rule = `.${identifier} { transform: ${val}; }`
+        console.log('insert', rule)
         insertStyleRule(identifier, rule)
       }
       classNames[namespace] = identifier

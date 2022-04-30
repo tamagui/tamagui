@@ -27,6 +27,8 @@
 
 - 3
   - <Video />, <Spinner />
+  - instead of generating classname strings generate objects
+    - instead of concatClassNames then just object ...
   - fix memory leak causing OOM eventually on site
   - // this can be done with CSS entirely right?
   - useLayout feature hook
@@ -115,3 +117,9 @@
 
 - vscode plugin to highlight the current node your cursors inside of in dom
 - blur prop built in ?
+
+- VSCode - "move to design system" action:
+  - grab a selection of any styled() or functional component
+  - moves it into your design system
+  - updates index.ts there
+  - updates imports in app

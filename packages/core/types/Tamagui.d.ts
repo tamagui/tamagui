@@ -4,6 +4,7 @@ declare class TamaguiManager {
     config: TamaguiInternalConfig | null;
     rnw: Record<string, any>;
     Helpers: typeof Helpers;
+    get insertedRules(): unknown[];
     get allSelectors(): {};
     get allTransforms(): {};
     get identifierToValue(): Map<string, any>;

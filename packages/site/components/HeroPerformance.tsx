@@ -33,10 +33,10 @@ export function HeroPerformance() {
           </HomeH3>
         </YStack>
 
-        <YStack pos="relative" px="$2" h={181} br="$8" width="100%" ai="stretch" jc="center">
+        <YStack pos="relative" px="$2" h={131} br="$8" width="100%" ai="stretch" jc="center">
           <Paragraph
             pos="absolute"
-            b={20}
+            b={-20}
             r={20}
             mt={-20}
             theme="alt3"
@@ -56,9 +56,6 @@ export function HeroPerformance() {
                 { name: 'react-native-web', value: 0.063 },
                 { name: 'Dripsy', value: 0.108 },
                 { name: 'NativeBase', value: 0.73 },
-                { name: 'Stitches', value: 0.037 },
-                { name: 'Emotion', value: 0.069 },
-                { name: 'Styled Components', value: 0.081 },
               ]}
             />
           )}
