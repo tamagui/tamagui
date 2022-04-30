@@ -17,22 +17,16 @@ React['createElement']
 
 export const Popper = ({
   children,
-  triggerRef,
-  onClose,
-  setOverlayRef,
+  ...props
 }: IPopperProps & {
   triggerRef: any
   onClose: any
   setOverlayRef?: (overlayRef: any) => void
 }) => {
+  const pv = Object.values(props)
+  const args = new Array(10).fill(undefined).map((_, i) => pv[i])
   return (
-    <PopperContext.Provider
-      value={useMemo(() => {
-        return { triggerRef, onClose, setOverlayRef }
-      }, [triggerRef, onClose, setOverlayRef])}
-    >
-      {children}
-    </PopperContext.Provider>
+    <PopperContext.Provider value={useMemo(() => props, args)}>{children}</PopperContext.Provider>
   )
 }
 
@@ -69,25 +63,33 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
 
   // Might have performance impact if there are a lot of siblings!
   // Shouldn't be an issue with popovers since it would have at most 2. Arrow and Content.
-  React.Children.forEach(children, (child) => {
-    if (
-      React.isValidElement(child) &&
-      // @ts-ignore
-      child.type.displayName === 'PopperArrow'
-    ) {
-      arrowElement = React.cloneElement(child as any, {
-        ...context,
-        ...arrowProps,
-        ...arrowStyle,
-        placement,
-      })
-    } else {
-      restElements.push(child)
-    }
-  })
+  React.Children.toArray(children)
+    .flatMap((child) => {
+      return React.isValidElement(child) && child.type['displayName'] === 'AnimatePresence'
+        ? child.props.children
+        : child
+    })
+    .map((child) => {
+      if (
+        React.isValidElement(child) &&
+        // @ts-ignore
+        child.type.displayName === 'PopperArrow'
+      ) {
+        arrowElement = React.cloneElement(child as any, {
+          ...context,
+          ...arrowProps,
+          ...arrowStyle,
+          placement,
+        })
+      } else {
+        restElements.push(child)
+      }
+    })
 
   let arrowHeight = 0
   let arrowWidth = 0
+
+  console.log('arrowElement', arrowElement)
 
   if (arrowElement) {
     arrowHeight = defaultArrowHeight
