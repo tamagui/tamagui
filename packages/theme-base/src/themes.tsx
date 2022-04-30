@@ -181,7 +181,7 @@ const lightThemes = createThemesFrom('light', createTheme, {
 
 const darkThemes = createThemesFrom('dark', createTheme, {
   backgrounds: darkGradient,
-  colors: lightGradient.slice(1),
+  colors: lightGradient.slice(2),
   isLight: false,
   shift: 1,
   offsets: {
