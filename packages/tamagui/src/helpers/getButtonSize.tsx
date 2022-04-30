@@ -3,7 +3,7 @@ import { VariantSpreadExtras, getVariableValue, isVariable } from '@tamagui/core
 // for use in button-like things
 
 export const getButtonSize =
-  (sizeX = 0.8, sizeY = 0.333) =>
+  (sizeX = 1, sizeY = 0.333) =>
   (val: any, { tokens, props }: VariantSpreadExtras<any>) => {
     const size = tokens.size[val] ?? tokens.size['$4'] ?? val ?? 14
     const radius = tokens.radius[val] ?? tokens.radius['$4'] ?? size

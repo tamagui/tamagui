@@ -1,4 +1,11 @@
 import { GetProps, GetVariantValues, MediaProps, PseudoProps, StaticConfig, StylableComponent, TamaguiComponent, VariantDefinitions, VariantSpreadFunction } from './types';
+export declare type StyledOptions<ParentComponent extends StylableComponent> = GetProps<ParentComponent> & {
+    name?: string;
+    variants?: VariantDefinitions<ParentComponent> | undefined;
+    defaultVariants?: {
+        [key: string]: any;
+    };
+};
 export declare function styled<ParentComponent extends StylableComponent, Variants extends VariantDefinitions<ParentComponent> | symbol = VariantDefinitions<ParentComponent> | symbol>(Component: ParentComponent, options?: GetProps<ParentComponent> & {
     name?: string;
     variants?: Variants | undefined;
