@@ -1,7 +1,7 @@
 import React from 'react';
 import { IPopperProps } from './types';
 export declare const Popper: {
-    ({ children, triggerRef, onClose, setOverlayRef, }: IPopperProps & {
+    ({ children, ...props }: IPopperProps & {
         triggerRef: any;
         onClose: any;
         setOverlayRef?: ((overlayRef: any) => void) | undefined;

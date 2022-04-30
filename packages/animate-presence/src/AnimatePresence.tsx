@@ -288,3 +288,5 @@ export const AnimatePresence: React.FunctionComponent<
     <>{exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child))}</>
   )
 }
+
+AnimatePresence.displayName = 'AnimatePresence'

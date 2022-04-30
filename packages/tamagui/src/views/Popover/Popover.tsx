@@ -46,7 +46,6 @@ export const Popover = withStaticProperties(
             value ? onOpen && onOpen() : onClose && onClose()
           },
         })
-        console.log('isOpen', isOpen)
 
         const [bodyMounted, setBodyMounted] = React.useState(false)
         const [headerMounted, setHeaderMounted] = React.useState(false)
