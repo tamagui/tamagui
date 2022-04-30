@@ -213,13 +213,7 @@ export const HeroResponsive = memo(() => {
         >
           <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.1} />
           <YStack pos="relative" f={1} h="100%" w="100%">
-            <YStack
-              theme="darker"
-              fullscreen
-              bc="$backgroundFocus"
-              className="mask-gradient-down"
-              zi={-1}
-            >
+            <YStack theme="darker" fullscreen className="mask-gradient-down" zi={-1}>
               <YStack fullscreen className="bg-grid" opacity={0.5} />
             </YStack>
           </YStack>
@@ -232,8 +226,8 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-      <XStack pe="none" y={-80} ai="flex-start">
-        <YStack w={1} h={100} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
+      <XStack pe="none" y={-50} ai="flex-start">
+        <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
         <Button
           borderWidth={1}
           size="$4"

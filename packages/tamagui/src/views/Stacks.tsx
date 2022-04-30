@@ -85,7 +85,7 @@ export const getSizedElevation = (
           return 10
         })()
       : +val
-  const [height, shadowRadius] = [Math.round(num / 3 + 1), Math.round(num / 2 + 2)]
+  const [height, shadowRadius] = [Math.round(num / 4 + 1), Math.round(num / 2 + 2)]
   const shadow = {
     shadowColor: theme.shadowColor,
     shadowRadius,

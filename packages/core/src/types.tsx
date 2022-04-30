@@ -218,6 +218,7 @@ export type TransformStyleProps = {
 // base props that are accepted by createComponent (additional to react-native-web)
 //
 export type TamaguiComponentPropsBase = {
+  space?: SpaceTokens
   dangerouslySetInnerHTML?: { __html: string }
   animation?: AnimationKeys
   animateOnly?: string[]
@@ -234,10 +235,9 @@ export type TamaguiComponentPropsBase = {
   onPressIn?: (e: GestureResponderEvent) => any
   onPressOut?: (e: GestureResponderEvent) => any
   // WEB ONLY
-  onMouseEnter?: (e: GestureResponderEvent) => any
-  // WEB ONLY
-  onMouseLeave?: (e: GestureResponderEvent) => any
-  space?: SpaceTokens
+  onMouseEnter?: (e: MouseEvent) => any
+  onMouseLeave?: (e: MouseEvent) => any
+  onMouseDown?: (e: MouseEvent) => any
 }
 
 type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =

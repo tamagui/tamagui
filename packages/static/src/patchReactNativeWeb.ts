@@ -27,6 +27,7 @@ export function patchReactNativeWeb() {
   // patch to allow className prop
   const patches = [
     {
+      filePath: ['modules', 'createDOMProps', 'index.js'],
       replacee: `  if (dataSet != null) {`,
       replacer: `
   if (props.dataSet && props.dataSet.className) {
@@ -36,15 +37,20 @@ export function patchReactNativeWeb() {
   }
   if (dataSet != null) {`,
     },
+    {
+      filePath: ['modules', 'forwardedProps', 'index.js'],
+      replacee: `dataSet: true,`,
+      replacer: `id: true, dataSet: true,`,
+    },
   ]
 
-  const dataSetPath = ['modules', 'createDOMProps', 'index.js']
-  const dataSetModulePath = path.join(rootDir, 'dist', ...dataSetPath)
-  const dataSetCjsPath = path.join(rootDir, 'dist', 'cjs', ...dataSetPath)
-
-  for (const file of [dataSetModulePath, dataSetCjsPath]) {
-    const contents = fs.readFileSync(file, 'utf-8')
-    for (const { replacee, replacer } of patches) {
+  for (const { filePath, replacee, replacer } of patches) {
+    const files = [
+      path.join(rootDir, 'dist', ...filePath),
+      path.join(rootDir, 'dist', 'cjs', ...filePath),
+    ]
+    for (const file of files) {
+      const contents = fs.readFileSync(file, 'utf-8')
       if (contents.includes(replacer)) {
         continue
       }
@@ -62,6 +68,7 @@ export function patchReactNativeWeb() {
       fs.writeFileSync(file, contents.replace(replacee, replacer))
     }
   }
+
   // if entry files not patched, patch them:
   const moduleEntry = path.join(rootDir, 'dist', 'index.js')
   const moduleEntrySrc = fs.readFileSync(moduleEntry, 'utf-8')

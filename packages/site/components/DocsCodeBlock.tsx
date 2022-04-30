@@ -79,6 +79,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             data-line-numbers={showLineNumbers}
             className={className}
             p={0}
+            mb={0}
             // @ts-ignore
             id={id}
           >

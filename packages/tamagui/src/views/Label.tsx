@@ -5,7 +5,9 @@ import { View } from 'react-native'
 
 import { useComposedRefs } from '../helpers/composeRefs'
 import { createContext } from '../helpers/createContext'
+import { getButtonSize } from '../helpers/getButtonSize'
 import { SizableStack } from './SizableStack'
+import { SizableText } from './SizableText'
 import { XStack } from './Stacks'
 
 const NAME = 'Label'
@@ -20,14 +22,22 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
-export const LabelFrame = styled(SizableStack, {
+export const LabelFrame = styled(SizableText, {
+  name: 'Label',
+  tag: 'label',
   size: '$4',
   backgroundColor: 'transparent',
+  display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
   cursor: 'default',
-  pressable: true,
   pressStyle: {
     backgroundColor: '$backgroundHover',
+  },
+  variants: {
+    size: {
+      '...size': getButtonSize(),
+    },
   },
 })
 
@@ -47,7 +57,6 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>((props, f
       if (htmlFor) {
         const element = document.getElementById(htmlFor)
         const label = ref.current
-        console.log('l', label, element)
         if (label && element) {
           const getAriaLabel = () => element.getAttribute('aria-labelledby')
           const ariaLabelledBy = [id, getAriaLabel()].filter(Boolean).join(' ')
@@ -81,7 +90,9 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>((props, f
         onMouseDown={(event) => {
           props.onMouseDown?.(event)
           // prevent text selection when double clicking label
-          if (!event.defaultPrevented && event.detail > 1) event.preventDefault()
+          if (!event.defaultPrevented && event.detail > 1) {
+            event.preventDefault()
+          }
         }}
         onPress={(event) => {
           props.onPress?.(event)
