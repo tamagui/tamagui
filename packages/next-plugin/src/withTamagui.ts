@@ -3,7 +3,7 @@ import path from 'path'
 import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
-import MiniCSSPlugin from 'mini-css-extract-plugin'
+import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
 import { shouldExclude } from 'tamagui-loader'
@@ -201,16 +201,32 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         const oneOfRule = webpackConfig.module.rules.find((x) => !!x.oneOf)
 
+        const cssLoader = getGlobalCssLoader(
+          // @ts-ignore
+          {
+            assetPrefix: options.config.assetPrefix || config.assetPrefix,
+            future: nextConfig.future,
+            experimental: nextConfig.experimental || {},
+            isClient: !isServer,
+            isServer,
+            isDevelopment: dev,
+          },
+          // @ts-ignore
+          () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
+          []
+        )
+
         if (oneOfRule) {
           if (!dev) {
+            const postCSSLoader = cssLoader[cssLoader.length - 1]
             // replace nextjs picky style rules with simple minicssextract
             oneOfRule.oneOf.unshift({
               test: /\.css$/i,
-              use: [MiniCSSPlugin.loader, 'css-loader'],
+              use: [MiniCSSExtractPlugin.loader, 'css-loader', postCSSLoader],
               sideEffects: true,
             })
             webpackConfig.plugins.push(
-              new MiniCSSPlugin({
+              new MiniCSSExtractPlugin({
                 filename: 'static/css/[name].[contenthash].css',
                 ignoreOrder: true,
                 runtime: false,
@@ -220,20 +236,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             oneOfRule.oneOf.unshift({
               test: /\.css$/i,
               sideEffects: true,
-              use: getGlobalCssLoader(
-                // @ts-ignore
-                {
-                  assetPrefix: options.config.assetPrefix || config.assetPrefix,
-                  future: nextConfig.future,
-                  experimental: nextConfig.experimental || {},
-                  isClient: !isServer,
-                  isServer,
-                  isDevelopment: dev,
-                },
-                // @ts-ignore
-                () => lazyPostCSS(dir, getSupportedBrowsers(dir, dev)),
-                []
-              ),
+              use: cssLoader,
             })
           }
         }

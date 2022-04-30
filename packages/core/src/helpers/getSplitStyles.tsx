@@ -115,9 +115,7 @@ export const getSplitStyles = (
 
   function push() {
     if (!cur) return
-    if (props['debug']) console.log('wut', cur)
     normalizeStyleObject(cur)
-    if (props['debug']) console.log('wut2', cur)
 
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
       console.log('  » getSplitStyles push', cur, state)
