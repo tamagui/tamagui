@@ -27,7 +27,7 @@ export function Community() {
             href="https://twitter.com/tamagui_js"
             target="_blank"
             rel="noopener noreferrer"
-            p="$6"
+            p="$5"
           >
             <svg
               width="30"
@@ -50,7 +50,7 @@ export function Community() {
                 </clipPath>
               </defs>
             </svg>
-            <H4 cursor="pointer" fontFamily="$silkscreen">
+            <H4 debug="verbose" cursor="pointer" fontFamily="$silkscreen">
               Twitter
             </H4>
             <Paragraph cursor="pointer" theme="alt2">
@@ -66,7 +66,7 @@ export function Community() {
             href="https://discord.gg/4qh6tdcVDa"
             target="_blank"
             rel="noopener noreferrer"
-            p="$6"
+            p="$5"
           >
             <DiscordIcon />
             {/* TODO this is using $body for other attributes not $silkscreen */}
@@ -86,7 +86,7 @@ export function Community() {
             href="https://github.com/tamagui/tamagui"
             target="_blank"
             rel="noopener noreferrer"
-            p="$6"
+            p="$5"
           >
             <GithubIcon />
             <H4 cursor="pointer" fontFamily="$silkscreen">

@@ -641,6 +641,8 @@ export function createComponent<
 
     // @ts-ignore
     component.defaultProps = {
+      // keep default variants, for example SizableText set size so the parents get the right attrs
+      ...staticConfig.defaultVariants,
       ...viewProps,
       ...component.defaultProps,
     }

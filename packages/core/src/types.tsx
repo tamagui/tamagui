@@ -177,6 +177,7 @@ export type GenericFont<Key extends number | string = number | string> = {
   family: string | Variable
   style?: Partial<{ [key in Key]: TextStyle['fontStyle'] | Variable }>
   transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
+  color?: Partial<{ [key in Key]: string | Variable }>
 }
 
 // media
@@ -243,7 +244,15 @@ export type TamaguiComponentPropsBase = {
 }
 
 type GetTokenFontKeysFor<
-  A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style'
+  A extends
+    | 'size'
+    | 'weight'
+    | 'letterSpacing'
+    | 'family'
+    | 'lineHeight'
+    | 'transform'
+    | 'style'
+    | 'color'
 > = keyof Tokens['font'][keyof Tokens['font']][A]
 
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
@@ -265,6 +274,7 @@ export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | num
 export type FontWeightTokens =
   | `$${GetTokenFontKeysFor<'weight'>}`
   | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
+export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle']
 export type FontTransformTokens =
@@ -296,6 +306,13 @@ export type ThemeValueByCategory<K extends string | number | symbol> = K extends
   : K extends 'letterSpacing'
   ? FontLetterSpacingTokens
   : {}
+
+type FontKeys = 'fontFamily'
+type FontSizeKeys = 'fontSize'
+type FontWeightKeys = 'fontWeight'
+type FontLetterSpacingKeys = 'letterSpacing'
+type LineHeightKeys = 'lineHeight'
+type ZIndexKeys = 'zIndex'
 
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
@@ -736,18 +753,6 @@ type SizeKeys =
   | 'maxWidth'
   | 'maxHeight'
   | 'shadowRadius'
-
-type FontKeys = 'fontFamily'
-
-type FontSizeKeys = 'fontSize'
-
-type FontWeightKeys = 'fontWeight'
-
-type FontLetterSpacingKeys = 'letterSpacing'
-
-type LineHeightKeys = 'lineHeight'
-
-type ZIndexKeys = 'zIndex'
 
 type ColorKeys =
   | 'color'
