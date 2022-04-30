@@ -1,6 +1,7 @@
 import { H2, H3, styled } from 'tamagui'
 
 export const HomeH2 = styled(H2, {
+  name: 'HomeH2',
   ta: 'center',
   als: 'center',
   size: '$12',
@@ -17,7 +18,7 @@ export const HomeH2 = styled(H2, {
 })
 
 export const HomeH3 = styled(H3, {
-  debug: 'verbose',
+  name: 'HomeH3',
   ta: 'center',
   theme: 'alt4',
   als: 'center',

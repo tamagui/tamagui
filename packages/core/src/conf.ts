@@ -26,7 +26,6 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
   }
 
   if (!globalThis['Tamagui']) {
-    Tamagui.config = conf
     globalThis['Tamagui'] = Tamagui
   }
 }

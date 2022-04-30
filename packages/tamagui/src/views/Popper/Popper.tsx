@@ -63,6 +63,7 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
 
   // Might have performance impact if there are a lot of siblings!
   // Shouldn't be an issue with popovers since it would have at most 2. Arrow and Content.
+  // todo move to more radix style proper context based system
   React.Children.toArray(children)
     .flatMap((child) => {
       return React.isValidElement(child) && child.type['displayName'] === 'AnimatePresence'
@@ -88,8 +89,6 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
 
   let arrowHeight = 0
   let arrowWidth = 0
-
-  console.log('arrowElement', arrowElement)
 
   if (arrowElement) {
     arrowHeight = defaultArrowHeight

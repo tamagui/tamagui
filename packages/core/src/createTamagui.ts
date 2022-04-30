@@ -121,6 +121,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       const theme = { ...config.themes[themeName] }
       config.themes[themeName] = theme
 
+      // console.log('themeName', themeName)
+      // if (themeName === 'light_Drawer') {
+      //   debugger
+      // }
+
       let vars = ''
 
       for (const themeKey in theme) {
@@ -128,6 +133,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           const val = theme[themeKey]
           // TODO sanity check is necessary
           const varName = val instanceof Variable ? val.name : varsByValue[val]?.name
+          console.log('?', themeKey, varName)
           vars += `--${themeKey}:${varName ? createCSSVariable(varName) : `${val}`};`
         }
 

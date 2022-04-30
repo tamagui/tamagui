@@ -585,6 +585,29 @@ declare const baseThemes: {
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
     };
+    dark_Drawer: {
+        background: any;
+        backgroundStronger: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        borderColor: any;
+        borderColorHover: any;
+        borderColorPress: any;
+        borderColorFocus: any;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+    };
     dark_Button: {
         background: any;
         backgroundStronger: any;
@@ -892,6 +915,29 @@ declare const baseThemes: {
     };
     light_active: any;
     light_Card: {
+        background: any;
+        backgroundStronger: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        borderColor: any;
+        borderColorHover: any;
+        borderColorPress: any;
+        borderColorFocus: any;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+    };
+    light_Drawer: {
         background: any;
         backgroundStronger: any;
         backgroundSoft: any;
@@ -3982,6 +4028,29 @@ declare const allThemes: {
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
     };
+    readonly dark_Drawer: {
+        background: any;
+        backgroundStronger: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        borderColor: any;
+        borderColorHover: any;
+        borderColorPress: any;
+        borderColorFocus: any;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+    };
     readonly dark_Button: {
         background: any;
         backgroundStronger: any;
@@ -4289,6 +4358,29 @@ declare const allThemes: {
     };
     readonly light_active: any;
     readonly light_Card: {
+        background: any;
+        backgroundStronger: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        borderColor: any;
+        borderColorHover: any;
+        borderColorPress: any;
+        borderColorFocus: any;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+    };
+    readonly light_Drawer: {
         background: any;
         backgroundStronger: any;
         backgroundSoft: any;

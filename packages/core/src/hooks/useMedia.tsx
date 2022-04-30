@@ -5,13 +5,14 @@ import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
 import {
   ConfigureMediaQueryOptions,
+  MediaPropKeys,
   MediaQueries,
+  MediaQueryKey,
   MediaQueryObject,
-  MediaQueryState,
 } from '../types'
 import { useConstant } from './useConstant'
 
-export const mediaState: { [key in keyof MediaQueryState]: boolean } = {} as any
+export const mediaState: { [key in MediaPropKeys]: boolean } = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
 export const addMediaQueryListener = (key: string, cb: any) => {
@@ -113,6 +114,7 @@ export const useMedia = () => {
     // add new
     for (const key in st.nextSelections) {
       if (!(key in st.selections)) {
+        console.log('lsiten', key)
         addMediaQueryListener(key, forceUpdate)
       }
     }
@@ -135,22 +137,30 @@ export const useMedia = () => {
 
   return useConstant(() => {
     const st = state.current
-    return new Proxy(mediaState, {
-      get(target, key: string) {
-        if (!(key in mediaState)) {
-          return Reflect.get(target, key)
-        }
-        if (!st.isUnmounted) {
-          if (st.isRendering) {
-            st.nextSelections[key] = true
-          }
-        }
-        if (key in mediaState) {
-          return mediaState[key]
-        }
-        return Reflect.get(mediaState, key)
+    return new Proxy(
+      mediaState as {
+        [key in MediaQueryKey]: boolean
       },
-    })
+      {
+        get(target, key: string) {
+          if (key[0] !== '$') {
+            key = `$${key}`
+          }
+          if (!(key in mediaState)) {
+            return Reflect.get(target, key)
+          }
+          if (!st.isUnmounted) {
+            if (st.isRendering) {
+              st.nextSelections[key] = true
+            }
+          }
+          if (key in mediaState) {
+            return mediaState[key]
+          }
+          return Reflect.get(mediaState, key)
+        },
+      }
+    )
   })
 }
 

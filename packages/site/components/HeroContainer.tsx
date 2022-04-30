@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Theme, XStack, YStack, styled } from 'tamagui'
+import { Theme, XStack, YStack, styled } from 'tamagui'
 
 export function HeroContainer({
   children,
@@ -34,46 +34,30 @@ export function HeroContainer({
     >
       {demoMultiple ? (
         <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
-          <XStack space="$6" px="$8">
+          <XStack space="$3" px="$8">
             <Theme name="dark">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
             <Theme name="light">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
             <Theme name="blue">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
             <Theme name="red">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
             <Theme name="pink">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
             <Theme name="orange">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
             <Theme name="green">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
             <Theme name="yellow">
-              <Card mih={200} p="$0">
-                {children}
-              </Card>
+              <Card>{children}</Card>
             </Theme>
           </XStack>
         </XStack>
@@ -83,3 +67,15 @@ export function HeroContainer({
     </YStack>
   )
 }
+
+const Card = styled(YStack, {
+  ai: 'center',
+  jc: 'center',
+  elevation: '$6',
+  y: 0,
+  ov: 'hidden',
+  minWidth: 180,
+  bc: '$background',
+  minHeight: 220,
+  br: '$4',
+})

@@ -9,7 +9,10 @@ export type ThemeableProps = {
   themeInverse?: boolean
 }
 
-export function themeable<Component extends (props: any) => any>(component: Component) {
+export function themeable<Component extends (props: any) => any>(
+  component: Component,
+  opts?: { componentName?: string }
+) {
   const withThemeComponent = forwardRef(function WithTheme(
     { themeInverse, theme, ...rest }: any,
     ref
@@ -18,8 +21,13 @@ export function themeable<Component extends (props: any) => any>(component: Comp
     if (themeInverse) {
       return <ThemeInverse>{element}</ThemeInverse>
     }
-    if (theme) {
-      return <Theme name={(theme as any) || null}>{element}</Theme>
+    if (theme || opts) {
+      console.log('WHAT', opts?.componentName)
+      return (
+        <Theme componentName={opts?.componentName} name={(theme as any) || null}>
+          {element}
+        </Theme>
+      )
     }
     return element
   })

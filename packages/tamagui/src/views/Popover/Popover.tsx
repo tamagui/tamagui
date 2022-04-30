@@ -76,7 +76,7 @@ export const Popover = withStaticProperties(
         }, [])
 
         const childrenElements =
-          typeof children === 'function' ? children({ open: isOpen }) : children
+          typeof children === 'function' ? children({ open: isOpen }) : isOpen ? children : null
 
         const popoverContext = {
           onClose: handleClose,
@@ -100,9 +100,11 @@ export const Popover = withStaticProperties(
                 <PopoverContext.Provider
                   value={useMemo(() => popoverContext, Object.values(popoverContext))}
                 >
-                  <FocusScope contain={trapFocus} restoreFocus autoFocus>
-                    {childrenElements}
-                  </FocusScope>
+                  {childrenElements ? (
+                    <FocusScope contain={trapFocus} restoreFocus autoFocus>
+                      {childrenElements}
+                    </FocusScope>
+                  ) : null}
                 </PopoverContext.Provider>
               </Popper>
             </Overlay>
