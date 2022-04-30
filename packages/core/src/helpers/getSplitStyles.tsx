@@ -46,7 +46,9 @@ export const getSplitStyles = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
-  state: SplitStyleState,
+  state: SplitStyleState & {
+    keepVariantsAsProps?: boolean
+  },
   defaultClassNames?: any
 ) => {
   if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
@@ -171,6 +173,14 @@ export const getSplitStyles = (
         delete cur[keyInit]
       }
       continue
+    }
+
+    if (
+      state.keepVariantsAsProps &&
+      staticConfig.defaultVariants &&
+      keyInit in staticConfig.defaultVariants
+    ) {
+      viewProps[keyInit] = valInit
     }
 
     if (
