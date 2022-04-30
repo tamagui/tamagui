@@ -8,9 +8,7 @@ export const Features = ({ items, ...props }: any) => {
     <YStack space {...props}>
       {items.map((feature, i) => (
         <XStack tag="li" key={i}>
-          <Text color="$green9">
-            <CheckCircle />
-          </Text>
+          <CheckCircle />
           <Paragraph color="$gray11">{feature}</Paragraph>
         </XStack>
       ))}

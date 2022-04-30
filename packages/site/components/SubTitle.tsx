@@ -6,7 +6,16 @@ export const SubTitle = ({ children, ...props }) => {
   const childText = typeof children === 'string' ? children : children.props.children
   return (
     <ThemeReset>
-      <H3 size="$7" theme="alt3" fontWeight="300" tag="p" mb="$2" mt="$0" {...props}>
+      <H3
+        size="$7"
+        letterSpacing={-1}
+        theme="alt3"
+        fontWeight="300"
+        tag="p"
+        mb="$2"
+        mt="$0"
+        {...props}
+      >
         {childText}
       </H3>
     </ThemeReset>

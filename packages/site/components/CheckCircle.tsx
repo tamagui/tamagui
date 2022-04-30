@@ -5,7 +5,7 @@ import { YStack } from 'tamagui'
 export const CheckCircle = () => (
   <YStack
     theme="green"
-    bc="$backgroundHover"
+    bc="$backgroundPress"
     w={25}
     h={25}
     ai="center"

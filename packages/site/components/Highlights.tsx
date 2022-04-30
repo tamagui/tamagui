@@ -34,6 +34,7 @@ export function Highlights({ features, disableLinks }: any) {
     >
       <YStack
         mb="$4"
+        mih={160}
         $gtSm={{
           flex: 1,
           mr: '$5',
@@ -49,7 +50,7 @@ export function Highlights({ features, disableLinks }: any) {
       </YStack>
 
       {!disableLinks && (
-        <YStack space="$4" tag="nav" aria-labelledby="site-component-info-header">
+        <YStack space="$3" tag="nav" aria-labelledby="site-component-info-header">
           <VisuallyHidden>
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
@@ -75,7 +76,7 @@ export function Highlights({ features, disableLinks }: any) {
 
           <Separator />
 
-          <YStack space="$3">
+          <YStack mb="$4" space="$1">
             <Link
               href={`https://github.com/tamagui/tamagui/tree/master/packages/tamagui/src/views/${frontmatter.component}.tsx`}
               target="_blank"
