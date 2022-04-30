@@ -627,6 +627,7 @@ export function createComponent<
       pressIn: false,
       focus: false,
       resolveVariablesAs: 'both',
+      keepVariantsAsProps: true,
     })
 
     const { style, viewProps } = initialSplitStyles
@@ -641,10 +642,14 @@ export function createComponent<
 
     // @ts-ignore
     component.defaultProps = {
-      // keep default variants, for example SizableText set size so the parents get the right attrs
-      ...staticConfig.defaultVariants,
       ...viewProps,
       ...component.defaultProps,
+    }
+    if (staticConfig.componentName === 'H4') {
+      console.log('sada', staticConfig, {
+        ...viewProps,
+        ...component.defaultProps,
+      })
     }
 
     // debug

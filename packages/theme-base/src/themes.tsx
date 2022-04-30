@@ -238,8 +238,6 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
       Object.values(props.colors).slice(isLight ? 0 : 2),
     ] as const
 
-    console.log('wut', i, name, backgrounds, colors)
-
     const scheme = isLight ? 'light' : 'dark'
     const shift = isLight ? 0 : 1
 

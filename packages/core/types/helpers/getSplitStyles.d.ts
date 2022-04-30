@@ -5,7 +5,9 @@ export declare type ClassNamesObject = Record<string, string>;
 export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 export declare const getSplitStyles: (props: {
     [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState, defaultClassNames?: any) => {
+}, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState & {
+    keepVariantsAsProps?: boolean;
+}, defaultClassNames?: any) => {
     viewProps: StackProps;
     style: ViewStyle;
     medias: Record<string, ViewStyle>;
