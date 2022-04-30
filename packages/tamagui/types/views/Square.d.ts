@@ -5,6 +5,7 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -19,6 +20,7 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -33,6 +35,7 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -47,6 +50,7 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;

@@ -3,7 +3,8 @@ import { View } from 'react-native';
 export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "size" | "focusable" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+}, "fontFamily" | "size" | "focusable" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -15,7 +16,8 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<(Omit<
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "size" | "focusable" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+}, "fontFamily" | "size" | "focusable" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -27,7 +29,8 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<(Omit<
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "size" | "focusable" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+}, "fontFamily" | "size" | "focusable" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -40,6 +43,7 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<(Omit<
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -54,6 +58,7 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<(Omit<
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -68,6 +73,7 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<(Omit<
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -82,6 +88,7 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<(Omit<
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
+    fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;

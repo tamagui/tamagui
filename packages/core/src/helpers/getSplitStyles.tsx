@@ -36,21 +36,6 @@ const skipProps = {
   debug: true,
 }
 
-function normalizeStyleObject(style: any) {
-  // fix flex to match web
-  // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-  if (typeof style.flex === 'number') {
-    const val = style.flex
-    delete style.flex
-    style.flexGrow = style.flexGrow ?? val
-    style.flexShrink = style.flexShrink ?? 1
-  }
-
-  if (!isWeb) {
-    fixNativeShadow(style)
-  }
-}
-
 type TransformNamespaceKey = 'transform' | PsuedoPropKeys | MediaQueryKey
 
 // TODO can make a few of these objects lazy if profiling seems slow
@@ -62,8 +47,12 @@ export const getSplitStyles = (
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
   state: SplitStyleState,
-  defaultClassNames?: ClassNamesObject | null
+  defaultClassNames?: any
 ) => {
+  if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+    console.log('  » getSplitStyles', { props, state, defaultClassNames })
+  }
+
   conf = conf || getConfig()
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
@@ -109,7 +98,7 @@ export const getSplitStyles = (
       }
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
         // prettier-ignore
-        console.log('mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
+        console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
       }
       if (process.env.NODE_ENV === 'development') {
         if (!transform) {
@@ -126,10 +115,12 @@ export const getSplitStyles = (
 
   function push() {
     if (!cur) return
+    if (props['debug']) console.log('wut', cur)
     normalizeStyleObject(cur)
+    if (props['debug']) console.log('wut2', cur)
 
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-      console.log('push style', cur, state)
+      console.log('  » getSplitStyles push', cur, state)
     }
 
     if (isWeb && !state.noClassNames) {
@@ -208,7 +199,7 @@ export const getSplitStyles = (
     const expanded = out === true || !out ? [[keyInit, valInit]] : Object.entries(out)
 
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-      console.log('split style', keyInit, expanded)
+      console.log('  » getSplitStyles', keyInit, expanded)
     }
 
     for (const [key, val] of expanded) {
@@ -269,7 +260,7 @@ export const getSplitStyles = (
         const mediaStyle = getSubStyle(val, staticConfig, theme, props, state)
 
         if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-          console.log('mediaStyle', mediaKey, mediaStyle, props)
+          console.log('  » getSplitStyles mediaStyle', mediaKey, mediaStyle, props)
         }
 
         const shouldDoClasses = isWeb && !state.noClassNames
@@ -335,7 +326,7 @@ export const getSplitStyles = (
   }
 
   if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-    console.log('out', { style, pseudos, medias, classNames, viewProps, state })
+    console.log('  » getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state })
   }
 
   return {
@@ -377,4 +368,19 @@ export const getSubStyle = (
   }
   normalizeStyleObject(styleOut)
   return styleOut
+}
+
+export function normalizeStyleObject(style: any) {
+  // fix flex to match web
+  // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+  if (typeof style.flex === 'number') {
+    const val = style.flex
+    delete style.flex
+    style.flexGrow = style.flexGrow ?? val
+    style.flexShrink = style.flexShrink ?? 1
+  }
+
+  if (!isWeb) {
+    fixNativeShadow(style)
+  }
 }

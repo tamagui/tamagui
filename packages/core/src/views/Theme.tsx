@@ -39,7 +39,7 @@ export const Theme = memo(function Theme(props: ThemeProps) {
 
   if (isWeb) {
     return (
-      <div
+      <span
         className={[
           `tui_Theme`,
           ...(!props.disableThemeClass ? [props.className, className].filter(Boolean) : []),
@@ -51,7 +51,7 @@ export const Theme = memo(function Theme(props: ThemeProps) {
         }}
       >
         {contents}
-      </div>
+      </span>
     )
   }
 
