@@ -33,7 +33,7 @@ export default function Home() {
           Search Docs...
         </SearchButton>
       </XStack>
-      <YStack elevation="$5" py="$8" pb="$9">
+      <YStack shac="$shadowColorHover" shar="$1" py="$8" pb="$9">
         <HeroBelow />
       </YStack>
       <Separator borderStyle="dotted" />

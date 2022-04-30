@@ -728,7 +728,14 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
  * --------------------------------------------
  */
 
-type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight'
+type SizeKeys =
+  | 'width'
+  | 'height'
+  | 'minWidth'
+  | 'minHeight'
+  | 'maxWidth'
+  | 'maxHeight'
+  | 'shadowRadius'
 
 type FontKeys = 'fontFamily'
 
