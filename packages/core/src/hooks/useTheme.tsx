@@ -89,6 +89,9 @@ export const useTheme = (
           }
           return Reflect.get(_, key)
         }
+        if (typeof key !== 'string' || key === '$typeof') {
+          return Reflect.get(_, key)
+        }
         if (process.env.NODE_ENV === 'development') {
           if (key === '__state') {
             return state.current

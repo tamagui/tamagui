@@ -1,8 +1,6 @@
-// debug
 import { EnsureFlexed, H4, Paragraph, XStack, YStack } from 'tamagui'
 
 import { Card } from './Card'
-import { CocentricCircles } from './CocentricCircles'
 import { ContainerLarge } from './Container'
 import { DiscordIcon } from './DiscordIcon'
 import { GithubIcon } from './GithubIcon'
@@ -10,7 +8,7 @@ import { HomeH2, HomeH3 } from './HomeH2'
 
 export function Community() {
   return (
-    <ContainerLarge my="$-4" space="$6">
+    <ContainerLarge my="$-6" space="$6">
       <YStack zi={1} space="$2">
         <HomeH2>Get involved</HomeH2>
         <HomeH3>Join the community on these platforms</HomeH3>

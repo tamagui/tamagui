@@ -128,6 +128,10 @@ export const getSplitStyles = (
     if (!cur) return
     normalizeStyleObject(cur)
 
+    if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+      console.log('push style', cur, state)
+    }
+
     if (isWeb && !state.noClassNames) {
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
@@ -169,12 +173,7 @@ export const getSplitStyles = (
     let isMedia = keyInit[0] === '$'
     let isPseudo = validPseudoKeys[keyInit]
 
-    if (
-      // isPropClassName
-      keyInit === 'className' ||
-      // isExtractedClassName
-      (validStyleProps[keyInit] && valInit && valInit[0] === '_')
-    ) {
+    if (keyInit === 'className' || (validStyleProps[keyInit] && valInit && valInit[0] === '_')) {
       push()
       mergeClassName(keyInit, valInit)
       if (cur) {
@@ -268,6 +267,10 @@ export const getSplitStyles = (
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
         const mediaStyle = getSubStyle(val, staticConfig, theme, props, state)
+
+        if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+          console.log('mediaStyle', mediaKey, mediaStyle, props)
+        }
 
         const shouldDoClasses = isWeb && !state.noClassNames
         if (shouldDoClasses) {

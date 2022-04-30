@@ -3,17 +3,8 @@ import { stylePropsView } from '@tamagui/helpers'
 import { StaticConfig, StaticConfigParsed, StylableComponent } from '../types'
 import { createPropMapper } from './createPropMapper'
 
-export function extendStaticConfig(
-  // can be undefined when loading with @tamagui/fake-react-native
-  // could be fixed a bit cleaner
-  parent?: StylableComponent,
-  config: StaticConfig = {}
-): StaticConfigParsed | null {
-  if (!parent) {
-    throw new Error('no parent')
-  }
-
-  if (!('staticConfig' in parent)) {
+export function extendStaticConfig(config: Partial<StaticConfig>, parent?: StylableComponent) {
+  if (!parent || !('staticConfig' in parent)) {
     return parseStaticConfig(config)
   }
 
@@ -59,7 +50,7 @@ export function extendStaticConfig(
   })
 }
 
-export const parseStaticConfig = (config: StaticConfig): StaticConfigParsed => {
+export const parseStaticConfig = (config: Partial<StaticConfig>): StaticConfigParsed => {
   return {
     ...config,
     parsed: true,

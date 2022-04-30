@@ -1,7 +1,6 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import type { TamaguiInternalConfig } from '@tamagui/core'
-import { getStylesAtomic, mediaObjectToString } from '@tamagui/core-node'
+import { TamaguiInternalConfig, getStylesAtomic, mediaObjectToString } from '@tamagui/core-node'
 import { ViewStyle } from 'react-native'
 
 import { MEDIA_SEP } from '../constants'

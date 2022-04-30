@@ -1,3 +1,4 @@
+// debug
 import { ArrowRight } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { memo } from 'react'
@@ -67,7 +68,6 @@ const HeroTop = memo(() => {
             size="$9"
             als="center"
             maw={500}
-            debug
             $gtSm={{
               mx: 0,
               maxWidth: 800,

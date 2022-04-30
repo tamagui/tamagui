@@ -8,8 +8,6 @@ import React, {
   memo,
   useCallback,
   useContext,
-  useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -22,20 +20,21 @@ import { rnw } from './constants/rnw'
 import { isVariable } from './createVariable'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import { ClassNamesObject, SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
+import { SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
-  PseudoStyles,
   SpaceTokens,
   StackProps,
   StaticConfig,
   StaticConfigParsed,
+  StylableComponent,
   TamaguiComponent,
   TamaguiComponentState,
+  TamaguiConfig,
   TamaguiInternalConfig,
   UseAnimationHook,
 } from './types'
@@ -61,44 +60,37 @@ if (typeof document !== 'undefined') {
   })
 }
 
-const useMemoDebug = (cb, args) => {
-  const key = useRef(`${Math.random()}`)
-  console.log('render', key.current)
-  return useMemo(() => {
-    console.log('memo update', key.current)
-    return cb()
-  }, args)
+// mutates
+function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: TamaguiConfig) {
+  // they are defined in correct order already { ...parent, ...child }
+  for (const key in defaultProps) {
+    defaultProps[shorthands[key] || key] = defaultProps[key]
+  }
 }
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
   Ref = View,
   BaseProps = never
->(configIn: Partial<StaticConfig> | StaticConfigParsed) {
-  let staticConfig: StaticConfigParsed
-  if ('parsed' in configIn) {
-    staticConfig = configIn
-  } else {
-    staticConfig = parseStaticConfig(configIn)
-  }
+>(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent) {
+  const staticConfig = (() => {
+    const config = extendStaticConfig(configIn, ParentComponent)
+    if ('parsed' in config) {
+      return config
+    } else {
+      return parseStaticConfig(config)
+    }
+  })()
 
-  const { Component, validStyles, isText, isZStack, componentName } = staticConfig
-  const componentClassName = `is_${componentName}`
-  const validStyleProps = validStyles || stylePropsView
-
-  // split out default styles vs props so we can assign it to component.defaultProps
+  const componentClassName = `is_${staticConfig.componentName}`
   let tamaguiConfig: TamaguiInternalConfig
   let AnimatedText: any
   let AnimatedView: any
   let avoidClasses = true
-
-  // web uses className, native uses style
-  let defaultPseudos: PseudoStyles = {}
   let defaultNativeStyle: any
-  let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }> | null = null
-  let defaultsClassName: ClassNamesObject | null = null
+  let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }>
   let initialTheme: any
-  let defaultSplitStyleResult: SplitStyleResult | null = null
+  let initialSplitStyles: SplitStyleResult
 
   function addPseudoToStyles(styles: any[], name: string, pseudos: any) {
     // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
@@ -107,7 +99,7 @@ export function createComponent<
     if (pseudoStyle) {
       styles.push(shouldNestObject ? { [name]: pseudoStyle } : pseudoStyle)
     }
-    const defaultPseudoStyle = defaultPseudos[name]
+    const defaultPseudoStyle = initialSplitStyles.pseudos[name]
     if (defaultPseudoStyle) {
       styles.push(shouldNestObject ? { [name]: defaultPseudoStyle } : defaultPseudoStyle)
     }
@@ -115,10 +107,12 @@ export function createComponent<
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
+    const { Component, componentName, isText, isZStack } = staticConfig
+
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.warn(componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
+        console.warn(staticConfig.componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
         // keep separate react native warn touches every value on prop causing weird behavior
         console.log('props in:', props)
         if (props['debug'] === 'break') debugger
@@ -126,7 +120,7 @@ export function createComponent<
     }
 
     const forceUpdate = useForceUpdate()
-    const theme = useTheme(props.theme, componentName, props, forceUpdate)
+    const theme = useTheme(props.theme, staticConfig.componentName, props, forceUpdate)
     const [state, set_] = useState<TamaguiComponentState>(defaultComponentState)
     const setStateShallow = createShallowUpdate(set_)
 
@@ -136,7 +130,7 @@ export function createComponent<
       staticConfig,
       theme,
       shouldAvoidClasses ? { ...state, noClassNames: true, resolveVariablesAs: 'value' } : state,
-      shouldAvoidClasses ? null : defaultsClassName
+      shouldAvoidClasses ? null : initialSplitStyles.classNames
     )
 
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitStyles
@@ -324,18 +318,7 @@ export function createComponent<
       }
     }
 
-    // TODO i think can still render this first part using reanimated
-    // that way we get some of the classnames we probably want here (componentName/font/etc)
-    // can just remove  && !shouldAvoidClasses and add in a viewProps.style = styles in isWeb
-
     if (isWeb) {
-      // const hasntSetInitialAnimationState = props.animation && !state.animation
-      // const disableInsertStyles = hasntSetInitialAnimationState || shouldAvoidClasses || false
-      // const stylesClassNames = useStylesAsClassname(
-      //   Array.isArray(styles) ? styles : [styles],
-      //   disableInsertStyles,
-      //   props.debug
-      // )
       if (!shouldAvoidClasses) {
         const fontFamilyName = isText
           ? props.fontFamily || staticConfig.defaultProps.fontFamily
@@ -358,7 +341,7 @@ export function createComponent<
         if (process.env.NODE_ENV === 'development') {
           if (props['debug']) {
             // prettier-ignore
-            console.log('  » className', { isStringElement, pseudos, state, defaultsClassName, classNames, propsClassName: props.className, style, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
+            console.log('  » className', { isStringElement, pseudos, state, classNames, propsClassName: props.className, style, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
           }
         }
         viewProps.className = className
@@ -409,9 +392,10 @@ export function createComponent<
     }
 
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
+    const initialPseudos = initialSplitStyles.pseudos
     const attachPress = !!(
       (pseudos && pseudos.pressStyle) ||
-      (defaultPseudos && defaultPseudos.pressStyle) ||
+      (initialPseudos && initialPseudos.pressStyle) ||
       onPress ||
       onPressOut ||
       onPressIn
@@ -521,7 +505,7 @@ export function createComponent<
             children,
             space,
             flexDirection: props.flexDirection || staticConfig.defaultProps?.flexDirection,
-            isZStack: isZStack,
+            isZStack,
           }),
           getThemeManagerIfChanged(theme)
         )
@@ -598,7 +582,7 @@ export function createComponent<
       if (props['debug']) {
         viewProps['debug'] = true
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, defaultsClassName, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, defaultSplitStyleResult, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
       }
     }
 
@@ -614,6 +598,8 @@ export function createComponent<
     return content
   })
 
+  component.displayName = staticConfig.componentName
+
   // Once configuration is run and all components are registered
   // get default props + className and analyze styles
   onConfiguredOnce((conf) => {
@@ -621,33 +607,26 @@ export function createComponent<
       // in static mode we just use these to lookup configuration
       return
     }
+
     tamaguiConfig = conf
+
+    // do this to make sure shorthands don't duplicate with.. longhands
+    mergeShorthands(staticConfig, tamaguiConfig)
+
     avoidClasses = !!tamaguiConfig.animations?.avoidClasses
     AnimatedText = tamaguiConfig.animations?.Text
     AnimatedView = tamaguiConfig?.animations?.View
     initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
-    defaultSplitStyleResult = getSplitStyles(
-      staticConfig.defaultProps,
-      staticConfig,
-      initialTheme,
-      {
-        mounted: true,
-        hover: false,
-        press: false,
-        pressIn: false,
-        focus: false,
-        resolveVariablesAs: 'both',
-      }
-    )
+    initialSplitStyles = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, {
+      mounted: true,
+      hover: false,
+      press: false,
+      pressIn: false,
+      focus: false,
+      resolveVariablesAs: 'both',
+    })
 
-    const { classNames, pseudos, style, viewProps } = defaultSplitStyleResult
-
-    if (isWeb) {
-      defaultsClassName = classNames
-    }
-
-    // for use in animations + native
-    defaultPseudos = pseudos
+    const { style, viewProps } = initialSplitStyles
     defaultNativeStyle = {}
     for (const key in style) {
       const v = style[key]
@@ -657,8 +636,6 @@ export function createComponent<
       base: defaultNativeStyle,
     })
 
-    component.displayName = staticConfig.componentName
-
     // @ts-ignore
     component.defaultProps = {
       ...viewProps,
@@ -666,16 +643,12 @@ export function createComponent<
     }
 
     // debug
-    if (process.env.NODE_ENV === 'development') {
-      if (staticConfig.defaultProps?.debug) {
-        // @ts-ignore
-        component.defaultProps.debug = true
-        if (process.env.IS_STATIC !== 'is_static') {
-          console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
-            staticConfig,
-            defaultSplitStyleResult,
-          })
-        }
+    if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.debug) {
+      if (process.env.IS_STATIC !== 'is_static') {
+        console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
+          staticConfig,
+          initialSplitStyles,
+        })
       }
     }
   })
@@ -686,25 +659,29 @@ export function createComponent<
     res = memo(res) as any
   }
 
+  res['staticConfig'] = {
+    validStyles: staticConfig.validStyles || stylePropsView,
+    ...staticConfig,
+  }
+
   if (process.env.NODE_ENV === 'development') {
     res['whyDidYouRender'] = true
   }
 
-  res['staticConfig'] = {
-    validStyles: validStyleProps,
-    ...staticConfig,
-  }
-
   // res.extractable HoC
-  res['extractable'] = (Component: any, conf?: StaticConfig) => {
-    Component['staticConfig'] = extendStaticConfig(res, {
-      ...conf,
-      neverFlatten: true,
-      defaultProps: {
-        ...Component.defaultProps,
-        ...conf?.defaultProps,
+  res['extractable'] = (Component: any, conf?: Partial<StaticConfig>) => {
+    Component['staticConfig'] = extendStaticConfig(
+      {
+        Component,
+        ...conf,
+        neverFlatten: true,
+        defaultProps: {
+          ...Component.defaultProps,
+          ...conf?.defaultProps,
+        },
       },
-    })
+      res
+    )
     return Component
   }
 

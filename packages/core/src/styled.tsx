@@ -1,7 +1,6 @@
 import { Image, Text, TextInput } from 'react-native'
 
 import { createComponent } from './createComponent'
-import { extendStaticConfig } from './helpers/extendStaticConfig'
 import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,
@@ -29,7 +28,7 @@ export function styled<
     // thought i had this typed, but can't get it linked
     defaultVariants?: { [key: string]: any }
   },
-  staticExtractionOptions?: StaticConfig
+  staticExtractionOptions?: Partial<StaticConfig>
 ) {
   const staticConfigProps = (() => {
     if (options) {
@@ -43,7 +42,7 @@ export function styled<
       const isImage = !!(defaultProps.isImage || (!isTamagui ? Comp === Image : false))
       const isInput = !!(defaultProps.isInput || (!isTamagui ? Comp === TextInput : false))
       const isText = !!(defaultProps.isText || (!isTamagui ? isInput || Comp === Text : false))
-      const conf: StaticConfig = {
+      const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
         ...(!isTamagui && {
           Component: Comp,
@@ -64,8 +63,8 @@ export function styled<
     }
     return {}
   })()
-  const config = extendStaticConfig(Component, staticConfigProps)
-  const component = createComponent(config!) // error is good here its on init
+
+  const component = createComponent(staticConfigProps, Component)
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
   type ParentPropsBase = ParentComponent extends TamaguiComponent<any, any, infer P>

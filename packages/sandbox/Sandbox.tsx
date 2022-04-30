@@ -1,11 +1,7 @@
-// debug-verbose
-
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { ArrowLeft, ArrowRight } from '@tamagui/feather-icons'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated'
-import { Button, Circle, H1, Square, Theme, VisuallyHidden, XStack, YStack, styled } from 'tamagui'
-import { Image } from 'tamagui'
+import React, { useState } from 'react'
+import { Button, H1, Image, Theme, VisuallyHidden, XStack, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
