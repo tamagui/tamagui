@@ -7,8 +7,6 @@ import { ExternalIcon } from './ExternalIcon'
 
 export function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItemProps) {
   const isExternal = href.startsWith('http')
-
-  console.log('href', href)
   return (
     <NextLink href={href} passHref>
       <XStack

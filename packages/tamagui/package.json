@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.0.0-beta.179+ce1cab5d",
+  "version": "1.0.0-beta.181+fff2a5b2",
   "sideEffects": [
     "*.css",
     "polyfills.ts"
@@ -29,14 +29,14 @@
     "@react-native-aria/focus": "^0.2.5",
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
-    "@tamagui/animate-presence": "^1.0.0-beta.179+ce1cab5d",
-    "@tamagui/core": "^1.0.0-beta.179+ce1cab5d",
+    "@tamagui/animate-presence": "^1.0.0-beta.181+fff2a5b2",
+    "@tamagui/core": "^1.0.0-beta.181+fff2a5b2",
     "@tamagui/expo-linear-gradient": "11.2.7",
-    "@tamagui/fake-react-native": "^1.0.0-beta.179+ce1cab5d",
-    "@tamagui/helpers": "^1.0.0-beta.179+ce1cab5d",
-    "@tamagui/use-controllable-state": "^1.0.0-beta.179+ce1cab5d",
-    "@tamagui/use-debounce": "^1.0.0-beta.179+ce1cab5d",
-    "@tamagui/use-force-update": "^1.0.0-beta.179+ce1cab5d",
+    "@tamagui/fake-react-native": "^1.0.0-beta.181+fff2a5b2",
+    "@tamagui/helpers": "^1.0.0-beta.181+fff2a5b2",
+    "@tamagui/use-controllable-state": "^1.0.0-beta.181+fff2a5b2",
+    "@tamagui/use-debounce": "^1.0.0-beta.181+fff2a5b2",
+    "@tamagui/use-force-update": "^1.0.0-beta.181+fff2a5b2",
     "react": "*",
     "react-dom": "*",
     "react-native-safe-area-context": "^3.3.2"
@@ -45,10 +45,10 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.179+ce1cab5d",
+    "@tamagui/build": "^1.0.0-beta.181+fff2a5b2",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "react-native-web": "^0.17.5"
   },
-  "gitHead": "ce1cab5d615eda84d71404e9bc6478140ac7699e"
+  "gitHead": "fff2a5b25ea3881d499e5376cd166f58556acaba"
 }

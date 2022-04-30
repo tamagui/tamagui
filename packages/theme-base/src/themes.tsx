@@ -181,11 +181,11 @@ const lightThemes = createThemesFrom('light', createTheme, {
 
 const darkThemes = createThemesFrom('dark', createTheme, {
   backgrounds: darkGradient,
-  colors: lightGradient,
+  colors: lightGradient.slice(1),
   isLight: false,
   shift: 1,
   offsets: {
-    color: [0, 6, 7, 7, 7, 7],
+    color: [0, 4, 5, 5, 5, 5],
   },
 })
 
@@ -228,18 +228,28 @@ type ColorThemeNames =
   | AltName<`dark_${ColorNames}`, AltKeys>
 
 const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) => {
-  const [altLightThemes, altDarkThemes] = [colors, darkColors].map((colors, i) => {
+  const [altLightThemes, altDarkThemes] = [
+    { colors: darkColors, backgrounds: colors },
+    { colors, backgrounds: darkColors },
+  ].map((props, i) => {
     const isLight = i === 0
+    const [backgrounds, colors] = [
+      Object.values(props.backgrounds),
+      Object.values(props.colors).slice(isLight ? 0 : 2),
+    ] as const
+
+    console.log('wut', i, name, backgrounds, colors)
+
     const scheme = isLight ? 'light' : 'dark'
     const shift = isLight ? 0 : 1
 
-    let backgrounds = Object.values(colors) as any[]
     if (!isLight) {
-      const [_, h, sp, lp] = backgrounds[0].match(/hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/)
+      const [_, h, sp, lp] = backgrounds[0].match(/hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/)!
       backgrounds.unshift(`hsl(${h}, ${sp}%, ${parseFloat(lp) / 2}%)`)
     }
 
     const themeWithAlts = createThemesFrom(name, createTheme, {
+      colors,
       backgrounds,
       isLight,
       shift,

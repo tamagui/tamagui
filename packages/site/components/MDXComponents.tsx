@@ -140,16 +140,7 @@ export const components = {
   h4: (props) => <H5 mt="$5" {...props} />,
   h5: (props) => <H6 mt="$5" {...props} />,
 
-  p: (props) => (
-    <Paragraph
-      // color="$colorHover"
-      className="paragraph"
-      display="block"
-      mb="$2"
-      mt="$2"
-      {...props}
-    />
-  ),
+  p: (props) => <Paragraph className="paragraph" display="block" mb="$2" mt="$2" {...props} />,
 
   a: ({ href = '', children, ...props }) => {
     return (
