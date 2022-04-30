@@ -11,7 +11,7 @@ export const createInterFont = <A extends GenericFont<keyof typeof size>>(
         : 'Inter',
     size,
     lineHeight: Object.fromEntries(
-      Object.entries(font.size || size).map(([k, v]) => [k, getVariableValue(v) * 1.1 + 9])
+      Object.entries(font.size || size).map(([k, v]) => [k, getVariableValue(v) * 1.1 + 10])
     ),
     weight: {
       4: '300',

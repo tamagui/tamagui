@@ -146,8 +146,8 @@ export const components = {
       // color="$colorHover"
       className="paragraph"
       display="block"
-      mb="$1"
-      mt="$1"
+      mb="$2"
+      mt="$2"
       {...props}
     />
   ),
