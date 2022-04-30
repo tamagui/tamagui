@@ -175,6 +175,8 @@ export type GenericFont<Key extends number | string = number | string> = {
   letterSpacing: Partial<{ [key in Key]: number | Variable }>
   weight: Partial<{ [key in Key]: number | string | Variable }>
   family: string | Variable
+  style?: Partial<{ [key in Key]: TextStyle['fontStyle'] | Variable }>
+  transform?: Partial<{ [key in Key]: TextStyle['textTransform'] | Variable }>
 }
 
 // media
@@ -240,19 +242,14 @@ export type TamaguiComponentPropsBase = {
   onMouseDown?: (e: MouseEvent) => any
 }
 
-type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> =
-  keyof Tokens['font'][keyof Tokens['font']][A]
+type GetTokenFontKeysFor<
+  A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style'
+> = keyof Tokens['font'][keyof Tokens['font']][A]
 
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
+// base tokens
 export type SizeTokens = GetTokenString<keyof Tokens['size']> | number
-export type FontTokens = GetTokenString<keyof Tokens['font']>
-export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
-export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
-export type FontWeightTokens =
-  | `$${GetTokenFontKeysFor<'weight'>}`
-  | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
-export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number
 export type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean
 export type ColorTokens =
   | GetTokenString<keyof Tokens['color']>
@@ -260,6 +257,19 @@ export type ColorTokens =
   | CSSColorNames
 export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
+
+// font tokens
+export type FontTokens = GetTokenString<keyof Tokens['font']>
+export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
+export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
+export type FontWeightTokens =
+  | `$${GetTokenFontKeysFor<'weight'>}`
+  | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
+export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number
+export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle']
+export type FontTransformTokens =
+  | `$${GetTokenFontKeysFor<'transform'>}`
+  | TextStyle['textTransform']
 
 //
 // adds theme short values to relevant props
@@ -592,10 +602,12 @@ type GetGenericComponentTamaguiProps<P> = P &
 
 export type SpreadKeys =
   | '...fontSize'
-  | '...size'
-  | '...color'
+  | '...fontStyle'
+  | '...fontTransform'
   | '...lineHeight'
   | '...letterSpacing'
+  | '...size'
+  | '...color'
   | '...zIndex'
   | '...theme'
   | '...radius'
@@ -619,6 +631,10 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
               ? ColorVariantSpreadFunction<MyProps>
               : Key extends '...lineHeight'
               ? FontLineHeightVariantSpreadFunction<MyProps>
+              : Key extends '...fontTransform'
+              ? FontTransformVariantSpreadFunction<MyProps>
+              : Key extends '...fontStyle'
+              ? FontStyleVariantSpreadFunction<MyProps>
               : Key extends '...letterSpacing'
               ? FontLetterSpacingVariantSpreadFunction<MyProps>
               : Key extends '...zIndex'
@@ -693,6 +709,14 @@ export type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpr
 export type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
   FontLetterSpacingTokens
+>
+export type FontStyleVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+  A,
+  FontStyleTokens
+>
+export type FontTransformVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
+  A,
+  FontTransformTokens
 >
 export type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>
 export type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, RadiusTokens>

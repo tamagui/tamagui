@@ -13,6 +13,8 @@ export {
   CreateTamaguiConfig,
   CreateTamaguiProps,
   FontLetterSpacingTokens,
+  FontStyleTokens,
+  FontTransformTokens,
   FontLineHeightTokens,
   FontSizeTokens,
   FontTokens,

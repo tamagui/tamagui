@@ -112,6 +112,12 @@ export declare type GenericFont<Key extends number | string = number | string> =
         [key in Key]: number | string | Variable;
     }>;
     family: string | Variable;
+    style?: Partial<{
+        [key in Key]: TextStyle['fontStyle'] | Variable;
+    }>;
+    transform?: Partial<{
+        [key in Key]: TextStyle['textTransform'] | Variable;
+    }>;
 };
 export declare type MediaKeys = keyof Media;
 export declare type MediaQueryObject = {
@@ -170,18 +176,20 @@ export declare type TamaguiComponentPropsBase = {
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
 };
-declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
+declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style'> = keyof Tokens['font'][keyof Tokens['font']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
+export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
+export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
+export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
+export declare type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
 export declare type FontTokens = GetTokenString<keyof Tokens['font']>;
 export declare type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
 export declare type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
 export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
 export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
-export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
-export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
-export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
-export declare type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
+export declare type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle'];
+export declare type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | TextStyle['textTransform'];
 export declare type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
 export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
     width: SpaceTokens;
@@ -293,11 +301,11 @@ export declare type StylableComponent = TamaguiComponent | React.Component | Rea
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
 export declare type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends React.Component<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
 declare type GetGenericComponentTamaguiProps<P> = P & Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>;
-export declare type SpreadKeys = '...fontSize' | '...size' | '...color' | '...lineHeight' | '...letterSpacing' | '...zIndex' | '...theme' | '...radius';
+export declare type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...color' | '...zIndex' | '...theme' | '...radius';
 export declare type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, MyProps extends Object = GetProps<Parent>, Val = any> = VariantDefinitionFromProps<MyProps, Val>;
 export declare type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
-        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
+        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
     } & {
         [Key in string | number]?: MyProps | VariantSpreadFunction<MyProps, Val>;
     } & {
@@ -327,6 +335,8 @@ export declare type SizeVariantSpreadFunction<A extends PropLike> = VariantSprea
 export declare type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ColorTokens>;
 export declare type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLineHeightTokens>;
 export declare type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLetterSpacingTokens>;
+export declare type FontStyleVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontStyleTokens>;
+export declare type FontTransformVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontTransformTokens>;
 export declare type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>;
 export declare type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, RadiusTokens>;
 export declare type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ThemeTokens>;
