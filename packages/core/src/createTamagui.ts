@@ -133,7 +133,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           const val = theme[themeKey]
           // TODO sanity check is necessary
           const varName = val instanceof Variable ? val.name : varsByValue[val]?.name
-          console.log('?', themeKey, varName)
           vars += `--${themeKey}:${varName ? createCSSVariable(varName) : `${val}`};`
         }
 

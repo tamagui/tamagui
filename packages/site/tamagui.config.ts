@@ -20,7 +20,7 @@ const headingFont = createInterFont({
   },
   letterSpacing: {
     5: 2,
-    6: 0,
+    6: 1,
     7: 0,
     8: -1,
     9: -2,
@@ -30,7 +30,12 @@ const headingFont = createInterFont({
     15: -6,
   },
 })
-const bodyFont = createInterFont()
+const bodyFont = createInterFont(
+  {},
+  {
+    sizeLineHeight: (size) => size + 14,
+  }
+)
 const firaFont = createFiraMonoFont()
 
 const tokens = createTokens({

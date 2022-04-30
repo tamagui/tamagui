@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/babel-plugin",
-  "version": "1.0.0-beta.179+ce1cab5d",
+  "version": "1.0.0-beta.181+fff2a5b2",
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -25,11 +25,11 @@
     "@babel/helper-plugin-utils": "^7.14.5",
     "@babel/template": "*",
     "@babel/traverse": "^7.15.4",
-    "@tamagui/static": "^1.0.0-beta.179+ce1cab5d"
+    "@tamagui/static": "^1.0.0-beta.181+fff2a5b2"
   },
   "devDependencies": {
     "@babel/types": "^7.15.6",
-    "@tamagui/build": "^1.0.0-beta.179+ce1cab5d"
+    "@tamagui/build": "^1.0.0-beta.181+fff2a5b2"
   },
-  "gitHead": "ce1cab5d615eda84d71404e9bc6478140ac7699e"
+  "gitHead": "fff2a5b25ea3881d499e5376cd166f58556acaba"
 }

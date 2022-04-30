@@ -11,7 +11,7 @@ export const createSilkscreenFont = <A extends GenericFont<keyof typeof size>>(
         : 'Silkscreen',
     size,
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, v * 1.5])
+      Object.entries(size).map(([k, v]) => [k, v * 1.65])
     ) as typeof size,
     weight: {
       4: '300',
