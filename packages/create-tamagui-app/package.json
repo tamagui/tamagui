@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "yarn ts-node index.ts",
+    "start": "./run.js",
     "test": "rimraf ./create-test-app/ && yarn release && node dist/index.js create-test-app",
     "dev": "ncc build ./index.ts -w -o dist/",
     "prerelease": "rimraf ./dist/",
