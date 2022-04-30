@@ -138,18 +138,18 @@ export function HeroExampleThemes() {
         return (
           <ContainerLarge position="relative" space="$2">
             <HomeH2>
-              A <span className="rainbow clip-text">new</span> theme engine
+              A <span className="rainbow clip-text">new</span> theme&nbsp;engine
             </HomeH2>
-            <HomeH3>
+            <HomeH3 debug="verbose">
               Themes that customize down to the component + unlimited alternate shades.
             </HomeH3>
           </ContainerLarge>
         )
       }, [])}
 
-      <YStack mt="$4" ai="center" jc="center" space="$2">
+      <YStack mt="$4" ai="center" jc="center">
         <XStack className="scroll-horizontal no-scrollbar">
-          <XStack px="$4" space="$4">
+          <XStack px="$4" space="$2">
             <InteractiveContainer bc="$background" p="$1" br="$10" als="center" space="$1">
               {['light', 'dark'].map((name, i) => {
                 const selected = i === 0 ? 'light' : 'dark'
@@ -199,8 +199,8 @@ export function HeroExampleThemes() {
         </XStack>
 
         <YStack
-          mt={-20}
-          py="$8"
+          py="$6"
+          my="$3"
           ov="hidden"
           w="100%"
           pos="relative"
@@ -242,7 +242,7 @@ export function HeroExampleThemes() {
                       // TODO merging hoverStyle scale wrong
                       scale={scale}
                       cursor="pointer"
-                      opacity={0.5}
+                      opacity={0.75}
                       hoverStyle={{
                         scale: scale + 0.025,
                       }}

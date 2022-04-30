@@ -2,7 +2,6 @@ import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
   PseudoStyles,
-  StackProps,
   StaticConfigParsed,
   TamaguiInternalConfig,
   getSplitStyles,

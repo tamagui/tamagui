@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { TamaguiInternalConfig } from '@tamagui/core';
+import { TamaguiInternalConfig } from '@tamagui/core-node';
 import { StyleObject, Ternary } from '../types';
 export declare function extractMediaStyle(ternary: Ternary, jsxPath: NodePath<t.JSXElement>, tamaguiConfig: TamaguiInternalConfig, sourcePath: string, importance?: number, shouldPrintDebug?: boolean | 'verbose'): {
     mediaStyles: StyleObject[];

@@ -8,10 +8,10 @@ import { ParagraphLink } from './Link'
 
 export const Footer = () => {
   return (
-    <YStack tag="footer" mb={-90} pos="relative">
+    <YStack tag="footer" pos="relative">
       <YStack fullscreen className="bg-dot-grid mask-gradient-up" pe="none" zi={-1} />
       <ContainerLarge>
-        <XStack py="$10" $sm={{ flexDirection: 'column', ai: 'center' }}>
+        <XStack py="$7" $sm={{ flexDirection: 'column', ai: 'center' }}>
           <YStack
             ai="flex-start"
             $sm={{ ai: 'center' }}
@@ -47,12 +47,6 @@ export const Footer = () => {
               </ParagraphLink>
             </Paragraph>
             <Paragraph size="$3">built with Tamagui</Paragraph>
-            <Paragraph size="$3">
-              site forked from {/* @ts-ignore */}
-              <ParagraphLink fontSize="inherit" href="https://github.com/modulz" target="_blank">
-                modulz
-              </ParagraphLink>
-            </Paragraph>
           </YStack>
 
           <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$4">

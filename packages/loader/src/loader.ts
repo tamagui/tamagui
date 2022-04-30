@@ -30,15 +30,6 @@ export function loader(this: LoaderContext<any>, source: string) {
   try {
     const threaded = this.emitFile === undefined
     const options: TamaguiOptions = { ...this.getOptions() }
-
-    if (options.disableExtraction || options.disableDebugAttr) {
-      if (!hasLogged) {
-        console.log(' » disableExtraction:', options.disableExtraction)
-        hasLogged = true
-      }
-      return this.callback(null, source)
-    }
-
     const sourcePath = `${this.resourcePath}`
     const startsWithComment = source[0] === '/' && source[1] === '/'
 

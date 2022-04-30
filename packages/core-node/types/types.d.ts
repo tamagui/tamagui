@@ -237,7 +237,7 @@ export declare type ViewOrTextProps = WithThemeShorthandsPseudosMediaAnimation<O
 export declare type TamaguiComponent<Props = any, Ref = any, BaseProps = {}, VariantProps = {}> = ReactComponentWithRef<Props, Ref> & StaticComponentObject;
 declare type StaticComponentObject = {
     staticConfig: StaticConfig;
-    extractable: <X>(a: X, opts?: StaticConfig) => X;
+    extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
     injectCSS?: boolean;

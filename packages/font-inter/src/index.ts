@@ -1,4 +1,4 @@
-import { GenericFont, createFont } from '@tamagui/core'
+import { GenericFont, createFont, getVariableValue } from '@tamagui/core'
 import { Platform } from 'react-native'
 
 export const createInterFont = <A extends GenericFont<keyof typeof size>>(
@@ -11,7 +11,7 @@ export const createInterFont = <A extends GenericFont<keyof typeof size>>(
         : 'Inter',
     size,
     lineHeight: Object.fromEntries(
-      Object.entries(font.size || size).map(([k, v]) => [k, v * 1.1 + 8])
+      Object.entries(font.size || size).map(([k, v]) => [k, getVariableValue(v) * 1.1 + 9])
     ),
     weight: {
       4: '300',

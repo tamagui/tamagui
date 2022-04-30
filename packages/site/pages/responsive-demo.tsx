@@ -63,7 +63,7 @@ export default function ResponsiveDemo() {
             {coverPhoto}
           </YStack>
           <XStack flex={1} maw="50%" $gtLarge={{ maw: '100%' }}>
-            <YStack ai="center" h={200} y={0} br="$6" ov="hidden" f={1}>
+            <YStack maw="100%" ai="center" h={200} y={0} br="$6" ov="hidden" f={1}>
               <Image width={450} height={200} src={img2.src} />
             </YStack>
             <YStack
@@ -74,6 +74,7 @@ export default function ResponsiveDemo() {
               ov="hidden"
               f={1}
               display="none"
+              maw="100%"
               $gtMedium={{ display: 'flex', ml: '$4' }}
               // $small={{ display: 'none' }}
               // $gtLarge={{ display: 'none' }}

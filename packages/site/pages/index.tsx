@@ -29,7 +29,7 @@ export default function Home() {
       <Hero />
       <Separator borderStyle="dotted" />
       <XStack zi={100} theme="alt1" mt={-28} ai="center" jc="center">
-        <SearchButton color="$color" width={350} size="$5">
+        <SearchButton color="$color" width={320} size="$6">
           Search Docs...
         </SearchButton>
       </XStack>

@@ -20,7 +20,7 @@ export const configListeners = new Set<ConfigListener>()
 
 export const onConfiguredOnce = (cb: ConfigListener) => {
   if (conf) {
-    cb(conf)
+    cb(conf!)
   } else {
     configListeners.add(cb)
   }

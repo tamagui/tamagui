@@ -141,12 +141,12 @@ export const SearchButton = (props: ButtonProps) => {
     <Button
       ref={ref as any}
       onPress={onOpen}
-      // className="all ease-in ms100"
+      className="all ease-in ms100"
       jc="flex-start"
       borderWidth={0.5}
       textAlign="left"
       icon={SearchIcon}
-      elevation="$1"
+      elevation="$2"
       color="$colorTranslucent"
       hoverStyle={{
         elevation: '$4',

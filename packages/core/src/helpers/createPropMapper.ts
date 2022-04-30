@@ -32,7 +32,7 @@ function getVariantFunction(variant: any, key: string, value: any) {
   return fn || variant['...'] || variant['...size']
 }
 
-export const createPropMapper = (staticConfig: StaticConfig) => {
+export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   const variants = staticConfig.variants || {}
   const defaultProps = staticConfig.defaultProps || {}
 

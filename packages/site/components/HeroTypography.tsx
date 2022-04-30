@@ -49,8 +49,8 @@ export const HeroTypography = () => {
     <>
       <YStack fullscreen className="bg-grid-big mask-gradient-both" o={0.5} />
       {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
-      <ContainerLarge ref={ref} position="relative" space="$8">
-        <YStack ai="center" space="$2">
+      <ContainerLarge position="relative" space="$8">
+        <YStack ref={ref} ai="center" space="$2">
           <HomeH2>Plug-and-play fonts, individually tuned.</HomeH2>
         </YStack>
 
@@ -69,12 +69,12 @@ export const HeroTypography = () => {
           <YStack
             h={300}
             w="40%"
-            mt={50}
             space="$0.5"
             ai="flex-end"
             scale={1.3}
             x={-30}
-            $sm={{ mt: 0, miw: '110%', ai: 'center', x: 0, scale: 0.8 }}
+            y={20}
+            $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 1 }}
           >
             <AnimatePresence exitBeforeEnter>
               <AnimatedHeading
@@ -189,6 +189,10 @@ const AnimatedHeading = ({
         o={1}
         y={0}
         pr="$1"
+        my="$1"
+        $sm={{
+          pr: 0,
+        }}
         fontFamily={`$${family}`}
         textShadowColor="$background"
         textShadowRadius={10}

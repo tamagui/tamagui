@@ -11,7 +11,8 @@ import { media } from './constants/media'
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont({
   weight: {
-    4: '700',
+    1: '400',
+    7: '700',
   },
   letterSpacing: {
     4: 0,

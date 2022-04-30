@@ -435,7 +435,7 @@ type StaticComponentObject = {
    * If you create a styled frame component this is a HoC to extract
    * styles from all parents.
    */
-  extractable: <X>(a: X, opts?: StaticConfig) => X
+  extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X
 }
 
 export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
