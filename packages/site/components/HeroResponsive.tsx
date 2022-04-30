@@ -347,7 +347,6 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
   return (
     <Theme name={active ? null : 'darker'}>
       <XStack
-        debug
         btw={1}
         boc={active ? 'transparent' : '$borderColor'}
         blw={1}

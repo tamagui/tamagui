@@ -1,5 +1,5 @@
 import { DocSearchModal } from '@docsearch/react'
-import { ArrowRight, Compass, Cpu, Layers, Search as SearchIcon } from '@tamagui/feather-icons'
+import { Search as SearchIcon } from '@tamagui/feather-icons'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

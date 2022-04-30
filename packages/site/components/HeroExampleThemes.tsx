@@ -140,7 +140,7 @@ export function HeroExampleThemes() {
             <HomeH2>
               A <span className="rainbow clip-text">new</span> theme&nbsp;engine
             </HomeH2>
-            <HomeH3 debug="verbose">
+            <HomeH3>
               Themes that customize down to the component + unlimited alternate shades.
             </HomeH3>
           </ContainerLarge>

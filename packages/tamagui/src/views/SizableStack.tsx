@@ -10,6 +10,9 @@ export const SizableStack = styled(XStack, {
   flexShrink: 1,
 
   variants: {
+    // allows the type to come in for use in size
+    fontFamily: () => ({}),
+
     hoverable: {
       true: {
         hoverStyle: {

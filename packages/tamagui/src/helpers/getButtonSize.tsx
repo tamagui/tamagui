@@ -14,6 +14,9 @@ export const getButtonSize =
     const lineHeights = font.lineHeight
     const lineHeight = lineHeights[val] ?? lineHeights['$4']
     const minHeight = getVariableValue(lineHeight) + py * 2
+    if (process.env.NODE_ENV === 'development' && props['debug']) {
+      console.log('getButtonSize', props.fontFamily, { size, py, val, lineHeight, minHeight })
+    }
     return {
       minHeight,
       paddingHorizontal: props.circular ? 0 : px,

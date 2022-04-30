@@ -53,16 +53,16 @@ export default function ResponsiveDemo() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui — Responsive Demo" />
-      <YStack mah="100vh" ov="hidden" p="$4" $gtLarge={{ flexDirection: 'row-reverse' }}>
+      <YStack mah="100vh" ov="hidden" p="$4" $gtLarge={{ fd: 'row-reverse' }}>
         <YStack pos="relative" $gtSmall={{ display: 'none' }}>
           {coverPhoto}
         </YStack>
 
-        <XStack space $small={{ display: 'none' }} $gtLarge={{ flexDirection: 'column', maw: 450 }}>
+        <XStack f={1} space $small={{ display: 'none' }} $gtLarge={{ fd: 'column', maw: 450 }}>
           <YStack ov="hidden" f={2} maw={400} $gtMedium={{ maw: '100%', f: 0 }}>
             {coverPhoto}
           </YStack>
-          <XStack flex={1} maw="50%" $gtLarge={{ maw: '100%' }}>
+          <XStack f={1} ov="hidden" maw="50%" $gtLarge={{ maw: '100%' }}>
             <YStack maw="100%" ai="center" h={200} y={0} br="$6" ov="hidden" f={1}>
               <Image width={450} height={200} src={img2.src} />
             </YStack>
@@ -76,8 +76,6 @@ export default function ResponsiveDemo() {
               display="none"
               maw="100%"
               $gtMedium={{ display: 'flex', ml: '$4' }}
-              // $small={{ display: 'none' }}
-              // $gtLarge={{ display: 'none' }}
             >
               <Image width={450} height={200} src={img3.src} />
             </YStack>

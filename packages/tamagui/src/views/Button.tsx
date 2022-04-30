@@ -191,6 +191,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     // careful not to desctructure and re-order props, order is important
     <ButtonInsideButtonContext.Provider value={true}>
       <ButtonFrame
+        fontFamily={fontFamily}
         // fixes SSR issue + DOM nesting issue of not allowing button in button
         {...(isInsideButton && {
           tag: 'span',

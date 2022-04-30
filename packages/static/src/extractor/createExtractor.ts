@@ -5,7 +5,9 @@ import {
   StaticConfigParsed,
   TamaguiInternalConfig,
   getSplitStyles,
+  getSubStyle,
   mediaQueryConfig,
+  normalizeStyleObject,
   pseudos,
   rnw,
 } from '@tamagui/core-node'
@@ -1080,32 +1082,6 @@ export function createExtractor() {
               }, [])
               .flat()
 
-            // evaluates all static attributes into a simple object
-            const completeStaticProps = {
-              ...Object.keys(attrs).reduce((acc, index) => {
-                const cur = attrs[index] as ExtractedAttr
-                if (cur.type === 'style') {
-                  Object.assign(acc, cur.value)
-                }
-                if (cur.type === 'attr') {
-                  if (t.isJSXSpreadAttribute(cur.value)) {
-                    return acc
-                  }
-                  if (!t.isJSXIdentifier(cur.value.name)) {
-                    return acc
-                  }
-                  const key = cur.value.name.name
-                  // undefined = boolean true
-                  const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
-                  if (value === FAILED_EVAL) {
-                    return acc
-                  }
-                  acc[key] = value
-                }
-                return acc
-              }, {}),
-            }
-
             // flatten logic!
             // fairly simple check to see if all children are text
             const hasSpread = node.attributes.some((x) => t.isJSXSpreadAttribute(x))
@@ -1119,10 +1095,8 @@ export function createExtractor() {
             const themeVal = inlined.get('theme')
             inlined.delete('theme')
             const allOtherPropsExtractable = [...inlined].every(([k, v]) => INLINE_EXTRACTABLE[k])
-            const shouldWrapInnerTheme =
-              allOtherPropsExtractable && !!(hasOnlyStringChildren && themeVal)
-            const canFlattenProps =
-              inlined.size === 0 || shouldWrapInnerTheme || allOtherPropsExtractable
+            const shouldWrapThme = allOtherPropsExtractable && !!themeVal
+            const canFlattenProps = inlined.size === 0 || shouldWrapThme || allOtherPropsExtractable
 
             let shouldFlatten =
               !shouldDeopt &&
@@ -1131,8 +1105,13 @@ export function createExtractor() {
               staticConfig.neverFlatten !== true &&
               (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
 
+            if (shouldPrintDebug) {
+              // prettier-ignore
+              console.log(' >>', { hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapThme, allOtherPropsExtractable, hasOnlyStringChildren })
+            }
+
             // wrap theme around children on flatten
-            if (shouldFlatten && shouldWrapInnerTheme) {
+            if (shouldFlatten && shouldWrapThme) {
               if (typeof themeVal !== 'string') {
                 // failed eval
                 return
@@ -1141,6 +1120,13 @@ export function createExtractor() {
               if (shouldPrintDebug) {
                 console.log('  - wrapping theme', allOtherPropsExtractable, themeVal)
               }
+
+              // remove theme attribute from flattened node
+              attrs = attrs.filter((x) =>
+                x.type === 'attr' && t.isJSXAttribute(x.value) && x.value.name.name === 'theme'
+                  ? false
+                  : true
+              )
 
               // add import
               if (!hasImportedTheme) {
@@ -1363,13 +1349,49 @@ export function createExtractor() {
               return acc
             }, [])
 
-            if (shouldPrintDebug) {
-              console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
+            const state = {
+              noClassNames: true,
+              focus: false,
+              hover: false,
+              mounted: true, // TODO match logic in createComponent
+              press: false,
+              pressIn: false,
             }
+
+            // evaluates all static attributes into a simple object
+            const completeStaticProps = Object.keys(attrs).reduce((acc, index) => {
+              const cur = attrs[index] as ExtractedAttr
+              if (cur.type === 'style') {
+                normalizeStyleObject(cur.value)
+                Object.assign(acc, cur.value)
+              }
+              if (cur.type === 'attr') {
+                if (t.isJSXSpreadAttribute(cur.value)) {
+                  return acc
+                }
+                if (!t.isJSXIdentifier(cur.value.name)) {
+                  return acc
+                }
+                const key = cur.value.name.name
+                // undefined = boolean true
+                const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
+                if (value === FAILED_EVAL) {
+                  return acc
+                }
+                acc[key] = value
+              }
+              return acc
+            }, {})
 
             const completeProps = {
               ...staticConfig.defaultProps,
               ...completeStaticProps,
+            }
+
+            if (shouldPrintDebug) {
+              console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
+              console.log('  - defaultProps: \n', logLines(objToStr(staticConfig.defaultProps)))
+              console.log('  - completeStaticProps: \n', logLines(objToStr(completeStaticProps)))
             }
 
             // post process
@@ -1388,13 +1410,8 @@ export function createExtractor() {
               }
               try {
                 const out = getSplitStyles(props, staticConfig, defaultTheme, {
-                  noClassNames: true,
+                  ...state,
                   fallbackProps: completeProps,
-                  focus: false,
-                  hover: false,
-                  mounted: true, // TODO match logic in createComponent
-                  press: false,
-                  pressIn: false,
                 })
                 const outStyle = {
                   ...out.style,
@@ -1435,13 +1452,13 @@ export function createExtractor() {
             }
 
             // any extra styles added in postprocess should be added to first group as they wont be overriden
-            // const stylesToAddToInitialGroup = difference(
-            //   Object.keys(completeStylesProcessed),
-            //   Object.keys(completeStaticProps)
-            // )
             const stylesToAddToInitialGroup = shouldFlatten
               ? difference(Object.keys(completeStylesProcessed), Object.keys(completeStaticProps))
               : []
+            // difference(
+            //   Object.keys(completeStylesProcessed),
+            //   Object.keys(completeStaticProps)
+            // )
 
             if (stylesToAddToInitialGroup.length) {
               const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
