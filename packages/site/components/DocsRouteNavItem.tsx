@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import * as React from 'react'
-import { Paragraph, SizableText, Spacer, XStack } from 'tamagui'
+import { SizableText, Spacer, XStack } from 'tamagui'
 
 import { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
@@ -8,6 +8,7 @@ import { ExternalIcon } from './ExternalIcon'
 export function DocsRouteNavItem({ children, active, href, pending, ...props }: NavItemProps) {
   const isExternal = href.startsWith('http')
 
+  console.log('href', href)
   return (
     <NextLink href={href} passHref>
       <XStack

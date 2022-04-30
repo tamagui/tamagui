@@ -75,6 +75,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             <Paragraph
               fontFamily="$silkscreen"
               p="$2"
+              letterSpacing={2}
               cursor="pointer"
               size="$4"
               o={0.7}
@@ -89,6 +90,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             <Paragraph
               fontFamily="$silkscreen"
               p="$2"
+              letterSpacing={2}
               cursor="pointer"
               size="$4"
               o={0.7}

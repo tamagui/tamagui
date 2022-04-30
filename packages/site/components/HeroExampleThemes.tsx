@@ -246,6 +246,9 @@ export function HeroExampleThemes() {
                       hoverStyle={{
                         scale: scale + 0.025,
                       }}
+                      $xs={{
+                        scale: scale * 0.8,
+                      }}
                       onPress={() => {
                         updateActiveI([colorI, shadeI])
                       }}
@@ -260,7 +263,7 @@ export function HeroExampleThemes() {
             </XStack>
           </XStack>
 
-          <YStack pe="none" fullscreen ai="center" jc="center" $xs={{ scale: 0.7 }}>
+          <YStack pe="none" fullscreen ai="center" jc="center" $xs={{ scale: 0.8 }}>
             <Theme name={colorName}>
               <MediaPlayer pointerEvents="none" pointerEventsControls="auto" alt={curShadeI} />
             </Theme>
