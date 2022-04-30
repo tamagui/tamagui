@@ -15,22 +15,26 @@ import tar from 'tar'
 import validateProjectName from 'validate-npm-package-name'
 
 // @ts-ignore
-import packageJson from './package.json'
+import packageJson from '../../package.json'
 
 const pipeline = promisify(Stream.pipeline)
-
-type RepoInfo = {
-  username: string
-  name: string
-  branch: string
-  filePath: string
-}
 
 let projectPath: string = ''
 
 const program = new Commander.Command(packageJson.name)
   .version(packageJson.version)
   .arguments('<project-directory>')
+  .action((name) => {
+    projectPath = name
+  })
+  .option('--use-npm', `Explicitly tell the CLI to bootstrap the app using npm`)
+  .option('--use-pnpm', `Explicitly tell the CLI to bootstrap the app using pnpm`)
+  .option(
+    `--template <template>, -t <template>`,
+    'Currently, the only option is `next-expo-solito`, which is set by default.',
+    'next-expo-solito'
+  )
+  .allowUnknownOption()
   .usage(
     `${chalk.green('<project-directory>')} [options]
   
@@ -38,38 +42,18 @@ Example usage:
 
 ${chalk.blueBright(`npx ${packageJson.name} next-expo`)}`
   )
-  .action((name) => {
-    projectPath = name
-  })
-  .option(
-    '--use-npm',
-    `
-  Explicitly tell the CLI to bootstrap the app using npm
-`
-  )
-  //   .option(
-  //     '--use-pnpm',
-  //     `
-  //   Explicitly tell the CLI to bootstrap the app using pnpm
-  // `
-  //   )
-  .option(
-    `--template <template>, -t <template>`,
-    'Currently, the only option is `tamagui`, which is set by default.'
-  )
-  .allowUnknownOption()
   .parse(process.argv)
 
 const packageManager = program.useNpm ? 'npm' : program.usePnpm ? 'pnpm' : 'yarn'
+const DOWNLOAD_URL = 'https://codeload.github.com/tamagui/starters/tar.gz/main'
 
-export function downloadAndExtractExample(root: string, name = 'tamagui'): Promise<void | unknown> {
+export function downloadAndExtractExample(root: string, name: string): Promise<void | unknown> {
   if (name === '__internal-testing-retry') {
     throw new Error('This is an internal example for testing the CLI.')
   }
-
   return pipeline(
-    got.stream('https://codeload.github.com/tamagui/starters/tar.gz/master'),
-    tar.extract({ cwd: root, strip: 3 }, [`tamagui-master/starter-apps/${name}`])
+    got.stream(DOWNLOAD_URL),
+    tar.extract({ cwd: root, strip: 2 }, [`starters-main/${name}`])
   )
 }
 
@@ -110,7 +94,7 @@ async function run() {
     process.exit(1)
   }
 
-  const resolvedProjectPath = path.resolve(projectPath)
+  const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
   const projectName = path.basename(resolvedProjectPath)
 
   const { valid, problems } = validateNpmName(projectName)
@@ -129,10 +113,8 @@ async function run() {
     console.log()
     console.log(
       chalk.red('🚨 [tamagui] error'),
-      `You tried to make a project called ${chalk.underline(
-        chalk.blueBright(projectName)
-      )}, but a folder with that name already exists: 
-${chalk.blueBright(resolvedProjectPath)}
+      // prettier-ignore
+      `You tried to make a project called ${chalk.underline(chalk.blueBright(projectName))}, but a folder with that name already exists: ${chalk.blueBright(resolvedProjectPath)}
 
 ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
     )
@@ -147,28 +129,26 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
   try {
     console.log(`Copying template into ${chalk.blueBright(projectName)}...`)
-    console.log()
-    await downloadAndExtractExample(resolvedProjectPath)
-    const pkg = require(path.resolve(resolvedProjectPath, 'package.json'))
+    await downloadAndExtractExample(resolvedProjectPath, program.template)
+    const pkgJsonPath = path.join(resolvedProjectPath, 'package.json')
+    console.log('pkgJsonPath', resolvedProjectPath, pkgJsonPath)
+    const pkg = require(pkgJsonPath)
     pkg.name = projectName
-    fs.writeFileSync(
-      path.resolve(resolvedProjectPath, 'package.json'),
-      JSON.stringify(pkg, null, 2)
-    )
+    fs.writeFileSync(pkgJsonPath, JSON.stringify(pkg, null, 2))
     console.log(chalk.green(`${projectName} created!`))
   } catch (e) {
-    console.error('[tamagui] Failed to download example\n\n', e)
-
+    console.error(
+      `[tamagui] Failed to download/extract example\n from: ${DOWNLOAD_URL}\n into: ${resolvedProjectPath}\n\n`,
+      e
+    )
     process.exit(1)
   }
 
-  const useYarn = packageManager === 'yarn'
-
   console.log('Installing packages. This might take a couple of minutes.')
   console.log()
+  const useYarn = packageManager === 'yarn'
   try {
-    await installDependenciesAsync(resolvedProjectPath, useYarn ? 'yarn' : 'npm')
-    // await install(resolvedProjectPath, null, { packageManager, isOnline })
+    await installDependenciesAsync(resolvedProjectPath, packageManager)
   } catch (e: any) {
     console.error(
       '[tamagui] error installing node_modules with ' + packageManager + '\n',
@@ -210,7 +190,7 @@ function validateNpmName(name: string): {
 
 export async function installDependenciesAsync(
   projectRoot: string,
-  packageManager: 'yarn' | 'npm'
+  packageManager: 'yarn' | 'npm' | 'pnpm'
 ) {
   const options = { cwd: projectRoot }
   if (packageManager === 'yarn') {
