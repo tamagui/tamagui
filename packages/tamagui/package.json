@@ -34,6 +34,7 @@
     "@tamagui/expo-linear-gradient": "11.2.7",
     "@tamagui/fake-react-native": "^1.0.0-beta.153+a49c2588",
     "@tamagui/helpers": "^1.0.0-beta.153+a49c2588",
+    "@tamagui/use-controllable-state": "^1.0.0-beta.153+a49c2588",
     "@tamagui/use-debounce": "^1.0.0-beta.153+a49c2588",
     "@tamagui/use-force-update": "^1.0.0-beta.153+a49c2588",
     "react": "*",

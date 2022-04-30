@@ -49,7 +49,10 @@ export const docsRoutes = [
 
   {
     label: 'Extra',
-    pages: [{ title: 'Drawer', route: '/docs/components/drawer' }],
+    pages: [
+      { title: 'Drawer', route: '/docs/components/drawer' },
+      { title: 'Menu', route: '/docs/components/menu' },
+    ],
   },
 
   {

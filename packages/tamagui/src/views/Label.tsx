@@ -6,6 +6,7 @@ import { View } from 'react-native'
 import { useComposedRefs } from '../helpers/composeRefs'
 import { createContext } from '../helpers/createContext'
 import { getButtonSize } from '../helpers/getButtonSize'
+import { sizableTextSizeVariant } from '../helpers/sizableTextSizeVariant'
 import { SizableStack } from './SizableStack'
 import { SizableText } from './SizableText'
 import { XStack } from './Stacks'
@@ -22,6 +23,9 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
+const buttonSizer = getButtonSize()
+const textSizer = sizableTextSizeVariant
+
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
   tag: 'label',
@@ -32,11 +36,16 @@ export const LabelFrame = styled(SizableText, {
   justifyContent: 'center',
   cursor: 'default',
   pressStyle: {
-    backgroundColor: '$backgroundHover',
+    color: '$colorPress',
   },
   variants: {
     size: {
-      '...size': getButtonSize(),
+      '...size': (val, extras) => {
+        return {
+          ...buttonSizer(val, extras),
+          ...textSizer(val, extras),
+        }
+      },
     },
   },
 })

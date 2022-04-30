@@ -5,10 +5,10 @@
 import { useId } from '@react-aria/utils'
 import { FocusScope } from '@react-native-aria/focus'
 import { withStaticProperties } from '@tamagui/core'
+import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { forwardRef, memo, useCallback, useMemo } from 'react'
 import { View } from 'react-native'
 
-import { useControllableState } from '../../hooks/useControllableState'
 import { Overlay } from '../Overlay'
 import { Popper } from '../Popper/Popper'
 import { PopoverContent } from './PopoverContent'
@@ -46,6 +46,7 @@ export const Popover = withStaticProperties(
             value ? onOpen && onOpen() : onClose && onClose()
           },
         })
+        console.log('isOpen', isOpen)
 
         const [bodyMounted, setBodyMounted] = React.useState(false)
         const [headerMounted, setHeaderMounted] = React.useState(false)
@@ -97,12 +98,6 @@ export const Popover = withStaticProperties(
             {updatedTrigger()}
             <Overlay isOpen={isOpen} onRequestClose={handleClose} useRNModalOnAndroid>
               <Popper onClose={handleClose} triggerRef={triggerRef} {...props}>
-                {/* <AbsoluteYStack
-                  fullscreen
-                  pointerEvents="auto"
-                  backgroundColor="rgba(0,0,0,0.1)"
-                  onPress={handleClose}
-                /> */}
                 <PopoverContext.Provider
                   value={useMemo(() => popoverContext, Object.values(popoverContext))}
                 >

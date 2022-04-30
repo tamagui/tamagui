@@ -1,20 +1,31 @@
 import { useMedia, withStaticProperties } from '@tamagui/core'
 import { Drawer, DrawerProvider } from '@tamagui/drawer'
-import { cloneElement, useEffect, useMemo, useState } from 'react'
+import { useControllableState } from '@tamagui/use-controllable-state'
+import React, { cloneElement, useEffect, useMemo, useState } from 'react'
 import { Popover, YStack } from 'tamagui'
 
 const MenuItem = (props) => {
   return props.children
 }
 
-export const Menu = withStaticProperties(
-  ({ children, trigger, onChangeOpen }) => {
-    const [show, setShow] = useState(false)
-    const media = useMedia()
+type MenuProps = {
+  children?: React.ReactNode
+  open?: boolean
+  defaultOpen?: boolean
+  trigger?: any
+  onChangeOpen?: (next: boolean) => void
+}
 
-    useEffect(() => {
-      onChangeOpen?.(show)
-    }, [show])
+export const Menu = withStaticProperties(
+  ({ children, open, defaultOpen, trigger, onChangeOpen }: MenuProps) => {
+    const media = useMedia()
+    const [show, setShow] = useControllableState({
+      prop: open,
+      defaultProp: defaultOpen || false,
+      onChange(next) {
+        onChangeOpen?.(next)
+      },
+    })
 
     const triggerProps = useMemo(() => {
       return {
@@ -42,7 +53,7 @@ export const Menu = withStaticProperties(
         onChangeOpen={setShow}
       >
         <Popover.Content>
-          {/* <Popover.Arrow /> */}
+          <Popover.Arrow />
           <YStack backgroundColor="$background" borderRadius="$2">
             {children}
           </YStack>

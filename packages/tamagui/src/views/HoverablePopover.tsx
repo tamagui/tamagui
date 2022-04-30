@@ -93,9 +93,12 @@ export const HoverablePopover = withStaticProperties(
         >
           {(openProps) => {
             const childrenElements = (
-              // @ts-ignore
               <AnimatePresence>
-                {typeof children === 'function' ? children(openProps) : children}
+                {typeof children === 'function'
+                  ? children(openProps)
+                  : openProps.open
+                  ? children
+                  : null}
               </AnimatePresence>
             )
             return (
