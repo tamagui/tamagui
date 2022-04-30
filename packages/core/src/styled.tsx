@@ -14,6 +14,13 @@ import {
   VariantSpreadFunction,
 } from './types'
 
+// TODO may be able to use this in the options?: arg below directly
+export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<ParentComponent> & {
+  name?: string
+  variants?: VariantDefinitions<ParentComponent> | undefined
+  defaultVariants?: { [key: string]: any }
+}
+
 export function styled<
   ParentComponent extends StylableComponent,
   Variants extends VariantDefinitions<ParentComponent> | symbol =
@@ -36,7 +43,10 @@ export function styled<
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
-      const isReactNativeWeb = RNComponents.has(Component)
+      const isReactNativeWeb =
+        'staticConfig' in Component
+          ? Component.staticConfig.isReactNativeWeb
+          : RNComponents.has(Component)
       const isTamagui = !isReactNativeWeb && 'staticConfig' in Component
       const Comp = Component as any
       const isImage = !!(defaultProps.isImage || (!isTamagui ? Comp === Image : false))

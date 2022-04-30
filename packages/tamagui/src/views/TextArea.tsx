@@ -1,14 +1,11 @@
 import { GetProps, styled } from '@tamagui/core'
-import { TextInput } from 'react-native'
 
-import { inputSizeVariant } from '../helpers/inputHelpers'
-import { inputStyle } from './Input'
+import { Input } from './Input'
 
-export const TextArea = styled(TextInput, {
+export const TextArea = styled(Input, {
   name: 'TextArea',
   multiline: true,
   numberOfLines: 4,
-  ...inputStyle,
 })
 
 export type TextAreaProps = GetProps<typeof TextArea>
