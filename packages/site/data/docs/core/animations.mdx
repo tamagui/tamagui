@@ -40,15 +40,15 @@ yarn add @tamagui/animations-css
 Then add it to your [config](/docs/intro/configuration):
 
 ```tsx
-import { createTamagui } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-css'
+import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
     fast: 'ease-in 150ms',
     medium: 'ease-in 300ms',
     slow: 'ease-in 450ms',
-  })
+  }),
   // ...
 })
 ```
@@ -68,8 +68,8 @@ yarn add @tamagui/animations-reanimated
 Then add it to your [config](/docs/intro/configuration):
 
 ```tsx
-import { createTamagui } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-reanimated'
+import { createTamagui } from 'tamagui'
 
 export default createTamagui({
   animations: createAnimations({
@@ -90,7 +90,7 @@ export default createTamagui({
       damping: 20,
       stiffness: 60,
     },
-  })
+  }),
   // ...
 })
 ```
@@ -117,7 +117,7 @@ Here's an example animating `hoverStyle`:
   <AnimationsHoverDemo />
 </HeroContainer>
 
-```jsx collapsible template=AnimationsHover
+```jsx hero template=AnimationsHover
 
 ```
 
@@ -125,11 +125,11 @@ Here's an example animating `hoverStyle`:
 
 Setting `enterStyle` styles on any component tell it to start with those styles, and immediately transition into their regular styles:
 
-<HeroContainer smaller>
+<HeroContainer>
   <AnimationsEnterDemo />
 </HeroContainer>
 
-```jsx collapsible template=AnimationsEnter
+```jsx hero template=AnimationsEnter
 
 ```
 
@@ -140,7 +140,7 @@ AnimatePresence animates direct children before they unmount. It's inspired by a
 To use with `@tamagui/core`, install and import `@tamagui/animate-presence`. It's already bundled and exported from `tamagui`.
 
 ```tsx
-import { Square, AnimatePresence } from 'tamagui'
+import { AnimatePresence, Square } from 'tamagui'
 
 export const MyComponent = ({ isVisible }) => (
   <AnimatePresence>
@@ -166,32 +166,32 @@ Wrap one or more tamagui components with AnimatePresence. This enables the use t
   presence in the tree.
 </Notice>
 
-<HeroContainer smaller noPad>
+<HeroContainer noPad>
   <AnimationsPresenceDemo />
 </HeroContainer>
 
-```jsx collapsible template=AnimationsPresence
+```jsx hero template=AnimationsPresence
 
 ```
 
 AnimatePresence takes two optional special properties, `enterVariant` and `exitVariant`, which allow you to override enterStyle and exitStyle conditionally. These properties would be impossible to change otherwise. This is a simple example, hit "Show Code" for the carousel demo above to see a more practical usage of it:
 
 ```tsx
-import { Square, AnimatePresence, styled } from 'tamagui'
+import { AnimatePresence, Square, styled } from 'tamagui'
 
 const AnimatableSquare = styled(Square, {
   variants: {
     fromRight: {
       true: {
-        x: 1000
+        x: 1000,
       },
     },
     fromLeft: {
       true: {
-        x: -1000
-      }
-    }
-  }
+        x: -1000,
+      },
+    },
+  },
 })
 
 export const MyComponent = ({ isVisible }) => (

@@ -12,12 +12,13 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
       tag="a"
       size="$2"
       fontSize="$2"
-      opacity={0.5}
       color="$color"
+      o={0.8}
       cursor="pointer"
-      py="$1"
+      py="$0.5"
       hoverStyle={{
-        opacity: 1,
+        o: 1,
+        color: '$colorHover',
       }}
       {...rest}
     />

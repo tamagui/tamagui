@@ -15,8 +15,8 @@ const headingFont = createInterFont({
     7: 'none',
   },
   weight: {
-    5: '400',
-    6: '700',
+    6: '400',
+    7: '700',
   },
   letterSpacing: {
     5: 2,
