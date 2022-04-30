@@ -149,6 +149,11 @@ const resolveTokens = (
   return res
 }
 
+const fontShorthand = {
+  fontSize: 'size',
+  fontWeight: 'weight',
+}
+
 const getToken = (
   key: string,
   value: string,
@@ -170,19 +175,10 @@ const getToken = (
         hasSet = true
         break
       case 'fontSize':
-        valOrVar = tokensParsed.font[fontFamily]?.size[value] || value
-        hasSet = true
-        break
       case 'lineHeight':
-        valOrVar = tokensParsed.font[fontFamily]?.lineHeight[value] || value
-        hasSet = true
-        break
       case 'letterSpacing':
-        valOrVar = tokensParsed.font[fontFamily]?.letterSpacing[value] || value
-        hasSet = true
-        break
       case 'fontWeight':
-        valOrVar = tokensParsed.font[fontFamily]?.weight[value] || value
+        valOrVar = tokensParsed.font[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
         hasSet = true
         break
     }

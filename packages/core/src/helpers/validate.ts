@@ -4,7 +4,8 @@ const { default: ow } = require('@tamagui/ow/dev-only')
 
 let Config: any
 let Tokens: any
-let Font: any
+let FontRequired: any
+let FontOptional: any
 
 export const validateConfig = (conf: any) => {
   if (!conf) {
@@ -28,7 +29,9 @@ export const validateTokens = (tokens: any) => {
 
 export const validateFont = (font: any) => {
   try {
-    ow(font, Font)
+    const { style, transform, ...required } = font
+    ow(required, FontRequired)
+    ow({ style, transform }, FontOptional)
   } catch (err: any) {
     console.warn('Given font:\n', JSON.stringify(font, null, 2), err)
   }
@@ -45,16 +48,28 @@ if (process.env.NODE_ENV === 'development') {
     animations: ow.object.valuesOfType(ow.object),
   })
 
-  Font = ow.object.exactShape({
+  const fontReq = {
     family: ow.string,
     size: ow.object.nonEmpty.valuesOfType(ow.number),
     lineHeight: ow.object.nonEmpty.valuesOfType(ow.number),
     weight: ow.object.nonEmpty.valuesOfType(ow.string),
     letterSpacing: ow.object.nonEmpty.valuesOfType(ow.number),
-  })
+  }
+  const fontOpt = {
+    style: ow.optional.object.valuesOfType(ow.string),
+    transform: ow.optional.object.valuesOfType(ow.string),
+  }
+
+  FontRequired = ow.object.exactShape(fontReq)
+  FontOptional = ow.object.partialShape(fontOpt)
 
   Tokens = ow.object.exactShape({
-    font: ow.object.valuesOfType(Font),
+    font: ow.object.valuesOfType(
+      ow.object.partialShape({
+        ...fontReq,
+        ...fontOpt,
+      })
+    ),
     size: ow.object.nonEmpty.valuesOfType(ow.number),
     space: ow.object.nonEmpty.valuesOfType(ow.number),
     zIndex: ow.object.nonEmpty.valuesOfType(ow.number),

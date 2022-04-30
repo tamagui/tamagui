@@ -43,6 +43,8 @@ type MakeTokens<T> = T extends {
       letterSpacing: infer D
       weight: infer Z
       family: infer Y
+      style: infer X
+      transform: infer W
     }
   }
   color: infer E
@@ -54,6 +56,12 @@ type MakeTokens<T> = T extends {
   ? {
       font: {
         [key in A]: {
+          transform: {
+            [key in keyof W]: Variable
+          }
+          style: {
+            [key in keyof X]: Variable
+          }
           size: {
             [key in keyof B]: Variable
           }

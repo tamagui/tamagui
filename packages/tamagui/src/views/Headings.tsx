@@ -34,17 +34,17 @@ export const H3 = styled(Heading, {
 export const H4 = styled(Heading, {
   name: 'H4',
   tag: 'h4',
-  size: '$6',
+  size: '$7',
 })
 
 export const H5 = styled(Heading, {
   name: 'H5',
   tag: 'h5',
-  size: '$5',
+  size: '$6',
 })
 
 export const H6 = styled(Heading, {
   name: 'H6',
   tag: 'h6',
-  size: '$4',
+  size: '$5',
 })

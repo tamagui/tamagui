@@ -15,7 +15,11 @@ export const sizableTextSizeVariant: VariantSpreadFunction<TextProps, FontSizeTo
   const lineHeight = props.lineHeight || font.lineHeight[val]
   const fontWeight = props.fontWeight || font.weight[val]
   const letterSpacing = props.letterSpacing || font.letterSpacing[val]
+  const fontStyle = props.fontStyle || font.style?.[val]
+  const textTransform = props.textTransform || font.transform?.[val]
   return {
+    fontStyle,
+    textTransform,
     fontFamily,
     fontWeight,
     letterSpacing,
