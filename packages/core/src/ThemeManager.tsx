@@ -20,7 +20,7 @@ export class ThemeManager {
   className: string | null = null
 
   constructor(
-    public name: string | null = null,
+    public name: string = '',
     public theme: ThemeObject | null = null,
     public parentManager: ThemeManager | null = null
   ) {
@@ -85,7 +85,7 @@ export class ThemeManager {
       return false
     }
     this.className = className || null
-    this.name = name || null
+    this.name = name || ''
     this.theme = theme
     this.notifyListeners()
     return true
@@ -99,10 +99,15 @@ export class ThemeManager {
 
     if (!name) {
       if (componentName) {
-        const name = `${this.name}_${componentName}`
-        const theme = themes[name]
-        if (theme) {
-          return { name, theme, className: this.#getClassName(name) }
+        // allow for _Card_Button or just _Button
+        const names = [
+          `${this.name}_${componentName}`,
+          `${withoutComponentName(this.name)}_${componentName}`,
+        ]
+        for (const name of names) {
+          if (name in themes) {
+            return { name, theme: themes[name], className: this.#getClassName(name) }
+          }
         }
       }
       return {
@@ -132,9 +137,15 @@ export class ThemeManager {
     }
 
     if (componentName) {
-      const componentThemeName = `${nextName}_${componentName}`
-      if (componentThemeName in themes) {
-        nextName = componentThemeName
+      // allow for _Card_Button or just _Button
+      const names = [
+        `${nextName}_${componentName}`,
+        `${withoutComponentName(nextName)}_${componentName}`,
+      ]
+      for (const name of names) {
+        if (name in themes) {
+          nextName = name
+        }
       }
     }
 
@@ -193,3 +204,5 @@ export class ThemeManager {
 
 export const ThemeManagerContext = createContext<ThemeManager | null>(null)
 export const emptyManager = new ThemeManager()
+
+const withoutComponentName = (name: string) => name.replace(/\_[A-Z][a-z]+$/, '')

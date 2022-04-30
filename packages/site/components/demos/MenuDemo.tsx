@@ -1,15 +1,15 @@
 import { Menu as MenuIcon } from '@tamagui/feather-icons'
 import { Menu } from '@tamagui/menu'
 import React, { useState } from 'react'
-import { Button, H3, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, H4, Paragraph, YStack } from 'tamagui'
 
 export default function MenuDemo() {
   const [show, setShow] = useState(false)
-  console.log('show', show)
 
   return (
     <Menu.Provider>
       <Menu
+        open={show}
         onChangeOpen={setShow}
         trigger={
           <Button
@@ -22,9 +22,9 @@ export default function MenuDemo() {
         }
       >
         <Menu.Item>
-          <YStack p="$6">
-            <H3 selectable={false}>Menu contents</H3>
-            <Paragraph selectable={false}>Lorem ipsum dolor sit amet.</Paragraph>
+          <YStack p="$2">
+            <H4>Menu contents</H4>
+            <Paragraph>Lorem ipsum dolor sit amet.</Paragraph>
           </YStack>
         </Menu.Item>
       </Menu>

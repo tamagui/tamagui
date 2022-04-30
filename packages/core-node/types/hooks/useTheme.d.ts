@@ -27,7 +27,7 @@ export declare const useChangeThemeEffect: (name?: string | null | undefined, co
         };
     };
     themeManager: ThemeManager | null;
-    name: string | null;
+    name: string;
     theme: (Partial<import("../types").TamaguiBaseTheme> & {
         [key: string]: import("../types").VariableVal;
     }) | null;

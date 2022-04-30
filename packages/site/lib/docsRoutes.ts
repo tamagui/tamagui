@@ -48,11 +48,16 @@ export const docsRoutes = [
   },
 
   {
-    label: 'Extra',
+    label: 'Separate Components',
     pages: [
       { title: 'Drawer', route: '/docs/components/drawer' },
       { title: 'Menu', route: '/docs/components/menu' },
     ],
+  },
+
+  {
+    label: 'Extras',
+    pages: [{ title: 'Feather Icons', route: '/docs/components/feather-icons' }],
   },
 
   {

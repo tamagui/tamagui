@@ -9,14 +9,14 @@ export declare type SetActiveThemeProps = {
 };
 export declare class ThemeManager {
     #private;
-    name: string | null;
+    name: string;
     theme: ThemeObject | null;
     parentManager: ThemeManager | null;
     keys: Map<any, Set<string>>;
     listeners: Map<any, Function>;
     themeListeners: Set<ThemeListener>;
     className: string | null;
-    constructor(name?: string | null, theme?: ThemeObject | null, parentManager?: ThemeManager | null);
+    constructor(name?: string, theme?: ThemeObject | null, parentManager?: ThemeManager | null);
     get parentName(): string | null;
     get fullName(): string;
     getValue(key: string): import("./types").VariableVal | undefined;
@@ -32,7 +32,7 @@ export declare class ThemeManager {
         };
         className: string;
     } | {
-        name: string | null;
+        name: string;
         theme: (Partial<import("./types").TamaguiBaseTheme> & {
             [key: string]: import("./types").VariableVal;
         }) | null;

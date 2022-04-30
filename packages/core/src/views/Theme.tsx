@@ -12,6 +12,7 @@ export type ThemeProps = {
   className?: string
   disableThemeClass?: boolean
   name: Exclude<ThemeName, number> | null
+  componentName?: string
   children?: any
   debug?: boolean
 }
@@ -19,7 +20,7 @@ export type ThemeProps = {
 export const Theme = memo(function Theme(props: ThemeProps) {
   const { name, theme, themeManager, themes, className } = useChangeThemeEffect(
     props.name,
-    undefined,
+    props.componentName,
     props
   )
 
@@ -36,6 +37,10 @@ export const Theme = memo(function Theme(props: ThemeProps) {
     () => wrapThemeManagerContext(props.children, themeManager),
     [props.children, themeManager]
   )
+
+  if (props.componentName === 'Drawer') {
+    console.log('ok?', className, themeManager)
+  }
 
   if (isWeb) {
     return (

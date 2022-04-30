@@ -4,6 +4,7 @@ export declare type ThemeProps = {
     className?: string;
     disableThemeClass?: boolean;
     name: Exclude<ThemeName, number> | null;
+    componentName?: string;
     children?: any;
     debug?: boolean;
 };

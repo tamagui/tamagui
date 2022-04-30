@@ -1,9 +1,21 @@
 import * as Helpers from '@tamagui/helpers';
 import { TamaguiInternalConfig } from './types';
 declare class TamaguiManager {
-    config: TamaguiInternalConfig | null;
     rnw: Record<string, any>;
     Helpers: typeof Helpers;
+    get config(): TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
+        [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
+            [key: string]: import("./types").VariableVal;
+        };
+    }, {}, {
+        [x: string]: {
+            [key: string]: string | number;
+        };
+    }, {
+        [key: string]: string | {
+            [key: string]: any;
+        };
+    }>;
     get insertedRules(): unknown[];
     get allSelectors(): {};
     get allTransforms(): {};
