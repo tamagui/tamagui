@@ -7,12 +7,11 @@ import { ScrollView } from 'react-native'
 import {
   Button,
   Circle,
-  EnsureFlexed,
-  H1,
   H2,
   H3,
   H4,
   H5,
+  H6,
   Image,
   ImageProps,
   Paragraph,
@@ -121,25 +120,25 @@ export const components = {
     )
   },
 
-  h1: (props) => <H1 mb="$2" {...props} />,
+  h1: (props) => <H2 mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2 color="$color" mt="$5" mb="$2" size="$9" letterSpacing={-0.5} data-heading {...props}>
+    <H3 color="$color" mt="$5" size="$9" letterSpacing={-0.5} data-heading {...props}>
       {children}
-    </H2>
+    </H3>
   ),
 
   h3: ({ children, id, ...props }) => (
-    <LinkHeading mt="$6" mb="$1" id={id}>
-      <H3 data-heading {...props}>
+    <LinkHeading mt="$5" mb="$1" id={id}>
+      <H4 data-heading {...props}>
         {children}
-      </H3>
+      </H4>
       {getNonTextChildren(children)}
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mt="$3" fow="800" {...props} />,
-  h5: (props) => <H5 mt="$3" fow="800" {...props} />,
+  h4: (props) => <H5 mt="$5" {...props} />,
+  h5: (props) => <H6 mt="$5" {...props} />,
 
   p: (props) => (
     <Paragraph
@@ -365,26 +364,12 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
   <XStack
     tag="a"
     href={`#${id}`}
-    // used by `scrollToUrlHash`
-    // not using the `id` attribute for that because we may get ids that start with a number
-    // and that is not a valid css selector
+    id={id}
     data-id={id}
     display="inline-flex"
     ai="center"
     space
     {...props}
-    // css={{
-    //   textDecoration: 'none',
-    //   color: 'inherit',
-    //   display: 'inline-flex',
-    //   alignItems: 'center',
-    //   svg: {
-    //     opacity: 0,
-    //   },
-    //   '&:hover svg': {
-    //     opacity: 1,
-    //   },
-    // }}
   >
     {children}
     <YStack tag="span" opacity={0.3}>
