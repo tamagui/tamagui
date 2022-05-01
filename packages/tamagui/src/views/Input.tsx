@@ -18,6 +18,8 @@ export const Input = styled(TextInput, {
 
   focusStyle: {
     borderColor: '$borderColorFocus',
+    borderWidth: 2,
+    margin: -1,
   },
 
   variants: {
