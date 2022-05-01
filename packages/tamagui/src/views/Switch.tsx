@@ -1,23 +1,23 @@
 // via radix
 // https://github.com/radix-ui/primitives/blob/main/packages/react/switch/src/Switch.tsx
 
+import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   ReactComponentWithRef,
   SizeTokens,
   SizeVariantSpreadFunction,
+  getSize,
   getVariableValue,
   styled,
   themeable,
 } from '@tamagui/core'
+import { Scope, createContextScope } from '@tamagui/create-context'
 import { XStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
 
-import { useComposedRefs } from '../helpers/composeRefs'
-import { Scope, createContextScope } from '../helpers/createContext'
-import { getSize } from '../helpers/getSize'
 import { usePrevious } from '../hooks/usePrevious'
 import { useLabelContext } from './Label'
 import { getSquareSize } from './Square'
