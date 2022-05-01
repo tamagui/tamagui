@@ -14,6 +14,7 @@
     "@tamagui/animations-reanimated": "^1.0.0-beta.147+6d63af55",
     "@tamagui/colors": "^1.0.0-beta.147+6d63af55",
     "@tamagui/core": "^1.0.0-beta.147+6d63af55",
+    "@tamagui/drawer": "^1.0.0-beta.147+6d63af55",
     "@tamagui/feather-icons": "^1.0.0-beta.147+6d63af55",
     "@tamagui/font-inter": "^1.0.0-beta.147+6d63af55",
     "@tamagui/shorthands": "^1.0.0-beta.147+6d63af55",

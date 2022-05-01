@@ -8,15 +8,15 @@ import { animations } from './animations.reanimated'
 const interFont = createInterFont()
 
 const config = createTamagui({
+  fonts: {
+    title: interFont,
+    body: interFont,
+  },
   animations,
   defaultTheme: 'light',
   shorthands,
   themes,
   tokens: createTokens({
-    font: {
-      title: interFont,
-      body: interFont,
-    },
     size,
     space,
     zIndex,

@@ -43,6 +43,9 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     },
   },
   devServer: {
+    client: {
+      overlay: false,
+    },
     hot: true,
     static: {
       directory: path.join(__dirname, 'public'),
@@ -55,14 +58,25 @@ module.exports = /** @type { import('webpack').Configuration } */ {
       {
         oneOf: [
           {
-            test: /(react-native-reanimated|bottom-sheet).*\.[tj]sx?$/,
+            test: /(react-native-reanimated).*\.[tj]sx?$/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['@babel/preset-react'],
+                },
+              },
+            ],
+          },
+          {
+            test: /(bottom-sheet).*\.[tj]sx?$/,
             use: [
               {
                 loader: 'babel-loader',
                 options: {
                   presets: ['@babel/preset-react'],
                   plugins: [
-                    // 'react-native-reanimated/plugin',
+                    'react-native-reanimated/plugin',
                     '@babel/plugin-proposal-class-properties',
                   ],
                 },

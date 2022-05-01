@@ -198,7 +198,7 @@ const baseThemes = {
   },
   light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
-  light_Drawer: lightThemes.light_alt1,
+  light_DrawerFrame: lightThemes.light_alt1,
   light_Button: lightThemes.light_alt1,
 
   // dark
@@ -209,7 +209,7 @@ const baseThemes = {
   },
   dark_active: makeActiveTheme(darkThemes.dark),
   dark_Card: darkThemes.dark_alt1,
-  dark_Drawer: darkThemes.dark_alt2,
+  dark_DrawerFrame: darkThemes.dark_alt2,
   dark_Button: darkThemes.dark_alt1,
 }
 
@@ -266,11 +266,11 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
     ...altLightThemes,
     [`${lightButtonTheme[0]}_Button`, altLightThemes[2][1]],
     [`${lightButtonTheme[0]}_Card`, altLightThemes[2][1]],
-    [`${lightButtonTheme[0]}_Drawer`, altLightThemes[2][1]],
+    [`${lightButtonTheme[0]}_DrawerFrame`, altLightThemes[2][1]],
     ...altDarkThemes,
     [`${darkButtonTheme[0]}_Button`, altDarkThemes[2][1]],
     [`${darkButtonTheme[0]}_Card`, altDarkThemes[2][1]],
-    [`${darkButtonTheme[0]}_Drawer`, altDarkThemes[2][1]],
+    [`${darkButtonTheme[0]}_DrawerFrame`, altDarkThemes[2][1]],
   ]
 })
 

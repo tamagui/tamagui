@@ -1,5 +1,5 @@
 import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 // can configure to allow most-recent-wins or prop-wins
 // defaults to most-recent-wins
@@ -12,7 +12,7 @@ export function useControllableState<T>({
 }: {
   prop?: T | undefined
   defaultProp: T
-  onChange?: (next: T) => void
+  onChange?: ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>
   strategy?: 'prop-wins' | 'most-recent-wins'
 }): [T, React.Dispatch<React.SetStateAction<T>>] {
   const handleChange = useCallbackRef(onChange)

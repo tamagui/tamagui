@@ -98,7 +98,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
                 addVar(val[fkey])
               } else {
                 for (const fskey in val[fkey]) {
-                  console.log('add', fkey, fskey, val[fkey][fskey])
                   addVar(val[fkey][fskey])
                 }
               }

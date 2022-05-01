@@ -2,7 +2,6 @@
   - types for $blue10 etc
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
-  - 30% fix on native + simple native demo (maybe with starters repo)
   - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here
 

@@ -12,7 +12,7 @@ import {
   styled,
   themeable,
 } from '@tamagui/core'
-import { Scope, createContextScope } from '@tamagui/create-context'
+import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { XStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -24,7 +24,6 @@ import { getSquareSize } from './Square'
 
 const SWITCH_NAME = 'Switch'
 
-type ScopedProps<P> = P & { __scopeSwitch?: Scope }
 const scopeContexts = createContextScope(SWITCH_NAME)
 const [createSwitchContext] = scopeContexts
 export const createSwitchScope = scopeContexts[1]
@@ -88,7 +87,7 @@ export type SwitchProps = SwitchButtonProps & {
 }
 
 const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
-  (props: ScopedProps<SwitchProps>, forwardedRef) => {
+  (props: ScopedProps<SwitchProps, 'Switch'>, forwardedRef) => {
     const {
       __scopeSwitch,
       labeledBy: ariaLabelledby,
@@ -197,7 +196,7 @@ const SwitchThumbFrame = styled(XStack, {
 
 export const SwitchThumb = SwitchThumbFrame.extractable(
   React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(
-    (props: ScopedProps<SwitchThumbProps>, forwardedRef) => {
+    (props: ScopedProps<SwitchThumbProps, 'Switch'>, forwardedRef) => {
       const { __scopeSwitch, ...thumbProps } = props
       const { size, disabled, checked } = useSwitchContext(THUMB_NAME, __scopeSwitch)
       return (

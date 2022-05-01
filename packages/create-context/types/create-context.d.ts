@@ -1,4 +1,7 @@
 import * as React from 'react';
+export declare type ScopedProps<P, K extends string> = P & {
+    [Key in `__scope${K}`]?: Scope;
+};
 export declare function createContext<ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType): readonly [{
     (props: ContextValueType & {
         children: React.ReactNode;

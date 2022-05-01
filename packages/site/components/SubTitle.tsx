@@ -7,6 +7,8 @@ export const SubTitle = ({ children, ...props }) => {
   return (
     <ThemeReset>
       <H3
+        pos="relative"
+        width="max-content"
         size="$7"
         letterSpacing={-1}
         theme="alt3"
