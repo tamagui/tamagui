@@ -8,6 +8,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -187,17 +188,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     document.documentElement.style.setProperty('color-scheme', colorScheme)
   }, [enableColorScheme, theme, resolvedTheme, forcedTheme])
 
+  const contextValue = useMemo(() => {
+    return {
+      theme,
+      setTheme,
+      forcedTheme,
+      resolvedTheme: theme === 'system' ? resolvedTheme : theme,
+      themes: enableSystem ? [...themes, 'system'] : themes,
+      systemTheme: (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined,
+    } as const
+  }, [theme, forcedTheme, resolvedTheme, enableSystem])
+
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        setTheme,
-        forcedTheme,
-        resolvedTheme: theme === 'system' ? resolvedTheme : theme,
-        themes: enableSystem ? [...themes, 'system'] : themes,
-        systemTheme: (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined,
-      }}
-    >
+    <ThemeContext.Provider value={contextValue}>
       <ThemeScript
         {...{
           forcedTheme,

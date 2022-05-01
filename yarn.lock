@@ -3263,7 +3263,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-aria/ssr@npm:^3.0.1, @react-aria/ssr@npm:^3.1.0, @react-aria/ssr@npm:^3.1.2":
+"@react-aria/ssr@npm:^3.0.1, @react-aria/ssr@npm:^3.1.2":
   version: 3.1.2
   resolution: "@react-aria/ssr@npm:3.1.2"
   dependencies:
@@ -3274,7 +3274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-aria/utils@npm:^3.10.0, @react-aria/utils@npm:^3.11.3, @react-aria/utils@npm:^3.3.0":
+"@react-aria/utils@npm:^3.11.3, @react-aria/utils@npm:^3.3.0":
   version: 3.11.3
   resolution: "@react-aria/utils@npm:3.11.3"
   dependencies:
@@ -17517,13 +17517,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^3.3.2":
-  version: 3.4.1
-  resolution: "react-native-safe-area-context@npm:3.4.1"
+"react-native-safe-area-context@npm:^4.2.5":
+  version: 4.2.5
+  resolution: "react-native-safe-area-context@npm:4.2.5"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 86a0614c5bef60ff8e056cff3fd4200cc6d181653cb6c26992ab62061792474f4872d1f5d394234ec6da75ce8b2960c930f4d6a1b6af3b6579cf1c30b6d64bb5
+  checksum: 66bc91285c8e330fdad18ba0ecd1e0f2bae28449e254501837cbee86b7ac170e1da83eef33d8634ec3c43f23621bcd56f995159d811fbc0babde2b38dd10f3e1
   languageName: node
   linkType: hard
 
@@ -19817,8 +19817,8 @@ __metadata:
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
     "@radix-ui/react-use-callback-ref": ^0.1.0
-    "@react-aria/ssr": ^3.1.0
-    "@react-aria/utils": ^3.10.0
+    "@react-aria/ssr": ^3.1.2
+    "@react-aria/utils": ^3.11.3
     "@react-native-aria/focus": ^0.2.5
     "@react-native-aria/overlays": ^0.3.2
     "@react-native-community/blur": ^3.6.0
@@ -19835,7 +19835,7 @@ __metadata:
     "@types/react": ^17.0.35
     react: "*"
     react-dom: "*"
-    react-native-safe-area-context: ^3.3.2
+    react-native-safe-area-context: ^4.2.5
     react-native-web: ^0.17.5
   peerDependencies:
     react-native-web: "*"

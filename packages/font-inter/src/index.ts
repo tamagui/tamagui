@@ -10,7 +10,7 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
   }: {
     sizeLineHeight?: (fontSize: number) => number
   } = {}
-): A => {
+): GenericFont<keyof typeof defaultSizes> => {
   // merge to allow individual overrides
   const size = {
     ...defaultSizes,
