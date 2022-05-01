@@ -103,7 +103,9 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
         <Separator mx="$-5" />
         <Spacer />
 
+        {/* <Theme name="blue"> */}
         <Component components={components as any} />
+        {/* </Theme> */}
 
         <Separator my="$8" mx="auto" />
 

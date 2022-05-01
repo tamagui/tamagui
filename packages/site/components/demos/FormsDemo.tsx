@@ -3,7 +3,7 @@ import { Button, Input, SizeTokens, TextArea, XStack, YStack } from 'tamagui'
 
 export default function FormsDemo() {
   return (
-    <YStack maxWidth={180} overflow="hidden" space="$2" m="$3" p="$2">
+    <YStack maxWidth={200} overflow="hidden" space="$2" m="$3" p="$2">
       <FormDemo size="$1" />
       <FormDemo size="$2" />
       <FormDemo size="$3" />

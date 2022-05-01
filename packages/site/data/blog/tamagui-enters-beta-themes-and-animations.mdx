@@ -32,12 +32,14 @@ Since the first alpha it's been six months, [several hundreds of bugfixes](https
 
 Lets take a look at the changes in the beta:
 
-### Start faster with create-tamagui-app
+---
 
-Introducing **create-tamagui-app**, to get started much faster with Expo, Next.js, and Tamagui:
+## Get started faster 🚀
+
+Introducing [**create-tamagui-app**](https://github.com/tamagui/tamagui/tree/master/packages/create-tamagui-app), to get started much faster with a bootstrapped monorepo that uses Expo, Next.js, Solito and Tamagui:
 
 ```bash
-npx create-tamagui-app@latest my-app
+npx create-tamagui-app
 ```
 
 You can even clone + deploy it instantly with Vercel and Github:
@@ -54,46 +56,56 @@ You can even clone + deploy it instantly with Vercel and Github:
 
 A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo we borrowed from.
 
-### Overhauled Themes 🎨
+---
+
+## Overhauled Themes 🎨
 
 Themes have been completely redone in an exciting way - they are a huge step forward, a the power and flexibility they have is really unparelleled.
 
-#### Sub-themes
+### Sub-themes
 
-Tamagui already supported sub-themes, with various edge cases. With the rewrite, sub-themes now work much better, and the `theme` prop is available on every component, including ones you create using the `styled` factory function.
+Tamagui already supported sub-themes, with various edge cases. With the rewrite, sub-themes now work much better, and the `theme` prop is available on every component, including ones you create using the `styled` factory function. Nest as many as you'd like!
 
-<ScrollView horizontal showsHorizontalScrollbars={false}>
-  <XStack py="$4">
-    <YStack scale={0.8}>
+You can define a base `dark` theme, add `dark_blue` variant, give that three levels of strength (like `dark_blue_alt1`...), and so on.
+
+<HeroContainer>
+  <XStack py="$4" ai="center">
+    <YStack mx={-16} scale={0.8}>
       <MediaPlayerDemo theme="pink" />
     </YStack>
-    <YStack scale={0.8}>
+    <YStack mx={-16} scale={0.8}>
       <MediaPlayerDemo theme="blue" />
     </YStack>
   </XStack>
-</ScrollView>
+</HeroContainer>
 
-#### Component themes
+### Component themes
 
 Not only that, but you can give any `styled` component a `name` and it ensure that sub-theme applies. Theme props are now normalized to match React Native style properties as well.
 
-#### Tons of small improvements
+So `dark_Button` can control all styles of buttons, and likewise `dark_blue_Button` can override any for the blue theme.
+
+### Tons of small improvements
 
 We've also fixed and improved a lot of how the `@tamagui/feather-icons`, the `Button` component, and the theme engine all work together to automatically handle passing values between each other.
 
-#### Why it matters
+### Why it matters
 
-I'm really happy with how this landed. This release could have been focused on adding more new components, but it became obvious while working on the newly release [Tooltip](/docs/components/tooltip)/[Popover](/docs/components/popover)/[Drawer](/docs/components/drawer), that we really needed to get the fundamentals right first. It comes down to **animations and themes both having an outsides influence on everything above them**.
+In general, UI kits are hard because they have so much complexity that nests.
 
-In general, UI kits are hard because they have recursive complexity; every implementation detail has an outsize influence the one above it, and features like compilers, media queries, and native support all multiply the amount of code and testing you need to implement.
+Every implementation detail has an outsize influence the one above it, and many features and requirements multiply - whether its SSR, browser engines, features like themes or media queries, a compiler, native or web, allowing a `styled` factory function vs inline props vs hooks - each one much work together, and many balance on layers below.
+
+I'm really happy with how this landed. This release could have been focused on new components, but it became obvious while working [Tooltip](/docs/components/tooltip) / [Popover](/docs/components/popover) / [Drawer](/docs/components/drawer) that **getting animations and themes right** needed to happen first to avoid future pain.
 
 [Read the docs for much more on themes](/docs/intro/themes).
 
-### Animations
+---
+
+## Animations
 
 Animations are making their way, experimentally, into `@tamagui/core`. They are unstable, but we want to get feedback and use them more in practice.
 
-<OffsetBox size="hero">
+<OffsetBox my="$4">
   <XStack py="$4">
     <ExampleAnimations />
   </XStack>
@@ -106,55 +118,91 @@ They're implemented as pluggable drivers, starting with two:
 
 Which means you can swap entire animation drivers depending on your platform. Want lighter bundles on web, but spring animations on native? Use both packages, and swap them out based on your environment.
 
+We've added a new pseudo `enterStyle` that works if you have an `animation` prop set, giving you easy styling on mount (and see the next section for `exitStyle`).
+
 [Read the docs on animations](/docs/core/animations) to get started.
 
-### New Components
+### AnimatePresence
 
-Over the last few months we've added:
+In early form, we've added [AnimatePresence](/docs/core/animations#animate-presence), which is directly inspired by Framer Motion's. It works with `exitStyle` and variants to make once-complex animations quite easy.
 
-- [Inputs](/docs/components/inputs)
-- [Label](/docs/components/label)
-- [Switch](/docs/components/switch)
-- [Image](/docs/components/image)
-- [Separator](/docs/components/separator)
-- [ThemeInverse](/docs/core/theme#theme-inverse) and [ThemeReset](/docs/core/theme#theme-reset)
-- [Popover](/docs/components/popover) and [HoverablePopover](/docs/components/hoverable-popover)
-- [Tooltip](/docs/components/tooltip)
-- [Drawer](/docs/components/drawer)
-- [Square and Circle](/docs/components/shapes)
-- [HTML Elements](/docs/components/html-elements)
+<HeroContainer noPad>
+  <AnimationsPresenceDemo />
+</HeroContainer>
 
-And we're just getting started!
+```jsx hero template=AnimationsPresence
+
+```
+
+---
+
+## New Components and improved styled()
+
+We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/docs/components/inputs), [Label](/docs/components/label), [Switch](/docs/components/switch), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover) and [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), [HTML Elements](/docs/components/html-elements).
+
+Here's the new Switch component that works with animations:
+
+<HeroContainer>
+  <SwitchDemo />
+</HeroContainer>
+
+```jsx hero template=Switch
+
+```
+
+### styled() Upgrades
+
+The `styled()` factory function as well gets many upgrades, it can accept React Native components directly and automatically interprets which props it can pass into them, as well as working properly now with media queries, and _much_ faster and more accurate types.
 
 There's tons of room to grow and improve. We're looking at using [Floating UI](https://floating-ui.com/) to improve our floating panels, and getting essential form elements in next.
 
 [Join our Discord to voice which ones you'd like to see](https://discord.gg/4qh6tdcVDa).
 
-### Upgraded Components
+---
+
+## Upgraded Components
 
 [LinearGradient](/docs/components/linear-gradient), [Image](/docs/components/image), and [Button](/docs/components/button) have received lots of love. LinearGradient now fully supports all theme values and the compiler will help it extract any style properties. Image should still be considered beta, but has gone through many rounds of bugfixes and improvements. And Button now handles passing more text properties down, themes and sizes icons more reliably, and has many fixes for variants like `circular`.
 
-### Focus styling
+---
 
-We landed experimental support for the `focusStyle` prop, which works much like `pressStyle` and `hoverStyle`.
+## Focus styling
 
-### ThemeReset
+We landed experimental support for the `focusStyle` prop, which works much like `pressStyle` and `hoverStyle`. You can see it in action on `Input`:
 
-Sometimes you want to have your theme reset to the one above it. ThemeReset does just this. Note: it's not SSR compatible if you're doing automatic light/dark themes - it will still work, but there may be a flash on first load. There's a fix for this that is a bit involved,so we think it's still useful to release as experimental until we land that.
+<HeroContainer>
+  <FormsDemo />
+</HeroContainer>
 
-### A pre-made base theme
+```jsx hero template=Forms
+
+```
+
+---
+
+## ThemeReset
+
+Sometimes you want to have your theme reset to the one above it. [ThemeReset](/docs/core/theme#theme-reset) does just this. Note: it's not SSR compatible if you're doing automatic light/dark themes - it will still work, but there may be a flash on first load. There's a fix for this that is a bit involved, but we think it's still useful to release it for now as experimental.
+
+---
+
+## A pre-made base theme
 
 Use the themes from the Tamagui site itself without any setup at all, simply install `@tamagui/theme-base` and add `themes` and `tokens` to `createTamagui()` in your `tamagui.config.ts`.
 
 Likewise, we've released `@tamagui/shorthands`, a nice default set of shorthands to use out of the box.
 
-### And much more...
+---
+
+## And much more...
 
 - 🐛 [Hundreds of bug-fixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.1).
 - ✨ Many docs improvements: new pages, more examples, more props documented, and search.
-- ✨ Smarter styled() function - now automatically detects Text/View and other React Native Web components and properly handles their styling/types.
+- 🐛 Much improved install experience and many bugs fixed with Next, Webpack, Monorepos.
 
-### Acknowledgements
+---
+
+## Acknowledgements
 
 This release once again is inspired by or forks code from a variety of other libraries and developers.
 
