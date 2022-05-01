@@ -1246,7 +1246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-object-assign@npm:^7.10.4":
+"@babel/plugin-transform-object-assign@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/plugin-transform-object-assign@npm:7.16.7"
   dependencies:
@@ -3474,12 +3474,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/animate-presence@^1.0.0-beta.147+6d63af55, @tamagui/animate-presence@^1.0.0-beta.181+fff2a5b2, @tamagui/animate-presence@workspace:packages/animate-presence":
+"@tamagui/animate-presence@^1.0.0-beta.147+6d63af55, @tamagui/animate-presence@^1.0.0-beta.193+14c13acd, @tamagui/animate-presence@workspace:packages/animate-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
@@ -3487,8 +3487,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-css@workspace:packages/animations-css"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
@@ -3496,8 +3496,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-motion@workspace:packages/animations-motion"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
@@ -3505,10 +3505,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
-    "@tamagui/animate-presence": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
-    react-native-reanimated: ^2.4.1
+    "@tamagui/animate-presence": ^1.0.0-beta.193+14c13acd
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
+    react-native-reanimated: ^2.8.0
   languageName: unknown
   linkType: soft
 
@@ -3521,12 +3521,12 @@ __metadata:
     "@babel/template": "*"
     "@babel/traverse": ^7.15.4
     "@babel/types": ^7.15.6
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/static": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/static": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.0.0-beta.181+fff2a5b2, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.0.0-beta.193+14c13acd, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -3543,19 +3543,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@^1.0.0-beta.147+6d63af55, @tamagui/colors@^1.0.0-beta.181+fff2a5b2, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@^1.0.0-beta.147+6d63af55, @tamagui/colors@^1.0.0-beta.193+14c13acd, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
-"@tamagui/core-node@^1.0.0-beta.181+fff2a5b2, @tamagui/core-node@workspace:packages/core-node":
+"@tamagui/core-node@^1.0.0-beta.193+14c13acd, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
-    "@tamagui/helpers": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/helpers": ^1.0.0-beta.193+14c13acd
     "@types/node": ^16.11.9
     "@types/react": ^17.0.35
     chokidar: ^3.5.2
@@ -3571,15 +3571,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.0.0-beta.147+6d63af55, @tamagui/core@^1.0.0-beta.181+fff2a5b2, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.0.0-beta.147+6d63af55, @tamagui/core@^1.0.0-beta.193+14c13acd, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/helpers": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/helpers": ^1.0.0-beta.193+14c13acd
     "@tamagui/ow": ^0.28.1
-    "@tamagui/use-debounce": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/use-force-update": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/use-debounce": ^1.0.0-beta.193+14c13acd
+    "@tamagui/use-force-update": ^1.0.0-beta.193+14c13acd
     "@types/react": ^17.0.35
     csstype: ^3.0.10
     esbuild: ^0.14.36
@@ -3597,13 +3597,13 @@ __metadata:
   resolution: "@tamagui/drawer@workspace:packages/drawer"
   dependencies:
     "@gorhom/bottom-sheet": ^4.1.5
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/polyfill-dev": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
+    "@tamagui/polyfill-dev": ^1.0.0-beta.193+14c13acd
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.2.0
-    react-native-reanimated: ^2.4.1
+    react-native-gesture-handler: ^2.4.1
+    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -3619,7 +3619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/fake-react-native@^1.0.0-beta.181+fff2a5b2, @tamagui/fake-react-native@workspace:packages/fake-react-native":
+"@tamagui/fake-react-native@^1.0.0-beta.193+14c13acd, @tamagui/fake-react-native@workspace:packages/fake-react-native":
   version: 0.0.0-use.local
   resolution: "@tamagui/fake-react-native@workspace:packages/fake-react-native"
   languageName: unknown
@@ -3629,8 +3629,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/feather-icons@workspace:packages/feather-icons"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
     camelcase: ^6.0.0
     cheerio: ^1.0.0-rc.5
     feather-icons: ^4.28.0
@@ -3649,8 +3649,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-fira-mono@workspace:packages/font-fira-mono"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/colors": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/colors": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
@@ -3658,8 +3658,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-inter@workspace:packages/font-inter"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/colors": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/colors": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
@@ -3667,16 +3667,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/font-silkscreen@workspace:packages/font-silkscreen"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/colors": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/colors": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
-"@tamagui/helpers@^1.0.0-beta.181+fff2a5b2, @tamagui/helpers@workspace:packages/helpers":
+"@tamagui/helpers@^1.0.0-beta.193+14c13acd, @tamagui/helpers@workspace:packages/helpers":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers@workspace:packages/helpers"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
     react-native: "*"
   peerDependencies:
     react-native: "*"
@@ -3688,14 +3688,14 @@ __metadata:
   resolution: "@tamagui/menu@workspace:packages/menu"
   dependencies:
     "@gorhom/bottom-sheet": ^4.1.5
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/polyfill-dev": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/use-controllable-state": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
+    "@tamagui/polyfill-dev": ^1.0.0-beta.193+14c13acd
+    "@tamagui/use-controllable-state": ^1.0.0-beta.193+14c13acd
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.2.0
-    react-native-reanimated: ^2.4.1
+    react-native-gesture-handler: ^2.4.1
+    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -3706,15 +3706,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/proxy-worm": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/static": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/proxy-worm": ^1.0.0-beta.193+14c13acd
+    "@tamagui/static": ^1.0.0-beta.193+14c13acd
     browserslist: ^4.19.1
     css-minimizer-webpack-plugin: ^3.4.1
     esbuild-loader: ^2.18.0
     next: ^12.1.5
     next-compose-plugins: ^2.2.1
-    tamagui-loader: ^1.0.0-beta.181+fff2a5b2
+    tamagui-loader: ^1.0.0-beta.193+14c13acd
     thread-loader: ^3.0.4
   peerDependencies:
     next: ">=12.0.0"
@@ -3735,13 +3735,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tamagui/polyfill-dev@^1.0.0-beta.181+fff2a5b2, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
+"@tamagui/polyfill-dev@^1.0.0-beta.193+14c13acd, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
   languageName: unknown
   linkType: soft
 
-"@tamagui/proxy-worm@^1.0.0-beta.181+fff2a5b2, @tamagui/proxy-worm@workspace:packages/proxy-worm":
+"@tamagui/proxy-worm@^1.0.0-beta.193+14c13acd, @tamagui/proxy-worm@workspace:packages/proxy-worm":
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
   languageName: unknown
@@ -3772,7 +3772,7 @@ __metadata:
     motion: ^10.6.2
     react: "*"
     react-dom: "*"
-    react-native-reanimated: ^2.4.1
+    react-native-reanimated: ^2.8.0
     react-native-web: ^0.17.5
     react-refresh: ^0.11.0
     tamagui: ^1.0.0-beta.147+6d63af55
@@ -3789,7 +3789,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
@@ -3851,7 +3851,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@^1.0.0-beta.181+fff2a5b2, @tamagui/static@workspace:packages/static":
+"@tamagui/static@^1.0.0-beta.193+14c13acd, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -3864,11 +3864,11 @@ __metadata:
     "@babel/types": ^7.15.6
     "@dish/babel-preset": ^0.0.6
     "@expo/match-media": ^0.1.0
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core-node": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/fake-react-native": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/helpers": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/proxy-worm": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core-node": ^1.0.0-beta.193+14c13acd
+    "@tamagui/fake-react-native": ^1.0.0-beta.193+14c13acd
+    "@tamagui/helpers": ^1.0.0-beta.193+14c13acd
+    "@tamagui/proxy-worm": ^1.0.0-beta.193+14c13acd
     "@testing-library/react": 13.0.0-alpha.4
     "@types/jest": "*"
     "@types/node": ^16.11.9
@@ -3891,7 +3891,7 @@ __metadata:
     react-native-web: ^0.17.5
     react-test-renderer: 18.0.0-beta-149b420f6-20211119
     style-loader: ^3.3.0
-    tamagui: ^1.0.0-beta.181+fff2a5b2
+    tamagui: ^1.0.0-beta.193+14c13acd
     typescript: ^4.5.2
     webpack: ^5.72.0
   peerDependencies:
@@ -3903,18 +3903,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/colors": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/colors": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-controllable-state@^1.0.0-beta.181+fff2a5b2, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
+"@tamagui/use-controllable-state@^1.0.0-beta.193+14c13acd, @tamagui/use-controllable-state@workspace:packages/use-controllable-state":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
   dependencies:
     "@radix-ui/react-use-callback-ref": ^0.1.0
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
     react: "*"
     react-dom: "*"
   peerDependencies:
@@ -3923,22 +3923,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-debounce@^1.0.0-beta.181+fff2a5b2, @tamagui/use-debounce@workspace:packages/use-debounce":
+"@tamagui/use-debounce@^1.0.0-beta.193+14c13acd, @tamagui/use-debounce@workspace:packages/use-debounce":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-debounce@workspace:packages/use-debounce"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
     react: "*"
   peerDependencies:
     react: "*"
   languageName: unknown
   linkType: soft
 
-"@tamagui/use-force-update@^1.0.0-beta.181+fff2a5b2, @tamagui/use-force-update@workspace:packages/use-force-update":
+"@tamagui/use-force-update@^1.0.0-beta.193+14c13acd, @tamagui/use-force-update@workspace:packages/use-force-update":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-force-update@workspace:packages/use-force-update"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
     react: "*"
   peerDependencies:
     react: "*"
@@ -3949,9 +3949,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-window-size@workspace:packages/use-window-size"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/use-debounce": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/use-force-update": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/use-debounce": ^1.0.0-beta.193+14c13acd
+    "@tamagui/use-force-update": ^1.0.0-beta.193+14c13acd
     "@types/react": ^17.0.35
     react: "*"
     react-native: "*"
@@ -7437,7 +7437,7 @@ __metadata:
   resolution: "create-tamagui-app@workspace:packages/create-tamagui-app"
   dependencies:
     "@expo/package-manager": ^0.0.50
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
     "@types/async-retry": 1.4.2
     "@types/cross-spawn": ^6.0.2
     "@types/node": ^16.11.9
@@ -14467,13 +14467,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mockdate@npm:^3.0.2":
-  version: 3.0.5
-  resolution: "mockdate@npm:3.0.5"
-  checksum: 72b66786d9e072379693f80bf9fb82eb5153c9741030a4294184e3ccaf952d0713fae8966f77780580cf902f8ec7ccc95577b0ad47980d255e2ffb71fc7ca49c
-  languageName: node
-  linkType: hard
-
 "modify-values@npm:^1.0.0":
   version: 1.0.1
   resolution: "modify-values@npm:1.0.1"
@@ -17432,15 +17425,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-freeze@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "react-freeze@npm:1.0.0"
-  peerDependencies:
-    react: ^17.0.0
-  checksum: c746b9d369c77296c277626cf7dd5ff24d49657e2f16412d14f845d1b428588184c0009374119f7dec24be37ab8c134d15aa4ecd57360c874880af508dcc577b
-  languageName: node
-  linkType: hard
-
 "react-is@npm:18.0.0-beta-149b420f6-20211119":
   version: 18.0.0-beta-149b420f6-20211119
   resolution: "react-is@npm:18.0.0-beta-149b420f6-20211119"
@@ -17469,7 +17453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.2.0":
+"react-native-gesture-handler@npm:^2.4.1":
   version: 2.4.1
   resolution: "react-native-gesture-handler@npm:2.4.1"
   dependencies:
@@ -17485,22 +17469,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:2.4.1":
-  version: 2.4.1
-  resolution: "react-native-reanimated@npm:2.4.1"
+"react-native-reanimated@npm:2.8.0":
+  version: 2.8.0
+  resolution: "react-native-reanimated@npm:2.8.0"
   dependencies:
-    "@babel/plugin-transform-object-assign": ^7.10.4
+    "@babel/plugin-transform-object-assign": ^7.16.7
+    "@babel/preset-typescript": ^7.16.7
     "@types/invariant": ^2.2.35
     invariant: ^2.2.4
     lodash.isequal: ^4.5.0
-    mockdate: ^3.0.2
-    react-native-screens: ^3.4.0
+    setimmediate: ^1.0.5
     string-hash-64: ^1.0.3
   peerDependencies:
+    "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-    react-native-gesture-handler: "*"
-  checksum: 17b6e47e02798349c003c2e78a8be3a0e8f5f841be40e89d899f5747a7ea379351c1ecaf6441cf08a486b96b4b92fce47d410be09a60b3b0ef3eb675d0df407a
+  checksum: 6409a941a177d04d9091953a05f493d4924eb0d3e2a4b24cf83bb20460b985f89dd879f0ab7337655dba6a3183ca50cc2ad2b3ea1c505cdc1eed6c5ee1296b59
   languageName: node
   linkType: hard
 
@@ -17527,19 +17511,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 66bc91285c8e330fdad18ba0ecd1e0f2bae28449e254501837cbee86b7ac170e1da83eef33d8634ec3c43f23621bcd56f995159d811fbc0babde2b38dd10f3e1
-  languageName: node
-  linkType: hard
-
-"react-native-screens@npm:^3.4.0":
-  version: 3.13.1
-  resolution: "react-native-screens@npm:3.13.1"
-  dependencies:
-    react-freeze: ^1.0.0
-    warn-once: ^0.1.0
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: aaab7071f65ea7b3be197417e073d0cad06c80fcb2a956faaeb020322c8002963f4d14ba96550484e96d156a48a29989c1485f47ec4bcd98c9701fe8de5c7cc1
   languageName: node
   linkType: hard
 
@@ -19781,12 +19752,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.0.0-beta.147+6d63af55, tamagui-loader@^1.0.0-beta.181+fff2a5b2, tamagui-loader@workspace:packages/loader":
+"tamagui-loader@^1.0.0-beta.147+6d63af55, tamagui-loader@^1.0.0-beta.193+14c13acd, tamagui-loader@workspace:packages/loader":
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/static": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/static": ^1.0.0-beta.193+14c13acd
     fs-extra: ^9.1.0
     lodash: ^4.17.21
   languageName: unknown
@@ -19815,7 +19786,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@^1.0.0-beta.147+6d63af55, tamagui@^1.0.0-beta.181+fff2a5b2, tamagui@workspace:packages/tamagui":
+"tamagui@^1.0.0-beta.147+6d63af55, tamagui@^1.0.0-beta.193+14c13acd, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
@@ -19825,15 +19796,15 @@ __metadata:
     "@react-native-aria/focus": ^0.2.5
     "@react-native-aria/overlays": ^0.3.2
     "@react-native-community/blur": ^3.6.0
-    "@tamagui/animate-presence": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/build": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/core": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/animate-presence": ^1.0.0-beta.193+14c13acd
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/core": ^1.0.0-beta.193+14c13acd
     "@tamagui/expo-linear-gradient": 11.2.7
-    "@tamagui/fake-react-native": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/helpers": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/use-controllable-state": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/use-debounce": ^1.0.0-beta.181+fff2a5b2
-    "@tamagui/use-force-update": ^1.0.0-beta.181+fff2a5b2
+    "@tamagui/fake-react-native": ^1.0.0-beta.193+14c13acd
+    "@tamagui/helpers": ^1.0.0-beta.193+14c13acd
+    "@tamagui/use-controllable-state": ^1.0.0-beta.193+14c13acd
+    "@tamagui/use-debounce": ^1.0.0-beta.193+14c13acd
+    "@tamagui/use-force-update": ^1.0.0-beta.193+14c13acd
     "@types/node": ^16.11.9
     "@types/react": ^17.0.35
     react: "*"
@@ -21423,13 +21394,6 @@ __metadata:
   dependencies:
     makeerror: 1.0.12
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
-  languageName: node
-  linkType: hard
-
-"warn-once@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "warn-once@npm:0.1.0"
-  checksum: 5fde2b526d132369ae30a34e9bd172f77ae3c061e6b875194de42d668bc189bd779ddada5217348cdf23ecac6a277931b40482173c6695544b924f6a8cd67601
   languageName: node
   linkType: hard
 

@@ -7,15 +7,19 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
   } = {},
   {
     sizeLineHeight = (size) => size + 10,
+    sizeSize = (size) => size * 1,
   }: {
     sizeLineHeight?: (fontSize: number) => number
+    sizeSize?: (size: number) => number
   } = {}
 ): GenericFont<keyof typeof defaultSizes> => {
   // merge to allow individual overrides
-  const size = {
-    ...defaultSizes,
-    ...font.size,
-  }
+  const size = Object.fromEntries(
+    Object.entries({
+      ...defaultSizes,
+      ...font.size,
+    }).map(([k, v]) => [k, sizeSize(v)])
+  )
   return createFont({
     family:
       Platform.OS == 'web'
@@ -36,15 +40,15 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
 }
 
 const defaultSizes = {
-  1: 12,
-  2: 13,
-  3: 14,
-  4: 16,
-  5: 18,
-  6: 19,
-  7: 21,
-  8: 26,
-  9: 32,
+  1: 11,
+  2: 12,
+  3: 13,
+  4: 14,
+  5: 17,
+  6: 18,
+  7: 20,
+  8: 23,
+  9: 30,
   10: 45,
   11: 58,
   12: 64,

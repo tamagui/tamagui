@@ -16,7 +16,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         ai="center"
         py="$1"
         px="$4"
-        opacity={pending ? 0.25 : 0.75}
+        opacity={pending ? 0.25 : 1}
         hoverStyle={{
           backgroundColor: '$backgroundHover',
           opacity: 1,

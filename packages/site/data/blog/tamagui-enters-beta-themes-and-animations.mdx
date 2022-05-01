@@ -28,45 +28,13 @@ by: nate
   width={900}
 />
 
-Since the first alpha it's been six months, [several hundreds of bugfixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.0), [three demo apps](https://github.com/tamagui), and a number of new core features. Plus, a totally [refreshed site](/), and a [benchmark suite](/docs/intro/benchmarks).
-
-Lets take a look at the changes in the beta:
-
----
-
-## Get started faster 🚀
-
-Introducing [**create-tamagui-app**](https://github.com/tamagui/tamagui/tree/master/packages/create-tamagui-app), to get started much faster with a bootstrapped monorepo that uses Expo, Next.js, Solito and Tamagui:
-
-```bash
-npx create-tamagui-app
-```
-
-You can even clone + deploy it instantly with Vercel and Github:
-
-<XStack my="$4" jc="center">
-  <a
-    href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next-expo-solito&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fblog%2Fintroducing-tamagui%2Fhero.png"
-    target="_blank"
-    alt="Deploy with Vercel"
-  >
-    <img src="https://vercel.com/button" />
-  </a>
-</XStack>
-
-A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo we borrowed from.
+Since the first alpha it's been six months, [several hundreds of bugfixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.0), [three demo apps](https://github.com/tamagui), and a number of new core features. Plus, a totally [refreshed site](/), and a [benchmark suite](/docs/intro/benchmarks). a grip of type improvements, compatability fixes and internals speedups its' really shaped up to be interesting. There are two pieces though that are the biggest impact: **Animations**, and **Themes**.
 
 ---
 
 ## Overhauled Themes 🎨
 
-Themes have been completely redone in an exciting way - they are a huge step forward, a the power and flexibility they have is really unparelleled.
-
-### Sub-themes
-
-Tamagui already supported sub-themes, with various edge cases. With the rewrite, sub-themes now work much better, and the `theme` prop is available on every component, including ones you create using the `styled` factory function. Nest as many as you'd like!
-
-You can define a base `dark` theme, add `dark_blue` variant, give that three levels of strength (like `dark_blue_alt1`...), and so on.
+Themes have been completely redone in an exciting way - they are a huge step forward, a the power and flexibility they have is really unparelleled. They are easier to use, map to styles you can use easily, and can build off alternative trees with uniqued shading, contrasts, and look. All of thi can be shared on `npm`.
 
 <HeroContainer>
   <XStack py="$4" ai="center">
@@ -74,10 +42,16 @@ You can define a base `dark` theme, add `dark_blue` variant, give that three lev
       <MediaPlayerDemo theme="pink" />
     </YStack>
     <YStack mx={-16} scale={0.8}>
-      <MediaPlayerDemo theme="blue" />
+      <MediaPlayerDemo theme="blue_alt3" />
     </YStack>
   </XStack>
 </HeroContainer>
+
+### Sub-themes
+
+Tamagui already supported sub-themes, with various edge cases. With the rewrite, sub-themes now work much better, and the `theme` prop is available on every component, including ones you create using the `styled` factory function. Nest as many as you'd like!
+
+You can define a base `dark` theme, add `dark_blue` variant, give that three levels of strength (like `dark_blue_alt1`...), and so on.
 
 ### Component themes
 
@@ -136,7 +110,31 @@ In early form, we've added [AnimatePresence](/docs/core/animations#animate-prese
 
 ---
 
-## New Components and improved styled()
+## Get started faster 🚀
+
+Introducing [**create-tamagui-app**](https://github.com/tamagui/tamagui/tree/master/packages/create-tamagui-app), to get started much faster with a bootstrapped monorepo that uses Expo, Next.js, Solito and Tamagui:
+
+```bash
+npx create-tamagui-app
+```
+
+You can even clone + deploy it instantly with Vercel and Github:
+
+<XStack my="$4" jc="center">
+  <a
+    href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next-expo-solito&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fblog%2Fintroducing-tamagui%2Fhero.png"
+    target="_blank"
+    alt="Deploy with Vercel"
+  >
+    <img src="https://vercel.com/button" />
+  </a>
+</XStack>
+
+A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo we borrowed from.
+
+---
+
+## New Components!
 
 We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/docs/components/inputs), [Label](/docs/components/label), [Switch](/docs/components/switch), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover) and [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), [HTML Elements](/docs/components/html-elements).
 
@@ -150,7 +148,7 @@ Here's the new Switch component that works with animations:
 
 ```
 
-### styled() Upgrades
+## styled() Upgrades
 
 The `styled()` factory function as well gets many upgrades, it can accept React Native components directly and automatically interprets which props it can pass into them, as well as working properly now with media queries, and _much_ faster and more accurate types.
 

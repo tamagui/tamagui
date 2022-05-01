@@ -324,7 +324,15 @@ iframe {
 .token.selector,
 .token.selector .class,
 .token.function {
-  color: var(--green10);
+  color: var(--green11);
+}
+
+.highlight-line:hover {
+  background-color: var(--backgroundHover);
+}
+
+.highlight-line {
+  color: var(--colorPress); 
 }
 
 .token.attr-value,
@@ -337,20 +345,23 @@ iframe {
 .token.number,
 .token.unit,
 .token.color {
-  color: var(--orange10);
+  color: var(--purple11);
+}
+
+.token.operator {
+  color: (--color);
 }
 
 .token.attr-name,
 .token.keyword,
 .token.rule,
-.token.operator,
 .token.pseudo-class,
 .token.important {
   color: var(--pink11);
 }
 
 .token.punctuation {
-  color: var(--teal10);
+  color: var(--teal12);
 }
 
 .token.module,
