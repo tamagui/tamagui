@@ -207,8 +207,8 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-      <XStack pe="none" y={-50} ai="flex-start">
-        <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
+      <XStack pe="none" y={-45} ai="flex-start">
+        <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           borderWidth={1}
           size="$4"

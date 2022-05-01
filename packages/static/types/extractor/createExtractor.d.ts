@@ -16,6 +16,8 @@ export declare function createExtractor(): {
         [key: string]: string | {
             [key: string]: any;
         };
+    }, {
+        [key: string]: import("@tamagui/core-node").GenericFont<string | number>;
     }>;
     parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, getFlattenedNode, disable, disableExtraction, disableExtractInlineMedia, disableExtractVariables, disableDebugAttr, prefixLogs, excludeProps, ...props }: ExtractorParseProps) => {
         flattened: number;

@@ -111,6 +111,7 @@ export function createExtractor() {
         throw new Error(`Must provide components array with list of Tamagui component modules`)
       }
 
+      const ogDebug = shouldPrintDebug
       const tm = timer()
 
       // we require it after parse because we need to set some global/env stuff before importing
@@ -259,15 +260,19 @@ export function createExtractor() {
           const tagId = `${preName}${node.name.name}@${filePath.replace('./', '')}:${lineNumbers}`
 
           // debug just one
-          const hasBooleanDebugTrue = node.attributes.some(
-            (n) =>
-              t.isJSXAttribute(n) &&
-              t.isJSXIdentifier(n.name) &&
-              n.name.name === 'debug' &&
-              n.value === null
-          )
-          if (hasBooleanDebugTrue) {
-            shouldPrintDebug = true
+          const debugPropValue = node.attributes
+            .filter<t.JSXAttribute>(
+              // @ts-ignore
+              (n) => t.isJSXAttribute(n) && t.isJSXIdentifier(n.name) && n.name.name === 'debug'
+            )
+            .map((n) => {
+              if (n.value === null) return true
+              if (t.isStringLiteral(n.value)) return n.value.value as 'verbose'
+              return false
+            })[0]
+
+          if (debugPropValue) {
+            shouldPrintDebug = debugPropValue
           }
 
           try {
@@ -470,7 +475,7 @@ export function createExtractor() {
 
             let attrs: ExtractedAttr[] = []
             let shouldDeopt = false
-            const inlined = new Map<string, boolean | string>()
+            const inlined = new Map<string, any>()
             let hasSetOptimized = false
 
             // RUN first pass
@@ -682,6 +687,11 @@ export function createExtractor() {
                 }
               }
 
+              if (name === 'theme') {
+                inlined.set('theme', attr.value)
+                return attr
+              }
+
               // if value can be evaluated, extract it and filter it out
               const styleValue = attemptEvalSafe(value)
 
@@ -713,10 +723,6 @@ export function createExtractor() {
                 let didInline = false
                 const attributes = keys.map((key) => {
                   const val = out[key]
-                  if (key === 'theme') {
-                    inlined.set(key, val)
-                    return attr
-                  }
                   if (isValidStyleKey(key)) {
                     return {
                       type: 'style',
@@ -1091,7 +1097,7 @@ export function createExtractor() {
                 (traversePath.node.children &&
                   traversePath.node.children.every((x) => x.type === 'JSXText')))
 
-            const themeVal = inlined.get('theme')
+            let themeVal = inlined.get('theme')
             inlined.delete('theme')
             const allOtherPropsExtractable = [...inlined].every(([k, v]) => INLINE_EXTRACTABLE[k])
             const shouldWrapThme = allOtherPropsExtractable && !!themeVal
@@ -1106,16 +1112,11 @@ export function createExtractor() {
 
             if (shouldPrintDebug) {
               // prettier-ignore
-              console.log(' >>', { hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapThme, allOtherPropsExtractable, hasOnlyStringChildren })
+              console.log(' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapThme, allOtherPropsExtractable, hasOnlyStringChildren }))
             }
 
             // wrap theme around children on flatten
             if (shouldFlatten && shouldWrapThme) {
-              if (typeof themeVal !== 'string') {
-                // failed eval
-                return
-              }
-
               if (shouldPrintDebug) {
                 console.log('  - wrapping theme', allOtherPropsExtractable, themeVal)
               }
@@ -1141,7 +1142,7 @@ export function createExtractor() {
               traversePath.replaceWith(
                 t.jsxElement(
                   t.jsxOpeningElement(t.jsxIdentifier('_TamaguiTheme'), [
-                    t.jsxAttribute(t.jsxIdentifier('name'), t.stringLiteral(`${themeVal}`)),
+                    t.jsxAttribute(t.jsxIdentifier('name'), themeVal.value),
                   ]),
                   t.jsxClosingElement(t.jsxIdentifier('_TamaguiTheme')),
                   [traversePath.node]
@@ -1597,8 +1598,8 @@ export function createExtractor() {
           } catch (err) {
             throw err
           } finally {
-            if (hasBooleanDebugTrue) {
-              shouldPrintDebug = false
+            if (debugPropValue) {
+              shouldPrintDebug = ogDebug
             }
           }
         },

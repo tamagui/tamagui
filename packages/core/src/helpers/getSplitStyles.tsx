@@ -94,7 +94,7 @@ export const getSplitStyles = (
           transform = val
         } else {
           // todo?
-          console.log('?', key, val)
+          console.trace('?', key, val, cur, props, state)
         }
       }
       if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
