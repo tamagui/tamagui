@@ -46,6 +46,7 @@ export default function App(props: AppProps) {
   const isDark = classes.includes('tui_dark')
   const [theme, setTheme] = useState(isDark ? 'dark' : 'light')
 
+  // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {
     return (
       <SearchProvider>

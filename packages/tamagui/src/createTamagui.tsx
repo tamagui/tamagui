@@ -1,4 +1,3 @@
-import { OverlayProvider } from '@react-native-aria/overlays'
 import * as Core from '@tamagui/core'
 import {
   CreateTamaguiConfig,
@@ -6,7 +5,9 @@ import {
   TamaguiInternalConfig,
   TamaguiProviderProps,
 } from '@tamagui/core'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+
+import { PopoverProvider } from './views/Popover/PopoverProvider'
+import { SafeAreaProvider } from './views/SafeAreaProvider'
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
@@ -21,7 +22,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return (
       <OGProvider {...props}>
         <SafeAreaProvider>
-          <OverlayProvider>{children}</OverlayProvider>
+          <PopoverProvider>{children}</PopoverProvider>
         </SafeAreaProvider>
       </OGProvider>
     )
