@@ -22,7 +22,6 @@ export function themeable<Component extends (props: any) => any>(
       return <ThemeInverse>{element}</ThemeInverse>
     }
     if (theme || opts) {
-      console.log('WHAT', opts?.componentName)
       return (
         <Theme componentName={opts?.componentName} name={(theme as any) || null}>
           {element}

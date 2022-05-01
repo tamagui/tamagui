@@ -645,12 +645,6 @@ export function createComponent<
       ...viewProps,
       ...component.defaultProps,
     }
-    if (staticConfig.componentName === 'H4') {
-      console.log('sada', staticConfig, {
-        ...viewProps,
-        ...component.defaultProps,
-      })
-    }
 
     // debug
     if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.debug) {

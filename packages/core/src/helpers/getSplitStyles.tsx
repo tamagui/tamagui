@@ -103,12 +103,11 @@ export const getSplitStyles = (
       }
       if (process.env.NODE_ENV === 'development') {
         if (!transform) {
-          console.log('NO TRANSFORM?', { key, val, transform })
+          console.trace('NO TRANSFORM?', { key, val, transform })
         }
       }
       transforms[namespace] = transforms[namespace] || ['', '']
       const identifier = val.replace('_transform', '')
-      console.warn('?bug2', key, val, transform, insertedTransforms[val])
       transforms[namespace][0] += identifier
       transforms[namespace][1] += transform
     } else {
@@ -128,8 +127,8 @@ export const getSplitStyles = (
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
         if (!state.noClassNames) {
-          mergeClassName(atomicStyle.property, atomicStyle.identifier)
           insertStyleRule(atomicStyle.identifier, atomicStyle.rules[0])
+          mergeClassName(atomicStyle.property, atomicStyle.identifier)
         } else {
           style[atomicStyle.property] = atomicStyle.value
         }
@@ -243,8 +242,8 @@ export const getSplitStyles = (
         if (isWeb && !state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
-            mergeClassName(`${style.property}-${key}`, style.identifier)
             insertStyleRule(style.identifier, style.rules[0])
+            mergeClassName(`${style.property}-${key}`, style.identifier)
           }
         }
         continue
@@ -277,8 +276,8 @@ export const getSplitStyles = (
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
-            mergeClassName(`${out.identifier}-${mediaKey}`, out.identifier)
             insertStyleRule(out.identifier, out.styleRule)
+            mergeClassName(`${out.identifier}-${mediaKey}`, out.identifier)
           }
         } else {
           if (mediaState[mediaKey]) {
