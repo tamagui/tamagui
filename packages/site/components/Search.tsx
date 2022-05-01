@@ -1,3 +1,4 @@
+// debug
 import { DocSearchModal } from '@docsearch/react'
 import { Search as SearchIcon } from '@tamagui/feather-icons'
 import Head from 'next/head'
@@ -9,9 +10,9 @@ import { Button, ButtonProps, Paragraph, isTouchDevice } from 'tamagui'
 
 const SearchContext = createContext<any>(null)
 
-const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
-const ACTION_KEY_APPLE = ['⌘', 'Command']
-const API_KEY = '701b99fa55d34c0875a49ec724bc8c6f'
+// const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
+// const ACTION_KEY_APPLE = ['⌘', 'Command']
+const API_KEY = '10e7bbeb85d3909346e1519bfcdf82dc'
 const APP_ID = 'AIE0I4P8ZS'
 const INDEX = 'tamagui'
 
@@ -73,6 +74,7 @@ export function SearchProvider({ children }) {
               },
             }}
             transformItems={(items) => {
+              console.log('items, items')
               return items.map((item, index) => {
                 const aEl = document.createElement('a')
                 aEl.href = item.url
@@ -143,10 +145,10 @@ export const SearchButton = (props: ButtonProps) => {
       onPress={onOpen}
       className="all ease-in ms100"
       jc="flex-start"
-      borderWidth={0.5}
+      borderWidth={1}
       textAlign="left"
       icon={SearchIcon}
-      elevation="$2"
+      elevation="$4"
       color="$colorTranslucent"
       hoverStyle={{
         elevation: '$4',

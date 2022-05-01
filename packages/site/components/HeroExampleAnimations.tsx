@@ -1,3 +1,4 @@
+import { ArrowDown } from '@tamagui/feather-icons'
 import Link from 'next/link'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
@@ -35,25 +36,7 @@ let hasScrolledOnce = false
 
 export function HeroExampleAnimations() {
   const { tint } = useTint()
-  const [disableScroll, setDisableScroll] = useState(false)
-
-  useEffect(() => {
-    let tm
-    const disable = () => {
-      if (!disableScroll) {
-        setDisableScroll(true)
-      }
-      clearTimeout(tm)
-      tm = setTimeout(() => {
-        setDisableScroll(false)
-      }, 300)
-    }
-    window.addEventListener('scroll', disable, { passive: true })
-    return () => {
-      clearTimeout(tm)
-      window.removeEventListener('scroll', disable)
-    }
-  }, [disableScroll])
+  const [disableScrollPane, setDisableScrollPane] = useState(true)
 
   return (
     <YStack>
@@ -86,10 +69,34 @@ export function HeroExampleAnimations() {
             perspective={1000}
             rotateY="-5deg"
             x={-10}
-            pe={disableScroll ? 'none' : 'auto'}
             $sm={{ display: 'none' }}
+            pos="relative"
+            br="$8"
+            elevation="$5"
+            ov="hidden"
           >
+            <YStack
+              pe={disableScrollPane ? 'auto' : 'none'}
+              o={disableScrollPane ? 1 : 0}
+              fullscreen
+              pt="$12"
+              ai="center"
+              jc="center"
+            >
+              <YStack fullscreen className="mask-gradient-up" bc="rgba(0,0,0,0.5)" />
+              <Button
+                iconAfter={ArrowDown}
+                size="$2"
+                zi={10}
+                theme="pink"
+                onPress={() => setDisableScrollPane(false)}
+              >
+                Allow scrolling
+              </Button>
+            </YStack>
+
             <CodeDemo
+              pe={disableScrollPane ? 'none' : 'auto'}
               maxHeight={500}
               maxWidth={530}
               language="jsx"
@@ -281,10 +288,16 @@ export const ExampleAnimations = memo(() => {
                     next()
                   }}
                 >
-                  <Paragraph selectable={false} cursor="inherit" size="$4" fontWeight="800">
+                  <Paragraph
+                    mb="$-1"
+                    selectable={false}
+                    cursor="inherit"
+                    size="$3"
+                    fontWeight="800"
+                  >
                     {item.name}
                   </Paragraph>
-                  <Paragraph ellipse selectable={false} size="$3" cursor="inherit" theme="alt2">
+                  <Paragraph ellipse selectable={false} size="$2" cursor="inherit" theme="alt2">
                     {item.description}
                   </Paragraph>
                 </YStack>
@@ -303,9 +316,7 @@ export const ExampleAnimations = memo(() => {
             return (
               <React.Fragment key={key}>
                 <YStack>
-                  <Paragraph size="$2" fow="800">
-                    {key}
-                  </Paragraph>
+                  <Paragraph size="$2">{key}</Paragraph>
                   <Paragraph>{value}</Paragraph>
                 </YStack>
                 {i < settings.length - 1 && <Separator vertical mx={15} />}

@@ -48,7 +48,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     <YStack
       ref={ref}
       position="relative"
-      mt="$1"
       mb="$4"
       {...(isHero && {
         px: '$4',
@@ -64,8 +63,8 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           display="inline-flex"
           alignItems="center"
           justifyContent="flex-end"
-          top={-58}
-          right="$6"
+          top={-68}
+          right="$7"
         >
           <Button size="$2" onPress={() => setIsCollapsed((x) => !x)}>
             {isCollapsed ? 'Show code' : 'Hide code'}
@@ -85,8 +84,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             // @ts-ignore
             id={id}
           >
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <Code p="$4" backgroundColor="transparent" className={className}>
+            <ScrollView
+              style={{ width: '100%' }}
+              contentContainerStyle={{ minWidth: '100%' }}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            >
+              <Code p="$4" backgroundColor="transparent" f={1} className={className}>
                 {children}
               </Code>
             </ScrollView>

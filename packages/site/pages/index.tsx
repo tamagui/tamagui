@@ -17,7 +17,6 @@ import { HeroExampleThemes } from '../components/HeroExampleThemes'
 import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
-import { HR } from '../components/HR'
 import { InstallInput } from '../components/InstallInput'
 import { SearchButton } from '../components/Search'
 

@@ -44,7 +44,7 @@ export default (props) => {
         l={20}
         iconAfter={Play}
         theme={tint}
-        size="$6"
+        size="$5"
         circular
         onPress={() => next()}
       />
