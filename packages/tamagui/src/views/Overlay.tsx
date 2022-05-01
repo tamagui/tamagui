@@ -70,5 +70,5 @@ export function Overlay({
     )
   }
 
-  return <OverlayContainer>{children}</OverlayContainer>
+  return <OverlayContainer style={{ zIndex: Number.MAX_SAFE_INTEGER }}>{children}</OverlayContainer>
 }

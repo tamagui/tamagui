@@ -3,7 +3,7 @@
 // Copyright (c) 2021 GeekyAnts India Pvt Ltd
 
 import { useOverlayPosition } from '@react-native-aria/overlays'
-import { useMemo } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 import React, { useContext, useEffect, useRef } from 'react'
 
 import { YStack } from '../Stacks'
@@ -57,35 +57,29 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
   let restElements: React.ReactNode[] = []
   let arrowElement: React.ReactElement | null = null
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setOverlayRef?.(overlayRef)
   }, [overlayRef, setOverlayRef])
 
   // Might have performance impact if there are a lot of siblings!
   // Shouldn't be an issue with popovers since it would have at most 2. Arrow and Content.
   // todo move to more radix style proper context based system
-  React.Children.toArray(children)
-    .flatMap((child) => {
-      return React.isValidElement(child) && child.type['displayName'] === 'AnimatePresence'
-        ? child.props.children
-        : child
-    })
-    .map((child) => {
-      if (
-        React.isValidElement(child) &&
-        // @ts-ignore
-        child.type.displayName === 'PopperArrow'
-      ) {
-        arrowElement = React.cloneElement(child as any, {
-          ...context,
-          ...arrowProps,
-          ...arrowStyle,
-          placement,
-        })
-      } else {
-        restElements.push(child)
-      }
-    })
+  React.Children.forEach(children, (child) => {
+    if (
+      React.isValidElement(child) &&
+      // @ts-ignore
+      child.type.displayName === 'PopperArrow'
+    ) {
+      arrowElement = React.cloneElement(child as any, {
+        ...context,
+        ...arrowProps,
+        ...arrowStyle,
+        placement,
+      })
+    } else {
+      restElements.push(child)
+    }
+  })
 
   let arrowHeight = 0
   let arrowWidth = 0
@@ -106,8 +100,6 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
   }
 
   const diagonalLength = getDiagonalLength(arrowHeight, arrowWidth) / 2
-
-  console.log('overlayProps', placement, overlayProps, overlayStyle, context)
 
   return (
     <YStack

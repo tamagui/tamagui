@@ -3,11 +3,9 @@ title: Introduction
 description: The how and why of Tamagui
 ---
 
-Tamagui lets you **share more code between web and native apps while improving DX, performance, and accessibility**. It turns all styles, even inline styles with conditional logic or responsive queries or themes, into efficient extracted atomic CSS on the web, or on native, into an efficient top-level StyleSheet.
+Tamagui lets you **share more code between web and native apps while improving, rather than sacrificing, DX, performance, and code maintainability**.
 
-This is a **win-win-win**: more performant, easier to write/maintain, and works on every platform. Typically you'd have to trade performance for DX, or both for cross-platform compatibility. With Tamagui, you don't.
-
-The compiler even flattens any fully analyzable views into a much faster simple HTML tags on web, or View/Text on native, reducing tree depth signficantly.
+It does this by compiling typed inline styles, even ones containing conditional logic, themes, or responsivity, into efficient atomic CSS (or a hoisted StyleSheet on native).
 
 <Image
   size="hero"
@@ -17,9 +15,17 @@ The compiler even flattens any fully analyzable views into a much faster simple 
   width={800}
 />
 
-### React Native ❤️
+This is a **win-win-win**: more performant, easier to write/maintain, and works on every platform. Typically you'd have to trade performance for DX, or both for cross-platform compatibility. With Tamagui, you don't!
 
-Work with your favorite libraries: `react-native` and `react-native-web`. Tamagui improves typical performance with an optimizing compiler - especially with media queries, themes, and dynamic styles.
+In exchange you add complexity with a compiler - but, it's both optional, very easy to turn off and introspect at every level.
+
+The compiler does a lot, too - it analyzes logic, spreads, and nested ternaries, even flattening fully analyzable components to reduce tree depth signficantly.
+
+---
+
+### Works with React ❤️
+
+Work with your favorite libraries: `react-native` and `react-native-web` augmenting them with features and performance.
 
 ### Themed, Responsive
 
@@ -27,15 +33,17 @@ Hooks `useTheme` and `useMedia` and inline theme and media styling work just how
 
 ### Faster Runtime
 
-Not just 0 prop interpolation, but 0 prop interpolation on inline styles and dynamic styles. Even with complex logical styling you get less runtime, light CSS output, and flatter component trees. Plus CSS media queries and CSS variables run much faster than JS ones.
+Almost no prop interpolation on inline styles and dynamic styles. Even with complex logical styling you get less runtime, light CSS output, and flatter component trees. CSS media queries and CSS variables run much faster than JS.
 
 ### Less Runtime
 
-Less JS to parse, especially when doing logic in your render function. Ternaries, object spreads, and more get extracted. Strictly style components (with no un-parseable props) are flattened to `div` or `span`, saving tree depth and hook calls.
+Tamagui adds some to bundle size, but dramatically reduces render performance and extract what would be many style objects out at build time. Strictly style components (with no un-parseable props) are flattened to `div` or `span`, saving tree depth and hook calls.
 
 ### Server-Side Rendering
 
 Tamagui supports cross-browser server-side rendering ([see how we do it with Next.js](https://github.com/tamagui/tamagui/tree/master/packages/site)), even for responsive styles and variants.
+
+---
 
 ## Key Features
 
@@ -55,9 +63,21 @@ Tamagui provides a simple [theming](/docs/intro/themes) experience out of the bo
 
 [Shorthands](/docs/intro/configuration#shorthands) allow you to map shorthand properties to their longer cousins. This lets you create Tailwinds-like quick properties to style. These work with TypeScript as well, and are designed so you can bring them with you across different tamagui component kits.
 
-### Responsive
+### Responsivity
 
 Tamagui lets you configure [media queries](/docs/core/use-media) and apply variants responsively using `$` props.
+
+### Animations
+
+Plug-in [animations](/docs/core/animations) with incredibly simple syntax.
+
+### Fonts
+
+A unique font system means you can publish and share font bundles including all their styles - vertical rythyms and all, and still get all the benefits of compilation speed.
+
+### Hooks
+
+The `useMedia` and `useTheme` hooks work reactively, avoiding re-renders, while giving you the same typed access as your normally have to your design system values. They work with the compiler as well when possible.
 
 ### Developer Experience
 

@@ -7,6 +7,7 @@ import {
   getSplitStyles,
   mediaQueryConfig,
   normalizeStyleObject,
+  proxyThemeVariables,
   pseudos,
   rnw,
 } from '@tamagui/core-node'
@@ -129,7 +130,10 @@ export function createExtractor() {
 
       loadedTamaguiConfig = tamaguiConfig as any
 
-      const defaultTheme = tamaguiConfig.themes[Object.keys(tamaguiConfig.themes)[0]]
+      const defaultTheme = proxyThemeVariables(
+        tamaguiConfig.themes[Object.keys(tamaguiConfig.themes)[0]]
+      )
+
       const body = fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
       /**

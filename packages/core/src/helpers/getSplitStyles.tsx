@@ -327,7 +327,6 @@ export const getSplitStyles = (
       const identifier = `_transform${hash}`
       if (!insertedTransforms[identifier]) {
         const rule = `.${identifier} { transform: ${val}; }`
-        console.log('insert', rule)
         insertStyleRule(identifier, rule)
       }
       classNames[namespace] = identifier
