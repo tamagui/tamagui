@@ -38,10 +38,6 @@ export const Theme = memo(function Theme(props: ThemeProps) {
     [props.children, themeManager]
   )
 
-  if (props.componentName === 'Drawer') {
-    console.log('ok?', className, themeManager)
-  }
-
   if (isWeb) {
     return (
       <span

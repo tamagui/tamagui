@@ -312,48 +312,32 @@ iframe {
 
 /* code highlighting */
 
-/* //   $$background: $loContrast;
-//   $$text: $colors$hiContrast;
-//   $$outline: 0 0 0 1px $colors$slate6;
-//   $$syntax1: $colors$blue11;
-//   $$syntax2: $colors$cyan11;
-//   $$syntax3: $colors$blue11;
-//   $$syntax4: $colors$blue11;
-//   $$comment: $colors$slate10;
-//   $$removed: $colors$red11;
-//   $$added: $colors$green11;
-//   $$lineNumbers: $colors$indigo5;
-//   $$fadedLines: $colors$slate10;
-//   $$highlightedWord1Bg: $colors$violet4;
-//   $$highlightedWord1BgActive: $colors$violet6;
-//   $$highlightedWord1Text: $colors$violet11;
-//   $$highlightedWord2Bg: $colors$red3;
-//   $$highlightedWord2BgActive: $colors$red5;
-//   $$highlightedWord2Text: $colors$red11;
-//   $$highlightedWord3Bg: $colors$green3;
-//   $$highlightedWord3BgActive: $colors$green5;
-//   $$highlightedWord3Text: $colors$green11', ;
-*/
-
 .token.parameter {
-  color: var(--colorPress);
+  color: var(--yellow10);
+}
+
+.token.class-name {
+  color: var(--teal10);
 }
 
 .token.tag,
-.token.class-name,
 .token.selector,
 .token.selector .class,
 .token.function {
-  color: var(--colorPress);
+  color: var(--green10);
 }
 
 .token.attr-value,
+.token.script {
+  color: var(--red10);
+}
+
 .token.class,
 .token.string,
 .token.number,
 .token.unit,
 .token.color {
-  color: var(--cyan11);
+  color: var(--orange10);
 }
 
 .token.attr-name,
@@ -366,12 +350,12 @@ iframe {
 }
 
 .token.punctuation {
-  color: var(--colorHover);
+  color: var(--teal10);
 }
 
 .token.module,
 .token.property {
-  color: var(--blue11);
+  color: var(--blue10);
 }
 
 .token.comment {

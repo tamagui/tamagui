@@ -1,11 +1,11 @@
 import { Play } from '@tamagui/feather-icons'
 import React from 'react'
-import { AnimationKeys, Button, Square, useControllableState } from 'tamagui'
+import { Button, Square, useControllableState } from 'tamagui'
 
 import { useTint } from '../ColorToggleButton'
 import { LogoIcon } from '../TamaguiLogo'
 
-export default (props: { position?: number; animation?: AnimationKeys }) => {
+export default (props) => {
   const { tint } = useTint()
   const [positionI, setPositionI] = useControllableState({
     prop: props.position,
@@ -22,12 +22,11 @@ export default (props: { position?: number; animation?: AnimationKeys }) => {
     <>
       <Square
         animation={props.animation || 'bouncy'}
-        elevation="$4"
+        onPress={() => next()}
         size={110}
+        elevation="$4"
         bc="$pink10"
         br="$9"
-        bw={2}
-        boc="transparent"
         hoverStyle={{
           scale: 1.1,
         }}
@@ -35,15 +34,14 @@ export default (props: { position?: number; animation?: AnimationKeys }) => {
           scale: 0.9,
         }}
         {...position}
-        onPress={() => next()}
       >
         <LogoIcon downscale={0.75} />
       </Square>
 
       <Button
         pos="absolute"
-        bottom={20}
-        left={20}
+        b={20}
+        l={20}
         iconAfter={Play}
         theme={tint}
         size="$6"

@@ -16,9 +16,10 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.181+fff2a5b2"
+    "@tamagui/build": "^1.0.0-beta.181+fff2a5b2",
+    "react": "*"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "*"
   },
   "publishConfig": {
