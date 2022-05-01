@@ -178,10 +178,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   })()
 
   // faster lookups token keys become $keys to match input
-  console.log('parsin', config.tokens)
   const tokensParsed: any = parseTokens(config.tokens)
 
-  console.log('parsin', config.fonts)
   const fontsParsed = (() => {
     if (!config.fonts) {
       throw new Error(`No fonts defined!`)
@@ -205,7 +203,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
     return res!
   })()
-  console.log('fontsParsed', fontsParsed)
 
   const getCSS = () => {
     return `${themeConfig.css}\n${getInsertedRules().join('\n')}`

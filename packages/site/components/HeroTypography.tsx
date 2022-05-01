@@ -71,9 +71,9 @@ export const HeroTypography = () => {
             w="40%"
             space="$0.5"
             ai="flex-end"
-            scale={1.3}
-            x={-30}
-            y={0}
+            scale={1.1}
+            x={0}
+            y={-20}
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 1 }}
           >
             <AnimatePresence exitBeforeEnter>

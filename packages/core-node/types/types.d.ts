@@ -11,9 +11,6 @@ export declare type VariableVal = number | string | Variable;
 export declare type VariableColorVal = string | Variable;
 declare type GenericKey = string | number | symbol;
 export interface CreateTokens<Val extends VariableVal = VariableVal> {
-    font: {
-        [key: GenericKey]: GenericFont;
-    };
     color: {
         [key: GenericKey]: Val;
     };
@@ -60,6 +57,9 @@ declare type GenericMedia<K extends string = string> = {
         [key: string]: number | string;
     };
 };
+declare type GenericFonts = {
+    [key: string]: GenericFont;
+};
 declare type GenericAnimations = {
     [key: string]: string | {
         [key: string]: any;
@@ -69,14 +69,15 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
-export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
+export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
+    fonts: F;
     tokens: A;
     themes: B;
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
 };
-export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations>;
+export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 export declare type ThemeObject = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
 export declare type Tokens = TamaguiConfig['tokens'];
 export declare type Shorthands = TamaguiConfig['shorthands'];
@@ -87,10 +88,11 @@ export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeTokens = `$${ThemeKeys}`;
 export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig>;
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
-export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = CreateTamaguiConfig<A, B, C, D, E> & {
+export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = CreateTamaguiConfig<A, B, C, D, E, F> & {
     Provider: (props: TamaguiProviderProps) => any;
     tokensParsed: CreateTokens<Variable>;
     themeConfig: any;
+    fontsParsed: GenericFonts;
     getCSS: () => string;
     parsed: boolean;
 };
@@ -112,6 +114,15 @@ export declare type GenericFont<Key extends number | string = number | string> =
         [key in Key]: number | string | Variable;
     }>;
     family: string | Variable;
+    style?: Partial<{
+        [key in Key]: TextStyle['fontStyle'] | Variable;
+    }>;
+    transform?: Partial<{
+        [key in Key]: TextStyle['textTransform'] | Variable;
+    }>;
+    color?: Partial<{
+        [key in Key]: string | Variable;
+    }>;
 };
 export declare type MediaKeys = keyof Media;
 export declare type MediaQueryObject = {
@@ -170,19 +181,28 @@ export declare type TamaguiComponentPropsBase = {
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
 };
-declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight'> = keyof Tokens['font'][keyof Tokens['font']][A];
+declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
-export declare type FontTokens = GetTokenString<keyof Tokens['font']>;
-export declare type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
-export declare type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
-export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
-export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
 export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
 export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
 export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
 export declare type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
+export declare type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
+export declare type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
+export declare type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
+export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
+export declare type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
+export declare type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number;
+export declare type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | TextStyle['fontStyle'];
+export declare type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | TextStyle['textTransform'];
 export declare type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : {};
+declare type FontKeys = 'fontFamily';
+declare type FontSizeKeys = 'fontSize';
+declare type FontWeightKeys = 'fontWeight';
+declare type FontLetterSpacingKeys = 'letterSpacing';
+declare type LineHeightKeys = 'lineHeight';
+declare type ZIndexKeys = 'zIndex';
 export declare type ThemeValueGet<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends SizeKeys ? SizeTokens : K extends FontKeys ? FontTokens : K extends FontSizeKeys ? FontSizeTokens : K extends SpaceKeys ? K extends 'shadowOffset' ? {
     width: SpaceTokens;
     height: SpaceTokens;
@@ -293,11 +313,11 @@ export declare type StylableComponent = TamaguiComponent | React.Component | Rea
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
 export declare type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends React.Component<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
 declare type GetGenericComponentTamaguiProps<P> = P & Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>;
-export declare type SpreadKeys = '...fontSize' | '...size' | '...color' | '...lineHeight' | '...letterSpacing' | '...zIndex' | '...theme' | '...radius';
+export declare type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...color' | '...zIndex' | '...theme' | '...radius';
 export declare type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, MyProps extends Object = GetProps<Parent>, Val = any> = VariantDefinitionFromProps<MyProps, Val>;
 export declare type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
-        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
+        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
     } & {
         [Key in string | number]?: MyProps | VariantSpreadFunction<MyProps, Val>;
     } & {
@@ -308,6 +328,7 @@ export declare type GetVariantProps<Variants> = {
     [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof Variants[Key]>;
 };
 export declare type VariantSpreadExtras<Props> = {
+    fonts: TamaguiConfig['fonts'];
     tokens: TamaguiConfig['tokens'];
     theme: Themes extends {
         [key: string]: infer B;
@@ -327,16 +348,12 @@ export declare type SizeVariantSpreadFunction<A extends PropLike> = VariantSprea
 export declare type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ColorTokens>;
 export declare type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLineHeightTokens>;
 export declare type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLetterSpacingTokens>;
+export declare type FontStyleVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontStyleTokens>;
+export declare type FontTransformVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontTransformTokens>;
 export declare type ZIndexVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ZIndexTokens>;
 export declare type RadiusVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, RadiusTokens>;
 export declare type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ThemeTokens>;
-declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight';
-declare type FontKeys = 'fontFamily';
-declare type FontSizeKeys = 'fontSize';
-declare type FontWeightKeys = 'fontWeight';
-declare type FontLetterSpacingKeys = 'letterSpacing';
-declare type LineHeightKeys = 'lineHeight';
-declare type ZIndexKeys = 'zIndex';
+declare type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
 declare type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'textShadowColor';
 declare type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'x' | 'y' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset';
 declare type CSSColorNames = 'aliceblue' | 'antiquewhite' | 'aqua' | 'aquamarine' | 'azure' | 'beige' | 'bisque' | 'black' | 'blanchedalmond' | 'blue' | 'blueviolet' | 'brown' | 'burlywood' | 'cadetblue' | 'chartreuse' | 'chocolate' | 'coral' | 'cornflowerblue' | 'cornsilk' | 'crimson' | 'cyan' | 'darkblue' | 'darkcyan' | 'darkgoldenrod' | 'darkgray' | 'darkgreen' | 'darkkhaki' | 'darkmagenta' | 'darkolivegreen' | 'darkorange' | 'darkorchid' | 'darkred' | 'darksalmon' | 'darkseagreen' | 'darkslateblue' | 'darkslategray' | 'darkturquoise' | 'darkviolet' | 'deeppink' | 'deepskyblue' | 'dimgray' | 'dodgerblue' | 'firebrick' | 'floralwhite' | 'forestgreen' | 'fuchsia' | 'gainsboro' | 'ghostwhite' | 'gold' | 'goldenrod' | 'gray' | 'green' | 'greenyellow' | 'honeydew' | 'hotpink' | 'indianred ' | 'indigo  ' | 'ivory' | 'khaki' | 'lavender' | 'lavenderblush' | 'lawngreen' | 'lemonchiffon' | 'lightblue' | 'lightcoral' | 'lightcyan' | 'lightgoldenrodyellow' | 'lightgrey' | 'lightgreen' | 'lightpink' | 'lightsalmon' | 'lightseagreen' | 'lightskyblue' | 'lightslategray' | 'lightsteelblue' | 'lightyellow' | 'lime' | 'limegreen' | 'linen' | 'magenta' | 'maroon' | 'mediumaquamarine' | 'mediumblue' | 'mediumorchid' | 'mediumpurple' | 'mediumseagreen' | 'mediumslateblue' | 'mediumspringgreen' | 'mediumturquoise' | 'mediumvioletred' | 'midnightblue' | 'mintcream' | 'mistyrose' | 'moccasin' | 'navajowhite' | 'navy' | 'oldlace' | 'olive' | 'olivedrab' | 'orange' | 'orangered' | 'orchid' | 'palegoldenrod' | 'palegreen' | 'paleturquoise' | 'palevioletred' | 'papayawhip' | 'peachpuff' | 'peru' | 'pink' | 'plum' | 'powderblue' | 'purple' | 'red' | 'rosybrown' | 'royalblue' | 'saddlebrown' | 'salmon' | 'sandybrown' | 'seagreen' | 'seashell' | 'sienna' | 'silver' | 'skyblue' | 'slateblue' | 'slategray' | 'snow' | 'springgreen' | 'steelblue' | 'tan' | 'teal' | 'thistle' | 'tomato' | 'turquoise' | 'violet' | 'wheat' | 'white' | 'whitesmoke' | 'yellow' | 'yellowgreen';

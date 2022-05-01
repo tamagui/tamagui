@@ -13,7 +13,6 @@ export class Variable {
   variable: string | number
 
   constructor({ val, name }: VariableIn) {
-    console.log('go', val, name)
     // converting to px breaks rn
     this.val = isVariable(val) ? val.val : val
     this.name = name
