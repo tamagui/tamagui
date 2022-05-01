@@ -16,10 +16,10 @@ declare const defaultSizes: {
     readonly 10: 45;
     readonly 11: 58;
     readonly 12: 64;
-    readonly 13: 76;
-    readonly 14: 102;
-    readonly 15: 124;
-    readonly 16: 144;
+    readonly 13: 72;
+    readonly 14: 92;
+    readonly 15: 114;
+    readonly 16: 134;
 };
 export {};
 //# sourceMappingURL=index.d.ts.map
