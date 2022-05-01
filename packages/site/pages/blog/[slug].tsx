@@ -9,7 +9,19 @@ import { format, parseISO } from 'date-fns'
 import { getMDXComponent } from 'mdx-bundler/client'
 import NextLink from 'next/link'
 import React from 'react'
-import { Button, H1, H2, H3, H6, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H1,
+  H2,
+  H3,
+  H6,
+  Paragraph,
+  Separator,
+  Spacer,
+  Theme,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { Link } from '../../components/Link'
 import { Frontmatter } from '../../frontmatter'
@@ -39,28 +51,21 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
       <Container>
         <YStack ai="flex-start">
           <NextLink href="/blog" passHref>
-            <Button
-              chromeless
-              icon={<ArrowLeft color="var(--colorPress)" size={12} />}
-              tag="a"
-              space="$2"
-              ml="$-6"
-              theme="alt1"
-            >
+            <Button chromeless icon={ArrowLeft} tag="a" ml="$-2" theme="alt1">
               Blog
             </Button>
           </NextLink>
         </YStack>
 
-        <H1 letterSpacing={-1} mt="$4" mb="$2">
+        <H1 letterSpacing={-1} mt="$6" mb="$2">
           {frontmatter.title}
         </H1>
 
-        <H2 theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$2">
+        <H2 theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$1">
           {frontmatter.description}
         </H2>
 
-        <XStack ai="center" mb="$3">
+        <XStack ai="center" my="$4">
           {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
 
           <Paragraph size="$3" theme="alt2" whiteSpace="nowrap">
@@ -95,9 +100,10 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
           </YStack>
         </XStack>
 
-        <Theme name="pink">
-          <Component components={components as any} />
-        </Theme>
+        <Separator mx="$-5" />
+        <Spacer />
+
+        <Component components={components as any} />
 
         <Separator my="$8" mx="auto" />
 

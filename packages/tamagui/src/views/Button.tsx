@@ -157,8 +157,6 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   const themedIcon = icon ? addTheme(icon) : null
   const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
 
-  ;<SizableText flexGrow={1} />
-
   const contents = noTextWrap
     ? children
     : React.Children.map(children, (child) => {
@@ -169,7 +167,6 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
         return (
           <SizableText
             {...{
-              color,
               fontWeight,
               letterSpacing,
               fontSize,
@@ -177,6 +174,9 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
               textAlign,
               size,
             }}
+            {...(colorProp && {
+              color: colorProp,
+            })}
             flexGrow={1}
             flexShrink={1}
             ellipse

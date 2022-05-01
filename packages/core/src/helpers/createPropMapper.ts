@@ -1,7 +1,7 @@
 import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { Variable, isVariable } from '../createVariable'
-import { StaticConfig, TamaguiInternalConfig } from '../types'
+import { StaticConfig, TamaguiInternalConfig, VariantSpreadFunction } from '../types'
 import { isObj } from './isObj'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
@@ -59,7 +59,9 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
 
       if (variantValue) {
         if (typeof variantValue === 'function') {
-          variantValue = variantValue(value, {
+          const fn = variantValue as VariantSpreadFunction<any>
+          variantValue = fn(value, {
+            fonts: conf.fontsParsed,
             tokens: conf.tokensParsed,
             theme,
             // TODO do this in splitstlye
@@ -157,7 +159,7 @@ const fontShorthand = {
 const getToken = (
   key: string,
   value: string,
-  { tokensParsed }: TamaguiInternalConfig,
+  { tokensParsed, fonts }: TamaguiInternalConfig,
   theme: any,
   fontFamily: string | undefined = '$body',
   resolveAs?: ResolveVariableTypes
@@ -171,14 +173,14 @@ const getToken = (
   } else {
     switch (key) {
       case 'fontFamily':
-        valOrVar = tokensParsed.font[value]?.family || value
+        valOrVar = fonts[value]?.family || value
         hasSet = true
         break
       case 'fontSize':
       case 'lineHeight':
       case 'letterSpacing':
       case 'fontWeight':
-        valOrVar = tokensParsed.font[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+        valOrVar = fonts[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
         hasSet = true
         break
     }

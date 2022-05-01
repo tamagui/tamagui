@@ -1,4 +1,3 @@
-// debug
 import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
@@ -11,32 +10,6 @@ import { Container, ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
 import { IconStack } from './IconStack'
 import { useOnIntersecting } from './useOnIntersecting'
-
-// const Marker = memo(({ name, active, onPress, ...props }: any) => {
-//   return (
-//     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-//       <XStack pe="none" y={-80} ai="flex-start" space>
-//         <YStack w={1} h={100} bc="$colorHover" opacity={active ? 0.5 : 0.1} />
-//         <Button
-//           borderWidth={1}
-//           size="$4"
-//           circular
-//           pos="absolute"
-//           top={0}
-//           left={0}
-//           y={-20}
-//           x={-19}
-//           fontSize={12}
-//           onPress={() => {
-//             onPress(name)
-//           }}
-//         >
-//           {name}
-//         </Button>
-//       </XStack>
-//     </YStack>
-//   )
-// })
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
@@ -105,6 +78,14 @@ export const HeroResponsive = memo(() => {
     setPrevMove(getState().move)
     setIsDragging(false)
   }
+
+  // go ahead and pre-load before intersect anyway since it can take a sec
+  useEffect(() => {
+    const tm = setTimeout(() => {
+      setHasIntersected(true)
+    }, 1000)
+    return () => clearTimeout(tm)
+  }, [])
 
   useOnIntersecting(
     ref,

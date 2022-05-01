@@ -13,6 +13,7 @@ export class Variable {
   variable: string | number
 
   constructor({ val, name }: VariableIn) {
+    console.log('go', val, name)
     // converting to px breaks rn
     this.val = isVariable(val) ? val.val : val
     this.name = name
@@ -33,9 +34,12 @@ export function isVariable(v: Variable | any): v is Variable {
 }
 
 export function getVariableValue(v: Variable | any) {
-  if (isVariable(v)) {
-    return v.val
-  }
+  if (isVariable(v)) return v.val
+  return v
+}
+
+export function getVariableName(v: Variable | any) {
+  if (isVariable(v)) return v.name
   return v
 }
 

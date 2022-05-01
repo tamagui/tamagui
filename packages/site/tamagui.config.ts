@@ -10,6 +10,9 @@ import { media } from './constants/media'
 
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont({
+  size: {
+    6: 15,
+  },
   transform: {
     6: 'uppercase',
     7: 'none',
@@ -17,6 +20,10 @@ const headingFont = createInterFont({
   weight: {
     6: '400',
     7: '700',
+  },
+  color: {
+    6: '$colorFocus',
+    7: '$color',
   },
   letterSpacing: {
     5: 2,
@@ -33,18 +40,12 @@ const headingFont = createInterFont({
 const bodyFont = createInterFont(
   {},
   {
-    sizeLineHeight: (size) => size + 14,
+    sizeLineHeight: (size) => size + (size > 20 ? 9 : 13),
   }
 )
 const firaFont = createFiraMonoFont()
 
 const tokens = createTokens({
-  font: {
-    heading: headingFont,
-    body: bodyFont,
-    mono: firaFont,
-    silkscreen: silkscreenFont,
-  },
   size,
   space,
   zIndex,
@@ -59,6 +60,12 @@ const config = createTamagui({
   shorthands,
   themes,
   tokens,
+  fonts: {
+    heading: headingFont,
+    body: bodyFont,
+    mono: firaFont,
+    silkscreen: silkscreenFont,
+  },
 })
 
 export type Conf = typeof config
