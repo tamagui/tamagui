@@ -46,8 +46,8 @@ const createdConfigs = new WeakMap<any, boolean>()
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
-): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E>>
-  ? TamaguiInternalConfig<A, B, C, D, E>
+): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>>
+  ? TamaguiInternalConfig<A, B, C, D, E, F>
   : unknown {
   if (createdConfigs.has(config)) {
     return config as any
@@ -98,6 +98,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
                 addVar(val[fkey])
               } else {
                 for (const fskey in val[fkey]) {
+                  console.log('add', fkey, fskey, val[fkey][fskey])
                   addVar(val[fkey][fskey])
                 }
               }
@@ -177,13 +178,41 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   })()
 
   // faster lookups token keys become $keys to match input
+  console.log('parsin', config.tokens)
   const tokensParsed: any = parseTokens(config.tokens)
+
+  console.log('parsin', config.fonts)
+  const fontsParsed = (() => {
+    if (!config.fonts) {
+      throw new Error(`No fonts defined!`)
+    }
+    const res = {} as typeof config.fonts
+    for (const familyName in config.fonts) {
+      const family = config.fonts[familyName]
+      const parsed = {}
+      for (const attrKey in family) {
+        const attr = family[attrKey]
+        if (attrKey === 'family') {
+          parsed[attrKey] = attr
+          continue
+        }
+        parsed[attrKey] = Object.keys(attr).reduce((acc, cur) => {
+          acc[`$${cur}`] = attr[cur]
+          return acc
+        }, {})
+      }
+      res[`$${familyName}`] = parsed as any
+    }
+    return res!
+  })()
+  console.log('fontsParsed', fontsParsed)
 
   const getCSS = () => {
     return `${themeConfig.css}\n${getInsertedRules().join('\n')}`
   }
 
   const next: TamaguiInternalConfig = {
+    fonts: {},
     animations: {} as any,
     shorthands: {},
     media: {},
@@ -193,6 +222,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       defaultTheme: 'light',
       ...config,
     }),
+    fontsParsed,
     themeConfig,
     tokensParsed,
     parsed: true,
@@ -216,29 +246,10 @@ const parseTokens = (tokens: any) => {
   const res: any = {}
   for (const key in tokens) {
     res[key] = {}
-    if (key === 'font') {
-      for (const family in tokens.font) {
-        const obj = {}
-        res.font[`$${family}`] = obj
-        for (const attrKey in tokens.font[family]) {
-          const attr = tokens.font[family][attrKey]
-          if (attrKey === 'family') {
-            obj[attrKey] = attr
-            continue
-          }
-          obj[attrKey] = Object.keys(attr).reduce((acc, cur) => {
-            acc[`$${cur}`] = attr[cur]
-            return acc
-          }, {})
-        }
-      }
-      continue
-    }
     for (const skey in tokens[key]) {
       res[key][`$${skey}`] = tokens[key][skey]
     }
   }
-
   return res
 }
 

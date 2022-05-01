@@ -10,8 +10,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
-): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E>>
-  ? TamaguiInternalConfig<A, B, C, D, E>
+): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>>
+  ? TamaguiInternalConfig<A, B, C, D, E, F>
   : unknown {
   const conf = Core.createTamagui(config)
 

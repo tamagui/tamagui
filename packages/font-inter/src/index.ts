@@ -2,7 +2,9 @@ import { GenericFont, createFont, getVariableValue } from '@tamagui/core'
 import { Platform } from 'react-native'
 
 export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>>(
-  font: Partial<A> = {},
+  font: {
+    [Key in keyof Partial<A>]?: Partial<A[Key]>
+  } = {},
   {
     sizeLineHeight = (size) => size + 10,
   }: {
@@ -20,7 +22,7 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
         ? 'Inter, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
         : 'Inter',
     lineHeight: Object.fromEntries(
-      Object.entries(font.size || size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
+      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
     ),
     weight: {
       4: '300',

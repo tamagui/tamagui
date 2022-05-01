@@ -5,7 +5,6 @@ import {
   StaticConfigParsed,
   TamaguiInternalConfig,
   getSplitStyles,
-  getSubStyle,
   mediaQueryConfig,
   normalizeStyleObject,
   pseudos,

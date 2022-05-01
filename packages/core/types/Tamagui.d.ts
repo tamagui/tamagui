@@ -15,6 +15,8 @@ declare class TamaguiManager {
         [key: string]: string | {
             [key: string]: any;
         };
+    }, {
+        [key: string]: import("./types").GenericFont<string | number>;
     }>;
     get insertedRules(): unknown[];
     get allSelectors(): {};

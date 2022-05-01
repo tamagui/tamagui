@@ -5,7 +5,6 @@ import { sizableTextSizeVariant } from '../helpers/sizableTextSizeVariant'
 export const SizableText = styled(Text, {
   name: 'SizableText',
   fontFamily: '$body',
-  color: '$color',
 
   variants: {
     size: sizableTextSizeVariant,

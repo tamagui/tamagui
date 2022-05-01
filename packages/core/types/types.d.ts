@@ -11,9 +11,6 @@ export declare type VariableVal = number | string | Variable;
 export declare type VariableColorVal = string | Variable;
 declare type GenericKey = string | number | symbol;
 export interface CreateTokens<Val extends VariableVal = VariableVal> {
-    font: {
-        [key: GenericKey]: GenericFont;
-    };
     color: {
         [key: GenericKey]: Val;
     };
@@ -60,6 +57,9 @@ declare type GenericMedia<K extends string = string> = {
         [key: string]: number | string;
     };
 };
+declare type GenericFonts = {
+    [key: string]: GenericFont;
+};
 declare type GenericAnimations = {
     [key: string]: string | {
         [key: string]: any;
@@ -69,14 +69,15 @@ export interface TamaguiCustomConfig {
 }
 export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiCustomConfig>, TamaguiCustomConfig {
 }
-export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
+export declare type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
+    fonts: F;
     tokens: A;
     themes: B;
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
 };
-export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations>;
+export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 export declare type ThemeObject = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
 export declare type Tokens = TamaguiConfig['tokens'];
 export declare type Shorthands = TamaguiConfig['shorthands'];
@@ -87,10 +88,11 @@ export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeTokens = `$${ThemeKeys}`;
 export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig>;
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
-export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations> = CreateTamaguiConfig<A, B, C, D, E> & {
+export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = CreateTamaguiConfig<A, B, C, D, E, F> & {
     Provider: (props: TamaguiProviderProps) => any;
     tokensParsed: CreateTokens<Variable>;
     themeConfig: any;
+    fontsParsed: GenericFonts;
     getCSS: () => string;
     parsed: boolean;
 };
@@ -179,14 +181,14 @@ export declare type TamaguiComponentPropsBase = {
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
 };
-declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof Tokens['font'][keyof Tokens['font']][A];
+declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
 export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
 export declare type ColorTokens = GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeObject> | CSSColorNames;
 export declare type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number;
 export declare type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number;
-export declare type FontTokens = GetTokenString<keyof Tokens['font']>;
+export declare type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export declare type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number;
 export declare type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number;
 export declare type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`;
@@ -326,6 +328,7 @@ export declare type GetVariantProps<Variants> = {
     [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof Variants[Key]>;
 };
 export declare type VariantSpreadExtras<Props> = {
+    fonts: TamaguiConfig['fonts'];
     tokens: TamaguiConfig['tokens'];
     theme: Themes extends {
         [key: string]: infer B;

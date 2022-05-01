@@ -13,6 +13,8 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
     [key: string]: string | {
         [key: string]: any;
     };
+}, {
+    [key: string]: import("./types").GenericFont<string | number>;
 }>;
 export declare const getTokens: () => import("./types").CreateTokens<import("./createVariable").Variable>;
 export declare const getThemes: () => {

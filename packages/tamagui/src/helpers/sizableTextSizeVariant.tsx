@@ -2,13 +2,13 @@ import { FontSizeTokens, TextProps, VariantSpreadFunction, getVariableValue } fr
 
 export const sizableTextSizeVariant: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   val = '$4',
-  { tokens, props }
+  { fonts, theme, props }
 ) => {
   const family = getVariableValue(props.fontFamily) || '$body'
-  const font = tokens.font[family] || tokens.font['$body']
+  const font = fonts[family] || fonts['$body']
   if (!font) {
-    console.warn('⚠️ no font found', { family, fontTokens: Object.keys(tokens.font), val })
-    return {}
+    console.warn('⚠️ no font found', { family, fontTokens: Object.keys(fonts), val })
+    return
   }
   const fontFamily = font.family
   const fontSize = props.fontSize || font.size[val]
@@ -17,7 +17,9 @@ export const sizableTextSizeVariant: VariantSpreadFunction<TextProps, FontSizeTo
   const letterSpacing = props.letterSpacing || font.letterSpacing[val]
   const fontStyle = props.fontStyle || font.style?.[val]
   const textTransform = props.textTransform || font.transform?.[val]
+  const color = props.color || font.color?.[val] || theme.color
   return {
+    color,
     fontStyle,
     textTransform,
     fontFamily,

@@ -34,7 +34,6 @@ export type VariableColorVal = string | Variable
 type GenericKey = string | number | symbol
 
 export interface CreateTokens<Val extends VariableVal = VariableVal> {
-  font: { [key: GenericKey]: GenericFont }
   color: { [key: GenericKey]: Val }
   space: { [key: GenericKey]: Val }
   size: { [key: GenericKey]: Val }
@@ -81,6 +80,11 @@ type GenericMedia<K extends string = string> = {
     [key: string]: number | string
   }
 }
+
+type GenericFonts = {
+  [key: string]: GenericFont
+}
+
 type GenericAnimations = {
   [key: string]:
     | string
@@ -110,8 +114,10 @@ export type CreateTamaguiConfig<
   B extends GenericThemes,
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
-  E extends GenericAnimations = GenericAnimations
+  E extends GenericAnimations = GenericAnimations,
+  F extends GenericFonts = GenericFonts
 > = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
+  fonts: F
   tokens: A
   themes: B
   shorthands: C
@@ -125,7 +131,8 @@ export type GenericTamaguiConfig = CreateTamaguiConfig<
   GenericThemes,
   GenericShorthands,
   GenericMedia,
-  GenericAnimations
+  GenericAnimations,
+  GenericFonts
 >
 
 // since TamaguiConfig will be re-declared, these will all be typed globally
@@ -148,14 +155,16 @@ export type TamaguiInternalConfig<
   B extends GenericThemes = GenericThemes,
   C extends GenericShorthands = GenericShorthands,
   D extends GenericMedia = GenericMedia,
-  E extends GenericAnimations = GenericAnimations
-> = CreateTamaguiConfig<A, B, C, D, E> & {
+  E extends GenericAnimations = GenericAnimations,
+  F extends GenericFonts = GenericFonts
+> = CreateTamaguiConfig<A, B, C, D, E, F> & {
   // TODO need to make it this but this breaks types, revisit
   // animations: E //AnimationDriver<E>
   Provider: (props: TamaguiProviderProps) => any
   // with $ prefixes for fast lookups (one time cost at startup vs every render)
   tokensParsed: CreateTokens<Variable>
   themeConfig: any
+  fontsParsed: GenericFonts
   getCSS: () => string
   parsed: boolean
 }
@@ -253,7 +262,7 @@ type GetTokenFontKeysFor<
     | 'transform'
     | 'style'
     | 'color'
-> = keyof Tokens['font'][keyof Tokens['font']][A]
+> = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']][A]
 
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
@@ -268,7 +277,7 @@ export type ZIndexTokens = GetTokenString<keyof Tokens['zIndex']> | number
 export type RadiusTokens = GetTokenString<keyof Tokens['radius']> | number
 
 // font tokens
-export type FontTokens = GetTokenString<keyof Tokens['font']>
+export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number
 export type FontWeightTokens =
@@ -682,6 +691,7 @@ export type GetVariantProps<Variants> = {
 }
 
 export type VariantSpreadExtras<Props> = {
+  fonts: TamaguiConfig['fonts']
   tokens: TamaguiConfig['tokens']
   theme: Themes extends { [key: string]: infer B } ? B : unknown
   props: Props

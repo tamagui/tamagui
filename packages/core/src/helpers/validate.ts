@@ -29,25 +29,15 @@ export const validateTokens = (tokens: any) => {
 
 export const validateFont = (font: any) => {
   try {
-    const { style, transform, ...required } = font
+    const { style, transform, color, ...required } = font
     ow(required, FontRequired)
-    ow({ style, transform }, FontOptional)
+    ow({ style, transform, color }, FontOptional)
   } catch (err: any) {
     console.warn('Given font:\n', JSON.stringify(font, null, 2), err)
   }
 }
 
 if (process.env.NODE_ENV === 'development') {
-  Config = ow.object.exactShape({
-    defaultTheme: ow.optional.string,
-    disableRootThemeClass: ow.optional.boolean,
-    shorthands: ow.optional.object.valuesOfType(ow.string),
-    themes: ow.object.valuesOfType(ow.object),
-    tokens: ow.object.valuesOfType(ow.object),
-    media: ow.object.valuesOfType(ow.object),
-    animations: ow.object.valuesOfType(ow.object),
-  })
-
   const fontReq = {
     family: ow.string,
     size: ow.object.nonEmpty.valuesOfType(ow.number),
@@ -58,18 +48,29 @@ if (process.env.NODE_ENV === 'development') {
   const fontOpt = {
     style: ow.optional.object.valuesOfType(ow.string),
     transform: ow.optional.object.valuesOfType(ow.string),
+    color: ow.optional.object.valuesOfType(ow.string),
   }
 
-  FontRequired = ow.object.exactShape(fontReq)
-  FontOptional = ow.object.partialShape(fontOpt)
-
-  Tokens = ow.object.exactShape({
-    font: ow.object.valuesOfType(
+  Config = ow.object.exactShape({
+    defaultTheme: ow.optional.string,
+    disableRootThemeClass: ow.optional.boolean,
+    shorthands: ow.optional.object.valuesOfType(ow.string),
+    themes: ow.object.valuesOfType(ow.object),
+    tokens: ow.object.valuesOfType(ow.object),
+    media: ow.object.valuesOfType(ow.object),
+    animations: ow.object.valuesOfType(ow.object),
+    fonts: ow.object.valuesOfType(
       ow.object.partialShape({
         ...fontReq,
         ...fontOpt,
       })
     ),
+  })
+
+  FontRequired = ow.object.exactShape(fontReq)
+  FontOptional = ow.object.partialShape(fontOpt)
+
+  Tokens = ow.object.exactShape({
     size: ow.object.nonEmpty.valuesOfType(ow.number),
     space: ow.object.nonEmpty.valuesOfType(ow.number),
     zIndex: ow.object.nonEmpty.valuesOfType(ow.number),

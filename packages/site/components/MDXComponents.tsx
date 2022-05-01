@@ -123,7 +123,7 @@ export const components = {
   h1: (props) => <H2 mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H3 color="$color" mt="$5" size="$9" letterSpacing={-0.5} data-heading {...props}>
+    <H3 mt="$5" size="$9" letterSpacing={-0.5} data-heading {...props}>
       {children}
     </H3>
   ),
