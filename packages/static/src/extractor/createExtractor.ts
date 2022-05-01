@@ -1,3 +1,5 @@
+import { relative } from 'path'
+
 import traverse, { NodePath, Visitor } from '@babel/traverse'
 import * as t from '@babel/types'
 import {
@@ -255,13 +257,14 @@ export function createExtractor() {
           // found a valid tag
           res.found++
 
-          const filePath = sourcePath.replace(process.cwd(), '.')
+          const filePath = `./${relative(process.cwd(), sourcePath)}`
           const lineNumbers = node.loc
             ? node.loc.start.line +
               (node.loc.start.line !== node.loc.end.line ? `-${node.loc.end.line}` : '')
             : ''
-          const preName = componentName ? `${componentName}.` : ''
-          const tagId = `${preName}${node.name.name}@${filePath.replace('./', '')}:${lineNumbers}`
+          const tagId = [componentName, `${node.name.name}`, `${filePath}:${lineNumbers}`].filter(
+            Boolean
+          )
 
           // debug just one
           const debugPropValue = node.attributes
@@ -289,14 +292,16 @@ export function createExtractor() {
             )
 
             if (shouldPrintDebug) {
-              console.log(`\n<${originalNodeName} /> (${tagId})`)
+              console.log('\n')
+              console.log('\x1b[33m%s\x1b[0m', `${tagId[0]} | ${tagId[2]} -------------------`)
+              console.log('\x1b[1m', '\x1b[32m', `<${originalNodeName} />`)
             }
 
             // add data-is
             if (shouldAddDebugProp && !disableDebugAttr) {
               res.modified++
               node.attributes.unshift(
-                t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(tagId))
+                t.jsxAttribute(t.jsxIdentifier('data-is'), t.stringLiteral(tagId.join(' ')))
               )
             }
 
@@ -871,9 +876,6 @@ export function createExtractor() {
               function getStaticConditional(value: t.Node): Ternary | null {
                 if (t.isConditionalExpression(value)) {
                   try {
-                    if (shouldPrintDebug) {
-                      console.log('attempt', value.alternate, value.consequent)
-                    }
                     const aVal = attemptEval(value.alternate)
                     const cVal = attemptEval(value.consequent)
                     if (shouldPrintDebug) {

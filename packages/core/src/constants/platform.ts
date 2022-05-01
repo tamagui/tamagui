@@ -9,6 +9,7 @@ export const isWeb =
   (process.env.TAMAGUI_TARGET === 'web' || Platform?.OS === 'web')
 
 export const isSSR = isWeb && typeof window === 'undefined'
+export const isClient = isWeb && typeof window !== 'undefined'
 export const useIsomorphicLayoutEffect = isSSR ? useEffect : useLayoutEffect
 export const isChrome = typeof navigator !== 'undefined' && /Chrome/.test(navigator.userAgent || '')
 export const supportsTouchWeb = typeof window !== 'undefined' && 'ontouchstart' in window

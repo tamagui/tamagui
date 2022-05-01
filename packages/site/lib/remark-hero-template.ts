@@ -1,13 +1,13 @@
 const fs = require('fs')
 const path = require('path')
-const visit = require('unist-util-visit')
+const utilvisit = require('unist-util-visit')
 
 const ROOT_PATH = process.cwd()
 const HERO_PATH = 'components/demos'
 
-module.exports = (options = {}) => {
+export default (options = {}) => {
   return (tree) => {
-    visit(tree, 'code', visitor)
+    utilvisit(tree, 'code', visitor)
   }
 
   function visitor(node, index, parent) {

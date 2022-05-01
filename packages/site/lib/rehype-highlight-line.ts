@@ -46,13 +46,13 @@ const lineNumberify = function lineNumberify(ast, lineNum = 1) {
   )
 }
 
-const wrapLines = function wrapLines(ast, linesToHighlight) {
+const wrapLines = function wrapLines(ast: any[], linesToHighlight) {
   const highlightAll = linesToHighlight.length === 1 && linesToHighlight[0] === 0
-  const allLines = Array.from(new Set(ast.map((x) => x.lineNumber)))
+  const allLines: any[] = Array.from(new Set(ast.map((x) => x.lineNumber)))
   let i = 0
   const wrapped = allLines.reduce((nodes, marker) => {
     const line = marker
-    const children = []
+    const children: any[] = []
     for (; i < ast.length; i++) {
       if (ast[i].lineNumber < line) {
         nodes.push(ast[i])
@@ -105,9 +105,8 @@ const applyMultilineFix = function (ast) {
   return hast.children
 }
 
-module.exports = function (ast, lines) {
+export default function (ast, lines) {
   const formattedAst = applyMultilineFix(ast)
   const numbered = lineNumberify(formattedAst).nodes
-
   return wrapLines(numbered, lines)
 }
