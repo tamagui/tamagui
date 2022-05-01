@@ -26,7 +26,10 @@ export const SafeAreaProvider = ({
   }
 
   return (
-    <RNSafeAreaProvider initialMetrics={initialWindowMetrics ?? defaultMetrics}>
+    <RNSafeAreaProvider
+      style={{ flex: 1, width: '100%', height: '100%' }}
+      initialMetrics={initialWindowMetrics ?? defaultMetrics}
+    >
       {children}
     </RNSafeAreaProvider>
   )

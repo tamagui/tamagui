@@ -40,8 +40,8 @@ const headingFont = createInterFont({
 const bodyFont = createInterFont(
   {},
   {
-    sizeSize: (size) => size * 1.22,
-    sizeLineHeight: (size) => size + (size > 20 ? 9 : 16),
+    sizeSize: (size) => size * 1.1,
+    sizeLineHeight: (size) => size + (size > 20 ? 9 : 14),
   }
 )
 const firaFont = createFiraMonoFont()

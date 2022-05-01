@@ -14,8 +14,8 @@ export default function DrawerDemo() {
           circular
           onPress={() => setShow((x) => !x)}
         />
-        <Drawer open={show} onChange={setShow}>
-          <YStack ai="center" jc="center" p="$6" space>
+        <Drawer open={show} onChangeOpen={setShow}>
+          <Drawer.Frame ai="center" jc="center" p="$6" space>
             <Paragraph selectable={false}>Hello.</Paragraph>
             <Button
               size="$6"
@@ -23,7 +23,7 @@ export default function DrawerDemo() {
               circular
               onPress={() => setShow((x) => !x)}
             />
-          </YStack>
+          </Drawer.Frame>
         </Drawer>
       </Drawer.Provider>
     </YStack>

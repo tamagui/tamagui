@@ -18,7 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^4.1.5",
+    "@gorhom/bottom-sheet": "^4.2.1",
     "@tamagui/core": "^1.0.0-beta.193+14c13acd",
     "@tamagui/polyfill-dev": "^1.0.0-beta.193+14c13acd",
     "@tamagui/use-controllable-state": "^1.0.0-beta.193+14c13acd",

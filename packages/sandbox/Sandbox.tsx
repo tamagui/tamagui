@@ -1,4 +1,5 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
+import { Drawer } from '@tamagui/drawer'
 import { ArrowLeft, ArrowRight } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
 import { Button, H1, Image, Theme, VisuallyHidden, XStack, YStack, styled } from 'tamagui'
@@ -21,13 +22,15 @@ export const Sandbox = () => {
             flexDirection: 'column',
           }}
         >
-          <a
-            style={{ marginBottom: 20 }}
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-          >
-            Switch theme
-          </a>
-          <Test />
+          <Drawer.Provider>
+            <a
+              style={{ marginBottom: 20 }}
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            >
+              Switch theme
+            </a>
+            <Test />
+          </Drawer.Provider>
         </div>
       </Theme>
     </Tamagui.Provider>
@@ -37,26 +40,11 @@ export const Sandbox = () => {
 export const Test = (props) => {
   return (
     <>
-      <VisuallyHidden>something</VisuallyHidden>
-      <H1
-        animation="bouncy"
-        enterStyle={{
-          opacity: 0,
-        }}
-        opacity={1}
-        size="$9"
-        $gtSm={{
-          size: '$11',
-          ta: 'center',
-        }}
-        $gtMd={{
-          size: '$12',
-          maxWidth: 900,
-          mx: '$4',
-        }}
-      >
-        Universal design systems for React&nbsp;Native &&nbsp;Web, faster
-      </H1>
+      <Drawer open>
+        <Drawer.Backdrop />
+        <Drawer.Handle />
+        <Drawer.Frame height={'calc(100vh)'}>hello</Drawer.Frame>
+      </Drawer>
     </>
   )
 }

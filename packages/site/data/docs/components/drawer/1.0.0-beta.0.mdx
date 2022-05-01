@@ -5,7 +5,7 @@ name: text
 component: Drawer
 ---
 
-# Drawer
+# Drawer <Beta />
 
 <Description>Show content above in a bottom sliding drawer.</Description>
 
@@ -19,13 +19,108 @@ component: Drawer
 
 <Highlights features={[`Animation and dragging on native and web.`]} />
 
-### Usage
+## Installation
+
+For webpack, you'll need to ensure the reanimated babel plugin runs on the `@gorhom/bottom-sheet` package, something like this in your `oneOf` rules:
+
+```tsx
+{
+  test: /(bottom-sheet).*\.[tj]sx?$/,
+  use: [
+    {
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/preset-react'],
+        plugins: [
+          'react-native-reanimated/plugin',
+        ],
+      },
+    },
+  ],
+}
+```
+
+## Usage
 
 Drawer extends the excellent [@gorhom/bottom-sheet](https://github.com/gorhom/react-native-bottom-sheet). Note this will bring along [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) and will require some [extra configuration with webpack](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/web-support).
 
-You must wrap `<Drawer.Provider>` somewhere in the root of your app.
+Put `<Drawer.Provider />` once at the top of your app, just below `<Tamagui.Provider />`.
 
-### Drawer props
+```tsx
+import { Drawer } from '@tamagui/drawer'
+
+import Tamagui from './tamagui.config'
+
+export function App() {
+  return (
+    <Tamagui.Provider>
+      <Drawer.Provider>
+        <MyPage />
+      </Drawer.Provider>
+    </Tamagui.Provider>
+  )
+}
+
+function MyPage() {
+  return (
+    <Drawer open={show} onChangeOpen={setShow}>
+      <Drawer.Handle />
+      <Drawer.Backdrop />
+      <Drawer.Frame>
+        <Paragraph>Hello.</Paragraph>
+      </Drawer.Frame>
+    </Drawer>
+  )
+}
+```
+
+If you want scrolling that plays well with gestures (see [BottomSheetScrollView](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetscrollview)):
+
+```tsx
+function MyPage() {
+  return (
+    <Drawer open={show} onChangeOpen={setShow}>
+      <Drawer.Frame>
+        <Drawer.ScrollView></Drawer.ScrollView>
+      </Drawer.Frame>
+    </Drawer>
+  )
+}
+```
+
+Or scrollable lists that play well with gestures (see [BottomSheetFlatList](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetflatlist), [BottomSheetSectionList](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetsectionlist) or [BottomSheetVirtualizedList](https://gorhom.github.io/react-native-bottom-sheet/components/bottomsheetvirtualizedlist)):
+
+```tsx
+function MyPage() {
+  const data = useMemo(
+    () =>
+      Array(50)
+        .fill(0)
+        .map((_, index) => `index-${index}`),
+    []
+  )
+  return (
+    <Drawer open={show} onChangeOpen={setShow}>
+      <Drawer.Frame>
+        <Drawer.FlatList
+          data={data}
+          keyExtractor={(i) => i}
+          renderItem={ useCallback(
+            ({ item }) => (
+              <YStack>
+                <Paragraph>{item}</Paragraph>
+              </YView>
+            ),
+            []
+          )}
+        />
+      </Drawer.Frame>
+    </Drawer>
+  )
+}
+```
+
+## Drawer props
 
 All the props from [react-native-bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/props), plus:
 
@@ -38,28 +133,10 @@ All the props from [react-native-bottom-sheet](https://gorhom.github.io/react-na
       description: `Show drawer.`,
     },
     {
-      name: 'onChange',
+      name: 'onChangeOpen',
       required: false,
       type: '(showing: boolean) => void',
       description: `Called on change show (if dismissed).`,
-    },
-    {
-      name: 'showHandle',
-      required: false,
-      type: 'boolean',
-      description: `Show a handle at top.`,
-    },
-    {
-      name: 'hideBackground',
-      required: false,
-      type: 'boolean',
-      description: `Don't show a background container element.`,
-    },
-    {
-      name: 'children',
-      required: false,
-      type: 'JSX.Element',
-      description: `What's inside the drawer.`,
     },
   ]}
 />

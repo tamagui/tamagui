@@ -67,7 +67,7 @@ export const components = {
   LI,
 
   Beta: () => (
-    <Button size="$3" theme="yellow" hoverable={false}>
+    <Button pe="none" size="$2" theme="pink_alt3" pos="absolute" t={-15} r={-75} rotate="5deg">
       Beta
     </Button>
   ),
@@ -121,7 +121,7 @@ export const components = {
     )
   },
 
-  h1: (props) => <H1 mb="$2" {...props} />,
+  h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
     <H2 mt="$5" size="$9" letterSpacing={-0.5} data-heading {...props}>

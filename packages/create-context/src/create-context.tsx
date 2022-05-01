@@ -3,6 +3,8 @@
 
 import * as React from 'react'
 
+export type ScopedProps<P, K extends string> = P & { [Key in `__scope${K}`]?: Scope }
+
 export function createContext<ContextValueType extends object | null>(
   rootComponentName: string,
   defaultContext?: ContextValueType

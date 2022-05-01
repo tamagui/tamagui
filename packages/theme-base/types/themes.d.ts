@@ -585,7 +585,7 @@ declare const baseThemes: {
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
     };
-    dark_Drawer: {
+    dark_DrawerFrame: {
         background: any;
         backgroundStronger: any;
         backgroundSoft: any;
@@ -937,7 +937,7 @@ declare const baseThemes: {
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
     };
-    light_Drawer: {
+    light_DrawerFrame: {
         background: any;
         backgroundStronger: any;
         backgroundSoft: any;
@@ -4028,7 +4028,7 @@ declare const allThemes: {
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
     };
-    readonly dark_Drawer: {
+    readonly dark_DrawerFrame: {
         background: any;
         backgroundStronger: any;
         backgroundSoft: any;
@@ -4380,7 +4380,7 @@ declare const allThemes: {
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
     };
-    readonly light_Drawer: {
+    readonly light_DrawerFrame: {
         background: any;
         backgroundStronger: any;
         backgroundSoft: any;
