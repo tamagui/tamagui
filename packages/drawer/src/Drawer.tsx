@@ -1,16 +1,28 @@
 import { BottomSheetModal, BottomSheetModalProps } from '@gorhom/bottom-sheet'
 import {
-  Stack,
   ThemeName,
   getVariableValue,
+  styled,
   themeable,
   useTheme,
   withStaticProperties,
 } from '@tamagui/core'
-import React from 'react'
+import { YStack } from '@tamagui/stacks'
+import React, { useLayoutEffect } from 'react'
 import { useEffect, useRef } from 'react'
 
 import { DrawerProvider } from './DrawerProvider'
+
+const DrawerPanel = styled(YStack, {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: '$background',
+  borderTopLeftRadius: '$4',
+  borderTopRightRadius: '$4',
+})
 
 export const Drawer = withStaticProperties(
   themeable(
@@ -20,6 +32,7 @@ export const Drawer = withStaticProperties(
       onChange,
       showHandle,
       hideBackground,
+      backgroundStyle,
       ...props
     }: Omit<Partial<BottomSheetModalProps>, 'onChange'> & {
       theme?: ThemeName
@@ -31,7 +44,7 @@ export const Drawer = withStaticProperties(
       const sheetRef = useRef<BottomSheetModal>(null)
       const theme = useTheme()
 
-      useEffect(() => {
+      useLayoutEffect(() => {
         if (!open) {
           sheetRef.current?.dismiss()
         } else {
@@ -44,11 +57,6 @@ export const Drawer = withStaticProperties(
           {...(!showHandle && {
             handleComponent: null,
           })}
-          backgroundStyle={{
-            backgroundColor: getVariableValue(theme.background),
-            shadowColor: getVariableValue(theme.shadowColor),
-            shadowRadius: 10,
-          }}
           snapPoints={['80%']}
           ref={sheetRef}
           {...(!!onChange && {
@@ -57,21 +65,16 @@ export const Drawer = withStaticProperties(
             },
           })}
           {...props}
+          backgroundStyle={[
+            {
+              backgroundColor: getVariableValue(theme.background),
+              shadowColor: getVariableValue(theme.shadowColor),
+              shadowRadius: 10,
+            },
+            backgroundStyle,
+          ]}
         >
-          {hideBackground ? null : (
-            <Stack
-              position="absolute"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              backgroundColor="$background"
-              borderTopLeftRadius="$2"
-              borderTopRightRadius="$2"
-            >
-              {children}
-            </Stack>
-          )}
+          {hideBackground ? null : <DrawerPanel>{children}</DrawerPanel>}
         </BottomSheetModal>
       )
     },
@@ -81,5 +84,6 @@ export const Drawer = withStaticProperties(
   ),
   {
     Provider: DrawerProvider,
+    Panel: DrawerPanel,
   }
 )

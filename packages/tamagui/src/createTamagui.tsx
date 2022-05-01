@@ -5,6 +5,7 @@ import {
   TamaguiInternalConfig,
   TamaguiProviderProps,
 } from '@tamagui/core'
+import * as React from 'react'
 
 import { PopoverProvider } from './views/Popover/PopoverProvider'
 import { SafeAreaProvider } from './views/SafeAreaProvider'

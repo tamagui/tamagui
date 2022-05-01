@@ -1,6 +1,6 @@
 /// <reference types="react" />
+import { YStackProps } from '@tamagui/stacks';
 import { ModalBaseProps, ModalPropsAndroid, ModalPropsIOS } from 'react-native';
-import { YStackProps } from './Stacks';
 declare type ModalPropsReact = ModalBaseProps & ModalPropsIOS & ModalPropsAndroid;
 export declare type ModalProps = Omit<ModalPropsReact, 'children'> & YStackProps & {
     visible?: boolean;

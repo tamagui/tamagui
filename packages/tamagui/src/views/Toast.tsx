@@ -1,10 +1,9 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { AnimationKeys, Text, isWeb } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { memo, useCallback, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-
-import { YStack } from './Stacks'
 
 export type ToastOptions = {
   duration?: number

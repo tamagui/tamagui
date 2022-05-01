@@ -1,9 +1,9 @@
 import { GetProps, isVariable, styled } from '@tamagui/core'
+import { getSizedElevation } from '@tamagui/stacks'
 import React from 'react'
 
 import { getButtonSize } from '../helpers/getButtonSize'
 import { SizableStack } from './SizableStack'
-import { getSizedElevation } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

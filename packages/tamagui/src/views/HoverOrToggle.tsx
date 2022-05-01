@@ -1,8 +1,8 @@
 import { useIsTouchDevice } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 import React, { forwardRef, useState } from 'react'
 
 import { Hoverable, HoverableProps } from './Hoverable'
-import { YStack } from './Stacks'
 
 export const HoverOrToggle = forwardRef(
   (

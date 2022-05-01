@@ -12,5 +12,6 @@ export declare const Drawer: ((props: Omit<Omit<Partial<BottomSheetModalProps>, 
     themeInverse?: boolean | undefined;
 }) => JSX.Element) & {
     Provider: ({ children, }: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetModalProvider/types").BottomSheetModalProviderProps) => JSX.Element;
+    Panel: import("@tamagui/core").TamaguiComponent<unknown, any, unknown, {}>;
 };
 //# sourceMappingURL=Drawer.d.ts.map

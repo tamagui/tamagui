@@ -169,8 +169,13 @@ export const getSplitStyles = (
 
     const valInit = props[keyInit]
 
-    let isMedia = keyInit[0] === '$'
-    let isPseudo = validPseudoKeys[keyInit]
+    // TODO
+    if (keyInit === 'style' || keyInit.startsWith('_style')) {
+      push()
+      cur = valInit
+      push()
+      continue
+    }
 
     if (keyInit === 'className' || (validStyleProps[keyInit] && valInit && valInit[0] === '_')) {
       push()
@@ -185,6 +190,9 @@ export const getSplitStyles = (
     ) {
       viewProps[keyInit] = valInit
     }
+
+    let isMedia = keyInit[0] === '$'
+    let isPseudo = validPseudoKeys[keyInit]
 
     if (
       !isMedia &&
@@ -292,13 +300,6 @@ export const getSplitStyles = (
             Object.assign(shouldDoClasses ? medias : style, mediaStyle)
           }
         }
-        continue
-      }
-
-      // TODO
-      if (key === 'style' || key.startsWith('_style')) {
-        push()
-        Object.assign(style, val)
         continue
       }
 
