@@ -3551,6 +3551,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/compose-refs@^1.0.0-beta.193+14c13acd, @tamagui/compose-refs@workspace:packages/compose-refs":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/compose-refs@workspace:packages/compose-refs"
+  dependencies:
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    react: "*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/core-node@^1.0.0-beta.193+14c13acd, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
@@ -3589,6 +3600,17 @@ __metadata:
     typescript: ^4.5.2
   peerDependencies:
     react-native-web: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/create-context@^1.0.0-beta.193+14c13acd, @tamagui/create-context@workspace:packages/create-context":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/create-context@workspace:packages/create-context"
+  dependencies:
+    "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    react: "*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -19813,7 +19835,9 @@ __metadata:
     "@react-native-community/blur": ^3.6.0
     "@tamagui/animate-presence": ^1.0.0-beta.193+14c13acd
     "@tamagui/build": ^1.0.0-beta.193+14c13acd
+    "@tamagui/compose-refs": ^1.0.0-beta.193+14c13acd
     "@tamagui/core": ^1.0.0-beta.193+14c13acd
+    "@tamagui/create-context": ^1.0.0-beta.193+14c13acd
     "@tamagui/expo-linear-gradient": 11.2.7
     "@tamagui/fake-react-native": ^1.0.0-beta.193+14c13acd
     "@tamagui/helpers": ^1.0.0-beta.193+14c13acd
