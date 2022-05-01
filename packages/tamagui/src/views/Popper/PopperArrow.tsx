@@ -1,7 +1,7 @@
 import { StackProps } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 import React from 'react'
 
-import { YStack } from '../Stacks'
 import { defaultArrowHeight, defaultArrowWidth, getDiagonalLength } from './shared'
 import { IPlacement } from './types'
 

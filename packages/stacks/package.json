@@ -1,7 +1,7 @@
 {
-  "name": "@tamagui/drawer",
+  "name": "@tamagui/stacks",
   "version": "1.0.0-beta.193+14c13acd",
-  "sideEffects": true,
+  "sideEffects": false,
   "source": "src/index.ts",
   "typings": "types",
   "main": "dist/cjs",
@@ -16,12 +16,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^4.1.5",
-    "@tamagui/core": "^1.0.0-beta.193+14c13acd",
-    "@tamagui/polyfill-dev": "^1.0.0-beta.193+14c13acd",
-    "@tamagui/stacks": "^1.0.0-beta.193+14c13acd",
-    "react-native-gesture-handler": "^2.4.1",
-    "react-native-reanimated": "^2.8.0"
+    "@tamagui/core": "^1.0.0-beta.193+14c13acd"
   },
   "peerDependencies": {
     "react": "*",
@@ -34,6 +29,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "gitHead": "14c13acd9143e76d975e7a6c311d4a5f3a00bced"
+  }
 }

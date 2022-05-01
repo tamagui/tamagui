@@ -3,10 +3,10 @@
 // Copyright (c) 2021 GeekyAnts India Pvt Ltd
 
 import { useOverlayPosition } from '@react-native-aria/overlays'
+import { YStack } from '@tamagui/stacks'
 import { useLayoutEffect, useMemo } from 'react'
 import React, { useContext, useEffect, useRef } from 'react'
 
-import { YStack } from '../Stacks'
 import { PopperArrow } from './PopperArrow'
 import { PopperContext } from './PopperContext'
 import { defaultArrowHeight, defaultArrowWidth, getDiagonalLength } from './shared'

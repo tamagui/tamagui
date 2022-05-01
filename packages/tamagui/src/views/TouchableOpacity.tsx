@@ -1,8 +1,7 @@
+import { YStack } from '@tamagui/stacks'
 import React from 'react'
 import { useState } from 'react'
 import { Pressable, PressableProps } from 'react-native'
-
-import { YStack } from './Stacks'
 
 export const TouchableOpacity = (props: PressableProps) => {
   const [isPressed, setIsPressed] = useState(false)

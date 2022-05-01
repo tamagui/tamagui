@@ -7,6 +7,7 @@ import {
   useIsomorphicLayoutEffect,
   useThemeName,
 } from '@tamagui/core'
+import { YStack, YStackProps } from '@tamagui/stacks'
 import { useDebounceValue } from '@tamagui/use-debounce'
 import React from 'react'
 import {
@@ -17,7 +18,6 @@ import {
 } from 'react-native'
 
 import { prevent } from '../helpers/prevent'
-import { YStack, YStackProps } from './Stacks'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

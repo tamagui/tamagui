@@ -1,7 +1,6 @@
 import { StackProps } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 import React from 'react'
-
-import { YStack } from './Stacks'
 
 export type BlurViewProps = StackProps & {
   blurAmount?: number // 0 - 100

@@ -1,7 +1,6 @@
 import { isWeb } from '@tamagui/core'
+import { XStack } from '@tamagui/stacks'
 import React from 'react'
-
-import { XStack } from './Stacks'
 
 export type GridProps = {
   children?: any

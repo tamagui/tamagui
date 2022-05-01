@@ -10,6 +10,7 @@ import {
   styled,
   themeable,
 } from '@tamagui/core'
+import { XStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -20,7 +21,6 @@ import { getSize } from '../helpers/getSize'
 import { usePrevious } from '../hooks/usePrevious'
 import { useLabelContext } from './Label'
 import { getSquareSize } from './Square'
-import { XStack, YStackProps } from './Stacks'
 
 const SWITCH_NAME = 'Switch'
 
@@ -29,8 +29,11 @@ const scopeContexts = createContextScope(SWITCH_NAME)
 const [createSwitchContext] = scopeContexts
 export const createSwitchScope = scopeContexts[1]
 
-type SwitchContextValue = { checked: boolean; disabled?: boolean; size: SizeTokens }
-const [SwitchProvider, useSwitchContext] = createSwitchContext<SwitchContextValue>(SWITCH_NAME)
+const [SwitchProvider, useSwitchContext] = createSwitchContext<{
+  checked: boolean
+  disabled?: boolean
+  size: SizeTokens
+}>(SWITCH_NAME)
 
 /* -------------------------------------------------------------------------------------------------
  * Switch

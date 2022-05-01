@@ -7,9 +7,7 @@ import { useComposedRefs } from '../helpers/composeRefs'
 import { createContext } from '../helpers/createContext'
 import { getButtonSize } from '../helpers/getButtonSize'
 import { sizableTextSizeVariant } from '../helpers/sizableTextSizeVariant'
-import { SizableStack } from './SizableStack'
 import { SizableText } from './SizableText'
-import { XStack } from './Stacks'
 
 const NAME = 'Label'
 
