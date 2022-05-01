@@ -20,7 +20,7 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
       console.trace()
       console.groupEnd()
     } else {
-      console.error(`Missing transform`, identifier)
+      console.error(`Missing transform`, identifier, css, rule)
     }
     return
   }

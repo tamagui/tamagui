@@ -8,7 +8,7 @@ import {
 import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'
-import { isWeb } from '../constants/platform'
+import { isClient, isWeb } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import {
   MediaKeys,
@@ -71,7 +71,10 @@ export const getSplitStyles = (
   let transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
   function mergeClassName(key: string, val: string) {
-    if (!val) return
+    if (!val) {
+      // empty classnames passed by compiler sometimes
+      return
+    }
     if (val.startsWith('_transform-')) {
       const isMediaOrPseudo = key !== 'transform'
       const isMedia = isMediaOrPseudo && key[11] === '_'
@@ -83,33 +86,38 @@ export const getSplitStyles = (
         : 'transform'
 
       let transform = insertedTransforms[val]
-      if (!transform) {
-        // HMR or loaded a new chunk
-        updateInserted()
-        transform = insertedTransforms[val]
-      }
-      if (!transform) {
-        if (isWeb && val[0] !== '_') {
-          // runtime insert
-          transform = val
-        } else {
-          // todo?
-          console.trace('?', key, val, cur, props, state)
-        }
-      }
-      if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-        // prettier-ignore
-        console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
-      }
-      if (process.env.NODE_ENV === 'development') {
+      if (isClient) {
         if (!transform) {
-          console.trace('NO TRANSFORM?', { key, val, transform })
+          // HMR or loaded a new chunk
+          updateInserted()
+          transform = insertedTransforms[val]
+        }
+        if (!transform) {
+          if (isWeb && val[0] !== '_') {
+            // runtime insert
+            transform = val
+          } else {
+            // error
+            console.trace('?', key, val, cur, props, state)
+          }
+        }
+        if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+          // prettier-ignore
+          console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
+        }
+        if (process.env.NODE_ENV === 'development') {
+          if (!transform) {
+            console.trace('NO TRANSFORM?', { key, val, transform })
+          }
         }
       }
       transforms[namespace] = transforms[namespace] || ['', '']
       const identifier = val.replace('_transform', '')
       transforms[namespace][0] += identifier
-      transforms[namespace][1] += transform
+      // ssr doesn't need to do anything just make the right classname
+      if (transform) {
+        transforms[namespace][1] += transform
+      }
     } else {
       classNames[key] = val
     }
@@ -167,10 +175,6 @@ export const getSplitStyles = (
     if (keyInit === 'className' || (validStyleProps[keyInit] && valInit && valInit[0] === '_')) {
       push()
       mergeClassName(keyInit, valInit)
-      if (cur) {
-        if (cur[keyInit]) console.warn('just want to see how used')
-        delete cur[keyInit]
-      }
       continue
     }
 
@@ -325,9 +329,11 @@ export const getSplitStyles = (
     for (const namespace in transforms) {
       const [hash, val] = transforms[namespace]
       const identifier = `_transform${hash}`
-      if (!insertedTransforms[identifier]) {
-        const rule = `.${identifier} { transform: ${val}; }`
-        insertStyleRule(identifier, rule)
+      if (isClient) {
+        if (!insertedTransforms[identifier]) {
+          const rule = `.${identifier} { transform: ${val}; }`
+          insertStyleRule(identifier, rule)
+        }
       }
       classNames[namespace] = identifier
     }

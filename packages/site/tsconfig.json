@@ -44,12 +44,13 @@
     "next-env.d.ts",
     "tamagui.config.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "**/*.js"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules",
-    "_next/**/*"
+    ".next",
+    ".turbo",
+    "out"
   ],
   "references": [
     {
