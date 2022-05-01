@@ -15,7 +15,9 @@ export function HeroPerformance() {
 
   useOnIntersecting(ref, ({ isIntersecting }) => {
     if (isIntersecting) {
-      setShow(true)
+      setTimeout(() => {
+        setShow(true)
+      }, 800)
     }
   })
 

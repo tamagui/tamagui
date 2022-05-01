@@ -50,7 +50,7 @@ export function Community() {
                 </clipPath>
               </defs>
             </svg>
-            <H4 debug="verbose" cursor="pointer" fontFamily="$silkscreen">
+            <H4 cursor="pointer" fontFamily="$silkscreen">
               Twitter
             </H4>
             <Paragraph cursor="pointer" theme="alt2">

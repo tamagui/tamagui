@@ -1,24 +1,29 @@
-import React from 'react'
-import { Image, XStack, XStackProps, YStack } from 'tamagui'
+import React, { forwardRef } from 'react'
+import { XStack, XStackProps, YStack } from 'tamagui'
 
-export const TamaguiLogo = ({
-  showWords,
-  color,
-  downscale,
-  ...props
-}: {
-  showWords?: boolean
-  color?: string
-  downscale?: number
-} & XStackProps) => (
-  <XStack ai="center" jc="center" space="$5" {...props}>
-    <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
-    {showWords && (
-      <YStack mb={-4}>
-        <LogoWords downscale={downscale ?? 2} color={color} />
-      </YStack>
-    )}
-  </XStack>
+export const TamaguiLogo = forwardRef(
+  (
+    {
+      showWords,
+      color,
+      downscale,
+      ...props
+    }: {
+      showWords?: boolean
+      color?: string
+      downscale?: number
+    } & XStackProps,
+    ref
+  ) => (
+    <XStack ref={ref} ai="center" jc="center" space="$5" {...props}>
+      <LogoIcon downscale={(downscale ?? 1) * (showWords ? 2 : 1.5)} color={color} />
+      {showWords && (
+        <YStack mb={-4}>
+          <LogoWords downscale={downscale ?? 2} color={color} />
+        </YStack>
+      )}
+    </XStack>
+  )
 )
 
 const colors = [

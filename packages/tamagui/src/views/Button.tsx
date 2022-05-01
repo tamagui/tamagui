@@ -211,19 +211,14 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
 })
 
 export const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View> =
-  ButtonFrame.extractable(
-    themeable(ButtonComponent as any, {
-      componentName: 'Button',
-    }) as any,
-    {
-      inlineProps: new Set([
-        // text props go here (can't really optimize them, but we never fully extract button anyway)
-        'color',
-        'fontWeight',
-        'fontSize',
-        'fontFamily',
-        'letterSpacing',
-        'textAlign',
-      ]),
-    }
-  )
+  ButtonFrame.extractable(themeable(ButtonComponent as any) as any, {
+    inlineProps: new Set([
+      // text props go here (can't really optimize them, but we never fully extract button anyway)
+      'color',
+      'fontWeight',
+      'fontSize',
+      'fontFamily',
+      'letterSpacing',
+      'textAlign',
+    ]),
+  })
