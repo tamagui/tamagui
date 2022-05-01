@@ -159,28 +159,27 @@ const fontShorthand = {
 const getToken = (
   key: string,
   value: string,
-  { tokensParsed, fonts }: TamaguiInternalConfig,
+  { tokensParsed, fontsParsed }: TamaguiInternalConfig,
   theme: any,
   fontFamily: string | undefined = '$body',
   resolveAs?: ResolveVariableTypes
 ) => {
   let valOrVar: any
   let hasSet = false
-  const valueName = value[0] === '$' ? value.slice(1) : value
-  if (valueName in theme) {
-    valOrVar = theme[valueName]
+  if (value in theme) {
+    valOrVar = theme[value]
     hasSet = true
   } else {
     switch (key) {
       case 'fontFamily':
-        valOrVar = fonts[value]?.family || value
+        valOrVar = fontsParsed[value]?.family || value
         hasSet = true
         break
       case 'fontSize':
       case 'lineHeight':
       case 'letterSpacing':
       case 'fontWeight':
-        valOrVar = fonts[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
+        valOrVar = fontsParsed[fontFamily]?.[fontShorthand[key] || key]?.[value] || value
         hasSet = true
         break
     }
@@ -206,7 +205,7 @@ const getToken = (
   }
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
-      console.warn(`⚠️ Missing token in theme ${theme.name}:`, value)
+      console.warn(`⚠️ Missing token:`, key, value, fontFamily, theme, fontsParsed)
       return null
     }
   }

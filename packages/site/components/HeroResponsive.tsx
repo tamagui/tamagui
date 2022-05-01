@@ -1,7 +1,17 @@
 import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Circle, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Circle,
+  Image,
+  Paragraph,
+  Spacer,
+  Theme,
+  XStack,
+  YStack,
+  useDebounce,
+} from 'tamagui'
 
 import { demoMedia } from '../constants/media'
 import { useGet } from '../hooks/useGet'
@@ -31,6 +41,10 @@ export const HeroResponsive = memo(() => {
   const safariRef = useRef<HTMLElement | null>(null)
   const getState = useGet({ move, isDragging })
   const [sizeI, setSizeI] = useState(0)
+  const updateBoundings = useDebounce(() => {
+    const rect = safariRef.current?.getBoundingClientRect() ?? null
+    setBounding(rect)
+  }, 350)
 
   useEffect(() => {
     if (!bounding) {
@@ -52,11 +66,6 @@ export const HeroResponsive = memo(() => {
       window.removeEventListener('resize', updateBoundings)
     }
   }, [])
-
-  function updateBoundings() {
-    const rect = safariRef.current?.getBoundingClientRect() ?? null
-    setBounding(rect)
-  }
 
   const onMove = throttle((e: MouseEvent) => {
     if (!getState().isDragging) return

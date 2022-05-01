@@ -37,7 +37,10 @@ const TooltipFrame = styled(SizableStack, {
   borderWidth: 0,
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: '$1',
+  borderRadius: '$2',
+  pointerEvents: 'none',
+  backgroundColor: '$background',
+  maxWidth: 400,
   paddingVertical: '$2',
   paddingHorizontal: '$3',
   flexWrap: 'nowrap',
@@ -67,6 +70,18 @@ export const Tooltip = ({
       if (!open) {
         return null
       }
+      const frame = (
+        <TooltipFrame
+          elevation={size}
+          size={size}
+          // TODO we could fix this i think with some fancy stuff
+          {...(tooltipFrameProps as any)}
+        >
+          <Paragraph textAlign="center" color="$color" size={size}>
+            {contents}
+          </Paragraph>
+        </TooltipFrame>
+      )
       return (
         <YStack
           key="tooltip-child"
@@ -76,21 +91,7 @@ export const Tooltip = ({
           {...tooltipContainerProps}
         >
           {!!showArrow && <HoverablePopover.Arrow backgroundColor="$background" />}
-          <Theme name={alwaysDark ? 'dark' : null}>
-            <TooltipFrame
-              elevation={size}
-              pointerEvents="none"
-              backgroundColor="$background"
-              maxWidth={400}
-              size={size}
-              // TODO we could fix this i think with some fancy stuff
-              {...(tooltipFrameProps as any)}
-            >
-              <Paragraph textAlign="center" color="$color" size={size}>
-                {contents}
-              </Paragraph>
-            </TooltipFrame>
-          </Theme>
+          {alwaysDark ? <Theme name={alwaysDark ? 'dark' : null}>{frame}</Theme> : frame}
         </YStack>
       )
     },

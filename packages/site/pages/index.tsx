@@ -37,8 +37,8 @@ export default function Home() {
         <HeroBelow />
       </YStack>
       <Separator borderStyle="dotted" />
-      <ContainerLarge zi={100000}>
-        <XStack mt={-28} mb={-100} jc="center" ai="center">
+      <ContainerLarge fd="column" pos="relative" zi={100000}>
+        <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <InstallInput />
         </XStack>
       </ContainerLarge>

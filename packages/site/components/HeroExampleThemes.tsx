@@ -63,7 +63,7 @@ export function HeroExampleThemes() {
   }
 
   const width = 180
-  const scale = 0.65
+  const scale = 0.6
 
   function scrollToIndex(index: number, force = false) {
     const node = scrollView.current
@@ -239,7 +239,6 @@ export function HeroExampleThemes() {
                     <XStack
                       key={i}
                       width={width}
-                      // TODO merging hoverStyle scale wrong
                       scale={scale}
                       cursor="pointer"
                       opacity={0.75}

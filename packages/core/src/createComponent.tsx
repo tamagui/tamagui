@@ -22,6 +22,7 @@ import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
+import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { usePressable } from './hooks/usePressable'
@@ -68,6 +69,8 @@ function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: T
   }
 }
 
+let initialTheme: any
+
 export function createComponent<
   ComponentPropTypes extends Object = {},
   Ref = View,
@@ -89,7 +92,6 @@ export function createComponent<
   let avoidClasses = true
   let defaultNativeStyle: any
   let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }>
-  let initialTheme: any
   let initialSplitStyles: SplitStyleResult
 
   function addPseudoToStyles(styles: any[], name: string, pseudos: any) {
@@ -619,7 +621,9 @@ export function createComponent<
     avoidClasses = !!tamaguiConfig.animations?.avoidClasses
     AnimatedText = tamaguiConfig.animations?.Text
     AnimatedView = tamaguiConfig?.animations?.View
-    initialTheme = conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]]
+    initialTheme =
+      initialTheme ||
+      proxyThemeVariables(conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]])
     initialSplitStyles = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, {
       mounted: true,
       hover: false,

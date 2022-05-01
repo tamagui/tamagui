@@ -7,6 +7,7 @@ import React, {
   isValidElement,
   useContext,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
@@ -137,7 +138,8 @@ export const AnimatePresence: React.FunctionComponent<
   if (forceRenderLayoutGroup) forceRender = forceRenderLayoutGroup
 
   const [isMounted, setIsMounted] = useState(false)
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     setIsMounted(true)
   }, [])
 

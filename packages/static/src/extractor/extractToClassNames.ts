@@ -278,11 +278,6 @@ export function extractToClassNames({
         }
       }
 
-      if (shouldPrintDebug) {
-        // prettier-ignore
-        console.log('  finalClassNames\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
-      }
-
       function addTernaryStyle(ternary: Ternary, a: any, b: any) {
         const cCN = a.map((x) => x.identifier).join(' ')
         const aCN = b.map((x) => x.identifier).join(' ')
@@ -301,11 +296,19 @@ export function extractToClassNames({
         }
       }
 
+      if (shouldPrintDebug) {
+        // prettier-ignore
+        console.log('  finalClassNames\n', logLines(finalClassNames.map(x => x['value']).join(' ')))
+      }
+
       node.attributes = finalAttrs
 
       if (finalClassNames.length) {
         // inserts the _cn variable and uses it for className
-        const names = buildClassName(finalClassNames)
+        let names = buildClassName(finalClassNames)
+        if (t.isStringLiteral(names)) {
+          names.value = concatClassName(names.value)
+        }
         const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
         let expr = nameExpr
 

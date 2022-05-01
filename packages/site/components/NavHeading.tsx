@@ -1,13 +1,9 @@
 import { H4, styled } from 'tamagui'
 
-// TODO usage type recursion becomes infinite
-
 export const NavHeading = styled(H4, {
-  size: '$3',
+  size: '$2',
   px: '$4',
-  py: '$1',
-  textTransform: 'capitalize',
-  letterSpacing: 0,
-  fow: '700',
+  py: '$2',
   mt: '$2',
+  o: 0.5,
 })

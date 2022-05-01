@@ -71,7 +71,7 @@ export function QuickNav() {
           display={headings.length === 0 ? 'none' : 'block'}
           space
         >
-          <H4 size="$3" id="site-quick-nav-heading" fow="800">
+          <H4 size="$2" o={0.5} id="site-quick-nav-heading">
             Quick nav
           </H4>
 
