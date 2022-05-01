@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-silkscreen",
-  "version": "1.0.0-beta.181+fff2a5b2",
+  "version": "1.0.0-beta.193+14c13acd",
   "typings": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,11 +18,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.181+fff2a5b2",
-    "@tamagui/colors": "^1.0.0-beta.181+fff2a5b2"
+    "@tamagui/build": "^1.0.0-beta.193+14c13acd",
+    "@tamagui/colors": "^1.0.0-beta.193+14c13acd"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "fff2a5b25ea3881d499e5376cd166f58556acaba"
+  "gitHead": "14c13acd9143e76d975e7a6c311d4a5f3a00bced"
 }

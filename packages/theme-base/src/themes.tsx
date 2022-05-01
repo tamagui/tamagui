@@ -235,7 +235,7 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
     const isLight = i === 0
     const [backgrounds, colors] = [
       Object.values(props.backgrounds),
-      Object.values(props.colors).slice(isLight ? 0 : 2),
+      Object.values(props.colors).slice(isLight ? 2 : 2),
     ] as const
 
     const scheme = isLight ? 'light' : 'dark'
@@ -253,8 +253,8 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
       shift,
       isBase: false,
       offsets: {
-        background: isLight ? [1, 1, 1, 0, 0, 0] : null,
-        borderColor: isLight ? [0, 1, 1, 2, 2, -2] : null,
+        background: isLight ? [0, 0, 0, 0, 0, 0] : null,
+        borderColor: isLight ? [+1, +1, +1, +1, +2] : null,
         color: isLight ? [0, 0, -1, -2, -3, -3, -4] : [-1, -1, -1, -1, -1, -1],
       },
     })

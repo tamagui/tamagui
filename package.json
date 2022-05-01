@@ -39,7 +39,7 @@
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
-    "react-native-reanimated": "2.4.1",
+    "react-native-reanimated": "2.8.0",
     "@types/node": "16.11.9",
     "@types/react": "17.0.43",
     "@types/react-native": "0.66.3",

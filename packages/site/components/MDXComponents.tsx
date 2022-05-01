@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native'
 import {
   Button,
   Circle,
+  H1,
   H2,
   H3,
   H4,
@@ -120,19 +121,19 @@ export const components = {
     )
   },
 
-  h1: (props) => <H2 mb="$2" {...props} />,
+  h1: (props) => <H1 mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H3 mt="$5" size="$9" letterSpacing={-0.5} data-heading {...props}>
+    <H2 mt="$5" size="$9" letterSpacing={-0.5} data-heading {...props}>
       {children}
-    </H3>
+    </H2>
   ),
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading mt="$5" mb="$1" id={id}>
-      <H4 data-heading {...props}>
+      <H3 size="$8" data-heading {...props}>
         {children}
-      </H4>
+      </H3>
       {getNonTextChildren(children)}
     </LinkHeading>
   ),
