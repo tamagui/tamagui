@@ -31,7 +31,7 @@ const browserHeight = 445
 
 export const HeroResponsive = memo(() => {
   const [bounding, setBounding] = useState<DOMRect | null>(null)
-  const [prevMove, setPrevMove] = useState(0)
+  const prevMove = useRef(0)
   const initialWidth =
     typeof window !== 'undefined' ? Math.max(400, Math.min(500, window.innerWidth / 2)) : 500
   const [hasIntersected, setHasIntersected] = useState(false)
@@ -78,13 +78,13 @@ export const HeroResponsive = memo(() => {
     const x = e.pageX - right
     const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 120
     const nextMove = Math.min(maxMove, Math.max(0, x))
-    const next = nextMove + (prevMove || 0)
+    const next = nextMove + (prevMove.current || 0)
     setMove(next)
-    setPrevMove(0)
-  }, 16)
+    prevMove.current = 0
+  }, 24)
 
   const stop = () => {
-    setPrevMove(getState().move)
+    prevMove.current = getState().move
     setIsDragging(false)
   }
 
@@ -107,7 +107,7 @@ export const HeroResponsive = memo(() => {
       if (didResize) {
         updateBoundings()
       }
-      setPrevMove(getState().move - 10)
+      prevMove.current = getState().move - 10
       window.addEventListener('mousemove', onMove)
       return () => {
         onMove.cancel()
@@ -146,11 +146,11 @@ export const HeroResponsive = memo(() => {
         <XStack b={-20} pos="absolute" zi={1} f={1} space="$1">
           <YStack
             className="unselectable"
+            contain="paint layout"
             pe={isDragging ? 'none' : 'auto'}
             w={width}
             f={1}
             ref={safariRef}
-            theme="alt1"
           >
             <Theme name="pink">
               <Safari shouldLoad={hasIntersected} isSmall={isSmall} />
@@ -299,7 +299,6 @@ export const Safari = memo(
 
             <XStack fullscreen ai="center">
               <XStack f={1} />
-              {/* @ts-ignore */}
               <XStack
                 h={30}
                 f={2}
@@ -324,13 +323,13 @@ export const Safari = memo(
 
         <XStack>
           <Tab bc="var(--green7)" btlr={0}>
-            Tamagui - React Native & Web UI kits
+            Github
           </Tab>
           <Tab bc="var(--pink7)" active>
             Tamagui - React Native & Web UI kits
           </Tab>
           <Tab bc="var(--yellow7)" btrr={0}>
-            Tamagui - React Native & Web UI kits
+            @natebirdman
           </Tab>
         </XStack>
 
@@ -338,7 +337,7 @@ export const Safari = memo(
           <YStack h="100%" pe="none" bc="$background">
             {!!shouldLoad && (
               <iframe
-                style={{ display: isLoaded ? 'flex' : 'none' }}
+                style={{ display: isLoaded ? 'flex' : 'none', contain: 'paint' }}
                 onLoad={() => {
                   setIsLoaded(true)
                 }}
@@ -360,6 +359,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
       <XStack
         btw={1}
         boc={active ? 'transparent' : '$borderColor'}
+        w="33.33%"
         blw={1}
         brw={1}
         bbw={1}
@@ -379,7 +379,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
           <Image width={12} height={12} src={favicon.src} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph cursor="default" size="$2" ellipse>
+        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$2" ellipse>
           {children}
         </Paragraph>
       </XStack>

@@ -17,7 +17,7 @@ export function HeroPerformance() {
     if (isIntersecting) {
       setTimeout(() => {
         setShow(true)
-      }, 800)
+      }, 100)
     }
   })
 

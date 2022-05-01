@@ -112,7 +112,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         // TODO document and make configurable
         // replace minifier with css-minimizer-webpack-plugin which handles deduping atomic styles
-        if (!isServer && !dev) {
+        if (!dev) {
           const cssMin = webpackConfig.optimization.minimizer.find((x) =>
             x.toString().includes('css-minimizer-plugin')
           )
