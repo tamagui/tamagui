@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.0.0-beta.0.207+cc93940f",
+  "version": "1.0.0-beta.0.209+5f91a5a5",
   "sideEffects": false,
   "source": "src/index.ts",
   "typings": "types",
@@ -19,11 +19,11 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/build": "^1.0.0-beta.0.209+5f91a5a5",
     "react": "*"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "cc93940f23ba75e41500f2622b99ca0e6a7b4bf1"
+  "gitHead": "5f91a5a5747cf5fa2e794a4ca65ee3113d318f0c"
 }

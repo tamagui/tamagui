@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/feather-icons",
-  "version": "1.0.0-beta.0.207+cc93940f",
+  "version": "1.0.0-beta.0.209+5f91a5a5",
   "sideEffects": false,
   "description": "React Native components for Feather icons - native and web",
   "source": "src/index.ts",
@@ -20,13 +20,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tamagui/core": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/core": "^1.0.0-beta.0.209+5f91a5a5",
     "react": "*",
     "react-dom": "*",
     "react-native-svg": "^12.1.1"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/build": "^1.0.0-beta.0.209+5f91a5a5",
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
     "feather-icons": "^4.28.0",
@@ -39,5 +39,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "cc93940f23ba75e41500f2622b99ca0e6a7b4bf1"
+  "gitHead": "5f91a5a5747cf5fa2e794a4ca65ee3113d318f0c"
 }

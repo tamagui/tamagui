@@ -44,6 +44,11 @@ ${chalk.blueBright(`npx ${packageJson.name} next-expo`)}`
   )
   .parse(process.argv)
 
+if (process.argv.includes('--version')) {
+  console.log(packageJson.version)
+  process.exit(0)
+}
+
 const packageManager = program.useNpm ? 'npm' : program.usePnpm ? 'pnpm' : 'yarn'
 const DOWNLOAD_URL = 'https://codeload.github.com/tamagui/starters/tar.gz/main'
 
@@ -96,6 +101,7 @@ async function run() {
 
   const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
   const projectName = path.basename(resolvedProjectPath)
+  console.log('resolvedProjectPath', resolvedProjectPath)
 
   const { valid, problems } = validateNpmName(projectName)
   if (!valid) {

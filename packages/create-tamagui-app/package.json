@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui-app",
-  "version": "1.0.0-beta.0.207+cc93940f",
+  "version": "1.0.0-beta.0.209+5f91a5a5",
   "bin": "./run.js",
   "main": "dist/cjs",
   "files": [
@@ -31,7 +31,7 @@
     "validate-npm-package-name": "3.0.0"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/build": "^1.0.0-beta.0.209+5f91a5a5",
     "@types/async-retry": "1.4.2",
     "@types/cross-spawn": "^6.0.2",
     "@types/node": "^16.11.9",
@@ -47,5 +47,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "cc93940f23ba75e41500f2622b99ca0e6a7b4bf1"
+  "gitHead": "5f91a5a5747cf5fa2e794a4ca65ee3113d318f0c"
 }

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-const path = require('path')
+const command = require.resolve('create-tamagui-app')
+const args = process.argv.slice(process.argv.findIndex((x) => x.includes('create-tamagui-app')))
 
-require('child_process').execSync(`node ${path.join(__dirname, 'dist', 'cjs', 'index.js')}`, {
+require('child_process').execSync(`node ${command} ${args.join(' ')}`, {
   stdio: 'inherit',
 })
