@@ -128,11 +128,11 @@ export declare type MediaKeys = keyof Media;
 export declare type MediaQueryObject = {
     [key: string]: string | number | string;
 };
-export declare type MediaQueryState = {
-    [key in string]: boolean;
-};
 export declare type MediaQueryKey = keyof Media;
 export declare type MediaPropKeys = `$${MediaQueryKey}`;
+export declare type MediaQueryState = {
+    [key in MediaPropKeys]: boolean;
+};
 export declare type MediaProps<A> = {
     [key in MediaPropKeys]?: A;
 };

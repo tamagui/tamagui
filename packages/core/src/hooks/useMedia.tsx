@@ -5,14 +5,14 @@ import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
 import {
   ConfigureMediaQueryOptions,
-  MediaPropKeys,
   MediaQueries,
   MediaQueryKey,
   MediaQueryObject,
+  MediaQueryState,
 } from '../types'
 import { useConstant } from './useConstant'
 
-export const mediaState: { [key in MediaPropKeys]: boolean } = {} as any
+export const mediaState: MediaQueryState = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
 export const addMediaQueryListener = (key: string, cb: any) => {
