@@ -25,7 +25,7 @@ export function HeroExampleCode() {
               <span className="rainbow clip-text">UX</span>
             </HomeH2>
             <HomeH3>
-              Maintainability, ergonomics, performance - while working on every platform.
+              Maintainabile and ergonomic, cross-platform, performant and easy-to-debug.
             </HomeH3>
           </YStack>
 
@@ -50,7 +50,7 @@ export function HeroExampleCode() {
           </InteractiveContainer>
 
           <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
-            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$4">
+            <YStack f={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$4">
               <CodeExamples {...activeExample.input} />
               <Paragraph size="$5" minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Input</CodeInline>
@@ -76,7 +76,7 @@ export function HeroExampleCode() {
                 <FastForward color="var(--colorHover)" size={22} />
               </IconStack>
             </YStack>
-            <YStack flex={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$4">
+            <YStack f={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$4">
               <CodeExamples {...activeExample.output} />
               <Paragraph size="$5" minHeight={50} ta="center" px="$6">
                 <CodeInline size="$4">Output</CodeInline>
@@ -114,13 +114,13 @@ const CodeExamples = memo(({ examples }: any) => {
           ))}
         </InteractiveContainer>
       </>
-      <XStack maxWidth="100%" flex={1}>
-        <YStack flex={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
+      <XStack maxWidth="100%" f={1}>
+        <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemo
             theme="Card"
             language={example.language as any}
             maxHeight={400}
-            flex={1}
+            f={1}
             value={example.code}
           />
         </YStack>

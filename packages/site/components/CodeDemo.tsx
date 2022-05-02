@@ -15,6 +15,8 @@ export function CodeDemo({ css, line, maxHeight, ...props }: CodeDemoProps) {
       bc="$backgroundHover"
       boc="$borderColor"
       bw={1}
+      // for hero code
+      f={1}
     >
       <CodeBlock
         backgroundColor="transparent"

@@ -54,7 +54,7 @@ export function HeroExampleAnimations() {
         <XStack>
           <YStack
             f={2}
-            miw="50%"
+            miw="55%"
             als="center"
             mr="$-2"
             bc="$backgroundHover"
@@ -82,13 +82,13 @@ export function HeroExampleAnimations() {
               ai="center"
               jc="center"
             >
-              <YStack fullscreen className="mask-gradient-up" o={0.35} bc="$colorMid" />
+              <YStack fullscreen className="mask-gradient-up" o={0.5} bc={`$${tint}4Dark`} />
               <Button
                 y={200}
                 iconAfter={ArrowDown}
                 size="$2"
                 zi={10}
-                themeInverse
+                theme={tint}
                 onPress={() => setDisableScrollPane(false)}
               >
                 View more
