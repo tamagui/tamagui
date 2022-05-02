@@ -35,12 +35,12 @@ export function HeroContainer({
       {demoMultiple ? (
         <XStack maxHeight="100%" maxWidth="100%" justifyContent="flex-start">
           <XStack space="$3" px="$8">
-            <Theme name="dark">
+            {/* <Theme name="dark">
               <Card>{children}</Card>
             </Theme>
             <Theme name="light">
               <Card>{children}</Card>
-            </Theme>
+            </Theme> */}
             <Theme name="blue">
               <Card>{children}</Card>
             </Theme>

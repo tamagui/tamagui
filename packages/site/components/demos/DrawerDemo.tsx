@@ -6,7 +6,7 @@ import { Button, Paragraph, YStack } from 'tamagui'
 export default function DrawerDemo() {
   const [show, setShow] = useState(false)
   return (
-    <YStack minWidth={260} w="100%" h="100%" ai="center" jc="center" position="relative">
+    <YStack minWidth={230} w="100%" h="100%" ai="center" jc="center" position="relative">
       <Drawer.Provider>
         <Button
           size="$6"
@@ -15,7 +15,7 @@ export default function DrawerDemo() {
           onPress={() => setShow((x) => !x)}
         />
         <Drawer open={show} onChangeOpen={setShow}>
-          <Drawer.Frame ai="center" jc="center" p="$6" space>
+          <Drawer.Frame h={200} ai="center" jc="center" p="$6" space>
             <Paragraph selectable={false}>Hello.</Paragraph>
             <Button
               size="$6"
