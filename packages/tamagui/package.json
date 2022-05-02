@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.0.0-beta.0.204+0834a094",
+  "version": "1.0.0-beta.0.207+cc93940f",
   "sideEffects": [
     "*.css",
     "polyfills.ts"
@@ -29,17 +29,17 @@
     "@react-native-aria/focus": "^0.2.5",
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
-    "@tamagui/animate-presence": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/compose-refs": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/core": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/create-context": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/animate-presence": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/compose-refs": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/core": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/create-context": "^1.0.0-beta.0.207+cc93940f",
     "@tamagui/expo-linear-gradient": "11.2.7",
-    "@tamagui/fake-react-native": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/helpers": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/stacks": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/use-controllable-state": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/use-debounce": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/use-force-update": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/fake-react-native": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/helpers": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/stacks": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/use-controllable-state": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/use-debounce": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/use-force-update": "^1.0.0-beta.0.207+cc93940f",
     "react": "*",
     "react-dom": "*",
     "react-native-safe-area-context": "^4.2.5"
@@ -48,10 +48,10 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/build": "^1.0.0-beta.0.207+cc93940f",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "react-native-web": "^0.17.5"
   },
-  "gitHead": "0834a0945f7b958c260d70f207d29a678e11b0ae"
+  "gitHead": "cc93940f23ba75e41500f2622b99ca0e6a7b4bf1"
 }
