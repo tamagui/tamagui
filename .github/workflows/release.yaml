@@ -27,7 +27,7 @@ jobs:
       - name: install yarn
         run: |
           npm i yarn -g
-          yarn set version 3.1.1
+          yarn set version 3.2.0
 
       # - uses: c-hive/gha-yarn-cache@v2
 
