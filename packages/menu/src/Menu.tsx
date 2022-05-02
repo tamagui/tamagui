@@ -17,10 +17,10 @@ type MenuProps = {
 }
 
 export const Menu = withStaticProperties(
-  ({ children, open, defaultOpen, trigger, onChangeOpen }: MenuProps) => {
+  ({ children, open: openProp, defaultOpen, trigger, onChangeOpen }: MenuProps) => {
     const media = useMedia()
-    const [show, setShow] = useControllableState({
-      prop: open,
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
       defaultProp: defaultOpen || false,
       onChange(next) {
         onChangeOpen?.(next)
@@ -30,7 +30,7 @@ export const Menu = withStaticProperties(
     const triggerProps = useMemo(() => {
       return {
         onPress: () => {
-          setShow((x) => !x)
+          setOpen((x) => !x)
         },
       }
     }, [])
@@ -39,7 +39,7 @@ export const Menu = withStaticProperties(
       return (
         <>
           {cloneElement(trigger, triggerProps)}
-          <Drawer open={show} onDismiss={() => setShow(false)}>
+          <Drawer open={open} onDismiss={() => setOpen(false)}>
             {children}
           </Drawer>
         </>
@@ -49,8 +49,8 @@ export const Menu = withStaticProperties(
     return (
       <Popover
         trigger={(props) => cloneElement(trigger, { ...props, ...triggerProps })}
-        isOpen={show}
-        onChangeOpen={setShow}
+        open={open}
+        onChangeOpen={setOpen}
       >
         <Popover.Content>
           <Popover.Arrow />

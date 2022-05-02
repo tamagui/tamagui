@@ -24,7 +24,9 @@ export const PopperArrow = React.memo(
       ...rest
     } = props
     const diagonalLength = getDiagonalLength(defaultArrowHeight, defaultArrowHeight)
+
     if (!width || !height || !placement) {
+      console.log('none', width, height, placement, props)
       return null
     }
     return (

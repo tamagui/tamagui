@@ -29,7 +29,7 @@ export type ModalProps = Omit<ModalPropsReact, 'children'> &
     visible?: boolean
     overlayBackground?: string
     overlayDismisses?: boolean
-    children?: any | ((isOpen?: boolean) => any)
+    children?: any | ((open?: boolean) => any)
   }
 
 export const Modal = (props: ModalProps) => {

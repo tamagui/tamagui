@@ -27,7 +27,7 @@ import { Modal, Platform } from 'react-native'
 import { useKeyboardDismissable } from '../hooks/useKeyboardDismissable'
 
 interface IOverlayProps {
-  isOpen?: boolean
+  open?: boolean
   children?: any
   // We use RN modal on android if needed as it supports shifting accessiblity focus to the opened view. IOS automatically shifts focus if an absolutely placed view appears in front.
   useRNModalOnAndroid?: boolean
@@ -37,7 +37,7 @@ interface IOverlayProps {
 
 export function Overlay({
   children,
-  isOpen,
+  open,
   useRNModalOnAndroid = false,
   isKeyboardDismissable = true,
   onRequestClose,
@@ -46,15 +46,15 @@ export function Overlay({
 
   if (typeof document !== 'undefined') {
     useKeyboardDismissable({
-      enabled: isOpen && isKeyboardDismissable,
+      enabled: open && isKeyboardDismissable,
       callback: onRequestClose ? onRequestClose : () => {},
     })
 
     useLayoutEffect(() => {
-      if (isOpen) {
+      if (open) {
         setOpenedOnce(true)
       }
-    }, [isOpen])
+    }, [open])
   }
 
   if (!openedOnce) {

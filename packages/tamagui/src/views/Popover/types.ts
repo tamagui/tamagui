@@ -46,11 +46,11 @@ export interface IPopoverProps {
   /**
    * If true, the popover will be opened by default
    */
-  defaultIsOpen?: boolean
+  defaultOpen?: boolean
   /**
    * Whether the popover is opened. Useful for conrolling the open state
    */
-  isOpen?: boolean
+  open?: boolean
   /**
    * Whether popover should trap focus.
    * @default true

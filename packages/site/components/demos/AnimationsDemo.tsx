@@ -8,6 +8,7 @@ import { LogoIcon } from '../TamaguiLogo'
 export default (props) => {
   const { tint } = useTint()
   const [positionI, setPositionI] = useControllableState({
+    strategy: 'most-recent-wins',
     prop: props.position,
     defaultProp: 0,
   })

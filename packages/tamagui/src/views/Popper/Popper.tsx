@@ -4,8 +4,7 @@
 
 import { useOverlayPosition } from '@react-native-aria/overlays'
 import { YStack } from '@tamagui/stacks'
-import { useLayoutEffect, useMemo } from 'react'
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { ReactNode, useContext, useLayoutEffect, useMemo, useRef } from 'react'
 
 import { PopperArrow } from './PopperArrow'
 import { PopperContext } from './PopperContext'
@@ -54,9 +53,6 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
     placement,
   } = overlayPosition
 
-  let restElements: React.ReactNode[] = []
-  let arrowElement: React.ReactElement | null = null
-
   useLayoutEffect(() => {
     setOverlayRef?.(overlayRef)
   }, [overlayRef, setOverlayRef])
@@ -64,22 +60,19 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
   // Might have performance impact if there are a lot of siblings!
   // Shouldn't be an issue with popovers since it would have at most 2. Arrow and Content.
   // todo move to more radix style proper context based system
-  React.Children.forEach(children, (child) => {
-    if (
-      React.isValidElement(child) &&
-      // @ts-ignore
-      child.type.displayName === 'PopperArrow'
-    ) {
-      arrowElement = React.cloneElement(child as any, {
+  const [arrow, restElements] = recursiveFindChild(
+    children,
+    (child) => child.type['displayName'] === 'PopperArrow'
+  )
+
+  const arrowElement = arrow
+    ? React.cloneElement(arrow, {
         ...context,
         ...arrowProps,
         ...arrowStyle,
         placement,
       })
-    } else {
-      restElements.push(child)
-    }
-  })
+    : null
 
   let arrowHeight = 0
   let arrowWidth = 0
@@ -136,3 +129,28 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
 
 Popper.Content = PopperContent
 Popper.Arrow = PopperArrow
+
+function recursiveFindChild(children: ReactNode, match: (child: any) => boolean, maxDepth = 4) {
+  let found: ReactNode = null
+  let rest = React.Children.toArray(children)
+
+  for (const [index, child] of rest.entries()) {
+    if (React.isValidElement(child)) {
+      if (match(child)) {
+        found = child
+        // technically doesn't need to even remove it right
+        // rest.splice(index, 1)
+        break
+      } else {
+        if (child.props.children && maxDepth >= 0) {
+          const [subFound] = recursiveFindChild(child.props.children, match, maxDepth - 1)
+          if (subFound) {
+            found = subFound
+          }
+        }
+      }
+    }
+  }
+
+  return [found, rest] as const
+}
