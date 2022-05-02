@@ -9,6 +9,7 @@ import { Theme } from './Theme'
 React['createElement']
 
 export type ThemeProviderProps = {
+  className?: string
   themes: any
   defaultTheme: string
   disableRootThemeClass?: boolean
@@ -31,7 +32,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       return () => {
         document.body.classList.remove(cn)
       }
-    }, [])
+    }, [props.disableRootThemeClass])
   }
 
   const themeContext = useMemo(() => {
@@ -43,7 +44,11 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
 
   return (
     <ThemeContext.Provider value={themeContext}>
-      <Theme name={props.defaultTheme} disableThemeClass={props.disableRootThemeClass}>
+      <Theme
+        className={props.className}
+        name={props.defaultTheme}
+        disableThemeClass={props.disableRootThemeClass}
+      >
         {props.children}
       </Theme>
     </ThemeContext.Provider>

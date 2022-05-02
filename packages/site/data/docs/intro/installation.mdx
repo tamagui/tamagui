@@ -257,19 +257,25 @@ Create a `tamagui.config.js` (or ts) file at the root of your project that passe
 import { createTamagui } from 'tamagui'
 
 const config = createTamagui({
+  // Initial theme
   defaultTheme: 'light',
+
+  // Generates @media(prefers-color-scheme) queries for light/dark
+  shouldAddPrefersColorThemes: true,
+
+  // Shorthand properties
   shorthands: {
     px: 'paddingHorizontal',
   },
+
+  // Themes, light/dark are treatest special
   themes: {
     light: {
       bg: '#fff',
       color: '#000'
     }
   },
-  tokens: {
-    // ... see Themes docus
-  },
+
   media: {
     xs: { maxWidth: 660 },
     gtXs: { minWidth: 660 + 1 },
@@ -282,6 +288,11 @@ const config = createTamagui({
     hoverNone: { hover: 'none' },
     pointerCoarse: { pointer: 'coarse' },
   },
+
+  // ... see Themes docs
+  tokens: {},
+  fonts: {},
+  animations: {},
 })
 
 type Conf = typeof config

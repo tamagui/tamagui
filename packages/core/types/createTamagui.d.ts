@@ -11,6 +11,7 @@ export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'the
     mediaQueryDefaultActive?: MediaQueryKey[];
     cssStyleSeparator?: string;
     maxDarkLightNesting?: number;
+    shouldAddPrefersColorThemes?: boolean;
 };
 export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
 //# sourceMappingURL=createTamagui.d.ts.map

@@ -9,28 +9,26 @@ React['keep']
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as any)
   return (
-    <Tamagui.Provider injectCSS defaultTheme="light">
-      <Theme name={theme}>
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <Drawer.Provider>
-            <a
-              style={{ marginBottom: 20 }}
-              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            >
-              Switch theme
-            </a>
-            <Test />
-          </Drawer.Provider>
-        </div>
-      </Theme>
+    <Tamagui.Provider disableRootThemeClass injectCSS defaultTheme={theme}>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Drawer.Provider>
+          <a
+            style={{ marginBottom: 20 }}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
+            Switch theme
+          </a>
+          <Test />
+        </Drawer.Provider>
+      </div>
     </Tamagui.Provider>
   )
 }
