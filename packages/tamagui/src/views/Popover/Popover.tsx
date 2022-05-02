@@ -26,9 +26,9 @@ export const Popover = withStaticProperties(
           onOpen,
           trigger,
           onClose,
-          isOpen: isOpenProp,
+          open: openProp,
           children,
-          defaultIsOpen,
+          defaultOpen,
           initialFocusRef,
           finalFocusRef,
           trapFocus = true,
@@ -38,9 +38,9 @@ export const Popover = withStaticProperties(
         ref: any
       ) => {
         const triggerRef = React.useRef(null)
-        const [isOpen, setIsOpen] = useControllableState({
-          prop: isOpenProp,
-          defaultProp: defaultIsOpen || false,
+        const [open, setOpen] = useControllableState({
+          prop: openProp,
+          defaultProp: defaultOpen || false,
           onChange: (value) => {
             onChangeOpen?.(value)
             value ? onOpen && onOpen() : onClose && onClose()
@@ -55,28 +55,28 @@ export const Popover = withStaticProperties(
         const bodyId = `${popoverContentId}-body`
 
         const handleOpen = React.useCallback(() => {
-          setIsOpen((x) => !x)
-        }, [setIsOpen])
+          setOpen((x) => !x)
+        }, [setOpen])
 
         const updatedTrigger = () => {
           return trigger(
             {
               ref: triggerRef,
               onPress: handleOpen,
-              'aria-expanded': isOpen ? true : false,
-              'aria-controls': isOpen ? popoverContentId : undefined,
+              'aria-expanded': open ? true : false,
+              'aria-controls': open ? popoverContentId : undefined,
               'aria-haspopup': true,
             },
-            { open: isOpen }
+            { open }
           )
         }
 
         const handleClose = useCallback(() => {
-          setIsOpen(false)
+          setOpen(false)
         }, [])
 
         const childrenElements =
-          typeof children === 'function' ? children({ open: isOpen }) : isOpen ? children : null
+          typeof children === 'function' ? children({ open }) : open ? children : null
 
         const popoverContext = {
           onClose: handleClose,
@@ -95,7 +95,7 @@ export const Popover = withStaticProperties(
           <>
             <View style={{ display: 'none' }} ref={ref}></View>
             {updatedTrigger()}
-            <Overlay isOpen={isOpen} onRequestClose={handleClose} useRNModalOnAndroid>
+            <Overlay open={open} onRequestClose={handleClose} useRNModalOnAndroid>
               <Popper onClose={handleClose} triggerRef={triggerRef} {...props}>
                 <PopoverContext.Provider
                   value={useMemo(() => popoverContext, Object.values(popoverContext))}

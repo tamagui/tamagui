@@ -6,7 +6,7 @@ export declare type ModalProps = Omit<ModalPropsReact, 'children'> & YStackProps
     visible?: boolean;
     overlayBackground?: string;
     overlayDismisses?: boolean;
-    children?: any | ((isOpen?: boolean) => any);
+    children?: any | ((open?: boolean) => any);
 };
 export declare const Modal: (props: ModalProps) => JSX.Element;
 export declare const ModalYStack: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {

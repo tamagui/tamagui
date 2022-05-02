@@ -64,7 +64,7 @@ Tooltips extend Stack views inheriting all the [Tamagui standard props](/docs/in
     {
       name: 'alwaysDark',
       required: false,
-      type: 'Boolean',
+      type: 'boolean',
       description: `Make sure the frame is dark`,
     },
     {
@@ -76,14 +76,20 @@ Tooltips extend Stack views inheriting all the [Tamagui standard props](/docs/in
     {
       name: 'allowHoverOnContent',
       required: false,
-      type: 'Boolean',
+      type: 'boolean',
       description: `Allow hover on tooltip content`,
     },
     {
       name: 'disableUntilSettled',
       required: false,
-      type: 'Boolean',
+      type: 'boolean',
       description: `Override hover only on settled`,
+    },
+    {
+      name: 'show',
+      required: false,
+      type: 'boolean',
+      description: `If for whatever reason you need to force it on/off.`,
     },
   ]}
 />

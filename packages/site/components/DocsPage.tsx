@@ -24,7 +24,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   // const { theme } = useTheme()
   const { tint } = useTint()
   const router = useRouter()
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false)
 
   let currentPath = router.pathname
   if (Array.isArray(router.query.slug)) {
@@ -42,7 +42,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const handleRouteChange = () => {
-      setIsOpen(false)
+      setOpen(false)
     }
     router.events.on('routeChangeStart', handleRouteChange)
     return () => {
@@ -235,18 +235,14 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   display: 'none',
                 }}
               >
-                <Button
-                  noTextWrap
-                  onPress={() => setIsOpen(!isOpen)}
-                  theme={isOpen ? 'alt1' : undefined}
-                >
+                <Button noTextWrap onPress={() => setOpen(!open)} theme={open ? 'alt1' : undefined}>
                   <Menu size={16} color="var(--color)" />
                 </Button>
               </YStack>
             </XStack>
 
             <YStack
-              display={isOpen ? 'flex' : 'none'}
+              display={open ? 'flex' : 'none'}
               $gtSm={{
                 display: 'block',
               }}

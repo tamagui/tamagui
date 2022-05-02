@@ -1,7 +1,8 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsTouchDevice, withStaticProperties } from '@tamagui/core'
+import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDebounce } from '@tamagui/use-debounce'
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 
 import { Hoverable, HoverableHandle } from './Hoverable'
 import { HoverOrToggle } from './HoverOrToggle'
@@ -33,19 +34,27 @@ export const HoverablePopover = withStaticProperties(
         allowHoverOnContent,
         fallbackToPress,
         disableUntilSettled,
+        open: openProp,
+        defaultOpen,
+        onChangeOpen,
         ...props
       },
       ref
     ) => {
       const hoverableRef = useRef<HoverableHandle>(null)
-      const [isActive, set] = useState(false)
+      const [open, setOpen] = useControllableState({
+        prop: openProp,
+        defaultProp: defaultOpen || false,
+        onChange: onChangeOpen,
+      })
+
       const isTouchDevice = useIsTouchDevice()
 
       // these are debounced only to allow jump betewen target/trigger
       // ..and to make content trigger faster than trigger
       // todo subtract from inner delay
-      const setOffSlow = useDebounce(() => set(false), allowHoverOnContent ? 20 : 0)
-      const setOnSlow = useDebounce(() => set(true), allowHoverOnContent ? 40 : 0)
+      const setOffSlow = useDebounce(() => setOpen(false), allowHoverOnContent ? 20 : 0)
+      const setOnSlow = useDebounce(() => setOpen(true), allowHoverOnContent ? 40 : 0)
       const cancelAll = () => {
         setOnSlow.cancel()
         setOffSlow.cancel()
@@ -63,7 +72,7 @@ export const HoverablePopover = withStaticProperties(
       useImperativeHandle(ref, () => ({
         close: () => {
           cancelAll()
-          set(false)
+          setOpen(false)
           hoverableRef.current?.close()
         },
       }))
@@ -75,7 +84,7 @@ export const HoverablePopover = withStaticProperties(
 
       return (
         <Popover
-          isOpen={isActive}
+          open={open}
           {...props}
           trigger={(triggerProps, state) => {
             return (

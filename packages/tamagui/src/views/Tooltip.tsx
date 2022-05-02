@@ -10,27 +10,15 @@ import { SizableTextProps } from './SizableText'
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
-  enterStyle?: StackProps['enterStyle']
-  exitStyle?: StackProps['exitStyle']
-  size?: SizableTextProps['size']
-  contents?: string | any
-  // TODO move this into a radix style separate components BUT make them optional:
-  //  so you can do:
-  //     <Tooltip contents="hello"><Button /></Tooltip>
-  //  but also do:
-  //     <Tooltip>
-  //       <Tooltip.Container animation="bounce" enterStyle={{}}>
-  //          <Tooltip.Arrow />
-  //          <Tooltip.Frame />
-  //       </Tooltip.Container>
-  //       <Tooltip.Trigger />
-  //     </Tooltip>
-  tooltipFrameProps?: Omit<StackProps, 'children'>
-  tooltipContainerProps?: Omit<StackProps, 'children'>
-  alwaysDark?: boolean
-  showArrow?: boolean
-}
+// TODO move this into a radix style separate components BUT make them optional:
+//  so you can do:
+//     <Tooltip contents="hello"><Button /></Tooltip>
+//  but also:
+//     <Tooltip>
+//       <Tooltip.Arrow />
+//       <Tooltip.Contents animation="bounce" enterStyle={{}} />
+//       <Tooltip.Trigger />
+//     </Tooltip>
 
 const TooltipFrame = styled(SizableStack, {
   name: 'Tooltip',
@@ -49,6 +37,17 @@ const TooltipFrame = styled(SizableStack, {
 const defaultOutStyle = {
   opacity: 0,
   y: -10,
+}
+
+export type TooltipProps = Omit<HoverablePopoverProps, 'trigger'> & {
+  enterStyle?: StackProps['enterStyle']
+  exitStyle?: StackProps['exitStyle']
+  size?: SizableTextProps['size']
+  contents?: string | any
+  tooltipFrameProps?: Omit<StackProps, 'children'>
+  tooltipContainerProps?: Omit<StackProps, 'children'>
+  alwaysDark?: boolean
+  showArrow?: boolean
 }
 
 export const Tooltip = ({

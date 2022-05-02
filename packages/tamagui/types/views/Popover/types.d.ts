@@ -17,8 +17,8 @@ export declare type IArrowProps = {
     style: Object;
 };
 export interface IPopoverProps {
-    defaultIsOpen?: boolean;
-    isOpen?: boolean;
+    defaultOpen?: boolean;
+    open?: boolean;
     trapFocus?: boolean;
     shouldFlip?: boolean;
     initialFocusRef?: React.RefObject<any>;
