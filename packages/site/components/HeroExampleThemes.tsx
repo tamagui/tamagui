@@ -141,7 +141,7 @@ export function HeroExampleThemes() {
               A <span className="rainbow clip-text">new</span> theme&nbsp;engine
             </HomeH2>
             <HomeH3>
-              Themes that customize down to the component + unlimited alternate shades.
+              Themes that customize down to the component, alongside unlimited alternate shades.
             </HomeH3>
           </ContainerLarge>
         )
@@ -151,12 +151,11 @@ export function HeroExampleThemes() {
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" space="$2">
             <InteractiveContainer bc="$background" p="$1" br="$10" als="center" space="$1">
-              {['light', 'dark'].map((name, i) => {
-                const selected = i === 0 ? 'light' : 'dark'
-                const isActive = theme === selected
+              {(['light', 'dark'] as const).map((name, i) => {
+                const isActive = theme === name
                 return (
-                  <Theme key={name} name={selected}>
-                    <ActiveCircle onPress={() => setTheme(selected)} isActive={isActive} />
+                  <Theme key={name} name={name}>
+                    <ActiveCircle onPress={() => setTheme(name)} isActive={isActive} />
                   </Theme>
                 )
               })}

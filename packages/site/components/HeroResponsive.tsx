@@ -1,3 +1,4 @@
+// debug
 import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
@@ -146,13 +147,12 @@ export const HeroResponsive = memo(() => {
         <XStack b={-20} pos="absolute" zi={1} f={1} space="$1">
           <YStack
             className="unselectable"
-            contain="paint layout"
             pe={isDragging ? 'none' : 'auto'}
             w={width}
             f={1}
             ref={safariRef}
           >
-            <Theme name="pink">
+            <Theme name="pink_alt2">
               <Safari shouldLoad={hasIntersected} isSmall={isSmall} />
             </Theme>
           </YStack>
@@ -255,11 +255,11 @@ const Header = memo(() => {
       </XStack>
 
       <Paragraph maxWidth={450} size="$7" theme="alt2">
-        Sharing responsive designs saves time, but hooks are verbose and expensive to run.
+        Responsive on Native & Web, without performance downside.
       </Paragraph>
 
       <Paragraph maxWidth={450} size="$5" theme="alt2">
-        Tamagui compiles to CSS media queries and hoists dynamic media style outside the render.
+        Tamagui compiles to CSS media queries and hoists dynamic media styles outside of rendering.
       </Paragraph>
     </YStack>
   )
@@ -273,10 +273,10 @@ export const Safari = memo(
       <YStack
         className="unselectable"
         contain="paint"
+        elevation="$6"
         bc="$background"
         f={1}
         ov="hidden"
-        elevation="$4"
         br="$4"
         boc="$borderColor"
         borderWidth={1}
@@ -321,7 +321,7 @@ export const Safari = memo(
           </XStack>
         </YStack>
 
-        <XStack>
+        <XStack mx={-2}>
           <Tab bc="var(--green7)" btlr={0}>
             Github
           </Tab>
@@ -363,7 +363,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
         blw={1}
         brw={1}
         bbw={1}
-        bbc={active ? '$borderColorPress' : '$borderColor'}
+        bbc={active ? '$borderColor' : 'transparent'}
         btlr={active ? 0 : 4}
         btrr={active ? 0 : 4}
         bc="$background"
@@ -379,7 +379,7 @@ const Tab = memo(({ active, children, bc, ...props }: any) => {
           <Image width={12} height={12} src={favicon.src} />
         </Circle>
         <Spacer size="$2" />
-        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$2" ellipse>
+        <Paragraph o={active ? 1 : 0.5} cursor="default" size="$1" ellipse>
           {children}
         </Paragraph>
       </XStack>

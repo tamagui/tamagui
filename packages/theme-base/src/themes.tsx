@@ -5,9 +5,12 @@ import { Variable, getVariableValue } from '@tamagui/core'
 import { setColorAlpha } from './colorUtils'
 import { color } from './tokens'
 
+// spaghetti ahead
+
 type ThemeCreatorProps = {
   shift?: number
   backgrounds: (string | Variable)[]
+  borderColors?: (string | Variable)[]
   colors?: (string | Variable)[]
   offsets?: {
     color?: number[] | null
@@ -70,8 +73,9 @@ const createTheme = (
   {
     backgrounds,
     isLight = true,
-    // isBase = false,
+    isBase = false,
     colors = [...backgrounds].reverse(),
+    borderColors = isLight ? colors : backgrounds,
     offsets: offsetsProp,
   }: ThemeCreatorProps
 ) => {
@@ -90,7 +94,7 @@ const createTheme = (
 
   const colorTranslucent = setColorAlpha(getVariableValue(get(colors, 0 + str, 'color')), 0.5)
 
-  return {
+  let theme = {
     background: get(backgrounds, str),
     backgroundStronger: get(backgrounds, str + strongerDir),
     backgroundSoft: get(backgrounds, str + 3),
@@ -98,19 +102,6 @@ const createTheme = (
     backgroundPress: get(backgrounds, str + darkerDir * 1),
     backgroundFocus: get(backgrounds, str + darkerDir * 2),
     backgroundTransparent: color.grayA1,
-    borderColor: isLight
-      ? get(colors, 8 - str, 'borderColor')
-      : get(backgrounds, 2 + str, 'borderColor'),
-    borderColorHover: isLight
-      ? get(colors, 6 - str, 'borderColor')
-      : get(backgrounds, 3 + str, 'borderColor'),
-    borderColorPress: isLight
-      ? get(colors, 5 - str, 'borderColor')
-      : get(backgrounds, 1 + str, 'borderColor'),
-    borderColorFocus: isLight
-      ? get(colors, 4 - str, 'borderColor')
-      : get(backgrounds, 3 + str, 'borderColor'),
-    // colorStronger: get(colors, str + strongerDir),
     color: get(colors, 0 + str, 'color'),
     colorHover: get(colors, 1 + str, 'color'),
     colorPress: get(colors, 2 + str, 'color'),
@@ -121,7 +112,37 @@ const createTheme = (
     shadowColorHover: darkColors[!isLight ? 1 : 8],
     shadowColorPress: darkColors[!isLight ? 1 : 8],
     shadowColorFocus: darkColors[!isLight ? 1 : 8],
+    borderColor: null as any as string | Variable,
+    borderColorHover: null as any as string | Variable,
+    borderColorPress: null as any as string | Variable,
+    borderColorFocus: null as any as string | Variable,
   }
+
+  if (isBase) {
+    Object.assign(theme, {
+      borderColor: isLight
+        ? get(colors, 8 - str, 'borderColor')
+        : get(backgrounds, 2 + str, 'borderColor'),
+      borderColorHover: isLight
+        ? get(colors, 6 - str, 'borderColor')
+        : get(backgrounds, 3 + str, 'borderColor'),
+      borderColorPress: isLight
+        ? get(colors, 5 - str, 'borderColor')
+        : get(backgrounds, 1 + str, 'borderColor'),
+      borderColorFocus: isLight
+        ? get(colors, 4 - str, 'borderColor')
+        : get(backgrounds, 3 + str, 'borderColor'),
+    })
+  } else {
+    Object.assign(theme, {
+      borderColor: get(borderColors, 1 + strongerDir, 'borderColor'),
+      borderColorHover: get(borderColors, 2 + strongerDir, 'borderColor'),
+      borderColorPress: get(borderColors, 3 + strongerDir, 'borderColor'),
+      borderColorFocus: get(borderColors, 4 + strongerDir, 'borderColor'),
+    })
+  }
+
+  return theme
 }
 
 export const colorSchemes = [
@@ -176,12 +197,15 @@ export const darkGradient = [
 
 const lightThemes = createThemesFrom('light', createTheme, {
   backgrounds: lightGradient,
+  // isBase: true,
+  borderColors: lightGradient.slice(2),
   isLight: true,
 })
 
 const darkThemes = createThemesFrom('dark', createTheme, {
   backgrounds: darkGradient,
   colors: lightGradient.slice(2),
+  isBase: true,
   isLight: false,
   shift: 1,
   offsets: {
@@ -249,15 +273,21 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
     const themeWithAlts = createThemesFrom(name, createTheme, {
       colors,
       backgrounds,
+      borderColors: backgrounds,
       isLight,
       shift,
       isBase: false,
       offsets: {
         background: isLight ? [0, 0, 0, 0, 0, 0] : null,
-        borderColor: isLight ? [+1, +1, +1, +1, +2] : null,
+        borderColor: isLight ? [3, 3, 3, 3, 2] : null,
         color: isLight ? [0, 0, -1, -2, -3, -3, -4] : [-1, -1, -1, -1, -1, -1],
       },
     })
+
+    if (isLight) {
+      console.log('', name, { colors, backgrounds, shift, themeWithAlts })
+    }
+
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])
   })
   const lightButtonTheme = altLightThemes[0]
@@ -274,34 +304,7 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
   ]
 })
 
-const transparent = {
-  background: 'transparent',
-  backgroundSoft: 'transparent',
-  backgroundHover: 'transparent',
-  backgroundPress: 'transparent',
-  backgroundFocus: 'transparent',
-  backgroundTransparent: 'transparent',
-  shadowColor: 'transparent',
-  shadowColorHover: 'transparent',
-  shadowColorPress: 'transparent',
-  shadowColorFocus: 'transparent',
-}
-
 type MyThemeBase = typeof baseThemes['light_alt1']
-
-// @ts-ignore
-const dark_outline: MyThemeBase = {
-  ...baseThemes.dark,
-  borderColor: '#fff',
-  ...transparent,
-}
-
-// @ts-ignore
-const light_outline: MyThemeBase = {
-  ...baseThemes.light,
-  borderColor: '#000',
-  ...transparent,
-}
 
 const colorThemes: {
   [key in ColorThemeNames]: MyThemeBase
@@ -310,8 +313,6 @@ const colorThemes: {
 const allThemes = {
   ...baseThemes,
   ...colorThemes,
-  dark_outline,
-  light_outline,
 } as const
 
 export const themes: {

@@ -821,15 +821,15 @@ export function createExtractor() {
 
               const staticConditional = getStaticConditional(value)
               if (staticConditional) {
-                if (shouldPrintDebug) {
-                  console.log(` static conditional ${name} = `, value)
+                if (shouldPrintDebug === 'verbose') {
+                  console.log(` static conditional ${name}`, value)
                 }
                 return { type: 'ternary', value: staticConditional }
               }
 
               const staticLogical = getStaticLogical(value)
               if (staticLogical) {
-                if (shouldPrintDebug) {
+                if (shouldPrintDebug === 'verbose') {
                   console.log(` static ternary ${name} = `, value)
                 }
                 return { type: 'ternary', value: staticLogical }

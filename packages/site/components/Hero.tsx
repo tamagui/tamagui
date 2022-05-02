@@ -54,8 +54,8 @@ const HeroTop = memo(() => {
         ov="hidden"
         space="$6"
         position="relative"
-        pt="$8"
-        pb="$2"
+        pt="$9"
+        pb="$4"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
@@ -104,7 +104,7 @@ const HeroTop = memo(() => {
               size="$6"
               fontFamily="$silkscreen"
               ta="left"
-              letterSpacing={-1.5}
+              letterSpacing={-1.3}
               $gtSm={{
                 ta: 'center',
                 size: '$7',

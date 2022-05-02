@@ -402,10 +402,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -416,6 +412,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
         teal1: string;
         teal2: string;
         teal3: string;
@@ -570,10 +570,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -584,6 +580,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     dark_DrawerFrame: {
         background: any;
@@ -593,10 +593,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -607,6 +603,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     dark_Button: {
         background: any;
@@ -616,10 +616,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -630,6 +626,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     dark_alt1: {
         background: any;
@@ -639,10 +639,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -653,6 +649,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     dark_alt4: {
         background: any;
@@ -662,10 +662,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -676,6 +672,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     dark_alt2: {
         background: any;
@@ -685,10 +685,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -699,6 +695,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     dark_alt3: {
         background: any;
@@ -708,10 +708,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -722,6 +718,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     dark_darker: {
         background: any;
@@ -731,10 +731,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -745,6 +741,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light: {
         background: any;
@@ -754,10 +754,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -768,6 +764,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
         teal1: string;
         teal2: string;
         teal3: string;
@@ -922,10 +922,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -936,6 +932,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light_DrawerFrame: {
         background: any;
@@ -945,10 +945,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -959,6 +955,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light_Button: {
         background: any;
@@ -968,10 +968,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -982,6 +978,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light_alt1: {
         background: any;
@@ -991,10 +991,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1005,6 +1001,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light_alt4: {
         background: any;
@@ -1014,10 +1014,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1028,6 +1024,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light_alt2: {
         background: any;
@@ -1037,10 +1037,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1051,6 +1047,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light_alt3: {
         background: any;
@@ -1060,10 +1060,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1074,6 +1070,10 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     light_darker: {
         background: any;
@@ -1083,10 +1083,6 @@ declare const baseThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1097,55 +1093,13 @@ declare const baseThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
 };
 declare const allThemes: {
-    readonly dark_outline: {
-        background: any;
-        backgroundStronger: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable;
-        shadowColor: string;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-    };
-    readonly light_outline: {
-        background: any;
-        backgroundStronger: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable;
-        shadowColor: string;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-    };
     readonly blue: {
         background: any;
         backgroundStronger: any;
@@ -1154,10 +1108,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1168,6 +1118,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly gray: {
         background: any;
@@ -1177,10 +1131,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1191,6 +1141,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly green: {
         background: any;
@@ -1200,10 +1154,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1214,6 +1164,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly indigo: {
         background: any;
@@ -1223,10 +1177,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1237,6 +1187,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly orange: {
         background: any;
@@ -1246,10 +1200,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1260,6 +1210,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly pink: {
         background: any;
@@ -1269,10 +1223,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1283,6 +1233,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly purple: {
         background: any;
@@ -1292,10 +1246,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1306,6 +1256,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly red: {
         background: any;
@@ -1315,10 +1269,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1329,6 +1279,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly violet: {
         background: any;
@@ -1338,10 +1292,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1352,6 +1302,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly yellow: {
         background: any;
@@ -1361,10 +1315,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1375,6 +1325,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly teal: {
         background: any;
@@ -1384,10 +1338,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1398,6 +1348,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly lime: {
         background: any;
@@ -1407,10 +1361,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1421,6 +1371,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly brown: {
         background: any;
@@ -1430,10 +1384,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1444,6 +1394,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_blue_alt1: {
         background: any;
@@ -1453,10 +1407,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1467,6 +1417,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_blue_alt4: {
         background: any;
@@ -1476,10 +1430,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1490,6 +1440,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_blue_alt2: {
         background: any;
@@ -1499,10 +1453,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1513,6 +1463,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_blue_alt3: {
         background: any;
@@ -1522,10 +1476,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1536,6 +1486,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_gray_alt1: {
         background: any;
@@ -1545,10 +1499,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1559,6 +1509,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_gray_alt4: {
         background: any;
@@ -1568,10 +1522,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1582,6 +1532,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_gray_alt2: {
         background: any;
@@ -1591,10 +1545,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1605,6 +1555,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_gray_alt3: {
         background: any;
@@ -1614,10 +1568,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1628,6 +1578,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_green_alt1: {
         background: any;
@@ -1637,10 +1591,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1651,6 +1601,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_green_alt4: {
         background: any;
@@ -1660,10 +1614,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1674,6 +1624,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_green_alt2: {
         background: any;
@@ -1683,10 +1637,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1697,6 +1647,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_green_alt3: {
         background: any;
@@ -1706,10 +1660,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1720,6 +1670,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_indigo_alt1: {
         background: any;
@@ -1729,10 +1683,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1743,6 +1693,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_indigo_alt4: {
         background: any;
@@ -1752,10 +1706,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1766,6 +1716,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_indigo_alt2: {
         background: any;
@@ -1775,10 +1729,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1789,6 +1739,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_indigo_alt3: {
         background: any;
@@ -1798,10 +1752,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1812,6 +1762,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_orange_alt1: {
         background: any;
@@ -1821,10 +1775,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1835,6 +1785,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_orange_alt4: {
         background: any;
@@ -1844,10 +1798,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1858,6 +1808,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_orange_alt2: {
         background: any;
@@ -1867,10 +1821,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1881,6 +1831,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_orange_alt3: {
         background: any;
@@ -1890,10 +1844,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1904,6 +1854,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_pink_alt1: {
         background: any;
@@ -1913,10 +1867,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1927,6 +1877,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_pink_alt4: {
         background: any;
@@ -1936,10 +1890,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1950,6 +1900,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_pink_alt2: {
         background: any;
@@ -1959,10 +1913,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1973,6 +1923,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_pink_alt3: {
         background: any;
@@ -1982,10 +1936,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -1996,6 +1946,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_purple_alt1: {
         background: any;
@@ -2005,10 +1959,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2019,6 +1969,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_purple_alt4: {
         background: any;
@@ -2028,10 +1982,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2042,6 +1992,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_purple_alt2: {
         background: any;
@@ -2051,10 +2005,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2065,6 +2015,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_purple_alt3: {
         background: any;
@@ -2074,10 +2028,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2088,6 +2038,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_red_alt1: {
         background: any;
@@ -2097,10 +2051,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2111,6 +2061,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_red_alt4: {
         background: any;
@@ -2120,10 +2074,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2134,6 +2084,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_red_alt2: {
         background: any;
@@ -2143,10 +2097,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2157,6 +2107,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_red_alt3: {
         background: any;
@@ -2166,10 +2120,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2180,6 +2130,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_violet_alt1: {
         background: any;
@@ -2189,10 +2143,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2203,6 +2153,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_violet_alt4: {
         background: any;
@@ -2212,10 +2166,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2226,6 +2176,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_violet_alt2: {
         background: any;
@@ -2235,10 +2189,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2249,6 +2199,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_violet_alt3: {
         background: any;
@@ -2258,10 +2212,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2272,6 +2222,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_yellow_alt1: {
         background: any;
@@ -2281,10 +2235,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2295,6 +2245,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_yellow_alt4: {
         background: any;
@@ -2304,10 +2258,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2318,6 +2268,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_yellow_alt2: {
         background: any;
@@ -2327,10 +2281,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2341,6 +2291,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_yellow_alt3: {
         background: any;
@@ -2350,10 +2304,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2364,6 +2314,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_teal_alt1: {
         background: any;
@@ -2373,10 +2327,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2387,6 +2337,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_teal_alt4: {
         background: any;
@@ -2396,10 +2350,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2410,6 +2360,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_teal_alt2: {
         background: any;
@@ -2419,10 +2373,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2433,6 +2383,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_teal_alt3: {
         background: any;
@@ -2442,10 +2396,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2456,6 +2406,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_lime_alt1: {
         background: any;
@@ -2465,10 +2419,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2479,6 +2429,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_lime_alt4: {
         background: any;
@@ -2488,10 +2442,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2502,6 +2452,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_lime_alt2: {
         background: any;
@@ -2511,10 +2465,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2525,6 +2475,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_lime_alt3: {
         background: any;
@@ -2534,10 +2488,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2548,6 +2498,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_brown_alt1: {
         background: any;
@@ -2557,10 +2511,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2571,6 +2521,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_brown_alt4: {
         background: any;
@@ -2580,10 +2534,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2594,6 +2544,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_brown_alt2: {
         background: any;
@@ -2603,10 +2557,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2617,6 +2567,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_brown_alt3: {
         background: any;
@@ -2626,10 +2580,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2640,6 +2590,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_blue_alt1: {
         background: any;
@@ -2649,10 +2603,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2663,6 +2613,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_blue_alt4: {
         background: any;
@@ -2672,10 +2626,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2686,6 +2636,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_blue_alt2: {
         background: any;
@@ -2695,10 +2649,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2709,6 +2659,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_blue_alt3: {
         background: any;
@@ -2718,10 +2672,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2732,6 +2682,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_gray_alt1: {
         background: any;
@@ -2741,10 +2695,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2755,6 +2705,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_gray_alt4: {
         background: any;
@@ -2764,10 +2718,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2778,6 +2728,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_gray_alt2: {
         background: any;
@@ -2787,10 +2741,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2801,6 +2751,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_gray_alt3: {
         background: any;
@@ -2810,10 +2764,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2824,6 +2774,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_green_alt1: {
         background: any;
@@ -2833,10 +2787,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2847,6 +2797,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_green_alt4: {
         background: any;
@@ -2856,10 +2810,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2870,6 +2820,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_green_alt2: {
         background: any;
@@ -2879,10 +2833,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2893,6 +2843,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_green_alt3: {
         background: any;
@@ -2902,10 +2856,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2916,6 +2866,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_indigo_alt1: {
         background: any;
@@ -2925,10 +2879,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2939,6 +2889,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_indigo_alt4: {
         background: any;
@@ -2948,10 +2902,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2962,6 +2912,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_indigo_alt2: {
         background: any;
@@ -2971,10 +2925,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -2985,6 +2935,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_indigo_alt3: {
         background: any;
@@ -2994,10 +2948,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3008,6 +2958,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_orange_alt1: {
         background: any;
@@ -3017,10 +2971,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3031,6 +2981,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_orange_alt4: {
         background: any;
@@ -3040,10 +2994,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3054,6 +3004,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_orange_alt2: {
         background: any;
@@ -3063,10 +3017,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3077,6 +3027,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_orange_alt3: {
         background: any;
@@ -3086,10 +3040,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3100,6 +3050,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_pink_alt1: {
         background: any;
@@ -3109,10 +3063,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3123,6 +3073,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_pink_alt4: {
         background: any;
@@ -3132,10 +3086,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3146,6 +3096,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_pink_alt2: {
         background: any;
@@ -3155,10 +3109,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3169,6 +3119,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_pink_alt3: {
         background: any;
@@ -3178,10 +3132,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3192,6 +3142,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_purple_alt1: {
         background: any;
@@ -3201,10 +3155,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3215,6 +3165,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_purple_alt4: {
         background: any;
@@ -3224,10 +3178,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3238,6 +3188,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_purple_alt2: {
         background: any;
@@ -3247,10 +3201,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3261,6 +3211,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_purple_alt3: {
         background: any;
@@ -3270,10 +3224,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3284,6 +3234,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_red_alt1: {
         background: any;
@@ -3293,10 +3247,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3307,6 +3257,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_red_alt4: {
         background: any;
@@ -3316,10 +3270,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3330,6 +3280,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_red_alt2: {
         background: any;
@@ -3339,10 +3293,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3353,6 +3303,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_red_alt3: {
         background: any;
@@ -3362,10 +3316,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3376,6 +3326,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_violet_alt1: {
         background: any;
@@ -3385,10 +3339,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3399,6 +3349,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_violet_alt4: {
         background: any;
@@ -3408,10 +3362,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3422,6 +3372,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_violet_alt2: {
         background: any;
@@ -3431,10 +3385,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3445,6 +3395,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_violet_alt3: {
         background: any;
@@ -3454,10 +3408,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3468,6 +3418,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_yellow_alt1: {
         background: any;
@@ -3477,10 +3431,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3491,6 +3441,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_yellow_alt4: {
         background: any;
@@ -3500,10 +3454,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3514,6 +3464,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_yellow_alt2: {
         background: any;
@@ -3523,10 +3477,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3537,6 +3487,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_yellow_alt3: {
         background: any;
@@ -3546,10 +3500,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3560,6 +3510,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_teal_alt1: {
         background: any;
@@ -3569,10 +3523,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3583,6 +3533,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_teal_alt4: {
         background: any;
@@ -3592,10 +3546,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3606,6 +3556,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_teal_alt2: {
         background: any;
@@ -3615,10 +3569,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3629,6 +3579,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_teal_alt3: {
         background: any;
@@ -3638,10 +3592,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3652,6 +3602,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_lime_alt1: {
         background: any;
@@ -3661,10 +3615,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3675,6 +3625,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_lime_alt4: {
         background: any;
@@ -3684,10 +3638,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3698,6 +3648,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_lime_alt2: {
         background: any;
@@ -3707,10 +3661,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3721,6 +3671,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_lime_alt3: {
         background: any;
@@ -3730,10 +3684,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3744,6 +3694,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_brown_alt1: {
         background: any;
@@ -3753,10 +3707,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3767,6 +3717,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_brown_alt4: {
         background: any;
@@ -3776,10 +3730,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3790,6 +3740,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_brown_alt2: {
         background: any;
@@ -3799,10 +3753,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3813,6 +3763,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_brown_alt3: {
         background: any;
@@ -3822,10 +3776,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3836,6 +3786,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark: {
         background: any;
@@ -3845,10 +3799,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -3859,6 +3809,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
         teal1: string;
         teal2: string;
         teal3: string;
@@ -4013,10 +3967,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4027,6 +3977,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_DrawerFrame: {
         background: any;
@@ -4036,10 +3990,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4050,6 +4000,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_Button: {
         background: any;
@@ -4059,10 +4013,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4073,6 +4023,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_alt1: {
         background: any;
@@ -4082,10 +4036,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4096,6 +4046,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_alt4: {
         background: any;
@@ -4105,10 +4059,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4119,6 +4069,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_alt2: {
         background: any;
@@ -4128,10 +4082,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4142,6 +4092,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_alt3: {
         background: any;
@@ -4151,10 +4105,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4165,6 +4115,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly dark_darker: {
         background: any;
@@ -4174,10 +4128,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4188,6 +4138,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light: {
         background: any;
@@ -4197,10 +4151,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4211,6 +4161,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
         teal1: string;
         teal2: string;
         teal3: string;
@@ -4365,10 +4319,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4379,6 +4329,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_DrawerFrame: {
         background: any;
@@ -4388,10 +4342,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4402,6 +4352,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_Button: {
         background: any;
@@ -4411,10 +4365,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4425,6 +4375,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_alt1: {
         background: any;
@@ -4434,10 +4388,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4448,6 +4398,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_alt4: {
         background: any;
@@ -4457,10 +4411,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4471,6 +4421,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_alt2: {
         background: any;
@@ -4480,10 +4434,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4494,6 +4444,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_alt3: {
         background: any;
@@ -4503,10 +4457,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4517,6 +4467,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
     readonly light_darker: {
         background: any;
@@ -4526,10 +4480,6 @@ declare const allThemes: {
         backgroundPress: any;
         backgroundFocus: any;
         backgroundTransparent: string;
-        borderColor: any;
-        borderColorHover: any;
-        borderColorPress: any;
-        borderColorFocus: any;
         color: any;
         colorHover: any;
         colorPress: any;
@@ -4540,6 +4490,10 @@ declare const allThemes: {
         shadowColorHover: string | Variable;
         shadowColorPress: string | Variable;
         shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
     };
 };
 export declare const themes: {
