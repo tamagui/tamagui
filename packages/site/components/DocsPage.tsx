@@ -126,19 +126,20 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     }}
                     flex={1}
                     width="50%"
-                    p="$3"
+                    p="$5"
                     borderRadius="$2"
                     borderWidth={1}
-                    borderColor="$borderColor"
+                    borderColor="$borderColorPress"
+                    pressStyle={{
+                      backgroundColor: '$backgroundPress',
+                    }}
                     tag="a"
                     aria-label={`Previous page: ${previous.title}`}
                     ai="flex-start"
                   >
-                    <YStack mb="$2">
-                      <Paragraph theme="alt1" size="$6">
-                        Previous
-                      </Paragraph>
-                    </YStack>
+                    <Paragraph theme="alt1" size="$5">
+                      Previous
+                    </Paragraph>
                     <Paragraph size="$3" fontWeight="800">
                       {previous.title}
                     </Paragraph>
@@ -153,19 +154,20 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     }}
                     width="50%"
                     flex={1}
-                    p="$3"
+                    p="$5"
                     borderRadius="$2"
                     borderWidth={1}
-                    borderColor="$borderColor"
+                    borderColor="$borderColorPress"
+                    pressStyle={{
+                      backgroundColor: '$backgroundPress',
+                    }}
                     tag="a"
                     aria-label={`Previous page: ${next.title}`}
                     ai="flex-end"
                   >
-                    <YStack mb="$2">
-                      <Paragraph theme="alt1" size="$6">
-                        Next
-                      </Paragraph>
-                    </YStack>
+                    <Paragraph theme="alt1" size="$5">
+                      Next
+                    </Paragraph>
                     <Paragraph size="$3" fontWeight="800">
                       {next.title}
                     </Paragraph>
