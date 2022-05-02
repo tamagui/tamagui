@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/drawer",
-  "version": "1.0.0-beta.0.204+0834a094",
+  "version": "1.0.0-beta.0.207+cc93940f",
   "sideEffects": true,
   "source": "src/index.ts",
   "typings": "types",
@@ -17,12 +17,12 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.2.1",
-    "@tamagui/compose-refs": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/core": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/create-context": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/polyfill-dev": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/stacks": "1.0.0-beta.0.204+0834a094",
-    "@tamagui/use-controllable-state": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/compose-refs": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/core": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/create-context": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/polyfill-dev": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/stacks": "^1.0.0-beta.0.207+cc93940f",
+    "@tamagui/use-controllable-state": "^1.0.0-beta.0.207+cc93940f",
     "react-native-gesture-handler": "^2.4.1",
     "react-native-reanimated": "^2.8.0"
   },
@@ -31,12 +31,12 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/build": "^1.0.0-beta.0.207+cc93940f",
     "react": "*",
     "react-dom": "*"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "0834a0945f7b958c260d70f207d29a678e11b0ae"
+  "gitHead": "cc93940f23ba75e41500f2622b99ca0e6a7b4bf1"
 }
