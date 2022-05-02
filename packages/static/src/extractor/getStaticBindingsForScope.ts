@@ -24,8 +24,18 @@ function importModule(path: string) {
   const filenames = [path.replace('.js', '.tsx'), path.replace('.js', '.ts'), path]
   for (const file of filenames) {
     if (existsSync(file)) {
-      // TODO we can clear this when we see updates on it later on
-      return require(file)
+      const { unregister } = require('esbuild-register/dist/node').register({
+        target: 'es2019',
+        format: 'cjs',
+      })
+      try {
+        // TODO we can clear this when we see updates on it later on
+        return require(file)
+      } catch {
+        // doesn't exists
+      } finally {
+        unregister()
+      }
     }
   }
   return null

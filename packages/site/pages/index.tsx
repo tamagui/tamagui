@@ -41,21 +41,21 @@ export default function Home() {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <Section pos="relative" zi={1000}>
+      <Section contain="paint layout" pos="relative" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>
       <Section pb="$0" zi={10}>
         <HeroResponsive />
       </Section>
-      <SectionTinted gradient bubble>
+      <SectionTinted contain="paint layout" gradient bubble>
         <HeroPerformance />
       </SectionTinted>
-      <SectionTinted noBorderTop zi={100}>
+      <SectionTinted contain="paint layout" noBorderTop zi={100}>
         <YStack fullscreen className="bg-grid-big mask-gradient-up" />
         <HeroExampleAnimations />
       </SectionTinted>
-      <Section zi={10}>
+      <Section contain="paint layout" zi={10}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
         <HeroExampleCode />
       </Section>
@@ -63,7 +63,7 @@ export default function Home() {
         <FeaturesGrid />
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
       </Section>
-      <SectionTinted bubble gradient>
+      <SectionTinted contain="paint layout" bubble gradient>
         <HeroTypography />
       </SectionTinted>
       <Section>

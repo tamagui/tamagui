@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/stacks",
-  "version": "1.0.0-beta.0.209+5f91a5a5",
+  "version": "1.0.0-beta.0.211+a49cc7ea",
   "sideEffects": false,
   "source": "src/index.ts",
   "typings": "types",
@@ -16,19 +16,19 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.0-beta.0.209+5f91a5a5"
+    "@tamagui/core": "^1.0.0-beta.0.211+a49cc7ea"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.209+5f91a5a5",
+    "@tamagui/build": "^1.0.0-beta.0.211+a49cc7ea",
     "react": "*",
     "react-dom": "*"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5f91a5a5747cf5fa2e794a4ca65ee3113d318f0c"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }

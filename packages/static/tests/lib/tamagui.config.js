@@ -78,10 +78,6 @@ const systemFont = createFont({
 export const tokens = createTokens({
   size,
   space,
-  font: {
-    title: systemFont,
-    body: systemFont,
-  },
   zIndex: {
     0: 0,
     1: 100,
@@ -164,6 +160,10 @@ export const themes = {
 
 const config = createTamagui({
   defaultTheme: 'light',
+  fonts: {
+    heading: systemFont,
+    body: systemFont,
+  },
   shorthands,
   themes,
   tokens,
