@@ -29,6 +29,7 @@
     "test": "turbo run test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
     "publish": "lerna publish --preid beta",
+    "publish:no-version": "npm publish --dry-run --workspaces",
     "publish:canary": "lerna publish --canary --preid beta.0 --force-publish --dist-tag canary",
     "version": "lerna version",
     "site": "yarn workspace @tamagui/site dev",
@@ -53,23 +54,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-refresh": "0.11.0",
-    "react-native-web": "0.17.5",
-    "tamagui": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/drawer": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/polyfill-dev": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/proxy-worm": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/use-controllable-state": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/use-debounce": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/compose-refs": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/core": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/helpers": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/build": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/static": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/core-node": "1.0.0-beta.0.211+a49cc7ea",
-    "tamagui-loader": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/animate-presence": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/babel-plugin": "1.0.0-beta.0.211+a49cc7ea",
-    "@tamagui/theme-base": "1.0.0-beta.0.211+a49cc7ea"
+    "react-native-web": "0.17.5"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

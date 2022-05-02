@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/stacks",
-  "version": "1.0.0-beta.0.211+a49cc7ea",
+  "version": "1.0.0-beta.0",
   "sideEffects": false,
   "source": "src/index.ts",
   "typings": "types",
@@ -16,14 +16,14 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.0-beta.0.211+a49cc7ea"
+    "@tamagui/core": "^1.0.0-beta.0"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/build": "^1.0.0-beta.0",
     "react": "*",
     "react-dom": "*"
   },

@@ -18,7 +18,7 @@ export const createInterFont = <A extends GenericFont<keyof typeof defaultSizes>
     Object.entries({
       ...defaultSizes,
       ...font.size,
-    }).map(([k, v]) => [k, sizeSize(v)])
+    }).map(([k, v]) => [k, sizeSize(+v)])
   )
   return createFont({
     family:
