@@ -19,10 +19,10 @@
     "dist"
   ],
   "dependencies": {
-    "@tamagui/helpers": "^1.0.0-beta.0.204+0834a094",
+    "@tamagui/helpers": "1.0.0-beta.0.204+0834a094",
     "@tamagui/ow": "^0.28.1",
-    "@tamagui/use-debounce": "^1.0.0-beta.0.204+0834a094",
-    "@tamagui/use-force-update": "^1.0.0-beta.0.204+0834a094",
+    "@tamagui/use-debounce": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/use-force-update": "1.0.0-beta.0.204+0834a094",
     "react": "*",
     "react-dom": "*"
   },
@@ -30,7 +30,7 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.204+0834a094",
+    "@tamagui/build": "1.0.0-beta.0.204+0834a094",
     "@types/react": "^17.0.35",
     "csstype": "^3.0.10",
     "esbuild": "^0.14.36",
