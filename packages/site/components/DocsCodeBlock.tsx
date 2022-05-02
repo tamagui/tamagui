@@ -41,7 +41,10 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
 
   useEffect(() => {
     if (hasCopied && code) copy(code)
-    setTimeout(() => setHasCopied(false), 1500)
+    const tm = setTimeout(() => setHasCopied(false), 1500)
+    return () => {
+      clearTimeout(tm)
+    }
   }, [hasCopied])
 
   return (

@@ -14,6 +14,7 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
+import NextProgress from 'nextjs-progressbar'
 import React, { useMemo, useState } from 'react'
 import { YStack } from 'tamagui'
 
@@ -64,6 +65,7 @@ export default function App(props: AppProps) {
         <Script async src={gtagUrl} />
         <Script dangerouslySetInnerHTML={{ __html: renderSnippet() || '' }} />
       </Head>
+      <NextProgress height={1} options={{ showSpinner: false }} />
       <NextThemes.ThemeProvider
         enableSystem
         disableTransitionOnChange

@@ -20,7 +20,12 @@ import { rnw } from './constants/rnw'
 import { isVariable } from './createVariable'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import { SplitStyleResult, getSplitStyles } from './helpers/getSplitStyles'
+import {
+  SplitStyleResult,
+  getSplitStyles,
+  insertSplitStyles,
+  useSplitStyles,
+} from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
@@ -127,7 +132,7 @@ export function createComponent<
     const setStateShallow = createShallowUpdate(set_)
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
-    const splitStyles = getSplitStyles(
+    const splitStyles = useSplitStyles(
       props,
       staticConfig,
       theme,
@@ -624,7 +629,7 @@ export function createComponent<
     initialTheme =
       initialTheme ||
       proxyThemeVariables(conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]])
-    initialSplitStyles = getSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, {
+    initialSplitStyles = insertSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, {
       mounted: true,
       hover: false,
       press: false,

@@ -5,10 +5,12 @@ import {
   validPseudoKeys,
   validStyles,
 } from '@tamagui/helpers'
+// @ts-ignore
+import { useInsertionEffect, useLayoutEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'
-import { isClient, isWeb } from '../constants/platform'
+import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import {
   MediaKeys,
@@ -24,7 +26,12 @@ import {
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
 import { ViewStyleWithPseudos, getStylesAtomic } from './getStylesAtomic'
-import { insertStyleRule, insertedTransforms, updateInserted } from './insertStyleRule'
+import {
+  insertStyleRule,
+  insertedTransforms,
+  updateInserted,
+  updateInsertedCache,
+} from './insertStyleRule'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 export type ClassNamesObject = Record<string, string>
@@ -42,7 +49,7 @@ type TransformNamespaceKey = 'transform' | PsuedoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
 
-export const getSplitStyles = (
+type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
@@ -50,6 +57,21 @@ export const getSplitStyles = (
     keepVariantsAsProps?: boolean
   },
   defaultClassNames?: any
+) => {
+  pseudos: PseudoStyles
+  medias: Record<MediaKeys, ViewStyle>
+  style: ViewStyle
+  classNames: ClassNamesObject
+  rulesToInsert: [string, string][]
+  viewProps: StackProps
+}
+
+export const getSplitStyles: StyleSplitter = (
+  props,
+  staticConfig,
+  theme,
+  state,
+  defaultClassNames
 ) => {
   if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
     console.log('  » getSplitStyles', { props, state, defaultClassNames })
@@ -64,6 +86,13 @@ export const getSplitStyles = (
   }
   const pseudos: PseudoStyles = {}
   const medias: Record<MediaKeys, ViewStyle> = {}
+
+  const rulesToInsert: [string, string][] = []
+  function addStyle(prop: string, rule: string) {
+    rulesToInsert.push([prop, rule])
+    updateInsertedCache(prop, rule)
+  }
+
   let cur: ViewStyleWithPseudos | null = null
 
   // we need to gather these specific to each media query / pseudo
@@ -135,7 +164,7 @@ export const getSplitStyles = (
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
         if (!state.noClassNames) {
-          insertStyleRule(atomicStyle.identifier, atomicStyle.rules[0])
+          addStyle(atomicStyle.identifier, atomicStyle.rules[0])
           mergeClassName(atomicStyle.property, atomicStyle.identifier)
         } else {
           style[atomicStyle.property] = atomicStyle.value
@@ -254,7 +283,7 @@ export const getSplitStyles = (
         if (isWeb && !state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
-            insertStyleRule(style.identifier, style.rules[0])
+            addStyle(style.identifier, style.rules[0])
             mergeClassName(`${style.property}-${key}`, style.identifier)
           }
         }
@@ -288,7 +317,7 @@ export const getSplitStyles = (
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
-            insertStyleRule(out.identifier, out.styleRule)
+            addStyle(out.identifier, out.styleRule)
             mergeClassName(`${out.identifier}-${mediaKey}`, out.identifier)
           }
         } else {
@@ -333,7 +362,7 @@ export const getSplitStyles = (
       if (isClient) {
         if (!insertedTransforms[identifier]) {
           const rule = `.${identifier} { transform: ${val}; }`
-          insertStyleRule(identifier, rule)
+          addStyle(identifier, rule)
         }
       }
       classNames[namespace] = identifier
@@ -350,7 +379,27 @@ export const getSplitStyles = (
     medias,
     pseudos,
     classNames,
+    rulesToInsert,
   }
+}
+
+export const insertSplitStyles: StyleSplitter = (...args) => {
+  const res = getSplitStyles(...args)
+  for (const [prop, rule] of res.rulesToInsert) {
+    insertStyleRule(prop, rule)
+  }
+  return res
+}
+
+const effect = useInsertionEffect || useIsomorphicLayoutEffect
+export const useSplitStyles: StyleSplitter = (...args) => {
+  const res = getSplitStyles(...args)
+  effect(() => {
+    for (const [prop, rule] of res.rulesToInsert) {
+      insertStyleRule(prop, rule)
+    }
+  })
+  return res
 }
 
 export const getSubStyle = (

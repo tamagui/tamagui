@@ -37,6 +37,7 @@
     "mdx-bundler": "^9.0.0",
     "mdx-prism": "^0.3.4",
     "next": "^12.1.5",
+    "nextjs-progressbar": "^0.0.14",
     "parse-numeric-range": "^1.2.0",
     "react": "*",
     "react-dom": "*",

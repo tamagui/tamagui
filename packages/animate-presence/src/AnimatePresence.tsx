@@ -6,8 +6,6 @@ import React, {
   cloneElement,
   isValidElement,
   useContext,
-  useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from 'react'
@@ -139,7 +137,7 @@ export const AnimatePresence: React.FunctionComponent<
 
   const [isMounted, setIsMounted] = useState(false)
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setIsMounted(true)
   }, [])
 
