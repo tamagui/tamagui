@@ -64,7 +64,7 @@ export const MediaPlayer = memo(
             </YStack>
           </XStack>
 
-          <Separator />
+          <Separator mb={-1} />
 
           <Theme name={barTheme}>
             <XStack

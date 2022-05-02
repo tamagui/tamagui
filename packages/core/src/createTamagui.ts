@@ -140,13 +140,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
         const isDark = themeName.startsWith('dark')
         const selector = `${CNP}${themeName}`
-        const addDarkLightSels = hasDarkLight && !isDarkOrLightBase
         const selectors = [selector]
+
         // since we dont specify dark/light in classnames we have to do an awkward specificity war
         // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
-        if (addDarkLightSels) {
+        if (hasDarkLight) {
           const childSelector = `${CNP}${themeName.replace('dark_', '').replace('light_', '')}`
-          const [stronger, weaker] = isDark ? ['dark', 'light'] : ['light', 'dark']
+          const order = isDark ? ['dark', 'light'] : ['light', 'dark']
+          if (isDarkOrLightBase) {
+            order.reverse()
+          }
+          const [stronger, weaker] = order
           const max = config.maxDarkLightNesting ?? 3
           new Array(max * 2).fill(undefined).forEach((_, pi) => {
             if (pi % 2 === 1) return
@@ -158,7 +162,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
             )
           })
         }
+
         cssRules.push(`${selectors.map((x) => `:root${x}`).join(', ')} {${vars}}`)
+
         if (config.shouldAddPrefersColorThemes) {
           // add media prefers for dark/light base
           if (isDarkOrLightBase) {
@@ -175,10 +181,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
     varsByValue.clear()
     Object.freeze(cssRules)
+    const css = cssRules.join('\n')
 
     return {
       cssRules,
-      css: cssRules.join('\n'),
+      css,
     }
   })()
 

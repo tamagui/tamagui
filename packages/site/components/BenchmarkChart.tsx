@@ -51,8 +51,8 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                 bc={getBarColor(result.name)}
                 o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
                 width={width}
-                height={10}
-                br="$1"
+                height={20}
+                br="$2"
                 position="relative"
                 jc="center"
                 scaleX={1}

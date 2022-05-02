@@ -79,19 +79,19 @@ export function HeroExampleAnimations() {
               pe={disableScrollPane ? 'auto' : 'none'}
               o={disableScrollPane ? 1 : 0}
               fullscreen
-              pt="$12"
               ai="center"
               jc="center"
             >
-              <YStack fullscreen className="mask-gradient-up" o={0.35} bc="$background" />
+              <YStack fullscreen className="mask-gradient-up" o={0.35} bc="$colorMid" />
               <Button
+                y={200}
                 iconAfter={ArrowDown}
                 size="$2"
                 zi={10}
-                theme="pink"
+                themeInverse
                 onPress={() => setDisableScrollPane(false)}
               >
-                Allow scrolling
+                View more
               </Button>
             </YStack>
 
