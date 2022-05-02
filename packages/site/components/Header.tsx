@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
-import { useTint } from './ColorToggleButton'
+import { tints, useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HeaderFloating } from './HeaderFloating'
 
@@ -23,7 +23,7 @@ export const HeaderIndependent = ({ disableNew }: { disableNew?: boolean }) => {
 export function Header({ floating, disableNew }: { floating?: boolean; disableNew?: boolean }) {
   const router = useRouter()
   const isHome = router.pathname === '/'
-  const { setNextTint } = useTint()
+  const { setNextTint, setTint } = useTint()
 
   return (
     <XStack
@@ -64,7 +64,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
       >
         <NextLink href="/" passHref>
           <XStack pointerEvents="auto" tag="a" als="center">
-            <LogoWords />
+            <LogoWords onHoverLetter={(i) => setTint(tints[i])} />
           </XStack>
         </NextLink>
       </XStack>
