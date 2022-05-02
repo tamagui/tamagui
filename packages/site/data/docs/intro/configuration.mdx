@@ -372,6 +372,20 @@ For a full configuration, see [@tamagui/shorthands](https://github.com/tamagui/t
       description: `What's between each generated CSS style rule. Set as newline to more easily debug outputted CSS.`,
     },
     {
+      name: 'themeClassNameOnRoot',
+      required: false,
+      type: 'boolean',
+      default: false,
+      description: `When using next-themes or anything that does SSR and attaches the theme class to the HTML tag, set this to true to have the proper CSS theme selectors generate`,
+    },
+    {
+      name: 'shouldAddPrefersColorThemes',
+      required: false,
+      type: 'boolean',
+      default: true,
+      description: `Generates @media queries based on prefers-color-scheme for you if you have light/dark themes.`,
+    },
+    {
       name: 'maxDarkLightNesting',
       required: false,
       type: 'number',

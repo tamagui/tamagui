@@ -1,4 +1,3 @@
-// debug
 import { DocSearchModal } from '@docsearch/react'
 import { Search as SearchIcon } from '@tamagui/feather-icons'
 import Head from 'next/head'
@@ -59,7 +58,11 @@ export function SearchProvider({ children }) {
           <DocSearchModal
             placeholder="Search docs..."
             hitComponent={ResultItem}
-            searchParameters={searchParams}
+            searchParameters={{
+              // facetFilters: ['version:1.0.0'],
+              facetFilters: [],
+              distinct: 1,
+            }}
             initialQuery={initialQuery || ''}
             initialScrollY={window.scrollY}
             onClose={onClose}
@@ -99,11 +102,6 @@ export function SearchProvider({ children }) {
         )}
     </>
   )
-}
-
-const searchParams = {
-  facetFilters: 'version:v3',
-  distinct: 1,
 }
 
 const ResultItem = ({ hit, children }) => {
