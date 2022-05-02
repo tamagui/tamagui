@@ -30,15 +30,39 @@ by: nate
 
 It's been six months since the first alpha, [several hundreds of bugfixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.0), [three demo apps](https://github.com/tamagui), ten new components, and now a few big new core features. Plus, a [refreshed site](/), a [benchmark suite](/docs/intro/benchmarks), a host of type improvements, and compatibility with more versions of Next.js, Webpack, and React Native.
 
-The two big new pieces in the beta are **Animations**, and **Themes**.
+What's new?
+
+### Get started faster 🚀
+
+Introducing [**create-tamagui-app**](https://github.com/tamagui/tamagui/tree/master/packages/create-tamagui-app), to get started much faster with a bootstrapped monorepo that uses Expo, Next.js, Solito and Tamagui:
+
+```bash
+npx create-tamagui-app
+```
+
+You can even clone + deploy it instantly with Vercel and Github:
+
+<XStack my="$4" jc="center">
+  <a
+    href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next-expo-solito&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fblog%2Fintroducing-tamagui%2Fhero.png"
+    target="_blank"
+    alt="Deploy with Vercel"
+  >
+    <img src="https://vercel.com/button" />
+  </a>
+</XStack>
+
+A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo.
 
 ---
 
-## Overhauled Themes 🎨
+### Themes 2.0 🎨
 
-Themes have been completely redone, and they're really fun. They now default to names that map to standard style names with pseudo postfixes, so for `color`, the alternates `colorHover`, `colorFocus`, and `colorPress` are all definable.
+Theme internally have been completely redone, and they're really fun. They work better, nest better, and come with a generator out of the box in `@tamagui/theme-base`.
 
-Building off that, theme's are now truly nestable - so you can have `dark` and `light`, and below that `dark_blue` and `light_blue`, and then different tints below that (like `dark_blue_alt1`).
+They now default to names that map to standard style names with optional pseudo postfixes, so for `color`, the alternates `colorHover`, `colorFocus`, and `colorPress` are definable.
+
+Building off that, themes can nest unlimited times - `dark` and `light` can have `dark_blue` and `light_blue`, and then different tints below that, like `dark_blue_alt1`.
 
 <HeroContainer>
   <XStack miw={500} py="$4" ai="center">
@@ -63,7 +87,7 @@ Finally, icons and buttons now handle passing themes down automatically.
 
 ---
 
-## Animations
+### Animations
 
 Animations are making their way, experimentally, into `@tamagui/core`. They are unstable, but we want to get feedback and use them more in practice.
 
@@ -84,7 +108,7 @@ We've also added a new pseudo `enterStyle` that works if you have an `animation`
 
 [Read the docs on animations](/docs/core/animations) to get started.
 
-### AnimatePresence
+#### AnimatePresence
 
 In early form, we've added [AnimatePresence](/docs/core/animations#animate-presence), which is directly forked off Framer Motion. It works with `exitStyle` and variants to make once-complex animations quite easy.
 
@@ -98,31 +122,7 @@ In early form, we've added [AnimatePresence](/docs/core/animations#animate-prese
 
 ---
 
-## Get started faster 🚀
-
-Introducing [**create-tamagui-app**](https://github.com/tamagui/tamagui/tree/master/packages/create-tamagui-app), to get started much faster with a bootstrapped monorepo that uses Expo, Next.js, Solito and Tamagui:
-
-```bash
-npx create-tamagui-app
-```
-
-You can even clone + deploy it instantly with Vercel and Github:
-
-<XStack my="$4" jc="center">
-  <a
-    href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&env=ENABLE_ROOT_PATH_BUILD_CACHE&root-directory=apps/next-expo-solito&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fblog%2Fintroducing-tamagui%2Fhero.png"
-    target="_blank"
-    alt="Deploy with Vercel"
-  >
-    <img src="https://vercel.com/button" />
-  </a>
-</XStack>
-
-A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo.
-
----
-
-## New Components
+### New Components
 
 We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/docs/components/inputs), [Label](/docs/components/label), [Switch](/docs/components/switch), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover) and [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), [HTML Elements](/docs/components/html-elements).
 
@@ -138,19 +138,21 @@ Here's the new Switch component working with spring animations:
 
 [Join our Discord to vote for new components](https://discord.gg/4qh6tdcVDa).
 
-## styled() Upgrades
+---
+
+### Styled Factory Upgrades
 
 The `styled()` factory function as well gets many upgrades, it accepts React Native components directly and automatically interprets their props, as well as many fixes - full media query support, _much_ faster/accurate types, and better compilation.
 
 ---
 
-## Upgrades
+### Component Updates
 
 [LinearGradient](/docs/components/linear-gradient), [Image](/docs/components/image), and [Button](/docs/components/button) have received lots of love. LinearGradient now fully supports all theme values and the compiler will help it extract any style properties. Image should still be considered beta, but has gone through many rounds of bugfixes and improvements. And Button now handles passing more text properties down, themes and sizes icons more reliably, and has many fixes for variants like `circular`.
 
 ---
 
-## focusStyle
+### Focus Styles
 
 We landed experimental support for the `focusStyle` prop, which works much like `pressStyle` and `hoverStyle`. You can see it in action on `Input`:
 
@@ -164,27 +166,39 @@ We landed experimental support for the `focusStyle` prop, which works much like 
 
 ---
 
-## ThemeReset
+### ThemeReset
 
 Sometimes you want to reset the current theme to the grandparent. [ThemeReset](/docs/core/theme#theme-reset) does just this. Note: it's not SSR compatible if you use automatic light/dark themes (it will still work, but it won't fully render until JS runs). There's a fix for this that is a bit involved, but we think it's still useful to release it as experimental.
 
 ---
 
-## base-theme
+### Theme Generation
 
 Use the themes from the Tamagui site itself without any setup at all, simply install `@tamagui/theme-base` and add `themes` and `tokens` to `createTamagui()` in your `tamagui.config.ts`.
 
 Likewise, we've released `@tamagui/shorthands`, nice default shorthands out of the box.
 
+[See the site tamagui.config.ts for a clear example](https://github.com/tamagui/tamagui/blob/39079fb064d58dd524194d0175014ae913b0da6e/packages/site/tamagui.config.ts#L5).
+
 ---
 
-### Feather Icons
+#### Feather Icons
 
 We've released [@tamagui/feather-icons](/docs/components/feather-icons), which have numerous adjustments to work well with themes and sizing.
 
+You can import and use them directly, or pass them to Buttons:
+
+```tsx
+import { Play } from '@tamagui/feather-icons'
+import { Button } from 'tamagui'
+
+// theme and size are properly passed from Button to icons automatically
+export default () => <Button size="$6" icon={Play} />
+```
+
 ---
 
-## And much more...
+### And much more...
 
 - 🐛 [Hundreds of bug-fixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.1).
 - ✨ Many docs improvements: new pages, more examples, more props documented, and search.
@@ -192,7 +206,15 @@ We've released [@tamagui/feather-icons](/docs/components/feather-icons), which h
 
 ---
 
-## Acknowledgements
+### Breaking changes
+
+- Sub themes now must be named with `_` (underscore) separators.
+- In tamagui.config.ts, `tokens.font` => `fonts`.
+- Popover, Tooltip, HoverablePopover `isOpen` prop becomes `open`.
+
+---
+
+### Acknowledgements
 
 This release once again is inspired by or forks code from a variety of other libraries and developers.
 
