@@ -42,7 +42,8 @@ if (isChrome) {
 }
 
 export default function App(props: AppProps) {
-  const classes = typeof document !== 'undefined' ? [...document.documentElement.classList] : []
+  const isClient = typeof document !== 'undefined'
+  const classes = isClient ? [...document.documentElement.classList] : []
   const isDark = classes.includes('tui_dark')
   const [theme, setTheme] = useState(isDark ? 'dark' : 'light')
 

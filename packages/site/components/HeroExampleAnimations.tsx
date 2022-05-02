@@ -83,7 +83,7 @@ export function HeroExampleAnimations() {
               ai="center"
               jc="center"
             >
-              <YStack fullscreen className="mask-gradient-up" bc="rgba(0,0,0,0.5)" />
+              <YStack fullscreen className="mask-gradient-up" o={0.35} bc="$background" />
               <Button
                 iconAfter={ArrowDown}
                 size="$2"

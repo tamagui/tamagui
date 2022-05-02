@@ -39,6 +39,9 @@ export type CreateTamaguiProps =
     // this sets the maxiumum number of nested dark/light themes you can do
     // defaults to 3 for a balance, but can be higher if you nest them deeply.
     maxDarkLightNesting?: number
+
+    // adds @media(prefers-color-scheme) media queries for dark/light
+    shouldAddPrefersColorThemes?: boolean
   }
 
 // config is re-run by the @tamagui/static, dont double validate
@@ -120,12 +123,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       // to allow using the same theme with diff names, be sure we don't mutate!
       const theme = { ...config.themes[themeName] }
       config.themes[themeName] = theme
-
-      // console.log('themeName', themeName)
-      // if (themeName === 'light_Drawer') {
-      //   debugger
-      // }
-
       let vars = ''
 
       for (const themeKey in theme) {
@@ -135,14 +132,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           const varName = val instanceof Variable ? val.name : varsByValue[val]?.name
           vars += `--${themeKey}:${varName ? createCSSVariable(varName) : `${val}`};`
         }
-
         // make sure properly names theme variables
         ensureThemeVariable(theme, themeKey)
       }
 
       if (isWeb) {
         const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
-        const isDark = themeName.includes('dark_')
+        const isDark = themeName.startsWith('dark')
         const selector = `${CNP}${themeName}`
         const addDarkLightSels = hasDarkLight && !isDarkOrLightBase
         const selectors = [selector]
@@ -162,8 +158,18 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
             )
           })
         }
-        const cssRule = `${selectors.join(', ')} {\n${vars}\n}`
-        cssRules.push(cssRule)
+        cssRules.push(`${selectors.map((x) => `:root${x}`).join(', ')} {${vars}}`)
+        if (config.shouldAddPrefersColorThemes) {
+          // add media prefers for dark/light base
+          if (isDarkOrLightBase) {
+            cssRules.push(
+              `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
+    body { background:${theme.background}; color: ${theme.color} }
+    :root {${vars} } 
+  }`
+            )
+          }
+        }
       }
     }
 
