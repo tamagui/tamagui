@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.2.1",
-    "@tamagui/core": "^1.0.0-beta.0.204+0834a094",
-    "@tamagui/polyfill-dev": "^1.0.0-beta.0.204+0834a094",
-    "@tamagui/use-controllable-state": "^1.0.0-beta.0.204+0834a094",
+    "@tamagui/core": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/polyfill-dev": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/use-controllable-state": "1.0.0-beta.0.204+0834a094",
     "react-native-gesture-handler": "^2.4.1",
     "react-native-reanimated": "^2.8.0"
   },
@@ -30,7 +30,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.204+0834a094",
+    "@tamagui/build": "1.0.0-beta.0.204+0834a094",
     "react": "*",
     "react-dom": "*"
   },

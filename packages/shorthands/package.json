@@ -17,7 +17,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.204+0834a094"
+    "@tamagui/build": "1.0.0-beta.0.204+0834a094"
   },
   "publishConfig": {
     "access": "public"

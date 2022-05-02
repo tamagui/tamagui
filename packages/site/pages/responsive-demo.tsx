@@ -53,7 +53,12 @@ export default function ResponsiveDemo() {
   return (
     <>
       <TitleAndMetaTags title="Tamagui — Responsive Demo" />
-      <YStack mah="100vh" ov="hidden" p="$4" $gtLarge={{ fd: 'row-reverse' }}>
+      <YStack
+        mah="100vh"
+        ov="hidden"
+        p="$4"
+        $gtLarge={{ fd: 'row-reverse', p: '$6', maw: 1200, als: 'center' }}
+      >
         <YStack pos="relative" $gtSmall={{ display: 'none' }}>
           {coverPhoto}
         </YStack>

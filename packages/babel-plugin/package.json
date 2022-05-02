@@ -25,11 +25,11 @@
     "@babel/helper-plugin-utils": "^7.14.5",
     "@babel/template": "*",
     "@babel/traverse": "^7.15.4",
-    "@tamagui/static": "^1.0.0-beta.0.204+0834a094"
+    "@tamagui/static": "1.0.0-beta.0.204+0834a094"
   },
   "devDependencies": {
     "@babel/types": "^7.15.6",
-    "@tamagui/build": "^1.0.0-beta.0.204+0834a094"
+    "@tamagui/build": "1.0.0-beta.0.204+0834a094"
   },
   "gitHead": "0834a0945f7b958c260d70f207d29a678e11b0ae"
 }

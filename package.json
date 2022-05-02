@@ -53,7 +53,22 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-refresh": "0.11.0",
-    "react-native-web": "0.17.5"
+    "react-native-web": "0.17.5",
+    "tamagui": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/drawer": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/polyfill-dev": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/proxy-worm": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/use-controllable-state": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/use-debounce": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/compose-refs": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/core": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/helpers": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/build": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/static": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/core-node": "1.0.0-beta.0.204+0834a094",
+    "tamagui-loader": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/animate-presence": "1.0.0-beta.0.204+0834a094",
+    "@tamagui/babel-plugin": "1.0.0-beta.0.204+0834a094"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

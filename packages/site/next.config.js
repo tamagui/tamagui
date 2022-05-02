@@ -35,6 +35,9 @@ const transform = withPlugins(
         'Picker',
         'Animated',
         'AnimatedFlatList',
+        'VirtualizedList',
+        'VirtualizedSectionList',
+        'FlatList',
       ],
     }),
     // // template for modifying webpack further:
