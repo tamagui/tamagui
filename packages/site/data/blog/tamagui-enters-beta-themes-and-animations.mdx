@@ -5,18 +5,18 @@ description: Animations, a new theme system, starter apps, and much more.
 by: nate
 ---
 
-<IntroParagraph>Tamagui is now in beta 🎉</IntroParagraph>
+<IntroParagraph>Tamagui enters beta 🎉</IntroParagraph>
 
 <IntroParagraph>
-  Tamagui a complete suite of libraries for making cross platform app interfaces on both React and
-  React Native at once. Its core is **three libraries**:
+  Tamagui makes making cross platform apps much easier. It's a suite of libraries, but **mainly
+  three things**:
 </IntroParagraph>
 
 <IntroParagraph>
   <UL>
     <LI>A style library (`@tamagui/core`) for creating React Native + Web components.</LI>
     <LI>An optimizing compiler (`@tamagui/static`) for incredible performance.</LI>
-    <LI>A component kit (`tamagui`) built using both the above.</LI>
+    <LI>A component kit (`tamagui`) built using both of the above.</LI>
   </UL>
 </IntroParagraph>
 
@@ -28,16 +28,20 @@ by: nate
   width={900}
 />
 
-Since the first alpha it's been six months, [several hundreds of bugfixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.0), [three demo apps](https://github.com/tamagui), and a number of new core features. Plus, a totally [refreshed site](/), and a [benchmark suite](/docs/intro/benchmarks). a grip of type improvements, compatability fixes and internals speedups its' really shaped up to be interesting. There are two pieces though that are the biggest impact: **Animations**, and **Themes**.
+It's been six months since the first alpha, [several hundreds of bugfixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.0), [three demo apps](https://github.com/tamagui), ten new components, and now a few big new core features. Plus, a [refreshed site](/), a [benchmark suite](/docs/intro/benchmarks), a host of type improvements, and compatibility with more versions of Next.js, Webpack, and React Native.
+
+The two big new pieces in the beta are **Animations**, and **Themes**.
 
 ---
 
 ## Overhauled Themes 🎨
 
-Themes have been completely redone in an exciting way - they are a huge step forward, a the power and flexibility they have is really unparelleled. They are easier to use, map to styles you can use easily, and can build off alternative trees with uniqued shading, contrasts, and look. All of thi can be shared on `npm`.
+Themes have been completely redone, and they're really fun. They now default to names that map to standard style names with pseudo postfixes, so for `color`, the alternates `colorHover`, `colorFocus`, and `colorPress` are all definable.
+
+Building off that, theme's are now truly nestable - so you can have `dark` and `light`, and below that `dark_blue` and `light_blue`, and then different tints below that (like `dark_blue_alt1`).
 
 <HeroContainer>
-  <XStack py="$4" ai="center">
+  <XStack miw={500} py="$4" ai="center">
     <YStack mx={-16} scale={0.8}>
       <MediaPlayerDemo theme="pink" />
     </YStack>
@@ -47,29 +51,13 @@ Themes have been completely redone in an exciting way - they are a huge step for
   </XStack>
 </HeroContainer>
 
-### Sub-themes
+The `theme` prop is now also available on every component, including ones you create using the `styled` factory function.
 
-Tamagui already supported sub-themes, with various edge cases. With the rewrite, sub-themes now work much better, and the `theme` prop is available on every component, including ones you create using the `styled` factory function. Nest as many as you'd like!
+Finally, **styled components** actually all will auto-match to a sub-theme of their name - so `Button`, will look for `dark_blue_Button`, allowing you to basically truly control every aspect of your interface, fully typed and changeable at runtime.
 
-You can define a base `dark` theme, add `dark_blue` variant, give that three levels of strength (like `dark_blue_alt1`...), and so on.
+Finally, icons and buttons now handle passing themes down automatically.
 
-### Component themes
-
-Not only that, but you can give any `styled` component a `name` and it ensure that sub-theme applies. Theme props are now normalized to match React Native style properties as well.
-
-So `dark_Button` can control all styles of buttons, and likewise `dark_blue_Button` can override any for the blue theme.
-
-### Tons of small improvements
-
-We've also fixed and improved a lot of how the `@tamagui/feather-icons`, the `Button` component, and the theme engine all work together to automatically handle passing values between each other.
-
-### Why it matters
-
-In general, UI kits are hard because they have so much complexity that nests.
-
-Every implementation detail has an outsize influence the one above it, and many features and requirements multiply - whether its SSR, browser engines, features like themes or media queries, a compiler, native or web, allowing a `styled` factory function vs inline props vs hooks - each one much work together, and many balance on layers below.
-
-I'm really happy with how this landed. This release could have been focused on new components, but it became obvious while working [Tooltip](/docs/components/tooltip) / [Popover](/docs/components/popover) / [Drawer](/docs/components/drawer) that **getting animations and themes right** needed to happen first to avoid future pain.
+**I'm really happy with how this landed**. This release could have been focused on new components, but it became obvious while working [Tooltip](/docs/components/tooltip) / [Popover](/docs/components/popover) / [Drawer](/docs/components/drawer) that **getting animations and themes right** needed to happen first to avoid future pain.
 
 [Read the docs for much more on themes](/docs/intro/themes).
 
@@ -90,15 +78,15 @@ They're implemented as pluggable drivers, starting with two:
 - [CSS](/docs/core/animations#css)
 - [Reanimated](/docs/core/animations#css)
 
-Which means you can swap entire animation drivers depending on your platform. Want lighter bundles on web, but spring animations on native? Use both packages, and swap them out based on your environment.
+Which means you can swap entire animation drivers depending on your platform. Want lighter bundles on web, but spring animations on native? Install both packages and swap them out based on your environment.
 
-We've added a new pseudo `enterStyle` that works if you have an `animation` prop set, giving you easy styling on mount (and see the next section for `exitStyle`).
+We've also added a new pseudo `enterStyle` that works if you have an `animation` prop set, giving you easy styling on mount (and see the next section for `exitStyle`).
 
 [Read the docs on animations](/docs/core/animations) to get started.
 
 ### AnimatePresence
 
-In early form, we've added [AnimatePresence](/docs/core/animations#animate-presence), which is directly inspired by Framer Motion's. It works with `exitStyle` and variants to make once-complex animations quite easy.
+In early form, we've added [AnimatePresence](/docs/core/animations#animate-presence), which is directly forked off Framer Motion. It works with `exitStyle` and variants to make once-complex animations quite easy.
 
 <HeroContainer noPad>
   <AnimationsPresenceDemo />
@@ -130,15 +118,15 @@ You can even clone + deploy it instantly with Vercel and Github:
   </a>
 </XStack>
 
-A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo we borrowed from.
+A big shout out to [Fernando Rojo](https://twitter.com/fernandotherojo) for creating [Solito](https://solito.dev), a great library for sharing all your views between Expo and Next.js, and the bootstrap repo.
 
 ---
 
-## New Components!
+## New Components
 
 We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/docs/components/inputs), [Label](/docs/components/label), [Switch](/docs/components/switch), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover) and [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), [HTML Elements](/docs/components/html-elements).
 
-Here's the new Switch component that works with animations:
+Here's the new Switch component working with spring animations:
 
 <HeroContainer>
   <SwitchDemo />
@@ -148,23 +136,21 @@ Here's the new Switch component that works with animations:
 
 ```
 
+[Join our Discord to vote for new components](https://discord.gg/4qh6tdcVDa).
+
 ## styled() Upgrades
 
-The `styled()` factory function as well gets many upgrades, it can accept React Native components directly and automatically interprets which props it can pass into them, as well as working properly now with media queries, and _much_ faster and more accurate types.
-
-There's tons of room to grow and improve. We're looking at using [Floating UI](https://floating-ui.com/) to improve our floating panels, and getting essential form elements in next.
-
-[Join our Discord to voice which ones you'd like to see](https://discord.gg/4qh6tdcVDa).
+The `styled()` factory function as well gets many upgrades, it accepts React Native components directly and automatically interprets their props, as well as many fixes - full media query support, _much_ faster/accurate types, and better compilation.
 
 ---
 
-## Upgraded Components
+## Upgrades
 
 [LinearGradient](/docs/components/linear-gradient), [Image](/docs/components/image), and [Button](/docs/components/button) have received lots of love. LinearGradient now fully supports all theme values and the compiler will help it extract any style properties. Image should still be considered beta, but has gone through many rounds of bugfixes and improvements. And Button now handles passing more text properties down, themes and sizes icons more reliably, and has many fixes for variants like `circular`.
 
 ---
 
-## Focus styling
+## focusStyle
 
 We landed experimental support for the `focusStyle` prop, which works much like `pressStyle` and `hoverStyle`. You can see it in action on `Input`:
 
@@ -180,21 +166,21 @@ We landed experimental support for the `focusStyle` prop, which works much like 
 
 ## ThemeReset
 
-Sometimes you want to have your theme reset to the one above it. [ThemeReset](/docs/core/theme#theme-reset) does just this. Note: it's not SSR compatible if you're doing automatic light/dark themes - it will still work, but there may be a flash on first load. There's a fix for this that is a bit involved, but we think it's still useful to release it for now as experimental.
+Sometimes you want to reset the current theme to the grandparent. [ThemeReset](/docs/core/theme#theme-reset) does just this. Note: it's not SSR compatible if you use automatic light/dark themes (it will still work, but it won't fully render until JS runs). There's a fix for this that is a bit involved, but we think it's still useful to release it as experimental.
 
 ---
 
-## A pre-made base theme
+## base-theme
 
 Use the themes from the Tamagui site itself without any setup at all, simply install `@tamagui/theme-base` and add `themes` and `tokens` to `createTamagui()` in your `tamagui.config.ts`.
 
-Likewise, we've released `@tamagui/shorthands`, a nice default set of shorthands to use out of the box.
+Likewise, we've released `@tamagui/shorthands`, nice default shorthands out of the box.
 
 ---
 
 ### Feather Icons
 
-We've released [@tamagui/feather-icons](/docs/components/feather-icons), which have numerous adjustmenets to make them work well with themes and automatically plug in on Native and Web.
+We've released [@tamagui/feather-icons](/docs/components/feather-icons), which have numerous adjustments to work well with themes and sizing.
 
 ---
 
@@ -214,4 +200,3 @@ I'd like to thank:
 
 - [Fenando Rojo](https://twitter.com/fernandotherojo) and [Moti](https://moti.fyi) for the elegant reanimated animation driver that served as the starting point of `@tamagui/animations-reanimated`, as well as for putting together [Solito](https://solito.dev) that powers the first template in create-tamagui-app.
 - [Matt Perry](https://twitter.com/mattgperry) and [Framer Motion](https://github.com/framer/motion) for the base of AnimatePresence in `@tamagui/animate-presence`.
-- [Tailwind](https://tailwindcss.com) for the inspiration of using a nice resizable browser to demo responsive design.
