@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-context",
-  "version": "1.0.0-beta.193+14c13acd",
+  "version": "1.0.0-beta.0.204+0834a094",
   "sideEffects": false,
   "source": "src/index.ts",
   "typings": "types",
@@ -19,10 +19,11 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.193+14c13acd",
+    "@tamagui/build": "^1.0.0-beta.0.204+0834a094",
     "react": "*"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "0834a0945f7b958c260d70f207d29a678e11b0ae"
 }

@@ -163,7 +163,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           })
         }
 
-        cssRules.push(`${selectors.map((x) => `:root${x}`).join(', ')} {${vars}}`)
+        cssRules.push(`${selectors.map((x) => `:root ${x}`).join(', ')} {${vars}}`)
 
         if (config.shouldAddPrefersColorThemes) {
           // add media prefers for dark/light base

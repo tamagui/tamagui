@@ -8,7 +8,7 @@ import {
   BottomSheetVirtualizedList,
 } from '@gorhom/bottom-sheet'
 import { composeRefs } from '@tamagui/compose-refs'
-import { styled, themeable, withStaticProperties } from '@tamagui/core'
+import { styled, themeable, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { XStack, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -129,13 +129,13 @@ export const Drawer = withStaticProperties(
       })
       const sheetRef = useRef<BottomSheetModal>(null)
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         if (!open) {
+          // bugfix
           setTimeout(() => {
             sheetRef.current?.dismiss()
           })
         } else {
-          console.log('open')
           sheetRef.current?.present()
         }
         onChangeOpen?.(open)
