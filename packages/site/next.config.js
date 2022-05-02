@@ -37,7 +37,8 @@ const transform = withPlugins(
         'AnimatedFlatList',
         'VirtualizedList',
         'VirtualizedSectionList',
-        'FlatList',
+        // reanimated node_modules/react-native-reanimated/lib/reanimated2/component/FlatList.js
+        // 'FlatList',
       ],
     }),
     // // template for modifying webpack further:

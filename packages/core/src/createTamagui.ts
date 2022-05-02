@@ -42,6 +42,9 @@ export type CreateTamaguiProps =
 
     // adds @media(prefers-color-scheme) media queries for dark/light
     shouldAddPrefersColorThemes?: boolean
+
+    // only if you put the theme classname on the html element we have to generate diff
+    themeClassNameOnRoot?: boolean
   }
 
 // config is re-run by the @tamagui/static, dont double validate
@@ -163,9 +166,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           })
         }
 
-        cssRules.push(`${selectors.map((x) => `:root ${x}`).join(', ')} {${vars}}`)
+        const rootSep = config.themeClassNameOnRoot ? '' : ' '
+        cssRules.push(`${selectors.map((x) => `:root${rootSep}${x}`).join(', ')} {${vars}}`)
 
-        if (config.shouldAddPrefersColorThemes) {
+        if (config.shouldAddPrefersColorThemes ?? true) {
           // add media prefers for dark/light base
           if (isDarkOrLightBase) {
             cssRules.push(

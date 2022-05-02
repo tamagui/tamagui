@@ -57,6 +57,7 @@ const tokens = createTokens({
 const config = createTamagui({
   defaultTheme: 'light',
   shouldAddPrefersColorThemes: true,
+  themeClassNameOnRoot: true,
   animations,
   media,
   shorthands,
