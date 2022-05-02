@@ -1282,6 +1282,7 @@ export function createExtractor() {
             let prev: ExtractedAttr | null = null
 
             function mergeStyles(prev: ViewStyle & PseudoStyles, next: ViewStyle & PseudoStyles) {
+              normalizeStyleObject(next)
               for (const key in next) {
                 // merge pseudos
                 if (pseudos[key]) {
