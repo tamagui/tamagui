@@ -64,6 +64,14 @@ if (typeof document !== 'undefined') {
     mouseUps.forEach((x) => x())
     mouseUps.clear()
   })
+  document.addEventListener('touchend', () => {
+    mouseUps.forEach((x) => x())
+    mouseUps.clear()
+  })
+  document.addEventListener('touchcancel', () => {
+    mouseUps.forEach((x) => x())
+    mouseUps.clear()
+  })
 }
 
 // mutates
@@ -495,14 +503,17 @@ export function createComponent<
                 })
                 onPressIn?.(e)
                 onMouseDown?.(e)
+                if (isWeb) {
+                  mouseUps.add(unPress)
+                }
               }
             : null,
           [pressEventKey]: attachPress
             ? (e) => {
+                onClick?.(e)
                 onPress?.(e)
                 unPress()
                 onPressOut?.(e)
-                onClick?.(e)
               }
             : null,
         }
