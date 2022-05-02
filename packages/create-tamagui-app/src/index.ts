@@ -101,7 +101,6 @@ async function run() {
 
   const resolvedProjectPath = path.resolve(process.cwd(), projectPath)
   const projectName = path.basename(resolvedProjectPath)
-  console.log('resolvedProjectPath', resolvedProjectPath)
 
   const { valid, problems } = validateNpmName(projectName)
   if (!valid) {

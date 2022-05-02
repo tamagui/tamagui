@@ -1,3 +1,4 @@
+// debug
 import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
@@ -32,14 +33,13 @@ const browserHeight = 445
 export const HeroResponsive = memo(() => {
   const [bounding, setBounding] = useState<DOMRect | null>(null)
   const prevMove = useRef(0)
-  const initialWidth =
-    typeof window !== 'undefined' ? Math.max(400, Math.min(500, window.innerWidth / 2)) : 500
+  const initialWidth = 420
   const [hasIntersected, setHasIntersected] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [move, setMove] = useState(0)
   const ref = useRef<HTMLDivElement | null>(null)
   const safariRef = useRef<HTMLElement | null>(null)
-  const getState = useGet({ move, isDragging })
+  const getState = useGet({ move, isDragging, bounding })
   const [sizeI, setSizeI] = useState(0)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
@@ -68,13 +68,14 @@ export const HeroResponsive = memo(() => {
   }, [])
 
   const onMove = throttle((e: MouseEvent) => {
-    if (!getState().isDragging) return
-    if (!bounding) {
+    const state = getState()
+    if (!state.isDragging) return
+    if (!state.bounding) {
       updateBoundings()
       return
     }
-    if (!bounding) return
-    const right = bounding.width + bounding.x
+    if (!state.bounding) return
+    const right = state.bounding.width + state.bounding.x
     const x = e.pageX - right
     const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 120
     const nextMove = Math.min(maxMove, Math.max(0, x))
@@ -130,8 +131,8 @@ export const HeroResponsive = memo(() => {
     }
   }, [])
 
-  const width = `calc(${initialWidth}px + ${move}px)`
-  const isSmall = initialWidth + move < 680
+  const width = initialWidth + Math.max(0, move)
+  const isSmall = initialWidth + Math.max(0, move) < 680
 
   const handleMarkerPress = useCallback((name) => {
     // todo animate to width

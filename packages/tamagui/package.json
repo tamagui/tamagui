@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.0.0-beta.0.209+5f91a5a5",
+  "version": "1.0.0-beta.0.211+a49cc7ea",
   "sideEffects": [
     "*.css",
     "polyfills.ts"
@@ -29,17 +29,17 @@
     "@react-native-aria/focus": "^0.2.5",
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
-    "@tamagui/animate-presence": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/compose-refs": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/core": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/create-context": "^1.0.0-beta.0.209+5f91a5a5",
+    "@tamagui/animate-presence": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/compose-refs": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/core": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/create-context": "^1.0.0-beta.0.211+a49cc7ea",
     "@tamagui/expo-linear-gradient": "11.2.7",
-    "@tamagui/fake-react-native": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/helpers": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/stacks": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/use-controllable-state": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/use-debounce": "^1.0.0-beta.0.209+5f91a5a5",
-    "@tamagui/use-force-update": "^1.0.0-beta.0.209+5f91a5a5",
+    "@tamagui/fake-react-native": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/helpers": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/stacks": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/use-controllable-state": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/use-debounce": "^1.0.0-beta.0.211+a49cc7ea",
+    "@tamagui/use-force-update": "^1.0.0-beta.0.211+a49cc7ea",
     "react": "*",
     "react-dom": "*",
     "react-native-safe-area-context": "^4.2.5"
@@ -48,10 +48,10 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.0.209+5f91a5a5",
+    "@tamagui/build": "^1.0.0-beta.0.211+a49cc7ea",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "react-native-web": "^0.17.5"
   },
-  "gitHead": "5f91a5a5747cf5fa2e794a4ca65ee3113d318f0c"
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
 }
