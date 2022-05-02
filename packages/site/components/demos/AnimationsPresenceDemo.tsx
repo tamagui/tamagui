@@ -26,7 +26,7 @@ export default () => {
   const exitVariant = direction === 1 ? 'isLeft' : 'isRight'
 
   return (
-    <XStack bc="#000" pos="relative" h={300} w="100%" ai="center">
+    <XStack ov="hidden" bc="#000" pos="relative" h={300} w="100%" ai="center">
       <AnimatePresence enterVariant={enterVariant} exitVariant={exitVariant}>
         <YStackEnterable key={page} animation="bouncy" fullscreen x={0} o={1}>
           <Image src={images[imageIndex]} width={700} height={300} />

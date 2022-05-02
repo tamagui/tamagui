@@ -52,7 +52,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                 o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
                 width={width}
                 height={20}
-                br="$2"
+                br="$1"
                 position="relative"
                 jc="center"
                 scaleX={1}

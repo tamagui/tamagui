@@ -28,7 +28,7 @@ export default () => {
         opacity={1}
         scale={1}
         y={0}
-        bc="$background"
+        bc="$pink10"
         br="$9"
       >
         <LogoIcon downscale={0.75} />

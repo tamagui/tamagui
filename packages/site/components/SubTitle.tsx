@@ -14,6 +14,7 @@ export const SubTitle = ({ children, ...props }) => {
         theme="alt3"
         fontWeight="300"
         tag="p"
+        maxWidth="100%"
         mb="$2"
         mt="$0"
         {...props}

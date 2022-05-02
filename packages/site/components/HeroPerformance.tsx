@@ -35,7 +35,16 @@ export function HeroPerformance() {
           </HomeH3>
         </YStack>
 
-        <YStack pos="relative" px="$2" h={131} br="$8" width="100%" ai="stretch" jc="center">
+        <YStack
+          pos="relative"
+          px="$2"
+          $sm={{ px: '$0', mx: -20, width: 'calc(100% + 40px)' }}
+          h={131}
+          br="$8"
+          width="100%"
+          ai="stretch"
+          jc="center"
+        >
           <Paragraph
             pos="absolute"
             b={-20}

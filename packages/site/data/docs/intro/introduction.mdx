@@ -17,7 +17,7 @@ It does this by compiling typed inline styles, even ones containing conditional 
 
 This is a **win-win-win**: more performant, easier to write/maintain, and works on every platform. Typically you'd have to trade performance for DX, or both for cross-platform compatibility. With Tamagui, you don't!
 
-In exchange you add complexity with a compiler - but, it's both optional, very easy to turn off and introspect at every level.
+In exchange you add complexity with a compiler, but, it's both optional, and very easy granularly introspect and turn off if needed.
 
 The compiler does a lot, too - it analyzes logic, spreads, and nested ternaries, even flattening fully analyzable components to reduce tree depth signficantly.
 
@@ -29,7 +29,7 @@ Work with your favorite libraries: `react-native` and `react-native-web` augment
 
 ### Themed, Responsive
 
-Hooks `useTheme` and `useMedia` and inline theme and media styling work just how you'd expect them to. But they compile to clean CSS media queries and CSS variables.
+Inline typed theme and media props, and accompanying `useTheme` and `useMedia` hooks work how you'd expect them to, but also compile away.
 
 ### Faster Runtime
 

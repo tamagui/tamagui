@@ -19,17 +19,10 @@ export const Link = ({
   children,
   ...props
 }: LinkProps) => {
-  const allChildrenStrings = React.Children.toArray(children).every((x) => typeof x === 'string')
   return (
     <NextLink passHref {...{ href, replace, scroll, shallow, prefetch, locale }}>
-      <SizableText
-        cursor="pointer"
-        tag="a"
-        color="$color"
-        hoverStyle={{ color: '$color' }}
-        {...props}
-      >
-        {allChildrenStrings ? children : children}
+      <SizableText cursor="pointer" tag="a" {...props}>
+        {children}
       </SizableText>
     </NextLink>
   )
