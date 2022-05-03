@@ -52,7 +52,7 @@ export const HeroTypography = () => {
       {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
       <ContainerLarge position="relative" space="$8">
         <YStack ref={ref} ai="center" space="$2">
-          <HomeH2>Plug-and-play fonts, individually tuned.</HomeH2>
+          <HomeH2>Pluggable fonts, individually tuned.</HomeH2>
         </YStack>
 
         <XStack
@@ -94,7 +94,7 @@ export const HeroTypography = () => {
                 family={family}
                 color="$blue10"
               >
-                typed and optimized
+                typed, compiled
               </AnimatedHeading>
               <AnimatedHeading
                 key={`${family}3`}

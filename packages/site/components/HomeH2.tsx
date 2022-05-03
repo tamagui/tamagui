@@ -5,7 +5,7 @@ export const HomeH2 = styled(H2, {
   ta: 'center',
   als: 'center',
   size: '$12',
-  maw: 780,
+  maw: 720,
   mt: '$-2',
 
   $sm: {
