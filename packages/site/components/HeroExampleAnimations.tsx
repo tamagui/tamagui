@@ -82,13 +82,19 @@ export function HeroExampleAnimations() {
               ai="center"
               jc="center"
             >
-              <YStack fullscreen className="mask-gradient-up" o={0.5} bc={`$${tint}4Dark`} />
+              <YStack
+                fullscreen
+                top="60%"
+                className="mask-gradient-up"
+                o={0.5}
+                bc="rgba(0,0,0,0.2)"
+              />
               <Button
                 y={200}
                 iconAfter={ArrowDown}
-                size="$2"
+                size="$4"
+                themeInverse
                 zi={10}
-                theme={tint}
                 onPress={() => setDisableScrollPane(false)}
               >
                 View more
@@ -102,12 +108,12 @@ export function HeroExampleAnimations() {
               language="jsx"
               value={`import { Button, Square } from 'tamagui'
 
-export default (props) => {
+export default () => {
   const [positionI, setPositionI] = React.useState(0)
   return (
     <>
       <Square
-        animation={props.animation || 'bouncy'}
+        animation="animation
         size={110}
         bc="$pink10"
         br="$9"

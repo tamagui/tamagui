@@ -25,7 +25,6 @@ export default (props) => {
         animation={props.animation || 'bouncy'}
         onPress={() => next()}
         size={110}
-        elevation="$4"
         bc="$pink10"
         br="$9"
         hoverStyle={{

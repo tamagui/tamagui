@@ -7,11 +7,11 @@ import { HomeH2, HomeH3 } from './HomeH2'
 const FeatureItem = ({ label, children }) => {
   return (
     <SizableText>
-      <SizableText size="$5" fow="800">
+      <SizableText size="$4" fow="800">
         {label}
       </SizableText>
       &nbsp;&nbsp;-&nbsp;&nbsp;
-      <SizableText size="$5" tag="span" theme="alt2">
+      <SizableText size="$4" tag="span" theme="alt2">
         {children}
       </SizableText>
     </SizableText>
@@ -22,7 +22,7 @@ const Features = ({ items, ...props }: any) => {
   return (
     <YStack space {...props}>
       {items.map((feature, i) => (
-        <Card elevation="$1" key={i}>
+        <Card debug="verbose" p="$9" elevation="$1" key={i}>
           <XStack tag="li">
             <Text color="$green9">
               <CheckCircle />

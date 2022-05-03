@@ -20,6 +20,7 @@ export interface UseThemeProps {
   forcedTheme?: string
   /** Update the theme */
   setTheme: (theme: string) => void
+  toggleTheme: () => void
   /** Active theme name */
   theme?: string
   /** If `enableSystem` is true and the active theme is "system", this returns whether the system preference resolved to "dark" or "light". Otherwise, identical to `theme` */
@@ -35,6 +36,7 @@ export interface ThemeProviderProps {
   forcedTheme?: string
   /** Whether to switch between dark and light themes based on prefers-color-scheme */
   enableSystem?: boolean
+  systemTheme?: string
   /** Disable all CSS transitions when switching themes */
   disableTransitionOnChange?: boolean
   /** Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons */
@@ -52,6 +54,7 @@ export interface ThemeProviderProps {
 }
 
 const ThemeContext = createContext<UseThemeProps>({
+  toggleTheme: () => {},
   setTheme: (_) => {},
   themes: [],
 })
@@ -192,6 +195,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     return {
       theme,
       setTheme,
+      toggleTheme() {
+        const order =
+          resolvedTheme === 'dark' ? ['system', 'light', 'dark'] : ['system', 'dark', 'light']
+        const next = order[(order.indexOf(theme) + 1) % order.length]
+        setTheme(next)
+      },
       forcedTheme,
       resolvedTheme: theme === 'system' ? resolvedTheme : theme,
       themes: enableSystem ? [...themes, 'system'] : themes,
@@ -205,6 +214,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         {...{
           forcedTheme,
           storageKey,
+          systemTheme: resolvedTheme,
           attribute,
           value,
           enableSystem,

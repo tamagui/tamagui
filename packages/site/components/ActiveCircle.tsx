@@ -1,6 +1,6 @@
 import { Circle, YStack } from 'tamagui'
 
-export const ActiveCircle = ({ isActive, backgroundColor, opacity, ...props }) => {
+export const ActiveCircle = ({ isActive, backgroundColor, opacity, ...props }: any) => {
   return (
     <YStack p="$1" {...props}>
       <YStack

@@ -101,6 +101,7 @@ export function createComponent<
   let avoidClasses = true
   let defaultNativeStyle: any
   let defaultNativeStyleSheet: StyleSheet.NamedStyles<{ base: {} }>
+  let tamaguiDefaultProps: any
   let initialSplitStyles: SplitStyleResult
 
   function addPseudoToStyles(styles: any[], name: string, pseudos: any) {
@@ -118,6 +119,9 @@ export function createComponent<
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
+    // ridiculous fix because react inserts default props after your props for some reason...
+    props = tamaguiDefaultProps ? { ...tamaguiDefaultProps, ...props } : props
+
     const { Component, componentName, isText, isZStack } = staticConfig
 
     if (process.env.NODE_ENV === 'development') {
@@ -125,7 +129,7 @@ export function createComponent<
         // prettier-ignore
         console.warn(staticConfig.componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
         // keep separate react native warn touches every value on prop causing weird behavior
-        console.log('props in:', props)
+        console.log('props in:', props, Object.keys(props))
         if (props['debug'] === 'break') debugger
       }
     }
@@ -659,10 +663,19 @@ export function createComponent<
     })
 
     // @ts-ignore
-    component.defaultProps = {
+    // this ruins the prop order!!!
+    // can't believe it but it puts default props after props?
+    const defaults = {
       ...viewProps,
       ...component.defaultProps,
     }
+    if (Object.keys(defaults).length) {
+      tamaguiDefaultProps = defaults
+    }
+    // component.defaultProps = {
+    //   ...viewProps,
+    //   ...component.defaultProps,
+    // }
 
     // add debug logs
     if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.debug) {

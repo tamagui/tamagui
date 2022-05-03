@@ -114,7 +114,6 @@ export const useMedia = () => {
     // add new
     for (const key in st.nextSelections) {
       if (!(key in st.selections)) {
-        console.log('lsiten', key)
         addMediaQueryListener(key, forceUpdate)
       }
     }
