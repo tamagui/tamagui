@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Button, ButtonProps, Paragraph, isTouchDevice } from 'tamagui'
+import { Button, ButtonProps, Paragraph, useIsTouchDevice } from 'tamagui'
 
 const SearchContext = createContext<any>(null)
 
@@ -119,6 +119,7 @@ const ResultItem = ({ hit, children }) => {
 
 export const SearchButton = (props: ButtonProps) => {
   const { onOpen, onInput } = useContext(SearchContext)
+  const isTouch = useIsTouchDevice()
   const ref = useRef()
 
   useEffect(() => {
@@ -152,7 +153,7 @@ export const SearchButton = (props: ButtonProps) => {
         elevation: '$4',
       }}
       iconAfter={
-        isTouchDevice ? null : (
+        isTouch ? null : (
           <Button tag="span" size="$2" theme="alt2" hoverable={false}>
             /
           </Button>

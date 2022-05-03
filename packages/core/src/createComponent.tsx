@@ -15,21 +15,17 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
-import { isAndroid, isTouchDevice, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
+import { isAndroid, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { rnw } from './constants/rnw'
 import { isVariable } from './createVariable'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
-import {
-  SplitStyleResult,
-  getSplitStyles,
-  insertSplitStyles,
-  useSplitStyles,
-} from './helpers/getSplitStyles'
+import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
+import { useIsTouchDevice } from './hooks/useIsTouchDevice'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
@@ -419,7 +415,9 @@ export function createComponent<
       onPressIn ||
       onClick
     )
-    const isHoverable = isWeb && !isTouchDevice
+
+    const isTouch = useIsTouchDevice()
+    const isHoverable = isWeb && !isTouch
     const attachHover =
       isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
@@ -666,7 +664,7 @@ export function createComponent<
       ...component.defaultProps,
     }
 
-    // debug
+    // add debug logs
     if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.debug) {
       if (process.env.IS_STATIC !== 'is_static') {
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {

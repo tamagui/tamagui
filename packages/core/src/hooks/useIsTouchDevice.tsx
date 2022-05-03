@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { isTouchDevice } from '../constants/platform'
+import { isTouchDevice, useIsomorphicLayoutEffect } from '../constants/platform'
 
 // ssr friendly
 
 export const useIsTouchDevice = () => {
   const [touchOnly, setTouchOnly] = useState(false)
 
-  if (isTouchDevice) {
-    useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
+    if (isTouchDevice) {
       setTouchOnly(true)
-    }, [])
-  }
+    }
+  }, [])
 
   return touchOnly
 }

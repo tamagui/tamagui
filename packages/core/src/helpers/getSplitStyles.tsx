@@ -6,7 +6,7 @@ import {
   validStyles,
 } from '@tamagui/helpers'
 // @ts-ignore
-import { useInsertionEffect, useLayoutEffect } from 'react'
+import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'

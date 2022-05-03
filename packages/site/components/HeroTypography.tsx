@@ -11,6 +11,7 @@ import {
   H6,
   Heading,
   Paragraph,
+  Spacer,
   TextProps,
   XStack,
   YStack,
@@ -74,7 +75,7 @@ export const HeroTypography = () => {
             scale={1.1}
             x={0}
             // y={-20}
-            $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 1 }}
+            $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
             <AnimatePresence exitBeforeEnter>
               <AnimatedHeading
@@ -84,25 +85,25 @@ export const HeroTypography = () => {
                 family={family}
                 color="$pink10"
               >
-                Hot-swappable
+                Swappable
               </AnimatedHeading>
               <AnimatedHeading
                 key={`${family}2`}
                 index={1}
                 Component={H2}
                 family={family}
-                color="$purple10"
+                color="$blue10"
               >
-                individually-styled
+                typed and optimized
               </AnimatedHeading>
               <AnimatedHeading
                 key={`${family}3`}
                 index={2}
                 Component={H3}
                 family={family}
-                color="$blue10"
+                color="$purple10"
               >
-                typed and optimized
+                custom per-size
               </AnimatedHeading>
               <AnimatedHeading
                 key={`${family}4`}
@@ -145,22 +146,18 @@ const OverlayCard = () => {
   // {/* TODO elevation not overriding? */}
   return (
     <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
-      <YStack jc="center" p="$6" space="$4" maw="calc(min(90vw, 400px))">
-        <Paragraph ta="left" size="$8" fow="400">
-          Plug-in or create fonts, as&nbsp;easy as npm install.
+      <YStack jc="center" p="$4" space="$4" maw="calc(min(90vw, 400px))" $sm={{ p: '$2' }}>
+        <Paragraph ta="left" size="$8" fow="400" letsp={-1}>
+          Share fonts as npm packages with complete control over vertical ryhthm.
         </Paragraph>
 
-        <Paragraph ta="left" size="$7" theme="alt1" fow="400">
+        <Paragraph ta="left" size="$6" theme="alt2" fow="400">
           Tune families across every size step - weights, spacing, line-height, and letter-spacing.
-        </Paragraph>
-
-        <Paragraph ta="left" size="$5" theme="alt2">
-          Fully-typed, shareable fonts!
         </Paragraph>
 
         <Link href="/docs/intro/configuration" passHref>
           <Button fontFamily="$silkscreen" tag="a" als="flex-end" theme={tint}>
-            Learn more &raquo;
+            Fonts &raquo;
           </Button>
         </Link>
       </YStack>

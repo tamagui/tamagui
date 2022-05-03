@@ -242,7 +242,7 @@ const Header = memo(() => {
   return (
     <YStack f={1} space="$3">
       <XStack>
-        <HomeH2 als="flex-start">Responsive.</HomeH2>
+        <HomeH2 als="flex-start">Responsive</HomeH2>
 
         <Spacer size="$6" />
 

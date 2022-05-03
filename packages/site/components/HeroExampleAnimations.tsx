@@ -43,7 +43,7 @@ export function HeroExampleAnimations() {
       <ContainerLarge position="relative" space="$6">
         <YStack zi={1} space="$1">
           <HomeH2 pos="relative">
-            Animations
+            <span className="rainbow clip-text">Animated</span>
             <Button pe="none" size="$3" theme="pink" pos="absolute" t={-10} r={-70} rotate="5deg">
               New
             </Button>

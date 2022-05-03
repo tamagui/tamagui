@@ -83,8 +83,6 @@ export const useTheme = (
             if (!didChangeTheme) {
               return null
             }
-            // TODO
-            // console.log('DID CHANGE THEME')
             return themeManager
           }
           return Reflect.get(_, key)

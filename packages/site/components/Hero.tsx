@@ -88,7 +88,7 @@ const HeroTop = memo(() => {
                 <span className="rainbow clip-text help">Universal</span>
               </span>
             </Tooltip>{' '}
-            design systems for React Native &&nbsp;Web, faster
+            design systems for React&nbsp;Native &&nbsp;Web, faster
           </H1>
 
           <YStack

@@ -4,16 +4,16 @@ export const HomeH2 = styled(H2, {
   name: 'HomeH2',
   ta: 'center',
   als: 'center',
-  size: '$11',
+  size: '$12',
   maw: 780,
   mt: '$-2',
 
   $sm: {
-    size: '$10',
+    size: '$11',
   },
 
   $xs: {
-    size: '$9',
+    size: '$10',
   },
 })
 

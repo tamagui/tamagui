@@ -20,12 +20,9 @@ export function HeroExampleCode() {
       <ContainerLarge position="relative">
         <YStack zi={1} space="$4">
           <YStack space="$2">
-            <HomeH2>
-              <span className="rainbow clip-text">DX</span> 🤝{' '}
-              <span className="rainbow clip-text">UX</span>
-            </HomeH2>
+            <HomeH2>DX 🤝 UX</HomeH2>
             <HomeH3>
-              Maintainabile and ergonomic, cross-platform, performant and easy-to-debug.
+              Maintainable, ergonomic, cross-platform, performant&nbsp;and&nbsp;easy-to-debug.
             </HomeH3>
           </YStack>
 
