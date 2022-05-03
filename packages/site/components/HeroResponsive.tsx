@@ -10,7 +10,9 @@ import {
   Theme,
   XStack,
   YStack,
+  isTouchDevice,
   useDebounce,
+  useMedia,
 } from 'tamagui'
 
 import { demoMedia } from '../constants/media'
@@ -108,11 +110,11 @@ export const HeroResponsive = memo(() => {
         updateBoundings()
       }
       prevMove.current = getState().move - 10
-      window.addEventListener('mousemove', onMove)
+      window.addEventListener('pointermove', onMove)
       return () => {
         onMove.cancel()
         dispose?.()
-        window.removeEventListener('mousemove', onMove)
+        window.removeEventListener('pointermove', onMove)
         stop()
       }
     },
@@ -130,7 +132,9 @@ export const HeroResponsive = memo(() => {
     }
   }, [])
 
-  const width = initialWidth + Math.max(0, move)
+  const media = useMedia()
+  const [smIndex, setSmIndex] = useState(0)
+  const width = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
   const isSmall = initialWidth + Math.max(0, move) < 680
 
   const handleMarkerPress = useCallback((name) => {
@@ -143,13 +147,29 @@ export const HeroResponsive = memo(() => {
         <Header />
         <Spacer size="$6" />
         <YStack h={browserHeight + 80} />
-        <XStack b={-20} pos="absolute" zi={1} f={1} space="$1">
+        <XStack
+          b={-20}
+          pos="absolute"
+          zi={1}
+          f={1}
+          space="$1"
+          $sm={{
+            scale: 0.8 - smIndex * 0.06,
+            x: 150 - width / 2,
+            y: -40,
+          }}
+        >
           <YStack
             className="unselectable"
             pe={isDragging ? 'none' : 'auto'}
             w={width}
             f={1}
             ref={safariRef}
+            onPress={() => {
+              if (isTouchDevice) {
+                setSmIndex((i) => (i + 1) % breakpoints.length)
+              }
+            }}
           >
             <Theme name="pink_alt2">
               <Safari shouldLoad={hasIntersected} isSmall={isSmall} />
@@ -157,7 +177,7 @@ export const HeroResponsive = memo(() => {
           </YStack>
 
           <Container zi={-1} pos="absolute">
-            <XStack x={-10}>
+            <XStack x={-10} $sm={{ display: 'none' }}>
               {breakpoints.map((bp, i) => {
                 return (
                   <Marker
@@ -175,8 +195,13 @@ export const HeroResponsive = memo(() => {
           <YStack
             jc="center"
             cursor="ew-resize"
-            onPressIn={() => {
+            onPressIn={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
               setIsDragging(true)
+            }}
+            $sm={{
+              display: 'none',
             }}
           >
             <YStack

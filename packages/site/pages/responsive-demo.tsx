@@ -25,7 +25,7 @@ export default function ResponsiveDemo() {
         <H3>Enchanting Garden</H3>
         <XStack ai="center" space>
           <MapPin size={12} color="var(--color)" />
-          <H5>Oakland, CA</H5>
+          <H5>Kailua, HI</H5>
         </XStack>
       </YStack>
       <YStack ai="flex-end">
