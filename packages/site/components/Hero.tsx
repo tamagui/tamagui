@@ -118,7 +118,7 @@ const HeroTop = memo(() => {
               }}
             >
               <span className="rainbow clip-text">Write&nbsp;once,&nbsp;run&nbsp;everywhere</span>{' '}
-              without downside thanks&nbsp;to&nbsp;an optimizing&nbsp;compiler.
+              without downsides thanks&nbsp;to&nbsp;an optimizing&nbsp;compiler.
             </Paragraph>
           </YStack>
         </YStack>
