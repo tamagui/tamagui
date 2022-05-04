@@ -40,7 +40,7 @@
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
-    "react-native-reanimated": "2.8.0",
+    "react-native-reanimated": "2.3.1",
     "@types/node": "16.11.9",
     "@types/react": "17.0.43",
     "@types/react-native": "0.66.3",
@@ -54,7 +54,8 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-refresh": "0.11.0",
-    "react-native-web": "0.17.5"
+    "react-native-web": "0.17.5",
+    "app": "portal:/Users/n8/starters/next-expo-solito/packages/app"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

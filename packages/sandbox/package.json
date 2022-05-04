@@ -22,7 +22,7 @@
     "motion": "^10.6.2",
     "react": "*",
     "react-dom": "*",
-    "react-native-reanimated": "^2.8.0",
+    "react-native-reanimated": "^2.3.1",
     "react-native-web": "^0.17.5",
     "tamagui": "^1.0.0-beta.1"
   },
