@@ -58,7 +58,9 @@ async function run() {
         throw new Error(`Has unsaved git changes: ${out.stdout}`)
       }
 
-      await spawnify(`yarn lerna version ${version} --ignore-changes --ignore-scripts --yes`)
+      await spawnify(
+        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --force-publish`
+      )
     }
 
     console.log((await exec(`git diff`)).stdout)
