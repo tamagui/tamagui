@@ -30,9 +30,9 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
       ai="center"
       position="relative"
       tag="header"
-      py={floating ? 0 : '$2'}
       jc="space-between"
-      p="relative"
+      pos="relative"
+      py={floating ? 0 : '$2'}
       zi={1}
     >
       <XStack ai="center" space="$4">

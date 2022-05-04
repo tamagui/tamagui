@@ -435,14 +435,46 @@ export const getSubStyle = (
 }
 
 export function normalizeStyleObject(style: any) {
+  // TODO move to our own atomic css generation and remove this along with getStylesAtomic
   // fix padding expand i know this exists in rnw but it doesnt expand base padding
   if (style.padding) {
-    const val = style.padding
+    style.paddingLeft = style.padding
+    style.paddingTop = style.padding
+    style.paddingRight = style.padding
+    style.paddingBottom = style.padding
     delete style.padding
-    style.paddingLeft = val
-    style.paddingTop = val
-    style.paddingRight = val
-    style.paddingBottom = val
+  }
+
+  if (style.paddingHorizontal) {
+    style.paddingLeft = style.paddingHorizontal
+    style.paddingRight = style.paddingHorizontal
+    delete style.paddingHorizontal
+  }
+
+  if (style.paddingVertical) {
+    style.paddingLeft = style.paddingVertical
+    style.paddingRight = style.paddingVertical
+    delete style.paddingVertical
+  }
+
+  if (style.margin) {
+    style.marginLeft = style.margin
+    style.marginTop = style.margin
+    style.marginRight = style.margin
+    style.marginBottom = style.margin
+    delete style.margin
+  }
+
+  if (style.marginHorizontal) {
+    style.marginLeft = style.marginHorizontal
+    style.marginRight = style.marginHorizontal
+    delete style.marginHorizontal
+  }
+
+  if (style.marginVertical) {
+    style.marginLeft = style.marginVertical
+    style.marginRight = style.marginVertical
+    delete style.marginVertical
   }
 
   // fix flex to match web
