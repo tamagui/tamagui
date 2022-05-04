@@ -35,6 +35,7 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
   if (!context) {
     throw new Error(`No <Popper /> above <Popper.Content />`)
   }
+
   const { setOverlayRef, triggerRef, ...restContext } = context
   const overlayRef = useRef(null)
   // const { top } = useSafeAreaInsets()
@@ -134,7 +135,7 @@ function recursiveFindChild(children: ReactNode, match: (child: any) => boolean,
   let found: ReactNode = null
   let rest = React.Children.toArray(children)
 
-  for (const [index, child] of rest.entries()) {
+  for (const child of rest) {
     if (React.isValidElement(child)) {
       if (match(child)) {
         found = child
