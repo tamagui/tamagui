@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "main": "index.js",
   "types": "types/static",
   "scripts": {

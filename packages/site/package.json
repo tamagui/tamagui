@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/site",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "private": true,
   "scripts": {
     "dev": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development next-remote-watch ./data",
