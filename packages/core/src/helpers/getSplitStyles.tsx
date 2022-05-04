@@ -435,6 +435,16 @@ export const getSubStyle = (
 }
 
 export function normalizeStyleObject(style: any) {
+  // fix padding expand i know this exists in rnw but it doesnt expand base padding
+  if (style.padding) {
+    const val = style.padding
+    delete style.padding
+    style.paddingLeft = val
+    style.paddingTop = val
+    style.paddingRight = val
+    style.paddingBottom = val
+  }
+
   // fix flex to match web
   // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
   if (typeof style.flex === 'number') {

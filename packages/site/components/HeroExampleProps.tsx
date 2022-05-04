@@ -22,7 +22,7 @@ const Features = ({ items, ...props }: any) => {
   return (
     <YStack space {...props}>
       {items.map((feature, i) => (
-        <Card debug="verbose" p="$9" elevation="$1" key={i}>
+        <Card key={i} p="$6" elevation="$1" $sm={{ p: '$4' }}>
           <XStack tag="li">
             <Text color="$green9">
               <CheckCircle />
