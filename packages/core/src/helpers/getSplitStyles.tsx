@@ -435,57 +435,6 @@ export const getSubStyle = (
 }
 
 export function normalizeStyleObject(style: any) {
-  // TODO move to our own atomic css generation and remove this along with getStylesAtomic
-  // fix padding expand i know this exists in rnw but it doesnt expand base padding
-  if (style.padding) {
-    style.paddingLeft = style.padding
-    style.paddingTop = style.padding
-    style.paddingRight = style.padding
-    style.paddingBottom = style.padding
-    delete style.padding
-  }
-
-  if (style.paddingHorizontal) {
-    style.paddingLeft = style.paddingHorizontal
-    style.paddingRight = style.paddingHorizontal
-    delete style.paddingHorizontal
-  }
-
-  if (style.paddingVertical) {
-    style.paddingTop = style.paddingVertical
-    style.paddingBottom = style.paddingVertical
-    delete style.paddingVertical
-  }
-
-  if (style.margin) {
-    style.marginLeft = style.margin
-    style.marginTop = style.margin
-    style.marginRight = style.margin
-    style.marginBottom = style.margin
-    delete style.margin
-  }
-
-  if (style.marginHorizontal) {
-    style.marginLeft = style.marginHorizontal
-    style.marginRight = style.marginHorizontal
-    delete style.marginHorizontal
-  }
-
-  if (style.marginVertical) {
-    style.marginTop = style.marginVertical
-    style.marginBottom = style.marginVertical
-    delete style.marginVertical
-  }
-
-  // fix flex to match web
-  // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-  if (typeof style.flex === 'number') {
-    const val = style.flex
-    delete style.flex
-    style.flexGrow = style.flexGrow ?? val
-    style.flexShrink = style.flexShrink ?? 1
-  }
-
   if (!isWeb) {
     fixNativeShadow(style)
   }

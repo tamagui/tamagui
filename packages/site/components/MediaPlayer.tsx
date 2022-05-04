@@ -42,10 +42,8 @@ export const MediaPlayer = memo(
           size="$6"
           br="$7"
           pointerEvents={pointerEvents}
-          pl={0}
-          pr={0}
-          pb={0}
-          pt={0}
+          p={0}
+          debug="verbose"
           ai="stretch"
         >
           <XStack ai="center" p="$4" space="$5">

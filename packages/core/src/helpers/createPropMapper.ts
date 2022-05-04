@@ -87,7 +87,7 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
           variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
         }
 
-        return variantValue
+        return expansions(variantValue)
       }
     }
 
@@ -109,9 +109,9 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
     }
 
     if (shouldReturn) {
-      return {
+      return expansions({
         [key]: value,
-      }
+      })
     }
   }
 }
@@ -247,4 +247,38 @@ const tokenCategories = {
     borderLeftColor: true,
     borderRightColor: true,
   },
+}
+
+// TODO need to move to own engine for all this... duplicating some functionality temporarily
+
+const sidesX = ['Left', 'Right']
+const sidesY = ['Top', 'Bottom']
+const sidesXY = [...sidesX, ...sidesY]
+const expand = {
+  padding: sidesXY.map((x) => `padding${x}`),
+  paddingHorizontal: sidesX.map((x) => `padding${x}`),
+  paddingVertical: sidesY.map((x) => `padding${x}`),
+  margin: sidesXY.map((x) => `margin${x}`),
+  marginHorizontal: sidesX.map((x) => `margin${x}`),
+  marginVertical: sidesY.map((x) => `margin${x}`),
+}
+
+function expansions(styleObj: Record<string, any>) {
+  for (const key in expand) {
+    if (key in styleObj) {
+      for (const expandKey of expand[key]) {
+        styleObj[expandKey] = styleObj[key]
+      }
+      delete styleObj[key]
+    }
+  }
+  if ('flex' in styleObj) {
+    // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+    if (typeof styleObj.flex === 'number') {
+      styleObj.flexGrow = styleObj.flexGrow ?? styleObj.flex
+      styleObj.flexShrink = styleObj.flexShrink ?? 1
+      delete styleObj.flex
+    }
+  }
+  return styleObj
 }

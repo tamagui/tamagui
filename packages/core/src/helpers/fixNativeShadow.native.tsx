@@ -1,21 +1,25 @@
 const matchRgbaHsla =
   /(rgba|hsla)\(\s*([\d\.]{1,}%?)\s*,\s*([\d\.]{1,}%?)\s*,\s*([\d\.]{1,}%?)\s*,\s*([\d\.]{1,})\s*\)$/
 
-export function fixNativeShadow(props: any) {
-  if (!props.shadowColor) {
+export function fixNativeShadow(styles: [string, any][]) {
+  const color = styles.find((x) => x[0] === 'shadowColor')
+  if (!color) {
     return
   }
-  if (!props.shadowOffset) {
+  if (!styles.find((x) => x[0] === 'shadowOffset')) {
     // fixes some broken shadows
-    props.shadowOffset = {
-      width: 0,
-      height: 0,
-    }
+    styles.push([
+      'shadowOffset',
+      {
+        width: 0,
+        height: 0,
+      },
+    ])
   }
-  if ('shadowOpacity' in props) {
+  if (styles.find((x) => x[0] === 'shadowOpacity')) {
     return
   }
-  const c = `${props.shadowColor}`
+  const c = `${color[1]}`
   // react native has issues sometimes with rgba()
   // supports rgba + hsla
   if ((c[0] === 'r' || c[0] === 'h') && c[3] === 'a') {
@@ -24,9 +28,9 @@ export function fixNativeShadow(props: any) {
       console.trace('invalid', c, type)
       throw new Error(`invalid style`)
     }
-    props.shadowColor = `${type.replace('a', '')}(${_1},${_2},${_3})`
-    props.shadowOpacity = +a
+    styles.push(['shadowColor', `${type.replace('a', '')}(${_1},${_2},${_3})`])
+    styles.push(['shadowOpacity', +a])
   } else {
-    props.shadowOpacity = 1
+    styles.push(['shadowOpacity', 1])
   }
 }
