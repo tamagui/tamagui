@@ -51,7 +51,7 @@ export const docsRoutes = [
     label: 'Separate Components',
     pages: [
       { title: 'Drawer', route: '/docs/components/drawer' },
-      { title: 'Menu', route: '/docs/components/menu' },
+      // { title: 'Menu', route: '/docs/components/menu' },
     ],
   },
 

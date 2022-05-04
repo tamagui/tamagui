@@ -198,11 +198,16 @@ export const Drawer = withStaticProperties(
     Handle: DrawerHandle,
     Frame: DrawerFrame,
     Backdrop: DrawerBackdrop,
-    // could leave these separate imports...
     ScrollView: BottomSheetScrollView,
-    FlatList: BottomSheetFlatList,
-    VirtualizedList: BottomSheetVirtualizedList,
-    SectionList: BottomSheetSectionList,
+    get FlatList() {
+      return BottomSheetFlatList
+    },
+    get VirtualizedList() {
+      return BottomSheetVirtualizedList
+    },
+    get SectionList() {
+      return BottomSheetSectionList
+    },
   }
 )
 

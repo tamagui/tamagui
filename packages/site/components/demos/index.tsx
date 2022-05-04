@@ -1,24 +1,25 @@
 import dynamic from 'next/dynamic'
 
-export const StacksDemo = dynamic(() => import('./StacksDemo'))
-export const ShapesDemo = dynamic(() => import('./ShapesDemo'))
-export const TextDemo = dynamic(() => import('./TextDemo'))
-export const ButtonDemo = dynamic(() => import('./ButtonDemo'))
-export const ThemeInverseDemo = dynamic(() => import('./ThemeInverseDemo'))
-export const FormsDemo = dynamic(() => import('./FormsDemo'))
-export const LinearGradientDemo = dynamic(() => import('./LinearGradientDemo'))
-export const HeadingsDemo = dynamic(() => import('./HeadingsDemo'))
+export { default as StacksDemo } from './StacksDemo'
+export { default as ShapesDemo } from './ShapesDemo'
+export { default as TextDemo } from './TextDemo'
+export { default as ButtonDemo } from './ButtonDemo'
+export { default as ThemeInverseDemo } from './ThemeInverseDemo'
+export { default as FormsDemo } from './FormsDemo'
+export { default as LinearGradientDemo } from './LinearGradientDemo'
+export { default as HeadingsDemo } from './HeadingsDemo'
+export { default as SeparatorDemo } from './SeparatorDemo'
+export { default as ImageDemo } from './ImageDemo'
+export { default as AnimationsDemo } from './AnimationsDemo'
+export { default as LabelDemo } from './LabelDemo'
+
 export const TooltipDemo = dynamic(() => import('./TooltipDemo'))
 export const DrawerDemo = dynamic(() => import('./DrawerDemo'))
 export const MenuDemo = dynamic(() => import('./MenuDemo'))
-export const SeparatorDemo = dynamic(() => import('./SeparatorDemo'))
 export const PopoverDemo = dynamic(() => import('./PopoverDemo'))
 export const HoverablePopoverDemo = dynamic(() => import('./HoverablePopoverDemo'))
-export const ImageDemo = dynamic(() => import('./ImageDemo'))
-export const AnimationsDemo = dynamic(() => import('./AnimationsDemo'))
 export const AnimationsHoverDemo = dynamic(() => import('./AnimationsHoverDemo'))
 export const AnimationsEnterDemo = dynamic(() => import('./AnimationsEnterDemo'))
 export const AnimationsPresenceDemo = dynamic(() => import('./AnimationsPresenceDemo'))
 export const SwitchDemo = dynamic(() => import('./SwitchDemo'))
-export const LabelDemo = dynamic(() => import('./LabelDemo'))
 export const FeatherIconsDemo = dynamic(() => import('./FeatherIconsDemo'))

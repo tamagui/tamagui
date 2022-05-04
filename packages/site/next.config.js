@@ -35,8 +35,8 @@ const transform = withPlugins(
         'Picker',
         'Animated',
         'AnimatedFlatList',
-        'VirtualizedList',
-        'VirtualizedSectionList',
+        // 'VirtualizedList',
+        // 'VirtualizedSectionList',
         // reanimated node_modules/react-native-reanimated/lib/reanimated2/component/FlatList.js
         // 'FlatList',
       ],

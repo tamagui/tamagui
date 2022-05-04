@@ -203,9 +203,9 @@ export declare const Drawer: ((props: Omit<Omit<Partial<BottomSheetModalProps>, 
         [x: string]: undefined;
     })>;
     ScrollView: (props: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types").BottomSheetScrollViewProps) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
-    FlatList: <T>(props: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types").BottomSheetFlatListProps<T>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
-    VirtualizedList: <T_1>(props: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types").BottomSheetVirtualizedListProps<T_1>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
-    SectionList: <ItemT, SectionT = import("react-native").DefaultSectionT>(props: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types").BottomSheetSectionListProps<ItemT, SectionT>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+    readonly FlatList: <T>(props: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types").BottomSheetFlatListProps<T>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+    readonly VirtualizedList: <T_1>(props: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types").BottomSheetVirtualizedListProps<T_1>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
+    readonly SectionList: <ItemT, SectionT = import("react-native").DefaultSectionT>(props: import("@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types").BottomSheetSectionListProps<ItemT, SectionT>) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null;
 };
 export { createDrawerScope };
 //# sourceMappingURL=Drawer.d.ts.map
