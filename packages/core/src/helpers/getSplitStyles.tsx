@@ -452,8 +452,8 @@ export function normalizeStyleObject(style: any) {
   }
 
   if (style.paddingVertical) {
-    style.paddingLeft = style.paddingVertical
-    style.paddingRight = style.paddingVertical
+    style.paddingTop = style.paddingVertical
+    style.paddingBottom = style.paddingVertical
     delete style.paddingVertical
   }
 
@@ -472,8 +472,8 @@ export function normalizeStyleObject(style: any) {
   }
 
   if (style.marginVertical) {
-    style.marginLeft = style.marginVertical
-    style.marginRight = style.marginVertical
+    style.marginTop = style.marginVertical
+    style.marginBottom = style.marginVertical
     delete style.marginVertical
   }
 

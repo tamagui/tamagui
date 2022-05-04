@@ -37,7 +37,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
     >
       <XStack ai="center" space="$4">
         {isHome ? (
-          <YStack cursor="pointer" my={-20}>
+          <YStack debug="verbose" cursor="pointer" my={-20}>
             <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 1.5} />
           </YStack>
         ) : (
