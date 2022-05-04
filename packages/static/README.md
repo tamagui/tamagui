@@ -1,5 +1,1 @@
-- onPress, onPressIn, onPressOut, onHoverIn, onHoverOut, ref, key extraction
-- bug with props after spread not applying, make them deopt:
-  - <YStack {...baseStyle} cursor="default" /> wont be right rn
-- hoverStyle/pressStyle spread + constant
-- LinearGradient
+## static

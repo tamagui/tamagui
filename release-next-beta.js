@@ -11,6 +11,7 @@ const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')
 
 const spawnify = async (cmd, opts) => {
+  console.log('>', cmd)
   const [head, ...rest] = cmd.split(' ')
   return new Promise((res, rej) => {
     const child = spawn(head, rest, { stdio: ['inherit', 'pipe', 'pipe'], ...opts })
@@ -49,7 +50,6 @@ async function run() {
 
       version = answer.version
 
-      console.log('building...')
       await exec(`yarn build`)
 
       console.log('checking no git changes...')
@@ -58,11 +58,9 @@ async function run() {
         throw new Error(`Has unsaved git changes: ${out.stdout}`)
       }
 
-      console.log('versioning...')
-      await spawnify(`yarn lerna vesion ${version} --ignore-changes --ignore-scripts`)
+      await spawnify(`yarn lerna version ${version} --ignore-changes --ignore-scripts --yes`)
     }
 
-    console.log('changes...')
     console.log((await exec(`git diff`)).stdout)
 
     const { confirmed } = await prompts({
@@ -108,7 +106,7 @@ async function run() {
       console.log(`✅ Published`)
     }
   } catch (err) {
-    console.log('\nError:\n', err.message)
+    console.log('\nError:\n', err)
   }
 }
 
