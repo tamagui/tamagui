@@ -1,4 +1,4 @@
-// heavily inspired by radix-ui popover
+// adapted from radix-ui popover
 
 // see floating portal
 // import { Portal } from '@tamagui/react-portal'
@@ -195,11 +195,13 @@ const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverConten
     const { forceMount, ...contentProps } = props
     const context = usePopoverContext(CONTENT_NAME, props.__scopePopover)
     const isOpen = forceMount || context.open
+    console.log('isOpen', isOpen)
     const contents = !isOpen ? null : context.modal ? (
       <PopoverContentModal {...contentProps} ref={forwardedRef} />
     ) : (
       <PopoverContentNonModal {...contentProps} ref={forwardedRef} />
     )
+
     return <AnimatePresence>{contents}</AnimatePresence>
   }
 )
@@ -284,8 +286,6 @@ const PopoverContentNonModal = React.forwardRef<PopoverContentTypeElement, Popov
     const context = usePopoverContext(CONTENT_NAME, props.__scopePopover)
     const hasInteractedOutsideRef = React.useRef(false)
     const PortalWrapper = React.Fragment //portalled ? Portal : React.Fragment
-
-    console.log('nonmmondal')
 
     return (
       <PortalWrapper>

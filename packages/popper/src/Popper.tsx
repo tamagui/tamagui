@@ -1,3 +1,5 @@
+// adapted from radix-ui popper
+
 import { Coords, Placement, offset, shift } from '@floating-ui/react-dom'
 import { arrow, flip } from '@floating-ui/react-native'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -37,7 +39,6 @@ export type PopperProps = {
 export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) => {
   const { __scopePopper, children, size } = props
   const anchorRef = React.useRef()
-
   return (
     <PopperProvider scope={__scopePopper} anchorRef={anchorRef} size={size}>
       {children}
@@ -65,14 +66,6 @@ export const PopperAnchor = React.forwardRef<PopperAnchorRef, PopperAnchorProps>
     const context = usePopperContext(ANCHOR_NAME, __scopePopper)
     const ref = React.useRef<PopperAnchorRef>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, context.anchorRef)
-
-    // React.useEffect(() => {
-    //   // Consumer can anchor the popper to something that isn't
-    //   // a DOM node e.g. pointer position, so we override the
-    //   // `anchorRef` with their virtual ref in this case.
-    //   // context.onAnchorChange(virtualRef?.current || ref.current)
-    // })
-
     return virtualRef ? null : <YStack {...anchorProps} ref={composedRefs} />
   }
 )
@@ -109,11 +102,11 @@ type PopperContentProps = YStackProps & {
 const PopperContentFrame = styled(SizableStack, {
   name: 'PopperContent',
   backgroundColor: '$background',
-  padding: '$10',
+  alignItems: 'center',
 
-  // defaultVariants: {
-  //   size: '$4',
-  // },
+  defaultVariants: {
+    size: '$4',
+  },
 })
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
@@ -157,24 +150,34 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       return autoUpdate(refs.reference.current, refs.floating.current, update)
     }, [refs.floating, refs.reference, update])
 
+    console.log('render!', x, y, refs, contentProps)
+
+    const arrowStyle = React.useMemo(() => {
+      return middlewareData.arrow
+    }, [JSON.stringify(middlewareData.arrow || {})])
+
     return (
       <PopperContentProvider
         scope={__scopePopper}
         arrowRef={composedArrowRefs}
-        arrowStyle={middlewareData.arrow}
+        arrowStyle={arrowStyle}
         size={size ?? context.size}
         placement={placement}
         onArrowSize={setArrowSize}
       >
-        <PopperContentFrame
-          data-placement={rest.placement}
-          data-strategy={rest.strategy}
-          {...contentProps}
+        {/* outer frame because we explicitly dont want animation to apply to this */}
+        <YStack
           ref={contentRefs}
-          x={x as any}
-          y={y as any}
+          x={(x as any) || 0}
+          y={(y as any) || 0}
           position={rest.strategy as any}
-        />
+        >
+          <PopperContentFrame
+            data-placement={rest.placement}
+            data-strategy={rest.strategy}
+            {...contentProps}
+          />
+        </YStack>
       </PopperContentProvider>
     )
   }
@@ -262,24 +265,6 @@ export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps
         })}
       />
     )
-
-    // return (
-    //   <span ref={context.arrowRef} style={{ ...context.arrowStyles, pointerEvents: 'none' }}>
-    //     <span
-    //       // we have to use an extra wrapper because `ResizeObserver` (used by `useSize`)
-    //       // doesn't report size as we'd expect on SVG elements.
-    //       // it reports their bounding box which is effectively the largest path inside the SVG.
-    //       ref={context.onArrowChange}
-    //       style={{
-    //         display: 'inline-block',
-    //         verticalAlign: 'top',
-    //         pointerEvents: 'auto',
-    //       }}
-    //     >
-    //       <YStack {...arrowProps} ref={forwardedRef} />
-    //     </span>
-    //   </span>
-    // )
   }
 )
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Popover, PopoverArrow, PopoverContent, PopoverTrigger } from 'tamagui'
+import { Button, Paragraph, Popover, PopoverArrow, PopoverContent, PopoverTrigger } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -38,9 +38,13 @@ export const Test = (props) => {
         <PopoverTrigger>
           <Button>Hello2</Button>
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent
+          enterStyle={{ x: 0, y: -20 }}
+          exitStyle={{ x: 0, y: -20 }}
+          animation="bouncy"
+        >
           <PopoverArrow />
-          Hello world
+          <Paragraph>Hello world</Paragraph>
         </PopoverContent>
       </Popover>
     </>

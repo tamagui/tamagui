@@ -283,6 +283,9 @@ export const AnimatePresence: React.FunctionComponent<
   //     `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This will lead to odd visual behaviour.`
   //   )
   // }
+  console.log(
+    exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child))
+  )
 
   return (
     <>{exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child))}</>
