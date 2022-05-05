@@ -3,6 +3,13 @@ import './polyfills'
 export { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export * from '@tamagui/helpers'
+export * from '@tamagui/popper'
+export * from '@tamagui/stacks'
+export * from '@tamagui/use-debounce'
+export * from '@tamagui/use-force-update'
+export * from '@tamagui/use-controllable-state'
+export * from '@tamagui/compose-refs'
+export * from '@tamagui/create-context'
 
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported
@@ -118,14 +125,6 @@ export {
 export * from './createTamagui'
 export * from './viewTypes'
 
-export * from '@tamagui/stacks'
-export * from '@tamagui/use-debounce'
-export * from '@tamagui/use-force-update'
-export * from '@tamagui/use-controllable-state'
-export * from '@tamagui/compose-refs'
-export * from '@tamagui/create-context'
-
-export * from './hooks/useLayout'
 export * from './hooks/useKeyboardDismissable'
 
 export * from './views/Anchor'
@@ -149,8 +148,6 @@ export * from './views/Modal'
 export * from './views/Overlay'
 export * from './views/Paragraph'
 export * from './views/Popover/Popover'
-export * from './views/Popover/PopoverProvider'
-export * from './views/SafeAreaProvider'
 export * from './views/Separator'
 export * from './views/SizableStack'
 export * from './views/SizableText'
@@ -160,7 +157,6 @@ export * from './views/Table'
 export * from './views/TextArea'
 export * from './views/Toast'
 export * from './views/Tooltip'
-export * from './views/TouchableOpacity'
 export * from './views/VisuallyHidden'
 
 export * from './helpers/prevent'

@@ -64,39 +64,6 @@ export const Tooltip = ({
   exitStyle = defaultOutStyle,
   ...props
 }: TooltipProps) => {
-  const getContents = useCallback(
-    ({ open }: { open: boolean }) => {
-      if (!open) {
-        return null
-      }
-      const frame = (
-        <TooltipFrame
-          elevation={size}
-          size={size}
-          // TODO we could fix this i think with some fancy stuff
-          {...(tooltipFrameProps as any)}
-        >
-          <Paragraph textAlign="center" color="$color" size={size}>
-            {contents}
-          </Paragraph>
-        </TooltipFrame>
-      )
-      return (
-        <YStack
-          key="tooltip-child"
-          animation="tooltip"
-          enterStyle={enterStyle}
-          exitStyle={exitStyle}
-          {...tooltipContainerProps}
-        >
-          {!!showArrow && <HoverablePopover.Arrow backgroundColor="$background" />}
-          {alwaysDark ? <Theme name={alwaysDark ? 'dark' : null}>{frame}</Theme> : frame}
-        </YStack>
-      )
-    },
-    [showArrow, alwaysDark, contents, tooltipFrameProps, size]
-  )
-
   return (
     <HoverablePopover
       placement="bottom"
@@ -120,7 +87,38 @@ export const Tooltip = ({
         )
       }
     >
-      {getContents}
+      {useCallback(
+        ({ open }: { open: boolean }) => {
+          if (!open) {
+            return null
+          }
+          const frame = (
+            <TooltipFrame
+              elevation={size}
+              size={size}
+              // TODO we could fix this i think with some fancy stuff
+              {...(tooltipFrameProps as any)}
+            >
+              <Paragraph textAlign="center" color="$color" size={size}>
+                {contents}
+              </Paragraph>
+            </TooltipFrame>
+          )
+          return (
+            <YStack
+              key="tooltip-child"
+              animation="tooltip"
+              enterStyle={enterStyle}
+              exitStyle={exitStyle}
+              {...tooltipContainerProps}
+            >
+              {!!showArrow && <HoverablePopover.Arrow backgroundColor="$background" />}
+              {alwaysDark ? <Theme name={alwaysDark ? 'dark' : null}>{frame}</Theme> : frame}
+            </YStack>
+          )
+        },
+        [showArrow, alwaysDark, contents, tooltipFrameProps, size]
+      )}
     </HoverablePopover>
   )
 }

@@ -2,9 +2,8 @@
 // The MIT License (MIT)
 // Copyright (c) 2021 GeekyAnts India Pvt Ltd
 
-import { useId } from '@react-aria/utils'
 import { FocusScope } from '@react-native-aria/focus'
-import { withStaticProperties } from '@tamagui/core'
+import { useId, withStaticProperties } from '@tamagui/core'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { forwardRef, memo, useCallback, useMemo } from 'react'
 import { View } from 'react-native'

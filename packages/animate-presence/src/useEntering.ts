@@ -1,4 +1,4 @@
-import { useId } from '@react-aria/utils'
+import { useId } from '@tamagui/core'
 import { useContext, useEffect } from 'react'
 
 import { AnimatePresenceContext, AnimatePresenceContextProps } from './AnimatePresenceContext'
@@ -13,7 +13,6 @@ export function useEntering(): [boolean | undefined, undefined | (() => void)] {
   }
 
   const { isEntering, onExitComplete, register } = context
-  // Replace with useId when released in React
   const id = useId()
   const safeToRemove = () => onExitComplete?.(id)
 

@@ -1969,6 +1969,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "@floating-ui/core@npm:0.6.2"
+  checksum: b3e1844da852fe141cfa4163026a7c5ffb4399a96105340dffdd5b76dcafea72c6221a06b4674c2b500bc776adc9d9e4ed39dba55e7d844d9507d994c0af743a
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^0.4.5":
+  version: 0.4.5
+  resolution: "@floating-ui/dom@npm:0.4.5"
+  dependencies:
+    "@floating-ui/core": ^0.6.2
+  checksum: 3024aba55fe7ee78b429a6a5d61f5719a6bb2acc79c8a33304b9d30c443efba3a5288acaf9003402e31ee97a533eda97c30a0f2c97e9e54c697df9b80a23dad8
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react-dom@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "@floating-ui/react-dom@npm:0.6.3"
+  dependencies:
+    "@floating-ui/dom": ^0.4.5
+    use-isomorphic-layout-effect: ^1.1.1
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 1af930aac4e13ed9a25ea2cf70e629d36363034a70ea407a6f8d8d4bd62979c59d3748b58e1ef31c427fdf21a754f285aabba9f14b9e916ab69eb5212144ef6c
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react-native@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "@floating-ui/react-native@npm:0.6.1"
+  dependencies:
+    "@floating-ui/core": ^0.6.2
+  peerDependencies:
+    react: ">=16.8.0"
+    react-native: ">=0.64.0"
+  checksum: 60eee9872075fc0a63c1ebd81c73e04812cbc3b1e910e516f4c646a7dfcc2fe64bdb313d3247fd9a308769738cd8e7b32c45e0488a528b979ff68e615927284a
+  languageName: node
+  linkType: hard
+
 "@formatjs/ecma402-abstract@npm:1.11.4":
   version: 1.11.4
   resolution: "@formatjs/ecma402-abstract@npm:1.11.4"
@@ -3778,6 +3819,52 @@ __metadata:
 "@tamagui/polyfill-dev@^1.0.0-beta.5, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/popover@workspace:packages/popover":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/popover@workspace:packages/popover"
+  dependencies:
+    "@tamagui/animate-presence": ^1.0.0-beta.5
+    "@tamagui/build": ^1.0.0-beta.5
+    "@tamagui/compose-refs": ^1.0.0-beta.5
+    "@tamagui/core": ^1.0.0-beta.5
+    "@tamagui/create-context": ^1.0.0-beta.5
+    "@tamagui/popper": ^1.0.0-beta.5
+    "@tamagui/stacks": ^1.0.0-beta.5
+    "@tamagui/use-controllable-state": ^1.0.0-beta.5
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/popper@^1.0.0-beta.5, @tamagui/popper@workspace:packages/popper":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/popper@workspace:packages/popper"
+  dependencies:
+    "@floating-ui/react-dom": ^0.6.3
+    "@floating-ui/react-native": ^0.6.1
+    "@tamagui/build": ^1.0.0-beta.5
+    "@tamagui/compose-refs": ^1.0.0-beta.5
+    "@tamagui/core": ^1.0.0-beta.5
+    "@tamagui/create-context": ^1.0.0-beta.5
+    "@tamagui/stacks": ^1.0.0-beta.5
+    "@tamagui/use-controllable-state": ^1.0.0-beta.5
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -19845,8 +19932,6 @@ __metadata:
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
     "@radix-ui/react-use-callback-ref": ^0.1.0
-    "@react-aria/ssr": ^3.1.2
-    "@react-aria/utils": ^3.11.3
     "@react-native-aria/focus": ^0.2.5
     "@react-native-aria/overlays": ^0.3.2
     "@react-native-community/blur": ^3.6.0
@@ -19858,6 +19943,7 @@ __metadata:
     "@tamagui/expo-linear-gradient": 11.2.7
     "@tamagui/fake-react-native": ^1.0.0-beta.5
     "@tamagui/helpers": ^1.0.0-beta.5
+    "@tamagui/popper": ^1.0.0-beta.5
     "@tamagui/stacks": ^1.0.0-beta.5
     "@tamagui/use-controllable-state": ^1.0.0-beta.5
     "@tamagui/use-debounce": ^1.0.0-beta.5
@@ -21176,6 +21262,18 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 7913df383a5a6fcb399212eedefaac2e0c6f843555202d4e3010bac3848afe38ecaa3d0d6500ad1d936fbeffd637e6c517e68edb024af5e6beca7f27f3ce7b21
+  languageName: node
+  linkType: hard
+
+"use-isomorphic-layout-effect@npm:^1.1.1":
+  version: 1.1.2
+  resolution: "use-isomorphic-layout-effect@npm:1.1.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: a6532f7fc9ae222c3725ff0308aaf1f1ddbd3c00d685ef9eee6714fd0684de5cb9741b432fbf51e61a784e2955424864f7ea9f99734a02f237b17ad3e18ea5cb
   languageName: node
   linkType: hard
 

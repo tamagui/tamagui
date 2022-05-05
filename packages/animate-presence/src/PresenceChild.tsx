@@ -1,5 +1,4 @@
-import { useId } from '@react-aria/utils'
-import { useConstant } from '@tamagui/core'
+import { useConstant, useId } from '@tamagui/core'
 import * as React from 'react'
 
 import { AnimatePresenceContext, AnimatePresenceContextProps } from './AnimatePresenceContext'

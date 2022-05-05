@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "composite": true, "jsx": "preserve" },
+  "references": [
+    { "path": "../core" },
+    { "path": "../create-context" },
+    { "path": "../compose-refs" },
+    { "path": "../use-controllable-state" },
+    { "path": "../build" }
+  ]
+}

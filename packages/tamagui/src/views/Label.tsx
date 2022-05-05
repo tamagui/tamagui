@@ -1,6 +1,5 @@
-import { useId } from '@react-aria/utils'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, ReactComponentWithRef, isWeb, styled, themeable } from '@tamagui/core'
+import { GetProps, ReactComponentWithRef, isWeb, styled, themeable, useId } from '@tamagui/core'
 import { createContext } from '@tamagui/create-context'
 import * as React from 'react'
 import { View } from 'react-native'
