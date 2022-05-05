@@ -1,6 +1,5 @@
-import { Drawer } from '@tamagui/drawer'
 import React, { useState } from 'react'
-import { Button, Popper, PopperAnchor, PopperArrow, PopperContent, Tooltip } from 'tamagui'
+import { Button, Popover, PopoverArrow, PopoverContent, PopoverTrigger } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -35,15 +34,15 @@ export const Sandbox = () => {
 export const Test = (props) => {
   return (
     <>
-      <Popper>
-        <PopperAnchor>
-          <Button>Hello</Button>
-        </PopperAnchor>
-        <PopperContent>
-          <PopperArrow />
+      <Popover>
+        <PopoverTrigger>
+          <Button>Hello2</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <PopoverArrow />
           Hello world
-        </PopperContent>
-      </Popper>
+        </PopoverContent>
+      </Popover>
     </>
   )
 }

@@ -18,7 +18,7 @@ import {
   PopperContent,
   createPopperScope,
 } from '@tamagui/popper'
-import { YStack } from '@tamagui/stacks/types'
+import { YStack } from '@tamagui/stacks'
 // import { Primitive } from '@tamagui/react-primitive'
 // import type * as Radix from '@tamagui/react-primitive'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -164,7 +164,10 @@ const PopoverTrigger = React.forwardRef<PopoverTriggerElement, PopoverTriggerPro
     ) : (
       // todo
       // @ts-ignore
-      <PopperAnchor asChild {...popperScope}>
+      <PopperAnchor
+        // asChild
+        {...popperScope}
+      >
         {trigger}
       </PopperAnchor>
     )
@@ -191,18 +194,13 @@ const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverConten
   (props: ScopedProps<PopoverContentProps>, forwardedRef) => {
     const { forceMount, ...contentProps } = props
     const context = usePopoverContext(CONTENT_NAME, props.__scopePopover)
-    // AnimatePresence
-    return (
-      // <Presence present={forceMount || context.open}>
-      <>
-        {context.modal ? (
-          <PopoverContentModal {...contentProps} ref={forwardedRef} />
-        ) : (
-          <PopoverContentNonModal {...contentProps} ref={forwardedRef} />
-        )}
-      </>
-      // </Presence>
+    const isOpen = forceMount || context.open
+    const contents = !isOpen ? null : context.modal ? (
+      <PopoverContentModal {...contentProps} ref={forwardedRef} />
+    ) : (
+      <PopoverContentNonModal {...contentProps} ref={forwardedRef} />
     )
+    return <AnimatePresence>{contents}</AnimatePresence>
   }
 )
 
@@ -285,8 +283,9 @@ const PopoverContentNonModal = React.forwardRef<PopoverContentTypeElement, Popov
     const { portalled = true, ...contentNonModalProps } = props
     const context = usePopoverContext(CONTENT_NAME, props.__scopePopover)
     const hasInteractedOutsideRef = React.useRef(false)
-
     const PortalWrapper = React.Fragment //portalled ? Portal : React.Fragment
+
+    console.log('nonmmondal')
 
     return (
       <PortalWrapper>
@@ -400,12 +399,6 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
         {...popperScope}
         {...contentProps}
         ref={forwardedRef}
-        style={{
-          ...contentProps.style,
-          // re-namespace exposed content custom property
-          ['--radix-popover-content-transform-origin' as any]:
-            'var(--radix-popper-transform-origin)',
-        }}
       />
     )
     // </DismissableLayer>
@@ -466,12 +459,12 @@ function getState(open: boolean) {
   return open ? 'open' : 'closed'
 }
 
-const Root = Popover
-const Anchor = PopoverAnchor
-const Trigger = PopoverTrigger
-const Content = PopoverContent
-const Close = PopoverClose
-const Arrow = PopoverArrow
+// const Root = Popover
+// const Anchor = PopoverAnchor
+// const Trigger = PopoverTrigger
+// const Content = PopoverContent
+// const Close = PopoverClose
+// const Arrow = PopoverArrow
 
 export {
   createPopoverScope,
@@ -483,12 +476,12 @@ export {
   PopoverClose,
   PopoverArrow,
   //
-  Root,
-  Anchor,
-  Trigger,
-  Content,
-  Close,
-  Arrow,
+  // Root,
+  // Anchor,
+  // Trigger,
+  // Content,
+  // Close,
+  // Arrow,
 }
 export type {
   PopoverProps,

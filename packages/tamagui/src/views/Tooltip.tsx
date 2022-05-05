@@ -1,10 +1,9 @@
 import { StackProps, Text, Theme, isTamaguiElement, isWeb, styled } from '@tamagui/core'
-import { YStack } from '@tamagui/stacks'
+import { SizableStack, YStack } from '@tamagui/stacks'
 import React, { useCallback } from 'react'
 
 import { HoverablePopover, HoverablePopoverProps } from './HoverablePopover'
 import { Paragraph } from './Paragraph'
-import { SizableStack } from './SizableStack'
 import { SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'

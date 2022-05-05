@@ -1,6 +1,5 @@
-import { SizeVariantSpreadFunction, TextProps } from '@tamagui/core'
+import { SizeVariantSpreadFunction, getButtonSize } from '@tamagui/core'
 
-import { getButtonSize } from './getButtonSize'
 import { sizableTextSizeVariant } from './sizableTextSizeVariant'
 
 const inputSizeFrame = getButtonSize(0.75, 0.75)

@@ -1,6 +1,5 @@
 import { GetProps, SizeVariantSpreadFunction, styled } from '@tamagui/core'
-
-import { SizableStack, SizableStackProps } from './SizableStack'
+import { SizableStack, SizableStackProps } from '@tamagui/stacks'
 
 export const getSquareSize: SizeVariantSpreadFunction<SizableStackProps> = (size, { tokens }) => {
   const width = tokens.size[size] ?? size

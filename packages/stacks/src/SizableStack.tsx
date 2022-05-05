@@ -1,7 +1,6 @@
-import { GetProps, styled } from '@tamagui/core'
-import { XStack } from '@tamagui/stacks'
+import { GetProps, getButtonSize, styled } from '@tamagui/core'
 
-import { getButtonSize } from '../helpers/getButtonSize'
+import { XStack } from './Stacks'
 
 export const SizableStack = styled(XStack, {
   name: 'SizableStack',

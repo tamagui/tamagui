@@ -1,6 +1,6 @@
 import { GetProps, styled } from '@tamagui/core'
+import { SizableStack } from '@tamagui/stacks'
 
-import { SizableStack } from './SizableStack'
 import { getSquareSize } from './Square'
 
 export const Circle = styled(SizableStack, {

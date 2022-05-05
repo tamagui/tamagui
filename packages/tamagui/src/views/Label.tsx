@@ -1,10 +1,17 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, ReactComponentWithRef, isWeb, styled, themeable, useId } from '@tamagui/core'
+import {
+  GetProps,
+  ReactComponentWithRef,
+  getButtonSize,
+  isWeb,
+  styled,
+  themeable,
+  useId,
+} from '@tamagui/core'
 import { createContext } from '@tamagui/create-context'
 import * as React from 'react'
 import { View } from 'react-native'
 
-import { getButtonSize } from '../helpers/getButtonSize'
 import { sizableTextSizeVariant } from '../helpers/sizableTextSizeVariant'
 import { SizableText } from './SizableText'
 

@@ -34,6 +34,7 @@
     "@tamagui/expo-linear-gradient": "11.2.7",
     "@tamagui/fake-react-native": "^1.0.0-beta.5",
     "@tamagui/helpers": "^1.0.0-beta.5",
+    "@tamagui/popover": "^1.0.0-beta.5",
     "@tamagui/popper": "^1.0.0-beta.5",
     "@tamagui/stacks": "^1.0.0-beta.5",
     "@tamagui/use-controllable-state": "^1.0.0-beta.5",

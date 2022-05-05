@@ -19,7 +19,7 @@ declare const PopoverTrigger: React.ForwardRefExoticComponent<Pick<PopoverTrigge
 interface PopoverContentProps extends PopoverContentTypeProps {
     forceMount?: true;
 }
-declare const PopoverContent: React.ForwardRefExoticComponent<Pick<PopoverContentProps, keyof PopoverContentProps> & React.RefAttributes<unknown>>;
+declare const PopoverContent: React.ForwardRefExoticComponent<Pick<PopoverContentProps, keyof PopoverContentProps> & React.RefAttributes<any>>;
 declare type RemoveScrollProps = any;
 interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
@@ -40,12 +40,6 @@ declare type PopperArrowProps = any;
 interface PopoverArrowProps extends PopperArrowProps {
 }
 declare const PopoverArrow: React.ForwardRefExoticComponent<Pick<PopoverArrowProps, string | number> & React.RefAttributes<any>>;
-declare const Root: React.FC<PopoverProps>;
-declare const Anchor: React.ForwardRefExoticComponent<Pick<PopoverAnchorProps, string | number> & React.RefAttributes<any>>;
-declare const Trigger: React.ForwardRefExoticComponent<Pick<PopoverTriggerProps, string | number> & React.RefAttributes<any>>;
-declare const Content: React.ForwardRefExoticComponent<Pick<PopoverContentProps, keyof PopoverContentProps> & React.RefAttributes<unknown>>;
-declare const Close: React.ForwardRefExoticComponent<Pick<PopoverCloseProps, string | number> & React.RefAttributes<any>>;
-declare const Arrow: React.ForwardRefExoticComponent<Pick<PopoverArrowProps, string | number> & React.RefAttributes<any>>;
-export { createPopoverScope, Popover, PopoverAnchor, PopoverTrigger, PopoverContent, PopoverClose, PopoverArrow, Root, Anchor, Trigger, Content, Close, Arrow, };
+export { createPopoverScope, Popover, PopoverAnchor, PopoverTrigger, PopoverContent, PopoverClose, PopoverArrow, };
 export type { PopoverProps, PopoverAnchorProps, PopoverTriggerProps, PopoverContentProps, PopoverCloseProps, PopoverArrowProps, };
 //# sourceMappingURL=Popover.d.ts.map
