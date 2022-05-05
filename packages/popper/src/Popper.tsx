@@ -92,7 +92,8 @@ const [PopperContentProvider, useContentContext] =
   createPopperContext<PopperContentContextValue>(CONTENT_NAME)
 
 type PopperContentElement = any
-type PopperContentProps = YStackProps & {
+
+export type PopperContentProps = YStackProps & {
   size?: SizeTokens
   placement?: Placement
   stayInFrame?: ShiftProps
@@ -150,11 +151,19 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       return autoUpdate(refs.reference.current, refs.floating.current, update)
     }, [refs.floating, refs.reference, update])
 
-    console.log('render!', x, y, refs, contentProps)
-
     const arrowStyle = React.useMemo(() => {
       return middlewareData.arrow
     }, [JSON.stringify(middlewareData.arrow || {})])
+
+    const contents = React.useMemo(() => {
+      return (
+        <PopperContentFrame
+          data-placement={rest.placement}
+          data-strategy={rest.strategy}
+          {...contentProps}
+        />
+      )
+    }, [rest.placement, rest.strategy, props])
 
     return (
       <PopperContentProvider
@@ -172,11 +181,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
           y={(y as any) || 0}
           position={rest.strategy as any}
         >
-          <PopperContentFrame
-            data-placement={rest.placement}
-            data-strategy={rest.strategy}
-            {...contentProps}
-          />
+          {contents}
         </YStack>
       </PopperContentProvider>
     )

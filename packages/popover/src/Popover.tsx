@@ -16,6 +16,7 @@ import {
   PopperAnchor,
   PopperArrow,
   PopperContent,
+  PopperContentProps,
   createPopperScope,
 } from '@tamagui/popper'
 import { YStack } from '@tamagui/stacks'
@@ -195,7 +196,6 @@ const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverConten
     const { forceMount, ...contentProps } = props
     const context = usePopoverContext(CONTENT_NAME, props.__scopePopover)
     const isOpen = forceMount || context.open
-    console.log('isOpen', isOpen)
     const contents = !isOpen ? null : context.modal ? (
       <PopoverContentModal {...contentProps} ref={forwardedRef} />
     ) : (
@@ -331,7 +331,6 @@ const PopoverContentNonModal = React.forwardRef<PopoverContentTypeElement, Popov
 type PopoverContentImplElement = React.ElementRef<typeof PopperContent>
 type FocusScopeProps = any //Radix.ComponentPropsWithoutRef<typeof FocusScope>
 type DismissableLayerProps = any //Radix.ComponentPropsWithoutRef<typeof DismissableLayer>
-type PopperContentProps = any //Radix.ComponentPropsWithoutRef<typeof PopperContent>
 interface PopoverContentImplProps
   extends PopperContentProps,
     Omit<DismissableLayerProps, 'onDismiss'> {

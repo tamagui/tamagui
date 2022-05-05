@@ -28,6 +28,12 @@ export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("
 }>> & {
     virtualRef?: React.RefObject<any> | undefined;
 } & React.RefAttributes<PopperAnchorRef>>;
+export declare type PopperContentProps = YStackProps & {
+    size?: SizeTokens;
+    placement?: Placement;
+    stayInFrame?: ShiftProps;
+    allowFlip?: FlipProps;
+};
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;

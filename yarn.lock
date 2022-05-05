@@ -19921,6 +19921,7 @@ __metadata:
     prettier-plugin-import-sort: ^0.0.7
     pretty-quick: ^3.1.2
     prompts: 2.1.0
+    tilg: ^0.1.1
     turbo: ^1.1.10
     typescript: ^4.5.2
     ultra-runner: ^3.10.5
@@ -20222,6 +20223,15 @@ __metadata:
   version: 1.1.0
   resolution: "thunky@npm:1.1.0"
   checksum: 993096c472b6b8f30e29dc777a8d17720e4cab448375041f20c0cb802a09a7fb2217f2a3e8cdc11851faa71c957e2db309357367fc9d7af3cb7a4d00f4b66034
+  languageName: node
+  linkType: hard
+
+"tilg@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "tilg@npm:0.1.1"
+  peerDependencies:
+    react: ^18.0.0 || ^17.0.0
+  checksum: cde2590679f4519e81d0d8e6459a922c7f1fc345b2943b81b43bd92d1853485cfcaee02e5fb0a64eb095c169328b5c057acee76ed3aaf0a6cc10bed063e592ed
   languageName: node
   linkType: hard
 

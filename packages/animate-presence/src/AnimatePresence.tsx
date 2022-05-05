@@ -278,14 +278,11 @@ export const AnimatePresence: React.FunctionComponent<
     )
   })
 
-  // if (process.env.NODE_ENV !== 'production' && exitBeforeEnter && childrenToRender.length > 1) {
-  //   console.warn(
-  //     `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This will lead to odd visual behaviour.`
-  //   )
-  // }
-  console.log(
-    exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child))
-  )
+  if (process.env.NODE_ENV !== 'production' && exitBeforeEnter && childrenToRender.length > 1) {
+    console.warn(
+      `You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This will lead to odd visual behaviour.`
+    )
+  }
 
   return (
     <>{exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child))}</>

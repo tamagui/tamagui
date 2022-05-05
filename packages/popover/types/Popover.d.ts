@@ -1,3 +1,4 @@
+import { PopperContentProps } from '@tamagui/popper';
 import * as React from 'react';
 declare const createPopoverScope: import("@tamagui/create-context").CreateScope;
 interface PopoverProps {
@@ -27,7 +28,6 @@ interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'trapFoc
 }
 declare type FocusScopeProps = any;
 declare type DismissableLayerProps = any;
-declare type PopperContentProps = any;
 interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableLayerProps, 'onDismiss'> {
     trapFocus?: FocusScopeProps['trapped'];
     onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus'];
