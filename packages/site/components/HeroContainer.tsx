@@ -6,11 +6,13 @@ export function HeroContainer({
   demoMultiple,
   smaller,
   noPad,
+  alignItems,
 }: {
   demoMultiple?: boolean
   children?: React.ReactNode
   smaller?: boolean
   noPad?: boolean
+  alignItems?: any
 }) {
   return (
     <YStack
@@ -19,7 +21,7 @@ export function HeroContainer({
       mb="$4"
       position="relative"
       display="flex"
-      alignItems="center"
+      alignItems={alignItems || 'center'}
       justifyContent="center"
       py={70}
       minHeight={300}

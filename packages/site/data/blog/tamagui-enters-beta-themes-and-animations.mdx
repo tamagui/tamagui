@@ -53,14 +53,31 @@ They now default to names that map to standard style names with optional pseudo 
 
 Building off that, themes can nest unlimited times - `dark` and `light` can have `dark_blue` and `light_blue`, and then different tints below that, like `dark_blue_alt1`.
 
-<HeroContainer>
-  <XStack miw={500} py="$4" ai="center">
-    <YStack mx={-16} scale={0.8}>
-      <MediaPlayerDemo theme="pink" />
-    </YStack>
-    <YStack mx={-16} scale={0.8}>
-      <MediaPlayerDemo theme="blue_alt3" />
-    </YStack>
+<HeroContainer alignItems="flex-start">
+  <XStack py="$4" px="$6" ai="center" space="$10">
+    <XStack mx={-16} scale={0.8}>
+      <YStack pos="relative" z={0} zi={3} mr={-200}>
+        <MediaPlayerDemo theme="blue" alt={1} />
+      </YStack>
+      <YStack pos="relative" z={0} zi={2} mr={-200}>
+        <MediaPlayerDemo theme="blue" alt={2} />
+      </YStack>
+      <YStack pos="relative" z={0} zi={1} mr={-200}>
+        <MediaPlayerDemo theme="blue" alt={3} />
+      </YStack>
+    </XStack>
+    <XStack mx={-16} scale={0.8}>
+      <YStack pos="relative" z={0} zi={3} mr={-200}>
+        <MediaPlayerDemo theme="pink" alt={1} />
+      </YStack>
+      <YStack pos="relative" z={0} zi={2} mr={-200}>
+        <MediaPlayerDemo theme="pink" alt={2} />
+      </YStack>
+      <YStack pos="relative" z={0} zi={1} mr={-200}>
+        <MediaPlayerDemo theme="pink" alt={3} />
+      </YStack>
+    </XStack>
+    <Spacer size="$6" />
   </XStack>
 </HeroContainer>
 
