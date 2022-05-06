@@ -3837,6 +3837,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
+    "@floating-ui/react-dom-interactions": ^0.4.0
     "@tamagui/animate-presence": ^1.0.0-beta.5
     "@tamagui/build": ^1.0.0-beta.5
     "@tamagui/compose-refs": ^1.0.0-beta.5

@@ -3,6 +3,7 @@
 // Copyright (c) 2021 GeekyAnts India Pvt Ltd
 
 import { useOverlayPosition } from '@react-native-aria/overlays'
+import { useIsomorphicLayoutEffect } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import React, { ReactNode, useContext, useLayoutEffect, useMemo, useRef } from 'react'
 
@@ -54,7 +55,7 @@ export const PopperContent = React.forwardRef((props: any, ref: any) => {
     placement,
   } = overlayPosition
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setOverlayRef?.(overlayRef)
   }, [overlayRef, setOverlayRef])
 

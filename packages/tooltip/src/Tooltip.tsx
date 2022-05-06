@@ -37,23 +37,29 @@ export type TooltipProps = PopperProps & {
   onOpenChange?: (open: boolean) => void
   groupId?: string
   restMs?: number
+  delay?:
+    | number
+    | {
+        open?: number
+        close?: number
+      }
 }
 
 export const TooltipGroup = FloatingDelayGroup
 
 export const Tooltip = withStaticProperties(
   ((props: ScopedProps<TooltipProps, 'Popover'>) => {
-    const { __scopePopover, children, restMs = 500, ...restProps } = props
+    const { __scopePopover, children, restMs = 500, delay: delayProp, ...restProps } = props
     const popperScope = usePopoverScope(__scopePopover)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
-    const { delay, setCurrentId } = useDelayGroupContext()
+    const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
+    const delay = delayProp ?? delayGroup
     const [open, setOpen] = React.useState(false)
     const id = props.groupId
 
     const onOpenChange = React.useCallback(
       (open) => {
-        console.log('open change', open, id)
         setOpen(open)
         if (open) {
           setCurrentId(id)

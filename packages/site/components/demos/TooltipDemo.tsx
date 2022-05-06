@@ -12,7 +12,7 @@ export default function TooltipDemo() {
         </XStack>
         <XStack space="$2">
           <Demo groupId="3" placement="left" Icon={ChevronLeft} />
-          <Button f={1} opacity={0} />
+          <YStack f={1} />
           <Demo groupId="4" placement="right" Icon={ChevronRight} />
         </XStack>
         <XStack space="$2">

@@ -273,7 +273,7 @@ export function createComponent<
       if (accessibilityRole) viewProps.accessibilityRole = accessibilityRole
     }
 
-    if (isWeb) {
+    if (isWeb && !asChild) {
       // from react-native-web
       rnw.useResponderEvents(hostRef, {
         onMoveShouldSetResponder,
@@ -433,18 +433,19 @@ export function createComponent<
     // while avoiding reparenting...
     // once proper reparenting is supported, we can remove this and use that...
     const shouldAttach =
-      attachPress ||
-      attachHover ||
-      'pressStyle' in props ||
-      'onPress' in props ||
-      'onPressIn' in props ||
-      'onPressOut' in props ||
-      (isWeb &&
-        ('hoverStyle' in props ||
-          'onHoverIn' in props ||
-          'onHoverOut' in props ||
-          'onMouseEnter' in props ||
-          'onMouseLeave' in props))
+      !asChild &&
+      (attachPress ||
+        attachHover ||
+        'pressStyle' in props ||
+        'onPress' in props ||
+        'onPressIn' in props ||
+        'onPressOut' in props ||
+        (isWeb &&
+          ('hoverStyle' in props ||
+            'onHoverIn' in props ||
+            'onHoverOut' in props ||
+            'onMouseEnter' in props ||
+            'onMouseLeave' in props)))
 
     const unPress = useCallback(() => {
       if (!internal.current!.isMounted) return
@@ -523,17 +524,18 @@ export function createComponent<
         }
       : null
 
-    const childEls = !children
-      ? children
-      : wrapThemeManagerContext(
-          spacedChildren({
-            children,
-            space,
-            flexDirection: props.flexDirection || staticConfig.defaultProps?.flexDirection,
-            isZStack,
-          }),
-          getThemeManagerIfChanged(theme)
-        )
+    const childEls =
+      !children || asChild
+        ? children
+        : wrapThemeManagerContext(
+            spacedChildren({
+              children,
+              space,
+              flexDirection: props.flexDirection || staticConfig.defaultProps?.flexDirection,
+              isZStack,
+            }),
+            getThemeManagerIfChanged(theme)
+          )
 
     // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
     const [pressProps] = usePressable(
@@ -588,6 +590,8 @@ export function createComponent<
 
     if (asChild) {
       ViewComponent = Slot
+      const onlyChild = React.Children.only(children)
+      Object.assign(viewProps, onlyChild.props)
     }
 
     content = createElement(ViewComponent, viewProps, childEls)

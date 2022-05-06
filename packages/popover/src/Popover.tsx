@@ -2,6 +2,15 @@
 
 import '@tamagui/polyfill-dev'
 
+import {
+  useDelayGroup,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+  useRole,
+} from '@floating-ui/react-dom-interactions'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { composeEventHandlers, useId, withStaticProperties } from '@tamagui/core'
@@ -11,12 +20,14 @@ import { createContextScope } from '@tamagui/create-context'
 // import { useFocusGuards } from '@tamagui/react-focus-guards'
 // import { FocusScope } from '@tamagui/react-focus-scope'
 import {
+  FloatingOverrideContext,
   Popper,
   PopperAnchor,
   PopperArrow,
   PopperContent,
   PopperContentProps,
   PopperProps,
+  UseFloatingFn,
   createPopperScope,
 } from '@tamagui/popper'
 import { Portal } from '@tamagui/portal'
@@ -482,26 +493,49 @@ export const Popover = withStaticProperties(
       onChange: onOpenChange,
     })
 
+    const useFloatingFn: UseFloatingFn = (props) => {
+      const floating = useFloating({
+        ...props,
+        open,
+        onOpenChange: setOpen,
+      })
+      const { getReferenceProps, getFloatingProps } = useInteractions([
+        useFocus(floating.context),
+        useRole(floating.context, { role: 'dialog' }),
+        useDismiss(floating.context),
+      ])
+      return {
+        ...floating,
+        getReferenceProps,
+        getFloatingProps,
+      } as any
+    }
+
+    const useFloatingContext = React.useCallback(useFloatingFn, [open])
+
     return (
-      <Popper {...popperScope} {...restProps}>
-        <PopoverProviderInternal
-          scope={__scopePopover}
-          contentId={useId()}
-          triggerRef={triggerRef}
-          open={open}
-          onOpenChange={setOpen}
-          onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
-          hasCustomAnchor={hasCustomAnchor}
-          onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
-          onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}
-          modal={modal}
-        >
-          {children}
-        </PopoverProviderInternal>
-      </Popper>
+      <FloatingOverrideContext.Provider value={useFloatingContext}>
+        <Popper {...popperScope} {...restProps}>
+          <PopoverProviderInternal
+            scope={__scopePopover}
+            contentId={useId()}
+            triggerRef={triggerRef}
+            open={open}
+            onOpenChange={setOpen}
+            onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
+            hasCustomAnchor={hasCustomAnchor}
+            onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
+            onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}
+            modal={modal}
+          >
+            {children}
+          </PopoverProviderInternal>
+        </Popper>
+      </FloatingOverrideContext.Provider>
     )
   }) as React.FC<PopoverProps>,
   {
+    Anchor: PopoverAnchor,
     Arrow: PopoverArrow,
     Trigger: PopoverTrigger,
     Content: PopoverContent,

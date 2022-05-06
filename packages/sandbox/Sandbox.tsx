@@ -2,7 +2,17 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import React, { useState } from 'react'
-import { Button, Paragraph, Tooltip, TooltipGroup, TooltipProps, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Popover,
+  PopoverProps,
+  Tooltip,
+  TooltipGroup,
+  TooltipProps,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -63,46 +73,45 @@ function Test() {
   )
 }
 
-// export function Demo(props: Omit<PopperProps, 'children'>) {
-//   console.log('props', props)
-//   return (
-//     <Popover modal {...props}>
-//       <Popover.Trigger>
-//         <Button>Hello2</Button>
-//       </Popover.Trigger>
-//       <Popover.Content
-//         enterStyle={{ x: 0, y: -20, o: 0 }}
-//         exitStyle={{ x: 0, y: -20, o: 0 }}
-//         x={0}
-//         y={0}
-//         o={1}
-//         animation="bouncy"
-//       >
-//         <Popover.Arrow />
-//         <Paragraph>Hello world</Paragraph>
-//       </Popover.Content>
-//     </Popover>
-//   )
-// }
-
-export function Demo(props: Omit<TooltipProps, 'children'>) {
+export function Demo(props: Omit<PopoverProps, 'children'>) {
   return (
-    <Tooltip {...props}>
-      <Tooltip.Trigger>
+    <Popover modal {...props}>
+      <Popover.Trigger debug>
         <Button>Hello2</Button>
-      </Tooltip.Trigger>
-      <Tooltip.Content
-        enterStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
-        exitStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
+      </Popover.Trigger>
+      <Popover.Content
+        enterStyle={{ x: 0, y: -20, o: 0 }}
+        exitStyle={{ x: 0, y: -20, o: 0 }}
         x={0}
-        scale={1}
         y={0}
         o={1}
         animation="bouncy"
       >
-        <Tooltip.Arrow />
+        <Popover.Arrow />
         <Paragraph>Hello world</Paragraph>
-      </Tooltip.Content>
-    </Tooltip>
+      </Popover.Content>
+    </Popover>
   )
 }
+
+// export function Demo(props: Omit<TooltipProps, 'children'>) {
+//   return (
+//     <Tooltip {...props}>
+//       <Tooltip.Trigger>
+//         <Button>Hello2</Button>
+//       </Tooltip.Trigger>
+//       <Tooltip.Content
+//         enterStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
+//         exitStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
+//         x={0}
+//         scale={1}
+//         y={0}
+//         o={1}
+//         animation="bouncy"
+//       >
+//         <Tooltip.Arrow />
+//         <Paragraph>Hello world</Paragraph>
+//       </Tooltip.Content>
+//     </Tooltip>
+//   )
+// }

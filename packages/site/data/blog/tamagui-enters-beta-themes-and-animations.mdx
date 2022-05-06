@@ -124,7 +124,7 @@ In early form, we've added [AnimatePresence](/docs/core/animations#animate-prese
 
 ### New Components
 
-We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/docs/components/inputs), [Label](/docs/components/label), [Switch](/docs/components/switch), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover) and [HoverablePopover](/docs/components/hoverable-popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), [HTML Elements](/docs/components/html-elements).
+We've added quite a few new components, and a good portion more are nearing release. Since the alpha we've introduced: [Inputs](/docs/components/inputs), [Label](/docs/components/label), [Switch](/docs/components/switch), [Image](/docs/components/image), [Separator](/docs/components/separator), [ThemeInverse](/docs/core/theme#theme-inverse), [Popover](/docs/components/popover), [Tooltip](/docs/components/tooltip), [Drawer](/docs/components/drawer), [Square and Circle](/docs/components/shapes), [HTML Elements](/docs/components/html-elements).
 
 Here's the new Switch component working with spring animations:
 
@@ -238,7 +238,7 @@ export default () => <Button size="$6" icon={Play} />
 - In tamagui.config.ts, `tokens.font` => `fonts`.
 - Popover and Tooltip are redone in with Radix-style nested components
   - We've exported a small `TooltipSimple` component that mimics the old Tooltip
-- HoverablePopover is gone (can use Tooltip or Popover instead)
+- HoverablePopover has been removed in favor of just Tooltip or customizing Popover
 
 ---
 

@@ -7,7 +7,6 @@ import {
   getTokens,
   getVariableValue,
   styled,
-  useIsMounted,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
@@ -80,7 +79,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
 
   const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     floating.reference(anchorRef.current)
   }, [anchorRef])
 
@@ -266,7 +265,7 @@ export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps
     }
 
     // send the Arrow's offset up to Popper
-    React.useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       context.onArrowSize?.(size)
     }, [size, context.onArrowSize])
 

@@ -7,6 +7,10 @@ export declare type TooltipProps = PopperProps & {
     onOpenChange?: (open: boolean) => void;
     groupId?: string;
     restMs?: number;
+    delay?: number | {
+        open?: number;
+        close?: number;
+    };
 };
 export declare const TooltipGroup: ({ children, delay, }: {
     children?: React.ReactNode;
