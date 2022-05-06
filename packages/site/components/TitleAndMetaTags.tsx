@@ -21,7 +21,7 @@ export function TitleAndMetaTags({
 }: TitleAndMetaTagsProps) {
   const router = useRouter()
 
-  const image = props.image ?? (poster ? `${url}/${poster}` : `${url}/social.png`)
+  const image = props.image ?? (poster ? `${url}/${poster}` : `${url}/social.jpg`)
   const path = pathname || router.pathname
 
   return (

@@ -59,7 +59,9 @@ const wrap = (min: number, max: number, v: number) => {
 }
 
 export const images = [
-  'https://images.unsplash.com/photo-1618472609777-b038f1f04b8d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3164&q=80',
-  'https://images.unsplash.com/photo-1649350319582-e7cea99c9c67?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3143&q=80',
-  'https://images.unsplash.com/photo-1650018943477-781416d478cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2982&q=80',
+  require('../../public/photo1.jpeg').default.src,
+  require('../../public/photo2.jpeg').default.src,
+  require('../../public/photo3.jpeg').default.src,
 ]
+
+console.log('images', images)

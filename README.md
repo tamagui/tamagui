@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img margin="auto" width="612px" src="https://github.com/tamagui/tamagui/raw/master/packages/site/public/social.png" alt="Tamagui">
+  <img margin="auto" width="612px" src="https://github.com/tamagui/tamagui/raw/master/packages/site/public/social.jpg" alt="Tamagui">
   <br>
 </h1>
 
