@@ -36,47 +36,31 @@ export const InstallInput = memo(() => {
         npm install tamagui
       </Paragraph>
       <Spacer size="$6" />
-      <Tooltip contents="Copy to clipboard">
-        <Button
-          borderRadius="$8"
-          mr="$-7"
-          x={-3}
-          // TODO broken in latest
-          icon={
-            hasCopied ? (
-              <Check size={16} color="var(--colorHover)" />
-            ) : (
-              <Copy size={16} color="var(--colorHover)" />
-            )
-          }
-          aria-label="Copy the install snippet to Clipboard"
-          onPress={() => {
-            copy('npm install tamagui')
-            setHasCopied(true)
-          }}
-        />
+      <Tooltip>
+        <Tooltip.Trigger>
+          <Button
+            borderRadius="$8"
+            mr="$-7"
+            x={-3}
+            // TODO broken in latest
+            icon={
+              hasCopied ? (
+                <Check size={16} color="var(--colorHover)" />
+              ) : (
+                <Copy size={16} color="var(--colorHover)" />
+              )
+            }
+            aria-label="Copy the install snippet to Clipboard"
+            onPress={() => {
+              copy('npm install tamagui')
+              setHasCopied(true)
+            }}
+          />
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+          <Paragraph>Copy to clipboard</Paragraph>
+        </Tooltip.Content>
       </Tooltip>
     </XStack>
   )
 })
-
-// const OutlineThemeComponentGrid = () => {
-//   return (
-//     <YStack fullscreen pointerEvents="none" zi={0} opacity={0.025}>
-//       <XStack>
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//         <MediaPlayer theme="outline" />
-//       </XStack>
-//     </YStack>
-//   )
-// }

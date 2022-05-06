@@ -1985,6 +1985,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/react-dom-interactions@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@floating-ui/react-dom-interactions@npm:0.4.0"
+  dependencies:
+    "@floating-ui/react-dom": ^0.6.3
+    aria-hidden: ^1.1.3
+    use-isomorphic-layout-effect: ^1.1.1
+  checksum: a0840cd4d52d2c4b0c0736714e305b7e0abc3b39c3b2ad21001098815075ee6de098c2711bedb2d53845760c99e9c328d7e082326caea04081759a753e82e3bc
+  languageName: node
+  linkType: hard
+
 "@floating-ui/react-dom@npm:^0.6.3":
   version: 0.6.3
   resolution: "@floating-ui/react-dom@npm:0.6.3"
@@ -3831,9 +3842,12 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.0-beta.5
     "@tamagui/core": ^1.0.0-beta.5
     "@tamagui/create-context": ^1.0.0-beta.5
+    "@tamagui/polyfill-dev": ^1.0.0-beta.5
     "@tamagui/popper": ^1.0.0-beta.5
+    "@tamagui/portal": ^1.0.0-beta.5
     "@tamagui/stacks": ^1.0.0-beta.5
     "@tamagui/use-controllable-state": ^1.0.0-beta.5
+    "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.67.3
     react: "*"
     react-dom: "*"
@@ -3857,6 +3871,23 @@ __metadata:
     "@tamagui/create-context": ^1.0.0-beta.5
     "@tamagui/stacks": ^1.0.0-beta.5
     "@tamagui/use-controllable-state": ^1.0.0-beta.5
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/portal@^1.0.0-beta.5, @tamagui/portal@workspace:packages/portal":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/portal@workspace:packages/portal"
+  dependencies:
+    "@tamagui/build": ^1.0.0-beta.5
+    "@tamagui/stacks": ^1.0.0-beta.5
     "@types/react-native": ^0.67.3
     react: "*"
     react-dom: "*"
@@ -4049,6 +4080,32 @@ __metadata:
     "@tamagui/build": ^1.0.0-beta.5
     "@tamagui/colors": ^1.0.0-beta.5
     "@tamagui/core": ^1.0.0-beta.5
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/tooltip@^1.0.0-beta.5, @tamagui/tooltip@workspace:packages/tooltip":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/tooltip@workspace:packages/tooltip"
+  dependencies:
+    "@floating-ui/react-dom-interactions": ^0.4.0
+    "@tamagui/build": ^1.0.0-beta.5
+    "@tamagui/compose-refs": ^1.0.0-beta.5
+    "@tamagui/core": ^1.0.0-beta.5
+    "@tamagui/create-context": ^1.0.0-beta.5
+    "@tamagui/polyfill-dev": ^1.0.0-beta.5
+    "@tamagui/popover": ^1.0.0-beta.5
+    "@tamagui/popper": ^1.0.0-beta.5
+    "@tamagui/stacks": ^1.0.0-beta.5
+    "@tamagui/use-controllable-state": ^1.0.0-beta.5
+    "@types/react-dom": ^18.0.3
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -4635,6 +4692,15 @@ __metadata:
   version: 1.2.4
   resolution: "@types/range-parser@npm:1.2.4"
   checksum: b7c0dfd5080a989d6c8bb0b6750fc0933d9acabeb476da6fe71d8bdf1ab65e37c136169d84148034802f48378ab94e3c37bb4ef7656b2bec2cb9c0f8d4146a95
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:^18.0.3":
+  version: 18.0.3
+  resolution: "@types/react-dom@npm:18.0.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: 5c87fb610e212f0942ebbf522dfca4c9dc2ac8afa4c601454415e7c42f993518868207faff7658d11974142937ba7af2f80e274c3a3f5e0e697bdd5547dbe1b0
   languageName: node
   linkType: hard
 
@@ -5493,6 +5559,15 @@ __metadata:
   version: 2.0.1
   resolution: "argparse@npm:2.0.1"
   checksum: 83644b56493e89a254bae05702abf3a1101b4fa4d0ca31df1c9985275a5a5bd47b3c27b7fa0b71098d41114d8ca000e6ed90cad764b306f8a503665e4d517ced
+  languageName: node
+  linkType: hard
+
+"aria-hidden@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "aria-hidden@npm:1.1.3"
+  dependencies:
+    tslib: ^1.0.0
+  checksum: 2d40a328246baac7ae0b243ebe0cbef53c836c5f78c9212e9c1ff93f3aee185bd9aa51773e161e0025722d691c9d5f125070f6175a7074c4a57778ddc30d9e74
   languageName: node
   linkType: hard
 
@@ -19947,6 +20022,7 @@ __metadata:
     "@tamagui/popover": ^1.0.0-beta.5
     "@tamagui/popper": ^1.0.0-beta.5
     "@tamagui/stacks": ^1.0.0-beta.5
+    "@tamagui/tooltip": ^1.0.0-beta.5
     "@tamagui/use-controllable-state": ^1.0.0-beta.5
     "@tamagui/use-debounce": ^1.0.0-beta.5
     "@tamagui/use-force-update": ^1.0.0-beta.5
@@ -20460,6 +20536,13 @@ __metadata:
   version: 2.1.0
   resolution: "tslib@npm:2.1.0"
   checksum: aa189c8179de0427b0906da30926fd53c59d96ec239dff87d6e6bc831f608df0cbd6f77c61dabc074408bd0aa0b9ae4ec35cb2c15f729e32f37274db5730cb78
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^1.0.0":
+  version: 1.14.1
+  resolution: "tslib@npm:1.14.1"
+  checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
   languageName: node
   linkType: hard
 

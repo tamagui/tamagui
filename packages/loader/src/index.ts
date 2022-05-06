@@ -9,6 +9,7 @@ export const shouldExclude = (path: string, projectRoot: string, tamaguiOptions:
   if (
     path.includes('react-native-reanimated') ||
     path.includes('react-native-gesture-handler') ||
+    path.includes('@gorhom/portal') ||
     path.includes(projectRoot) ||
     path.includes('/dist/jsx/')
   ) {

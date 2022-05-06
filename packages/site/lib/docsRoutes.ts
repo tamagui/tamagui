@@ -38,7 +38,6 @@ export const docsRoutes = [
       { title: 'Shapes', route: '/docs/components/shapes' },
       { title: 'Separator', route: '/docs/components/separator' },
       { title: 'Popover', route: '/docs/components/popover' },
-      { title: 'HoverablePopover', route: '/docs/components/hoverable-popover' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
       { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
       { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },

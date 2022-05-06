@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/popover",
+  "name": "@tamagui/portal",
   "version": "1.0.0-beta.5",
   "sideEffects": true,
   "source": "src/index.ts",
@@ -18,15 +18,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/animate-presence": "^1.0.0-beta.5",
-    "@tamagui/compose-refs": "^1.0.0-beta.5",
-    "@tamagui/core": "^1.0.0-beta.5",
-    "@tamagui/create-context": "^1.0.0-beta.5",
-    "@tamagui/polyfill-dev": "^1.0.0-beta.5",
-    "@tamagui/popper": "^1.0.0-beta.5",
-    "@tamagui/portal": "^1.0.0-beta.5",
-    "@tamagui/stacks": "^1.0.0-beta.5",
-    "@tamagui/use-controllable-state": "^1.0.0-beta.5"
+    "@tamagui/stacks": "^1.0.0-beta.5"
   },
   "peerDependencies": {
     "react": "*",
@@ -35,7 +27,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.0-beta.5",
-    "@types/react-dom": "^18.0.3",
     "@types/react-native": "^0.67.3",
     "react": "*",
     "react-dom": "*",

@@ -13,7 +13,7 @@ export function FeaturesGrid() {
       <ContainerLarge space="$8">
         <YStack zi={1} space="$1">
           <HomeH2 className="rainbow clip-text">All-in-one</HomeH2>
-          <HomeH3>Rapidly iterate on truly cross-platform apps.</HomeH3>
+          <HomeH3>Rapidly iterate on truly cross-platform&nbsp;apps.</HomeH3>
         </YStack>
 
         <YStack maw={950} als="center">

@@ -80,6 +80,7 @@ const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>((props, f
              * We get the latest attribute value because at the time that this cleanup fires,
              * the values from the closure may have changed.
              */
+            if (!id) return
             const ariaLabelledBy = getAriaLabel()?.replace(id, '')
             if (ariaLabelledBy === '') {
               element.removeAttribute('aria-labelledby')

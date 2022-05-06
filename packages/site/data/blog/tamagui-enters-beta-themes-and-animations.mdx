@@ -146,7 +146,33 @@ The `styled()` factory function as well gets many upgrades, it accepts React Nat
 
 ---
 
-### Component Updates
+### Popover
+
+Popover was introduced in alpha, but we've redone it for the beta. It's still early stage, but the API is significantly improved. It now gives you much more control over the target, content and trigger. Importantly, it works using Tamagui primitives, and automatically wraps your content in [AnimatePresence](/docs/core/animations#animate-presence) supporting beautiful and simple enter/exit animations.
+
+The core of Popover is now powered by the wonderful [Floating UI](https://floating-ui.com/), saving us a lot of complexity and giving it more reliable and powerful behaviors.
+
+It's also been split out optionally into it's own package at `@tamagui/popover`.
+
+Show the code below to see the improved component-based API.
+
+<HeroContainer>
+  <PopoverDemo />
+</HeroContainer>
+
+---
+
+### Tooltip
+
+Tooltip likewise was rebuilt in a similar fashion to Popover - a composable component API, full animation support, and powered by [Floating UI's React DOM Interactions](https://floating-ui.com/docs/react-dom-interactions).
+
+<HeroContainer>
+  <TooltipDemo />
+</HeroContainer>
+
+---
+
+### Other Component Updates
 
 [LinearGradient](/docs/components/linear-gradient), [Image](/docs/components/image), and [Button](/docs/components/button) have received lots of love. LinearGradient now fully supports all theme values and the compiler will help it extract any style properties. Image should still be considered beta, but has gone through many rounds of bugfixes and improvements. And Button now handles passing more text properties down, themes and sizes icons more reliably, and has many fixes for variants like `circular`.
 
@@ -210,7 +236,24 @@ export default () => <Button size="$6" icon={Play} />
 
 - Sub themes now must be named with `_` (underscore) separators.
 - In tamagui.config.ts, `tokens.font` => `fonts`.
-- Popover, Tooltip, HoverablePopover `isOpen` prop becomes `open`.
+- Popover and Tooltip are redone in with Radix-style nested components
+- HoverablePopover is gone (can use Tooltip or Popover instead)
+
+---
+
+### Going forward
+
+There's a ton of progress here, but likewise a ton more to go. There's many components, docs, and features to be written, and I'd like to get better at community and sharing progress from here on out.
+
+What really excites me is the foundations laid. Tamagui now has such a rich set of primitives - from animations, themes, and sizing, to performance even including things like media queries, to all the helpers and hooks adopted since alpha that make designing Radix-like composable API's a breeze, all the way to adopting Floating UI and all the powerful primitives now available - everything feels like it works together well, and as of late the composability and flexiblity haven't blocked design of even complex use-cases (✊🪵).
+
+Seeing Tooltip come to life somewhat easily in the latest refactor just by importing a few hooks and components and giving it an `animation` prop was really inspiring.
+
+I've always wanted to build beautiful apps, but doing so has always felt like either I needed to limit the ambition, the features, the platforms supported, or the dream altogether - without massive investment.
+
+With the latest Tamagui, the bar feels decisively lowered to where building _an actually beautiful_ app that scales to great ambition is actually within reach.
+
+🍻
 
 ---
 

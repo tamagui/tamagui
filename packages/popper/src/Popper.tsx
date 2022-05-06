@@ -1,15 +1,22 @@
 // adapted from radix-ui popper
 
-import { Coords, Placement, offset, shift } from '@floating-ui/react-dom'
-import { arrow, flip } from '@floating-ui/react-native'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { SizeTokens, getTokens, getVariableValue, styled } from '@tamagui/core'
+import {
+  SizeTokens,
+  StackProps,
+  getTokens,
+  getVariableValue,
+  styled,
+  useIsMounted,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { SizableStack, YStack, YStackProps } from '@tamagui/stacks'
+import { SizableStack, SizableStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
 
-import { autoUpdate, useFloating } from './floating'
+import { Coords, Placement, arrow, autoUpdate, flip, offset, shift } from './floating'
+import { UseFloatingResult, useFloating } from './useFloating'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -25,22 +32,81 @@ const [createPopperContext, createScope] = createContextScope(POPPER_NAME)
 
 export const createPopperScope = createScope
 
-type PopperContextValue = {
+type PopperContextValue = UseFloatingResult & {
+  isMounted: boolean
   anchorRef: any
   size?: SizeTokens
+  placement?: Placement
+  arrowRef: any
+  onArrowSize?: (val: number) => void
+  arrowStyle?: Partial<Coords> & {
+    centerOffset: number
+  }
 }
 const [PopperProvider, usePopperContext] = createPopperContext<PopperContextValue>(POPPER_NAME)
 
 export type PopperProps = {
   size?: SizeTokens
   children?: React.ReactNode
+  placement?: Placement
+  stayInFrame?: ShiftProps
+  allowFlip?: FlipProps
 }
 
 export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) => {
-  const { __scopePopper, children, size } = props
-  const anchorRef = React.useRef()
+  const { __scopePopper, children, size, placement = 'bottom', stayInFrame, allowFlip } = props
+
+  const [isMounted, setIsMounted] = React.useState(false)
+  useIsomorphicLayoutEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  const anchorRef = React.useRef<any>()
+  const [arrowEl, setArrow] = React.useState<HTMLSpanElement | null>(null)
+  const [arrowSize, setArrowSize] = React.useState(0)
+  const arrowRef = React.useRef()
+
+  const floating = useFloating({
+    placement,
+    middleware: [
+      stayInFrame ? shift(stayInFrame) : (null as any),
+      allowFlip ? flip(allowFlip) : (null as any),
+      arrowEl ? arrow({ element: arrowEl }) : (null as any),
+      arrowSize ? offset(arrowSize) : (null as any),
+    ].filter(Boolean),
+  })
+
+  const { refs, middlewareData } = floating
+
+  const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
+
+  React.useLayoutEffect(() => {
+    floating.reference(anchorRef.current)
+  }, [anchorRef])
+
+  React.useEffect(() => {
+    if (!refs.reference.current || !refs.floating.current) {
+      return
+    }
+    // Only call this when the floating element is rendered
+    return autoUpdate(refs.reference.current, refs.floating.current, floating.update)
+  }, [refs.floating.current, refs.reference.current])
+
+  const arrowStyle = React.useMemo(() => {
+    return middlewareData.arrow
+  }, [JSON.stringify(middlewareData.arrow || {})])
+
   return (
-    <PopperProvider scope={__scopePopper} anchorRef={anchorRef} size={size}>
+    <PopperProvider
+      scope={__scopePopper}
+      anchorRef={anchorRef}
+      size={size}
+      arrowRef={composedArrowRefs}
+      arrowStyle={arrowStyle}
+      onArrowSize={setArrowSize}
+      isMounted={isMounted}
+      {...floating}
+    >
       {children}
     </PopperProvider>
   )
@@ -54,7 +120,7 @@ Popper.displayName = POPPER_NAME
 
 const ANCHOR_NAME = 'PopperAnchor'
 
-type PopperAnchorRef = React.Ref<HTMLDivElement | View>
+type PopperAnchorRef = HTMLElement | View
 
 export type PopperAnchorProps = YStackProps & {
   virtualRef?: React.RefObject<any>
@@ -63,10 +129,17 @@ export type PopperAnchorProps = YStackProps & {
 export const PopperAnchor = React.forwardRef<PopperAnchorRef, PopperAnchorProps>(
   (props: ScopedProps<PopperAnchorProps>, forwardedRef) => {
     const { __scopePopper, virtualRef, ...anchorProps } = props
-    const context = usePopperContext(ANCHOR_NAME, __scopePopper)
+    const { anchorRef, getReferenceProps } = usePopperContext(ANCHOR_NAME, __scopePopper)
     const ref = React.useRef<PopperAnchorRef>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref, context.anchorRef)
-    return virtualRef ? null : <YStack {...anchorProps} ref={composedRefs} />
+    const composedRefs = useComposedRefs(forwardedRef, ref, anchorRef)
+    if (virtualRef) {
+      return null
+    }
+    const stackProps = {
+      ref: composedRefs,
+      ...anchorProps,
+    }
+    return <YStack {...(getReferenceProps ? getReferenceProps(stackProps) : stackProps)} />
   }
 )
 
@@ -78,27 +151,9 @@ PopperAnchor.displayName = ANCHOR_NAME
 
 const CONTENT_NAME = 'PopperContent'
 
-type PopperContentContextValue = {
-  size?: SizeTokens
-  placement?: Placement
-  arrowRef: any
-  onArrowSize?: (val: number) => void
-  arrowStyle?: Partial<Coords> & {
-    centerOffset: number
-  }
-}
+type PopperContentElement = HTMLElement | View
 
-const [PopperContentProvider, useContentContext] =
-  createPopperContext<PopperContentContextValue>(CONTENT_NAME)
-
-type PopperContentElement = any
-
-export type PopperContentProps = YStackProps & {
-  size?: SizeTokens
-  placement?: Placement
-  stayInFrame?: ShiftProps
-  allowFlip?: FlipProps
-}
+export type PopperContentProps = SizableStackProps
 
 const PopperContentFrame = styled(SizableStack, {
   name: 'PopperContent',
@@ -112,78 +167,40 @@ const PopperContentFrame = styled(SizableStack, {
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
   (props: ScopedProps<PopperContentProps>, forwardedRef) => {
-    const {
-      __scopePopper,
-      size,
-      placement = 'bottom',
-      stayInFrame,
-      allowFlip,
-      ...contentProps
-    } = props
-
-    const context = usePopperContext(CONTENT_NAME, __scopePopper)
-    const [arrowEl, setArrow] = React.useState<HTMLSpanElement | null>(null)
-    const [arrowSize, setArrowSize] = React.useState(0)
-    const arrowRef = React.useRef()
-
-    const { x, y, reference, floating, refs, update, middlewareData, ...rest } = useFloating({
-      placement,
-      middleware: [
-        stayInFrame ? shift(stayInFrame) : (null as any),
-        allowFlip ? flip(allowFlip) : (null as any),
-        arrowEl ? arrow({ element: arrowEl }) : (null as any),
-        arrowSize ? offset(arrowSize) : (null as any),
-      ].filter(Boolean),
-    })
-
+    const { __scopePopper, ...contentProps } = props
+    const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
+      usePopperContext(CONTENT_NAME, __scopePopper)
     const contentRefs = useComposedRefs<any>(floating, forwardedRef)
-    const composedArrowRefs = useComposedRefs<any>(arrowRef, setArrow)
-
-    React.useLayoutEffect(() => {
-      reference(context.anchorRef.current)
-    }, [context.anchorRef])
-
-    React.useEffect(() => {
-      if (!refs.reference.current || !refs.floating.current) {
-        return
-      }
-      // Only call this when the floating element is rendered
-      return autoUpdate(refs.reference.current, refs.floating.current, update)
-    }, [refs.floating, refs.reference, update])
-
-    const arrowStyle = React.useMemo(() => {
-      return middlewareData.arrow
-    }, [JSON.stringify(middlewareData.arrow || {})])
 
     const contents = React.useMemo(() => {
       return (
         <PopperContentFrame
-          data-placement={rest.placement}
-          data-strategy={rest.strategy}
+          key="popper-content-frame"
+          data-placement={placement}
+          data-strategy={strategy}
           {...contentProps}
+          size={contentProps.size ?? size}
         />
       )
-    }, [rest.placement, rest.strategy, props])
+    }, [placement, strategy, props])
 
+    // all poppers hidden on ssr by default
+    if (!isMounted) {
+      return null
+    }
+
+    const frameProps = {
+      ref: contentRefs,
+      x: (x as any) || 0,
+      y: (y as any) || 0,
+      position: 'absolute',
+    }
+
+    // outer frame because we explicitly dont want animation to apply to this
     return (
-      <PopperContentProvider
-        scope={__scopePopper}
-        arrowRef={composedArrowRefs}
-        arrowStyle={arrowStyle}
-        size={size ?? context.size}
-        placement={placement}
-        onArrowSize={setArrowSize}
-      >
-        {/* outer frame because we explicitly dont want animation to apply to this */}
-        <YStack
-          ref={contentRefs}
-          x={(x as any) || 0}
-          y={(y as any) || 0}
-          position={rest.strategy as any}
-        >
-          {contents}
-        </YStack>
-      </PopperContentProvider>
+      <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
+        {contents}
+      </YStack>
     )
   }
 )
@@ -196,7 +213,7 @@ PopperContent.displayName = CONTENT_NAME
 
 const ARROW_NAME = 'PopperArrow'
 
-type PopperArrowElement = typeof YStack
+type PopperArrowElement = HTMLElement | View
 
 export type PopperArrowProps = YStackProps & {
   offset?: number
@@ -213,10 +230,17 @@ const PopperArrowFrame = styled(YStack, {
   // rotate: '45deg',
 })
 
+const opposites = {
+  top: 'bottom',
+  right: 'left',
+  bottom: 'top',
+  left: 'right',
+}
+
 export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps>(
   function PopperArrow(props: ScopedProps<PopperArrowProps>, forwardedRef) {
     const { __scopePopper, offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
-    const context = useContentContext(ARROW_NAME, __scopePopper)
+    const context = usePopperContext(ARROW_NAME, __scopePopper)
     const tokens = getTokens()
     const sizeVal = sizeProp ?? context.size
     const sizeValResolved = getVariableValue(tokens.size[sizeVal as any] ?? sizeVal ?? 12)
@@ -225,18 +249,19 @@ export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps
     const { x, y } = context.arrowStyle || { x: 0, y: 0 }
     const refs = useComposedRefs(context.arrowRef, forwardedRef)
 
-    let arrowStyle = { x, y, width: size, height: size }
-    if (placement) {
-      const staticSide = {
-        top: 'bottom',
-        right: 'left',
-        bottom: 'top',
-        left: 'right',
-      }[placement.split('-')[0]]
-      if (staticSide) {
-        Object.assign(arrowStyle, {
-          [staticSide]: -size / 2,
-        })
+    const primaryPlacement = placement ? placement.split('-')[0] : 'top'
+
+    let arrowStyle: StackProps = { x, y, width: size, height: size }
+    if (primaryPlacement) {
+      const oppSide = opposites[primaryPlacement]
+      if (oppSide) {
+        arrowStyle[oppSide] = -size / 2
+      }
+      if (oppSide === 'top' || oppSide === 'bottom') {
+        arrowStyle.left = 0
+      }
+      if (oppSide === 'left' || oppSide === 'right') {
+        arrowStyle.top = 0
       }
     }
 
@@ -251,20 +276,21 @@ export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps
         ref={refs}
         {...arrowStyle}
         rotate="45deg"
-        left={0}
-        {...(placement === 'top' && {
+        // left={0}
+        // top={0}
+        {...(primaryPlacement === 'top' && {
           borderBottomWidth: borderWidth,
           borderRightWidth: borderWidth,
         })}
-        {...(placement === 'bottom' && {
+        {...(primaryPlacement === 'bottom' && {
           borderTopWidth: borderWidth,
           borderLeftWidth: borderWidth,
         })}
-        {...(placement === 'left' && {
+        {...(primaryPlacement === 'left' && {
           borderTopWidth: borderWidth,
           borderRightWidth: borderWidth,
         })}
-        {...(placement === 'right' && {
+        {...(primaryPlacement === 'right' && {
           borderBottomWidth: borderWidth,
           borderLeftWidth: borderWidth,
         })}

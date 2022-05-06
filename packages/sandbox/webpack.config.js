@@ -36,10 +36,6 @@ module.exports = /** @type { import('webpack').Configuration } */ {
       'react-native$': 'react-native-web',
       'react-native-reanimated': require.resolve('react-native-reanimated'),
       'react-native-reanimated$': require.resolve('react-native-reanimated'),
-      react: require.resolve('react'),
-      'react-dom': require.resolve('react-dom'),
-      react$: require.resolve('react'),
-      'react-dom$': require.resolve('react-dom'),
     },
   },
   devServer: {
@@ -58,7 +54,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
       {
         oneOf: [
           {
-            test: /(react-native-reanimated).*\.[tj]sx?$/,
+            test: /(react-native-reanimated|gorhom\/portal).*\.[tj]sx?$/,
             use: [
               {
                 loader: 'babel-loader',
@@ -119,6 +115,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     new webpack.DefinePlugin({
       process: {
         env: {
+          __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
           IS_STATIC: '""',
           NODE_ENV: JSON.stringify(NODE_ENV),
           TAMAGUI_TARGET: JSON.stringify('web'),

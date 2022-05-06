@@ -1,0 +1,20 @@
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+}
+
+p,
+input,
+textarea,
+select,
+button,
+ul,
+ol,
+li,
+pre {
+  margin: 0;
+  padding: 0;
+}

@@ -283,7 +283,7 @@ const Header = memo(() => {
       </Paragraph>
 
       <Paragraph maxWidth={450} size="$5" theme="alt2">
-        Tamagui compiles to CSS media queries and hoists dynamic media styles outside of rendering.
+        Tamagui compiles to hoisted CSS/StyleSheets, moving styling outside of rendering.
       </Paragraph>
     </YStack>
   )

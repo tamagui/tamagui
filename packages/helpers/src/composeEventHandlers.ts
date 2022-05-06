@@ -1,6 +1,9 @@
-export type EventHandler<E extends Event> = (event: E) => void
+import { FocusEvent } from 'react'
+import { GestureResponderEvent } from 'react-native'
 
-export function composeEventHandlers<E extends Event>(
+export type EventHandler<E extends Event | GestureResponderEvent | FocusEvent> = (event: E) => void
+
+export function composeEventHandlers<E extends Event | GestureResponderEvent | FocusEvent>(
   og?: EventHandler<E>,
   next?: EventHandler<E>,
   { checkDefaultPrevented = true } = {}

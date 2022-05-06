@@ -11,19 +11,7 @@ If you'd rather build your own design system on top of core, [see the Design Sys
 
 ### Quick Start
 
-Try out [create-tamagui-app](/docs/guides/create-tamagui-app) for a helpful starter template. You may also use `@tamagui/shorthands` and `@tamagui/theme-base` to set up nice defaults for shorthands, themes and tokens:
-
-```tsx
-import { shorthands } from '@tamagui/shorthands'
-import { themes, tokens } from '@tamagui/theme-base'
-import { createTamagui } from 'tamagui'
-
-export default createTamagui({
-  themes,
-  tokens,
-  shorthands,
-})
-```
+Try out [create-tamagui-app](/docs/guides/create-tamagui-app) for a helpful starter template which comes with `@tamagui/shorthands` and `@tamagui/theme-base` for easy default shorthands, themes and tokens.
 
 ### Install Tamagui
 
@@ -311,7 +299,7 @@ The `createTamagui` function receives a configuration object:
 - `media`: Define reusable responsive [media queries](/docs/use-media).
 - `shorthands`: Define any props you want to expand to style values, keys being the shorthand and values being the expanded style prop.
 
-### Add Provider
+### Set up root
 
 Import and use the Tamagui `Provider` component at the top component in your app.
 
@@ -361,6 +349,12 @@ const css = Tamagui.getCSS()
 
 Even when using Webpack, some CSS won't be extracted and so will need to come from this helper.
 
+Finally, you may want to reset your CSS on your web app, we provide a very minimal one you can import. For Next.js apps, do so at the top of your `_app.tsx`:
+
+```tsx
+import '@tamagui/core/reset.css'
+```
+
 ### Use any views
 
 You're now ready to use Tamagui, import and use any components:
@@ -381,4 +375,4 @@ export default function Demo() {
 
 ### Web-only configurations
 
-If you want autocompleted imports of `react-native` without having to install the large package, you can set `react-native` version to `0.0.0`, and then add `@types/react-native` at the latest version.
+If you want autocompleted imports of `react-native` without having to install all the weight of react-native, you can set `react-native` version to `0.0.0`, and add `@types/react-native` at the latest version.

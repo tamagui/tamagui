@@ -90,7 +90,7 @@ function ContentInner({ Component, pageProps }: AppProps) {
   const isDocs = router.pathname.includes('/docs')
   const isDemo = router.pathname.includes('/responsive-demo')
   return (
-    <YStack>
+    <>
       {isDocs ? (
         <DocsPage>
           <Component {...pageProps} />
@@ -99,6 +99,6 @@ function ContentInner({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       )}
       {!isDocs && !isDemo && <Footer />}
-    </YStack>
+    </>
   )
 }

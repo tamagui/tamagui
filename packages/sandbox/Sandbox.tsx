@@ -1,15 +1,8 @@
+import '@tamagui/core/reset.css'
+import '@tamagui/polyfill-dev'
+
 import React, { useState } from 'react'
-import {
-  Button,
-  Paragraph,
-  Popover,
-  PopoverArrow,
-  PopoverContent,
-  PopoverTrigger,
-  PopperContentProps,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Paragraph, Tooltip, TooltipGroup, TooltipProps, XStack, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -19,6 +12,15 @@ export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as any)
   return (
     <Tamagui.Provider disableRootThemeClass injectCSS defaultTheme={theme}>
+      <Button
+        pos="absolute"
+        b={10}
+        l={10}
+        onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      >
+        Switch
+      </Button>
+
       <div
         style={{
           width: '100%',
@@ -27,85 +29,80 @@ export const Sandbox = () => {
           display: 'flex',
           flexDirection: 'column',
           background: 'red',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <a
-          style={{ marginBottom: 20 }}
-          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-        >
-          Switch theme
-        </a>
-
         <Test />
-        <HoverablePopoverDemo />
       </div>
     </Tamagui.Provider>
   )
 }
 
-export const Test = (props) => {
+function Test() {
   return (
-    <>
-      <Popover>
-        <PopoverTrigger>
-          <Button>Hello2</Button>
-        </PopoverTrigger>
-        <PopoverContent
-          enterStyle={{ x: 0, y: -20, o: 0 }}
-          exitStyle={{ x: 0, y: -20, o: 0 }}
-          x={0}
-          y={0}
-          o={1}
-          animation="bouncy"
-        >
-          <PopoverArrow />
-          <Paragraph>Hello world</Paragraph>
-        </PopoverContent>
-      </Popover>
-    </>
+    <TooltipGroup delay={{ open: 3000, close: 100 }}>
+      <YStack space als="center">
+        <XStack space>
+          <Demo groupId="0" placement="top-start" />
+          <Demo groupId="1" placement="top" />
+          <Demo groupId="2" placement="top-end" />
+        </XStack>
+        <XStack space>
+          <Demo groupId="3" placement="left" />
+          <Button f={1} opacity={0} />
+          <Demo groupId="4" placement="right" />
+        </XStack>
+        <XStack space>
+          <Demo groupId="5" placement="bottom-start" />
+          <Demo groupId="6" placement="bottom" />
+          <Demo groupId="7" placement="bottom-end" />
+        </XStack>
+      </YStack>
+    </TooltipGroup>
   )
 }
 
-function HoverablePopoverDemo() {
-  return (
-    <YStack space ai="center">
-      <XStack space>
-        <Demo placement="top-start" />
-        <Demo placement="top" />
-        <Demo placement="top-end" />
-      </XStack>
-      <XStack space>
-        <Demo placement="left" />
-        <Button opacity={0} />
-        <Demo placement="right" />
-      </XStack>
-      <XStack space>
-        <Demo placement="bottom-start" />
-        <Demo placement="bottom" />
-        <Demo placement="bottom-end" />
-      </XStack>
-    </YStack>
-  )
-}
+// export function Demo(props: Omit<PopperProps, 'children'>) {
+//   console.log('props', props)
+//   return (
+//     <Popover modal {...props}>
+//       <Popover.Trigger>
+//         <Button>Hello2</Button>
+//       </Popover.Trigger>
+//       <Popover.Content
+//         enterStyle={{ x: 0, y: -20, o: 0 }}
+//         exitStyle={{ x: 0, y: -20, o: 0 }}
+//         x={0}
+//         y={0}
+//         o={1}
+//         animation="bouncy"
+//       >
+//         <Popover.Arrow />
+//         <Paragraph>Hello world</Paragraph>
+//       </Popover.Content>
+//     </Popover>
+//   )
+// }
 
-function Demo(props: Omit<PopperContentProps, 'children'>) {
+export function Demo(props: Omit<TooltipProps, 'children'>) {
   return (
-    <Popover>
-      <PopoverTrigger>
+    <Tooltip {...props}>
+      <Tooltip.Trigger>
         <Button>Hello2</Button>
-      </PopoverTrigger>
-      <PopoverContent
-        enterStyle={{ x: 0, y: -20, o: 0 }}
-        exitStyle={{ x: 0, y: -20, o: 0 }}
+      </Tooltip.Trigger>
+      <Tooltip.Content
+        enterStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
+        exitStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
         x={0}
+        scale={1}
         y={0}
         o={1}
         animation="bouncy"
-        {...props}
       >
-        <PopoverArrow />
+        <Tooltip.Arrow />
         <Paragraph>Hello world</Paragraph>
-      </PopoverContent>
-    </Popover>
+      </Tooltip.Content>
+    </Tooltip>
   )
 }
