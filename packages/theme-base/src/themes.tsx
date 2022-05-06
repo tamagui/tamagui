@@ -100,7 +100,7 @@ const createTheme = (
     background: get(backgrounds, str),
     backgroundStronger: backgroundStronger || get(backgrounds, str + strongerDir),
     backgroundSoft: get(backgrounds, str + 3),
-    backgroundHover: get(backgrounds, str + lighterDir),
+    backgroundHover: get(backgrounds, str + strongerDir),
     backgroundPress: get(backgrounds, str + darkerDir * 1),
     backgroundFocus: get(backgrounds, str + darkerDir * 2),
     backgroundTransparent: color.grayA1,
@@ -110,7 +110,7 @@ const createTheme = (
     colorFocus: get(colors, 3 + str, 'color'),
     colorTranslucent,
     colorMid: colors[Math.floor(colors.length / 2)],
-    shadowColor: isLight ? color.grayA3 : color.grayA8,
+    shadowColor: isLight ? color.grayA2 : color.grayA8,
     shadowColorHover: darkColors[!isLight ? 1 : 8],
     shadowColorPress: darkColors[!isLight ? 1 : 8],
     shadowColorFocus: darkColors[!isLight ? 1 : 8],
@@ -282,11 +282,13 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
       shift,
       isBase: false,
       offsets: {
-        background: isLight ? [0, 0, 0, 0, 0, 0] : null,
-        borderColor: isLight ? [3, 3, 3, 3, 2] : null,
+        background: isLight ? [1, 1, 1, 1, 1, 1] : null,
+        borderColor: isLight ? [2, 2, 2, 3, 2] : null,
         color: isLight ? [0, 0, -1, -2, -3, -3, -4] : [-1, -1, -1, -1, -1, -1],
       },
     })
+
+    if (isLight) console.log('themeWithAlts', themeWithAlts)
 
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])
   })

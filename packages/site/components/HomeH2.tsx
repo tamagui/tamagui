@@ -23,6 +23,7 @@ export const HomeH3 = styled(H3, {
   theme: 'alt3',
   als: 'center',
   fow: '400',
+  px: 30,
   size: '$8',
   letsp: -0.5,
   maw: 540,

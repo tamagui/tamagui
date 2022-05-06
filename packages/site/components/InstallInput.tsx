@@ -26,7 +26,7 @@ export const InstallInput = memo(() => {
       als="center"
       elevation="$2"
       br="$10"
-      bc="$backgroundHover"
+      bc="$background"
       hoverStyle={{
         bc: '$background',
       }}

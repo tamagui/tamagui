@@ -55,7 +55,8 @@ const HeroTop = memo(() => {
         ov="hidden"
         space="$6"
         position="relative"
-        pt="$8"
+        pt="$9"
+        mb="$4"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',

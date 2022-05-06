@@ -32,7 +32,7 @@ export default function Home() {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <YStack bc="$background" shac="$shadowColorHover" shar="$1" py="$8" pb="$9">
+      <YStack elevation="$2" bc="$background" py="$8" pb={78}>
         <HeroBelow />
       </YStack>
       <Separator />
@@ -54,7 +54,7 @@ export default function Home() {
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
         <HeroExampleCode />
       </Section>
-      <Section bc="$background" mt={-100}>
+      <Section bc="$background" mt={-100} bbw={1} bbc="$borderColor" mb="$-5">
         <FeaturesGrid />
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
       </Section>
@@ -98,11 +98,12 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
       contain="paint"
       pos="relative"
       py="$9"
+      elevation="$2"
       {...(bubble && {
         maw: 1400,
         br: '$6',
         bw: 1,
-        boc: `$${tint}3`,
+        boc: `$${tint}4`,
         als: 'center',
         width: '100%',
       })}

@@ -142,7 +142,7 @@ export const HeroResponsive = memo(() => {
   }, [])
 
   return (
-    <YStack ref={ref} y={0} mt={-180} pos="relative">
+    <YStack ref={ref} y={0} mt={-150} pos="relative">
       <ContainerLarge pos="relative">
         <Header />
         <Spacer size="$6" />

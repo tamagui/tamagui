@@ -16,7 +16,6 @@ import { useRouter } from 'next/router'
 import Script from 'next/script'
 import NextProgress from 'nextjs-progressbar'
 import React, { useMemo, useState } from 'react'
-import { YStack } from 'tamagui'
 
 import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
@@ -57,7 +56,6 @@ export default function App(props: AppProps) {
     )
   }, [props])
 
-  // cant do system them because next SSR
   return (
     <>
       <Head>
