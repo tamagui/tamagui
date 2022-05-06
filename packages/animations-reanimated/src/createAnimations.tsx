@@ -103,7 +103,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
         for (const key in style) {
           const value = style[key]
-          const animationConfig = getAnimationConfig(animations, props.animation) as any
+          const animationConfig = getAnimationConfig(key, animations, props.animation) as any
           const { animation, config, shouldRepeat, repeatCount, repeatReverse } = getAnimation(
             key,
             animationConfig,
@@ -194,25 +194,37 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
   }
 }
 
-function getAnimationConfig(conf: AnimationsConfig, animation?: AnimationProp) {
+function getAnimationConfig(key: string, animations: AnimationsConfig, animation?: AnimationProp) {
   if (typeof animation === 'string') {
-    return conf[animation]
+    return animations[animation]
   }
-  let config: { type?: AnimationKeys } & {
-    [key: string]: AnimationKeys | { [key: string]: any }
-  }
+  let type = ''
+  let extraConf: any
   if (Array.isArray(animation)) {
-    const defaultType = animation[0] as string
-    config = { ...animation[1] }
-    for (const key in config) {
-      if (!config.type) {
-        config.type = defaultType
+    type = animation[0] as string
+    const conf = animation[1]?.[key]
+    if (conf) {
+      if (typeof conf === 'string') {
+        type = conf
+      } else {
+        type = (conf as any).type || type
+        extraConf = conf
       }
     }
   } else {
-    config = animation as any
+    const val = animation?.[key]
+    type = val?.type
+    extraConf = val
   }
-  return config
+  const found = animations[type]
+  if (!found) {
+    throw new Error(`No animation of type "${type}" for key "${key}"`)
+  }
+  return {
+    ...found,
+    ...extraConf,
+    type: found.type,
+  }
 }
 
 function animationDelay(
@@ -331,6 +343,9 @@ function getAnimation(
       velocity: 2,
       deceleration: 2,
     }
+  } else {
+    console.warn('no type of animation?', animationType)
+    animation = withSpring
   }
 
   return {
