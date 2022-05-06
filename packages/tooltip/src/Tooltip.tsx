@@ -143,7 +143,14 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
           scale={1}
           y={0}
           opacity={1}
-          animation="bouncy"
+          animation={[
+            'bouncy',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
           {...contentProps}
         >
           <Tooltip.Arrow />

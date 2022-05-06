@@ -4,32 +4,32 @@ import { Button, Paragraph, Tooltip, TooltipGroup, TooltipProps, XStack, YStack 
 export default function TooltipDemo() {
   return (
     <TooltipGroup delay={{ open: 3000, close: 100 }}>
-      <YStack space als="center">
-        <XStack space>
-          <Demo groupId="0" placement="top-start" icon={Circle} />
-          <Demo groupId="1" placement="top" icon={ChevronUp} />
-          <Demo groupId="2" placement="top-end" icon={Circle} />
+      <YStack space="$2" als="center">
+        <XStack space="$2">
+          <Demo groupId="0" placement="top-start" Icon={Circle} />
+          <Demo groupId="1" placement="top" Icon={ChevronUp} />
+          <Demo groupId="2" placement="top-end" Icon={Circle} />
         </XStack>
-        <XStack space>
-          <Demo groupId="3" placement="left" icon={ChevronLeft} />
+        <XStack space="$2">
+          <Demo groupId="3" placement="left" Icon={ChevronLeft} />
           <Button f={1} opacity={0} />
-          <Demo groupId="4" placement="right" icon={ChevronRight} />
+          <Demo groupId="4" placement="right" Icon={ChevronRight} />
         </XStack>
-        <XStack space>
-          <Demo groupId="5" placement="bottom-start" icon={Circle} />
-          <Demo groupId="6" placement="bottom" icon={ChevronDown} />
-          <Demo groupId="7" placement="bottom-end" icon={Circle} />
+        <XStack space="$2">
+          <Demo groupId="5" placement="bottom-start" Icon={Circle} />
+          <Demo groupId="6" placement="bottom" Icon={ChevronDown} />
+          <Demo groupId="7" placement="bottom-end" Icon={Circle} />
         </XStack>
       </YStack>
     </TooltipGroup>
   )
 }
 
-export function Demo({ icon, ...props }: TooltipProps & { icon?: any }) {
+export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
   return (
     <Tooltip {...props}>
       <Tooltip.Trigger>
-        <Button>Open</Button>
+        <Button icon={Icon} circular />
       </Tooltip.Trigger>
       <Tooltip.Content
         enterStyle={{ x: 0, y: -5, o: 0, scale: 0.9 }}

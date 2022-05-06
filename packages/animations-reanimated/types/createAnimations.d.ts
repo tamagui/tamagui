@@ -6,12 +6,18 @@ declare type AnimationsConfig<A extends Object = any> = {
 declare type AnimationConfig = ({
     type: 'timing';
     loop?: number;
+    repeat?: number;
+    repeatReverse?: boolean;
 } & WithTimingConfig) | ({
     type: 'spring';
     loop?: number;
+    repeat?: number;
+    repeatReverse?: boolean;
 } & WithSpringConfig) | ({
     type: 'decay';
     loop?: number;
+    repeat?: number;
+    repeatReverse?: boolean;
 } & WithDecayConfig);
 export declare function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A>;
 export {};

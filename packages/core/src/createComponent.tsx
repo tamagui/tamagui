@@ -587,7 +587,6 @@ export function createComponent<
     }
 
     if (asChild) {
-      console.log('wut', ViewComponent, viewProps)
       ViewComponent = Slot
     }
 

@@ -133,6 +133,58 @@ Setting `enterStyle` styles on any component tell it to start with those styles,
 
 ```
 
+### Granular animations
+
+The `animation` prop accepts a string or a more complex object to customize animations per-property.
+
+The basic object we'll call an `AnimationConfig`, looks like this:
+
+```tsx
+import { YStack } from 'tamagui'
+
+export default () => (
+  <YStack
+    animation={{
+      // only x and y will apply animations
+      x: 'bouncy',
+      y: {
+        type: 'bouncy',
+        overshootClamping: true,
+      }
+    }}
+  />
+)
+```
+
+Note that values can either map to `AnimationKey` as a string, or to `{ type: AnimationKey, ...configuration }`
+
+You can set a default value using a two-arity array with the default in the first position:
+
+```tsx
+import { YStack } from 'tamagui'
+
+export default () => (
+  <YStack
+    animation={[
+      // all attributes get "bouncy"
+      'bouncy',
+      // these are customized
+      {
+        y: 'slow',
+        scale: {
+          type: 'fast',
+          repeat: 2
+        }
+      }
+    ]}
+  />
+)
+```
+
+### animateOnly
+
+The `animateOnly` prop will limit your animation config to certain keys. It accepts an array of strings that correspond to style property names.
+
 ### AnimatePresence and exitStyle
 
 AnimatePresence animates direct children before they unmount. It's inspired by and forked from [Framer Motion](https://github.com/framer/motion), but works with any animation in Tamagui.

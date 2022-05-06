@@ -1,5 +1,5 @@
 import { AnimatePresenceContext, useEntering } from '@tamagui/animate-presence'
-import { AnimationDriver } from '@tamagui/core'
+import { AnimationDriver, AnimationKeys, AnimationProp } from '@tamagui/core'
 import { useCallback, useContext, useEffect, useMemo } from 'react'
 import Animated, {
   WithDecayConfig,
@@ -19,9 +19,9 @@ type AnimationsConfig<A extends Object = any> = {
 }
 
 type AnimationConfig =
-  | ({ type: 'timing'; loop?: number } & WithTimingConfig)
-  | ({ type: 'spring'; loop?: number } & WithSpringConfig)
-  | ({ type: 'decay'; loop?: number } & WithDecayConfig)
+  | ({ type: 'timing'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithTimingConfig)
+  | ({ type: 'spring'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithSpringConfig)
+  | ({ type: 'decay'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithDecayConfig)
 // | ({ type: 'transition' } & TransitionProps)
 
 const AnimatedView = Animated.View
@@ -93,7 +93,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         }
 
         const isExiting = isEntering === false
-        const transition = animations[props.animation]
 
         const exitingStyleProps: Record<string, boolean> = {}
         if (exitStyle) {
@@ -104,8 +103,12 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
         for (const key in style) {
           const value = style[key]
-          const aconf = animationConfig(key, transition)
-          const { animation, config, shouldRepeat, repeatCount, repeatReverse } = aconf
+          const animationConfig = getAnimationConfig(animations, props.animation) as any
+          const { animation, config, shouldRepeat, repeatCount, repeatReverse } = getAnimation(
+            key,
+            animationConfig,
+            props.animateOnly
+          )
 
           const callback: (completed: boolean, value?: any) => void = (completed, recentValue) => {
             runOnJS(reanimatedOnDidAnimated)(key, completed, recentValue, {
@@ -123,7 +126,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             }
           }
 
-          let { delayMs = null } = animationDelay(key, transition, delay)
+          let { delayMs = null } = animationDelay(key, animationConfig, delay)
 
           if (key === 'transform') {
             if (!Array.isArray(value)) {
@@ -191,24 +194,45 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
   }
 }
 
+function getAnimationConfig(conf: AnimationsConfig, animation?: AnimationProp) {
+  if (typeof animation === 'string') {
+    return conf[animation]
+  }
+  let config: { type?: AnimationKeys } & {
+    [key: string]: AnimationKeys | { [key: string]: any }
+  }
+  if (Array.isArray(animation)) {
+    const defaultType = animation[0] as string
+    config = { ...animation[1] }
+    for (const key in config) {
+      if (!config.type) {
+        config.type = defaultType
+      }
+    }
+  } else {
+    config = animation as any
+  }
+  return config
+}
+
 function animationDelay(
   key: string,
-  transition: AnimationConfig | undefined,
+  animation: AnimationConfig | undefined,
   defaultDelay?: number
 ) {
   'worklet'
   if (
-    !transition ||
-    !transition[key] ||
-    transition[key].delayMs === undefined ||
-    transition[key].delayMs === null
+    !animation ||
+    !animation[key] ||
+    animation[key].delayMs === undefined ||
+    animation[key].delayMs === null
   ) {
     return {
       delayMs: null,
     }
   }
   return {
-    delayMs: transition[key].delayMs as TransitionConfig['delay'],
+    delayMs: animation[key].delayMs as TransitionConfig['delay'],
   }
 }
 
@@ -268,103 +292,45 @@ const isColor = (styleKey: string) => {
   ].includes(styleKey)
 }
 
-function animationConfig<Animate>(styleProp: string, transition: AnimationConfig | undefined) {
+function getAnimation(
+  key: string,
+  animationConfig: AnimationConfig | undefined,
+  animateOnly?: string[]
+) {
   'worklet'
-  const key = styleProp
+  if (!animationConfig || (animateOnly && !animateOnly.includes(key))) {
+    return {}
+  }
+
   let repeatCount = 0
-  let repeatReverse = true
-  let animationType: Required<TransitionConfig>['type'] = 'spring'
+  let repeatReverse = animationConfig.repeatReverse || false
+  let animationType: Required<TransitionConfig>['type'] = animationConfig?.type || 'spring'
 
   if (isColor(key) || key === 'opacity') {
     animationType = 'timing'
   }
 
-  if (!transition) {
-    return {}
+  if ('repeat' in animationConfig) {
+    repeatCount = animationConfig.repeat || 0
+  } else {
+    if (animationConfig.loop) {
+      repeatCount = animationConfig.loop ? -1 : 0
+    }
   }
 
-  // say that we're looking at `width`
-  // first, check if we have transition.width.type
-  if (transition[key]?.type) {
-    animationType = transition[key]?.type
-  } else if (transition.type) {
-    // otherwise, fallback to transition.type
-    animationType = transition.type
-  }
-
-  const loop = transition[key]?.loop || transition.loop || null
-
-  if (loop != null) {
-    repeatCount = loop ? -1 : 0
-  }
-
-  // if (transition[key]?.repeat != null) {
-  //   repeatCount = transition[key]?.repeat
-  // } else if (transition?.repeat != null) {
-  //   repeatCount = transition.repeat
-  // }
-
-  // if (transition[key]?.repeatReverse != null) {
-  //   repeatReverse = transition[key]?.repeatReverse
-  // } else if (transition?.repeatReverse != null) {
-  //   repeatReverse = transition.repeatReverse
-  // }
-
-  let config = {}
-  // so sad, but fix it later :(
+  let config = animationConfig
   let animation: any
 
   if (animationType === 'timing') {
-    const duration =
-      (transition[key] as WithTimingConfig)?.duration ?? (transition as WithTimingConfig)?.duration
-
-    const easing =
-      (transition[key] as WithTimingConfig)?.easing ?? (transition as WithTimingConfig)?.easing
-
-    if (easing) {
-      config['easing'] = easing
-    }
-    if (duration != null) {
-      config['duration'] = duration
-    }
     animation = withTiming
   } else if (animationType === 'spring') {
     animation = withSpring
-    config = {} as WithSpringConfig
-    configKeys.forEach((configKey) => {
-      'worklet'
-      const styleSpecificConfig = transition?.[key]?.[configKey]
-      const transitionConfigForKey = transition?.[configKey]
-      if (styleSpecificConfig != null) {
-        config[configKey] = styleSpecificConfig
-      } else if (transitionConfigForKey != null) {
-        config[configKey] = transitionConfigForKey
-      }
-    })
   } else if (animationType === 'decay') {
     animation = withDecay
-    config = {
+    config = config || {
       velocity: 2,
       deceleration: 2,
     }
-    const configKeys: (keyof WithDecayConfig)[] = [
-      'clamp',
-      'velocity',
-      'deceleration',
-      'velocityFactor',
-    ]
-    configKeys.forEach((configKey) => {
-      'worklet'
-      // is this necessary ^ don't think so...?
-      const styleSpecificConfig = transition?.[key]?.[configKey]
-      const transitionConfigForKey = transition?.[configKey]
-
-      if (styleSpecificConfig != null) {
-        config[configKey] = styleSpecificConfig
-      } else if (transitionConfigForKey != null) {
-        config[configKey] = transitionConfigForKey
-      }
-    })
   }
 
   return {
@@ -375,13 +341,3 @@ function animationConfig<Animate>(styleProp: string, transition: AnimationConfig
     shouldRepeat: !!repeatCount,
   }
 }
-
-const configKeys: (keyof WithSpringConfig)[] = [
-  'damping',
-  'mass',
-  'overshootClamping',
-  'restDisplacementThreshold',
-  'restSpeedThreshold',
-  'stiffness',
-  'velocity',
-]

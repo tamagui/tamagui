@@ -86,7 +86,7 @@ export declare type Themes = TamaguiConfig['themes'];
 export declare type ThemeName = GetAltThemeNames<keyof Themes>;
 export declare type ThemeKeys = keyof ThemeObject;
 export declare type ThemeTokens = `$${ThemeKeys}`;
-export declare type AnimationKeys = GetAnimationKeys<TamaguiConfig>;
+export declare type AnimationKeys = Omit<GetAnimationKeys<TamaguiConfig>, number>;
 declare type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S;
 export declare type TamaguiInternalConfig<A extends GenericTokens = GenericTokens, B extends GenericThemes = GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts> = CreateTamaguiConfig<A, B, C, D, E, F> & {
     Provider: (props: TamaguiProviderProps) => any;
@@ -158,13 +158,28 @@ export declare type TransformStyleProps = {
     rotateX?: string;
     rotateZ?: string;
 };
+export declare type AnimationConfigType = any;
+export declare type AnimationProp = AnimationKeys | {
+    [key: string]: AnimationKeys | {
+        type: AnimationKeys;
+        [key: string]: any;
+    };
+} | [
+    AnimationKeys,
+    {
+        [key: string]: AnimationKeys | {
+            type?: AnimationKeys;
+            [key: string]: any;
+        };
+    }
+];
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
     space?: SpaceTokens;
     dangerouslySetInnerHTML?: {
         __html: string;
     };
-    animation?: AnimationKeys;
+    animation?: AnimationProp;
     animateOnly?: string[];
     children?: any | any[];
     debug?: boolean | 'break' | 'verbose';
@@ -384,9 +399,7 @@ export declare type AnimationDriver<A extends AnimationConfig = AnimationConfig>
     View?: any;
     Text?: any;
 };
-export declare type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any> & {
-    animation: string;
-};
+export declare type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
 export declare type UseAnimationHelpers = {
     staticConfig: StaticConfigParsed;
     getStyle: (props?: {

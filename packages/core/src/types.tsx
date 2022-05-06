@@ -145,7 +145,7 @@ export type ThemeName = GetAltThemeNames<keyof Themes>
 // export type ThemeNameWithSubThemes = GetSubThemes<ThemeName>
 export type ThemeKeys = keyof ThemeObject
 export type ThemeTokens = `$${ThemeKeys}`
-export type AnimationKeys = GetAnimationKeys<TamaguiConfig>
+export type AnimationKeys = Omit<GetAnimationKeys<TamaguiConfig>, number>
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
 
@@ -224,6 +224,35 @@ export type TransformStyleProps = {
 
 // createComponent props helpers
 
+// animation="bouncy"
+// animation={['bouncy', {  }]}
+// { all: 'name' }
+
+// TODO can override for better types
+export type AnimationConfigType = any
+
+export type AnimationProp =
+  | AnimationKeys
+  | {
+      [key: string]:
+        | AnimationKeys
+        | {
+            type: AnimationKeys
+            [key: string]: any
+          }
+    }
+  | [
+      AnimationKeys,
+      {
+        [key: string]:
+          | AnimationKeys
+          | {
+              type?: AnimationKeys
+              [key: string]: any
+            }
+      }
+    ]
+
 //
 // base props that are accepted by createComponent (additional to react-native-web)
 //
@@ -231,7 +260,7 @@ export type TamaguiComponentPropsBase = {
   asChild?: boolean
   space?: SpaceTokens
   dangerouslySetInnerHTML?: { __html: string }
-  animation?: AnimationKeys
+  animation?: AnimationProp
   animateOnly?: string[]
   children?: any | any[]
   debug?: boolean | 'break' | 'verbose'
@@ -1001,10 +1030,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   Text?: any
 }
 
-export type UseAnimationProps = TamaguiComponentPropsBase &
-  Record<string, any> & {
-    animation: string
-  }
+export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
 export type UseAnimationHelpers = {
   staticConfig: StaticConfigParsed
