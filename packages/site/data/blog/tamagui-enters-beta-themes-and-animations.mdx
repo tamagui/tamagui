@@ -221,8 +221,9 @@ export default () => <Button size="$6" icon={Play} />
 
 ### And much more...
 
-- 🐛 [Hundreds of bug-fixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.0).
 - ✨ Many docs improvements: new pages, more examples, more props documented, and search.
+- ✨ `asChild` prop that lets you simply pass all style props down to a child.
+- 🐛 [Hundreds of bug-fixes](https://github.com/tamagui/tamagui/releases/tag/v1.0.0-beta.0).
 - 🐛 Much improved install experience and many bugs fixed with Next, Webpack, Monorepos.
 
 ---
@@ -239,15 +240,15 @@ export default () => <Button size="$6" icon={Play} />
 
 ### Going forward
 
-There's a ton of progress here, but likewise a ton more to go. There's many components, docs, and features to be written, and I'd like to get better at community and sharing progress from here on out.
+There's a ton of progress here, but likewise a ton more to go. There's many components, docs, and features to be written, and alongside that I'd like to get better at community and sharing progress from here on out.
 
-What really excites me is the foundations laid. Tamagui now has such a rich set of primitives - from animations, themes, and sizing, to performance even including things like media queries, to all the helpers and hooks adopted since alpha that make designing Radix-like composable API's a breeze, all the way to adopting Floating UI and all the powerful primitives now available - everything feels like it works together well, and as of late the composability and flexiblity haven't blocked design of even complex use-cases (✊🪵).
+What really excites me with this release is the foundation laid. Tamagui now has _such_ a rich set of primitives - from animations, themes, and sizing, to performance across every feature, to all the helpers and hooks adopted since alpha that make animated, sizable and Radix-like composable API's a breeze, all the way to Floating UI and all the powerful primitives that brings. Everything feels like it's working together well (✊🪵).
 
-Seeing Tooltip come to life somewhat easily in the latest refactor just by importing a few hooks and components and giving it an `animation` prop was really inspiring.
+Seeing Tooltip come to life somewhat easily in the latest refactor by just importing a few hooks/components and giving it an `animation` prop with `AnimatePresence` was really inspiring.
 
-I've always wanted to build beautiful apps, but doing so has always felt like either I needed to limit the ambition, the features, the platforms supported, or the dream altogether - without massive investment.
+I've always wanted to build ambitious, beautiful apps, but it's never felt feasible to even get clsoe to the vision, at least not withuot VC-level investment.
 
-With the latest Tamagui, the bar feels decisively lowered to where building _an actually beautiful_ app that scales to great ambition is actually within reach.
+With Tamagui beta, the bar feels decisively lowered. Building _an actually beautiful app, myself_ feels within reach. That's cool.
 
 🍻
 
@@ -261,3 +262,4 @@ I'd like to thank:
 
 - [Fenando Rojo](https://twitter.com/fernandotherojo) and [Moti](https://moti.fyi) for the elegant reanimated animation driver that served as the starting point of `@tamagui/animations-reanimated`, as well as for putting together [Solito](https://solito.dev) that powers the first template in create-tamagui-app.
 - [Matt Perry](https://twitter.com/mattgperry) and [Framer Motion](https://github.com/framer/motion) for the base of AnimatePresence in `@tamagui/animate-presence`.
+- [Radix](https://www.radix-ui.com) for their rad quality, the innovative composing components API's, and `asChild`.
