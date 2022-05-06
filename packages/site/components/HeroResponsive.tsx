@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
   Button,
   Circle,
@@ -47,7 +47,7 @@ export const HeroResponsive = memo(() => {
     setBounding(rect)
   }, 350)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!bounding) {
       updateBoundings()
       return
@@ -138,8 +138,12 @@ export const HeroResponsive = memo(() => {
   const isSmall = initialWidth + Math.max(0, move) < 680
 
   const handleMarkerPress = useCallback((name) => {
-    // todo animate to width
+    const next = (breakpoints.find((x) => x.name === name)?.at ?? 0) - initialWidth + 20
+    setMove(next)
+    prevMove.current = 0
   }, [])
+
+  const scale = 0.8 - Math.min(0.25, smIndex * 0.18)
 
   return (
     <YStack ref={ref} y={0} mt={-150} pos="relative">
@@ -154,12 +158,13 @@ export const HeroResponsive = memo(() => {
           f={1}
           space="$1"
           $sm={{
-            scale: 0.8 - smIndex * 0.06,
-            x: 150 - width / 2,
+            scale,
+            x: 150 - width / 2 - (smIndex ? (0.9 - scale) * 200 : 0),
             y: -40,
           }}
         >
           <YStack
+            zi={2}
             className="unselectable"
             pe={isDragging ? 'none' : 'auto'}
             w={width}
@@ -176,7 +181,7 @@ export const HeroResponsive = memo(() => {
             </Theme>
           </YStack>
 
-          <Container zi={-1} pos="absolute">
+          <Container zi={1} pos="absolute">
             <XStack x={-10} $sm={{ display: 'none' }}>
               {breakpoints.map((bp, i) => {
                 return (
@@ -240,7 +245,7 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-      <XStack pe="none" y={-45} ai="flex-start">
+      <XStack y={-48} ai="flex-start">
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           borderWidth={1}
@@ -278,12 +283,12 @@ const Header = memo(() => {
         </XStack>
       </XStack>
 
-      <Paragraph maxWidth={450} size="$7" theme="alt2">
+      <Paragraph size="$7" theme="alt2">
         Responsive on Native & Web, without performance downside.
       </Paragraph>
 
-      <Paragraph maxWidth={450} size="$5" theme="alt2">
-        Tamagui compiles to hoisted CSS/StyleSheets, moving styling outside of rendering.
+      <Paragraph maxWidth={450} size="$5" theme="alt4">
+        Tamagui compiles to hoisted CSS/StyleSheets, moving styles outside of render/runtime.
       </Paragraph>
     </YStack>
   )
