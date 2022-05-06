@@ -13,6 +13,7 @@ export default function DrawerDemo() {
           icon={show ? ChevronDown : ChevronUp}
           circular
           onPress={() => setShow((x) => !x)}
+          elevation="$2"
         />
         <Drawer open={show} onChangeOpen={setShow}>
           <Drawer.Frame h={200} ai="center" jc="center" p="$6" space>
@@ -22,6 +23,7 @@ export default function DrawerDemo() {
               icon={show ? ChevronDown : ChevronUp}
               circular
               onPress={() => setShow((x) => !x)}
+              elevation="$2"
             />
           </Drawer.Frame>
         </Drawer>

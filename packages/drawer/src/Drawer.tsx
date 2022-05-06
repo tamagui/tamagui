@@ -59,19 +59,6 @@ export const DrawerHandle = styled(XStack, {
   },
 })
 
-// export type DrawerHandleProps = ScopedProps<XStackProps, 'Drawer'>
-// test memo
-// export const DrawerHandle = DrawerHandleFrame.extractable(
-//   forwardRef(({ __scopeDrawer, ...props }: DrawerHandleProps) => {
-//     const context = useDrawerContext(HANDLE_NAME, __scopeDrawer)
-
-//     return null
-//   }),
-//   {
-//     neverFlatten: true,
-//   }
-// )
-
 type DrawerContextValue = {
   open?: boolean
   onChangeOpen?: OpenChangeHandler
@@ -138,7 +125,6 @@ export const Drawer = withStaticProperties(
         } else {
           sheetRef.current?.present()
         }
-        onChangeOpen?.(open)
       }, [open])
 
       let handleComponent: any = null
@@ -166,18 +152,16 @@ export const Drawer = withStaticProperties(
       // TODO find components
 
       return (
-        <DrawerRootProvider
-          scope={__scopeDrawer}
-          open={open}
-          onChangeOpen={useCallback(setOpen, [])}
-        >
+        <DrawerRootProvider scope={__scopeDrawer} open={open} onChangeOpen={setOpen}>
           <BottomSheetModal
             handleComponent={() => handleComponent}
             backdropComponent={() => backdropComponent}
             snapPoints={['80%']}
             ref={composeRefs(ref, sheetRef)}
             onChange={(i) => {
-              setOpen(i === 0)
+              const next = i === 0
+              setOpen(next)
+              onChangeOpen?.(next)
             }}
             backgroundStyle={{
               backgroundColor: 'transparent',

@@ -21,7 +21,7 @@ export function HeroContainer({
       display="flex"
       alignItems="center"
       justifyContent="center"
-      py={50}
+      py={70}
       minHeight={300}
       y={0}
       borderRadius="$4"

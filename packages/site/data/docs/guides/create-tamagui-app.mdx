@@ -1,14 +1,14 @@
 ---
-title: create-tamagui-app
+title: Create Tamagui App
 description: Get started with a helpful template
 ---
 
-Set up a starter repo with expo, webpack, and tamagui configured and ready to go:
+Set up a starter repo with expo, webpack, and Tamagui configured and ready to go:
 
 ### Usage
 
 ```bash
-npx create-tamagui-app
+npx create-tamagui-app@latest
 ```
 
 Check out [the source of the starter app template](https://github.com/tamagui/starter-base).
@@ -95,5 +95,3 @@ yarn
 ```
 
 You can also install the native library inside of `packages/app` if you want to get autoimport for that package inside of the `app` folder. However, you need to be careful and install the _exact_ same version in both packages. If the versions mismatch at all, you'll potentially get terrible bugs. This is a classic monorepo issue. I use `lerna-update-wizard` to help with this (you don't need to use Lerna to use that lib).
-
-## 🧐 Why use Expo + Next.js?

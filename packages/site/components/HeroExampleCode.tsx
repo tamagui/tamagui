@@ -22,8 +22,7 @@ export function HeroExampleCode() {
           <YStack space="$2">
             <HomeH2>DX 🤝 UX</HomeH2>
             <HomeH3>
-              Maintainable, cross-platform and performant - still&nbsp;easy&nbsp;to&nbsp;use and
-              introspect.
+              Maintainable, cross-platform, performant + easier&nbsp;to&nbsp;use and debug.
             </HomeH3>
           </YStack>
 

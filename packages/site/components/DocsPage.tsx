@@ -35,7 +35,12 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
   const currentPageIndex = allNotPending.findIndex((page) => page.route === currentPath)
   const previous = allNotPending[currentPageIndex - 1]
-  const next = allNotPending[currentPageIndex + 1]
+  let nextIndex = currentPageIndex + 1
+  let next = allNotPending[nextIndex]
+  while (next && next.route.startsWith('http')) {
+    next = allNotPending[++nextIndex]
+  }
+
   const GITHUB_URL = 'https://github.com'
   const REPO_NAME = 'tamagui/tamagui'
   const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/packages/site/data${currentPath}.mdx`
