@@ -112,10 +112,7 @@ export const PopoverTrigger = React.forwardRef<PopoverTriggerElement, PopoverTri
     return context.hasCustomAnchor ? (
       trigger
     ) : (
-      <PopperAnchor
-        // asChild
-        {...popperScope}
-      >
+      <PopperAnchor debug asChild {...popperScope}>
         {trigger}
       </PopperAnchor>
     )

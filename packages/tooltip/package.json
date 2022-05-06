@@ -26,6 +26,7 @@
     "@tamagui/popover": "^1.0.0-beta.5",
     "@tamagui/popper": "^1.0.0-beta.5",
     "@tamagui/stacks": "^1.0.0-beta.5",
+    "@tamagui/text": "^1.0.0-beta.5",
     "@tamagui/use-controllable-state": "^1.0.0-beta.5"
   },
   "peerDependencies": {

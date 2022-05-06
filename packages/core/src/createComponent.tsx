@@ -40,6 +40,7 @@ import {
   TamaguiInternalConfig,
   UseAnimationHook,
 } from './types'
+import { Slot } from './views/Slot'
 import { TextAncestorContext } from './views/TextAncestorContext'
 
 React['keep']
@@ -120,7 +121,7 @@ export function createComponent<
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
     // ridiculous fix because react inserts default props after your props for some reason...
-    props = tamaguiDefaultProps ? { ...tamaguiDefaultProps, ...props } : props
+    props = tamaguiDefaultProps && !props.asChild ? { ...tamaguiDefaultProps, ...props } : props
 
     const { Component, componentName, isText, isZStack } = staticConfig
 
@@ -145,7 +146,7 @@ export function createComponent<
       staticConfig,
       theme,
       shouldAvoidClasses ? { ...state, noClassNames: true, resolveVariablesAs: 'value' } : state,
-      shouldAvoidClasses ? null : initialSplitStyles.classNames
+      shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames
     )
 
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitStyles
@@ -168,6 +169,7 @@ export function createComponent<
     const {
       tag,
       hitSlop,
+      asChild,
       children,
       pointerEvents,
       onPress,
@@ -521,7 +523,7 @@ export function createComponent<
         }
       : null
 
-    let childEls = !children
+    const childEls = !children
       ? children
       : wrapThemeManagerContext(
           spacedChildren({
@@ -582,6 +584,11 @@ export function createComponent<
       } else {
         Object.assign(viewProps, events)
       }
+    }
+
+    if (asChild) {
+      console.log('wut', ViewComponent, viewProps)
+      ViewComponent = Slot
     }
 
     content = createElement(ViewComponent, viewProps, childEls)

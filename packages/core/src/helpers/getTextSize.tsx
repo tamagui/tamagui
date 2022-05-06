@@ -1,6 +1,7 @@
-import { FontSizeTokens, TextProps, VariantSpreadFunction, getVariableValue } from '@tamagui/core'
+import { getVariableValue } from '../createVariable'
+import { FontSizeTokens, TextProps, VariantSpreadFunction } from '../types'
 
-export const sizableTextSizeVariant: VariantSpreadFunction<TextProps, FontSizeTokens> = (
+export const getTextSize: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   val = '$4',
   { fonts, theme, props }
 ) => {

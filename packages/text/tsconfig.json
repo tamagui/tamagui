@@ -3,11 +3,6 @@
   "compilerOptions": { "composite": true, "jsx": "preserve" },
   "references": [
     { "path": "../core" },
-    { "path": "../text" },
-    { "path": "../stacks" },
-    { "path": "../create-context" },
-    { "path": "../compose-refs" },
-    { "path": "../use-controllable-state" },
     { "path": "../build" }
   ]
 }

@@ -1,8 +1,7 @@
 import { ReactComponentWithRef, isWeb, styled } from '@tamagui/core'
+import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { forwardRef } from 'react'
 import { Linking, View } from 'react-native'
-
-import { SizableText, SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['keep']

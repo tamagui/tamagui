@@ -159,6 +159,7 @@ export declare type TransformStyleProps = {
     rotateZ?: string;
 };
 export declare type TamaguiComponentPropsBase = {
+    asChild?: boolean;
     space?: SpaceTokens;
     dangerouslySetInnerHTML?: {
         __html: string;

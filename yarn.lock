@@ -4073,6 +4073,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/text@^1.0.0-beta.5, @tamagui/text@workspace:packages/text":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/text@workspace:packages/text"
+  dependencies:
+    "@tamagui/build": ^1.0.0-beta.5
+    "@tamagui/core": ^1.0.0-beta.5
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/theme-base@^1.0.0-beta.5, @tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
@@ -4096,6 +4110,7 @@ __metadata:
     "@tamagui/popover": ^1.0.0-beta.5
     "@tamagui/popper": ^1.0.0-beta.5
     "@tamagui/stacks": ^1.0.0-beta.5
+    "@tamagui/text": ^1.0.0-beta.5
     "@tamagui/use-controllable-state": ^1.0.0-beta.5
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.67.3
@@ -20022,6 +20037,7 @@ __metadata:
     "@tamagui/popover": ^1.0.0-beta.5
     "@tamagui/popper": ^1.0.0-beta.5
     "@tamagui/stacks": ^1.0.0-beta.5
+    "@tamagui/text": ^1.0.0-beta.5
     "@tamagui/tooltip": ^1.0.0-beta.5
     "@tamagui/use-controllable-state": ^1.0.0-beta.5
     "@tamagui/use-debounce": ^1.0.0-beta.5

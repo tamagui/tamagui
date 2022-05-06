@@ -18,12 +18,19 @@ import {
   PopoverArrow,
   PopoverClose,
   PopoverContent,
+  PopoverContentProps,
   PopoverTrigger,
   __PopoverProviderInternal,
   usePopoverScope,
 } from '@tamagui/popover'
 import { FloatingOverrideContext, Popper, PopperProps, UseFloatingFn } from '@tamagui/popper'
+import { SizableStackProps } from '@tamagui/stacks'
+import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
+
+const TooltipContent = React.forwardRef((props: PopoverContentProps, ref: any) => {
+  return <PopoverContent pointerEvents="none" ref={ref} {...props} />
+})
 
 export type TooltipProps = PopperProps & {
   children?: React.ReactNode
@@ -106,9 +113,43 @@ export const Tooltip = withStaticProperties(
     Anchor: PopoverAnchor,
     Arrow: PopoverArrow,
     Close: PopoverClose,
-    Content: PopoverContent,
+    Content: TooltipContent,
     Trigger: PopoverTrigger,
   }
 )
 
 Tooltip.displayName = 'Tooltip'
+
+export type TooltipSimpleProps = TooltipProps & {
+  label?: React.ReactNode
+  children?: React.ReactNode
+  contentProps?: SizableStackProps
+}
+
+export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
+  label,
+  children,
+  contentProps,
+  ...tooltipProps
+}) => {
+  return (
+    <TooltipGroup delay={{ open: 3000, close: 100 }}>
+      <Tooltip {...tooltipProps}>
+        <Tooltip.Trigger>{children}</Tooltip.Trigger>
+        <Tooltip.Content
+          enterStyle={{ x: 0, y: -10, opacity: 0, scale: 0.9 }}
+          exitStyle={{ x: 0, y: -10, opacity: 0, scale: 0.9 }}
+          x={0}
+          scale={1}
+          y={0}
+          opacity={1}
+          animation="bouncy"
+          {...contentProps}
+        >
+          <Tooltip.Arrow />
+          <Paragraph>{label}</Paragraph>
+        </Tooltip.Content>
+      </Tooltip>
+    </TooltipGroup>
+  )
+}

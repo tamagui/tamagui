@@ -1,7 +1,7 @@
 import { GetProps, ReactComponentWithRef, ThemeableProps } from '@tamagui/core';
+import { SizableTextProps } from '@tamagui/text';
 import { FunctionComponent } from 'react';
 import { View } from 'react-native';
-import { SizableTextProps } from './SizableText';
 declare type ButtonIconProps = {
     color?: string;
     size?: number;

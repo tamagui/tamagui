@@ -1,0 +1,34 @@
+{
+  "name": "@tamagui/text",
+  "version": "1.0.0-beta.5",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "typings": "types",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.0.0-beta.5"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.0-beta.5",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}

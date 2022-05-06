@@ -1,5 +1,6 @@
 import '@tamagui/polyfill-dev';
 import { PopperProps } from '@tamagui/popper';
+import { SizableStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 export declare type TooltipProps = PopperProps & {
     children?: React.ReactNode;
@@ -45,7 +46,7 @@ export declare const Tooltip: React.FC<TooltipProps> & {
         fullscreen?: boolean | undefined;
         elevation?: import("@tamagui/core").SizeTokens | undefined;
     }>> & React.RefAttributes<HTMLElement | import("react-native").View>>;
-    Content: React.ForwardRefExoticComponent<import("@tamagui/popover").PopoverContentTypeProps & React.RefAttributes<HTMLElement | import("react-native").View>>;
+    Content: React.ForwardRefExoticComponent<import("@tamagui/popover").PopoverContentTypeProps & React.RefAttributes<unknown>>;
     Trigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
         fullscreen?: boolean | undefined;
         elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -57,4 +58,10 @@ export declare const Tooltip: React.FC<TooltipProps> & {
         elevation?: import("@tamagui/core").SizeTokens | undefined;
     }>> & React.RefAttributes<HTMLElement | import("react-native").View>>;
 };
+export declare type TooltipSimpleProps = TooltipProps & {
+    label?: React.ReactNode;
+    children?: React.ReactNode;
+    contentProps?: SizableStackProps;
+};
+export declare const TooltipSimple: React.FC<TooltipSimpleProps>;
 //# sourceMappingURL=Tooltip.d.ts.map

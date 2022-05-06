@@ -10,12 +10,12 @@ import {
   useTheme,
 } from '@tamagui/core'
 import { SizableStack } from '@tamagui/stacks'
+import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
 import { View } from 'react-native'
 
 import { getFontSize } from '../helpers/getFontSize'
 import { getSpace } from '../helpers/getSpace'
-import { SizableText, SizableTextProps } from './SizableText'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

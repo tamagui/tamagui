@@ -1,6 +1,6 @@
 import { ReactComponentWithRef } from '@tamagui/core';
+import { SizableTextProps } from '@tamagui/text';
 import { View } from 'react-native';
-import { SizableTextProps } from './SizableText';
 export declare type AnchorProps = SizableTextProps & {
     href?: string;
     target?: string;

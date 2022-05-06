@@ -9,6 +9,7 @@ import {
   Text,
   Theme,
   Tooltip,
+  TooltipSimple,
   VisuallyHidden,
   XStack,
   YStack,
@@ -83,16 +84,11 @@ const HeroTop = memo(() => {
               maxWidth: 1200,
             }}
           >
-            <Tooltip>
-              <Tooltip.Trigger>
-                <span className="universal">
-                  <span className="rainbow clip-text help">Universal</span>
-                </span>
-              </Tooltip.Trigger>
-              <Tooltip.Content>
-                <Paragraph>Works the same on iOS, Android, and web</Paragraph>
-              </Tooltip.Content>
-            </Tooltip>{' '}
+            <TooltipSimple label="Works the same on iOS, Android, and web">
+              <span className="universal">
+                <span className="rainbow clip-text help">Universal</span>
+              </span>
+            </TooltipSimple>{' '}
             design systems for React&nbsp;Native &&nbsp;Web, faster
           </H1>
 

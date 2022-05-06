@@ -68,6 +68,18 @@ Outside of style properties, Tamagui adds:
     {
       name: 'debug',
       required: false,
+      type: 'boolean | "verbose" | "break"',
+      description: (
+        <span>
+          When set to true Tamagui will output a variety of helpful information on how it parsed and
+          applied styling. Verbose will output more information, and break will hit a debugger at
+          the start of render in development mode.
+        </span>
+      ),
+    },
+    {
+      name: 'asChild',
+      required: false,
       type: 'boolean',
       description: (
         <span>

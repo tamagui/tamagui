@@ -75,7 +75,7 @@ export const Slottable = ({ children }: { children: React.ReactNode }) => {
 type AnyProps = Record<string, any>
 
 function isSlottable(child: React.ReactNode): child is React.ReactElement {
-  return React.isValidElement(child) && child.type === Slottable
+  return React.isValidElement(child)
 }
 
 function mergeProps(slotProps: AnyProps, childProps: AnyProps) {

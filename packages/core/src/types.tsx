@@ -228,6 +228,7 @@ export type TransformStyleProps = {
 // base props that are accepted by createComponent (additional to react-native-web)
 //
 export type TamaguiComponentPropsBase = {
+  asChild?: boolean
   space?: SpaceTokens
   dangerouslySetInnerHTML?: { __html: string }
   animation?: AnimationKeys

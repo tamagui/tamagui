@@ -3,17 +3,16 @@ import {
   GetProps,
   ReactComponentWithRef,
   getButtonSize,
+  getTextSize,
   isWeb,
   styled,
   themeable,
   useId,
 } from '@tamagui/core'
 import { createContext } from '@tamagui/create-context'
+import { SizableText } from '@tamagui/text'
 import * as React from 'react'
 import { View } from 'react-native'
-
-import { sizableTextSizeVariant } from '../helpers/sizableTextSizeVariant'
-import { SizableText } from './SizableText'
 
 const NAME = 'Label'
 
@@ -28,7 +27,6 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
 })
 
 const buttonSizer = getButtonSize()
-const textSizer = sizableTextSizeVariant
 
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
@@ -47,7 +45,7 @@ export const LabelFrame = styled(SizableText, {
       '...size': (val, extras) => {
         return {
           ...buttonSizer(val, extras),
-          ...textSizer(val, extras),
+          ...getTextSize(val, extras),
         }
       },
     },
