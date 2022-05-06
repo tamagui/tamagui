@@ -25,71 +25,120 @@ component: Tooltip
   ]}
 />
 
-### Usage
+### Anatomy
 
-```jsx
-import { Tooltip, Button } from 'tamagui'
+```tsx
+import { Tooltip } from '@tamagui/tooltip'
 
 export default () => (
-  <Tooltip contents="Text in tooltip">
-    <Button>Hover to open</Button>
+  <Tooltip>
+    <Tooltip.Trigger />
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      {/* ... */}
+    </Tooltip.Content>
   </Tooltip>
 )
 ```
 
-### Tooltip props
+### API
 
-Tooltips extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+#### Popover
+
+Contains every component for the popover.
 
 <PropsTable
   data={[
     {
-      name: 'contents',
+      name: 'children',
+      type: 'React.ReactNode',
       required: true,
+      description: `Must contain Popover.Content`,
+    },
+    {
+      name: 'groupId',
       type: 'string',
-      description: `What's shown in the tooltip.`,
-    },
-    {
-      name: 'tooltipFrameProps',
       required: false,
-      type: 'StackProps',
-      description: `Change style of the tooltip frame`,
+      description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
     },
     {
-      name: 'size',
-      required: true,
-      type: 'Size',
-      description: `Size it up or down.`,
-    },
-    {
-      name: 'alwaysDark',
+      name: 'restMs',
+      type: 'number',
       required: false,
-      type: 'boolean',
-      description: `Make sure the frame is dark`,
+      description: `Time needed for cursor to rest before showing.`,
     },
     {
       name: 'delay',
+      type: `number | { open?: number; close?: number }`,
       required: false,
-      type: 'number',
-      description: `Set the delay before appearing`,
+      description: `Maximum time before showing (can be set independently for open/close).`,
     },
     {
-      name: 'allowHoverOnContent',
+      name: 'size',
+      type: 'SizeTokens',
       required: false,
-      type: 'boolean',
-      description: `Allow hover on tooltip content`,
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
     },
     {
-      name: 'disableUntilSettled',
+      name: 'placement',
+      type: 'Placement',
       required: false,
-      type: 'boolean',
-      description: `Override hover only on settled`,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
     },
     {
-      name: 'show',
-      required: false,
+      name: 'open',
       type: 'boolean',
-      description: `If for whatever reason you need to force it on/off.`,
+      required: false,
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: `Renders into root of app instead of inline`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps',
+      required: false,
+      description: `See floating-ui shift()`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps',
+      required: false,
+      description: `See floating-ui flip`,
     },
   ]}
 />
+
+#### Trigger
+
+Used to trigger opening of the popover when uncontrolled, just renders a YStack, see [Stacks](/docs/components/stacks).
+
+#### Content
+
+Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
+
+Used to display the content of the popover.
+
+<Notice>
+  Docs coming soon, we need to finalize a few more things to get the full set of props working
+</Notice>
+
+#### Anchor
+
+Renders as YStack, see [Stacks](/docs/components/stacks).
+
+When you want the Trigger to be in another location from where the Popover attaches, use Anchor. When used, Anchor is where the Popover will attach, while Trigger will open it.

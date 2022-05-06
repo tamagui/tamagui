@@ -288,8 +288,6 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
       },
     })
 
-    if (isLight) console.log('themeWithAlts', themeWithAlts)
-
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])
   })
   const lightButtonTheme = altLightThemes[0]

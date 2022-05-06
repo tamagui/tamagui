@@ -52,7 +52,6 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import
 }>> & React.RefAttributes<PopoverTriggerElement>>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
-    portalled?: boolean;
 }
 export declare type PopoverContentProps = PopoverContentTypeProps;
 export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverContentTypeProps & React.RefAttributes<HTMLElement | View>>;
@@ -100,7 +99,6 @@ export declare const PopoverArrow: React.ForwardRefExoticComponent<Omit<import("
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 }>> & React.RefAttributes<PopoverArrowElement>>;
 export declare type PopoverProps = PopperProps & {
-    children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;

@@ -144,11 +144,6 @@ export interface PopoverContentTypeProps
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
-  /**
-   * Whether the `Popover` should render in a `Portal`
-   * (default: `true`)
-   */
-  portalled?: boolean
 }
 
 export type PopoverContentProps = PopoverContentTypeProps
@@ -185,7 +180,7 @@ const PopoverContentModal = React.forwardRef<PopoverContentTypeElement, PopoverC
     //   if (content) return hideOthers(content)
     // }, [])
 
-    const PortalWrapper = portalled ? Portal : React.Fragment
+    const PortalWrapper = context.modal ? Portal : React.Fragment
 
     return (
       <PortalWrapper>
@@ -229,10 +224,10 @@ const PopoverContentModal = React.forwardRef<PopoverContentTypeElement, PopoverC
 
 const PopoverContentNonModal = React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
   (props: ScopedProps<PopoverContentTypeProps>, forwardedRef) => {
-    const { portalled = true, ...contentNonModalProps } = props
+    const { ...contentNonModalProps } = props
     const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
     const hasInteractedOutsideRef = React.useRef(false)
-    const PortalWrapper = React.Fragment //portalled ? Portal : React.Fragment
+    const PortalWrapper = context.modal ? Portal : React.Fragment
 
     return (
       <PortalWrapper>
@@ -466,7 +461,6 @@ PopoverArrow.displayName = ARROW_NAME
  * -----------------------------------------------------------------------------------------------*/
 
 export type PopoverProps = PopperProps & {
-  children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void

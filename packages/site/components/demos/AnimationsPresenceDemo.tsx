@@ -63,5 +63,3 @@ export const images = [
   require('../../public/photo2.jpeg').default.src,
   require('../../public/photo3.jpeg').default.src,
 ]
-
-console.log('images', images)

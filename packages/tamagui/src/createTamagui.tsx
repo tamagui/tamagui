@@ -7,7 +7,6 @@ import {
 } from '@tamagui/core'
 import * as React from 'react'
 
-import { PopoverProvider } from './views/Popover/PopoverProvider'
 import { SafeAreaProvider } from './views/SafeAreaProvider'
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
@@ -22,9 +21,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   conf.Provider = ({ children, ...props }: TamaguiProviderProps) => {
     return (
       <OGProvider {...props}>
-        <SafeAreaProvider>
-          <PopoverProvider>{children}</PopoverProvider>
-        </SafeAreaProvider>
+        <SafeAreaProvider>{children}</SafeAreaProvider>
       </OGProvider>
     )
   }

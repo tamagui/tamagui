@@ -25,122 +25,103 @@ component: Popover
   ]}
 />
 
-### Popover props
+### Anatomy
+
+```tsx
+import { Popover } from '@tamagui/popover'
+
+export default () => (
+  <Popover>
+    <Popover.Trigger />
+    <Popover.Content>
+      <Popover.Arrow />
+      <Popover.Close />
+      {/* ... */}
+    </Popover.Content>
+  </Popover>
+)
+```
+
+### API
+
+#### Popover
+
+Contains every component for the popover.
 
 <PropsTable
   data={[
     {
       name: 'children',
+      type: 'React.ReactNode',
       required: true,
-      type: `React.ReactNode
-| ((state: { open: boolean }) => React.ReactNode)`,
-      description: `Popover children`,
+      description: `Must contain Popover.Content`,
     },
     {
-      name: 'trigger',
-      required: true,
-      type: `(props: {
-  ref: any
-  onPress: (e?: GestureResponderEvent) => any
-  [key: string]: any
-},
-state: { open: boolean })) => JSX.Element`,
-      description: `Function that returns a React Element. This element will be used as a Trigger for the popover`,
-    },
-    {
-      name: 'defaultOpen',
+      name: 'size',
+      type: 'SizeTokens',
       required: false,
-      type: 'boolean',
-      description: `If true, the popover will be opened by default`,
-    },
-    {
-      name: 'open',
-      required: false,
-      type: 'boolean',
-      description: `Whether the popover is opened. Useful for conrolling the open state`,
-    },
-    {
-      name: 'trapFocus',
-      required: false,
-      type: 'boolean',
-      description: `Whether popover should trap focus. @default true`,
-    },
-    {
-      name: 'shouldFlip',
-      required: false,
-      type: 'boolean',
-      description: `Whether the element should flip its orientation (e.g. top to bottom or left to right) when there is `,
-    },
-    {
-      name: 'initialFocusRef',
-      required: false,
-      type: 'React.RefObject<any>',
-      description: `The ref of element to receive focus when the popover opens.`,
-    },
-    {
-      name: 'finalFocusRef',
-      required: false,
-      type: 'React.RefObject<any>',
-      description: `The ref of element to receive focus when the modal closes.`,
-    },
-    {
-      name: 'crossOffset',
-      required: false,
-      type: 'number',
-      description: `The additional offset applied along the cross axis between the element and its trigger element.`,
-    },
-    {
-      name: 'offset',
-      required: false,
-      type: 'number',
-      description: `The additional offset applied along the main axis between the element and its trigger element.`,
-    },
-    {
-      name: 'shouldOverlapWithTrigger',
-      required: false,
-      type: 'boolean',
-      description: `Determines whether menu content should overlap with the trigger @default false`,
-    },
-    {
-      name: 'isKeyboardDismissable',
-      required: false,
-      type: 'boolean',
-      description: `If true, the modal will close when Escape key is pressed @default true`,
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
     },
     {
       name: 'placement',
+      type: 'Placement',
       required: false,
-      type: `'top' 
-| 'bottom' 
-| 'left' 
-| 'right' 
-| 'top left' 
-| 'top right' 
-| 'bottom left' 
-| 'bottom 'right' 
-| 'right top' 
-| 'right bottom' 
-| 'left top' 
-| 'left bottom'`,
-      description: `Popover placement @default bottom`,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
     },
     {
-      name: 'onClose',
+      name: 'open',
+      type: 'boolean',
       required: false,
-      type: '() => void',
-      description: `This function will be invoked when popover is closed. It'll also be called when user attempts to `,
+      description: ``,
     },
     {
-      name: 'onOpen',
+      name: 'defaultOpen',
+      type: 'boolean',
       required: false,
-      type: '() => void',
-      description: `This function will be invoked when popover is opened`,
     },
     {
-      name: 'onChangeOpen',
-      required: false,
+      name: 'onOpenChange',
       type: '(open: boolean) => void',
-      description: `This function will be invoked when popover is opened or closed`,
+      required: false,
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: `Renders into root of app instead of inline`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps',
+      required: false,
+      description: `See floating-ui shift()`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps',
+      required: false,
+      description: `See floating-ui flip`,
     },
   ]}
 />
+
+#### Trigger
+
+Used to trigger opening of the popover when uncontrolled, just renders a YStack, see [Stacks](/docs/components/stacks).
+
+#### Content
+
+Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
+
+Used to display the content of the popover.
+
+<Notice>
+  Docs coming soon, we need to finalize a few more things to get the full set of props working
+</Notice>
+
+#### Anchor
+
+Renders as YStack, see [Stacks](/docs/components/stacks).
+
+When you want the Trigger to be in another location from where the Popover attaches, use Anchor. When used, Anchor is where the Popover will attach, while Trigger will open it.
