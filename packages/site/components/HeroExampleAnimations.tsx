@@ -85,9 +85,9 @@ export function HeroExampleAnimations() {
               <YStack
                 fullscreen
                 top="60%"
-                className="mask-gradient-up"
+                // className="mask-gradient-up"
                 o={0.5}
-                bc="rgba(0,0,0,0.2)"
+                // bc="rgba(0,0,0,0.2)"
               />
               <Button
                 y={200}

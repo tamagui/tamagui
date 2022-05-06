@@ -56,7 +56,6 @@ const HeroTop = memo(() => {
         space="$6"
         position="relative"
         pt="$8"
-        pb="$4"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
@@ -85,9 +84,7 @@ const HeroTop = memo(() => {
             }}
           >
             <TooltipSimple label="Works the same on iOS, Android, and web">
-              <span className="universal">
-                <span className="rainbow clip-text help">Universal</span>
-              </span>
+              <span className="rainbow clip-text help">Universal</span>
             </TooltipSimple>{' '}
             design systems for React&nbsp;Native &&nbsp;Web, faster
           </H1>
@@ -133,6 +130,7 @@ const HeroTop = memo(() => {
               tag="a"
               size="$5"
               fontWeight="800"
+              bw={1}
             >
               Get started
             </Button>

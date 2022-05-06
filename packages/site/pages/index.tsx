@@ -26,21 +26,16 @@ export default function Home() {
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating isHome />
       <Hero />
-      <Separator borderStyle="dotted" />
-      <XStack zi={100} theme="alt1" my={-28} ai="center" jc="center">
-        <SearchButton color="$color" width={320} size="$6">
-          Search Docs...
-        </SearchButton>
-      </XStack>
-      <YStack shac="$shadowColorHover" shar="$1" py="$8" pb="$9">
-        <HeroBelow />
-      </YStack>
-      <Separator borderStyle="dotted" />
+      <Separator />
       <ContainerLarge fd="column" pos="relative" zi={100000}>
         <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <InstallInput />
         </XStack>
       </ContainerLarge>
+      <YStack bc="$background" shac="$shadowColorHover" shar="$1" py="$8" pb="$9">
+        <HeroBelow />
+      </YStack>
+      <Separator />
       <Section contain="paint layout" pos="relative" zi={1000}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
@@ -55,11 +50,11 @@ export default function Home() {
         <YStack fullscreen className="bg-grid-big mask-gradient-up" />
         <HeroExampleAnimations />
       </SectionTinted>
-      <Section contain="paint layout" zi={10}>
+      <Section bc="$background" contain="paint layout" zi={10}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
         <HeroExampleCode />
       </Section>
-      <Section mt={-100}>
+      <Section bc="$background" mt={-100}>
         <FeaturesGrid />
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
       </Section>

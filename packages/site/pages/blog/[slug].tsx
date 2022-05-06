@@ -9,19 +9,7 @@ import { format, parseISO } from 'date-fns'
 import { getMDXComponent } from 'mdx-bundler/client'
 import NextLink from 'next/link'
 import React from 'react'
-import {
-  Button,
-  H1,
-  H2,
-  H3,
-  H6,
-  Paragraph,
-  Separator,
-  Spacer,
-  Theme,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, H1, H2, H3, H6, Paragraph, Separator, Spacer, XStack, YStack } from 'tamagui'
 
 import { Link } from '../../components/Link'
 import { Frontmatter } from '../../frontmatter'
@@ -61,11 +49,11 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
           {frontmatter.title}
         </H1>
 
-        <H2 theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$1">
+        <H2 theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$1" letsp={-0.5}>
           {frontmatter.description}
         </H2>
 
-        <XStack ai="center" my="$4">
+        <XStack ai="center" my="$3">
           {/* <Avatar src={authors[data.by].avatar} mr={2} /> */}
 
           <Paragraph size="$3" theme="alt2" whiteSpace="nowrap">
@@ -100,8 +88,9 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
           </YStack>
         </XStack>
 
-        <Separator mx="$-5" />
         <Spacer />
+        <Separator mx="$-5" />
+        <Spacer size="$6" />
 
         {/* <Theme name="blue"> */}
         <Component components={components as any} />

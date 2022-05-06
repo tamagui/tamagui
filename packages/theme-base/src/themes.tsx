@@ -10,6 +10,7 @@ import { color } from './tokens'
 type ThemeCreatorProps = {
   shift?: number
   backgrounds: (string | Variable)[]
+  backgroundStronger?: string | Variable
   borderColors?: (string | Variable)[]
   colors?: (string | Variable)[]
   offsets?: {
@@ -76,6 +77,7 @@ const createTheme = (
     isBase = false,
     colors = [...backgrounds].reverse(),
     borderColors = isLight ? colors : backgrounds,
+    backgroundStronger,
     offsets: offsetsProp,
   }: ThemeCreatorProps
 ) => {
@@ -96,7 +98,7 @@ const createTheme = (
 
   let theme = {
     background: get(backgrounds, str),
-    backgroundStronger: get(backgrounds, str + strongerDir),
+    backgroundStronger: backgroundStronger || get(backgrounds, str + strongerDir),
     backgroundSoft: get(backgrounds, str + 3),
     backgroundHover: get(backgrounds, str + lighterDir),
     backgroundPress: get(backgrounds, str + darkerDir * 1),
@@ -198,6 +200,7 @@ export const darkGradient = [
 const lightThemes = createThemesFrom('light', createTheme, {
   backgrounds: lightGradient,
   // isBase: true,
+  backgroundStronger: '#fcfcfc',
   borderColors: lightGradient.slice(2),
   isLight: true,
 })
@@ -205,6 +208,7 @@ const lightThemes = createThemesFrom('light', createTheme, {
 const darkThemes = createThemesFrom('dark', createTheme, {
   backgrounds: darkGradient,
   colors: lightGradient.slice(2),
+  backgroundStronger: '#111',
   isBase: true,
   isLight: false,
   shift: 1,

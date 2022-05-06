@@ -8,6 +8,7 @@ import { AlphaButton } from './AlphaButton'
 import { tints, useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HeaderFloating } from './HeaderFloating'
+import { SearchButton } from './Search'
 
 export const HeaderIndependent = ({ disableNew }: { disableNew?: boolean }) => {
   return (
@@ -69,7 +70,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
         </NextLink>
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav">
+      <XStack pointerEvents="auto" tag="nav" space="$2">
         <XStack ai="center" space="$2">
           <NextLink href="/docs/intro/installation" passHref>
             <Paragraph
@@ -101,7 +102,9 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             </Paragraph>
           </NextLink>
 
-          <ThemeToggle ml="$2" chromeless={floating} />
+          <SearchButton borderWidth={0} iconAfter={null} />
+
+          <ThemeToggle chromeless={floating} />
         </XStack>
       </XStack>
     </XStack>

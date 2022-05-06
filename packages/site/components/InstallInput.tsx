@@ -24,16 +24,15 @@ export const InstallInput = memo(() => {
       height={48}
       ai="center"
       als="center"
-      elevation="$4"
+      elevation="$2"
       br="$10"
       bc="$backgroundHover"
-      // elevation="$1"
       hoverStyle={{
         bc: '$background',
       }}
     >
-      <Paragraph ta="center" size="$5" letterSpacing={0.5} fontWeight="500" fontFamily="$mono">
-        npm install tamagui
+      <Paragraph ta="center" size="$4" fontWeight="500" fontFamily="$mono">
+        npx create-tamagui-app@latest
       </Paragraph>
       <Spacer size="$6" />
       <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>

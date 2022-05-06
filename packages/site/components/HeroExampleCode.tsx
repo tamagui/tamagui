@@ -21,7 +21,10 @@ export function HeroExampleCode() {
         <YStack zi={1} space="$4">
           <YStack space="$2">
             <HomeH2>DX 🤝 UX</HomeH2>
-            <HomeH3>Maintainable, cross-platform, performant&nbsp;and&nbsp;easy-to-debug.</HomeH3>
+            <HomeH3>
+              Maintainable, cross-platform and performant - still&nbsp;easy&nbsp;to&nbsp;use and
+              introspect.
+            </HomeH3>
           </YStack>
 
           <InteractiveContainer theme={tint} maxWidth="100%" als="center">
