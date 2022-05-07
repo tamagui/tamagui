@@ -1,6 +1,7 @@
 // via radix
 // https://github.com/radix-ui/primitives/blob/main/packages/react/switch/src/Switch.tsx
 
+import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -18,7 +19,6 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
 
-import { usePrevious } from '../hooks/usePrevious'
 import { useLabelContext } from './Label'
 import { getSquareSize } from './Square'
 
