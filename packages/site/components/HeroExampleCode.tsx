@@ -48,7 +48,7 @@ export function HeroExampleCode() {
 
           <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
             <YStack f={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$4">
-              <CodeExamples {...activeExample.input} />
+              <CodeExamples key={activeIndex} {...activeExample.input} />
               <Paragraph size="$4" minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Input</CodeInline>
                 <span style={{ opacity: 0.65 }}>
@@ -74,7 +74,7 @@ export function HeroExampleCode() {
               </IconStack>
             </YStack>
             <YStack f={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$4">
-              <CodeExamples {...activeExample.output} />
+              <CodeExamples key={activeIndex} {...activeExample.output} />
               <Paragraph size="$4" minHeight={50} ta="center" px="$6">
                 <CodeInline size="$4">Output</CodeInline>
                 <span style={{ opacity: 0.65 }}>
