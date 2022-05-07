@@ -12,6 +12,7 @@ import {
   YStack,
   isTouchDevice,
   useDebounce,
+  useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
 
@@ -47,7 +48,7 @@ export const HeroResponsive = memo(() => {
     setBounding(rect)
   }, 350)
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!bounding) {
       updateBoundings()
       return
