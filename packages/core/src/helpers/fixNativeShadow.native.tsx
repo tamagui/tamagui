@@ -2,6 +2,9 @@ const matchRgbaHsla =
   /(rgba|hsla)\(\s*([\d\.]{1,}%?)\s*,\s*([\d\.]{1,}%?)\s*,\s*([\d\.]{1,}%?)\s*,\s*([\d\.]{1,})\s*\)$/
 
 export function fixNativeShadow(styles: [string, any][]) {
+  if (!styles) {
+    return
+  }
   const color = styles.find((x) => x[0] === 'shadowColor')
   if (!color) {
     return
