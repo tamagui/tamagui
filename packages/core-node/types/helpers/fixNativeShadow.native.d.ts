@@ -1,2 +1,2 @@
-export declare function fixNativeShadow(styles: [string, any][]): void;
+export declare function fixNativeShadow(props: any): void;
 //# sourceMappingURL=fixNativeShadow.native.d.ts.map
