@@ -75,8 +75,6 @@ export function styled<
         isImage,
       }
 
-      console.log('makeme', name, Comp, conf)
-
       return conf
     }
     return {}
