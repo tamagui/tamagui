@@ -3974,6 +3974,31 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/select@workspace:packages/select":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/select@workspace:packages/select"
+  dependencies:
+    "@floating-ui/react-dom": 0.7.0
+    "@floating-ui/react-dom-interactions": ^0.4.0
+    "@floating-ui/react-native": ^0.7.0
+    "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@tamagui/build": ^1.0.0-beta.9
+    "@tamagui/compose-refs": ^1.0.0-beta.9
+    "@tamagui/core": ^1.0.0-beta.9
+    "@tamagui/create-context": ^1.0.0-beta.9
+    "@tamagui/stacks": ^1.0.0-beta.9
+    "@tamagui/use-controllable-state": ^1.0.0-beta.9
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/shorthands@^1.0.0-beta.9, @tamagui/shorthands@workspace:packages/shorthands":
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"

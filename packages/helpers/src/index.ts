@@ -1,3 +1,4 @@
+export * from './clamp'
 export * from './composeEventHandlers'
 export * from './concatClassName'
 export * from './validStyleProps'
