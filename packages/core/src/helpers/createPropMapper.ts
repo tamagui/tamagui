@@ -261,6 +261,7 @@ const expand = {
   margin: sidesXY.map((x) => `margin${x}`),
   marginHorizontal: sidesX.map((x) => `margin${x}`),
   marginVertical: sidesY.map((x) => `margin${x}`),
+  borderWidth: sidesXY.map((x) => `border${x}Width`),
 }
 
 function expansions(styleObj: Record<string, any>) {
