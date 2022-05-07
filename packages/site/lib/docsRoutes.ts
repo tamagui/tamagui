@@ -63,7 +63,7 @@ export const docsRoutes = [
     label: 'Guides',
     pages: [
       { title: 'Design Systems', route: '/docs/guides/design-systems' },
-      { title: 'Developing', route: '/docs/intro/dev-tools' },
+      { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'Next.js', route: '/docs/guides/next-js' },
       { title: 'Expo', route: '/docs/guides/expo' },
       { title: 'create-tamagui-app', route: '/docs/guides/create-tamagui-app' },
