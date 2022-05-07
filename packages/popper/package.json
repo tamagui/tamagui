@@ -18,8 +18,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@floating-ui/react-dom": "^0.6.3",
-    "@floating-ui/react-native": "^0.6.1",
+    "@floating-ui/react-dom": "0.7.0",
+    "@floating-ui/react-native": "^0.7.0",
     "@tamagui/compose-refs": "^1.0.0-beta.9",
     "@tamagui/core": "^1.0.0-beta.9",
     "@tamagui/create-context": "^1.0.0-beta.9",
