@@ -1,14 +1,13 @@
 - beta:
-  - types for $blue10 etc
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here
+  - make imports not do /types suffix
 
 - 1:
   - auto skeleton components
   - <Avatar />, <Select />, <Tabs />
-  - redo popover/popper to use floating-ui
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
   - <BlurView />
