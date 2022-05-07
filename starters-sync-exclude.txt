@@ -1,0 +1,3 @@
+*tamagui*
+*/react/*
+*/react-dom/*
