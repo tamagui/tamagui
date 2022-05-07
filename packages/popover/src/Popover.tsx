@@ -168,7 +168,7 @@ type PopoverContentTypeElement = PopoverContentImplElement
 
 const PopoverContentModal = React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
   (props: ScopedProps<PopoverContentTypeProps>, forwardedRef) => {
-    const { allowPinchZoom, portalled = true, ...contentModalProps } = props
+    const { allowPinchZoom, ...contentModalProps } = props
     const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
@@ -475,7 +475,7 @@ export const Popover = withStaticProperties(
       open: openProp,
       defaultOpen,
       onOpenChange,
-      modal = false,
+      modal = true,
       ...restProps
     } = props
     const popperScope = usePopoverScope(__scopePopover)
