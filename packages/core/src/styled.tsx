@@ -47,8 +47,11 @@ export function styled<
         'staticConfig' in Component
           ? Component.staticConfig.isReactNativeWeb
           : RNComponents.has(Component)
+      const reactNativeWebComponent = isReactNativeWeb
+        ? Component['staticConfig']?.reactNativeWebComponent || Component
+        : null
       const isTamagui = !isReactNativeWeb && 'staticConfig' in Component
-      const Comp = Component as any
+      const Comp = reactNativeWebComponent || (Component as any)
       const isImage = !!(defaultProps.isImage || (!isTamagui ? Comp === Image : false))
       const isInput = !!(defaultProps.isInput || (!isTamagui ? Comp === TextInput : false))
       const isText = !!(defaultProps.isText || (!isTamagui ? isInput || Comp === Text : false))
@@ -65,10 +68,15 @@ export function styled<
         defaultVariants,
         componentName: name,
         isReactNativeWeb,
+        // for nesting multiple levels of rnw styled() need keep use the OG component
+        reactNativeWebComponent,
         isInput,
         isText,
         isImage,
       }
+
+      console.log('makeme', name, Comp, conf)
+
       return conf
     }
     return {}

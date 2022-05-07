@@ -322,6 +322,7 @@ export declare type StaticConfig = {
         [key: string]: any;
     };
     isReactNativeWeb?: boolean;
+    reactNativeWebComponent?: any;
     memo?: boolean;
     isTamagui?: boolean;
 };

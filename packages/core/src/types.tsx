@@ -609,6 +609,11 @@ export type StaticConfig = {
   isReactNativeWeb?: boolean
 
   /**
+   * Used internally to keep reference to the original rnw component
+   */
+  reactNativeWebComponent?: any
+
+  /**
    * Memoize the component
    */
   memo?: boolean
