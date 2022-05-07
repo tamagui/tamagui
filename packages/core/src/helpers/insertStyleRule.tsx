@@ -87,5 +87,6 @@ export function insertStyleRule(identifier: string, rule: string) {
   if (allSelectors[identifier]) return
   hasInsertedSinceUpdate = true
   updateInsertedCache(identifier, rule)
+  allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
   sheet?.insertRule(rule, sheet.cssRules.length)
 }

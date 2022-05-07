@@ -3,10 +3,9 @@ import { useForceUpdate } from '@tamagui/use-force-update'
 import { useEffect, useLayoutEffect } from 'react'
 import { Dimensions, Platform } from 'react-native'
 
-export const isWeb = process.env.TAMAGUI_TARGET === 'web' ? true : Platform?.OS === 'web'
-export const isSSR = isWeb && typeof window === 'undefined'
-export const useIsomorphicLayoutEffect: (effect: () => void | (() => void), deps?: any[]) => void =
-  isSSR ? useEffect : useLayoutEffect
+const isWeb = process.env.TAMAGUI_TARGET === 'web' ? true : Platform?.OS === 'web'
+const isSSR = isWeb && typeof window === 'undefined'
+const useIsomorphicLayoutEffect = isSSR ? useEffect : useLayoutEffect
 
 type WindowSize = [number, number]
 
@@ -31,7 +30,7 @@ let store: WindowSizeStore | null = null
 function createStore() {
   if (!store) {
     store = new WindowSizeStore()
-    Dimensions.addEventListener('change', debounce(store.update, 40))
+    Dimensions.addEventListener('change', debounce(store.update, 32))
   }
 }
 
