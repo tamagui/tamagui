@@ -3291,6 +3291,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-use-previous@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@radix-ui/react-use-previous@npm:0.1.1"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+  peerDependencies:
+    react: ^16.8 || ^17.0
+  checksum: ca6d7fc397bb19a59fb06529c376fc0b4501fde29c390e9448dd381d05d25d7d2dbfde4c15a491851930cb62fec3cc15ecc413ff77e789a3139d8083db06bf21
+  languageName: node
+  linkType: hard
+
 "@react-aria/focus@npm:^3.2.3":
   version: 3.5.4
   resolution: "@react-aria/focus@npm:3.5.4"
@@ -3982,10 +3993,12 @@ __metadata:
     "@floating-ui/react-dom-interactions": ^0.4.0
     "@floating-ui/react-native": ^0.7.0
     "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@radix-ui/react-use-previous": ^0.1.1
     "@tamagui/build": ^1.0.0-beta.9
     "@tamagui/compose-refs": ^1.0.0-beta.9
     "@tamagui/core": ^1.0.0-beta.9
     "@tamagui/create-context": ^1.0.0-beta.9
+    "@tamagui/separator": ^1.0.0-beta.9
     "@tamagui/stacks": ^1.0.0-beta.9
     "@tamagui/use-controllable-state": ^1.0.0-beta.9
     "@types/react-native": ^0.67.3
@@ -3996,6 +4009,20 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/separator@^1.0.0-beta.9, @tamagui/separator@workspace:packages/separator":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/separator@workspace:packages/separator"
+  dependencies:
+    "@tamagui/build": ^1.0.0-beta.9
+    "@tamagui/core": ^1.0.0-beta.9
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -20078,6 +20105,7 @@ __metadata:
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
     "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@radix-ui/react-use-previous": ^0.1.1
     "@react-native-aria/focus": ^0.2.5
     "@react-native-aria/overlays": ^0.3.2
     "@react-native-community/blur": ^3.6.0
@@ -20091,6 +20119,7 @@ __metadata:
     "@tamagui/helpers": ^1.0.0-beta.9
     "@tamagui/popover": ^1.0.0-beta.9
     "@tamagui/popper": ^1.0.0-beta.9
+    "@tamagui/separator": ^1.0.0-beta.9
     "@tamagui/stacks": ^1.0.0-beta.9
     "@tamagui/text": ^1.0.0-beta.9
     "@tamagui/tooltip": ^1.0.0-beta.9
