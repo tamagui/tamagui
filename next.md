@@ -1,3 +1,12 @@
+- dish notes:
+  - need createTheme() to customize (think takeout)
+  - appmenubuttonfloatint
+    - circular remove overflow hidden
+    - size=5.5 icon scales diff
+    - size={55} doesnt set size only icon
+    - theme light needs darker shadows?
+
+  
   - <Card />, <Select />, <List />, <List.Radio />
     - list.radio just combines List, Label
       - can use Switch or custom
