@@ -5,4 +5,5 @@ export declare const Tooltip: ((props: any) => any) & {
     Content: (props: any) => null;
     Trigger: (props: any) => any;
 };
+export declare const TooltipSimple: (props: any) => any;
 //# sourceMappingURL=Tooltip.native.d.ts.map
