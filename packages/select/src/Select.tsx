@@ -44,7 +44,20 @@ import { View } from 'react-native'
 
 // import { RemoveScroll } from 'react-remove-scroll'
 
-// <Select>
+//   upsides:
+//     could virtualize in the future
+//     should be a decent amount faster
+//     no having to set keys
+//     no internal awkward traversal of children, impossible on native
+
+//   downsides:
+//     have to have a hook with a new type of pattern
+
+// alternate is just to require passing index={}
+
+// const select = useSelect()
+//
+// <Select items={[]}>
 //   <SelectTrigger>
 //     <SelectIcon />
 //     <SelectValue />
@@ -52,17 +65,21 @@ import { View } from 'react-native'
 //
 //   <SelectContent>
 //     <SelectScrollUpButton />
+//     <SelectScrollDownButton />
 //
 //     can optionally include group
 //     <SelectItemGroup>
 //       <SelectItemGroupLabel />
-//       <SelectItem>
-//         <SelectItemText />
-//         <SelectItemIndicator />
-//       </SelectItem>
 //     </SelectItemGroup>
 //
-//     <SelectScrollDownButton />
+//     <SelectItem>
+//       <SelectItemText>
+//          {select.text}
+//       </SelectItemText>
+//       <SelectItemIndicator />
+//     </SelectItem>
+//   </SelectItemGroup>
+//
 //   </SelectContent>
 // </Select>
 
