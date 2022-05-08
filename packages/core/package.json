@@ -24,6 +24,7 @@
     "@tamagui/ow": "^0.28.1",
     "@tamagui/use-debounce": "^1.0.0-beta.9",
     "@tamagui/use-force-update": "^1.0.0-beta.9",
+    "expo-screen-orientation": "^4.2.0",
     "react": "*",
     "react-dom": "*"
   },
