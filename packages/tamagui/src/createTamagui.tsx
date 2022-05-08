@@ -20,9 +20,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const OGProvider = conf.Provider
   conf.Provider = ({ children, ...props }: TamaguiProviderProps) => {
     return (
-      <OGProvider {...props}>
-        <SafeAreaProvider>{children}</SafeAreaProvider>
-      </OGProvider>
+      <SafeAreaProvider>
+        <OGProvider {...props}>{children}</OGProvider>
+      </SafeAreaProvider>
     )
   }
 

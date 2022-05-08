@@ -56,7 +56,6 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
-    "@expo/webpack-config": "^0.16.2",
     "@next/bundle-analyzer": "^12.0.10",
     "@tamagui/next-plugin": "^1.0.0-beta.9",
     "@types/lodash.throttle": "^4.1.6",
