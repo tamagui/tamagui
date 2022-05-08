@@ -44,6 +44,7 @@
     "@tamagui/use-controllable-state": "^1.0.0-beta.9",
     "@tamagui/use-debounce": "^1.0.0-beta.9",
     "@tamagui/use-force-update": "^1.0.0-beta.9",
+    "expo-modules-core": "^0.9.1",
     "react": "*",
     "react-dom": "*",
     "react-native-safe-area-context": "^3.3.2"
