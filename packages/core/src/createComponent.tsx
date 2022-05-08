@@ -128,7 +128,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.warn(staticConfig.componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
+        console.log('⚠️', staticConfig.componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
         // keep separate react native warn touches every value on prop causing weird behavior
         console.log('props in:', props, Object.keys(props))
         if (props['debug'] === 'break') debugger
@@ -662,30 +662,40 @@ export function createComponent<
       keepVariantsAsProps: true,
     })
 
-    const { style, viewProps } = initialSplitStyles
-    defaultNativeStyle = {}
-    for (const key in style) {
-      const v = style[key]
-      defaultNativeStyle[key] = isVariable(v) ? v.val : v
-    }
-    defaultNativeStyleSheet = StyleSheet.create({
-      base: defaultNativeStyle,
-    })
-
     // @ts-ignore
     // this ruins the prop order!!!
     // can't believe it but it puts default props after props?
     const defaults = {
-      ...viewProps,
       ...component.defaultProps,
+      ...initialSplitStyles.viewProps,
     }
+
+    defaultNativeStyle = {}
+
+    for (const key in staticConfig.defaultProps) {
+      const val = staticConfig.defaultProps[key]
+      if (typeof val === 'string' && val[0] === '$') {
+        defaults[key] = val
+      } else {
+        defaultNativeStyle[key] = val
+      }
+    }
+    // for (const key in style) {
+    //   const v = style[key]
+    //   if (isVariable(v)) {
+    //     // keep as unresolved theme var to use at render time
+    //     viewProps[key] = staticConfig.defaultProps[key]
+    //   } else {
+    //     defaultNativeStyle[key] = v
+    //   }
+    // }
+    defaultNativeStyleSheet = StyleSheet.create({
+      base: defaultNativeStyle,
+    })
+
     if (Object.keys(defaults).length) {
       tamaguiDefaultProps = defaults
     }
-    // component.defaultProps = {
-    //   ...viewProps,
-    //   ...component.defaultProps,
-    // }
 
     // add debug logs
     if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.debug) {
@@ -693,6 +703,9 @@ export function createComponent<
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
           staticConfig,
           initialSplitStyles,
+          tamaguiDefaultProps,
+          defaultNativeStyle,
+          defaults,
         })
       }
     }
