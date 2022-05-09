@@ -1,5 +1,7 @@
 import { ViewStyle } from 'react-native'
 
+console.log('process.env.TAMAGUI_TARGET', process.env.TAMAGUI_TARGET)
+
 // flat transform props
 export const stylePropsTransform = Object.freeze({
   x: true,
@@ -132,13 +134,15 @@ export const stylePropsTextOnly = Object.freeze({
   textShadowRadius: true,
   textTransform: true,
 
-  // allow a few web only ones
-  // TODO
+  // allow some web only ones
   ...(process.env.TAMAGUI_TARGET === 'web' && {
     whiteSpace: true,
     wordWrap: true,
     textOverflow: true,
     textDecorationDistance: true,
+    userSelect: true,
+    selectable: true,
+    cursor: true,
   }),
 })
 

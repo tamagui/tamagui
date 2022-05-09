@@ -18,7 +18,8 @@
         "alias": {
           "^(react-native)$": "@tamagui/fake-react-native",
           "@react-native-aria/overlays": "@tamagui/fake-react-native",
-          "react-native-safe-area-context": "@tamagui/fake-react-native"
+          "react-native-safe-area-context": "@tamagui/fake-react-native",
+          "react-native-gesture-handler": "@tamagui/proxy-worm"
         },
         "type": "config"
       }

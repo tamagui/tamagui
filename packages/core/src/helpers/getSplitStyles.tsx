@@ -41,6 +41,21 @@ const skipProps = {
   animation: true,
   animateOnly: true,
   debug: true,
+
+  ...(!isWeb && {
+    tag: true,
+    whiteSpace: true,
+    wordWrap: true,
+    textOverflow: true,
+    textDecorationDistance: true,
+    userSelect: true,
+    selectable: true,
+    cursor: true,
+    contain: true,
+    pointerEvents: true,
+    boxSizing: true,
+    boxShadow: true,
+  }),
 }
 
 type TransformNamespaceKey = 'transform' | PsuedoPropKeys | MediaQueryKey
@@ -179,6 +194,9 @@ export const getSplitStyles: StyleSplitter = (
       state.resolveVariablesAs === 'both'
     ) {
       for (const key in cur) {
+        if (skipProps[key]) {
+          continue
+        }
         if (key in stylePropsTransform) {
           mergeTransform(style, key, cur[key])
         } else {
@@ -193,6 +211,9 @@ export const getSplitStyles: StyleSplitter = (
 
   for (const keyInit in props) {
     if (skipProps[keyInit]) {
+      continue
+    }
+    if (!isWeb && keyInit.startsWith('data-')) {
       continue
     }
 
@@ -345,7 +366,7 @@ export const getSplitStyles: StyleSplitter = (
 
       // pass to view props
       if (!staticConfig.variants || !(key in staticConfig.variants)) {
-        if (key !== 'animation' && key !== 'debug') {
+        if (!skipProps[key]) {
           push()
           viewProps[key] = val
         }

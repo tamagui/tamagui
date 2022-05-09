@@ -15,17 +15,27 @@ const ellipseStyle = {
 export const Text = createComponent<TextProps, TextView, TextPropsBase>({
   componentName: 'Text',
   isText: true,
+
   defaultProps: {
-    display: isWeb ? 'inline' : 'flex',
-    boxSizing: 'border-box',
+    display: 'flex',
     fontFamily: 'System',
-    wordWrap: 'break-word',
+    ...(isWeb && {
+      display: 'inline',
+      boxSizing: 'border-box',
+      wordWrap: 'break-word',
+    }),
   },
+
   variants: {
     numberOfLines: {
-      1: ellipseStyle,
-      // TODO imply fn, test 1, could do types `>1` `<2`
-      ':number': (lines) => (lines > 1 ? { WebkitLineClamp: 1 } : null),
+      1: isWeb ? ellipseStyle : { numberOfLines: 1 },
+
+      ':number': (numberOfLines) =>
+        isWeb
+          ? numberOfLines >= 1
+            ? { WebkitLineClamp: numberOfLines }
+            : null
+          : { numberOfLines },
     },
 
     selectable: {
@@ -53,17 +63,11 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
           },
     },
   },
+
   deoptProps: new Set(isWeb ? [] : ['ellipse']),
+
   validStyles: {
     ...validStyles,
     ...stylePropsTextOnly,
-    ...(isWeb && {
-      userSelect: true,
-      textOverflow: true,
-      whiteSpace: true,
-      wordWrap: true,
-      selectable: true,
-      cursor: true,
-    }),
   },
 })

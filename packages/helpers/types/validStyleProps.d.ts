@@ -124,6 +124,9 @@ export declare const stylePropsTextOnly: Readonly<{
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
+    userSelect?: boolean | undefined;
+    selectable?: boolean | undefined;
+    cursor?: boolean | undefined;
     color: boolean;
     fontFamily: boolean;
     fontSize: boolean;
@@ -145,6 +148,9 @@ export declare const stylePropsText: Readonly<{
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
+    userSelect?: boolean | undefined;
+    selectable?: boolean | undefined;
+    cursor?: boolean | undefined;
     color: boolean;
     fontFamily: boolean;
     fontSize: boolean;
@@ -162,8 +168,6 @@ export declare const stylePropsText: Readonly<{
     textTransform: boolean;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
-    userSelect?: boolean | undefined;
-    cursor?: boolean | undefined;
     contain?: boolean | undefined;
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
@@ -269,6 +273,9 @@ export declare const stylePropsAll: Readonly<{
     wordWrap?: boolean | undefined;
     textOverflow?: boolean | undefined;
     textDecorationDistance?: boolean | undefined;
+    userSelect?: boolean | undefined;
+    selectable?: boolean | undefined;
+    cursor?: boolean | undefined;
     color: boolean;
     fontFamily: boolean;
     fontSize: boolean;
@@ -286,8 +293,6 @@ export declare const stylePropsAll: Readonly<{
     textTransform: boolean;
     overflowX?: boolean | undefined;
     overflowY?: boolean | undefined;
-    userSelect?: boolean | undefined;
-    cursor?: boolean | undefined;
     contain?: boolean | undefined;
     pointerEvents?: boolean | undefined;
     boxSizing?: boolean | undefined;
