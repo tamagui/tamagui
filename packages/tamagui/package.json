@@ -37,6 +37,7 @@
     "@tamagui/helpers": "^1.0.0-beta.11",
     "@tamagui/popover": "^1.0.0-beta.11",
     "@tamagui/popper": "^1.0.0-beta.11",
+    "@tamagui/separator": "^1.0.0-beta.11",
     "@tamagui/stacks": "^1.0.0-beta.11",
     "@tamagui/text": "^1.0.0-beta.11",
     "@tamagui/tooltip": "^1.0.0-beta.11",
