@@ -11,13 +11,13 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { BaseButton } from 'react-native-gesture-handler'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isAndroid, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { rnw } from './constants/rnw'
-import { isVariable } from './createVariable'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
@@ -109,12 +109,12 @@ export function createComponent<
     // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
     const pseudoStyle = pseudos[name]
     const shouldNestObject = isWeb && name !== 'enterStyle' && name !== 'exitStyle'
-    if (pseudoStyle) {
-      styles.push(shouldNestObject ? { [name]: pseudoStyle } : pseudoStyle)
-    }
     const defaultPseudoStyle = initialSplitStyles.pseudos[name]
     if (defaultPseudoStyle) {
       styles.push(shouldNestObject ? { [name]: defaultPseudoStyle } : defaultPseudoStyle)
+    }
+    if (pseudoStyle) {
+      styles.push(shouldNestObject ? { [name]: pseudoStyle } : pseudoStyle)
     }
   }
 
@@ -457,13 +457,12 @@ export function createComponent<
 
     const events = shouldAttach
       ? {
-          ...(!isWeb && {
-            // non web
-            onPressOut: (e) => {
-              unPress()
-              onPressOut?.(e)
-            },
-          }),
+          onPressOut: attachPress
+            ? (e) => {
+                unPress()
+                onPressOut?.(e)
+              }
+            : undefined,
           ...(isHoverable && {
             onMouseEnter: attachHover
               ? (e) => {
@@ -515,10 +514,9 @@ export function createComponent<
             : null,
           [pressEventKey]: attachPress
             ? (e) => {
+                unPress()
                 onClick?.(e)
                 onPress?.(e)
-                unPress()
-                onPressOut?.(e)
               }
             : null,
         }
@@ -536,23 +534,6 @@ export function createComponent<
             }),
             getThemeManagerIfChanged(theme)
           )
-
-    // TODO once we do the above we can then rely entirely on pressStyle returned here isntead of above pressStyle logic
-    const [pressProps] = usePressable(
-      events
-        ? {
-            disabled,
-            ...(hitSlop && {
-              hitSlop,
-            }),
-            onPressIn: events.onMouseDown,
-            onPressOut: events.onPressOut,
-            onPress: events[pressEventKey],
-          }
-        : {
-            disabled: true,
-          }
-    )
 
     let content: any
 
@@ -580,21 +561,61 @@ export function createComponent<
       }
     }
 
-    if (events) {
-      if (!isStringElement) {
-        Object.assign(viewProps, pressProps)
-      } else {
-        Object.assign(viewProps, events)
-      }
-    }
-
     if (asChild) {
       ViewComponent = Slot
       const onlyChild = React.Children.only(children)
       Object.assign(viewProps, onlyChild.props)
     }
 
+    // EVENTS: web
+    if (isWeb) {
+      const [pressableProps] = usePressable(
+        events
+          ? {
+              disabled,
+              ...(hitSlop && {
+                hitSlop,
+              }),
+              onPressIn: events.onMouseDown,
+              onPress: events[pressEventKey],
+            }
+          : {
+              disabled: true,
+            }
+      )
+      if (events) {
+        if (!isStringElement) {
+          Object.assign(viewProps, pressableProps)
+        } else {
+          Object.assign(viewProps, events)
+        }
+      }
+    }
+
     content = createElement(ViewComponent, viewProps, childEls)
+
+    // EVENTS native
+    // native just wrap in <Pressable />
+    if (!isWeb) {
+      if (attachPress) {
+        content = (
+          // bugfix: on native <Pressable /> pressing down and then moving finger off
+          // doesn't actually turn off press styles
+          // but react-native-gesture-handler doesn't pass GestureResponderEvent...
+          <Pressable onPressIn={events?.onMouseDown} onPress={events?.[pressEventKey]}>
+            <BaseButton
+              onActiveStateChange={(isActive) => {
+                if (!isActive) {
+                  unPress()
+                }
+              }}
+            >
+              {content}
+            </BaseButton>
+          </Pressable>
+        )
+      }
+    }
 
     if (isWeb && events && attachHover) {
       content = (
@@ -613,9 +634,8 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        viewProps['debug'] = true
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), pressProps, events, shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
       }
     }
 
@@ -672,23 +692,18 @@ export function createComponent<
 
     defaultNativeStyle = {}
 
+    const validStyles = staticConfig.validStyles || stylePropsView
+
+    // split - keep variables on props to be processed using theme values at runtime (native)
     for (const key in staticConfig.defaultProps) {
       const val = staticConfig.defaultProps[key]
-      if (typeof val === 'string' && val[0] === '$') {
+      if ((typeof val === 'string' && val[0] === '$') || !validStyles[key]) {
         defaults[key] = val
       } else {
         defaultNativeStyle[key] = val
       }
     }
-    // for (const key in style) {
-    //   const v = style[key]
-    //   if (isVariable(v)) {
-    //     // keep as unresolved theme var to use at render time
-    //     viewProps[key] = staticConfig.defaultProps[key]
-    //   } else {
-    //     defaultNativeStyle[key] = v
-    //   }
-    // }
+
     defaultNativeStyleSheet = StyleSheet.create({
       base: defaultNativeStyle,
     })
