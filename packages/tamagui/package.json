@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "1.0.0-beta.10",
+  "version": "1.0.0-beta.12",
   "sideEffects": [
     "*.css",
     "polyfills.ts"
@@ -24,24 +24,27 @@
   },
   "dependencies": {
     "@radix-ui/react-use-callback-ref": "^0.1.0",
+    "@radix-ui/react-use-previous": "^0.1.1",
     "@react-native-aria/focus": "^0.2.5",
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
-    "@tamagui/animate-presence": "^1.0.0-beta.10",
-    "@tamagui/compose-refs": "^1.0.0-beta.10",
-    "@tamagui/core": "^1.0.0-beta.10",
-    "@tamagui/create-context": "^1.0.0-beta.10",
+    "@tamagui/animate-presence": "^1.0.0-beta.12",
+    "@tamagui/compose-refs": "^1.0.0-beta.12",
+    "@tamagui/core": "^1.0.0-beta.12",
+    "@tamagui/create-context": "^1.0.0-beta.12",
     "@tamagui/expo-linear-gradient": "11.2.7",
-    "@tamagui/fake-react-native": "^1.0.0-beta.10",
-    "@tamagui/helpers": "^1.0.0-beta.10",
-    "@tamagui/popover": "^1.0.0-beta.10",
-    "@tamagui/popper": "^1.0.0-beta.10",
-    "@tamagui/stacks": "^1.0.0-beta.10",
-    "@tamagui/text": "^1.0.0-beta.10",
-    "@tamagui/tooltip": "^1.0.0-beta.10",
-    "@tamagui/use-controllable-state": "^1.0.0-beta.10",
-    "@tamagui/use-debounce": "^1.0.0-beta.10",
-    "@tamagui/use-force-update": "^1.0.0-beta.10",
+    "@tamagui/fake-react-native": "^1.0.0-beta.12",
+    "@tamagui/helpers": "^1.0.0-beta.12",
+    "@tamagui/popover": "^1.0.0-beta.12",
+    "@tamagui/popper": "^1.0.0-beta.12",
+    "@tamagui/separator": "^1.0.0-beta.12",
+    "@tamagui/stacks": "^1.0.0-beta.12",
+    "@tamagui/text": "^1.0.0-beta.12",
+    "@tamagui/tooltip": "^1.0.0-beta.12",
+    "@tamagui/use-controllable-state": "^1.0.0-beta.12",
+    "@tamagui/use-debounce": "^1.0.0-beta.12",
+    "@tamagui/use-force-update": "^1.0.0-beta.12",
+    "expo-modules-core": "^0.9.1",
     "react": "*",
     "react-dom": "*",
     "react-native-safe-area-context": "^3.3.2"
@@ -50,7 +53,7 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.10",
+    "@tamagui/build": "^1.0.0-beta.12",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "react-native-web": "^0.17.5"

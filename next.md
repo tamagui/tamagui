@@ -1,20 +1,32 @@
-- beta:
+- dish notes:
+  - styled(Button) types break
+  - why is Button text centering, doesnt seem like it should
+  - need createTheme() to customize (think takeout)
+  - appmenubuttonfloatint
+    - circular remove overflow hidden
+    - size=5.5 icon scales diff
+    - size={55} doesnt set size only icon
+    - theme light needs darker shadows?
+  
+  - <Card />, <Select />, <List />, <Radio />, <Modal />, <Avatar />, <Tabs />, <Blur />, <Toast />
+    - radio may be List.Radio just combines List, Label, Drawer
+      - can use Switch or check or custom
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here
   - make imports not do /types suffix
+  - <UL /> <LI /> <OL />
 
 - 1:
+  - focusStyle on native
   - auto skeleton components
-  - <Avatar />, <Select />, <Tabs />
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
-  - <BlurView />
   - docs: extractable(), deoptProps, getExpandedShorthands
 
 - 2: 
-  - <Toast />, <Card />, <Carousel />
+  - <Carousel />
   - load theme hook via feature if possible
   - add fonts section to guides
   - document $body being default font family
@@ -22,6 +34,15 @@
   - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
 
 - 3
+  - move away from rnw css generation
+  - move away from supporting some react native APIs for performance
+    - alternatively could test just doing this:
+      - compiler could insert special props like:
+        - __noAnimations, __noTheme, __noSpace
+        - it would change key={} alongside that
+        - that way HMR still works, but loads less hooks
+        - works in production for extra perf
+  - as={} + extraction + types
   - <Video />, <Spinner />
   - instead of generating classname strings generate objects
     - instead of concatClassNames then just object ...
@@ -32,10 +53,6 @@
     - react native doesn't support it yet except on new arch
     - (useId/useInsertionEffect)
   - escape hatch for html props `htmlProps` or tag={} => as={} + work better?
-  - bring back `onLayout` via features hooks
-    - press events?
-  - <LinearGradient />
-    - make extractable to css
 
 - whenever switch over to styleq or own internal css generator:
   - remove getStylesAtomic altogether - loop only once over props/styles
@@ -49,7 +66,6 @@
   - `space` should work with media queries
   - createTamagui({ defaultProps: { Button: {} } }) for any component
   - document/release <ThemeReverse />
-  - <ListItem />
 
   - basic styled() extraction to css at compile time
   - ~button textProps => child selectors~
@@ -73,21 +89,19 @@
   
   - <List /> (works with drawer + draggable + selectable)
   - <Menu />
-  - <MenuDrawer />
+  - <PopoverDrawer /> + <MenuDrawer />
 
   - // TODO only on hoverable/pressable!
   - ios/android specific themes
   - options to render to native components in more places
 
   - <Group />
-  - <Combobox />
-  - <UL /> <LI /> <OL />
+  - <Combobox /> (<SelectInput /> or <SelectInput />)
 
 - transformOrigin
   - may be able to translate to matrix https://www.jianshu.com/p/c67559b8f691
   - https://github.com/sueLan/react-native-anchor-point
 - space => gap (blocked https://github.com/facebook/yoga/pull/1116)
-- popover add safety checks around using Popover.Content
 - Text selectColor
 - focusWithinStyle
 - accessibility upgrades (focus rings etc)
@@ -101,15 +115,9 @@
 - have tamagui watch the tamagui.config.ts file and report if types break
 - smart responsive scaling system (<Scale /> basically)
 
-- design system hosting
 - https://github.com/react-native-menu/menu
-- compiler could insert special props like:
-  - __noAnimations, __noTheme, __noSpace
-  - it would change key={} alongside that
-  - that way HMR still works, but loads less hooks
-  - works in production for extra perf
+
 - compiler hot reload (shouldn't be too hard for basic case)
-- upgrade expo/match-media (there was some problem before)
 
 - vscode plugin to highlight the current node your cursors inside of in dom
 - blur prop built in ?

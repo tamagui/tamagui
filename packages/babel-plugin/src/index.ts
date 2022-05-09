@@ -89,92 +89,103 @@ export default declare(function snackBabelPlugin(
             })['expression'] as t.MemberExpression
           }
 
-          extractor.parse(root, {
-            shouldPrintDebug,
-            importsWhitelist: ['constants.js', 'colors.js'],
-            deoptProps: new Set(['focusStyle', 'hoverStyle', 'pressStyle', 'pointerEvents']),
-            excludeProps: new Set([
-              'className',
-              'display',
-              'userSelect',
-              'selectable',
-              'whiteSpace',
-              'textOverflow',
-              'cursor',
-              'contain',
-            ]),
-            ...options,
-            // disable this extraction for now at least, need to figure out merging theme vs non-theme
-            // because theme need to stay in render(), whereas non-theme can be extracted
-            // for now just turn it off entirely at a small perf loss
-            disableExtractInlineMedia: true,
-            // disable extracting variables as no native concept of them
-            disableExtractVariables: true,
-            sourcePath,
-            getFlattenedNode({ isTextView }) {
-              if (!hasImportedView) {
-                hasImportedView = true
-                root.unshiftContainer('body', importNativeView())
-              }
-              return isTextView ? '__ReactNativeText' : '__ReactNativeView'
-            },
-            onExtractTag(props) {
-              assertValidTag(props.node)
-              const stylesExpr = t.arrayExpression([])
-              let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
-
-              function addStyle(expr: any, key: string) {
-                if (props.isFlattened) {
-                  stylesExpr.elements.push(expr)
-                } else {
-                  finalAttrs.push(
-                    t.jsxAttribute(t.jsxIdentifier(`_style${key}`), t.jsxExpressionContainer(expr))
-                  )
+          try {
+            extractor.parse(root, {
+              shouldPrintDebug,
+              importsWhitelist: ['constants.js', 'colors.js'],
+              deoptProps: new Set(['focusStyle', 'hoverStyle', 'pressStyle', 'pointerEvents']),
+              excludeProps: new Set([
+                'className',
+                'display',
+                'userSelect',
+                'selectable',
+                'whiteSpace',
+                'textOverflow',
+                'cursor',
+                'contain',
+              ]),
+              ...options,
+              // disable this extraction for now at least, need to figure out merging theme vs non-theme
+              // because theme need to stay in render(), whereas non-theme can be extracted
+              // for now just turn it off entirely at a small perf loss
+              disableExtractInlineMedia: true,
+              // disable extracting variables as no native concept of them
+              disableExtractVariables: true,
+              sourcePath,
+              getFlattenedNode({ isTextView }) {
+                if (!hasImportedView) {
+                  hasImportedView = true
+                  root.unshiftContainer('body', importNativeView())
                 }
-              }
+                return isTextView ? '__ReactNativeText' : '__ReactNativeView'
+              },
+              onExtractTag(props) {
+                assertValidTag(props.node)
+                const stylesExpr = t.arrayExpression([])
+                let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 
-              for (const attr of props.attrs) {
-                switch (attr.type) {
-                  case 'style':
-                    // split theme properties and leave them as props since RN has no concept of theme
-                    const { themed, plain } = splitThemeStyles(attr.value)
-                    for (const key in themed) {
-                      finalAttrs.push(
-                        t.jsxAttribute(t.jsxIdentifier(key), t.stringLiteral(themed[key]))
+                function addStyle(expr: any, key: string) {
+                  if (props.isFlattened) {
+                    stylesExpr.elements.push(expr)
+                  } else {
+                    finalAttrs.push(
+                      t.jsxAttribute(
+                        t.jsxIdentifier(`_style${key}`),
+                        t.jsxExpressionContainer(expr)
                       )
-                    }
-                    const ident = addSheetStyle(plain, props.node)
-                    addStyle(ident, simpleHash(JSON.stringify(plain)))
-                    break
-                  case 'ternary':
-                    // TODO use splitThemeStyles
-                    const { consequent, alternate } = attr.value
-                    const cons = addSheetStyle(consequent, props.node)
-                    const alt = addSheetStyle(alternate, props.node)
-                    const styleExpr = t.conditionalExpression(attr.value.test, cons, alt)
-                    addStyle(styleExpr, simpleHash(JSON.stringify({ consequent, alternate })))
-                    break
-                  case 'attr':
-                    if (t.isJSXSpreadAttribute(attr.value)) {
-                      if (isSimpleSpread(attr.value)) {
-                        stylesExpr.elements.push(
-                          t.memberExpression(attr.value.argument, t.identifier('style'))
+                    )
+                  }
+                }
+
+                for (const attr of props.attrs) {
+                  switch (attr.type) {
+                    case 'style':
+                      // split theme properties and leave them as props since RN has no concept of theme
+                      const { themed, plain } = splitThemeStyles(attr.value)
+                      for (const key in themed) {
+                        finalAttrs.push(
+                          t.jsxAttribute(t.jsxIdentifier(key), t.stringLiteral(themed[key]))
                         )
                       }
-                    }
-                    finalAttrs.push(attr.value)
-                    break
+                      const ident = addSheetStyle(plain, props.node)
+                      addStyle(ident, simpleHash(JSON.stringify(plain)))
+                      break
+                    case 'ternary':
+                      // TODO use splitThemeStyles
+                      const { consequent, alternate } = attr.value
+                      const cons = addSheetStyle(consequent, props.node)
+                      const alt = addSheetStyle(alternate, props.node)
+                      const styleExpr = t.conditionalExpression(attr.value.test, cons, alt)
+                      addStyle(styleExpr, simpleHash(JSON.stringify({ consequent, alternate })))
+                      break
+                    case 'attr':
+                      if (t.isJSXSpreadAttribute(attr.value)) {
+                        if (isSimpleSpread(attr.value)) {
+                          stylesExpr.elements.push(
+                            t.memberExpression(attr.value.argument, t.identifier('style'))
+                          )
+                        }
+                      }
+                      finalAttrs.push(attr.value)
+                      break
+                  }
                 }
-              }
 
-              props.node.attributes = finalAttrs
-              if (props.isFlattened) {
-                props.node.attributes.push(
-                  t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
-                )
-              }
-            },
-          })
+                props.node.attributes = finalAttrs
+                if (props.isFlattened) {
+                  props.node.attributes.push(
+                    t.jsxAttribute(t.jsxIdentifier('style'), t.jsxExpressionContainer(stylesExpr))
+                  )
+                }
+              },
+            })
+          } catch (err) {
+            if (err instanceof Error) {
+              // metro doesn't show stack so we can
+              console.warn('Error in Tamagui parse', err)
+            }
+            throw err
+          }
 
           if (!Object.keys(sheetStyles).length) {
             if (shouldPrintDebug) {

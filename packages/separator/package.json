@@ -1,0 +1,33 @@
+{
+  "name": "@tamagui/separator",
+  "version": "1.0.0-beta.12",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "typings": "types",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.0.0-beta.12"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.0-beta.12",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

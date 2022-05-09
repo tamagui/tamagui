@@ -24,13 +24,13 @@ type AnimationConfig =
   | ({ type: 'decay'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithDecayConfig)
 // | ({ type: 'transition' } & TransitionProps)
 
-const AnimatedView = Animated.View
-const AnimatedText = Animated.Text
-
-AnimatedView['displayName'] = 'AnimatedView'
-AnimatedText['displayName'] = 'AnimatedText'
-
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
+  const AnimatedView = Animated.View
+  const AnimatedText = Animated.Text
+
+  AnimatedView['displayName'] = 'AnimatedView'
+  AnimatedText['displayName'] = 'AnimatedText'
+
   return {
     avoidClasses: true,
     animations,

@@ -1,6 +1,7 @@
 import { Stack, styled } from '@tamagui/core'
 
 export const Separator = styled(Stack, {
+  name: 'Separator',
   borderColor: '$borderColorHover',
   flexShrink: 0,
   alignSelf: 'stretch',
