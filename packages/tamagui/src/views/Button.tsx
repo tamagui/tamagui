@@ -4,6 +4,7 @@ import {
   ReactComponentWithRef,
   ThemeableProps,
   getVariableValue,
+  isVariable,
   spacedChildren,
   styled,
   themeable,
@@ -79,9 +80,9 @@ const ButtonFrame = styled(SizableStack, {
 
     circular: {
       true: (_, { props, tokens }) => {
-        const sizeVal = props['size'] ?? '$4'
+        const sizeVal = props.size ?? '$4'
         const sizeToken = tokens.size[sizeVal] ?? 44
-        const size = +getVariableValue(sizeToken) * 2
+        const size = isVariable(sizeToken) ? +getVariableValue(sizeToken) * 2 : sizeToken
         return {
           width: size,
           height: size,
@@ -182,7 +183,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
             ellipse
             {...textProps}
           >
-            {children}
+            {child}
           </SizableText>
         )
       })
