@@ -7,11 +7,10 @@
     - size=5.5 icon scales diff
     - size={55} doesnt set size only icon
     - theme light needs darker shadows?
-
   
-  - <Card />, <Select />, <List />, <List.Radio />
-    - list.radio just combines List, Label
-      - can use Switch or custom
+  - <Card />, <Select />, <List />, <Radio />, <Modal />, <Avatar />, <Tabs />, <Blur />, <Toast />
+    - radio may be List.Radio just combines List, Label, Drawer
+      - can use Switch or check or custom
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
@@ -22,14 +21,12 @@
 - 1:
   - focusStyle on native
   - auto skeleton components
-  - <Avatar />, <Tabs />
-  - <Blur />
   - check ScrollView SSR compat saw a bug
   - do a series of small demo videos to share on twitter etc
   - docs: extractable(), deoptProps, getExpandedShorthands
 
 - 2: 
-  - <Toast />, <Carousel />
+  - <Carousel />
   - load theme hook via feature if possible
   - add fonts section to guides
   - document $body being default font family
