@@ -1,11 +1,9 @@
 import { themeable, useTheme } from '@tamagui/core'
-import {
-  LinearGradient as LinearGradientNative,
-  LinearGradientProps,
-} from '@tamagui/expo-linear-gradient'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
+
+import { LinearGradient as LinearGradientNative, LinearGradientProps } from '../lib/linear-gradient'
 
 // // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']

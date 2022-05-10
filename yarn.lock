@@ -3636,12 +3636,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/expo-linear-gradient@npm:11.2.7":
-  version: 11.2.7
-  resolution: "@tamagui/expo-linear-gradient@npm:11.2.7"
-  peerDependencies:
-    expo: "*"
-  checksum: ce2a0d7b4d0dbcdcc93ec421b4af284f432d8110817c9f1fd73de3d1aafb3a4a485211ef967925c5c62ca1da324f1cb0bf31c3f7c21094f820007f00896e04d7
+"@tamagui/expo-linear-gradient@npm:^11.2.8":
+  version: 11.2.8
+  resolution: "@tamagui/expo-linear-gradient@npm:11.2.8"
+  checksum: f1eeacc49bf73cebaf908c34ca63e3cf4dfae07ed65f6ca8f8e10ea79ae8291757f595a4f0e10fb715976df596749bb0bfc128e1800ed95c4fde8ab1fe7d099b
   languageName: node
   linkType: hard
 
@@ -3733,6 +3731,7 @@ __metadata:
   resolution: "@tamagui/next-plugin@workspace:packages/next-plugin"
   dependencies:
     "@tamagui/build": ^1.0.0-beta.14
+    "@tamagui/expo-linear-gradient": ^11.2.8
     "@tamagui/proxy-worm": ^1.0.0-beta.14
     "@tamagui/static": ^1.0.0-beta.14
     babel-loader: ^8.2.5
@@ -8848,6 +8847,15 @@ __metadata:
     jest-matcher-utils: ^27.5.1
     jest-message-util: ^27.5.1
   checksum: b2c66beb52de53ef1872165aace40224e722bca3c2274c54cfa74b6d617d55cf0ccdbf36783ccd64dbea501b280098ed33fd0b207d4f15bc03cd3c7a24364a6a
+  languageName: node
+  linkType: hard
+
+"expo-linear-gradient@npm:~11.0.3":
+  version: 11.0.3
+  resolution: "expo-linear-gradient@npm:11.0.3"
+  peerDependencies:
+    expo: "*"
+  checksum: 0728a0ef16210f0998b0fd309880e411f873542ca8878f069adfb8356f9e6bc808a00fef2aec8094be1bbdb094a359c9a281abd0894cd601991c3e82925704de
   languageName: node
   linkType: hard
 
@@ -17826,7 +17834,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.0-beta.14
     "@tamagui/core": ^1.0.0-beta.14
     "@tamagui/create-context": ^1.0.0-beta.14
-    "@tamagui/expo-linear-gradient": 11.2.7
+    "@tamagui/expo-linear-gradient": ^11.2.8
     "@tamagui/fake-react-native": ^1.0.0-beta.14
     "@tamagui/helpers": ^1.0.0-beta.14
     "@tamagui/popover": ^1.0.0-beta.14
@@ -17840,6 +17848,7 @@ __metadata:
     "@tamagui/use-force-update": ^1.0.0-beta.14
     "@types/node": ^16.11.9
     "@types/react": ^17.0.35
+    expo-linear-gradient: ~11.0.3
     expo-modules-core: ^0.9.1
     react: "*"
     react-dom: "*"

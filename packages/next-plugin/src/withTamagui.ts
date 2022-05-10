@@ -62,6 +62,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
             ['react-native$', 'react-native-web'],
             ['react-native-reanimated', 'react-native-reanimated'],
+            ['expo-linear-gradient', '@tamagui/expo-linear-gradient'],
             ['react-native-web$', 'react-native-web'],
             ['@testing-library/react-native', '@tamagui/proxy-worm'],
             ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']],
