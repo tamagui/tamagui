@@ -427,7 +427,11 @@ export function createComponent<
     const attachHover =
       isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
-    const pressEventKey = isStringElement ? 'onClick' : 'onPress'
+
+    const handlesPressEvents = !isStringElement && !asChild
+    const pressKey = handlesPressEvents ? 'onPress' : 'onClick'
+    const pressInKey = handlesPressEvents ? 'onPressIn' : 'onMouseDown'
+    const pressOutKey = handlesPressEvents ? 'onPressOut' : 'onMouseUp'
 
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
     // while avoiding reparenting...
@@ -457,7 +461,7 @@ export function createComponent<
 
     const events = shouldAttach
       ? {
-          onPressOut: attachPress
+          [pressOutKey]: attachPress
             ? (e) => {
                 unPress()
                 onPressOut?.(e)
@@ -499,7 +503,7 @@ export function createComponent<
                 }
               : undefined,
           }),
-          onMouseDown: attachPress
+          [pressInKey]: attachPress
             ? (e) => {
                 setStateShallow({
                   press: true,
@@ -512,7 +516,7 @@ export function createComponent<
                 }
               }
             : null,
-          [pressEventKey]: attachPress
+          [pressKey]: attachPress
             ? (e) => {
                 unPress()
                 onClick?.(e)
@@ -576,15 +580,16 @@ export function createComponent<
               ...(hitSlop && {
                 hitSlop,
               }),
-              onPressIn: events.onMouseDown,
-              onPress: events[pressEventKey],
+              onPressOut: events[pressOutKey],
+              onPressIn: events[pressInKey],
+              onPress: events[pressKey],
             }
           : {
               disabled: true,
             }
       )
       if (events) {
-        if (!isStringElement) {
+        if (handlesPressEvents) {
           Object.assign(viewProps, pressableProps)
         } else {
           Object.assign(viewProps, events)
@@ -597,12 +602,12 @@ export function createComponent<
     // EVENTS native
     // native just wrap in <Pressable />
     if (!isWeb) {
-      if (attachPress) {
+      if (attachPress && events) {
         content = (
           // bugfix: on native <Pressable /> pressing down and then moving finger off
           // doesn't actually turn off press styles
           // but react-native-gesture-handler doesn't pass GestureResponderEvent...
-          <Pressable onPressIn={events?.onMouseDown} onPress={events?.[pressEventKey]}>
+          <Pressable onPressIn={events[pressInKey]} onPress={events[pressKey]}>
             <BaseButton
               onActiveStateChange={(isActive) => {
                 if (!isActive) {
@@ -807,6 +812,10 @@ export const Spacer = createComponent<
         minWidth: 0,
       },
     },
+  },
+
+  defaultVariants: {
+    direction: 'horizontal',
   },
 })
 

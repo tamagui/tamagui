@@ -52,7 +52,7 @@ const SlotClone = React.forwardRef<any, SlotCloneProps>((props, forwardedRef) =>
 
   if (React.isValidElement(children)) {
     return React.cloneElement(children, {
-      ...mergeProps(slotProps, children.props),
+      ...mergeProps(children, slotProps),
       ref: composeRefs(forwardedRef, (children as any).ref),
     })
   }
@@ -78,13 +78,37 @@ function isSlottable(child: React.ReactNode): child is React.ReactElement {
   return React.isValidElement(child)
 }
 
-function mergeProps(slotProps: AnyProps, childProps: AnyProps) {
+const pressMap = {
+  onPress: 'onClick',
+  onPressOut: 'onMouseOut',
+  onPressIn: 'onMouseIn',
+}
+
+function mergeProps(child: any, slotProps: AnyProps) {
+  const childProps = child.props
+
   // all child props should override
   const overrideProps = { ...childProps }
 
-  for (const propName in childProps) {
+  const isHTMLChild = typeof child.type === 'string'
+
+  if (isHTMLChild) {
+    for (const key in pressMap) {
+      if (key in slotProps) {
+        slotProps[pressMap[key]] = slotProps[key]
+        delete slotProps[key]
+      }
+    }
+  }
+
+  for (let propName in childProps) {
     const slotPropValue = slotProps[propName]
     const childPropValue = childProps[propName]
+
+    if (isHTMLChild && pressMap[propName]) {
+      propName = pressMap[propName]
+      delete overrideProps[propName]
+    }
 
     const isHandler = /^on[A-Z]/.test(propName)
     // if it's a handler, modify the override by composing the base handler

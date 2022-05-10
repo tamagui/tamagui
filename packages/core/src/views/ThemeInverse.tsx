@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
+import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { useDefaultThemeName, useThemeName } from '../hooks/useTheme'
 import { Theme } from './Theme'
 
@@ -17,6 +18,12 @@ export function setThemeInversions(next: StringRecord) {
 export const ThemeInverse = (props: { children: any }) => {
   const themeName = useThemeName()
   const defaultTheme = useDefaultThemeName()
-  const name = inversions[themeName] || inversions[defaultTheme || ''] || null
+  const [name, setName] = useState<null | string>(null)
+
+  // ssr
+  useIsomorphicLayoutEffect(() => {
+    setName(inversions[themeName] || inversions[defaultTheme || ''] || null)
+  }, [defaultTheme, themeName])
+
   return <Theme name={name}>{props.children}</Theme>
 }
