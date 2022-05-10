@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox",
-  "version": "1.0.0-beta.14",
+  "version": "1.0.0-beta.15",
   "private": true,
   "scripts": {
     "dev": "DISABLE_EXTRACTION=true TARGET=css NODE_ENV=development webpack serve",
@@ -9,22 +9,22 @@
     "dev:motion": "TARGET=motion NODE_ENV=development webpack serve"
   },
   "dependencies": {
-    "@tamagui/animations-css": "^1.0.0-beta.14",
-    "@tamagui/animations-motion": "^1.0.0-beta.14",
-    "@tamagui/animations-reanimated": "^1.0.0-beta.14",
-    "@tamagui/colors": "^1.0.0-beta.14",
-    "@tamagui/core": "^1.0.0-beta.14",
-    "@tamagui/drawer": "^1.0.0-beta.14",
-    "@tamagui/feather-icons": "^1.0.0-beta.14",
-    "@tamagui/font-inter": "^1.0.0-beta.14",
-    "@tamagui/shorthands": "^1.0.0-beta.14",
-    "@tamagui/theme-base": "^1.0.0-beta.14",
+    "@tamagui/animations-css": "^1.0.0-beta.15",
+    "@tamagui/animations-motion": "^1.0.0-beta.15",
+    "@tamagui/animations-reanimated": "^1.0.0-beta.15",
+    "@tamagui/colors": "^1.0.0-beta.15",
+    "@tamagui/core": "^1.0.0-beta.15",
+    "@tamagui/drawer": "^1.0.0-beta.15",
+    "@tamagui/feather-icons": "^1.0.0-beta.15",
+    "@tamagui/font-inter": "^1.0.0-beta.15",
+    "@tamagui/shorthands": "^1.0.0-beta.15",
+    "@tamagui/theme-base": "^1.0.0-beta.15",
     "motion": "^10.6.2",
     "react": "*",
     "react-dom": "*",
     "react-native-reanimated": "~2.8.0",
     "react-native-web": "^0.17.5",
-    "tamagui": "^1.0.0-beta.14"
+    "tamagui": "^1.0.0-beta.15"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.16.7",
@@ -37,7 +37,7 @@
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.0",
     "react-refresh": "^0.11.0",
-    "tamagui-loader": "^1.0.0-beta.14",
+    "tamagui-loader": "^1.0.0-beta.15",
     "thread-loader": "^3.0.4",
     "webpack": "^5.72.0",
     "webpack-bundle-analyzer": "^4.5.0",
