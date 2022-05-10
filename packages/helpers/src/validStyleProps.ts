@@ -1,7 +1,5 @@
 import { ViewStyle } from 'react-native'
 
-console.log('process.env.TAMAGUI_TARGET', process.env.TAMAGUI_TARGET)
-
 // flat transform props
 export const stylePropsTransform = Object.freeze({
   x: true,

@@ -11,16 +11,29 @@ function sync() {
   # copy in *all* node modules to ensure sub-deps shared (but prefer not to overwrite)
   rsync --exclude-from="$FROM/starters-sync-exclude.txt" --ignore-existing -al "$FROM/node_modules/" "$TO"
 
-  # then copy in all tamagui deps but overwrite
-  rsync -a --delete -l "$FROM/packages/tamagui/" "$TO/tamagui" &
-  rsync -a --delete -l "$FROM/packages/loader/" "$TO/tamagui-loader" &
-  rsync -al "$FROM/packages/" "$TO/@tamagui" &
+  # special case (non @tamagui/*)
+  rsync -a --delete "$FROM/packages/tamagui/" "$TO/tamagui" &
+  rsync -a --delete "$FROM/packages/loader/" "$TO/tamagui-loader" &
+  
+  # all @tamagui/*
+  rsync -a \
+    --exclude="$FROM/packages/loader/" \
+    --exclude="$FROM/packages/tamagui/" \
+     "$FROM/packages/" "$TO/@tamagui" &
   wait
 
+  rm -r "$TO/@floating-ui/react-dom-interactions/node_modules" || true
+
   pushd "$TO" || exit
+  # rm -r node || true
   watchman watch-del-all 2&> /dev/null
   rm -r "$TMPDIR/metro-cache" 2&> /dev/null || true
   popd || exit
+
+  rm -r "$TO/../apps/next/node_modules/.cache" || true
+  rm -r "$TO/../apps/next/.next" || true
+
+  echo "done"
 }
 
 sync

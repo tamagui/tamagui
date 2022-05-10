@@ -113,15 +113,20 @@ export const Drawer = withStaticProperties(
         prop: openProp,
         defaultProp: defaultOpen || false,
         onChange: onChangeOpen,
+        strategy: 'most-recent-wins',
       })
       const sheetRef = useRef<BottomSheetModal>(null)
 
       useIsomorphicLayoutEffect(() => {
         if (!open) {
           // bugfix
-          setTimeout(() => {
+          const tm = setTimeout(() => {
             sheetRef.current?.dismiss()
           })
+
+          return () => {
+            clearTimeout(tm)
+          }
         } else {
           sheetRef.current?.present()
         }
@@ -149,8 +154,6 @@ export const Drawer = withStaticProperties(
         }
       })
 
-      // TODO find components
-
       return (
         <DrawerRootProvider scope={__scopeDrawer} open={open} onChangeOpen={setOpen}>
           <BottomSheetModal
@@ -159,9 +162,8 @@ export const Drawer = withStaticProperties(
             snapPoints={['80%']}
             ref={composeRefs(ref, sheetRef)}
             onChange={(i) => {
-              const next = i === 0
-              setOpen(next)
-              onChangeOpen?.(next)
+              const isOpen = i >= 0
+              setOpen(isOpen)
             }}
             backgroundStyle={{
               backgroundColor: 'transparent',

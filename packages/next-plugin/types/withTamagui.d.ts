@@ -1,5 +1,6 @@
 import type { TamaguiOptions } from '@tamagui/static';
 export declare type WithTamaguiProps = TamaguiOptions & {
+    aliasReactPackages?: boolean;
     shouldIncludeModuleServer?: (props: {
         context: string;
         request: string;

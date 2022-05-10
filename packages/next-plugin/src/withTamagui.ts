@@ -10,6 +10,7 @@ import { shouldExclude } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
+  aliasReactPackages?: boolean
   shouldIncludeModuleServer?: (props: {
     context: string
     request: string
@@ -63,7 +64,13 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ['react-native-reanimated', 'react-native-reanimated'],
             ['react-native-web$', 'react-native-web'],
             ['@testing-library/react-native', '@tamagui/proxy-worm'],
-            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']]
+            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']],
+            ...(tamaguiOptions.aliasReactPackages
+              ? ([
+                  ['react', 'react'],
+                  ['react-dom', 'react-dom'],
+                ] as any)
+              : [])
           ),
           // expo fix https://github.com/expo/expo/issues/9999
           'react-native-web/src': require.resolve('react-native-web/dist'),
