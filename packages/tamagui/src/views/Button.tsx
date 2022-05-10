@@ -16,7 +16,6 @@ import React, { FunctionComponent, forwardRef, isValidElement, useContext } from
 import { View } from 'react-native'
 
 import { getFontSize } from '../helpers/getFontSize'
-import { getSpace } from '../helpers/getSpace'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -37,8 +36,7 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     noTextWrap?: boolean
     // make the spacing elements flex
     spaceFlex?: number | boolean
-    // adjust internal space relative to size
-    // default -3
+    // adjust internal space relative to icon size
     scaleSpace?: number
 
     // pass text properties:
@@ -111,7 +109,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     space,
     spaceFlex,
     scaleIcon = 1,
-    scaleSpace = -2,
+    scaleSpace = 0.5,
 
     // text props
     color: colorProp,
@@ -141,13 +139,14 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   }
   color = color?.toString()
 
+  // @ts-ignore
+  const iconSize = getFontSize(size, { relativeSize: scaleIcon })
+
   const addTheme = (el: any) => {
     if (isValidElement(el)) {
       return el
     }
     if (el) {
-      // @ts-ignore
-      const iconSize = getFontSize(size, { relativeSize: scaleIcon })
       return React.createElement(el, {
         color,
         size: iconSize,
@@ -201,9 +200,10 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
         {...rest}
       >
         {spacedChildren({
-          space: getSpace(space, scaleSpace),
+          // a bit arbitrary but scaling to font size is necessary so long as button does
+          space: getVariableValue(iconSize) * scaleSpace,
           spaceFlex,
-          flexDirection: props.flexDirection,
+          flexDirection: props.flexDirection || 'row',
           children: [themedIcon, contents, themedIconAfter],
         })}
       </ButtonFrame>
