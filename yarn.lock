@@ -3628,11 +3628,11 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.0-beta.13
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.1.0
     react-native-reanimated: ^2.3.1
   peerDependencies:
     react: "*"
     react-dom: "*"
+    react-native-gesture-handler: "*"
   languageName: unknown
   linkType: soft
 
@@ -3720,7 +3720,7 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.0-beta.13
     react: "*"
     react-dom: "*"
-    react-native-gesture-handler: ^2.1.0
+    react-native-gesture-handler: "*"
     react-native-reanimated: ^2.3.1
   peerDependencies:
     react: "*"
@@ -15723,7 +15723,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.1.0":
+"react-native-gesture-handler@npm:2.4.2":
   version: 2.4.2
   resolution: "react-native-gesture-handler@npm:2.4.2"
   dependencies:

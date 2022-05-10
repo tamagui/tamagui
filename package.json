@@ -41,6 +41,7 @@
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
+    "react-native-gesture-handler": "2.4.2",
     "react-native-reanimated": "2.3.1",
     "@types/node": "16.11.9",
     "@types/react": "17.0.43",
