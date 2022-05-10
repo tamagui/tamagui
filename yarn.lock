@@ -1222,7 +1222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-object-assign@npm:^7.10.4":
+"@babel/plugin-transform-object-assign@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/plugin-transform-object-assign@npm:7.16.7"
   dependencies:
@@ -3506,7 +3506,7 @@ __metadata:
     "@tamagui/animate-presence": ^1.0.0-beta.14
     "@tamagui/build": ^1.0.0-beta.14
     "@tamagui/core": ^1.0.0-beta.14
-    react-native-reanimated: ^2.3.1
+    react-native-reanimated: ~2.8.0
   languageName: unknown
   linkType: soft
 
@@ -3628,7 +3628,7 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.0-beta.14
     react: "*"
     react-dom: "*"
-    react-native-reanimated: ^2.3.1
+    react-native-reanimated: ~2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -3719,7 +3719,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: "*"
-    react-native-reanimated: ^2.3.1
+    react-native-reanimated: ~2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -3866,7 +3866,7 @@ __metadata:
     motion: ^10.6.2
     react: "*"
     react-dom: "*"
-    react-native-reanimated: ^2.3.1
+    react-native-reanimated: ~2.8.0
     react-native-web: ^0.17.5
     react-refresh: ^0.11.0
     tamagui: ^1.0.0-beta.14
@@ -13516,13 +13516,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mockdate@npm:^3.0.2":
-  version: 3.0.5
-  resolution: "mockdate@npm:3.0.5"
-  checksum: 72b66786d9e072379693f80bf9fb82eb5153c9741030a4294184e3ccaf952d0713fae8966f77780580cf902f8ec7ccc95577b0ad47980d255e2ffb71fc7ca49c
-  languageName: node
-  linkType: hard
-
 "modify-values@npm:^1.0.0":
   version: 1.0.1
   resolution: "modify-values@npm:1.0.1"
@@ -15701,15 +15694,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-freeze@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "react-freeze@npm:1.0.0"
-  peerDependencies:
-    react: ^17.0.0
-  checksum: c746b9d369c77296c277626cf7dd5ff24d49657e2f16412d14f845d1b428588184c0009374119f7dec24be37ab8c134d15aa4ecd57360c874880af508dcc577b
-  languageName: node
-  linkType: hard
-
 "react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.1.0":
   version: 18.1.0
   resolution: "react-is@npm:18.1.0"
@@ -15747,22 +15731,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:2.3.1":
-  version: 2.3.1
-  resolution: "react-native-reanimated@npm:2.3.1"
+"react-native-reanimated@npm:2.8.0":
+  version: 2.8.0
+  resolution: "react-native-reanimated@npm:2.8.0"
   dependencies:
-    "@babel/plugin-transform-object-assign": ^7.10.4
+    "@babel/plugin-transform-object-assign": ^7.16.7
+    "@babel/preset-typescript": ^7.16.7
     "@types/invariant": ^2.2.35
     invariant: ^2.2.4
     lodash.isequal: ^4.5.0
-    mockdate: ^3.0.2
-    react-native-screens: ^3.4.0
+    setimmediate: ^1.0.5
     string-hash-64: ^1.0.3
   peerDependencies:
+    "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-    react-native-gesture-handler: "*"
-  checksum: 1bc31594a0088421ae16327fe3dc067a2beb75e43a6fbbe35c94ad4fd3662de348816b5e08eb9d6cb846c1b76c735b9edfb5d66296d937d83ff2961bb7e2d39a
+  checksum: 6409a941a177d04d9091953a05f493d4924eb0d3e2a4b24cf83bb20460b985f89dd879f0ab7337655dba6a3183ca50cc2ad2b3ea1c505cdc1eed6c5ee1296b59
   languageName: node
   linkType: hard
 
@@ -15782,26 +15766,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-safe-area-context@npm:^3.3.2":
-  version: 3.4.1
-  resolution: "react-native-safe-area-context@npm:3.4.1"
+"react-native-safe-area-context@npm:^4.2.5":
+  version: 4.2.5
+  resolution: "react-native-safe-area-context@npm:4.2.5"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 86a0614c5bef60ff8e056cff3fd4200cc6d181653cb6c26992ab62061792474f4872d1f5d394234ec6da75ce8b2960c930f4d6a1b6af3b6579cf1c30b6d64bb5
-  languageName: node
-  linkType: hard
-
-"react-native-screens@npm:^3.4.0":
-  version: 3.13.1
-  resolution: "react-native-screens@npm:3.13.1"
-  dependencies:
-    react-freeze: ^1.0.0
-    warn-once: ^0.1.0
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: aaab7071f65ea7b3be197417e073d0cad06c80fcb2a956faaeb020322c8002963f4d14ba96550484e96d156a48a29989c1485f47ec4bcd98c9701fe8de5c7cc1
+  checksum: 66bc91285c8e330fdad18ba0ecd1e0f2bae28449e254501837cbee86b7ac170e1da83eef33d8634ec3c43f23621bcd56f995159d811fbc0babde2b38dd10f3e1
   languageName: node
   linkType: hard
 
@@ -17852,7 +17823,7 @@ __metadata:
     expo-modules-core: ^0.9.1
     react: "*"
     react-dom: "*"
-    react-native-safe-area-context: ^3.3.2
+    react-native-safe-area-context: ^4.2.5
     react-native-web: ^0.17.5
   peerDependencies:
     react-native-web: "*"
@@ -19249,13 +19220,6 @@ __metadata:
   dependencies:
     makeerror: 1.0.12
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
-  languageName: node
-  linkType: hard
-
-"warn-once@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "warn-once@npm:0.1.0"
-  checksum: 5fde2b526d132369ae30a34e9bd172f77ae3c061e6b875194de42d668bc189bd779ddada5217348cdf23ecac6a277931b40482173c6695544b924f6a8cd67601
   languageName: node
   linkType: hard
 
