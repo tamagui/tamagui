@@ -5,7 +5,7 @@ export default function ButtonDemo(props) {
   return (
     <YStack p="$3" space="$2" {...props}>
       <Button>Plain</Button>
-      <Button icon={Airplay} size="$6">
+      <Button als="center" icon={Airplay} size="$6">
         Large
       </Button>
       <InteractiveContainer>

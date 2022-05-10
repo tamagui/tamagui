@@ -1,7 +1,6 @@
 import { useTheme } from '@components/NextTheme'
 import { Monitor, Moon, Sun } from '@tamagui/feather-icons'
-import { memo, useEffect, useState } from 'react'
-import { SectionList } from 'react-native'
+import { useState } from 'react'
 import { Button, ButtonProps, useIsomorphicLayoutEffect } from 'tamagui'
 
 const icons = {

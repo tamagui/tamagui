@@ -35,7 +35,7 @@ const splitToFlat = ([a, b]: number[]) => {
 let hasScrolledOnce = false
 
 export function HeroExampleThemes() {
-  const { setTheme, theme: userTheme } = useTheme()
+  const { setTheme, theme: userTheme, systemTheme } = useTheme()
   const [activeI, setActiveI] = useState([0, 0])
   const [curColorI, curShadeI] = activeI
   const [theme, setSelTheme] = useState('')
@@ -129,8 +129,9 @@ export function HeroExampleThemes() {
   })
 
   useEffect(() => {
-    setSelTheme(userTheme as any)
-  }, [userTheme])
+    if (typeof userTheme === 'boolean') return
+    setSelTheme(userTheme === 'system' ? systemTheme || 'light' : userTheme || 'light')
+  }, [userTheme, systemTheme])
 
   return (
     <YStack>

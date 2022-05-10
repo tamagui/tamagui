@@ -12,6 +12,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
+import { useIsomorphicLayoutEffect } from 'tamagui'
 
 export interface UseThemeProps {
   /** List of all available theme names */
@@ -88,7 +89,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     (e?) => {
       const systemTheme = getSystemTheme(e)
       setResolvedTheme(systemTheme)
-      if (theme === 'system' && !forcedTheme) changeTheme(systemTheme, false)
+      if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
     },
     [theme, forcedTheme]
   )
@@ -97,7 +98,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   const mediaListener = useRef(handleMediaQuery)
   mediaListener.current = handleMediaQuery
 
-  const changeTheme = useCallback((theme, updateStorage = true, updateDOM = true) => {
+  const handleChangeTheme = useCallback((theme, updateStorage = true, updateDOM = true) => {
     let name = value?.[theme] || theme
 
     const enable = disableTransitionOnChange && updateDOM ? disableAnimation() : null
@@ -130,25 +131,24 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
   }, [])
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const handler = (...args: any) => mediaListener.current(...args)
-
     // Always listen to System preference
     const media = window.matchMedia(MEDIA)
-
     // Intentionally use deprecated listener methods to support iOS & old browsers
     media.addListener(handler)
     handler(media)
-
-    return () => media.removeListener(handler)
+    return () => {
+      media.removeListener(handler)
+    }
   }, [])
 
   const setTheme = useCallback(
     (newTheme) => {
       if (forcedTheme) {
-        changeTheme(newTheme, true, false)
+        handleChangeTheme(newTheme, true, false)
       } else {
-        changeTheme(newTheme)
+        handleChangeTheme(newTheme)
       }
       setThemeState(newTheme)
     },
@@ -165,13 +165,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       const theme = e.newValue || defaultTheme
       setTheme(theme)
     }
-
     window.addEventListener('storage', handleStorage)
-    return () => window.removeEventListener('storage', handleStorage)
-  }, [setTheme])
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+    }
+  }, [])
 
   // color-scheme handling
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!enableColorScheme) return
 
     let colorScheme =
