@@ -157,35 +157,63 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   const themedIcon = icon ? addTheme(icon) : null
   const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
 
-  const contents = noTextWrap
-    ? children
-    : React.Children.map(children, (child) => {
-        const component = typeof child !== 'string' ? child?.['type'] : null
-        if (component?.staticConfig?.isText) {
-          return child
+  let contents = children
+
+  if (!noTextWrap && children) {
+    // in the case of using variables, like so:
+    // <Button>Hello, {name}</Button>
+    // it gives us props.children as ['Hello, ', 'name']
+    // but we don't want to wrap multiple SizableText around each part
+    // so we group them
+    let allChildren = React.Children.toArray(children)
+    let nextChildren: any[] = []
+    let lastIsString = false
+
+    function concatStringChildren() {
+      if (!lastIsString) return
+      const childrenStrings = nextChildren[nextChildren.length - 1]
+      nextChildren[nextChildren.length - 1] = (
+        <SizableText
+          {...{
+            fontWeight,
+            letterSpacing,
+            fontSize,
+            fontFamily,
+            textAlign,
+            size,
+          }}
+          {...(colorProp && {
+            color: colorProp,
+          })}
+          flexGrow={1}
+          flexShrink={1}
+          ellipse
+          {...textProps}
+        >
+          {childrenStrings}
+        </SizableText>
+      )
+    }
+
+    for (const child of allChildren) {
+      const last = nextChildren[nextChildren.length - 1]
+      const isString = typeof child === 'string'
+      if (isString) {
+        if (lastIsString) {
+          last.push(child)
+        } else {
+          nextChildren.push([child])
         }
-        return (
-          <SizableText
-            {...{
-              fontWeight,
-              letterSpacing,
-              fontSize,
-              fontFamily,
-              textAlign,
-              size,
-            }}
-            {...(colorProp && {
-              color: colorProp,
-            })}
-            flexGrow={1}
-            flexShrink={1}
-            ellipse
-            {...textProps}
-          >
-            {child}
-          </SizableText>
-        )
-      })
+      } else {
+        concatStringChildren()
+        nextChildren.push(child)
+      }
+      lastIsString = isString
+    }
+    concatStringChildren()
+
+    contents = nextChildren
+  }
 
   return (
     // careful not to desctructure and re-order props, order is important
@@ -199,13 +227,15 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
         ref={ref as any}
         {...rest}
       >
-        {spacedChildren({
-          // a bit arbitrary but scaling to font size is necessary so long as button does
-          space: getVariableValue(iconSize) * scaleSpace,
-          spaceFlex,
-          flexDirection: props.flexDirection || 'row',
-          children: [themedIcon, contents, themedIconAfter],
-        })}
+        {themedIcon || themedIconAfter
+          ? spacedChildren({
+              // a bit arbitrary but scaling to font size is necessary so long as button does
+              space: getVariableValue(iconSize) * scaleSpace,
+              spaceFlex,
+              flexDirection: props.flexDirection || 'row',
+              children: [themedIcon, contents, themedIconAfter],
+            })
+          : contents}
       </ButtonFrame>
     </ButtonInsideButtonContext.Provider>
   )
