@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.0.0-beta.16",
+  "version": "1.0.0-beta.17",
   "sideEffects": true,
   "source": "src/index.ts",
   "typings": "types",
@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.2.1",
-    "@tamagui/core": "^1.0.0-beta.16",
-    "@tamagui/polyfill-dev": "^1.0.0-beta.16",
-    "@tamagui/use-controllable-state": "^1.0.0-beta.16",
+    "@tamagui/core": "^1.0.0-beta.17",
+    "@tamagui/polyfill-dev": "^1.0.0-beta.17",
+    "@tamagui/use-controllable-state": "^1.0.0-beta.17",
     "react-native-gesture-handler": "*",
     "react-native-reanimated": "~2.8.0"
   },
@@ -30,7 +30,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.0-beta.16",
+    "@tamagui/build": "^1.0.0-beta.17",
     "react": "*",
     "react-dom": "*"
   },
