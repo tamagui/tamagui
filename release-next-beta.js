@@ -5,7 +5,7 @@ const prompts = require('prompts')
 const fs = require('fs-extra')
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
 const path = require('path')
-const nextVersion = `1.0.0-beta.${+curVersion.split('.')[3] + 1}`
+const nextVersion = `1.0.1-beta.${+curVersion.split('.')[3] + 1}`
 
 const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')
