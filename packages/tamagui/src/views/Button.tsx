@@ -88,7 +88,6 @@ const ButtonFrame = styled(SizableStack, {
           maxHeight: size,
           minWidth: size,
           minHeight: size,
-          overflow: 'hidden',
           borderRadius: 100_000,
           paddingVertical: 0,
           paddingHorizontal: 0,
