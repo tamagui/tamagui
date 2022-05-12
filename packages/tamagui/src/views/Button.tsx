@@ -171,9 +171,11 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
 
     function concatStringChildren() {
       if (!lastIsString) return
-      const childrenStrings = nextChildren[nextChildren.length - 1]
-      nextChildren[nextChildren.length - 1] = (
+      const index = nextChildren.length - 1
+      const childrenStrings = nextChildren[index]
+      nextChildren[index] = (
         <SizableText
+          key={index}
           {...{
             fontWeight,
             letterSpacing,
