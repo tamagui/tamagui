@@ -1862,26 +1862,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/core@npm:^0.6.2":
-  version: 0.6.2
-  resolution: "@floating-ui/core@npm:0.6.2"
-  checksum: b3e1844da852fe141cfa4163026a7c5ffb4399a96105340dffdd5b76dcafea72c6221a06b4674c2b500bc776adc9d9e4ed39dba55e7d844d9507d994c0af743a
-  languageName: node
-  linkType: hard
-
 "@floating-ui/core@npm:^0.7.0":
   version: 0.7.0
   resolution: "@floating-ui/core@npm:0.7.0"
   checksum: 79a2f2c1a9b12149008723bc6f3c677ba8cba5f7835a2a4be1d4696816941703769b3809335f9b46c23e2091610d52617459f16b0a1027ac47995dd59134dbee
-  languageName: node
-  linkType: hard
-
-"@floating-ui/dom@npm:^0.4.5":
-  version: 0.4.5
-  resolution: "@floating-ui/dom@npm:0.4.5"
-  dependencies:
-    "@floating-ui/core": ^0.6.2
-  checksum: 3024aba55fe7ee78b429a6a5d61f5719a6bb2acc79c8a33304b9d30c443efba3a5288acaf9003402e31ee97a533eda97c30a0f2c97e9e54c697df9b80a23dad8
   languageName: node
   linkType: hard
 
@@ -1894,18 +1878,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom-interactions@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@floating-ui/react-dom-interactions@npm:0.4.0"
+"@floating-ui/react-dom-interactions@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@floating-ui/react-dom-interactions@npm:0.5.0"
   dependencies:
-    "@floating-ui/react-dom": ^0.6.3
+    "@floating-ui/react-dom": ^0.7.0
     aria-hidden: ^1.1.3
     use-isomorphic-layout-effect: ^1.1.1
-  checksum: a0840cd4d52d2c4b0c0736714e305b7e0abc3b39c3b2ad21001098815075ee6de098c2711bedb2d53845760c99e9c328d7e082326caea04081759a753e82e3bc
+  checksum: 4c90f4a159b855480135bcd12bfb1f3b3d92c8b3d834c493f429cd4516554ad4088a4aa21b34d3fe6e2b64626bb1f954cd069a797984a75288b6b924f7309c64
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:0.7.0":
+"@floating-ui/react-dom@npm:0.7.0, @floating-ui/react-dom@npm:^0.7.0":
   version: 0.7.0
   resolution: "@floating-ui/react-dom@npm:0.7.0"
   dependencies:
@@ -1915,19 +1899,6 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 46282409a0c69ba993f39f38bb05e173420b819c27f27cf76639a4abf0ac3c3e325cd9f00ff2f8791fe6b2e100e7113f35ef1f82b517fa498c6c3df1a557c373
-  languageName: node
-  linkType: hard
-
-"@floating-ui/react-dom@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "@floating-ui/react-dom@npm:0.6.3"
-  dependencies:
-    "@floating-ui/dom": ^0.4.5
-    use-isomorphic-layout-effect: ^1.1.1
-  peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 1af930aac4e13ed9a25ea2cf70e629d36363034a70ea407a6f8d8d4bd62979c59d3748b58e1ef31c427fdf21a754f285aabba9f14b9e916ab69eb5212144ef6c
   languageName: node
   linkType: hard
 
@@ -3769,7 +3740,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/popover@workspace:packages/popover"
   dependencies:
-    "@floating-ui/react-dom-interactions": ^0.4.0
+    "@floating-ui/react-dom-interactions": ^0.5.0
     "@tamagui/animate-presence": ^1.0.1-beta.21
     "@tamagui/build": ^1.0.1-beta.21
     "@tamagui/compose-refs": ^1.0.1-beta.21
@@ -3882,7 +3853,7 @@ __metadata:
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
     "@floating-ui/react-dom": 0.7.0
-    "@floating-ui/react-dom-interactions": ^0.4.0
+    "@floating-ui/react-dom-interactions": ^0.5.0
     "@floating-ui/react-native": ^0.7.0
     "@radix-ui/react-use-callback-ref": ^0.1.0
     "@radix-ui/react-use-previous": ^0.1.1
@@ -4074,7 +4045,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/tooltip@workspace:packages/tooltip"
   dependencies:
-    "@floating-ui/react-dom-interactions": ^0.4.0
+    "@floating-ui/react-dom-interactions": ^0.5.0
     "@tamagui/build": ^1.0.1-beta.21
     "@tamagui/compose-refs": ^1.0.1-beta.21
     "@tamagui/core": ^1.0.1-beta.21

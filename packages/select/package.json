@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@floating-ui/react-dom": "0.7.0",
-    "@floating-ui/react-dom-interactions": "^0.4.0",
+    "@floating-ui/react-dom-interactions": "^0.5.0",
     "@floating-ui/react-native": "^0.7.0",
     "@radix-ui/react-use-callback-ref": "^0.1.0",
     "@radix-ui/react-use-previous": "^0.1.1",
