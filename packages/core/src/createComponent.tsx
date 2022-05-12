@@ -12,7 +12,6 @@ import React, {
   useState,
 } from 'react'
 import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { BaseButton } from 'react-native-gesture-handler'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
@@ -22,6 +21,7 @@ import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
+import { BaseButton } from './helpers/nativeGestureHandler'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
@@ -832,21 +832,26 @@ export function spacedChildren({
   spaceFlex?: boolean | number
   flexDirection?: ViewStyle['flexDirection']
 }) {
-  const childrenList = Children.toArray(children)
+  const childrenList = Array.isArray(children) ? children : Children.toArray(children)
   const len = childrenList.length
-  if (len === 1) {
+  if (len <= 1) {
     return childrenList
   }
-  const next: any[] = []
+  const final: any[] = []
   for (const [index, child] of childrenList.entries()) {
-    if (child === null || child === undefined) {
+    if (
+      child === null ||
+      child === undefined ||
+      child === false ||
+      (Array.isArray(child) && child.length === 0)
+    ) {
       continue
     }
 
     if (!child || (child['key'] && !isZStack)) {
-      next.push(child)
+      final.push(child)
     } else {
-      next.push(
+      final.push(
         <Fragment key={index}>{isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}</Fragment>
       )
     }
@@ -856,24 +861,25 @@ export function spacedChildren({
       continue
     }
 
-    if (index !== len - 1) {
-      if (space) {
-        next.push(
-          <Spacer
-            key={`_${index}_spacer`}
-            direction={
-              flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
-            }
-            size={space}
-            {...(spaceFlex && {
-              flex: spaceFlex,
-            })}
-          />
-        )
-      }
+    const next = childrenList[index + 1]
+
+    if (next && space) {
+      final.push(
+        <Spacer
+          key={`_${index}_spacer`}
+          direction={
+            flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
+          }
+          size={space}
+          {...(spaceFlex && {
+            flex: spaceFlex,
+          })}
+        />
+      )
     }
   }
-  return next
+
+  return final
 }
 
 export function AbsoluteFill(props: any) {
