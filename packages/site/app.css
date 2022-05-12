@@ -22,7 +22,7 @@ body {
 }
 
 body {
-  background-color: var(--backgroundStronger) !important;
+  background-color: var(--backgroundStrong) !important;
 }
 
 body {
@@ -98,7 +98,7 @@ span._display-1adg3ll > span._display-xoduu5 {
   background: linear-gradient(
     330deg,
     var(--background) 10%,
-    var(--backgroundStronger) 50%,
+    var(--backgroundStrong) 50%,
     var(--background) 90%
   );
 }
@@ -106,7 +106,7 @@ span._display-1adg3ll > span._display-xoduu5 {
 .hero-gradient-2 {
   background: linear-gradient(
     180deg,
-    var(--backgroundStronger) 0%,
+    var(--backgroundStrong) 0%,
     transparent 90%
   );
 }

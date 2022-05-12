@@ -10,7 +10,7 @@ import { color } from './tokens'
 type ThemeCreatorProps = {
   shift?: number
   backgrounds: (string | Variable)[]
-  backgroundStronger?: string | Variable
+  backgroundStrong?: string | Variable
   borderColors?: (string | Variable)[]
   colors?: (string | Variable)[]
   offsets?: {
@@ -77,7 +77,7 @@ const createTheme = (
     isBase = false,
     colors = [...backgrounds].reverse(),
     borderColors = isLight ? colors : backgrounds,
-    backgroundStronger,
+    backgroundStrong,
     offsets: offsetsProp,
   }: ThemeCreatorProps
 ) => {
@@ -90,6 +90,7 @@ const createTheme = (
   const lighterDir = isLight ? -1 : 1
   const darkerDir = -lighterDir
   const strongerDir = isLight ? darkerDir : lighterDir
+  const softerDir = -strongerDir
   const get = (arr: any[], index: number, name = 'background') => {
     return arr[Math.max(0, Math.min(index + (offsets[name][str] || 0), arr.length - 1))]
   }
@@ -98,10 +99,10 @@ const createTheme = (
 
   let theme = {
     background: get(backgrounds, str),
-    backgroundStronger: backgroundStronger || get(backgrounds, str + strongerDir),
-    backgroundSoft: get(backgrounds, str + 3),
-    backgroundHover: get(backgrounds, str + strongerDir),
-    backgroundPress: get(backgrounds, str + darkerDir * 1),
+    backgroundStrong: backgroundStrong || get(backgrounds, str + strongerDir * 2),
+    backgroundSoft: get(backgrounds, str + softerDir * 2),
+    backgroundHover: get(backgrounds, str + lighterDir),
+    backgroundPress: get(backgrounds, str + darkerDir),
     backgroundFocus: get(backgrounds, str + darkerDir * 2),
     backgroundTransparent: color.grayA1,
     color: get(colors, 0 + str, 'color'),
@@ -200,7 +201,7 @@ export const darkGradient = [
 const lightThemes = createThemesFrom('light', createTheme, {
   backgrounds: lightGradient,
   // isBase: true,
-  backgroundStronger: '#fcfcfc',
+  backgroundStrong: '#fcfcfc',
   borderColors: lightGradient.slice(2),
   isLight: true,
 })
@@ -208,7 +209,7 @@ const lightThemes = createThemesFrom('light', createTheme, {
 const darkThemes = createThemesFrom('dark', createTheme, {
   backgrounds: darkGradient,
   colors: lightGradient.slice(2),
-  backgroundStronger: '#111',
+  backgroundStrong: '#111',
   isBase: true,
   isLight: false,
   shift: 1,

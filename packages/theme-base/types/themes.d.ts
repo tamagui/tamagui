@@ -396,7 +396,7 @@ export declare const darkGradient: string[];
 declare const baseThemes: {
     dark: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -564,7 +564,7 @@ declare const baseThemes: {
     dark_active: any;
     dark_Card: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -587,7 +587,7 @@ declare const baseThemes: {
     };
     dark_DrawerFrame: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -610,7 +610,7 @@ declare const baseThemes: {
     };
     dark_Button: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -633,7 +633,7 @@ declare const baseThemes: {
     };
     dark_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -656,7 +656,7 @@ declare const baseThemes: {
     };
     dark_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -679,7 +679,7 @@ declare const baseThemes: {
     };
     dark_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -702,7 +702,7 @@ declare const baseThemes: {
     };
     dark_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -725,7 +725,7 @@ declare const baseThemes: {
     };
     dark_darker: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -748,7 +748,7 @@ declare const baseThemes: {
     };
     light: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -916,7 +916,7 @@ declare const baseThemes: {
     light_active: any;
     light_Card: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -939,7 +939,7 @@ declare const baseThemes: {
     };
     light_DrawerFrame: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -962,7 +962,7 @@ declare const baseThemes: {
     };
     light_Button: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -985,7 +985,7 @@ declare const baseThemes: {
     };
     light_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1008,7 +1008,7 @@ declare const baseThemes: {
     };
     light_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1031,7 +1031,7 @@ declare const baseThemes: {
     };
     light_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1054,7 +1054,7 @@ declare const baseThemes: {
     };
     light_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1077,7 +1077,7 @@ declare const baseThemes: {
     };
     light_darker: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1102,7 +1102,7 @@ declare const baseThemes: {
 declare const allThemes: {
     readonly blue: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1125,7 +1125,7 @@ declare const allThemes: {
     };
     readonly gray: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1148,7 +1148,7 @@ declare const allThemes: {
     };
     readonly green: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1171,7 +1171,7 @@ declare const allThemes: {
     };
     readonly indigo: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1194,7 +1194,7 @@ declare const allThemes: {
     };
     readonly orange: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1217,7 +1217,7 @@ declare const allThemes: {
     };
     readonly pink: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1240,7 +1240,7 @@ declare const allThemes: {
     };
     readonly purple: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1263,7 +1263,7 @@ declare const allThemes: {
     };
     readonly red: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1286,7 +1286,7 @@ declare const allThemes: {
     };
     readonly violet: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1309,7 +1309,7 @@ declare const allThemes: {
     };
     readonly yellow: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1332,7 +1332,7 @@ declare const allThemes: {
     };
     readonly teal: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1355,7 +1355,7 @@ declare const allThemes: {
     };
     readonly lime: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1378,7 +1378,7 @@ declare const allThemes: {
     };
     readonly brown: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1401,7 +1401,7 @@ declare const allThemes: {
     };
     readonly light_blue_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1424,7 +1424,7 @@ declare const allThemes: {
     };
     readonly light_blue_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1447,7 +1447,7 @@ declare const allThemes: {
     };
     readonly light_blue_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1470,7 +1470,7 @@ declare const allThemes: {
     };
     readonly light_blue_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1493,7 +1493,7 @@ declare const allThemes: {
     };
     readonly light_gray_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1516,7 +1516,7 @@ declare const allThemes: {
     };
     readonly light_gray_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1539,7 +1539,7 @@ declare const allThemes: {
     };
     readonly light_gray_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1562,7 +1562,7 @@ declare const allThemes: {
     };
     readonly light_gray_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1585,7 +1585,7 @@ declare const allThemes: {
     };
     readonly light_green_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1608,7 +1608,7 @@ declare const allThemes: {
     };
     readonly light_green_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1631,7 +1631,7 @@ declare const allThemes: {
     };
     readonly light_green_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1654,7 +1654,7 @@ declare const allThemes: {
     };
     readonly light_green_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1677,7 +1677,7 @@ declare const allThemes: {
     };
     readonly light_indigo_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1700,7 +1700,7 @@ declare const allThemes: {
     };
     readonly light_indigo_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1723,7 +1723,7 @@ declare const allThemes: {
     };
     readonly light_indigo_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1746,7 +1746,7 @@ declare const allThemes: {
     };
     readonly light_indigo_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1769,7 +1769,7 @@ declare const allThemes: {
     };
     readonly light_orange_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1792,7 +1792,7 @@ declare const allThemes: {
     };
     readonly light_orange_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1815,7 +1815,7 @@ declare const allThemes: {
     };
     readonly light_orange_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1838,7 +1838,7 @@ declare const allThemes: {
     };
     readonly light_orange_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1861,7 +1861,7 @@ declare const allThemes: {
     };
     readonly light_pink_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1884,7 +1884,7 @@ declare const allThemes: {
     };
     readonly light_pink_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1907,7 +1907,7 @@ declare const allThemes: {
     };
     readonly light_pink_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1930,7 +1930,7 @@ declare const allThemes: {
     };
     readonly light_pink_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1953,7 +1953,7 @@ declare const allThemes: {
     };
     readonly light_purple_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1976,7 +1976,7 @@ declare const allThemes: {
     };
     readonly light_purple_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -1999,7 +1999,7 @@ declare const allThemes: {
     };
     readonly light_purple_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2022,7 +2022,7 @@ declare const allThemes: {
     };
     readonly light_purple_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2045,7 +2045,7 @@ declare const allThemes: {
     };
     readonly light_red_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2068,7 +2068,7 @@ declare const allThemes: {
     };
     readonly light_red_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2091,7 +2091,7 @@ declare const allThemes: {
     };
     readonly light_red_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2114,7 +2114,7 @@ declare const allThemes: {
     };
     readonly light_red_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2137,7 +2137,7 @@ declare const allThemes: {
     };
     readonly light_violet_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2160,7 +2160,7 @@ declare const allThemes: {
     };
     readonly light_violet_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2183,7 +2183,7 @@ declare const allThemes: {
     };
     readonly light_violet_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2206,7 +2206,7 @@ declare const allThemes: {
     };
     readonly light_violet_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2229,7 +2229,7 @@ declare const allThemes: {
     };
     readonly light_yellow_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2252,7 +2252,7 @@ declare const allThemes: {
     };
     readonly light_yellow_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2275,7 +2275,7 @@ declare const allThemes: {
     };
     readonly light_yellow_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2298,7 +2298,7 @@ declare const allThemes: {
     };
     readonly light_yellow_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2321,7 +2321,7 @@ declare const allThemes: {
     };
     readonly light_teal_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2344,7 +2344,7 @@ declare const allThemes: {
     };
     readonly light_teal_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2367,7 +2367,7 @@ declare const allThemes: {
     };
     readonly light_teal_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2390,7 +2390,7 @@ declare const allThemes: {
     };
     readonly light_teal_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2413,7 +2413,7 @@ declare const allThemes: {
     };
     readonly light_lime_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2436,7 +2436,7 @@ declare const allThemes: {
     };
     readonly light_lime_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2459,7 +2459,7 @@ declare const allThemes: {
     };
     readonly light_lime_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2482,7 +2482,7 @@ declare const allThemes: {
     };
     readonly light_lime_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2505,7 +2505,7 @@ declare const allThemes: {
     };
     readonly light_brown_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2528,7 +2528,7 @@ declare const allThemes: {
     };
     readonly light_brown_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2551,7 +2551,7 @@ declare const allThemes: {
     };
     readonly light_brown_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2574,7 +2574,7 @@ declare const allThemes: {
     };
     readonly light_brown_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2597,7 +2597,7 @@ declare const allThemes: {
     };
     readonly dark_blue_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2620,7 +2620,7 @@ declare const allThemes: {
     };
     readonly dark_blue_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2643,7 +2643,7 @@ declare const allThemes: {
     };
     readonly dark_blue_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2666,7 +2666,7 @@ declare const allThemes: {
     };
     readonly dark_blue_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2689,7 +2689,7 @@ declare const allThemes: {
     };
     readonly dark_gray_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2712,7 +2712,7 @@ declare const allThemes: {
     };
     readonly dark_gray_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2735,7 +2735,7 @@ declare const allThemes: {
     };
     readonly dark_gray_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2758,7 +2758,7 @@ declare const allThemes: {
     };
     readonly dark_gray_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2781,7 +2781,7 @@ declare const allThemes: {
     };
     readonly dark_green_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2804,7 +2804,7 @@ declare const allThemes: {
     };
     readonly dark_green_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2827,7 +2827,7 @@ declare const allThemes: {
     };
     readonly dark_green_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2850,7 +2850,7 @@ declare const allThemes: {
     };
     readonly dark_green_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2873,7 +2873,7 @@ declare const allThemes: {
     };
     readonly dark_indigo_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2896,7 +2896,7 @@ declare const allThemes: {
     };
     readonly dark_indigo_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2919,7 +2919,7 @@ declare const allThemes: {
     };
     readonly dark_indigo_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2942,7 +2942,7 @@ declare const allThemes: {
     };
     readonly dark_indigo_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2965,7 +2965,7 @@ declare const allThemes: {
     };
     readonly dark_orange_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -2988,7 +2988,7 @@ declare const allThemes: {
     };
     readonly dark_orange_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3011,7 +3011,7 @@ declare const allThemes: {
     };
     readonly dark_orange_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3034,7 +3034,7 @@ declare const allThemes: {
     };
     readonly dark_orange_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3057,7 +3057,7 @@ declare const allThemes: {
     };
     readonly dark_pink_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3080,7 +3080,7 @@ declare const allThemes: {
     };
     readonly dark_pink_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3103,7 +3103,7 @@ declare const allThemes: {
     };
     readonly dark_pink_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3126,7 +3126,7 @@ declare const allThemes: {
     };
     readonly dark_pink_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3149,7 +3149,7 @@ declare const allThemes: {
     };
     readonly dark_purple_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3172,7 +3172,7 @@ declare const allThemes: {
     };
     readonly dark_purple_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3195,7 +3195,7 @@ declare const allThemes: {
     };
     readonly dark_purple_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3218,7 +3218,7 @@ declare const allThemes: {
     };
     readonly dark_purple_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3241,7 +3241,7 @@ declare const allThemes: {
     };
     readonly dark_red_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3264,7 +3264,7 @@ declare const allThemes: {
     };
     readonly dark_red_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3287,7 +3287,7 @@ declare const allThemes: {
     };
     readonly dark_red_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3310,7 +3310,7 @@ declare const allThemes: {
     };
     readonly dark_red_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3333,7 +3333,7 @@ declare const allThemes: {
     };
     readonly dark_violet_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3356,7 +3356,7 @@ declare const allThemes: {
     };
     readonly dark_violet_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3379,7 +3379,7 @@ declare const allThemes: {
     };
     readonly dark_violet_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3402,7 +3402,7 @@ declare const allThemes: {
     };
     readonly dark_violet_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3425,7 +3425,7 @@ declare const allThemes: {
     };
     readonly dark_yellow_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3448,7 +3448,7 @@ declare const allThemes: {
     };
     readonly dark_yellow_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3471,7 +3471,7 @@ declare const allThemes: {
     };
     readonly dark_yellow_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3494,7 +3494,7 @@ declare const allThemes: {
     };
     readonly dark_yellow_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3517,7 +3517,7 @@ declare const allThemes: {
     };
     readonly dark_teal_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3540,7 +3540,7 @@ declare const allThemes: {
     };
     readonly dark_teal_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3563,7 +3563,7 @@ declare const allThemes: {
     };
     readonly dark_teal_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3586,7 +3586,7 @@ declare const allThemes: {
     };
     readonly dark_teal_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3609,7 +3609,7 @@ declare const allThemes: {
     };
     readonly dark_lime_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3632,7 +3632,7 @@ declare const allThemes: {
     };
     readonly dark_lime_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3655,7 +3655,7 @@ declare const allThemes: {
     };
     readonly dark_lime_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3678,7 +3678,7 @@ declare const allThemes: {
     };
     readonly dark_lime_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3701,7 +3701,7 @@ declare const allThemes: {
     };
     readonly dark_brown_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3724,7 +3724,7 @@ declare const allThemes: {
     };
     readonly dark_brown_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3747,7 +3747,7 @@ declare const allThemes: {
     };
     readonly dark_brown_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3770,7 +3770,7 @@ declare const allThemes: {
     };
     readonly dark_brown_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3793,7 +3793,7 @@ declare const allThemes: {
     };
     readonly dark: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3961,7 +3961,7 @@ declare const allThemes: {
     readonly dark_active: any;
     readonly dark_Card: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -3984,7 +3984,7 @@ declare const allThemes: {
     };
     readonly dark_DrawerFrame: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4007,7 +4007,7 @@ declare const allThemes: {
     };
     readonly dark_Button: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4030,7 +4030,7 @@ declare const allThemes: {
     };
     readonly dark_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4053,7 +4053,7 @@ declare const allThemes: {
     };
     readonly dark_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4076,7 +4076,7 @@ declare const allThemes: {
     };
     readonly dark_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4099,7 +4099,7 @@ declare const allThemes: {
     };
     readonly dark_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4122,7 +4122,7 @@ declare const allThemes: {
     };
     readonly dark_darker: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4145,7 +4145,7 @@ declare const allThemes: {
     };
     readonly light: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4313,7 +4313,7 @@ declare const allThemes: {
     readonly light_active: any;
     readonly light_Card: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4336,7 +4336,7 @@ declare const allThemes: {
     };
     readonly light_DrawerFrame: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4359,7 +4359,7 @@ declare const allThemes: {
     };
     readonly light_Button: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4382,7 +4382,7 @@ declare const allThemes: {
     };
     readonly light_alt1: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4405,7 +4405,7 @@ declare const allThemes: {
     };
     readonly light_alt4: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4428,7 +4428,7 @@ declare const allThemes: {
     };
     readonly light_alt2: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4451,7 +4451,7 @@ declare const allThemes: {
     };
     readonly light_alt3: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
@@ -4474,7 +4474,7 @@ declare const allThemes: {
     };
     readonly light_darker: {
         background: any;
-        backgroundStronger: any;
+        backgroundStrong: any;
         backgroundSoft: any;
         backgroundHover: any;
         backgroundPress: any;
