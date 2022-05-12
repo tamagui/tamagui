@@ -46,7 +46,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
               res.push(next)
             } catch (err) {
-              console.log(prefix, `withTamagui skipping resolving ${out}`)
+              // console.log(prefix, `withTamagui skipping resolving ${out}`)
             }
           }
           return Object.fromEntries(res)
