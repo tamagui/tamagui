@@ -1,4 +1,4 @@
-import { ArrowRight } from '@tamagui/feather-icons'
+import { ArrowRight, Play } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { memo } from 'react'
 import {
@@ -8,7 +8,6 @@ import {
   Spacer,
   Text,
   Theme,
-  Tooltip,
   TooltipSimple,
   VisuallyHidden,
   XStack,
@@ -25,7 +24,7 @@ export function Hero() {
   const { tint } = useTint()
 
   return (
-    <YStack pos="relative">
+    <YStack pos="relative" pe="auto">
       <Theme name={tint}>
         <YStack fullscreen zi={0} className="hero-gradient-2" opacity={1} />
         <HeroTop />

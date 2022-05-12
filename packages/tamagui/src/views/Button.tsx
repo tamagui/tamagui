@@ -2,9 +2,12 @@ import {
   ButtonInsideButtonContext,
   GetProps,
   ReactComponentWithRef,
+  SizeTokens,
   ThemeableProps,
+  buttonScaling,
+  getButtonSize,
+  getSizeScaledToFont,
   getVariableValue,
-  isVariable,
   spacedChildren,
   styled,
   themeable,
@@ -77,10 +80,11 @@ const ButtonFrame = styled(SizableStack, {
     },
 
     circular: {
-      true: (_, { props, tokens }) => {
+      true: (_, extras) => {
+        const { props } = extras
         const sizeVal = props.size ?? '$4'
-        const sizeToken = tokens.size[sizeVal] ?? 44
-        const size = isVariable(sizeToken) ? +getVariableValue(sizeToken) * 2 : sizeToken
+        const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
+        const size = scale.minHeight
         return {
           width: size,
           height: size,
@@ -138,8 +142,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   }
   color = color?.toString()
 
-  // @ts-ignore
-  const iconSize = getFontSize(size, { relativeSize: scaleIcon })
+  const iconSize = getFontSize(size) * scaleIcon
 
   const addTheme = (el: any) => {
     if (isValidElement(el)) {

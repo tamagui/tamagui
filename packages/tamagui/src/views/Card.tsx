@@ -1,9 +1,11 @@
-import { GetProps, getButtonSize, isVariable, styled } from '@tamagui/core'
+import { GetProps, createGetStackSize, isVariable, styled } from '@tamagui/core'
 import { SizableStack, getSizedElevation } from '@tamagui/stacks'
 import React from 'react'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
+
+const getCardSize = createGetStackSize({ sizeX: 1, sizeY: 0.9 })
 
 export const Card = styled(SizableStack, {
   name: 'Card',
@@ -19,7 +21,7 @@ export const Card = styled(SizableStack, {
         const token = tokens.size[size]
         const sizeNum = isVariable(token) ? +token.val : size
         return {
-          ...getButtonSize(1, 0.9)(size, extras),
+          ...getCardSize(size, extras),
           ...getSizedElevation(sizeNum, extras),
         }
       },

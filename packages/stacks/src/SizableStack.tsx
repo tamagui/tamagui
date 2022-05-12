@@ -59,7 +59,7 @@ export const SizableStack = styled(XStack, {
     },
 
     size: {
-      '...size': getButtonSize(),
+      '...size': getButtonSize,
     },
 
     disabled: {

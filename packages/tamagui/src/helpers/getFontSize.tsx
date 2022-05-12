@@ -37,15 +37,20 @@ export const getFontSizeToken = (
   }
   const size = inSize || '$4'
   const relativeSize = opts?.relativeSize || 0
-  if (relativeSize === 0) {
-    return size
-  }
   const conf = getConfig()
   const fontSize = conf.fontsParsed[opts?.font || '$body'].size
   const sizeTokens = Object.keys(fontSize)
-  const tokenIndex = Math.min(
-    Math.max(0, sizeTokens.indexOf(size) + relativeSize),
-    sizeTokens.length - 1
-  )
+  let foundIndex = sizeTokens.indexOf(size)
+  if (foundIndex === -1) {
+    if (size.endsWith('.5')) {
+      foundIndex = sizeTokens.indexOf(size.replace('.5', ''))
+    }
+  }
+  if (process.env.NODE_ENV === 'development') {
+    if (foundIndex === -1) {
+      console.warn('No font size found', inSize, opts, 'in size tokens', sizeTokens)
+    }
+  }
+  const tokenIndex = Math.min(Math.max(0, foundIndex + relativeSize), sizeTokens.length - 1)
   return (sizeTokens[tokenIndex] ?? size) as FontSizeTokens
 }

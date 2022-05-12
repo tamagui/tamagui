@@ -26,8 +26,6 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
-const buttonSizer = getButtonSize()
-
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
   tag: 'label',
@@ -44,7 +42,7 @@ export const LabelFrame = styled(SizableText, {
     size: {
       '...size': (val, extras) => {
         return {
-          ...buttonSizer(val, extras),
+          ...getButtonSize(val, extras),
           ...getTextSize(val, extras),
         }
       },

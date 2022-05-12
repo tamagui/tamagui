@@ -9,7 +9,7 @@ export const Features = ({ items, ...props }: any) => {
       {items.map((feature, i) => (
         <XStack tag="li" key={i}>
           <CheckCircle />
-          <Paragraph color="$gray11">{feature}</Paragraph>
+          <Paragraph color="$gray10">{feature}</Paragraph>
         </XStack>
       ))}
     </YStack>
