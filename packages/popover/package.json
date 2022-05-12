@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "1.0.1-beta.19",
+  "version": "1.0.1-beta.20",
   "sideEffects": true,
   "source": "src/index.ts",
   "typings": "types",
@@ -19,15 +19,15 @@
   },
   "dependencies": {
     "@floating-ui/react-dom-interactions": "^0.4.0",
-    "@tamagui/animate-presence": "^1.0.1-beta.19",
-    "@tamagui/compose-refs": "^1.0.1-beta.19",
-    "@tamagui/core": "^1.0.1-beta.19",
-    "@tamagui/create-context": "^1.0.1-beta.19",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.19",
-    "@tamagui/popper": "^1.0.1-beta.19",
-    "@tamagui/portal": "^1.0.1-beta.19",
-    "@tamagui/stacks": "^1.0.1-beta.19",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.19"
+    "@tamagui/animate-presence": "^1.0.1-beta.20",
+    "@tamagui/compose-refs": "^1.0.1-beta.20",
+    "@tamagui/core": "^1.0.1-beta.20",
+    "@tamagui/create-context": "^1.0.1-beta.20",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.20",
+    "@tamagui/popper": "^1.0.1-beta.20",
+    "@tamagui/portal": "^1.0.1-beta.20",
+    "@tamagui/stacks": "^1.0.1-beta.20",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.20"
   },
   "peerDependencies": {
     "react": "*",
@@ -35,7 +35,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.19",
+    "@tamagui/build": "^1.0.1-beta.20",
     "@types/react-dom": "^18.0.3",
     "@types/react-native": "^0.67.3",
     "react": "*",
