@@ -29,6 +29,7 @@ import { useIsTouchDevice } from './hooks/useIsTouchDevice'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
+  SpaceDirection,
   SpaceTokens,
   StackProps,
   StaticConfig,
@@ -533,7 +534,7 @@ export function createComponent<
             spacedChildren({
               children,
               space,
-              flexDirection: props.flexDirection || staticConfig.defaultProps?.flexDirection,
+              direction: props.spaceDirection || 'both',
               isZStack,
             }),
             getThemeManagerIfChanged(theme)
@@ -823,14 +824,14 @@ export function spacedChildren({
   isZStack,
   children,
   space,
-  flexDirection,
+  direction,
   spaceFlex,
 }: {
   isZStack?: boolean
   children: any
   space?: any
   spaceFlex?: boolean | number
-  flexDirection?: ViewStyle['flexDirection']
+  direction?: SpaceDirection
 }) {
   const childrenList = Array.isArray(children) ? children : Children.toArray(children)
   const len = childrenList.length
@@ -868,7 +869,11 @@ export function spacedChildren({
         <Spacer
           key={`_${index}_spacer`}
           direction={
-            flexDirection === 'row' || flexDirection === 'row-reverse' ? 'horizontal' : 'vertical'
+            direction === 'both'
+              ? undefined
+              : direction === 'row' || direction === 'row-reverse'
+              ? 'horizontal'
+              : 'vertical'
           }
           size={space}
           {...(spaceFlex && {

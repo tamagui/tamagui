@@ -234,7 +234,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
               // a bit arbitrary but scaling to font size is necessary so long as button does
               space: getVariableValue(iconSize) * scaleSpace,
               spaceFlex,
-              flexDirection: props.flexDirection || 'row',
+              direction: props.flexDirection || 'row',
               children: [themedIcon, contents, themedIconAfter],
             })
           : contents}

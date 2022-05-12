@@ -16,7 +16,7 @@ You may also want to reference the [react-native-web docs](https://necolas.githu
 - [Interactions](https://necolas.github.io/react-native-web/docs/interactions/)
 - [Localization](https://necolas.github.io/react-native-web/docs/localization/)
 
-Outside of style properties, Tamagui adds:
+Outside of flat style properties, Tamagui adds the following props:
 
 <PropsTable
   data={[
@@ -66,9 +66,27 @@ Outside of style properties, Tamagui adds:
       ),
     },
     {
+      name: 'spaceDirection',
+      required: false,
+      default: 'both',
+      type: `'row' | 'column' | 'both'`,
+      description: (
+        <span>
+          By default the space inserted is a square, but if you set it to row it will be 0px tall,
+          column will be 0px wide.
+        </span>
+      ),
+    },
+    {
+      name: 'fullscreen',
+      required: false,
+      type: `boolean`,
+      description: <span>Sets position absolute, and top, left, right, and bottom all to 0.</span>,
+    },
+    {
       name: 'debug',
       required: false,
-      type: 'boolean | "verbose" | "break"',
+      type: `boolean | 'verbose' | 'break'`,
       description: (
         <span>
           When set to true Tamagui will output a variety of helpful information on how it parsed and

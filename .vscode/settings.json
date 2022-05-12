@@ -2,10 +2,11 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.colorCustomizations": {
     "[Nüshu]": {
-      "statusBar.background": "#631847",
+      "statusBar.background": "#af6895",
     },
     "[ktrz-monokai]": {
-      "statusBar.background": "#631847"
+      "statusBar.background": "#6d2552",
+      "statusBar.foreground": "#fff"
     }
   }
 }

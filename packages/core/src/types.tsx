@@ -253,12 +253,15 @@ export type AnimationProp =
       }
     ]
 
+export type SpaceDirection = ViewStyle['flexDirection'] | 'both'
+
 //
 // base props that are accepted by createComponent (additional to react-native-web)
 //
 export type TamaguiComponentPropsBase = {
   asChild?: boolean
   space?: SpaceTokens
+  spaceDirection?: SpaceDirection
   dangerouslySetInnerHTML?: { __html: string }
   animation?: AnimationProp
   animateOnly?: string[]

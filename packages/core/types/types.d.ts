@@ -173,9 +173,11 @@ export declare type AnimationProp = AnimationKeys | {
         };
     }
 ];
+export declare type SpaceDirection = ViewStyle['flexDirection'] | 'both';
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
     space?: SpaceTokens;
+    spaceDirection?: SpaceDirection;
     dangerouslySetInnerHTML?: {
         __html: string;
     };

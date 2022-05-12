@@ -1,6 +1,7 @@
+- fix types import
+
 - dish notes:
   - styled(Button) types break
-  - why is Button text centering, doesnt seem like it should
   - need createTheme() to customize (think takeout)
   - appmenubuttonfloatint
     - circular remove overflow hidden
