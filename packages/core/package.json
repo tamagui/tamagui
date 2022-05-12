@@ -16,7 +16,8 @@
   },
   "files": [
     "types",
-    "dist"
+    "dist",
+    "reset.css"
   ],
   "dependencies": {
     "@expo/match-media": "^0.3.0",
