@@ -6,6 +6,7 @@ const json5 = require('json5')
 const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
+const debounce = require('lodash.debounce')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -175,9 +176,7 @@ if (shouldClean || shouldCleanBuildOnly) {
     process.env.IS_WATCHING = true
     process.env.DISABLE_AUTORUN = true
     build().then(() => {
-      const finish = (_, path, stats) => {
-        build()
-      }
+      const rebuild = debounce(build, 100)
       const chokidar = require('chokidar')
       chokidar
         // prevent infinite loop but cause race condition if you just build directly
@@ -186,8 +185,8 @@ if (shouldClean || shouldCleanBuildOnly) {
           alwaysStat: true,
           ignoreInitial: true,
         })
-        .on('change', finish)
-        .on('add', finish)
+        .on('change', rebuild)
+        .on('add', rebuild)
     })
   } else {
     build()
