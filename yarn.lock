@@ -3932,7 +3932,6 @@ __metadata:
     next: ^12.1.5
     next-compose-plugins: ^2.2.1
     next-remote-watch: ^1.0.0
-    next-videos: ^1.4.0
     nextjs-progressbar: ^0.0.14
     parse-numeric-range: ^1.2.0
     react: "*"
@@ -9097,18 +9096,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-loader@npm:^4.2.0":
-  version: 4.3.0
-  resolution: "file-loader@npm:4.3.0"
-  dependencies:
-    loader-utils: ^1.2.3
-    schema-utils: ^2.5.0
-  peerDependencies:
-    webpack: ^4.0.0
-  checksum: a005ac5599e96631e8ead32db874283ef821c121e93997b0d6f853db1284bcd7832e1ac59d39a21c201de22b6e33146996c28bd8c486893a5191c334a00f61b2
-  languageName: node
-  linkType: hard
-
 "fill-range@npm:^4.0.0":
   version: 4.0.0
   resolution: "fill-range@npm:4.0.0"
@@ -12261,17 +12248,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^1.2.3":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
-  dependencies:
-    big.js: ^5.2.2
-    emojis-list: ^3.0.0
-    json5: ^1.0.1
-  checksum: d150b15e7a42ac47d935c8b484b79e44ff6ab4c75df7cc4cb9093350cf014ec0b17bdb60c5d6f91a37b8b218bd63b973e263c65944f58ca2573e402b9a27e717
-  languageName: node
-  linkType: hard
-
 "loader-utils@npm:^2.0.0":
   version: 2.0.2
   resolution: "loader-utils@npm:2.0.2"
@@ -13647,15 +13623,6 @@ __metadata:
   bin:
     next-remote-watch: bin/next-remote-watch
   checksum: a67b15c2556e380c7dfbe8651d8a89fe34f42f439fa910ece5585e988a7c23116f3e432eef93984bb3bba9683798f2f757642652883288550bf613357cc67ea3
-  languageName: node
-  linkType: hard
-
-"next-videos@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "next-videos@npm:1.4.0"
-  dependencies:
-    file-loader: ^4.2.0
-  checksum: c9fa2306a14ace71f8ec06e11249fc6bc53b2dce2f386df5d2409afe92d2d294146b450aa30fb22d4bb52f482f93bba5bc91dac5b6f481508c8d45f26af65748
   languageName: node
   linkType: hard
 
@@ -16654,7 +16621,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^2.5.0, schema-utils@npm:^2.6.5":
+"schema-utils@npm:^2.6.5":
   version: 2.7.1
   resolution: "schema-utils@npm:2.7.1"
   dependencies:

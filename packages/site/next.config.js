@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const { withTamagui } = require('@tamagui/next-plugin')
 const withPlugins = require('next-compose-plugins')
-const withVideos = require('next-videos')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 
 Error.stackTraceLimit = Infinity
@@ -22,7 +21,6 @@ const transform = withPlugins(
     withBundleAnalyzer({
       enabled: process.env.ANALYZE === 'true',
     }),
-    withVideos,
     withTamagui({
       config: './tamagui.config.ts',
       components: ['tamagui'],

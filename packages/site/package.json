@@ -63,7 +63,6 @@
     "mini-css-extract-plugin": "^2.6.0",
     "next-compose-plugins": "^2.2.1",
     "next-remote-watch": "^1.0.0",
-    "next-videos": "^1.4.0",
     "tamagui-loader": "^1.0.1-beta.21",
     "webpack-bundle-analyzer": "^4.5.0"
   }
