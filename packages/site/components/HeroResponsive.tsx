@@ -288,7 +288,7 @@ const Header = memo(() => {
         Responsive on Native & Web, without performance downside.
       </Paragraph>
 
-      <Paragraph maxWidth={450} size="$5" theme="alt4">
+      <Paragraph maxWidth={450} size="$5" theme="alt3">
         Tamagui compiles to hoisted CSS/StyleSheets, moving styles outside of render/runtime.
       </Paragraph>
     </YStack>

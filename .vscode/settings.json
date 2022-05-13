@@ -2,7 +2,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.colorCustomizations": {
     "[Nüshu]": {
-      "statusBar.background": "#af6895",
+      "statusBar.background": "#cf95ba",
+      "statusBar.foreground": "#fff",
     },
     "[ktrz-monokai]": {
       "statusBar.background": "#6d2552",
