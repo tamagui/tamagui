@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
-import { TamaguiComponentState } from '../types'
-
-export function createShallowUpdate(
-  setter: React.Dispatch<React.SetStateAction<TamaguiComponentState>>
+export function createShallowUpdate<State extends Object>(
+  setter: React.Dispatch<React.SetStateAction<State>>
 ) {
-  return (next: Partial<TamaguiComponentState>) => {
-    setter((prev) => {
-      for (const key in next) {
-        if (prev[key] !== next[key]) {
-          return { ...prev, ...next }
+  return useCallback(
+    (next: Partial<State>) => {
+      setter((prev) => {
+        for (const key in next) {
+          if (prev[key] !== next[key]) {
+            return { ...prev, ...next }
+          }
         }
-      }
-      return prev
-    })
-  }
+        return prev
+      })
+    },
+    [setter]
+  )
 }

@@ -110,7 +110,7 @@ const createTheme = (
     colorPress: get(colors, 2 + str, 'color'),
     colorFocus: get(colors, 3 + str, 'color'),
     colorTranslucent,
-    colorMid: colors[Math.floor(colors.length / 2)],
+    colorMid: (isLight ? colors : backgrounds)[Math.floor(colors.length / 2)],
     shadowColor: isLight ? color.grayA2 : color.grayA8,
     shadowColorHover: darkColors[!isLight ? 1 : 8],
     shadowColorPress: darkColors[!isLight ? 1 : 8],
@@ -201,7 +201,7 @@ export const darkGradient = [
 const lightThemes = createThemesFrom('light', createTheme, {
   backgrounds: lightGradient,
   // isBase: true,
-  backgroundStrong: '#fcfcfc',
+  backgroundStrong: '#fafafa',
   borderColors: lightGradient.slice(2),
   isLight: true,
 })

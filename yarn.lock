@@ -3443,6 +3443,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@takeout/font-noto@portal:/Users/n8/takeout/packages/font-noto::locator=tamagui-monorepo%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@takeout/font-noto@portal:/Users/n8/takeout/packages/font-noto::locator=tamagui-monorepo%40workspace%3A."
+  dependencies:
+    "@tamagui/core": ^1.0.1-beta.21
+  languageName: node
+  linkType: soft
+
 "@tamagui/animate-presence@^1.0.1-beta.21, @tamagui/animate-presence@workspace:packages/animate-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
@@ -3506,6 +3514,7 @@ __metadata:
     fast-glob: ^3.2.7
     fs-extra: ^9.1.0
     json5: ^2.2.0
+    lodash.debounce: ^4.0.8
     typescript: ^4.5.2
   bin:
     tamagui-build: tamagui-build.js
@@ -3646,6 +3655,7 @@ __metadata:
   resolution: "@tamagui/font-fira-mono@workspace:packages/font-fira-mono"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.21
+    "@tamagui/core": ^1.0.1-beta.21
   languageName: unknown
   linkType: soft
 
@@ -3654,6 +3664,7 @@ __metadata:
   resolution: "@tamagui/font-inter@workspace:packages/font-inter"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.21
+    "@tamagui/core": ^1.0.1-beta.21
   languageName: unknown
   linkType: soft
 
@@ -3662,6 +3673,7 @@ __metadata:
   resolution: "@tamagui/font-silkscreen@workspace:packages/font-silkscreen"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.21
+    "@tamagui/core": ^1.0.1-beta.21
   languageName: unknown
   linkType: soft
 
@@ -3905,6 +3917,7 @@ __metadata:
     "@docsearch/css": ^3.0.0
     "@docsearch/react": ^3.0.0
     "@next/bundle-analyzer": ^12.0.10
+    "@takeout/font-noto": ^1.0.1-beta.21
     "@tamagui/animate-presence": ^1.0.1-beta.21
     "@tamagui/animations-reanimated": ^1.0.1-beta.21
     "@tamagui/colors": ^1.0.1-beta.21
@@ -18466,7 +18479,7 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>":
   version: 4.6.3
-  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver

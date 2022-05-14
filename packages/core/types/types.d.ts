@@ -199,7 +199,7 @@ export declare type TamaguiComponentPropsBase = {
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
 };
-declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']][A];
+declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
 export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;

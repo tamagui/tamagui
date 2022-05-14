@@ -7,7 +7,8 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "takeout/*"
     ]
   },
   "scripts": {
@@ -56,7 +57,9 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-refresh": "0.11.0",
-    "react-native-web": "0.17.5"
+    "react-native-web": "0.17.5",
+    "takeout-monorepo": "portal:/Users/n8/takeout",
+    "@takeout/font-noto": "portal:/Users/n8/takeout/packages/font-noto"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

@@ -293,7 +293,7 @@ type GetTokenFontKeysFor<
     | 'transform'
     | 'style'
     | 'color'
-> = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']][A]
+> = keyof TamaguiConfig['fonts']['body'][A]
 
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 

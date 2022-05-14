@@ -102,6 +102,8 @@ export {
   getStylesAtomic,
   getThemes,
   getTokens,
+  getVariableValue,
+  getVariableName,
   isObj,
   isTamaguiElement,
   isVariable,
