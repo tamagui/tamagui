@@ -63,6 +63,9 @@ async function run() {
       )
     }
 
+    // lerna messes up and always needs a second yarn install
+    await spawnify(`yarn install`)
+
     console.log((await exec(`git diff`)).stdout)
 
     const { confirmed } = await prompts({

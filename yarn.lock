@@ -3825,6 +3825,7 @@ __metadata:
     "@tamagui/drawer": ^1.0.1-beta.21
     "@tamagui/feather-icons": ^1.0.1-beta.21
     "@tamagui/font-inter": ^1.0.1-beta.21
+    "@tamagui/select": ^1.0.1-beta.21
     "@tamagui/shorthands": ^1.0.1-beta.21
     "@tamagui/theme-base": ^1.0.1-beta.21
     "@welldone-software/why-did-you-render": ^7.0.1
@@ -3849,7 +3850,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/select@workspace:packages/select":
+"@tamagui/select@^1.0.1-beta.21, @tamagui/select@workspace:packages/select":
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:

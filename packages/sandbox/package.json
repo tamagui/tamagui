@@ -17,6 +17,7 @@
     "@tamagui/drawer": "^1.0.1-beta.21",
     "@tamagui/feather-icons": "^1.0.1-beta.21",
     "@tamagui/font-inter": "^1.0.1-beta.21",
+    "@tamagui/select": "^1.0.1-beta.21",
     "@tamagui/shorthands": "^1.0.1-beta.21",
     "@tamagui/theme-base": "^1.0.1-beta.21",
     "motion": "^10.6.2",
