@@ -20,6 +20,7 @@
     "@tamagui/shorthands": "^1.0.1-beta.37",
     "@tamagui/slider": "^1.0.1-beta.37",
     "@tamagui/theme-base": "^1.0.1-beta.37",
+    "@tamagui/select": "^1.0.1-beta.21",
     "motion": "^10.6.2",
     "react": "*",
     "react-dom": "*",

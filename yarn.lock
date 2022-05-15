@@ -3861,6 +3861,7 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.4
+<<<<<<< HEAD
     "@tamagui/animations-css": ^1.0.1-beta.37
     "@tamagui/animations-motion": ^1.0.1-beta.37
     "@tamagui/animations-reanimated": ^1.0.1-beta.37
@@ -3872,6 +3873,19 @@ __metadata:
     "@tamagui/shorthands": ^1.0.1-beta.37
     "@tamagui/slider": ^1.0.1-beta.37
     "@tamagui/theme-base": ^1.0.1-beta.37
+=======
+    "@tamagui/animations-css": ^1.0.1-beta.21
+    "@tamagui/animations-motion": ^1.0.1-beta.21
+    "@tamagui/animations-reanimated": ^1.0.1-beta.21
+    "@tamagui/colors": ^1.0.1-beta.21
+    "@tamagui/core": ^1.0.1-beta.21
+    "@tamagui/drawer": ^1.0.1-beta.21
+    "@tamagui/feather-icons": ^1.0.1-beta.21
+    "@tamagui/font-inter": ^1.0.1-beta.21
+    "@tamagui/select": ^1.0.1-beta.21
+    "@tamagui/shorthands": ^1.0.1-beta.21
+    "@tamagui/theme-base": ^1.0.1-beta.21
+>>>>>>> c7a1e094b (continue)
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
@@ -3896,7 +3910,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/select@workspace:packages/select":
+"@tamagui/select@^1.0.1-beta.21, @tamagui/select@workspace:packages/select":
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
@@ -3911,6 +3925,7 @@ __metadata:
     "@tamagui/create-context": ^1.0.1-beta.37
     "@tamagui/separator": ^1.0.1-beta.37
     "@tamagui/stacks": ^1.0.1-beta.37
+    "@tamagui/text": ^1.0.1-beta.37
     "@tamagui/use-controllable-state": ^1.0.1-beta.37
     "@types/react-native": ^0.67.3
     react: "*"

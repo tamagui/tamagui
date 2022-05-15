@@ -5,20 +5,7 @@ import '@tamagui/polyfill-dev'
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import {
-  Button,
-  Card,
-  H2,
-  Image,
-  Input,
-  Progress,
-  Separator,
-  Switch,
-  SwitchThumb,
-  TooltipSimple,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Select, YStack } from 'tamagui'
 
 import { SandboxAnimationDemo } from './SandboxAnimationDemo'
 import Tamagui from './tamagui.config'
@@ -52,63 +39,35 @@ export const Sandbox = () => {
         }}
       >
         <YStack space ai="center">
-          <Progress size="$4" value={90}>
-            <Progress.Indicator animation="bouncy" />
-          </Progress>
+          <Select defaultValue="blueberry">
+            <Select.Trigger>
+              <Select.Value placeholder="Something" />
+              <Select.Icon></Select.Icon>
+            </Select.Trigger>
 
-          <Progress size="$6" value={90}>
-            <Progress.Indicator animation="bouncy" />
-          </Progress>
+            <Select.Content>
+              <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
 
-          <Progress size="$8" value={90}>
-            <Progress.Indicator animation="bouncy" />
-          </Progress>
+              <Select.Viewport>
+                <Select.Group>
+                  <Select.Label>Fruits</Select.Label>
+                  <Select.Item value="apple">
+                    <Select.ItemText>Apple</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="banana">
+                    <Select.ItemText>Banana</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="blueberry">
+                    <Select.ItemText>Blueberry</Select.ItemText>
+                  </Select.Item>
+                </Select.Group>
+              </Select.Viewport>
+
+              <Select.ScrollDownButton>👇</Select.ScrollDownButton>
+            </Select.Content>
+          </Select>
         </YStack>
       </div>
     </Tamagui.Provider>
   )
 }
-
-// export function FormDemo({ size }) {
-//   return (
-//     <Card size={size}>
-//       <XStack space={size}>
-//         <Slider f={1} size={size} orientation="vertical" defaultValue={[50]} max={100} step={1}>
-//           <Slider.Track>
-//             <Slider.TrackActive />
-//           </Slider.Track>
-//           <Slider.Thumb hoverable bordered circular elevate index={0} />
-//         </Slider>
-
-//         <YStack space={size} p={size}>
-//           <Button size={size}>Hello</Button>
-//           <Input placeholder="Search..." size={size} />
-//           <SliderDemo w="100%" size={size} />
-//           <Switch size={size}>
-//             <SwitchThumb animation="bouncy" elevate />
-//           </Switch>
-//         </YStack>
-//       </XStack>
-//     </Card>
-//   )
-// }
-
-// export function SliderDemo(props: SliderProps) {
-//   return (
-//     <Slider my={props.size} defaultValue={[50]} max={100} step={1} {...props}>
-//       <Slider.Track>
-//         <Slider.TrackActive />
-//       </Slider.Track>
-//       <Slider.Thumb
-//         hoverable
-//         bordered
-//         circular
-//         elevate
-//         index={0}
-//         focusStyle={{
-//           borderWidth: 2,
-//         }}
-//       />
-//     </Slider>
-//   )
-// }

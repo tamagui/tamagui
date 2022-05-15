@@ -25,9 +25,15 @@ For adapting things specifically to web, native, or platform:
 - `extractable<A extends TamaguiComponent>(): A` - [hints for compiler to extract a HoC component](https://github.com/tamagui/tamagui/blob/296a71b74d3020a28e3bafd1abb748a67d535be4/packages/tamagui/src/views/Anchor.tsx#L22).
 - `getExpandedShorthands(props: Object): Object` - Returns a new object with all shorthand props expanded.
 
+## Importing from React Native
+
+In general either your Webpack configuration or using `@tamagui/next-plugin`, you will be aliasing `react-native` to `react-native-web`. This means you should import anything you need from `react-native` directly and never import for `react-native-web`. Your bundler will handle automatically changing it.
+
+Tamagui (at this time) doesn't have a variety of views like ScrollView or FlatList. If you need them, just import them directly from `react-native`.
+
 ## Classes generated
 
-Tamagui generates a few helpful classes. For components created with `styled()` for which a `name` is set, like so:
+Tamagui generates a few helpful classes. For components created with `styled()` where a `name` is set like this:
 
 ```tsx
 const MyButton = styled(YStack, {
@@ -36,7 +42,7 @@ const MyButton = styled(YStack, {
 })
 ```
 
-Tamagui will add the classname `is_MyButton`. This is a useful escape hatch for attaching CSS to any extra component. All Tamagui components have their name set.
+Tamagui adds the classname `is_MyButton`. This is a useful escape hatch for attaching CSS to any extra component. All the default Tamagui components have their name set.
 
 For component that extends a Text-based component, a further classname is set of the format `font_[fontFamily]`. So if you do:
 
@@ -44,7 +50,7 @@ For component that extends a Text-based component, a further classname is set of
 <Paragraph fontFamily="$body" />
 ```
 
-The classname `font_body` will be output to DOM.
+The classnames `is_Paragraph` and `font_body` will be output to DOM.
 
 ## Dev tools
 
