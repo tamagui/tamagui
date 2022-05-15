@@ -1,40 +1,34 @@
-- fix types import
-
-- dish notes:
-  - styled(Button) types break
-  - need createTheme() to customize (think takeout)
-  - appmenubuttonfloatint
-    - circular remove overflow hidden
-    - size=5.5 icon scales diff
-    - size={55} doesnt set size only icon
-    - theme light needs darker shadows?
-  
-  - <Card />, <Select />, <List />, <Radio />, <Modal />, <Avatar />, <Tabs />, <Blur />, <Toast />
-    - radio may be List.Radio just combines List, Label, Drawer
-      - can use Switch or check or custom
+- 1.0
+  - fix /types import
+  - make Label work on native with touch event (require single <Label.Provider> at root)
+    - make sure Select, Input, Switch etc all work with it
+  - document $body being default font family
+  - add more of a kitchen sink demo to starts
+  - test Android in starters repo
+  - size=5.5 icon scales diff
+  - size={55} doesnt set size only icon
+  - theme light needs darker shadows?
+  - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
+  - <Select />, <Dialog /> (AlertDialog)
+  - maybe <ToggleGroup />
+  - maybe <Slider />
+  - maybe <Blur />, <Tabs />, <Toast />, <RadioGroup />, <Progress />
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here
-  - make imports not do /types suffix
-  - <UL /> <LI /> <OL />
-
-- 1:
+  - maybe <UL /> <LI /> <OL />
   - focusStyle on native
-  - auto skeleton components
-  - check ScrollView SSR compat saw a bug
-  - do a series of small demo videos to share on twitter etc
-  - docs: extractable(), deoptProps, getExpandedShorthands
+  - document exported helpers getTokens, useThemeName, getFontSize, spacedChildren
 
-- 2: 
-  - <Carousel />
-  - load theme hook via feature if possible
-  - add fonts section to guides
-  - document $body being default font family
-  - styleq / react-native-web 18 exploration
+(potentially 1.0)
+  - createTamagui({ defaultProps: { Button: {} } }) for any component
+  - `space` should work with media queries
+  - Text numberOfLines / context fix
   - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
-
-- 3
+    - Docs/ability to configure stricted theme values (dont accept anything but tokens)
+  - as={} + extraction + types
+  - add fonts section to guides
   - move away from rnw css generation
   - move away from supporting some react native APIs for performance
     - alternatively could test just doing this:
@@ -43,62 +37,62 @@
         - it would change key={} alongside that
         - that way HMR still works, but loads less hooks
         - works in production for extra perf
-  - as={} + extraction + types
-  - <Video />, <Spinner />
-  - instead of generating classname strings generate objects
-    - instead of concatClassNames then just object ...
-  - fix memory leak causing OOM eventually on site
-  - // this can be done with CSS entirely right?
-  - useLayout feature hook
-  - optional 18-only separate releases? beta.3.react18?
-    - react native doesn't support it yet except on new arch
-    - (useId/useInsertionEffect)
-  - escape hatch for html props `htmlProps` or tag={} => as={} + work better?
+  - auto skeleton components
 
-- whenever switch over to styleq or own internal css generator:
-  - remove getStylesAtomic altogether - loop only once over props/styles
-
-- exported helpers getTokens, useThemeName, getFontSize
-  - spacedChildren
-- exported hooks - useControllableState, useLayout
-- <SizableFrame />, <EnsureFlexed />
-
-  - Text numberOfLines / context fix
-  - `space` should work with media queries
-  - createTamagui({ defaultProps: { Button: {} } }) for any component
-  - document/release <ThemeReverse />
-
+takeout:
+  - customizable createTheme()
+  - cli: 
+    - tamagui generate
+      - JSDocs / TSMorph
+    - tamagui serve
+      - able to focus in on any component without needing to restart anything
+      - localhost:3000/FuzzyComponentName
+    - tamagui test ./packages/site/components/OffsetBox.tsx
+    - tamagui debug ./packages/site/components/OffsetBox.tsx
+  - ios/android specific themes
   - basic styled() extraction to css at compile time
-  - ~button textProps => child selectors~
-    - See if this isn't too terribly hard:
-    - childStyle={{
-        [Text]: {
-          color: 'green',
-          hoverStyle: {
-            color: 'red'
-          }
-        }
-      }}
-
-  - container queries
+  - compiler hot reload
+  - VSCode
+    - move from functional component to styled() and back
+    - built in jsx => css converter
+    - "move to my design system" (finds tamagui package.json and moves there)
+      - grab a selection of any styled() or functional component
+      - moves it into your design system
+      - updates index.ts there
+      - updates imports in app
+  - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
 
-  - @tamagui/cli: 
-    - tamagui test ./packages/site/components/OffsetBox.tsx
-    - tamagui sandbox ./packages/site/components/OffsetBox.tsx
-    - tamagui compile ./packages/site/components/OffsetBox.tsx
-  
-  - <List /> (works with drawer + draggable + selectable)
-  - <Menu />
-  - <PopoverDrawer /> + <MenuDrawer />
-
-  - // TODO only on hoverable/pressable!
-  - ios/android specific themes
-  - options to render to native components in more places
-
-  - <Group />
-  - <Combobox /> (<SelectInput /> or <SelectInput />)
-
+- styled(Button) types break   
+- <Card />, <List />, <Radio />, <Avatar />
+  - radio may be List.Radio just combines List, Label, Drawer
+    - can use Switch or check or custom
+- docs: extractable(), deoptProps, getExpandedShorthands
+- <Accordion />
+- <Carousel />
+- load theme hook via feature if possible
+- styleq / react-native-web 18 exploration
+- <Video />, <Spinner />
+- instead of generating classname strings generate objects
+  - instead of concatClassNames then just object ...
+- fix memory leak causing OOM eventually on site
+- // this can be done with CSS entirely right?
+- optional 18-only separate releases? beta.3.react18?
+  - react native doesn't support it yet except on new arch
+  - (useId/useInsertionEffect)
+- escape hatch for html props `htmlProps` or tag={} => as={} + work better?
+- whenever switch over to styleq or own internal css generator:
+  - remove getStylesAtomic altogether - loop only once over props/styles
+- exported hooks - useControllableState, useLayout
+- <SizableFrame />, <EnsureFlexed />
+- document/release <ThemeReverse />
+- container queries
+- <List /> (works with drawer + draggable + selectable)
+- <Menu />
+- <PopoverDrawer /> + <MenuDrawer />
+- // TODO only on hoverable/pressable!
+- options to render to native components in more places
+- <Group />
 - transformOrigin
   - may be able to translate to matrix https://www.jianshu.com/p/c67559b8f691
   - https://github.com/sueLan/react-native-anchor-point
@@ -106,25 +100,10 @@
 - Text selectColor
 - focusWithinStyle
 - accessibility upgrades (focus rings etc)
-- JSDocs
-- VSCode integrations:
-  - move from functional component to styled() and back
-  - built in jsx => css converter
-  - "move to my design system" (finds tamagui package.json and moves there)
-- much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
 - colored cli output
 - have tamagui watch the tamagui.config.ts file and report if types break
 - smart responsive scaling system (<Scale /> basically)
-
 - https://github.com/react-native-menu/menu
-
-- compiler hot reload (shouldn't be too hard for basic case)
-
 - vscode plugin to highlight the current node your cursors inside of in dom
 - blur prop built in ?
 
-- VSCode - "move to design system" action:
-  - grab a selection of any styled() or functional component
-  - moves it into your design system
-  - updates index.ts there
-  - updates imports in app
