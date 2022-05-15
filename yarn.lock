@@ -3506,6 +3506,7 @@ __metadata:
     fast-glob: ^3.2.7
     fs-extra: ^9.1.0
     json5: ^2.2.0
+    lodash.debounce: ^4.0.8
     typescript: ^4.5.2
   bin:
     tamagui-build: tamagui-build.js
