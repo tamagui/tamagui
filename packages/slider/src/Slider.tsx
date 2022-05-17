@@ -2,7 +2,6 @@
 
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { SizeTokens } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
 import { composeEventHandlers } from '@tamagui/helpers'
@@ -35,12 +34,12 @@ const [createSliderContext, createSliderScope] = createContextScope(SLIDER_NAME)
 const [SliderOrientationProvider, useSliderOrientationContext] = createSliderContext<{
   startEdge: 'bottom' | 'left' | 'right'
   endEdge: 'top' | 'right' | 'left'
-  size: SizeTokens
+  size: 'width' | 'height'
   direction: number
 }>(SLIDER_NAME, {
   startEdge: 'left',
   endEdge: 'right',
-  size: '$4',
+  size: 'width',
   direction: 1,
 })
 
@@ -72,6 +71,7 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
     const isDirectionLTR = direction === 'ltr'
 
     function getValueFromPointer(pointerPosition: number) {
+      // @ts-ignore
       const rect = rectRef.current || slider!.getBoundingClientRect()
       const input: [number, number] = [0, rect.width]
       const output: [number, number] = isDirectionLTR ? [min, max] : [max, min]
@@ -93,10 +93,10 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
           data-orientation="horizontal"
           {...sliderProps}
           ref={composedRefs}
-          style={{
-            ...sliderProps.style,
-            ['--radix-slider-thumb-transform' as any]: 'translateX(-50%)',
-          }}
+          // style={{
+          //   ...sliderProps.style,
+          //   ['--radix-slider-thumb-transform' as any]: 'translateX(-50%)',
+          // }}
           onSlideStart={(event) => {
             const value = getValueFromPointer(event.clientX)
             onSlideStart?.(value)
@@ -131,6 +131,7 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
     const rectRef = React.useRef<ClientRect>()
 
     function getValueFromPointer(pointerPosition: number) {
+      // @ts-ignore
       const rect = rectRef.current || sliderRef.current!.getBoundingClientRect()
       const input: [number, number] = [0, rect.height]
       const output: [number, number] = [max, min]
@@ -188,7 +189,9 @@ type SliderImplPrivateProps = {
   onEndKeyDown(event: React.KeyboardEvent): void
   onStepKeyDown(event: React.KeyboardEvent): void
 }
-interface SliderImplProps extends YStackProps, SliderImplPrivateProps {}
+interface SliderImplProps extends YStackProps, SliderImplPrivateProps {
+  dir?: Direction
+}
 
 const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
@@ -223,30 +226,30 @@ const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
         //     event.preventDefault()
         //   }
         // })}
-        onPointerDown={composeEventHandlers(props.onPointerDown, (event) => {
-          const target = event.target as HTMLElement
-          target.setPointerCapture(event.pointerId)
-          // Prevent browser focus behaviour because we focus a thumb manually when values change.
-          event.preventDefault()
-          // Touch devices have a delay before focusing so won't focus if touch immediately moves
-          // away from target (sliding). We want thumb to focus regardless.
-          if (context.thumbs.has(target)) {
-            target.focus()
-          } else {
-            onSlideStart(event)
-          }
-        })}
-        onPointerMove={composeEventHandlers(props.onPointerMove, (event) => {
-          const target = event.target as HTMLElement
-          if (target.hasPointerCapture(event.pointerId)) onSlideMove(event)
-        })}
-        onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
-          const target = event.target as HTMLElement
-          if (target.hasPointerCapture(event.pointerId)) {
-            target.releasePointerCapture(event.pointerId)
-            onSlideEnd(event)
-          }
-        })}
+        // onPointerDown={composeEventHandlers(props.onPointerDown, (event) => {
+        //   const target = event.target as HTMLElement
+        //   target.setPointerCapture(event.pointerId)
+        //   // Prevent browser focus behaviour because we focus a thumb manually when values change.
+        //   event.preventDefault()
+        //   // Touch devices have a delay before focusing so won't focus if touch immediately moves
+        //   // away from target (sliding). We want thumb to focus regardless.
+        //   if (context.thumbs.has(target)) {
+        //     target.focus()
+        //   } else {
+        //     onSlideStart(event)
+        //   }
+        // })}
+        // onPointerMove={composeEventHandlers(props.onPointerMove, (event) => {
+        //   const target = event.target as HTMLElement
+        //   if (target.hasPointerCapture(event.pointerId)) onSlideMove(event)
+        // })}
+        // onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
+        //   const target = event.target as HTMLElement
+        //   if (target.hasPointerCapture(event.pointerId)) {
+        //     target.releasePointerCapture(event.pointerId)
+        //     onSlideEnd(event)
+        //   }
+        // })}
       />
     )
   }
@@ -258,8 +261,9 @@ const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
 
 const TRACK_NAME = 'SliderTrack'
 
-type SliderTrackElement = React.ElementRef<typeof YStack>
-type PrimitiveSpanProps = Radix.ComponentPropsWithoutRef<typeof YStack>
+type SliderTrackElement = HTMLElement | View
+type PrimitiveSpanProps = YStackProps
+
 interface SliderTrackProps extends PrimitiveSpanProps {}
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
@@ -285,7 +289,7 @@ SliderTrack.displayName = TRACK_NAME
 
 const RANGE_NAME = 'SliderRange'
 
-type SliderRangeElement = React.ElementRef<typeof YStack>
+type SliderRangeElement = HTMLElement | View
 interface SliderRangeProps extends PrimitiveSpanProps {}
 
 const SliderRange = React.forwardRef<SliderRangeElement, SliderRangeProps>(
@@ -326,7 +330,7 @@ SliderRange.displayName = RANGE_NAME
 
 const THUMB_NAME = 'SliderThumb'
 
-type SliderThumbElement = React.ElementRef<typeof YStack>
+type SliderThumbElement = HTMLElement | View
 interface SliderThumbProps extends PrimitiveSpanProps {
   index: number
 }
@@ -336,27 +340,27 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const { __scopeSlider, index, ...thumbProps } = props
     const context = useSliderContext(THUMB_NAME, __scopeSlider)
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
-    const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
-    const size = useSize(thumb)
+    // const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null)
+    // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
+    // const size = useSize(thumb)
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const orientationSize = size?.[orientation.size]
+    const orientationSize = 40 //size?.[orientation.size]
     const thumbInBoundsOffset = orientationSize
       ? getThumbInBoundsOffset(orientationSize, percent, orientation.direction)
       : 0
 
-    React.useEffect(() => {
-      if (thumb) {
-        context.thumbs.add(thumb)
-        return () => {
-          context.thumbs.delete(thumb)
-        }
-      }
-    }, [thumb, context.thumbs])
+    // React.useEffect(() => {
+    //   if (thumb) {
+    //     context.thumbs.add(thumb)
+    //     return () => {
+    //       context.thumbs.delete(thumb)
+    //     }
+    //   }
+    // }, [thumb, context.thumbs])
 
     return (
       <span
@@ -367,7 +371,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         }}
       >
         <YStack
-          role="slider"
+          // role="slider"
           aria-label={props['aria-label'] || label}
           aria-valuemin={context.min}
           aria-valuenow={value}
@@ -375,9 +379,9 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
           aria-orientation={context.orientation}
           data-orientation={context.orientation}
           data-disabled={context.disabled ? '' : undefined}
-          tabIndex={context.disabled ? undefined : 0}
+          // tabIndex={context.disabled ? undefined : 0}
           {...thumbProps}
-          ref={composedRefs}
+          // ref={composedRefs}
           /**
            * There will be no value on initial render while we work out the index so we hide thumbs
            * without a value, otherwise SSR will render them in the wrong position before they
@@ -398,7 +402,8 @@ SliderThumb.displayName = THUMB_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const BubbleInput = (props: Radix.ComponentPropsWithoutRef<'input'>) => {
+// TODO
+const BubbleInput = (props: any) => {
   const { value, ...inputProps } = props
   const ref = React.useRef<HTMLInputElement>(null)
   const prevValue = usePrevious(value)
@@ -592,7 +597,7 @@ const Slider = React.forwardRef<SliderElement, SliderProps>(
       prop: value,
       defaultProp: defaultValue,
       onChange: (value) => {
-        const thumbs = [...thumbRefs.current]
+        // const thumbs = [...thumbRefs.current]
         // thumbs[valueIndexToChangeRef.current]?.focus()
         onValueChange(value)
       },
