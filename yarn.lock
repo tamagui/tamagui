@@ -3827,6 +3827,7 @@ __metadata:
     "@tamagui/feather-icons": ^1.0.1-beta.21
     "@tamagui/font-inter": ^1.0.1-beta.21
     "@tamagui/shorthands": ^1.0.1-beta.21
+    "@tamagui/slider": ^1.0.1-beta.21
     "@tamagui/theme-base": ^1.0.1-beta.21
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-polyfill: ^6.26.0
@@ -3956,11 +3957,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/slider@workspace:packages/slider":
+"@tamagui/slider@^1.0.1-beta.21, @tamagui/slider@workspace:packages/slider":
   version: 0.0.0-use.local
   resolution: "@tamagui/slider@workspace:packages/slider"
   dependencies:
-    "@radix-ui/react-use-callback-ref": ^0.1.0
     "@radix-ui/react-use-previous": ^0.1.1
     "@tamagui/build": ^1.0.1-beta.21
     "@tamagui/compose-refs": ^1.0.1-beta.21

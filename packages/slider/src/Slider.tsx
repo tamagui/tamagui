@@ -2,6 +2,7 @@
 
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { getVariableValue, styled, withStaticProperties } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
 import { composeEventHandlers } from '@tamagui/helpers'
@@ -259,19 +260,56 @@ const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
  * SliderTrack
  * -----------------------------------------------------------------------------------------------*/
 
+const DirectionalYStack = styled(YStack, {
+  variants: {
+    vertical: {
+      true: {
+        width: 5,
+        height: 100,
+      },
+    },
+    horizontal: {
+      true: {
+        height: 5,
+        width: 100,
+      },
+    },
+  },
+})
+
+const SliderTrackFrame = styled(DirectionalYStack, {
+  name: 'SliderTrack',
+  backgroundColor: '$background',
+
+  variants: {
+    size: {
+      '...size': (val, { props, tokens }) => {
+        const isVertical = props.vertical
+        const size = getVariableValue(tokens.size[val] ?? tokens.size['$4'] ?? val) as number
+        return {
+          // do size stuff
+        }
+      },
+    },
+  },
+
+  defaultVariants: {
+    horizontal: true,
+  },
+})
+
 const TRACK_NAME = 'SliderTrack'
 
 type SliderTrackElement = HTMLElement | View
-type PrimitiveSpanProps = YStackProps
 
-interface SliderTrackProps extends PrimitiveSpanProps {}
+interface SliderTrackProps extends YStackProps {}
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
   (props: ScopedProps<SliderTrackProps>, forwardedRef) => {
     const { __scopeSlider, ...trackProps } = props
     const context = useSliderContext(TRACK_NAME, __scopeSlider)
     return (
-      <YStack
+      <SliderTrackFrame
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
         {...trackProps}
@@ -290,7 +328,7 @@ SliderTrack.displayName = TRACK_NAME
 const RANGE_NAME = 'SliderRange'
 
 type SliderRangeElement = HTMLElement | View
-interface SliderRangeProps extends PrimitiveSpanProps {}
+interface SliderRangeProps extends YStackProps {}
 
 const SliderRange = React.forwardRef<SliderRangeElement, SliderRangeProps>(
   (props: ScopedProps<SliderRangeProps>, forwardedRef) => {
@@ -331,7 +369,7 @@ SliderRange.displayName = RANGE_NAME
 const THUMB_NAME = 'SliderThumb'
 
 type SliderThumbElement = HTMLElement | View
-interface SliderThumbProps extends PrimitiveSpanProps {
+interface SliderThumbProps extends YStackProps {
   index: number
 }
 
@@ -569,8 +607,8 @@ interface SliderProps
   onValueChange?(value: number[]): void
 }
 
-const Slider = React.forwardRef<SliderElement, SliderProps>(
-  (props: ScopedProps<SliderProps>, forwardedRef) => {
+const Slider = withStaticProperties(
+  React.forwardRef<SliderElement, SliderProps>((props: ScopedProps<SliderProps>, forwardedRef) => {
     const {
       name,
       min = 0,
@@ -584,13 +622,14 @@ const Slider = React.forwardRef<SliderElement, SliderProps>(
       onValueChange = () => {},
       ...sliderProps
     } = props
-    const [slider, setSlider] = React.useState<HTMLSpanElement | null>(null)
+    const [slider, setSlider] = React.useState<HTMLElement | View | null>(null)
     const composedRefs = useComposedRefs(forwardedRef, (node) => setSlider(node))
     const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Set())
     const valueIndexToChangeRef = React.useRef<number>(0)
     const isHorizontal = orientation === 'horizontal'
     // We set this to true by default so that events bubble to forms without JS (SSR)
-    const isFormControl = slider ? Boolean(slider.closest('form')) : true
+    // TODO
+    // const isFormControl = slider ? Boolean(slider.closest('form')) : true
     const SliderOrientation = isHorizontal ? SliderHorizontal : SliderVertical
 
     const [values = [], setValues] = useControllableState({
@@ -662,22 +701,26 @@ const Slider = React.forwardRef<SliderElement, SliderProps>(
             }
           }}
         />
-        {isFormControl &&
+        {/* {isFormControl &&
           values.map((value, index) => (
             <BubbleInput
               key={index}
               name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
               value={value}
             />
-          ))}
+          ))} */}
       </SliderProvider>
     )
+  }),
+  {
+    Track: SliderTrack,
+    Range: SliderRange,
+    Thumb: SliderThumb,
   }
 )
 
 Slider.displayName = SLIDER_NAME
 
-const Root = Slider
 const Track = SliderTrack
 const Range = SliderRange
 const Thumb = SliderThumb
@@ -690,7 +733,6 @@ export {
   SliderRange,
   SliderThumb,
   //
-  Root,
   Track,
   Range,
   Thumb,

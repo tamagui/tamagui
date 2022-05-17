@@ -1,6 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { Slider } from '@tamagui/slider'
 import React, { useState } from 'react'
 import {
   Button,
@@ -43,75 +44,18 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Test />
+        <Demo />
       </div>
     </Tamagui.Provider>
   )
 }
 
-function Test() {
-  return (
-    <TooltipGroup delay={{ open: 3000, close: 100 }}>
-      <YStack space als="center">
-        <XStack space>
-          <Demo groupId="0" placement="top-start" />
-          <Demo groupId="1" placement="top" />
-          <Demo groupId="2" placement="top-end" />
-        </XStack>
-        <XStack space>
-          <Demo groupId="3" placement="left" />
-          <Button f={1} opacity={0} />
-          <Demo groupId="4" placement="right" />
-        </XStack>
-        <XStack space>
-          <Demo groupId="5" placement="bottom-start" />
-          <Demo groupId="6" placement="bottom" />
-          <Demo groupId="7" placement="bottom-end" />
-        </XStack>
-      </YStack>
-    </TooltipGroup>
-  )
-}
-
 export function Demo(props: Omit<PopoverProps, 'children'>) {
   return (
-    <Popover modal {...props}>
-      <Popover.Trigger debug>
-        <Button>Hello2</Button>
-      </Popover.Trigger>
-      <Popover.Content
-        enterStyle={{ x: 0, y: -20, o: 0 }}
-        exitStyle={{ x: 0, y: -20, o: 0 }}
-        x={0}
-        y={0}
-        o={1}
-        animation="bouncy"
-      >
-        <Popover.Arrow />
-        <Paragraph>Hello world</Paragraph>
-      </Popover.Content>
-    </Popover>
+    <Slider>
+      <Slider.Track>
+        <Slider.Thumb index={0} />
+      </Slider.Track>
+    </Slider>
   )
 }
-
-// export function Demo(props: Omit<TooltipProps, 'children'>) {
-//   return (
-//     <Tooltip {...props}>
-//       <Tooltip.Trigger>
-//         <Button>Hello2</Button>
-//       </Tooltip.Trigger>
-//       <Tooltip.Content
-//         enterStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
-//         exitStyle={{ x: 0, y: -10, o: 0, scale: 0.9 }}
-//         x={0}
-//         scale={1}
-//         y={0}
-//         o={1}
-//         animation="bouncy"
-//       >
-//         <Tooltip.Arrow />
-//         <Paragraph>Hello world</Paragraph>
-//       </Tooltip.Content>
-//     </Tooltip>
-//   )
-// }
