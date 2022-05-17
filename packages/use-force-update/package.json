@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/use-force-update",
   "version": "1.0.1-beta.21",
-  "types": "types",
+  "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",

@@ -4,7 +4,7 @@
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
-  "types": "types",
+  "types": "./types/index.d.ts",
   "sideEffects": [
     "*.css"
   ],

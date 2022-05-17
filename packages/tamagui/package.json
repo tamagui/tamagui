@@ -6,7 +6,7 @@
     "polyfills.ts"
   ],
   "source": "src/index.ts",
-  "types": "types",
+  "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
