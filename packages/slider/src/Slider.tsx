@@ -3,10 +3,7 @@
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { getVariableValue, styled, withStaticProperties } from '@tamagui/core'
-import { createContextScope } from '@tamagui/create-context'
-import type { Scope } from '@tamagui/create-context'
-import { composeEventHandlers } from '@tamagui/helpers'
-import { clamp } from '@tamagui/helpers'
+import { clamp, composeEventHandlers } from '@tamagui/helpers'
 // import { useSize } from '@tamagui/react-use-size'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -14,7 +11,23 @@ import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 import { View } from 'react-native'
 
-type Direction = 'ltr' | 'rtl'
+import {
+  SLIDER_NAME,
+  SliderOrientationProvider,
+  SliderProvider,
+  useSliderContext,
+  useSliderOrientationContext,
+} from './context'
+import { SliderImpl } from './SliderImpl'
+import {
+  Direction,
+  ScopedProps,
+  SliderContextValue,
+  SliderHorizontalProps,
+  SliderImplElement,
+  SliderProps,
+  SliderVerticalProps,
+} from './types'
 
 const PAGE_KEYS = ['PageUp', 'PageDown']
 const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
@@ -23,44 +36,11 @@ const BACK_KEYS: Record<Direction, string[]> = {
   rtl: ['ArrowDown', 'Home', 'ArrowRight', 'PageDown'],
 }
 
-type ScopedProps<P> = P & { __scopeSlider?: Scope }
-
-const SLIDER_NAME = 'Slider'
-const [createSliderContext, createSliderScope] = createContextScope(SLIDER_NAME)
-
 /* -------------------------------------------------------------------------------------------------
  * SliderHorizontal
  * -----------------------------------------------------------------------------------------------*/
 
-const [SliderOrientationProvider, useSliderOrientationContext] = createSliderContext<{
-  startEdge: 'bottom' | 'left' | 'right'
-  endEdge: 'top' | 'right' | 'left'
-  size: 'width' | 'height'
-  direction: number
-}>(SLIDER_NAME, {
-  startEdge: 'left',
-  endEdge: 'right',
-  size: 'width',
-  direction: 1,
-})
-
-type SliderOrientationPrivateProps = {
-  min: number
-  max: number
-  onSlideStart?(value: number): void
-  onSlideMove?(value: number): void
-  onHomeKeyDown(event: React.KeyboardEvent): void
-  onEndKeyDown(event: React.KeyboardEvent): void
-  onStepKeyDown(step: { event: React.KeyboardEvent; direction: number }): void
-}
-interface SliderOrientationProps
-  extends Omit<SliderImplProps, keyof SliderImplPrivateProps>,
-    SliderOrientationPrivateProps {}
-
 type SliderHorizontalElement = SliderImplElement
-interface SliderHorizontalProps extends SliderOrientationProps {
-  dir?: Direction
-}
 
 const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
@@ -122,7 +102,6 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
  * -----------------------------------------------------------------------------------------------*/
 
 type SliderVerticalElement = SliderImplElement
-interface SliderVerticalProps extends SliderOrientationProps {}
 
 const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalProps>(
   (props: ScopedProps<SliderVerticalProps>, forwardedRef) => {
@@ -173,85 +152,6 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
           }}
         />
       </SliderOrientationProvider>
-    )
-  }
-)
-
-/* -------------------------------------------------------------------------------------------------
- * SliderImpl
- * -----------------------------------------------------------------------------------------------*/
-
-type SliderImplElement = HTMLElement | View
-type SliderImplPrivateProps = {
-  onSlideStart(event: React.PointerEvent): void
-  onSlideMove(event: React.PointerEvent): void
-  onSlideEnd(event: React.PointerEvent): void
-  onHomeKeyDown(event: React.KeyboardEvent): void
-  onEndKeyDown(event: React.KeyboardEvent): void
-  onStepKeyDown(event: React.KeyboardEvent): void
-}
-interface SliderImplProps extends YStackProps, SliderImplPrivateProps {
-  dir?: Direction
-}
-
-const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
-  (props: ScopedProps<SliderImplProps>, forwardedRef) => {
-    const {
-      __scopeSlider,
-      onSlideStart,
-      onSlideMove,
-      onSlideEnd,
-      onHomeKeyDown,
-      onEndKeyDown,
-      onStepKeyDown,
-      ...sliderProps
-    } = props
-    const context = useSliderContext(SLIDER_NAME, __scopeSlider)
-
-    return (
-      <YStack
-        {...sliderProps}
-        ref={forwardedRef}
-        // onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-        //   if (event.key === 'Home') {
-        //     onHomeKeyDown(event)
-        //     // Prevent scrolling to page start
-        //     event.preventDefault()
-        //   } else if (event.key === 'End') {
-        //     onEndKeyDown(event)
-        //     // Prevent scrolling to page end
-        //     event.preventDefault()
-        //   } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
-        //     onStepKeyDown(event)
-        //     // Prevent scrolling for directional key presses
-        //     event.preventDefault()
-        //   }
-        // })}
-        // onPointerDown={composeEventHandlers(props.onPointerDown, (event) => {
-        //   const target = event.target as HTMLElement
-        //   target.setPointerCapture(event.pointerId)
-        //   // Prevent browser focus behaviour because we focus a thumb manually when values change.
-        //   event.preventDefault()
-        //   // Touch devices have a delay before focusing so won't focus if touch immediately moves
-        //   // away from target (sliding). We want thumb to focus regardless.
-        //   if (context.thumbs.has(target)) {
-        //     target.focus()
-        //   } else {
-        //     onSlideStart(event)
-        //   }
-        // })}
-        // onPointerMove={composeEventHandlers(props.onPointerMove, (event) => {
-        //   const target = event.target as HTMLElement
-        //   if (target.hasPointerCapture(event.pointerId)) onSlideMove(event)
-        // })}
-        // onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
-        //   const target = event.target as HTMLElement
-        //   if (target.hasPointerCapture(event.pointerId)) {
-        //     target.releasePointerCapture(event.pointerId)
-        //     onSlideEnd(event)
-        //   }
-        // })}
-      />
     )
   }
 )
@@ -576,36 +476,7 @@ function roundValue(value: number, decimalCount: number) {
  * Slider
  * -----------------------------------------------------------------------------------------------*/
 
-type SliderContextValue = {
-  disabled?: boolean
-  min: number
-  max: number
-  values: number[]
-  valueIndexToChangeRef: React.MutableRefObject<number>
-  thumbs: Set<SliderThumbElement>
-  orientation: SliderProps['orientation']
-}
-
-const [SliderProvider, useSliderContext] = createSliderContext<SliderContextValue>(SLIDER_NAME)
-
 type SliderElement = SliderHorizontalElement | SliderVerticalElement
-interface SliderProps
-  extends Omit<
-    SliderHorizontalProps | SliderVerticalProps,
-    keyof SliderOrientationPrivateProps | 'defaultValue'
-  > {
-  name?: string
-  disabled?: boolean
-  orientation?: React.AriaAttributes['aria-orientation']
-  dir?: Direction
-  min?: number
-  max?: number
-  step?: number
-  minStepsBetweenThumbs?: number
-  value?: number[]
-  defaultValue?: number[]
-  onValueChange?(value: number[]): void
-}
 
 const Slider = withStaticProperties(
   React.forwardRef<SliderElement, SliderProps>((props: ScopedProps<SliderProps>, forwardedRef) => {
@@ -726,8 +597,6 @@ const Range = SliderRange
 const Thumb = SliderThumb
 
 export {
-  createSliderScope,
-  //
   Slider,
   SliderTrack,
   SliderRange,
