@@ -3,7 +3,7 @@
   "version": "1.0.1-beta.21",
   "sideEffects": true,
   "source": "src/index.ts",
-  "typings": "types",
+  "types": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",

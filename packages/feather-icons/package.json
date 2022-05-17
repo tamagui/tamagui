@@ -4,7 +4,7 @@
   "sideEffects": false,
   "description": "React Native components for Feather icons - native and web",
   "source": "src/index.ts",
-  "typings": "types",
+  "types": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
   "files": [

@@ -1,7 +1,7 @@
 {
   "name": "@tamagui/use-debounce",
   "version": "1.0.1-beta.21",
-  "typings": "types",
+  "types": "types",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",

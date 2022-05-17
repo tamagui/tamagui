@@ -3956,6 +3956,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/slider@workspace:packages/slider":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/slider@workspace:packages/slider"
+  dependencies:
+    "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@radix-ui/react-use-previous": ^0.1.1
+    "@tamagui/build": ^1.0.1-beta.21
+    "@tamagui/compose-refs": ^1.0.1-beta.21
+    "@tamagui/core": ^1.0.1-beta.21
+    "@tamagui/create-context": ^1.0.1-beta.21
+    "@tamagui/stacks": ^1.0.1-beta.21
+    "@tamagui/use-controllable-state": ^1.0.1-beta.21
+    "@tamagui/use-direction": ^1.0.1-beta.21
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/stacks@^1.0.1-beta.21, @tamagui/stacks@workspace:packages/stacks":
   version: 0.0.0-use.local
   resolution: "@tamagui/stacks@workspace:packages/stacks"
@@ -4086,6 +4110,17 @@ __metadata:
 "@tamagui/use-debounce@^1.0.1-beta.21, @tamagui/use-debounce@workspace:packages/use-debounce":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-debounce@workspace:packages/use-debounce"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.21
+    react: "*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/use-direction@^1.0.1-beta.21, @tamagui/use-direction@workspace:packages/use-direction":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-direction@workspace:packages/use-direction"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.21
     react: "*"
@@ -18467,7 +18502,7 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>":
   version: 4.6.3
-  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
+  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
