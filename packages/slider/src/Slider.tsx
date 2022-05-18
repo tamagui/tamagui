@@ -300,6 +300,17 @@ interface SliderThumbProps extends YStackProps {
   index: number
 }
 
+const SliderThumbFrame = styled(YStack, {
+  name: 'SliderThumb',
+
+  width: 10,
+  height: 10,
+  borderRadius: 100_000,
+  backgroundColor: 'yellow',
+
+  // todo make sizable
+})
+
 const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
   (props: ScopedProps<SliderThumbProps>, forwardedRef) => {
     const { __scopeSlider, index, ...thumbProps } = props
@@ -335,7 +346,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
           [orientation.startEdge]: `calc(${percent}% + ${thumbInBoundsOffset}px)`,
         }}
       >
-        <YStack
+        <SliderThumbFrame
           // role="slider"
           aria-label={props['aria-label'] || label}
           aria-valuemin={context.min}
