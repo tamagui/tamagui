@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import type { GestureReponderEvent } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { YStackProps } from '@tamagui/stacks';
 import type { View } from 'react-native';
@@ -8,9 +9,9 @@ export declare type ScopedProps<P> = P & {
 export declare type Direction = 'ltr' | 'rtl';
 export declare type SliderImplElement = HTMLElement | View;
 declare type SliderImplPrivateProps = {
-    onSlideStart(event: React.PointerEvent): void;
-    onSlideMove(event: React.PointerEvent): void;
-    onSlideEnd(event: React.PointerEvent): void;
+    onSlideStart(event: GestureReponderEvent): void;
+    onSlideMove(event: GestureReponderEvent): void;
+    onSlideEnd(event: GestureReponderEvent): void;
     onHomeKeyDown(event: React.KeyboardEvent): void;
     onEndKeyDown(event: React.KeyboardEvent): void;
     onStepKeyDown(event: React.KeyboardEvent): void;

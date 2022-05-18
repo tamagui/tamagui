@@ -2,6 +2,7 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
+import { composeEventHandlers } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 
@@ -41,30 +42,29 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
         //     event.preventDefault()
         //   }
         // })}
-        // onPointerDown={composeEventHandlers(props.onPointerDown, (event) => {
-        //   const target = event.target as HTMLElement
-        //   target.setPointerCapture(event.pointerId)
-        //   // Prevent browser focus behaviour because we focus a thumb manually when values change.
-        //   event.preventDefault()
-        //   // Touch devices have a delay before focusing so won't focus if touch immediately moves
-        //   // away from target (sliding). We want thumb to focus regardless.
-        //   if (context.thumbs.has(target)) {
-        //     target.focus()
-        //   } else {
-        //     onSlideStart(event)
-        //   }
-        // })}
-        // onPointerMove={composeEventHandlers(props.onPointerMove, (event) => {
-        //   const target = event.target as HTMLElement
-        //   if (target.hasPointerCapture(event.pointerId)) onSlideMove(event)
-        // })}
-        // onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
-        //   const target = event.target as HTMLElement
-        //   if (target.hasPointerCapture(event.pointerId)) {
-        //     target.releasePointerCapture(event.pointerId)
-        //     onSlideEnd(event)
-        //   }
-        // })}
+        onStartShouldSetResponder={() => true}
+        onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
+          const target = event.target as HTMLElement
+          console.log('wut', target)
+          // target.setPointerCapture(event.pointerId)
+          // // Prevent browser focus behaviour because we focus a thumb manually when values change.
+          event.preventDefault()
+          // Touch devices have a delay before focusing so won't focus if touch immediately moves
+          // away from target (sliding). We want thumb to focus regardless.
+          if (context.thumbs.has(target)) {
+            target.focus()
+          } else {
+            onSlideStart(event)
+          }
+        })}
+        onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
+          const target = event.target as HTMLElement
+          onSlideMove(event)
+        })}
+        onResponderRelease={composeEventHandlers(props.onResponderRelease, (event) => {
+          const target = event.target as HTMLElement
+          onSlideEnd(event)
+        })}
       />
     )
   }

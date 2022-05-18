@@ -456,6 +456,12 @@ export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStyl
 export type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>
 export type StackProps = StackPropsBaseShared & StackStyleProps
 
+export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (
+  event: infer Event
+) => void
+  ? Event
+  : never
+
 //
 // Text props
 //

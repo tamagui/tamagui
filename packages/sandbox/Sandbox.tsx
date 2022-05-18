@@ -54,7 +54,7 @@ export function Demo(props: Omit<PopoverProps, 'children'>) {
   return (
     <Slider defaultValue={[50]} max={100} step={1} aria-label="Volume">
       <Slider.Track>
-        <Slider.TrackActive debug />
+        <Slider.TrackActive />
       </Slider.Track>
       <Slider.Thumb index={0} />
     </Slider>

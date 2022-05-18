@@ -261,6 +261,7 @@ export declare type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children
 export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
 export declare type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>;
 export declare type StackProps = StackPropsBaseShared & StackStyleProps;
+export declare type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps & {
     ellipse?: boolean;
     selectable?: boolean;

@@ -58,6 +58,14 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
       const output: [number, number] = isDirectionLTR ? [min, max] : [max, min]
       const value = linearScale(input, output)
       rectRef.current = rect
+      console.log(
+        'check it',
+        rect.left,
+        input,
+        output,
+        pointerPosition,
+        value(pointerPosition - rect.left)
+      )
       return value(pointerPosition - rect.left)
     }
 
@@ -79,11 +87,11 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
           //   ['--radix-slider-thumb-transform' as any]: 'translateX(-50%)',
           // }}
           onSlideStart={(event) => {
-            const value = getValueFromPointer(event.clientX)
+            const value = getValueFromPointer(event.nativeEvent.locationX)
             onSlideStart?.(value)
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.clientX)
+            const value = getValueFromPointer(event.nativeEvent.locationX)
             onSlideMove?.(value)
           }}
           onSlideEnd={() => (rectRef.current = undefined)}
@@ -116,7 +124,6 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
       const input: [number, number] = [0, rect.height]
       const output: [number, number] = [max, min]
       const value = linearScale(input, output)
-
       rectRef.current = rect
       return value(pointerPosition - rect.top)
     }
@@ -138,11 +145,11 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
           //   ['--radix-slider-thumb-transform' as any]: 'translateY(50%)',
           // }}
           onSlideStart={(event) => {
-            const value = getValueFromPointer(event.clientY)
+            const value = getValueFromPointer(event.nativeEvent.locationY)
             onSlideStart?.(value)
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.clientY)
+            const value = getValueFromPointer(event.nativeEvent.locationY)
             onSlideMove?.(value)
           }}
           onSlideEnd={() => (rectRef.current = undefined)}

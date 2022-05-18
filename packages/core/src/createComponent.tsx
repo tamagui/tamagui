@@ -276,6 +276,9 @@ export function createComponent<
 
     if (isWeb && !asChild) {
       // from react-native-web
+      if (onResponderMove) {
+        console.log('using them', hostRef, onResponderMove)
+      }
       rnw.useResponderEvents(hostRef, {
         onMoveShouldSetResponder,
         onMoveShouldSetResponderCapture,
