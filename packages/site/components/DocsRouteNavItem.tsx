@@ -18,16 +18,15 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         px="$4"
         opacity={pending ? 0.25 : 1}
         hoverStyle={{
-          backgroundColor: '$backgroundHover',
+          backgroundColor: '$background',
           opacity: 1,
         }}
         pressStyle={{
-          backgroundColor: '$backgroundPress',
-          opacity: 1,
+          backgroundColor: '$background',
+          opacity: 0.6,
         }}
         pointerEvents={pending ? 'none' : 'auto'}
         {...(active && {
-          theme: 'alt3',
           backgroundColor: '$background',
           hoverStyle: {
             backgroundColor: '$background',
@@ -37,8 +36,11 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         <SizableText
           size="$3"
           userSelect="none"
+          opacity={0.7}
           {...(active && {
             theme: 'alt2',
+            fow: '900',
+            opacity: 1,
           })}
         >
           {children}
