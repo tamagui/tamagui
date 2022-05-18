@@ -8,10 +8,10 @@ declare type SliderTrackElement = HTMLElement | View;
 interface SliderTrackProps extends YStackProps {
 }
 declare const SliderTrack: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
-declare type SliderRangeElement = HTMLElement | View;
-interface SliderRangeProps extends YStackProps {
+declare type SliderTrackActiveElement = HTMLElement | View;
+interface SliderTrackActiveProps extends YStackProps {
 }
-declare const SliderRange: React.ForwardRefExoticComponent<SliderRangeProps & React.RefAttributes<SliderRangeElement>>;
+declare const SliderTrackActive: React.ForwardRefExoticComponent<SliderTrackActiveProps & React.RefAttributes<SliderTrackActiveElement>>;
 declare type SliderThumbElement = HTMLElement | View;
 interface SliderThumbProps extends YStackProps {
     index: number;
@@ -20,12 +20,12 @@ declare const SliderThumb: React.ForwardRefExoticComponent<SliderThumbProps & Re
 declare type SliderElement = SliderHorizontalElement | SliderVerticalElement;
 declare const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<SliderElement>> & {
     Track: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
-    Range: React.ForwardRefExoticComponent<SliderRangeProps & React.RefAttributes<SliderRangeElement>>;
+    TrackActive: React.ForwardRefExoticComponent<SliderTrackActiveProps & React.RefAttributes<SliderTrackActiveElement>>;
     Thumb: React.ForwardRefExoticComponent<SliderThumbProps & React.RefAttributes<SliderThumbElement>>;
 };
 declare const Track: React.ForwardRefExoticComponent<SliderTrackProps & React.RefAttributes<SliderTrackElement>>;
-declare const Range: React.ForwardRefExoticComponent<SliderRangeProps & React.RefAttributes<SliderRangeElement>>;
+declare const Range: React.ForwardRefExoticComponent<SliderTrackActiveProps & React.RefAttributes<SliderTrackActiveElement>>;
 declare const Thumb: React.ForwardRefExoticComponent<SliderThumbProps & React.RefAttributes<SliderThumbElement>>;
-export { Slider, SliderTrack, SliderRange, SliderThumb, Track, Range, Thumb, };
-export type { SliderProps, SliderTrackProps, SliderRangeProps, SliderThumbProps };
+export { Slider, SliderTrack, SliderTrackActive, SliderThumb, Track, Range, Thumb, };
+export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps };
 //# sourceMappingURL=Slider.d.ts.map

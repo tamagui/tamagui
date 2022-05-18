@@ -34,12 +34,12 @@ export const Sandbox = () => {
 
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: '100vw',
+          height: '100vh',
           pointerEvents: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          background: 'red',
+          background: 'var(--backgroundStrong)',
           alignItems: 'center',
           justifyContent: 'center',
         }}
@@ -52,10 +52,11 @@ export const Sandbox = () => {
 
 export function Demo(props: Omit<PopoverProps, 'children'>) {
   return (
-    <Slider>
+    <Slider defaultValue={[50]} max={100} step={1} aria-label="Volume">
       <Slider.Track>
-        <Slider.Thumb index={0} />
+        <Slider.TrackActive debug />
       </Slider.Track>
+      <Slider.Thumb index={0} />
     </Slider>
   )
 }

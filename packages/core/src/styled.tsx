@@ -55,6 +55,7 @@ export function styled<
       const isImage = !!(defaultProps.isImage || (!isTamagui ? Comp === Image : false))
       const isInput = !!(defaultProps.isInput || (!isTamagui ? Comp === TextInput : false))
       const isText = !!(defaultProps.isText || (!isTamagui ? isInput || Comp === Text : false))
+
       const conf: Partial<StaticConfig> = {
         ...staticExtractionOptions,
         ...(!isTamagui && {

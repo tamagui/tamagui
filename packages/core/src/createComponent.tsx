@@ -688,12 +688,12 @@ export function createComponent<
       keepVariantsAsProps: true,
     })
 
-    // @ts-ignore
     // this ruins the prop order!!!
     // can't believe it but it puts default props after props?
     const defaults = {
       ...component.defaultProps,
       ...initialSplitStyles.viewProps,
+      ...initialSplitStyles.style,
     }
 
     defaultNativeStyle = {}

@@ -165,13 +165,13 @@ const DirectionalYStack = styled(YStack, {
     vertical: {
       true: {
         width: 5,
-        height: 100,
+        height: 200,
       },
     },
     horizontal: {
       true: {
         height: 5,
-        width: 100,
+        width: 200,
       },
     },
   },
@@ -179,13 +179,17 @@ const DirectionalYStack = styled(YStack, {
 
 const SliderTrackFrame = styled(DirectionalYStack, {
   name: 'SliderTrack',
-  backgroundColor: '$background',
+  // backgroundColor: '$background',
+  backgroundColor: 'red',
+  borderRadius: 100_000,
+  position: 'relative',
 
   variants: {
     size: {
       '...size': (val, { props, tokens }) => {
         const isVertical = props.vertical
         const size = getVariableValue(tokens.size[val] ?? tokens.size['$4'] ?? val) as number
+        console.log('size', size)
         return {
           // do size stuff
         }
@@ -222,16 +226,37 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
 SliderTrack.displayName = TRACK_NAME
 
 /* -------------------------------------------------------------------------------------------------
- * SliderRange
+ * SliderTrackActive
  * -----------------------------------------------------------------------------------------------*/
 
-const RANGE_NAME = 'SliderRange'
+const RANGE_NAME = 'SliderTrackActive'
 
-type SliderRangeElement = HTMLElement | View
-interface SliderRangeProps extends YStackProps {}
+type SliderTrackActiveElement = HTMLElement | View
+interface SliderTrackActiveProps extends YStackProps {}
 
-const SliderRange = React.forwardRef<SliderRangeElement, SliderRangeProps>(
-  (props: ScopedProps<SliderRangeProps>, forwardedRef) => {
+const SliderTrackActiveFrame = styled(YStack, {
+  debug: true,
+  name: 'SliderTrackActive',
+  backgroundColor: '#000',
+  borderRadius: 100_000,
+  position: 'absolute',
+
+  variants: {
+    dir: {
+      horizontal: {
+        top: 0,
+        bottom: 0,
+      },
+      vertical: {
+        left: 0,
+        right: 0,
+      },
+    },
+  },
+})
+
+const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrackActiveProps>(
+  (props: ScopedProps<SliderTrackActiveProps>, forwardedRef) => {
     const { __scopeSlider, ...rangeProps } = props
     const context = useSliderContext(RANGE_NAME, __scopeSlider)
     const orientation = useSliderOrientationContext(RANGE_NAME, __scopeSlider)
@@ -244,23 +269,25 @@ const SliderRange = React.forwardRef<SliderRangeElement, SliderRangeProps>(
     const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
     const offsetEnd = 100 - Math.max(...percentages)
 
+    console.log('context.orientation', context.orientation)
+
     return (
-      <YStack
+      <SliderTrackActiveFrame
+        dir={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         {...rangeProps}
         ref={composedRefs}
-        // style={{
-        //   ...props.style,
-        //   [orientation.startEdge]: offsetStart + '%',
-        //   [orientation.endEdge]: offsetEnd + '%',
-        // }}
+        {...{
+          [orientation.startEdge]: offsetStart + '%',
+          [orientation.endEdge]: offsetEnd + '%',
+        }}
       />
     )
   }
 )
 
-SliderRange.displayName = RANGE_NAME
+SliderTrackActive.displayName = RANGE_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SliderThumb
@@ -585,7 +612,7 @@ const Slider = withStaticProperties(
   }),
   {
     Track: SliderTrack,
-    Range: SliderRange,
+    TrackActive: SliderTrackActive,
     Thumb: SliderThumb,
   }
 )
@@ -593,17 +620,17 @@ const Slider = withStaticProperties(
 Slider.displayName = SLIDER_NAME
 
 const Track = SliderTrack
-const Range = SliderRange
+const Range = SliderTrackActive
 const Thumb = SliderThumb
 
 export {
   Slider,
   SliderTrack,
-  SliderRange,
+  SliderTrackActive,
   SliderThumb,
   //
   Track,
   Range,
   Thumb,
 }
-export type { SliderProps, SliderTrackProps, SliderRangeProps, SliderThumbProps }
+export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps }
