@@ -4,14 +4,22 @@ import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   SizeTokens,
+  getConfig,
   getTokens,
   getVariableValue,
+  getVariantExtras,
   styled,
   withStaticProperties,
 } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 // import { useSize } from '@tamagui/react-use-size'
-import { SizableStack, SizableStackProps, YStack, YStackProps } from '@tamagui/stacks'
+import {
+  SizableStack,
+  SizableStackProps,
+  YStack,
+  YStackProps,
+  getCircleSize,
+} from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -309,7 +317,10 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
     // const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null)
     // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
-    const size = (typeof sizeProp !== 'undefined' ? getSize(sizeProp) : context.size) ?? 40
+    const sizeVal = sizeProp ?? context.size ?? 40
+    const size = getCircleSize(sizeVal, getVariantExtras(props))
+    console.log('size', size)
+
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
     const percent =
@@ -319,8 +330,6 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const thumbInBoundsOffset = size
       ? getThumbInBoundsOffset(size, percent, orientation.direction)
       : 0
-
-    console.log('size', size)
 
     // React.useEffect(() => {
     //   if (thumb) {

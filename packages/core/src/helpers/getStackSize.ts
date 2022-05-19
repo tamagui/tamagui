@@ -6,10 +6,12 @@ import { SizeTokens } from '../types'
 
 type ScaleProps = { sizeX: number; sizeY: number }
 
+export type ScaleVariantExtras = Pick<VariantSpreadExtras<any>, 'tokens' | 'props' | 'fonts'>
+
 export const getSizeScaledToFont = (
   val: string | number,
   { sizeX = 1, sizeY = 1 }: ScaleProps,
-  { tokens, props, fonts }: VariantSpreadExtras<any>
+  { tokens, props, fonts }: ScaleVariantExtras
 ) => {
   const size = tokens.size[val] ?? tokens.size['$4'] ?? val ?? 14
   const radius = tokens.radius[val] ?? tokens.radius['$4'] ?? size

@@ -46,7 +46,7 @@ export function Demo(props: Omit<PopoverProps, 'children'>) {
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb size="$4" circular index={0} />
+      <Slider.Thumb size="$4" circular elevation="$4" index={0} />
     </Slider>
   )
 }

@@ -17,6 +17,7 @@ export * from './constants/platform'
 export * from './constants/rnw'
 
 export * from './helpers/getStackSize'
+export * from './helpers/getVariantExtras'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getSize'
 export * from './helpers/getSplitStyles'

@@ -2,6 +2,7 @@ import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { Variable, isVariable } from '../createVariable'
 import { StaticConfig, TamaguiInternalConfig, VariantSpreadFunction } from '../types'
+import { getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
@@ -60,27 +61,7 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
       if (variantValue) {
         if (typeof variantValue === 'function') {
           const fn = variantValue as VariantSpreadFunction<any>
-          variantValue = fn(value, {
-            fonts: conf.fontsParsed,
-            tokens: conf.tokensParsed,
-            theme,
-            // TODO do this in splitstlye
-            // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-            props: avoidDefaultProps
-              ? props
-              : new Proxy(props, {
-                  get(target, key) {
-                    if (Reflect.has(target, key)) {
-                      return Reflect.get(target, key)
-                    }
-                    // these props may be extracted into classNames, but we still want to access them
-                    // at runtime, so we proxy back to defaultProps but don't pass them
-                    if (defaultProps) {
-                      return Reflect.get(defaultProps, key)
-                    }
-                  },
-                }),
-          })
+          variantValue = fn(value, getVariantExtras(props, theme, defaultProps, avoidDefaultProps))
         }
 
         if (isObj(variantValue)) {

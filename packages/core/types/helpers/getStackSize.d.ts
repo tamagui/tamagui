@@ -4,7 +4,8 @@ declare type ScaleProps = {
     sizeX: number;
     sizeY: number;
 };
-export declare const getSizeScaledToFont: (val: string | number, { sizeX, sizeY }: ScaleProps, { tokens, props, fonts }: VariantSpreadExtras<any>) => {
+export declare type ScaleVariantExtras = Pick<VariantSpreadExtras<any>, 'tokens' | 'props' | 'fonts'>;
+export declare const getSizeScaledToFont: (val: string | number, { sizeX, sizeY }: ScaleProps, { tokens, props, fonts }: ScaleVariantExtras) => {
     px: number;
     py: number;
     radius: import("@tamagui/core").VariableVal;

@@ -1,4 +1,12 @@
-import { GetProps, buttonScaling, getButtonSize, getSizeScaledToFont, styled } from '@tamagui/core'
+import {
+  GetProps,
+  ScaleVariantExtras,
+  SizeTokens,
+  buttonScaling,
+  getButtonSize,
+  getSizeScaledToFont,
+  styled,
+} from '@tamagui/core'
 
 import { XStack } from './Stacks'
 
@@ -66,9 +74,7 @@ export const SizableStack = styled(XStack, {
       true: (_, extras) => {
         const { props } = extras
         // @ts-ignore
-        const sizeVal = props.size ?? '$4'
-        const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
-        const size = scale.minHeight
+        const size = getCircleSize(props.size, extras)
         return {
           width: size,
           height: size,
@@ -115,3 +121,9 @@ export const SizableStack = styled(XStack, {
 })
 
 export type SizableStackProps = GetProps<typeof SizableStack>
+
+export function getCircleSize(size: SizeTokens, extras: ScaleVariantExtras) {
+  const sizeVal = size ?? '$4'
+  const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
+  return scale.minHeight
+}
