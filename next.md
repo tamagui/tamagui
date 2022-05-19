@@ -8,6 +8,7 @@
   - fix /types import
   - make Label work on native with touch event (require single <Label.Provider> at root)
     - make sure Select, Input, Switch etc all work with it
+  - document $body being default font family
   - add more of a kitchen sink demo to starts
   - test Android in starters repo
   - size=5.5 icon scales diff
