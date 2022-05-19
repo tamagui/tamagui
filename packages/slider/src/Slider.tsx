@@ -85,12 +85,12 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
       >
         <SliderImpl
           dir={direction}
-          data-orientation="horizontal"
+          orientation="horizontal"
           {...sliderProps}
           onLayout={(e) => {
             const layout = e.nativeEvent.layout
             layoutRef.current = layout
-            // setSize(layout.height)
+            setSize(layout.height)
           }}
           ref={forwardedRef}
           onSlideStart={(event) => {
@@ -144,12 +144,13 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
         scope={props.__scopeSlider}
         startEdge="bottom"
         endEdge="top"
-        size="height"
+        sizeProp="height"
+        size={0}
         direction={1}
       >
         <SliderImpl
-          data-orientation="vertical"
           {...sliderProps}
+          orientation="vertical"
           ref={ref}
           onSlideStart={(event) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
@@ -190,7 +191,7 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
       <SliderTrackFrame
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
-        dir={context.orientation}
+        orientation={context.orientation}
         {...trackProps}
         ref={forwardedRef}
       />
@@ -209,24 +210,8 @@ const RANGE_NAME = 'SliderTrackActive'
 type SliderTrackActiveElement = HTMLElement | View
 interface SliderTrackActiveProps extends YStackProps {}
 
-const SliderTrackActiveFrame = styled(YStack, {
+const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
-  backgroundColor: '#000',
-  borderRadius: 100_000,
-  position: 'absolute',
-
-  variants: {
-    dir: {
-      horizontal: {
-        top: 0,
-        bottom: 0,
-      },
-      vertical: {
-        left: 0,
-        right: 0,
-      },
-    },
-  },
 })
 
 const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrackActiveProps>(
@@ -245,7 +230,8 @@ const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrack
 
     return (
       <SliderTrackActiveFrame
-        dir={context.orientation}
+        debug="verbose"
+        orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
         {...rangeProps}

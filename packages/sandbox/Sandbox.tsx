@@ -44,7 +44,7 @@ export const Sandbox = () => {
 
 export function Demo(props: SliderProps) {
   return (
-    <Slider defaultValue={[50]} max={100} step={1} {...props}>
+    <Slider bc="blue" defaultValue={[50]} max={100} step={1} {...props}>
       <Slider.Track bc="green">
         <Slider.TrackActive bc="red" />
       </Slider.Track>

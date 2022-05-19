@@ -11,7 +11,7 @@ import { ScopedProps, SliderImplElement, SliderImplProps } from './types'
 
 export const DirectionalYStack = styled(YStack, {
   variants: {
-    dir: {
+    orientation: {
       horizontal: {},
       vertical: {},
     },
@@ -24,16 +24,20 @@ export const SliderFrame = styled(DirectionalYStack, {
 
   variants: {
     size: (val, extras) => {
-      const dir = extras.props.dir
+      const orientation = extras.props.orientation
       const circleSize = getCircleSize(val, extras)
       const size = circleSize / 4
-      if (dir === 'horizontal') {
+      console.log('huh', size)
+      if (orientation === 'horizontal') {
+        console.log('returnin')
         return {
           height: size,
+          width: 100,
         }
       }
       return {
         width: size,
+        height: 100,
       }
     },
   },
@@ -55,7 +59,9 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
 
     return (
       <SliderFrame
+        size="$4"
         {...sliderProps}
+        data-orientation={sliderProps.orientation}
         ref={forwardedRef}
         // onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
         //   if (event.key === 'Home') {

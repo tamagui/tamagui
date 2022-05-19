@@ -20,6 +20,7 @@ export interface SliderTrackProps extends SizableStackProps {
 }
 export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProps {
     dir?: Direction;
+    orientation: 'horizontal' | 'vertical';
 }
 declare type SliderOrientationPrivateProps = {
     min: number;
@@ -33,7 +34,7 @@ declare type SliderOrientationPrivateProps = {
         direction: number;
     }): void;
 };
-interface SliderOrientationProps extends Omit<SliderImplProps, keyof SliderImplPrivateProps>, SliderOrientationPrivateProps {
+interface SliderOrientationProps extends Omit<SliderImplProps, keyof SliderImplPrivateProps | 'orientation'>, SliderOrientationPrivateProps {
 }
 export interface SliderHorizontalProps extends SliderOrientationProps {
     dir?: Direction;
