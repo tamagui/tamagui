@@ -2,10 +2,16 @@
 
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { getVariableValue, styled, withStaticProperties } from '@tamagui/core'
+import {
+  SizeTokens,
+  getTokens,
+  getVariableValue,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 // import { useSize } from '@tamagui/react-use-size'
-import { YStack, YStackProps } from '@tamagui/stacks'
+import { SizableStack, SizableStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -72,11 +78,6 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
           {...sliderProps}
           onLayout={(e) => (layoutRef.current = e.nativeEvent.layout)}
           ref={forwardedRef}
-          // ref={composedRefs}
-          // style={{
-          //   ...sliderProps.style,
-          //   ['--radix-slider-thumb-transform' as any]: 'translateX(-50%)',
-          // }}
           onSlideStart={(event) => {
             const value = getValueFromPointer(event.nativeEvent.pageX)
             if (value) {
@@ -135,10 +136,6 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
           data-orientation="vertical"
           {...sliderProps}
           ref={ref}
-          // style={{
-          //   ...sliderProps.style,
-          //   ['--radix-slider-thumb-transform' as any]: 'translateY(50%)',
-          // }}
           onSlideStart={(event) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
             onSlideStart?.(value)
@@ -293,40 +290,37 @@ SliderTrackActive.displayName = RANGE_NAME
 
 const THUMB_NAME = 'SliderThumb'
 
-type SliderThumbElement = HTMLElement | View
-interface SliderThumbProps extends YStackProps {
-  index: number
-}
-
-const SliderThumbFrame = styled(YStack, {
+const SliderThumbFrame = styled(SizableStack, {
   name: 'SliderThumb',
-
-  width: 10,
-  height: 10,
-  borderRadius: 100_000,
-  backgroundColor: 'yellow',
   position: 'absolute',
 
   // todo make sizable
 })
 
+type SliderThumbElement = HTMLElement | View
+interface SliderThumbProps extends SizableStackProps {
+  index: number
+}
+
 const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
   (props: ScopedProps<SliderThumbProps>, forwardedRef) => {
-    const { __scopeSlider, index, ...thumbProps } = props
+    const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(THUMB_NAME, __scopeSlider)
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
     // const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null)
     // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
-    // const size = useSize(thumb)
+    const size = (typeof sizeProp !== 'undefined' ? getSize(sizeProp) : context.size) ?? 40
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const orientationSize = 40 //size?.[orientation.size]
-    const thumbInBoundsOffset = orientationSize
-      ? getThumbInBoundsOffset(orientationSize, percent, orientation.direction)
+
+    const thumbInBoundsOffset = size
+      ? getThumbInBoundsOffset(size, percent, orientation.direction)
       : 0
+
+    console.log('size', size)
 
     // React.useEffect(() => {
     //   if (thumb) {
@@ -339,6 +333,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
 
     return (
       <SliderThumbFrame
+        ref={forwardedRef}
         // role="slider"
         aria-label={props['aria-label'] || label}
         aria-valuemin={context.min}
@@ -353,7 +348,6 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         {...{
           [orientation.startEdge]: `${percent}%`,
         }}
-        // ref={composedRefs}
         /**
          * There will be no value on initial render while we work out the index so we hide thumbs
          * without a value, otherwise SSR will render them in the wrong position before they
@@ -370,6 +364,129 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
 )
 
 SliderThumb.displayName = THUMB_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * Slider
+ * -----------------------------------------------------------------------------------------------*/
+
+type SliderElement = SliderHorizontalElement | SliderVerticalElement
+
+const Slider = withStaticProperties(
+  React.forwardRef<SliderElement, SliderProps>((props: ScopedProps<SliderProps>, forwardedRef) => {
+    const {
+      name,
+      min = 0,
+      max = 100,
+      step = 1,
+      orientation = 'horizontal',
+      disabled = false,
+      minStepsBetweenThumbs = 0,
+      defaultValue = [min],
+      value,
+      onValueChange = () => {},
+      size: sizeProp,
+      ...sliderProps
+    } = props
+    // const [slider, setSlider] = React.useState<HTMLElement | View | null>(null)
+    // const composedRefs = useComposedRefs(forwardedRef, (node) => setSlider(node))
+    const size = getSize(sizeProp)
+    const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Set())
+    const valueIndexToChangeRef = React.useRef<number>(0)
+    const isHorizontal = orientation === 'horizontal'
+    // We set this to true by default so that events bubble to forms without JS (SSR)
+    // TODO
+    // const isFormControl = slider ? Boolean(slider.closest('form')) : true
+
+    const [values = [], setValues] = useControllableState({
+      prop: value,
+      defaultProp: defaultValue,
+      onChange: (value) => {
+        // const thumbs = [...thumbRefs.current]
+        // thumbs[valueIndexToChangeRef.current]?.focus()
+        onValueChange(value)
+      },
+    })
+
+    function handleSlideStart(value: number) {
+      const closestIndex = getClosestValueIndex(values, value)
+      updateValues(value, closestIndex)
+    }
+
+    function handleSlideMove(value: number) {
+      updateValues(value, valueIndexToChangeRef.current)
+    }
+
+    function updateValues(value: number, atIndex: number) {
+      const decimalCount = getDecimalCount(step)
+      const snapToStep = roundValue(Math.round((value - min) / step) * step + min, decimalCount)
+      const nextValue = clamp(snapToStep, [min, max])
+      setValues((prevValues = []) => {
+        const nextValues = getNextSortedValues(prevValues, nextValue, atIndex)
+        if (hasMinStepsBetweenValues(nextValues, minStepsBetweenThumbs * step)) {
+          valueIndexToChangeRef.current = nextValues.indexOf(nextValue)
+          return String(nextValues) === String(prevValues) ? prevValues : nextValues
+        } else {
+          return prevValues
+        }
+      })
+    }
+
+    const SliderOrientation = isHorizontal ? SliderHorizontal : SliderVertical
+
+    return (
+      <SliderProvider
+        scope={props.__scopeSlider}
+        disabled={disabled}
+        min={min}
+        max={max}
+        valueIndexToChangeRef={valueIndexToChangeRef}
+        thumbs={thumbRefs.current}
+        values={values}
+        orientation={orientation}
+        size={size}
+      >
+        <SliderOrientation
+          aria-disabled={disabled}
+          data-disabled={disabled ? '' : undefined}
+          {...sliderProps}
+          ref={forwardedRef}
+          min={min}
+          max={max}
+          onSlideStart={disabled ? undefined : handleSlideStart}
+          onSlideMove={disabled ? undefined : handleSlideMove}
+          onHomeKeyDown={() => !disabled && updateValues(min, 0)}
+          onEndKeyDown={() => !disabled && updateValues(max, values.length - 1)}
+          onStepKeyDown={({ event, direction: stepDirection }) => {
+            if (!disabled) {
+              const isPageKey = PAGE_KEYS.includes(event.key)
+              const isSkipKey = isPageKey || (event.shiftKey && ARROW_KEYS.includes(event.key))
+              const multiplier = isSkipKey ? 10 : 1
+              const atIndex = valueIndexToChangeRef.current
+              const value = values[atIndex]
+              const stepInDirection = step * multiplier * stepDirection
+              updateValues(value + stepInDirection, atIndex)
+            }
+          }}
+        />
+        {/* {isFormControl &&
+          values.map((value, index) => (
+            <BubbleInput
+              key={index}
+              name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
+              value={value}
+            />
+          ))} */}
+      </SliderProvider>
+    )
+  }),
+  {
+    Track: SliderTrack,
+    TrackActive: SliderTrackActive,
+    Thumb: SliderThumb,
+  }
+)
+
+Slider.displayName = SLIDER_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -505,125 +622,16 @@ function roundValue(value: number, decimalCount: number) {
   return Math.round(value * rounder) / rounder
 }
 
-/* -------------------------------------------------------------------------------------------------
- * Slider
- * -----------------------------------------------------------------------------------------------*/
+function getSize(size?: SizeTokens) {
+  const tokens = getTokens()
+  return typeof size === 'number'
+    ? size
+    : size
+    ? (getVariableValue(tokens.size[size]) as number)
+    : null
+}
 
-type SliderElement = SliderHorizontalElement | SliderVerticalElement
-
-const Slider = withStaticProperties(
-  React.forwardRef<SliderElement, SliderProps>((props: ScopedProps<SliderProps>, forwardedRef) => {
-    const {
-      name,
-      min = 0,
-      max = 100,
-      step = 1,
-      orientation = 'horizontal',
-      disabled = false,
-      minStepsBetweenThumbs = 0,
-      defaultValue = [min],
-      value,
-      onValueChange = () => {},
-      ...sliderProps
-    } = props
-    const [slider, setSlider] = React.useState<HTMLElement | View | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, (node) => setSlider(node))
-    const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Set())
-    const valueIndexToChangeRef = React.useRef<number>(0)
-    const isHorizontal = orientation === 'horizontal'
-    // We set this to true by default so that events bubble to forms without JS (SSR)
-    // TODO
-    // const isFormControl = slider ? Boolean(slider.closest('form')) : true
-
-    const [values = [], setValues] = useControllableState({
-      prop: value,
-      defaultProp: defaultValue,
-      onChange: (value) => {
-        // const thumbs = [...thumbRefs.current]
-        // thumbs[valueIndexToChangeRef.current]?.focus()
-        onValueChange(value)
-      },
-    })
-
-    function handleSlideStart(value: number) {
-      const closestIndex = getClosestValueIndex(values, value)
-      updateValues(value, closestIndex)
-    }
-
-    function handleSlideMove(value: number) {
-      updateValues(value, valueIndexToChangeRef.current)
-    }
-
-    function updateValues(value: number, atIndex: number) {
-      const decimalCount = getDecimalCount(step)
-      const snapToStep = roundValue(Math.round((value - min) / step) * step + min, decimalCount)
-      const nextValue = clamp(snapToStep, [min, max])
-      setValues((prevValues = []) => {
-        const nextValues = getNextSortedValues(prevValues, nextValue, atIndex)
-        if (hasMinStepsBetweenValues(nextValues, minStepsBetweenThumbs * step)) {
-          valueIndexToChangeRef.current = nextValues.indexOf(nextValue)
-          return String(nextValues) === String(prevValues) ? prevValues : nextValues
-        } else {
-          return prevValues
-        }
-      })
-    }
-
-    const SliderOrientation = isHorizontal ? SliderHorizontal : SliderVertical
-
-    return (
-      <SliderProvider
-        scope={props.__scopeSlider}
-        disabled={disabled}
-        min={min}
-        max={max}
-        valueIndexToChangeRef={valueIndexToChangeRef}
-        thumbs={thumbRefs.current}
-        values={values}
-        orientation={orientation}
-      >
-        <SliderOrientation
-          aria-disabled={disabled}
-          data-disabled={disabled ? '' : undefined}
-          {...sliderProps}
-          ref={composedRefs}
-          min={min}
-          max={max}
-          onSlideStart={disabled ? undefined : handleSlideStart}
-          onSlideMove={disabled ? undefined : handleSlideMove}
-          onHomeKeyDown={() => !disabled && updateValues(min, 0)}
-          onEndKeyDown={() => !disabled && updateValues(max, values.length - 1)}
-          onStepKeyDown={({ event, direction: stepDirection }) => {
-            if (!disabled) {
-              const isPageKey = PAGE_KEYS.includes(event.key)
-              const isSkipKey = isPageKey || (event.shiftKey && ARROW_KEYS.includes(event.key))
-              const multiplier = isSkipKey ? 10 : 1
-              const atIndex = valueIndexToChangeRef.current
-              const value = values[atIndex]
-              const stepInDirection = step * multiplier * stepDirection
-              updateValues(value + stepInDirection, atIndex)
-            }
-          }}
-        />
-        {/* {isFormControl &&
-          values.map((value, index) => (
-            <BubbleInput
-              key={index}
-              name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
-              value={value}
-            />
-          ))} */}
-      </SliderProvider>
-    )
-  }),
-  {
-    Track: SliderTrack,
-    TrackActive: SliderTrackActive,
-    Thumb: SliderThumb,
-  }
-)
-
-Slider.displayName = SLIDER_NAME
+/* -----------------------------------------------------------------------------------------------*/
 
 const Track = SliderTrack
 const Range = SliderTrackActive

@@ -78,26 +78,6 @@ const ButtonFrame = styled(SizableStack, {
         },
       },
     },
-
-    circular: {
-      true: (_, extras) => {
-        const { props } = extras
-        const sizeVal = props.size ?? '$4'
-        const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
-        const size = scale.minHeight
-        return {
-          width: size,
-          height: size,
-          maxWidth: size,
-          maxHeight: size,
-          minWidth: size,
-          minHeight: size,
-          borderRadius: 100_000,
-          paddingVertical: 0,
-          paddingHorizontal: 0,
-        }
-      },
-    },
   },
 })
 

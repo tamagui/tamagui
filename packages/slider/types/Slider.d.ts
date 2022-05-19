@@ -1,4 +1,4 @@
-import { YStackProps } from '@tamagui/stacks';
+import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
 import { SliderImplElement, SliderProps } from './types';
@@ -13,7 +13,7 @@ interface SliderTrackActiveProps extends YStackProps {
 }
 declare const SliderTrackActive: React.ForwardRefExoticComponent<SliderTrackActiveProps & React.RefAttributes<SliderTrackActiveElement>>;
 declare type SliderThumbElement = HTMLElement | View;
-interface SliderThumbProps extends YStackProps {
+interface SliderThumbProps extends SizableStackProps {
     index: number;
 }
 declare const SliderThumb: React.ForwardRefExoticComponent<SliderThumbProps & React.RefAttributes<SliderThumbElement>>;

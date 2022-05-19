@@ -1,4 +1,4 @@
-import { GetProps, getButtonSize, styled } from '@tamagui/core'
+import { GetProps, buttonScaling, getButtonSize, getSizeScaledToFont, styled } from '@tamagui/core'
 
 import { XStack } from './Stacks'
 
@@ -60,6 +60,27 @@ export const SizableStack = styled(XStack, {
 
     size: {
       '...size': getButtonSize,
+    },
+
+    circular: {
+      true: (_, extras) => {
+        const { props } = extras
+        // @ts-ignore
+        const sizeVal = props.size ?? '$4'
+        const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
+        const size = scale.minHeight
+        return {
+          width: size,
+          height: size,
+          maxWidth: size,
+          maxHeight: size,
+          minWidth: size,
+          minHeight: size,
+          borderRadius: 100_000,
+          paddingVertical: 0,
+          paddingHorizontal: 0,
+        }
+      },
     },
 
     disabled: {

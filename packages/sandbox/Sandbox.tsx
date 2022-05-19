@@ -3,17 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import { Slider } from '@tamagui/slider'
 import React, { useState } from 'react'
-import {
-  Button,
-  Paragraph,
-  Popover,
-  PopoverProps,
-  Tooltip,
-  TooltipGroup,
-  TooltipProps,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, PopoverProps } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -56,7 +46,7 @@ export function Demo(props: Omit<PopoverProps, 'children'>) {
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb index={0} />
+      <Slider.Thumb size="$4" circular index={0} />
     </Slider>
   )
 }

@@ -1,4 +1,4 @@
-import type { GestureReponderEvent } from '@tamagui/core'
+import type { GestureReponderEvent, SizeTokens } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import type { YStackProps } from '@tamagui/stacks'
 import type { View } from 'react-native'
@@ -49,6 +49,7 @@ export interface SliderProps
     SliderHorizontalProps | SliderVerticalProps,
     keyof SliderOrientationPrivateProps | 'defaultValue'
   > {
+  size?: SizeTokens
   name?: string
   disabled?: boolean
   orientation?: React.AriaAttributes['aria-orientation']
@@ -63,6 +64,7 @@ export interface SliderProps
 }
 
 export type SliderContextValue = {
+  size?: number | null
   disabled?: boolean
   min: number
   max: number
