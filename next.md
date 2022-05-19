@@ -1,3 +1,7 @@
+- use style values instead of classnames when non-extracted
+  - think of <YStack x={cursor.position} /> we'll generate infinite classnames
+  - also aligns with stylex
+
 - 1.0
   - shorthands-only type/docs
   - tokens-only type/docs
