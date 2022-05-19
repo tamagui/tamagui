@@ -19,13 +19,15 @@ export declare const SliderOrientationProvider: {
     (props: {
         startEdge: 'bottom' | 'left' | 'right';
         endEdge: 'top' | 'right' | 'left';
-        size: 'width' | 'height';
+        sizeProp: 'width' | 'height';
+        size: number;
         direction: number;
     } & {
         scope: import("@tamagui/create-context").Scope<{
             startEdge: 'bottom' | 'left' | 'right';
             endEdge: 'top' | 'right' | 'left';
-            size: 'width' | 'height';
+            sizeProp: 'width' | 'height';
+            size: number;
             direction: number;
         }>;
         children: import("react").ReactNode;
@@ -34,12 +36,14 @@ export declare const SliderOrientationProvider: {
 }, useSliderOrientationContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<{
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
-    size: 'width' | 'height';
+    sizeProp: 'width' | 'height';
+    size: number;
     direction: number;
 } | undefined>) => {
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
-    size: 'width' | 'height';
+    sizeProp: 'width' | 'height';
+    size: number;
     direction: number;
 };
 //# sourceMappingURL=context.d.ts.map

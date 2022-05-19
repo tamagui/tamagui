@@ -12,11 +12,13 @@ export const [SliderProvider, useSliderContext] =
 export const [SliderOrientationProvider, useSliderOrientationContext] = createSliderContext<{
   startEdge: 'bottom' | 'left' | 'right'
   endEdge: 'top' | 'right' | 'left'
-  size: 'width' | 'height'
+  sizeProp: 'width' | 'height'
+  size: number
   direction: number
 }>(SLIDER_NAME, {
   startEdge: 'left',
   endEdge: 'right',
-  size: 'width',
+  sizeProp: 'width',
+  size: 0,
   direction: 1,
 })

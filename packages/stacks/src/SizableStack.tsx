@@ -8,7 +8,7 @@ import {
   styled,
 } from '@tamagui/core'
 
-import { XStack } from './Stacks'
+import { XStack, getElevation } from './Stacks'
 
 export const SizableStack = styled(XStack, {
   name: 'SizableStack',
@@ -70,6 +70,7 @@ export const SizableStack = styled(XStack, {
       '...size': getButtonSize,
     },
 
+    // matches circle to size
     circular: {
       true: (_, extras) => {
         const { props } = extras
@@ -86,6 +87,13 @@ export const SizableStack = styled(XStack, {
           paddingVertical: 0,
           paddingHorizontal: 0,
         }
+      },
+    },
+
+    // matches elevation to size
+    elevate: {
+      true: (_, extras) => {
+        return getElevation(extras.props['size'], extras)
       },
     },
 

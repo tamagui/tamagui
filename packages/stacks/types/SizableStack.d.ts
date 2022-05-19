@@ -2,7 +2,7 @@ import { GetProps, ScaleVariantExtras, SizeTokens } from '@tamagui/core';
 export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "disabled" | "size" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}, "focusable" | "fontFamily" | "disabled" | "size" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "elevate" | "chromeless"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
@@ -10,13 +10,14 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
     bordered?: boolean | undefined;
     size?: SizeTokens | undefined;
     circular?: boolean | undefined;
+    elevate?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "disabled" | "size" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}, "focusable" | "fontFamily" | "disabled" | "size" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "elevate" | "chromeless"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
@@ -24,13 +25,14 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
     bordered?: boolean | undefined;
     size?: SizeTokens | undefined;
     circular?: boolean | undefined;
+    elevate?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "disabled" | "size" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "chromeless"> & {
+}, "focusable" | "fontFamily" | "disabled" | "size" | "transparent" | "hoverable" | "pressable" | "bordered" | "circular" | "elevate" | "chromeless"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
@@ -38,6 +40,7 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
     bordered?: boolean | undefined;
     size?: SizeTokens | undefined;
     circular?: boolean | undefined;
+    elevate?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -52,6 +55,7 @@ export declare const SizableStack: import("@tamagui/core").TamaguiComponent<Omit
     bordered?: boolean | undefined;
     size?: SizeTokens | undefined;
     circular?: boolean | undefined;
+    elevate?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;

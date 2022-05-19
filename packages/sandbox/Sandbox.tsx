@@ -1,9 +1,9 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Slider } from '@tamagui/slider'
+import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
-import { Button, PopoverProps } from 'tamagui'
+import { Button, PopoverProps, Spacer } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -35,18 +35,20 @@ export const Sandbox = () => {
         }}
       >
         <Demo />
+        <Spacer size="$8" />
+        <Demo size="$10" />
       </div>
     </Tamagui.Provider>
   )
 }
 
-export function Demo(props: Omit<PopoverProps, 'children'>) {
+export function Demo(props: SliderProps) {
   return (
-    <Slider defaultValue={[50]} max={100} step={1} aria-label="Volume">
-      <Slider.Track>
-        <Slider.TrackActive />
+    <Slider defaultValue={[50]} max={100} step={1} {...props}>
+      <Slider.Track bc="green">
+        <Slider.TrackActive bc="red" />
       </Slider.Track>
-      <Slider.Thumb size="$4" circular elevation="$4" index={0} />
+      <Slider.Thumb circular elevate index={0} />
     </Slider>
   )
 }

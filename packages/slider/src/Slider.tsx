@@ -32,7 +32,7 @@ import {
   useSliderContext,
   useSliderOrientationContext,
 } from './context'
-import { SliderImpl } from './SliderImpl'
+import { DirectionalYStack, SliderFrame, SliderImpl } from './SliderImpl'
 import {
   Direction,
   ScopedProps,
@@ -40,6 +40,7 @@ import {
   SliderHorizontalProps,
   SliderImplElement,
   SliderProps,
+  SliderTrackProps,
   SliderVerticalProps,
 } from './types'
 
@@ -62,6 +63,7 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
     const layoutRef = React.useRef<LayoutRectangle | null>(null)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
+    const [size, setSize] = React.useState(0)
 
     function getValueFromPointer(pointerPosition: number) {
       const layout = layoutRef.current
@@ -78,13 +80,18 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
         startEdge={isDirectionLTR ? 'left' : 'right'}
         endEdge={isDirectionLTR ? 'right' : 'left'}
         direction={isDirectionLTR ? 1 : -1}
-        size="width"
+        sizeProp="width"
+        size={size}
       >
         <SliderImpl
           dir={direction}
           data-orientation="horizontal"
           {...sliderProps}
-          onLayout={(e) => (layoutRef.current = e.nativeEvent.layout)}
+          onLayout={(e) => {
+            const layout = e.nativeEvent.layout
+            layoutRef.current = layout
+            // setSize(layout.height)
+          }}
           ref={forwardedRef}
           onSlideStart={(event) => {
             const value = getValueFromPointer(event.nativeEvent.pageX)
@@ -167,52 +174,13 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
  * SliderTrack
  * -----------------------------------------------------------------------------------------------*/
 
-const DirectionalYStack = styled(YStack, {
-  variants: {
-    vertical: {
-      true: {
-        width: 5,
-        height: 200,
-      },
-    },
-    horizontal: {
-      true: {
-        height: 5,
-        width: 200,
-      },
-    },
-  },
-})
-
-const SliderTrackFrame = styled(DirectionalYStack, {
-  name: 'SliderTrack',
-  // backgroundColor: '$background',
-  backgroundColor: 'red',
-  borderRadius: 100_000,
-  position: 'relative',
-
-  variants: {
-    size: {
-      '...size': (val, { props, tokens }) => {
-        const isVertical = props.vertical
-        const size = getVariableValue(tokens.size[val] ?? tokens.size['$4'] ?? val) as number
-        return {
-          // do size stuff
-        }
-      },
-    },
-  },
-
-  defaultVariants: {
-    horizontal: true,
-  },
-})
-
 const TRACK_NAME = 'SliderTrack'
 
 type SliderTrackElement = HTMLElement | View
 
-interface SliderTrackProps extends YStackProps {}
+const SliderTrackFrame = styled(SliderFrame, {
+  name: 'SliderTrackFrame',
+})
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
   (props: ScopedProps<SliderTrackProps>, forwardedRef) => {
@@ -222,6 +190,7 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
       <SliderTrackFrame
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
+        dir={context.orientation}
         {...trackProps}
         ref={forwardedRef}
       />
@@ -319,7 +288,6 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
     const sizeVal = sizeProp ?? context.size ?? 40
     const size = getCircleSize(sizeVal, getVariantExtras(props))
-    console.log('size', size)
 
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
@@ -330,6 +298,8 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const thumbInBoundsOffset = size
       ? getThumbInBoundsOffset(size, percent, orientation.direction)
       : 0
+
+    console.log('thumbInBoundsOffset', thumbInBoundsOffset, size, percent)
 
     // React.useEffect(() => {
     //   if (thumb) {
@@ -354,6 +324,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         // tabIndex={context.disabled ? undefined : 0}
         {...thumbProps}
         x={thumbInBoundsOffset}
+        y={-size / 2}
         {...{
           [orientation.startEdge]: `${percent}%`,
         }}
@@ -440,7 +411,7 @@ const Slider = withStaticProperties(
       })
     }
 
-    const SliderOrientation = isHorizontal ? SliderHorizontal : SliderVertical
+    const SliderOriented = isHorizontal ? SliderHorizontal : SliderVertical
 
     return (
       <SliderProvider
@@ -454,7 +425,7 @@ const Slider = withStaticProperties(
         orientation={orientation}
         size={size}
       >
-        <SliderOrientation
+        <SliderOriented
           aria-disabled={disabled}
           data-disabled={disabled ? '' : undefined}
           {...sliderProps}

@@ -3,15 +3,40 @@
  * -----------------------------------------------------------------------------------------------*/
 
 import { composeEventHandlers, styled } from '@tamagui/core'
-import { YStack } from '@tamagui/stacks'
+import { YStack, getCircleSize } from '@tamagui/stacks'
 import * as React from 'react'
 
 import { SLIDER_NAME, useSliderContext } from './context'
 import { ScopedProps, SliderImplElement, SliderImplProps } from './types'
 
-const SliderFrame = styled(YStack, {
+export const DirectionalYStack = styled(YStack, {
+  variants: {
+    dir: {
+      horizontal: {},
+      vertical: {},
+    },
+  },
+})
+
+export const SliderFrame = styled(DirectionalYStack, {
   name: 'Slider',
   position: 'relative',
+
+  variants: {
+    size: (val, extras) => {
+      const dir = extras.props.dir
+      const circleSize = getCircleSize(val, extras)
+      const size = circleSize / 4
+      if (dir === 'horizontal') {
+        return {
+          height: size,
+        }
+      }
+      return {
+        width: size,
+      }
+    },
+  },
 })
 
 export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
