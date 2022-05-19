@@ -3600,6 +3600,7 @@ __metadata:
     "@tamagui/use-controllable-state": ^1.0.1-beta.21
     react: "*"
     react-dom: "*"
+    react-native-gesture-handler: "*"
     react-native-reanimated: ~2.8.0
   peerDependencies:
     react: "*"
