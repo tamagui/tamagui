@@ -154,6 +154,7 @@ export function createComponent<
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
     const hasEnterStyle = !!props.enterStyle
+    const hostRef = useRef<HTMLElement | View>(null)
 
     const features = useFeatures(props, {
       forceUpdate,
@@ -164,6 +165,7 @@ export function createComponent<
       pseudos,
       staticConfig,
       theme,
+      hostRef,
       onDidAnimate: props.onDidAnimate,
     })
 
@@ -217,7 +219,6 @@ export function createComponent<
       // @ts-ignore
       defaultVariants,
 
-      // TODO feature load layout hook
       onLayout,
       ...viewPropsRest
     } = viewPropsIn
@@ -234,7 +235,6 @@ export function createComponent<
     }
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
-    const hostRef = useRef(null)
 
     // isMounted
     const internal = useRef<{ isMounted: boolean }>()
@@ -275,6 +275,8 @@ export function createComponent<
     }
 
     if (isWeb && !asChild) {
+      rnw.useElementLayout(hostRef, onLayout)
+
       // from react-native-web
       rnw.useResponderEvents(hostRef, {
         onMoveShouldSetResponder,

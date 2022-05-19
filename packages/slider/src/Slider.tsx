@@ -9,7 +9,7 @@ import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
-import { View } from 'react-native'
+import { LayoutRectangle, View } from 'react-native'
 
 import {
   SLIDER_NAME,
@@ -45,28 +45,17 @@ type SliderHorizontalElement = SliderImplElement
 const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
     const { min, max, dir, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } = props
-    const [slider, setSlider] = React.useState<SliderImplElement | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, (node) => setSlider(node))
-    const rectRef = React.useRef<ClientRect>()
+    const layoutRef = React.useRef<LayoutRectangle | null>(null)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
 
     function getValueFromPointer(pointerPosition: number) {
-      // @ts-ignore
-      const rect = rectRef.current || slider!.getBoundingClientRect()
-      const input: [number, number] = [0, rect.width]
+      const layout = layoutRef.current
+      if (!layout) return
+      const input: [number, number] = [0, layout.width]
       const output: [number, number] = isDirectionLTR ? [min, max] : [max, min]
       const value = linearScale(input, output)
-      rectRef.current = rect
-      console.log(
-        'check it',
-        rect.left,
-        input,
-        output,
-        pointerPosition,
-        value(pointerPosition - rect.left)
-      )
-      return value(pointerPosition - rect.left)
+      return value(pointerPosition - layout.x)
     }
 
     return (
@@ -81,20 +70,26 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
           dir={direction}
           data-orientation="horizontal"
           {...sliderProps}
-          ref={composedRefs}
+          onLayout={(e) => (layoutRef.current = e.nativeEvent.layout)}
+          ref={forwardedRef}
+          // ref={composedRefs}
           // style={{
           //   ...sliderProps.style,
           //   ['--radix-slider-thumb-transform' as any]: 'translateX(-50%)',
           // }}
           onSlideStart={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.locationX)
-            onSlideStart?.(value)
+            const value = getValueFromPointer(event.nativeEvent.pageX)
+            if (value) {
+              onSlideStart?.(value)
+            }
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.locationX)
-            onSlideMove?.(value)
+            const value = getValueFromPointer(event.nativeEvent.pageX)
+            if (value) {
+              onSlideMove?.(value)
+            }
           }}
-          onSlideEnd={() => (rectRef.current = undefined)}
+          onSlideEnd={() => {}}
           onStepKeyDown={(event) => {
             const isBackKey = BACK_KEYS[direction].includes(event.key)
             onStepKeyDown?.({ event, direction: isBackKey ? -1 : 1 })
@@ -196,7 +191,6 @@ const SliderTrackFrame = styled(DirectionalYStack, {
       '...size': (val, { props, tokens }) => {
         const isVertical = props.vertical
         const size = getVariableValue(tokens.size[val] ?? tokens.size['$4'] ?? val) as number
-        console.log('size', size)
         return {
           // do size stuff
         }
@@ -242,7 +236,6 @@ type SliderTrackActiveElement = HTMLElement | View
 interface SliderTrackActiveProps extends YStackProps {}
 
 const SliderTrackActiveFrame = styled(YStack, {
-  debug: true,
   name: 'SliderTrackActive',
   backgroundColor: '#000',
   borderRadius: 100_000,
@@ -275,8 +268,6 @@ const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrack
     )
     const offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0
     const offsetEnd = 100 - Math.max(...percentages)
-
-    console.log('context.orientation', context.orientation)
 
     return (
       <SliderTrackActiveFrame
@@ -314,6 +305,7 @@ const SliderThumbFrame = styled(YStack, {
   height: 10,
   borderRadius: 100_000,
   backgroundColor: 'yellow',
+  position: 'absolute',
 
   // todo make sizable
 })
@@ -346,37 +338,33 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     // }, [thumb, context.thumbs])
 
     return (
-      <span
-        style={{
-          transform: 'var(--radix-slider-thumb-transform)',
-          position: 'absolute',
-          [orientation.startEdge]: `calc(${percent}% + ${thumbInBoundsOffset}px)`,
+      <SliderThumbFrame
+        // role="slider"
+        aria-label={props['aria-label'] || label}
+        aria-valuemin={context.min}
+        aria-valuenow={value}
+        aria-valuemax={context.max}
+        aria-orientation={context.orientation}
+        data-orientation={context.orientation}
+        data-disabled={context.disabled ? '' : undefined}
+        // tabIndex={context.disabled ? undefined : 0}
+        {...thumbProps}
+        x={thumbInBoundsOffset}
+        {...{
+          [orientation.startEdge]: `${percent}%`,
         }}
-      >
-        <SliderThumbFrame
-          // role="slider"
-          aria-label={props['aria-label'] || label}
-          aria-valuemin={context.min}
-          aria-valuenow={value}
-          aria-valuemax={context.max}
-          aria-orientation={context.orientation}
-          data-orientation={context.orientation}
-          data-disabled={context.disabled ? '' : undefined}
-          // tabIndex={context.disabled ? undefined : 0}
-          {...thumbProps}
-          // ref={composedRefs}
-          /**
-           * There will be no value on initial render while we work out the index so we hide thumbs
-           * without a value, otherwise SSR will render them in the wrong position before they
-           * snap into the correct position during hydration which would be visually jarring for
-           * slower connections.
-           */
-          style={value === undefined ? { display: 'none' } : props.style}
-          onFocus={composeEventHandlers(props.onFocus, () => {
-            context.valueIndexToChangeRef.current = index
-          })}
-        />
-      </span>
+        // ref={composedRefs}
+        /**
+         * There will be no value on initial render while we work out the index so we hide thumbs
+         * without a value, otherwise SSR will render them in the wrong position before they
+         * snap into the correct position during hydration which would be visually jarring for
+         * slower connections.
+         */
+        style={value === undefined ? { display: 'none' } : props.style}
+        onFocus={composeEventHandlers(props.onFocus, () => {
+          context.valueIndexToChangeRef.current = index
+        })}
+      />
     )
   }
 )
@@ -546,7 +534,6 @@ const Slider = withStaticProperties(
     // We set this to true by default so that events bubble to forms without JS (SSR)
     // TODO
     // const isFormControl = slider ? Boolean(slider.closest('form')) : true
-    const SliderOrientation = isHorizontal ? SliderHorizontal : SliderVertical
 
     const [values = [], setValues] = useControllableState({
       prop: value,
@@ -571,7 +558,6 @@ const Slider = withStaticProperties(
       const decimalCount = getDecimalCount(step)
       const snapToStep = roundValue(Math.round((value - min) / step) * step + min, decimalCount)
       const nextValue = clamp(snapToStep, [min, max])
-
       setValues((prevValues = []) => {
         const nextValues = getNextSortedValues(prevValues, nextValue, atIndex)
         if (hasMinStepsBetweenValues(nextValues, minStepsBetweenThumbs * step)) {
@@ -582,6 +568,8 @@ const Slider = withStaticProperties(
         }
       })
     }
+
+    const SliderOrientation = isHorizontal ? SliderHorizontal : SliderVertical
 
     return (
       <SliderProvider
