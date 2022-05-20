@@ -1,5 +1,12 @@
-import { getCircleSize } from './SizableStack'
+import { ScaleVariantExtras, SizeTokens, buttonScaling, getSizeScaledToFont } from '@tamagui/core'
+
 import { getElevation } from './Stacks'
+
+export function getCircleSize(size: SizeTokens, extras: ScaleVariantExtras) {
+  const sizeVal = size ?? '$4'
+  const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
+  return scale.minHeight
+}
 
 export const elevate = {
   true: (_, extras) => {
