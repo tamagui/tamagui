@@ -3,12 +3,23 @@
   - also aligns with stylex
 
 - 1.0
+  - make SimpleTooltip inverse by default
+    - make all inverse by default? i think so? or else make sub-themes handle it...
+  - input type="email", button type="submit" etc
+    - its fine to wrap input in HOC like button
+    - normalize divergent android/ios:
+      - https://reactnative.dev/docs/textinput
+        - android accepts "autoComplete"
+        - ios accepts "textContentType"
+        - set secureTextEntry automatically for type="password"
+  - form onSubmit
   - shorthands-only type/docs
   - tokens-only type/docs
   - fix /types import
   - make Label work on native with touch event (require single <Label.Provider> at root)
     - make sure Select, Input, Switch etc all work with it
   - document $body being default font family
+  - better docs on @tamagui/stacks (Sizable, ThemeableSizable, export variants)
   - add more of a kitchen sink demo to starts
   - test Android in starters repo
   - size=5.5 icon scales diff

@@ -343,6 +343,8 @@ export declare type VariantDefinitionFromProps<MyProps, Val> = MyProps extends O
         [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
     });
 } : never;
+export declare type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>;
+export declare type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>;
 export declare type GetVariantProps<Variants> = {
     [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof Variants[Key]>;
 };

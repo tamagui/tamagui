@@ -36,6 +36,8 @@ export {
   GetAnimationKeys,
   GetProps,
   GetVariantProps,
+  GenericTextVariants,
+  GenericStackVariants,
   Media,
   MediaKeys,
   MediaPropKeys,
