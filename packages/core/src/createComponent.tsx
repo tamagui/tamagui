@@ -788,7 +788,7 @@ export const Spacer = createComponent<
     size: {
       '...size': (size, { tokens }) => {
         size = size == true ? '$true' : size
-        const sizePx = tokens.size[size] ?? size
+        const sizePx = tokens.space[size] ?? size
         return {
           width: sizePx,
           height: sizePx,
