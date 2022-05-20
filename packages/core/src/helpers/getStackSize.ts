@@ -13,7 +13,7 @@ export const getSizeScaledToFont = (
   { sizeX = 1, sizeY = 1 }: ScaleProps,
   { tokens, props, fonts }: ScaleVariantExtras
 ) => {
-  const size = tokens.size[val] ?? tokens.size['$4'] ?? val ?? 14
+  const size = tokens.size[val] ?? val ?? tokens.size['$4'] ?? 14
   const radius = tokens.radius[val] ?? tokens.radius['$4'] ?? size
   const px = Math.round(+(isVariable(size) ? size.val : size) * sizeX)
   const py = Math.round(+(isVariable(size) ? size.val : size) * sizeY)

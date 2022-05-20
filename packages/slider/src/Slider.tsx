@@ -294,6 +294,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
 
     return (
       <SliderThumbFrame
+        debug="verbose"
         ref={forwardedRef}
         // role="slider"
         aria-label={props['aria-label'] || label}
