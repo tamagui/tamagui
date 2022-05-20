@@ -5,7 +5,10 @@ import {
   getTextSize,
 } from '@tamagui/core'
 
-const inputSizeFrame = createGetStackSize(buttonScaling)
+const inputSizeFrame = createGetStackSize({
+  ...buttonScaling,
+  sizeX: 0.4,
+})
 
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = '$4', props) => {
   const frame = inputSizeFrame(val, props)

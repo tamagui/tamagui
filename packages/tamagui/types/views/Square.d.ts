@@ -9,9 +9,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -22,9 +22,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -35,9 +35,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
@@ -48,9 +48,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
 }>;

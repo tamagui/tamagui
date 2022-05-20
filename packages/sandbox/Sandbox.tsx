@@ -3,11 +3,13 @@ import '@tamagui/polyfill-dev'
 
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
-import { Button, PopoverProps, Spacer } from 'tamagui'
+import { Button, Input, PopoverProps, Spacer, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
 React['keep']
+
+const size = '$6'
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as any)
@@ -34,7 +36,11 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Demo size="$4" />
+        <YStack space={size}>
+          <Button size={size}>Hello</Button>
+          <Input size={size} />
+          <Demo size={size} />
+        </YStack>
         {/* <Spacer size="$8" />
         <Demo size="$10" /> */}
       </div>
@@ -44,7 +50,7 @@ export const Sandbox = () => {
 
 export function Demo(props: SliderProps) {
   return (
-    <Slider bc="blue" defaultValue={[50]} max={100} step={1} {...props}>
+    <Slider width="100%" bc="blue" defaultValue={[50]} max={100} step={1} {...props}>
       <Slider.Track bc="green">
         <Slider.TrackActive bc="red" />
       </Slider.Track>

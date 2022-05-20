@@ -3,6 +3,7 @@
   - also aligns with stylex
 
 - 1.0
+  - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
     - make all inverse by default? i think so? or else make sub-themes handle it...
   - input type="email", button type="submit" etc

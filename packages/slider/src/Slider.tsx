@@ -294,7 +294,6 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
 
     return (
       <SliderThumbFrame
-        debug="verbose"
         ref={forwardedRef}
         // role="slider"
         aria-label={props['aria-label'] || label}
@@ -308,7 +307,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         {...thumbProps}
         x={thumbInBoundsOffset}
         y={-size / 2}
-        size={100}
+        size={size}
         {...{
           [orientation.startEdge]: `${percent}%`,
         }}
