@@ -62,6 +62,14 @@ const ButtonFrame = styled(ThemeableSizableStack, {
   hoverable: true,
   pressable: true,
 
+  pressStyle: {
+    borderColor: 'transparent',
+  },
+
+  hoverStyle: {
+    borderColor: 'transparent',
+  },
+
   focusStyle: {
     borderColor: '$borderColorFocus',
   },
@@ -71,12 +79,6 @@ const ButtonFrame = styled(ThemeableSizableStack, {
   cursor: 'pointer',
 
   variants: {
-    bordered: {
-      true: {
-        borderColor: '$borderColor',
-      },
-    },
-
     active: {
       true: {
         hoverStyle: {
@@ -85,6 +87,14 @@ const ButtonFrame = styled(ThemeableSizableStack, {
       },
     },
   },
+})
+
+export const ButtonText = styled(SizableText, {
+  color: '$color',
+  selectable: false,
+  flexGrow: 1,
+  flexShrink: 1,
+  ellipse: true,
 })
 
 const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
@@ -175,9 +185,6 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
           {...(colorProp && {
             color: colorProp,
           })}
-          flexGrow={1}
-          flexShrink={1}
-          ellipse
           {...textProps}
         >
           {childrenStrings}

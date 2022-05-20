@@ -9,6 +9,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<Omit<impor
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -22,6 +23,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<Omit<impor
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -35,6 +37,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<Omit<impor
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -48,6 +51,7 @@ export declare const Circle: import("@tamagui/core").TamaguiComponent<Omit<impor
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
