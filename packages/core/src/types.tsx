@@ -720,6 +720,9 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
     }
   : never
 
+export type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>
+export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>
+
 export type GetVariantProps<Variants> = {
   [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>
     ? Val

@@ -14,6 +14,6 @@ export declare function spacedChildren({ isZStack, children, space, direction, s
     space?: any;
     spaceFlex?: boolean | number;
     direction?: SpaceDirection;
-}): any[];
+}): any;
 export declare function AbsoluteFill(props: any): JSX.Element;
 //# sourceMappingURL=createComponent.d.ts.map
