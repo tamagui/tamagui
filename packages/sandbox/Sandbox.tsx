@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
-import { Button, Input, PopoverProps, Spacer, YStack } from 'tamagui'
+import { Button, Input, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
