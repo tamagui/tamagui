@@ -15,13 +15,15 @@ export const getSizeScaledToFont = (
 ) => {
   const size = tokens.size[val] ?? val ?? tokens.size['$4'] ?? 14
   const radius = tokens.radius[val] ?? tokens.radius['$4'] ?? size
-  const px = Math.round(+(isVariable(size) ? size.val : size) * sizeX)
-  const py = Math.round(+(isVariable(size) ? size.val : size) * sizeY)
+  const sizePx = +(isVariable(size) ? size.val : size)
+  const scaleSize = isVariable(size) ? 2 : 1
+  const px = Math.round(sizePx * sizeX)
+  const py = Math.round(sizePx * sizeY)
   // keep buttons height aligned to the font used
   const font = fonts[props.fontFamily] || fonts['$body']
   const lineHeights = font.lineHeight
   const lineHeight = lineHeights[val] ?? lineHeights['$4']
-  const minHeight = Math.round(getVariableValue(lineHeight) + py * 2)
+  const minHeight = Math.round(getVariableValue(lineHeight) + py * scaleSize)
   return {
     px,
     py,
