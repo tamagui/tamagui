@@ -168,7 +168,7 @@ export function createExtractor() {
         if (isValidImport) {
           const isValidComponent = node.specifiers.some((specifier) => {
             const name = specifier.local.name
-            return validComponents[name] || validHooks[name]
+            return !!(validComponents[name] || validHooks[name])
           })
           if (shouldPrintDebug === 'verbose') {
             console.log('import from', from, { isValidComponent })

@@ -24,7 +24,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
   const shouldExclude = (path: string, projectRoot: string) => {
     const res = tamaguiOptions.shouldExtract?.(path, projectRoot)
     if (typeof res === 'boolean') {
-      return res
+      return !res
     }
     return shouldExcludeDefault(path, projectRoot)
   }
