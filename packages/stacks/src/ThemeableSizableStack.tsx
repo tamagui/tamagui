@@ -1,7 +1,7 @@
 import { GetProps, getButtonSize, styled } from '@tamagui/core'
 
 import { YStack } from './Stacks'
-import { focusable, hoverable, pressable } from './variants'
+import { circular, elevate, focusable, hoverable, pressable } from './variants'
 
 export const ThemeableSizableStack = styled(YStack, {
   name: 'SizableStack',
@@ -12,9 +12,13 @@ export const ThemeableSizableStack = styled(YStack, {
   variants: {
     // allows the type to come in for use in size
     fontFamily: () => ({}),
+
     hoverable,
     pressable,
     focusable,
+    circular,
+    elevate,
+
     size: {
       '...size': getButtonSize,
     },
@@ -48,10 +52,6 @@ export const ThemeableSizableStack = styled(YStack, {
         backgroundColor: 'transparent',
         borderColor: 'transparent',
         shadowColor: 'transparent',
-        // this would be a breaking change...
-        // hoverStyle: {
-        //   backgroundColor: 'transparent',
-        // },
       },
     },
   },

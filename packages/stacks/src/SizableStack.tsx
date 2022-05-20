@@ -8,8 +8,8 @@ import {
   styled,
 } from '@tamagui/core'
 
-import { YStack, getElevation } from './Stacks'
-import { focusable, hoverable, pressable } from './variants'
+import { YStack } from './Stacks'
+import { circular, elevate, focusable, hoverable, pressable } from './variants'
 
 export const SizableStack = styled(YStack, {
   name: 'SizableStack',
@@ -20,38 +20,15 @@ export const SizableStack = styled(YStack, {
   variants: {
     // allows the type to come in for use in size
     fontFamily: () => ({}),
+
     hoverable,
     pressable,
     focusable,
+    circular,
+    elevate,
+
     size: {
       '...size': getButtonSize,
-    },
-
-    // matches circle to size
-    circular: {
-      true: (_, extras) => {
-        const { props } = extras
-        // @ts-ignore
-        const size = getCircleSize(props.size, extras)
-        return {
-          width: size,
-          height: size,
-          maxWidth: size,
-          maxHeight: size,
-          minWidth: size,
-          minHeight: size,
-          borderRadius: 100_000,
-          paddingVertical: 0,
-          paddingHorizontal: 0,
-        }
-      },
-    },
-
-    // matches elevation to size
-    elevate: {
-      true: (_, extras) => {
-        return getElevation(extras.props['size'], extras)
-      },
     },
   },
 })

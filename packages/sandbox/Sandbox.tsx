@@ -34,9 +34,9 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Demo />
-        <Spacer size="$8" />
-        <Demo size="$10" />
+        <Demo size="$4" />
+        {/* <Spacer size="$8" />
+        <Demo size="$10" /> */}
       </div>
     </Tamagui.Provider>
   )

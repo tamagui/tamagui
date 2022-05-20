@@ -3,8 +3,6 @@ import {
   GetProps,
   ReactComponentWithRef,
   ThemeableProps,
-  buttonScaling,
-  getSizeScaledToFont,
   getVariableValue,
   spacedChildren,
   styled,
