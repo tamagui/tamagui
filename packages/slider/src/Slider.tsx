@@ -267,15 +267,13 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
     // const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null)
     // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
-    const sizeVal = sizeProp ?? context.size ?? 40
-    const size = getCircleSize(sizeVal, getVariantExtras(props))
-    console.log('s', sizeProp, context.size, { sizeVal, size })
 
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
+    const [size, setSize] = React.useState(0)
 
     const thumbInBoundsOffset = size
       ? getThumbInBoundsOffset(size, percent, orientation.direction)
@@ -307,7 +305,10 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         {...thumbProps}
         x={thumbInBoundsOffset}
         y={-size / 2}
-        size={size}
+        size={sizeProp ?? context.size ?? 30}
+        onLayout={(e) => {
+          setSize(e.nativeEvent.layout[orientation.sizeProp])
+        }}
         {...{
           [orientation.startEdge]: `${percent}%`,
         }}

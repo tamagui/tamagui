@@ -5,7 +5,6 @@ import { getElevation } from './Stacks'
 export function getCircleSize(size: SizeTokens, extras: ScaleVariantExtras) {
   const sizeVal = size ?? '$4'
   const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
-  console.log('getCircleSize', size, sizeVal, scale)
   return scale.minHeight
 }
 

@@ -62,6 +62,9 @@ const ButtonFrame = styled(ThemeableSizableStack, {
   hoverable: true,
   pressable: true,
 
+  // if we wanted this only when pressable = true, we'd need to merge variants?
+  cursor: 'pointer',
+
   pressStyle: {
     borderColor: 'transparent',
   },
@@ -73,10 +76,6 @@ const ButtonFrame = styled(ThemeableSizableStack, {
   focusStyle: {
     borderColor: '$borderColorFocus',
   },
-
-  // TODO only on hoverable/pressable!
-  // would need to merge variants
-  cursor: 'pointer',
 
   variants: {
     active: {
@@ -172,7 +171,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
       const index = nextChildren.length - 1
       const childrenStrings = nextChildren[index]
       nextChildren[index] = (
-        <SizableText
+        <ButtonText
           key={index}
           {...{
             fontWeight,
@@ -188,7 +187,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
           {...textProps}
         >
           {childrenStrings}
-        </SizableText>
+        </ButtonText>
       )
     }
 

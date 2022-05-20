@@ -9,7 +9,7 @@ import Tamagui from './tamagui.config'
 
 React['keep']
 
-const size = '$2'
+const size = '$8'
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as any)
