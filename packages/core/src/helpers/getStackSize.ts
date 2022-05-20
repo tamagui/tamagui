@@ -42,5 +42,5 @@ export const createGetStackSize =
     }
   }
 
-export const buttonScaling = { sizeX: 0.8, sizeY: 0.333 }
+export const buttonScaling = { sizeX: 0.9, sizeY: 0.333 }
 export const getButtonSize = createGetStackSize(buttonScaling)

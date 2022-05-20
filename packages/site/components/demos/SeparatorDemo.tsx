@@ -9,9 +9,9 @@ export default function SeparatorDemo() {
       <Separator my={15} />
       <XStack h={20} ai="center">
         <Paragraph>Blog</Paragraph>
-        <Separator vertical mx={15} />
+        <Separator als="stretch" vertical mx={15} />
         <Paragraph>Docs</Paragraph>
-        <Separator vertical mx={15} />
+        <Separator als="stretch" vertical mx={15} />
         <Paragraph>Source</Paragraph>
       </XStack>
     </YStack>

@@ -16,6 +16,7 @@ export * from './constants/constants'
 export * from './constants/platform'
 export * from './constants/rnw'
 
+export * from './helpers/createShallowUpdate'
 export * from './helpers/getStackSize'
 export * from './helpers/getExpandedShorthands'
 export * from './helpers/getSize'

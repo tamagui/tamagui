@@ -7,8 +7,8 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -22,8 +22,8 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -37,8 +37,8 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
@@ -52,8 +52,8 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    bordered?: boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
+    bordered?: boolean | undefined;
     disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;

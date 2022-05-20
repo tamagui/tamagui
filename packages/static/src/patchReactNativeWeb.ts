@@ -8,8 +8,8 @@ import * as fs from 'fs-extra'
 // would be nice in the future to be able to eject from react-native-web entirely optionally
 
 // keep it sync
-export function patchReactNativeWeb() {
-  const rootDir = require.resolve('react-native-web').replace(/\/dist.*/, '')
+export function patchReactNativeWeb(dir: string = require.resolve('react-native-web')) {
+  const rootDir = dir.replace(/\/dist.*/, '')
   const modulePath = path.join(rootDir, 'dist', 'tamagui-exports.js')
   const cjsPath = path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js')
   const shouldPatchExports =

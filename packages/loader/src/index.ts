@@ -5,7 +5,7 @@ export default require('./loader').loader
 
 // helper for webpack exclude specific to tamagui
 
-export const shouldExclude = (path: string, projectRoot: string, tamaguiOptions: any) => {
+export const shouldExclude = (path: string, projectRoot: string) => {
   if (
     path.includes('react-native-reanimated') ||
     path.includes('react-native-gesture-handler') ||
