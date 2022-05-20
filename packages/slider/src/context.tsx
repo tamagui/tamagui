@@ -1,3 +1,4 @@
+import { SizeTokens } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 
 import { SliderContextValue } from './types'
@@ -13,7 +14,7 @@ export const [SliderOrientationProvider, useSliderOrientationContext] = createSl
   startEdge: 'bottom' | 'left' | 'right'
   endEdge: 'top' | 'right' | 'left'
   sizeProp: 'width' | 'height'
-  size: number
+  size: number | SizeTokens
   direction: number
 }>(SLIDER_NAME, {
   startEdge: 'left',

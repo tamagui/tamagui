@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import { SizeTokens } from '@tamagui/core';
 import { SliderContextValue } from './types';
 export declare const SLIDER_NAME = "Slider";
 export declare const createSliderContext: <ContextValueType extends object | null>(rootComponentName: string, defaultContext?: ContextValueType | undefined) => readonly [{
@@ -20,14 +21,14 @@ export declare const SliderOrientationProvider: {
         startEdge: 'bottom' | 'left' | 'right';
         endEdge: 'top' | 'right' | 'left';
         sizeProp: 'width' | 'height';
-        size: number;
+        size: number | SizeTokens;
         direction: number;
     } & {
         scope: import("@tamagui/create-context").Scope<{
             startEdge: 'bottom' | 'left' | 'right';
             endEdge: 'top' | 'right' | 'left';
             sizeProp: 'width' | 'height';
-            size: number;
+            size: number | SizeTokens;
             direction: number;
         }>;
         children: import("react").ReactNode;
@@ -37,13 +38,13 @@ export declare const SliderOrientationProvider: {
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
     sizeProp: 'width' | 'height';
-    size: number;
+    size: number | SizeTokens;
     direction: number;
 } | undefined>) => {
     startEdge: 'bottom' | 'left' | 'right';
     endEdge: 'top' | 'right' | 'left';
     sizeProp: 'width' | 'height';
-    size: number;
+    size: number | SizeTokens;
     direction: number;
 };
 //# sourceMappingURL=context.d.ts.map

@@ -269,7 +269,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
     const sizeVal = sizeProp ?? context.size ?? 40
     const size = getCircleSize(sizeVal, getVariantExtras(props))
-    console.log('s', sizeProp, context.size, sizeVal, size)
+    console.log('s', sizeProp, context.size, { sizeVal, size })
 
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
@@ -352,8 +352,6 @@ const Slider = withStaticProperties(
     } = props
     // const [slider, setSlider] = React.useState<HTMLElement | View | null>(null)
     // const composedRefs = useComposedRefs(forwardedRef, (node) => setSlider(node))
-    const size = getSize(sizeProp)
-    console.log('go', size, sizeProp)
     const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Set())
     const valueIndexToChangeRef = React.useRef<number>(0)
     const isHorizontal = orientation === 'horizontal'
@@ -407,7 +405,8 @@ const Slider = withStaticProperties(
         thumbs={thumbRefs.current}
         values={values}
         orientation={orientation}
-        size={size}
+        // @ts-ignore
+        size={sizeProp || 20}
       >
         <SliderOriented
           aria-disabled={disabled}

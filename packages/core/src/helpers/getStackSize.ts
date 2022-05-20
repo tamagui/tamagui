@@ -24,6 +24,7 @@ export const getSizeScaledToFont = (
   const lineHeights = font.lineHeight
   const lineHeight = lineHeights[val] ?? lineHeights['$4']
   const minHeight = Math.round(getVariableValue(lineHeight) + py * scaleSize)
+  console.log('getSizeScaledToFont', minHeight, { val, size, lineHeight, py, scaleSize })
   return {
     px,
     py,

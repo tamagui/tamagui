@@ -9,7 +9,7 @@ import Tamagui from './tamagui.config'
 
 React['keep']
 
-const size = '$6'
+const size = '$2'
 
 export const Sandbox = () => {
   const [theme, setTheme] = useState('light' as any)
@@ -54,7 +54,7 @@ export function Demo(props: SliderProps) {
       <Slider.Track bc="green">
         <Slider.TrackActive bc="red" />
       </Slider.Track>
-      <Slider.Thumb circular elevate index={0} />
+      <Slider.Thumb hoverable bordered circular elevate index={0} />
     </Slider>
   )
 }
