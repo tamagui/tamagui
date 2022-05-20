@@ -1,7 +1,8 @@
 import type { TamaguiOptions } from '@tamagui/static';
 export declare type WithTamaguiProps = TamaguiOptions & {
     aliasReactPackages?: boolean;
-    shouldIncludeModuleServer?: (props: {
+    shouldExtract?: (path: string, projectRoot: string) => boolean | undefined;
+    shouldExcludeFromServer?: (props: {
         context: string;
         request: string;
         fullPath: string;

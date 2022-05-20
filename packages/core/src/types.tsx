@@ -293,7 +293,7 @@ type GetTokenFontKeysFor<
     | 'transform'
     | 'style'
     | 'color'
-> = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']][A]
+> = keyof TamaguiConfig['fonts']['body'][A]
 
 type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`
 
@@ -725,6 +725,9 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
           })
     }
   : never
+
+export type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>
+export type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>
 
 export type GetVariantProps<Variants> = {
   [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>

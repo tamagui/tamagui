@@ -6,12 +6,13 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
-import { shouldExclude } from 'tamagui-loader'
+import { shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
   aliasReactPackages?: boolean
-  shouldIncludeModuleServer?: (props: {
+  shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
+  shouldExcludeFromServer?: (props: {
     context: string
     request: string
     fullPath: string
@@ -19,6 +20,15 @@ export type WithTamaguiProps = TamaguiOptions & {
 }
 
 export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
+  // allows configuration
+  const shouldExclude = (path: string, projectRoot: string) => {
+    const res = tamaguiOptions.shouldExtract?.(path, projectRoot)
+    if (typeof res === 'boolean') {
+      return !res
+    }
+    return shouldExcludeDefault(path, projectRoot)
+  }
+
   return (nextConfig: any = {}) => {
     return {
       ...nextConfig,
@@ -141,17 +151,18 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         webpackConfig.resolve.mainFields.unshift('module:jsx')
 
         if (isServer) {
-          const includeModule = (context: string, request: string) => {
+          const externalize = (context: string, request: string) => {
             const fullPath = request[0] === '.' ? path.join(context, request) : request
 
-            const userRes = tamaguiOptions.shouldIncludeModuleServer?.({
-              context,
-              request,
-              fullPath,
-            })
-
-            if (userRes !== undefined) {
-              return userRes
+            if (tamaguiOptions.shouldExcludeFromServer) {
+              const userRes = tamaguiOptions.shouldExcludeFromServer({
+                context,
+                request,
+                fullPath,
+              })
+              if (userRes !== undefined) {
+                return userRes
+              }
             }
 
             if (
@@ -187,7 +198,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               // only runs on server
               return (ctx, cb) => {
                 const isCb = typeof cb === 'function'
-                const res = includeModule(ctx.context, ctx.request)
+                const res = externalize(ctx.context, ctx.request)
                 if (isCb) {
                   if (typeof res === 'string') {
                     return cb(null, res)
@@ -268,17 +279,15 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 {
                   loader: 'babel-loader',
                   options: {
-                    plugins: [
-                      'react-native-reanimated/plugin',
-                      '@babel/plugin-transform-react-jsx',
-                    ],
+                    presets: ['@babel/preset-react'],
+                    plugins: ['react-native-reanimated/plugin'],
                   },
                 },
               ],
             },
             {
               test: /\.(jsx?|tsx?)$/,
-              exclude: (path: string) => shouldExclude(path, options.dir, tamaguiOptions),
+              exclude: (path: string) => shouldExclude(path, options.dir),
               use: [
                 ...[].concat(swcLoader.use),
                 {
@@ -296,7 +305,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             second,
             {
               test: /\.(tsx|jsx)$/,
-              exclude: (path: string) => shouldExclude(path, options.dir, tamaguiOptions),
+              exclude: (path: string) => shouldExclude(path, options.dir),
               use: [
                 'thread-loader',
                 {

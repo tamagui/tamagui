@@ -111,32 +111,53 @@ const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
 
 export default withPlugins([
+  // All options shows are optional, except config:
   withTamagui({
-    // all props are optional except config:
+    // Path to your tamagui.config.ts file:
     config: './tamagui.config.ts',
-    // your design system (npm module name)
+
+    // Your design system (default: "tamagui")
     components: ['tamagui'],
-    // follow normalized imports matching these file names, attempt to evaluate
+
+    // Follow normalized imports matching these file names, attempt to evaluate
     // their exports for static extraction
     importsWhitelist: ['constants.js', 'colors.js'],
+
     // display detailed output (default true)
     logTimings: true,
+
     // disable static extraction, faster to iterate in dev mode (default false)
     disableExtraction: process.env.NODE_ENV === 'development',
+
     // disableExtraction only disables optimizations but keeps the debug ability and output
-    // if you want faster builds, you can disable tamagui entirely with this:
+    // if you want faster builds, you can disable tamagui entirely with this (default false)
     disable: false,
-    // exclude react-native-web modules to lighten bundle
+
+    // Exclude react-native-web modules to lighten bundle
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker'],
-    // many packages give difficulty to the nextjs server-side (node) runtime when un-bundled.
+
+    // The following options are for more unusual configurations
+
+    // By default, we configure webpack to pass anything inside your root or design system
+    // to the Tamagui loader. If you are importing files from an external package, use this:
+    shouldExtract: (path: string, projectRoot: string) => {
+      if (path.includes('../packages/my-app')) {
+        return true
+      }
+    },
+
+    // Many packages give difficulty to the nextjs server-side (node) runtime when un-bundled.
     // for example, tamagui configures aliases like `react-native` => `react-native-web`.
     // if you're running into a module that has errors importing react-native, you'll want to
-    // use a custom shouldIncludeModuleServer function to include it (or override the default).
+    // use a custom shouldExcludeFromServer function to include it (or override the default).
     // this is the exact same return type as webpack.externals.
     // returning undefined will let tamagui handle it, boolean or other values to override.
-    shouldIncludeModuleServer: ({ fullPath }) => {
+    shouldExcludeFromServer: ({ fullPath, request }) => {
       if (fullPath.includes('my-module')) {
         return `commonjs ${commonjs}`
+      }
+      if (request === 'some-hard-to-bundle-package') {
+        return true
       }
     }
   })

@@ -199,7 +199,7 @@ export declare type TamaguiComponentPropsBase = {
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
 };
-declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts'][keyof TamaguiConfig['fonts']][A];
+declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
 export declare type SpaceTokens = GetTokenString<keyof Tokens['space']> | number | boolean;
@@ -344,6 +344,8 @@ export declare type VariantDefinitionFromProps<MyProps, Val> = MyProps extends O
         [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
     });
 } : never;
+export declare type GenericStackVariants = VariantDefinitionFromProps<StackProps, any>;
+export declare type GenericTextVariants = VariantDefinitionFromProps<StackProps, any>;
 export declare type GetVariantProps<Variants> = {
     [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof Variants[Key]>;
 };

@@ -834,6 +834,9 @@ export function spacedChildren({
   spaceFlex?: boolean | number
   direction?: SpaceDirection
 }) {
+  if (!space && !spaceFlex) {
+    return children
+  }
   const childrenList = Array.isArray(children) ? children : Children.toArray(children)
   const len = childrenList.length
   if (len <= 1) {
@@ -841,16 +844,14 @@ export function spacedChildren({
   }
   const final: any[] = []
   for (const [index, child] of childrenList.entries()) {
-    if (
+    const isEmpty =
       child === null ||
       child === undefined ||
       child === false ||
       (Array.isArray(child) && child.length === 0)
-    ) {
-      continue
-    }
 
-    if (!child || (child['key'] && !isZStack)) {
+    // push them all, but wrap some in Fragment
+    if (isEmpty || !child || (child['key'] && !isZStack)) {
       final.push(child)
     } else {
       final.push(
@@ -858,14 +859,9 @@ export function spacedChildren({
       )
     }
 
-    // allows for custom visually hidden components that dont insert spacing
-    if (child['type']?.['isVisuallyHidden']) {
-      continue
-    }
-
     const next = childrenList[index + 1]
 
-    if (next && space) {
+    if (next && !isVisuallyHidden(next)) {
       final.push(
         <Spacer
           key={`_${index}_spacer`}
@@ -886,6 +882,10 @@ export function spacedChildren({
   }
 
   return final
+}
+
+function isVisuallyHidden(child: any) {
+  return child?.['type']?.['isVisuallyHidden']
 }
 
 export function AbsoluteFill(props: any) {

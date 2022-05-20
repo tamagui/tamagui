@@ -1,4 +1,3 @@
 import React from 'react';
-import { TamaguiComponentState } from '../types';
-export declare function createShallowUpdate(setter: React.Dispatch<React.SetStateAction<TamaguiComponentState>>): (next: Partial<TamaguiComponentState>) => void;
+export declare function createShallowUpdate<State extends Object>(setter: React.Dispatch<React.SetStateAction<State>>): (next: Partial<State>) => void;
 //# sourceMappingURL=createShallowUpdate.d.ts.map

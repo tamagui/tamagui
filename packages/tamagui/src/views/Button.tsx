@@ -2,10 +2,8 @@ import {
   ButtonInsideButtonContext,
   GetProps,
   ReactComponentWithRef,
-  SizeTokens,
   ThemeableProps,
   buttonScaling,
-  getButtonSize,
   getSizeScaledToFont,
   getVariableValue,
   spacedChildren,
@@ -13,7 +11,7 @@ import {
   themeable,
   useTheme,
 } from '@tamagui/core'
-import { SizableStack } from '@tamagui/stacks'
+import { ThemeableSizableStack } from '@tamagui/stacks'
 import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
 import { View } from 'react-native'
@@ -54,7 +52,7 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     textProps?: Partial<SizableTextProps>
   }
 
-const ButtonFrame = styled(SizableStack, {
+const ButtonFrame = styled(ThemeableSizableStack, {
   name: 'Button',
   tag: 'button',
   size: '$4',

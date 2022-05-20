@@ -1,5 +1,5 @@
 import { GetProps, createGetStackSize, isVariable, styled } from '@tamagui/core'
-import { SizableStack, getSizedElevation } from '@tamagui/stacks'
+import { ThemeableSizableStack, getSizedElevation } from '@tamagui/stacks'
 import React from 'react'
 
 // bugfix esbuild strips react jsx: 'preserve'
@@ -7,7 +7,7 @@ React['createElement']
 
 const getCardSize = createGetStackSize({ sizeX: 1, sizeY: 0.9 })
 
-export const Card = styled(SizableStack, {
+export const Card = styled(ThemeableSizableStack, {
   name: 'Card',
   alignItems: 'flex-start',
   flexDirection: 'column',
