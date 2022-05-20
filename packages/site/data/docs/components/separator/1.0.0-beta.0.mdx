@@ -1,0 +1,35 @@
+---
+title: Separator
+description: A simple separator component
+name: text
+component: Separator
+---
+
+# Separator
+
+<Description>Create borders between components.</Description>
+
+<HeroContainer>
+  <SeparatorDemo />
+</HeroContainer>
+
+```jsx hero template=Separator
+
+```
+
+<Highlights features={[`Supports horizontal and vertical orientation.`]} />
+
+### Separator props
+
+Separators extend Stack views inheriting all the [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'vertical',
+      required: false,
+      type: 'boolean',
+      description: `Show vertical separator.`,
+    },
+  ]}
+/>

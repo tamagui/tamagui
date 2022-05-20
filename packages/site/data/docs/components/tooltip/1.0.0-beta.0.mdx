@@ -1,0 +1,144 @@
+---
+title: Tooltip
+description: A simple tooltip component
+name: text
+component: Tooltip
+---
+
+# Tooltip
+
+<Description>A tooltip on web, with only accessibility output on native.</Description>
+
+<HeroContainer>
+  <TooltipDemo />
+</HeroContainer>
+
+```jsx hero template=Tooltip
+
+```
+
+<Highlights
+  features={[
+    `Doesn't open until your mouse stops moving.`,
+    `Doesn't render on native.`,
+    `Sizable and positionable.`,
+  ]}
+/>
+
+### Anatomy
+
+```tsx
+import { Tooltip } from '@tamagui/tooltip'
+
+export default () => (
+  <Tooltip>
+    <Tooltip.Trigger />
+    <Tooltip.Content>
+      <Tooltip.Arrow />
+      {/* ... */}
+    </Tooltip.Content>
+  </Tooltip>
+)
+```
+
+### API
+
+#### Popover
+
+Contains every component for the popover.
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: `Must contain Popover.Content`,
+    },
+    {
+      name: 'groupId',
+      type: 'string',
+      required: false,
+      description: `If given, will work alongside TooltipGroup to ensure only one tooltip in the groups stays open.`,
+    },
+    {
+      name: 'restMs',
+      type: 'number',
+      required: false,
+      description: `Time needed for cursor to rest before showing.`,
+    },
+    {
+      name: 'delay',
+      type: `number | { open?: number; close?: number }`,
+      required: false,
+      description: `Maximum time before showing (can be set independently for open/close).`,
+    },
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+    },
+    {
+      name: 'placement',
+      type: 'Placement',
+      required: false,
+      description: `'top' | 'right' | 'bottom' | 'left' | 'top-start' | 'top-end' | 'right-start' | 'right-end' | 'bottom-start' | 'bottom-end' | 'left-start' | 'left-end'`,
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: ``,
+    },
+    {
+      name: 'defaultOpen',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: `Renders into root of app instead of inline`,
+    },
+    {
+      name: 'stayInFrame',
+      type: 'ShiftProps',
+      required: false,
+      description: `See floating-ui shift()`,
+    },
+    {
+      name: 'allowFlip',
+      type: 'FlipProps',
+      required: false,
+      description: `See floating-ui flip`,
+    },
+  ]}
+/>
+
+#### Trigger
+
+Used to trigger opening of the popover when uncontrolled, just renders a YStack, see [Stacks](/docs/components/stacks).
+
+#### Content
+
+Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
+
+Used to display the content of the popover.
+
+<Notice>
+  Docs coming soon, we need to finalize a few more things to get the full set of props working
+</Notice>
+
+#### Anchor
+
+Renders as YStack, see [Stacks](/docs/components/stacks).
+
+When you want the Trigger to be in another location from where the Popover attaches, use Anchor. When used, Anchor is where the Popover will attach, while Trigger will open it.

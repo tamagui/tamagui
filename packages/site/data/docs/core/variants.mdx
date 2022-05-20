@@ -1,0 +1,254 @@
+---
+title: Variants
+description: Simple typed prop styles through styled()
+---
+
+Variants let you create typed props quickly on your styled() components.
+
+Here's an example:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const Circle = styled(Stack, {
+  borderRadius: 100_000_000,
+
+  variants: {
+    pin: {
+      top: {
+        position: 'absolute',
+        top: 0,
+      },
+    },
+
+    centered: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+})
+```
+
+We can use these like so:
+
+```jsx
+<Circle pin="top" centered size="$lg" />
+```
+
+We're showing off a few different styles of variants here. We'll expand on them below:
+
+### Functional variant
+
+If you need more complex types, or simply prefer a shorter syntax, you can use a single function instead of using the object syntax for variants:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const MyStack = styled(Stack, {
+  variants: {
+    doubleMargin: (val: number) => ({
+      margin: val * 2
+    }),
+  },
+})
+```
+
+Alternatively, Tamagui provides helpers that let you quickly accept certain types:
+
+### Typed variants
+
+#### Boolean
+
+The special keys `true` and `false` will map to a boolean. So the `centered` prop will be typed to accept true or false, and when true it will apply it's styles.
+
+#### Other types
+
+You can use a pseudo Typescript syntax for other variants:
+
+- `:string` - Accepts a `string`
+- `:boolean` - Accepts a `boolean` (less precendence than `true` or `false`)
+- `:number` - Accepts a `number`
+
+Example:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const ColorfulStack = styled(Stack, {
+  variants: {
+    color: {
+      ':string': (color) => {
+        // color is of type "string"
+        return {
+          color,
+          borderColor: color,
+        }
+      }
+    }
+  },
+})
+```
+
+### Typed spread variants
+
+When you write variants, you have to be explicit so Typescript and the runtime know exactly which props you accept. This can be especially cumbersome when you want to "gather" all the values of a specific token. For example, without spread variants, if you wanted to have a `pad` property that accepted all the keys from `tokens.size`, you'd have to write this:
+
+```jsx
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
+    // ...
+  }
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(Stack, {
+  variants: {
+    pad: {
+      sm: {
+        padding: tokens.size.sm,
+      },
+      md: {
+        padding: tokens.size.md,
+      },
+      lg: {
+        padding: tokens.size.lg,
+      },
+      // ...
+    }
+  }
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+This is verbose, and only gets more verbose if you add more sizes. It would require always updating every component every time you change the tokens.
+
+Spread variants solve this problem. Instead, we can write:
+
+```jsx
+// in your tamagui.config.ts:
+const tokens = createTokens({
+  size: {
+    sm: 10,
+    md: 15,
+    lg: 25,
+    // ...
+  }
+})
+
+export default createTamagui({
+  tokens
+})
+
+// somewhere in your app:
+const MyButton = styled(Stack, {
+  variants: {
+    pad: {
+      '...size': (val, { tokens }) => ({
+        padding: tokens.size[val]
+      }),
+    }
+  }
+})
+
+// now you can
+<MyButton pad="$lg" />
+```
+
+Spread variants save you from having to define hardcoded styles for every key (`sm`, `md`, `lg`) in your token object. They collect values from any of your top level token categories. So you can only use `...color`, `...size`, `...space`, `...font`, `...fontSize`, `...lineHeight`, `...radius`, `...letterSpace`, or `...zIndex`. They must be prefixed with `...` as that is how they are typed properly and assembled for runtime.
+
+The Spread variant function will receive two arguments: the first is the value given to the property (`"$lg"`), and the second is an object with `{ theme, tokens, props }`.
+
+- `theme` a proxy to your theme that lets you access all theme values using normal keys, or with a `$` prefix.
+- `tokens` of type TokensParsed, the tokens from `createTokens`, but the keys all start with `$`.
+
+Because you can expand them to any number of styles, they can save a ton of code:
+
+```jsx
+const Square = styled(Stack, {
+  variants: {
+    size: {
+      '...size': (size, { tokens }) => {
+        // size === '$lg'
+        // tokens.size.$lg === 25
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  }
+})
+```
+
+#### Catch-all spread variant
+
+Using '...' lets you use a function to grab all variants that don't match:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const ColorfulStack = styled(Stack, {
+  variants: {
+    colorful: {
+      true: {
+        color: 'red',
+      },
+      '...': (val) => {
+        // this will catch any other values that don't match
+        return {
+          color: val
+        }
+      }
+    },
+  },
+})
+```
+
+### defaultVariants
+
+Sometimes you'd like to set a default value for a variant you've just set on your styled() component. Due to the way Typescript types parse from left to right, we can't properly type variants directly on the object you define them on.
+
+The `defaultVariants` option allows you to set these, properly typed:
+
+```jsx
+const Square = styled(Stack, {
+  variants: {
+    size: {
+      '...size': (size, { tokens }) => {
+        // size === '$lg'
+        // tokens.size.$lg === 25
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+
+  // <Square /> will get size '$10' from size tokens automatically
+  defaultVariants: {
+    size: '$10'
+  }
+})
+```

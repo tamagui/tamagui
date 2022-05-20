@@ -1,0 +1,78 @@
+---
+title: styled()
+description: Extend and build custom and optimizable components.
+---
+
+<Notice>
+  For custom styled() components to be optimized by the compiler, you'll need to place them in a
+  node module and update your build configuration. See the [Design Systems
+  guide](/docs/guides/design-systems).
+</Notice>
+
+Create a new component by extending an existing one:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const Circle = styled(Stack, {
+  borderRadius: 100_000_000,
+})
+```
+
+Usage:
+
+```jsx
+<Circle x={10} y={10} backgroundColor="red" />
+```
+
+Note, `tamagui` and `@tamagui/core` both export many of the same helpers, like styled. If you are using `tamagui`, you don't need to ever add `@tamagui/core` to your package.json or import it and can instead import directly from `tamagui` itself.
+
+The `styled` function only accepts Tamagui components or components that accept the `className` property, for now. There is a workaround option to support react-native-web components, but it's not a public API as it will likely change with their next release.
+
+You can pass any prop that is supported by the component you are extending, even variants of the parent component. Tamagui will figure out the style props up-front, turn them into classNames, and then pass the non-style props down to the component as defaultProps.
+
+## Variants
+
+Let's add some variants:
+
+```jsx
+import { styled, Stack } from '@tamagui/core'
+
+export const Circle = styled(Stack, {
+  borderRadius: 100_000_000,
+
+  variants: {
+    pin: {
+      top: {
+        position: 'absolute',
+        top: 0,
+      },
+    },
+
+    centered: {
+      true: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    },
+
+    size: {
+      '...size': (size, { tokens }) => {
+        return {
+          width: tokens.size[size] ?? size,
+          height: tokens.size[size] ?? size,
+        }
+      },
+    },
+  },
+})
+
+```
+
+We can use these like so:
+
+```jsx
+<Circle pin="top" centered size="$lg" />
+```
+
+To learn more about to use them and all the special types, [see the docs on variants](/docs/core/variants).
