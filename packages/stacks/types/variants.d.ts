@@ -208,6 +208,9 @@ export declare const elevate: {
         enterStyle?: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>) | import("@tamagui/core").Variable | null | undefined;
     } | null | undefined;
 };
+export declare const bordered: (val: boolean | number, { props }: {
+    props: any;
+}) => any;
 export declare const circular: {
     true: (_: any, extras: any) => {
         width: number;
@@ -251,6 +254,12 @@ export declare const pressable: {
 };
 export declare const focusable: {
     true: {
+        focusStyle: {
+            backgroundColor: string;
+            borderColor: string;
+        };
+    };
+    false: {
         focusStyle: {
             backgroundColor: string;
             borderColor: string;

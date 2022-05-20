@@ -1,7 +1,7 @@
 import { GetProps, getButtonSize, styled } from '@tamagui/core'
 
 import { YStack } from './Stacks'
-import { circular, elevate, focusable, hoverable, pressable } from './variants'
+import { bordered, circular, elevate, focusable, hoverable, pressable } from './variants'
 
 export const ThemeableSizableStack = styled(YStack, {
   name: 'SizableStack',
@@ -18,16 +18,10 @@ export const ThemeableSizableStack = styled(YStack, {
     focusable,
     circular,
     elevate,
+    bordered,
 
     size: {
       '...size': getButtonSize,
-    },
-
-    bordered: {
-      true: {
-        borderWidth: 1,
-        borderColor: '$borderColor',
-      },
     },
 
     disabled: {
