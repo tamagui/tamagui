@@ -44,7 +44,6 @@ export const circular = {
   true: (_, extras) => {
     const { props } = extras
     const size = getCircleSize(props.size, extras)
-    console.log('getting', props.size, size)
     return {
       width: size,
       height: size,

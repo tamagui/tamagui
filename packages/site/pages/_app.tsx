@@ -1,4 +1,5 @@
 import '@docsearch/css'
+import '@tamagui/core/reset.css'
 import '@tamagui/font-fira-mono/css/400.css'
 import '@tamagui/font-inter/css/400.css'
 import '@tamagui/font-inter/css/700.css'
