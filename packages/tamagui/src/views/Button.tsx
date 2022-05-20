@@ -54,19 +54,29 @@ const ButtonFrame = styled(ThemeableSizableStack, {
   name: 'Button',
   tag: 'button',
   size: '$4',
-  borderWidth: 0,
-  borderColor: '$borderColor',
+  borderWidth: 1,
+  borderColor: 'transparent',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
   hoverable: true,
   pressable: true,
 
+  focusStyle: {
+    borderColor: '$borderColorFocus',
+  },
+
   // TODO only on hoverable/pressable!
   // would need to merge variants
   cursor: 'pointer',
 
   variants: {
+    bordered: {
+      true: {
+        borderColor: '$borderColor',
+      },
+    },
+
     active: {
       true: {
         hoverStyle: {
