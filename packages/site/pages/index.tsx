@@ -18,7 +18,6 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
-import { SearchButton } from '../components/Search'
 
 export default function Home() {
   return (

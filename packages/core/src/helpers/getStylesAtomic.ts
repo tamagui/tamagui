@@ -1,21 +1,9 @@
-import {
-  StyleObject,
-  invertMapTransformKeys,
-  mergeTransform,
-  stylePropsTransform,
-} from '@tamagui/helpers'
+import { StyleObject, stylePropsTransform } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
-import { getConfig } from '../conf'
+import { reversedShorthands } from '../createTamagui'
 import { isVariable } from '../createVariable'
 import { RulesData, generateAtomicStyles } from './generateAtomicStyles'
-
-// import { rnw } from '../constants/rnw'
-// const generateAtomicStyles = (style: ViewStyle) => {
-//   return rnw.atomic(rnw.createCompileableStyle(rnw.createReactDOMStyle(style))) as {
-//     [key: string]: StyleObject
-//   }
-// }
 
 export type ViewStyleWithPseudos = ViewStyle & {
   hoverStyle?: ViewStyle
@@ -26,6 +14,26 @@ export type ViewStyleWithPseudos = ViewStyle & {
 type AtomicStyleOptions = {
   splitTransforms?: boolean
 }
+
+// *0 order matches to *1
+export const pseudos = {
+  hoverStyle: {
+    name: 'hover',
+    priority: 1,
+  },
+  pressStyle: {
+    name: 'active',
+    priority: 2,
+  },
+  focusStyle: {
+    name: 'focus',
+    priority: 3,
+  },
+} as const
+
+type PseudoDescriptor = typeof pseudos[keyof typeof pseudos]
+
+const pseudosOrdered = Object.values(pseudos)
 
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options: AtomicStyleOptions = {}) {
   const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
@@ -53,24 +61,28 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options: AtomicS
   return res
 }
 
-let reversedShorthands: Record<string, string> | null = null
+const mapTransformKeys = {
+  x: 'translateX',
+  y: 'translateY',
+}
+
+const invertMapTransformKeys = {
+  translateX: 'x',
+  translateY: 'y',
+}
+
+export const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
+  obj.transform ||= []
+  obj.transform[backwards ? 'unshift' : 'push']({ [mapTransformKeys[key] || key]: val } as any)
+}
 
 function getAtomicStyle(
   style: ViewStyle,
-  pseudo: { name: string; priority: number } | undefined,
+  pseudo: PseudoDescriptor | undefined,
   options: AtomicStyleOptions
 ): StyleObject[] {
   if (style == null || typeof style !== 'object') {
     throw new Error(`Wrong style type: "${typeof style}": ${style}`)
-  }
-  if (!reversedShorthands) {
-    reversedShorthands = {}
-    const conf = getConfig()
-    if (conf.shorthands) {
-      for (const key in conf.shorthands) {
-        reversedShorthands[conf.shorthands[key]] = key
-      }
-    }
   }
 
   // why is this diff from react-native-web!? need to figure out
@@ -110,7 +122,7 @@ function getAtomicStyle(
     if (!val.property) {
       throw new Error(`no prop`)
     }
-    const shortProp = reversedShorthands![val.property] || val.property
+    const shortProp = reversedShorthands[val.property] || val.property
     const identifier = `_${shortProp}-${psuedoPrefix}${hash}`
     const className = `.${identifier}`
     const rules = val.rules.map((rule) => {
@@ -137,6 +149,7 @@ function getAtomicStyle(
 
     const result: StyleObject = {
       property: val.transformProperty || val.property,
+      pseudo: pseudo?.name,
       value: val.value || '',
       identifier,
       className,
@@ -156,21 +169,3 @@ const borderDefaults = {
   borderLeftWidth: 'borderLeftStyle',
   borderRightWidth: 'borderRightStyle',
 }
-
-// *0 order matches to *1
-export const pseudos = {
-  hoverStyle: {
-    name: 'hover',
-    priority: 1,
-  },
-  pressStyle: {
-    name: 'active',
-    priority: 2,
-  },
-  focusStyle: {
-    name: 'focus',
-    priority: 3,
-  },
-}
-
-const pseudosOrdered = Object.values(pseudos)

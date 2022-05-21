@@ -10,13 +10,21 @@ import { TextStyle, ViewStyle } from 'react-native'
 
 import { prefixInlineStyles, prefixStyles } from './prefixStyles'
 
+export function expandStyles(style: any) {
+  const res = {}
+  for (const key in style) {
+    updateReactDOMStyle(res, key, style[key])
+  }
+  return res
+}
+
 // TODO can use for inline styles...
 /**
  * Compile simple style object to inline DOM styles.
  * No support for 'animationKeyframes', 'placeholderTextColor', 'scrollbarWidth', or 'pointerEvents'.
  */
 export function inline(style: Style): Object {
-  return prefixInlineStyles(createReactDOMStyle(style))
+  return prefixInlineStyles(expandStyles(style))
 }
 
 type Rule = string
@@ -51,12 +59,8 @@ const STYLE_SHORT_FORM_EXPANSIONS = {
   paddingVertical: ['paddingTop', 'paddingBottom'],
 }
 
-const MONOSPACE_FONT_STACK = 'monospace,monospace'
-const SYSTEM_FONT_STACK =
-  '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif'
-
 export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutput => {
-  const res = createReactDOMStyle(style)
+  const res = expandStyles(style)
 
   if (
     style.shadowColor != null ||
@@ -101,9 +105,17 @@ export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutp
   return out
 }
 
-function updateReactDOMStyle(initial, final, key, value) {
+function updateReactDOMStyle(style: Object, key: string, value: any) {
   value = normalizeValueWithProperty(value, key)
+  const out = expandStyle(key, value)
+  if (out) {
+    Object.assign(style, Object.fromEntries(out))
+  } else {
+    style[key] = value
+  }
+}
 
+export function expandStyle(key: string, value: any) {
   switch (key) {
     // Ignore some React Native styles
     case 'elevation':
@@ -114,16 +126,17 @@ function updateReactDOMStyle(initial, final, key, value) {
     }
 
     case 'aspectRatio': {
-      final[key] = value.toString()
-      break
+      return [key, value.toString()]
     }
 
     // TODO: remove once this issue is fixed
     // https://github.com/rofrischmann/inline-style-prefixer/issues/159
     case 'backgroundClip': {
       if (value === 'text') {
-        final.backgroundClip = value
-        final.WebkitBackgroundClip = value
+        return [
+          ['backgroundClip', value],
+          ['WebkitBackgroundClip', value],
+        ]
       }
       break
     }
@@ -131,78 +144,51 @@ function updateReactDOMStyle(initial, final, key, value) {
     // The 'flex' property value in React Native must be a positive integer,
     // 0, or -1.
     case 'flex': {
-      if (value === -1) {
-        final.flexGrow = 0
-        final.flexShrink = 1
-        final.flexBasis = 'auto'
-      } else {
-        final.flex = value
+      if (value <= -1) {
+        return [
+          ['flexGrow', 0],
+          ['flexShrink', 1],
+          ['flexBasis', 'auto'],
+        ]
       }
-      break
-    }
-
-    case 'font': {
-      final[key] = value.replace('System', SYSTEM_FONT_STACK)
-      break
-    }
-
-    case 'fontFamily': {
-      if (value.indexOf('System') > -1) {
-        const stack = value.split(/,\s*/)
-        stack[stack.indexOf('System')] = SYSTEM_FONT_STACK
-        final[key] = stack.join(',')
-      } else if (value === 'monospace') {
-        final[key] = MONOSPACE_FONT_STACK
-      } else {
-        final[key] = value
-      }
-      break
-    }
-
-    case 'fontVariant': {
-      if (Array.isArray(value) && value.length > 0) {
-        final.fontVariant = value.join(' ')
+      // normalizing to better align with native
+      // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+      if (value >= 0) {
+        return [
+          ['flexGrow', value],
+          ['flexShrink', 1],
+        ]
       }
       break
     }
 
     case 'textAlignVertical': {
-      final.verticalAlign = value === 'center' ? 'middle' : value
-      break
+      return [['verticalAlign', value === 'center' ? 'middle' : value]]
     }
 
     case 'textDecorationLine': {
-      final.textDecorationLine = value
-      break
+      return ['textDecorationLine', value]
     }
 
-    case 'transform':
-    case 'transformMatrix': {
-      let transform = initial.transform
-      if (Array.isArray(initial.transform)) {
-        transform = initial.transform.map(mapTransform).join(' ')
+    case 'transform': {
+      if (Array.isArray(value)) {
+        return [[key, value.map(mapTransform).join(' ')]]
       }
-      final.transform = transform
       break
     }
 
     case 'writingDirection': {
-      final.direction = value
-      break
+      return [['direction', value]]
     }
 
     default: {
-      const longFormProperties = STYLE_SHORT_FORM_EXPANSIONS[key]
-      if (longFormProperties) {
-        longFormProperties.forEach((longForm, i) => {
-          // The value of any longform property in the original styles takes
-          // precedence over the shortform's value.
-          if (typeof initial[longForm] === 'undefined') {
-            final[longForm] = value
-          }
+      const longKey = STYLE_SHORT_FORM_EXPANSIONS[key]
+      if (longKey) {
+        return longKey.map((key) => {
+          return [key, value]
         })
-      } else {
-        final[key] = Array.isArray(value) ? value.join(',') : value
+      } else if (Array.isArray(value)) {
+        return [[key, value.join(',')]]
       }
     }
   }
@@ -328,19 +314,11 @@ function createKeyframes(keyframes) {
   return { identifier, rules }
 }
 
-export function createReactDOMStyle(style: any) {
-  const res = {}
-  for (const key in style) {
-    updateReactDOMStyle(style, res, key, style[key])
-  }
-  return res
-}
-
 /**
  * Creates a CSS declaration block from a StyleSheet object.
  */
 function createDeclarationBlock(style: Style) {
-  const domStyle = prefixStyles(createReactDOMStyle(style))
+  const domStyle = prefixStyles(expandStyles(style))
   const declarationsString = Object.keys(domStyle)
     .map((property) => {
       const value = domStyle[property]

@@ -83,6 +83,9 @@ takeout:
   - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
 
+- <GradientText /> can work native with 
+  - https://github.com/react-native-masked-view/masked-view
+- react-native-skia / svg image support
 - before={{}}, after={{}} could work ...
   - only if we can do with psuedos:
     - focusStyle={{ after: { fullscreen: true, border... } }}

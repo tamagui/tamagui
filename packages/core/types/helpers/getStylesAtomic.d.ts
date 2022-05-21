@@ -8,20 +8,21 @@ export declare type ViewStyleWithPseudos = ViewStyle & {
 declare type AtomicStyleOptions = {
     splitTransforms?: boolean;
 };
-export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: AtomicStyleOptions): StyleObject[];
 export declare const pseudos: {
-    hoverStyle: {
-        name: string;
-        priority: number;
+    readonly hoverStyle: {
+        readonly name: "hover";
+        readonly priority: 1;
     };
-    pressStyle: {
-        name: string;
-        priority: number;
+    readonly pressStyle: {
+        readonly name: "active";
+        readonly priority: 2;
     };
-    focusStyle: {
-        name: string;
-        priority: number;
+    readonly focusStyle: {
+        readonly name: "focus";
+        readonly priority: 3;
     };
 };
+export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: AtomicStyleOptions): StyleObject[];
+export declare const mergeTransform: (obj: ViewStyle, key: string, val: any, backwards?: boolean) => void;
 export {};
 //# sourceMappingURL=getStylesAtomic.d.ts.map

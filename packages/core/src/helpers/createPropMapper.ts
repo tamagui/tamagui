@@ -1,7 +1,15 @@
 import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { Variable, isVariable } from '../createVariable'
-import { StaticConfig, TamaguiInternalConfig, VariantSpreadFunction } from '../types'
+import {
+  PropMapper,
+  SplitStyleState,
+  StaticConfig,
+  TamaguiInternalConfig,
+  ThemeObject,
+  VariantSpreadFunction,
+} from '../types'
+import { expandStyle, expandStyles } from './generateAtomicStyles'
 import { getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 
@@ -37,19 +45,15 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   const variants = staticConfig.variants || {}
   const defaultProps = staticConfig.defaultProps || {}
 
-  return (
-    key: string,
-    value: any,
-    theme: any,
-    props: any,
-    returnVariablesAs: ResolveVariableTypes = !!props.animation ? 'value' : 'auto',
-    avoidDefaultProps = false
-  ) => {
+  const mapper: PropMapper = (key, value, theme, propsIn, state, avoidDefaultProps = false) => {
     const conf = getConfig()
     if (!conf) {
       console.trace('no conf! err')
       return
     }
+
+    const props = state.fallbackProps || propsIn
+    const returnVariablesAs = state.resolveVariablesAs || !!props.animation ? 'value' : 'auto'
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
@@ -68,11 +72,11 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
           variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
         }
 
-        return expansions(variantValue)
+        return Object.entries(expandStyles(variantValue))
       }
     }
 
-    let shouldReturn = false
+    let shouldReturn = value !== undefined && value !== null
 
     // handle shorthands
     if (conf.shorthands[key]) {
@@ -81,7 +85,6 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
     }
 
     if (value) {
-      shouldReturn = true
       if (value[0] === '$') {
         value = getToken(key, value, conf, theme, fontFamily, returnVariablesAs)
       } else if (isVariable(value)) {
@@ -90,11 +93,11 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
     }
 
     if (shouldReturn) {
-      return expansions({
-        [key]: value,
-      })
+      return expandStyle(key, value) || [[key, value]]
     }
   }
+
+  return mapper
 }
 
 const resolveTokens = (
@@ -235,39 +238,4 @@ const tokenCategories = {
     borderLeftColor: true,
     borderRightColor: true,
   },
-}
-
-// TODO need to move to own engine for all this... duplicating some functionality temporarily
-
-const sidesX = ['Left', 'Right']
-const sidesY = ['Top', 'Bottom']
-const sidesXY = [...sidesX, ...sidesY]
-const expand = {
-  padding: sidesXY.map((x) => `padding${x}`),
-  paddingHorizontal: sidesX.map((x) => `padding${x}`),
-  paddingVertical: sidesY.map((x) => `padding${x}`),
-  margin: sidesXY.map((x) => `margin${x}`),
-  marginHorizontal: sidesX.map((x) => `margin${x}`),
-  marginVertical: sidesY.map((x) => `margin${x}`),
-  borderWidth: sidesXY.map((x) => `border${x}Width`),
-}
-
-function expansions(styleObj: Record<string, any>) {
-  for (const key in expand) {
-    if (key in styleObj) {
-      for (const expandKey of expand[key]) {
-        styleObj[expandKey] = styleObj[key]
-      }
-      delete styleObj[key]
-    }
-  }
-  if ('flex' in styleObj) {
-    // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-    if (typeof styleObj.flex === 'number') {
-      styleObj.flexGrow = styleObj.flexGrow ?? styleObj.flex
-      styleObj.flexShrink = styleObj.flexShrink ?? 1
-      delete styleObj.flex
-    }
-  }
-  return styleObj
 }
