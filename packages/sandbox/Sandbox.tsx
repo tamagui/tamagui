@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, useColorScheme } from 'react-native'
 import { Button, Card, Input, Spacer, Switch, SwitchThumb, XStack, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
@@ -11,9 +11,10 @@ import Tamagui from './tamagui.config'
 React['keep']
 
 export const Sandbox = () => {
-  const [theme, setTheme] = useState('light' as any)
+  const scheme = useColorScheme()
+  const [theme, setTheme] = useState(scheme as any)
   return (
-    <Tamagui.Provider disableRootThemeClass injectCSS defaultTheme={theme}>
+    <Tamagui.Provider injectCSS defaultTheme={theme}>
       <Button
         pos="absolute"
         b={10}

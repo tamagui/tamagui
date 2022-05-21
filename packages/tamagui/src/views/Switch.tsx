@@ -52,6 +52,7 @@ const SwitchFrame = styled(XStack, {
   borderRadius: 1000,
   borderWidth: 2,
   borderColor: 'transparent',
+  backgroundColor: '$background',
 
   focusStyle: {
     borderColor: '$borderColorFocus',

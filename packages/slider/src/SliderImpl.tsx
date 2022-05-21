@@ -19,7 +19,7 @@ export const DirectionalYStack = styled(YStack, {
 })
 
 export const SliderFrame = styled(DirectionalYStack, {
-  name: 'Slider',
+  // name: 'Slider',
   position: 'relative',
 
   variants: {

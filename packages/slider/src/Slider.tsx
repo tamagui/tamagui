@@ -191,11 +191,12 @@ const TRACK_NAME = 'SliderTrack'
 type SliderTrackElement = HTMLElement | View
 
 const SliderTrackFrame = styled(SliderFrame, {
-  name: 'SliderTrackFrame',
+  name: 'SliderTrack',
   height: '100%',
   width: '100%',
   backgroundColor: '$background',
   position: 'relative',
+  borderRadius: 100_000,
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
@@ -228,7 +229,7 @@ interface SliderTrackActiveProps extends YStackProps {}
 
 const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
-  backgroundColor: '$colorMid',
+  backgroundColor: '$background',
   position: 'absolute',
 })
 

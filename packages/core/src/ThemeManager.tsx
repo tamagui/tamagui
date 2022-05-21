@@ -106,7 +106,8 @@ export class ThemeManager {
         ]
         for (const name of names) {
           if (name in themes) {
-            return { name, theme: themes[name], className: this.#getClassName(name) }
+            const className = this.#getClassName(name)
+            return { name, theme: themes[name], className }
           }
         }
       }
@@ -205,4 +206,4 @@ export class ThemeManager {
 export const ThemeManagerContext = createContext<ThemeManager | null>(null)
 export const emptyManager = new ThemeManager()
 
-const withoutComponentName = (name: string) => name.replace(/\_[A-Z][a-z]+$/, '')
+const withoutComponentName = (name: string) => name.replaceAll(/\_[A-Z][a-zA-Z]+$/g, '')
