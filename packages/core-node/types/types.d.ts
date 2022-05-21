@@ -286,11 +286,10 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
     injectCSS?: boolean;
     children?: React.ReactNode;
 };
+export declare type PropMapper = (key: string, value: any, theme: ThemeObject, props: Record<string, any>, state: Partial<SplitStyleState>, avoidDefaultProps?: boolean) => undefined | [string, any][];
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
-    propMapper: (key: string, value: any, theme: ThemeObject, props: any, resolveVariablesAs?: ResolveVariableTypes, avoidDefaultProps?: boolean) => undefined | boolean | {
-        [key: string]: any;
-    };
+    propMapper: PropMapper;
     variantsParsed?: {
         [key: string]: {
             [key: string]: any;
@@ -392,9 +391,8 @@ export declare type TamaguiComponentState = {
 };
 export declare type SplitStyleState = TamaguiComponentState & {
     noClassNames?: boolean;
-    dynamicStylesInline?: boolean;
     resolveVariablesAs?: ResolveVariableTypes;
-    fallbackProps?: Object;
+    fallbackProps?: Record<string, any>;
 };
 declare type AnimationConfig = {
     [key: string]: any;

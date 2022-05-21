@@ -58,7 +58,7 @@ if (watch) {
 
   chokidar
     // prevent infinite loop but cause race condition if you just build directly
-    .watch('../core/dist', {
+    .watch(['../core/dist', '../static/dist'], {
       persistent: true,
       alwaysStat: true,
       ignoreInitial: true,

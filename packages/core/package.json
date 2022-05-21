@@ -26,6 +26,9 @@
     "@tamagui/use-debounce": "^1.0.1-beta.28",
     "@tamagui/use-force-update": "^1.0.1-beta.28",
     "expo-screen-orientation": "^4.2.0",
+    "hyphenate-style-name": "^1.0.4",
+    "inline-style-prefixer": "^6.0.0",
+    "normalize-css-color": "^1.0.2",
     "react": "*",
     "react-dom": "*"
   },

@@ -87,10 +87,10 @@ export {
   // constants
   isChrome,
   isSSR,
-  isTouchDevice,
+  isTouchable,
   isWeb,
   isWebIOS,
-  supportsTouchWeb,
+  isWebTouchable,
   // helpers
   addMediaQueryListener,
   createComponent,

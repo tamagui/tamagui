@@ -1,2 +1,2 @@
-export declare const rnw: Record<string, any>;
+export declare const rnw: any;
 //# sourceMappingURL=rnw.d.ts.map

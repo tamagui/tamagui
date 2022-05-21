@@ -1,6 +1,6 @@
 const interopRequire = (src: any) => ('default' in src ? src.default : src)
 
-export const rnw: Record<string, any> = {}
+export const rnw: any = {}
 
 // in static mode, require them directly since we can't import react-native-web at all (it has flow stuff in it)
 if (process.env.IS_STATIC === 'is_static') {

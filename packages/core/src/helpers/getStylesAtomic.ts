@@ -1,19 +1,9 @@
-import {
-  StyleObject,
-  invertMapTransformKeys,
-  mergeTransform,
-  stylePropsTransform,
-} from '@tamagui/helpers'
+import { StyleObject, stylePropsTransform } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
-import { getConfig } from '../conf'
-import { rnw } from '../constants/rnw'
+import { reversedShorthands } from '../createTamagui'
 import { isVariable } from '../createVariable'
-
-// NOTE: going to refactor and merge getSplitStyles + getAtomicStyles into one
-// before i can do that need to not rely on rnw for generateAtomicStyles
-// will change that to not be external at all and just logically do it in the
-// merged getSplitStyles/getAtomicStyles file in one loop.
+import { RulesData, generateAtomicStyles } from './generateAtomicStyles'
 
 export type ViewStyleWithPseudos = ViewStyle & {
   hoverStyle?: ViewStyle
@@ -24,6 +14,26 @@ export type ViewStyleWithPseudos = ViewStyle & {
 type AtomicStyleOptions = {
   splitTransforms?: boolean
 }
+
+// *0 order matches to *1
+export const pseudos = {
+  hoverStyle: {
+    name: 'hover',
+    priority: 1,
+  },
+  pressStyle: {
+    name: 'active',
+    priority: 2,
+  },
+  focusStyle: {
+    name: 'focus',
+    priority: 3,
+  },
+} as const
+
+type PseudoDescriptor = typeof pseudos[keyof typeof pseudos]
+
+const pseudosOrdered = Object.values(pseudos)
 
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options: AtomicStyleOptions = {}) {
   const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
@@ -51,17 +61,24 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options: AtomicS
   return res
 }
 
-const generateAtomicStyles = (style: ViewStyle) => {
-  return rnw.atomic(rnw.createCompileableStyle(rnw.createReactDOMStyle(style))) as {
-    [key: string]: StyleObject
-  }
+const mapTransformKeys = {
+  x: 'translateX',
+  y: 'translateY',
 }
 
-let reversedShorthands: Record<string, string> | null = null
+const invertMapTransformKeys = {
+  translateX: 'x',
+  translateY: 'y',
+}
+
+export const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
+  obj.transform ||= []
+  obj.transform[backwards ? 'unshift' : 'push']({ [mapTransformKeys[key] || key]: val } as any)
+}
 
 function getAtomicStyle(
   style: ViewStyle,
-  pseudo: { name: string; priority: number } | undefined,
+  pseudo: PseudoDescriptor | undefined,
   options: AtomicStyleOptions
 ): StyleObject[] {
   if (style == null || typeof style !== 'object') {
@@ -75,7 +92,7 @@ function getAtomicStyle(
     }
   }
 
-  let atomicStyles: { [key: string]: StyleObject & { transformProperty?: string } } = {}
+  let atomicStyles: { [key: string]: RulesData & { transformProperty?: string } } = {}
 
   if (options.splitTransforms && style.transform) {
     let { transform, ...rest } = style
@@ -95,26 +112,17 @@ function getAtomicStyle(
     atomicStyles = generateAtomicStyles(style)
   }
 
-  if (!reversedShorthands) {
-    reversedShorthands = {}
-    const conf = getConfig()
-    if (conf.shorthands) {
-      for (const key in conf.shorthands) {
-        reversedShorthands[conf.shorthands[key]] = key
-      }
-    }
-  }
-
   // TODO ... and then also avoid this loop! n^4
   return Object.keys(atomicStyles).map((key) => {
     const val = atomicStyles[key]
     // r-transform-1ns13n
-    const [_, a, b] = val.identifier.split('-')
-    // dev mode its "r-transform-1ns13n", prod its "r-1ns13n", normalize them
-    const hash = b || a
+    const [_, hash] = val.identifier.split('-')
     // pseudos have a `--` to be easier to find with concatClassNames
     const psuedoPrefix = pseudo ? `0${pseudo.name}-` : ''
-    const shortProp = reversedShorthands![val.property] || val.property
+    if (!val.property) {
+      throw new Error(`no prop`)
+    }
+    const shortProp = reversedShorthands[val.property] || val.property
     const identifier = `_${shortProp}-${psuedoPrefix}${hash}`
     const className = `.${identifier}`
     const rules = val.rules.map((rule) => {
@@ -141,7 +149,8 @@ function getAtomicStyle(
 
     const result: StyleObject = {
       property: val.transformProperty || val.property,
-      value: val.value,
+      pseudo: pseudo?.name,
+      value: val.value || '',
       identifier,
       className,
       rules,
@@ -160,21 +169,3 @@ const borderDefaults = {
   borderLeftWidth: 'borderLeftStyle',
   borderRightWidth: 'borderRightStyle',
 }
-
-// *0 order matches to *1
-export const pseudos = {
-  hoverStyle: {
-    name: 'hover',
-    priority: 1,
-  },
-  pressStyle: {
-    name: 'active',
-    priority: 2,
-  },
-  focusStyle: {
-    name: 'focus',
-    priority: 3,
-  },
-}
-
-const pseudosOrdered = Object.values(pseudos)

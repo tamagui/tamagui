@@ -1,7 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import {
   Theme,
-  isTouchDevice,
+  isTouchable,
   isWeb,
   styled,
   useIsomorphicLayoutEffect,
@@ -94,7 +94,7 @@ export const Modal = (props: ModalProps) => {
     }, [visible])
 
     // this fixes page getting stuck at top, at the expense of a flicker
-    if (isTouchDevice) {
+    if (isTouchable) {
       useIsomorphicLayoutEffect(() => {
         if (visible) {
           return () => {

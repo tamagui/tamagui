@@ -1,3 +1,4 @@
+// debug
 import { ArrowRight, Play } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { memo } from 'react'
@@ -127,6 +128,7 @@ const HeroTop = memo(() => {
         <XStack ai="center" jc="center" space="$4">
           <NextLink href="/docs/intro/introduction" passHref>
             <Button
+              debug
               fontFamily="$silkscreen"
               borderRadius={1000}
               iconAfter={ArrowRight}

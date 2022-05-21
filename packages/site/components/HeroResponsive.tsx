@@ -10,7 +10,7 @@ import {
   Theme,
   XStack,
   YStack,
-  isTouchDevice,
+  isTouchable,
   useDebounce,
   useIsomorphicLayoutEffect,
   useMedia,
@@ -172,7 +172,7 @@ export const HeroResponsive = memo(() => {
             f={1}
             ref={safariRef}
             onPress={() => {
-              if (isTouchDevice) {
+              if (isTouchable) {
                 setSmIndex((i) => (i + 1) % breakpoints.length)
               }
             }}

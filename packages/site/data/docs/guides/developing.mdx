@@ -3,6 +3,20 @@ title: Developing with Tamagui
 description: Details and helpful dev tools.
 ---
 
+## Helpful exports
+
+Some useful hooks and constants exist in `@tamagui/core`.
+
+For adapting things specifically to web, native, or platform:
+
+- `isWeb` - true if rendering on web SSR or client side, false if native
+- `isSSR` - true if web + SSR
+- `isClient` - true if web + not SSR
+- `isChrome` - true if client + Chrome
+- `isWebTouchable` - true if web + touch device
+- `isTouchable` - true if isWebTouchable or native
+- `isWebIOS` - true if web + iOS
+
 ## Classes generated
 
 Tamagui generates a few helpful classes. For components created with `styled()` for which a `name` is set, like so:

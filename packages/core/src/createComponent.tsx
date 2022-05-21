@@ -146,12 +146,13 @@ export function createComponent<
       props,
       staticConfig,
       theme,
-      {
-        ...state,
-        noClassNames: shouldAvoidClasses ? true : false,
-        dynamicStylesInline: true,
-        resolveVariablesAs: shouldAvoidClasses ? 'value' : 'auto',
-      },
+      !shouldAvoidClasses
+        ? state
+        : {
+            ...state,
+            noClassNames: true,
+            resolveVariablesAs: 'value',
+          },
       shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames
     )
 
