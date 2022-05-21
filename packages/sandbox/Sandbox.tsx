@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import { ScrollView, useColorScheme } from 'react-native'
 import { Button, Card, Input, Spacer, Switch, SwitchThumb, XStack, YStack } from 'tamagui'
 
+import { MediaPlayer } from './MediaPlayer'
 import Tamagui from './tamagui.config'
 
 React['keep']
@@ -36,11 +37,22 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <XStack maw="100%" ov="hidden" space ai="center" fs={0}>
-          <FormDemo size="$4" />
+        <XStack maw="100%" space ai="center" fs={0}>
+          <Card
+            debug="verbose"
+            overflow="visible"
+            bordered
+            size="$6"
+            br="$7"
+            w={100}
+            p={0}
+            ai="stretch"
+          />
+          {/* <MediaPlayer /> */}
+          {/* <FormDemo size="$4" />
           <FormDemo size="$5" />
           <FormDemo size="$6" />
-          <FormDemo size="$7" />
+          <FormDemo size="$7" /> */}
         </XStack>
       </div>
     </Tamagui.Provider>
