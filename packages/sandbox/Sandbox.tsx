@@ -39,12 +39,15 @@ export const Sandbox = () => {
       >
         {/* <XStack maw="100%" space ai="center" fs={0}> */}
         <Button
-          debug
-          hoverStyle={{
-            backgroundColor: 'red',
-          }}
+          aria-label="Copy code to clipboard"
+          position="absolute"
+          size="$2"
+          top="$5"
+          right="$3"
+          display="inline-flex"
+          opacity={0}
         >
-          helo
+          hi
         </Button>
         {/* <Card
             debug="verbose"
