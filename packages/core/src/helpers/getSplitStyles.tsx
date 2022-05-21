@@ -88,10 +88,6 @@ export const getSplitStyles: StyleSplitter = (
   state,
   defaultClassNames
 ) => {
-  if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-    console.log('  » getSplitStyles', { props, state, defaultClassNames })
-  }
-
   conf = conf || getConfig()
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
@@ -172,7 +168,7 @@ export const getSplitStyles: StyleSplitter = (
     normalizeStyleObject(cur)
 
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-      console.log('  » getSplitStyles push', cur, state)
+      console.log('  » getSplitStyles push', cur)
     }
 
     if (isWeb && !state.noClassNames) {
@@ -397,7 +393,10 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
-    console.log('  » getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state })
+    if (typeof document !== 'undefined') {
+      // prettier-ignore
+      console.log('  » getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state })
+    }
   }
 
   return {

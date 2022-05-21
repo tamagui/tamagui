@@ -36,19 +36,19 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        {/* <XStack maw="100%" space ai="center" fs={0}> */}
-        <Button
-          aria-label="Copy code to clipboard"
-          position="absolute"
-          size="$2"
-          top="$5"
-          right="$3"
-          display="inline-flex"
-          opacity={0}
-        >
-          hi
-        </Button>
-        {/* <Card
+        <XStack maw="100%" space ai="center" fs={0}>
+          <Button
+            aria-label="Copy code to clipboard"
+            position="absolute"
+            size="$2"
+            top="$5"
+            right="$3"
+            display="inline-flex"
+            opacity={0}
+          >
+            hi
+          </Button>
+          <Card
             debug="verbose"
             overflow="visible"
             bordered
@@ -57,13 +57,12 @@ export const Sandbox = () => {
             w={100}
             p={0}
             ai="stretch"
-          /> */}
-        {/* <MediaPlayer /> */}
-        {/* <FormDemo size="$4" />
+          />
+          <FormDemo size="$4" />
           <FormDemo size="$5" />
           <FormDemo size="$6" />
-          <FormDemo size="$7" /> */}
-        {/* </XStack> */}
+          <FormDemo size="$7" />
+        </XStack>
       </div>
     </Tamagui.Provider>
   )
