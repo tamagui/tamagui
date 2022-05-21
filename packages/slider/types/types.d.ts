@@ -57,7 +57,7 @@ export interface SliderProps extends Omit<SliderHorizontalProps | SliderVertical
     onValueChange?(value: number[]): void;
 }
 export declare type SliderContextValue = {
-    size?: number | null;
+    size?: SizeTokens | number | null;
     disabled?: boolean;
     min: number;
     max: number;

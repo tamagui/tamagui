@@ -67,7 +67,7 @@ export interface SliderProps
 }
 
 export type SliderContextValue = {
-  size?: number | null
+  size?: SizeTokens | number | null
   disabled?: boolean
   min: number
   max: number

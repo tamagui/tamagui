@@ -58,9 +58,9 @@ type SliderHorizontalElement = SliderImplElement
 const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
     const { min, max, dir, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } = props
-    const layoutRef = React.useRef<LayoutRectangle | null>(null)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
+    const layoutRef = React.useRef<LayoutRectangle | null>(null)
     const [size, setSize] = React.useState(0)
 
     function getValueFromPointer(pointerPosition: number) {
@@ -69,7 +69,7 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
       const input: [number, number] = [0, layout.width]
       const output: [number, number] = isDirectionLTR ? [min, max] : [max, min]
       const value = linearScale(input, output)
-      return value(pointerPosition - layout.x)
+      return value(pointerPosition)
     }
 
     return (
@@ -82,23 +82,23 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
         size={size}
       >
         <SliderImpl
+          ref={forwardedRef}
           dir={direction}
-          orientation="horizontal"
           {...sliderProps}
+          orientation="horizontal"
           onLayout={(e) => {
             const layout = e.nativeEvent.layout
             layoutRef.current = layout
             setSize(layout.height)
           }}
-          ref={forwardedRef}
           onSlideStart={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX)
+            const value = getValueFromPointer(event.nativeEvent.locationX)
             if (value) {
               onSlideStart?.(value)
             }
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX)
+            const value = getValueFromPointer(event.nativeEvent.locationX)
             if (value) {
               onSlideMove?.(value)
             }
@@ -123,18 +123,17 @@ type SliderVerticalElement = SliderImplElement
 const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalProps>(
   (props: ScopedProps<SliderVerticalProps>, forwardedRef) => {
     const { min, max, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } = props
-    const sliderRef = React.useRef<SliderImplElement>(null)
-    const ref = useComposedRefs(forwardedRef, sliderRef)
-    const rectRef = React.useRef<ClientRect>()
+    const layoutRef = React.useRef<LayoutRectangle | null>(null)
+    const [size, setSize] = React.useState(0)
 
     function getValueFromPointer(pointerPosition: number) {
-      // @ts-ignore
-      const rect = rectRef.current || sliderRef.current!.getBoundingClientRect()
-      const input: [number, number] = [0, rect.height]
+      const layout = layoutRef.current
+      if (!layout) return
+      const input: [number, number] = [0, layout.height]
       const output: [number, number] = [max, min]
       const value = linearScale(input, output)
-      rectRef.current = rect
-      return value(pointerPosition - rect.top)
+      console.log('pointerPosition', value(pointerPosition))
+      return value(pointerPosition)
     }
 
     return (
@@ -143,22 +142,31 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
         startEdge="bottom"
         endEdge="top"
         sizeProp="height"
-        size={0}
+        size={size}
         direction={1}
       >
         <SliderImpl
+          ref={forwardedRef}
           {...sliderProps}
           orientation="vertical"
-          ref={ref}
+          onLayout={(e) => {
+            const layout = e.nativeEvent.layout
+            layoutRef.current = layout
+            setSize(layout.height)
+          }}
           onSlideStart={(event) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
-            onSlideStart?.(value)
+            if (value) {
+              onSlideStart?.(value)
+            }
           }}
           onSlideMove={(event) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
-            onSlideMove?.(value)
+            if (value) {
+              onSlideMove?.(value)
+            }
           }}
-          onSlideEnd={() => (rectRef.current = undefined)}
+          onSlideEnd={() => {}}
           onStepKeyDown={(event) => {
             const isBackKey = BACK_KEYS.ltr.includes(event.key)
             onStepKeyDown?.({ event, direction: isBackKey ? -1 : 1 })
@@ -179,6 +187,9 @@ type SliderTrackElement = HTMLElement | View
 
 const SliderTrackFrame = styled(SliderFrame, {
   name: 'SliderTrackFrame',
+  height: '100%',
+  width: '100%',
+  backgroundColor: '$background',
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
@@ -275,11 +286,12 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const label = getLabel(index, context.values.length)
     const [size, setSize] = React.useState(0)
 
-    const thumbInBoundsOffset = size
-      ? getThumbInBoundsOffset(size, percent, orientation.direction)
-      : 0
+    const thumbInBoundsOffset = 0
+    // size
+    //   ? getThumbInBoundsOffset(size / 2, percent, orientation.direction)
+    //   : 0
 
-    console.log('thumbInBoundsOffset', thumbInBoundsOffset, size, percent)
+    console.log('percent', { value, percent, size, thumbInBoundsOffset, context })
 
     // React.useEffect(() => {
     //   if (thumb) {
@@ -303,7 +315,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         data-disabled={context.disabled ? '' : undefined}
         // tabIndex={context.disabled ? undefined : 0}
         {...thumbProps}
-        x={thumbInBoundsOffset}
+        x={thumbInBoundsOffset - size / 2}
         y={-size / 2}
         size={sizeProp ?? context.size ?? 30}
         onLayout={(e) => {
@@ -406,7 +418,6 @@ const Slider = withStaticProperties(
         thumbs={thumbRefs.current}
         values={values}
         orientation={orientation}
-        // @ts-ignore
         size={sizeProp || 20}
       >
         <SliderOriented
