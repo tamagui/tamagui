@@ -95,11 +95,13 @@ span._display-1adg3ll > span._display-xoduu5 {
 }
 
 .hero-gradient {
+  border: 1px solid var(--borderColor);
   background: linear-gradient(
     330deg,
-    var(--background) 10%,
-    var(--backgroundStrong) 50%,
-    var(--background) 90%
+    var(--background) 0%,
+    transparent 25%,
+    transparent 75%,
+    var(--background) 100%
   );
 }
 

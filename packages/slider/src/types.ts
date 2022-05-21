@@ -1,6 +1,6 @@
 import type { GestureReponderEvent, SizeTokens } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
-import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
+import type { SizableStackProps } from '@tamagui/stacks'
 import type { View } from 'react-native'
 
 export type ScopedProps<P> = P & { __scopeSlider?: Scope }
