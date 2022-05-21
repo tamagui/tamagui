@@ -26,16 +26,18 @@ export const SliderFrame = styled(DirectionalYStack, {
     size: (val, extras) => {
       const orientation = extras.props.orientation
       const circleSize = getCircleSize(val, extras)
-      const size = circleSize / 4
+      const size = circleSize / 10
       if (orientation === 'horizontal') {
         return {
           height: size,
-          width: 100,
+          borderRadius: size,
+          // width: 100,
         }
       }
       return {
         width: size,
-        height: 100,
+        borderRadius: size,
+        // height: 100,
       }
     },
   },
@@ -54,7 +56,6 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
       ...sliderProps
     } = props
     const context = useSliderContext(SLIDER_NAME, __scopeSlider)
-
     return (
       <SliderFrame
         size="$4"
@@ -78,18 +79,18 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
         // })}
         onStartShouldSetResponder={() => true}
         onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
-          // const target = event.target as HTMLElement
-          // console.log('wut', target)
-          // target.setPointerCapture(event.pointerId)
+          const target = event.target as HTMLElement | number
+          const isStartingOnThumb = context.thumbs.has(event.target)
           // // Prevent browser focus behaviour because we focus a thumb manually when values change.
           event.preventDefault()
           // Touch devices have a delay before focusing so won't focus if touch immediately moves
           // away from target (sliding). We want thumb to focus regardless.
-          // if (context.thumbs.has(target)) {
-          //   target.focus()
-          // } else {
-          onSlideStart(event)
-          // }
+          if (target instanceof HTMLElement) {
+            if (context.thumbs.has(target)) {
+              target.focus()
+            }
+          }
+          onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track')
         })}
         onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
           // const target = event.target as HTMLElement

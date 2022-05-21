@@ -19,6 +19,6 @@ pre {
   padding: 0;
 }
 
-input, button {
+input, button, [role="slider"] {
   outline: none;
 }

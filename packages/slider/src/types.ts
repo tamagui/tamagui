@@ -10,7 +10,7 @@ export type Direction = 'ltr' | 'rtl'
 export type SliderImplElement = HTMLElement | View
 
 type SliderImplPrivateProps = {
-  onSlideStart(event: GestureReponderEvent): void
+  onSlideStart(event: GestureReponderEvent, target: 'thumb' | 'track'): void
   onSlideMove(event: GestureReponderEvent): void
   onSlideEnd(event: GestureReponderEvent): void
   onHomeKeyDown(event: React.KeyboardEvent): void
@@ -28,7 +28,7 @@ export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProp
 type SliderOrientationPrivateProps = {
   min: number
   max: number
-  onSlideStart?(value: number): void
+  onSlideStart?(value: number, target: 'thumb' | 'track'): void
   onSlideMove?(value: number): void
   onHomeKeyDown(event: React.KeyboardEvent): void
   onEndKeyDown(event: React.KeyboardEvent): void
@@ -67,7 +67,7 @@ export interface SliderProps
 }
 
 export type SliderContextValue = {
-  size?: number | null
+  size?: SizeTokens | number | null
   disabled?: boolean
   min: number
   max: number

@@ -5,7 +5,13 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { getVariantExtras, styled, withStaticProperties } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 // import { useSize } from '@tamagui/react-use-size'
-import { SizableStack, SizableStackProps, YStackProps, getCircleSize } from '@tamagui/stacks'
+import {
+  SizableStack,
+  SizableStackProps,
+  ThemeableSizableStack,
+  YStackProps,
+  getCircleSize,
+} from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -58,9 +64,9 @@ type SliderHorizontalElement = SliderImplElement
 const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
     const { min, max, dir, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } = props
-    const layoutRef = React.useRef<LayoutRectangle | null>(null)
     const direction = useDirection(dir)
     const isDirectionLTR = direction === 'ltr'
+    const layoutRef = React.useRef<LayoutRectangle | null>(null)
     const [size, setSize] = React.useState(0)
 
     function getValueFromPointer(pointerPosition: number) {
@@ -69,7 +75,7 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
       const input: [number, number] = [0, layout.width]
       const output: [number, number] = isDirectionLTR ? [min, max] : [max, min]
       const value = linearScale(input, output)
-      return value(pointerPosition - layout.x)
+      return value(pointerPosition)
     }
 
     return (
@@ -82,23 +88,23 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
         size={size}
       >
         <SliderImpl
+          ref={forwardedRef}
           dir={direction}
-          orientation="horizontal"
           {...sliderProps}
+          orientation="horizontal"
           onLayout={(e) => {
             const layout = e.nativeEvent.layout
             layoutRef.current = layout
             setSize(layout.height)
           }}
-          ref={forwardedRef}
-          onSlideStart={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX)
+          onSlideStart={(event, target) => {
+            const value = getValueFromPointer(event.nativeEvent.locationX)
             if (value) {
-              onSlideStart?.(value)
+              onSlideStart?.(value, target)
             }
           }}
           onSlideMove={(event) => {
-            const value = getValueFromPointer(event.nativeEvent.pageX)
+            const value = getValueFromPointer(event.nativeEvent.locationX)
             if (value) {
               onSlideMove?.(value)
             }
@@ -123,18 +129,16 @@ type SliderVerticalElement = SliderImplElement
 const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalProps>(
   (props: ScopedProps<SliderVerticalProps>, forwardedRef) => {
     const { min, max, onSlideStart, onSlideMove, onStepKeyDown, ...sliderProps } = props
-    const sliderRef = React.useRef<SliderImplElement>(null)
-    const ref = useComposedRefs(forwardedRef, sliderRef)
-    const rectRef = React.useRef<ClientRect>()
+    const layoutRef = React.useRef<LayoutRectangle | null>(null)
+    const [size, setSize] = React.useState(0)
 
     function getValueFromPointer(pointerPosition: number) {
-      // @ts-ignore
-      const rect = rectRef.current || sliderRef.current!.getBoundingClientRect()
-      const input: [number, number] = [0, rect.height]
+      const layout = layoutRef.current
+      if (!layout) return
+      const input: [number, number] = [0, layout.height]
       const output: [number, number] = [max, min]
       const value = linearScale(input, output)
-      rectRef.current = rect
-      return value(pointerPosition - rect.top)
+      return value(pointerPosition)
     }
 
     return (
@@ -143,22 +147,31 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
         startEdge="bottom"
         endEdge="top"
         sizeProp="height"
-        size={0}
+        size={size}
         direction={1}
       >
         <SliderImpl
+          ref={forwardedRef}
           {...sliderProps}
           orientation="vertical"
-          ref={ref}
-          onSlideStart={(event) => {
+          onLayout={(e) => {
+            const layout = e.nativeEvent.layout
+            layoutRef.current = layout
+            setSize(layout.height)
+          }}
+          onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
-            onSlideStart?.(value)
+            if (value) {
+              onSlideStart?.(value, target)
+            }
           }}
           onSlideMove={(event) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
-            onSlideMove?.(value)
+            if (value) {
+              onSlideMove?.(value)
+            }
           }}
-          onSlideEnd={() => (rectRef.current = undefined)}
+          onSlideEnd={() => {}}
           onStepKeyDown={(event) => {
             const isBackKey = BACK_KEYS.ltr.includes(event.key)
             onStepKeyDown?.({ event, direction: isBackKey ? -1 : 1 })
@@ -179,6 +192,10 @@ type SliderTrackElement = HTMLElement | View
 
 const SliderTrackFrame = styled(SliderFrame, {
   name: 'SliderTrackFrame',
+  height: '100%',
+  width: '100%',
+  backgroundColor: '$background',
+  position: 'relative',
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
@@ -190,6 +207,7 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
         orientation={context.orientation}
+        size={context.size}
         {...trackProps}
         ref={forwardedRef}
       />
@@ -210,6 +228,8 @@ interface SliderTrackActiveProps extends YStackProps {}
 
 const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
+  backgroundColor: '$colorMid',
+  position: 'absolute',
 })
 
 const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrackActiveProps>(
@@ -231,12 +251,21 @@ const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrack
         orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
+        size={context.size}
         {...rangeProps}
         ref={composedRefs}
         {...{
           [orientation.startEdge]: offsetStart + '%',
           [orientation.endEdge]: offsetEnd + '%',
         }}
+        {...(orientation.sizeProp === 'width'
+          ? {
+              height: '100%',
+            }
+          : {
+              left: 0,
+              right: 0,
+            })}
       />
     )
   }
@@ -250,9 +279,16 @@ SliderTrackActive.displayName = RANGE_NAME
 
 const THUMB_NAME = 'SliderThumb'
 
-const SliderThumbFrame = styled(SizableStack, {
+const SliderThumbFrame = styled(ThemeableSizableStack, {
   name: 'SliderThumb',
   position: 'absolute',
+  // TODO not taking up 2
+  bordered: 2,
+  // OR THIS
+  borderWidth: 2,
+  pressable: true,
+  focusable: true,
+  hoverable: true,
 })
 
 type SliderThumbElement = HTMLElement | View
@@ -265,8 +301,8 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(THUMB_NAME, __scopeSlider)
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
-    // const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null)
-    // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
+    const [thumb, setThumb] = React.useState<View | HTMLElement | null>(null)
+    const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
 
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
@@ -279,21 +315,21 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
       ? getThumbInBoundsOffset(size, percent, orientation.direction)
       : 0
 
-    console.log('thumbInBoundsOffset', thumbInBoundsOffset, size, percent)
-
-    // React.useEffect(() => {
-    //   if (thumb) {
-    //     context.thumbs.add(thumb)
-    //     return () => {
-    //       context.thumbs.delete(thumb)
-    //     }
-    //   }
-    // }, [thumb, context.thumbs])
+    React.useEffect(() => {
+      if (thumb) {
+        context.thumbs.add(thumb)
+        return () => {
+          context.thumbs.delete(thumb)
+        }
+      }
+    }, [thumb, context.thumbs])
 
     return (
       <SliderThumbFrame
-        ref={forwardedRef}
-        // role="slider"
+        ref={composedRefs}
+        // TODO
+        // @ts-ignore
+        role="slider"
         aria-label={props['aria-label'] || label}
         aria-valuemin={context.min}
         aria-valuenow={value}
@@ -301,10 +337,21 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         aria-orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
-        // tabIndex={context.disabled ? undefined : 0}
+        // TODO
+        // @ts-ignore
+        tabIndex={context.disabled ? undefined : 0}
         {...thumbProps}
-        x={thumbInBoundsOffset}
-        y={-size / 2}
+        {...(context.orientation === 'horizontal'
+          ? {
+              x: thumbInBoundsOffset - size / 2,
+              y: -size / 2,
+              top: '50%',
+            }
+          : {
+              x: -size / 2,
+              y: size / 2,
+              left: '50%',
+            })}
         size={sizeProp ?? context.size ?? 30}
         onLayout={(e) => {
           setSize(e.nativeEvent.layout[orientation.sizeProp])
@@ -364,16 +411,11 @@ const Slider = withStaticProperties(
       prop: value,
       defaultProp: defaultValue,
       onChange: (value) => {
-        // const thumbs = [...thumbRefs.current]
-        // thumbs[valueIndexToChangeRef.current]?.focus()
+        const thumbs = [...thumbRefs.current]
+        thumbs[valueIndexToChangeRef.current]?.focus()
         onValueChange(value)
       },
     })
-
-    function handleSlideStart(value: number) {
-      const closestIndex = getClosestValueIndex(values, value)
-      updateValues(value, closestIndex)
-    }
 
     function handleSlideMove(value: number) {
       updateValues(value, valueIndexToChangeRef.current)
@@ -406,7 +448,6 @@ const Slider = withStaticProperties(
         thumbs={thumbRefs.current}
         values={values}
         orientation={orientation}
-        // @ts-ignore
         size={sizeProp || 20}
       >
         <SliderOriented
@@ -416,7 +457,19 @@ const Slider = withStaticProperties(
           ref={forwardedRef}
           min={min}
           max={max}
-          onSlideStart={disabled ? undefined : handleSlideStart}
+          onSlideStart={
+            disabled
+              ? undefined
+              : (value: number, target) => {
+                  // when starting on the track, move it right away
+                  // when starting on thumb, dont jump until movemenet as it feels weird
+                  console.log('target', target)
+                  if (target !== 'thumb') {
+                    const closestIndex = getClosestValueIndex(values, value)
+                    updateValues(value, closestIndex)
+                  }
+                }
+          }
           onSlideMove={disabled ? undefined : handleSlideMove}
           onHomeKeyDown={() => !disabled && updateValues(min, 0)}
           onEndKeyDown={() => !disabled && updateValues(max, values.length - 1)}

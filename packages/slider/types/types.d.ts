@@ -9,7 +9,7 @@ export declare type ScopedProps<P> = P & {
 export declare type Direction = 'ltr' | 'rtl';
 export declare type SliderImplElement = HTMLElement | View;
 declare type SliderImplPrivateProps = {
-    onSlideStart(event: GestureReponderEvent): void;
+    onSlideStart(event: GestureReponderEvent, target: 'thumb' | 'track'): void;
     onSlideMove(event: GestureReponderEvent): void;
     onSlideEnd(event: GestureReponderEvent): void;
     onHomeKeyDown(event: React.KeyboardEvent): void;
@@ -25,7 +25,7 @@ export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProp
 declare type SliderOrientationPrivateProps = {
     min: number;
     max: number;
-    onSlideStart?(value: number): void;
+    onSlideStart?(value: number, target: 'thumb' | 'track'): void;
     onSlideMove?(value: number): void;
     onHomeKeyDown(event: React.KeyboardEvent): void;
     onEndKeyDown(event: React.KeyboardEvent): void;
@@ -57,7 +57,7 @@ export interface SliderProps extends Omit<SliderHorizontalProps | SliderVertical
     onValueChange?(value: number[]): void;
 }
 export declare type SliderContextValue = {
-    size?: number | null;
+    size?: SizeTokens | number | null;
     disabled?: boolean;
     min: number;
     max: number;
