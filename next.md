@@ -3,6 +3,7 @@
   - also aligns with stylex
 
 - 1.0
+  - html props: role, tabIndex, input type
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
     - make all inverse by default? i think so? or else make sub-themes handle it...
@@ -81,6 +82,11 @@ takeout:
   - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
 
+- before={{}}, after={{}} could work ...
+  - only if we can do with psuedos:
+    - focusStyle={{ after: { fullscreen: true, border... } }}
+    - allows for proper focused borders that don't require super hacks
+    - see Switch
 - styled(Button) types break   
 - <Card />, <List />, <Radio />, <Avatar />
   - radio may be List.Radio just combines List, Label, Drawer

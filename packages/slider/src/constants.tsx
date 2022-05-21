@@ -1,7 +1,7 @@
 import { SizeTokens } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 
-import { SliderContextValue } from './types'
+import { Direction, SliderContextValue } from './types'
 
 export const SLIDER_NAME = 'Slider'
 
@@ -23,3 +23,10 @@ export const [SliderOrientationProvider, useSliderOrientationContext] = createSl
   size: 0,
   direction: 1,
 })
+
+export const PAGE_KEYS = ['PageUp', 'PageDown']
+export const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+export const BACK_KEYS: Record<Direction, string[]> = {
+  ltr: ['ArrowDown', 'Home', 'ArrowLeft', 'PageDown'],
+  rtl: ['ArrowDown', 'Home', 'ArrowRight', 'PageDown'],
+}

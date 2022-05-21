@@ -35,6 +35,7 @@ export const docsRoutes = [
       { title: 'Label', route: '/docs/components/label' },
       { title: 'Inputs', route: '/docs/components/inputs' },
       { title: 'Switch', route: '/docs/components/switch' },
+      { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Shapes', route: '/docs/components/shapes' },
       { title: 'Separator', route: '/docs/components/separator' },
       { title: 'Popover', route: '/docs/components/popover' },

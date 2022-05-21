@@ -1,6 +1,6 @@
 import type { GestureReponderEvent, SizeTokens } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
-import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
+import type { SizableStackProps } from '@tamagui/stacks'
 import type { View } from 'react-native'
 
 export type ScopedProps<P> = P & { __scopeSlider?: Scope }
@@ -10,7 +10,7 @@ export type Direction = 'ltr' | 'rtl'
 export type SliderImplElement = HTMLElement | View
 
 type SliderImplPrivateProps = {
-  onSlideStart(event: GestureReponderEvent): void
+  onSlideStart(event: GestureReponderEvent, target: 'thumb' | 'track'): void
   onSlideMove(event: GestureReponderEvent): void
   onSlideEnd(event: GestureReponderEvent): void
   onHomeKeyDown(event: React.KeyboardEvent): void
@@ -28,7 +28,7 @@ export interface SliderImplProps extends SliderTrackProps, SliderImplPrivateProp
 type SliderOrientationPrivateProps = {
   min: number
   max: number
-  onSlideStart?(value: number): void
+  onSlideStart?(value: number, target: 'thumb' | 'track'): void
   onSlideMove?(value: number): void
   onHomeKeyDown(event: React.KeyboardEvent): void
   onEndKeyDown(event: React.KeyboardEvent): void

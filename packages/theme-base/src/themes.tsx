@@ -59,6 +59,11 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     ...altThemes,
     ...altButtonThemes,
     [`${name}_Button`, altThemes[0][1]],
+    [`${name}_SliderTrack`, altThemes[0][1]],
+    [`${name}_SliderTrackActive`, altThemes[2][1]],
+    [`${name}_SliderThumb`, altThemes[3][1]],
+    [`${name}_Switch`, altThemes[0][1]],
+    [`${name}_SwitchThumb`, altThemes[1][1]],
     [`${name}_darker`, darkerTheme],
     [`${name}_active`, activeTheme],
   ]
@@ -227,8 +232,12 @@ const baseThemes = {
   },
   light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
+  light_Button: lightThemes.light,
+  light_SliderTrack: lightThemes.light_alt1,
+  light_SliderTrackActive: lightThemes.light_alt2,
+  light_Switch: lightThemes.light,
+  light_SwitchThumb: lightThemes.light_alt1,
   light_DrawerFrame: lightThemes.light_alt1,
-  light_Button: lightThemes.light_alt1,
 
   // dark
   ...darkThemes,
@@ -237,8 +246,12 @@ const baseThemes = {
     ...darkThemes.dark,
   },
   dark_active: makeActiveTheme(darkThemes.dark),
-  dark_Card: darkThemes.dark_alt1,
-  dark_DrawerFrame: darkThemes.dark_alt2,
+  dark_Card: darkThemes.dark,
+  dark_DrawerFrame: darkThemes.dark,
+  dark_SliderTrack: darkThemes.dark_darker,
+  dark_SliderTrackActive: darkThemes.dark_alt1,
+  dark_Switch: darkThemes.dark_darker,
+  dark_SwitchThumb: darkThemes.dark_alt1,
   dark_Button: darkThemes.dark_alt1,
 }
 

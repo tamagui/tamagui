@@ -1,30 +1,30 @@
 // forked from radix-ui
 
-import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { getVariantExtras, styled, withStaticProperties } from '@tamagui/core'
+import { styled, withStaticProperties } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
-// import { useSize } from '@tamagui/react-use-size'
-import { SizableStack, SizableStackProps, YStackProps, getCircleSize } from '@tamagui/stacks'
+import { SizableStackProps, ThemeableSizableStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 import { LayoutRectangle, View } from 'react-native'
 
 import {
+  ARROW_KEYS,
+  BACK_KEYS,
+  PAGE_KEYS,
   SLIDER_NAME,
   SliderOrientationProvider,
   SliderProvider,
   useSliderContext,
   useSliderOrientationContext,
-} from './context'
+} from './constants'
 import {
   convertValueToPercentage,
   getClosestValueIndex,
   getDecimalCount,
   getLabel,
   getNextSortedValues,
-  getSize,
   getThumbInBoundsOffset,
   hasMinStepsBetweenValues,
   linearScale,
@@ -41,13 +41,6 @@ import {
   SliderTrackProps,
   SliderVerticalProps,
 } from './types'
-
-const PAGE_KEYS = ['PageUp', 'PageDown']
-const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
-const BACK_KEYS: Record<Direction, string[]> = {
-  ltr: ['ArrowDown', 'Home', 'ArrowLeft', 'PageDown'],
-  rtl: ['ArrowDown', 'Home', 'ArrowRight', 'PageDown'],
-}
 
 /* -------------------------------------------------------------------------------------------------
  * SliderHorizontal
@@ -91,10 +84,10 @@ const SliderHorizontal = React.forwardRef<SliderHorizontalElement, SliderHorizon
             layoutRef.current = layout
             setSize(layout.height)
           }}
-          onSlideStart={(event) => {
+          onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationX)
             if (value) {
-              onSlideStart?.(value)
+              onSlideStart?.(value, target)
             }
           }}
           onSlideMove={(event) => {
@@ -132,7 +125,6 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
       const input: [number, number] = [0, layout.height]
       const output: [number, number] = [max, min]
       const value = linearScale(input, output)
-      console.log('pointerPosition', value(pointerPosition))
       return value(pointerPosition)
     }
 
@@ -154,10 +146,10 @@ const SliderVertical = React.forwardRef<SliderVerticalElement, SliderVerticalPro
             layoutRef.current = layout
             setSize(layout.height)
           }}
-          onSlideStart={(event) => {
+          onSlideStart={(event, target) => {
             const value = getValueFromPointer(event.nativeEvent.locationY)
             if (value) {
-              onSlideStart?.(value)
+              onSlideStart?.(value, target)
             }
           }}
           onSlideMove={(event) => {
@@ -186,10 +178,12 @@ const TRACK_NAME = 'SliderTrack'
 type SliderTrackElement = HTMLElement | View
 
 const SliderTrackFrame = styled(SliderFrame, {
-  name: 'SliderTrackFrame',
+  name: 'SliderTrack',
   height: '100%',
   width: '100%',
   backgroundColor: '$background',
+  position: 'relative',
+  borderRadius: 100_000,
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
@@ -201,6 +195,7 @@ const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
         data-disabled={context.disabled ? '' : undefined}
         data-orientation={context.orientation}
         orientation={context.orientation}
+        size={context.size}
         {...trackProps}
         ref={forwardedRef}
       />
@@ -221,6 +216,8 @@ interface SliderTrackActiveProps extends YStackProps {}
 
 const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
+  backgroundColor: '$background',
+  position: 'absolute',
 })
 
 const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrackActiveProps>(
@@ -242,12 +239,21 @@ const SliderTrackActive = React.forwardRef<SliderTrackActiveElement, SliderTrack
         orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
+        size={context.size}
         {...rangeProps}
         ref={composedRefs}
         {...{
           [orientation.startEdge]: offsetStart + '%',
           [orientation.endEdge]: offsetEnd + '%',
         }}
+        {...(orientation.sizeProp === 'width'
+          ? {
+              height: '100%',
+            }
+          : {
+              left: 0,
+              right: 0,
+            })}
       />
     )
   }
@@ -261,9 +267,16 @@ SliderTrackActive.displayName = RANGE_NAME
 
 const THUMB_NAME = 'SliderThumb'
 
-const SliderThumbFrame = styled(SizableStack, {
+const SliderThumbFrame = styled(ThemeableSizableStack, {
   name: 'SliderThumb',
   position: 'absolute',
+  // TODO not taking up 2
+  bordered: 2,
+  // OR THIS
+  borderWidth: 2,
+  pressable: true,
+  focusable: true,
+  hoverable: true,
 })
 
 type SliderThumbElement = HTMLElement | View
@@ -276,8 +289,8 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const { __scopeSlider, index, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(THUMB_NAME, __scopeSlider)
     const orientation = useSliderOrientationContext(THUMB_NAME, __scopeSlider)
-    // const [thumb, setThumb] = React.useState<HTMLSpanElement | null>(null)
-    // const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
+    const [thumb, setThumb] = React.useState<View | HTMLElement | null>(null)
+    const composedRefs = useComposedRefs(forwardedRef, (node) => setThumb(node))
 
     // We cast because index could be `-1` which would return undefined
     const value = context.values[index] as number | undefined
@@ -286,26 +299,25 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const label = getLabel(index, context.values.length)
     const [size, setSize] = React.useState(0)
 
-    const thumbInBoundsOffset = 0
-    // size
-    //   ? getThumbInBoundsOffset(size / 2, percent, orientation.direction)
-    //   : 0
+    const thumbInBoundsOffset = size
+      ? getThumbInBoundsOffset(size, percent, orientation.direction)
+      : 0
 
-    console.log('percent', { value, percent, size, thumbInBoundsOffset, context })
-
-    // React.useEffect(() => {
-    //   if (thumb) {
-    //     context.thumbs.add(thumb)
-    //     return () => {
-    //       context.thumbs.delete(thumb)
-    //     }
-    //   }
-    // }, [thumb, context.thumbs])
+    React.useEffect(() => {
+      if (thumb) {
+        context.thumbs.add(thumb)
+        return () => {
+          context.thumbs.delete(thumb)
+        }
+      }
+    }, [thumb, context.thumbs])
 
     return (
       <SliderThumbFrame
-        ref={forwardedRef}
-        // role="slider"
+        ref={composedRefs}
+        // TODO
+        // @ts-ignore
+        role="slider"
         aria-label={props['aria-label'] || label}
         aria-valuemin={context.min}
         aria-valuenow={value}
@@ -313,10 +325,21 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         aria-orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
-        // tabIndex={context.disabled ? undefined : 0}
+        // TODO
+        // @ts-ignore
+        tabIndex={context.disabled ? undefined : 0}
         {...thumbProps}
-        x={thumbInBoundsOffset - size / 2}
-        y={-size / 2}
+        {...(context.orientation === 'horizontal'
+          ? {
+              x: thumbInBoundsOffset - size / 2,
+              y: -size / 2,
+              top: '50%',
+            }
+          : {
+              x: -size / 2,
+              y: size / 2,
+              left: '50%',
+            })}
         size={sizeProp ?? context.size ?? 30}
         onLayout={(e) => {
           setSize(e.nativeEvent.layout[orientation.sizeProp])
@@ -376,16 +399,11 @@ const Slider = withStaticProperties(
       prop: value,
       defaultProp: defaultValue,
       onChange: (value) => {
-        // const thumbs = [...thumbRefs.current]
-        // thumbs[valueIndexToChangeRef.current]?.focus()
+        const thumbs = [...thumbRefs.current]
+        thumbs[valueIndexToChangeRef.current]?.focus()
         onValueChange(value)
       },
     })
-
-    function handleSlideStart(value: number) {
-      const closestIndex = getClosestValueIndex(values, value)
-      updateValues(value, closestIndex)
-    }
 
     function handleSlideMove(value: number) {
       updateValues(value, valueIndexToChangeRef.current)
@@ -427,7 +445,18 @@ const Slider = withStaticProperties(
           ref={forwardedRef}
           min={min}
           max={max}
-          onSlideStart={disabled ? undefined : handleSlideStart}
+          onSlideStart={
+            disabled
+              ? undefined
+              : (value: number, target) => {
+                  // when starting on the track, move it right away
+                  // when starting on thumb, dont jump until movemenet as it feels weird
+                  if (target !== 'thumb') {
+                    const closestIndex = getClosestValueIndex(values, value)
+                    updateValues(value, closestIndex)
+                  }
+                }
+          }
           onSlideMove={disabled ? undefined : handleSlideMove}
           onHomeKeyDown={() => !disabled && updateValues(min, 0)}
           onEndKeyDown={() => !disabled && updateValues(max, values.length - 1)}
@@ -466,35 +495,35 @@ Slider.displayName = SLIDER_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 // TODO
-const BubbleInput = (props: any) => {
-  const { value, ...inputProps } = props
-  const ref = React.useRef<HTMLInputElement>(null)
-  const prevValue = usePrevious(value)
+// const BubbleInput = (props: any) => {
+//   const { value, ...inputProps } = props
+//   const ref = React.useRef<HTMLInputElement>(null)
+//   const prevValue = usePrevious(value)
 
-  // Bubble value change to parents (e.g form change event)
-  React.useEffect(() => {
-    const input = ref.current!
-    const inputProto = window.HTMLInputElement.prototype
-    const descriptor = Object.getOwnPropertyDescriptor(inputProto, 'value') as PropertyDescriptor
-    const setValue = descriptor.set
-    if (prevValue !== value && setValue) {
-      const event = new Event('input', { bubbles: true })
-      setValue.call(input, value)
-      input.dispatchEvent(event)
-    }
-  }, [prevValue, value])
+//   // Bubble value change to parents (e.g form change event)
+//   React.useEffect(() => {
+//     const input = ref.current!
+//     const inputProto = window.HTMLInputElement.prototype
+//     const descriptor = Object.getOwnPropertyDescriptor(inputProto, 'value') as PropertyDescriptor
+//     const setValue = descriptor.set
+//     if (prevValue !== value && setValue) {
+//       const event = new Event('input', { bubbles: true })
+//       setValue.call(input, value)
+//       input.dispatchEvent(event)
+//     }
+//   }, [prevValue, value])
 
-  /**
-   * We purposefully do not use `type="hidden"` here otherwise forms that
-   * wrap it will not be able to access its value via the FormData API.
-   *
-   * We purposefully do not add the `value` attribute here to allow the value
-   * to be set programatically and bubble to any parent form `onChange` event.
-   * Adding the `value` will cause React to consider the programatic
-   * dispatch a duplicate and it will get swallowed.
-   */
-  return <input style={{ display: 'none' }} {...inputProps} ref={ref} defaultValue={value} />
-}
+//   /**
+//    * We purposefully do not use `type="hidden"` here otherwise forms that
+//    * wrap it will not be able to access its value via the FormData API.
+//    *
+//    * We purposefully do not add the `value` attribute here to allow the value
+//    * to be set programatically and bubble to any parent form `onChange` event.
+//    * Adding the `value` will cause React to consider the programatic
+//    * dispatch a duplicate and it will get swallowed.
+//    */
+//   return <input style={{ display: 'none' }} {...inputProps} ref={ref} defaultValue={value} />
+// }
 
 /* -----------------------------------------------------------------------------------------------*/
 

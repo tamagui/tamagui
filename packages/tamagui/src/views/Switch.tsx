@@ -14,7 +14,7 @@ import {
   themeable,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
-import { XStack, YStackProps } from '@tamagui/stacks'
+import { ThemeableSizableStack, XStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -50,7 +50,13 @@ const SwitchFrame = styled(XStack, {
   name: 'Switch',
   tag: 'button',
   borderRadius: 1000,
-  borderWidth: 0,
+  borderWidth: 2,
+  borderColor: 'transparent',
+  backgroundColor: '$background',
+
+  focusStyle: {
+    borderColor: '$borderColorFocus',
+  },
 
   variants: {
     size: {
@@ -58,12 +64,12 @@ const SwitchFrame = styled(XStack, {
         const { height, minHeight, maxHeight } = getSwitchHeight(val, extras)!
         const { width, minWidth, maxWidth } = getSwitchWidth(val, extras)!
         return {
-          height,
-          minHeight,
-          maxHeight,
-          width,
-          minWidth,
-          maxWidth,
+          height: height + 2,
+          minHeight: minHeight + 2,
+          maxHeight: maxHeight + 2,
+          width: getVariableValue(width) + 4,
+          minWidth: minWidth + 2,
+          maxWidth: maxWidth + 2,
         }
       },
     },
@@ -127,6 +133,8 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
           data-disabled={disabled ? '' : undefined}
           disabled={disabled}
           // @ts-ignore
+          tabIndex={disabled ? undefined : 0}
+          // @ts-ignore
           value={value}
           {...switchProps}
           ref={composedRefs}
@@ -176,11 +184,9 @@ export const Switch: ReactComponentWithRef<SwitchProps, HTMLButtonElement | View
 
 const THUMB_NAME = 'SwitchThumb'
 
-export type SwitchThumbProps = YStackProps
-
-const SwitchThumbFrame = styled(XStack, {
+const SwitchThumbFrame = styled(ThemeableSizableStack, {
   name: 'SwitchThumb',
-  backgroundColor: '$color',
+  backgroundColor: '$background',
   borderRadius: 1000,
 
   variants: {
@@ -193,6 +199,8 @@ const SwitchThumbFrame = styled(XStack, {
     size: '$4',
   },
 })
+
+export type SwitchThumbProps = GetProps<typeof SwitchThumbFrame>
 
 export const SwitchThumb = SwitchThumbFrame.extractable(
   React.forwardRef<React.ElementRef<'span'>, SwitchThumbProps>(

@@ -3,17 +3,18 @@ import '@tamagui/polyfill-dev'
 
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
-import { ScrollView } from 'react-native'
-import { Button, Input, Spacer, XStack, YStack } from 'tamagui'
+import { ScrollView, useColorScheme } from 'react-native'
+import { Button, Card, Input, Spacer, Switch, SwitchThumb, XStack, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
 React['keep']
 
 export const Sandbox = () => {
-  const [theme, setTheme] = useState('light' as any)
+  const scheme = useColorScheme()
+  const [theme, setTheme] = useState(scheme as any)
   return (
-    <Tamagui.Provider disableRootThemeClass injectCSS defaultTheme={theme}>
+    <Tamagui.Provider injectCSS defaultTheme={theme}>
       <Button
         pos="absolute"
         b={10}
@@ -36,9 +37,10 @@ export const Sandbox = () => {
         }}
       >
         <XStack maw="100%" ov="hidden" space ai="center" fs={0}>
-          {/* <FormDemo size="$3" /> */}
           <FormDemo size="$4" />
-          {/* <FormDemo size="$9" /> */}
+          <FormDemo size="$5" />
+          <FormDemo size="$6" />
+          <FormDemo size="$7" />
         </XStack>
       </div>
     </Tamagui.Provider>
@@ -47,32 +49,44 @@ export const Sandbox = () => {
 
 export function FormDemo({ size }) {
   return (
-    <YStack space={size} p={size}>
-      <Button size={size}>Hello</Button>
-      <Input size={size} />
-      <Demo size={size} />
-    </YStack>
+    <Card size={size}>
+      <XStack space={size}>
+        <Slider f={1} size={size} orientation="vertical" defaultValue={[50]} max={100} step={1}>
+          <Slider.Track>
+            <Slider.TrackActive />
+          </Slider.Track>
+          <Slider.Thumb hoverable bordered circular elevate index={0} />
+        </Slider>
+
+        <YStack space={size} p={size}>
+          <Button size={size}>Hello</Button>
+          <Input placeholder="Search..." size={size} />
+          <SliderDemo w="100%" size={size} />
+          <Switch size={size}>
+            <SwitchThumb elevate />
+          </Switch>
+        </YStack>
+      </XStack>
+    </Card>
   )
 }
 
-export function Demo(props: SliderProps) {
+export function SliderDemo(props: SliderProps) {
   return (
-    <>
-      <Slider defaultValue={[50]} max={100} step={1} {...props}>
-        <Slider.Track>
-          <Slider.TrackActive bc="red" />
-        </Slider.Track>
-        <Slider.Thumb hoverable bordered circular elevate index={0} />
-      </Slider>
-      <Spacer />
-      <Spacer />
-      <Spacer />
-      <Slider orientation="vertical" bc="blue" defaultValue={[50]} max={100} step={1} {...props}>
-        <Slider.Track bc="green">
-          <Slider.TrackActive bc="red" />
-        </Slider.Track>
-        <Slider.Thumb hoverable bordered circular elevate index={0} />
-      </Slider>
-    </>
+    <Slider my={props.size} defaultValue={[50]} max={100} step={1} {...props}>
+      <Slider.Track>
+        <Slider.TrackActive />
+      </Slider.Track>
+      <Slider.Thumb
+        hoverable
+        bordered
+        circular
+        elevate
+        index={0}
+        focusStyle={{
+          borderWidth: 2,
+        }}
+      />
+    </Slider>
   )
 }

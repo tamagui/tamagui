@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/drawer",
-  "version": "1.0.1-beta.26",
+  "version": "1.0.1-beta.27",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,12 +17,12 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.2.1",
-    "@tamagui/compose-refs": "^1.0.1-beta.26",
-    "@tamagui/core": "^1.0.1-beta.26",
-    "@tamagui/create-context": "^1.0.1-beta.26",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.26",
-    "@tamagui/stacks": "^1.0.1-beta.26",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.26",
+    "@tamagui/compose-refs": "^1.0.1-beta.27",
+    "@tamagui/core": "^1.0.1-beta.27",
+    "@tamagui/create-context": "^1.0.1-beta.27",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.27",
+    "@tamagui/stacks": "^1.0.1-beta.27",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.27",
     "react-native-reanimated": "~2.8.0"
   },
   "peerDependencies": {
@@ -31,7 +31,7 @@
     "react-native-gesture-handler": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.26",
+    "@tamagui/build": "^1.0.1-beta.27",
     "react": "*",
     "react-dom": "*",
     "react-native-gesture-handler": "*"
