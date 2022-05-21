@@ -57,6 +57,7 @@ export function FormDemo({ size }) {
           </Slider.Track>
           <Slider.Thumb hoverable bordered circular elevate index={0} />
         </Slider>
+
         <YStack space={size} p={size}>
           <Button size={size}>Hello</Button>
           <Input placeholder="Search..." size={size} />

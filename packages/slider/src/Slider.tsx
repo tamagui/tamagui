@@ -1,36 +1,30 @@
 // forked from radix-ui
 
-import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { getVariantExtras, styled, withStaticProperties } from '@tamagui/core'
+import { styled, withStaticProperties } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
-// import { useSize } from '@tamagui/react-use-size'
-import {
-  SizableStack,
-  SizableStackProps,
-  ThemeableSizableStack,
-  YStackProps,
-  getCircleSize,
-} from '@tamagui/stacks'
+import { SizableStackProps, ThemeableSizableStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
 import { LayoutRectangle, View } from 'react-native'
 
 import {
+  ARROW_KEYS,
+  BACK_KEYS,
+  PAGE_KEYS,
   SLIDER_NAME,
   SliderOrientationProvider,
   SliderProvider,
   useSliderContext,
   useSliderOrientationContext,
-} from './context'
+} from './constants'
 import {
   convertValueToPercentage,
   getClosestValueIndex,
   getDecimalCount,
   getLabel,
   getNextSortedValues,
-  getSize,
   getThumbInBoundsOffset,
   hasMinStepsBetweenValues,
   linearScale,
@@ -47,13 +41,6 @@ import {
   SliderTrackProps,
   SliderVerticalProps,
 } from './types'
-
-const PAGE_KEYS = ['PageUp', 'PageDown']
-const ARROW_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
-const BACK_KEYS: Record<Direction, string[]> = {
-  ltr: ['ArrowDown', 'Home', 'ArrowLeft', 'PageDown'],
-  rtl: ['ArrowDown', 'Home', 'ArrowRight', 'PageDown'],
-}
 
 /* -------------------------------------------------------------------------------------------------
  * SliderHorizontal
@@ -509,35 +496,35 @@ Slider.displayName = SLIDER_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 // TODO
-const BubbleInput = (props: any) => {
-  const { value, ...inputProps } = props
-  const ref = React.useRef<HTMLInputElement>(null)
-  const prevValue = usePrevious(value)
+// const BubbleInput = (props: any) => {
+//   const { value, ...inputProps } = props
+//   const ref = React.useRef<HTMLInputElement>(null)
+//   const prevValue = usePrevious(value)
 
-  // Bubble value change to parents (e.g form change event)
-  React.useEffect(() => {
-    const input = ref.current!
-    const inputProto = window.HTMLInputElement.prototype
-    const descriptor = Object.getOwnPropertyDescriptor(inputProto, 'value') as PropertyDescriptor
-    const setValue = descriptor.set
-    if (prevValue !== value && setValue) {
-      const event = new Event('input', { bubbles: true })
-      setValue.call(input, value)
-      input.dispatchEvent(event)
-    }
-  }, [prevValue, value])
+//   // Bubble value change to parents (e.g form change event)
+//   React.useEffect(() => {
+//     const input = ref.current!
+//     const inputProto = window.HTMLInputElement.prototype
+//     const descriptor = Object.getOwnPropertyDescriptor(inputProto, 'value') as PropertyDescriptor
+//     const setValue = descriptor.set
+//     if (prevValue !== value && setValue) {
+//       const event = new Event('input', { bubbles: true })
+//       setValue.call(input, value)
+//       input.dispatchEvent(event)
+//     }
+//   }, [prevValue, value])
 
-  /**
-   * We purposefully do not use `type="hidden"` here otherwise forms that
-   * wrap it will not be able to access its value via the FormData API.
-   *
-   * We purposefully do not add the `value` attribute here to allow the value
-   * to be set programatically and bubble to any parent form `onChange` event.
-   * Adding the `value` will cause React to consider the programatic
-   * dispatch a duplicate and it will get swallowed.
-   */
-  return <input style={{ display: 'none' }} {...inputProps} ref={ref} defaultValue={value} />
-}
+//   /**
+//    * We purposefully do not use `type="hidden"` here otherwise forms that
+//    * wrap it will not be able to access its value via the FormData API.
+//    *
+//    * We purposefully do not add the `value` attribute here to allow the value
+//    * to be set programatically and bubble to any parent form `onChange` event.
+//    * Adding the `value` will cause React to consider the programatic
+//    * dispatch a duplicate and it will get swallowed.
+//    */
+//   return <input style={{ display: 'none' }} {...inputProps} ref={ref} defaultValue={value} />
+// }
 
 /* -----------------------------------------------------------------------------------------------*/
 

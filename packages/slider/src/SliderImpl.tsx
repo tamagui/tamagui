@@ -2,11 +2,11 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
-import { composeEventHandlers, styled } from '@tamagui/core'
+import { composeEventHandlers, isWeb, styled } from '@tamagui/core'
 import { YStack, getCircleSize } from '@tamagui/stacks'
 import * as React from 'react'
 
-import { SLIDER_NAME, useSliderContext } from './context'
+import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
 import { ScopedProps, SliderImplElement, SliderImplProps } from './types'
 
 export const DirectionalYStack = styled(YStack, {
@@ -19,7 +19,6 @@ export const DirectionalYStack = styled(YStack, {
 })
 
 export const SliderFrame = styled(DirectionalYStack, {
-  // name: 'Slider',
   position: 'relative',
 
   variants: {
@@ -31,13 +30,11 @@ export const SliderFrame = styled(DirectionalYStack, {
         return {
           height: size,
           borderRadius: size,
-          // width: 100,
         }
       }
       return {
         width: size,
         borderRadius: size,
-        // height: 100,
       }
     },
   },
@@ -62,21 +59,23 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
         {...sliderProps}
         data-orientation={sliderProps.orientation}
         ref={forwardedRef}
-        // onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-        //   if (event.key === 'Home') {
-        //     onHomeKeyDown(event)
-        //     // Prevent scrolling to page start
-        //     event.preventDefault()
-        //   } else if (event.key === 'End') {
-        //     onEndKeyDown(event)
-        //     // Prevent scrolling to page end
-        //     event.preventDefault()
-        //   } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
-        //     onStepKeyDown(event)
-        //     // Prevent scrolling for directional key presses
-        //     event.preventDefault()
-        //   }
-        // })}
+        {...(isWeb && {
+          onKeyDown: (event) => {
+            if (event.key === 'Home') {
+              onHomeKeyDown(event)
+              // Prevent scrolling to page start
+              event.preventDefault()
+            } else if (event.key === 'End') {
+              onEndKeyDown(event)
+              // Prevent scrolling to page end
+              event.preventDefault()
+            } else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
+              onStepKeyDown(event)
+              // Prevent scrolling for directional key presses
+              event.preventDefault()
+            }
+          },
+        })}
         onStartShouldSetResponder={() => true}
         onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
           const target = event.target as HTMLElement | number
