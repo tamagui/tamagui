@@ -54,8 +54,8 @@ Theme objects now default to names that map to standard style names (with option
 Building off that, themes can nest unlimited times - `dark` and `light` can have `dark_blue` and `light_blue`, and then different tints below that, like `dark_blue_alt1`.
 
 <HeroContainer alignItems="flex-start">
-  <XStack py="$4" px="$6" ai="center" space="$10">
-    <XStack mx={-16} scale={0.8}>
+  <XStack py="$4" px="$6" ai="center" space="$11">
+    <XStack scale={0.8}>
       <YStack pos="relative" z={0} zi={3} mr={-200}>
         <MediaPlayerDemo theme="blue" alt={1} />
       </YStack>
@@ -66,7 +66,7 @@ Building off that, themes can nest unlimited times - `dark` and `light` can have
         <MediaPlayerDemo theme="blue" alt={3} />
       </YStack>
     </XStack>
-    <XStack mx={-16} scale={0.8}>
+    <XStack scale={0.8}>
       <YStack pos="relative" z={0} zi={3} mr={-200}>
         <MediaPlayerDemo theme="pink" alt={1} />
       </YStack>

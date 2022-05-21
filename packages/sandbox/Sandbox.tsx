@@ -37,8 +37,16 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <XStack maw="100%" space ai="center" fs={0}>
-          <Card
+        {/* <XStack maw="100%" space ai="center" fs={0}> */}
+        <Button
+          debug
+          hoverStyle={{
+            backgroundColor: 'red',
+          }}
+        >
+          helo
+        </Button>
+        {/* <Card
             debug="verbose"
             overflow="visible"
             bordered
@@ -47,13 +55,13 @@ export const Sandbox = () => {
             w={100}
             p={0}
             ai="stretch"
-          />
-          {/* <MediaPlayer /> */}
-          {/* <FormDemo size="$4" />
+          /> */}
+        {/* <MediaPlayer /> */}
+        {/* <FormDemo size="$4" />
           <FormDemo size="$5" />
           <FormDemo size="$6" />
           <FormDemo size="$7" /> */}
-        </XStack>
+        {/* </XStack> */}
       </div>
     </Tamagui.Provider>
   )
