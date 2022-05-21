@@ -17784,6 +17784,7 @@ __metadata:
     "@tamagui/popover": ^1.0.1-beta.26
     "@tamagui/popper": ^1.0.1-beta.26
     "@tamagui/separator": ^1.0.1-beta.26
+    "@tamagui/slider": ^1.0.1-beta.26
     "@tamagui/stacks": ^1.0.1-beta.26
     "@tamagui/text": ^1.0.1-beta.26
     "@tamagui/tooltip": ^1.0.1-beta.26
