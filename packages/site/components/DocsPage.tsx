@@ -103,7 +103,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           top={15}
           right={30}
           ai="center"
-          space="$4"
+          space="$6"
         >
           <AlphaButton />
 

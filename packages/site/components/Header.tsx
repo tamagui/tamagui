@@ -36,7 +36,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
       py={floating ? 0 : '$2'}
       zi={1}
     >
-      <XStack ai="center" space="$4">
+      <XStack ai="center" space="$6">
         {isHome ? (
           <YStack cursor="pointer" my={-20}>
             <TamaguiLogo onPress={setNextTint} downscale={floating ? 2 : 1.5} />
@@ -70,39 +70,39 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
         </NextLink>
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav" space="$2">
-        <XStack ai="center" space="$2">
-          <NextLink href="/docs/intro/installation" passHref>
-            <Paragraph
-              fontFamily="$silkscreen"
-              p="$2"
-              letterSpacing={2}
-              cursor="pointer"
-              size="$4"
-              o={0.7}
-              hoverStyle={{ opacity: 1 }}
-              tag="a"
-            >
-              Docs
-            </Paragraph>
-          </NextLink>
+      <XStack pointerEvents="auto" tag="nav" space="$3">
+        <NextLink href="/docs/intro/installation" passHref>
+          <Paragraph
+            fontFamily="$silkscreen"
+            p="$2"
+            letterSpacing={2}
+            cursor="pointer"
+            size="$4"
+            o={0.7}
+            hoverStyle={{ opacity: 1 }}
+            tag="a"
+          >
+            Docs
+          </Paragraph>
+        </NextLink>
 
-          <NextLink href="/blog" passHref>
-            <Paragraph
-              fontFamily="$silkscreen"
-              p="$2"
-              letterSpacing={2}
-              cursor="pointer"
-              size="$4"
-              o={0.7}
-              hoverStyle={{ opacity: 1 }}
-              tag="a"
-            >
-              Blog
-            </Paragraph>
-          </NextLink>
+        <NextLink href="/blog" passHref>
+          <Paragraph
+            fontFamily="$silkscreen"
+            p="$2"
+            letterSpacing={2}
+            cursor="pointer"
+            size="$4"
+            o={0.7}
+            hoverStyle={{ opacity: 1 }}
+            tag="a"
+          >
+            Blog
+          </Paragraph>
+        </NextLink>
 
-          <SearchButton borderWidth={0} iconAfter={null} />
+        <XStack ai="center" space="$4">
+          <SearchButton iconAfter={null} />
 
           <ThemeToggle chromeless={floating} />
         </XStack>
