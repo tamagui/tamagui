@@ -178,13 +178,17 @@ export const getSplitStyles: StyleSplitter = (
     if (isWeb && !state.noClassNames) {
       const atomic = getStylesAtomic(cur)
       for (const atomicStyle of atomic) {
-        if (props['debug']) console.log('mergin', cur, atomicStyle)
+        const key = atomicStyle.property
         if (!state.dynamicStylesInline) {
           addStyle(atomicStyle.identifier, atomicStyle.rules[0])
-          mergeClassName(atomicStyle.property, atomicStyle.identifier)
+          mergeClassName(key, atomicStyle.identifier)
         } else {
-          console.log('inline', atomicStyle.property, atomicStyle.property)
-          style[atomicStyle.property] = atomicStyle.value
+          if (cur[key] === 0) {
+            // bugfix rnw getAtomicStyles value on 0 == '\"\"'
+            style[key] = 0
+          } else {
+            style[key] = atomicStyle.value
+          }
         }
       }
     }
