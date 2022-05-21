@@ -63,4 +63,4 @@ export declare const YGroup: import("react").ForwardRefExoticComponent<Omit<impo
     scrollable?: boolean | undefined;
 } & import("react").RefAttributes<unknown>>;
 export {};
-//# sourceMappingURL=InteractiveContainer.d.ts.map
+//# sourceMappingURL=Group.d.ts.map

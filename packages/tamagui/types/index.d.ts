@@ -29,7 +29,7 @@ export * from './views/Headings';
 export * from './views/Hoverable';
 export * from './views/Image';
 export * from './views/Input';
-export * from './views/InteractiveContainer';
+export * from './views/Group';
 export * from './views/Label';
 export * from './views/Layouts';
 export * from './views/LinearGradient';
