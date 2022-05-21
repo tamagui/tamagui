@@ -123,6 +123,8 @@ function getAtomicStyle(
         let res = rule
           .replace(`.${val.identifier}`, `${psuedoPrefixSelect} ${className}`)
           .replace('{', `:${pseudo.name}{`)
+          // important to override inline styles
+          .replace(';', ' !important;')
 
         if (pseudo.name === 'hover') {
           // hover styles need to be conditional

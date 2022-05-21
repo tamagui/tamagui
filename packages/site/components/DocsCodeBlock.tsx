@@ -101,17 +101,17 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           <Button
             aria-label="Copy code to clipboard"
             position="absolute"
-            top="$2"
-            right="$2"
+            size="$2"
+            top="$5"
+            right="$3"
             display="inline-flex"
             opacity={0}
+            icon={hasCopied ? CheckCircle : Clipboard}
             // css={{
             //   '*:hover > &, &:focus': { opacity: 1, transition: '150ms linear' },
             // }}
             onPress={() => setHasCopied(true)}
-          >
-            {hasCopied ? <CheckCircle /> : <Clipboard />}
-          </Button>
+          ></Button>
         </YStack>
       )}
     </YStack>

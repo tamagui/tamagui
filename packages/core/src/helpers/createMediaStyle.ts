@@ -38,6 +38,7 @@ export const createMediaStyle = (
   } else {
     styleRule = `@media ${mediaQuery} { ${precendencePrefix} ${styleInner} }`
   }
+  styleRule = styleRule.replace(';}', ' !important;}')
   return {
     styleRule,
     identifier: nextIdentifier,

@@ -146,7 +146,12 @@ export function createComponent<
       props,
       staticConfig,
       theme,
-      shouldAvoidClasses ? { ...state, noClassNames: true, resolveVariablesAs: 'value' } : state,
+      {
+        ...state,
+        noClassNames: shouldAvoidClasses ? true : false,
+        dynamicStylesInline: true,
+        resolveVariablesAs: shouldAvoidClasses ? 'value' : 'auto',
+      },
       shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames
     )
 
@@ -319,7 +324,7 @@ export function createComponent<
     if (isStringElement && shouldAvoidClasses) {
       styles = {
         ...defaultNativeStyle,
-        ...animationStyles,
+        ...(animationStyles ?? style),
         ...medias,
       }
     } else {
@@ -329,8 +334,7 @@ export function createComponent<
         // TODO this should be able to be done w css to replicate after extraction:
         //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
         // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-        // style,
-        animationStyles ? animationStyles : style,
+        animationStyles ?? style,
         medias,
       ]
       if (!animationStyles) {
@@ -342,36 +346,38 @@ export function createComponent<
     }
 
     if (isWeb) {
-      if (!shouldAvoidClasses) {
-        const fontFamilyName = isText
-          ? props.fontFamily || staticConfig.defaultProps.fontFamily
-          : null
-        const fontFamily =
-          fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
-        const classList = [
-          componentName ? componentClassName : '',
-          fontFamily ? `font_${fontFamily}` : '',
-          theme.className,
-          classNames ? Object.values(classNames).join(' ') : '',
-        ]
+      const fontFamilyName = isText
+        ? props.fontFamily || staticConfig.defaultProps.fontFamily
+        : null
+      const fontFamily =
+        fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
+      const classList = [
+        componentName ? componentClassName : '',
+        fontFamily ? `font_${fontFamily}` : '',
+        theme.className,
+        classNames ? Object.values(classNames).join(' ') : '',
+      ]
 
+      if (!shouldAvoidClasses) {
+        if (classNames) {
+          classList.push(Object.values(classNames).join(' '))
+        }
         // TODO restore this to isText classList
         // hasTextAncestor === true && cssText.textHasAncestor,
         // TODO MOVE TO VARIANTS [number] [any]
         // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
-
-        const className = classList.join(' ')
-        if (process.env.NODE_ENV === 'development') {
-          if (props['debug']) {
-            // prettier-ignore
-            console.log('  » className', { isStringElement, pseudos, state, classNames, propsClassName: props.className, style, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
-          }
-        }
-        viewProps.className = className
-        viewProps.style = animationStyles
-      } else {
-        viewProps.style = styles
       }
+
+      const className = classList.join(' ')
+      const style = animationStyles ?? splitStyles.style
+
+      if (process.env.NODE_ENV === 'development' && props['debug']) {
+        // prettier-ignore
+        console.log('  » className', { splitStyles, style, isStringElement, pseudos, state, classNames, propsClassName: props.className, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
+      }
+
+      viewProps.className = className
+      viewProps.style = style
     } else {
       viewProps.style = styles
     }

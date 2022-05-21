@@ -61,7 +61,7 @@ export default function Home() {
       <SectionTinted contain="paint layout" bubble gradient>
         <HeroTypography />
       </SectionTinted>
-      <Section>
+      <Section zi={10}>
         <HeroExampleProps />
       </Section>
       <Section mt={-70} zi={0}>
