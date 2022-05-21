@@ -3,6 +3,7 @@
   - also aligns with stylex
 
 - 1.0
+  - document XGroup, YGroup
   - html props: role, tabIndex, input type
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default

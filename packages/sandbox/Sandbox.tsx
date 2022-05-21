@@ -3,10 +3,9 @@ import '@tamagui/polyfill-dev'
 
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
-import { ScrollView, useColorScheme } from 'react-native'
-import { Button, Card, Input, Spacer, Switch, SwitchThumb, XStack, YStack } from 'tamagui'
+import { useColorScheme } from 'react-native'
+import { Button, Card, Input, Switch, SwitchThumb, XStack, YStack } from 'tamagui'
 
-import { MediaPlayer } from './MediaPlayer'
 import Tamagui from './tamagui.config'
 
 React['keep']
