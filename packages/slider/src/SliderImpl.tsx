@@ -30,11 +30,13 @@ export const SliderFrame = styled(DirectionalYStack, {
         return {
           height: size,
           borderRadius: size,
+          justifyContent: 'center',
         }
       }
       return {
         width: size,
         borderRadius: size,
+        alignItems: 'center',
       }
     },
   },

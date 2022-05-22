@@ -334,11 +334,19 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
               x: thumbInBoundsOffset - size / 2,
               y: -size / 2,
               top: '50%',
+              ...(size === 0 && {
+                top: 'auto',
+                bottom: 'auto',
+              }),
             }
           : {
               x: -size / 2,
               y: size / 2,
               left: '50%',
+              ...(size === 0 && {
+                left: 'auto',
+                right: 'auto',
+              }),
             })}
         size={sizeProp ?? context.size ?? 30}
         onLayout={(e) => {
