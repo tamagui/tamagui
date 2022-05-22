@@ -419,8 +419,10 @@ const normalizeColor = (color?: number | string, opacity = 1): void | string => 
   if (color == null || color == undefined) {
     return
   }
-  if (typeof color === 'string' && isWebColor(color)) {
-    return color
+  if (isWeb) {
+    if (typeof color === 'string' && isWebColor(color)) {
+      return color
+    }
   }
   const colorInt = processColor(color)
   if (colorInt != null) {
