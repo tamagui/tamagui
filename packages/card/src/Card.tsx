@@ -8,7 +8,7 @@ import {
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { ThemeableStack } from '@tamagui/stacks'
-import React, { cloneElement, forwardRef, isValidElement } from 'react'
+import React, { cloneElement, forwardRef } from 'react'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -27,6 +27,7 @@ const CardFrame = styled(ThemeableStack, {
   flexDirection: 'column',
   backgroundColor: '$background',
   position: 'relative',
+  overflow: 'hidden',
 
   variants: {
     size: {
