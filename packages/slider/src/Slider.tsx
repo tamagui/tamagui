@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { styled, withStaticProperties } from '@tamagui/core'
+import { isWeb, styled, withStaticProperties } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableSizableStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -394,8 +394,8 @@ const Slider = withStaticProperties(
       size: sizeProp,
       ...sliderProps
     } = props
-    // const [slider, setSlider] = React.useState<HTMLElement | View | null>(null)
-    // const composedRefs = useComposedRefs(forwardedRef, (node) => setSlider(node))
+    const sliderRef = React.useRef<SliderImplElement>(null)
+    const composedRefs = useComposedRefs(sliderRef, forwardedRef)
     const thumbRefs = React.useRef<SliderContextValue['thumbs']>(new Set())
     const valueIndexToChangeRef = React.useRef<number>(0)
     const isHorizontal = orientation === 'horizontal'
@@ -412,6 +412,20 @@ const Slider = withStaticProperties(
         onValueChange(value)
       },
     })
+
+    if (isWeb) {
+      React.useEffect(() => {
+        const node = sliderRef.current as HTMLElement
+        if (!node) return
+        const preventDefault = (e) => {
+          e.preventDefault()
+        }
+        node.addEventListener('touchstart', preventDefault)
+        return () => {
+          node.removeEventListener('touchstart', preventDefault)
+        }
+      }, [])
+    }
 
     function handleSlideMove(value: number) {
       updateValues(value, valueIndexToChangeRef.current)
@@ -450,7 +464,7 @@ const Slider = withStaticProperties(
           aria-disabled={disabled}
           data-disabled={disabled ? '' : undefined}
           {...sliderProps}
-          ref={forwardedRef}
+          ref={composedRefs}
           min={min}
           max={max}
           onSlideStart={

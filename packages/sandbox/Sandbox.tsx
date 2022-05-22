@@ -48,9 +48,14 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <TooltipSimple label="hi">
-          <Button>hi</Button>
-        </TooltipSimple>
+        <YStack h={1000} pt={400}>
+          <Slider h={200} orientation="vertical">
+            <Slider.Track bc="red">
+              <Slider.TrackActive />
+            </Slider.Track>
+            <Slider.Thumb index={0} />
+          </Slider>
+        </YStack>
         {/* <XStack maw="100%" space ai="center" fs={0}> */}
         {/* <Button
             aria-label="Copy code to clipboard"

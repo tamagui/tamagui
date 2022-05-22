@@ -83,7 +83,6 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
           const target = event.target as HTMLElement | number
           const isStartingOnThumb = context.thumbs.has(event.target)
           // // Prevent browser focus behaviour because we focus a thumb manually when values change.
-          event.preventDefault()
           // Touch devices have a delay before focusing so won't focus if touch immediately moves
           // away from target (sliding). We want thumb to focus regardless.
           if (target instanceof HTMLElement) {
