@@ -98,7 +98,6 @@ takeout:
 - <Card />, <List />, <Radio />, <Avatar />
   - radio may be List.Radio just combines List, Label, Drawer
     - can use Switch or check or custom
-- docs: extractable(), deoptProps, getExpandedShorthands
 - <Accordion />
 - <Carousel />
 - load theme hook via feature if possible
