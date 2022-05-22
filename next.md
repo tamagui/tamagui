@@ -1,3 +1,4 @@
+- fix compiler on bootstrap repo not accepting packages/app
 - use style values instead of classnames when non-extracted
   - think of <YStack x={cursor.position} /> we'll generate infinite classnames
   - also aligns with stylex

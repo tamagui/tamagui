@@ -4,6 +4,7 @@ import { ViewStyle } from 'react-native'
 import { reversedShorthands } from '../createTamagui'
 import { isVariable } from '../createVariable'
 import { RulesData, generateAtomicStyles } from './generateAtomicStyles'
+import { invertMapTransformKeys, mergeTransform } from './mergeTransform'
 
 export type ViewStyleWithPseudos = ViewStyle & {
   hoverStyle?: ViewStyle
@@ -59,21 +60,6 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options: AtomicS
   }
 
   return res
-}
-
-const mapTransformKeys = {
-  x: 'translateX',
-  y: 'translateY',
-}
-
-const invertMapTransformKeys = {
-  translateX: 'x',
-  translateY: 'y',
-}
-
-export const mergeTransform = (obj: ViewStyle, key: string, val: any, backwards = false) => {
-  obj.transform ||= []
-  obj.transform[backwards ? 'unshift' : 'push']({ [mapTransformKeys[key] || key]: val } as any)
 }
 
 function getAtomicStyle(

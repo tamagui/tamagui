@@ -19,13 +19,14 @@ import {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
-import { ViewStyleWithPseudos, getStylesAtomic, mergeTransform } from './getStylesAtomic'
+import { ViewStyleWithPseudos, getStylesAtomic } from './getStylesAtomic'
 import {
   insertStyleRule,
   insertedTransforms,
   updateInserted,
   updateInsertedCache,
 } from './insertStyleRule'
+import { mergeTransform } from './mergeTransform'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 export type ClassNamesObject = Record<string, string>

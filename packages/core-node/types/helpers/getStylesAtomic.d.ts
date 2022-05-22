@@ -23,6 +23,5 @@ export declare const pseudos: {
     };
 };
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: AtomicStyleOptions): StyleObject[];
-export declare const mergeTransform: (obj: ViewStyle, key: string, val: any, backwards?: boolean) => void;
 export {};
 //# sourceMappingURL=getStylesAtomic.d.ts.map

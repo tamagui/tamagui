@@ -8,6 +8,7 @@ import hyphenateStyleName from 'hyphenate-style-name'
 import normalizeCSSColor from 'normalize-css-color'
 import { TextStyle, ViewStyle } from 'react-native'
 
+import { isWeb } from '../constants/platform'
 import { prefixInlineStyles, prefixStyles } from './prefixStyles'
 
 export function expandStyles(style: any) {
@@ -116,80 +117,83 @@ function updateReactDOMStyle(style: Object, key: string, value: any) {
 }
 
 export function expandStyle(key: string, value: any) {
-  switch (key) {
-    // Ignore some React Native styles
-    case 'elevation':
-    case 'overlayColor':
-    case 'resizeMode':
-    case 'tintColor': {
-      break
-    }
-
-    case 'aspectRatio': {
-      return [key, value.toString()]
-    }
-
-    // TODO: remove once this issue is fixed
-    // https://github.com/rofrischmann/inline-style-prefixer/issues/159
-    case 'backgroundClip': {
-      if (value === 'text') {
-        return [
-          ['backgroundClip', value],
-          ['WebkitBackgroundClip', value],
-        ]
-      }
-      break
-    }
-
+  if (key === 'flex') {
     // The 'flex' property value in React Native must be a positive integer,
     // 0, or -1.
-    case 'flex': {
-      if (value <= -1) {
-        return [
-          ['flexGrow', 0],
-          ['flexShrink', 1],
-          ['flexBasis', 'auto'],
-        ]
+    if (value <= -1) {
+      return [
+        ['flexGrow', 0],
+        ['flexShrink', 1],
+        ['flexBasis', 'auto'],
+      ]
+    }
+    // normalizing to better align with native
+    // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+    if (value >= 0) {
+      return [
+        ['flexGrow', value],
+        ['flexShrink', 1],
+      ]
+    }
+    return
+  }
+
+  // web only
+  if (isWeb) {
+    switch (key) {
+      // Ignore some React Native styles
+      case 'elevation':
+      case 'overlayColor':
+      case 'resizeMode':
+      case 'tintColor': {
+        break
       }
-      // normalizing to better align with native
-      // see spec for flex shorthand https://developer.mozilla.org/en-US/docs/Web/CSS/flex
-      if (value >= 0) {
-        return [
-          ['flexGrow', value],
-          ['flexShrink', 1],
-        ]
+
+      case 'aspectRatio': {
+        return [key, value.toString()]
       }
-      break
-    }
 
-    case 'textAlignVertical': {
-      return [['verticalAlign', value === 'center' ? 'middle' : value]]
-    }
-
-    case 'textDecorationLine': {
-      return ['textDecorationLine', value]
-    }
-
-    case 'transform': {
-      if (Array.isArray(value)) {
-        return [[key, value.map(mapTransform).join(' ')]]
+      // TODO: remove once this issue is fixed
+      // https://github.com/rofrischmann/inline-style-prefixer/issues/159
+      case 'backgroundClip': {
+        if (value === 'text') {
+          return [
+            ['backgroundClip', value],
+            ['WebkitBackgroundClip', value],
+          ]
+        }
+        break
       }
-      break
-    }
 
-    case 'writingDirection': {
-      return [['direction', value]]
-    }
-
-    default: {
-      const longKey = STYLE_SHORT_FORM_EXPANSIONS[key]
-      if (longKey) {
-        return longKey.map((key) => {
-          return [key, value]
-        })
-      } else if (Array.isArray(value)) {
-        return [[key, value.join(',')]]
+      case 'textAlignVertical': {
+        return [['verticalAlign', value === 'center' ? 'middle' : value]]
       }
+
+      case 'textDecorationLine': {
+        return ['textDecorationLine', value]
+      }
+
+      case 'transform': {
+        if (Array.isArray(value)) {
+          return [[key, value.map(mapTransform).join(' ')]]
+        }
+        break
+      }
+
+      case 'writingDirection': {
+        return [['direction', value]]
+      }
+    }
+  }
+
+  const longKey = STYLE_SHORT_FORM_EXPANSIONS[key]
+  if (longKey) {
+    return longKey.map((key) => {
+      return [key, value]
+    })
+  } else {
+    if (isWeb && Array.isArray(value)) {
+      return [[key, value.join(',')]]
     }
   }
 }
@@ -400,13 +404,15 @@ const colorProps = {
 }
 
 function normalizeValueWithProperty(value: any, property?: string): any {
-  let returnValue = value
-  if ((property == null || !unitlessNumbers[property]) && typeof value === 'number') {
-    returnValue = `${value}px`
-  } else if (property != null && colorProps[property]) {
-    returnValue = normalizeColor(value)
+  if (isWeb) {
+    if ((property == null || !unitlessNumbers[property]) && typeof value === 'number') {
+      return `${value}px`
+    }
   }
-  return returnValue
+  if (property && colorProps[property]) {
+    return normalizeColor(value)
+  }
+  return value
 }
 
 const normalizeColor = (color?: number | string, opacity = 1): void | string => {
