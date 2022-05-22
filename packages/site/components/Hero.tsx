@@ -128,7 +128,6 @@ const HeroTop = memo(() => {
         <XStack ai="center" jc="center" space="$4">
           <NextLink href="/docs/intro/introduction" passHref>
             <Button
-              debug
               fontFamily="$silkscreen"
               borderRadius={1000}
               iconAfter={ArrowRight}

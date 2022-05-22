@@ -155,10 +155,18 @@ export function HeroExampleThemes() {
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = theme === name
                 return (
-                  <Theme key={name} name={name}>
-                    <ActiveCircle onPress={() => setTheme(name)} isActive={isActive} />
-                  </Theme>
+                  <ActiveCircle
+                    backgroundColor={name === 'dark' ? '#000' : '#fff'}
+                    onPress={() => setTheme(name)}
+                    isActive={isActive}
+                  />
                 )
+                // TODO fix
+                // return (
+                //   <Theme key={name} name={name}>
+                //     <ActiveCircle onPress={() => setTheme(name)} isActive={isActive} />
+                //   </Theme>
+                // )
               })}
             </XGroup>
 

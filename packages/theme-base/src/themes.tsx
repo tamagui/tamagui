@@ -45,7 +45,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   let themeEntries: any[] = [[name, theme]]
   const altThemes: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
-    getTheme(alt * 2 + shift, props),
+    getTheme(alt + (props.isLight ? 1 : 0) + shift, props),
   ])
   const altThemes2: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,

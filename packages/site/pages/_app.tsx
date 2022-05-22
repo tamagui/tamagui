@@ -57,8 +57,6 @@ export default function App(props: AppProps) {
     )
   }, [props])
 
-  console.log('theme', theme)
-
   return (
     <>
       <Head>
