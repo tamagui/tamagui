@@ -1,7 +1,14 @@
-import { GetProps, SizeTokens, styled, withStaticProperties } from '@tamagui/core'
+import {
+  GetProps,
+  SizeTokens,
+  isTamaguiElement,
+  styled,
+  themeable,
+  withStaticProperties,
+} from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
-import { ThemeableSizableStack } from '@tamagui/stacks'
-import React, { forwardRef } from 'react'
+import { ThemeableStack } from '@tamagui/stacks'
+import React, { cloneElement, forwardRef, isValidElement } from 'react'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -12,15 +19,14 @@ type CardContextValue = {
   size?: SizeTokens
 }
 
-export const [createCardContext, createCardScope] = createContextScope(CARD_NAME)
+const [createCardContext, createCardScope] = createContextScope(CARD_NAME)
 const [CardProvider, useCardContext] = createCardContext<CardContextValue>(CARD_NAME)
 
-export type CardProps = GetProps<typeof CardFrame>
-
-const CardFrame = styled(ThemeableSizableStack, {
+const CardFrame = styled(ThemeableStack, {
   name: 'Card',
   flexDirection: 'column',
   backgroundColor: '$background',
+  position: 'relative',
 
   variants: {
     size: {
@@ -37,38 +43,64 @@ const CardFrame = styled(ThemeableSizableStack, {
   },
 })
 
-const CardHeader = styled(ThemeableSizableStack, {
+const CardHeader = styled(ThemeableStack, {
   name: 'CardHeader',
+  zIndex: 10,
   backgroundColor: 'transparent',
   flexDirection: 'row',
   marginBottom: 'auto',
+
+  variants: {
+    size: {
+      '...size': (val, { tokens }) => {
+        return {
+          padding: tokens.size[val] ?? val,
+        }
+      },
+    },
+  },
 })
 
-const CardFooter = styled(ThemeableSizableStack, {
+const CardFooter = styled(CardHeader, {
   name: 'CardFooter',
-  backgroundColor: 'transparent',
-  flexDirection: 'row',
+  zIndex: 5,
   marginTop: 'auto',
+  marginBottom: 0,
 })
 
-const CardBackground = styled(ThemeableSizableStack, {
+const CardBackground = styled(ThemeableStack, {
   name: 'CardBackground',
   zIndex: 0,
   fullscreen: true,
+  overflow: 'hidden',
   pointerEvents: 'none',
+  padding: 0,
 })
 
 export type CardHeaderProps = GetProps<typeof CardHeader>
 export type CardFooterProps = GetProps<typeof CardFooter>
 
+export type CardProps = GetProps<typeof CardFrame>
+
 export const Card = withStaticProperties(
-  forwardRef(({ size, __scopeCard, ...props }: ScopedProps<CardProps, 'Card'>) => {
-    return (
-      <CardProvider scope={__scopeCard} size={size}>
-        <CardFrame {...props} />
-      </CardProvider>
-    )
-  }),
+  themeable(
+    forwardRef<ScopedProps<CardProps, 'Card'>, any>(({ size, __scopeCard, children, ...props }) => {
+      return (
+        <CardProvider scope={__scopeCard} size={size}>
+          <CardFrame {...props}>
+            {React.Children.map(children, (child) => {
+              if (isTamaguiElement(child) && !child.props.size) {
+                return cloneElement(child, {
+                  size,
+                })
+              }
+              return child
+            })}
+          </CardFrame>
+        </CardProvider>
+      )
+    })
+  ),
   {
     Header: CardHeader,
     Footer: CardFooter,
@@ -76,4 +108,4 @@ export const Card = withStaticProperties(
   }
 )
 
-export { useCardContext, CardHeader, CardFooter, CardBackground }
+export { createCardScope, useCardContext, CardHeader, CardFooter, CardBackground }

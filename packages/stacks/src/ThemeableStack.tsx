@@ -1,9 +1,9 @@
-import { GetProps, getButtonSize, styled } from '@tamagui/core'
+import { GetProps, styled } from '@tamagui/core'
 
 import { YStack } from './Stacks'
 import { bordered, circular, elevate, focusable, hoverable, pad, pressable } from './variants'
 
-export const ThemeableSizableStack = styled(YStack, {
+export const ThemeableStack = styled(YStack, {
   name: 'SizableStack',
   backgroundColor: '$background',
   flexDirection: 'row',
@@ -21,21 +21,6 @@ export const ThemeableSizableStack = styled(YStack, {
     elevate,
     bordered,
 
-    size: {
-      '...size': getButtonSize,
-    },
-
-    disabled: {
-      true: {
-        // pointerEvents: 'none',
-        opacity: 0.45,
-        backgroundColor: '$background',
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-      },
-    },
-
     transparent: {
       true: {
         backgroundColor: 'transparent',
@@ -52,4 +37,15 @@ export const ThemeableSizableStack = styled(YStack, {
   },
 })
 
-export type ThemeableSizableStackProps = GetProps<typeof ThemeableSizableStack>
+export type ThemeableStackProps = GetProps<typeof ThemeableStack>
+
+const Test = styled(ThemeableStack, {
+  variants: {
+    something: {
+      true: {},
+    },
+  },
+})
+
+type T = GetProps<typeof Test>
+type x = T['chromeless']

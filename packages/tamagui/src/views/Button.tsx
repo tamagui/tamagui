@@ -3,13 +3,14 @@ import {
   GetProps,
   ReactComponentWithRef,
   ThemeableProps,
+  getButtonSize,
   getVariableValue,
   spacedChildren,
   styled,
   themeable,
   useTheme,
 } from '@tamagui/core'
-import { ThemeableSizableStack } from '@tamagui/stacks'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
 import { View } from 'react-native'
@@ -50,17 +51,16 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     textProps?: Partial<SizableTextProps>
   }
 
-const ButtonFrame = styled(ThemeableSizableStack, {
+const ButtonFrame = styled(ThemeableStack, {
   name: 'Button',
   tag: 'button',
-  size: '$4',
+  hoverable: true,
+  pressable: true,
   borderWidth: 1,
   borderColor: 'transparent',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
-  hoverable: true,
-  pressable: true,
 
   // if we wanted this only when pressable = true, we'd need to merge variants?
   cursor: 'pointer',
@@ -78,6 +78,10 @@ const ButtonFrame = styled(ThemeableSizableStack, {
   },
 
   variants: {
+    size: {
+      '...size': getButtonSize,
+    },
+
     active: {
       true: {
         hoverStyle: {
@@ -86,14 +90,23 @@ const ButtonFrame = styled(ThemeableSizableStack, {
       },
     },
 
-    disabled: {
-      true: {
-        opacity: 0.5,
-        pointerEvents: 'none',
-      },
-    },
+    // breaking size types??
+    // disabled: {
+    //   true: {
+    //     opacity: 0.5,
+    //     pointerEvents: 'none',
+    //   },
+    // },
+  },
+
+  defaultVariants: {
+    size: '$4',
   },
 })
+
+type x = GetProps<typeof ButtonFrame>
+type y = x['size']
+type z = x['chromeless']
 
 export const ButtonText = styled(SizableText, {
   color: '$color',

@@ -15,9 +15,9 @@ export declare const getSizeScaledToFont: (val: string | number, { sizeX, sizeY 
 };
 export declare const createGetStackSize: (scale: ScaleProps) => (val: SizeTokens | number, extras: VariantSpreadExtras<any>) => {
     minHeight: number;
+    borderRadius: any;
     paddingHorizontal: number;
     paddingVertical: number;
-    borderRadius: any;
 };
 export declare const buttonScaling: {
     sizeX: number;
@@ -25,9 +25,9 @@ export declare const buttonScaling: {
 };
 export declare const getButtonSize: (val: SizeTokens | number, extras: VariantSpreadExtras<any>) => {
     minHeight: number;
+    borderRadius: any;
     paddingHorizontal: number;
     paddingVertical: number;
-    borderRadius: any;
 };
 export {};
 //# sourceMappingURL=getStackSize.d.ts.map

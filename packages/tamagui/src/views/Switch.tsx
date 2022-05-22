@@ -14,7 +14,7 @@ import {
   themeable,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
-import { ThemeableSizableStack, XStack, YStackProps } from '@tamagui/stacks'
+import { ThemeableStack, XStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
@@ -184,7 +184,7 @@ export const Switch: ReactComponentWithRef<SwitchProps, HTMLButtonElement | View
 
 const THUMB_NAME = 'SwitchThumb'
 
-const SwitchThumbFrame = styled(ThemeableSizableStack, {
+const SwitchThumbFrame = styled(ThemeableStack, {
   name: 'SwitchThumb',
   backgroundColor: '$background',
   borderRadius: 1000,

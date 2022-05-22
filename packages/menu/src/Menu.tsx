@@ -46,20 +46,21 @@ export const Menu = withStaticProperties(
       )
     }
 
-    return (
-      <Popover
-        trigger={(props) => cloneElement(trigger, { ...props, ...triggerProps })}
-        open={open}
-        onChangeOpen={setOpen}
-      >
-        <Popover.Content>
-          <Popover.Arrow />
-          <YStack backgroundColor="$background" borderRadius="$2">
-            {children}
-          </YStack>
-        </Popover.Content>
-      </Popover>
-    )
+    return null
+    // return (
+    //   <Popover
+    //     trigger={(props) => cloneElement(trigger, { ...props, ...triggerProps })}
+    //     open={open}
+    //     onChangeOpen={setOpen}
+    //   >
+    //     <Popover.Content>
+    //       <Popover.Arrow />
+    //       <YStack backgroundColor="$background" borderRadius="$2">
+    //         {children}
+    //       </YStack>
+    //     </Popover.Content>
+    //   </Popover>
+    // )
   },
   {
     Item: MenuItem,

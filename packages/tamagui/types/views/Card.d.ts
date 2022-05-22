@@ -8,6 +8,7 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -25,6 +26,7 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -42,6 +44,7 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -59,6 +62,7 @@ export declare const Card: import("@tamagui/core").TamaguiComponent<Omit<import(
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;

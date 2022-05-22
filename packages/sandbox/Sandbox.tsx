@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   H2,
+  Image,
   Input,
   Separator,
   Switch,
@@ -49,7 +50,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Card elevate size="$4">
+        <Card theme="dark" w={300} h={500} elevate size="$4">
           <Card.Header pad>
             <H2>Sony A7IV</H2>
           </Card.Header>
@@ -57,6 +58,14 @@ export const Sandbox = () => {
             <XStack f={1} />
             <Button br="$10">Purchase</Button>
           </Card.Footer>
+          <Card.Background bc="red">
+            <Image
+              width={300}
+              height={500}
+              resizeMode="cover"
+              src={require('../../packages/site/public/camera.jpg').default}
+            />
+          </Card.Background>
         </Card>
         {/* <XStack maw="100%" space ai="center" fs={0}> */}
         {/* <Button
