@@ -1,9 +1,9 @@
 // forked from radix-ui
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, styled, withStaticProperties } from '@tamagui/core'
+import { getButtonSize, isWeb, styled, withStaticProperties } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
-import { SizableStackProps, ThemeableSizableStack, YStackProps } from '@tamagui/stacks'
+import { SizableStackProps, ThemeableStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import * as React from 'react'
@@ -32,7 +32,6 @@ import {
 } from './helpers'
 import { SliderFrame, SliderImpl } from './SliderImpl'
 import {
-  Direction,
   ScopedProps,
   SliderContextValue,
   SliderHorizontalProps,
@@ -267,7 +266,7 @@ SliderTrackActive.displayName = RANGE_NAME
 
 const THUMB_NAME = 'SliderThumb'
 
-const SliderThumbFrame = styled(ThemeableSizableStack, {
+const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
   position: 'absolute',
   // TODO not taking up 2
@@ -277,6 +276,12 @@ const SliderThumbFrame = styled(ThemeableSizableStack, {
   pressable: true,
   focusable: true,
   hoverable: true,
+
+  variants: {
+    size: {
+      '...size': getButtonSize,
+    },
+  },
 })
 
 type SliderThumbElement = HTMLElement | View

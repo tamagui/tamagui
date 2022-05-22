@@ -3856,6 +3856,7 @@ __metadata:
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
     esbuild-loader: ^2.18.0
+    file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.6.0
     motion: ^10.6.2
@@ -3867,6 +3868,7 @@ __metadata:
     tamagui: ^1.0.1-beta.31
     tamagui-loader: ^1.0.1-beta.31
     thread-loader: ^3.0.4
+    url-loader: ^4.1.1
     webpack: ^5.72.0
     webpack-bundle-analyzer: ^4.5.0
     webpack-cli: ^4.9.2
@@ -9153,6 +9155,18 @@ __metadata:
   dependencies:
     escape-string-regexp: ^1.0.5
   checksum: 85a6ad29e9aca80b49b817e7c89ecc4716ff14e3779d9835af554db91bac41c0f289c418923519392a1e582b4d10482ad282021330cd045bb7b80c84152f2a2b
+  languageName: node
+  linkType: hard
+
+"file-loader@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "file-loader@npm:6.2.0"
+  dependencies:
+    loader-utils: ^2.0.0
+    schema-utils: ^3.0.0
+  peerDependencies:
+    webpack: ^4.0.0 || ^5.0.0
+  checksum: faf43eecf233f4897b0150aaa874eeeac214e4f9de49738a9e0ef734a30b5260059e85b7edadf852b98e415f875bd5f12587768a93fd52aaf2e479ecf95fab20
   languageName: node
   linkType: hard
 
@@ -18926,6 +18940,23 @@ __metadata:
   version: 0.1.0
   resolution: "urix@npm:0.1.0"
   checksum: 4c076ecfbf3411e888547fe844e52378ab5ada2d2f27625139011eada79925e77f7fbf0e4016d45e6a9e9adb6b7e64981bd49b22700c7c401c5fc15f423303b3
+  languageName: node
+  linkType: hard
+
+"url-loader@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "url-loader@npm:4.1.1"
+  dependencies:
+    loader-utils: ^2.0.0
+    mime-types: ^2.1.27
+    schema-utils: ^3.0.0
+  peerDependencies:
+    file-loader: "*"
+    webpack: ^4.0.0 || ^5.0.0
+  peerDependenciesMeta:
+    file-loader:
+      optional: true
+  checksum: c1122a992c6cff70a7e56dfc2b7474534d48eb40b2cc75467cde0c6972e7597faf8e43acb4f45f93c2473645dfd803bcbc20960b57544dd1e4c96e77f72ba6fd
   languageName: node
   linkType: hard
 

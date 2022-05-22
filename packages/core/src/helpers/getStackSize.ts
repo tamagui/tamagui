@@ -40,9 +40,9 @@ export const createGetStackSize =
     const { radius, minHeight, px, py } = getSizeScaledToFont(val, scale, extras)
     return {
       minHeight,
+      borderRadius: props.circular ? 100_000 : props.borderRadius ?? radius,
       paddingHorizontal: props.circular ? 0 : px,
       paddingVertical: props.circular ? 0 : py,
-      borderRadius: props.circular ? 100_000 : props.borderRadius ?? radius,
     }
   }
 

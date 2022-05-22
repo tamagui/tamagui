@@ -45,10 +45,9 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }, "size"> & {
@@ -62,10 +61,9 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }, "size"> & {
@@ -79,10 +77,9 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }, "size"> & {
@@ -96,10 +93,9 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 } & {
@@ -115,10 +111,9 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }, "size"> & {
@@ -132,10 +127,9 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }, "size"> & {
@@ -149,10 +143,9 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
-    size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }, "size"> & {
