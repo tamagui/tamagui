@@ -17,6 +17,7 @@
         - ios accepts "textContentType"
         - set secureTextEntry automatically for type="password"
   - form onSubmit
+  - // TODO bug not applying
   - shorthands-only type/docs
   - tokens-only type/docs
   - fix /types import

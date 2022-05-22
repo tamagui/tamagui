@@ -5,7 +5,17 @@ import '@tamagui/polyfill-dev'
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Card, Input, Separator, Switch, SwitchThumb, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Card,
+  Input,
+  Separator,
+  Switch,
+  SwitchThumb,
+  TooltipSimple,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { SandboxAnimationDemo } from './SandboxAnimationDemo'
 import Tamagui from './tamagui.config'
@@ -18,25 +28,13 @@ export const Sandbox = () => {
   return (
     <Tamagui.Provider injectCSS defaultTheme={theme}>
       <Button
-        rotate="-2.5deg"
-        theme="pink_alt2"
-        cursor="pointer"
-        opacity={0.9}
-        hoverStyle={{ opacity: 1 }}
-        tag="a"
-        size="$2"
-      >
-        Beta
-      </Button>
-
-      {/* <Button
         pos="absolute"
         b={10}
         l={10}
         onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
         Switch
-      </Button> */}
+      </Button>
 
       <div
         style={{
@@ -50,6 +48,9 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
+        <TooltipSimple label="hi">
+          <Button>hi</Button>
+        </TooltipSimple>
         {/* <XStack maw="100%" space ai="center" fs={0}> */}
         {/* <Button
             aria-label="Copy code to clipboard"

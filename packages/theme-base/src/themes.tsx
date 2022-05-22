@@ -68,6 +68,8 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     [`${name}_SliderThumb`, altThemes[3][1]],
     [`${name}_Switch`, altThemes[0][1]],
     [`${name}_SwitchThumb`, altThemes[1][1]],
+    [`${name}_TooltipArrow`, altThemes[1][1]],
+    [`${name}_TooltipContent`, altThemes[1][1]],
     [`${name}_darker`, darkerTheme],
     [`${name}_active`, activeTheme],
   ]
