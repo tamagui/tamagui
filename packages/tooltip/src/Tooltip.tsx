@@ -59,7 +59,7 @@ export const Tooltip = withStaticProperties(
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
     const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
     const delay = delayProp ?? delayGroup
-    const [open, setOpen] = React.useState(true)
+    const [open, setOpen] = React.useState(false)
     const id = props.groupId
 
     const onOpenChange = React.useCallback(
