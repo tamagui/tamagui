@@ -16,7 +16,7 @@ import { ScopedProps } from '@tamagui/create-context'
 import {
   PopoverAnchor,
   PopoverArrow,
-  PopoverClose,
+  PopoverArrowProps,
   PopoverContent,
   PopoverContentProps,
   PopoverTrigger,
@@ -29,7 +29,11 @@ import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
 const TooltipContent = React.forwardRef((props: PopoverContentProps, ref: any) => {
-  return <PopoverContent pointerEvents="none" ref={ref} {...props} />
+  return <PopoverContent componentName="TooltipContent" pointerEvents="none" ref={ref} {...props} />
+})
+
+const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
+  return <PopoverArrow componentName="TooltipArrow" ref={ref} {...props} />
 })
 
 export type TooltipProps = PopperProps & {
@@ -55,7 +59,7 @@ export const Tooltip = withStaticProperties(
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
     const { delay: delayGroup, setCurrentId } = useDelayGroupContext()
     const delay = delayProp ?? delayGroup
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(true)
     const id = props.groupId
 
     const onOpenChange = React.useCallback(
@@ -117,8 +121,7 @@ export const Tooltip = withStaticProperties(
   }) as React.FC<TooltipProps>,
   {
     Anchor: PopoverAnchor,
-    Arrow: PopoverArrow,
-    Close: PopoverClose,
+    Arrow: TooltipArrow,
     Content: TooltipContent,
     Trigger: PopoverTrigger,
   }
