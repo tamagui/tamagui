@@ -12,6 +12,7 @@ export { default as SeparatorDemo } from './SeparatorDemo'
 export { default as ImageDemo } from './ImageDemo'
 export { default as AnimationsDemo } from './AnimationsDemo'
 export { default as LabelDemo } from './LabelDemo'
+export { default as GroupDemo } from './GroupDemo'
 
 export const TooltipDemo = dynamic(() => import('./TooltipDemo'))
 export const DrawerDemo = dynamic(() => import('./DrawerDemo'))

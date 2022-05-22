@@ -85,6 +85,13 @@ const ButtonFrame = styled(ThemeableSizableStack, {
         },
       },
     },
+
+    disabled: {
+      true: {
+        opacity: 0.5,
+        pointerEvents: 'none',
+      },
+    },
   },
 })
 

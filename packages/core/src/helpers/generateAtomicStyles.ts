@@ -459,7 +459,7 @@ const unitlessNumbers = {
   borderImageSlice: true,
   borderImageWidth: true,
   boxFlex: true,
-  boxFlexGroup: true,
+  boxFleGroup: true,
   boxOrdinalGroup: true,
   columnCount: true,
   flex: true,

@@ -1,5 +1,5 @@
 import { Activity, Airplay } from '@tamagui/feather-icons'
-import { Button, XGroup, XStack, YStack } from 'tamagui'
+import { Button, Group, XStack, YStack } from 'tamagui'
 
 export default function ButtonDemo(props) {
   return (
@@ -8,14 +8,14 @@ export default function ButtonDemo(props) {
       <Button als="center" icon={Airplay} size="$6">
         Large
       </Button>
-      <XGroup>
+      <Group>
         <Button w="50%" size="$3" br={0} theme="alt2">
           Alt2
         </Button>
         <Button w="50%" size="$3" br={0} theme="yellow">
           Yellow
         </Button>
-      </XGroup>
+      </Group>
       <XStack space>
         <Button themeInverse size="$2">
           Small Inverse
@@ -24,14 +24,14 @@ export default function ButtonDemo(props) {
           After
         </Button>
       </XStack>
-      <XGroup>
+      <Group>
         <Button br={0} w="50%" size="$1" disabled>
           disabled
         </Button>
         <Button br={0} w="50%" size="$1" chromeless>
           chromeless
         </Button>
-      </XGroup>
+      </Group>
     </YStack>
   )
 }

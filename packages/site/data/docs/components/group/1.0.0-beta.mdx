@@ -1,0 +1,87 @@
+---
+title: Group
+description: Render horizontal or vertical groups easily.
+name: text
+component: Group
+---
+
+# Group
+
+<Description>Layout buttons and more with groups.</Description>
+
+<HeroContainer demoMultiple>
+  <GroupDemo />
+</HeroContainer>
+
+```jsx hero template=Group
+
+```
+
+<Highlights
+  features={[
+    'Accepts size prop that works on all styles.',
+    'Align vertically or horizontally.',
+    'Natural spacing and disabled props.',
+  ]}
+/>
+
+### Usage
+
+```jsx
+import { Group, Button } from 'tamagui'
+
+export default () => (
+  <Group>
+    <Button>First</Button>
+    <Button>Second</Button>
+    <Button>Third</Button>
+  </Group>
+)
+```
+
+Group will pass it's border radius down. It ensures any items inside will get appropriately scaled border radius, subtracting 1px from inner items radius, to make sure it aligns.
+
+### Sizing
+
+The `size` property applies to radius, and passes to children:
+
+```jsx
+import { Group, Button } from 'tamagui'
+
+export default () => (
+  <Group size="$6">
+    <Button>First</Button>
+    <Button>Second</Button>
+    <Button>Third</Button>
+  </Group>
+)
+```
+
+### Disabled
+
+The `disabled` property will pass to children
+
+<HeroContainer>
+  <GroupDisabledDemo />
+</HeroContainer>
+
+### Group API
+
+Group extends [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'string | SizeTokens',
+      description: `Set a size, number or one of the size token values.`,
+    },
+    {
+      name: 'disabled',
+      required: false,
+      type: 'boolean',
+      description: `Pass disabled down to children.`,
+    },
+  ]}
+/>

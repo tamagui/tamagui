@@ -1,6 +1,6 @@
 import { useTheme } from '@components/NextTheme'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Theme, ThemeName, XGroup, XStack, YStack, debounce } from 'tamagui'
+import { Group, Theme, ThemeName, XStack, YStack, debounce } from 'tamagui'
 
 import { useGet } from '../hooks/useGet'
 import { ActiveCircle } from './ActiveCircle'
@@ -151,7 +151,7 @@ export function HeroExampleThemes() {
       <YStack mt="$4" ai="center" jc="center">
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" space="$2">
-            <XGroup bc="$background" p="$1" br="$10" als="center">
+            <Group bc="$background" p="$1" br="$10" als="center">
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = theme === name
                 return (
@@ -168,9 +168,9 @@ export function HeroExampleThemes() {
                 //   </Theme>
                 // )
               })}
-            </XGroup>
+            </Group>
 
-            <XGroup bc="$background" p="$1" br="$10" als="center">
+            <Group bc="$background" p="$1" br="$10" als="center">
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
@@ -183,9 +183,9 @@ export function HeroExampleThemes() {
                   </Theme>
                 )
               })}
-            </XGroup>
+            </Group>
 
-            <XGroup bc="$background" p="$1" br="$10" als="center">
+            <Group bc="$background" p="$1" br="$10" als="center">
               <Theme name={colorName}>
                 <XStack>
                   {themes[1].map((name, i) => {
@@ -202,7 +202,7 @@ export function HeroExampleThemes() {
                   })}
                 </XStack>
               </Theme>
-            </XGroup>
+            </Group>
           </XStack>
         </XStack>
 

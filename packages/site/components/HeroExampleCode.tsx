@@ -1,7 +1,7 @@
 import { FastForward } from '@tamagui/feather-icons'
 import { memo, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, XGroup, XStack, YStack } from 'tamagui'
+import { Button, Group, Paragraph, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { CodeDemo } from './CodeDemo'
@@ -27,7 +27,7 @@ export function HeroExampleCode() {
             </HomeH3>
           </YStack>
 
-          <XGroup theme={tint} maxWidth="100%" als="center" scrollable>
+          <Group theme={tint} maxWidth="100%" als="center" scrollable>
             {examples.map((example, i) => {
               return (
                 <Button
@@ -43,7 +43,7 @@ export function HeroExampleCode() {
                 </Button>
               )
             })}
-          </XGroup>
+          </Group>
 
           <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
             <YStack
@@ -109,7 +109,7 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <XGroup zi={10} mb="$-4" als="center">
+        <Group zi={10} mb="$-4" als="center">
           {examples.map((example, i) => (
             <Button
               onPress={() => setActiveIndex(i)}
@@ -122,7 +122,7 @@ const CodeExamples = memo(({ examples }: any) => {
               {example.name}
             </Button>
           ))}
-        </XGroup>
+        </Group>
       </>
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>

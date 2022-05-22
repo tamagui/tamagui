@@ -31,6 +31,7 @@ export const docsRoutes = [
       { title: 'Stacks', route: '/docs/components/stacks' },
       { title: 'Paragraph', route: '/docs/components/text' },
       { title: 'Button', route: '/docs/components/button' },
+      { title: 'Group', route: '/docs/components/group' },
       { title: 'Headings', route: '/docs/components/headings' },
       { title: 'Image', route: '/docs/components/image' },
       { title: 'Label', route: '/docs/components/label' },

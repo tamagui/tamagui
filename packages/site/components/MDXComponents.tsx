@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native'
 import {
   Button,
   Circle,
+  Group,
   H1,
   H2,
   H3,
@@ -360,6 +361,16 @@ export const components = {
       <Theme name={theme}>
         <MediaPlayer {...props} />
       </Theme>
+    )
+  },
+
+  GroupDisabledDemo: () => {
+    return (
+      <Group als="center" disabled>
+        <Button>First</Button>
+        <Button>Second</Button>
+        <Button>Third</Button>
+      </Group>
     )
   },
 }

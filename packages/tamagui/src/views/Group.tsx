@@ -27,82 +27,100 @@ export const GroupFrame = styled(YStack, {
   },
 })
 
-type GroupProps = GetProps<typeof GroupFrame> & {
+export type GroupProps = GetProps<typeof GroupFrame> & {
   scrollable?: boolean
+  disabled?: boolean
+  vertical?: boolean
 }
 
-const getGroup = (direction: 'X' | 'Y') =>
-  forwardRef(
-    (
-      {
-        children: childrenProp,
-        space,
-        spaceDirection,
-        size = '$4',
-        scrollable,
-        ...props
-      }: XGroupProps,
-      ref
-    ) => {
-      const radius = getVariableValue(getTokens().radius[size]) - 1
-      const childrens = Children.toArray(childrenProp)
-      const children = childrens.map((child, i) => {
-        if (!radius) return child
-        if (!isValidElement(child)) return child
-        if (i === 0) {
-          return cloneElement(child, {
+export const Group = forwardRef(
+  (
+    {
+      children: childrenProp,
+      space,
+      spaceDirection,
+      size: sizeProp = '$4',
+      scrollable,
+      vertical,
+      disabled: disabledProp,
+      ...props
+    }: GroupProps,
+    ref
+  ) => {
+    const radius = getVariableValue(getTokens().radius[sizeProp]) - 1
+    const childrens = Children.toArray(childrenProp)
+    const children = childrens.map((child, i) => {
+      if (!radius) return child
+      if (!isValidElement(child)) return child
+      const disabled = child.props.disabled ?? disabledProp
+      const size = child.props.size ?? sizeProp
+      if (i === 0) {
+        return cloneElement(child, {
+          ...(!vertical && {
             borderTopLeftRadius: radius,
             borderBottomLeftRadius: radius,
-          })
-        }
-        if (i === childrens.length - 1) {
-          return cloneElement(child, {
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+          }),
+          ...(vertical && {
+            borderTopLeftRadius: radius,
+            borderTopRightRadius: radius,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+          }),
+          disabled,
+          size,
+        })
+      }
+      if (i === childrens.length - 1) {
+        return cloneElement(child, {
+          ...(!vertical && {
             borderTopRightRadius: radius,
             borderBottomRightRadius: radius,
-          })
-        }
-        return child
-      })
-
-      const wrapScroll = (children: any) => {
-        if (scrollable)
-          return (
-            <ScrollView
-              {...(direction === 'Y' && {
-                showsVerticalScrollIndicator: false,
-              })}
-              {...(direction === 'X' && {
-                horizontal: true,
-                showsHorizontalScrollIndicator: false,
-              })}
-            >
-              {children}
-            </ScrollView>
-          )
-        return children
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+          }),
+          ...(vertical && {
+            borderBottomLeftRadius: radius,
+            borderBottomRightRadius: radius,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+          }),
+          disabled,
+          size,
+        })
       }
+      return cloneElement(child, { disabled, size, borderRadius: 0 })
+    })
 
-      return (
-        <GroupFrame
-          ref={ref}
-          size={size}
-          flexDirection={direction === 'X' ? 'row' : 'column'}
-          {...props}
-        >
-          {wrapScroll(
-            spacedChildren({
-              direction: spaceDirection,
-              space,
-              children,
-            })
-          )}
-        </GroupFrame>
-      )
+    const wrapScroll = (children: any) => {
+      if (scrollable)
+        return (
+          <ScrollView
+            {...(vertical && {
+              showsVerticalScrollIndicator: false,
+            })}
+            {...(!vertical && {
+              horizontal: true,
+              showsHorizontalScrollIndicator: false,
+            })}
+          >
+            {children}
+          </ScrollView>
+        )
+      return children
     }
-  )
 
-export type XGroupProps = GroupProps
-export const XGroup = getGroup('X')
-
-export type YGroupProps = GroupProps
-export const YGroup = getGroup('Y')
+    return (
+      <GroupFrame ref={ref} size={sizeProp} flexDirection={!vertical ? 'row' : 'column'} {...props}>
+        {wrapScroll(
+          spacedChildren({
+            direction: spaceDirection,
+            space,
+            children,
+          })
+        )}
+      </GroupFrame>
+    )
+  }
+)
