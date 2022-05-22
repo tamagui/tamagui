@@ -164,44 +164,46 @@ const PopperContentFrame = styled(SizableStack, {
   },
 })
 
-export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
-  (props: ScopedProps<PopperContentProps>, forwardedRef) => {
-    const { __scopePopper, ...contentProps } = props
-    const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
-      usePopperContext(CONTENT_NAME, __scopePopper)
-    const contentRefs = useComposedRefs<any>(floating, forwardedRef)
+export const PopperContent = PopperContentFrame.extractable(
+  React.forwardRef<PopperContentElement, PopperContentProps>(
+    (props: ScopedProps<PopperContentProps>, forwardedRef) => {
+      const { __scopePopper, ...contentProps } = props
+      const { strategy, placement, floating, x, y, getFloatingProps, size, isMounted } =
+        usePopperContext(CONTENT_NAME, __scopePopper)
+      const contentRefs = useComposedRefs<any>(floating, forwardedRef)
 
-    const contents = React.useMemo(() => {
+      const contents = React.useMemo(() => {
+        return (
+          <PopperContentFrame
+            key="popper-content-frame"
+            data-placement={placement}
+            data-strategy={strategy}
+            {...contentProps}
+            size={contentProps.size ?? size}
+          />
+        )
+      }, [placement, strategy, props])
+
+      // all poppers hidden on ssr by default
+      if (!isMounted) {
+        return null
+      }
+
+      const frameProps = {
+        ref: contentRefs,
+        x: (x as any) || 0,
+        y: (y as any) || 0,
+        position: 'absolute',
+      }
+
+      // outer frame because we explicitly dont want animation to apply to this
       return (
-        <PopperContentFrame
-          key="popper-content-frame"
-          data-placement={placement}
-          data-strategy={strategy}
-          {...contentProps}
-          size={contentProps.size ?? size}
-        />
+        <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
+          {contents}
+        </YStack>
       )
-    }, [placement, strategy, props])
-
-    // all poppers hidden on ssr by default
-    if (!isMounted) {
-      return null
     }
-
-    const frameProps = {
-      ref: contentRefs,
-      x: (x as any) || 0,
-      y: (y as any) || 0,
-      position: 'absolute',
-    }
-
-    // outer frame because we explicitly dont want animation to apply to this
-    return (
-      <YStack {...(getFloatingProps ? getFloatingProps(frameProps) : frameProps)}>
-        {contents}
-      </YStack>
-    )
-  }
+  )
 )
 
 PopperContent.displayName = CONTENT_NAME
@@ -225,6 +227,7 @@ const PopperArrowFrame = styled(YStack, {
   backgroundColor: '$background',
   position: 'absolute',
   zIndex: 1,
+  pointerEvents: 'none',
   // TODO bug not applying
   // rotate: '45deg',
 })
@@ -236,8 +239,11 @@ const opposites = {
   left: 'right',
 }
 
-export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps>(
-  function PopperArrow(props: ScopedProps<PopperArrowProps>, forwardedRef) {
+export const PopperArrow = PopperArrowFrame.extractable(
+  React.forwardRef<PopperArrowElement, PopperArrowProps>(function PopperArrow(
+    props: ScopedProps<PopperArrowProps>,
+    forwardedRef
+  ) {
     const { __scopePopper, offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
     const context = usePopperContext(ARROW_NAME, __scopePopper)
     const tokens = getTokens()
@@ -273,10 +279,8 @@ export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps
       <PopperArrowFrame
         {...arrowProps}
         ref={refs}
-        {...arrowStyle}
         rotate="45deg"
-        // left={0}
-        // top={0}
+        {...arrowStyle}
         {...(primaryPlacement === 'top' && {
           borderBottomWidth: borderWidth,
           borderRightWidth: borderWidth,
@@ -295,7 +299,7 @@ export const PopperArrow = React.forwardRef<PopperArrowElement, PopperArrowProps
         })}
       />
     )
-  }
+  })
 )
 
 PopperArrow.displayName = ARROW_NAME
