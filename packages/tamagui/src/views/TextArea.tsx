@@ -9,6 +9,12 @@ export const TextArea = styled(Input, {
   numberOfLines: 4,
   height: 'auto',
 
+  focusStyle: {
+    margin: -1,
+    borderColor: '$borderColorFocus',
+    borderWidth: 2,
+  },
+
   variants: {
     size: {
       '...size': textAreaSizeVariant,

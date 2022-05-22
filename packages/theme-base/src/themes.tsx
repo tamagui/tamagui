@@ -45,10 +45,14 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   let themeEntries: any[] = [[name, theme]]
   const altThemes: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
+    getTheme(alt * 2 + shift, props),
+  ])
+  const altThemes2: any[] = alternates.map((alt) => [
+    `${name}_alt${alt}`,
     getTheme(alt + shift, props),
   ])
   const altButtonThemes: any[] = alternates.map((_, i) => {
-    const [bName, bTheme] = [altThemes[i][0], (altThemes[i + 1] || altThemes[i])[1]]
+    const [bName, bTheme] = [altThemes2[i][0], (altThemes2[i + 1] || altThemes2[i])[1]]
     return [`${bName}_Button` as any, bTheme]
   })
   // add these after alts since we rely on positioning
@@ -58,7 +62,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     ...themeEntries,
     ...altThemes,
     ...altButtonThemes,
-    [`${name}_Button`, altThemes[0][1]],
+    [`${name}_Button`, altThemes2[1][1]],
     [`${name}_SliderTrack`, altThemes[0][1]],
     [`${name}_SliderTrackActive`, altThemes[2][1]],
     [`${name}_SliderThumb`, altThemes[3][1]],
@@ -304,17 +308,17 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
 
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])
   })
-  const lightButtonTheme = altLightThemes[0]
-  const darkButtonTheme = altDarkThemes[0]
+  // const lightButtonTheme = altLightThemes[0]
+  // const darkButtonTheme = altDarkThemes[0]
   return [
     ...altLightThemes,
-    [`${lightButtonTheme[0]}_Button`, altLightThemes[2][1]],
-    [`${lightButtonTheme[0]}_Card`, altLightThemes[2][1]],
-    [`${lightButtonTheme[0]}_DrawerFrame`, altLightThemes[2][1]],
+    // [`${lightButtonTheme[0]}_Button`, altLightThemes[2][1]],
+    // [`${lightButtonTheme[0]}_Card`, altLightThemes[2][1]],
+    // [`${lightButtonTheme[0]}_DrawerFrame`, altLightThemes[2][1]],
     ...altDarkThemes,
-    [`${darkButtonTheme[0]}_Button`, altDarkThemes[2][1]],
-    [`${darkButtonTheme[0]}_Card`, altDarkThemes[2][1]],
-    [`${darkButtonTheme[0]}_DrawerFrame`, altDarkThemes[2][1]],
+    // [`${darkButtonTheme[0]}_Button`, altDarkThemes[2][1]],
+    // [`${darkButtonTheme[0]}_Card`, altDarkThemes[2][1]],
+    // [`${darkButtonTheme[0]}_DrawerFrame`, altDarkThemes[2][1]],
   ]
 })
 

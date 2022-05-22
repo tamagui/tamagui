@@ -3,19 +3,10 @@ import React, { memo, useMemo } from 'react'
 import { isWeb } from '../constants/platform'
 import { wrapThemeManagerContext } from '../helpers/wrapThemeManagerContext'
 import { useChangeThemeEffect } from '../hooks/useTheme'
-import { ThemeName } from '../types'
+import { ThemeProps } from '../hooks/useTheme'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
-
-export type ThemeProps = {
-  className?: string
-  disableThemeClass?: boolean
-  name: Exclude<ThemeName, number> | null
-  componentName?: string
-  children?: any
-  debug?: boolean
-}
 
 export const Theme = memo(function Theme(props: ThemeProps) {
   const { name, theme, themeManager, themes, className } = useChangeThemeEffect(

@@ -159,7 +159,7 @@ export const components = {
     return (
       <NextLink href={href} passHref>
         {/* @ts-ignore */}
-        <Text tag="a" display="inline" {...props}>
+        <Paragraph tag="a" display="inline" {...props}>
           {children}
           {href.startsWith('http') ? (
             <>
@@ -169,7 +169,7 @@ export const components = {
               </Text>
             </>
           ) : null}
-        </Text>
+        </Paragraph>
       </NextLink>
     )
   },

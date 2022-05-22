@@ -13,6 +13,13 @@ export type SetActiveThemeProps = {
   theme?: any
 }
 
+export type GetNextThemeProps = {
+  themes?: Themes
+  name?: string | null
+  componentName?: string | null
+  reset?: boolean
+}
+
 export class ThemeManager {
   keys = new Map<any, Set<string>>()
   listeners = new Map<any, Function>()
@@ -22,7 +29,8 @@ export class ThemeManager {
   constructor(
     public name: string = '',
     public theme: ThemeObject | null = null,
-    public parentManager: ThemeManager | null = null
+    public parentManager: ThemeManager | null = null,
+    public reset: boolean = false
   ) {
     // find the nearest different parentManager
     let parent = parentManager
@@ -77,11 +85,8 @@ export class ThemeManager {
 
   update({ name, theme, className }: SetActiveThemeProps = {}) {
     // className compare on web, avoids light/dark re-renders
-    const sameNameOrClassName = this.className
-      ? // == instead of === (sometimes its undefined/null)
-        className == this.className
-      : name === this.name
-    if (sameNameOrClassName) {
+    const nameChanged = name !== this.name
+    if (!nameChanged) {
       return false
     }
     this.className = className || null
@@ -91,11 +96,18 @@ export class ThemeManager {
     return true
   }
 
-  getNextTheme(
-    opts: { themes?: Themes; name?: string | null; componentName?: string | null } = {},
-    props?: any
-  ) {
-    const { themes = getThemes(), name, componentName } = opts
+  getNextTheme(props: GetNextThemeProps = {}, debug?: any) {
+    const { themes = getThemes(), name, componentName } = props
+
+    if (props.reset && name) {
+      return {
+        name: name,
+        theme: themes[name],
+        className: this.#getClassName(name),
+      }
+    }
+
+    const parentIsReset = this.parentManager?.reset
 
     if (!name) {
       if (componentName) {
@@ -118,7 +130,7 @@ export class ThemeManager {
     }
 
     let nextName = name || this.name || ''
-    let parentName = this.fullName
+    let parentName = parentIsReset ? this.parentName || this.fullName : this.fullName
 
     while (true) {
       if (nextName in themes) {
@@ -155,8 +167,8 @@ export class ThemeManager {
       theme = themes[`light_${nextName}`]
     }
 
-    if (process.env.NODE_ENV === 'development' && props && props['debug']) {
-      console.log('getNextTheme', { name: opts.name, nextName, parentName })
+    if (process.env.NODE_ENV === 'development' && debug) {
+      console.log('getNextTheme', { props, nextName, parentName }, this)
     }
 
     return {

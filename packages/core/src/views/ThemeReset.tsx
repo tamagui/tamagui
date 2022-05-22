@@ -36,7 +36,7 @@ export const ThemeReset = (props: { children?: any }) => {
   }
 
   return (
-    <Theme className="tui-theme-reset" name={name}>
+    <Theme className="tui-theme-reset" reset name={name}>
       {props.children}
     </Theme>
   )
