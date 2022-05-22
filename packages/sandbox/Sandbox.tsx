@@ -8,6 +8,7 @@ import { useColorScheme } from 'react-native'
 import {
   Button,
   Card,
+  H2,
   Input,
   Separator,
   Switch,
@@ -48,14 +49,15 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack h={1000} pt={400}>
-          <Slider h={200} orientation="vertical">
-            <Slider.Track bc="red">
-              <Slider.TrackActive />
-            </Slider.Track>
-            <Slider.Thumb index={0} />
-          </Slider>
-        </YStack>
+        <Card elevate size="$4">
+          <Card.Header pad>
+            <H2>Sony A7IV</H2>
+          </Card.Header>
+          <Card.Footer pad>
+            <XStack f={1} />
+            <Button br="$10">Purchase</Button>
+          </Card.Footer>
+        </Card>
         {/* <XStack maw="100%" space ai="center" fs={0}> */}
         {/* <Button
             aria-label="Copy code to clipboard"

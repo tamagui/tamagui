@@ -1,5 +1,6 @@
 import './polyfills';
 export { useSafeAreaInsets } from 'react-native-safe-area-context';
+export * from '@tamagui/card';
 export * from '@tamagui/compose-refs';
 export * from '@tamagui/create-context';
 export * from '@tamagui/helpers';
@@ -20,7 +21,6 @@ export * from './hooks/useKeyboardDismissable';
 export * from './views/Anchor';
 export * from './views/BlurView';
 export * from './views/Button';
-export * from './views/Card';
 export * from './views/Circle';
 export * from './views/EnsureFlexed';
 export * from './views/Form';

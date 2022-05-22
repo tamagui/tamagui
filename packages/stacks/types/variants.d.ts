@@ -94,6 +94,7 @@ export declare const elevate: {
         id?: string | import("@tamagui/core").Variable | undefined;
         tag?: string | import("@tamagui/core").Variable | undefined;
         theme?: import("@tamagui/core").Variable | import("@tamagui/core").ThemeName | null | undefined;
+        componentName?: string | import("@tamagui/core").Variable | undefined;
         onHoverIn?: import("@tamagui/core").Variable | ((e: MouseEvent) => any) | undefined;
         onHoverOut?: import("@tamagui/core").Variable | ((e: MouseEvent) => any) | undefined;
         onPress?: ((e: import("react-native").GestureResponderEvent) => any) | import("@tamagui/core").Variable | undefined;
@@ -211,6 +212,11 @@ export declare const elevate: {
 export declare const bordered: (val: boolean | number, { props }: {
     props: any;
 }) => any;
+export declare const pad: {
+    true: (_: any, extras: any) => {
+        padding: any;
+    };
+};
 export declare const circular: {
     true: (_: any, extras: any) => {
         width: number;
