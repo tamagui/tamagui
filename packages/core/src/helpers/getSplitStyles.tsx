@@ -36,6 +36,7 @@ const skipProps = {
   animation: true,
   animateOnly: true,
   debug: true,
+  componentName: true,
 
   ...(!isWeb && {
     tag: true,

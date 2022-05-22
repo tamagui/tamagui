@@ -96,7 +96,7 @@ export function createComponent<
     }
   })()
 
-  const componentClassName = `is_${staticConfig.componentName}`
+  const defaultComponentClassName = `is_${staticConfig.componentName}`
   let tamaguiConfig: TamaguiInternalConfig
   let AnimatedText: any
   let AnimatedView: any
@@ -124,12 +124,16 @@ export function createComponent<
     // ridiculous fix because react inserts default props after your props for some reason...
     props = tamaguiDefaultProps && !props.asChild ? { ...tamaguiDefaultProps, ...props } : props
 
-    const { Component, componentName, isText, isZStack } = staticConfig
+    const { Component, isText, isZStack } = staticConfig
+    const componentName = props.componentName || staticConfig.componentName
+    const componentClassName = props.componentName
+      ? `is_${props.componentName}`
+      : defaultComponentClassName
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.log('⚠️', staticConfig.componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
+        console.log('⚠️', componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
         // keep separate react native warn touches every value on prop causing weird behavior
         console.log('props in:', props, Object.keys(props))
         if (props['debug'] === 'break') debugger
@@ -137,7 +141,7 @@ export function createComponent<
     }
 
     const forceUpdate = useForceUpdate()
-    const theme = useTheme(props.theme, staticConfig.componentName, props, forceUpdate)
+    const theme = useTheme(props.theme, componentName, props, forceUpdate)
     const [state, set_] = useState<TamaguiComponentState>(defaultComponentState)
     const setStateShallow = createShallowUpdate(set_)
 

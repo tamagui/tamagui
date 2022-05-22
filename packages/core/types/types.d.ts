@@ -5,6 +5,32 @@ import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
+export declare type TamaguiComponentPropsBase = {
+    asChild?: boolean;
+    space?: SpaceTokens;
+    spaceDirection?: SpaceDirection;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    };
+    animation?: AnimationProp;
+    animateOnly?: string[];
+    children?: any | any[];
+    debug?: boolean | 'break' | 'verbose';
+    disabled?: boolean;
+    className?: string;
+    id?: string;
+    tag?: string;
+    theme?: ThemeName | null;
+    componentName?: string;
+    onHoverIn?: (e: MouseEvent) => any;
+    onHoverOut?: (e: MouseEvent) => any;
+    onPress?: (e: GestureResponderEvent) => any;
+    onPressIn?: (e: GestureResponderEvent) => any;
+    onPressOut?: (e: GestureResponderEvent) => any;
+    onMouseEnter?: (e: MouseEvent) => any;
+    onMouseLeave?: (e: MouseEvent) => any;
+    onMouseDown?: (e: MouseEvent) => any;
+};
 export declare type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<Props & React.RefAttributes<Ref>>;
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export declare type VariableVal = number | string | Variable;
@@ -174,31 +200,6 @@ export declare type AnimationProp = AnimationKeys | {
     }
 ];
 export declare type SpaceDirection = ViewStyle['flexDirection'] | 'both';
-export declare type TamaguiComponentPropsBase = {
-    asChild?: boolean;
-    space?: SpaceTokens;
-    spaceDirection?: SpaceDirection;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    };
-    animation?: AnimationProp;
-    animateOnly?: string[];
-    children?: any | any[];
-    debug?: boolean | 'break' | 'verbose';
-    disabled?: boolean;
-    className?: string;
-    id?: string;
-    tag?: string;
-    theme?: ThemeName | null;
-    onHoverIn?: (e: MouseEvent) => any;
-    onHoverOut?: (e: MouseEvent) => any;
-    onPress?: (e: GestureResponderEvent) => any;
-    onPressIn?: (e: GestureResponderEvent) => any;
-    onPressOut?: (e: GestureResponderEvent) => any;
-    onMouseEnter?: (e: MouseEvent) => any;
-    onMouseLeave?: (e: MouseEvent) => any;
-    onMouseDown?: (e: MouseEvent) => any;
-};
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
