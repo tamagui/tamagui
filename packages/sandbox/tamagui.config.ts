@@ -9,7 +9,7 @@ const interFont = createInterFont()
 
 const config = createTamagui({
   fonts: {
-    title: interFont,
+    heading: interFont,
     body: interFont,
   },
   animations,

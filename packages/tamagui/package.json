@@ -29,6 +29,7 @@
     "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
     "@tamagui/animate-presence": "^1.0.1-beta.31",
+    "@tamagui/card": "^1.0.1-beta.31",
     "@tamagui/compose-refs": "^1.0.1-beta.31",
     "@tamagui/core": "^1.0.1-beta.31",
     "@tamagui/create-context": "^1.0.1-beta.31",

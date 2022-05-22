@@ -3509,6 +3509,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/card@^1.0.1-beta.31, @tamagui/card@workspace:packages/card":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/card@workspace:packages/card"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.31
+    "@tamagui/core": ^1.0.1-beta.31
+    "@tamagui/create-context": ^1.0.1-beta.31
+    "@tamagui/stacks": ^1.0.1-beta.31
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/colors@^1.0.1-beta.31, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
@@ -17778,6 +17797,7 @@ __metadata:
     "@react-native-community/blur": ^3.6.0
     "@tamagui/animate-presence": ^1.0.1-beta.31
     "@tamagui/build": ^1.0.1-beta.31
+    "@tamagui/card": ^1.0.1-beta.31
     "@tamagui/compose-refs": ^1.0.1-beta.31
     "@tamagui/core": ^1.0.1-beta.31
     "@tamagui/create-context": ^1.0.1-beta.31
