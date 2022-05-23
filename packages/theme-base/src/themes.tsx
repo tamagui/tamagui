@@ -84,7 +84,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     [`${name}_Progress`, altThemes[2][1]],
     [`${name}_ProgressIndicator`, inverted[2]],
     [`${name}_Switch`, altThemes[0][1]],
-    [`${name}_SwitchThumb`, altThemes[1][1]],
+    [`${name}_SwitchThumb`, inverted[2]],
     [`${name}_TooltipArrow`, altThemes[1][1]],
     [`${name}_TooltipContent`, altThemes[1][1]],
     [`${name}_darker`, darkerTheme],
