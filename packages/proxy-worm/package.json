@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/proxy-worm",
-  "version": "1.0.1-beta.33",
+  "version": "1.0.1-beta.34",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
