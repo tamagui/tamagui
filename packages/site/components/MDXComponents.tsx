@@ -193,7 +193,7 @@ export const components = {
     )
   },
 
-  strong: (props) => <Text {...props} fontWeight="700" />,
+  strong: (props) => <Paragraph fontSize="inherit" {...props} fontWeight="700" />,
 
   img: ({ ...props }) => (
     <YStack my="$6">
