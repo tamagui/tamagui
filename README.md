@@ -3,11 +3,7 @@
   <br>
 </h1>
 
----
-
 <h4 align="center">The faster, more complete style system for React Native & Web.</h4>
-
----
 
 See [tamagui.dev](https://tamagui.dev) for documentation.
 
@@ -25,7 +21,7 @@ In exchange you add some complexity with the compiler - but - it's both optional
 
 The compiler does a lot, too - it analyzes logic, spreads, and nested ternaries, even flattening fully analyzable components to reduce tree depth signficantly.
 
----
+<br />
 
 ### Works with React ❤️
 
@@ -87,7 +83,7 @@ The `useMedia` and `useTheme` hooks work reactively, avoiding re-renders, while 
 
 Tamagui provides a fully-typed API so all your TypeScript style properties, values, media queries and shorthands will be auto-completed for you. It provides a `// debug` pragma and `debug` prop that both allow easy introspection into whats happening at compile and runtime. In dev mode it puts a `data-` attribute that links every DOM node back to your original source.
 
----
+<br />
 
 ### Why inline style props?
 
