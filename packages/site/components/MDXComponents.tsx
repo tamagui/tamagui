@@ -160,12 +160,12 @@ export const components = {
     return (
       <NextLink href={href} passHref>
         {/* @ts-ignore */}
-        <Paragraph tag="a" display="inline" {...props}>
+        <Paragraph fontSize="inherit" tag="a" display="inline" cursor="pointer" {...props}>
           {children}
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <Text display="inline-flex" y={2} mr={2}>
+              <Text fontSize="inherit" display="inline-flex" y={2} mr={2}>
                 <ExternalIcon />
               </Text>
             </>
