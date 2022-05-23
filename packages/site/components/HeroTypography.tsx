@@ -1,3 +1,4 @@
+import { AnimatePresence } from '@tamagui/animate-presence'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -17,7 +18,6 @@ import {
   YStack,
 } from 'tamagui'
 
-import { AnimatePresence } from '../../animate-presence'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
