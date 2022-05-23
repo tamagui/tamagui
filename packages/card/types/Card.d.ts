@@ -1,6 +1,6 @@
 import { GetProps, SizeTokens } from '@tamagui/core';
-import { ScopedProps } from '@tamagui/create-context';
 import React from 'react';
+import { View } from 'react-native';
 declare type CardContextValue = {
     size?: SizeTokens;
 };
@@ -367,7 +367,7 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
 export declare type CardHeaderProps = GetProps<typeof CardHeader>;
 export declare type CardFooterProps = GetProps<typeof CardFooter>;
 export declare type CardProps = GetProps<typeof CardFrame>;
-export declare const Card: ((props: Omit<Pick<any, string | number | symbol> & React.RefAttributes<ScopedProps<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
 } & {
@@ -415,7 +415,9 @@ export declare const Card: ((props: Omit<Pick<any, string | number | symbol> & R
     chromeless?: boolean | undefined;
 }, "size"> & {
     size?: SizeTokens | undefined;
-}>>, "Card">>, "theme" | "themeInverse"> & {
+}>> & {
+    __scopeCard?: import("@tamagui/create-context").Scope<any>;
+} & React.RefAttributes<View | HTMLElement>, "theme" | "themeInverse"> & {
     theme?: import("@tamagui/core").ThemeName | null | undefined;
     themeInverse?: boolean | undefined;
 }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {

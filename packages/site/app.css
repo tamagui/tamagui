@@ -319,7 +319,7 @@ iframe {
 /* code highlighting */
 
 .token.parameter {
-  color: var(--yellow10);
+  color: var(--pink10);
 }
 
 .token.class-name {
@@ -367,7 +367,7 @@ iframe {
 }
 
 .token.punctuation {
-  color: var(--teal12);
+  color: var(--teal10);
 }
 
 .token.module,

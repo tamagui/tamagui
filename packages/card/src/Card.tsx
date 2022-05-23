@@ -9,6 +9,7 @@ import {
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { ThemeableStack } from '@tamagui/stacks'
 import React, { cloneElement, forwardRef } from 'react'
+import { View } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -47,8 +48,8 @@ const CardFrame = styled(ThemeableStack, {
 const CardHeader = styled(ThemeableStack, {
   name: 'CardHeader',
   zIndex: 10,
+  flexDirection: 'column',
   backgroundColor: 'transparent',
-  flexDirection: 'row',
   marginBottom: 'auto',
 
   variants: {
@@ -65,6 +66,7 @@ const CardHeader = styled(ThemeableStack, {
 const CardFooter = styled(CardHeader, {
   name: 'CardFooter',
   zIndex: 5,
+  flexDirection: 'row',
   marginTop: 'auto',
   marginBottom: 0,
 })
@@ -85,22 +87,24 @@ export type CardProps = GetProps<typeof CardFrame>
 
 export const Card = withStaticProperties(
   themeable(
-    forwardRef<ScopedProps<CardProps, 'Card'>, any>(({ size, __scopeCard, children, ...props }) => {
-      return (
-        <CardProvider scope={__scopeCard} size={size}>
-          <CardFrame {...props}>
-            {React.Children.map(children, (child) => {
-              if (isTamaguiElement(child) && !child.props.size) {
-                return cloneElement(child, {
-                  size,
-                })
-              }
-              return child
-            })}
-          </CardFrame>
-        </CardProvider>
-      )
-    })
+    forwardRef<HTMLElement | View, ScopedProps<CardProps, 'Card'>>(
+      ({ size, __scopeCard, children, ...props }) => {
+        return (
+          <CardProvider scope={__scopeCard} size={size}>
+            <CardFrame {...props}>
+              {React.Children.map(children, (child) => {
+                if (isTamaguiElement(child) && !child.props.size) {
+                  return cloneElement(child, {
+                    size,
+                  })
+                }
+                return child
+              })}
+            </CardFrame>
+          </CardProvider>
+        )
+      }
+    )
   ),
   {
     Header: CardHeader,
