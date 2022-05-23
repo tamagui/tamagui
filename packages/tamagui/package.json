@@ -38,6 +38,7 @@
     "@tamagui/helpers": "^1.0.1-beta.33",
     "@tamagui/popover": "^1.0.1-beta.33",
     "@tamagui/popper": "^1.0.1-beta.33",
+    "@tamagui/progress": "^1.0.1-beta.33",
     "@tamagui/separator": "^1.0.1-beta.33",
     "@tamagui/slider": "^1.0.1-beta.33",
     "@tamagui/stacks": "^1.0.1-beta.33",

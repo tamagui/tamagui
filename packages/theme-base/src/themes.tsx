@@ -58,14 +58,31 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   // add these after alts since we rely on positioning
   const darkerTheme = getTheme(Math.max(0, shift + (props.isLight ? 1 : -1)), props)
   const activeTheme = makeActiveTheme(theme)
+
+  const inverted = altThemes.map(([_name, theme]) => {
+    return {
+      ...theme,
+      background: theme.color,
+      backgroundHover: theme.colorHover,
+      backgroundFocus: theme.colorFocus,
+      backgroundPress: theme.colorPress,
+      color: theme.background,
+      colorHover: theme.backgroundHover,
+      colorFocus: theme.backgroundFocus,
+      colorPress: theme.backgroundPress,
+    }
+  })
+
   themeEntries = [
     ...themeEntries,
     ...altThemes,
     ...altButtonThemes,
     [`${name}_Button`, altThemes2[1][1]],
-    [`${name}_SliderTrack`, altThemes[0][1]],
-    [`${name}_SliderTrackActive`, altThemes[2][1]],
-    [`${name}_SliderThumb`, altThemes[3][1]],
+    [`${name}_SliderTrack`, altThemes[1][1]],
+    [`${name}_SliderTrackActive`, altThemes[3][1]],
+    [`${name}_SliderThumb`, inverted[2]],
+    [`${name}_Progress`, altThemes[2][1]],
+    [`${name}_ProgressIndicator`, inverted[2]],
     [`${name}_Switch`, altThemes[0][1]],
     [`${name}_SwitchThumb`, altThemes[1][1]],
     [`${name}_TooltipArrow`, altThemes[1][1]],

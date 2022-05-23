@@ -44,6 +44,7 @@ export const docsRoutes = [
       { title: 'Tooltip', route: '/docs/components/tooltip' },
       { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
       { title: 'Spinner', route: '/docs/components/spinner' },
+      { title: 'Progress', route: '/docs/components/progress' },
       { title: 'Shapes', route: '/docs/components/shapes' },
       { title: 'Anchor', route: '/docs/components/anchor' },
       { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },

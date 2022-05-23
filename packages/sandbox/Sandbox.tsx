@@ -11,6 +11,7 @@ import {
   H2,
   Image,
   Input,
+  Progress,
   Separator,
   Switch,
   SwitchThumb,
@@ -50,43 +51,19 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Card theme="dark" w={300} h={500} elevate size="$4">
-          <Card.Header pad>
-            <H2>Sony A7IV</H2>
-          </Card.Header>
-          <Card.Footer pad>
-            <XStack f={1} />
-            <Button br="$10">Purchase</Button>
-          </Card.Footer>
-          <Card.Background bc="red">
-            <Image
-              width={300}
-              height={500}
-              resizeMode="cover"
-              src={require('../../packages/site/public/camera.jpg').default}
-            />
-          </Card.Background>
-        </Card>
-        {/* <XStack maw="100%" space ai="center" fs={0}> */}
-        {/* <Button
-            aria-label="Copy code to clipboard"
-            position="absolute"
-            size="$2"
-            top="$5"
-            right="$3"
-            display="inline-flex"
-            opacity={0}
-          >
-            hi
-          </Button> */}
+        <YStack space ai="center">
+          <Progress size="$4" value={90}>
+            <Progress.Indicator animation="bouncy" />
+          </Progress>
 
-        {/* <SandboxAnimationDemo /> */}
-        {/* <Card overflow="visible" bordered size="$6" br="$7" w={100} p={0} ai="stretch" /> */}
-        {/* <FormDemo size="$4" /> */}
-        {/* <FormDemo size="$5" /> */}
-        {/* <FormDemo size="$6" /> */}
-        {/* <FormDemo size="$7" /> */}
-        {/* </XStack> */}
+          <Progress size="$6" value={90}>
+            <Progress.Indicator animation="bouncy" />
+          </Progress>
+
+          <Progress size="$8" value={90}>
+            <Progress.Indicator animation="bouncy" />
+          </Progress>
+        </YStack>
       </div>
     </Tamagui.Provider>
   )

@@ -6,6 +6,7 @@ export * from '@tamagui/create-context';
 export * from '@tamagui/helpers';
 export * from '@tamagui/popover';
 export * from '@tamagui/popper';
+export * from '@tamagui/progress';
 export * from '@tamagui/stacks';
 export * from '@tamagui/slider';
 export * from '@tamagui/text';

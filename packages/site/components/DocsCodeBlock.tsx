@@ -66,8 +66,11 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           display="inline-flex"
           alignItems="center"
           justifyContent="flex-end"
-          top={-68}
-          right="$7"
+          top={-60}
+          r="$6"
+          $gtMd={{
+            r: '$7',
+          }}
         >
           <Button size="$2" onPress={() => setIsCollapsed((x) => !x)}>
             {isCollapsed ? 'Show code' : 'Hide code'}

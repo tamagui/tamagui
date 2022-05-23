@@ -156,6 +156,7 @@ export function HeroExampleThemes() {
                 const isActive = theme === name
                 return (
                   <ActiveCircle
+                    key={name}
                     backgroundColor={name === 'dark' ? '#000' : '#fff'}
                     onPress={() => setTheme(name)}
                     isActive={isActive}

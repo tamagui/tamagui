@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/slider",
+  "name": "@tamagui/progress",
   "version": "1.0.1-beta.33",
   "sideEffects": true,
   "source": "src/index.ts",
@@ -21,9 +21,7 @@
     "@tamagui/compose-refs": "^1.0.1-beta.33",
     "@tamagui/core": "^1.0.1-beta.33",
     "@tamagui/create-context": "^1.0.1-beta.33",
-    "@tamagui/stacks": "^1.0.1-beta.33",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.33",
-    "@tamagui/use-direction": "^1.0.1-beta.33"
+    "@tamagui/stacks": "^1.0.1-beta.33"
   },
   "peerDependencies": {
     "react": "*",

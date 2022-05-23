@@ -25,7 +25,7 @@ export const SliderFrame = styled(DirectionalYStack, {
     size: (val, extras) => {
       const orientation = extras.props.orientation
       const circleSize = getCircleSize(val, extras)
-      const size = circleSize / 10
+      const size = circleSize / 8
       if (orientation === 'horizontal') {
         return {
           height: size,

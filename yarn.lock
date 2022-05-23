@@ -3828,6 +3828,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/progress@^1.0.1-beta.33, @tamagui/progress@workspace:packages/progress":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/progress@workspace:packages/progress"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.33
+    "@tamagui/compose-refs": ^1.0.1-beta.33
+    "@tamagui/core": ^1.0.1-beta.33
+    "@tamagui/create-context": ^1.0.1-beta.33
+    "@tamagui/stacks": ^1.0.1-beta.33
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/proxy-worm@^1.0.1-beta.33, @tamagui/proxy-worm@workspace:packages/proxy-worm":
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
@@ -3986,7 +4006,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/slider@workspace:packages/slider"
   dependencies:
-    "@radix-ui/react-use-previous": ^0.1.1
     "@tamagui/build": ^1.0.1-beta.33
     "@tamagui/compose-refs": ^1.0.1-beta.33
     "@tamagui/core": ^1.0.1-beta.33
@@ -17820,6 +17839,7 @@ __metadata:
     "@tamagui/helpers": ^1.0.1-beta.33
     "@tamagui/popover": ^1.0.1-beta.33
     "@tamagui/popper": ^1.0.1-beta.33
+    "@tamagui/progress": ^1.0.1-beta.33
     "@tamagui/separator": ^1.0.1-beta.33
     "@tamagui/slider": ^1.0.1-beta.33
     "@tamagui/stacks": ^1.0.1-beta.33
