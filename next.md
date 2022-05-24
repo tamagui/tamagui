@@ -1,3 +1,4 @@
+- Group make media style size use properly
 - fix compiler on bootstrap repo not accepting packages/app
 - use style values instead of classnames when non-extracted
   - think of <YStack x={cursor.position} /> we'll generate infinite classnames
@@ -43,6 +44,7 @@
   - maybe <UL /> <LI /> <OL />
   - focusStyle on native
   - document exported helpers getTokens, useThemeName, getFontSize, spacedChildren
+  - // TODO infer ref
 
 (potentially 1.0)
   - createTamagui({ defaultProps: { Button: {} } }) for any component

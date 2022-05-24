@@ -27,7 +27,7 @@ export function Hero() {
   return (
     <YStack pos="relative" pe="auto">
       <Theme name={tint}>
-        <YStack fullscreen zi={0} className="hero-gradient-2" opacity={0.35} />
+        <YStack fullscreen zi={0} className="hero-gradient-2" opacity={0.5} />
         <HeroTop />
       </Theme>
     </YStack>

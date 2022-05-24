@@ -88,10 +88,10 @@ export type CardProps = GetProps<typeof CardFrame>
 export const Card = withStaticProperties(
   themeable(
     forwardRef<HTMLElement | View, ScopedProps<CardProps, 'Card'>>(
-      ({ size, __scopeCard, children, ...props }) => {
+      ({ size, __scopeCard, children, ...props }, ref) => {
         return (
           <CardProvider scope={__scopeCard} size={size}>
-            <CardFrame {...props}>
+            <CardFrame ref={ref} {...props}>
               {React.Children.map(children, (child) => {
                 if (isTamaguiElement(child) && !child.props.size) {
                   return cloneElement(child, {

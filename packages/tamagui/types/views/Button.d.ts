@@ -36,9 +36,10 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "size" | "active"> & {
+}, "size" | "disabled" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
+    disabled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -53,9 +54,10 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "size" | "active"> & {
+}, "size" | "disabled" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
+    disabled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -70,9 +72,10 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "size" | "active"> & {
+}, "size" | "disabled" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
+    disabled?: boolean | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -90,6 +93,7 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
+    disabled?: boolean | undefined;
 }>;
 export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     size?: import("@tamagui/core").FontSizeTokens | undefined;

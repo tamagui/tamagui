@@ -10,7 +10,7 @@ import {
   themeable,
   useTheme,
 } from '@tamagui/core'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
 import { View } from 'react-native'
@@ -90,13 +90,13 @@ const ButtonFrame = styled(ThemeableStack, {
       },
     },
 
-    // breaking size types??
-    // disabled: {
-    //   true: {
-    //     opacity: 0.5,
-    //     pointerEvents: 'none',
-    //   },
-    // },
+    disabled: {
+      true: {
+        opacity: 0.5,
+        // TODO breaking types
+        pointerEvents: 'none' as any,
+      },
+    },
   },
 
   defaultVariants: {
@@ -104,9 +104,9 @@ const ButtonFrame = styled(ThemeableStack, {
   },
 })
 
-type x = GetProps<typeof ButtonFrame>
-type y = x['size']
-type z = x['chromeless']
+// see TODO breaking types
+// type x = GetProps<typeof ButtonFrame>
+// type y = x['size']
 
 export const ButtonText = styled(SizableText, {
   color: '$color',
