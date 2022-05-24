@@ -13,37 +13,32 @@ Tamagui lets you **share more code between web and native apps while improving, 
 
 It does this by compiling typed inline styles - even ones containing conditional logic, themes, or responsivity - into efficient atomic CSS (or a hoisted StyleSheet on native).
 
-<Image size="hero" title="Tamagui logo" src="/social.jpg" height={200} width={800} />
-
 This is a **win-win-win**: more performant, easier to write/maintain, and works on every platform. Typically you'd have to trade performance for DX, or both for cross-platform compatibility. With Tamagui, you don't!
 
 In exchange you add some complexity with the compiler - but - it's both optional and very easy to granularly introspect or turn off.
 
 The compiler does a lot, too - it analyzes logic, spreads, and nested ternaries, even flattening fully analyzable components to reduce tree depth signficantly.
 
-<br />
-
-### Works with React ❤️
+#### Works with React ❤️
 
 Work with your favorite libraries: `react-native` and `react-native-web` augmenting them with features and performance.
 
-### Themed, Responsive
+#### Themed, Responsive
 
 Inline typed theme and media props, and accompanying `useTheme` and `useMedia` hooks work how you'd expect them to, but also compile away.
 
-### Faster Runtime
+#### Faster Runtime
 
 Almost no prop interpolation on inline styles and dynamic styles. Even with complex logical styling you get less runtime, light CSS output, and flatter component trees. CSS media queries and CSS variables run much faster than JS.
 
-### Less Runtime
+#### Less Runtime
 
 Tamagui adds some to bundle size, but dramatically reduces render performance and extract what would be many style objects out at build time. Strictly style components (with no un-parseable props) are flattened to `div` or `span`, saving tree depth and hook calls.
 
-### Server-Side Rendering
+#### Server-Side Rendering
 
 Tamagui supports cross-browser server-side rendering ([see how we do it with Next.js](https://github.com/tamagui/tamagui/tree/master/packages/site)), even for responsive styles and variants.
 
----
 
 ## Key Features
 
@@ -103,7 +98,6 @@ Fast inline styles and common tokens mean less having to name things. Shorthand 
 
 Changing between a style that's determined by a ternary or conditional and one that's static shouldn't be a hard choice. With StyleSheet there's some friction as you have to either inline it and save time and readability or extract it to the bottom and gain performance. With inline styles (and the compiler) you no longer have that friction: convert any prop to have a ternary and it works the same, and runs fast.
 
----
 
 ## Community
 
@@ -114,7 +108,6 @@ We're excited to see the community adopt Tamagui, raise issues, and provide feed
 - [GitHub Discussions](https://github.com/tamagui/tamagui/discussions)
 - [GitHub](https://github.com/tamagui/tamagui)
 
----
 
 ## Credits
 
