@@ -1,6 +1,6 @@
 import { GetProps, getTokens, getVariableValue, spacedChildren, styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
-import { Children, cloneElement, forwardRef, isValidElement } from 'react'
+import React, { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
 
 export const GroupFrame = styled(YStack, {
