@@ -52,16 +52,18 @@ type TamaguiElement = HTMLElement | View
       groups={{ 123: { name: '' } }}
       groupKey="groupId"
       renderItem={({ text }) => (
-        <Select.Item>
-          <Select.ItemText>
+        <>
+          <Text>
              {text}
-          </Select.ItemText>
+          </Text>
           <Select.ItemIndicator />
-        </Select.Item>
+        </>
       )}
       renderGroup={({ name }) => (
         <Select.Group>
-          {name}
+          <Select.GroupLabel>
+            {name}
+          </Select.GroupLabel>
         </Select.Group>
       )}
     >
@@ -501,7 +503,7 @@ SelectItem.displayName = ITEM_NAME
 
 const ITEM_TEXT_NAME = 'SelectItemText'
 
-type SelectItemTextElement = TamaguiElement
+type SelectItemTextElement = React.ElementRef<typeof Primitive.span>
 interface SelectItemTextProps extends YStackProps {}
 
 const SelectItemText = React.forwardRef<SelectItemTextElement, SelectItemTextProps>(
@@ -549,7 +551,7 @@ SelectItemText.displayName = ITEM_TEXT_NAME
 
 const ITEM_INDICATOR_NAME = 'SelectItemIndicator'
 
-type SelectItemIndicatorElement = TamaguiElement
+type SelectItemIndicatorElement = React.ElementRef<typeof Primitive.span>
 interface SelectItemIndicatorProps extends YStackProps {}
 
 const SelectItemIndicator = React.forwardRef<SelectItemIndicatorElement, SelectItemIndicatorProps>(
