@@ -2,12 +2,15 @@ import './polyfills'
 
 export { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+export * from '@tamagui/card'
 export * from '@tamagui/compose-refs'
 export * from '@tamagui/create-context'
 export * from '@tamagui/helpers'
 export * from '@tamagui/popover'
 export * from '@tamagui/popper'
+export * from '@tamagui/progress'
 export * from '@tamagui/stacks'
+export * from '@tamagui/slider'
 export * from '@tamagui/text'
 export * from '@tamagui/tooltip'
 export * from '@tamagui/separator'
@@ -86,10 +89,10 @@ export {
   // constants
   isChrome,
   isSSR,
-  isTouchDevice,
+  isTouchable,
   isWeb,
   isWebIOS,
-  supportsTouchWeb,
+  isWebTouchable,
   // helpers
   addMediaQueryListener,
   createComponent,
@@ -138,7 +141,6 @@ export * from './hooks/useKeyboardDismissable'
 export * from './views/Anchor'
 export * from './views/BlurView'
 export * from './views/Button'
-export * from './views/Card'
 export * from './views/Circle'
 export * from './views/EnsureFlexed'
 export * from './views/Form'
@@ -147,12 +149,13 @@ export * from './views/Headings'
 export * from './views/Hoverable'
 export * from './views/Image'
 export * from './views/Input'
-export * from './views/InteractiveContainer'
+export * from './views/Group'
 export * from './views/Label'
 export * from './views/Layouts'
 export * from './views/LinearGradient'
 export * from './views/Modal'
 export * from './views/Overlay'
+export * from './views/Spinner'
 export * from './views/Square'
 export * from './views/Switch'
 export * from './views/Table'

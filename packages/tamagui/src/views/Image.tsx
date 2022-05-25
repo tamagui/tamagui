@@ -18,12 +18,13 @@ const StyledImage = styled(
 
 type StyledImageProps = GetProps<typeof StyledImage>
 
-export type ImageProps = Omit<StackProps, keyof StyledImageProps> &
-  Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
-    width: number
-    height: number
-    src: string | StyledImageProps['source']
-  }
+type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
+  width: number
+  height: number
+  src: string | StyledImageProps['source']
+}
+
+export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
 
 export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => {
   const props = getExpandedShorthands(inProps)

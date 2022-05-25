@@ -6,20 +6,24 @@ import { SizeTokens } from '../types'
 
 type ScaleProps = { sizeX: number; sizeY: number }
 
+export type ScaleVariantExtras = Pick<VariantSpreadExtras<any>, 'tokens' | 'props' | 'fonts'>
+
 export const getSizeScaledToFont = (
   val: string | number,
   { sizeX = 1, sizeY = 1 }: ScaleProps,
-  { tokens, props, fonts }: VariantSpreadExtras<any>
+  { tokens, props, fonts }: ScaleVariantExtras
 ) => {
-  const size = tokens.size[val] ?? tokens.size['$4'] ?? val ?? 14
+  const size = tokens.size[val] ?? val ?? tokens.size['$4'] ?? 14
   const radius = tokens.radius[val] ?? tokens.radius['$4'] ?? size
-  const px = Math.round(+(isVariable(size) ? size.val : size) * sizeX)
-  const py = Math.round(+(isVariable(size) ? size.val : size) * sizeY)
+  const sizePx = +(isVariable(size) ? size.val : size)
+  const scaleSize = isVariable(size) ? 2 : 1
+  const px = Math.round(sizePx * sizeX)
+  const py = Math.round(sizePx * sizeY)
   // keep buttons height aligned to the font used
   const font = fonts[props.fontFamily] || fonts['$body']
   const lineHeights = font.lineHeight
   const lineHeight = lineHeights[val] ?? lineHeights['$4']
-  const minHeight = Math.round(getVariableValue(lineHeight) + py * 2)
+  const minHeight = Math.round(getVariableValue(lineHeight) + py * scaleSize)
   return {
     px,
     py,
@@ -36,9 +40,9 @@ export const createGetStackSize =
     const { radius, minHeight, px, py } = getSizeScaledToFont(val, scale, extras)
     return {
       minHeight,
+      borderRadius: props.circular ? 100_000 : props.borderRadius ?? radius,
       paddingHorizontal: props.circular ? 0 : px,
       paddingVertical: props.circular ? 0 : py,
-      borderRadius: props.circular ? 100_000 : props.borderRadius ?? radius,
     }
   }
 

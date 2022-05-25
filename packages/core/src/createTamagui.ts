@@ -224,6 +224,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return `${themeConfig.css}\n${getInsertedRules().join('\n')}`
   }
 
+  if (config.shorthands) {
+    for (const key in config.shorthands) {
+      reversedShorthands[config.shorthands[key]] = key
+    }
+  }
+
   const next: TamaguiInternalConfig = {
     fonts: {},
     animations: {} as any,
@@ -254,6 +260,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // @ts-expect-error
   return next
 }
+
+export const reversedShorthands: Record<string, string> = {}
 
 const parseTokens = (tokens: any) => {
   const res: any = {}

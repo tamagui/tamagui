@@ -1,3 +1,4 @@
 export * from './Stacks'
 export * from './SizableStack'
-export * from './ThemeableSizableStack'
+export * from './ThemeableStack'
+export { getCircleSize } from './variants'

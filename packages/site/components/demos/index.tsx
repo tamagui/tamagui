@@ -12,6 +12,9 @@ export { default as SeparatorDemo } from './SeparatorDemo'
 export { default as ImageDemo } from './ImageDemo'
 export { default as AnimationsDemo } from './AnimationsDemo'
 export { default as LabelDemo } from './LabelDemo'
+export { default as GroupDemo } from './GroupDemo'
+export { default as CardDemo } from './CardDemo'
+export { default as ProgressDemo } from './ProgressDemo'
 
 export const TooltipDemo = dynamic(() => import('./TooltipDemo'))
 export const DrawerDemo = dynamic(() => import('./DrawerDemo'))
@@ -21,4 +24,6 @@ export const AnimationsHoverDemo = dynamic(() => import('./AnimationsHoverDemo')
 export const AnimationsEnterDemo = dynamic(() => import('./AnimationsEnterDemo'))
 export const AnimationsPresenceDemo = dynamic(() => import('./AnimationsPresenceDemo'))
 export const SwitchDemo = dynamic(() => import('./SwitchDemo'))
+export const SliderDemo = dynamic(() => import('./SliderDemo'))
+export const SpinnerDemo = dynamic(() => import('./SpinnerDemo'))
 export const FeatherIconsDemo = dynamic(() => import('./FeatherIconsDemo'))

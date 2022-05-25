@@ -3,15 +3,14 @@ import {
   GetProps,
   ReactComponentWithRef,
   ThemeableProps,
-  buttonScaling,
-  getSizeScaledToFont,
+  getButtonSize,
   getVariableValue,
   spacedChildren,
   styled,
   themeable,
   useTheme,
 } from '@tamagui/core'
-import { ThemeableSizableStack } from '@tamagui/stacks'
+import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, SizableTextProps } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
 import { View } from 'react-native'
@@ -52,23 +51,37 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     textProps?: Partial<SizableTextProps>
   }
 
-const ButtonFrame = styled(ThemeableSizableStack, {
+const ButtonFrame = styled(ThemeableStack, {
   name: 'Button',
   tag: 'button',
-  size: '$4',
-  borderWidth: 0,
-  borderColor: '$borderColor',
+  hoverable: true,
+  pressable: true,
+  borderWidth: 1,
+  borderColor: 'transparent',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
-  hoverable: true,
-  pressable: true,
 
-  // TODO only on hoverable/pressable!
-  // would need to merge variants
+  // if we wanted this only when pressable = true, we'd need to merge variants?
   cursor: 'pointer',
 
+  pressStyle: {
+    borderColor: 'transparent',
+  },
+
+  hoverStyle: {
+    borderColor: 'transparent',
+  },
+
+  focusStyle: {
+    borderColor: '$borderColorFocus',
+  },
+
   variants: {
+    size: {
+      '...size': getButtonSize,
+    },
+
     active: {
       true: {
         hoverStyle: {
@@ -77,26 +90,30 @@ const ButtonFrame = styled(ThemeableSizableStack, {
       },
     },
 
-    circular: {
-      true: (_, extras) => {
-        const { props } = extras
-        const sizeVal = props.size ?? '$4'
-        const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
-        const size = scale.minHeight
-        return {
-          width: size,
-          height: size,
-          maxWidth: size,
-          maxHeight: size,
-          minWidth: size,
-          minHeight: size,
-          borderRadius: 100_000,
-          paddingVertical: 0,
-          paddingHorizontal: 0,
-        }
+    disabled: {
+      true: {
+        opacity: 0.5,
+        // TODO breaking types
+        pointerEvents: 'none' as any,
       },
     },
   },
+
+  defaultVariants: {
+    size: '$4',
+  },
+})
+
+// see TODO breaking types
+// type x = GetProps<typeof ButtonFrame>
+// type y = x['size']
+
+export const ButtonText = styled(SizableText, {
+  color: '$color',
+  selectable: false,
+  flexGrow: 1,
+  flexShrink: 1,
+  ellipse: true,
 })
 
 const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
@@ -174,7 +191,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
       const index = nextChildren.length - 1
       const childrenStrings = nextChildren[index]
       nextChildren[index] = (
-        <SizableText
+        <ButtonText
           key={index}
           {...{
             fontWeight,
@@ -187,13 +204,10 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
           {...(colorProp && {
             color: colorProp,
           })}
-          flexGrow={1}
-          flexShrink={1}
-          ellipse
           {...textProps}
         >
           {childrenStrings}
-        </SizableText>
+        </ButtonText>
       )
     }
 

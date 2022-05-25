@@ -1,0 +1,70 @@
+---
+title: Card
+description: A flexible card component.
+name: text
+component: Card
+---
+
+# Card
+
+<Description>Sizable, themeable cards with a flexible API.</Description>
+
+<HeroContainer>
+  <CardDemo />
+</HeroContainer>
+
+```jsx hero template=Card
+
+```
+
+<Highlights
+  features={[
+    `Sizable with a size prop that passes to Card children.`,
+    `Themeable helper props like elevate.`,
+    `Background component that handles positioning.`,
+  ]}
+/>
+
+### Anatomy
+
+```tsx
+import { Card } from 'tamagui' // or @tamagui/card
+
+export default () => (
+  <Card>
+    <Card.Header />
+    <Card.Footer />
+    {/* any other components */}
+    <Card.Background />
+  </Card>
+)
+```
+
+### API
+
+#### Card
+
+Frame of the card, extends [ThemeableStack props](/docs/components/stacks#themeablestack), adding:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      type: 'SizeTokens',
+      required: false,
+      description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
+    },
+  ]}
+/>
+
+#### Card.Header
+
+Extends [ThemeableStack](/docs/components/stacks#themeablestack).
+
+#### Card.Footer
+
+Extends [ThemeableStack](/docs/components/stacks#themeablestack).
+
+#### Card.Background
+
+Extends [YStack](/docs/components/stacks), set to `fullscreen` and zIndex below Header/Footer.

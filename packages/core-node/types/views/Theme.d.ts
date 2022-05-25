@@ -1,12 +1,4 @@
 import React from 'react';
-import { ThemeName } from '../types';
-export declare type ThemeProps = {
-    className?: string;
-    disableThemeClass?: boolean;
-    name: Exclude<ThemeName, number> | null;
-    componentName?: string;
-    children?: any;
-    debug?: boolean;
-};
+import { ThemeProps } from '../hooks/useTheme';
 export declare const Theme: React.NamedExoticComponent<ThemeProps>;
 //# sourceMappingURL=Theme.d.ts.map

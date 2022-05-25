@@ -1,9 +1,9 @@
 {
   "name": "@tamagui/compose-refs",
-  "version": "1.0.1-beta.25",
+  "version": "1.0.1-beta.37",
   "sideEffects": false,
   "source": "src/index.ts",
-  "typings": "types",
+  "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
@@ -19,7 +19,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.25",
+    "@tamagui/build": "^1.0.1-beta.37",
     "react": "*"
   },
   "publishConfig": {

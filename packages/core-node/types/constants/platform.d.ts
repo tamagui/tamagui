@@ -6,7 +6,7 @@ export declare const isSSR: boolean;
 export declare const isClient: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;
 export declare const isChrome: boolean;
-export declare const supportsTouchWeb: boolean;
-export declare const isTouchDevice: boolean;
+export declare const isWebTouchable: boolean;
+export declare const isTouchable: boolean;
 export declare const isWebIOS: boolean;
 //# sourceMappingURL=platform.d.ts.map

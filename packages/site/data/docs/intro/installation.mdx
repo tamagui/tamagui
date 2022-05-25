@@ -164,8 +164,6 @@ export default withPlugins([
 ])
 ```
 
-In order to get React to play nicely with next, we've been using `react` and `react-dom` pinned to version `18.0.0-beta-24dd07bd2-20211208`. For whatever reason, this version (and not 17, nor 18), works without errors. With 17 there's Suspense errors, and with 18 HMR breaks.
-
 Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS` to "true" can fix issues with Tamagui being resolved incorrectly.
 
 See the [Next.js Guide](/docs/guides/next-js) for more details on setting up your app.

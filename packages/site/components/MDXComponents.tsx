@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native'
 import {
   Button,
   Circle,
+  Group,
   H1,
   H2,
   H3,
@@ -114,7 +115,7 @@ export const components = {
           borderWidth={1}
           borderColor="$borderColor"
           p="$4"
-          py="$3"
+          pr="$6"
           bc="$background"
           br="$2"
           my="$4"
@@ -159,17 +160,17 @@ export const components = {
     return (
       <NextLink href={href} passHref>
         {/* @ts-ignore */}
-        <Text tag="a" display="inline" {...props}>
+        <Paragraph fontSize="inherit" tag="a" display="inline" cursor="pointer" {...props}>
           {children}
           {href.startsWith('http') ? (
             <>
               &nbsp;
-              <Text display="inline-flex" y={2} mr={2}>
+              <Text fontSize="inherit" display="inline-flex" y={2} mr={2}>
                 <ExternalIcon />
               </Text>
             </>
           ) : null}
-        </Text>
+        </Paragraph>
       </NextLink>
     )
   },
@@ -192,7 +193,7 @@ export const components = {
     )
   },
 
-  strong: (props) => <Text {...props} fontWeight="700" />,
+  strong: (props) => <Paragraph tag="strong" fontSize="inherit" {...props} fontWeight="700" />,
 
   img: ({ ...props }) => (
     <YStack my="$6">
@@ -360,6 +361,16 @@ export const components = {
       <Theme name={theme}>
         <MediaPlayer {...props} />
       </Theme>
+    )
+  },
+
+  GroupDisabledDemo: () => {
+    return (
+      <Group als="center" disabled>
+        <Button>First</Button>
+        <Button>Second</Button>
+        <Button>Third</Button>
+      </Group>
     )
   },
 }

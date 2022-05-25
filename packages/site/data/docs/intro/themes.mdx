@@ -3,9 +3,48 @@ title: Themes
 description: How to create and use themes in Tamagui.
 ---
 
-Themes in Tamagui are powerful because they can compose off each other nicely. They are meant to be fairly small, with tokens doing much of the heavy lifting.
+Themes in Tamagui are very powerful:
 
-Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color`, `colorHover`, `background`, and `backgroundHover`.
+- You can nest themes as much as you want. So `dark` can have `dark_green` and `dark_red`.
+- A theme that ends in a capitalized segment will match to a styled component:
+  - So `styled(Stack, { name: 'MyComponent' })` will always look for a theme named like:
+    - `dark_MyComponent` if the current theme is `dark`
+    - `dark_green_MyComponent` if the current theme is `dark_green`
+- If you have `dark`, `light` and `dark_green` and `light_green`, you can do partial name matches:
+
+```tsx
+export default () => (
+  <Theme name="dark">
+    <Theme name="green">
+      {/* dark_green is set */}
+    </Theme>
+    <Theme name="light_green">
+      {/* light_green is set */}
+    </Theme>
+    <Theme name="light">
+      <Theme name="green">
+        {/* light_green is set */}
+
+        <Theme name="dark">
+          {/* no theme named light_green_dark, so dark is set */}
+        </Theme>
+      </Theme>
+    </Theme>
+  </Theme>
+)
+```
+
+- In each theme, you can set any key to any value you like, but:
+  - Your top level themes should always be super-sets of children, because:
+    - Children themes re-use CSS variables from parents
+    - Children themes fall back to parents' value when theirs are not set.
+- We recommend manually typing your final theme object to be like so, to keep your TypeScript typings stable and accurate:
+  - `Record<keyof themes, typeof light>`
+
+In `tamagui`, we've standardized on certain theme keys in order to have every component be able to be themed:
+
+- These color keys: `background`, `color`, `borderColor`, `shadowColor`
+  - Plus pseudo variants for each, eg `backgroundHover`, `backgroundPress`, `backgroundFocus`
 
 Themes make assumptions about `light` and `dark`, if you define these two base themes, you'll avoid full-tree re-renders when they're changed on web.
 

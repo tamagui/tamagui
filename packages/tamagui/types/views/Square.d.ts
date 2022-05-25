@@ -9,6 +9,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -20,6 +23,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -31,6 +37,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
@@ -42,6 +51,9 @@ export declare const Square: import("@tamagui/core").TamaguiComponent<Omit<impor
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;

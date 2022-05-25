@@ -1,4 +1,3 @@
-import { ViewStyle } from 'react-native';
 export declare const stylePropsTransform: Readonly<{
     x: boolean;
     y: boolean;
@@ -510,13 +509,4 @@ export declare const validStyles: Readonly<{
     pressStyle: boolean;
     focusStyle: boolean;
 }>;
-export declare const mapTransformKeys: {
-    x: string;
-    y: string;
-};
-export declare const invertMapTransformKeys: {
-    translateX: string;
-    translateY: string;
-};
-export declare const mergeTransform: (obj: ViewStyle, key: string, val: any) => void;
 //# sourceMappingURL=validStyleProps.d.ts.map

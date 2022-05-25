@@ -1,8 +1,9 @@
-import React from 'react'
-import { ViewStyle } from 'react-native'
+import React, { RefObject } from 'react'
+import { View, ViewStyle } from 'react-native'
 
 import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { getSubStyle } from '../helpers/getSplitStyles'
+import { rnw } from '../static'
 import { PseudoStyles, SplitStyleState } from '../types'
 import {
   StaticConfig,
@@ -28,6 +29,7 @@ type FeatureUtils = {
   staticConfig: StaticConfigParsed
   theme: any
   onDidAnimate?: () => void
+  hostRef: RefObject<HTMLElement | View>
 }
 
 const createDefinition = ({
@@ -62,11 +64,34 @@ function loadFeatures(): Record<string, FeatureDefinition> {
     // loads animations and sets state with the results
     animation: loadAnimationFeature(),
 
+    // onLayout
+    // doesn't work because useLayoutEffect in child fires before parent is mounted
+    // onLayout: loadOnLayoutFeature(),
+
     // will update the parent whenever media query changes
     // no need on web, media queries are inserted and run in css
     mediaQuery: loadMediaQueryFeature(),
   }
 }
+
+// function loadOnLayoutFeature() {
+//   return createDefinition({
+//     Component: (allProps) => {
+//       console.log('got layout', allProps._utils.hostRef, allProps.onLayout)
+
+//       useIsomorphicLayoutEffect(() => {
+//         console.log('wut is', allProps._utils.hostRef.current)
+//         setTimeout(() => {
+//           console.log('wut is2', allProps._utils.hostRef.current)
+//         })
+//       }, [])
+
+//       rnw.useElementLayout(allProps._utils.hostRef, allProps.onLayout)
+//       return null
+//     },
+//     propNames: ['onLayout'],
+//   })
+// }
 
 function loadAnimationFeature() {
   return createDefinition({

@@ -1,8 +1,14 @@
+- Group make media style size use properly
+- fix compiler on bootstrap repo not accepting packages/app
 - use style values instead of classnames when non-extracted
   - think of <YStack x={cursor.position} /> we'll generate infinite classnames
   - also aligns with stylex
 
 - 1.0
+  - overwriting `disabled` in variants breaks types... (see ThemeableStack)
+  - sell sizing story better - home hero, blog post?
+  - html props: role, tabIndex, input type
+  - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
     - make all inverse by default? i think so? or else make sub-themes handle it...
   - input type="email", button type="submit" etc
@@ -13,6 +19,7 @@
         - ios accepts "textContentType"
         - set secureTextEntry automatically for type="password"
   - form onSubmit
+  - // TODO bug not applying
   - shorthands-only type/docs
   - tokens-only type/docs
   - fix /types import
@@ -37,6 +44,7 @@
   - maybe <UL /> <LI /> <OL />
   - focusStyle on native
   - document exported helpers getTokens, useThemeName, getFontSize, spacedChildren
+  - // TODO infer ref
 
 (potentially 1.0)
   - createTamagui({ defaultProps: { Button: {} } }) for any component
@@ -80,11 +88,18 @@ takeout:
   - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
 
+- <GradientText /> can work native with 
+  - https://github.com/react-native-masked-view/masked-view
+- react-native-skia / svg image support
+- before={{}}, after={{}} could work ...
+  - only if we can do with psuedos:
+    - focusStyle={{ after: { fullscreen: true, border... } }}
+    - allows for proper focused borders that don't require super hacks
+    - see Switch
 - styled(Button) types break   
 - <Card />, <List />, <Radio />, <Avatar />
   - radio may be List.Radio just combines List, Label, Drawer
     - can use Switch or check or custom
-- docs: extractable(), deoptProps, getExpandedShorthands
 - <Accordion />
 - <Carousel />
 - load theme hook via feature if possible

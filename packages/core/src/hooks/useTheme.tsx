@@ -5,9 +5,19 @@ import { getConfig } from '../conf'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { areEqualSets } from '../helpers/areEqualSets'
 import { ThemeContext } from '../ThemeContext'
-import { ThemeManager, ThemeManagerContext, emptyManager } from '../ThemeManager'
-import { ThemeObject } from '../types'
+import { GetNextThemeProps, ThemeManager, ThemeManagerContext, emptyManager } from '../ThemeManager'
+import { ThemeName, ThemeObject } from '../types'
 import { useConstant } from './useConstant'
+
+export type ThemeProps = {
+  className?: string
+  disableThemeClass?: boolean
+  name: Exclude<ThemeName, number> | null
+  componentName?: string
+  children?: any
+  reset?: boolean
+  debug?: boolean | 'verbose'
+}
 
 type UseThemeState = {
   uuid: Object
@@ -18,7 +28,7 @@ type UseThemeState = {
 export const useTheme = (
   themeName?: string | null,
   componentName?: string,
-  props?: any,
+  props?: ThemeProps,
   forceUpdate?: any
 ): ThemeObject => {
   const { name, theme, themes, themeManager, className, didChangeTheme } = useChangeThemeEffect(
@@ -29,7 +39,7 @@ export const useTheme = (
   )
 
   if (process.env.NODE_ENV === 'development') {
-    if (props?.['debug'] === 'verbose') {
+    if (props?.debug === 'verbose') {
       console.log('  » useTheme', { themeName, componentName, name, className })
     }
   }
@@ -75,7 +85,7 @@ export const useTheme = (
           // TODO make this pattern better
           if (key === GetThemeManager) {
             if (process.env.NODE_ENV === 'development') {
-              if (props['debug']) {
+              if (props?.debug) {
                 // prettier-ignore
                 console.log('did change', { themeName, didChangeTheme, name, componentName }, themeManager?.parentName)
               }
@@ -160,19 +170,19 @@ export const useDefaultThemeName = () => {
 export const useChangeThemeEffect = (
   name?: string | null,
   componentName?: string,
-  props?: any,
+  props?: ThemeProps,
   forceUpdateProp?: any
 ) => {
   const debug = props && props['debug']
   const parentManager = useContext(ThemeManagerContext) || emptyManager
   const { themes } = useContext(ThemeContext)!
-  const next = parentManager.getNextTheme({ name, componentName, themes }, props)
+  const reset = props?.reset || false
+  const getThemeProps: GetNextThemeProps = { name, componentName, themes, reset }
+  const next = parentManager.getNextTheme(getThemeProps, debug)
   const forceUpdate = forceUpdateProp || useForceUpdate()
   const themeManager = useConstant<ThemeManager | null>(() => {
-    if (!next) {
-      return null
-    }
-    return new ThemeManager(next.name, next.theme, parentManager)
+    if (!next) return null
+    return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 
   if (typeof document !== 'undefined') {
@@ -182,7 +192,7 @@ export const useChangeThemeEffect = (
         themeManager.update(next)
       }
       return parentManager.onChangeTheme(() => {
-        const next = parentManager.getNextTheme({ name, componentName, themes }, debug)
+        const next = parentManager.getNextTheme(getThemeProps, debug)
         if (!next) return
         if (themeManager.update(next)) {
           forceUpdate()

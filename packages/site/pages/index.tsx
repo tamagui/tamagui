@@ -18,7 +18,6 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
-import { SearchButton } from '../components/Search'
 
 export default function Home() {
   return (
@@ -61,7 +60,7 @@ export default function Home() {
       <SectionTinted contain="paint layout" bubble gradient>
         <HeroTypography />
       </SectionTinted>
-      <Section>
+      <Section zi={10}>
         <HeroExampleProps />
       </Section>
       <Section mt={-70} zi={0}>

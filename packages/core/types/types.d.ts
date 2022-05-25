@@ -5,6 +5,32 @@ import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
+export declare type TamaguiComponentPropsBase = {
+    asChild?: boolean;
+    space?: SpaceTokens;
+    spaceDirection?: SpaceDirection;
+    dangerouslySetInnerHTML?: {
+        __html: string;
+    };
+    animation?: AnimationProp;
+    animateOnly?: string[];
+    children?: any | any[];
+    debug?: boolean | 'break' | 'verbose';
+    disabled?: boolean;
+    className?: string;
+    id?: string;
+    tag?: string;
+    theme?: ThemeName | null;
+    componentName?: string;
+    onHoverIn?: (e: MouseEvent) => any;
+    onHoverOut?: (e: MouseEvent) => any;
+    onPress?: (e: GestureResponderEvent) => any;
+    onPressIn?: (e: GestureResponderEvent) => any;
+    onPressOut?: (e: GestureResponderEvent) => any;
+    onMouseEnter?: (e: MouseEvent) => any;
+    onMouseLeave?: (e: MouseEvent) => any;
+    onMouseDown?: (e: MouseEvent) => any;
+};
 export declare type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<Props & React.RefAttributes<Ref>>;
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
 export declare type VariableVal = number | string | Variable;
@@ -174,31 +200,6 @@ export declare type AnimationProp = AnimationKeys | {
     }
 ];
 export declare type SpaceDirection = ViewStyle['flexDirection'] | 'both';
-export declare type TamaguiComponentPropsBase = {
-    asChild?: boolean;
-    space?: SpaceTokens;
-    spaceDirection?: SpaceDirection;
-    dangerouslySetInnerHTML?: {
-        __html: string;
-    };
-    animation?: AnimationProp;
-    animateOnly?: string[];
-    children?: any | any[];
-    debug?: boolean | 'break' | 'verbose';
-    disabled?: boolean;
-    className?: string;
-    id?: string;
-    tag?: string;
-    theme?: ThemeName | null;
-    onHoverIn?: (e: MouseEvent) => any;
-    onHoverOut?: (e: MouseEvent) => any;
-    onPress?: (e: GestureResponderEvent) => any;
-    onPressIn?: (e: GestureResponderEvent) => any;
-    onPressOut?: (e: GestureResponderEvent) => any;
-    onMouseEnter?: (e: MouseEvent) => any;
-    onMouseLeave?: (e: MouseEvent) => any;
-    onMouseDown?: (e: MouseEvent) => any;
-};
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;
@@ -261,6 +262,7 @@ export declare type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children
 export declare type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>;
 export declare type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>;
 export declare type StackProps = StackPropsBaseShared & StackStyleProps;
+export declare type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (event: infer Event) => void ? Event : never;
 export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility'> & TransformStyleProps & WebOnlyStyleProps & {
     ellipse?: boolean;
     selectable?: boolean;
@@ -285,11 +287,10 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
     injectCSS?: boolean;
     children?: React.ReactNode;
 };
+export declare type PropMapper = (key: string, value: any, theme: ThemeObject, props: Record<string, any>, state: Partial<SplitStyleState>, avoidDefaultProps?: boolean) => undefined | [string, any][];
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
-    propMapper: (key: string, value: any, theme: ThemeObject, props: any, resolveVariablesAs?: ResolveVariableTypes, avoidDefaultProps?: boolean) => undefined | boolean | {
-        [key: string]: any;
-    };
+    propMapper: PropMapper;
     variantsParsed?: {
         [key: string]: {
             [key: string]: any;
@@ -392,7 +393,7 @@ export declare type TamaguiComponentState = {
 export declare type SplitStyleState = TamaguiComponentState & {
     noClassNames?: boolean;
     resolveVariablesAs?: ResolveVariableTypes;
-    fallbackProps?: Object;
+    fallbackProps?: Record<string, any>;
 };
 declare type AnimationConfig = {
     [key: string]: any;

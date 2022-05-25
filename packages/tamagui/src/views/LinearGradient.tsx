@@ -1,4 +1,4 @@
-import { themeable, useTheme } from '@tamagui/core'
+import { ColorTokens, themeable, useTheme } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
@@ -8,8 +8,10 @@ import { LinearGradient as LinearGradientNative, LinearGradientProps } from '../
 // // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-// TODO type theme values on colors
-type Props = LinearGradientProps & Omit<YStackProps, 'children' | keyof LinearGradientProps>
+type Props = Omit<LinearGradientProps, 'colors'> &
+  Omit<YStackProps, 'children' | keyof LinearGradientProps> & {
+    colors?: (ColorTokens | string)[]
+  }
 
 export const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAttributes<any>> =
   YStack.extractable(
@@ -18,7 +20,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAt
         const { start, end, colors: colorsProp, locations, ...stackProps } = props
         const colors = useLinearGradientColors(colorsProp)
         return (
-          <YStack ref={ref} position="relative" overflow="hidden" {...props}>
+          <YStack ref={ref} position="relative" overflow="hidden" {...stackProps}>
             <LinearGradientNative
               start={start}
               end={end}

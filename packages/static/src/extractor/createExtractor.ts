@@ -12,6 +12,7 @@ import {
   proxyThemeVariables,
   pseudos,
   rnw,
+  stylePropsTransform,
 } from '@tamagui/core-node'
 import { difference, pick } from 'lodash'
 import type { ViewStyle } from 'react-native'
@@ -717,7 +718,7 @@ export function createExtractor() {
                     styleValue,
                     defaultTheme,
                     staticConfig.defaultProps,
-                    'auto'
+                    { resolveVariablesAs: 'auto' }
                   )
                   if (out) {
                     // translate to DOM-compat
@@ -1223,10 +1224,7 @@ export function createExtractor() {
 
             // expand shorthands, de-opt variables
             attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
-              if (!cur) {
-                return acc
-              }
-
+              if (!cur) return acc
               if (cur.type === 'attr' && !t.isJSXSpreadAttribute(cur.value)) {
                 if (shouldFlatten) {
                   if (cur.value.name.name === 'tag') {
@@ -1235,7 +1233,6 @@ export function createExtractor() {
                   }
                 }
               }
-
               if (cur.type !== 'style') {
                 acc.push(cur)
                 return acc
@@ -1244,7 +1241,6 @@ export function createExtractor() {
               let key = Object.keys(cur.value)[0]
               const value = cur.value[key]
               const fullKey = tamaguiConfig.shorthands[key]
-
               // expand shorthands
               if (fullKey) {
                 cur.value = { [fullKey]: value }
@@ -1398,7 +1394,7 @@ export function createExtractor() {
             if (shouldPrintDebug) {
               console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
               console.log('  - defaultProps: \n', logLines(objToStr(staticConfig.defaultProps)))
-              console.log('  - completeStaticProps: \n', logLines(objToStr(completeStaticProps)))
+              console.log('  - completeProps: \n', logLines(objToStr(completeProps)))
             }
 
             // post process
@@ -1424,18 +1420,7 @@ export function createExtractor() {
                   ...out.style,
                   ...out.pseudos,
                 }
-                if (staticConfig.validStyles) {
-                  for (const key in outStyle) {
-                    if (
-                      !staticConfig.validStyles[key] &&
-                      !pseudos[key] &&
-                      !/(hover|focus|press)Style$/.test(key)
-                    ) {
-                      if (shouldPrintDebug) console.log(' delete invalid style', key)
-                      delete outStyle[key]
-                    }
-                  }
-                }
+                omitInvalidStyles(outStyle)
                 if (shouldPrintDebug) {
                   // prettier-ignore
                   console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
@@ -1451,24 +1436,36 @@ export function createExtractor() {
               }
             }
 
-            // used to ensure we pass the entire prop bundle to getStyles
-            const completeStylesProcessed = getStyles(completeProps, 'completeStylesProcessed')
+            function omitInvalidStyles(style: any) {
+              if (staticConfig.validStyles) {
+                for (const key in style) {
+                  if (
+                    stylePropsTransform[key] ||
+                    (!staticConfig.validStyles[key] &&
+                      !pseudos[key] &&
+                      !/(hoverStyle|focusStyle|pressStyle)$/.test(key))
+                  ) {
+                    if (shouldPrintDebug) console.log(' delete invalid style', key)
+                    delete style[key]
+                  }
+                }
+              }
+            }
 
-            if (!completeStylesProcessed) {
+            // used to ensure we pass the entire prop bundle to getStyles
+            const completeStyles = getStyles(completeProps, 'completeStyles')
+
+            if (!completeStyles) {
               throw new Error(`Impossible, no styles`)
             }
 
             // any extra styles added in postprocess should be added to first group as they wont be overriden
-            const stylesToAddToInitialGroup = shouldFlatten
-              ? difference(Object.keys(completeStylesProcessed), Object.keys(completeStaticProps))
+            const addInitialStyleKeys = shouldFlatten
+              ? difference(Object.keys(completeStyles), Object.keys(completeStaticProps))
               : []
-            // difference(
-            //   Object.keys(completeStylesProcessed),
-            //   Object.keys(completeStaticProps)
-            // )
 
-            if (stylesToAddToInitialGroup.length) {
-              const toAdd = pick(completeStylesProcessed, ...stylesToAddToInitialGroup)
+            if (addInitialStyleKeys.length) {
+              const toAdd = pick(completeStyles, ...addInitialStyleKeys)
               const firstGroup = attrs.find((x) => x.type === 'style')
               if (shouldPrintDebug) {
                 console.log('    toAdd', objToStr(toAdd))
@@ -1476,17 +1473,19 @@ export function createExtractor() {
               if (!firstGroup) {
                 attrs.unshift({ type: 'style', value: toAdd })
               } else {
+                // because were adding fully processed, remove any unprocessed from first group
+                omitInvalidStyles(firstGroup.value)
                 Object.assign(firstGroup.value, toAdd)
               }
             }
 
             if (shouldPrintDebug) {
               // prettier-ignore
-              console.log('   -- stylesToAddToInitialGroup', stylesToAddToInitialGroup.join(', '), { shouldFlatten })
+              console.log('   -- addInitialStyleKeys', addInitialStyleKeys.join(', '), { shouldFlatten })
               // prettier-ignore
               console.log('   -- completeStaticProps:\n', logLines(objToStr(completeStaticProps)))
               // prettier-ignore
-              console.log('   -- completeStylesProcessed:\n', logLines(objToStr(completeStylesProcessed)))
+              console.log('   -- completeStyles:\n', logLines(objToStr(completeStyles)))
             }
 
             let getStyleError: any = null
@@ -1515,7 +1514,7 @@ export function createExtractor() {
                       // but actually resolve them to the full object
                       // TODO media/psuedo merging
                       attr.value = Object.fromEntries(
-                        Object.keys(styles).map((k) => [k, completeStylesProcessed[k]])
+                        Object.keys(styles).map((k) => [k, completeStyles[k]])
                       )
                     }
                     continue

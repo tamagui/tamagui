@@ -45,20 +45,48 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   let themeEntries: any[] = [[name, theme]]
   const altThemes: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
+    getTheme(alt + (props.isLight ? 1 : 0) + shift, props),
+  ])
+  const altThemes2: any[] = alternates.map((alt) => [
+    `${name}_alt${alt}`,
     getTheme(alt + shift, props),
   ])
   const altButtonThemes: any[] = alternates.map((_, i) => {
-    const [bName, bTheme] = [altThemes[i][0], (altThemes[i + 1] || altThemes[i])[1]]
+    const [bName, bTheme] = [altThemes2[i][0], (altThemes2[i + 1] || altThemes2[i])[1]]
     return [`${bName}_Button` as any, bTheme]
   })
   // add these after alts since we rely on positioning
   const darkerTheme = getTheme(Math.max(0, shift + (props.isLight ? 1 : -1)), props)
   const activeTheme = makeActiveTheme(theme)
+
+  const inverted = altThemes.map(([_name, theme]) => {
+    return {
+      ...theme,
+      background: theme.color,
+      backgroundHover: theme.colorHover,
+      backgroundFocus: theme.colorFocus,
+      backgroundPress: theme.colorPress,
+      color: theme.background,
+      colorHover: theme.backgroundHover,
+      colorFocus: theme.backgroundFocus,
+      colorPress: theme.backgroundPress,
+    }
+  })
+
   themeEntries = [
     ...themeEntries,
     ...altThemes,
     ...altButtonThemes,
-    [`${name}_Button`, altThemes[0][1]],
+    [`${name}_Button`, altThemes2[1][1]],
+    [`${name}_SliderTrack`, altThemes[1][1]],
+    [`${name}_SliderTrackActive`, altThemes[3][1]],
+    [`${name}_SliderThumb`, inverted[2]],
+    [`${name}_Progress`, altThemes[2][1]],
+    [`${name}_ProgressIndicator`, inverted[2]],
+    [`${name}_Switch`, altThemes[0][1]],
+    [`${name}_SwitchThumb`, inverted[2]],
+    [`${name}_TooltipArrow`, altThemes[1][1]],
+    [`${name}_TooltipContent`, altThemes[1][1]],
     [`${name}_darker`, darkerTheme],
     [`${name}_active`, activeTheme],
   ]
@@ -227,8 +255,12 @@ const baseThemes = {
   },
   light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
+  light_Button: lightThemes.light,
+  light_SliderTrack: lightThemes.light_alt1,
+  light_SliderTrackActive: lightThemes.light_alt2,
+  light_Switch: lightThemes.light,
+  light_SwitchThumb: lightThemes.light_alt1,
   light_DrawerFrame: lightThemes.light_alt1,
-  light_Button: lightThemes.light_alt1,
 
   // dark
   ...darkThemes,
@@ -237,8 +269,12 @@ const baseThemes = {
     ...darkThemes.dark,
   },
   dark_active: makeActiveTheme(darkThemes.dark),
-  dark_Card: darkThemes.dark_alt1,
-  dark_DrawerFrame: darkThemes.dark_alt2,
+  dark_Card: darkThemes.dark,
+  dark_DrawerFrame: darkThemes.dark,
+  dark_SliderTrack: darkThemes.dark_darker,
+  dark_SliderTrackActive: darkThemes.dark_alt1,
+  dark_Switch: darkThemes.dark_darker,
+  dark_SwitchThumb: darkThemes.dark_alt1,
   dark_Button: darkThemes.dark_alt1,
 }
 
@@ -291,17 +327,17 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
 
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])
   })
-  const lightButtonTheme = altLightThemes[0]
-  const darkButtonTheme = altDarkThemes[0]
+  // const lightButtonTheme = altLightThemes[0]
+  // const darkButtonTheme = altDarkThemes[0]
   return [
     ...altLightThemes,
-    [`${lightButtonTheme[0]}_Button`, altLightThemes[2][1]],
-    [`${lightButtonTheme[0]}_Card`, altLightThemes[2][1]],
-    [`${lightButtonTheme[0]}_DrawerFrame`, altLightThemes[2][1]],
+    // [`${lightButtonTheme[0]}_Button`, altLightThemes[2][1]],
+    // [`${lightButtonTheme[0]}_Card`, altLightThemes[2][1]],
+    // [`${lightButtonTheme[0]}_DrawerFrame`, altLightThemes[2][1]],
     ...altDarkThemes,
-    [`${darkButtonTheme[0]}_Button`, altDarkThemes[2][1]],
-    [`${darkButtonTheme[0]}_Card`, altDarkThemes[2][1]],
-    [`${darkButtonTheme[0]}_DrawerFrame`, altDarkThemes[2][1]],
+    // [`${darkButtonTheme[0]}_Button`, altDarkThemes[2][1]],
+    // [`${darkButtonTheme[0]}_Card`, altDarkThemes[2][1]],
+    // [`${darkButtonTheme[0]}_DrawerFrame`, altDarkThemes[2][1]],
   ]
 })
 

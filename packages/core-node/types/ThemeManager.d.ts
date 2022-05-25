@@ -7,25 +7,28 @@ export declare type SetActiveThemeProps = {
     name?: string | null;
     theme?: any;
 };
+export declare type GetNextThemeProps = {
+    themes?: Themes;
+    name?: string | null;
+    componentName?: string | null;
+    reset?: boolean;
+};
 export declare class ThemeManager {
     #private;
     name: string;
     theme: ThemeObject | null;
     parentManager: ThemeManager | null;
+    reset: boolean;
     keys: Map<any, Set<string>>;
     listeners: Map<any, Function>;
     themeListeners: Set<ThemeListener>;
     className: string | null;
-    constructor(name?: string, theme?: ThemeObject | null, parentManager?: ThemeManager | null);
+    constructor(name?: string, theme?: ThemeObject | null, parentManager?: ThemeManager | null, reset?: boolean);
     get parentName(): string | null;
     get fullName(): string;
     getValue(key: string): import("./types").VariableVal | undefined;
     update({ name, theme, className }?: SetActiveThemeProps): boolean;
-    getNextTheme(opts?: {
-        themes?: Themes;
-        name?: string | null;
-        componentName?: string | null;
-    }, props?: any): {
+    getNextTheme(props?: GetNextThemeProps, debug?: any): {
         name: string;
         theme: Partial<import("./types").TamaguiBaseTheme> & {
             [key: string]: import("./types").VariableVal;

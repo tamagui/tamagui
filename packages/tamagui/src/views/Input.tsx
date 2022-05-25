@@ -9,8 +9,6 @@ export const Input = styled(TextInput, {
   color: '$color',
   borderColor: '$borderColor',
   backgroundColor: '$background',
-  paddingVertical: '$2',
-  paddingHorizontal: '$2',
 
   hoverStyle: {
     borderColor: '$borderColorHover',

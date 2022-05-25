@@ -1,7 +1,7 @@
 import { FastForward } from '@tamagui/feather-icons'
 import { memo, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, InteractiveContainer, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Group, Paragraph, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { CodeDemo } from './CodeDemo'
@@ -13,6 +13,7 @@ import { IconStack } from './IconStack'
 export function HeroExampleCode() {
   const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
+  console.log('activeIndex', activeIndex)
   const activeExample = examples[activeIndex]
 
   return (
@@ -26,29 +27,34 @@ export function HeroExampleCode() {
             </HomeH3>
           </YStack>
 
-          <InteractiveContainer theme={tint} maxWidth="100%" als="center">
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {examples.map((example, i) => {
-                return (
-                  <Button
-                    onPress={() => setActiveIndex(i)}
-                    theme={i === activeIndex ? 'active' : null}
-                    key={i}
-                    borderRadius="$0"
-                    size="$4"
-                    fontFamily="$silkscreen"
-                    // fontWeight={i === activeIndex ? '700' : '400'}
-                  >
-                    {example.name}
-                  </Button>
-                )
-              })}
-            </ScrollView>
-          </InteractiveContainer>
+          <Group theme={tint} maxWidth="100%" als="center" scrollable>
+            {examples.map((example, i) => {
+              return (
+                <Button
+                  onPress={() => setActiveIndex(i)}
+                  theme={i === activeIndex ? 'active' : null}
+                  key={i}
+                  borderRadius={0}
+                  size="$4"
+                  fontFamily="$silkscreen"
+                  // fontWeight={i === activeIndex ? '700' : '400'}
+                >
+                  {example.name}
+                </Button>
+              )
+            })}
+          </Group>
 
           <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
-            <YStack f={1} maxWidth="50%" $sm={{ maxWidth: '100%' }} px="$2" space="$4">
-              <CodeExamples key={activeIndex} {...activeExample.input} />
+            <YStack
+              key={`input${activeIndex}`}
+              f={1}
+              maxWidth="50%"
+              $sm={{ maxWidth: '100%' }}
+              px="$2"
+              space="$4"
+            >
+              <CodeExamples {...activeExample.input} />
               <Paragraph size="$4" minHeight={50} ta="center" px="$7">
                 <CodeInline size="$4">Input</CodeInline>
                 <span style={{ opacity: 0.65 }}>
@@ -73,8 +79,15 @@ export function HeroExampleCode() {
                 <FastForward color="var(--colorHover)" size={22} />
               </IconStack>
             </YStack>
-            <YStack f={1} maxWidth="50%" $sm={{ maxWidth: '100%', mt: '$6' }} px="$2" space="$4">
-              <CodeExamples key={activeIndex} {...activeExample.output} />
+            <YStack
+              key={`output${activeIndex}`}
+              f={1}
+              maxWidth="50%"
+              $sm={{ maxWidth: '100%', mt: '$6' }}
+              px="$2"
+              space="$4"
+            >
+              <CodeExamples {...activeExample.output} />
               <Paragraph size="$4" minHeight={50} ta="center" px="$6">
                 <CodeInline size="$4">Output</CodeInline>
                 <span style={{ opacity: 0.65 }}>
@@ -96,7 +109,7 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <InteractiveContainer zi={10} mb="$-4" als="center">
+        <Group zi={10} mb="$-4" als="center">
           {examples.map((example, i) => (
             <Button
               onPress={() => setActiveIndex(i)}
@@ -109,7 +122,7 @@ const CodeExamples = memo(({ examples }: any) => {
               {example.name}
             </Button>
           ))}
-        </InteractiveContainer>
+        </Group>
       </>
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>

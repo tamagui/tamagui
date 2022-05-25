@@ -85,9 +85,9 @@ export const MediaPlayer = memo(
                   elevation: '$6',
                   scale: 1.025,
                 }}
-                my="$-6"
+                my="$-7"
                 icon={Pause}
-                size="$7"
+                size="$8"
                 circular
                 elevation="$4"
                 pointerEvents={pointerEventsControls}

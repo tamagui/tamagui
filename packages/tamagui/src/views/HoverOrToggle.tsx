@@ -15,9 +15,9 @@ export const HoverOrToggle = forwardRef(
     },
     ref: any
   ) => {
-    const isTouchDevice = useIsTouchDevice()
+    const isTouchable = useIsTouchDevice()
 
-    if (isTouchDevice) {
+    if (isTouchable) {
       const [_isOn, setIsOn] = useState(false)
       if (!fallbackToPress) {
         return children

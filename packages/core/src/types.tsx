@@ -19,6 +19,35 @@ import { ResolveVariableTypes } from './helpers/createPropMapper'
 import { RNWTextProps, RNWViewProps } from './types-rnw'
 import { ThemeProviderProps } from './views/ThemeProvider'
 
+//
+// base props that are accepted by createComponent (additional to react-native-web)
+//
+export type TamaguiComponentPropsBase = {
+  asChild?: boolean
+  space?: SpaceTokens
+  spaceDirection?: SpaceDirection
+  dangerouslySetInnerHTML?: { __html: string }
+  animation?: AnimationProp
+  animateOnly?: string[]
+  children?: any | any[]
+  debug?: boolean | 'break' | 'verbose'
+  disabled?: boolean
+  className?: string
+  id?: string
+  tag?: string
+  theme?: ThemeName | null
+  componentName?: string
+  onHoverIn?: (e: MouseEvent) => any
+  onHoverOut?: (e: MouseEvent) => any
+  onPress?: (e: GestureResponderEvent) => any
+  onPressIn?: (e: GestureResponderEvent) => any
+  onPressOut?: (e: GestureResponderEvent) => any
+  // WEB ONLY
+  onMouseEnter?: (e: MouseEvent) => any
+  onMouseLeave?: (e: MouseEvent) => any
+  onMouseDown?: (e: MouseEvent) => any
+}
+
 export type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<
   Props & React.RefAttributes<Ref>
 >
@@ -255,34 +284,6 @@ export type AnimationProp =
 
 export type SpaceDirection = ViewStyle['flexDirection'] | 'both'
 
-//
-// base props that are accepted by createComponent (additional to react-native-web)
-//
-export type TamaguiComponentPropsBase = {
-  asChild?: boolean
-  space?: SpaceTokens
-  spaceDirection?: SpaceDirection
-  dangerouslySetInnerHTML?: { __html: string }
-  animation?: AnimationProp
-  animateOnly?: string[]
-  children?: any | any[]
-  debug?: boolean | 'break' | 'verbose'
-  disabled?: boolean
-  className?: string
-  id?: string
-  tag?: string
-  theme?: ThemeName | null
-  onHoverIn?: (e: MouseEvent) => any
-  onHoverOut?: (e: MouseEvent) => any
-  onPress?: (e: GestureResponderEvent) => any
-  onPressIn?: (e: GestureResponderEvent) => any
-  onPressOut?: (e: GestureResponderEvent) => any
-  // WEB ONLY
-  onMouseEnter?: (e: MouseEvent) => any
-  onMouseLeave?: (e: MouseEvent) => any
-  onMouseDown?: (e: MouseEvent) => any
-}
-
 type GetTokenFontKeysFor<
   A extends
     | 'size'
@@ -456,6 +457,12 @@ export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStyl
 export type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>
 export type StackProps = StackPropsBaseShared & StackStyleProps
 
+export type GestureReponderEvent = Exclude<View['props']['onResponderMove'], void> extends (
+  event: infer Event
+) => void
+  ? Event
+  : never
+
 //
 // Text props
 //
@@ -511,16 +518,18 @@ export type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>>
   children?: React.ReactNode
 }
 
+export type PropMapper = (
+  key: string,
+  value: any,
+  theme: ThemeObject,
+  props: Record<string, any>,
+  state: Partial<SplitStyleState>,
+  avoidDefaultProps?: boolean
+) => undefined | [string, any][]
+
 export type StaticConfigParsed = StaticConfig & {
   parsed: true
-  propMapper: (
-    key: string,
-    value: any,
-    theme: ThemeObject,
-    props: any,
-    resolveVariablesAs?: ResolveVariableTypes,
-    avoidDefaultProps?: boolean
-  ) => undefined | boolean | { [key: string]: any }
+  propMapper: PropMapper
   variantsParsed?: {
     [key: string]: {
       [key: string]: any
@@ -1024,7 +1033,7 @@ export type TamaguiComponentState = {
 export type SplitStyleState = TamaguiComponentState & {
   noClassNames?: boolean
   resolveVariablesAs?: ResolveVariableTypes
-  fallbackProps?: Object
+  fallbackProps?: Record<string, any>
 }
 
 // Animations:

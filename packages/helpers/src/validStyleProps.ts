@@ -1,5 +1,3 @@
-import { ViewStyle } from 'react-native'
-
 // flat transform props
 export const stylePropsTransform = Object.freeze({
   x: true,
@@ -163,19 +161,3 @@ export const validStyles = Object.freeze({
   ...validPseudoKeys,
   ...stylePropsView,
 })
-
-export const mapTransformKeys = {
-  x: 'translateX',
-  y: 'translateY',
-}
-
-export const invertMapTransformKeys = {
-  translateX: 'x',
-  translateY: 'y',
-}
-
-export const mergeTransform = (obj: ViewStyle, key: string, val: any) => {
-  obj.transform ||= []
-  // @ts-ignore
-  obj.transform.push({ [mapTransformKeys[key] || key]: val })
-}

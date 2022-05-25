@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { ViewStyle } from 'react-native';
+import { RefObject } from 'react';
+import { View, ViewStyle } from 'react-native';
 import { PseudoStyles, SplitStyleState } from '../types';
 import { StaticConfigParsed, TamaguiComponentState, UseAnimationHook } from '../types';
 declare type FeatureUtils = {
@@ -12,6 +12,7 @@ declare type FeatureUtils = {
     staticConfig: StaticConfigParsed;
     theme: any;
     onDidAnimate?: () => void;
+    hostRef: RefObject<HTMLElement | View>;
 };
 export declare const useFeatures: (props: any, utils?: FeatureUtils | undefined) => JSX.Element[];
 export {};

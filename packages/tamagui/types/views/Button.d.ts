@@ -30,14 +30,16 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    bordered?: boolean | undefined;
-    disabled?: boolean | undefined;
+    circular?: boolean | undefined;
+    pad?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "active" | "circular"> & {
+}, "size" | "disabled" | "active"> & {
+    size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
-    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -46,14 +48,16 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    bordered?: boolean | undefined;
-    disabled?: boolean | undefined;
+    circular?: boolean | undefined;
+    pad?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "active" | "circular"> & {
+}, "size" | "disabled" | "active"> & {
+    size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
-    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -62,14 +66,16 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    bordered?: boolean | undefined;
-    disabled?: boolean | undefined;
+    circular?: boolean | undefined;
+    pad?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "active" | "circular"> & {
+}, "size" | "disabled" | "active"> & {
+    size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
-    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -78,15 +84,40 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    bordered?: boolean | undefined;
-    disabled?: boolean | undefined;
+    circular?: boolean | undefined;
+    pad?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 } & {
+    size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
-    circular?: boolean | undefined;
+    disabled?: boolean | undefined;
 }>;
+export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+}>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+}, string | number> & {
+    [x: string]: undefined;
+} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+}, string | number> & {
+    [x: string]: undefined;
+}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+}, string | number> & {
+    [x: string]: undefined;
+}>>), any, import("@tamagui/core").TextPropsBase, {
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & ({} | {
+    [x: string]: undefined;
+})>;
 export declare const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View>;
 export {};
 //# sourceMappingURL=Button.d.ts.map

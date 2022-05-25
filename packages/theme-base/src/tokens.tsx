@@ -46,11 +46,14 @@ export const size: {
 type Sizes = typeof size
 type SizeKeys = keyof Sizes
 
+const spaces = Object.entries(size).map(([k, v]) => [k, Math.round(v * 0.75)])
+const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
+
 export const space: {
   [Key in `-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
-  ...size,
-  ...Object.fromEntries(Object.entries(size).map(([k, v]) => [`-${k}`, -v])),
+  ...Object.fromEntries(spaces),
+  ...Object.fromEntries(spacesNegative),
 } as any
 
 export const zIndex = {
@@ -74,8 +77,11 @@ export const radius = {
   3: 7,
   4: 9,
   5: 10,
-  6: 12,
-  7: 16,
-  8: 20,
-  9: 30,
+  6: 16,
+  7: 19,
+  8: 22,
+  9: 26,
+  10: 34,
+  11: 42,
+  12: 50,
 }

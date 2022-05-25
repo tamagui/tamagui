@@ -5,6 +5,7 @@ export declare type ThemeProviderProps = {
     defaultTheme: string;
     disableRootThemeClass?: boolean;
     children?: any;
+    reset?: boolean;
 };
 export declare const ThemeProvider: (props: ThemeProviderProps) => JSX.Element;
 //# sourceMappingURL=ThemeProvider.d.ts.map

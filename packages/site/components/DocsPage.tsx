@@ -103,7 +103,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           top={15}
           right={30}
           ai="center"
-          space="$4"
+          space="$6"
         >
           <AlphaButton />
 
@@ -134,7 +134,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     p="$5"
                     borderRadius="$2"
                     borderWidth={1}
-                    borderColor="$borderColorPress"
+                    borderColor="$borderColor"
                     pressStyle={{
                       backgroundColor: '$backgroundPress',
                     }}
@@ -145,7 +145,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     <Paragraph theme="alt1" size="$5">
                       Previous
                     </Paragraph>
-                    <Paragraph size="$3" fontWeight="800">
+                    <Paragraph size="$3" color="$gray10">
                       {previous.title}
                     </Paragraph>
                   </YStack>
@@ -162,7 +162,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     p="$5"
                     borderRadius="$2"
                     borderWidth={1}
-                    borderColor="$borderColorPress"
+                    borderColor="$borderColor"
                     pressStyle={{
                       backgroundColor: '$backgroundPress',
                     }}
@@ -173,7 +173,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     <Paragraph theme="alt1" size="$5">
                       Next
                     </Paragraph>
-                    <Paragraph size="$3" fontWeight="800">
+                    <Paragraph size="$3" color="$gray10">
                       {next.title}
                     </Paragraph>
                   </YStack>

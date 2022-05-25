@@ -74,11 +74,6 @@ type RNWWebAccessibilityRole =
   | 'summary'
   | 'text'
 
-interface PressableStateCallbackType {
-  hovered?: boolean
-  focused?: boolean
-}
-
 export interface RNWViewProps {
   // our internal hack to pass className down (until styleq transition)
   dataSet?: any

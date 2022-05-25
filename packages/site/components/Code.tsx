@@ -23,7 +23,7 @@ export const CodeInline = styled(Paragraph, {
   name: 'CodeInline',
   tag: 'code',
   fontFamily: '$mono',
-  theme: 'alt2',
+  theme: 'alt1',
   color: '$color',
   backgroundColor: '$background',
   br: '$4',

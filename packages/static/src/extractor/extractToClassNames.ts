@@ -115,10 +115,13 @@ export function extractToClassNames({
       let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
       let finalStyles: StyleObject[] = []
 
-      const viewStyles = {}
+      let viewStyles = {}
       for (const attr of attrs) {
         if (attr.type === 'style') {
-          Object.assign(viewStyles, attr.value)
+          viewStyles = {
+            ...viewStyles,
+            ...attr.value,
+          }
         }
       }
 
@@ -177,6 +180,9 @@ export function extractToClassNames({
               }
 
               for (const style of styles) {
+                if (style.pseudo) {
+                  continue
+                }
                 //  leave them  as attributes
                 finalAttrs.push(
                   t.jsxAttribute(t.jsxIdentifier(style.property), t.stringLiteral(style.identifier))

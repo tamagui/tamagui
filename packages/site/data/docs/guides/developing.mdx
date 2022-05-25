@@ -9,6 +9,28 @@ In general either your Webpack configuration or using `@tamagui/next-plugin`, yo
 
 Tamagui (at this time) doesn't have a variety of views like ScrollView or FlatList. If you need them, just import them directly from `react-native`.
 
+## Helpful exports
+
+Some useful hooks and constants exist in `@tamagui/core`.
+
+### Constants
+
+For adapting things specifically to web, native, or platform:
+
+- `isWeb` - true if rendering on web SSR or client side, false if native
+- `isSSR` - true if web + SSR
+- `isClient` - true if web + not SSR
+- `isChrome` - true if client + Chrome
+- `isWebTouchable` - true if web + touch device
+- `isTouchable` - true if isWebTouchable or native
+- `isWebIOS` - true if web + iOS
+
+### Helpers
+
+- `isTamaguiElement(child: any; name?: string) => boolean` - match Tamagui React elements.
+- `extractable<A extends TamaguiComponent>(): A` - [hints for compiler to extract a HoC component](https://github.com/tamagui/tamagui/blob/296a71b74d3020a28e3bafd1abb748a67d535be4/packages/tamagui/src/views/Anchor.tsx#L22).
+- `getExpandedShorthands(props: Object): Object` - Returns a new object with all shorthand props expanded.
+
 ## Classes generated
 
 Tamagui generates a few helpful classes. For components created with `styled()` where a `name` is set like this:

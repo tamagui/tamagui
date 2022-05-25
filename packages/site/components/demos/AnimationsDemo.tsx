@@ -42,7 +42,7 @@ export default (props) => {
         pos="absolute"
         b={20}
         l={20}
-        iconAfter={Play}
+        icon={Play}
         theme={tint}
         size="$5"
         circular

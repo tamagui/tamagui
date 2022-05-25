@@ -1,0 +1,74 @@
+---
+title: Progress
+description: Display a bar to indicate percent completion.
+name: text
+component: Progress
+---
+
+# Progress
+
+<Description>Show percent completion with a progress bar.</Description>
+
+<HeroContainer>
+  <ProgressDemo />
+</HeroContainer>
+
+```jsx hero template=Progress
+
+```
+
+<Highlights
+  features={[
+    'Sizable, themeable, animatable.',
+    'Composable component API for complete control.',
+    <span>
+      Adheres to the{' '}
+      <a href="https://www.w3.org/TR/wai-aria-1.2/#progressbar">progressbar role requirements</a>
+    </span>,
+  ]}
+/>
+
+### Usage
+
+The `value` property controls the percent, but you can override it by adjusting the `x` property.
+
+```jsx
+import { Progress, Button } from 'tamagui'
+
+export default () => (
+  <Progress value={60}>
+    <Progress.Indicator animation="bouncy" />
+  </Progress>
+)
+```
+
+### API
+
+#### Progress
+
+Progress extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: '"small" | "large"',
+    },
+    {
+      name: 'value',
+      required: false,
+      type: 'number | null',
+      description: `Control the percent progress.`,
+    },
+    {
+      name: 'max',
+      required: false,
+      type: 'number',
+    },
+  ]}
+/>
+
+#### Indicator
+
+Progress.Indicator extends [ThemeableStack](/docs/components/stacks#themeablestack), getting [Tamagui standard props](/docs/intro/props).

@@ -10,11 +10,12 @@ declare const StyledImage: import("@tamagui/core").TamaguiComponent<(import("rea
     [x: string]: undefined;
 }>;
 declare type StyledImageProps = GetProps<typeof StyledImage>;
-export declare type ImageProps = Omit<StackProps, keyof StyledImageProps> & Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
+declare type BaseProps = Omit<StyledImageProps, 'source' | 'width' | 'height' | 'style' | 'onLayout'> & {
     width: number;
     height: number;
     src: string | StyledImageProps['source'];
 };
+export declare type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>;
 export declare const Image: React.FC<ImageProps>;
 export {};
 //# sourceMappingURL=Image.d.ts.map

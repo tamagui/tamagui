@@ -35,42 +35,39 @@ export declare type PopperContentProps = SizableStackProps;
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "size" | "focusable" | "fontFamily" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+}, "size" | "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    bordered?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "size" | "focusable" | "fontFamily" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+}, "size" | "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    bordered?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "size" | "focusable" | "fontFamily" | "disabled" | "transparent" | "hoverable" | "pressable" | "bordered" | "chromeless"> & {
+}, "size" | "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
-    bordered?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: number | boolean | undefined;
     size?: SizeTokens | undefined;
-    disabled?: boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
 }>> & React.RefAttributes<PopperContentElement>>;
 declare type PopperArrowElement = HTMLElement | View;
 export declare type PopperArrowProps = YStackProps & {

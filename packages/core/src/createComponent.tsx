@@ -96,7 +96,7 @@ export function createComponent<
     }
   })()
 
-  const componentClassName = `is_${staticConfig.componentName}`
+  const defaultComponentClassName = `is_${staticConfig.componentName}`
   let tamaguiConfig: TamaguiInternalConfig
   let AnimatedText: any
   let AnimatedView: any
@@ -124,12 +124,16 @@ export function createComponent<
     // ridiculous fix because react inserts default props after your props for some reason...
     props = tamaguiDefaultProps && !props.asChild ? { ...tamaguiDefaultProps, ...props } : props
 
-    const { Component, componentName, isText, isZStack } = staticConfig
+    const { Component, isText, isZStack } = staticConfig
+    const componentName = props.componentName || staticConfig.componentName
+    const componentClassName = props.componentName
+      ? `is_${props.componentName}`
+      : defaultComponentClassName
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.log('⚠️', staticConfig.componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
+        console.log('⚠️', componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
         // keep separate react native warn touches every value on prop causing weird behavior
         console.log('props in:', props, Object.keys(props))
         if (props['debug'] === 'break') debugger
@@ -137,7 +141,7 @@ export function createComponent<
     }
 
     const forceUpdate = useForceUpdate()
-    const theme = useTheme(props.theme, staticConfig.componentName, props, forceUpdate)
+    const theme = useTheme(props.theme, componentName, props, forceUpdate)
     const [state, set_] = useState<TamaguiComponentState>(defaultComponentState)
     const setStateShallow = createShallowUpdate(set_)
 
@@ -146,7 +150,13 @@ export function createComponent<
       props,
       staticConfig,
       theme,
-      shouldAvoidClasses ? { ...state, noClassNames: true, resolveVariablesAs: 'value' } : state,
+      !shouldAvoidClasses
+        ? state
+        : {
+            ...state,
+            noClassNames: true,
+            resolveVariablesAs: 'value',
+          },
       shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames
     )
 
@@ -154,6 +164,7 @@ export function createComponent<
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
     const hasEnterStyle = !!props.enterStyle
+    const hostRef = useRef<HTMLElement | View>(null)
 
     const features = useFeatures(props, {
       forceUpdate,
@@ -164,6 +175,7 @@ export function createComponent<
       pseudos,
       staticConfig,
       theme,
+      hostRef,
       onDidAnimate: props.onDidAnimate,
     })
 
@@ -217,7 +229,6 @@ export function createComponent<
       // @ts-ignore
       defaultVariants,
 
-      // TODO feature load layout hook
       onLayout,
       ...viewPropsRest
     } = viewPropsIn
@@ -234,7 +245,6 @@ export function createComponent<
     }
 
     const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
-    const hostRef = useRef(null)
 
     // isMounted
     const internal = useRef<{ isMounted: boolean }>()
@@ -275,6 +285,8 @@ export function createComponent<
     }
 
     if (isWeb && !asChild) {
+      rnw.useElementLayout(hostRef, onLayout)
+
       // from react-native-web
       rnw.useResponderEvents(hostRef, {
         onMoveShouldSetResponder,
@@ -317,7 +329,7 @@ export function createComponent<
     if (isStringElement && shouldAvoidClasses) {
       styles = {
         ...defaultNativeStyle,
-        ...animationStyles,
+        ...(animationStyles ?? style),
         ...medias,
       }
     } else {
@@ -327,8 +339,7 @@ export function createComponent<
         // TODO this should be able to be done w css to replicate after extraction:
         //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
         // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
-        // style,
-        animationStyles ? animationStyles : style,
+        animationStyles ?? style,
         medias,
       ]
       if (!animationStyles) {
@@ -340,36 +351,38 @@ export function createComponent<
     }
 
     if (isWeb) {
-      if (!shouldAvoidClasses) {
-        const fontFamilyName = isText
-          ? props.fontFamily || staticConfig.defaultProps.fontFamily
-          : null
-        const fontFamily =
-          fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
-        const classList = [
-          componentName ? componentClassName : '',
-          fontFamily ? `font_${fontFamily}` : '',
-          theme.className,
-          classNames ? Object.values(classNames).join(' ') : '',
-        ]
+      const fontFamilyName = isText
+        ? props.fontFamily || staticConfig.defaultProps.fontFamily
+        : null
+      const fontFamily =
+        fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
+      const classList = [
+        componentName ? componentClassName : '',
+        fontFamily ? `font_${fontFamily}` : '',
+        theme.className,
+        classNames ? Object.values(classNames).join(' ') : '',
+      ]
 
+      if (!shouldAvoidClasses) {
+        if (classNames) {
+          classList.push(Object.values(classNames).join(' '))
+        }
         // TODO restore this to isText classList
         // hasTextAncestor === true && cssText.textHasAncestor,
         // TODO MOVE TO VARIANTS [number] [any]
         // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
-
-        const className = classList.join(' ')
-        if (process.env.NODE_ENV === 'development') {
-          if (props['debug']) {
-            // prettier-ignore
-            console.log('  » className', { isStringElement, pseudos, state, classNames, propsClassName: props.className, style, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
-          }
-        }
-        viewProps.className = className
-        viewProps.style = animationStyles
-      } else {
-        viewProps.style = styles
       }
+
+      const className = classList.join(' ')
+      const style = animationStyles ?? splitStyles.style
+
+      if (process.env.NODE_ENV === 'development' && props['debug']) {
+        // prettier-ignore
+        console.log('  » className', { splitStyles, style, isStringElement, pseudos, state, classNames, propsClassName: props.className, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
+      }
+
+      viewProps.className = className
+      viewProps.style = style
     } else {
       viewProps.style = styles
     }
@@ -688,7 +701,6 @@ export function createComponent<
       keepVariantsAsProps: true,
     })
 
-    // @ts-ignore
     // this ruins the prop order!!!
     // can't believe it but it puts default props after props?
     const defaults = {
@@ -787,7 +799,7 @@ export const Spacer = createComponent<
     size: {
       '...size': (size, { tokens }) => {
         size = size == true ? '$true' : size
-        const sizePx = tokens.size[size] ?? size
+        const sizePx = tokens.space[size] ?? size
         return {
           width: sizePx,
           height: sizePx,
