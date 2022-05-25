@@ -1,8 +1,10 @@
 import {
   ContextData,
+  FloatingContext,
   FloatingFocusManager,
   FloatingOverlay,
   FloatingPortal,
+  ReferenceType,
   autoUpdate,
   detectOverflow,
   flip,
@@ -80,6 +82,12 @@ interface SelectContextValue {
   controlledScrolling: boolean
   canScrollUp: boolean
   canScrollDown: boolean
+  floatingContext: FloatingContext<ReferenceType>
+  interactions: {
+    getReferenceProps: (userProps?: React.HTMLProps<Element> | undefined) => any
+    getFloatingProps: (userProps?: React.HTMLProps<HTMLElement> | undefined) => any
+    getItemProps: (userProps?: React.HTMLProps<HTMLElement> | undefined) => any
+  }
 
   // gather elements
   setElement(
@@ -241,11 +249,62 @@ type SelectContentElement = any
 type SelectContentProps = any
 
 const SelectContent = React.forwardRef<SelectContentElement, SelectContentProps>(
-  (props: ScopedProps<SelectContentProps>, forwardedRef) => {
-    const context = useSelectContext(CONTENT_NAME, props.__scopeSelect)
-    return props.children
+  ({ children, __scopeSelect }: ScopedProps<SelectContentProps>, forwardedRef) => {
+    const context = useSelectContext(CONTENT_NAME, __scopeSelect)
+    return (
+      <FloatingPortal>
+        {context.open && <FloatingOverlay lockScroll>{children}</FloatingOverlay>}
+      </FloatingPortal>
+    )
   }
 )
+
+/* -------------------------------------------------------------------------------------------------
+ * SelectViewport
+ * -----------------------------------------------------------------------------------------------*/
+
+const VIEWPORT_NAME = 'SelectViewport'
+
+export const SelectViewportFrame = styled(YStack, {
+  name: VIEWPORT_NAME,
+})
+
+export type SelectViewportProps = GetProps<typeof SelectViewportFrame>
+
+const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
+  (props: ScopedProps<SelectViewportProps>, forwardedRef) => {
+    const { __scopeSelect, children, ...viewportProps } = props
+    const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
+    const composedRefs = useComposedRefs(
+      forwardedRef
+      // contentContext.onViewportChange
+    )
+    const prevScrollTopRef = React.useRef(0)
+    return (
+      <>
+        {/* Hide scrollbars cross-browser and enable momentum scroll for touch devices */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `[data-radix-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-select-viewport]::-webkit-scrollbar{display:none}`,
+          }}
+        />
+        <FloatingFocusManager context={context.floatingContext} preventTabbing>
+          <SelectViewportFrame
+            data-radix-select-viewport=""
+            // @ts-ignore
+            role="presentation"
+            {...viewportProps}
+            ref={composedRefs}
+          >
+            <div {...context.interactions.getFloatingProps()}>{children}</div>
+          </SelectViewportFrame>
+        </FloatingFocusManager>
+      </>
+    )
+  }
+)
+
+SelectViewport.displayName = VIEWPORT_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectGroup
@@ -496,8 +555,7 @@ const SelectScrollUpButton = React.forwardRef<
   SelectScrollUpButtonElement,
   SelectScrollUpButtonProps
 >((props: ScopedProps<SelectScrollUpButtonProps>, forwardedRef) => {
-  // const contentContext = useSelectContentContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect)
-  const [canScrollUp, setCanScrollUp] = React.useState(false)
+  const context = useSelectContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect)
   const composedRefs = useComposedRefs(
     forwardedRef
     // contentContext.onScrollButtonChange
@@ -516,7 +574,7 @@ const SelectScrollUpButton = React.forwardRef<
   //   }
   // }, [contentContext.viewport, contentContext.isPositioned])
 
-  return canScrollUp ? (
+  return context.canScrollUp ? (
     <SelectScrollButtonImpl
       {...props}
       ref={composedRefs}
@@ -669,15 +727,18 @@ export const Select = withStaticProperties(
       name,
       autoComplete,
     } = props
+
     // const [trigger, setTrigger] = React.useState<SelectTriggerElement | null>(null)
     // const [valueNode, setValueNode] = React.useState<SelectValueElement | null>(null)
     // const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
     // const direction = useDirection(dir)
+
     const [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen || false,
       onChange: onOpenChange,
     })
+
     const [value, setValue] = useControllableState({
       prop: valueProp,
       defaultProp: defaultValue || '',
@@ -836,7 +897,7 @@ export const Select = withStaticProperties(
       scrollTop <
         floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
 
-    const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
+    const interactions = useInteractions([
       useClick(context, { pointerDown: true }),
       useRole(context, { role: 'listbox' }),
       useDismiss(context),
@@ -1152,6 +1213,33 @@ export const Select = withStaticProperties(
     return (
       <SelectProvider
         scope={__scopeSelect}
+        interactions={{
+          ...interactions,
+          getFloatingProps() {
+            return {
+              ref: floating,
+              className: 'Select',
+              style: {
+                position: strategy,
+                top: y ?? '',
+                left: x ?? '',
+              },
+              onPointerEnter() {
+                setControlledScrolling(false)
+              },
+              onPointerMove() {
+                setControlledScrolling(false)
+              },
+              onKeyDown() {
+                setControlledScrolling(true)
+              },
+              onScroll(event) {
+                setScrollTop(event.currentTarget.scrollTop)
+              },
+            }
+          },
+        }}
+        floatingContext={context}
         activeIndex={0}
         canScrollDown
         canScrollUp
@@ -1211,6 +1299,7 @@ export const Select = withStaticProperties(
     ScrollUpButton: SelectScrollUpButton,
     Trigger: SelectTrigger,
     Value: SelectValue,
+    Viewport: SelectViewport,
   }
 )
 

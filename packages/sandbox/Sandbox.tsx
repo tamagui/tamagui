@@ -48,12 +48,14 @@ export const Sandbox = () => {
             <Select.Content>
               <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
 
-              <Select.Group>
-                <Select.Label>Fruits</Select.Label>
-                <Select.Item value="apple">
-                  <Select.ItemText>Apple</Select.ItemText>
-                </Select.Item>
-              </Select.Group>
+              <Select.Viewport>
+                <Select.Group>
+                  <Select.Label>Fruits</Select.Label>
+                  <Select.Item value="apple">
+                    <Select.ItemText>Apple</Select.ItemText>
+                  </Select.Item>
+                </Select.Group>
+              </Select.Viewport>
 
               <Select.ScrollDownButton>👇</Select.ScrollDownButton>
             </Select.Content>
