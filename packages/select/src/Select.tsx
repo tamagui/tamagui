@@ -89,8 +89,8 @@ interface SelectContextValue {
   onChange: (value: string) => void
   dataRef: React.MutableRefObject<ContextData>
   controlledScrolling: boolean
-  valueNode: TamaguiElement | null
-  onValueNodeChange(node: TamaguiElement): void
+  valueNode: Element | null
+  onValueNodeChange(node: HTMLElement): void
   valueNodeHasChildren: boolean
   onValueNodeHasChildrenChange(hasChildren: boolean): void
   canScrollUp: boolean
@@ -143,6 +143,15 @@ const TRIGGER_NAME = 'SelectTrigger'
 
 export type SelectTriggerProps = YStackProps
 
+const SelectTriggerFrame = styled(XStack, {
+  name: TRIGGER_NAME,
+  tag: 'button',
+  // @ts-ignore
+  role: 'combobox',
+  backgroundColor: 'transparent',
+  borderWidth: 0,
+})
+
 export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps>(
   (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
     const {
@@ -159,9 +168,7 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
     // const labelledBy = ariaLabelledby || labelId
 
     return (
-      <YStack
-        tag="button"
-        // role="combobox"
+      <SelectTriggerFrame
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
@@ -172,33 +179,6 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
         {...triggerProps}
         ref={forwardedRef}
         {...context.interactions.getReferenceProps()}
-        // onPointerDown={composeEventHandlers(triggerProps.onPointerDown, (event) => {
-        //   // prevent implicit pointer capture
-        //   // https://www.w3.org/TR/pointerevents3/#implicit-pointer-capture
-        //   ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
-
-        //   // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
-        //   // but not when the control key is pressed (avoiding MacOS right click)
-        //   if (event.button === 0 && event.ctrlKey === false) {
-        //     handleOpen()
-        //     context.triggerPointerDownPosRef.current = {
-        //       x: Math.round(event.pageX),
-        //       y: Math.round(event.pageY),
-        //     }
-        //     // prevent trigger from stealing focus from the active item after opening.
-        //     event.preventDefault()
-        //   }
-        // })}
-        // onKeyDown={composeEventHandlers(triggerProps.onKeyDown, (event) => {
-        //   const isTypingAhead = searchRef.current !== ''
-        //   const isModifierKey = event.ctrlKey || event.altKey || event.metaKey
-        //   if (!isModifierKey && event.key.length === 1) handleTypeaheadSearch(event.key)
-        //   if (isTypingAhead && event.key === ' ') return
-        //   if (OPEN_KEYS.includes(event.key)) {
-        //     handleOpen()
-        //     event.preventDefault()
-        //   }
-        // })}
       />
     )
   }
@@ -233,14 +213,6 @@ const SelectValue = SelectValueFrame.extractable(
         onValueNodeHasChildrenChange(hasChildren)
       }, [onValueNodeHasChildrenChange, hasChildren])
 
-      console.log(
-        'go',
-        context.value,
-        placeholder,
-        children,
-        context.value === undefined && placeholder !== undefined ? placeholder : children
-      )
-
       return (
         <SelectValueFrame
           ref={composedRefs}
@@ -255,7 +227,7 @@ const SelectValue = SelectValueFrame.extractable(
   )
 )
 
-// SelectValue.displayName = VALUE_NAME
+SelectValue.displayName = VALUE_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectIcon
@@ -265,7 +237,7 @@ export const SelectIcon = styled(XStack, {
   name: 'SelectIcon',
   // @ts-ignore
   'aria-hidden': true,
-  children: '▼',
+  children: <Paragraph>▼</Paragraph>,
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -410,13 +382,21 @@ const [SelectItemContextProvider, useSelectItemContext] =
 type SelectItemElement = TamaguiElement
 interface SelectItemProps extends YStackProps {
   value: string
+  index: number
   disabled?: boolean
   textValue?: string
 }
 
 const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
-    const { __scopeSelect, value, disabled = false, textValue: textValueProp, ...itemProps } = props
+    const {
+      __scopeSelect,
+      value,
+      disabled = false,
+      textValue: textValueProp,
+      index,
+      ...itemProps
+    } = props
     const context = useSelectContext(ITEM_NAME, __scopeSelect)
     // const contentContext = useSelectContentContext(ITEM_NAME, __scopeSelect)
     const isSelected = context.value === value
@@ -428,10 +408,46 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
     )
     const textId = useId()
 
-    const handleSelect = () => {
-      if (!disabled) {
-        // context.onValueChange(value)
-        // context.onOpenChange(false)
+    const {
+      selectedIndex,
+      setSelectedIndex,
+      listRef,
+      open,
+      setOpen,
+      onChange,
+      activeIndex,
+      setActiveIndex,
+      dataRef,
+    } = context
+
+    const timeoutRef = React.useRef<any>()
+    const [allowMouseUp, setAllowMouseUp] = React.useState(false)
+
+    function handleSelect() {
+      setSelectedIndex(index)
+      onChange(value)
+      setOpen(false)
+    }
+
+    React.useEffect(() => {
+      clearTimeout(timeoutRef.current)
+      if (open) {
+        if (selectedIndex !== index) {
+          setAllowMouseUp(true)
+        } else {
+          timeoutRef.current = setTimeout(() => {
+            setAllowMouseUp(true)
+          }, 300)
+        }
+      } else {
+        setAllowMouseUp(false)
+      }
+    }, [open, index, setActiveIndex, selectedIndex])
+
+    function handleKeyDown(event: React.KeyboardEvent) {
+      if (event.key === 'Enter' || (event.key === ' ' && !dataRef.current.typing)) {
+        event.preventDefault()
+        handleSelect()
       }
     }
 
@@ -452,6 +468,7 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
           textValue={textValue}
         > */}
         <YStack
+          tag="li"
           // @ts-ignore
           role="option"
           aria-labelledby={textId}
@@ -462,6 +479,11 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
           data-disabled={disabled ? '' : undefined}
           tabIndex={disabled ? undefined : -1}
           {...itemProps}
+          {...context.interactions.getItemProps({
+            onClick: allowMouseUp ? handleSelect : undefined,
+            onMouseUp: allowMouseUp ? handleSelect : undefined,
+            onKeyDown: handleKeyDown,
+          })}
           ref={composedRefs}
           // onFocus={composeEventHandlers(itemProps.onFocus, () => setIsFocused(true))}
           // onBlur={composeEventHandlers(itemProps.onBlur, () => setIsFocused(false))}
@@ -513,7 +535,6 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
     // We ignore `className` and `style` as this part shouldn't be styled.
     const { __scopeSelect, className, style, ...itemTextProps } = props
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
-    // const contentContext = useSelectContentContext(ITEM_TEXT_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const ref = React.useRef<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(
@@ -1238,7 +1259,7 @@ export const Select = withStaticProperties(
     // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
     // const triggerPointerDownPosRef = React.useRef<{ x: number; y: number } | null>(null)
 
-    const [valueNode, setValueNode] = React.useState<TamaguiElement | null>(null)
+    const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
     const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
 
     return (
@@ -1296,7 +1317,7 @@ export const Select = withStaticProperties(
         controlledScrolling
         dataRef={null as any}
         listRef={listItemsRef}
-        onChange={null as any}
+        onChange={setValue}
         selectedIndex={0}
         setActiveIndex={() => {}}
         setElement={() => {}}

@@ -41,7 +41,7 @@ export const Sandbox = () => {
         <YStack space ai="center">
           <Select defaultValue="blueberry">
             <Select.Trigger>
-              <Select.Value />
+              <Select.Value placeholder="Something" />
               <Select.Icon></Select.Icon>
             </Select.Trigger>
 

@@ -85,6 +85,7 @@ interface SelectLabelProps extends YStackProps {
 }
 interface SelectItemProps extends YStackProps {
     value: string;
+    index: number;
     disabled?: boolean;
     textValue?: string;
 }
