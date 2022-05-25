@@ -51,7 +51,7 @@ export const LabelFrame = styled(SizableText, {
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {
-  htmlFor: string
+  htmlFor?: string
 }
 
 const LabelComponent = React.forwardRef<typeof LabelFrame, LabelProps>((props, forwardedRef) => {
