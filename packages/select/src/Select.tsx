@@ -56,6 +56,16 @@ import { View } from 'react-native'
 
 type TamaguiElement = HTMLElement | View
 
+// Cross browser fixes for pinch-zooming/backdrop-filter 🙄
+const isFirefox =
+  typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox')
+if (isFirefox) {
+  document.body.classList.add('firefox')
+}
+function getVisualOffsetTop() {
+  return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SelectContext
  * -----------------------------------------------------------------------------------------------*/
@@ -78,8 +88,11 @@ interface SelectContextValue {
   setOpen: (open: boolean) => void
   onChange: (value: string) => void
   dataRef: React.MutableRefObject<ContextData>
-  getItemProps: (userProps?: React.HTMLProps<HTMLElement>) => any
   controlledScrolling: boolean
+  valueNode: TamaguiElement | null
+  onValueNodeChange(node: TamaguiElement): void
+  valueNodeHasChildren: boolean
+  onValueNodeHasChildrenChange(hasChildren: boolean): void
   canScrollUp: boolean
   canScrollDown: boolean
   floatingContext: FloatingContext<ReferenceType>
@@ -158,6 +171,7 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
         data-disabled={disabled ? '' : undefined}
         {...triggerProps}
         ref={forwardedRef}
+        {...context.interactions.getReferenceProps()}
         // onPointerDown={composeEventHandlers(triggerProps.onPointerDown, (event) => {
         //   // prevent implicit pointer capture
         //   // https://www.w3.org/TR/pointerevents3/#implicit-pointer-capture
@@ -198,32 +212,47 @@ SelectTrigger.displayName = TRIGGER_NAME
 
 const VALUE_NAME = 'SelectValue'
 
-type SelectValueElement = GenericElement
-type SelectValueProps = YStackProps
+const SelectValueFrame = styled(XStack, {
+  name: VALUE_NAME,
+})
 
-const SelectValue = React.forwardRef<SelectValueElement, SelectValueProps>(
-  (props: ScopedProps<SelectValueProps>, forwardedRef) => {
-    // We ignore `className` and `style` as this part shouldn't be styled.
-    const { __scopeSelect, className, style, ...valueProps } = props
-    // const context = useSelectContext(VALUE_NAME, __scopeSelect)
-    // const { onValueNodeHasChildrenChange } = context
-    // const hasChildren = props.children !== undefined
-    // const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
+type SelectValueProps = GetProps<typeof SelectValueFrame> & {
+  placeholder?: React.ReactNode
+}
 
-    // React.useEffect(() => {
-    //   onValueNodeHasChildrenChange(hasChildren)
-    // }, [onValueNodeHasChildrenChange, hasChildren])
+const SelectValue = SelectValueFrame.extractable(
+  React.forwardRef<TamaguiElement, SelectValueProps>(
+    ({ __scopeSelect, children, placeholder }: ScopedProps<SelectValueProps>, forwardedRef) => {
+      // We ignore `className` and `style` as this part shouldn't be styled.
+      const context = useSelectContext(VALUE_NAME, __scopeSelect)
+      const { onValueNodeHasChildrenChange } = context
+      const hasChildren = children !== undefined
+      const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
 
-    return (
-      <XStack
-        {...valueProps}
-        // ref={composedRefs}
-        // we don't want events from the portalled `SelectValue` children to bubble
-        // through the item they came from
-        pointerEvents="none"
-      />
-    )
-  }
+      React.useLayoutEffect(() => {
+        onValueNodeHasChildrenChange(hasChildren)
+      }, [onValueNodeHasChildrenChange, hasChildren])
+
+      console.log(
+        'go',
+        context.value,
+        placeholder,
+        children,
+        context.value === undefined && placeholder !== undefined ? placeholder : children
+      )
+
+      return (
+        <SelectValueFrame
+          ref={composedRefs}
+          // we don't want events from the portalled `SelectValue` children to bubble
+          // through the item they came from
+          pointerEvents="none"
+        >
+          {context.value === undefined && placeholder !== undefined ? placeholder : children}
+        </SelectValueFrame>
+      )
+    }
+  )
 )
 
 // SelectValue.displayName = VALUE_NAME
@@ -499,9 +528,9 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
         <SelectItemTextFrame id={itemContext.textId} {...itemTextProps} ref={composedRefs} />
 
         {/* Portal the select item text into the trigger value node */}
-        {/* {itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren
+        {itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren
           ? ReactDOM.createPortal(itemTextProps.children, context.valueNode)
-          : null} */}
+          : null}
 
         {/* Portal an option in the bubble select */}
         {/* {context.bubbleSelect
@@ -729,9 +758,6 @@ export const Select = withStaticProperties(
     } = props
 
     // const [trigger, setTrigger] = React.useState<SelectTriggerElement | null>(null)
-    // const [valueNode, setValueNode] = React.useState<SelectValueElement | null>(null)
-    // const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
-    // const direction = useDirection(dir)
 
     const [open, setOpen] = useControllableState({
       prop: openProp,
@@ -744,6 +770,8 @@ export const Select = withStaticProperties(
       defaultProp: defaultValue || '',
       onChange: onValueChange,
     })
+
+    console.log('value', value)
 
     const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
     const selectedIndexRef = React.useRef<number | null>(null)
@@ -1210,13 +1238,35 @@ export const Select = withStaticProperties(
     // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
     // const triggerPointerDownPosRef = React.useRef<{ x: number; y: number } | null>(null)
 
+    const [valueNode, setValueNode] = React.useState<TamaguiElement | null>(null)
+    const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
+
     return (
       <SelectProvider
         scope={__scopeSelect}
+        valueNode={valueNode}
+        onValueNodeChange={setValueNode}
+        valueNodeHasChildren={valueNodeHasChildren}
+        onValueNodeHasChildrenChange={setValueNodeHasChildren}
         interactions={{
           ...interactions,
+          getReferenceProps() {
+            return interactions.getReferenceProps({
+              ref: reference,
+              className: 'SelectTrigger',
+              onKeyDown(event) {
+                if (
+                  event.key === 'Enter' ||
+                  (event.key === ' ' && !context.dataRef.current.typing)
+                ) {
+                  event.preventDefault()
+                  setOpen(true)
+                }
+              },
+            })
+          },
           getFloatingProps() {
-            return {
+            return interactions.getFloatingProps({
               ref: floating,
               className: 'Select',
               style: {
@@ -1236,7 +1286,7 @@ export const Select = withStaticProperties(
               onScroll(event) {
                 setScrollTop(event.currentTarget.scrollTop)
               },
-            }
+            })
           },
         }}
         floatingContext={context}
@@ -1245,7 +1295,6 @@ export const Select = withStaticProperties(
         canScrollUp
         controlledScrolling
         dataRef={null as any}
-        getItemProps={null as any}
         listRef={listItemsRef}
         onChange={null as any}
         selectedIndex={0}
@@ -1253,7 +1302,7 @@ export const Select = withStaticProperties(
         setElement={() => {}}
         setOpen={() => {}}
         setSelectedIndex={() => {}}
-        value=""
+        value={value}
         // trigger={trigger}
         // onTriggerChange={setTrigger}
         // valueNode={valueNode}
@@ -1305,96 +1354,3 @@ export const Select = withStaticProperties(
 
 // @ts-ignore
 Select.displayName = SELECT_NAME
-
-/* -----------------------------------------------------------------------------------------------*/
-
-const BubbleSelect = React.forwardRef<HTMLSelectElement, React.ComponentPropsWithoutRef<'select'>>(
-  (props, forwardedRef) => {
-    const { value, ...selectProps } = props
-    const ref = React.useRef<HTMLSelectElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-    const prevValue = usePrevious(value)
-
-    // Bubble value change to parents (e.g form change event)
-    React.useEffect(() => {
-      const select = ref.current!
-      const selectProto = window.HTMLSelectElement.prototype
-      const descriptor = Object.getOwnPropertyDescriptor(selectProto, 'value') as PropertyDescriptor
-      const setValue = descriptor.set
-      if (prevValue !== value && setValue) {
-        const event = new Event('change', { bubbles: true })
-        setValue.call(select, value)
-        select.dispatchEvent(event)
-      }
-    }, [prevValue, value])
-
-    /**
-     * We purposefully use a `select` here to support form autofill as much
-     * as possible.
-     *
-     * We purposefully do not add the `value` attribute here to allow the value
-     * to be set programatically and bubble to any parent form `onChange` event.
-     * Adding the `value` will cause React to consider the programatic
-     * dispatch a duplicate and it will get swallowed.
-     *
-     * We use `VisuallyHidden` rather than `display: "none"` because Safari autofill
-     * won't work otherwise.
-     */
-    // TODO
-    return null
-    // return (
-    //   <VisuallyHidden asChild>
-    //     <select {...selectProps} ref={composedRefs} defaultValue={value} />
-    //   </VisuallyHidden>
-    // )
-  }
-)
-
-// Cross browser fixes for pinch-zooming/backdrop-filter 🙄
-const isFirefox =
-  typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox')
-if (isFirefox) {
-  document.body.classList.add('firefox')
-}
-function getVisualOffsetTop() {
-  return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
-}
-
-/**
- *
- *  <Select
- *    items={[{ name: '', value: '', groupId: '123' }]}
- *    groups={{ 123: { name: '' } }}
- *    groupKey="groupId"
- *  >
- *    <Select.Trigger>
- *      <Select.Icon />
- *      <Select.Value />
- *    </Select.Trigger>
- *
- *    <Select.Content>
- *      <Select.ScrollUpButton />
- *      <Select.ScrollDownButton />
- *
- *      can optionally include group
- *      <Select.Group>
- *        {(group, index) => (
- *          <Select.GroupLabel>
- *            {group.name}
- *          </Select.GroupLabel>
- *        )}
- *      </Select.Group>
- *
- *      <Select.Item>
- *        {(item, index) => (
- *          <>
- *            <Select.ItemText>
- *              {item.text}
- *            </Select.ItemText>
- *            <Select.ItemIndicator />
- *          </>
- *        )}
- *      </Select.Item>
- *    </Select.Content>
- *  </Select>
- */

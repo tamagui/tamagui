@@ -54,6 +54,12 @@ export const Sandbox = () => {
                   <Select.Item value="apple">
                     <Select.ItemText>Apple</Select.ItemText>
                   </Select.Item>
+                  <Select.Item value="banana">
+                    <Select.ItemText>Banana</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="blueberry">
+                    <Select.ItemText>Blueberry</Select.ItemText>
+                  </Select.Item>
                 </Select.Group>
               </Select.Viewport>
 
