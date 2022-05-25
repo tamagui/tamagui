@@ -19,7 +19,14 @@ import {
 import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { composeEventHandlers, useIsomorphicLayoutEffect } from '@tamagui/core'
+import {
+  GetProps,
+  Text,
+  composeEventHandlers,
+  styled,
+  useIsomorphicLayoutEffect,
+  withStaticProperties,
+} from '@tamagui/core'
 // import { useDirection } from '@tamagui/react-direction'
 // import { DismissableLayer } from '@tamagui/react-dismissable-layer'
 // import { FocusScope } from '@tamagui/react-focus-scope'
@@ -31,6 +38,7 @@ import { clamp } from '@tamagui/helpers'
 import { Portal } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
 import { XStack, YStack, YStackProps } from '@tamagui/stacks'
+import { Paragraph } from '@tamagui/text'
 // import { Primitive } from '@tamagui/react-primitive'
 // import type * as Radix from '@tamagui/react-primitive'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -46,39 +54,6 @@ import { View } from 'react-native'
 
 type TamaguiElement = HTMLElement | View
 
-/**
- *  <Select
-      items={[{ name: '', value: '', groupId: '123' }]}
-      groups={{ 123: { name: '' } }}
-      groupKey="groupId"
-      renderItem={({ text }) => (
-        <>
-          <Text>
-             {text}
-          </Text>
-          <Select.ItemIndicator />
-        </>
-      )}
-      renderGroup={({ name }) => (
-        <Select.Group>
-          <Select.GroupLabel>
-            {name}
-          </Select.GroupLabel>
-        </Select.Group>
-      )}
-    >
-      <Select.Trigger>
-        <Select.Icon />
-        <Select.Value />
-      </Select.Trigger>
-      
-      <Select.Content>
-        <Select.ScrollUpButton />
-        <Select.ScrollDownButton />
-      </Select.Content>
-    </Select>
- */
-
 /* -------------------------------------------------------------------------------------------------
  * SelectContext
  * -----------------------------------------------------------------------------------------------*/
@@ -91,7 +66,7 @@ const MIN_HEIGHT = 80
 const FALLBACK_THRESHOLD = 16
 
 interface SelectContextValue {
-  use: UseSelect
+  value: any
   selectedIndex: number
   setSelectedIndex: (index: number) => void
   activeIndex: number | null
@@ -129,65 +104,8 @@ type ScopedProps<P> = P & { __scopeSelect?: Scope }
 const [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME)
 const [SelectProvider, useSelectContext] = createSelectContext<SelectContextValue>(SELECT_NAME)
 
-/* -------------------------------------------------------------------------------------------------
- * useSelect
- * -----------------------------------------------------------------------------------------------*/
-
-type SelectItemI = {
-  name: string
-  value: any
-}
-
-type SelectGroupI = {
-  [key: string]: {
-    name: string
-  }
-}
-
-export type UseSelectProps<Item extends SelectItemI, Group extends SelectGroupI> = {
-  items: Item[]
-  groups: {
-    [Key in keyof Group]: Group[Key]
-  }
-}
-
-const pathProxy = (base: string[]) => {
-  return new Proxy(
-    {},
-    {
-      get(_, key: string) {
-        return pathProxy([...base, key])
-      },
-    }
-  )
-}
-
-const GET_SELECT_INFO = Symbol('GET_SELECT_INFO')
-
-type UseSelect = {
-  item: SelectItemI
-  group: SelectGroupI[keyof SelectGroupI]
-}
-
-export const useSelect = <Item extends SelectItemI, Group extends SelectGroupI>(
-  props: UseSelectProps<Item, Group>,
-  mountArgs: any[]
-) => {
-  return React.useMemo(() => {
-    const selectProxy = {} as UseSelect
-    return new Proxy(selectProxy, {
-      get(_, key) {
-        if (key === 'item' || key === 'group') {
-          return pathProxy([key])
-        }
-        if (key === GET_SELECT_INFO) {
-          return props
-        }
-        throw new Error(`Must only access "item" or "group" on select.`)
-      },
-    })
-  }, mountArgs)
-}
+// const [SelectContentContextProvider, useSelectContentContext] =
+//   createSelectContext<SelectContentContextValue>(CONTENT_NAME);
 
 type GenericElement = HTMLElement | View
 
@@ -306,23 +224,12 @@ const SelectValue = React.forwardRef<SelectValueElement, SelectValueProps>(
  * SelectIcon
  * -----------------------------------------------------------------------------------------------*/
 
-const ICON_NAME = 'SelectIcon'
-
-type SelectIconProps = YStackProps
-type SelectIconElement = GenericElement
-
-const SelectIcon = React.forwardRef<SelectIconElement, SelectIconProps>(
-  (props: ScopedProps<SelectIconProps>, forwardedRef) => {
-    const { __scopeSelect, children, ...iconProps } = props
-    return (
-      <XStack aria-hidden {...iconProps} ref={forwardedRef}>
-        {children || '▼'}
-      </XStack>
-    )
-  }
-)
-
-SelectIcon.displayName = ICON_NAME
+export const SelectIcon = styled(XStack, {
+  name: 'SelectIcon',
+  // @ts-ignore
+  'aria-hidden': true,
+  children: '▼',
+})
 
 /* -------------------------------------------------------------------------------------------------
  * SelectContent
@@ -351,16 +258,19 @@ type SelectGroupContextValue = { id: string }
 const [SelectGroupContextProvider, useSelectGroupContext] =
   createSelectContext<SelectGroupContextValue>(GROUP_NAME)
 
-type SelectGroupElement = TamaguiElement
-interface SelectGroupProps extends YStackProps {}
+const SelectGroupFrame = styled(YStack, {
+  name: GROUP_NAME,
+})
 
-const SelectGroup = React.forwardRef<SelectGroupElement, SelectGroupProps>(
+type SelectGroupProps = GetProps<typeof SelectGroupFrame>
+
+const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
   (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
     const { __scopeSelect, ...groupProps } = props
     const groupId = useId()
     return (
       <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
-        <YStack
+        <SelectGroupFrame
           // @ts-ignore
           role="group"
           aria-labelledby={groupId}
@@ -403,7 +313,7 @@ type SelectItemContextValue = {
   value: string
   textId: string
   isSelected: boolean
-  onItemTextChange(node: SelectItemTextElement | null): void
+  onItemTextChange(node: TamaguiElement | null): void
 }
 
 const [SelectItemContextProvider, useSelectItemContext] =
@@ -425,15 +335,15 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
     const [textValue, setTextValue] = React.useState(textValueProp ?? '')
     const [isFocused, setIsFocused] = React.useState(false)
     const composedRefs = useComposedRefs(
-      forwardedRef,
-      isSelected ? context.onSelectedItemChange : undefined
+      forwardedRef
+      // isSelected ? context.onSelectedItemChange : undefined
     )
     const textId = useId()
 
     const handleSelect = () => {
       if (!disabled) {
-        context.onValueChange(value)
-        context.onOpenChange(false)
+        // context.onValueChange(value)
+        // context.onOpenChange(false)
       }
     }
 
@@ -441,55 +351,56 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
       <SelectItemContextProvider
         scope={__scopeSelect}
         value={value}
-        textId={textId}
+        textId={textId || ''}
         isSelected={isSelected}
         onItemTextChange={React.useCallback((node) => {
-          setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
+          // setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
         }, [])}
       >
-        <Collection.ItemSlot
+        {/* <Collection.ItemSlot
           scope={__scopeSelect}
           value={value}
           disabled={disabled}
           textValue={textValue}
-        >
-          <YStack
-            role="option"
-            aria-labelledby={textId}
-            // `isFocused` caveat fixes stuttering in VoiceOver
-            aria-selected={isSelected && isFocused}
-            data-state={isSelected ? 'active' : 'inactive'}
-            aria-disabled={disabled || undefined}
-            data-disabled={disabled ? '' : undefined}
-            tabIndex={disabled ? undefined : -1}
-            {...itemProps}
-            ref={composedRefs}
-            onFocus={composeEventHandlers(itemProps.onFocus, () => setIsFocused(true))}
-            onBlur={composeEventHandlers(itemProps.onBlur, () => setIsFocused(false))}
-            onPointerUp={composeEventHandlers(itemProps.onPointerUp, handleSelect)}
-            onPointerMove={composeEventHandlers(itemProps.onPointerMove, (event) => {
-              if (disabled) {
-                contentContext.onItemLeave()
-              } else {
-                // even though safari doesn't support this option, it's acceptable
-                // as it only means it might scroll a few pixels when using the pointer.
-                event.currentTarget.focus({ preventScroll: true })
-              }
-            })}
-            onPointerLeave={composeEventHandlers(itemProps.onPointerLeave, (event) => {
-              if (event.currentTarget === document.activeElement) {
-                contentContext.onItemLeave()
-              }
-            })}
-            onKeyDown={composeEventHandlers(itemProps.onKeyDown, (event) => {
-              const isTypingAhead = contentContext.searchRef.current !== ''
-              if (isTypingAhead && event.key === ' ') return
-              if (SELECTION_KEYS.includes(event.key)) handleSelect()
-              // prevent page scroll if using the space key to select an item
-              if (event.key === ' ') event.preventDefault()
-            })}
-          />
-        </Collection.ItemSlot>
+        > */}
+        <YStack
+          // @ts-ignore
+          role="option"
+          aria-labelledby={textId}
+          // `isFocused` caveat fixes stuttering in VoiceOver
+          aria-selected={isSelected && isFocused}
+          data-state={isSelected ? 'active' : 'inactive'}
+          aria-disabled={disabled || undefined}
+          data-disabled={disabled ? '' : undefined}
+          tabIndex={disabled ? undefined : -1}
+          {...itemProps}
+          ref={composedRefs}
+          // onFocus={composeEventHandlers(itemProps.onFocus, () => setIsFocused(true))}
+          // onBlur={composeEventHandlers(itemProps.onBlur, () => setIsFocused(false))}
+          // onPointerUp={composeEventHandlers(itemProps.onPointerUp, handleSelect)}
+          // onPointerMove={composeEventHandlers(itemProps.onPointerMove, (event) => {
+          //   if (disabled) {
+          //     contentContext.onItemLeave()
+          //   } else {
+          //     // even though safari doesn't support this option, it's acceptable
+          //     // as it only means it might scroll a few pixels when using the pointer.
+          //     event.currentTarget.focus({ preventScroll: true })
+          //   }
+          // })}
+          // onPointerLeave={composeEventHandlers(itemProps.onPointerLeave, (event) => {
+          //   if (event.currentTarget === document.activeElement) {
+          //     contentContext.onItemLeave()
+          //   }
+          // })}
+          // onKeyDown={composeEventHandlers(itemProps.onKeyDown, (event) => {
+          //   const isTypingAhead = contentContext.searchRef.current !== ''
+          //   if (isTypingAhead && event.key === ' ') return
+          //   if (SELECTION_KEYS.includes(event.key)) handleSelect()
+          //   // prevent page scroll if using the space key to select an item
+          //   if (event.key === ' ') event.preventDefault()
+          // })}
+        />
+        {/* </Collection.ItemSlot> */}
       </SelectItemContextProvider>
     )
   }
@@ -503,41 +414,44 @@ SelectItem.displayName = ITEM_NAME
 
 const ITEM_TEXT_NAME = 'SelectItemText'
 
-type SelectItemTextElement = React.ElementRef<typeof Primitive.span>
-interface SelectItemTextProps extends YStackProps {}
+const SelectItemTextFrame = styled(Paragraph, {
+  name: ITEM_TEXT_NAME,
+})
 
-const SelectItemText = React.forwardRef<SelectItemTextElement, SelectItemTextProps>(
+type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
+
+const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
   (props: ScopedProps<SelectItemTextProps>, forwardedRef) => {
     // We ignore `className` and `style` as this part shouldn't be styled.
     const { __scopeSelect, className, style, ...itemTextProps } = props
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
-    const contentContext = useSelectContentContext(ITEM_TEXT_NAME, __scopeSelect)
+    // const contentContext = useSelectContentContext(ITEM_TEXT_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
-    const ref = React.useRef<SelectItemTextElement | null>(null)
+    const ref = React.useRef<TamaguiElement | null>(null)
     const composedRefs = useComposedRefs(
       forwardedRef,
       ref,
-      itemContext.onItemTextChange,
-      itemContext.isSelected ? contentContext.onSelectedItemTextChange : undefined
+      itemContext.onItemTextChange
+      // itemContext.isSelected ? contentContext.onSelectedItemTextChange : undefined
     )
 
     return (
       <>
-        <Primitive.span id={itemContext.textId} {...itemTextProps} ref={composedRefs} />
+        <SelectItemTextFrame id={itemContext.textId} {...itemTextProps} ref={composedRefs} />
 
         {/* Portal the select item text into the trigger value node */}
-        {itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren
+        {/* {itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren
           ? ReactDOM.createPortal(itemTextProps.children, context.valueNode)
-          : null}
+          : null} */}
 
         {/* Portal an option in the bubble select */}
-        {context.bubbleSelect
+        {/* {context.bubbleSelect
           ? ReactDOM.createPortal(
               // we use `.textContent` because `option` only support `string` or `number`
               <option value={itemContext.value}>{ref.current?.textContent}</option>,
               context.bubbleSelect
             )
-          : null}
+          : null} */}
       </>
     )
   }
@@ -551,15 +465,18 @@ SelectItemText.displayName = ITEM_TEXT_NAME
 
 const ITEM_INDICATOR_NAME = 'SelectItemIndicator'
 
-type SelectItemIndicatorElement = React.ElementRef<typeof Primitive.span>
-interface SelectItemIndicatorProps extends YStackProps {}
+const SelectItemIndicatorFrame = styled(XStack, {
+  name: ITEM_TEXT_NAME,
+})
 
-const SelectItemIndicator = React.forwardRef<SelectItemIndicatorElement, SelectItemIndicatorProps>(
+type SelectItemIndicatorProps = GetProps<typeof SelectItemIndicatorFrame>
+
+const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicatorProps>(
   (props: ScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
     const { __scopeSelect, ...itemIndicatorProps } = props
     const itemContext = useSelectItemContext(ITEM_INDICATOR_NAME, __scopeSelect)
     return itemContext.isSelected ? (
-      <Primitive.span aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
+      <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
     ) : null
   }
 )
@@ -579,9 +496,12 @@ const SelectScrollUpButton = React.forwardRef<
   SelectScrollUpButtonElement,
   SelectScrollUpButtonProps
 >((props: ScopedProps<SelectScrollUpButtonProps>, forwardedRef) => {
-  const contentContext = useSelectContentContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect)
+  // const contentContext = useSelectContentContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect)
   const [canScrollUp, setCanScrollUp] = React.useState(false)
-  const composedRefs = useComposedRefs(forwardedRef, contentContext.onScrollButtonChange)
+  const composedRefs = useComposedRefs(
+    forwardedRef
+    // contentContext.onScrollButtonChange
+  )
 
   // useLayoutEffect(() => {
   //   if (contentContext.viewport && contentContext.isPositioned) {
@@ -601,10 +521,10 @@ const SelectScrollUpButton = React.forwardRef<
       {...props}
       ref={composedRefs}
       onAutoScroll={() => {
-        const { viewport, selectedItem } = contentContext
-        if (viewport && selectedItem) {
-          viewport.scrollTop = viewport.scrollTop - selectedItem.offsetHeight
-        }
+        // const { viewport, selectedItem } = contentContext
+        // if (viewport && selectedItem) {
+        //   viewport.scrollTop = viewport.scrollTop - selectedItem.offsetHeight
+        // }
       }}
     />
   ) : null
@@ -625,9 +545,12 @@ const SelectScrollDownButton = React.forwardRef<
   SelectScrollDownButtonElement,
   SelectScrollDownButtonProps
 >((props: ScopedProps<SelectScrollDownButtonProps>, forwardedRef) => {
-  const contentContext = useSelectContentContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect)
+  // const contentContext = useSelectContentContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect)
   const [canScrollDown, setCanScrollDown] = React.useState(false)
-  const composedRefs = useComposedRefs(forwardedRef, contentContext.onScrollButtonChange)
+  const composedRefs = useComposedRefs(
+    forwardedRef
+    // contentContext.onScrollButtonChange
+  )
 
   // useLayoutEffect(() => {
   //   if (contentContext.viewport && contentContext.isPositioned) {
@@ -650,10 +573,10 @@ const SelectScrollDownButton = React.forwardRef<
       {...props}
       ref={composedRefs}
       onAutoScroll={() => {
-        const { viewport, selectedItem } = contentContext
-        if (viewport && selectedItem) {
-          viewport.scrollTop = viewport.scrollTop + selectedItem.offsetHeight
-        }
+        // const { viewport, selectedItem } = contentContext
+        // if (viewport && selectedItem) {
+        //   viewport.scrollTop = viewport.scrollTop + selectedItem.offsetHeight
+        // }
       }}
     />
   ) : null
@@ -671,16 +594,20 @@ const SelectScrollButtonImpl = React.forwardRef<
   SelectScrollButtonImplProps
 >((props: ScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
   const { __scopeSelect, onAutoScroll, ...scrollIndicatorProps } = props
-  const contentContext = useSelectContentContext('SelectScrollButton', __scopeSelect)
+  // const contentContext = useSelectContentContext('SelectScrollButton', __scopeSelect)
   const autoScrollTimerRef = React.useRef<number | null>(null)
 
   const intervalRef = React.useRef<any>()
   const loopingRef = React.useRef(false)
 
+  const dir = 'up' //TODO
   const { x, y, reference, floating, strategy, update, refs } = useFloating({
     strategy: 'fixed',
     placement: dir === 'up' ? 'top' : 'bottom',
-    middleware: [offset(({ floating }) => -floating.height)],
+    middleware: [
+      // @ts-ignore
+      offset(({ floating }) => -floating.height),
+    ],
   })
 
   return (
@@ -688,16 +615,16 @@ const SelectScrollButtonImpl = React.forwardRef<
       aria-hidden
       {...scrollIndicatorProps}
       ref={forwardedRef}
-      style={{ flexShrink: 0, ...scrollIndicatorProps.style }}
-      onPointerMove={composeEventHandlers(scrollIndicatorProps.onPointerMove, () => {
-        contentContext.onItemLeave()
-        if (autoScrollTimerRef.current === null) {
-          autoScrollTimerRef.current = window.setInterval(onAutoScroll, 50)
-        }
-      })}
-      onPointerLeave={composeEventHandlers(scrollIndicatorProps.onPointerLeave, () => {
-        clearAutoScrollTimer()
-      })}
+      // style={{ flexShrink: 0, ...scrollIndicatorProps.style }}
+      // onPointerMove={composeEventHandlers(scrollIndicatorProps.onPointerMove, () => {
+      //   contentContext.onItemLeave()
+      //   if (autoScrollTimerRef.current === null) {
+      //     autoScrollTimerRef.current = window.setInterval(onAutoScroll, 50)
+      //   }
+      // })}
+      // onPointerLeave={composeEventHandlers(scrollIndicatorProps.onPointerLeave, () => {
+      //   clearAutoScrollTimer()
+      // })}
     />
   )
 })
@@ -706,27 +633,15 @@ const SelectScrollButtonImpl = React.forwardRef<
  * SelectSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-const SEPARATOR_NAME = 'SelectSeparator'
-
-type SelectSeparatorElement = TamaguiElement
-interface SelectSeparatorProps extends YStackProps {}
-
-const SelectSeparator = Separator
-// React.forwardRef<SelectSeparatorElement, SelectSeparatorProps>(
-//   (props: ScopedProps<SelectSeparatorProps>, forwardedRef) => {
-//     const { __scopeSelect, ...separatorProps } = props
-//     return <YStack aria-hidden {...separatorProps} ref={forwardedRef} />
-//   }
-// )
-
-SelectSeparator.displayName = SEPARATOR_NAME
+export const SelectSeparator = styled(Separator, {
+  name: 'SelectSeparator',
+})
 
 /* -------------------------------------------------------------------------------------------------
  * Select
  * -----------------------------------------------------------------------------------------------*/
 
 export interface SelectProps {
-  use: UseSelect
   children?: React.ReactNode
   value?: string
   defaultValue?: string
@@ -739,523 +654,537 @@ export interface SelectProps {
   autoComplete?: string
 }
 
-export const Select: React.FC<SelectProps> = (props: ScopedProps<SelectProps>) => {
-  const {
-    __scopeSelect,
-    children,
-    open: openProp,
-    defaultOpen,
-    onOpenChange,
-    value: valueProp,
-    defaultValue,
-    onValueChange,
-    use,
-    dir,
-    name,
-    autoComplete,
-  } = props
-  // const [trigger, setTrigger] = React.useState<SelectTriggerElement | null>(null)
-  // const [valueNode, setValueNode] = React.useState<SelectValueElement | null>(null)
-  // const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
-  // const direction = useDirection(dir)
-  const [open, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpen || false,
-    onChange: onOpenChange,
-  })
-  const [value, setValue] = useControllableState({
-    prop: valueProp,
-    defaultProp: defaultValue || '',
-    onChange: onValueChange,
-  })
-
-  const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
-  const selectedIndexRef = React.useRef<number | null>(null)
-  const activeIndexRef = React.useRef<number | null>(null)
-  const prevActiveIndex = usePrevious<number | null>(activeIndex)
-
-  const [showArrows, setShowArrows] = React.useState(false)
-  const [scrollTop, setScrollTop] = React.useState(0)
-  const listItemsRef = React.useRef<Array<HTMLLIElement | null>>([])
-  const listContentRef = React.useRef([
-    'Select...',
-    ...(React.Children.map(children, (child) =>
-      React.Children.map(
-        React.isValidElement(child) && child.props.children,
-        (child) => child.props.value
-      )
-    ) ?? []),
-  ])
-
-  const [selectedIndex, setSelectedIndex] = React.useState(
-    Math.max(0, listContentRef.current.indexOf(value))
-  )
-  const [controlledScrolling, setControlledScrolling] = React.useState(false)
-  const [middlewareType, setMiddlewareType] = React.useState<'align' | 'fallback'>('align')
-
-  useIsomorphicLayoutEffect(() => {
-    selectedIndexRef.current = selectedIndex
-    activeIndexRef.current = activeIndex
-  })
-
-  // Wait for scroll position to settle before showing arrows to prevent
-  // interference with pointer events.
-  React.useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      setShowArrows(open)
-
-      if (!open) {
-        setScrollTop(0)
-        setMiddlewareType('align')
-        setActiveIndex(null)
-        setControlledScrolling(false)
-      }
+export const Select = withStaticProperties(
+  (props: ScopedProps<SelectProps>) => {
+    const {
+      __scopeSelect,
+      children,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      value: valueProp,
+      defaultValue,
+      onValueChange,
+      dir,
+      name,
+      autoComplete,
+    } = props
+    // const [trigger, setTrigger] = React.useState<SelectTriggerElement | null>(null)
+    // const [valueNode, setValueNode] = React.useState<SelectValueElement | null>(null)
+    // const [valueNodeHasChildren, setValueNodeHasChildren] = React.useState(false)
+    // const direction = useDirection(dir)
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen || false,
+      onChange: onOpenChange,
     })
-    return () => {
-      cancelAnimationFrame(frame)
+    const [value, setValue] = useControllableState({
+      prop: valueProp,
+      defaultProp: defaultValue || '',
+      onChange: onValueChange,
+    })
+
+    const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
+    const selectedIndexRef = React.useRef<number | null>(null)
+    const activeIndexRef = React.useRef<number | null>(null)
+    const prevActiveIndex = usePrevious<number | null>(activeIndex)
+
+    const [showArrows, setShowArrows] = React.useState(false)
+    const [scrollTop, setScrollTop] = React.useState(0)
+    const listItemsRef = React.useRef<Array<HTMLLIElement | null>>([])
+    const listContentRef = React.useRef([
+      'Select...',
+      ...(React.Children.map(children, (child) =>
+        React.Children.map(
+          React.isValidElement(child) && child.props.children,
+          (child) => child.props.value
+        )
+      ) ?? []),
+    ])
+
+    const [selectedIndex, setSelectedIndex] = React.useState(
+      Math.max(0, listContentRef.current.indexOf(value))
+    )
+    const [controlledScrolling, setControlledScrolling] = React.useState(false)
+    const [middlewareType, setMiddlewareType] = React.useState<'align' | 'fallback'>('align')
+
+    useIsomorphicLayoutEffect(() => {
+      selectedIndexRef.current = selectedIndex
+      activeIndexRef.current = activeIndex
+    })
+
+    // Wait for scroll position to settle before showing arrows to prevent
+    // interference with pointer events.
+    React.useEffect(() => {
+      const frame = requestAnimationFrame(() => {
+        setShowArrows(open)
+
+        if (!open) {
+          setScrollTop(0)
+          setMiddlewareType('align')
+          setActiveIndex(null)
+          setControlledScrolling(false)
+        }
+      })
+      return () => {
+        cancelAnimationFrame(frame)
+      }
+    }, [open])
+
+    function getFloatingPadding(floating: HTMLElement | null) {
+      if (!floating) {
+        return 0
+      }
+      return Number(getComputedStyle(floating).paddingLeft?.replace('px', ''))
     }
-  }, [open])
 
-  function getFloatingPadding(floating: HTMLElement | null) {
-    if (!floating) {
-      return 0
-    }
-    return Number(getComputedStyle(floating).paddingLeft?.replace('px', ''))
-  }
+    const { x, y, reference, floating, strategy, context, refs, middlewareData, update } =
+      useFloating({
+        open,
+        onOpenChange: setOpen,
+        placement: 'bottom',
+        middleware:
+          middlewareType === 'align'
+            ? [
+                offset(({ rects }) => {
+                  const index = activeIndexRef.current ?? selectedIndexRef.current
 
-  const { x, y, reference, floating, strategy, context, refs, middlewareData, update } =
-    useFloating({
-      open,
-      onOpenChange: setOpen,
-      placement: 'bottom',
-      middleware:
-        middlewareType === 'align'
-          ? [
-              offset(({ rects }) => {
-                const index = activeIndexRef.current ?? selectedIndexRef.current
+                  if (index == null) {
+                    return 0
+                  }
 
-                if (index == null) {
-                  return 0
-                }
+                  const item = listItemsRef.current[index]
 
-                const item = listItemsRef.current[index]
+                  if (item == null) {
+                    return 0
+                  }
 
-                if (item == null) {
-                  return 0
-                }
+                  const offsetTop = item.offsetTop
+                  const itemHeight = item.offsetHeight
+                  const height = rects.reference.height
 
-                const offsetTop = item.offsetTop
-                const itemHeight = item.offsetHeight
-                const height = rects.reference.height
+                  return -offsetTop - height - (itemHeight - height) / 2
+                }),
+                // Custom `size` that can handle the opposite direction of the
+                // placement
+                {
+                  name: 'size',
+                  async fn(args) {
+                    const {
+                      elements: { floating },
+                      rects: { reference },
+                      middlewareData,
+                    } = args
 
-                return -offsetTop - height - (itemHeight - height) / 2
-              }),
-              // Custom `size` that can handle the opposite direction of the
-              // placement
-              {
-                name: 'size',
-                async fn(args) {
-                  const {
-                    elements: { floating },
-                    rects: { reference },
-                    middlewareData,
-                  } = args
+                    const overflow = await detectOverflow(args, {
+                      padding: WINDOW_PADDING,
+                    })
 
-                  const overflow = await detectOverflow(args, {
-                    padding: WINDOW_PADDING,
-                  })
+                    const top = Math.max(0, overflow.top)
+                    const bottom = Math.max(0, overflow.bottom)
+                    const nextY = args.y + top
 
-                  const top = Math.max(0, overflow.top)
-                  const bottom = Math.max(0, overflow.bottom)
-                  const nextY = args.y + top
+                    if (middlewareData.size?.skip) {
+                      return {
+                        y: nextY,
+                        data: {
+                          y: middlewareData.size.y,
+                        },
+                      }
+                    }
 
-                  if (middlewareData.size?.skip) {
+                    Object.assign(floating.style, {
+                      maxHeight: `${floating.scrollHeight - Math.abs(top + bottom)}px`,
+                      minWidth: `${reference.width + getFloatingPadding(floating) * 2}px`,
+                    })
+
                     return {
                       y: nextY,
                       data: {
-                        y: middlewareData.size.y,
+                        y: top,
+                        skip: true,
+                      },
+                      reset: {
+                        rects: true,
                       },
                     }
-                  }
-
-                  Object.assign(floating.style, {
-                    maxHeight: `${floating.scrollHeight - Math.abs(top + bottom)}px`,
-                    minWidth: `${reference.width + getFloatingPadding(floating) * 2}px`,
-                  })
-
-                  return {
-                    y: nextY,
-                    data: {
-                      y: top,
-                      skip: true,
-                    },
-                    reset: {
-                      rects: true,
-                    },
-                  }
+                  },
                 },
-              },
-            ]
-          : [
-              offset(5),
-              flip(),
-              size({
-                apply({ rects, availableHeight, elements }) {
-                  Object.assign(elements.floating.style, {
-                    width: `${rects.reference.width}px`,
-                    maxHeight: `${availableHeight}px`,
-                  })
-                },
-                padding: WINDOW_PADDING,
-              }),
-            ],
-    })
+              ]
+            : [
+                offset(5),
+                flip(),
+                size({
+                  apply({ rects, availableHeight, elements }) {
+                    Object.assign(elements.floating.style, {
+                      width: `${rects.reference.width}px`,
+                      maxHeight: `${availableHeight}px`,
+                    })
+                  },
+                  padding: WINDOW_PADDING,
+                }),
+              ],
+      })
 
-  const floatingRef = refs.floating
-  const forceUpdate = React.useReducer(() => ({}), {})[1]
+    const floatingRef = refs.floating
+    const forceUpdate = React.useReducer(() => ({}), {})[1]
 
-  const showUpArrow = showArrows && scrollTop > SCROLL_ARROW_THRESHOLD
-  const showDownArrow =
-    showArrows &&
-    floatingRef.current &&
-    scrollTop <
-      floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
+    const showUpArrow = showArrows && scrollTop > SCROLL_ARROW_THRESHOLD
+    const showDownArrow =
+      showArrows &&
+      floatingRef.current &&
+      scrollTop <
+        floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
 
-  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
-    useClick(context, { pointerDown: true }),
-    useRole(context, { role: 'listbox' }),
-    useDismiss(context),
-    useListNavigation(context, {
-      listRef: listItemsRef,
-      activeIndex,
-      selectedIndex,
-      onNavigate: setActiveIndex,
-    }),
-    useTypeahead(context, {
-      listRef: listContentRef,
-      onMatch: open ? setActiveIndex : setSelectedIndex,
-      selectedIndex,
-      activeIndex,
-    }),
-  ])
+    const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
+      useClick(context, { pointerDown: true }),
+      useRole(context, { role: 'listbox' }),
+      useDismiss(context),
+      useListNavigation(context, {
+        listRef: listItemsRef,
+        activeIndex,
+        selectedIndex,
+        onNavigate: setActiveIndex,
+      }),
+      useTypeahead(context, {
+        listRef: listContentRef,
+        onMatch: open ? setActiveIndex : setSelectedIndex,
+        selectedIndex,
+        activeIndex,
+      }),
+    ])
 
-  const increaseHeight = React.useCallback(
-    (floating: HTMLElement, amount = 0) => {
-      if (middlewareType === 'fallback') {
-        return
-      }
-
-      const currentMaxHeight = Number(floating.style.maxHeight.replace('px', ''))
-      const currentTop = Number(floating.style.top.replace('px', ''))
-      const rect = floating.getBoundingClientRect()
-      const rectTop = rect.top
-      const rectBottom = rect.bottom
-      const visualMaxHeight = visualViewport.height - WINDOW_PADDING * 2
-
-      if (
-        amount < 0 &&
-        selectedIndexRef.current != null &&
-        Math.round(rectBottom) <
-          Math.round(visualViewport.height + getVisualOffsetTop() - WINDOW_PADDING)
-      ) {
-        floating.style.maxHeight = `${Math.min(visualMaxHeight, currentMaxHeight - amount)}px`
-      }
-
-      if (
-        amount > 0 &&
-        Math.round(rectTop) > Math.round(WINDOW_PADDING - getVisualOffsetTop()) &&
-        floating.scrollHeight > floating.offsetHeight
-      ) {
-        const nextTop = Math.max(WINDOW_PADDING + getVisualOffsetTop(), currentTop - amount)
-
-        const nextMaxHeight = Math.min(visualMaxHeight, currentMaxHeight + amount)
-
-        Object.assign(floating.style, {
-          maxHeight: `${nextMaxHeight}px`,
-          top: `${nextTop}px`,
-        })
-
-        if (nextTop - WINDOW_PADDING > getVisualOffsetTop()) {
-          floating.scrollTop -= nextMaxHeight - currentMaxHeight + getFloatingPadding(floating)
+    const increaseHeight = React.useCallback(
+      (floating: HTMLElement, amount = 0) => {
+        if (middlewareType === 'fallback') {
+          return
         }
 
-        return currentTop - nextTop
-      }
-    },
-    [middlewareType]
-  )
+        const currentMaxHeight = Number(floating.style.maxHeight.replace('px', ''))
+        const currentTop = Number(floating.style.top.replace('px', ''))
+        const rect = floating.getBoundingClientRect()
+        const rectTop = rect.top
+        const rectBottom = rect.bottom
+        const visualMaxHeight = visualViewport.height - WINDOW_PADDING * 2
 
-  const handleScrollArrowChange = (dir: 'up' | 'down') => () => {
-    const floating = floatingRef.current
-    const isUp = dir === 'up'
-    if (floating) {
-      const value = isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY
-      const multi =
-        (isUp && floating.scrollTop <= SCROLL_ARROW_THRESHOLD * 2) ||
-        (!isUp &&
-          floating.scrollTop >=
-            floating.scrollHeight - floating.clientHeight - SCROLL_ARROW_THRESHOLD * 2)
-          ? 2
-          : 1
-      floating.scrollTop += multi * (isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY)
+        if (
+          amount < 0 &&
+          selectedIndexRef.current != null &&
+          Math.round(rectBottom) <
+            Math.round(visualViewport.height + getVisualOffsetTop() - WINDOW_PADDING)
+        ) {
+          floating.style.maxHeight = `${Math.min(visualMaxHeight, currentMaxHeight - amount)}px`
+        }
 
-      increaseHeight(floating, multi === 2 ? value * 2 : value)
-      // Ensure derived data (scroll arrows) is fresh
-      forceUpdate()
-    }
-  }
+        if (
+          amount > 0 &&
+          Math.round(rectTop) > Math.round(WINDOW_PADDING - getVisualOffsetTop()) &&
+          floating.scrollHeight > floating.offsetHeight
+        ) {
+          const nextTop = Math.max(WINDOW_PADDING + getVisualOffsetTop(), currentTop - amount)
 
-  const touchPageYRef = React.useRef<number | null>(null)
+          const nextMaxHeight = Math.min(visualMaxHeight, currentMaxHeight + amount)
 
-  const handleWheel = React.useCallback(
-    (event: WheelEvent | TouchEvent) => {
-      const pinching = event.ctrlKey
+          Object.assign(floating.style, {
+            maxHeight: `${nextMaxHeight}px`,
+            top: `${nextTop}px`,
+          })
 
-      const currentTarget = event.currentTarget as HTMLElement
-
-      function isWheelEvent(event: any): event is WheelEvent {
-        return typeof event.deltaY === 'number'
-      }
-
-      function isTouchEvent(event: any): event is TouchEvent {
-        return event.touches != null
-      }
-
-      if (
-        Math.abs(
-          (currentTarget?.offsetHeight ?? 0) - (visualViewport.height - WINDOW_PADDING * 2)
-        ) > 1 &&
-        !pinching
-      ) {
-        event.preventDefault()
-      } else if (isWheelEvent(event) && isFirefox) {
-        // Firefox needs this to propagate scrolling
-        // during momentum scrolling phase if the
-        // height reached its maximum (at boundaries)
-        currentTarget.scrollTop += event.deltaY
-      }
-
-      if (!pinching) {
-        let delta = 5
-
-        if (isTouchEvent(event)) {
-          const currentPageY = touchPageYRef.current
-          const pageY = event.touches[0]?.pageY
-
-          if (pageY != null) {
-            touchPageYRef.current = pageY
-
-            if (currentPageY != null) {
-              delta = currentPageY - pageY
-            }
+          if (nextTop - WINDOW_PADDING > getVisualOffsetTop()) {
+            floating.scrollTop -= nextMaxHeight - currentMaxHeight + getFloatingPadding(floating)
           }
-        }
 
-        increaseHeight(currentTarget, isWheelEvent(event) ? event.deltaY : delta)
-        setScrollTop(currentTarget.scrollTop)
+          return currentTop - nextTop
+        }
+      },
+      [middlewareType]
+    )
+
+    const handleScrollArrowChange = (dir: 'up' | 'down') => () => {
+      const floating = floatingRef.current
+      const isUp = dir === 'up'
+      if (floating) {
+        const value = isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY
+        const multi =
+          (isUp && floating.scrollTop <= SCROLL_ARROW_THRESHOLD * 2) ||
+          (!isUp &&
+            floating.scrollTop >=
+              floating.scrollHeight - floating.clientHeight - SCROLL_ARROW_THRESHOLD * 2)
+            ? 2
+            : 1
+        floating.scrollTop += multi * (isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY)
+
+        increaseHeight(floating, multi === 2 ? value * 2 : value)
         // Ensure derived data (scroll arrows) is fresh
         forceUpdate()
       }
-    },
-    [increaseHeight, forceUpdate]
-  )
-
-  // Handle `onWheel` event in an effect to remove the `passive` option so we
-  // can .preventDefault() it
-  React.useEffect(() => {
-    function onTouchEnd() {
-      touchPageYRef.current = null
     }
 
-    const floating = floatingRef.current
-    if (open && floating && middlewareType === 'align') {
-      floating.addEventListener('wheel', handleWheel)
-      floating.addEventListener('touchmove', handleWheel)
-      floating.addEventListener('touchend', onTouchEnd, { passive: true })
+    const touchPageYRef = React.useRef<number | null>(null)
+
+    const handleWheel = React.useCallback(
+      (event: WheelEvent | TouchEvent) => {
+        const pinching = event.ctrlKey
+
+        const currentTarget = event.currentTarget as HTMLElement
+
+        function isWheelEvent(event: any): event is WheelEvent {
+          return typeof event.deltaY === 'number'
+        }
+
+        function isTouchEvent(event: any): event is TouchEvent {
+          return event.touches != null
+        }
+
+        if (
+          Math.abs(
+            (currentTarget?.offsetHeight ?? 0) - (visualViewport.height - WINDOW_PADDING * 2)
+          ) > 1 &&
+          !pinching
+        ) {
+          event.preventDefault()
+        } else if (isWheelEvent(event) && isFirefox) {
+          // Firefox needs this to propagate scrolling
+          // during momentum scrolling phase if the
+          // height reached its maximum (at boundaries)
+          currentTarget.scrollTop += event.deltaY
+        }
+
+        if (!pinching) {
+          let delta = 5
+
+          if (isTouchEvent(event)) {
+            const currentPageY = touchPageYRef.current
+            const pageY = event.touches[0]?.pageY
+
+            if (pageY != null) {
+              touchPageYRef.current = pageY
+
+              if (currentPageY != null) {
+                delta = currentPageY - pageY
+              }
+            }
+          }
+
+          increaseHeight(currentTarget, isWheelEvent(event) ? event.deltaY : delta)
+          setScrollTop(currentTarget.scrollTop)
+          // Ensure derived data (scroll arrows) is fresh
+          forceUpdate()
+        }
+      },
+      [increaseHeight, forceUpdate]
+    )
+
+    // Handle `onWheel` event in an effect to remove the `passive` option so we
+    // can .preventDefault() it
+    React.useEffect(() => {
+      function onTouchEnd() {
+        touchPageYRef.current = null
+      }
+
+      const floating = floatingRef.current
+      if (open && floating && middlewareType === 'align') {
+        floating.addEventListener('wheel', handleWheel)
+        floating.addEventListener('touchmove', handleWheel)
+        floating.addEventListener('touchend', onTouchEnd, { passive: true })
+        return () => {
+          floating.removeEventListener('wheel', handleWheel)
+          floating.removeEventListener('touchmove', handleWheel)
+          floating.removeEventListener('touchend', onTouchEnd)
+        }
+      }
+    }, [open, floatingRef, handleWheel, middlewareType])
+
+    // Ensure the menu remains attached to the reference element when resizing.
+    React.useEffect(() => {
+      window.addEventListener('resize', update)
       return () => {
-        floating.removeEventListener('wheel', handleWheel)
-        floating.removeEventListener('touchmove', handleWheel)
-        floating.removeEventListener('touchend', onTouchEnd)
+        window.removeEventListener('resize', update)
       }
-    }
-  }, [open, floatingRef, handleWheel, middlewareType])
+    }, [update])
 
-  // Ensure the menu remains attached to the reference element when resizing.
-  React.useEffect(() => {
-    window.addEventListener('resize', update)
-    return () => {
-      window.removeEventListener('resize', update)
-    }
-  }, [update])
+    // Scroll the active or selected item into view when in `controlledScrolling`
+    // mode (i.e. arrow key nav).
+    React.useLayoutEffect(() => {
+      const floating = floatingRef.current
 
-  // Scroll the active or selected item into view when in `controlledScrolling`
-  // mode (i.e. arrow key nav).
-  React.useLayoutEffect(() => {
-    const floating = floatingRef.current
+      if (open && controlledScrolling && floating) {
+        const item =
+          activeIndex != null
+            ? listItemsRef.current[activeIndex]
+            : selectedIndex != null
+            ? listItemsRef.current[selectedIndex]
+            : null
 
-    if (open && controlledScrolling && floating) {
-      const item =
-        activeIndex != null
-          ? listItemsRef.current[activeIndex]
-          : selectedIndex != null
-          ? listItemsRef.current[selectedIndex]
-          : null
+        if (item && prevActiveIndex != null) {
+          const itemHeight = listItemsRef.current[prevActiveIndex]?.offsetHeight ?? 0
 
-      if (item && prevActiveIndex != null) {
-        const itemHeight = listItemsRef.current[prevActiveIndex]?.offsetHeight ?? 0
+          const floatingHeight = floating.offsetHeight
+          const top = item.offsetTop
+          const bottom = top + itemHeight
 
-        const floatingHeight = floating.offsetHeight
-        const top = item.offsetTop
-        const bottom = top + itemHeight
+          if (top < floating.scrollTop + 20) {
+            const diff = floating.scrollTop - top + 20
+            floating.scrollTop -= diff
 
-        if (top < floating.scrollTop + 20) {
-          const diff = floating.scrollTop - top + 20
-          floating.scrollTop -= diff
+            if (activeIndex != selectedIndex && activeIndex != null) {
+              increaseHeight(floating, -diff)
+            }
+          } else if (bottom > floatingHeight + floating.scrollTop - 20) {
+            const diff = bottom - floatingHeight - floating.scrollTop + 20
 
-          if (activeIndex != selectedIndex && activeIndex != null) {
-            increaseHeight(floating, -diff)
-          }
-        } else if (bottom > floatingHeight + floating.scrollTop - 20) {
-          const diff = bottom - floatingHeight - floating.scrollTop + 20
+            floating.scrollTop += diff
 
-          floating.scrollTop += diff
-
-          if (activeIndex != selectedIndex && activeIndex != null) {
-            floating.scrollTop -= increaseHeight(floating, diff) ?? 0
+            if (activeIndex != selectedIndex && activeIndex != null) {
+              floating.scrollTop -= increaseHeight(floating, diff) ?? 0
+            }
           }
         }
       }
-    }
-  }, [
-    open,
-    controlledScrolling,
-    prevActiveIndex,
-    activeIndex,
-    selectedIndex,
-    floatingRef,
-    increaseHeight,
-  ])
+    }, [
+      open,
+      controlledScrolling,
+      prevActiveIndex,
+      activeIndex,
+      selectedIndex,
+      floatingRef,
+      increaseHeight,
+    ])
 
-  // Sync the height and the scrollTop values and device whether to use fallback
-  // positioning.
-  React.useLayoutEffect(() => {
-    const floating = refs.floating.current
-    const reference = refs.reference.current
+    // Sync the height and the scrollTop values and device whether to use fallback
+    // positioning.
+    React.useLayoutEffect(() => {
+      const floating = refs.floating.current
+      const reference = refs.reference.current
 
-    if (open && floating && reference && floating.offsetHeight < floating.scrollHeight) {
-      const referenceRect = reference.getBoundingClientRect()
+      if (open && floating && reference && floating.offsetHeight < floating.scrollHeight) {
+        const referenceRect = reference.getBoundingClientRect()
 
-      if (middlewareType === 'fallback') {
-        const item = listItemsRef.current[selectedIndex]
-        if (item) {
-          floating.scrollTop = item.offsetTop - floating.clientHeight + referenceRect.height
+        if (middlewareType === 'fallback') {
+          const item = listItemsRef.current[selectedIndex]
+          if (item) {
+            floating.scrollTop = item.offsetTop - floating.clientHeight + referenceRect.height
+          }
+          return
         }
-        return
+
+        floating.scrollTop = middlewareData.size?.y
+
+        const closeToBottom =
+          visualViewport.height + getVisualOffsetTop() - referenceRect.bottom < FALLBACK_THRESHOLD
+        const closeToTop = referenceRect.top < FALLBACK_THRESHOLD
+
+        if (floating.offsetHeight < MIN_HEIGHT || closeToTop || closeToBottom) {
+          setMiddlewareType('fallback')
+        }
       }
+    }, [
+      open,
+      increaseHeight,
+      selectedIndex,
+      middlewareType,
+      refs.floating,
+      refs.reference,
+      // Always re-run this effect when the position has been computed so the
+      // .scrollTop change works with fresh sizing.
+      middlewareData,
+    ])
 
-      floating.scrollTop = middlewareData.size?.y
-
-      const closeToBottom =
-        visualViewport.height + getVisualOffsetTop() - referenceRect.bottom < FALLBACK_THRESHOLD
-      const closeToTop = referenceRect.top < FALLBACK_THRESHOLD
-
-      if (floating.offsetHeight < MIN_HEIGHT || closeToTop || closeToBottom) {
-        setMiddlewareType('fallback')
+    React.useLayoutEffect(() => {
+      if (open && selectedIndex != null) {
+        requestAnimationFrame(() => {
+          listItemsRef.current[selectedIndex]?.focus({ preventScroll: true })
+        })
       }
-    }
-  }, [
-    open,
-    increaseHeight,
-    selectedIndex,
-    middlewareType,
-    refs.floating,
-    refs.reference,
-    // Always re-run this effect when the position has been computed so the
-    // .scrollTop change works with fresh sizing.
-    middlewareData,
-  ])
+    }, [listItemsRef, selectedIndex, open])
 
-  React.useLayoutEffect(() => {
-    if (open && selectedIndex != null) {
-      requestAnimationFrame(() => {
-        listItemsRef.current[selectedIndex]?.focus({ preventScroll: true })
+    // Wait for scroll position to settle before showing arrows to prevent
+    // interference with pointer events.
+    React.useEffect(() => {
+      const frame = requestAnimationFrame(() => {
+        setShowArrows(open)
+
+        if (!open) {
+          setScrollTop(0)
+          setMiddlewareType('align')
+          setActiveIndex(null)
+          setControlledScrolling(false)
+        }
       })
-    }
-  }, [listItemsRef, selectedIndex, open])
+      return () => cancelAnimationFrame(frame)
+    }, [open])
 
-  // Wait for scroll position to settle before showing arrows to prevent
-  // interference with pointer events.
-  React.useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      setShowArrows(open)
+    let optionIndex = 0
+    // const options = [
+    //   <ul key="default">
+    //     <Option value="default">Select...</Option>
+    //   </ul>,
+    //   ...(React.Children.map(
+    //     children,
+    //     (child) =>
+    //       React.isValidElement(child) && (
+    //         <ul
+    //           key={child.props.label}
+    //           role="group"
+    //           aria-labelledby={`floating-ui-select-${child.props.label}`}
+    //         >
+    //           <li
+    //             role="presentation"
+    //             id={`floating-ui-select-${child.props.label}`}
+    //             className="SelectGroupLabel"
+    //             aria-hidden="true"
+    //           >
+    //             {child.props.label}
+    //           </li>
+    //           {React.Children.map(child.props.children, (child) =>
+    //             React.cloneElement(child, { index: 1 + optionIndex++ })
+    //           )}
+    //         </ul>
+    //       )
+    //   ) ?? []),
+    // ]
 
-      if (!open) {
-        setScrollTop(0)
-        setMiddlewareType('align')
-        setActiveIndex(null)
-        setControlledScrolling(false)
-      }
-    })
-    return () => cancelAnimationFrame(frame)
-  }, [open])
+    // We set this to true by default so that events bubble to forms without JS (SSR)
+    // const isFormControl = trigger ? Boolean(trigger.closest('form')) : true
+    // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
+    // const triggerPointerDownPosRef = React.useRef<{ x: number; y: number } | null>(null)
 
-  let optionIndex = 0
-  const options = [
-    <ul key="default">
-      <Option value="default">Select...</Option>
-    </ul>,
-    ...(React.Children.map(
-      children,
-      (child) =>
-        React.isValidElement(child) && (
-          <ul
-            key={child.props.label}
-            role="group"
-            aria-labelledby={`floating-ui-select-${child.props.label}`}
-          >
-            <li
-              role="presentation"
-              id={`floating-ui-select-${child.props.label}`}
-              className="SelectGroupLabel"
-              aria-hidden="true"
-            >
-              {child.props.label}
-            </li>
-            {React.Children.map(child.props.children, (child) =>
-              React.cloneElement(child, { index: 1 + optionIndex++ })
-            )}
-          </ul>
-        )
-    ) ?? []),
-  ]
-
-  // We set this to true by default so that events bubble to forms without JS (SSR)
-  // const isFormControl = trigger ? Boolean(trigger.closest('form')) : true
-  // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
-  // const triggerPointerDownPosRef = React.useRef<{ x: number; y: number } | null>(null)
-
-  return (
-    <SelectProvider
-      scope={__scopeSelect}
-      // trigger={trigger}
-      // onTriggerChange={setTrigger}
-      // valueNode={valueNode}
-      // onValueNodeChange={setValueNode}
-      // valueNodeHasChildren={valueNodeHasChildren}
-      // onValueNodeHasChildrenChange={setValueNodeHasChildren}
-      // contentId={useId() || ''}
-      // value={value}
-      // onValueChange={setValue}
-      open={open}
-      // onOpenChange={setOpen}
-      // TODO
-      // dir={'rtl'} //direction}
-      // bubbleSelect={bubbleSelect}
-      // triggerPointerDownPosRef={triggerPointerDownPosRef}
-    >
-      {/* <Collection.Provider scope={__scopeSelect}>{children}</Collection.Provider> */}
-      {children}
-      {/* {isFormControl ? (
+    return (
+      <SelectProvider
+        scope={__scopeSelect}
+        activeIndex={0}
+        canScrollDown
+        canScrollUp
+        controlledScrolling
+        dataRef={null as any}
+        getItemProps={null as any}
+        listRef={listItemsRef}
+        onChange={null as any}
+        selectedIndex={0}
+        setActiveIndex={() => {}}
+        setElement={() => {}}
+        setOpen={() => {}}
+        setSelectedIndex={() => {}}
+        value=""
+        // trigger={trigger}
+        // onTriggerChange={setTrigger}
+        // valueNode={valueNode}
+        // onValueNodeChange={setValueNode}
+        // valueNodeHasChildren={valueNodeHasChildren}
+        // onValueNodeHasChildrenChange={setValueNodeHasChildren}
+        // contentId={useId() || ''}
+        // value={value}
+        // onValueChange={setValue}
+        open={open}
+        // onOpenChange={setOpen}
+        // TODO
+        // dir={'rtl'} //direction}
+        // bubbleSelect={bubbleSelect}
+        // triggerPointerDownPosRef={triggerPointerDownPosRef}
+      >
+        {/* <Collection.Provider scope={__scopeSelect}>{children}</Collection.Provider> */}
+        {children}
+        {/* {isFormControl ? (
         <BubbleSelect
           ref={setBubbleSelect}
           aria-hidden
@@ -1267,10 +1196,25 @@ export const Select: React.FC<SelectProps> = (props: ScopedProps<SelectProps>) =
           onChange={(event) => setValue(event.target.value)}
         />
       ) : null} */}
-    </SelectProvider>
-  )
-}
+      </SelectProvider>
+    )
+  },
+  {
+    Content: SelectContent,
+    Group: SelectGroup,
+    Icon: SelectIcon,
+    Item: SelectItem,
+    ItemIndicator: SelectItemIndicator,
+    ItemText: SelectItemText,
+    Label: SelectLabel,
+    ScrollDownButton: SelectScrollDownButton,
+    ScrollUpButton: SelectScrollUpButton,
+    Trigger: SelectTrigger,
+    Value: SelectValue,
+  }
+)
 
+// @ts-ignore
 Select.displayName = SELECT_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
@@ -1309,11 +1253,11 @@ const BubbleSelect = React.forwardRef<HTMLSelectElement, React.ComponentPropsWit
      */
     // TODO
     return null
-    return (
-      <VisuallyHidden asChild>
-        <select {...selectProps} ref={composedRefs} defaultValue={value} />
-      </VisuallyHidden>
-    )
+    // return (
+    //   <VisuallyHidden asChild>
+    //     <select {...selectProps} ref={composedRefs} defaultValue={value} />
+    //   </VisuallyHidden>
+    // )
   }
 )
 
@@ -1326,3 +1270,42 @@ if (isFirefox) {
 function getVisualOffsetTop() {
   return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
 }
+
+/**
+ *
+ *  <Select
+ *    items={[{ name: '', value: '', groupId: '123' }]}
+ *    groups={{ 123: { name: '' } }}
+ *    groupKey="groupId"
+ *  >
+ *    <Select.Trigger>
+ *      <Select.Icon />
+ *      <Select.Value />
+ *    </Select.Trigger>
+ *
+ *    <Select.Content>
+ *      <Select.ScrollUpButton />
+ *      <Select.ScrollDownButton />
+ *
+ *      can optionally include group
+ *      <Select.Group>
+ *        {(group, index) => (
+ *          <Select.GroupLabel>
+ *            {group.name}
+ *          </Select.GroupLabel>
+ *        )}
+ *      </Select.Group>
+ *
+ *      <Select.Item>
+ *        {(item, index) => (
+ *          <>
+ *            <Select.ItemText>
+ *              {item.text}
+ *            </Select.ItemText>
+ *            <Select.ItemIndicator />
+ *          </>
+ *        )}
+ *      </Select.Item>
+ *    </Select.Content>
+ *  </Select>
+ */

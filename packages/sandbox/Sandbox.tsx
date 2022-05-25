@@ -39,7 +39,25 @@ export const Sandbox = () => {
         }}
       >
         <YStack space ai="center">
-          <Select></Select>
+          <Select defaultValue="blueberry">
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Icon></Select.Icon>
+            </Select.Trigger>
+
+            <Select.Content>
+              <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
+
+              <Select.Group>
+                <Select.Label>Fruits</Select.Label>
+                <Select.Item value="apple">
+                  <Select.ItemText>Apple</Select.ItemText>
+                </Select.Item>
+              </Select.Group>
+
+              <Select.ScrollDownButton>👇</Select.ScrollDownButton>
+            </Select.Content>
+          </Select>
         </YStack>
       </div>
     </Tamagui.Provider>

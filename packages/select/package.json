@@ -28,6 +28,7 @@
     "@tamagui/create-context": "^1.0.1-beta.37",
     "@tamagui/separator": "^1.0.1-beta.37",
     "@tamagui/stacks": "^1.0.1-beta.37",
+    "@tamagui/text": "^1.0.1-beta.37",
     "@tamagui/use-controllable-state": "^1.0.1-beta.37"
   },
   "peerDependencies": {
