@@ -46,36 +46,36 @@ import { View } from 'react-native'
 
 type TamaguiElement = HTMLElement | View
 
-//
-// <Select
-//   items={[{ name: '', value: '', groupId: '123' }]}
-//   groups={{ 123: { name: '' } }}
-//   groupKey="groupId"
-// >
-//   <Select.Trigger>
-//     <Select.Icon />
-//     <Select.Value />
-//   </Select.Trigger>
-//
-//   <Select.Content>
-//     <Select.ScrollUpButton />
-//     <Select.ScrollDownButton />
-//
-//     can optionally include group
-//     <Select.Group>
-//       <Select.GroupLabel>
-//         {select.group.name}
-//       </Select.GroupLabel>
-//     </Select.Group>
-//
-//     <Select.Item>
-//       <Select.ItemText>
-//          {select.item.text}
-//       </Select.ItemText>
-//       <Select.ItemIndicator />
-//     </Select.Item>
-//   </Select.Content>
-// </Select>
+/**
+ *  <Select
+      items={[{ name: '', value: '', groupId: '123' }]}
+      groups={{ 123: { name: '' } }}
+      groupKey="groupId"
+      renderItem={({ text }) => (
+        <Select.Item>
+          <Select.ItemText>
+             {text}
+          </Select.ItemText>
+          <Select.ItemIndicator />
+        </Select.Item>
+      )}
+      renderGroup={({ name }) => (
+        <Select.Group>
+          {name}
+        </Select.Group>
+      )}
+    >
+      <Select.Trigger>
+        <Select.Icon />
+        <Select.Value />
+      </Select.Trigger>
+      
+      <Select.Content>
+        <Select.ScrollUpButton />
+        <Select.ScrollDownButton />
+      </Select.Content>
+    </Select>
+ */
 
 /* -------------------------------------------------------------------------------------------------
  * SelectContext
@@ -501,8 +501,8 @@ SelectItem.displayName = ITEM_NAME
 
 const ITEM_TEXT_NAME = 'SelectItemText'
 
-type SelectItemTextElement = React.ElementRef<typeof Primitive.span>
-interface SelectItemTextProps extends PrimitiveSpanProps {}
+type SelectItemTextElement = TamaguiElement
+interface SelectItemTextProps extends YStackProps {}
 
 const SelectItemText = React.forwardRef<SelectItemTextElement, SelectItemTextProps>(
   (props: ScopedProps<SelectItemTextProps>, forwardedRef) => {
@@ -549,8 +549,8 @@ SelectItemText.displayName = ITEM_TEXT_NAME
 
 const ITEM_INDICATOR_NAME = 'SelectItemIndicator'
 
-type SelectItemIndicatorElement = React.ElementRef<typeof Primitive.span>
-interface SelectItemIndicatorProps extends PrimitiveSpanProps {}
+type SelectItemIndicatorElement = TamaguiElement
+interface SelectItemIndicatorProps extends YStackProps {}
 
 const SelectItemIndicator = React.forwardRef<SelectItemIndicatorElement, SelectItemIndicatorProps>(
   (props: ScopedProps<SelectItemIndicatorProps>, forwardedRef) => {
