@@ -44,11 +44,14 @@ import { View } from 'react-native'
 
 // import { RemoveScroll } from 'react-remove-scroll'
 
-// const items = [{ name: '', value: '', groupId: '123' }]
-// const groups = { 123: { name: '' } }
-// const select = useSelect({ items, groups }, [])
+type TamaguiElement = HTMLElement | View
+
 //
-// <Select use={select}>
+// <Select
+//   items={[{ name: '', value: '', groupId: '123' }]}
+//   groups={{ 123: { name: '' } }}
+//   groupKey="groupId"
+// >
 //   <Select.Trigger>
 //     <Select.Icon />
 //     <Select.Value />
@@ -74,14 +77,55 @@ import { View } from 'react-native'
 //   </Select.Content>
 // </Select>
 
-// Cross browser fixes for pinch-zooming/backdrop-filter 🙄
-const isFirefox = navigator.userAgent.toLowerCase().includes('firefox')
-if (isFirefox) {
-  document.body.classList.add('firefox')
+/* -------------------------------------------------------------------------------------------------
+ * SelectContext
+ * -----------------------------------------------------------------------------------------------*/
+
+const SELECT_NAME = 'Select'
+const WINDOW_PADDING = 8
+const SCROLL_ARROW_VELOCITY = 8
+const SCROLL_ARROW_THRESHOLD = 8
+const MIN_HEIGHT = 80
+const FALLBACK_THRESHOLD = 16
+
+interface SelectContextValue {
+  use: UseSelect
+  selectedIndex: number
+  setSelectedIndex: (index: number) => void
+  activeIndex: number | null
+  setActiveIndex: (index: number | null) => void
+  listRef: React.MutableRefObject<Array<HTMLLIElement | null>>
+  open: boolean
+  setOpen: (open: boolean) => void
+  onChange: (value: string) => void
+  dataRef: React.MutableRefObject<ContextData>
+  getItemProps: (userProps?: React.HTMLProps<HTMLElement>) => any
+  controlledScrolling: boolean
+  canScrollUp: boolean
+  canScrollDown: boolean
+
+  // gather elements
+  setElement(
+    type:
+      | 'trigger'
+      | 'triggerIcon'
+      | 'triggerValue'
+      | 'content'
+      | 'scrollUp'
+      | 'scrollDown'
+      | 'group'
+      | 'groupLabel'
+      | 'item'
+      | 'itemText'
+      | 'itemIndicator',
+    value: React.ReactElement
+  ): void
 }
-function getVisualOffsetTop() {
-  return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
-}
+
+type ScopedProps<P> = P & { __scopeSelect?: Scope }
+
+const [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME)
+const [SelectProvider, useSelectContext] = createSelectContext<SelectContextValue>(SELECT_NAME)
 
 /* -------------------------------------------------------------------------------------------------
  * useSelect
@@ -151,56 +195,6 @@ const OPEN_KEYS = [' ', 'Enter', 'ArrowUp', 'ArrowDown']
 const SELECTION_KEYS = [' ', 'Enter']
 
 /* -------------------------------------------------------------------------------------------------
- * SelectContext
- * -----------------------------------------------------------------------------------------------*/
-
-const SELECT_NAME = 'Select'
-const WINDOW_PADDING = 8
-const SCROLL_ARROW_VELOCITY = 8
-const SCROLL_ARROW_THRESHOLD = 8
-const MIN_HEIGHT = 80
-const FALLBACK_THRESHOLD = 16
-
-interface SelectContextValue {
-  use: UseSelect
-  selectedIndex: number
-  setSelectedIndex: (index: number) => void
-  activeIndex: number | null
-  setActiveIndex: (index: number | null) => void
-  listRef: React.MutableRefObject<Array<HTMLLIElement | null>>
-  open: boolean
-  setOpen: (open: boolean) => void
-  onChange: (value: string) => void
-  dataRef: React.MutableRefObject<ContextData>
-  getItemProps: (userProps?: React.HTMLProps<HTMLElement>) => any
-  controlledScrolling: boolean
-  canScrollUp: boolean
-  canScrollDown: boolean
-
-  // gather elements
-  setElement(
-    type:
-      | 'trigger'
-      | 'triggerIcon'
-      | 'triggerValue'
-      | 'content'
-      | 'scrollUp'
-      | 'scrollDown'
-      | 'group'
-      | 'groupLabel'
-      | 'item'
-      | 'itemText'
-      | 'itemIndicator',
-    value: React.ReactElement
-  ): void
-}
-
-type ScopedProps<P> = P & { __scopeSelect?: Scope }
-
-const [createSelectContext, createSelectScope] = createContextScope(SELECT_NAME)
-const [SelectProvider, useSelectContext] = createSelectContext<SelectContextValue>(SELECT_NAME)
-
-/* -------------------------------------------------------------------------------------------------
  * SelectTrigger
  * -----------------------------------------------------------------------------------------------*/
 
@@ -218,8 +212,8 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
       ...triggerProps
     } = props
     const context = useSelectContext(TRIGGER_NAME, __scopeSelect)
-    const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange)
-    const getItems = useCollection(__scopeSelect)
+    // const composedRefs = useComposedRefs(forwardedRef, context.onTriggerChange)
+    // const getItems = useCollection(__scopeSelect)
     // const labelId = useLabelContext(context.trigger)
     // const labelledBy = ariaLabelledby || labelId
 
@@ -227,15 +221,15 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
       <YStack
         tag="button"
         // role="combobox"
-        aria-controls={context.contentId}
+        // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
         // aria-labelledby={labelledBy}
-        dir={context.dir}
+        // dir={context.dir}
         disabled={disabled}
         data-disabled={disabled ? '' : undefined}
         {...triggerProps}
-        ref={composedRefs}
+        ref={forwardedRef}
         // onPointerDown={composeEventHandlers(triggerProps.onPointerDown, (event) => {
         //   // prevent implicit pointer capture
         //   // https://www.w3.org/TR/pointerevents3/#implicit-pointer-capture
@@ -355,16 +349,22 @@ type SelectGroupContextValue = { id: string }
 const [SelectGroupContextProvider, useSelectGroupContext] =
   createSelectContext<SelectGroupContextValue>(GROUP_NAME)
 
-type SelectGroupElement = React.ElementRef<typeof Primitive.div>
-interface SelectGroupProps extends PrimitiveDivProps {}
+type SelectGroupElement = TamaguiElement
+interface SelectGroupProps extends YStackProps {}
 
 const SelectGroup = React.forwardRef<SelectGroupElement, SelectGroupProps>(
   (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
     const { __scopeSelect, ...groupProps } = props
     const groupId = useId()
     return (
-      <SelectGroupContextProvider scope={__scopeSelect} id={groupId}>
-        <Primitive.div role="group" aria-labelledby={groupId} {...groupProps} ref={forwardedRef} />
+      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
+        <YStack
+          // @ts-ignore
+          role="group"
+          aria-labelledby={groupId}
+          {...groupProps}
+          ref={forwardedRef}
+        />
       </SelectGroupContextProvider>
     )
   }
@@ -378,14 +378,14 @@ SelectGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'SelectLabel'
 
-type SelectLabelElement = React.ElementRef<typeof Primitive.div>
-interface SelectLabelProps extends PrimitiveDivProps {}
+type SelectLabelElement = TamaguiElement
+interface SelectLabelProps extends YStackProps {}
 
 const SelectLabel = React.forwardRef<SelectLabelElement, SelectLabelProps>(
   (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
     const { __scopeSelect, ...labelProps } = props
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
-    return <Primitive.div id={groupContext.id} {...labelProps} ref={forwardedRef} />
+    return <YStack id={groupContext.id} {...labelProps} ref={forwardedRef} />
   }
 )
 
@@ -407,8 +407,8 @@ type SelectItemContextValue = {
 const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-type SelectItemElement = React.ElementRef<typeof Primitive.div>
-interface SelectItemProps extends PrimitiveDivProps {
+type SelectItemElement = TamaguiElement
+interface SelectItemProps extends YStackProps {
   value: string
   disabled?: boolean
   textValue?: string
@@ -418,13 +418,13 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
     const { __scopeSelect, value, disabled = false, textValue: textValueProp, ...itemProps } = props
     const context = useSelectContext(ITEM_NAME, __scopeSelect)
-    const contentContext = useSelectContentContext(ITEM_NAME, __scopeSelect)
+    // const contentContext = useSelectContentContext(ITEM_NAME, __scopeSelect)
     const isSelected = context.value === value
     const [textValue, setTextValue] = React.useState(textValueProp ?? '')
     const [isFocused, setIsFocused] = React.useState(false)
     const composedRefs = useComposedRefs(
       forwardedRef,
-      isSelected ? contentContext.onSelectedItemChange : undefined
+      isSelected ? context.onSelectedItemChange : undefined
     )
     const textId = useId()
 
@@ -451,7 +451,7 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
           disabled={disabled}
           textValue={textValue}
         >
-          <Primitive.div
+          <YStack
             role="option"
             aria-labelledby={textId}
             // `isFocused` caveat fixes stuttering in VoiceOver
@@ -659,8 +659,8 @@ const SelectScrollDownButton = React.forwardRef<
 
 SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 
-type SelectScrollButtonImplElement = React.ElementRef<typeof Primitive.div>
-interface SelectScrollButtonImplProps extends PrimitiveDivProps {
+type SelectScrollButtonImplElement = TamaguiElement
+interface SelectScrollButtonImplProps extends YStackProps {
   onAutoScroll(): void
 }
 
@@ -682,7 +682,7 @@ const SelectScrollButtonImpl = React.forwardRef<
   })
 
   return (
-    <Primitive.div
+    <YStack
       aria-hidden
       {...scrollIndicatorProps}
       ref={forwardedRef}
@@ -706,62 +706,18 @@ const SelectScrollButtonImpl = React.forwardRef<
 
 const SEPARATOR_NAME = 'SelectSeparator'
 
-type SelectSeparatorElement = React.ElementRef<typeof Primitive.div>
-interface SelectSeparatorProps extends PrimitiveDivProps {}
+type SelectSeparatorElement = TamaguiElement
+interface SelectSeparatorProps extends YStackProps {}
 
 const SelectSeparator = Separator
 // React.forwardRef<SelectSeparatorElement, SelectSeparatorProps>(
 //   (props: ScopedProps<SelectSeparatorProps>, forwardedRef) => {
 //     const { __scopeSelect, ...separatorProps } = props
-//     return <Primitive.div aria-hidden {...separatorProps} ref={forwardedRef} />
+//     return <YStack aria-hidden {...separatorProps} ref={forwardedRef} />
 //   }
 // )
 
 SelectSeparator.displayName = SEPARATOR_NAME
-
-/* -----------------------------------------------------------------------------------------------*/
-
-const BubbleSelect = React.forwardRef<HTMLSelectElement, React.ComponentPropsWithoutRef<'select'>>(
-  (props, forwardedRef) => {
-    const { value, ...selectProps } = props
-    const ref = React.useRef<HTMLSelectElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-    const prevValue = usePrevious(value)
-
-    // Bubble value change to parents (e.g form change event)
-    React.useEffect(() => {
-      const select = ref.current!
-      const selectProto = window.HTMLSelectElement.prototype
-      const descriptor = Object.getOwnPropertyDescriptor(selectProto, 'value') as PropertyDescriptor
-      const setValue = descriptor.set
-      if (prevValue !== value && setValue) {
-        const event = new Event('change', { bubbles: true })
-        setValue.call(select, value)
-        select.dispatchEvent(event)
-      }
-    }, [prevValue, value])
-
-    /**
-     * We purposefully use a `select` here to support form autofill as much
-     * as possible.
-     *
-     * We purposefully do not add the `value` attribute here to allow the value
-     * to be set programatically and bubble to any parent form `onChange` event.
-     * Adding the `value` will cause React to consider the programatic
-     * dispatch a duplicate and it will get swallowed.
-     *
-     * We use `VisuallyHidden` rather than `display: "none"` because Safari autofill
-     * won't work otherwise.
-     */
-    // TODO
-    return null
-    return (
-      <VisuallyHidden asChild>
-        <select {...selectProps} ref={composedRefs} defaultValue={value} />
-      </VisuallyHidden>
-    )
-  }
-)
 
 /* -------------------------------------------------------------------------------------------------
  * Select
@@ -1314,3 +1270,57 @@ export const Select: React.FC<SelectProps> = (props: ScopedProps<SelectProps>) =
 }
 
 Select.displayName = SELECT_NAME
+
+/* -----------------------------------------------------------------------------------------------*/
+
+const BubbleSelect = React.forwardRef<HTMLSelectElement, React.ComponentPropsWithoutRef<'select'>>(
+  (props, forwardedRef) => {
+    const { value, ...selectProps } = props
+    const ref = React.useRef<HTMLSelectElement>(null)
+    const composedRefs = useComposedRefs(forwardedRef, ref)
+    const prevValue = usePrevious(value)
+
+    // Bubble value change to parents (e.g form change event)
+    React.useEffect(() => {
+      const select = ref.current!
+      const selectProto = window.HTMLSelectElement.prototype
+      const descriptor = Object.getOwnPropertyDescriptor(selectProto, 'value') as PropertyDescriptor
+      const setValue = descriptor.set
+      if (prevValue !== value && setValue) {
+        const event = new Event('change', { bubbles: true })
+        setValue.call(select, value)
+        select.dispatchEvent(event)
+      }
+    }, [prevValue, value])
+
+    /**
+     * We purposefully use a `select` here to support form autofill as much
+     * as possible.
+     *
+     * We purposefully do not add the `value` attribute here to allow the value
+     * to be set programatically and bubble to any parent form `onChange` event.
+     * Adding the `value` will cause React to consider the programatic
+     * dispatch a duplicate and it will get swallowed.
+     *
+     * We use `VisuallyHidden` rather than `display: "none"` because Safari autofill
+     * won't work otherwise.
+     */
+    // TODO
+    return null
+    return (
+      <VisuallyHidden asChild>
+        <select {...selectProps} ref={composedRefs} defaultValue={value} />
+      </VisuallyHidden>
+    )
+  }
+)
+
+// Cross browser fixes for pinch-zooming/backdrop-filter 🙄
+const isFirefox =
+  typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox')
+if (isFirefox) {
+  document.body.classList.add('firefox')
+}
+function getVisualOffsetTop() {
+  return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
+}
