@@ -1,8 +1,10 @@
 import './polyfills';
 export { useSafeAreaInsets } from 'react-native-safe-area-context';
+export * from '@tamagui/button';
 export * from '@tamagui/card';
 export * from '@tamagui/compose-refs';
 export * from '@tamagui/create-context';
+export * from '@tamagui/font-size';
 export * from '@tamagui/helpers';
 export * from '@tamagui/popover';
 export * from '@tamagui/popper';
@@ -22,7 +24,6 @@ export * from './viewTypes';
 export * from './hooks/useKeyboardDismissable';
 export * from './views/Anchor';
 export * from './views/BlurView';
-export * from './views/Button';
 export * from './views/Circle';
 export * from './views/EnsureFlexed';
 export * from './views/Form';
@@ -45,5 +46,4 @@ export * from './views/TextArea';
 export * from './views/Toast';
 export * from './views/VisuallyHidden';
 export * from './helpers/prevent';
-export * from './helpers/getFontSize';
 //# sourceMappingURL=index.d.ts.map
