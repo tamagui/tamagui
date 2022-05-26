@@ -184,43 +184,17 @@ export function createComponent<
       hitSlop,
       asChild,
       children,
-      pointerEvents,
       onPress,
       onPressIn,
       onPressOut,
       onHoverIn,
       onHoverOut,
       space,
-      disabled,
+      disabled: disabledProp,
+      onMouseDown,
       onMouseEnter,
       onMouseLeave,
       hrefAttrs,
-      onMoveShouldSetResponder,
-      onMoveShouldSetResponderCapture,
-      onResponderEnd,
-      onResponderGrant,
-      onResponderMove,
-      onResponderReject,
-      onResponderRelease,
-      onResponderStart,
-      onResponderTerminate,
-      onResponderTerminationRequest,
-      onScrollShouldSetResponder,
-      onScrollShouldSetResponderCapture,
-      onSelectionChangeShouldSetResponder,
-      onSelectionChangeShouldSetResponderCapture,
-      onStartShouldSetResponder,
-      onStartShouldSetResponderCapture,
-      onMouseDown,
-      nativeID,
-
-      accessible,
-      accessibilityRole,
-
-      // android
-      collapsable,
-      focusable,
-
       // ignore from here on out
       // for next/link compat etc
       // @ts-ignore
@@ -229,11 +203,430 @@ export function createComponent<
       // @ts-ignore
       defaultVariants,
 
-      onLayout,
-      ...viewPropsRest
+      ...nonTamaguiProps
     } = viewPropsIn
 
-    let viewProps: StackProps = viewPropsRest
+    // get the right component
+    const isTaggable = !Component || typeof Component === 'string'
+    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
+
+    // default to tag, fallback to component (when both strings)
+    const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
+    const BaseTextComponent = !isWeb ? Text : element || 'span'
+    const BaseViewComponent = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
+    let elementType = isText
+      ? (isAnimated ? AnimatedText || Text : null) || BaseTextComponent
+      : (isAnimated ? AnimatedView || View : null) || BaseViewComponent
+
+    elementType = Component || elementType
+    const isStringElement = typeof elementType === 'string'
+
+    const disabled =
+      (props.accessibilityState != null && props.accessibilityState.disabled === true) ||
+      props.accessibilityDisabled
+
+    // these can ultimately be for DOM, react-native-web views, or animated views
+    // so the type is pretty loose
+    let viewProps: Record<string, any>
+
+    // if react-native-web view just pass all props down
+    if (isWeb && !staticConfig.isReactNativeWeb) {
+      // otherwise replicate react-native-web functionality
+      const {
+        onMoveShouldSetResponder,
+        onMoveShouldSetResponderCapture,
+        onResponderEnd,
+        onResponderGrant,
+        onResponderMove,
+        onResponderReject,
+        onResponderRelease,
+        onResponderStart,
+        onResponderTerminate,
+        onResponderTerminationRequest,
+        onScrollShouldSetResponder,
+        onScrollShouldSetResponderCapture,
+        onSelectionChangeShouldSetResponder,
+        onSelectionChangeShouldSetResponderCapture,
+        onStartShouldSetResponder,
+        onStartShouldSetResponderCapture,
+        nativeID,
+
+        // @ts-ignore
+        accessibilityActiveDescendant,
+        // @ts-ignore
+        accessibilityAtomic,
+        // @ts-ignore
+        accessibilityAutoComplete,
+        // @ts-ignore
+        accessibilityBusy,
+        // @ts-ignore
+        accessibilityChecked,
+        // @ts-ignore
+        accessibilityColumnCount,
+        // @ts-ignore
+        accessibilityColumnIndex,
+        // @ts-ignore
+        accessibilityColumnSpan,
+        // @ts-ignore
+        accessibilityControls,
+        // @ts-ignore
+        accessibilityCurrent,
+        // @ts-ignore
+        accessibilityDescribedBy,
+        // @ts-ignore
+        accessibilityDetails,
+        // @ts-ignore
+        accessibilityDisabled,
+        // @ts-ignore
+        accessibilityErrorMessage,
+        // @ts-ignore
+        accessibilityExpanded,
+        // @ts-ignore
+        accessibilityFlowTo,
+        // @ts-ignore
+        accessibilityHasPopup,
+        // @ts-ignore
+        accessibilityHidden,
+        // @ts-ignore
+        accessibilityInvalid,
+        // @ts-ignore
+        accessibilityKeyShortcuts,
+        // @ts-ignore
+        accessibilityLabel,
+        // @ts-ignore
+        accessibilityLabelledBy,
+        // @ts-ignore
+        accessibilityLevel,
+        // @ts-ignore
+        accessibilityLiveRegion,
+        // @ts-ignore
+        accessibilityModal,
+        // @ts-ignore
+        accessibilityMultiline,
+        // @ts-ignore
+        accessibilityMultiSelectable,
+        // @ts-ignore
+        accessibilityOrientation,
+        // @ts-ignore
+        accessibilityOwns,
+        // @ts-ignore
+        accessibilityPlaceholder,
+        // @ts-ignore
+        accessibilityPosInSet,
+        // @ts-ignore
+        accessibilityPressed,
+        // @ts-ignore
+        accessibilityReadOnly,
+        // @ts-ignore
+        accessibilityRequired,
+        // @ts-ignore
+        accessibilityRole,
+        // @ts-ignore
+        accessibilityRoleDescription,
+        // @ts-ignore
+        accessibilityRowCount,
+        // @ts-ignore
+        accessibilityRowIndex,
+        // @ts-ignore
+        accessibilityRowSpan,
+        // @ts-ignore
+        accessibilitySelected,
+        // @ts-ignore
+        accessibilitySetSize,
+        // @ts-ignore
+        accessibilitySort,
+        // @ts-ignore
+        accessibilityValueMax,
+        // @ts-ignore
+        accessibilityValueMin,
+        // @ts-ignore
+        accessibilityValueNow,
+        // @ts-ignore
+        accessibilityValueText,
+
+        // deprecated
+        accessible,
+        accessibilityState,
+        accessibilityValue,
+
+        // android
+        collapsable,
+        focusable,
+
+        onLayout,
+
+        ...webProps
+      } = nonTamaguiProps
+
+      viewProps = webProps
+
+      // adapted from react-native-web
+      if (!viewProps.role && accessibilityRole) {
+        if (accessibilityRole === 'none') {
+          viewProps.role = 'presentation'
+        } else {
+          const webRole = accessibilityRoleToWebRole[accessibilityRole]
+          if (webRole != null) {
+            viewProps.role = webRole || accessibilityRole
+          }
+        }
+      }
+      const role = viewProps.role
+
+      // adapted from react-native-web
+      // ACCESSIBILITY
+      if (accessibilityActiveDescendant != null) {
+        viewProps['aria-activedescendant'] = accessibilityActiveDescendant
+      }
+      if (accessibilityAtomic != null) {
+        viewProps['aria-atomic'] = accessibilityAtomic
+      }
+      if (accessibilityAutoComplete != null) {
+        viewProps['aria-autocomplete'] = accessibilityAutoComplete
+      }
+      if (accessibilityBusy != null) {
+        viewProps['aria-busy'] = accessibilityBusy
+      }
+      if (accessibilityChecked != null) {
+        viewProps['aria-checked'] = accessibilityChecked
+      }
+      if (accessibilityColumnCount != null) {
+        viewProps['aria-colcount'] = accessibilityColumnCount
+      }
+      if (accessibilityColumnIndex != null) {
+        viewProps['aria-colindex'] = accessibilityColumnIndex
+      }
+      if (accessibilityColumnSpan != null) {
+        viewProps['aria-colspan'] = accessibilityColumnSpan
+      }
+      if (accessibilityControls != null) {
+        viewProps['aria-controls'] = processIDRefList(accessibilityControls)
+      }
+      if (accessibilityCurrent != null) {
+        viewProps['aria-current'] = accessibilityCurrent
+      }
+      if (accessibilityDescribedBy != null) {
+        viewProps['aria-describedby'] = processIDRefList(accessibilityDescribedBy)
+      }
+      if (accessibilityDetails != null) {
+        viewProps['aria-details'] = accessibilityDetails
+      }
+      if (disabled === true) {
+        viewProps['aria-disabled'] = true
+        // Enhance with native semantics
+        if (
+          elementType === 'button' ||
+          elementType === 'form' ||
+          elementType === 'input' ||
+          elementType === 'select' ||
+          elementType === 'textarea'
+        ) {
+          viewProps.disabled = true
+        }
+      }
+      if (accessibilityErrorMessage != null) {
+        viewProps['aria-errormessage'] = accessibilityErrorMessage
+      }
+      if (accessibilityExpanded != null) {
+        viewProps['aria-expanded'] = accessibilityExpanded
+      }
+      if (accessibilityFlowTo != null) {
+        viewProps['aria-flowto'] = processIDRefList(accessibilityFlowTo)
+      }
+      if (accessibilityHasPopup != null) {
+        viewProps['aria-haspopup'] = accessibilityHasPopup
+      }
+      if (accessibilityHidden === true) {
+        viewProps['aria-hidden'] = accessibilityHidden
+      }
+      if (accessibilityInvalid != null) {
+        viewProps['aria-invalid'] = accessibilityInvalid
+      }
+      if (accessibilityKeyShortcuts != null && Array.isArray(accessibilityKeyShortcuts)) {
+        viewProps['aria-keyshortcuts'] = accessibilityKeyShortcuts.join(' ')
+      }
+      if (accessibilityLabel != null) {
+        viewProps['aria-label'] = accessibilityLabel
+      }
+      if (accessibilityLabelledBy != null) {
+        viewProps['aria-labelledby'] = processIDRefList(accessibilityLabelledBy)
+      }
+      if (accessibilityLevel != null) {
+        viewProps['aria-level'] = accessibilityLevel
+      }
+      if (accessibilityLiveRegion != null) {
+        viewProps['aria-live'] =
+          accessibilityLiveRegion === 'none' ? 'off' : accessibilityLiveRegion
+      }
+      if (accessibilityModal != null) {
+        viewProps['aria-modal'] = accessibilityModal
+      }
+      if (accessibilityMultiline != null) {
+        viewProps['aria-multiline'] = accessibilityMultiline
+      }
+      if (accessibilityMultiSelectable != null) {
+        viewProps['aria-multiselectable'] = accessibilityMultiSelectable
+      }
+      if (accessibilityOrientation != null) {
+        viewProps['aria-orientation'] = accessibilityOrientation
+      }
+      if (accessibilityOwns != null) {
+        viewProps['aria-owns'] = processIDRefList(accessibilityOwns)
+      }
+      if (accessibilityPlaceholder != null) {
+        viewProps['aria-placeholder'] = accessibilityPlaceholder
+      }
+      if (accessibilityPosInSet != null) {
+        viewProps['aria-posinset'] = accessibilityPosInSet
+      }
+      if (accessibilityPressed != null) {
+        viewProps['aria-pressed'] = accessibilityPressed
+      }
+      if (accessibilityReadOnly != null) {
+        viewProps['aria-readonly'] = accessibilityReadOnly
+        // Enhance with native semantics
+        if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+          viewProps.readOnly = true
+        }
+      }
+      if (accessibilityRequired != null) {
+        viewProps['aria-required'] = accessibilityRequired
+        // Enhance with native semantics
+        if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
+          viewProps.required = true
+        }
+      }
+      if (accessibilityRoleDescription != null) {
+        viewProps['aria-roledescription'] = accessibilityRoleDescription
+      }
+      if (accessibilityRowCount != null) {
+        viewProps['aria-rowcount'] = accessibilityRowCount
+      }
+      if (accessibilityRowIndex != null) {
+        viewProps['aria-rowindex'] = accessibilityRowIndex
+      }
+      if (accessibilityRowSpan != null) {
+        viewProps['aria-rowspan'] = accessibilityRowSpan
+      }
+      if (accessibilitySelected != null) {
+        viewProps['aria-selected'] = accessibilitySelected
+      }
+      if (accessibilitySetSize != null) {
+        viewProps['aria-setsize'] = accessibilitySetSize
+      }
+      if (accessibilitySort != null) {
+        viewProps['aria-sort'] = accessibilitySort
+      }
+      if (accessibilityValueMax != null) {
+        viewProps['aria-valuemax'] = accessibilityValueMax
+      }
+      if (accessibilityValueMin != null) {
+        viewProps['aria-valuemin'] = accessibilityValueMin
+      }
+      if (accessibilityValueNow != null) {
+        viewProps['aria-valuenow'] = accessibilityValueNow
+      }
+      if (accessibilityValueText != null) {
+        viewProps['aria-valuetext'] = accessibilityValueText
+      }
+
+      if (nativeID) {
+        viewProps.id = nativeID
+      }
+
+      if (!asChild) {
+        rnw.useElementLayout(hostRef, onLayout)
+
+        // from react-native-web
+        rnw.useResponderEvents(hostRef, {
+          onMoveShouldSetResponder,
+          onMoveShouldSetResponderCapture,
+          onResponderEnd,
+          onResponderGrant,
+          onResponderMove,
+          onResponderReject,
+          onResponderRelease,
+          onResponderStart,
+          onResponderTerminate,
+          onResponderTerminationRequest,
+          onScrollShouldSetResponder,
+          onScrollShouldSetResponderCapture,
+          onSelectionChangeShouldSetResponder,
+          onSelectionChangeShouldSetResponderCapture,
+          onStartShouldSetResponder,
+          onStartShouldSetResponderCapture,
+        })
+      }
+
+      // from react-native-web
+      const platformMethodsRef = rnw.usePlatformMethods(viewProps)
+      const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
+
+      if (!isAnimated) {
+        // @ts-ignore
+        viewProps.ref = setRef
+      } else {
+        if (forwardedRef) {
+          // @ts-ignore
+          viewProps.ref = forwardedRef
+        }
+      }
+
+      if (props.href != null && hrefAttrs != null) {
+        const { download, rel, target } = hrefAttrs
+        if (download != null) {
+          viewProps.download = download
+        }
+        if (rel != null) {
+          viewProps.rel = rel
+        }
+        if (typeof target === 'string') {
+          viewProps.target = target.charAt(0) !== '_' ? '_' + target : target
+        }
+      }
+
+      // FOCUS
+      // "focusable" indicates that an element may be a keyboard tab-stop.
+      const _focusable = focusable != null ? focusable : accessible
+      if (_focusable === false) {
+        viewProps.tabIndex = '-1'
+      }
+      if (
+        // These native elements are focusable by default
+        elementType === 'a' ||
+        elementType === 'button' ||
+        elementType === 'input' ||
+        elementType === 'select' ||
+        elementType === 'textarea'
+      ) {
+        if (_focusable === false || accessibilityDisabled === true) {
+          viewProps.tabIndex = '-1'
+        }
+      } else if (
+        // These roles are made focusable by default
+        role === 'button' ||
+        role === 'checkbox' ||
+        role === 'link' ||
+        role === 'radio' ||
+        role === 'textbox' ||
+        role === 'switch'
+      ) {
+        if (_focusable !== false) {
+          viewProps.tabIndex = '0'
+        }
+      } else {
+        // Everything else must explicitly set the prop
+        if (_focusable === true) {
+          viewProps.tabIndex = '0'
+        }
+      }
+    } else {
+      viewProps = nonTamaguiProps
+      if (forwardedRef) {
+        // @ts-ignore
+        viewProps.ref = forwardedRef
+      }
+    }
 
     // from react-native-web
     if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
@@ -243,8 +636,6 @@ export function createComponent<
         }
       })
     }
-
-    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
 
     // isMounted
     const internal = useRef<{ isMounted: boolean }>()
@@ -270,60 +661,8 @@ export function createComponent<
       }
     }, [hasEnterStyle, props.animation])
 
-    if (nativeID) {
-      viewProps.id = nativeID
-    }
-
-    if (isAndroid) {
-      if (collapsable) viewProps.collapsable = collapsable
-      if (focusable) viewProps.focusable = focusable
-    }
-
-    if (!isWeb) {
-      if (accessible) viewProps.accessible = accessible
-      if (accessibilityRole) viewProps.accessibilityRole = accessibilityRole
-    }
-
-    if (isWeb && !asChild) {
-      rnw.useElementLayout(hostRef, onLayout)
-
-      // from react-native-web
-      rnw.useResponderEvents(hostRef, {
-        onMoveShouldSetResponder,
-        onMoveShouldSetResponderCapture,
-        onResponderEnd,
-        onResponderGrant,
-        onResponderMove,
-        onResponderReject,
-        onResponderRelease,
-        onResponderStart,
-        onResponderTerminate,
-        onResponderTerminationRequest,
-        onScrollShouldSetResponder,
-        onScrollShouldSetResponderCapture,
-        onSelectionChangeShouldSetResponder,
-        onSelectionChangeShouldSetResponderCapture,
-        onStartShouldSetResponder,
-        onStartShouldSetResponderCapture,
-      })
-    }
-
-    // get the right component
-    const isTaggable = !Component || typeof Component === 'string'
-
-    // default to tag, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
-    const BaseTextComponent = !isWeb ? Text : element || 'span'
-    const BaseViewComponent = !isWeb ? View : element || (hasTextAncestor ? 'span' : 'div')
-    let ViewComponent = isText
-      ? (isAnimated ? AnimatedText || Text : null) || BaseTextComponent
-      : (isAnimated ? AnimatedView || View : null) || BaseViewComponent
-
-    ViewComponent = Component || ViewComponent
-
     let styles: any[]
 
-    const isStringElement = typeof ViewComponent === 'string'
     const animationStyles = state.animation ? state.animation.style : null
 
     if (isStringElement && shouldAvoidClasses) {
@@ -385,44 +724,6 @@ export function createComponent<
       viewProps.style = style
     } else {
       viewProps.style = styles
-    }
-
-    if (pointerEvents) {
-      viewProps.pointerEvents = pointerEvents
-    }
-
-    if (isWeb) {
-      // from react-native-web
-      const platformMethodsRef = rnw.usePlatformMethods(viewProps)
-      const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
-
-      if (!isAnimated) {
-        // @ts-ignore
-        viewProps.ref = setRef
-      } else {
-        if (forwardedRef) {
-          // @ts-ignore
-          viewProps.ref = forwardedRef
-        }
-      }
-
-      if (props.href != null && hrefAttrs != null) {
-        const { download, rel, target } = hrefAttrs
-        if (download != null) {
-          viewProps.download = download
-        }
-        if (rel != null) {
-          viewProps.rel = rel
-        }
-        if (typeof target === 'string') {
-          viewProps.target = target.charAt(0) !== '_' ? '_' + target : target
-        }
-      }
-    } else {
-      if (forwardedRef) {
-        // @ts-ignore
-        viewProps.ref = forwardedRef
-      }
     }
 
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
@@ -562,24 +863,11 @@ export function createComponent<
           ...viewProps.dataSet,
           className: viewProps.className,
         }
-      } else {
-        const rnProps = rnw.createDOMProps(viewProps)
-        const className =
-          rnProps.className && rnProps.className !== viewProps.className
-            ? `${rnProps.className} ${viewProps.className}`
-            : viewProps.className
-
-        // additive
-        viewProps = rnProps
-        // we already handle Text/View properly
-        if (className) {
-          viewProps.className = className
-        }
       }
     }
 
     if (asChild) {
-      ViewComponent = Slot
+      elementType = Slot
       const onlyChild = React.Children.only(children)
       Object.assign(viewProps, onlyChild.props)
     }
@@ -610,7 +898,7 @@ export function createComponent<
       }
     }
 
-    content = createElement(ViewComponent, viewProps, childEls)
+    content = createElement(elementType, viewProps, childEls)
 
     // EVENTS native
     // native just wrap in <Pressable />
@@ -653,7 +941,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent: elementType, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeState: theme.__state, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
       }
     }
 
@@ -924,3 +1212,22 @@ export function AbsoluteFill(props: any) {
 //   // from react-native-web
 //   content = createElement(TextAncestorContext.Provider, { value: true }, content)
 // }
+
+function processIDRefList(idRefList: string | Array<string>): string {
+  return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
+}
+
+const accessibilityRoleToWebRole = {
+  adjustable: 'slider',
+  button: 'button',
+  header: 'heading',
+  image: 'img',
+  imagebutton: null,
+  keyboardkey: null,
+  label: null,
+  link: 'link',
+  none: 'presentation',
+  search: 'search',
+  summary: 'region',
+  text: null,
+}
