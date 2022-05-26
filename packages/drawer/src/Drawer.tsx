@@ -8,28 +8,18 @@ import {
   BottomSheetVirtualizedList,
 } from '@gorhom/bottom-sheet'
 import { composeRefs } from '@tamagui/compose-refs'
-import { styled, themeable, useIsomorphicLayoutEffect, withStaticProperties } from '@tamagui/core'
+import {
+  isSSR,
+  isWeb,
+  styled,
+  themeable,
+  useIsomorphicLayoutEffect,
+  withStaticProperties,
+} from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { XStack, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, {
-  ReactNode,
-  forwardRef,
-  isValidElement,
-  useCallback,
-  useLayoutEffect,
-  useRef,
-} from 'react'
-
-// <Drawer.Provider>
-//   <Drawer>
-//     <Drawer.Backdrop />
-//     <Drawer.Handle />
-//     <Drawer.Frame>
-//        <Drawer.ScrollView /> (optional)
-//     </Drawer.Frame>
-//   </Drawer>
-// </Drawer.Provider>
+import React, { ReactNode, forwardRef, isValidElement, useEffect, useRef, useState } from 'react'
 
 type OpenChangeHandler =
   | ((showing: boolean) => void)
@@ -38,7 +28,6 @@ type OpenChangeHandler =
 export const DrawerProvider = BottomSheetModalProvider
 
 const DRAWER_NAME = 'Drawer'
-// const HANDLE_NAME = 'DrawerHandle'
 
 export const DrawerHandle = styled(XStack, {
   name: 'DrawerHandle',
@@ -98,6 +87,16 @@ export type DrawerProps = ScopedProps<
   children?: ReactNode
 }
 
+const useIsSSR = () => {
+  const [val, setVal] = useState(isWeb ? isSSR : false)
+  useEffect(() => {
+    if (isWeb && !isSSR) {
+      setVal(false)
+    }
+  }, [])
+  return val
+}
+
 export const Drawer = withStaticProperties(
   themeable(
     forwardRef<BottomSheetModal, DrawerProps>((props, ref) => {
@@ -109,6 +108,7 @@ export const Drawer = withStaticProperties(
         onChangeOpen,
         ...rest
       } = props
+      const isServerSide = useIsSSR()
       const [open, setOpen] = useControllableState({
         prop: openProp,
         defaultProp: defaultOpen || false,
@@ -131,6 +131,10 @@ export const Drawer = withStaticProperties(
           sheetRef.current?.present()
         }
       }, [open])
+
+      if (isServerSide) {
+        return null
+      }
 
       let handleComponent: any = null
       let backdropComponent: any = null
