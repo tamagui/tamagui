@@ -117,23 +117,6 @@ interface SelectContextValue {
     getFloatingProps: (userProps?: React.HTMLProps<HTMLElement> | undefined) => any
     getItemProps: (userProps?: React.HTMLProps<HTMLElement> | undefined) => any
   }
-
-  // gather elements
-  setElement(
-    type:
-      | 'trigger'
-      | 'triggerIcon'
-      | 'triggerValue'
-      | 'content'
-      | 'scrollUp'
-      | 'scrollDown'
-      | 'group'
-      | 'groupLabel'
-      | 'item'
-      | 'itemText'
-      | 'itemIndicator',
-    value: React.ReactElement
-  ): void
 }
 
 type ScopedProps<P> = P & { __scopeSelect?: Scope }
@@ -419,6 +402,7 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     const [allowMouseUp, setAllowMouseUp] = React.useState(false)
 
     function handleSelect() {
+      console.log('handling select!')
       setSelectedIndex(index)
       onChange(value)
       setOpen(false)
@@ -440,11 +424,18 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     }, [open, index, setActiveIndex, selectedIndex])
 
     function handleKeyDown(event: React.KeyboardEvent) {
+      console.log('item key down')
       if (event.key === 'Enter' || (event.key === ' ' && !dataRef.current.typing)) {
         event.preventDefault()
         handleSelect()
       }
     }
+
+    const selectItemProps = context.interactions.getItemProps({
+      onClick: allowMouseUp ? handleSelect : undefined,
+      onMouseUp: allowMouseUp ? handleSelect : undefined,
+      onKeyDown: handleKeyDown,
+    })
 
     return (
       <SelectItemContextProvider
@@ -457,6 +448,7 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         }, [])}
       >
         <SelectItemFrame
+          ref={composedRefs}
           aria-labelledby={textId}
           // `isFocused` caveat fixes stuttering in VoiceOver
           aria-selected={isSelected && isFocused}
@@ -465,36 +457,7 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           data-disabled={disabled ? '' : undefined}
           tabIndex={disabled ? undefined : -1}
           {...itemProps}
-          {...context.interactions.getItemProps({
-            onClick: allowMouseUp ? handleSelect : undefined,
-            onMouseUp: allowMouseUp ? handleSelect : undefined,
-            onKeyDown: handleKeyDown,
-          })}
-          ref={composedRefs}
-          // onFocus={composeEventHandlers(itemProps.onFocus, () => setIsFocused(true))}
-          // onBlur={composeEventHandlers(itemProps.onBlur, () => setIsFocused(false))}
-          // onPointerUp={composeEventHandlers(itemProps.onPointerUp, handleSelect)}
-          // onPointerMove={composeEventHandlers(itemProps.onPointerMove, (event) => {
-          //   if (disabled) {
-          //     contentContext.onItemLeave()
-          //   } else {
-          //     // even though safari doesn't support this option, it's acceptable
-          //     // as it only means it might scroll a few pixels when using the pointer.
-          //     event.currentTarget.focus({ preventScroll: true })
-          //   }
-          // })}
-          // onPointerLeave={composeEventHandlers(itemProps.onPointerLeave, (event) => {
-          //   if (event.currentTarget === document.activeElement) {
-          //     contentContext.onItemLeave()
-          //   }
-          // })}
-          // onKeyDown={composeEventHandlers(itemProps.onKeyDown, (event) => {
-          //   const isTypingAhead = contentContext.searchRef.current !== ''
-          //   if (isTypingAhead && event.key === ' ') return
-          //   if (SELECTION_KEYS.includes(event.key)) handleSelect()
-          //   // prevent page scroll if using the space key to select an item
-          //   if (event.key === ' ') event.preventDefault()
-          // })}
+          {...selectItemProps}
         />
       </SelectItemContextProvider>
     )
@@ -627,7 +590,7 @@ const SelectLabelFrame = styled(SelectItemTextFrame, {
 
   variants: {
     size: {
-      '...size': (val, extras) => {
+      '...size': (val: SizeTokens, extras) => {
         const size = getSelectItemSize(val, extras)
         return {
           ...size,
@@ -1008,6 +971,11 @@ export const Select = withStaticProperties(
       scrollTop <
         floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
 
+    console.log('Select', {
+      activeIndex,
+      selectedIndex,
+    })
+
     const interactions = useInteractions([
       useClick(context, { pointerDown: true }),
       useRole(context, { role: 'listbox' }),
@@ -1266,36 +1234,6 @@ export const Select = withStaticProperties(
       return () => cancelAnimationFrame(frame)
     }, [open])
 
-    // let optionIndex = 0
-    // const options = [
-    //   <ul key="default">
-    //     <Option value="default">Select...</Option>
-    //   </ul>,
-    //   ...(React.Children.map(
-    //     children,
-    //     (child) =>
-    //       React.isValidElement(child) && (
-    //         <ul
-    //           key={child.props.label}
-    //           role="group"
-    //           aria-labelledby={`floating-ui-select-${child.props.label}`}
-    //         >
-    //           <li
-    //             role="presentation"
-    //             id={`floating-ui-select-${child.props.label}`}
-    //             className="SelectGroupLabel"
-    //             aria-hidden="true"
-    //           >
-    //             {child.props.label}
-    //           </li>
-    //           {React.Children.map(child.props.children, (child) =>
-    //             React.cloneElement(child, { index: 1 + optionIndex++ })
-    //           )}
-    //         </ul>
-    //       )
-    //   ) ?? []),
-    // ]
-
     // We set this to true by default so that events bubble to forms without JS (SSR)
     // const isFormControl = trigger ? Boolean(trigger.closest('form')) : true
     // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
@@ -1356,18 +1294,17 @@ export const Select = withStaticProperties(
           },
         }}
         floatingContext={context}
-        activeIndex={0}
+        activeIndex={activeIndex}
         canScrollDown={!!showDownArrow}
         canScrollUp={!!showUpArrow}
         controlledScrolling
-        dataRef={null as any}
+        dataRef={context.dataRef}
         listRef={listItemsRef}
         onChange={setValue}
         selectedIndex={0}
-        setActiveIndex={() => {}}
-        setElement={() => {}}
-        setOpen={() => {}}
-        setSelectedIndex={() => {}}
+        setActiveIndex={setActiveIndex}
+        setOpen={setOpen}
+        setSelectedIndex={setSelectedIndex}
         value={value}
         // trigger={trigger}
         // onTriggerChange={setTrigger}
