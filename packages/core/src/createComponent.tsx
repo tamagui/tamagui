@@ -570,8 +570,7 @@ export function createComponent<
             : viewProps.className
 
         // additive
-        Object.assign(viewProps, rnProps)
-
+        viewProps = rnProps
         // we already handle Text/View properly
         if (className) {
           viewProps.className = className
