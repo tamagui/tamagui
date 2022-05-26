@@ -1,6 +1,5 @@
 import { FastForward } from '@tamagui/feather-icons'
 import { memo, useState } from 'react'
-import { ScrollView } from 'react-native'
 import { Button, Group, Paragraph, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
@@ -13,7 +12,6 @@ import { IconStack } from './IconStack'
 export function HeroExampleCode() {
   const { tint } = useTint()
   const [activeIndex, setActiveIndex] = useState(0)
-  console.log('activeIndex', activeIndex)
   const activeExample = examples[activeIndex]
 
   return (
