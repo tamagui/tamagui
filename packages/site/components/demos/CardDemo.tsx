@@ -1,5 +1,7 @@
 import { Button, Card, CardProps, H2, H3, Image, Paragraph, XStack } from 'tamagui'
 
+import camera from '../../public/camera.jpg'
+
 export default function CardDemo() {
   return (
     <XStack $sm={{ als: 'flex-start' }} px="$4" space>
@@ -29,12 +31,7 @@ function DemoCard(props: CardProps) {
         <Button br="$10">Purchase</Button>
       </Card.Footer>
       <Card.Background>
-        <Image
-          width={300}
-          height={500}
-          resizeMode="cover"
-          src={require('../../public/camera.jpg').default.src}
-        />
+        <Image width={300} height={500} resizeMode="cover" src={camera.src} />
       </Card.Background>
     </Card>
   )

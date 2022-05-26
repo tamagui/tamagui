@@ -13,9 +13,9 @@ import {
   YStack,
 } from 'tamagui'
 
-import img1 from '../public/photo1.webp'
-import img2 from '../public/photo2.webp'
-import img3 from '../public/photo3.webp'
+import img1 from '../public/photo1.jpg'
+import img2 from '../public/photo2.jpg'
+import img3 from '../public/photo3.jpg'
 
 export default function ResponsiveDemo() {
   const header = (

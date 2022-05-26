@@ -26,7 +26,7 @@ export default function Home() {
       <HeaderFloating isHome />
       <Hero />
       <Separator />
-      <ContainerLarge fd="column" pos="relative" zi={100000}>
+      <ContainerLarge contain="layout" fd="column" pos="relative" zi={100000}>
         <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <InstallInput />
         </XStack>
