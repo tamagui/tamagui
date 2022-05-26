@@ -96,7 +96,7 @@ interface SelectContextValue {
   setSelectedIndex: (index: number) => void
   activeIndex: number | null
   setActiveIndex: (index: number | null) => void
-  listRef: React.MutableRefObject<Array<HTMLLIElement | null>>
+  listRef: React.MutableRefObject<Array<HTMLElement | null>>
   floatingRef: React.MutableRefObject<HTMLElement | null>
   open: boolean
   setOpen: (open: boolean) => void
