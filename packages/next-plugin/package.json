@@ -29,6 +29,7 @@
     "esbuild-loader": "^2.18.0",
     "mini-css-extract-plugin": "^2.6.0",
     "next-compose-plugins": "^2.2.1",
+    "react-native-svg-web": "^1.0.9",
     "tamagui-loader": "^1.0.1-beta.37",
     "thread-loader": "^3.0.4"
   },

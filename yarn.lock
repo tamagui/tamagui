@@ -3670,7 +3670,7 @@ __metadata:
     prop-types: ^15.7.2
     react: "*"
     react-dom: "*"
-    react-native-svg: ^12.1.1
+    react-native-svg: ^12.3.0
     uppercamelcase: ^3.0.0
   languageName: unknown
   linkType: soft
@@ -3763,6 +3763,7 @@ __metadata:
     mini-css-extract-plugin: ^2.6.0
     next: ^12.1.6
     next-compose-plugins: ^2.2.1
+    react-native-svg-web: ^1.0.9
     tamagui-loader: ^1.0.1-beta.37
     thread-loader: ^3.0.4
   peerDependencies:
@@ -3890,7 +3891,6 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.4
-<<<<<<< HEAD
     "@tamagui/animations-css": ^1.0.1-beta.37
     "@tamagui/animations-motion": ^1.0.1-beta.37
     "@tamagui/animations-reanimated": ^1.0.1-beta.37
@@ -3899,22 +3899,10 @@ __metadata:
     "@tamagui/drawer": ^1.0.1-beta.37
     "@tamagui/feather-icons": ^1.0.1-beta.37
     "@tamagui/font-inter": ^1.0.1-beta.37
+    "@tamagui/select": ^1.0.1-beta.37
     "@tamagui/shorthands": ^1.0.1-beta.37
     "@tamagui/slider": ^1.0.1-beta.37
     "@tamagui/theme-base": ^1.0.1-beta.37
-=======
-    "@tamagui/animations-css": ^1.0.1-beta.21
-    "@tamagui/animations-motion": ^1.0.1-beta.21
-    "@tamagui/animations-reanimated": ^1.0.1-beta.21
-    "@tamagui/colors": ^1.0.1-beta.21
-    "@tamagui/core": ^1.0.1-beta.21
-    "@tamagui/drawer": ^1.0.1-beta.21
-    "@tamagui/feather-icons": ^1.0.1-beta.21
-    "@tamagui/font-inter": ^1.0.1-beta.21
-    "@tamagui/select": ^1.0.1-beta.21
-    "@tamagui/shorthands": ^1.0.1-beta.21
-    "@tamagui/theme-base": ^1.0.1-beta.21
->>>>>>> c7a1e094b (continue)
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
@@ -3939,7 +3927,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/select@^1.0.1-beta.21, @tamagui/select@workspace:packages/select":
+"@tamagui/select@^1.0.1-beta.37, @tamagui/select@workspace:packages/select":
   version: 0.0.0-use.local
   resolution: "@tamagui/select@workspace:packages/select"
   dependencies:
@@ -15805,9 +15793,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:2.8.0":
-  version: 2.8.0
-  resolution: "react-native-reanimated@npm:2.8.0"
+"react-native-reanimated@npm:3.0.0-rc.0":
+  version: 3.0.0-rc.0
+  resolution: "react-native-reanimated@npm:3.0.0-rc.0"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
@@ -15820,7 +15808,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 6409a941a177d04d9091953a05f493d4924eb0d3e2a4b24cf83bb20460b985f89dd879f0ab7337655dba6a3183ca50cc2ad2b3ea1c505cdc1eed6c5ee1296b59
+  checksum: e7cceeb0bb8d026587c729dd40de0dcf1b5d6bb5377ee369e5da5d752ed4387b6c8af0ef8cf613db72cc2cc1f7a9a8d4786b810da3199204462466c1579f95f0
   languageName: node
   linkType: hard
 
@@ -15850,7 +15838,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:^12.1.1":
+"react-native-svg-web@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "react-native-svg-web@npm:1.0.9"
+  peerDependencies:
+    prop-types: "*"
+    react: "*"
+    react-native-web: ">= 0.10.1"
+  checksum: fb217afb275a3e06f8c4e5e79d6099cdabb16fa294cd7611bc4cdbbc3ffcaa6c848cdb23dbe7673d11ab57a635c82a0f752a627fbc183f4884c255346f1c53e5
+  languageName: node
+  linkType: hard
+
+"react-native-svg@npm:^12.3.0":
   version: 12.3.0
   resolution: "react-native-svg@npm:12.3.0"
   dependencies:

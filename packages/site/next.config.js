@@ -33,10 +33,10 @@ const transform = withPlugins(
         'Picker',
         'Animated',
         'AnimatedFlatList',
-        // 'VirtualizedList',
-        // 'VirtualizedSectionList',
-        // reanimated node_modules/react-native-reanimated/lib/reanimated2/component/FlatList.js
-        // 'FlatList',
+        'VirtualizedList',
+        'VirtualizedSectionList',
+        'FlatList',
+        'CheckBox',
       ],
     }),
     // // template for modifying webpack further:

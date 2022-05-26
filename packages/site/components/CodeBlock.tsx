@@ -32,25 +32,26 @@ type CodeBlockProps = PreProps & {
   showLineNumbers?: boolean
 }
 
-export const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
-  (_props, forwardedRef) => {
-    const { language, value, line = '0', className = '', mode, showLineNumbers, ...props } = _props
-    let result = refractor.highlight(value, language)
-    result = highlightLine(result, rangeParser(line))
-    result = highlightWord(result)
-    result = hastToHtml(result)
-    const classes = `language-${language} ${className}`
-    if (mode === 'typewriter') {
-      return <CodeTypewriter className={classes} css={css} variant="" value={result} {...props} />
-    }
-
-    return (
-      <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
-        <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
-      </Pre>
-    )
+export default React.forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlock(
+  _props,
+  forwardedRef
+) {
+  const { language, value, line = '0', className = '', mode, showLineNumbers, ...props } = _props
+  let result = refractor.highlight(value, language)
+  result = highlightLine(result, rangeParser(line))
+  result = highlightWord(result)
+  result = hastToHtml(result)
+  const classes = `language-${language} ${className}`
+  if (mode === 'typewriter') {
+    return <CodeTypewriter className={classes} css={css} variant="" value={result} {...props} />
   }
-)
+
+  return (
+    <Pre ref={forwardedRef} className={classes} data-line-numbers={showLineNumbers} {...props}>
+      <Code className={classes} dangerouslySetInnerHTML={{ __html: result }} />
+    </Pre>
+  )
+})
 
 /**
  * recursively get all text nodes as an array for a given element

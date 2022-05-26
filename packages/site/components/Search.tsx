@@ -1,12 +1,22 @@
-import { DocSearchModal } from '@docsearch/react'
 import { Search as SearchIcon } from '@tamagui/feather-icons'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  createContext,
+  lazy,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { Button, ButtonProps, Paragraph, useIsTouchDevice } from 'tamagui'
 
+const DocSearchModal = dynamic(() => import('./DocSearch'))
 const SearchContext = createContext<any>(null)
 
 // const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']

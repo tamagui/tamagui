@@ -36,14 +36,14 @@
     "version": "lerna version",
     "site": "yarn workspace @tamagui/site dev",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
-    "site:prod": "yarn workspace @tamagui/site next:build && yarn workspace @tamagui/site next:start",
+    "site:prod": "ANALYZE=true yarn workspace @tamagui/site next:build && yarn workspace @tamagui/site next:start",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",
     "fix": "yarn manypkg fix"
   },
   "resolutions": {
     "react-native-gesture-handler": "2.4.2",
-    "react-native-reanimated": "2.8.0",
+    "react-native-reanimated": "3.0.0-rc.0",
     "@types/node": "16.11.9",
     "@types/react": "17.0.43",
     "@types/react-native": "0.66.3",

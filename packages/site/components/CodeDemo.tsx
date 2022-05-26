@@ -1,8 +1,9 @@
 // Inspired by https://github.com/rexxars/react-refractor
+import dynamic from 'next/dynamic'
 import React from 'react'
 import { YStack } from 'tamagui'
 
-import { CodeBlock } from './CodeBlock'
+const CodeBlock = dynamic(() => import('./CodeBlock'))
 
 type CodeDemoProps = React.ComponentProps<typeof CodeBlock>
 

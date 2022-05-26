@@ -615,7 +615,7 @@ export function createComponent<
 
     // EVENTS native
     // native just wrap in <Pressable />
-    if (!isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'native') {
       if (attachPress && events) {
         content = (
           // bugfix: on native <Pressable /> pressing down and then moving finger off

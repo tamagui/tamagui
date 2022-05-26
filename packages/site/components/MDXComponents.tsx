@@ -379,6 +379,8 @@ export const components = {
       </Group>
     )
   },
+
+  DemoButton: () => <Button>Hello world</Button>,
 }
 
 const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) => (

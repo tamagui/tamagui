@@ -1,7 +1,7 @@
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
 import { forwardRef, useContext, useEffect, useRef, useState } from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native'
 import { Button, YStack } from 'tamagui'
 
 import { Code } from './Code'

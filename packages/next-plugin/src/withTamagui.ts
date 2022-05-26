@@ -65,6 +65,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const alias = {
           ...(webpackConfig.resolve.alias || {}),
           ...safeResolves(
+            ['react-native-svg', 'react-native-svg-web'],
             // fixes https://github.com/kentcdodds/mdx-bundler/issues/143
             ['react/jsx-runtime.js', 'react/jsx-runtime'],
             ['react/jsx-runtime', 'react/jsx-runtime'],
@@ -108,7 +109,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             webpackConfig.plugins.push(
               new webpack.NormalModuleReplacementPlugin(
                 regex,
-                require.resolve('@tamagui/proxy-worm')
+                require.resolve('@tamagui/proxy-worm/empty-react-native-view')
               )
             )
           } catch (err) {
