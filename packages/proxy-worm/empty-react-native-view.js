@@ -6,7 +6,10 @@ module.exports = new Proxy(
     },
   },
   {
-    get() {
+    get(_, key) {
+      if (key === 'createAnimatedComponent') {
+        return (x) => x
+      }
       return View
     },
   }
