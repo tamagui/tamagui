@@ -59,7 +59,7 @@ const wrap = (min: number, max: number, v: number) => {
 }
 
 export const images = [
-  require('../../public/photo1.jpeg').default.src,
-  require('../../public/photo2.jpeg').default.src,
-  require('../../public/photo3.jpeg').default.src,
+  require('../../public/photo1.jpg').default.src,
+  require('../../public/photo2.jpg').default.src,
+  require('../../public/photo3.jpg').default.src,
 ]
