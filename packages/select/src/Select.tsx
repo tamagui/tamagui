@@ -24,8 +24,12 @@ import { Button, ButtonProps } from '@tamagui/button'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  SizeTokens,
   Text,
+  VariantSpreadExtras,
+  VariantSpreadFunction,
   composeEventHandlers,
+  getVariableValue,
   styled,
   useIsomorphicLayoutEffect,
   withStaticProperties,
@@ -40,7 +44,7 @@ import { clamp } from '@tamagui/helpers'
 // import { useLabelContext } from '@tamagui/react-label'
 import { Portal } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { XStack, YStack, YStackProps } from '@tamagui/stacks'
+import { ThemeableStack, XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 // import { Primitive } from '@tamagui/react-primitive'
 // import type * as Radix from '@tamagui/react-primitive'
@@ -65,6 +69,14 @@ if (isFirefox) {
 }
 function getVisualOffsetTop() {
   return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
+}
+
+const getSelectItemSize = (val: SizeTokens, { tokens }: VariantSpreadExtras<any>) => {
+  const padding = getVariableValue(tokens.size[val])
+  return {
+    paddingHorizontal: padding / 2,
+    paddingVertical: padding / 4,
+  }
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -266,8 +278,24 @@ const SelectContent = React.forwardRef<SelectContentElement, SelectContentProps>
 
 const VIEWPORT_NAME = 'SelectViewport'
 
-export const SelectViewportFrame = styled(YStack, {
+export const SelectViewportFrame = styled(ThemeableStack, {
   name: VIEWPORT_NAME,
+  backgroundColor: '$background',
+  elevate: true,
+
+  variants: {
+    size: {
+      '...size': (val, { tokens }) => {
+        return {
+          borderRadius: tokens.size[val] ?? val,
+        }
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: '$2',
+  },
 })
 
 export type SelectViewportProps = GetProps<typeof SelectViewportFrame>
@@ -291,15 +319,17 @@ const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
           }}
         />
         <FloatingFocusManager context={context.floatingContext} preventTabbing>
-          <SelectViewportFrame
-            data-radix-select-viewport=""
-            // @ts-ignore
-            role="presentation"
-            {...viewportProps}
-            ref={composedRefs}
-          >
-            <div {...context.interactions.getFloatingProps()}>{children}</div>
-          </SelectViewportFrame>
+          <div {...context.interactions.getFloatingProps()}>
+            <SelectViewportFrame
+              data-radix-select-viewport=""
+              // @ts-ignore
+              role="presentation"
+              {...viewportProps}
+              ref={composedRefs}
+            >
+              {children}
+            </SelectViewportFrame>
+          </div>
         </FloatingFocusManager>
       </>
     )
@@ -307,62 +337,6 @@ const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
 )
 
 SelectViewport.displayName = VIEWPORT_NAME
-
-/* -------------------------------------------------------------------------------------------------
- * SelectGroup
- * -----------------------------------------------------------------------------------------------*/
-
-const GROUP_NAME = 'SelectGroup'
-
-type SelectGroupContextValue = { id: string }
-
-const [SelectGroupContextProvider, useSelectGroupContext] =
-  createSelectContext<SelectGroupContextValue>(GROUP_NAME)
-
-const SelectGroupFrame = styled(YStack, {
-  name: GROUP_NAME,
-})
-
-type SelectGroupProps = GetProps<typeof SelectGroupFrame>
-
-const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
-  (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
-    const { __scopeSelect, ...groupProps } = props
-    const groupId = useId()
-    return (
-      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
-        <SelectGroupFrame
-          // @ts-ignore
-          role="group"
-          aria-labelledby={groupId}
-          {...groupProps}
-          ref={forwardedRef}
-        />
-      </SelectGroupContextProvider>
-    )
-  }
-)
-
-SelectGroup.displayName = GROUP_NAME
-
-/* -------------------------------------------------------------------------------------------------
- * SelectLabel
- * -----------------------------------------------------------------------------------------------*/
-
-const LABEL_NAME = 'SelectLabel'
-
-type SelectLabelElement = TamaguiElement
-interface SelectLabelProps extends YStackProps {}
-
-const SelectLabel = React.forwardRef<SelectLabelElement, SelectLabelProps>(
-  (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
-    const { __scopeSelect, ...labelProps } = props
-    const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
-    return <YStack id={groupContext.id} {...labelProps} ref={forwardedRef} />
-  }
-)
-
-SelectLabel.displayName = LABEL_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItem
@@ -380,7 +354,6 @@ type SelectItemContextValue = {
 const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-type SelectItemElement = TamaguiElement
 interface SelectItemProps extends YStackProps {
   value: string
   index: number
@@ -388,7 +361,29 @@ interface SelectItemProps extends YStackProps {
   textValue?: string
 }
 
-const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
+const SelectItemFrame = styled(YStack, {
+  name: ITEM_NAME,
+  tag: 'li',
+  // @ts-ignore
+  role: 'option',
+  width: '100%',
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  variants: {
+    size: {
+      '...size': getSelectItemSize,
+    },
+  },
+
+  defaultVariants: {
+    size: '$4',
+  },
+})
+
+const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
     const {
       __scopeSelect,
@@ -399,7 +394,6 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
       ...itemProps
     } = props
     const context = useSelectContext(ITEM_NAME, __scopeSelect)
-    // const contentContext = useSelectContentContext(ITEM_NAME, __scopeSelect)
     const isSelected = context.value === value
     const [textValue, setTextValue] = React.useState(textValueProp ?? '')
     const [isFocused, setIsFocused] = React.useState(false)
@@ -462,16 +456,7 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
           // setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
         }, [])}
       >
-        {/* <Collection.ItemSlot
-          scope={__scopeSelect}
-          value={value}
-          disabled={disabled}
-          textValue={textValue}
-        > */}
-        <YStack
-          tag="li"
-          // @ts-ignore
-          role="option"
+        <SelectItemFrame
           aria-labelledby={textId}
           // `isFocused` caveat fixes stuttering in VoiceOver
           aria-selected={isSelected && isFocused}
@@ -511,7 +496,6 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
           //   if (event.key === ' ') event.preventDefault()
           // })}
         />
-        {/* </Collection.ItemSlot> */}
       </SelectItemContextProvider>
     )
   }
@@ -527,6 +511,7 @@ const ITEM_TEXT_NAME = 'SelectItemText'
 
 const SelectItemTextFrame = styled(Paragraph, {
   name: ITEM_TEXT_NAME,
+  cursor: 'default',
 })
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
@@ -594,6 +579,82 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
 SelectItemIndicator.displayName = ITEM_INDICATOR_NAME
 
 /* -------------------------------------------------------------------------------------------------
+ * SelectGroup
+ * -----------------------------------------------------------------------------------------------*/
+
+const GROUP_NAME = 'SelectGroup'
+
+type SelectGroupContextValue = { id: string }
+
+const [SelectGroupContextProvider, useSelectGroupContext] =
+  createSelectContext<SelectGroupContextValue>(GROUP_NAME)
+
+const SelectGroupFrame = styled(YStack, {
+  name: GROUP_NAME,
+  width: '100%',
+})
+
+type SelectGroupProps = GetProps<typeof SelectGroupFrame>
+
+const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
+  (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
+    const { __scopeSelect, ...groupProps } = props
+    const groupId = useId()
+    return (
+      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
+        <SelectGroupFrame
+          // @ts-ignore
+          role="group"
+          aria-labelledby={groupId}
+          {...groupProps}
+          ref={forwardedRef}
+        />
+      </SelectGroupContextProvider>
+    )
+  }
+)
+
+SelectGroup.displayName = GROUP_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * SelectLabel
+ * -----------------------------------------------------------------------------------------------*/
+
+const LABEL_NAME = 'SelectLabel'
+
+const SelectLabelFrame = styled(SelectItemTextFrame, {
+  name: LABEL_NAME,
+
+  variants: {
+    size: {
+      '...size': (val, extras) => {
+        const size = getSelectItemSize(val, extras)
+        return {
+          ...size,
+          paddingTop: size.paddingVertical * 4,
+        }
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: '$4',
+  },
+})
+
+export type SelectLabelProps = GetProps<typeof SelectLabelFrame>
+
+const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
+  (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
+    const { __scopeSelect, ...labelProps } = props
+    const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
+    return <SelectLabelFrame id={groupContext.id} {...labelProps} ref={forwardedRef} />
+  }
+)
+
+SelectLabel.displayName = LABEL_NAME
+
+/* -------------------------------------------------------------------------------------------------
  * SelectScrollUpButton
  * -----------------------------------------------------------------------------------------------*/
 
@@ -655,6 +716,7 @@ const SelectScrollButtonImpl = React.forwardRef<
   )
   const intervalRef = React.useRef<any>()
   const loopingRef = React.useRef(false)
+  const isVisible = context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']
 
   const { x, y, reference, floating, strategy, update, refs } = useFloating({
     strategy: 'fixed',
@@ -670,7 +732,7 @@ const SelectScrollButtonImpl = React.forwardRef<
   }, [reference, floatingRef.current])
 
   React.useEffect(() => {
-    if (!refs.reference.current || !refs.floating.current) {
+    if (!refs.reference.current || !refs.floating.current || !isVisible) {
       return
     }
 
@@ -683,9 +745,9 @@ const SelectScrollButtonImpl = React.forwardRef<
       loopingRef.current = false
       cleanup()
     }
-  }, [update, refs.floating, refs.reference])
+  }, [isVisible, update, refs.floating, refs.reference])
 
-  if (!context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']) {
+  if (!isVisible) {
     return null
   }
 
@@ -708,8 +770,6 @@ const SelectScrollButtonImpl = React.forwardRef<
       forceUpdate()
     }
   }
-
-  console.log('gogo', x, y)
 
   return (
     <YStack
@@ -794,8 +854,6 @@ export const Select = withStaticProperties(
       onChange: onValueChange,
     })
 
-    console.log('value', value)
-
     const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
     const selectedIndexRef = React.useRef<number | null>(null)
     const activeIndexRef = React.useRef<number | null>(null)
@@ -813,6 +871,8 @@ export const Select = withStaticProperties(
         )
       ) ?? []),
     ])
+
+    console.log('value', value, scrollTop)
 
     const [selectedIndex, setSelectedIndex] = React.useState(
       Math.max(0, listContentRef.current.indexOf(value))
@@ -947,8 +1007,6 @@ export const Select = withStaticProperties(
       floatingRef.current &&
       scrollTop <
         floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
-
-    console.log('show?', { showUpArrow, showDownArrow })
 
     const interactions = useInteractions([
       useClick(context, { pointerDown: true }),

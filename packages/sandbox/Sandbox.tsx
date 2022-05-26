@@ -48,7 +48,7 @@ export const Sandbox = () => {
             <Select.Content>
               <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
 
-              <Select.Viewport>
+              <Select.Viewport minWidth={200}>
                 <Select.Group>
                   <Select.Label>Fruits</Select.Label>
                   <Select.Item value="apple" index={0}>
@@ -60,23 +60,20 @@ export const Sandbox = () => {
                   <Select.Item value="blueberry" index={2}>
                     <Select.ItemText>Blueberry</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="banana" index={1}>
-                    <Select.ItemText>Banana</Select.ItemText>
+                  <Select.Item value="berry" index={1}>
+                    <Select.ItemText>Berry</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="banana" index={1}>
-                    <Select.ItemText>Banana</Select.ItemText>
+                  <Select.Item value="strawberry" index={1}>
+                    <Select.ItemText>Strawberry</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="banana" index={1}>
-                    <Select.ItemText>Banana</Select.ItemText>
+                  <Select.Item value="kiwi" index={1}>
+                    <Select.ItemText>Kiwi</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="banana" index={1}>
-                    <Select.ItemText>Banana</Select.ItemText>
+                  <Select.Item value="grap" index={1}>
+                    <Select.ItemText>Grap</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="banana" index={1}>
-                    <Select.ItemText>Banana</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="banana" index={1}>
-                    <Select.ItemText>Banana</Select.ItemText>
+                  <Select.Item value="orange" index={1}>
+                    <Select.ItemText>Orange</Select.ItemText>
                   </Select.Item>
                 </Select.Group>
               </Select.Viewport>
