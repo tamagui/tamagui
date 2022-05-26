@@ -20,6 +20,7 @@ import {
 } from '@floating-ui/react-dom-interactions'
 import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
 import { usePrevious } from '@radix-ui/react-use-previous'
+import { Button, ButtonProps } from '@tamagui/button'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -84,6 +85,7 @@ interface SelectContextValue {
   activeIndex: number | null
   setActiveIndex: (index: number | null) => void
   listRef: React.MutableRefObject<Array<HTMLLIElement | null>>
+  floatingRef: React.MutableRefObject<HTMLElement | null>
   open: boolean
   setOpen: (open: boolean) => void
   onChange: (value: string) => void
@@ -96,6 +98,8 @@ interface SelectContextValue {
   canScrollUp: boolean
   canScrollDown: boolean
   floatingContext: FloatingContext<ReferenceType>
+  increaseHeight: (floating: HTMLElement, amount?: any) => number | undefined
+  forceUpdate: React.DispatchWithoutAction
   interactions: {
     getReferenceProps: (userProps?: React.HTMLProps<Element> | undefined) => any
     getFloatingProps: (userProps?: React.HTMLProps<HTMLElement> | undefined) => any
@@ -141,16 +145,7 @@ const SELECTION_KEYS = [' ', 'Enter']
 
 const TRIGGER_NAME = 'SelectTrigger'
 
-export type SelectTriggerProps = YStackProps
-
-const SelectTriggerFrame = styled(XStack, {
-  name: TRIGGER_NAME,
-  tag: 'button',
-  // @ts-ignore
-  role: 'combobox',
-  backgroundColor: 'transparent',
-  borderWidth: 0,
-})
+export type SelectTriggerProps = ButtonProps
 
 export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps>(
   (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
@@ -168,7 +163,8 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
     // const labelledBy = ariaLabelledby || labelId
 
     return (
-      <SelectTriggerFrame
+      <Button
+        componentName={TRIGGER_NAME}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
@@ -192,7 +188,7 @@ SelectTrigger.displayName = TRIGGER_NAME
 
 const VALUE_NAME = 'SelectValue'
 
-const SelectValueFrame = styled(XStack, {
+const SelectValueFrame = styled(Paragraph, {
   name: VALUE_NAME,
 })
 
@@ -549,14 +545,6 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
       // itemContext.isSelected ? contentContext.onSelectedItemTextChange : undefined
     )
 
-    console.log(
-      'item yo',
-      itemTextProps,
-      itemContext.isSelected,
-      context.valueNode,
-      context.valueNodeHasChildren
-    )
-
     return (
       <>
         <SelectItemTextFrame id={itemContext.textId} {...itemTextProps} ref={composedRefs} />
@@ -611,45 +599,21 @@ SelectItemIndicator.displayName = ITEM_INDICATOR_NAME
 
 const SCROLL_UP_BUTTON_NAME = 'SelectScrollUpButton'
 
-type SelectScrollUpButtonElement = SelectScrollButtonImplElement
-interface SelectScrollUpButtonProps extends Omit<SelectScrollButtonImplProps, 'onAutoScroll'> {}
+interface SelectScrollButtonProps
+  extends Omit<SelectScrollButtonImplProps, 'dir' | 'componentName'> {}
 
-const SelectScrollUpButton = React.forwardRef<
-  SelectScrollUpButtonElement,
-  SelectScrollUpButtonProps
->((props: ScopedProps<SelectScrollUpButtonProps>, forwardedRef) => {
-  const context = useSelectContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect)
-  const composedRefs = useComposedRefs(
-    forwardedRef
-    // contentContext.onScrollButtonChange
-  )
-
-  // useLayoutEffect(() => {
-  //   if (contentContext.viewport && contentContext.isPositioned) {
-  //     const viewport = contentContext.viewport
-  //     function handleScroll() {
-  //       const canScrollUp = viewport.scrollTop > 0
-  //       setCanScrollUp(canScrollUp)
-  //     }
-  //     handleScroll()
-  //     viewport.addEventListener('scroll', handleScroll)
-  //     return () => viewport.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [contentContext.viewport, contentContext.isPositioned])
-
-  return context.canScrollUp ? (
-    <SelectScrollButtonImpl
-      {...props}
-      ref={composedRefs}
-      onAutoScroll={() => {
-        // const { viewport, selectedItem } = contentContext
-        // if (viewport && selectedItem) {
-        //   viewport.scrollTop = viewport.scrollTop - selectedItem.offsetHeight
-        // }
-      }}
-    />
-  ) : null
-})
+const SelectScrollUpButton = React.forwardRef<TamaguiElement, SelectScrollButtonProps>(
+  (props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        componentName={SCROLL_UP_BUTTON_NAME}
+        {...props}
+        dir="up"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
@@ -659,93 +623,118 @@ SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
 const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 
-type SelectScrollDownButtonElement = SelectScrollButtonImplElement
-interface SelectScrollDownButtonProps extends Omit<SelectScrollButtonImplProps, 'onAutoScroll'> {}
-
-const SelectScrollDownButton = React.forwardRef<
-  SelectScrollDownButtonElement,
-  SelectScrollDownButtonProps
->((props: ScopedProps<SelectScrollDownButtonProps>, forwardedRef) => {
-  // const contentContext = useSelectContentContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect)
-  const [canScrollDown, setCanScrollDown] = React.useState(false)
-  const composedRefs = useComposedRefs(
-    forwardedRef
-    // contentContext.onScrollButtonChange
-  )
-
-  // useLayoutEffect(() => {
-  //   if (contentContext.viewport && contentContext.isPositioned) {
-  //     const viewport = contentContext.viewport
-  //     function handleScroll() {
-  //       const maxScroll = viewport.scrollHeight - viewport.clientHeight
-  //       // we use Math.ceil here because if the UI is zoomed-in
-  //       // `scrollTop` is not always reported as an integer
-  //       const canScrollDown = Math.ceil(viewport.scrollTop) < maxScroll
-  //       setCanScrollDown(canScrollDown)
-  //     }
-  //     handleScroll()
-  //     viewport.addEventListener('scroll', handleScroll)
-  //     return () => viewport.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [contentContext.viewport, contentContext.isPositioned])
-
-  return canScrollDown ? (
-    <SelectScrollButtonImpl
-      {...props}
-      ref={composedRefs}
-      onAutoScroll={() => {
-        // const { viewport, selectedItem } = contentContext
-        // if (viewport && selectedItem) {
-        //   viewport.scrollTop = viewport.scrollTop + selectedItem.offsetHeight
-        // }
-      }}
-    />
-  ) : null
-})
+const SelectScrollDownButton = React.forwardRef<TamaguiElement, SelectScrollButtonProps>(
+  (props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        componentName={SCROLL_DOWN_BUTTON_NAME}
+        {...props}
+        dir="down"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 
 type SelectScrollButtonImplElement = TamaguiElement
 interface SelectScrollButtonImplProps extends YStackProps {
-  onAutoScroll(): void
+  dir: 'up' | 'down'
+  componentName: string
 }
 
 const SelectScrollButtonImpl = React.forwardRef<
   SelectScrollButtonImplElement,
   SelectScrollButtonImplProps
 >((props: ScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
-  const { __scopeSelect, onAutoScroll, ...scrollIndicatorProps } = props
-  // const contentContext = useSelectContentContext('SelectScrollButton', __scopeSelect)
-  const autoScrollTimerRef = React.useRef<number | null>(null)
-
+  const { __scopeSelect, dir, componentName, ...scrollIndicatorProps } = props
+  const { floatingRef, increaseHeight, forceUpdate, ...context } = useSelectContext(
+    componentName,
+    __scopeSelect
+  )
   const intervalRef = React.useRef<any>()
   const loopingRef = React.useRef(false)
 
-  const dir = 'up' //TODO
   const { x, y, reference, floating, strategy, update, refs } = useFloating({
     strategy: 'fixed',
     placement: dir === 'up' ? 'top' : 'bottom',
-    middleware: [
-      // @ts-ignore
-      offset(({ floating }) => -floating.height),
-    ],
+    middleware: [offset(({ rects }) => -rects.floating.height)],
   })
+
+  const composedRefs = useComposedRefs(forwardedRef, floating)
+
+  React.useLayoutEffect(() => {
+    reference(floatingRef.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reference, floatingRef.current])
+
+  React.useEffect(() => {
+    if (!refs.reference.current || !refs.floating.current) {
+      return
+    }
+
+    const cleanup = autoUpdate(refs.reference.current, refs.floating.current, update, {
+      animationFrame: true,
+    })
+
+    return () => {
+      clearInterval(intervalRef.current)
+      loopingRef.current = false
+      cleanup()
+    }
+  }, [update, refs.floating, refs.reference])
+
+  if (!context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']) {
+    return null
+  }
+
+  const handleScrollArrowChange = () => {
+    const floating = floatingRef.current
+    const isUp = dir === 'up'
+    if (floating) {
+      const value = isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY
+      const multi =
+        (isUp && floating.scrollTop <= SCROLL_ARROW_THRESHOLD * 2) ||
+        (!isUp &&
+          floating.scrollTop >=
+            floating.scrollHeight - floating.clientHeight - SCROLL_ARROW_THRESHOLD * 2)
+          ? 2
+          : 1
+      floating.scrollTop += multi * (isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY)
+
+      increaseHeight(floating, multi === 2 ? value * 2 : value)
+      // Ensure derived data (scroll arrows) is fresh
+      forceUpdate()
+    }
+  }
+
+  console.log('gogo', x, y)
 
   return (
     <YStack
+      ref={composedRefs}
+      componentName={componentName}
       aria-hidden
       {...scrollIndicatorProps}
-      ref={forwardedRef}
-      // style={{ flexShrink: 0, ...scrollIndicatorProps.style }}
-      // onPointerMove={composeEventHandlers(scrollIndicatorProps.onPointerMove, () => {
-      //   contentContext.onItemLeave()
-      //   if (autoScrollTimerRef.current === null) {
-      //     autoScrollTimerRef.current = window.setInterval(onAutoScroll, 50)
-      //   }
-      // })}
-      // onPointerLeave={composeEventHandlers(scrollIndicatorProps.onPointerLeave, () => {
-      //   clearAutoScrollTimer()
-      // })}
+      // @ts-expect-error
+      position={strategy}
+      left={x || 0}
+      top={y || 0}
+      width={`calc(${(floatingRef.current?.offsetWidth ?? 0) - 2}px)`}
+      background={`linear-gradient(to ${
+        dir === 'up' ? 'bottom' : 'top'
+      }, #29282b 50%, rgba(53, 54, 55, 0.01))`}
+      onPointerMove={() => {
+        if (!loopingRef.current) {
+          intervalRef.current = setInterval(handleScrollArrowChange, 1000 / 60)
+          loopingRef.current = true
+        }
+      }}
+      onPointerLeave={() => {
+        loopingRef.current = false
+        clearInterval(intervalRef.current)
+      }}
     />
   )
 })
@@ -959,6 +948,8 @@ export const Select = withStaticProperties(
       scrollTop <
         floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
 
+    console.log('show?', { showUpArrow, showDownArrow })
+
     const interactions = useInteractions([
       useClick(context, { pointerDown: true }),
       useRole(context, { role: 'listbox' }),
@@ -1022,26 +1013,6 @@ export const Select = withStaticProperties(
       },
       [middlewareType]
     )
-
-    const handleScrollArrowChange = (dir: 'up' | 'down') => () => {
-      const floating = floatingRef.current
-      const isUp = dir === 'up'
-      if (floating) {
-        const value = isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY
-        const multi =
-          (isUp && floating.scrollTop <= SCROLL_ARROW_THRESHOLD * 2) ||
-          (!isUp &&
-            floating.scrollTop >=
-              floating.scrollHeight - floating.clientHeight - SCROLL_ARROW_THRESHOLD * 2)
-            ? 2
-            : 1
-        floating.scrollTop += multi * (isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY)
-
-        increaseHeight(floating, multi === 2 ? value * 2 : value)
-        // Ensure derived data (scroll arrows) is fresh
-        forceUpdate()
-      }
-    }
 
     const touchPageYRef = React.useRef<number | null>(null)
 
@@ -1278,6 +1249,9 @@ export const Select = withStaticProperties(
     return (
       <SelectProvider
         scope={__scopeSelect}
+        increaseHeight={increaseHeight}
+        forceUpdate={forceUpdate}
+        floatingRef={floatingRef}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
         valueNodeHasChildren={valueNodeHasChildren}
@@ -1325,8 +1299,8 @@ export const Select = withStaticProperties(
         }}
         floatingContext={context}
         activeIndex={0}
-        canScrollDown
-        canScrollUp
+        canScrollDown={!!showDownArrow}
+        canScrollUp={!!showUpArrow}
         controlledScrolling
         dataRef={null as any}
         listRef={listItemsRef}

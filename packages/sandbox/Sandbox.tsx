@@ -41,11 +41,8 @@ export const Sandbox = () => {
       >
         <YStack space ai="center">
           <Select defaultValue="blueberry">
-            <Select.Trigger>
+            <Select.Trigger iconAfter={ChevronDown}>
               <Select.Value placeholder="Something" />
-              <Select.Icon>
-                <ChevronDown />
-              </Select.Icon>
             </Select.Trigger>
 
             <Select.Content>
@@ -62,6 +59,24 @@ export const Sandbox = () => {
                   </Select.Item>
                   <Select.Item value="blueberry" index={2}>
                     <Select.ItemText>Blueberry</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="banana" index={1}>
+                    <Select.ItemText>Banana</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="banana" index={1}>
+                    <Select.ItemText>Banana</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="banana" index={1}>
+                    <Select.ItemText>Banana</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="banana" index={1}>
+                    <Select.ItemText>Banana</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="banana" index={1}>
+                    <Select.ItemText>Banana</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="banana" index={1}>
+                    <Select.ItemText>Banana</Select.ItemText>
                   </Select.Item>
                 </Select.Group>
               </Select.Viewport>
