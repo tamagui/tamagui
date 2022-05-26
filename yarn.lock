@@ -3509,6 +3509,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/button@^1.0.1-beta.37, @tamagui/button@workspace:packages/button":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/button@workspace:packages/button"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.37
+    "@tamagui/core": ^1.0.1-beta.37
+    "@tamagui/font-size": ^1.0.1-beta.37
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/card@^1.0.1-beta.37, @tamagui/card@workspace:packages/card":
   version: 0.0.0-use.local
   resolution: "@tamagui/card@workspace:packages/card"
@@ -3684,6 +3699,20 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.37
     "@tamagui/core": ^1.0.1-beta.37
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/font-size@^1.0.1-beta.37, @tamagui/font-size@workspace:packages/font-size":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/font-size@workspace:packages/font-size"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.37
+    "@tamagui/core": ^1.0.1-beta.37
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -3920,6 +3949,7 @@ __metadata:
     "@radix-ui/react-use-callback-ref": ^0.1.0
     "@radix-ui/react-use-previous": ^0.1.1
     "@tamagui/build": ^1.0.1-beta.37
+    "@tamagui/button": ^1.0.1-beta.37
     "@tamagui/compose-refs": ^1.0.1-beta.37
     "@tamagui/core": ^1.0.1-beta.37
     "@tamagui/create-context": ^1.0.1-beta.37
@@ -17845,12 +17875,14 @@ __metadata:
     "@react-native-community/blur": ^3.6.0
     "@tamagui/animate-presence": ^1.0.1-beta.37
     "@tamagui/build": ^1.0.1-beta.37
+    "@tamagui/button": ^1.0.1-beta.37
     "@tamagui/card": ^1.0.1-beta.37
     "@tamagui/compose-refs": ^1.0.1-beta.37
     "@tamagui/core": ^1.0.1-beta.37
     "@tamagui/create-context": ^1.0.1-beta.37
     "@tamagui/expo-linear-gradient": ^11.2.8
     "@tamagui/fake-react-native": ^1.0.1-beta.37
+    "@tamagui/font-size": ^1.0.1-beta.37
     "@tamagui/helpers": ^1.0.1-beta.37
     "@tamagui/popover": ^1.0.1-beta.37
     "@tamagui/popper": ^1.0.1-beta.37

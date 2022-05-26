@@ -2,6 +2,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { ChevronDown } from '@tamagui/feather-icons'
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
@@ -40,25 +41,39 @@ export const Sandbox = () => {
       >
         <YStack space ai="center">
           <Select defaultValue="blueberry">
-            <Select.Trigger>
+            <Select.Trigger iconAfter={ChevronDown}>
               <Select.Value placeholder="Something" />
-              <Select.Icon></Select.Icon>
             </Select.Trigger>
 
             <Select.Content>
               <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
 
-              <Select.Viewport>
+              <Select.Viewport minWidth={200}>
                 <Select.Group>
                   <Select.Label>Fruits</Select.Label>
-                  <Select.Item value="apple">
+                  <Select.Item value="apple" index={0}>
                     <Select.ItemText>Apple</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="banana">
+                  <Select.Item value="banana" index={1}>
                     <Select.ItemText>Banana</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="blueberry">
+                  <Select.Item value="blueberry" index={2}>
                     <Select.ItemText>Blueberry</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="berry" index={3}>
+                    <Select.ItemText>Berry</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="strawberry" index={4}>
+                    <Select.ItemText>Strawberry</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="kiwi" index={5}>
+                    <Select.ItemText>Kiwi</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="grap" index={6}>
+                    <Select.ItemText>Grap</Select.ItemText>
+                  </Select.Item>
+                  <Select.Item value="orange" index={7}>
+                    <Select.ItemText>Orange</Select.ItemText>
                   </Select.Item>
                 </Select.Group>
               </Select.Viewport>

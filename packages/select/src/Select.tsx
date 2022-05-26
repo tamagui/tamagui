@@ -20,11 +20,16 @@ import {
 } from '@floating-ui/react-dom-interactions'
 import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
 import { usePrevious } from '@radix-ui/react-use-previous'
+import { Button, ButtonProps } from '@tamagui/button'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  SizeTokens,
   Text,
+  VariantSpreadExtras,
+  VariantSpreadFunction,
   composeEventHandlers,
+  getVariableValue,
   styled,
   useIsomorphicLayoutEffect,
   withStaticProperties,
@@ -39,7 +44,7 @@ import { clamp } from '@tamagui/helpers'
 // import { useLabelContext } from '@tamagui/react-label'
 import { Portal } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
-import { XStack, YStack, YStackProps } from '@tamagui/stacks'
+import { ThemeableStack, XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 // import { Primitive } from '@tamagui/react-primitive'
 // import type * as Radix from '@tamagui/react-primitive'
@@ -66,6 +71,14 @@ function getVisualOffsetTop() {
   return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
 }
 
+const getSelectItemSize = (val: SizeTokens, { tokens }: VariantSpreadExtras<any>) => {
+  const padding = getVariableValue(tokens.size[val])
+  return {
+    paddingHorizontal: padding / 2,
+    paddingVertical: padding / 4,
+  }
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SelectContext
  * -----------------------------------------------------------------------------------------------*/
@@ -84,6 +97,7 @@ interface SelectContextValue {
   activeIndex: number | null
   setActiveIndex: (index: number | null) => void
   listRef: React.MutableRefObject<Array<HTMLLIElement | null>>
+  floatingRef: React.MutableRefObject<HTMLElement | null>
   open: boolean
   setOpen: (open: boolean) => void
   onChange: (value: string) => void
@@ -96,28 +110,13 @@ interface SelectContextValue {
   canScrollUp: boolean
   canScrollDown: boolean
   floatingContext: FloatingContext<ReferenceType>
+  increaseHeight: (floating: HTMLElement, amount?: any) => number | undefined
+  forceUpdate: React.DispatchWithoutAction
   interactions: {
     getReferenceProps: (userProps?: React.HTMLProps<Element> | undefined) => any
     getFloatingProps: (userProps?: React.HTMLProps<HTMLElement> | undefined) => any
     getItemProps: (userProps?: React.HTMLProps<HTMLElement> | undefined) => any
   }
-
-  // gather elements
-  setElement(
-    type:
-      | 'trigger'
-      | 'triggerIcon'
-      | 'triggerValue'
-      | 'content'
-      | 'scrollUp'
-      | 'scrollDown'
-      | 'group'
-      | 'groupLabel'
-      | 'item'
-      | 'itemText'
-      | 'itemIndicator',
-    value: React.ReactElement
-  ): void
 }
 
 type ScopedProps<P> = P & { __scopeSelect?: Scope }
@@ -141,16 +140,7 @@ const SELECTION_KEYS = [' ', 'Enter']
 
 const TRIGGER_NAME = 'SelectTrigger'
 
-export type SelectTriggerProps = YStackProps
-
-const SelectTriggerFrame = styled(XStack, {
-  name: TRIGGER_NAME,
-  tag: 'button',
-  // @ts-ignore
-  role: 'combobox',
-  backgroundColor: 'transparent',
-  borderWidth: 0,
-})
+export type SelectTriggerProps = ButtonProps
 
 export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps>(
   (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
@@ -168,7 +158,8 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
     // const labelledBy = ariaLabelledby || labelId
 
     return (
-      <SelectTriggerFrame
+      <Button
+        componentName={TRIGGER_NAME}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
@@ -192,7 +183,7 @@ SelectTrigger.displayName = TRIGGER_NAME
 
 const VALUE_NAME = 'SelectValue'
 
-const SelectValueFrame = styled(XStack, {
+const SelectValueFrame = styled(Paragraph, {
   name: VALUE_NAME,
 })
 
@@ -254,7 +245,11 @@ const SelectContent = React.forwardRef<SelectContentElement, SelectContentProps>
     const context = useSelectContext(CONTENT_NAME, __scopeSelect)
     return (
       <FloatingPortal>
-        {context.open && <FloatingOverlay lockScroll>{children}</FloatingOverlay>}
+        {context.open ? (
+          <FloatingOverlay lockScroll>{children}</FloatingOverlay>
+        ) : (
+          <div style={{ display: 'none' }}>{children}</div>
+        )}
       </FloatingPortal>
     )
   }
@@ -266,8 +261,24 @@ const SelectContent = React.forwardRef<SelectContentElement, SelectContentProps>
 
 const VIEWPORT_NAME = 'SelectViewport'
 
-export const SelectViewportFrame = styled(YStack, {
+export const SelectViewportFrame = styled(ThemeableStack, {
   name: VIEWPORT_NAME,
+  backgroundColor: '$background',
+  elevate: true,
+
+  variants: {
+    size: {
+      '...size': (val, { tokens }) => {
+        return {
+          borderRadius: tokens.size[val] ?? val,
+        }
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: '$2',
+  },
 })
 
 export type SelectViewportProps = GetProps<typeof SelectViewportFrame>
@@ -290,15 +301,17 @@ const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
           }}
         />
         <FloatingFocusManager context={context.floatingContext} preventTabbing>
-          <SelectViewportFrame
-            data-radix-select-viewport=""
-            // @ts-ignore
-            role="presentation"
-            {...viewportProps}
-            ref={composedRefs}
-          >
-            <div {...context.interactions.getFloatingProps()}>{children}</div>
-          </SelectViewportFrame>
+          <div {...context.interactions.getFloatingProps()}>
+            <SelectViewportFrame
+              data-radix-select-viewport=""
+              // @ts-ignore
+              role="presentation"
+              {...viewportProps}
+              ref={composedRefs}
+            >
+              {children}
+            </SelectViewportFrame>
+          </div>
         </FloatingFocusManager>
       </>
     )
@@ -306,62 +319,6 @@ const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
 )
 
 SelectViewport.displayName = VIEWPORT_NAME
-
-/* -------------------------------------------------------------------------------------------------
- * SelectGroup
- * -----------------------------------------------------------------------------------------------*/
-
-const GROUP_NAME = 'SelectGroup'
-
-type SelectGroupContextValue = { id: string }
-
-const [SelectGroupContextProvider, useSelectGroupContext] =
-  createSelectContext<SelectGroupContextValue>(GROUP_NAME)
-
-const SelectGroupFrame = styled(YStack, {
-  name: GROUP_NAME,
-})
-
-type SelectGroupProps = GetProps<typeof SelectGroupFrame>
-
-const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
-  (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
-    const { __scopeSelect, ...groupProps } = props
-    const groupId = useId()
-    return (
-      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
-        <SelectGroupFrame
-          // @ts-ignore
-          role="group"
-          aria-labelledby={groupId}
-          {...groupProps}
-          ref={forwardedRef}
-        />
-      </SelectGroupContextProvider>
-    )
-  }
-)
-
-SelectGroup.displayName = GROUP_NAME
-
-/* -------------------------------------------------------------------------------------------------
- * SelectLabel
- * -----------------------------------------------------------------------------------------------*/
-
-const LABEL_NAME = 'SelectLabel'
-
-type SelectLabelElement = TamaguiElement
-interface SelectLabelProps extends YStackProps {}
-
-const SelectLabel = React.forwardRef<SelectLabelElement, SelectLabelProps>(
-  (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
-    const { __scopeSelect, ...labelProps } = props
-    const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
-    return <YStack id={groupContext.id} {...labelProps} ref={forwardedRef} />
-  }
-)
-
-SelectLabel.displayName = LABEL_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItem
@@ -379,7 +336,6 @@ type SelectItemContextValue = {
 const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-type SelectItemElement = TamaguiElement
 interface SelectItemProps extends YStackProps {
   value: string
   index: number
@@ -387,7 +343,33 @@ interface SelectItemProps extends YStackProps {
   textValue?: string
 }
 
-const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
+const SelectItemFrame = styled(YStack, {
+  name: ITEM_NAME,
+  tag: 'li',
+  // @ts-ignore
+  role: 'option',
+  width: '100%',
+
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+  },
+
+  focusStyle: {
+    backgroundColor: '$backgroundFocus',
+  },
+
+  variants: {
+    size: {
+      '...size': getSelectItemSize,
+    },
+  },
+
+  defaultVariants: {
+    size: '$4',
+  },
+})
+
+const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
     const {
       __scopeSelect,
@@ -398,14 +380,9 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
       ...itemProps
     } = props
     const context = useSelectContext(ITEM_NAME, __scopeSelect)
-    // const contentContext = useSelectContentContext(ITEM_NAME, __scopeSelect)
     const isSelected = context.value === value
     const [textValue, setTextValue] = React.useState(textValueProp ?? '')
     const [isFocused, setIsFocused] = React.useState(false)
-    const composedRefs = useComposedRefs(
-      forwardedRef
-      // isSelected ? context.onSelectedItemChange : undefined
-    )
     const textId = useId()
 
     const {
@@ -420,10 +397,22 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
       dataRef,
     } = context
 
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      (node) => {
+        console.log('node', node)
+        if (node instanceof HTMLElement) {
+          listRef.current[index] = node
+        }
+      }
+      // isSelected ? context.onSelectedItemChange : undefined
+    )
+
     const timeoutRef = React.useRef<any>()
     const [allowMouseUp, setAllowMouseUp] = React.useState(false)
 
     function handleSelect() {
+      console.log('handling select!')
       setSelectedIndex(index)
       onChange(value)
       setOpen(false)
@@ -445,11 +434,18 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
     }, [open, index, setActiveIndex, selectedIndex])
 
     function handleKeyDown(event: React.KeyboardEvent) {
+      console.log('item key down')
       if (event.key === 'Enter' || (event.key === ' ' && !dataRef.current.typing)) {
         event.preventDefault()
         handleSelect()
       }
     }
+
+    const selectItemProps = context.interactions.getItemProps({
+      onClick: allowMouseUp ? handleSelect : undefined,
+      onMouseUp: allowMouseUp ? handleSelect : undefined,
+      onKeyDown: handleKeyDown,
+    })
 
     return (
       <SelectItemContextProvider
@@ -461,16 +457,8 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
           // setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
         }, [])}
       >
-        {/* <Collection.ItemSlot
-          scope={__scopeSelect}
-          value={value}
-          disabled={disabled}
-          textValue={textValue}
-        > */}
-        <YStack
-          tag="li"
-          // @ts-ignore
-          role="option"
+        <SelectItemFrame
+          ref={composedRefs}
           aria-labelledby={textId}
           // `isFocused` caveat fixes stuttering in VoiceOver
           aria-selected={isSelected && isFocused}
@@ -479,38 +467,8 @@ const SelectItem = React.forwardRef<SelectItemElement, SelectItemProps>(
           data-disabled={disabled ? '' : undefined}
           tabIndex={disabled ? undefined : -1}
           {...itemProps}
-          {...context.interactions.getItemProps({
-            onClick: allowMouseUp ? handleSelect : undefined,
-            onMouseUp: allowMouseUp ? handleSelect : undefined,
-            onKeyDown: handleKeyDown,
-          })}
-          ref={composedRefs}
-          // onFocus={composeEventHandlers(itemProps.onFocus, () => setIsFocused(true))}
-          // onBlur={composeEventHandlers(itemProps.onBlur, () => setIsFocused(false))}
-          // onPointerUp={composeEventHandlers(itemProps.onPointerUp, handleSelect)}
-          // onPointerMove={composeEventHandlers(itemProps.onPointerMove, (event) => {
-          //   if (disabled) {
-          //     contentContext.onItemLeave()
-          //   } else {
-          //     // even though safari doesn't support this option, it's acceptable
-          //     // as it only means it might scroll a few pixels when using the pointer.
-          //     event.currentTarget.focus({ preventScroll: true })
-          //   }
-          // })}
-          // onPointerLeave={composeEventHandlers(itemProps.onPointerLeave, (event) => {
-          //   if (event.currentTarget === document.activeElement) {
-          //     contentContext.onItemLeave()
-          //   }
-          // })}
-          // onKeyDown={composeEventHandlers(itemProps.onKeyDown, (event) => {
-          //   const isTypingAhead = contentContext.searchRef.current !== ''
-          //   if (isTypingAhead && event.key === ' ') return
-          //   if (SELECTION_KEYS.includes(event.key)) handleSelect()
-          //   // prevent page scroll if using the space key to select an item
-          //   if (event.key === ' ') event.preventDefault()
-          // })}
+          {...selectItemProps}
         />
-        {/* </Collection.ItemSlot> */}
       </SelectItemContextProvider>
     )
   }
@@ -526,6 +484,7 @@ const ITEM_TEXT_NAME = 'SelectItemText'
 
 const SelectItemTextFrame = styled(Paragraph, {
   name: ITEM_TEXT_NAME,
+  cursor: 'default',
 })
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
@@ -593,50 +552,102 @@ const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicator
 SelectItemIndicator.displayName = ITEM_INDICATOR_NAME
 
 /* -------------------------------------------------------------------------------------------------
+ * SelectGroup
+ * -----------------------------------------------------------------------------------------------*/
+
+const GROUP_NAME = 'SelectGroup'
+
+type SelectGroupContextValue = { id: string }
+
+const [SelectGroupContextProvider, useSelectGroupContext] =
+  createSelectContext<SelectGroupContextValue>(GROUP_NAME)
+
+const SelectGroupFrame = styled(YStack, {
+  name: GROUP_NAME,
+  width: '100%',
+})
+
+type SelectGroupProps = GetProps<typeof SelectGroupFrame>
+
+const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
+  (props: ScopedProps<SelectGroupProps>, forwardedRef) => {
+    const { __scopeSelect, ...groupProps } = props
+    const groupId = useId()
+    return (
+      <SelectGroupContextProvider scope={__scopeSelect} id={groupId || ''}>
+        <SelectGroupFrame
+          // @ts-ignore
+          role="group"
+          aria-labelledby={groupId}
+          {...groupProps}
+          ref={forwardedRef}
+        />
+      </SelectGroupContextProvider>
+    )
+  }
+)
+
+SelectGroup.displayName = GROUP_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * SelectLabel
+ * -----------------------------------------------------------------------------------------------*/
+
+const LABEL_NAME = 'SelectLabel'
+
+const SelectLabelFrame = styled(SelectItemTextFrame, {
+  name: LABEL_NAME,
+
+  variants: {
+    size: {
+      '...size': (val: SizeTokens, extras) => {
+        const size = getSelectItemSize(val, extras)
+        return {
+          ...size,
+          paddingTop: size.paddingVertical * 4,
+        }
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: '$4',
+  },
+})
+
+export type SelectLabelProps = GetProps<typeof SelectLabelFrame>
+
+const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
+  (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
+    const { __scopeSelect, ...labelProps } = props
+    const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
+    return <SelectLabelFrame id={groupContext.id} {...labelProps} ref={forwardedRef} />
+  }
+)
+
+SelectLabel.displayName = LABEL_NAME
+
+/* -------------------------------------------------------------------------------------------------
  * SelectScrollUpButton
  * -----------------------------------------------------------------------------------------------*/
 
 const SCROLL_UP_BUTTON_NAME = 'SelectScrollUpButton'
 
-type SelectScrollUpButtonElement = SelectScrollButtonImplElement
-interface SelectScrollUpButtonProps extends Omit<SelectScrollButtonImplProps, 'onAutoScroll'> {}
+interface SelectScrollButtonProps
+  extends Omit<SelectScrollButtonImplProps, 'dir' | 'componentName'> {}
 
-const SelectScrollUpButton = React.forwardRef<
-  SelectScrollUpButtonElement,
-  SelectScrollUpButtonProps
->((props: ScopedProps<SelectScrollUpButtonProps>, forwardedRef) => {
-  const context = useSelectContext(SCROLL_UP_BUTTON_NAME, props.__scopeSelect)
-  const composedRefs = useComposedRefs(
-    forwardedRef
-    // contentContext.onScrollButtonChange
-  )
-
-  // useLayoutEffect(() => {
-  //   if (contentContext.viewport && contentContext.isPositioned) {
-  //     const viewport = contentContext.viewport
-  //     function handleScroll() {
-  //       const canScrollUp = viewport.scrollTop > 0
-  //       setCanScrollUp(canScrollUp)
-  //     }
-  //     handleScroll()
-  //     viewport.addEventListener('scroll', handleScroll)
-  //     return () => viewport.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [contentContext.viewport, contentContext.isPositioned])
-
-  return context.canScrollUp ? (
-    <SelectScrollButtonImpl
-      {...props}
-      ref={composedRefs}
-      onAutoScroll={() => {
-        // const { viewport, selectedItem } = contentContext
-        // if (viewport && selectedItem) {
-        //   viewport.scrollTop = viewport.scrollTop - selectedItem.offsetHeight
-        // }
-      }}
-    />
-  ) : null
-})
+const SelectScrollUpButton = React.forwardRef<TamaguiElement, SelectScrollButtonProps>(
+  (props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        componentName={SCROLL_UP_BUTTON_NAME}
+        {...props}
+        dir="up"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
@@ -646,93 +657,117 @@ SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
 const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 
-type SelectScrollDownButtonElement = SelectScrollButtonImplElement
-interface SelectScrollDownButtonProps extends Omit<SelectScrollButtonImplProps, 'onAutoScroll'> {}
-
-const SelectScrollDownButton = React.forwardRef<
-  SelectScrollDownButtonElement,
-  SelectScrollDownButtonProps
->((props: ScopedProps<SelectScrollDownButtonProps>, forwardedRef) => {
-  // const contentContext = useSelectContentContext(SCROLL_DOWN_BUTTON_NAME, props.__scopeSelect)
-  const [canScrollDown, setCanScrollDown] = React.useState(false)
-  const composedRefs = useComposedRefs(
-    forwardedRef
-    // contentContext.onScrollButtonChange
-  )
-
-  // useLayoutEffect(() => {
-  //   if (contentContext.viewport && contentContext.isPositioned) {
-  //     const viewport = contentContext.viewport
-  //     function handleScroll() {
-  //       const maxScroll = viewport.scrollHeight - viewport.clientHeight
-  //       // we use Math.ceil here because if the UI is zoomed-in
-  //       // `scrollTop` is not always reported as an integer
-  //       const canScrollDown = Math.ceil(viewport.scrollTop) < maxScroll
-  //       setCanScrollDown(canScrollDown)
-  //     }
-  //     handleScroll()
-  //     viewport.addEventListener('scroll', handleScroll)
-  //     return () => viewport.removeEventListener('scroll', handleScroll)
-  //   }
-  // }, [contentContext.viewport, contentContext.isPositioned])
-
-  return canScrollDown ? (
-    <SelectScrollButtonImpl
-      {...props}
-      ref={composedRefs}
-      onAutoScroll={() => {
-        // const { viewport, selectedItem } = contentContext
-        // if (viewport && selectedItem) {
-        //   viewport.scrollTop = viewport.scrollTop + selectedItem.offsetHeight
-        // }
-      }}
-    />
-  ) : null
-})
+const SelectScrollDownButton = React.forwardRef<TamaguiElement, SelectScrollButtonProps>(
+  (props: ScopedProps<SelectScrollButtonProps>, forwardedRef) => {
+    return (
+      <SelectScrollButtonImpl
+        componentName={SCROLL_DOWN_BUTTON_NAME}
+        {...props}
+        dir="down"
+        ref={forwardedRef}
+      />
+    )
+  }
+)
 
 SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 
 type SelectScrollButtonImplElement = TamaguiElement
 interface SelectScrollButtonImplProps extends YStackProps {
-  onAutoScroll(): void
+  dir: 'up' | 'down'
+  componentName: string
 }
 
 const SelectScrollButtonImpl = React.forwardRef<
   SelectScrollButtonImplElement,
   SelectScrollButtonImplProps
 >((props: ScopedProps<SelectScrollButtonImplProps>, forwardedRef) => {
-  const { __scopeSelect, onAutoScroll, ...scrollIndicatorProps } = props
-  // const contentContext = useSelectContentContext('SelectScrollButton', __scopeSelect)
-  const autoScrollTimerRef = React.useRef<number | null>(null)
-
+  const { __scopeSelect, dir, componentName, ...scrollIndicatorProps } = props
+  const { floatingRef, increaseHeight, forceUpdate, ...context } = useSelectContext(
+    componentName,
+    __scopeSelect
+  )
   const intervalRef = React.useRef<any>()
   const loopingRef = React.useRef(false)
+  const isVisible = context[dir === 'down' ? 'canScrollDown' : 'canScrollUp']
 
-  const dir = 'up' //TODO
   const { x, y, reference, floating, strategy, update, refs } = useFloating({
     strategy: 'fixed',
     placement: dir === 'up' ? 'top' : 'bottom',
-    middleware: [
-      // @ts-ignore
-      offset(({ floating }) => -floating.height),
-    ],
+    middleware: [offset(({ rects }) => -rects.floating.height)],
   })
+
+  const composedRefs = useComposedRefs(forwardedRef, floating)
+
+  React.useLayoutEffect(() => {
+    reference(floatingRef.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reference, floatingRef.current])
+
+  React.useEffect(() => {
+    if (!refs.reference.current || !refs.floating.current || !isVisible) {
+      return
+    }
+
+    const cleanup = autoUpdate(refs.reference.current, refs.floating.current, update, {
+      animationFrame: true,
+    })
+
+    return () => {
+      clearInterval(intervalRef.current)
+      loopingRef.current = false
+      cleanup()
+    }
+  }, [isVisible, update, refs.floating, refs.reference])
+
+  if (!isVisible) {
+    return null
+  }
+
+  const handleScrollArrowChange = () => {
+    const floating = floatingRef.current
+    const isUp = dir === 'up'
+    if (floating) {
+      const value = isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY
+      const multi =
+        (isUp && floating.scrollTop <= SCROLL_ARROW_THRESHOLD * 2) ||
+        (!isUp &&
+          floating.scrollTop >=
+            floating.scrollHeight - floating.clientHeight - SCROLL_ARROW_THRESHOLD * 2)
+          ? 2
+          : 1
+      floating.scrollTop += multi * (isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY)
+
+      increaseHeight(floating, multi === 2 ? value * 2 : value)
+      // Ensure derived data (scroll arrows) is fresh
+      forceUpdate()
+    }
+  }
 
   return (
     <YStack
+      ref={composedRefs}
+      componentName={componentName}
       aria-hidden
       {...scrollIndicatorProps}
-      ref={forwardedRef}
-      // style={{ flexShrink: 0, ...scrollIndicatorProps.style }}
-      // onPointerMove={composeEventHandlers(scrollIndicatorProps.onPointerMove, () => {
-      //   contentContext.onItemLeave()
-      //   if (autoScrollTimerRef.current === null) {
-      //     autoScrollTimerRef.current = window.setInterval(onAutoScroll, 50)
-      //   }
-      // })}
-      // onPointerLeave={composeEventHandlers(scrollIndicatorProps.onPointerLeave, () => {
-      //   clearAutoScrollTimer()
-      // })}
+      // @ts-expect-error
+      position={strategy}
+      left={x || 0}
+      top={y || 0}
+      width={`calc(${(floatingRef.current?.offsetWidth ?? 0) - 2}px)`}
+      background={`linear-gradient(to ${
+        dir === 'up' ? 'bottom' : 'top'
+      }, #29282b 50%, rgba(53, 54, 55, 0.01))`}
+      onPointerMove={() => {
+        if (!loopingRef.current) {
+          intervalRef.current = setInterval(handleScrollArrowChange, 1000 / 60)
+          loopingRef.current = true
+        }
+      }}
+      onPointerLeave={() => {
+        loopingRef.current = false
+        clearInterval(intervalRef.current)
+      }}
     />
   )
 })
@@ -792,8 +827,6 @@ export const Select = withStaticProperties(
       onChange: onValueChange,
     })
 
-    console.log('value', value)
-
     const [activeIndex, setActiveIndex] = React.useState<number | null>(null)
     const selectedIndexRef = React.useRef<number | null>(null)
     const activeIndexRef = React.useRef<number | null>(null)
@@ -801,7 +834,7 @@ export const Select = withStaticProperties(
 
     const [showArrows, setShowArrows] = React.useState(false)
     const [scrollTop, setScrollTop] = React.useState(0)
-    const listItemsRef = React.useRef<Array<HTMLLIElement | null>>([])
+    const listItemsRef = React.useRef<Array<HTMLElement | null>>([])
     const listContentRef = React.useRef([
       'Select...',
       ...(React.Children.map(children, (child) =>
@@ -946,6 +979,11 @@ export const Select = withStaticProperties(
       scrollTop <
         floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
 
+    console.log('Select', {
+      activeIndex,
+      selectedIndex,
+    })
+
     const interactions = useInteractions([
       useClick(context, { pointerDown: true }),
       useRole(context, { role: 'listbox' }),
@@ -1009,26 +1047,6 @@ export const Select = withStaticProperties(
       },
       [middlewareType]
     )
-
-    const handleScrollArrowChange = (dir: 'up' | 'down') => () => {
-      const floating = floatingRef.current
-      const isUp = dir === 'up'
-      if (floating) {
-        const value = isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY
-        const multi =
-          (isUp && floating.scrollTop <= SCROLL_ARROW_THRESHOLD * 2) ||
-          (!isUp &&
-            floating.scrollTop >=
-              floating.scrollHeight - floating.clientHeight - SCROLL_ARROW_THRESHOLD * 2)
-            ? 2
-            : 1
-        floating.scrollTop += multi * (isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY)
-
-        increaseHeight(floating, multi === 2 ? value * 2 : value)
-        // Ensure derived data (scroll arrows) is fresh
-        forceUpdate()
-      }
-    }
 
     const touchPageYRef = React.useRef<number | null>(null)
 
@@ -1201,6 +1219,12 @@ export const Select = withStaticProperties(
     ])
 
     React.useLayoutEffect(() => {
+      console.log(
+        'focusin',
+        selectedIndex,
+        listItemsRef.current[selectedIndex],
+        listItemsRef.current
+      )
       if (open && selectedIndex != null) {
         requestAnimationFrame(() => {
           listItemsRef.current[selectedIndex]?.focus({ preventScroll: true })
@@ -1224,36 +1248,6 @@ export const Select = withStaticProperties(
       return () => cancelAnimationFrame(frame)
     }, [open])
 
-    let optionIndex = 0
-    // const options = [
-    //   <ul key="default">
-    //     <Option value="default">Select...</Option>
-    //   </ul>,
-    //   ...(React.Children.map(
-    //     children,
-    //     (child) =>
-    //       React.isValidElement(child) && (
-    //         <ul
-    //           key={child.props.label}
-    //           role="group"
-    //           aria-labelledby={`floating-ui-select-${child.props.label}`}
-    //         >
-    //           <li
-    //             role="presentation"
-    //             id={`floating-ui-select-${child.props.label}`}
-    //             className="SelectGroupLabel"
-    //             aria-hidden="true"
-    //           >
-    //             {child.props.label}
-    //           </li>
-    //           {React.Children.map(child.props.children, (child) =>
-    //             React.cloneElement(child, { index: 1 + optionIndex++ })
-    //           )}
-    //         </ul>
-    //       )
-    //   ) ?? []),
-    // ]
-
     // We set this to true by default so that events bubble to forms without JS (SSR)
     // const isFormControl = trigger ? Boolean(trigger.closest('form')) : true
     // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
@@ -1265,6 +1259,9 @@ export const Select = withStaticProperties(
     return (
       <SelectProvider
         scope={__scopeSelect}
+        increaseHeight={increaseHeight}
+        forceUpdate={forceUpdate}
+        floatingRef={floatingRef}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
         valueNodeHasChildren={valueNodeHasChildren}
@@ -1311,25 +1308,20 @@ export const Select = withStaticProperties(
           },
         }}
         floatingContext={context}
-        activeIndex={0}
-        canScrollDown
-        canScrollUp
+        activeIndex={activeIndex}
+        canScrollDown={!!showDownArrow}
+        canScrollUp={!!showUpArrow}
         controlledScrolling
-        dataRef={null as any}
+        dataRef={context.dataRef}
         listRef={listItemsRef}
         onChange={setValue}
         selectedIndex={0}
-        setActiveIndex={() => {}}
-        setElement={() => {}}
-        setOpen={() => {}}
-        setSelectedIndex={() => {}}
+        setActiveIndex={setActiveIndex}
+        setOpen={setOpen}
+        setSelectedIndex={setSelectedIndex}
         value={value}
         // trigger={trigger}
         // onTriggerChange={setTrigger}
-        // valueNode={valueNode}
-        // onValueNodeChange={setValueNode}
-        // valueNodeHasChildren={valueNodeHasChildren}
-        // onValueNodeHasChildrenChange={setValueNodeHasChildren}
         // contentId={useId() || ''}
         // value={value}
         // onValueChange={setValue}
@@ -1375,3 +1367,5 @@ export const Select = withStaticProperties(
 
 // @ts-ignore
 Select.displayName = SELECT_NAME
+
+export { createSelectScope }
