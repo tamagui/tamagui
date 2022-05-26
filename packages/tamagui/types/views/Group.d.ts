@@ -1,5 +1,5 @@
-/// <reference types="react" />
 import { GetProps } from '@tamagui/core';
+import React from 'react';
 export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -26,7 +26,7 @@ export declare type GroupProps = GetProps<typeof GroupFrame> & {
     disabled?: boolean;
     vertical?: boolean;
 };
-export declare const Group: import("react").ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+export declare const Group: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
@@ -45,5 +45,5 @@ export declare const Group: import("react").ForwardRefExoticComponent<Omit<impor
     scrollable?: boolean | undefined;
     disabled?: boolean | undefined;
     vertical?: boolean | undefined;
-} & import("react").RefAttributes<unknown>>;
+} & React.RefAttributes<unknown>>;
 //# sourceMappingURL=Group.d.ts.map

@@ -18,7 +18,7 @@ export declare const LabelFrame: import("@tamagui/core").TamaguiComponent<Omit<i
     size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
 export declare type LabelProps = GetProps<typeof LabelFrame> & {
-    htmlFor: string;
+    htmlFor?: string;
 };
 export declare const Label: ReactComponentWithRef<LabelProps, HTMLButtonElement | View>;
 export declare const useLabelContext: (element?: HTMLElement | null | undefined) => string | undefined;
