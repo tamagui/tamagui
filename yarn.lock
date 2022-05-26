@@ -3778,6 +3778,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/next-theme@workspace:packages/next-theme":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/next-theme@workspace:packages/next-theme"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.40
+    "@tamagui/core": ^1.0.1-beta.40
+    react: "*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/ow@npm:^0.28.1":
   version: 0.28.1
   resolution: "@tamagui/ow@npm:0.28.1"

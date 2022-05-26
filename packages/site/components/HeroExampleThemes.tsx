@@ -1,4 +1,4 @@
-import { useTheme } from '@components/NextTheme'
+import { useTheme } from '@tamagui/next-theme'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Group, Theme, ThemeName, XStack, YStack, debounce } from 'tamagui'
 

@@ -1,5 +1,5 @@
-import { useTheme } from '@components/NextTheme'
 import { Monitor, Moon, Sun } from '@tamagui/feather-icons'
+import { useTheme } from '@tamagui/next-theme'
 import { useState } from 'react'
 import { Button, ButtonProps, TooltipSimple, useIsomorphicLayoutEffect } from 'tamagui'
 

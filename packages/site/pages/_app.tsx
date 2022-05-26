@@ -9,44 +9,22 @@ import '../app.css'
 
 import { DocsPage } from '@components/DocsPage'
 import { Footer } from '@components/Footer'
-import * as NextThemes from '@components/NextTheme'
 import { gtagUrl, renderSnippet } from '@lib/analytics'
+import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 import NextProgress from 'nextjs-progressbar'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
 import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
 
-globalThis['React'] = React
 Error.stackTraceLimit = Infinity
 
-const isChrome =
-  typeof document !== 'undefined' &&
-  process.env.NODE_ENV === 'development' &&
-  /Chrome/.test(navigator.userAgent) &&
-  /Google Inc/.test(navigator.vendor)
-if (isChrome) {
-  // log out CSS for debugging
-  const blocks = Tamagui.getCSS().split('}\n')
-  console.groupCollapsed('CSS')
-  for (const block of blocks) {
-    const title = block.slice(0, block.indexOf('{')).split(', ').join('\n')
-    console.groupCollapsed(title)
-    console.log(block)
-    console.groupEnd()
-  }
-  console.groupEnd()
-}
-
 export default function App(props: AppProps) {
-  const isClient = typeof document !== 'undefined'
-  const classes = isClient ? [...document.documentElement.classList] : []
-  const isDark = classes.includes('tui_dark')
-  const [theme, setTheme] = useState(isDark ? 'dark' : 'light')
+  const [theme, setTheme] = useRootTheme()
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {
@@ -65,21 +43,11 @@ export default function App(props: AppProps) {
         <Script dangerouslySetInnerHTML={{ __html: renderSnippet() || '' }} />
       </Head>
       <NextProgress height={1} options={{ showSpinner: false }} />
-      <NextThemes.ThemeProvider
-        enableSystem
-        disableTransitionOnChange
-        attribute="class"
-        defaultTheme="system"
-        value={{
-          dark: 'tui_dark',
-          light: 'tui_light',
-        }}
-        onChangeTheme={(x) => setTheme(x.replace('tui_', ''))}
-      >
+      <NextThemeProvider onChangeTheme={setTheme}>
         <Tamagui.Provider disableRootThemeClass defaultTheme={theme}>
           {contents}
         </Tamagui.Provider>
-      </NextThemes.ThemeProvider>
+      </NextThemeProvider>
     </>
   )
 }

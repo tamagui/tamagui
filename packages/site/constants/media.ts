@@ -7,6 +7,7 @@ export const media = {
   md: { maxWidth: 1020 },
   sm: { maxWidth: 800 },
   xs: { maxWidth: 660 },
+  xxs: { maxWidth: 390 },
   gtXs: { minWidth: 660 + 1 },
   gtSm: { minWidth: 800 + 1 },
   gtMd: { minWidth: 1020 + 1 },

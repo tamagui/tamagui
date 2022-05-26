@@ -175,6 +175,9 @@ See the [Next.js Guide](/docs/guides/next-js) for more details on setting up you
 Add `@tamagui/babel-plugin` to your `babel.config.js` plugins:
 
 ```js
+// only use babel-plugin for native:
+process.env.TAMAGUI_TARGET = 'native'
+
 module.exports = {
   plugins: [
     [
@@ -186,7 +189,11 @@ module.exports = {
         logTimings: true,
         disableExtraction: process.env.NODE_ENV === 'development',
       }
-    ]
+    ],
+    // be sure to set TAMAGUI_TARGET
+    ['transform-inline-environment-variables', {
+      include: 'TAMAGUI_TARGET'
+    }]
   ]
 }
 ```

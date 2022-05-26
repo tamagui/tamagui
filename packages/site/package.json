@@ -19,6 +19,7 @@
     "@tamagui/animations-reanimated": "^1.0.1-beta.40",
     "@tamagui/colors": "^1.0.1-beta.40",
     "@tamagui/drawer": "^1.0.1-beta.40",
+    "@tamagui/next-theme": "^1.0.1-beta.40",
     "@tamagui/feather-icons": "^1.0.1-beta.40",
     "@tamagui/font-fira-mono": "^1.0.1-beta.40",
     "@tamagui/font-inter": "^1.0.1-beta.40",

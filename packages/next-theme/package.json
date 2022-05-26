@@ -1,0 +1,31 @@
+{
+  "name": "@tamagui/next-theme",
+  "version": "1.0.1-beta.40",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.0.1-beta.40"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.40",
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

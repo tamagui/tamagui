@@ -110,7 +110,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
                 o={0.7}
                 hoverStyle={{ opacity: 1 }}
                 tag="a"
-                $sm={{
+                $xxs={{
                   display: 'none',
                 }}
               >
