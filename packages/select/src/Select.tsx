@@ -254,7 +254,11 @@ const SelectContent = React.forwardRef<SelectContentElement, SelectContentProps>
     const context = useSelectContext(CONTENT_NAME, __scopeSelect)
     return (
       <FloatingPortal>
-        {context.open && <FloatingOverlay lockScroll>{children}</FloatingOverlay>}
+        {context.open ? (
+          <FloatingOverlay lockScroll>{children}</FloatingOverlay>
+        ) : (
+          <div style={{ display: 'none' }}>{children}</div>
+        )}
       </FloatingPortal>
     )
   }
@@ -281,6 +285,7 @@ const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
       // contentContext.onViewportChange
     )
     const prevScrollTopRef = React.useRef(0)
+    console.log('rendering me')
     return (
       <>
         {/* Hide scrollbars cross-browser and enable momentum scroll for touch devices */}
@@ -542,6 +547,14 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
       ref,
       itemContext.onItemTextChange
       // itemContext.isSelected ? contentContext.onSelectedItemTextChange : undefined
+    )
+
+    console.log(
+      'item yo',
+      itemTextProps,
+      itemContext.isSelected,
+      context.valueNode,
+      context.valueNodeHasChildren
     )
 
     return (
@@ -1224,7 +1237,7 @@ export const Select = withStaticProperties(
       return () => cancelAnimationFrame(frame)
     }, [open])
 
-    let optionIndex = 0
+    // let optionIndex = 0
     // const options = [
     //   <ul key="default">
     //     <Option value="default">Select...</Option>
@@ -1326,10 +1339,6 @@ export const Select = withStaticProperties(
         value={value}
         // trigger={trigger}
         // onTriggerChange={setTrigger}
-        // valueNode={valueNode}
-        // onValueNodeChange={setValueNode}
-        // valueNodeHasChildren={valueNodeHasChildren}
-        // onValueNodeHasChildrenChange={setValueNodeHasChildren}
         // contentId={useId() || ''}
         // value={value}
         // onValueChange={setValue}
@@ -1375,3 +1384,5 @@ export const Select = withStaticProperties(
 
 // @ts-ignore
 Select.displayName = SELECT_NAME
+
+export { createSelectScope }

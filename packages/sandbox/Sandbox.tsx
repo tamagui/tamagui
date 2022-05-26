@@ -2,6 +2,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { ChevronDown } from '@tamagui/feather-icons'
 import { Slider, SliderProps } from '@tamagui/slider'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
@@ -42,7 +43,9 @@ export const Sandbox = () => {
           <Select defaultValue="blueberry">
             <Select.Trigger>
               <Select.Value placeholder="Something" />
-              <Select.Icon></Select.Icon>
+              <Select.Icon>
+                <ChevronDown />
+              </Select.Icon>
             </Select.Trigger>
 
             <Select.Content>
@@ -51,13 +54,13 @@ export const Sandbox = () => {
               <Select.Viewport>
                 <Select.Group>
                   <Select.Label>Fruits</Select.Label>
-                  <Select.Item value="apple">
+                  <Select.Item value="apple" index={0}>
                     <Select.ItemText>Apple</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="banana">
+                  <Select.Item value="banana" index={1}>
                     <Select.ItemText>Banana</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="blueberry">
+                  <Select.Item value="blueberry" index={2}>
                     <Select.ItemText>Blueberry</Select.ItemText>
                   </Select.Item>
                 </Select.Group>

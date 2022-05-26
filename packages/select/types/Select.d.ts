@@ -7,6 +7,7 @@ declare type TamaguiElement = HTMLElement | View;
 declare type ScopedProps<P> = P & {
     __scopeSelect?: Scope;
 };
+declare const createSelectScope: import("@tamagui/create-context").CreateScope;
 declare type GenericElement = HTMLElement | View;
 declare type Direction = 'ltr' | 'rtl';
 export declare type SelectTriggerProps = YStackProps;
@@ -337,5 +338,5 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         [x: string]: undefined;
     }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
 };
-export {};
+export { createSelectScope };
 //# sourceMappingURL=Select.d.ts.map
