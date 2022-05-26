@@ -3768,7 +3768,7 @@ __metadata:
     css-minimizer-webpack-plugin: ^3.4.1
     esbuild-loader: ^2.18.0
     mini-css-extract-plugin: ^2.6.0
-    next: ^12.1.6
+    next: ^12.1.7-canary.16
     next-compose-plugins: ^2.2.1
     react-native-svg-web: ^1.0.9
     tamagui-loader: ^1.0.1-beta.38
