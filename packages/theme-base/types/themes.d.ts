@@ -746,29 +746,6 @@ declare const baseThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    dark_alt4: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: string;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable;
-        shadowColor: string;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-        borderColor: string | Variable;
-        borderColorHover: string | Variable;
-        borderColorPress: string | Variable;
-        borderColorFocus: string | Variable;
-    };
     dark_alt2: {
         background: any;
         backgroundStrong: any;
@@ -793,6 +770,29 @@ declare const baseThemes: {
         borderColorFocus: string | Variable;
     };
     dark_alt3: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
+    };
+    dark_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1190,29 +1190,6 @@ declare const baseThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    light_alt4: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: string;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable;
-        shadowColor: string;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-        borderColor: string | Variable;
-        borderColorHover: string | Variable;
-        borderColorPress: string | Variable;
-        borderColorFocus: string | Variable;
-    };
     light_alt2: {
         background: any;
         backgroundStrong: any;
@@ -1237,6 +1214,29 @@ declare const baseThemes: {
         borderColorFocus: string | Variable;
     };
     light_alt3: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
+    };
+    light_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1606,29 +1606,6 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_blue_alt4: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: string;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable;
-        shadowColor: string;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-        borderColor: string | Variable;
-        borderColorHover: string | Variable;
-        borderColorPress: string | Variable;
-        borderColorFocus: string | Variable;
-    };
     readonly light_blue_alt2: {
         background: any;
         backgroundStrong: any;
@@ -1675,7 +1652,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_gray_alt1: {
+    readonly light_blue_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1698,7 +1675,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_gray_alt4: {
+    readonly light_gray_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1767,7 +1744,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_green_alt1: {
+    readonly light_gray_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1790,7 +1767,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_green_alt4: {
+    readonly light_green_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1859,7 +1836,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_indigo_alt1: {
+    readonly light_green_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1882,7 +1859,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_indigo_alt4: {
+    readonly light_indigo_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1951,7 +1928,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_orange_alt1: {
+    readonly light_indigo_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1974,7 +1951,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_orange_alt4: {
+    readonly light_orange_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2043,7 +2020,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_pink_alt1: {
+    readonly light_orange_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2066,7 +2043,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_pink_alt4: {
+    readonly light_pink_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2135,7 +2112,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_purple_alt1: {
+    readonly light_pink_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2158,7 +2135,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_purple_alt4: {
+    readonly light_purple_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2227,7 +2204,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_red_alt1: {
+    readonly light_purple_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2250,7 +2227,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_red_alt4: {
+    readonly light_red_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2319,7 +2296,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_violet_alt1: {
+    readonly light_red_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2342,7 +2319,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_violet_alt4: {
+    readonly light_violet_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2411,7 +2388,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_yellow_alt1: {
+    readonly light_violet_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2434,7 +2411,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_yellow_alt4: {
+    readonly light_yellow_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2503,7 +2480,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_teal_alt1: {
+    readonly light_yellow_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2526,7 +2503,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_teal_alt4: {
+    readonly light_teal_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2595,7 +2572,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_lime_alt1: {
+    readonly light_teal_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2618,7 +2595,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_lime_alt4: {
+    readonly light_lime_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2687,7 +2664,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_brown_alt1: {
+    readonly light_lime_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2710,7 +2687,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_brown_alt4: {
+    readonly light_brown_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2779,7 +2756,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_blue_alt1: {
+    readonly light_brown_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2802,7 +2779,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_blue_alt4: {
+    readonly dark_blue_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2871,7 +2848,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_gray_alt1: {
+    readonly dark_blue_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2894,7 +2871,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_gray_alt4: {
+    readonly dark_gray_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2963,7 +2940,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_green_alt1: {
+    readonly dark_gray_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2986,7 +2963,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_green_alt4: {
+    readonly dark_green_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3055,7 +3032,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_indigo_alt1: {
+    readonly dark_green_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3078,7 +3055,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_indigo_alt4: {
+    readonly dark_indigo_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3147,7 +3124,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_orange_alt1: {
+    readonly dark_indigo_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3170,7 +3147,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_orange_alt4: {
+    readonly dark_orange_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3239,7 +3216,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_pink_alt1: {
+    readonly dark_orange_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3262,7 +3239,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_pink_alt4: {
+    readonly dark_pink_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3331,7 +3308,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_purple_alt1: {
+    readonly dark_pink_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3354,7 +3331,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_purple_alt4: {
+    readonly dark_purple_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3423,7 +3400,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_red_alt1: {
+    readonly dark_purple_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3446,7 +3423,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_red_alt4: {
+    readonly dark_red_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3515,7 +3492,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_violet_alt1: {
+    readonly dark_red_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3538,7 +3515,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_violet_alt4: {
+    readonly dark_violet_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3607,7 +3584,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_yellow_alt1: {
+    readonly dark_violet_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3630,7 +3607,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_yellow_alt4: {
+    readonly dark_yellow_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3699,7 +3676,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_teal_alt1: {
+    readonly dark_yellow_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3722,7 +3699,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_teal_alt4: {
+    readonly dark_teal_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3791,7 +3768,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_lime_alt1: {
+    readonly dark_teal_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3814,7 +3791,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_lime_alt4: {
+    readonly dark_lime_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3883,7 +3860,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_brown_alt1: {
+    readonly dark_lime_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3906,7 +3883,7 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_brown_alt4: {
+    readonly dark_brown_alt1: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -3953,6 +3930,29 @@ declare const allThemes: {
         borderColorFocus: string | Variable;
     };
     readonly dark_brown_alt3: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
+    };
+    readonly dark_brown_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -4327,29 +4327,6 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly dark_alt4: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: string;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable;
-        shadowColor: string;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-        borderColor: string | Variable;
-        borderColorHover: string | Variable;
-        borderColorPress: string | Variable;
-        borderColorFocus: string | Variable;
-    };
     readonly dark_alt2: {
         background: any;
         backgroundStrong: any;
@@ -4374,6 +4351,29 @@ declare const allThemes: {
         borderColorFocus: string | Variable;
     };
     readonly dark_alt3: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
+    };
+    readonly dark_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -4771,29 +4771,6 @@ declare const allThemes: {
         borderColorPress: string | Variable;
         borderColorFocus: string | Variable;
     };
-    readonly light_alt4: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: string;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable;
-        shadowColor: string;
-        shadowColorHover: string | Variable;
-        shadowColorPress: string | Variable;
-        shadowColorFocus: string | Variable;
-        borderColor: string | Variable;
-        borderColorHover: string | Variable;
-        borderColorPress: string | Variable;
-        borderColorFocus: string | Variable;
-    };
     readonly light_alt2: {
         background: any;
         backgroundStrong: any;
@@ -4818,6 +4795,29 @@ declare const allThemes: {
         borderColorFocus: string | Variable;
     };
     readonly light_alt3: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: string;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable;
+        shadowColor: string;
+        shadowColorHover: string | Variable;
+        shadowColorPress: string | Variable;
+        shadowColorFocus: string | Variable;
+        borderColor: string | Variable;
+        borderColorHover: string | Variable;
+        borderColorPress: string | Variable;
+        borderColorFocus: string | Variable;
+    };
+    readonly light_alt4: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;

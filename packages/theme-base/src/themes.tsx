@@ -78,6 +78,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     ...altThemes,
     ...altButtonThemes,
     [`${name}_Button`, altThemes2[1][1]],
+    [`${name}_DrawerFrame`, altThemes2[1][1]],
     [`${name}_SliderTrack`, altThemes[1][1]],
     [`${name}_SliderTrackActive`, altThemes[3][1]],
     [`${name}_SliderThumb`, inverted[2]],
@@ -270,7 +271,7 @@ const baseThemes = {
   },
   dark_active: makeActiveTheme(darkThemes.dark),
   dark_Card: darkThemes.dark,
-  dark_DrawerFrame: darkThemes.dark,
+  dark_DrawerFrame: darkThemes.dark_alt1,
   dark_SliderTrack: darkThemes.dark_darker,
   dark_SliderTrackActive: darkThemes.dark_alt1,
   dark_Switch: darkThemes.dark_darker,
@@ -327,18 +328,7 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
 
     return Object.entries(themeWithAlts).map(([k, v]) => [`${scheme}_${k}`, v])
   })
-  // const lightButtonTheme = altLightThemes[0]
-  // const darkButtonTheme = altDarkThemes[0]
-  return [
-    ...altLightThemes,
-    // [`${lightButtonTheme[0]}_Button`, altLightThemes[2][1]],
-    // [`${lightButtonTheme[0]}_Card`, altLightThemes[2][1]],
-    // [`${lightButtonTheme[0]}_DrawerFrame`, altLightThemes[2][1]],
-    ...altDarkThemes,
-    // [`${darkButtonTheme[0]}_Button`, altDarkThemes[2][1]],
-    // [`${darkButtonTheme[0]}_Card`, altDarkThemes[2][1]],
-    // [`${darkButtonTheme[0]}_DrawerFrame`, altDarkThemes[2][1]],
-  ]
+  return [...altLightThemes, ...altDarkThemes]
 })
 
 type MyThemeBase = typeof baseThemes['light_alt1']
