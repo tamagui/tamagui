@@ -86,8 +86,6 @@ module.exports = function (name, opts) {
       browsersListForSwc: true,
     },
     webpack5: true,
-    wait: true,
-    useSuspense: true,
     typescript: {
       ignoreBuildErrors: true,
     },
