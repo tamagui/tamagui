@@ -60,19 +60,19 @@ export const Sandbox = () => {
                   <Select.Item value="blueberry" index={2}>
                     <Select.ItemText>Blueberry</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="berry" index={1}>
+                  <Select.Item value="berry" index={3}>
                     <Select.ItemText>Berry</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="strawberry" index={1}>
+                  <Select.Item value="strawberry" index={4}>
                     <Select.ItemText>Strawberry</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="kiwi" index={1}>
+                  <Select.Item value="kiwi" index={5}>
                     <Select.ItemText>Kiwi</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="grap" index={1}>
+                  <Select.Item value="grap" index={6}>
                     <Select.ItemText>Grap</Select.ItemText>
                   </Select.Item>
-                  <Select.Item value="orange" index={1}>
+                  <Select.Item value="orange" index={7}>
                     <Select.ItemText>Orange</Select.ItemText>
                   </Select.Item>
                 </Select.Group>

@@ -292,7 +292,6 @@ const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
       // contentContext.onViewportChange
     )
     const prevScrollTopRef = React.useRef(0)
-    console.log('rendering me')
     return (
       <>
         {/* Hide scrollbars cross-browser and enable momentum scroll for touch devices */}
@@ -355,6 +354,10 @@ const SelectItemFrame = styled(YStack, {
     backgroundColor: '$backgroundHover',
   },
 
+  focusStyle: {
+    backgroundColor: '$backgroundFocus',
+  },
+
   variants: {
     size: {
       '...size': getSelectItemSize,
@@ -380,10 +383,6 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     const isSelected = context.value === value
     const [textValue, setTextValue] = React.useState(textValueProp ?? '')
     const [isFocused, setIsFocused] = React.useState(false)
-    const composedRefs = useComposedRefs(
-      forwardedRef
-      // isSelected ? context.onSelectedItemChange : undefined
-    )
     const textId = useId()
 
     const {
@@ -397,6 +396,17 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       setActiveIndex,
       dataRef,
     } = context
+
+    const composedRefs = useComposedRefs(
+      forwardedRef,
+      (node) => {
+        console.log('node', node)
+        if (node instanceof HTMLElement) {
+          listRef.current[index] = node
+        }
+      }
+      // isSelected ? context.onSelectedItemChange : undefined
+    )
 
     const timeoutRef = React.useRef<any>()
     const [allowMouseUp, setAllowMouseUp] = React.useState(false)
@@ -824,7 +834,7 @@ export const Select = withStaticProperties(
 
     const [showArrows, setShowArrows] = React.useState(false)
     const [scrollTop, setScrollTop] = React.useState(0)
-    const listItemsRef = React.useRef<Array<HTMLLIElement | null>>([])
+    const listItemsRef = React.useRef<Array<HTMLElement | null>>([])
     const listContentRef = React.useRef([
       'Select...',
       ...(React.Children.map(children, (child) =>
@@ -834,8 +844,6 @@ export const Select = withStaticProperties(
         )
       ) ?? []),
     ])
-
-    console.log('value', value, scrollTop)
 
     const [selectedIndex, setSelectedIndex] = React.useState(
       Math.max(0, listContentRef.current.indexOf(value))
@@ -1211,6 +1219,12 @@ export const Select = withStaticProperties(
     ])
 
     React.useLayoutEffect(() => {
+      console.log(
+        'focusin',
+        selectedIndex,
+        listItemsRef.current[selectedIndex],
+        listItemsRef.current
+      )
       if (open && selectedIndex != null) {
         requestAnimationFrame(() => {
           listItemsRef.current[selectedIndex]?.focus({ preventScroll: true })
