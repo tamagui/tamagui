@@ -156,7 +156,13 @@ const OverlayCard = () => {
         </Paragraph>
 
         <Link href="/docs/intro/configuration" passHref>
-          <Button fontFamily="$silkscreen" tag="a" als="flex-end" theme={tint}>
+          <Button
+            accessibilityLabel="Fonts docs"
+            fontFamily="$silkscreen"
+            tag="a"
+            als="flex-end"
+            theme={tint}
+          >
             Fonts &raquo;
           </Button>
         </Link>

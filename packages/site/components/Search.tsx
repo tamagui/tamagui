@@ -140,6 +140,7 @@ export const SearchButton = (props: ButtonProps) => {
 
   return (
     <Button
+      accessibilityLabel="Search docs"
       ref={ref as any}
       onPress={onOpen}
       className="all ease-in ms100"

@@ -28,7 +28,6 @@ import {
 import { Frontmatter } from '../frontmatter'
 import { BenchmarkChart } from './BenchmarkChart'
 import { Code, CodeInline } from './Code'
-import { DemoButton } from './DemoButton'
 import * as Demos from './demos'
 import { DocCodeBlock } from './DocsCodeBlock'
 import { ExternalIcon } from './ExternalIcon'
@@ -80,7 +79,16 @@ export const components = {
   },
 
   Beta: () => (
-    <Button pe="none" size="$2" theme="pink_alt3" pos="absolute" t={-15} r={-75} rotate="5deg">
+    <Button
+      accessibilityLabel="Beta blog post"
+      pe="none"
+      size="$2"
+      theme="pink_alt3"
+      pos="absolute"
+      t={-15}
+      r={-75}
+      rotate="5deg"
+    >
       Beta
     </Button>
   ),
@@ -290,8 +298,6 @@ export const components = {
       </YStack>
     )
   },
-
-  DemoButton,
 
   Preview: (props) => {
     return <Preview {...props} mt="$5" />

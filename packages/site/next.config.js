@@ -76,12 +76,20 @@ const transform = withPlugins(
 )
 
 module.exports = function (name, opts) {
-  const { defaultConfig } = opts
-  defaultConfig.webpack5 = true
-  // defaultConfig.swcMinify = true
-  defaultConfig.wait = true
-  defaultConfig.useSuspense = false
-  // defaultConfig.experimental.reactRoot = 'concurrent'
-  defaultConfig.typescript.ignoreBuildErrors = true
-  return transform(name, { defaultConfig })
+  return transform(name, {
+    ...opts.defaultConfig,
+    experimental: {
+      ...opts.defaultConfig.experimental,
+      plugins: true,
+      scrollRestoration: true,
+      legacyBrowsers: false,
+      browsersListForSwc: true,
+    },
+    webpack5: true,
+    wait: true,
+    useSuspense: true,
+    typescript: {
+      ignoreBuildErrors: true,
+    },
+  })
 }

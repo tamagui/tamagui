@@ -82,7 +82,12 @@ const BenchmarksLink = () => {
   const { tint } = useTint()
   return (
     <Link href="/docs/intro/benchmarks" passHref>
-      <Button fontFamily="$silkscreen" theme={tint} tag="a">
+      <Button
+        accessibilityLabel="Performance benchmarks"
+        fontFamily="$silkscreen"
+        theme={tint}
+        tag="a"
+      >
         Benchmarks &raquo;
       </Button>
     </Link>

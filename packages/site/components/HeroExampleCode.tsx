@@ -29,6 +29,7 @@ export function HeroExampleCode() {
             {examples.map((example, i) => {
               return (
                 <Button
+                  accessibilityLabel="See example"
                   onPress={() => setActiveIndex(i)}
                   theme={i === activeIndex ? 'active' : null}
                   key={i}
@@ -110,6 +111,7 @@ const CodeExamples = memo(({ examples }: any) => {
         <Group zi={10} mb="$-4" als="center">
           {examples.map((example, i) => (
             <Button
+              accessibilityLabel="See example"
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
               size="$3"

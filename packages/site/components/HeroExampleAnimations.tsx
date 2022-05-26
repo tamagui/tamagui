@@ -44,7 +44,16 @@ export function HeroExampleAnimations() {
         <YStack zi={1} space="$1">
           <HomeH2 pos="relative">
             <span className="rainbow clip-text">Animated</span>
-            <Button pe="none" size="$3" theme="pink" pos="absolute" t={-10} r={-70} rotate="5deg">
+            <Button
+              tag="span"
+              pe="none"
+              size="$3"
+              theme="pink"
+              pos="absolute"
+              t={-10}
+              r={-70}
+              rotate="5deg"
+            >
               New
             </Button>
           </HomeH2>
@@ -90,6 +99,7 @@ export function HeroExampleAnimations() {
                 // bc="rgba(0,0,0,0.2)"
               />
               <Button
+                accessibilityLabel="View more"
                 y={200}
                 iconAfter={ArrowDown}
                 size="$4"
@@ -180,17 +190,22 @@ export const positions = [
 
         <XStack als="center" space="$1">
           <Link href="/docs/core/animations#css" passHref>
-            <Button fontFamily="$silkscreen" theme={tint} tag="a">
+            <Button accessibilityLabel="CSS docs" fontFamily="$silkscreen" theme={tint} tag="a">
               CSS &raquo;
             </Button>
           </Link>
           <Link href="/docs/core/animations#reanimated" passHref>
-            <Button fontFamily="$silkscreen" theme={tint} tag="a">
+            <Button
+              accessibilityLabel="Reanimated docs"
+              fontFamily="$silkscreen"
+              theme={tint}
+              tag="a"
+            >
               Reanimated &raquo;
             </Button>
           </Link>
           <Link href="/docs/core/animations" passHref>
-            <Button fontFamily="$silkscreen" tag="a">
+            <Button accessibilityLabel="Animation docs" fontFamily="$silkscreen" tag="a">
               Docs &raquo;
             </Button>
           </Link>

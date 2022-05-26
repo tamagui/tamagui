@@ -249,6 +249,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
       <XStack y={-48} ai="flex-start">
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
+          accessibilityLabel={`Responsive size ${name}`}
           borderWidth={1}
           size="$4"
           circular
@@ -367,6 +368,7 @@ export const Safari = memo(
           <YStack h="100%" pe="none" bc="$background">
             {!!shouldLoad && (
               <iframe
+                title="Responsive demo"
                 style={{ display: isLoaded ? 'flex' : 'none', contain: 'paint' }}
                 onLoad={() => {
                   setIsLoaded(true)

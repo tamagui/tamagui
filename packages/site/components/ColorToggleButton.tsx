@@ -45,10 +45,10 @@ export const ColorToggleButton = (props: ButtonProps) => {
   const { tint, setNextTint } = useTint()
   return (
     <Button
+      accessibilityLabel="Toggle light dark theme"
       chromeless
       onPress={setNextTint}
       {...props}
-      aria-label="toggle a light and dark color scheme"
     >
       {/* @ts-ignore TODO too deep */}
       <Diamond m={2} size={7} backgroundColor={tint} />

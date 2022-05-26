@@ -5,6 +5,7 @@ import { Button, Paragraph, Spacer, Tooltip, TooltipSimple, XStack } from 'tamag
 
 export const InstallInput = memo(() => {
   const [hasCopied, setHasCopied] = React.useState(false)
+  const installScript = `npx create-tamagui-app@latest`
 
   useEffect(() => {
     if (hasCopied) {
@@ -32,11 +33,12 @@ export const InstallInput = memo(() => {
       }}
     >
       <Paragraph ta="center" size="$4" fontWeight="500" fontFamily="$mono">
-        npx create-tamagui-app@latest
+        {installScript}
       </Paragraph>
       <Spacer size="$6" />
       <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
         <Button
+          accessibilityLabel={installScript}
           borderRadius="$8"
           mr="$-7"
           x={-3}
@@ -50,7 +52,7 @@ export const InstallInput = memo(() => {
           }
           aria-label="Copy the install snippet to Clipboard"
           onPress={() => {
-            copy('npm install tamagui')
+            copy(installScript)
             setHasCopied(true)
           }}
         />

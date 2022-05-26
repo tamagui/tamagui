@@ -34,6 +34,7 @@ export default () => {
       </AnimatePresence>
 
       <Button
+        accessibilityLabel="Carousel left"
         icon={ArrowLeft}
         circular
         size="$5"
@@ -42,6 +43,7 @@ export default () => {
         onPress={() => paginate(-1)}
       />
       <Button
+        accessibilityLabel="Carousel right"
         icon={ArrowRight}
         circular
         size="$5"

@@ -72,7 +72,11 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             r: '$7',
           }}
         >
-          <Button size="$2" onPress={() => setIsCollapsed((x) => !x)}>
+          <Button
+            accessibilityLabel="Show or hide code"
+            size="$2"
+            onPress={() => setIsCollapsed((x) => !x)}
+          >
             {isCollapsed ? 'Show code' : 'Hide code'}
           </Button>
         </YStack>
