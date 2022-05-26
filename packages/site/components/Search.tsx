@@ -14,7 +14,7 @@ import {
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { Button, ButtonProps, Paragraph, useIsTouchDevice } from 'tamagui'
+import { Button, ButtonProps, Paragraph, TooltipSimple, useIsTouchDevice } from 'tamagui'
 
 const DocSearchModal = dynamic(() => import('./DocSearch'))
 const SearchContext = createContext<any>(null)
@@ -149,28 +149,28 @@ export const SearchButton = (props: ButtonProps) => {
   }, [onInput, ref])
 
   return (
-    <Button
-      accessibilityLabel="Search docs"
-      ref={ref as any}
-      onPress={onOpen}
-      className="all ease-in ms100"
-      jc="flex-start"
-      textAlign="left"
-      icon={SearchIcon}
-      color="$colorTranslucent"
-      hoverStyle={{
-        elevation: '$4',
-      }}
-      iconAfter={
-        isTouch ? null : (
-          <Button tag="span" size="$2" theme="alt2" hoverable={false}>
-            /
-          </Button>
-        )
-      }
-      {...props}
-      borderRadius={1000}
-    />
+    <TooltipSimple groupId="header-actions-search" label="Search docs..">
+      <Button
+        accessibilityLabel="Search docs"
+        ref={ref as any}
+        onPress={onOpen}
+        className="all ease-in ms100"
+        jc="flex-start"
+        textAlign="left"
+        icon={SearchIcon}
+        hoverStyle={{
+          elevation: '$4',
+        }}
+        iconAfter={
+          isTouch ? null : (
+            <Button tag="span" size="$2" theme="alt2" hoverable={false}>
+              /
+            </Button>
+          )
+        }
+        {...props}
+      />
+    </TooltipSimple>
   )
 }
 

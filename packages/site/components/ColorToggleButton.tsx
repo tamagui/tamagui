@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonProps, Circle, Square, ThemeName, ThemeProps, YStack, styled } from 'tamagui'
+import { Button, ButtonProps, Circle, Square, ThemeName, TooltipSimple, styled } from 'tamagui'
 
 export const tints: ThemeName[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
 
@@ -44,15 +44,11 @@ export const useTint = () => {
 export const ColorToggleButton = (props: ButtonProps) => {
   const { tint, setNextTint } = useTint()
   return (
-    <Button
-      accessibilityLabel="Toggle light dark theme"
-      chromeless
-      onPress={setNextTint}
-      {...props}
-    >
-      {/* @ts-ignore TODO too deep */}
-      <Diamond m={2} size={7} backgroundColor={tint} />
-    </Button>
+    <TooltipSimple groupId="header-actions-color" label="Change color">
+      <Button onPress={setNextTint} {...props} aria-label="toggle a light and dark color scheme">
+        <Circle bw={1} boc="$color" m={2} size={12} backgroundColor={tint} />
+      </Button>
+    </TooltipSimple>
   )
 }
 

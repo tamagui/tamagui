@@ -1,7 +1,7 @@
 import { useTheme } from '@components/NextTheme'
 import { Monitor, Moon, Sun } from '@tamagui/feather-icons'
 import { useState } from 'react'
-import { Button, ButtonProps, useIsomorphicLayoutEffect } from 'tamagui'
+import { Button, ButtonProps, TooltipSimple, useIsomorphicLayoutEffect } from 'tamagui'
 
 const icons = {
   system: Monitor,
@@ -20,13 +20,15 @@ export const ThemeToggle = (props: ButtonProps) => {
   const Icon = icons[clientTheme]
 
   return (
-    <Button
-      onPress={toggleTheme}
-      {...props}
-      aria-label="toggle a light and dark color scheme"
-      icon={Icon}
-    >
-      {/* {theme === 'light' ? <Moon size={12} /> : <SunIcon />} */}
-    </Button>
+    <TooltipSimple groupId="header-actions-theme" label={`Switch theme (${theme})`}>
+      <Button
+        onPress={toggleTheme}
+        {...props}
+        aria-label="toggle a light and dark color scheme"
+        icon={Icon}
+      >
+        {/* {theme === 'light' ? <Moon size={12} /> : <SunIcon />} */}
+      </Button>
+    </TooltipSimple>
   )
 }
