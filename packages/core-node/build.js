@@ -28,6 +28,14 @@ async function build() {
     await fs.remove('dist/core')
     await fs.copy('../core/types', './types')
   } catch (err) {
+    if (err.message.includes(`Plugin "alias" returned`)) {
+      console.log(`Initial watch err, retry`)
+      // could be our initial watch
+      setTimeout(() => {
+        buildretry()
+      }, 1000)
+      return
+    }
     console.error('Error building core-node:', err.message)
   }
   console.log('...built core-node')
