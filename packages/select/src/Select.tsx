@@ -62,13 +62,13 @@ import { View } from 'react-native'
 type TamaguiElement = HTMLElement | View
 
 // Cross browser fixes for pinch-zooming/backdrop-filter 🙄
-const isFirefox =
-  typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox')
+const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) || ''
+const isFirefox = userAgent.toLowerCase().includes('firefox')
 if (isFirefox) {
   document.body.classList.add('firefox')
 }
 function getVisualOffsetTop() {
-  return !/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ? visualViewport.offsetTop : 0
+  return !/^((?!chrome|android).)*safari/i.test(userAgent) ? visualViewport.offsetTop : 0
 }
 
 const getSelectItemSize = (val: SizeTokens, { tokens }: VariantSpreadExtras<any>) => {
