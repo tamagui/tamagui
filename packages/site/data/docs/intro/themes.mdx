@@ -27,7 +27,7 @@ const tokens = createTokens({
 })
 
 
-const dark = createTeme({
+const dark = createTheme({
   background: tokens.color.black,
   color: tokens.color.white,
 })
@@ -42,7 +42,7 @@ Think of tokens as your base variables which can be shared downwards to themes. 
 
 ## Subset themes
 
-One of the real powers of Tamagui is theme nesting, which we'll explain below, but which is important to understand. If you define a theme with the name in the form `[parentName]_[subName]`, Tamagui then accepts `<Theme name="[subName]" />` as though it's valid.
+One of the real powers of Tamagui is theme nesting (we'll explain more on the importance and usage below). If you define a theme with the name in the form `[parentName]_[subName]`, Tamagui then accepts `<Theme name="[subName]" />` as though it's valid.
 
 You can do this as many times as you'd like. For example you can have the following themes:
 
