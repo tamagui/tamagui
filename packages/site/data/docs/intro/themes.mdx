@@ -124,7 +124,7 @@ You can of course do all of this yourself in your own design system with `styled
 import { Stack, styled } from '@tamagui/core'
 
 const Button = styled(Stack, {
-  // note: this name will match it to and theme ending with `_Button`:
+  // note: this name will match it to any theme ending with `_Button`:
   name: 'Button'
 })
 ```
@@ -158,7 +158,9 @@ export const Button = ButtonFrame.extractable(({ children, ...props }: ButtonPro
 })
 ```
 
-And now you can have any theme customize these two components by defining `_Button` and `_ButtonText`.
+And now you can add two themes: `dark_Button` and `dark_ButtonText`, and override their default styles.
+
+We'd like to better organize some helpers to allow for composable components as well, but just note you can use these same patterns to build any type of API you'd like - you could export ButtonText separately, for example, for a more verbose but flexible API.
 
 ## Quick start
 
