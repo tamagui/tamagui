@@ -344,7 +344,7 @@ const allThemes = {
 }
 
 // 2. then get the name type
-type ThemeName = keyof allThemes
+type ThemeName = keyof typeof allThemes
 
 // 3. then, create a Themes type that explicitly maps ThemeName => BaseTheme
 type Themes = {
