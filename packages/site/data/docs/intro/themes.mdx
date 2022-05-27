@@ -3,13 +3,164 @@ title: Themes
 description: How to create and use themes in Tamagui.
 ---
 
-Themes in Tamagui are powerful because they can compose off each other nicely. They are meant to be fairly small, with tokens doing much of the heavy lifting.
+Themes in Tamagui are powerful. They work a bit differently than you may expect. If you just want to dive in and copy a complete theme config, head down to [Quick Start](#quick-start).
 
-Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define 10-15 or so "common" theme properties that let us then style the rest of our app - things like `color`, `colorHover`, `background`, and `backgroundHover`.
+Because themes are so flexible and can adapt to every component, we're working on better high level libraries to generate themes from colors. Until then, you can roll your own, or use/fork our `@tamagui/theme-base` package.
 
-Themes make assumptions about `light` and `dark`, if you define these two base themes, you'll avoid full-tree re-renders when they're changed on web.
+You make a theme with `createTheme`, like so:
 
-### Quick start with @tamagui/theme-base
+```tsx
+const dark = createTheme({
+  background: '#000',
+  color: '#fff'
+})
+```
+
+You can pass any token to a theme, and doing so is a nice way to share colors in a type-friendly way, and to save bundle-size on the client (they will be shared as CSS Variables:
+
+```tsx
+const tokens = createTokens({
+  color: {
+    black: '#000',
+    white: '#fff',
+  },
+})
+
+
+const dark = createTeme({
+  background: tokens.color.black,
+  color: tokens.color.white,
+})
+```
+
+Think of tokens as your base variables which can be shared downwards to themes. Themes meanwhile are meant to be concise, we typically define a handful of "common" properties that any of your `styled()` components can use.
+
+<Notice>
+  Tamagui make some assumptions about the themes `dark` and `light`. If you use them, changing the
+  between the two will avoid re-rendering the whole tree.
+</Notice>
+
+## Subset themes
+
+One of the real powers of Tamagui is theme nesting, which we'll explain below, but which is important to understand. If you define a theme with the name in the form `[parentName]_[subName]`, Tamagui then accepts `<Theme name="[subName]" />` as though it's valid.
+
+You can do this as many times as you'd like. For example you can have the following themes:
+
+- `dark_green_subtle`
+- `light_green_subtle`
+
+And you're able to then access them (fully typed):
+
+```tsx
+<Theme name="dark">
+  <Theme name="green">
+    <Button theme="subtle">Hello world</Button>
+  </Theme>
+</Theme>
+```
+
+You can also do:
+
+```tsx
+<Theme name="dark_green">
+  <Button theme="subtle">Hello world</Button>
+</Theme>
+```
+
+#### Component subset themes
+
+Finally, each component in Tamagui can be set up to accept a component specific theme by passing the `name` property to the second argument of `styled()`. For example, for the Button component, we define the frame of it like so:
+
+```tsx
+const ButtonFrame = styled(SizableFrame, {
+  name: 'Button',
+  tag: 'button',
+})
+```
+
+<Notice>
+  We've decided to enforce the first letter being capitalized. This makes it easier to users to
+  distinguish component themes, and allows Tamagui internally to avoid extra work and nesting.
+</Notice>
+
+The `name` attribute will be removed from the defaultProps and used internally by Tamagui to check for the sub-theme that matches. This means any theme named with an ending of `_Button` will apply. So you can add the following themes to customize buttons at any level:
+
+- `dark_Button`
+- `dark_green_Button`
+- `dark_green_subtle_Button`
+
+### Tamagui theme keys
+
+While `@tamagui/core` isn't prescriptive at all, `tamagui` is. This is because standardizing on specific shared theme keys unlocks huge upside. In `tamagui`, all components will look for the following keys:
+
+- `background`
+- `color`
+- `borderColor`
+- `shadowColor`
+
+Plus all the "psuedo" variants for each, so for example, `backgroundHover`, `backgroundPress`, and `backgroundFocus`.
+
+<Notice>In the future, `tamagui` will expand use more, like `borderWidth`.</Notice>
+
+Putting this all together, you'll see how you can get complete control over Tamagui component themes:
+
+```tsx
+// this will customize all `Button` styles
+const dark_Button = createTheme({
+  background: '#333',
+  color: '#999'
+})
+
+// this will customize all `Button` styles inside the `dark_green` theme:
+const dark_green_Button = createTheme({
+  background: 'darkgreen',
+  color: 'lightgreen'
+})
+```
+
+You can of course do all of this yourself in your own design system with `styled`:
+
+```tsx
+import { Stack, styled } from '@tamagui/core'
+
+const Button = styled(Stack, {
+  // note: this name will match it to and theme ending with `_Button`:
+  name: 'Button'
+})
+```
+
+If you are building a component with more than one sub-components, you can follow this pattern:
+
+```tsx
+import { Text, Stack, styled, GetProps } from '@tamagui/core'
+
+const ButtonFrame = styled(Stack, {
+  name: 'Button'
+  backgroundColor: '$background'
+})
+
+const ButtonText = styled(Text, {
+  name: 'ButtonText'
+  color: '$color'
+})
+
+type ButtonProps = GetProps<typeof ButtonFrame>
+
+// note: extractable will tell the tamagui compiler to optimize usages of this:
+export const Button = ButtonFrame.extractable(({ children, ...props }: ButtonProps) => {
+  return (
+    <ButtonFrame {...props}>
+      <ButtonText>
+        {children}
+      </ButtonText>
+    </ButtonFrame>
+  )
+})
+```
+
+And now you can have any theme customize these two components by defining `_Button` and `_ButtonText`.
+
+## Quick start
 
 To get started quickly, you can use the themes we've developed alongside this site and with other apps, `@tamagui/theme-base`. It's even easier to see how it all comes together by using [create-tamagui-app to bootstrap](/docs/guides/create-tamagui-app).
 
@@ -48,7 +199,7 @@ declare module 'tamagui' {
 export default config
 ```
 
-### Example
+## Full Example
 
 Let's start with an example of inline styling with a subset of the configuration:
 
@@ -119,7 +270,7 @@ export const App = () => (
 //  .color-2nesi3 { background-color: var(--red); }
 ```
 
-### Ensuring valid types
+## Ensuring valid types
 
 Here's what we've landed on which helps ensure everything is typed properly. Use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. Keep themes in a separate `themes.ts` file, and structure it like this:
 
@@ -127,7 +278,7 @@ Here's what we've landed on which helps ensure everything is typed properly. Use
 import { createTheme } from 'tamagui'
 import { tokens } from './tokens'
 
-const lightTheme = createTheme({
+const light = createTheme({
   background: '#fff',
   backgroundHover: tokens.color.gray3,
   backgroundPress: tokens.color.gray4,
@@ -142,8 +293,8 @@ const lightTheme = createTheme({
   shadowColorHover: tokens.color.grayA6,
 })
 
-// note: we set up a consistent theme type to validate the rest:
-type BaseTheme = typeof lightTheme
+// note: we set up a single consistent base type to validate the rest:
+type BaseTheme = typeof light
 
 // the rest of the themes use BaseTheme
 const dark: BaseTheme = {
@@ -162,7 +313,7 @@ const dark: BaseTheme = {
 }
 
 // if you need to add non-token values, use createTheme
-const darkTranslucent: BaseTheme = createTheme({
+const dark_translucent: BaseTheme = createTheme({
   ...dark,
   background: 'rgba(0,0,0,0.7)',
   backgroundHover: 'rgba(0,0,0,0.5)',
@@ -170,7 +321,7 @@ const darkTranslucent: BaseTheme = createTheme({
   backgroundFocus: 'rgba(0,0,0,0.1)',
 })
 
-const lightTranslucent: BaseTheme = createTheme({
+const light_translucent: BaseTheme = createTheme({
   ...light,
   background: 'rgba(255,255,255,0.85)',
   backgroundHover: 'rgba(250,250,250,0.85)',
@@ -178,61 +329,26 @@ const lightTranslucent: BaseTheme = createTheme({
   backgroundFocus: 'rgba(240,240,240,0.7)',
 })
 
-// use `as const` at the end here to be sure its strictly typed
-export const themes = {
+// note the steps here
+// we recommend doing this because it avoids a category of confusing type errors
+
+// 1. to get ThemeNames/Theme, first create an object with all themes
+const allThemes = {
   dark,
   light,
-  'translucent-dark': darkTranslucent,
-  'translucent-light': lightTranslucent,
+  dark_translucent,
+  light_translucent,
   ...colorThemes,
-} as const
+}
+
+// 2. then get the name type
+type ThemeName = keyof allThemes
+
+// 3. then, create a Themes type that explicitly maps ThemeName => BaseTheme
+type Themes = {
+  [key in ThemeName]: BaseTheme
+}
+
+// 4. finally, export it with the stricter type
+export const themes: Themes = allThemes
 ```
-
-### Subset themes
-
-One of the real powers of Tamagui is theme nesting, which we'll explain below, but which is important to understand. If you define a theme with the name in the form `[parentName]_[subName]`, Tamagui then accepts `<Theme name="[subName]" />` as though it's valid.
-
-You can do this as many times as you'd like. For example you can have the following themes:
-
-- `dark_green_subtle`
-- `light_green_subtle`
-
-And you're able to then access them (fully typed):
-
-```tsx
-<Theme name="dark">
-  <Theme name="green">
-    <Button theme="subtle">Hello world</Button>
-  </Theme>
-</Theme>
-```
-
-You can also do:
-
-```tsx
-<Theme name="dark_green">
-  <Button theme="subtle">Hello world</Button>
-</Theme>
-```
-
-#### Component subset themes
-
-Finally, each component in Tamagui can be set up to accept a component specific theme by passing the `name` property to the second argument of `styled()`. For example, for the Button component, we define the frame of it like so:
-
-```tsx
-const ButtonFrame = styled(SizableFrame, {
-  name: 'Button',
-  tag: 'button',
-})
-```
-
-<Notice>
-  We've decided to enforce the first letter being capitalized. This makes it easier to users to
-  distinguish component themes, and allows Tamagui internally to avoid extra work and nesting.
-</Notice>
-
-The `name` attribute will be removed from the defaultProps and used internally by Tamagui to check for the sub-theme that matches. This means any theme named with an ending of `_Button` will apply. So you can add the following themes to customize buttons at any level:
-
-- `dark_Button`
-- `dark_green_Button`
-- `dark_green_subtle_Button`
