@@ -25,7 +25,6 @@ const [CardProvider, useCardContext] = createCardContext<CardContextValue>(CARD_
 
 const CardFrame = styled(ThemeableStack, {
   name: 'Card',
-  flexDirection: 'column',
   backgroundColor: '$background',
   position: 'relative',
   overflow: 'hidden',
@@ -48,7 +47,6 @@ const CardFrame = styled(ThemeableStack, {
 const CardHeader = styled(ThemeableStack, {
   name: 'CardHeader',
   zIndex: 10,
-  flexDirection: 'column',
   backgroundColor: 'transparent',
   marginBottom: 'auto',
 

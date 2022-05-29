@@ -41,10 +41,6 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
           ...config.validStyles,
         }
       : parent.staticConfig.validStyles || stylePropsView,
-    defaultVariants: {
-      ...parent.staticConfig.defaultVariants,
-      ...config.defaultVariants,
-    },
     defaultProps: {
       ...parent.staticConfig.defaultProps,
       ...parent.staticConfig.defaultVariants,

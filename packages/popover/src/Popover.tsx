@@ -199,7 +199,6 @@ const PopoverContentModal = React.forwardRef<PopoverContentTypeElement, PopoverC
           onPointerDownOutside={composeEventHandlers(
             props.onPointerDownOutside,
             (event) => {
-              console.log('pinter outside', event)
               // @ts-expect-error
               const originalEvent = event.detail.originalEvent
               const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true

@@ -212,9 +212,14 @@ export declare const elevate: {
 export declare const bordered: (val: boolean | number, { props }: {
     props: any;
 }) => any;
-export declare const pad: {
+export declare const padded: {
     true: (_: any, extras: any) => {
         padding: any;
+    };
+};
+export declare const radiused: {
+    true: (_: any, extras: any) => {
+        borderRadius: any;
     };
 };
 export declare const circular: {

@@ -720,7 +720,15 @@ export function createComponent<
         console.log('  » className', { splitStyles, style, isStringElement, pseudos, state, classNames, propsClassName: props.className, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
       }
 
-      viewProps.className = className
+      if (staticConfig.isReactNativeWeb) {
+        viewProps.dataSet = {
+          ...viewProps.dataSet,
+          className: className,
+        }
+      } else {
+        viewProps.className = className
+      }
+
       viewProps.style = style
     } else {
       viewProps.style = styles
@@ -841,7 +849,7 @@ export function createComponent<
         }
       : null
 
-    const childEls =
+    let childEls =
       !children || asChild
         ? children
         : wrapThemeManagerContext(
@@ -856,20 +864,13 @@ export function createComponent<
 
     let content: any
 
-    // replicate react-native-web's `createElement`
-    if (isWeb) {
-      if (staticConfig.isReactNativeWeb) {
-        viewProps.dataSet = {
-          ...viewProps.dataSet,
-          className: viewProps.className,
-        }
-      }
-    }
-
     if (asChild) {
-      elementType = Slot
       const onlyChild = React.Children.only(children)
-      Object.assign(viewProps, onlyChild.props)
+      const { children: onlyChildren, ...restProps } = onlyChild.props
+      elementType = onlyChild.type
+      viewProps = { ...props, ...restProps }
+      delete viewProps['asChild']
+      childEls = onlyChildren
     }
 
     // EVENTS: web
@@ -1119,6 +1120,12 @@ export const Spacer = createComponent<
   },
 })
 
+export const Unspaced = (props: { children?: any }) => {
+  return props.children
+}
+
+Unspaced['isUnspaced'] = true
+
 export function spacedChildren({
   isZStack,
   children,
@@ -1159,7 +1166,7 @@ export function spacedChildren({
 
     const next = childrenList[index + 1]
 
-    if (next && !isVisuallyHidden(next)) {
+    if (next && !isUnspaced(next)) {
       final.push(
         <Spacer
           key={`_${index}_spacer`}
@@ -1182,8 +1189,8 @@ export function spacedChildren({
   return final
 }
 
-function isVisuallyHidden(child: any) {
-  return child?.['type']?.['isVisuallyHidden']
+function isUnspaced(child: any) {
+  return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
 }
 
 export function AbsoluteFill(props: any) {

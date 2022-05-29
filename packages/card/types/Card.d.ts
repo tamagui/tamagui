@@ -11,6 +11,7 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -27,6 +28,7 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -43,6 +45,7 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -59,6 +62,7 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -76,6 +80,7 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -92,6 +97,7 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -108,6 +114,7 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -124,6 +131,7 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -141,6 +149,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -157,6 +166,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -173,6 +183,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -189,6 +200,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -207,6 +219,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -225,6 +238,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -243,6 +257,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -260,8 +275,9 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
 declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "pad" | "chromeless"> & {
+}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -274,8 +290,9 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "pad" | "chromeless"> & {
+}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -288,8 +305,9 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "pad" | "chromeless"> & {
+}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -304,6 +322,7 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -320,6 +339,7 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -336,6 +356,7 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -352,6 +373,7 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -372,6 +394,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -388,6 +411,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -404,6 +428,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -426,6 +451,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -442,6 +468,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -458,6 +485,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -474,6 +502,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -491,6 +520,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -507,6 +537,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -523,6 +554,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -539,6 +571,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -557,6 +590,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -575,6 +609,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -593,6 +628,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -610,8 +646,9 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     Background: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         fullscreen?: boolean | undefined;
         elevation?: SizeTokens | undefined;
-    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "pad" | "chromeless"> & {
+    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -624,8 +661,9 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         fullscreen?: boolean | undefined;
         elevation?: SizeTokens | undefined;
-    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "pad" | "chromeless"> & {
+    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -638,8 +676,9 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         fullscreen?: boolean | undefined;
         elevation?: SizeTokens | undefined;
-    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "pad" | "chromeless"> & {
+    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -654,6 +693,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -670,6 +710,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -686,6 +727,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
@@ -702,6 +744,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
+        backgrounded?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;

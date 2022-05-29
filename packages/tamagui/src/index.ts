@@ -3,6 +3,7 @@ import './polyfills'
 export { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export * from '@tamagui/button'
+export * from '@tamagui/dialog'
 export * from '@tamagui/card'
 export * from '@tamagui/compose-refs'
 export * from '@tamagui/create-context'
@@ -87,6 +88,7 @@ export {
   Theme,
   ThemeInverse,
   ThemeReset,
+  Unspaced,
   // context,
   TextAncestorContext,
   // constants
@@ -145,9 +147,9 @@ export * from './views/Anchor'
 export * from './views/BlurView'
 export * from './views/Circle'
 export * from './views/EnsureFlexed'
+export * from './views/Fieldset'
 export * from './views/Form'
 export * from './views/Grid'
-export * from './views/Headings'
 export * from './views/Hoverable'
 export * from './views/Image'
 export * from './views/Input'

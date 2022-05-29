@@ -78,8 +78,21 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
   const filtered: ReactElement<any>[] = []
 
   // We use forEach here instead of map as map mutates the component key by preprending `.$`
-  Children.forEach(children, (child) => {
-    if (isValidElement(child)) filtered.push(child)
+  Children.forEach(children, (child, index) => {
+    if (isValidElement(child)) {
+      if (!child.key) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`No key given to AnimatePresence child, assigning index as key`)
+        }
+        filtered.push(
+          React.cloneElement(child, {
+            key: index,
+          })
+        )
+      } else {
+        filtered.push(child)
+      }
+    }
   })
 
   return filtered
