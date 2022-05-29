@@ -41,11 +41,13 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -57,11 +59,13 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -73,11 +77,13 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -89,11 +95,13 @@ declare const SwitchThumbFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -107,11 +115,13 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -123,11 +133,13 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -139,11 +151,13 @@ export declare const SwitchThumb: React.ForwardRefExoticComponent<Omit<import("r
     elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;

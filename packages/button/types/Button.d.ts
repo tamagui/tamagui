@@ -27,6 +27,7 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -45,6 +46,7 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -63,6 +65,7 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
@@ -81,6 +84,7 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
+    backgrounded?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;

@@ -7,6 +7,7 @@
 - 1.0
   - overwriting `disabled` in variants breaks types... (see ThemeableStack)
   - sell sizing story better - home hero, blog post?
+  - sell compiler much better in hero
   - html props: role, tabIndex, input type
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
@@ -35,7 +36,6 @@
   - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
   - <Select />, <Dialog /> (AlertDialog)
   - maybe <ToggleGroup />
-  - maybe <Slider />
   - maybe <Blur />, <Tabs />, <Toast />, <RadioGroup />, <Progress />
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none

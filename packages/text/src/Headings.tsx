@@ -1,5 +1,6 @@
 import { styled } from '@tamagui/core'
-import { Paragraph } from '@tamagui/text'
+
+import { Paragraph } from './Paragraph'
 
 export const Heading = styled(Paragraph, {
   tag: 'span',

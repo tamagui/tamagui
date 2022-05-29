@@ -55,11 +55,13 @@ const ButtonFrame = styled(ThemeableStack, {
   tag: 'button',
   hoverable: true,
   pressable: true,
+  backgrounded: true,
   borderWidth: 1,
   borderColor: 'transparent',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
+  flexDirection: 'row',
 
   // if we wanted this only when pressable = true, we'd need to merge variants?
   cursor: 'pointer',

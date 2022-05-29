@@ -1,23 +1,36 @@
 import { GetProps, styled } from '@tamagui/core'
 
 import { YStack } from './Stacks'
-import { bordered, circular, elevate, focusable, hoverable, pad, pressable } from './variants'
+import {
+  bordered,
+  circular,
+  elevate,
+  focusable,
+  hoverable,
+  padded,
+  pressable,
+  radiused,
+} from './variants'
 
 export const ThemeableStack = styled(YStack, {
   name: 'SizableStack',
-  backgroundColor: '$background',
-  flexDirection: 'row',
-  flexShrink: 1,
 
   variants: {
     // allows the type to come in for use in size
     fontFamily: () => ({}),
 
+    backgrounded: {
+      true: {
+        backgroundColor: '$background',
+      },
+    },
+
+    radiused,
     hoverable,
     pressable,
     focusable,
     circular,
-    pad,
+    padded,
     elevate,
     bordered,
 

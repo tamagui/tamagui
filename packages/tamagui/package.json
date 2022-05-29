@@ -34,6 +34,7 @@
     "@tamagui/compose-refs": "^1.0.1-beta.42",
     "@tamagui/core": "^1.0.1-beta.42",
     "@tamagui/create-context": "^1.0.1-beta.42",
+    "@tamagui/dialog": "^1.0.1-beta.42",
     "@tamagui/expo-linear-gradient": "^11.2.8",
     "@tamagui/fake-react-native": "^1.0.1-beta.42",
     "@tamagui/font-size": "^1.0.1-beta.42",

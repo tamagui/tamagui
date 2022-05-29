@@ -40,11 +40,20 @@ export const bordered = (val: boolean | number, { props }) => {
   }
 }
 
-export const pad = {
+export const padded = {
   true: (_, extras) => {
     const { tokens, props } = extras
     return {
       padding: tokens.size[props.size] || tokens.size['$4'],
+    }
+  },
+}
+
+export const radiused = {
+  true: (_, extras) => {
+    const { tokens, props } = extras
+    return {
+      borderRadius: tokens.radius[props.size] || tokens.radius['$4'],
     }
   },
 }

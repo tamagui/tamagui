@@ -3626,6 +3626,33 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/dialog@^1.0.1-beta.42, @tamagui/dialog@workspace:packages/dialog":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/dialog@workspace:packages/dialog"
+  dependencies:
+    "@tamagui/animate-presence": ^1.0.1-beta.42
+    "@tamagui/build": ^1.0.1-beta.42
+    "@tamagui/compose-refs": ^1.0.1-beta.42
+    "@tamagui/core": ^1.0.1-beta.42
+    "@tamagui/create-context": ^1.0.1-beta.42
+    "@tamagui/polyfill-dev": ^1.0.1-beta.42
+    "@tamagui/popper": ^1.0.1-beta.42
+    "@tamagui/portal": ^1.0.1-beta.42
+    "@tamagui/stacks": ^1.0.1-beta.42
+    "@tamagui/text": ^1.0.1-beta.42
+    "@tamagui/use-controllable-state": ^1.0.1-beta.42
+    "@types/react-dom": ^18.0.3
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/drawer@^1.0.1-beta.42, @tamagui/drawer@workspace:packages/drawer":
   version: 0.0.0-use.local
   resolution: "@tamagui/drawer@workspace:packages/drawer"
@@ -17903,6 +17930,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.1-beta.42
     "@tamagui/core": ^1.0.1-beta.42
     "@tamagui/create-context": ^1.0.1-beta.42
+    "@tamagui/dialog": ^1.0.1-beta.42
     "@tamagui/expo-linear-gradient": ^11.2.8
     "@tamagui/fake-react-native": ^1.0.1-beta.42
     "@tamagui/font-size": ^1.0.1-beta.42
