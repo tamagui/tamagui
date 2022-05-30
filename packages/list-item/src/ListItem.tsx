@@ -1,9 +1,9 @@
 import {
-  ButtonInsideButtonContext,
   GetProps,
   ReactComponentWithRef,
+  Spacer,
   ThemeableProps,
-  getButtonSize,
+  getSize,
   getVariableValue,
   spacedChildren,
   styled,
@@ -13,16 +13,16 @@ import {
 import { getFontSize } from '@tamagui/font-size'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, SizableTextProps } from '@tamagui/text'
-import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
+import React, { Children, FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
 import { View } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-type ButtonIconProps = { color?: string; size?: number }
-type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
+type ListItemIconProps = { color?: string; size?: number }
+type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
-export type ButtonProps = GetProps<typeof ButtonFrame> &
+export type ListItemProps = GetProps<typeof ListItemFrame> &
   ThemeableProps & {
     // add icon before, passes color and size automatically if Component
     icon?: IconProp
@@ -50,21 +50,14 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     textProps?: Partial<SizableTextProps>
   }
 
-const ButtonFrame = styled(ThemeableStack, {
-  name: 'Button',
-  tag: 'button',
-  hoverable: true,
-  pressable: true,
-  backgrounded: true,
-  borderWidth: 1,
-  borderColor: 'transparent',
+const ListItemFrame = styled(ThemeableStack, {
+  name: 'ListItem',
+  tag: 'li',
   justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
+  width: '100%',
   flexDirection: 'row',
-
-  // if we wanted this only when pressable = true, we'd need to merge variants?
-  cursor: 'pointer',
 
   pressStyle: {
     borderColor: 'transparent',
@@ -80,7 +73,12 @@ const ButtonFrame = styled(ThemeableStack, {
 
   variants: {
     size: {
-      '...size': getButtonSize,
+      '...size': (val, { tokens }) => {
+        return {
+          paddingVertical: getSize(val, -1),
+          paddingHorizontal: tokens.size[val],
+        }
+      },
     },
 
     active: {
@@ -106,10 +104,10 @@ const ButtonFrame = styled(ThemeableStack, {
 })
 
 // see TODO breaking types
-// type x = GetProps<typeof ButtonFrame>
+// type x = GetProps<typeof ListItemFrame>
 // type y = x['size']
 
-export const ButtonText = styled(SizableText, {
+export const ListItemText = styled(SizableText, {
   color: '$color',
   selectable: false,
   flexGrow: 1,
@@ -117,7 +115,7 @@ export const ButtonText = styled(SizableText, {
   ellipse: true,
 })
 
-const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
+const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
   // careful not to desctructure and re-order props, order is important
   const {
     children,
@@ -128,7 +126,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     space,
     spaceFlex,
     scaleIcon = 1,
-    scaleSpace = 0.66,
+    scaleSpace = 0.5,
 
     // text props
     color: colorProp,
@@ -139,9 +137,8 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     textAlign,
     textProps,
     ...rest
-  } = props as ButtonProps
+  } = props as ListItemProps
 
-  const isInsideButton = useContext(ButtonInsideButtonContext)
   const theme = useTheme()
   const size = props.size || '$4'
 
@@ -179,7 +176,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
 
   if (!noTextWrap && children) {
     // in the case of using variables, like so:
-    // <Button>Hello, {name}</Button>
+    // <ListItem>Hello, {name}</ListItem>
     // it gives us props.children as ['Hello, ', 'name']
     // but we don't want to wrap multiple SizableText around each part
     // so we group them
@@ -192,7 +189,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
       const index = nextChildren.length - 1
       const childrenStrings = nextChildren[index]
       nextChildren[index] = (
-        <ButtonText
+        <ListItemText
           key={index}
           {...{
             fontWeight,
@@ -208,7 +205,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
           {...textProps}
         >
           {childrenStrings}
-        </ButtonText>
+        </ListItemText>
       )
     }
 
@@ -232,36 +229,37 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     contents = nextChildren
   }
 
+  const spaceSize = getVariableValue(iconSize) * scaleSpace
+
   return (
-    // careful not to desctructure and re-order props, order is important
-    <ButtonInsideButtonContext.Provider value={true}>
-      <ButtonFrame
-        fontFamily={fontFamily}
-        // fixes SSR issue + DOM nesting issue of not allowing button in button
-        {...(isInsideButton && {
-          tag: 'span',
-        })}
-        ref={ref as any}
-        {...rest}
-      >
-        {themedIcon || themedIconAfter
-          ? spacedChildren({
-              // a bit arbitrary but scaling to font size is necessary so long as button does
-              space: getVariableValue(iconSize) * scaleSpace,
-              spaceFlex,
-              direction: props.flexDirection || 'row',
-              children: [themedIcon, contents, themedIconAfter],
-            })
-          : contents}
-      </ButtonFrame>
-    </ButtonInsideButtonContext.Provider>
+    <ListItemFrame fontFamily={fontFamily} ref={ref as any} {...rest}>
+      {themedIcon || themedIconAfter ? (
+        <>
+          {themedIcon ? (
+            <>
+              {themedIcon}
+              <Spacer size={spaceSize} />
+            </>
+          ) : null}
+          {contents}
+          {themedIconAfter ? (
+            <>
+              <Spacer flex size={spaceSize} />
+              {themedIconAfter}
+            </>
+          ) : null}
+        </>
+      ) : (
+        contents
+      )}
+    </ListItemFrame>
   )
 })
 
-export const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View> =
-  ButtonFrame.extractable(themeable(ButtonComponent as any) as any, {
+export const ListItem: ReactComponentWithRef<ListItemProps, HTMLLIElement | View> =
+  ListItemFrame.extractable(themeable(ListItemComponent as any) as any, {
     inlineProps: new Set([
-      // text props go here (can't really optimize them, but we never fully extract button anyway)
+      // text props go here (can't really optimize them, but we never fully extract listItem anyway)
       'color',
       'fontWeight',
       'fontSize',

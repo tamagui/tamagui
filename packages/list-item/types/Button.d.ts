@@ -28,12 +28,11 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    padded?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -48,12 +47,11 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    padded?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -68,12 +66,11 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    padded?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -88,12 +85,11 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    padded?: boolean | undefined;
+    pad?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;

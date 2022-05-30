@@ -17,6 +17,7 @@
     "@tamagui/drawer": "^1.0.1-beta.42",
     "@tamagui/feather-icons": "^1.0.1-beta.42",
     "@tamagui/font-inter": "^1.0.1-beta.42",
+    "@tamagui/kitchen-sink": "^1.0.1-beta.42",
     "@tamagui/select": "^1.0.1-beta.42",
     "@tamagui/shorthands": "^1.0.1-beta.42",
     "@tamagui/slider": "^1.0.1-beta.42",
