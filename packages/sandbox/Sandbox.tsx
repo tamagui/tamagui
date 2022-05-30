@@ -3,6 +3,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { X } from '@tamagui/feather-icons'
+import { KitchenSink } from '@tamagui/kitchen-sink'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
 import {
@@ -52,71 +53,57 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack>
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog}
-          {Logog} {Logog}
-        </YStack>
-
         <YStack space ai="center">
-          <Dialog modal>
-            <DialogTrigger asChild>
-              <Button>Edit Profile</Button>
-            </DialogTrigger>
-            <DialogPortal>
-              <DialogOverlay key="overlay" o={0.5} />
-              {/*  animation="bouncy" */}
-              <DialogContent key="content" space>
-                <DialogTitle>Edit profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're done.
-                </DialogDescription>
-                <Fieldset horizontal>
-                  <Label w={160} justifyContent="flex-end" htmlFor="name">
-                    Name
-                  </Label>
-                  <Input f={1} id="name" defaultValue="Pedro Duarte" />
-                </Fieldset>
-                <Fieldset horizontal>
-                  <Label w={160} justifyContent="flex-end" htmlFor="username">
-                    Username
-                  </Label>
-                  <Input f={1} id="username" defaultValue="@peduarte" />
-                </Fieldset>
-
-                <YStack ai="flex-end" mt="$2">
-                  <DialogClose asChild>
-                    <Button theme="green" aria-label="Close">
-                      Save changes
-                    </Button>
-                  </DialogClose>
-                </YStack>
-
-                <Unspaced>
-                  <DialogClose asChild>
-                    <Button pos="absolute" t="$4" r="$4" circular icon={X} />
-                  </DialogClose>
-                </Unspaced>
-              </DialogContent>
-            </DialogPortal>
-          </Dialog>
+          <KitchenSink />
         </YStack>
       </div>
     </Tamagui.Provider>
+  )
+}
+
+function DialogDemo() {
+  return (
+    <Dialog modal>
+      <DialogTrigger asChild>
+        <Button>Edit Profile</Button>
+      </DialogTrigger>
+      <DialogPortal>
+        <DialogOverlay key="overlay" o={0.5} />
+        {/*  animation="bouncy" */}
+        <DialogContent key="content" space>
+          <DialogTitle>Edit profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here. Click save when you're done.
+          </DialogDescription>
+          <Fieldset horizontal>
+            <Label w={160} justifyContent="flex-end" htmlFor="name">
+              Name
+            </Label>
+            <Input f={1} id="name" defaultValue="Pedro Duarte" />
+          </Fieldset>
+          <Fieldset horizontal>
+            <Label w={160} justifyContent="flex-end" htmlFor="username">
+              Username
+            </Label>
+            <Input f={1} id="username" defaultValue="@peduarte" />
+          </Fieldset>
+
+          <YStack ai="flex-end" mt="$2">
+            <DialogClose asChild>
+              <Button theme="green" aria-label="Close">
+                Save changes
+              </Button>
+            </DialogClose>
+          </YStack>
+
+          <Unspaced>
+            <DialogClose asChild>
+              <Button pos="absolute" t="$4" r="$4" circular icon={X} />
+            </DialogClose>
+          </Unspaced>
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
   )
 }
 

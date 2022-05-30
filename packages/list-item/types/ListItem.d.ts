@@ -2,12 +2,12 @@ import { GetProps, ReactComponentWithRef, ThemeableProps } from '@tamagui/core';
 import { SizableTextProps } from '@tamagui/text';
 import { FunctionComponent } from 'react';
 import { View } from 'react-native';
-declare type ButtonIconProps = {
+declare type ListItemIconProps = {
     color?: string;
     size?: number;
 };
-declare type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null;
-export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps & {
+declare type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null;
+export declare type ListItemProps = GetProps<typeof ListItemFrame> & ThemeableProps & {
     icon?: IconProp;
     iconAfter?: IconProp;
     scaleIcon?: number;
@@ -22,7 +22,7 @@ export declare type ButtonProps = GetProps<typeof ButtonFrame> & ThemeableProps 
     textAlign?: SizableTextProps['textAlign'];
     textProps?: Partial<SizableTextProps>;
 };
-declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     fullscreen?: boolean | undefined;
     elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
@@ -103,7 +103,7 @@ declare const ButtonFrame: import("@tamagui/core").TamaguiComponent<Omit<import(
     active?: boolean | undefined;
     disabled?: boolean | undefined;
 }>;
-export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
+export declare const ListItemText: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
@@ -126,6 +126,6 @@ export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<
 } & ({} | {
     [x: string]: undefined;
 })>;
-export declare const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View>;
+export declare const ListItem: ReactComponentWithRef<ListItemProps, HTMLLIElement | View>;
 export {};
-//# sourceMappingURL=Button.d.ts.map
+//# sourceMappingURL=ListItem.d.ts.map

@@ -8,6 +8,12 @@ export declare const Spacer: TamaguiComponent<Omit<StackProps, "flex" | "directi
     flex?: number | boolean | undefined;
     direction?: "horizontal" | "vertical" | undefined;
 }, View, never, {}>;
+export declare const Unspaced: {
+    (props: {
+        children?: any;
+    }): any;
+    isUnspaced: boolean;
+};
 export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, }: {
     isZStack?: boolean;
     children: any;

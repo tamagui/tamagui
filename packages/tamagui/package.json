@@ -39,6 +39,7 @@
     "@tamagui/fake-react-native": "^1.0.1-beta.42",
     "@tamagui/font-size": "^1.0.1-beta.42",
     "@tamagui/helpers": "^1.0.1-beta.42",
+    "@tamagui/list-item": "^1.0.1-beta.42",
     "@tamagui/popover": "^1.0.1-beta.42",
     "@tamagui/popper": "^1.0.1-beta.42",
     "@tamagui/progress": "^1.0.1-beta.42",

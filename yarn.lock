@@ -3761,6 +3761,35 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/kitchen-sink@^1.0.1-beta.42, @tamagui/kitchen-sink@workspace:packages/kitchen-sink":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/kitchen-sink@workspace:packages/kitchen-sink"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.42
+    react: "*"
+    react-dom: "*"
+    tamagui: ^1.0.1-beta.42
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/list-item@^1.0.1-beta.42, @tamagui/list-item@workspace:packages/list-item":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/list-item@workspace:packages/list-item"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.42
+    "@tamagui/core": ^1.0.1-beta.42
+    "@tamagui/font-size": ^1.0.1-beta.42
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/menu@^1.0.1-beta.42, @tamagui/menu@workspace:packages/menu":
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:packages/menu"
@@ -3945,6 +3974,7 @@ __metadata:
     "@tamagui/drawer": ^1.0.1-beta.42
     "@tamagui/feather-icons": ^1.0.1-beta.42
     "@tamagui/font-inter": ^1.0.1-beta.42
+    "@tamagui/kitchen-sink": ^1.0.1-beta.42
     "@tamagui/select": ^1.0.1-beta.42
     "@tamagui/shorthands": ^1.0.1-beta.42
     "@tamagui/slider": ^1.0.1-beta.42
@@ -17935,6 +17965,7 @@ __metadata:
     "@tamagui/fake-react-native": ^1.0.1-beta.42
     "@tamagui/font-size": ^1.0.1-beta.42
     "@tamagui/helpers": ^1.0.1-beta.42
+    "@tamagui/list-item": ^1.0.1-beta.42
     "@tamagui/popover": ^1.0.1-beta.42
     "@tamagui/popper": ^1.0.1-beta.42
     "@tamagui/progress": ^1.0.1-beta.42
