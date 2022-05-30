@@ -5,6 +5,9 @@
   - also aligns with stylex
 
 - 1.0
+  - document <ListItem />
+  - Input based on Button for icon/iconAfter
+  - `blur` style prop
   - overwriting `disabled` in variants breaks types... (see ThemeableStack)
   - sell sizing story better - home hero, blog post?
   - sell compiler much better in hero
@@ -32,11 +35,20 @@
   - test Android in starters repo
   - size=5.5 icon scales diff
   - size={55} doesnt set size only icon
+  - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - theme light needs darker shadows?
   - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
   - <Select />, <Dialog /> (AlertDialog)
-  - maybe <ToggleGroup />
-  - maybe <Blur />, <Tabs />, <Toast />, <RadioGroup />, <Progress />
+  
+  - <SelectableList /> (type = multi | single)
+    - in place of Radio (+ checkbox)
+    - needs ToggleGroup
+      - needs RovingFocusGroup
+
+  - <Tabs />
+    - needs RovingFocusGroup
+
+  - <Toast />
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
@@ -52,16 +64,7 @@
   - Text numberOfLines / context fix
   - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
     - Docs/ability to configure stricted theme values (dont accept anything but tokens)
-  - as={} + extraction + types
   - add fonts section to guides
-  - move away from rnw css generation
-  - move away from supporting some react native APIs for performance
-    - alternatively could test just doing this:
-      - compiler could insert special props like:
-        - __noAnimations, __noTheme, __noSpace
-        - it would change key={} alongside that
-        - that way HMR still works, but loads less hooks
-        - works in production for extra perf
   - auto skeleton components
 
 takeout:
@@ -88,16 +91,22 @@ takeout:
   - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
 
+- compiler could insert special props like:
+  - __noAnimations, __noTheme, __noSpace
+  - it would change key={} alongside that
+  - that way HMR still works, but loads less hooks
+  - works in production for extra perf
+- as={} + extraction + types
 - <GradientText /> can work native with 
   - https://github.com/react-native-masked-view/masked-view
 - react-native-skia / svg image support
-- before={{}}, after={{}} could work ...
+- beforeStyle, afterStyle could work ...
   - only if we can do with psuedos:
     - focusStyle={{ after: { fullscreen: true, border... } }}
     - allows for proper focused borders that don't require super hacks
     - see Switch
 - styled(Button) types break   
-- <Card />, <List />, <Radio />, <Avatar />
+- <Avatar />
   - radio may be List.Radio just combines List, Label, Drawer
     - can use Switch or check or custom
 - <Accordion />
@@ -119,7 +128,6 @@ takeout:
 - <SizableFrame />, <EnsureFlexed />
 - document/release <ThemeReverse />
 - container queries
-- <List /> (works with drawer + draggable + selectable)
 - <Menu />
 - <PopoverDrawer /> + <MenuDrawer />
 - // TODO only on hoverable/pressable!

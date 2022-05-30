@@ -1,8 +1,8 @@
 // TODO split this into own package @tamagui/types to share with animations packages
 
-import CSS from 'csstype'
+import type { Properties } from 'csstype'
 import React from 'react'
-import {
+import type {
   GestureResponderEvent,
   Image,
   TextProps as ReactTextProps,
@@ -14,10 +14,12 @@ import {
   ViewStyle,
 } from 'react-native'
 
-import { Variable } from './createVariable'
-import { ResolveVariableTypes } from './helpers/createPropMapper'
-import { RNWTextProps, RNWViewProps } from './types-rnw'
-import { ThemeProviderProps } from './views/ThemeProvider'
+import type { Variable } from './createVariable'
+import type { ResolveVariableTypes } from './helpers/createPropMapper'
+import type { RNWTextProps, RNWViewProps } from './types-rnw'
+import type { ThemeProviderProps } from './views/ThemeProvider'
+
+export type TamaguiElement = HTMLElement | View
 
 //
 // base props that are accepted by createComponent (additional to react-native-web)
@@ -453,6 +455,7 @@ export type StackStylePropsBase = Omit<ViewStyle, 'display' | 'backfaceVisibilit
 export type StackPropsBaseShared = Omit<ViewProps, 'display' | 'children'> &
   RNWViewProps &
   TamaguiComponentPropsBase
+
 export type StackStyleProps = WithThemeShorthandsPseudosMediaAnimation<StackStylePropsBase>
 export type StackPropsBase = StackPropsBaseShared & WithThemeAndShorthands<StackStylePropsBase>
 export type StackProps = StackPropsBaseShared & StackStyleProps
@@ -473,11 +476,11 @@ export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility
     ellipse?: boolean
     selectable?: boolean
     textDecorationDistance?: number
-    userSelect?: CSS.Properties['userSelect']
-    textOverflow?: CSS.Properties['textOverflow']
-    whiteSpace?: CSS.Properties['whiteSpace']
-    wordWrap?: CSS.Properties['wordWrap']
-    cursor?: CSS.Properties['cursor']
+    userSelect?: Properties['userSelect']
+    textOverflow?: Properties['textOverflow']
+    whiteSpace?: Properties['whiteSpace']
+    wordWrap?: Properties['wordWrap']
+    cursor?: Properties['cursor']
   }
 
 export type TextPropsBaseShared = Omit<ReactTextProps, 'children'> &

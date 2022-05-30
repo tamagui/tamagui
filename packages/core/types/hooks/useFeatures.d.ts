@@ -14,6 +14,6 @@ declare type FeatureUtils = {
     onDidAnimate?: () => void;
     hostRef: RefObject<HTMLElement | View>;
 };
-export declare const useFeatures: (props: any, utils?: FeatureUtils | undefined) => JSX.Element[];
+export declare const useFeatures: (props: any, utils?: FeatureUtils) => JSX.Element[];
 export {};
 //# sourceMappingURL=useFeatures.d.ts.map

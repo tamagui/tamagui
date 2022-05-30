@@ -22,11 +22,11 @@ export default function CardDemo() {
 function DemoCard(props: CardProps) {
   return (
     <Card theme="dark" elevate size="$4" {...props}>
-      <Card.Header pad>
+      <Card.Header padded>
         <H2>Sony A7IV</H2>
         <Paragraph theme="alt2">Now available</Paragraph>
       </Card.Header>
-      <Card.Footer pad>
+      <Card.Footer padded>
         <XStack f={1} />
         <Button br="$10">Purchase</Button>
       </Card.Footer>

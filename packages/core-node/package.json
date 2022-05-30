@@ -27,7 +27,7 @@
     "lodash": "^4.17.21",
     "ts-transform-import-path-rewrite": "^0.3.0",
     "ttypescript": "^1.5.13",
-    "typescript": "^4.5.2"
+    "typescript": "^4.7.2"
   },
   "publishConfig": {
     "access": "public"

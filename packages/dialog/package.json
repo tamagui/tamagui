@@ -29,7 +29,8 @@
     "@tamagui/portal": "^1.0.1-beta.42",
     "@tamagui/stacks": "^1.0.1-beta.42",
     "@tamagui/text": "^1.0.1-beta.42",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.42"
+    "@tamagui/use-controllable-state": "^1.0.1-beta.42",
+    "react-remove-scroll": "^2.5.3"
   },
   "peerDependencies": {
     "react": "*",

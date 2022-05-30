@@ -55,7 +55,7 @@ export declare const ZStack: import("@tamagui/core").TamaguiComponent<(Omit<impo
 }>>), any, import("@tamagui/core").StackPropsBase, {
     fullscreen?: boolean | undefined;
     elevation?: SizeTokens | undefined;
-} & ({} | {
+} & (symbol | {
     [x: string]: undefined;
 })>;
 export declare const getSizedElevation: (val: SizeTokens | number | boolean, { theme, tokens }: VariantSpreadExtras<any>) => {

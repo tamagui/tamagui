@@ -3522,7 +3522,7 @@ __metadata:
     fs-extra: ^9.1.0
     json5: ^2.2.0
     lodash.debounce: ^4.0.8
-    typescript: ^4.5.2
+    typescript: ^4.7.2
   bin:
     tamagui-build: tamagui-build.js
   languageName: unknown
@@ -3597,7 +3597,7 @@ __metadata:
     lodash: ^4.17.21
     ts-transform-import-path-rewrite: ^0.3.0
     ttypescript: ^1.5.13
-    typescript: ^4.5.2
+    typescript: ^4.7.2
   languageName: unknown
   linkType: soft
 
@@ -3621,7 +3621,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native-web: ^0.17.5
-    typescript: ^4.5.2
+    typescript: ^4.7.2
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -3660,6 +3660,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native: "*"
+    react-remove-scroll: ^2.5.3
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -16037,7 +16038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-remove-scroll@npm:^2.4.1":
+"react-remove-scroll@npm:^2.4.1, react-remove-scroll@npm:^2.5.3":
   version: 2.5.3
   resolution: "react-remove-scroll@npm:2.5.3"
   dependencies:
@@ -18715,23 +18716,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.6.4":
-  version: 4.6.4
-  resolution: "typescript@npm:4.6.4"
+"typescript@npm:4.7.2":
+  version: 4.7.2
+  resolution: "typescript@npm:4.7.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: e7bfcc39cd4571a63a54e5ea21f16b8445268b9900bf55aee0e02ad981be576acc140eba24f1af5e3c1457767c96cea6d12861768fb386cf3ffb34013718631a
+  checksum: 5163585e6b56410f77d5483b698d9489bbee8902c99029eb70cf6d21525a186530ce19a00951af84eefd4a131cc51d0959f5118e25e70ab61f45ac4057dbd1ef
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>":
-  version: 4.6.4
-  resolution: "typescript@patch:typescript@npm%3A4.6.4#~builtin<compat/typescript>::version=4.6.4&hash=7ad353"
+"typescript@patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>":
+  version: 4.7.2
+  resolution: "typescript@patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 1cb434fbc637d347be90e3a0c6cd05e33c38f941713c8786d3031faf1842c2c148ba91d2fac01e7276b0ae3249b8633f1660e32686cc7a8c6a8fd5361dc52c66
+  checksum: 7e2b9a9f4a70fb7616f1b0d986977f8e34a74f046202fa7f24fdee79589598277810fa216b3776c20c0683a9235872c73be34fdb93f67f98c1efaca40999422f
   languageName: node
   linkType: hard
 

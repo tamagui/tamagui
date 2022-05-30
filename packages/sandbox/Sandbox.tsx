@@ -70,8 +70,26 @@ function DialogDemo() {
       </DialogTrigger>
       <DialogPortal>
         <DialogOverlay key="overlay" o={0.5} />
-        {/*  animation="bouncy" */}
-        <DialogContent bordered elevate key="content" space>
+        <DialogContent
+          bordered
+          elevate
+          key="content"
+          space
+          animation={[
+            'bouncy',
+            {
+              opacity: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+          enterStyle={{ x: 0, y: -40, opacity: 0, scale: 0.975 }}
+          exitStyle={{ x: 0, y: 40, opacity: 0, scale: 0.975 }}
+          x={0}
+          scale={1}
+          opacity={1}
+          y={0}
+        >
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
             Make changes to your profile here. Click save when you're done.
@@ -80,13 +98,13 @@ function DialogDemo() {
             <Label w={160} justifyContent="flex-end" htmlFor="name">
               Name
             </Label>
-            <Input f={1} id="name" defaultValue="Pedro Duarte" />
+            <Input f={1} id="name" defaultValue="Nate Wienert" />
           </Fieldset>
           <Fieldset horizontal>
             <Label w={160} justifyContent="flex-end" htmlFor="username">
               Username
             </Label>
-            <Input f={1} id="username" defaultValue="@peduarte" />
+            <Input f={1} id="username" defaultValue="@natebirdman" />
           </Fieldset>
 
           <YStack ai="flex-end" mt="$2">

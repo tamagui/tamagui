@@ -8,6 +8,8 @@ import { composeEventHandlers } from '@tamagui/core'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
+import { DismissableBranchProps, DismissableProps } from './DismissableProps'
+
 function dispatchDiscreteCustomEvent<E extends CustomEvent>(target: E['target'], event: E) {
   if (target) ReactDOM.flushSync(() => target.dispatchEvent(event))
 }
@@ -28,44 +30,6 @@ const DismissableContext = React.createContext({
   layersWithOutsidePointerEventsDisabled: new Set<HTMLDivElement>(),
   branches: new Set<HTMLDivElement>(),
 })
-
-type DivProps = React.HTMLProps<HTMLDivElement>
-
-interface DismissableBaseProps {
-  /**
-   * When `true`, hover/focus/click interactions will be disabled on elements outside
-   * the `Dismissable`. Users will need to click twice on outside elements to
-   * interact with them: once to close the `Dismissable`, and again to trigger the element.
-   */
-  disableOutsidePointerEvents?: boolean
-  /**
-   * Event handler called when the escape key is down.
-   * Can be prevented.
-   */
-  onEscapeKeyDown?: (event: KeyboardEvent) => void
-  /**
-   * Event handler called when the a `pointerdown` event happens outside of the `Dismissable`.
-   * Can be prevented.
-   */
-  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
-  /**
-   * Event handler called when the focus moves outside of the `Dismissable`.
-   * Can be prevented.
-   */
-  onFocusOutside?: (event: FocusOutsideEvent) => void
-  /**
-   * Event handler called when an interaction happens outside the `Dismissable`.
-   * Specifically, when a `pointerdown` event happens outside or focus moves outside of it.
-   * Can be prevented.
-   */
-  onInteractOutside?: (event: PointerDownOutsideEvent | FocusOutsideEvent) => void
-  /**
-   * Handler called when the `Dismissable` should be dismissed
-   */
-  onDismiss?: () => void
-}
-
-type DismissableProps = DismissableBaseProps & DivProps
 
 const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>((props, forwardedRef) => {
   const {
@@ -164,18 +128,29 @@ const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>((props, f
       // @ts-ignore
       ref={composedRefs}
       style={{
+        display: 'contents',
         pointerEvents: isBodyPointerEventsDisabled
           ? isPointerEventsEnabled
             ? 'auto'
             : 'none'
           : undefined,
+        // @ts-ignore
         ...props.style,
       }}
-      onFocusCapture={composeEventHandlers(props.onFocusCapture, focusOutside.onFocusCapture)}
-      onBlurCapture={composeEventHandlers(props.onBlurCapture, focusOutside.onBlurCapture)}
+      onFocusCapture={composeEventHandlers(
+        // @ts-ignore
+        props.onFocusCapture,
+        focusOutside.onFocusCapture
+      )}
+      onBlurCapture={composeEventHandlers(
+        // @ts-ignore
+        props.onBlurCapture,
+        focusOutside.onBlurCapture
+      )}
       // @ts-ignore
       onPointerDownCapture={composeEventHandlers(
-        props.onPointerDownCapture as any,
+        // @ts-ignore
+        props.onPointerDownCapture,
         pointerDownOutside.onPointerDownCapture
       )}
     />
@@ -189,8 +164,6 @@ Dismissable.displayName = DISMISSABLE_LAYER_NAME
  * -----------------------------------------------------------------------------------------------*/
 
 const BRANCH_NAME = 'DismissableBranch'
-
-interface DismissableBranchProps extends DivProps {}
 
 const DismissableBranch = React.forwardRef<HTMLDivElement, DismissableBranchProps>(
   (props, forwardedRef) => {
@@ -208,7 +181,7 @@ const DismissableBranch = React.forwardRef<HTMLDivElement, DismissableBranchProp
       }
     }, [context.branches])
 
-    return <div {...props} ref={composedRefs} />
+    return <div style={{ display: 'contents' }} {...props} ref={composedRefs} />
   }
 )
 
@@ -216,8 +189,8 @@ DismissableBranch.displayName = BRANCH_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type PointerDownOutsideEvent = CustomEvent<{ originalEvent: PointerEvent }>
-type FocusOutsideEvent = CustomEvent<{ originalEvent: FocusEvent }>
+export type PointerDownOutsideEvent = CustomEvent<{ originalEvent: PointerEvent }>
+export type FocusOutsideEvent = CustomEvent<{ originalEvent: FocusEvent }>
 
 /**
  * Listens for `pointerdown` outside a react subtree. We use `pointerdown` rather than `pointerup`
@@ -354,4 +327,4 @@ export {
   Branch,
 }
 
-export type { DismissableBaseProps, DismissableProps }
+export type { DismissableProps }
