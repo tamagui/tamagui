@@ -3647,6 +3647,8 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.1-beta.42
     "@tamagui/core": ^1.0.1-beta.42
     "@tamagui/create-context": ^1.0.1-beta.42
+    "@tamagui/dismissable": ^1.0.1-beta.42
+    "@tamagui/focus-scope": ^1.0.1-beta.42
     "@tamagui/polyfill-dev": ^1.0.1-beta.42
     "@tamagui/popper": ^1.0.1-beta.42
     "@tamagui/portal": ^1.0.1-beta.42
@@ -3665,7 +3667,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/dismissable@workspace:packages/dismissable":
+"@tamagui/dismissable@^1.0.1-beta.42, @tamagui/dismissable@workspace:packages/dismissable":
   version: 0.0.0-use.local
   resolution: "@tamagui/dismissable@workspace:packages/dismissable"
   dependencies:
@@ -3674,14 +3676,11 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.42
     "@tamagui/compose-refs": ^1.0.1-beta.42
     "@tamagui/core": ^1.0.1-beta.42
-    "@types/react-native": ^0.67.3
     react: "*"
     react-dom: "*"
-    react-native: "*"
   peerDependencies:
     react: "*"
     react-dom: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -3738,6 +3737,21 @@ __metadata:
     react-dom: "*"
     react-native-svg: ^12.3.0
     uppercamelcase: ^3.0.0
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/focus-scope@^1.0.1-beta.42, @tamagui/focus-scope@workspace:packages/focus-scope":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/focus-scope@workspace:packages/focus-scope"
+  dependencies:
+    "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@tamagui/build": ^1.0.1-beta.42
+    "@tamagui/compose-refs": ^1.0.1-beta.42
+    react: "*"
+    react-dom: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 

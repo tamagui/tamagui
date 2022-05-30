@@ -22,6 +22,8 @@
     "@tamagui/compose-refs": "^1.0.1-beta.42",
     "@tamagui/core": "^1.0.1-beta.42",
     "@tamagui/create-context": "^1.0.1-beta.42",
+    "@tamagui/dismissable": "^1.0.1-beta.42",
+    "@tamagui/focus-scope": "^1.0.1-beta.42",
     "@tamagui/polyfill-dev": "^1.0.1-beta.42",
     "@tamagui/popper": "^1.0.1-beta.42",
     "@tamagui/portal": "^1.0.1-beta.42",
