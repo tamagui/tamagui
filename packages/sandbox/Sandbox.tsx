@@ -54,7 +54,8 @@ export const Sandbox = () => {
         }}
       >
         <YStack space ai="center">
-          <KitchenSink />
+          <DialogDemo />
+          {/* <KitchenSink /> */}
         </YStack>
       </div>
     </Tamagui.Provider>
@@ -70,7 +71,7 @@ function DialogDemo() {
       <DialogPortal>
         <DialogOverlay key="overlay" o={0.5} />
         {/*  animation="bouncy" */}
-        <DialogContent key="content" space>
+        <DialogContent bordered elevate key="content" space>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
             Make changes to your profile here. Click save when you're done.

@@ -3147,7 +3147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-use-callback-ref@npm:^0.1.0":
+"@radix-ui/react-use-callback-ref@npm:0.1.0, @radix-ui/react-use-callback-ref@npm:^0.1.0":
   version: 0.1.0
   resolution: "@radix-ui/react-use-callback-ref@npm:0.1.0"
   dependencies:
@@ -3155,6 +3155,18 @@ __metadata:
   peerDependencies:
     react: ^16.8 || ^17.0
   checksum: 5356971123d7bbc66a208eca4709483190d0927a6817089f885d4538cd701a174d76830ba36cfaa6336b340415aaefaddc606a575246b0cbcb4b1f2897075203
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-use-escape-keydown@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@radix-ui/react-use-escape-keydown@npm:0.1.0"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-use-callback-ref": 0.1.0
+  peerDependencies:
+    react: ^16.8 || ^17.0
+  checksum: b92769ecf49eac072c95898e230f9066385b6623d5af8d8f6a322a84bac4bcfab149eb3321fc363dad1d8b1b9706dcdde461a5423bc77f4afffba346b2f11ea3
   languageName: node
   linkType: hard
 
@@ -3642,6 +3654,26 @@ __metadata:
     "@tamagui/text": ^1.0.1-beta.42
     "@tamagui/use-controllable-state": ^1.0.1-beta.42
     "@types/react-dom": ^18.0.3
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/dismissable@workspace:packages/dismissable":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/dismissable@workspace:packages/dismissable"
+  dependencies:
+    "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@radix-ui/react-use-escape-keydown": ^0.1.0
+    "@tamagui/build": ^1.0.1-beta.42
+    "@tamagui/compose-refs": ^1.0.1-beta.42
+    "@tamagui/core": ^1.0.1-beta.42
     "@types/react-native": ^0.67.3
     react: "*"
     react-dom: "*"

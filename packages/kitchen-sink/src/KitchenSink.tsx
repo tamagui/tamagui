@@ -4,7 +4,7 @@ import { Button, Group, ListItem, YStack } from 'tamagui'
 export function KitchenSink() {
   return (
     <YStack space>
-      <Group vertical>
+      <Group size="$4" vertical>
         <ListItem iconAfter={Check}>Hello world</ListItem>
         <ListItem iconAfter={Check}>Hello world</ListItem>
         <ListItem iconAfter={Check}>Hello world</ListItem>
