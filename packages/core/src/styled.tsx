@@ -13,6 +13,7 @@ import {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
+import { Stack } from './views/Stack'
 
 // TODO may be able to use this in the options?: arg below directly
 export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<ParentComponent> & {
@@ -89,7 +90,7 @@ export function styled<
     : GetProps<ParentComponent>
   type ParentVariants = ParentComponent extends TamaguiComponent<any, any, any, infer V> ? V : {}
 
-  type OurVariants = Variants extends symbol
+  type OurVariants = Variants extends void
     ? {}
     : {
         [Key in keyof Variants]?: Variants[Key] extends VariantSpreadFunction<any, infer Val>
@@ -118,108 +119,34 @@ export function styled<
   >
 }
 
-// test types:
-// // variants
+// breaking...
+// TODO see core/types.ts bug
+
 // export const XStack = styled(Stack, {
-//   flexDirection: 'row',
-//   name: 'XStack',
 //   variants: {
-//     fullscreen: {
-//       true: {},
-//     },
-//     elevation: {
-//       '...size': (val) => ({}),
-//     },
-//   },
-// })
-// const InBetween = styled(XStack, {})
-// type INBVariants = typeof InBetween extends TamaguiComponent<any, any, any, infer Variants> ? Variants: never
-// const SwitchFrame = styled(InBetween, {
-//   name: 'Switch',
-//   tag: 'button',
-//   borderRadius: 100,
-//   borderWidth: 0,
-//   variants: {
-//     name: {
+//     horizontal: {
 //       true: {
-//         backgroundColor: 'aliceblue'
-//       },
-//       // 1: {
-
-//       // },
-//       // ':number': (val) => {
-//       //   return {}
-//       // },
-//       // "...fontSize": (val) => {
-//       //   return {}
-//       // },
-//       // "...color": (val) => {
-//       //   return {}
-//       // }
-//     }
-//   },
-//   defaultVariants: {
-//     size: '$4',
-//   },
-// })
-// const x = <XStack fullscreen />
-// const y = <XStack fullscreen />
-// const z = <SwitchFrame fullscreen name />
-
-// depth:
-// export const SizableText = styled(Stack, {
-//   name: 'SizableText',
-//   backgroundColor: 'red',
-//   variants: {
-//     size: {
-//       '...fontSize': (val, { props }) => {
-//         return {
-//           backgroundColor: '',
-//         }
+//         // flexDirection: 'row',
+//         width: 0,
 //       },
 //     },
 //   },
 // })
-// export const Heading = styled(SizableText, {
-//   tag: 'span',
-//   name: 'Heading',
-//   accessibilityRole: 'header',
-//   size: '$8',
-//   margin: 0,
-// })
-// export const Paragraph = styled(SizableText, {
-//   tag: 'p',
-//   margin: 10,
+
+// const Separator = styled(Stack, {
 //   variants: {
-//     another: {
-//       true: {},
+//     vertical: {
+//       true: {
+//         flexDirection: 'row',
+//       },
 //     },
 //   },
+//            <--- have to add as const to get working???
 // })
-// export const Paragraph2 = styled(Paragraph, {
-//   tag: 'p',
-//   variants: {
-//     another: {
-//       '...color': (val) => ({
-//         backgroundColor: 'red',
-//       }),
-//     },
-//   },
-// })
-// const a = <SizableText size="$10" />
-// const b = <Paragraph size="$10" another />
-// const c = <Paragraph2 size="$10" another="aliceblue" />
-// export const SizableText2 = styled(SizableText, {
-// })
-// const xx = <SizableText2 abc />
-// export const Paragraph = styled(SizableText, {
-//   name: 'Paragraph',
-// })
-// export const Heading = styled(Paragraph, {
-//   tag: 'span',
-//   margin: 0,
-// })
-// export const H2 = styled(Heading, {
-//   name: 'H2',
-// })
-// const x = <H2 color="red" />
+
+// type props = GetProps<typeof XStack>
+// type variants = typeof XStack extends TamaguiComponent<any, infer Variants> ? Variants : never
+// type variants2 = typeof Separator extends TamaguiComponent<any, infer Variants> ? Variants : never
+
+// const x = <XStack horizontal />
+// const x2 = <Separator vertical />

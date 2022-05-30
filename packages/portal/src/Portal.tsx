@@ -6,7 +6,9 @@ import * as React from 'react'
 import { createPortal } from 'react-dom'
 import { Modal } from 'react-native'
 
-export const Portal = (props: YStackProps) => {
+export type PortalProps = YStackProps
+
+export const Portal = (props: PortalProps) => {
   const contents = <YStack pointerEvents="none" fullscreen {...props} />
 
   if (!isWeb) {

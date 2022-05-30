@@ -9,13 +9,13 @@ export declare type ThemeProps = {
     reset?: boolean;
     debug?: boolean | 'verbose';
 };
-export declare const useTheme: (themeName?: string | null | undefined, componentName?: string | undefined, props?: ThemeProps | undefined, forceUpdate?: any) => ThemeObject;
+export declare const useTheme: (themeName?: string | null, componentName?: string, props?: ThemeProps, forceUpdate?: any) => ThemeObject;
 export declare const getThemeManagerIfChanged: (theme: any) => any;
 export declare const useThemeName: (opts?: {
-    parent?: true | undefined;
-} | undefined) => string;
+    parent?: true;
+}) => string;
 export declare const useDefaultThemeName: () => ThemeName | undefined;
-export declare const useChangeThemeEffect: (name?: string | null | undefined, componentName?: string | undefined, props?: ThemeProps | undefined, forceUpdateProp?: any) => {
+export declare const useChangeThemeEffect: (name?: string | null, componentName?: string, props?: ThemeProps, forceUpdateProp?: any) => {
     didChangeTheme: boolean;
     themes: {
         [key: string]: Partial<import("../types").TamaguiBaseTheme> & {

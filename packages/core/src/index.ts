@@ -41,6 +41,7 @@ export * from './hooks/usePressable'
 export * from './hooks/useTheme'
 export * from './hooks/useUnmountEffect'
 
+export * from './views/Slot'
 export * from './views/Stack'
 export * from './views/Text'
 export * from './views/TextAncestorContext'

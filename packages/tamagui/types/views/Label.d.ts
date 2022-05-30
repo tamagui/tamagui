@@ -21,5 +21,5 @@ export declare type LabelProps = GetProps<typeof LabelFrame> & {
     htmlFor?: string;
 };
 export declare const Label: ReactComponentWithRef<LabelProps, HTMLButtonElement | View>;
-export declare const useLabelContext: (element?: HTMLElement | null | undefined) => string | undefined;
+export declare const useLabelContext: (element?: HTMLElement | null) => string | undefined;
 //# sourceMappingURL=Label.d.ts.map

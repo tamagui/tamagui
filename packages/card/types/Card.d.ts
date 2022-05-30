@@ -7,16 +7,17 @@ declare type CardContextValue = {
 declare const createCardScope: import("@tamagui/create-context").CreateScope;
 declare const useCardContext: (consumerName: string, scope: import("@tamagui/create-context").Scope<CardContextValue | undefined>) => CardContextValue;
 declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -24,16 +25,17 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -41,16 +43,17 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -58,16 +61,17 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -76,16 +80,17 @@ declare const CardFrame: import("@tamagui/core").TamaguiComponent<Omit<import("r
     size?: SizeTokens | undefined;
 }>;
 declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -93,16 +98,17 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -110,16 +116,17 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -127,16 +134,17 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -145,16 +153,17 @@ declare const CardHeader: import("@tamagui/core").TamaguiComponent<Omit<import("
     size?: SizeTokens | undefined;
 }>;
 declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -162,16 +171,17 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -179,16 +189,17 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -196,16 +207,17 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -215,16 +227,17 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -234,16 +247,17 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -253,81 +267,86 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
 }, string | number> & {
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").StackPropsBase, {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 } & {
     size?: SizeTokens | undefined;
-} & ({} | {
+} & (symbol | {
     [x: string]: undefined;
 })>;
 declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
+}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
+}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
+}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
 }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -335,16 +354,17 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
 }, string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -352,16 +372,17 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
 }, string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -369,37 +390,39 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
 }, string | number> & {
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").StackPropsBase, {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-} & ({} | {
+} & (symbol | {
     [x: string]: undefined;
 })>;
 export declare type CardHeaderProps = GetProps<typeof CardHeader>;
 export declare type CardFooterProps = GetProps<typeof CardFooter>;
 export declare type CardProps = GetProps<typeof CardFrame>;
 export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -407,16 +430,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
 }, "size"> & {
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -424,16 +448,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
 }, "size"> & {
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
+    radiused?: boolean | undefined;
     hoverable?: boolean | undefined;
     pressable?: boolean | undefined;
     focusable?: boolean | undefined;
     circular?: boolean | undefined;
-    pad?: boolean | undefined;
+    padded?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
@@ -447,16 +472,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     themeInverse?: boolean | undefined;
 }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
     Header: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -464,16 +490,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, "size"> & {
         size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -481,16 +508,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -498,16 +526,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>>, any, import("@tamagui/core").StackPropsBase, {
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -516,16 +545,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         size?: SizeTokens | undefined;
     }>;
     Footer: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -533,16 +563,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, "size"> & {
         size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -550,16 +581,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -567,16 +599,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -586,16 +619,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -605,16 +639,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -624,81 +659,86 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, string | number> & {
         [x: string]: undefined;
     }>>), any, import("@tamagui/core").StackPropsBase, {
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
     } & {
         size?: SizeTokens | undefined;
-    } & ({} | {
+    } & (symbol | {
         [x: string]: undefined;
     })>;
     Background: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
-    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
-    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
-    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "pad" | "chromeless"> & {
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
+    }, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
     }>>) | (Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -706,16 +746,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -723,16 +764,17 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
@@ -740,21 +782,22 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
     }, string | number> & {
         [x: string]: undefined;
     }>>), any, import("@tamagui/core").StackPropsBase, {
-        fullscreen?: boolean | undefined;
-        elevation?: SizeTokens | undefined;
+        readonly fullscreen?: boolean | undefined;
+        readonly elevation?: SizeTokens | undefined;
     } & {
         fontFamily?: unknown;
         backgrounded?: boolean | undefined;
+        radiused?: boolean | undefined;
         hoverable?: boolean | undefined;
         pressable?: boolean | undefined;
         focusable?: boolean | undefined;
         circular?: boolean | undefined;
-        pad?: boolean | undefined;
+        padded?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    } & ({} | {
+    } & (symbol | {
         [x: string]: undefined;
     })>;
 };

@@ -41,7 +41,7 @@
     "csstype": "^3.0.10",
     "esbuild": "^0.14.36",
     "react-native-web": "^0.17.5",
-    "typescript": "^4.5.2"
+    "typescript": "^4.7.2"
   },
   "publishConfig": {
     "access": "public"

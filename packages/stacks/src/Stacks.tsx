@@ -11,8 +11,8 @@ import {
 } from '@tamagui/core'
 
 export type YStackProps = GetProps<typeof YStack>
-export type XStackProps = GetProps<typeof YStack>
-export type ZStackProps = GetProps<typeof ZStack>
+export type XStackProps = YStackProps
+export type ZStackProps = YStackProps
 
 export const getElevation: SizeVariantSpreadFunction<StackProps> = (size, extras) => {
   const { tokens } = extras
@@ -30,30 +30,25 @@ const fullscreenStyle = {
   bottom: 0,
 } as const
 
+const variants = {
+  fullscreen: {
+    true: fullscreenStyle,
+  },
+  elevation: {
+    '...size': getElevation,
+  },
+} as const
+
 export const YStack = styled(Stack, {
   flexDirection: 'column',
   name: 'YStack',
-  variants: {
-    fullscreen: {
-      true: fullscreenStyle,
-    },
-    elevation: {
-      '...size': getElevation,
-    },
-  },
+  variants,
 })
 
 export const XStack = styled(Stack, {
   flexDirection: 'row',
   name: 'XStack',
-  variants: {
-    fullscreen: {
-      true: fullscreenStyle,
-    },
-    elevation: {
-      '...size': getElevation,
-    },
-  },
+  variants,
 })
 
 export const ZStack = styled(

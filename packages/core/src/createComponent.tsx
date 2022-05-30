@@ -15,7 +15,7 @@ import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
-import { isAndroid, isWeb, useIsomorphicLayoutEffect } from './constants/platform'
+import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { rnw } from './constants/rnw'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
@@ -38,6 +38,7 @@ import {
   TamaguiComponent,
   TamaguiComponentState,
   TamaguiConfig,
+  TamaguiElement,
   TamaguiInternalConfig,
   UseAnimationHook,
 } from './types'
@@ -84,7 +85,7 @@ let initialTheme: any
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
-  Ref = View,
+  Ref = TamaguiElement,
   BaseProps = never
 >(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent) {
   const staticConfig = (() => {

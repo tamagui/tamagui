@@ -1,15 +1,24 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { GetProps, composeEventHandlers, styled, useId, withStaticProperties } from '@tamagui/core'
+import {
+  GetProps,
+  Slot,
+  composeEventHandlers,
+  styled,
+  useId,
+  withStaticProperties,
+} from '@tamagui/core'
 import { Scope, createContext, createContextScope } from '@tamagui/create-context'
-import { Dismissable, DismissableBaseProps } from '@tamagui/dismissable'
+import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
-import { Portal } from '@tamagui/portal'
+import { Portal, PortalProps } from '@tamagui/portal'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { Modal, ModalProps, View } from 'react-native'
+import { ModalProps, View } from 'react-native'
+import { RemoveScroll } from 'react-remove-scroll'
+// import { hideOthers } from 'aria-hidden';
 
 const DIALOG_NAME = 'Dialog'
 
@@ -34,7 +43,7 @@ type DialogContextValue = {
 
 const [DialogProvider, useDialogContext] = createDialogContext<DialogContextValue>(DIALOG_NAME)
 
-// type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
+type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 
 interface DialogProps {
   children?: React.ReactNode
@@ -42,12 +51,11 @@ interface DialogProps {
   defaultOpen?: boolean
   onOpenChange?(open: boolean): void
   modal?: boolean
-  allowPinchZoom?: boolean
 
   /**
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
-  // allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
+  allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -94,8 +102,6 @@ type PortalContextValue = { forceMount?: true }
 const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValue>(PORTAL_NAME, {
   forceMount: undefined,
 })
-
-type PortalProps = YStackProps & Pick<ModalProps, 'presentationStyle'>
 
 interface DialogPortalProps extends Omit<PortalProps, 'asChild'> {
   children?: React.ReactNode
@@ -153,11 +159,14 @@ const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
     const portalContext = usePortalContext(OVERLAY_NAME, props.__scopeDialog)
     const { forceMount = portalContext.forceMount, ...overlayProps } = props
     const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog)
-    return context.modal ? (
-      // <Presence present={forceMount || context.open}>
-      <DialogOverlayImpl {...overlayProps} ref={forwardedRef} />
-    ) : // </Presence>
-    null
+
+    if (!context.modal) {
+      return null
+    }
+
+    // <AnimatePresence>
+    return <DialogOverlayImpl {...overlayProps} ref={forwardedRef} />
+    // </AnimatePresence>
   }
 )
 
@@ -172,15 +181,15 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
     return (
       // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
       // ie. when `Overlay` and `Content` are siblings
-      // <RemoveScroll as={Slot} allowPinchZoom={context.allowPinchZoom} shards={[context.contentRef]}>
-      <DialogOverlayFrame
-        data-state={getState(context.open)}
-        {...overlayProps}
-        ref={forwardedRef}
-        // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-        // style={{ pointerEvents: 'auto', ...overlayProps.style }}
-      />
-      // </RemoveScroll>
+      <RemoveScroll as={Slot} allowPinchZoom={context.allowPinchZoom} shards={[context.contentRef]}>
+        <DialogOverlayFrame
+          data-state={getState(context.open)}
+          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+          pointerEvents="auto"
+          {...overlayProps}
+          ref={forwardedRef}
+        />
+      </RemoveScroll>
     )
   }
 )
@@ -193,6 +202,7 @@ const CONTENT_NAME = 'DialogContent'
 
 const DialogContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
+  tag: 'dialog',
   pointerEvents: 'auto',
   position: 'relative',
   backgrounded: true,
@@ -217,7 +227,6 @@ const DialogContent = React.forwardRef<TamaguiElement, DialogContentProps>(
     const { forceMount = portalContext.forceMount, ...contentProps } = props
     const context = useDialogContext(CONTENT_NAME, props.__scopeDialog)
     return (
-      // <Presence present={forceMount || context.open}>
       <>
         {context.modal ? (
           <DialogContentModal {...contentProps} ref={forwardedRef} />
@@ -225,7 +234,6 @@ const DialogContent = React.forwardRef<TamaguiElement, DialogContentProps>(
           <DialogContentNonModal {...contentProps} ref={forwardedRef} />
         )}
       </>
-      // </Presence>
     )
   }
 )
@@ -265,13 +273,12 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
           context.triggerRef.current?.focus()
         })}
         onPointerDownOutside={composeEventHandlers(props.onPointerDownOutside, (event) => {
-          console.log('pointer down outside')
-          // const originalEvent = event.detail.originalEvent
-          // const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
-          // const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-          // // If the event is a right-click, we shouldn't close because
-          // // it is effectively as if we right-clicked the `Overlay`.
-          // if (isRightClick) event.preventDefault()
+          const originalEvent = event['detail'].originalEvent
+          const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
+          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+          // If the event is a right-click, we shouldn't close because
+          // it is effectively as if we right-clicked the `Overlay`.
+          if (isRightClick) event.preventDefault()
         })}
         // When focus is trapped, a `focusout` event may still happen.
         // We make sure we don't trigger our `onDismiss` in such case.
@@ -308,7 +315,6 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
           hasInteractedOutsideRef.current = false
         }}
         onInteractOutside={(event) => {
-          console.log('outside?')
           props.onInteractOutside?.(event)
 
           if (!event.defaultPrevented) hasInteractedOutsideRef.current = true
@@ -319,9 +325,11 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
           //
           // We use `onInteractOutside` as some browsers also
           // focus on pointer down, creating the same issue.
-          // const target = event.target as HTMLElement
-          // const targetIsTrigger = context.triggerRef.current?.contains(target)
-          // if (targetIsTrigger) event.preventDefault()
+          const target = event.target as HTMLElement
+          const trigger = context.triggerRef.current
+          if (!(trigger instanceof HTMLElement)) return
+          const targetIsTrigger = trigger.contains(target)
+          if (targetIsTrigger) event.preventDefault()
         }}
       />
     )
@@ -331,7 +339,7 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
 /* -----------------------------------------------------------------------------------------------*/
 
 type DialogContentImplProps = DialogContentFrameProps &
-  Omit<DismissableBaseProps, 'onDismiss'> & {
+  Omit<DismissableProps, 'onDismiss'> & {
     /**
      * When `true`, focus cannot escape the `Content` via keyboard,
      * pointer, or a programmatic focus.
@@ -364,7 +372,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       onPointerDownOutside,
       onFocusOutside,
       onInteractOutside,
-      children,
       ...contentProps
     } = props
     const context = useDialogContext(CONTENT_NAME, __scopeDialog)
@@ -375,8 +382,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     // the last element in the DOM (beacuse of the `Portal`)
     // useFocusGuards();
 
-    // return <DialogContentFrame {...contentProps}>{children}</DialogContentFrame>
-
     return (
       <>
         <FocusScope
@@ -386,11 +391,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           onUnmountAutoFocus={onCloseAutoFocus}
         >
           <Dismissable
-            role="dialog"
-            id={context.contentId}
-            aria-describedby={context.descriptionId}
-            aria-labelledby={context.titleId}
-            data-state={getState(context.open)}
             disableOutsidePointerEvents={disableOutsidePointerEvents}
             onEscapeKeyDown={onEscapeKeyDown}
             onPointerDownOutside={onPointerDownOutside}
@@ -400,15 +400,21 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
             ref={composedRefs}
             onDismiss={() => context.onOpenChange(false)}
           >
-            <DialogContentFrame {...contentProps} />
+            <DialogContentFrame
+              id={context.contentId}
+              aria-describedby={context.descriptionId}
+              aria-labelledby={context.titleId}
+              data-state={getState(context.open)}
+              {...contentProps}
+            />
           </Dismissable>
         </FocusScope>
-        {/* {process.env.NODE_ENV !== 'production' && (
+        {process.env.NODE_ENV !== 'production' && (
           <>
             <TitleWarning titleId={context.titleId} />
             <DescriptionWarning contentRef={contentRef} descriptionId={context.descriptionId} />
           </>
-        )} */}
+        )}
       </>
     )
   }
@@ -419,51 +425,45 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
  * -----------------------------------------------------------------------------------------------*/
 
 const TITLE_NAME = 'DialogTitle'
-const DialogTitle = styled(H2, {
+const DialogTitleFrame = styled(H2, {
   name: TITLE_NAME,
 })
 
-type DialogTitleProps = GetProps<typeof DialogTitle>
+type DialogTitleProps = GetProps<typeof DialogTitleFrame>
 
-// type DialogTitleElement = React.ElementRef<typeof Primitive.h2>;
-// type PrimitiveHeading2Props = Radix.ComponentPropsWithoutRef<typeof Primitive.h2>;
-// interface DialogTitleProps extends PrimitiveHeading2Props {}
+const DialogTitle = React.forwardRef<TamaguiElement, DialogTitleProps>(
+  (props: ScopedProps<DialogTitleProps>, forwardedRef) => {
+    const { __scopeDialog, ...titleProps } = props
+    const context = useDialogContext(TITLE_NAME, __scopeDialog)
+    return <DialogTitleFrame id={context.titleId} {...titleProps} ref={forwardedRef} />
+  }
+)
 
-// const DialogTitle = React.forwardRef<DialogTitleElement, DialogTitleProps>(
-//   (props: ScopedProps<DialogTitleProps>, forwardedRef) => {
-//     const { __scopeDialog, ...titleProps } = props;
-//     const context = useDialogContext(TITLE_NAME, __scopeDialog);
-//     return <Primitive.h2 id={context.titleId} {...titleProps} ref={forwardedRef} />;
-//   }
-// );
-
-// DialogTitle.displayName = TITLE_NAME;
+DialogTitle.displayName = TITLE_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * DialogDescription
  * -----------------------------------------------------------------------------------------------*/
 
-const DialogDescription = styled(Paragraph, {
+const DialogDescriptionFrame = styled(Paragraph, {
   name: 'DialogDescription',
 })
 
-type DialogDescriptionProps = GetProps<typeof DialogDescription>
+type DialogDescriptionProps = GetProps<typeof DialogDescriptionFrame>
 
-// const DESCRIPTION_NAME = 'DialogDescription';
+const DESCRIPTION_NAME = 'DialogDescription'
 
-// type DialogDescriptionElement = React.ElementRef<typeof Primitive.p>;
-// type PrimitiveParagraphProps = Radix.ComponentPropsWithoutRef<typeof Primitive.p>;
-// interface DialogDescriptionProps extends PrimitiveParagraphProps {}
+const DialogDescription = React.forwardRef<TamaguiElement, DialogDescriptionProps>(
+  (props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
+    const { __scopeDialog, ...descriptionProps } = props
+    const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog)
+    return (
+      <DialogDescriptionFrame id={context.descriptionId} {...descriptionProps} ref={forwardedRef} />
+    )
+  }
+)
 
-// const DialogDescription = React.forwardRef<DialogDescriptionElement, DialogDescriptionProps>(
-//   (props: ScopedProps<DialogDescriptionProps>, forwardedRef) => {
-//     const { __scopeDialog, ...descriptionProps } = props;
-//     const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog);
-//     return <Primitive.p id={context.descriptionId} {...descriptionProps} ref={forwardedRef} />;
-//   }
-// );
-
-// DialogDescription.displayName = DESCRIPTION_NAME;
+DialogDescription.displayName = DESCRIPTION_NAME
 
 /* -------------------------------------------------------------------------------------------------
  * DialogClose
@@ -525,28 +525,32 @@ For more information, see https://radix-ui.com/primitives/docs/components/${titl
   return null
 }
 
-// const DESCRIPTION_WARNING_NAME = 'DialogDescriptionWarning'
+const DESCRIPTION_WARNING_NAME = 'DialogDescriptionWarning'
 
-// type DescriptionWarningProps = {
-//   contentRef: React.RefObject<TamaguiElement>
-//   descriptionId?: string
-// }
+type DescriptionWarningProps = {
+  contentRef: React.RefObject<TamaguiElement>
+  descriptionId?: string
+}
 
-// const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef, descriptionId }) => {
-//   const descriptionWarningContext = useWarningContext(DESCRIPTION_WARNING_NAME)
-//   const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${descriptionWarningContext.contentName}}.`
+const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef, descriptionId }) => {
+  const descriptionWarningContext = useWarningContext(DESCRIPTION_WARNING_NAME)
+  const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${descriptionWarningContext.contentName}}.`
 
-//   React.useEffect(() => {
-//     const describedById = contentRef.current?.getAttribute('aria-describedby')
-//     // if we have an id and the user hasn't set aria-describedby={undefined}
-//     if (descriptionId && describedById) {
-//       const hasDescription = document.getElementById(descriptionId)
-//       if (!hasDescription) console.warn(MESSAGE)
-//     }
-//   }, [MESSAGE, contentRef, descriptionId])
+  React.useEffect(() => {
+    const contentNode = contentRef.current
+    if (!(contentNode instanceof HTMLElement)) {
+      return
+    }
+    const describedById = contentNode.getAttribute('aria-describedby')
+    // if we have an id and the user hasn't set aria-describedby={undefined}
+    if (descriptionId && describedById) {
+      const hasDescription = document.getElementById(descriptionId)
+      if (!hasDescription) console.warn(MESSAGE)
+    }
+  }, [MESSAGE, contentRef, descriptionId])
 
-//   return null
-// }
+  return null
+}
 
 /* -------------------------------------------------------------------------------------------------
  * Dialog

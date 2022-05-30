@@ -94,11 +94,12 @@ const ButtonFrame = styled(ThemeableStack, {
     disabled: {
       true: {
         opacity: 0.5,
-        // TODO breaking types
-        pointerEvents: 'none' as any,
+        pointerEvents: 'none',
       },
     },
-  },
+
+    // TODO see core/styled.ts bug
+  } as const,
 
   defaultVariants: {
     size: '$4',
