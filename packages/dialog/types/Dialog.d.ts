@@ -146,7 +146,8 @@ declare const DialogContentFrame: import("@tamagui/core").TamaguiComponent<(Omit
 } & ({} | {
     [x: string]: undefined;
 })>;
-declare type DialogContentProps = GetProps<typeof DialogContentFrame> & {
+declare type DialogContentFrameProps = GetProps<typeof DialogContentFrame>;
+declare type DialogContentProps = DialogContentFrameProps & {
     forceMount?: true;
 };
 declare const DialogContent: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{

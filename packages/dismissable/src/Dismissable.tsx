@@ -31,7 +31,7 @@ const DismissableContext = React.createContext({
 
 type DivProps = React.HTMLProps<HTMLDivElement>
 
-interface DismissableProps extends DivProps {
+interface DismissableBaseProps {
   /**
    * When `true`, hover/focus/click interactions will be disabled on elements outside
    * the `Dismissable`. Users will need to click twice on outside elements to
@@ -64,6 +64,8 @@ interface DismissableProps extends DivProps {
    */
   onDismiss?: () => void
 }
+
+type DismissableProps = DismissableBaseProps & DivProps
 
 const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>((props, forwardedRef) => {
   const {
@@ -351,4 +353,5 @@ export {
   Root,
   Branch,
 }
-export type { DismissableProps }
+
+export type { DismissableBaseProps, DismissableProps }

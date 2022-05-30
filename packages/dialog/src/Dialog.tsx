@@ -2,6 +2,8 @@ import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { GetProps, composeEventHandlers, styled, useId, withStaticProperties } from '@tamagui/core'
 import { Scope, createContext, createContextScope } from '@tamagui/create-context'
+import { Dismissable, DismissableBaseProps } from '@tamagui/dismissable'
+import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { Portal } from '@tamagui/portal'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
@@ -199,7 +201,9 @@ const DialogContentFrame = styled(ThemeableStack, {
   elevate: true,
 })
 
-type DialogContentProps = GetProps<typeof DialogContentFrame> & {
+type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
+
+type DialogContentProps = DialogContentFrameProps & {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -326,29 +330,27 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type DismissableLayerProps = any //Radix.ComponentPropsWithoutRef<typeof DismissableLayer>;
-type FocusScopeProps = any // Radix.ComponentPropsWithoutRef<typeof FocusScope>;
+type DialogContentImplProps = DialogContentFrameProps &
+  Omit<DismissableBaseProps, 'onDismiss'> & {
+    /**
+     * When `true`, focus cannot escape the `Content` via keyboard,
+     * pointer, or a programmatic focus.
+     * @defaultValue false
+     */
+    trapFocus?: FocusScopeProps['trapped']
 
-interface DialogContentImplProps extends Omit<DismissableLayerProps, 'onDismiss'> {
-  /**
-   * When `true`, focus cannot escape the `Content` via keyboard,
-   * pointer, or a programmatic focus.
-   * @defaultValue false
-   */
-  trapFocus?: FocusScopeProps['trapped']
+    /**
+     * Event handler called when auto-focusing on open.
+     * Can be prevented.
+     */
+    onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
 
-  /**
-   * Event handler called when auto-focusing on open.
-   * Can be prevented.
-   */
-  onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
-
-  /**
-   * Event handler called when auto-focusing on close.
-   * Can be prevented.
-   */
-  onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
-}
+    /**
+     * Event handler called when auto-focusing on close.
+     * Can be prevented.
+     */
+    onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+  }
 
 const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProps>(
   (props: ScopedProps<DialogContentImplProps>, forwardedRef) => {
@@ -357,6 +359,11 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       trapFocus,
       onOpenAutoFocus,
       onCloseAutoFocus,
+      disableOutsidePointerEvents,
+      onEscapeKeyDown,
+      onPointerDownOutside,
+      onFocusOutside,
+      onInteractOutside,
       children,
       ...contentProps
     } = props
@@ -368,28 +375,34 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     // the last element in the DOM (beacuse of the `Portal`)
     // useFocusGuards();
 
-    return <DialogContentFrame {...contentProps}>{children}</DialogContentFrame>
+    // return <DialogContentFrame {...contentProps}>{children}</DialogContentFrame>
 
     return (
       <>
-        {/* <FocusScope
-          asChild
+        <FocusScope
           loop
           trapped={trapFocus}
           onMountAutoFocus={onOpenAutoFocus}
           onUnmountAutoFocus={onCloseAutoFocus}
-        > */}
-        {/* <DismissableLayer
+        >
+          <Dismissable
             role="dialog"
             id={context.contentId}
             aria-describedby={context.descriptionId}
             aria-labelledby={context.titleId}
             data-state={getState(context.open)}
-            {...contentProps}
+            disableOutsidePointerEvents={disableOutsidePointerEvents}
+            onEscapeKeyDown={onEscapeKeyDown}
+            onPointerDownOutside={onPointerDownOutside}
+            onFocusOutside={onFocusOutside}
+            onInteractOutside={onInteractOutside}
+            // @ts-ignore
             ref={composedRefs}
             onDismiss={() => context.onOpenChange(false)}
-          /> */}
-        {/* </FocusScope> */}
+          >
+            <DialogContentFrame {...contentProps} />
+          </Dismissable>
+        </FocusScope>
         {/* {process.env.NODE_ENV !== 'production' && (
           <>
             <TitleWarning titleId={context.titleId} />
