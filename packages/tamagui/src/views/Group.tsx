@@ -1,17 +1,14 @@
 import { GetProps, getTokens, getVariableValue, spacedChildren, styled } from '@tamagui/core'
-import { YStack } from '@tamagui/stacks'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
 import React, { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
 
-export const GroupFrame = styled(YStack, {
+export const GroupFrame = styled(ThemeableStack, {
   name: 'GroupFrame',
   borderWidth: 1,
+  borderColor: 'transparent',
   y: 0,
-  borderColor: '$borderColor',
   overflow: 'hidden',
-  hoverStyle: {
-    borderColor: '$borderColorHover',
-  },
 
   variants: {
     size: (val, { tokens }) => {

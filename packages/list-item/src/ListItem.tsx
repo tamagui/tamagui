@@ -5,7 +5,6 @@ import {
   ThemeableProps,
   getSize,
   getVariableValue,
-  spacedChildren,
   styled,
   themeable,
   useTheme,

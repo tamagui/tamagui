@@ -15,6 +15,7 @@ export { default as LabelDemo } from './LabelDemo'
 export { default as GroupDemo } from './GroupDemo'
 export { default as CardDemo } from './CardDemo'
 export { default as ProgressDemo } from './ProgressDemo'
+export { default as ListItemDemo } from './ListItemDemo'
 
 export const TooltipDemo = dynamic(() => import('./TooltipDemo'))
 export const DrawerDemo = dynamic(() => import('./DrawerDemo'))

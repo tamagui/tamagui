@@ -23,8 +23,8 @@ export declare type ListItemProps = GetProps<typeof ListItemFrame> & ThemeablePr
     textProps?: Partial<SizableTextProps>;
 };
 declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
@@ -43,8 +43,8 @@ declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omit<impor
     active?: boolean | undefined;
     disabled?: boolean | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
@@ -63,8 +63,8 @@ declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omit<impor
     active?: boolean | undefined;
     disabled?: boolean | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
@@ -83,8 +83,8 @@ declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omit<impor
     active?: boolean | undefined;
     disabled?: boolean | undefined;
 }>>, any, import("@tamagui/core").StackPropsBase, {
-    fullscreen?: boolean | undefined;
-    elevation?: import("@tamagui/core").SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
@@ -123,7 +123,7 @@ export declare const ListItemText: import("@tamagui/core").TamaguiComponent<(Omi
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").TextPropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} & (symbol | {
     [x: string]: undefined;
 })>;
 export declare const ListItem: ReactComponentWithRef<ListItemProps, HTMLLIElement | View>;

@@ -164,7 +164,8 @@ export const SearchButton = (props: ButtonProps) => {
         borderRadius={100}
         iconAfter={
           isTouch ? null : (
-            <Button tag="span" size="$2" theme="alt2" hoverable={false}>
+            // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
+            <Button tag="span" size="$2" chromeless borderWidth={0} pe="none" o={0.35}>
               /
             </Button>
           )
