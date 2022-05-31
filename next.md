@@ -5,10 +5,11 @@
   - also aligns with stylex
 
 - 1.0
+  - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
   - document <ListItem />
   - Input based on Button for icon/iconAfter
-  - `blur` style prop
   - overwriting `disabled` in variants breaks types... (see ThemeableStack)
+  - fix `as const` for variants with string const bug
   - sell sizing story better - home hero, blog post?
   - sell compiler much better in hero
   - html props: role, tabIndex, input type
@@ -45,10 +46,6 @@
     - needs ToggleGroup
       - needs RovingFocusGroup
 
-  - <Tabs />
-    - needs RovingFocusGroup
-
-  - <Toast />
   - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
@@ -59,6 +56,18 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - <Tabs />
+    - needs RovingFocusGroup
+  - <Toast />
+  - `blur` style prop
+  - explore removing need for patching react-native-web
+      - PR to rnw to publish pieces we need
+  - web-only mode:
+    - alias react-native => @tamagui/react-native-web-only ?
+  - Stacks / Grid 
+    - https://mobily.github.io/stacks/docs/changelog
+      - https://github.com/mobily/stacks/blob/master/src/Stacks_component_Grid.res
+    - maybe redo space to use this logic too if done at runtime (and then that allows moving to gap / compilation)
   - createTamagui({ defaultProps: { Button: {} } }) for any component
   - `space` should work with media queries
   - Text numberOfLines / context fix

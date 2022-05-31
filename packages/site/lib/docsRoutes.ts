@@ -70,7 +70,9 @@ export const docsRoutes = [
     label: 'Content',
     pages: [
       { title: 'Card', route: '/docs/components/card' },
+      { title: 'Group', route: '/docs/components/group' },
       { title: 'Image', route: '/docs/components/image' },
+      { title: 'List Item', route: '/docs/components/list-item' },
     ],
   },
 
