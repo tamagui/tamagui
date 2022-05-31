@@ -6,9 +6,9 @@ export declare type ToastOptions = {
 };
 export declare const Toast: {
     clear: () => void;
-    show: (content: any, options?: ToastOptions) => void;
-    error: (content: any, options?: Omit<ToastOptions, 'type'>) => void;
-    success: (content: any, options?: Omit<ToastOptions, 'type'>) => void;
+    show: (content: any, options?: ToastOptions | undefined) => void;
+    error: (content: any, options?: Omit<ToastOptions, "type"> | undefined) => void;
+    success: (content: any, options?: Omit<ToastOptions, "type"> | undefined) => void;
 };
 export declare const ToastRoot: import("react").NamedExoticComponent<{
     animation?: AnimationKeys | undefined;

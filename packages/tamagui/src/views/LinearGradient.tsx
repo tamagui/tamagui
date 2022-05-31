@@ -1,38 +1,43 @@
 import { ColorTokens, themeable, useTheme } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-import { LinearGradient as LinearGradientNative, LinearGradientProps } from '../lib/linear-gradient'
+import {
+  LinearGradient as ExpoLinearGradient,
+  LinearGradientProps as ExpoLinearGradientProps,
+} from '../lib/linear-gradient'
 
 // // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
 
-type Props = Omit<LinearGradientProps, 'colors'> &
-  Omit<YStackProps, 'children' | keyof LinearGradientProps> & {
+export type LinearGradientProps = Omit<ExpoLinearGradientProps, 'colors'> &
+  Omit<YStackProps, 'children' | keyof ExpoLinearGradientProps> & {
     colors?: (ColorTokens | string)[]
   }
 
-export const LinearGradient: React.ForwardRefExoticComponent<Props & React.RefAttributes<any>> =
-  YStack.extractable(
-    themeable(
-      React.forwardRef((props: any, ref) => {
-        const { start, end, colors: colorsProp, locations, ...stackProps } = props
-        const colors = useLinearGradientColors(colorsProp)
-        return (
-          <YStack ref={ref} position="relative" overflow="hidden" {...stackProps}>
-            <LinearGradientNative
-              start={start}
-              end={end}
-              colors={colors}
-              locations={locations}
-              style={[StyleSheet.absoluteFill]}
-            />
-          </YStack>
-        )
-      })
-    )
-  ) as any
+export const LinearGradient: React.ForwardRefExoticComponent<
+  LinearGradientProps & React.RefAttributes<HTMLElement | View>
+> = YStack.extractable(
+  themeable(
+    React.forwardRef((props: LinearGradientProps, ref) => {
+      const { start, end, colors: colorsProp, locations, ...stackProps } = props
+      const colors = useLinearGradientColors(colorsProp || [])
+      return (
+        // @ts-expect-error we have slight diff in RNWProps
+        <YStack ref={ref} position="relative" overflow="hidden" {...stackProps}>
+          <ExpoLinearGradient
+            start={start}
+            end={end}
+            colors={colors}
+            locations={locations}
+            style={[StyleSheet.absoluteFill]}
+          />
+        </YStack>
+      )
+    })
+  )
+) as any
 
 // resolve tamagui theme values
 const useLinearGradientColors = (colors: string[]) => {
