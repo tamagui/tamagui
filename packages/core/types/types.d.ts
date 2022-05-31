@@ -1,10 +1,10 @@
-import type { Properties } from 'csstype';
+import { Properties } from 'csstype';
 import React from 'react';
-import type { GestureResponderEvent, Image, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
-import type { Variable } from './createVariable';
-import type { ResolveVariableTypes } from './helpers/createPropMapper';
-import type { RNWTextProps, RNWViewProps } from './types-rnw';
-import type { ThemeProviderProps } from './views/ThemeProvider';
+import { GestureResponderEvent, Image, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import { Variable } from './createVariable';
+import { ResolveVariableTypes } from './helpers/createPropMapper';
+import { RNWTextProps, RNWViewProps } from './types-rnw';
+import { ThemeProviderProps } from './views/ThemeProvider';
 export declare type TamaguiElement = HTMLElement | View;
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;

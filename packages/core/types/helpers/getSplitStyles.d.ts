@@ -18,7 +18,7 @@ declare type StyleSplitter = (props: {
 export declare const getSplitStyles: StyleSplitter;
 export declare const insertSplitStyles: StyleSplitter;
 export declare const useSplitStyles: StyleSplitter;
-export declare const getSubStyle: (styleIn: Object, staticConfig: StaticConfigParsed, theme: ThemeObject, props: any, state: SplitStyleState, avoidDefaultProps?: boolean) => ViewStyle;
+export declare const getSubStyle: (styleIn: Object, staticConfig: StaticConfigParsed, theme: ThemeObject, props: any, state: SplitStyleState, avoidDefaultProps?: boolean | undefined) => ViewStyle;
 export declare function normalizeStyleObject(style: any): void;
 export {};
 //# sourceMappingURL=getSplitStyles.d.ts.map

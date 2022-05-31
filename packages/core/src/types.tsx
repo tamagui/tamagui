@@ -1,8 +1,8 @@
 // TODO split this into own package @tamagui/types to share with animations packages
 
-import type { Properties } from 'csstype'
+import { Properties } from 'csstype'
 import React from 'react'
-import type {
+import {
   GestureResponderEvent,
   Image,
   TextProps as ReactTextProps,
@@ -14,10 +14,10 @@ import type {
   ViewStyle,
 } from 'react-native'
 
-import type { Variable } from './createVariable'
-import type { ResolveVariableTypes } from './helpers/createPropMapper'
-import type { RNWTextProps, RNWViewProps } from './types-rnw'
-import type { ThemeProviderProps } from './views/ThemeProvider'
+import { Variable } from './createVariable'
+import { ResolveVariableTypes } from './helpers/createPropMapper'
+import { RNWTextProps, RNWViewProps } from './types-rnw'
+import { ThemeProviderProps } from './views/ThemeProvider'
 
 export type TamaguiElement = HTMLElement | View
 

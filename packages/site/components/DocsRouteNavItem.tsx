@@ -46,10 +46,10 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
           {children}
         </SizableText>
         {isExternal && (
-          <>
-            <Spacer size="$1" />
+          <XStack opacity={0.5}>
+            <Spacer size="$2" />
             <ExternalIcon />
-          </>
+          </XStack>
         )}
         {!!pending ? (
           <>

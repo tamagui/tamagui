@@ -7,7 +7,17 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, Paragraph, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  H3,
+  Paragraph,
+  Separator,
+  Text,
+  Theme,
+  VisuallyHidden,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton, useTint } from './ColorToggleButton'
@@ -58,31 +68,45 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   const menuContents = React.useMemo(() => {
     return (
       <>
-        {docsRoutes.map((section, i) => (
-          <YStack key={`${section.label}${i}`} mb="$4">
-            <NavHeading>{section.label}</NavHeading>
-            {section.pages.map((page) => {
+        {docsRoutes.map((section, i) => {
+          if ('type' in section) {
+            if (section.type === 'hr') {
               return (
-                <DocsRouteNavItem
-                  key={`${page.route}`}
-                  href={page.route}
-                  active={currentPath === page.route}
-                  pending={page['pending']}
-                >
-                  {page.title}
-                </DocsRouteNavItem>
+                <YStack mx="$4">
+                  {!!section.title ? (
+                    <XStack ai="center" jc="center" space="$6" mb="$2" mt="$4">
+                      <Separator my="$4" />
+                      <Paragraph als="center" size="$2" fow="800">
+                        {section.title}
+                      </Paragraph>
+                      <Separator my="$4" />
+                    </XStack>
+                  ) : (
+                    <Separator my="$4" />
+                  )}
+                </YStack>
               )
-            })}
-          </YStack>
-        ))}
-
-        <YStack mb="$4">
-          <NavHeading>Community</NavHeading>
-          {/* <DocsRouteNavItem href="/blog">Blog</DocsRouteNavItem> */}
-          <DocsRouteNavItem href="https://github.com/tamagui/tamagui">GitHub</DocsRouteNavItem>
-          <DocsRouteNavItem href="https://twitter.com/tamagui_js">Twitter</DocsRouteNavItem>
-          <DocsRouteNavItem href="https://discord.gg/4qh6tdcVDa">Discord</DocsRouteNavItem>
-        </YStack>
+            }
+            return null
+          }
+          return (
+            <YStack key={`${section.label}${i}`} mb="$4">
+              {!!section.label && <NavHeading letsp={3}>{section.label}</NavHeading>}
+              {section.pages.map((page) => {
+                return (
+                  <DocsRouteNavItem
+                    key={`${page.route}`}
+                    href={page.route}
+                    active={currentPath === page.route}
+                    pending={page['pending']}
+                  >
+                    {page.title}
+                  </DocsRouteNavItem>
+                )
+              })}
+            </YStack>
+          )
+        })}
 
         <YStack
           height="$5"

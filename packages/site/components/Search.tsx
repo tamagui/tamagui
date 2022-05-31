@@ -161,6 +161,7 @@ export const SearchButton = (props: ButtonProps) => {
         hoverStyle={{
           elevation: '$4',
         }}
+        borderRadius={100}
         iconAfter={
           isTouch ? null : (
             <Button tag="span" size="$2" theme="alt2" hoverable={false}>

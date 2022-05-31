@@ -1,13 +1,12 @@
 /// <reference types="react" />
-import { View } from 'react-native';
-import { SpaceDirection, SpaceTokens, StackProps, StaticConfig, StaticConfigParsed, StylableComponent, TamaguiComponent } from './types';
+import { SpaceDirection, SpaceTokens, StackProps, StaticConfig, StaticConfigParsed, StylableComponent, TamaguiComponent, TamaguiElement } from './types';
 export declare const mouseUps: Set<Function>;
-export declare function createComponent<ComponentPropTypes extends Object = {}, Ref = View, BaseProps = never>(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>;
+export declare function createComponent<ComponentPropTypes extends Object = {}, Ref = TamaguiElement, BaseProps = never>(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>;
 export declare const Spacer: TamaguiComponent<Omit<StackProps, "flex" | "direction"> & {
     size?: SpaceTokens | undefined;
     flex?: number | boolean | undefined;
     direction?: "horizontal" | "vertical" | undefined;
-}, View, never, {}>;
+}, TamaguiElement, never, {}>;
 export declare const Unspaced: {
     (props: {
         children?: any;
