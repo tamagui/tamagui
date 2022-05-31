@@ -1,10 +1,11 @@
-import CSS from 'csstype';
+import { Properties } from 'csstype';
 import React from 'react';
 import { GestureResponderEvent, Image, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
+export declare type TamaguiElement = HTMLElement | View;
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
     space?: SpaceTokens;
@@ -267,11 +268,11 @@ export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVi
     ellipse?: boolean;
     selectable?: boolean;
     textDecorationDistance?: number;
-    userSelect?: CSS.Properties['userSelect'];
-    textOverflow?: CSS.Properties['textOverflow'];
-    whiteSpace?: CSS.Properties['whiteSpace'];
-    wordWrap?: CSS.Properties['wordWrap'];
-    cursor?: CSS.Properties['cursor'];
+    userSelect?: Properties['userSelect'];
+    textOverflow?: Properties['textOverflow'];
+    whiteSpace?: Properties['whiteSpace'];
+    wordWrap?: Properties['wordWrap'];
+    cursor?: Properties['cursor'];
 };
 export declare type TextPropsBaseShared = Omit<ReactTextProps, 'children'> & RNWTextProps & TamaguiComponentPropsBase;
 export declare type TextPropsBase = TextPropsBaseShared & WithThemeAndShorthands<TextStylePropsBase>;
