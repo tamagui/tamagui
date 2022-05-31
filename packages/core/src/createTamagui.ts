@@ -280,6 +280,7 @@ function ensureThemeVariable(theme: any, key: string) {
   const val = theme[key]
   if (!isVariable(val)) {
     theme[key] = createVariable({
+      key,
       name: key,
       val,
     })
@@ -287,6 +288,7 @@ function ensureThemeVariable(theme: any, key: string) {
     if (val.name !== key) {
       // rename to theme name
       theme[key] = createVariable({
+        key,
         name: key,
         val: val.val,
       })

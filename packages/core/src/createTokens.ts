@@ -22,7 +22,7 @@ export const mapTokensToVariables = (
     if (val && typeof val === 'object') {
       res[key] = mapTokensToVariables(tokens[key], name)
     } else {
-      res[key] = createVariable({ val, name })
+      res[key] = createVariable({ val, name, key })
     }
   }
   // @ts-expect-error

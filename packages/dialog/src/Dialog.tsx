@@ -3,9 +3,12 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   Slot,
+  Theme,
   composeEventHandlers,
   styled,
   useId,
+  useTheme,
+  useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContext, createContextScope } from '@tamagui/create-context'
@@ -114,6 +117,7 @@ interface DialogPortalProps extends Omit<PortalProps, 'asChild'> {
 
 const DialogPortal: React.FC<DialogPortalProps> = (props: ScopedProps<DialogPortalProps>) => {
   const { __scopeDialog, forceMount, children, ...rest } = props
+  const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, __scopeDialog)
   const isShowing = forceMount || context.open
   return (
@@ -122,10 +126,14 @@ const DialogPortal: React.FC<DialogPortalProps> = (props: ScopedProps<DialogPort
         alignItems="center"
         justifyContent="center"
         zIndex={100}
+        // TODO web-only
+        maxHeight="100vh"
         pointerEvents={isShowing ? 'auto' : 'none'}
         {...rest}
       >
-        <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
+        <Theme name={themeName}>
+          <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
+        </Theme>
       </Portal>
     </PortalProvider>
   )
@@ -209,6 +217,18 @@ const DialogContentFrame = styled(ThemeableStack, {
   padded: true,
   radiused: true,
   elevate: true,
+
+  variants: {
+    size: {
+      '...size': (val, extras) => {
+        return {}
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: '$4',
+  },
 })
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
@@ -556,8 +576,8 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef, des
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
 
-const Dialog: React.FC<DialogProps> = withStaticProperties(
-  (props: ScopedProps<DialogProps>) => {
+const Dialog = withStaticProperties(
+  function Dialog(props: ScopedProps<DialogProps>) {
     const {
       __scopeDialog,
       children,
@@ -603,8 +623,6 @@ const Dialog: React.FC<DialogProps> = withStaticProperties(
     Close: DialogClose,
   }
 )
-
-Dialog.displayName = DIALOG_NAME
 
 export {
   createDialogScope,

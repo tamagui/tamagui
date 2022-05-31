@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/helpers",
+  "name": "@tamagui/helpers-tamagui",
   "version": "1.0.1-beta.42",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -16,6 +16,9 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/text": "^1.0.1-beta.42"
+  },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.42",
     "react": "*",
@@ -27,6 +30,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }

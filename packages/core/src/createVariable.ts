@@ -11,11 +11,13 @@ export class Variable {
   name: string
   val: string | number
   variable: string | number
+  key: string
 
-  constructor({ val, name }: VariableIn) {
+  constructor({ val, name, key }: VariableIn) {
     // converting to px breaks rn
     this.val = isVariable(val) ? val.val : val
     this.name = name
+    this.key = key
     this.variable = isWeb ? createCSSVariable(name) : this.val
   }
 
@@ -24,7 +26,7 @@ export class Variable {
   }
 }
 
-type VariableIn = { val: string | number | Variable; name: string }
+type VariableIn = { val: string | number | Variable; name: string; key: string }
 
 export const createVariable = (props: VariableIn) => new Variable(props)
 

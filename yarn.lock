@@ -3535,6 +3535,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.42
     "@tamagui/core": ^1.0.1-beta.42
     "@tamagui/font-size": ^1.0.1-beta.42
+    "@tamagui/helpers-tamagui": ^1.0.1-beta.42
     react: "*"
     react-dom: "*"
   peerDependencies:
@@ -3797,13 +3798,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/helpers-tamagui@^1.0.1-beta.42, @tamagui/helpers-tamagui@workspace:packages/helpers-tamagui":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/helpers-tamagui@workspace:packages/helpers-tamagui"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.42
+    "@tamagui/text": ^1.0.1-beta.42
+    react: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/helpers@^1.0.1-beta.42, @tamagui/helpers@workspace:packages/helpers":
   version: 0.0.0-use.local
   resolution: "@tamagui/helpers@workspace:packages/helpers"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.42
+    react: "*"
     react-native: "*"
   peerDependencies:
+    react: "*"
     react-native: "*"
   languageName: unknown
   linkType: soft
@@ -3829,6 +3846,7 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.42
     "@tamagui/core": ^1.0.1-beta.42
     "@tamagui/font-size": ^1.0.1-beta.42
+    "@tamagui/helpers-tamagui": ^1.0.1-beta.42
     react: "*"
     react-dom: "*"
   peerDependencies:

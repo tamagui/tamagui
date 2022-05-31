@@ -1,4 +1,5 @@
 import {
+  FontSizeTokens,
   GetProps,
   ReactComponentWithRef,
   Spacer,
@@ -7,12 +8,16 @@ import {
   getVariableValue,
   styled,
   themeable,
-  useTheme,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { ThemeableStack } from '@tamagui/stacks'
-import { SizableText, SizableTextProps } from '@tamagui/text'
-import React, { Children, FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
+import {
+  TextParentStyles,
+  useGetThemedIcon,
+  wrapStringChildrenInText,
+} from '@tamagui/helpers-tamagui'
+import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { SizableText } from '@tamagui/text'
+import React, { FunctionComponent, forwardRef } from 'react'
 import { View } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
@@ -21,7 +26,8 @@ React['createElement']
 type ListItemIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ListItemIconProps> | null
 
-export type ListItemProps = GetProps<typeof ListItemFrame> &
+export type ListItemProps = Omit<TextParentStyles, 'TextComponent'> &
+  GetProps<typeof ListItemFrame> &
   ThemeableProps & {
     // add icon before, passes color and size automatically if Component
     icon?: IconProp
@@ -30,32 +36,23 @@ export type ListItemProps = GetProps<typeof ListItemFrame> &
     // adjust icon relative to size
     // default: -1
     scaleIcon?: number
-    // dont wrap inner contents in a text element
-    noTextWrap?: boolean
     // make the spacing elements flex
     spaceFlex?: number | boolean
     // adjust internal space relative to icon size
     scaleSpace?: number
 
-    // pass text properties:
-    color?: SizableTextProps['color']
-    fontWeight?: SizableTextProps['fontWeight']
-    fontSize?: SizableTextProps['fontSize']
-    fontFamily?: SizableTextProps['fontFamily']
-    letterSpacing?: SizableTextProps['letterSpacing']
-    textAlign?: SizableTextProps['textAlign']
-
-    // all the other text controls
-    textProps?: Partial<SizableTextProps>
+    // subtitle
+    subTitle?: React.ReactNode
   }
 
 const ListItemFrame = styled(ThemeableStack, {
   name: 'ListItem',
   tag: 'li',
-  justifyContent: 'center',
   alignItems: 'center',
   flexWrap: 'nowrap',
   width: '100%',
+  maxWidth: '100%',
+  overflow: 'hidden',
   flexDirection: 'row',
 
   pressStyle: {
@@ -102,16 +99,16 @@ const ListItemFrame = styled(ThemeableStack, {
   },
 })
 
-// see TODO breaking types
-// type x = GetProps<typeof ListItemFrame>
-// type y = x['size']
-
 export const ListItemText = styled(SizableText, {
   color: '$color',
   selectable: false,
   flexGrow: 1,
   flexShrink: 1,
   ellipse: true,
+})
+
+export const ListItemSubtitle = styled(ListItemText, {
+  color: '$colorPress',
 })
 
 const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
@@ -125,10 +122,11 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
     space,
     spaceFlex,
     scaleIcon = 1,
-    scaleSpace = 0.5,
+    scaleSpace = 1,
+    subTitle,
 
     // text props
-    color: colorProp,
+    color,
     fontWeight,
     letterSpacing,
     fontSize,
@@ -138,97 +136,17 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
     ...rest
   } = props as ListItemProps
 
-  const theme = useTheme()
   const size = props.size || '$4'
-
-  // get color from prop or theme
-  let color: any
-  // @ts-expect-error
-  if (theme && colorProp && colorProp in theme) {
-    // @ts-expect-error
-    color = theme[colorProp]
-  } else if (colorProp) {
-    color = colorProp
-  } else {
-    color = theme?.color
-  }
-  color = color?.toString()
-
+  const subtitleSizeToken = getSize(size, -2)
+  const subtitleSize = `$${subtitleSizeToken.key}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon
-
-  const addTheme = (el: any) => {
-    if (isValidElement(el)) {
-      return el
-    }
-    if (el) {
-      return React.createElement(el, {
-        color,
-        size: iconSize,
-      })
-    }
-    return el
-  }
-  const themedIcon = icon ? addTheme(icon) : null
-  const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
-
-  let contents = children
-
-  if (!noTextWrap && children) {
-    // in the case of using variables, like so:
-    // <ListItem>Hello, {name}</ListItem>
-    // it gives us props.children as ['Hello, ', 'name']
-    // but we don't want to wrap multiple SizableText around each part
-    // so we group them
-    let allChildren = React.Children.toArray(children)
-    let nextChildren: any[] = []
-    let lastIsString = false
-
-    function concatStringChildren() {
-      if (!lastIsString) return
-      const index = nextChildren.length - 1
-      const childrenStrings = nextChildren[index]
-      nextChildren[index] = (
-        <ListItemText
-          key={index}
-          {...{
-            fontWeight,
-            letterSpacing,
-            fontSize,
-            fontFamily,
-            textAlign,
-            size,
-          }}
-          {...(colorProp && {
-            color: colorProp,
-          })}
-          {...textProps}
-        >
-          {childrenStrings}
-        </ListItemText>
-      )
-    }
-
-    for (const child of allChildren) {
-      const last = nextChildren[nextChildren.length - 1]
-      const isString = typeof child === 'string'
-      if (isString) {
-        if (lastIsString) {
-          last.push(child)
-        } else {
-          nextChildren.push([child])
-        }
-      } else {
-        concatStringChildren()
-        nextChildren.push(child)
-      }
-      lastIsString = isString
-    }
-    concatStringChildren()
-
-    contents = nextChildren
-  }
-
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
+  const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
+  const contents = wrapStringChildrenInText({
+    ...props,
+    TextComponent: ListItemText,
+  })
 
   return (
     <ListItemFrame fontFamily={fontFamily} ref={ref as any} {...rest}>
@@ -240,7 +158,20 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
               <Spacer size={spaceSize} />
             </>
           ) : null}
-          {contents}
+          <YStack>
+            {contents}
+            {subTitle ? (
+              typeof subTitle === 'string' ? (
+                // TODO can use theme but we need to standardize to alt themes
+                // or standardize on subtle colors in themes
+                <ListItemSubtitle opacity={0.65} size={subtitleSize}>
+                  {subTitle}
+                </ListItemSubtitle>
+              ) : (
+                subTitle
+              )
+            ) : null}
+          </YStack>
           {themedIconAfter ? (
             <>
               <Spacer flex size={spaceSize} />

@@ -8,12 +8,16 @@ import {
   spacedChildren,
   styled,
   themeable,
-  useTheme,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
+import {
+  TextParentStyles,
+  useGetThemedIcon,
+  wrapStringChildrenInText,
+} from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
 import { SizableText, SizableTextProps } from '@tamagui/text'
-import React, { FunctionComponent, forwardRef, isValidElement, useContext } from 'react'
+import React, { FunctionComponent, forwardRef, useContext } from 'react'
 import { View } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
@@ -22,7 +26,8 @@ React['createElement']
 type ButtonIconProps = { color?: string; size?: number }
 type IconProp = JSX.Element | FunctionComponent<ButtonIconProps> | null
 
-export type ButtonProps = GetProps<typeof ButtonFrame> &
+export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
+  GetProps<typeof ButtonFrame> &
   ThemeableProps & {
     // add icon before, passes color and size automatically if Component
     icon?: IconProp
@@ -37,17 +42,6 @@ export type ButtonProps = GetProps<typeof ButtonFrame> &
     spaceFlex?: number | boolean
     // adjust internal space relative to icon size
     scaleSpace?: number
-
-    // pass text properties:
-    color?: SizableTextProps['color']
-    fontWeight?: SizableTextProps['fontWeight']
-    fontSize?: SizableTextProps['fontSize']
-    fontFamily?: SizableTextProps['fontFamily']
-    letterSpacing?: SizableTextProps['letterSpacing']
-    textAlign?: SizableTextProps['textAlign']
-
-    // all the other text controls
-    textProps?: Partial<SizableTextProps>
   }
 
 const ButtonFrame = styled(ThemeableStack, {
@@ -132,7 +126,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     scaleSpace = 0.66,
 
     // text props
-    color: colorProp,
+    color,
     fontWeight,
     letterSpacing,
     fontSize,
@@ -143,98 +137,18 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   } = props as ButtonProps
 
   const isInsideButton = useContext(ButtonInsideButtonContext)
-  const theme = useTheme()
   const size = props.size || '$4'
-
-  // get color from prop or theme
-  let color: any
-  // @ts-expect-error
-  if (theme && colorProp && colorProp in theme) {
-    // @ts-expect-error
-    color = theme[colorProp]
-  } else if (colorProp) {
-    color = colorProp
-  } else {
-    color = theme?.color
-  }
-  color = color?.toString()
-
   const iconSize = getFontSize(size) * scaleIcon
-
-  const addTheme = (el: any) => {
-    if (isValidElement(el)) {
-      return el
-    }
-    if (el) {
-      return React.createElement(el, {
-        color,
-        size: iconSize,
-      })
-    }
-    return el
-  }
-  const themedIcon = icon ? addTheme(icon) : null
-  const themedIconAfter = iconAfter ? addTheme(iconAfter) : null
-
-  let contents = children
-
-  if (!noTextWrap && children) {
-    // in the case of using variables, like so:
-    // <Button>Hello, {name}</Button>
-    // it gives us props.children as ['Hello, ', 'name']
-    // but we don't want to wrap multiple SizableText around each part
-    // so we group them
-    let allChildren = React.Children.toArray(children)
-    let nextChildren: any[] = []
-    let lastIsString = false
-
-    function concatStringChildren() {
-      if (!lastIsString) return
-      const index = nextChildren.length - 1
-      const childrenStrings = nextChildren[index]
-      nextChildren[index] = (
-        <ButtonText
-          key={index}
-          {...{
-            fontWeight,
-            letterSpacing,
-            fontSize,
-            fontFamily,
-            textAlign,
-            size,
-          }}
-          {...(colorProp && {
-            color: colorProp,
-          })}
-          {...textProps}
-        >
-          {childrenStrings}
-        </ButtonText>
-      )
-    }
-
-    for (const child of allChildren) {
-      const last = nextChildren[nextChildren.length - 1]
-      const isString = typeof child === 'string'
-      if (isString) {
-        if (lastIsString) {
-          last.push(child)
-        } else {
-          nextChildren.push([child])
-        }
-      } else {
-        concatStringChildren()
-        nextChildren.push(child)
-      }
-      lastIsString = isString
-    }
-    concatStringChildren()
-
-    contents = nextChildren
-  }
+  const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
+  const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
+  const spaceSize = getVariableValue(iconSize) * scaleSpace
+  const contents = wrapStringChildrenInText({
+    ...props,
+    TextComponent: ButtonText,
+  })
 
   return (
-    // careful not to desctructure and re-order props, order is important
+    // careful not to destructure and re-order props, order is important
     <ButtonInsideButtonContext.Provider value={true}>
       <ButtonFrame
         fontFamily={fontFamily}
@@ -248,7 +162,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
         {themedIcon || themedIconAfter
           ? spacedChildren({
               // a bit arbitrary but scaling to font size is necessary so long as button does
-              space: getVariableValue(iconSize) * scaleSpace,
+              space: spaceSize,
               spaceFlex,
               direction: props.flexDirection || 'row',
               children: [themedIcon, contents, themedIconAfter],
