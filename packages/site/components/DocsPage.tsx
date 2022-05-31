@@ -91,7 +91,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           }
           return (
             <YStack key={`${section.label}${i}`} mb="$4">
-              {!!section.label && <NavHeading letsp={3}>{section.label}</NavHeading>}
+              {!!section.label && <NavHeading>{section.label}</NavHeading>}
               {section.pages.map((page) => {
                 return (
                   <DocsRouteNavItem

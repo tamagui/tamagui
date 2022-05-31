@@ -100,6 +100,50 @@ takeout:
   - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
 
+- ornaments system:
+    - hooks inside any styled component to add decoration-only elements
+      - for example to mimic iOS style ListItem you want a separator
+      - themes should ideally define this, right? 
+        - or themes can export decorations
+
+so:
+
+```tsx
+import { ornaments, themes } from '@tamagui/theme-ios'
+
+export const createTamagui({
+  ornaments,
+  themes
+})
+
+// where ornaments is something like:
+const ornaments = {
+  ListItem: props => (
+    <Separator pos="absolute" bottom={0} left={40} right={0} />
+  ),
+}
+
+// questions: 
+//  1. does that compile? seems like it but not trivial feature
+//  2. to make it compile better needs to limit expressivity 
+//     - could limit to just Stack
+
+// could enforce it only accepts TamaguiComponents:
+const ListItemSeparator = styled(Stack, {})
+const ornaments = {
+  ListItem: [ListItemSeparator],
+}
+
+//  could make it accept platform specific object
+const ornaments = {
+  ListItem: {
+    ios: [ListItemSeparator],
+    web: []
+  },
+}
+```
+
+
 - compiler could insert special props like:
   - __noAnimations, __noTheme, __noSpace
   - it would change key={} alongside that

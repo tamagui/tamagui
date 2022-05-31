@@ -1,10 +1,21 @@
 // import { AccessibleIcon } from '@tamagui/feather-icons'
 import { Minus } from '@tamagui/feather-icons'
 import React from 'react'
-import { Paragraph, Theme, XStack, YStack, styled } from 'tamagui'
+import {
+  H4,
+  ListItem,
+  Paragraph,
+  Separator,
+  Text,
+  Theme,
+  ThemeInverse,
+  ThemeReset,
+  XStack,
+  YStack,
+  styled,
+} from 'tamagui'
 
 import { Code } from './Code'
-import { RegionTable } from './RegionTable'
 
 type PropDef = {
   name: string
@@ -25,100 +36,77 @@ export function PropsTable({
 }) {
   const hasAriaLabel = !!(ariaLabel || ariaLabelledBy)
   return (
-    <RegionTable
-      width="100%"
-      // textAlign="left"
-      // borderCollapse="collapse"
-      aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
-      aria-labelledby={ariaLabelledBy}
-      mt="$2"
-    >
-      <thead>
-        <tr>
-          <YStack
-            // @ts-ignore
-            display="table-head"
-            tag="th"
-            borderBottomWidth={1}
-            borderBottomColor="$borderColor"
-            pb="$3"
-            pr="$4"
-          >
-            <Paragraph fontWeight="600" size="$4" theme="alt1">
-              Prop
-            </Paragraph>
-          </YStack>
-          <YStack
-            // @ts-ignore
-            display="table-head"
-            tag="th"
-            borderBottomWidth={1}
-            borderBottomColor="$borderColor"
-            pb="$3"
-            pr="$4"
-          >
-            <Paragraph fontWeight="600" size="$4" theme="alt1">
-              Type
-            </Paragraph>
-          </YStack>
-          <YStack
-            // @ts-ignore
-            display="table-head"
-            tag="th"
-            borderBottomWidth={1}
-            borderBottomColor="$borderColor"
-            pb="$3"
-            pr="$4"
-          >
-            <Paragraph fontWeight="600" size="$4" theme="alt1">
-              Default
-            </Paragraph>
-          </YStack>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map(({ name, type, required, default: defaultValue, description }, i) => (
-          <React.Fragment key={`${name}-${i}`}>
-            <tr>
-              <TD>
-                <XStack ai="center" space>
-                  <Code colored>
-                    {name}
-                    {required ? '*' : null}
-                  </Code>
+    <ThemeReset>
+      <ThemeInverse>
+        <YStack
+          backgroundColor="$backgroundStrong"
+          width="100%"
+          aria-label={hasAriaLabel ? ariaLabel : 'Component Props'}
+          aria-labelledby={ariaLabelledBy}
+          mt="$2"
+          br="$4"
+        >
+          {data.map(({ name, type, required, default: defaultValue, description }, i) => (
+            <ListItem key={`${name}-${i}`} pb="$4">
+              <YStack width="100%">
+                <XStack>
+                  <XStack miw="35%" ai="center" space>
+                    <H4
+                      color="$color"
+                      fow="800"
+                      fontFamily="Inter"
+                      textTransform="none"
+                      size="$5"
+                      width={200}
+                    >
+                      {name}
+                      {required ? (
+                        <Paragraph fontSize="inherit" o={0.5}>
+                          {' '}
+                          <Paragraph fontWeight="800" theme="yellow">
+                            (required)
+                          </Paragraph>
+                        </Paragraph>
+                      ) : null}
+                    </H4>
+                  </XStack>
+
+                  <Separator als="stretch" vertical mx="$4" my="$2" />
+
+                  <XStack bc="red" f={1} miw="30%" ai="center">
+                    <Code bc="$backgroundPress">{type}</Code>
+
+                    <Separator als="stretch" vertical mx="$4" my="$2" />
+
+                    <Paragraph o={0.5} size="$2">
+                      Default:&nbsp;
+                    </Paragraph>
+                    {Boolean(defaultValue) ? (
+                      <Code bc="$backgroundPress">{defaultValue}</Code>
+                    ) : (
+                      <YStack>
+                        <Minus size={12} opacity={0.5} color="var(--color)" />
+                      </YStack>
+                    )}
+                  </XStack>
                 </XStack>
-              </TD>
-              <TD>
-                <Code bc="$backgroundPress">{type}</Code>
-              </TD>
-              <TD>
-                {Boolean(defaultValue) ? (
-                  <Code bc="$backgroundPress">{defaultValue}</Code>
-                ) : (
-                  <YStack>
-                    {/*  as={AccessibleIcon} label="No default value" */}
-                    <Minus size={12} opacity={0.5} color="var(--color)" />
+
+                <Separator my={2} />
+
+                {description && (
+                  <YStack p="$2">
+                    <Paragraph size="$4" theme="alt1">
+                      {description}
+                    </Paragraph>
                   </YStack>
                 )}
-              </TD>
-            </tr>
-            {description && (
-              <tr>
-                <td colSpan={2}>
-                  <Theme name="gray">
-                    <YStack p="$2">
-                      <Paragraph size="$2" theme="alt1">
-                        {description}
-                      </Paragraph>
-                    </YStack>
-                  </Theme>
-                </td>
-              </tr>
-            )}
-          </React.Fragment>
-        ))}
-      </tbody>
-    </RegionTable>
+              </YStack>
+              <Separator my={2} />
+            </ListItem>
+          ))}
+        </YStack>
+      </ThemeInverse>
+    </ThemeReset>
   )
 }
 

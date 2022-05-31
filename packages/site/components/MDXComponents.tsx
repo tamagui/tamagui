@@ -11,6 +11,7 @@ import {
   H1,
   H2,
   H3,
+  H4,
   H5,
   H6,
   Image,
@@ -159,8 +160,8 @@ export const components = {
     </LinkHeading>
   ),
 
-  h4: (props) => <H5 mt="$5" {...props} />,
-  h5: (props) => <H6 mt="$5" {...props} />,
+  h4: (props) => <H4 mt="$6" s {...props} />,
+  h5: (props) => <H5 mt="$5" {...props} />,
 
   p: (props) => <Paragraph className="paragraph" display="block" mb="$2" mt="$2" {...props} />,
 

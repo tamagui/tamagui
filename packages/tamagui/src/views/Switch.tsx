@@ -42,8 +42,10 @@ const WIDTH_SIZE = 3
 const HEIGHT_SIZE = 1
 
 const getSwitchHeight: SizeVariantSpreadFunction<any> = (val, extras) =>
+  // @ts-ignore works but need to improve types
   getSquareSize(getSize(val, HEIGHT_SIZE), extras)
 const getSwitchWidth: SizeVariantSpreadFunction<any> = (val, extras) =>
+  // @ts-ignore works but need to improve types
   getSquareSize(getSize(val, WIDTH_SIZE), extras)
 
 const SwitchFrame = styled(XStack, {

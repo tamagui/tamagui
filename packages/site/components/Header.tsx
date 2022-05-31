@@ -88,10 +88,11 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             <NextLink href="/docs/intro/installation" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
-                p="$2"
+                px="$3"
+                py="$2"
                 letterSpacing={2}
                 cursor="pointer"
-                size="$4"
+                size="$3"
                 o={0.7}
                 hoverStyle={{ opacity: 1 }}
                 tag="a"
@@ -103,10 +104,11 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             <NextLink href="/blog" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
-                p="$2"
+                px="$3"
+                py="$2"
                 letterSpacing={2}
                 cursor="pointer"
-                size="$4"
+                size="$3"
                 o={0.7}
                 hoverStyle={{ opacity: 1 }}
                 tag="a"

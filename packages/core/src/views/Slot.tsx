@@ -14,21 +14,22 @@ export type SlotProps = {
 export const Slot = React.forwardRef<HTMLElement, SlotProps>((props, forwardedRef) => {
   const { children, ...slotProps } = props
 
-  if (React.Children.toArray(children).some(isSlottable)) {
-    return (
-      <>
-        {React.Children.map(children, (child) => {
-          return isSlottable(child) ? (
-            <SlotClone {...slotProps} ref={forwardedRef}>
-              {child.props.children}
-            </SlotClone>
-          ) : (
-            child
-          )
-        })}
-      </>
-    )
-  }
+  // if (React.Children.toArray(children).some(isSlottable)) {
+  //   return (
+  //     <>
+  //       {React.Children.map(children, (child) => {
+  //         console.log('get chiln', { props, child })
+  //         return isSlottable(child) ? (
+  //           <SlotClone {...slotProps} ref={forwardedRef}>
+  //             {child.props.children}
+  //           </SlotClone>
+  //         ) : (
+  //           child
+  //         )
+  //       })}
+  //     </>
+  //   )
+  // }
 
   return (
     <SlotClone {...slotProps} ref={forwardedRef}>
@@ -51,10 +52,11 @@ const SlotClone = React.forwardRef<any, SlotCloneProps>((props, forwardedRef) =>
   const { children, ...slotProps } = props
 
   if (React.isValidElement(children)) {
-    return React.cloneElement(children, {
+    const childProps = {
       ...mergeProps(children, slotProps),
       ref: composeRefs(forwardedRef, (children as any).ref),
-    })
+    }
+    return React.cloneElement(children, childProps)
   }
 
   return React.Children.count(children) > 1 ? React.Children.only(null) : null

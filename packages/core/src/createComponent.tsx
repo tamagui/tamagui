@@ -865,20 +865,24 @@ export function createComponent<
 
     let content: any
 
-    // if (asChild) {
-    //   const onlyChild = React.Children.only(children)
-    //   const { children: onlyChildren, ...restProps } = onlyChild.props
-    //   elementType = onlyChild.type
-    //   viewProps = { ...props, ...restProps }
-    //   delete viewProps['asChild']
-    //   childEls = onlyChildren
-    // }
-
     if (asChild) {
       elementType = Slot
-      const onlyChild = React.Children.only(children)
-      Object.assign(viewProps, onlyChild.props)
+      viewProps = {
+        ...viewProps,
+        onPress,
+        onPressIn,
+        onPressOut,
+      }
     }
+
+    // if (asChild) {
+    //   elementType = Slot
+    //   const onlyChild = React.Children.only(children)
+    //   const { children: onlyChildren, ...restProps } = onlyChild.props
+    //   viewProps = { ...props, ...restProps }
+    //   // childEls = onlyChildren
+    //   delete viewProps['asChild']
+    // }
 
     // EVENTS: web
     if (isWeb) {

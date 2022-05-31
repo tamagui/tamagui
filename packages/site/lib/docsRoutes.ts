@@ -1,10 +1,5 @@
 export const docsRoutes = [
   {
-    type: 'hr',
-    title: 'Get Started',
-  },
-
-  {
     pages: [
       { title: 'Introduction', route: '/docs/intro/introduction' },
       { title: 'Installation', route: '/docs/intro/installation' },
@@ -39,17 +34,8 @@ export const docsRoutes = [
   },
 
   {
-    label: 'Base',
     pages: [
-      { title: 'Button', route: '/docs/components/button' },
-      { title: 'Separator', route: '/docs/components/separator' },
       { title: 'Stacks', route: '/docs/components/stacks' },
-    ],
-  },
-
-  {
-    label: 'Text',
-    pages: [
       { title: 'Headings', route: '/docs/components/headings' },
       { title: 'Paragraph', route: '/docs/components/text' },
     ],
@@ -58,11 +44,21 @@ export const docsRoutes = [
   {
     label: 'Forms',
     pages: [
-      { title: 'Input & Textarea', route: '/docs/components/inputs' },
+      { title: 'Button', route: '/docs/components/button' },
+      { title: 'Input + Textarea', route: '/docs/components/inputs' },
       { title: 'Label', route: '/docs/components/label' },
       { title: 'Progress', route: '/docs/components/progress' },
       { title: 'Slider', route: '/docs/components/slider' },
       { title: 'Switch', route: '/docs/components/switch' },
+    ],
+  },
+
+  {
+    label: 'Panels',
+    pages: [
+      { title: 'Dialog', route: '/docs/components/dialog' },
+      { title: 'Popover', route: '/docs/components/popover' },
+      { title: 'Tooltip', route: '/docs/components/tooltip' },
     ],
   },
 
@@ -77,21 +73,21 @@ export const docsRoutes = [
   },
 
   {
-    label: 'Panels',
+    label: 'Visual',
     pages: [
-      { title: 'Popover', route: '/docs/components/popover' },
-      { title: 'Tooltip', route: '/docs/components/tooltip' },
+      { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
+      { title: 'Separator', route: '/docs/components/separator' },
+      { title: 'Square + Circle', route: '/docs/components/shapes' },
     ],
   },
 
   {
-    label: 'Misc',
+    label: 'Etc',
     pages: [
       { title: 'Anchor', route: '/docs/components/anchor' },
       { title: 'HTML Elements', route: '/docs/components/html-elements' },
-      { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
-      { title: 'Shapes', route: '/docs/components/shapes' },
       { title: 'Spinner', route: '/docs/components/spinner' },
+      { title: 'Unspaced', route: '/docs/components/unspaced' },
       { title: 'VisuallyHidden', route: '/docs/components/visually-hidden' },
     ],
   },
