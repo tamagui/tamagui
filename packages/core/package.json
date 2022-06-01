@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core",
-  "version": "1.0.1-beta.43",
+  "version": "1.0.1-beta.44",
   "source": "src/index.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -21,10 +21,10 @@
   ],
   "dependencies": {
     "@expo/match-media": "^0.3.0",
-    "@tamagui/helpers": "^1.0.1-beta.43",
+    "@tamagui/helpers": "^1.0.1-beta.44",
     "@tamagui/ow": "^0.28.1",
-    "@tamagui/use-debounce": "^1.0.1-beta.43",
-    "@tamagui/use-force-update": "^1.0.1-beta.43",
+    "@tamagui/use-debounce": "^1.0.1-beta.44",
+    "@tamagui/use-force-update": "^1.0.1-beta.44",
     "expo-screen-orientation": "^4.2.0",
     "hyphenate-style-name": "^1.0.4",
     "inline-style-prefixer": "^6.0.0",
@@ -36,7 +36,7 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.43",
+    "@tamagui/build": "^1.0.1-beta.44",
     "@types/react": "^17.0.35",
     "csstype": "^3.0.10",
     "esbuild": "^0.14.36",
