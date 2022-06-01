@@ -284,7 +284,7 @@ declare const CardFooter: import("@tamagui/core").TamaguiComponent<(Omit<import(
     chromeless?: boolean | undefined;
 } & {
     size?: SizeTokens | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
 })>;
 declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -405,7 +405,7 @@ declare const CardBackground: import("@tamagui/core").TamaguiComponent<(Omit<imp
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
 })>;
 export declare type CardHeaderProps = GetProps<typeof CardHeader>;
@@ -676,7 +676,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         chromeless?: boolean | undefined;
     } & {
         size?: SizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     })>;
     Background: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -797,7 +797,7 @@ export declare const Card: ((props: Omit<Omit<import("react-native").ViewProps, 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     })>;
 };

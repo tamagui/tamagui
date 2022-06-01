@@ -31,5 +31,3 @@ export const CodeInline = styled(Paragraph, {
   px: '$1',
   py: 3,
 })
-
-// const x = <Code />

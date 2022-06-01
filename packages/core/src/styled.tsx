@@ -24,9 +24,7 @@ export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<
 
 export function styled<
   ParentComponent extends StylableComponent,
-  Variants extends VariantDefinitions<ParentComponent> | symbol =
-    | VariantDefinitions<ParentComponent>
-    | symbol
+  Variants extends VariantDefinitions<ParentComponent> | void = VariantDefinitions<ParentComponent> | void
 >(
   Component: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
@@ -101,7 +99,7 @@ export function styled<
   type VariantProps = Omit<ParentVariants, keyof OurVariants> & OurVariants
   type OurPropsBase = ParentPropsBase & VariantProps
 
-  type Props = Variants extends void | symbol
+  type Props = Variants extends void
     ? GetProps<ParentComponent>
     : // start with base props
       OurPropsBase &
