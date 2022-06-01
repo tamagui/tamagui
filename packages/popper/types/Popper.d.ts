@@ -19,22 +19,22 @@ export declare type PopperAnchorProps = YStackProps & {
     virtualRef?: React.RefObject<any>;
 };
 export declare const PopperAnchor: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }>> & {
     virtualRef?: React.RefObject<any> | undefined;
 } & React.RefAttributes<PopperAnchorRef>>;
 declare type PopperContentElement = HTMLElement | View;
 export declare type PopperContentProps = SizableStackProps;
 export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }, "size" | "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
@@ -45,8 +45,8 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }, "size" | "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
@@ -57,8 +57,8 @@ export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }, "size" | "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered"> & {
     fontFamily?: unknown;
     hoverable?: boolean | undefined;
@@ -75,14 +75,14 @@ export declare type PopperArrowProps = YStackProps & {
     size?: SizeTokens;
 };
 export declare const PopperArrow: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
-    fullscreen?: boolean | undefined;
-    elevation?: SizeTokens | undefined;
+    readonly fullscreen?: boolean | undefined;
+    readonly elevation?: SizeTokens | undefined;
 }>> & {
     offset?: number | undefined;
     size?: SizeTokens | undefined;

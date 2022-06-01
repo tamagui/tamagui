@@ -2,6 +2,7 @@
 import { Minus } from '@tamagui/feather-icons'
 import React from 'react'
 import {
+  H3,
   H4,
   ListItem,
   Paragraph,
@@ -44,13 +45,17 @@ export function PropsTable({
       aria-labelledby={ariaLabelledBy}
       my="$4"
       br="$4"
+      ov="hidden"
       mx="$-4"
       $sm={{
         mx: 0,
       }}
     >
+      <XStack ai="center" py="$2" px="$4" backgroundColor="$borderColor">
+        <H3 size="$3">Props</H3>
+      </XStack>
       {data.map(({ name, type, required, default: defaultValue, description }, i) => (
-        <ListItem key={`${name}-${i}`} p={0}>
+        <ListItem btw={1} boc="$borderColor" key={`${name}-${i}`} p={0}>
           <YStack width="100%">
             <XStack py="$3" px="$4" backgroundColor="$background" $sm={{ flexDirection: 'column' }}>
               <XStack miw="30%" ai="center" space>
@@ -66,7 +71,7 @@ export function PropsTable({
                   {required ? (
                     <Paragraph tag="span" fontSize="inherit" o={0.5}>
                       {' '}
-                      <Paragraph tag="span" fontWeight="800" theme="yellow">
+                      <Paragraph tag="span" fontWeight="300">
                         (required)
                       </Paragraph>
                     </Paragraph>
@@ -91,16 +96,16 @@ export function PropsTable({
                 </Paragraph>
 
                 <XStack ai="center">
-                  <Paragraph o={0.5} size="$2">
-                    Default:&nbsp;
-                  </Paragraph>
                   {Boolean(defaultValue) ? (
-                    <Code bc="$backgroundPress">{defaultValue}</Code>
-                  ) : (
-                    <YStack>
-                      <Minus size={12} opacity={0.5} color="var(--color)" />
-                    </YStack>
-                  )}
+                    <>
+                      <Paragraph o={0.5} size="$2">
+                        Default:&nbsp;
+                      </Paragraph>
+                      <Code my="$-1" bc="$backgroundPress">
+                        {defaultValue}
+                      </Code>
+                    </>
+                  ) : null}
                 </XStack>
               </XStack>
             </XStack>

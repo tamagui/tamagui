@@ -1,7 +1,7 @@
 import { GetProps, SizeTokens, SizeVariantSpreadFunction, StackProps, VariantSpreadExtras } from '@tamagui/core';
 export declare type YStackProps = GetProps<typeof YStack>;
-export declare type XStackProps = GetProps<typeof YStack>;
-export declare type ZStackProps = GetProps<typeof ZStack>;
+export declare type XStackProps = YStackProps;
+export declare type ZStackProps = YStackProps;
 export declare const getElevation: SizeVariantSpreadFunction<StackProps>;
 export declare const YStack: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
@@ -56,7 +56,7 @@ export declare const ZStack: import("@tamagui/core").TamaguiComponent<(Omit<impo
 }>>), any, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-} & ({} | {
+} & (symbol | {
     [x: string]: undefined;
 })>;
 export declare const getSizedElevation: (val: SizeTokens | number | boolean, { theme, tokens }: VariantSpreadExtras<any>) => {
