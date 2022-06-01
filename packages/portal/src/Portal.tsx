@@ -13,7 +13,11 @@ export const Portal = (props: PortalProps) => {
 
   if (!isWeb) {
     // check if theme stays in context here
-    return <Modal visible>{contents}</Modal>
+    return (
+      <Modal visible transparent pointerEvents="none">
+        {contents}
+      </Modal>
+    )
   }
 
   const [hostElement, setHostElement] = React.useState<any>(null)

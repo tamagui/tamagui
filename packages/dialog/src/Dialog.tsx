@@ -8,7 +8,6 @@ import {
   isWeb,
   styled,
   useId,
-  useTheme,
   useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
@@ -20,7 +19,7 @@ import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
-import { ModalProps, View } from 'react-native'
+import { View } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
 // import { hideOthers } from 'aria-hidden';
 
@@ -131,9 +130,10 @@ const DialogPortal: React.FC<DialogPortalProps> = (props: ScopedProps<DialogPort
         alignItems="center"
         justifyContent="center"
         zIndex={100}
-        // TODO web-only
-        maxHeight="100vh"
         pointerEvents={isShowing ? 'auto' : 'none'}
+        {...(isWeb && {
+          maxHeight: '100vh',
+        })}
         {...rest}
       >
         <Theme name={themeName}>{contents}</Theme>
@@ -189,17 +189,25 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
   (props: ScopedProps<DialogOverlayImplProps>, forwardedRef) => {
     const { __scopeDialog, ...overlayProps } = props
     const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+    const content = (
+      <DialogOverlayFrame
+        data-state={getState(context.open)}
+        // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+        pointerEvents="auto"
+        {...overlayProps}
+        ref={forwardedRef}
+      />
+    )
+
+    if (!isWeb) {
+      return content
+    }
+
     return (
       // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
       // ie. when `Overlay` and `Content` are siblings
       <RemoveScroll as={Slot} allowPinchZoom={context.allowPinchZoom} shards={[context.contentRef]}>
-        <DialogOverlayFrame
-          data-state={getState(context.open)}
-          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-          pointerEvents="auto"
-          {...overlayProps}
-          ref={forwardedRef}
-        />
+        {content}
       </RemoveScroll>
     )
   }
@@ -275,13 +283,13 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    React.useEffect(() => {
-      const content = contentRef.current
-      if (content) {
-        console.log('should hide others')
-        // return hideOthers(content)
-      }
-    }, [])
+    // React.useEffect(() => {
+    //   const content = contentRef.current
+    //   if (content) {
+    //     console.log('should hide others')
+    //     // return hideOthers(content)
+    //   }
+    // }, [])
 
     return (
       <DialogContentImpl
@@ -643,7 +651,6 @@ export {
   //
   WarningProvider,
 }
-
 export type {
   DialogProps,
   DialogTriggerProps,
