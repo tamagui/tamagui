@@ -124,6 +124,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
     spaceFlex,
     scaleIcon = 1,
     scaleSpace = 0.66,
+    separator,
 
     // text props
     color,
@@ -142,10 +143,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapStringChildrenInText({
-    ...props,
-    TextComponent: ButtonText,
-  })
+  const contents = wrapStringChildrenInText(ButtonText, props)
 
   return (
     // careful not to destructure and re-order props, order is important
@@ -164,6 +162,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
               // a bit arbitrary but scaling to font size is necessary so long as button does
               space: spaceSize,
               spaceFlex,
+              separator,
               direction: props.flexDirection || 'row',
               children: [themedIcon, contents, themedIconAfter],
             })

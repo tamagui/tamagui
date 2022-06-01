@@ -29,7 +29,7 @@ import { useIsTouchDevice } from './hooks/useIsTouchDevice'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
-  SpaceDirection,
+  SpaceFlexDirection,
   SpaceTokens,
   StackProps,
   StaticConfig,
@@ -127,7 +127,9 @@ export function createComponent<
 
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
-    const componentClassName = props.componentName
+    const componentClassName = props.asChild
+      ? ''
+      : props.componentName
       ? `is_${props.componentName}`
       : defaultComponentClassName
 
@@ -196,6 +198,7 @@ export function createComponent<
       onMouseEnter,
       onMouseLeave,
       hrefAttrs,
+      separator,
       // ignore from here on out
       // for next/link compat etc
       // @ts-ignore
@@ -234,6 +237,7 @@ export function createComponent<
     if (isWeb && !staticConfig.isReactNativeWeb) {
       // otherwise replicate react-native-web functionality
       const {
+        // event props
         onMoveShouldSetResponder,
         onMoveShouldSetResponderCapture,
         onResponderEnd,
@@ -250,8 +254,11 @@ export function createComponent<
         onSelectionChangeShouldSetResponderCapture,
         onStartShouldSetResponder,
         onStartShouldSetResponderCapture,
+
+        // react-native props
         nativeID,
 
+        // react-native-web accessibility props
         // @ts-ignore
         accessibilityActiveDescendant,
         // @ts-ignore
@@ -855,6 +862,7 @@ export function createComponent<
         ? children
         : wrapThemeManagerContext(
             spacedChildren({
+              separator,
               children,
               space,
               direction: props.spaceDirection || 'both',
@@ -1078,16 +1086,23 @@ export function createComponent<
   return res
 }
 
+// for elements to avoid spacing
+export const Unspaced = (props: { children?: any }) => {
+  return props.children
+}
+Unspaced['isUnspaced'] = true
+
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 
-export const Spacer = createComponent<
-  Omit<StackProps, 'flex' | 'direction'> & {
-    size?: number | SpaceTokens
-    flex?: boolean | number
-    direction?: 'horizontal' | 'vertical'
-  }
->({
+type SpaceDirection = 'vertical' | 'horizontal'
+
+export type SpacerProps = Omit<StackProps, 'flex' | 'direction'> & {
+  size?: number | SpaceTokens
+  flex?: boolean | number
+  direction?: SpaceDirection
+}
+export const Spacer = createComponent<SpacerProps>({
   memo: true,
   componentName: 'Spacer',
   defaultProps: {
@@ -1131,11 +1146,14 @@ export const Spacer = createComponent<
   },
 })
 
-export const Unspaced = (props: { children?: any }) => {
-  return props.children
+export type SpacedChildrenProps = {
+  isZStack?: boolean
+  children?: any
+  space?: any
+  spaceFlex?: boolean | number
+  direction?: SpaceFlexDirection
+  separator?: React.ReactNode
 }
-
-Unspaced['isUnspaced'] = true
 
 export function spacedChildren({
   isZStack,
@@ -1143,19 +1161,15 @@ export function spacedChildren({
   space,
   direction,
   spaceFlex,
-}: {
-  isZStack?: boolean
-  children: any
-  space?: any
-  spaceFlex?: boolean | number
-  direction?: SpaceDirection
-}) {
-  if (!space && !spaceFlex) {
+  separator,
+}: SpacedChildrenProps) {
+  const hasSpace = !!(space || spaceFlex)
+  const hasSeparator = !(separator === undefined || separator === null)
+  if (!hasSpace && !hasSeparator) {
     return children
   }
-  const childrenList = Array.isArray(children) ? children : Children.toArray(children)
-  const len = childrenList.length
-  if (len <= 1) {
+  const childrenList = Children.toArray(children)
+  if (childrenList.length <= 1) {
     return childrenList
   }
   const final: any[] = []
@@ -1178,26 +1192,67 @@ export function spacedChildren({
     const next = childrenList[index + 1]
 
     if (next && !isUnspaced(next)) {
-      final.push(
-        <Spacer
-          key={`_${index}_spacer`}
-          direction={
-            direction === 'both'
-              ? undefined
-              : direction === 'row' || direction === 'row-reverse'
-              ? 'horizontal'
-              : 'vertical'
-          }
-          size={space}
-          {...(spaceFlex && {
-            flex: spaceFlex,
-          })}
-        />
-      )
+      if (separator) {
+        if (hasSpace) {
+          final.push(
+            createSpacer({
+              key: `_${index}_before_sep_spacer`,
+              direction,
+              space,
+              spaceFlex,
+            })
+          )
+        }
+        final.push(
+          React.isValidElement(separator)
+            ? React.cloneElement(separator, { key: `sep_${index}` })
+            : separator
+        )
+        if (hasSpace) {
+          final.push(
+            createSpacer({
+              key: `_${index}_after_sep_spacer`,
+              direction,
+              space,
+              spaceFlex,
+            })
+          )
+        }
+      } else {
+        final.push(
+          createSpacer({
+            key: `_${index}_spacer`,
+            direction,
+            space,
+            spaceFlex,
+          })
+        )
+      }
     }
   }
 
   return final
+}
+
+type CreateSpacerProps = SpacedChildrenProps & { key: string }
+
+function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
+  return (
+    <Spacer
+      key={key}
+      direction={
+        direction === 'both'
+          ? undefined
+          : direction === 'row' || direction === 'row-reverse'
+          ? 'horizontal'
+          : 'vertical'
+      }
+      size={space}
+      {...(spaceFlex && {
+        flex: spaceFlex,
+      })}
+    />
+  )
 }
 
 function isUnspaced(child: any) {

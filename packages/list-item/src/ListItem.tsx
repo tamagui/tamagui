@@ -143,10 +143,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapStringChildrenInText({
-    ...props,
-    TextComponent: ListItemText,
-  })
+  const contents = wrapStringChildrenInText(ListItemText, props)
 
   return (
     <ListItemFrame fontFamily={fontFamily} ref={ref as any} {...rest}>

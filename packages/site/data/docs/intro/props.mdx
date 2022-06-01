@@ -53,6 +53,7 @@ Outside of flat style properties, Tamagui adds the following props:
         </span>
       ),
     },
+    
     {
       name: 'space',
       required: false,
@@ -65,6 +66,7 @@ Outside of flat style properties, Tamagui adds the following props:
         </span>
       ),
     },
+
     {
       name: 'spaceDirection',
       required: false,
@@ -77,6 +79,18 @@ Outside of flat style properties, Tamagui adds the following props:
         </span>
       ),
     },
+
+    {
+      name: 'separator',
+      required: false,
+      type: "React.ReactNode",
+      description: (
+        <span>
+          Insert a separator between every child. If space is provided, the separator will appear with a space on either side.
+        </span>
+      ),
+    },
+
     {
       name: 'fullscreen',
       required: false,
@@ -89,7 +103,7 @@ Outside of flat style properties, Tamagui adds the following props:
       type: `boolean | 'verbose' | 'break'`,
       description: (
         <span>
-          When set to true Tamagui will output a variety of helpful information on how it parsed and
+          When set Tamagui will output a variety of helpful information on how it parsed and
           applied styling. Verbose will output more information, and break will hit a debugger at
           the start of render in development mode.
         </span>
@@ -101,12 +115,12 @@ Outside of flat style properties, Tamagui adds the following props:
       type: 'boolean',
       description: (
         <span>
-          When set to true Tamagui will output a variety of helpful information on how it parsed and
-          applied styling.
+          When true, Tamagui expects a single child element to which it will pass all to, merging together any event handling props.
         </span>
       ),
     },
-  ]}
+
+]}
 />
 
 ### Text props

@@ -5,6 +5,7 @@ import {
   Slot,
   Theme,
   composeEventHandlers,
+  isWeb,
   styled,
   useId,
   useTheme,
@@ -536,6 +537,7 @@ If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it wi
 For more information, see https://radix-ui.com/primitives/docs/components/${titleWarningContext.docsSlug}`
 
   React.useEffect(() => {
+    if (!isWeb) return
     if (titleId) {
       const hasTitle = document.getElementById(titleId)
       if (!hasTitle) throw new Error(MESSAGE)
@@ -557,6 +559,7 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef, des
   const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${descriptionWarningContext.contentName}}.`
 
   React.useEffect(() => {
+    if (!isWeb) return
     const contentNode = contentRef.current
     if (!(contentNode instanceof HTMLElement)) {
       return

@@ -4,19 +4,25 @@ import React from 'react'
 import { TextParentStyles } from './types'
 
 type Props = TextParentStyles & {
-  TextComponent: any
   children?: React.ReactNode
   size?: SizeTokens
 }
 
-export function wrapStringChildrenInText({
-  children,
-  textProps,
-  size,
-  noTextWrap,
-  TextComponent,
-  ...directTextProps
-}: Props) {
+export function wrapStringChildrenInText(
+  TextComponent: any,
+  {
+    children,
+    textProps,
+    size,
+    noTextWrap,
+    color,
+    fontFamily,
+    fontSize,
+    fontWeight,
+    letterSpacing,
+    textAlign,
+  }: Props
+) {
   if (noTextWrap || !children) {
     return children
   }
@@ -29,6 +35,14 @@ export function wrapStringChildrenInText({
   let allChildren = React.Children.toArray(children)
   let nextChildren: any[] = []
   let lastIsString = false
+  const directTextProps: any = {}
+  // to avoid setting undefined
+  if (color) directTextProps.color = color
+  if (fontFamily) directTextProps.fontFamily = fontFamily
+  if (fontSize) directTextProps.fontSize = fontSize
+  if (fontWeight) directTextProps.fontWeight = fontWeight
+  if (letterSpacing) directTextProps.letterSpacing = letterSpacing
+  if (textAlign) directTextProps.textAlign = textAlign
 
   function concatStringChildren() {
     if (!lastIsString) return

@@ -19,6 +19,8 @@ import { ResolveVariableTypes } from './helpers/createPropMapper'
 import { RNWTextProps, RNWViewProps } from './types-rnw'
 import { ThemeProviderProps } from './views/ThemeProvider'
 
+export type SpaceFlexDirection = ViewStyle['flexDirection'] | 'both'
+
 export type TamaguiElement = HTMLElement | View
 
 //
@@ -27,7 +29,8 @@ export type TamaguiElement = HTMLElement | View
 export type TamaguiComponentPropsBase = {
   asChild?: boolean
   space?: SpaceTokens
-  spaceDirection?: SpaceDirection
+  spaceDirection?: SpaceFlexDirection
+  separator?: React.ReactNode
   dangerouslySetInnerHTML?: { __html: string }
   animation?: AnimationProp
   animateOnly?: string[]
@@ -283,8 +286,6 @@ export type AnimationProp =
             }
       }
     ]
-
-export type SpaceDirection = ViewStyle['flexDirection'] | 'both'
 
 type GetTokenFontKeysFor<
   A extends
