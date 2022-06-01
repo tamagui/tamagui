@@ -55,18 +55,6 @@ const ListItemFrame = styled(ThemeableStack, {
   overflow: 'hidden',
   flexDirection: 'row',
 
-  pressStyle: {
-    borderColor: 'transparent',
-  },
-
-  hoverStyle: {
-    borderColor: 'transparent',
-  },
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
-
   variants: {
     size: {
       '...size': (val, { tokens }) => {

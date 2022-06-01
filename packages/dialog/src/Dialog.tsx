@@ -121,6 +121,10 @@ const DialogPortal: React.FC<DialogPortalProps> = (props: ScopedProps<DialogPort
   const themeName = useThemeName()
   const context = useDialogContext(PORTAL_NAME, __scopeDialog)
   const isShowing = forceMount || context.open
+  const contents = <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
+  if (!context.modal) {
+    return contents
+  }
   return (
     <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
       <Portal
@@ -132,9 +136,7 @@ const DialogPortal: React.FC<DialogPortalProps> = (props: ScopedProps<DialogPort
         pointerEvents={isShowing ? 'auto' : 'none'}
         {...rest}
       >
-        <Theme name={themeName}>
-          <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
-        </Theme>
+        <Theme name={themeName}>{contents}</Theme>
       </Portal>
     </PortalProvider>
   )

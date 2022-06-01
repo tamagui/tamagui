@@ -81,7 +81,8 @@ export declare const elevate: {
         onSelectionChangeShouldSetResponderCapture?: unknown;
         asChild?: boolean | import("@tamagui/core").Variable | undefined;
         space?: import("@tamagui/core").Variable | import("@tamagui/core").SpaceTokens | undefined;
-        spaceDirection?: import("@tamagui/core").Variable | import("@tamagui/core").SpaceDirection;
+        spaceDirection?: import("@tamagui/core").Variable | import("@tamagui/core").SpaceFlexDirection;
+        separator?: import("react").ReactNode | import("@tamagui/core").Variable;
         dangerouslySetInnerHTML?: import("@tamagui/core").Variable | {
             __html: string;
         } | undefined;
