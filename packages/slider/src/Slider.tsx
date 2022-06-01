@@ -273,6 +273,7 @@ const SliderThumbFrame = styled(ThemeableStack, {
   bordered: 2,
   // OR THIS
   borderWidth: 2,
+  backgrounded: true,
   pressable: true,
   focusable: true,
   hoverable: true,

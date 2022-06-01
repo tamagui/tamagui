@@ -31,7 +31,7 @@ function DemoCard(props: CardProps) {
         <Button br="$10">Purchase</Button>
       </Card.Footer>
       <Card.Background>
-        <Image width={300} height={500} resizeMode="cover" src={camera.src} />
+        <Image pos="absolute" width={300} height={500} resizeMode="cover" src={camera.src} />
       </Card.Background>
     </Card>
   )

@@ -27,6 +27,7 @@ const ProgressIndicatorFrame = styled(ThemeableStack, {
   name: INDICATOR_NAME,
   height: '100%',
   width: '100%',
+  backgrounded: true,
 })
 
 const ProgressIndicator = ProgressIndicatorFrame.extractable(
@@ -116,6 +117,7 @@ const ProgressFrame = styled(ThemeableStack, {
   name: PROGRESS_NAME,
   borderRadius: 100_000,
   overflow: 'hidden',
+  backgrounded: true,
 
   variants: {
     size: {
