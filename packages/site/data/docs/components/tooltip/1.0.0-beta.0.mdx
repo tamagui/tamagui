@@ -43,9 +43,9 @@ export default () => (
 
 ### API
 
-#### Popover
+#### &lt;Tooltip /&gt;
 
-Contains every component for the popover.
+Contains every component for the tooltip.
 
 <PropsTable
   data={[
@@ -125,13 +125,11 @@ Contains every component for the popover.
 
 #### Trigger
 
-Used to trigger opening of the popover when uncontrolled, just renders a YStack, see [Stacks](/docs/components/stacks).
+Used to trigger opening of the popover when uncontrolled, see YStack in [Stacks](/docs/components/stacks).
 
 #### Content
 
-Renders as SizableStack which is just a YStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
-
-Used to display the content of the popover.
+Renders as SizableStack (see [Stacks](/docs/components/stacks)) with an extra `size` prop that accepts any `SizeTokens`.
 
 <Notice>
   Docs coming soon, we need to finalize a few more things to get the full set of props working
@@ -141,4 +139,4 @@ Used to display the content of the popover.
 
 Renders as YStack, see [Stacks](/docs/components/stacks).
 
-When you want the Trigger to be in another location from where the Popover attaches, use Anchor. When used, Anchor is where the Popover will attach, while Trigger will open it.
+When you want the Trigger to be in another location from where the Tooltip attaches, use Anchor. When used, Anchor is where the Tooltip will attach, while Trigger will open it.
