@@ -36,7 +36,7 @@ export declare const ModalYStack: import("@tamagui/core").TamaguiComponent<(Omit
 }>>), any, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
 })>;
 export {};

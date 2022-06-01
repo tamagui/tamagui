@@ -24,7 +24,7 @@ export const PresenceChild = ({
   presenceAffectsLayout,
 }: PresenceChildProps) => {
   const presenceChildren = useConstant(newChildrenMap)
-  const id = useId()
+  const id = useId() || ''
 
   const context = React.useMemo(
     (): AnimatePresenceContextProps => {

@@ -13,24 +13,6 @@ export type SlotProps = {
 
 export const Slot = React.forwardRef<HTMLElement, SlotProps>((props, forwardedRef) => {
   const { children, ...slotProps } = props
-
-  // if (React.Children.toArray(children).some(isSlottable)) {
-  //   return (
-  //     <>
-  //       {React.Children.map(children, (child) => {
-  //         console.log('get chiln', { props, child })
-  //         return isSlottable(child) ? (
-  //           <SlotClone {...slotProps} ref={forwardedRef}>
-  //             {child.props.children}
-  //           </SlotClone>
-  //         ) : (
-  //           child
-  //         )
-  //       })}
-  //     </>
-  //   )
-  // }
-
   return (
     <SlotClone {...slotProps} ref={forwardedRef}>
       {children}

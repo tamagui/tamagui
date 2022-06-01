@@ -113,7 +113,7 @@ export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<(Omit<
 }>>), any, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
 })>;
 export declare const SelectViewportFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -198,9 +198,9 @@ interface SelectItemProps extends YStackProps {
 }
 declare const SelectLabelFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
-})) & (symbol | {
+})) & ({} | {
     [x: string]: undefined;
 } | {
     [x: string]: undefined;
@@ -208,9 +208,9 @@ declare const SelectLabelFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
-})) & (symbol | {
+})) & ({} | {
     [x: string]: undefined;
 } | {
     [x: string]: undefined;
@@ -218,9 +218,9 @@ declare const SelectLabelFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
-})) & (symbol | {
+})) & ({} | {
     [x: string]: undefined;
 } | {
     [x: string]: undefined;
@@ -228,9 +228,9 @@ declare const SelectLabelFrame: import("@tamagui/core").TamaguiComponent<Omit<im
     size?: SizeTokens | undefined;
 }>>, any, import("@tamagui/core").TextPropsBase, (({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
-})) & (symbol | {
+})) & ({} | {
     [x: string]: undefined;
 } | {
     [x: string]: undefined;
@@ -264,7 +264,7 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").StackPropsBase, {
     vertical?: boolean | undefined;
-} & (symbol | {
+} & ({} | {
     [x: string]: undefined;
 })>;
 export interface SelectProps {
@@ -333,7 +333,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     }>>), any, import("@tamagui/core").StackPropsBase, {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     })>;
     Item: React.ForwardRefExoticComponent<SelectItemProps & React.RefAttributes<TamaguiElement>>;
@@ -382,46 +382,46 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
     Label: React.ForwardRefExoticComponent<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
-    })) & (symbol | {
+    })) & ({} | {
         [x: string]: undefined;
     } | {
         [x: string]: undefined;
@@ -429,9 +429,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
-    })) & (symbol | {
+    })) & ({} | {
         [x: string]: undefined;
     } | {
         [x: string]: undefined;
@@ -439,9 +439,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
-    })) & (symbol | {
+    })) & ({} | {
         [x: string]: undefined;
     } | {
         [x: string]: undefined;
@@ -548,19 +548,19 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         placeholder?: React.ReactNode;
     }, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
@@ -568,19 +568,19 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         placeholder?: React.ReactNode;
     }, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & (symbol | {
+    } & ({} | {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;

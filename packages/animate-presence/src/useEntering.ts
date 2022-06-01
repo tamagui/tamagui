@@ -13,7 +13,7 @@ export function useEntering(): [boolean | undefined, undefined | (() => void)] {
   }
 
   const { isEntering, onExitComplete, register } = context
-  const id = useId()
+  const id = useId() || ''
   const safeToRemove = () => onExitComplete?.(id)
 
   // It's safe to call the following hooks conditionally (after an early return) because the context will always
