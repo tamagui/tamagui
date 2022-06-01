@@ -37,6 +37,7 @@ export const Group = forwardRef(
       children: childrenProp,
       space,
       spaceDirection,
+      separator,
       size: sizeProp = '$4',
       scrollable,
       vertical,
@@ -114,6 +115,7 @@ export const Group = forwardRef(
         {wrapScroll(
           spacedChildren({
             direction: spaceDirection,
+            separator,
             space,
             children,
           })

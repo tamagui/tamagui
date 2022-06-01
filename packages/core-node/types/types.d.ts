@@ -5,11 +5,13 @@ import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
+export declare type SpaceFlexDirection = ViewStyle['flexDirection'] | 'both';
 export declare type TamaguiElement = HTMLElement | View;
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
     space?: SpaceTokens;
-    spaceDirection?: SpaceDirection;
+    spaceDirection?: SpaceFlexDirection;
+    separator?: React.ReactNode;
     dangerouslySetInnerHTML?: {
         __html: string;
     };
@@ -200,7 +202,6 @@ export declare type AnimationProp = AnimationKeys | {
         };
     }
 ];
-export declare type SpaceDirection = ViewStyle['flexDirection'] | 'both';
 declare type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 declare type GetTokenString<A> = A extends string | number ? `$${A}` : `$${string}`;
 export declare type SizeTokens = GetTokenString<keyof Tokens['size']> | number;

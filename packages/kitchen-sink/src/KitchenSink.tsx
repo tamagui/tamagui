@@ -1,10 +1,10 @@
 import { Check, X } from '@tamagui/feather-icons'
-import { Button, Group, ListItem, TooltipSimple, YStack } from 'tamagui'
+import { Button, Group, ListItem, Separator, TooltipSimple, YStack } from 'tamagui'
 
 export function KitchenSink() {
   return (
     <YStack space>
-      <Group width={250} size="$4" vertical>
+      <Group width={250} size="$4" vertical separator={<Separator marginLeft="$4" />}>
         <ListItem icon={Check} subTitle="test 123">
           Bye world
         </ListItem>

@@ -37,7 +37,7 @@ export const Sandbox = () => {
         l={10}
         onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
-        Switch
+        Switch theme
       </Button>
 
       <div

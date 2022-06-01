@@ -75,6 +75,7 @@
     - Docs/ability to configure stricted theme values (dont accept anything but tokens)
   - add fonts section to guides
   - auto skeleton components
+  - simple <Table /> could be similar to PropsTable
 
 takeout:
   - customizable createTheme()
@@ -99,6 +100,7 @@ takeout:
       - updates imports in app
   - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
+  - List hierarchical (https://developer.apple.com/documentation/swiftui/list)
 
 - ornaments system:
     - hooks inside any styled component to add decoration-only elements
@@ -116,18 +118,6 @@ export const createTamagui({
   themes
 })
 
-// where ornaments is something like:
-const ornaments = {
-  ListItem: props => (
-    <Separator pos="absolute" bottom={0} left={40} right={0} />
-  ),
-}
-
-// questions: 
-//  1. does that compile? seems like it but not trivial feature
-//  2. to make it compile better needs to limit expressivity 
-//     - could limit to just Stack
-
 // could enforce it only accepts TamaguiComponents:
 const ListItemSeparator = styled(Stack, {})
 const ornaments = {
@@ -143,7 +133,7 @@ const ornaments = {
 }
 ```
 
-
+- <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
 - compiler could insert special props like:
   - __noAnimations, __noTheme, __noSpace
   - it would change key={} alongside that
