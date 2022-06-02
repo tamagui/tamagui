@@ -14,7 +14,7 @@ import {
   themeable,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
-import { ThemeableStack, XStack, YStackProps } from '@tamagui/stacks'
+import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'

@@ -20,7 +20,6 @@ import {
 } from '@floating-ui/react-dom-interactions'
 import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
 import { usePrevious } from '@radix-ui/react-use-previous'
-import { Button, ButtonProps } from '@tamagui/button'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
@@ -41,6 +40,7 @@ import { useId } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
 import { clamp } from '@tamagui/helpers'
+import { ListItem, ListItemProps } from '@tamagui/list-item'
 // import { useLabelContext } from '@tamagui/react-label'
 import { Portal } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
@@ -96,6 +96,7 @@ interface SelectContextValue {
   setSelectedIndex: (index: number) => void
   activeIndex: number | null
   setActiveIndex: (index: number | null) => void
+  setValueAtIndex: (index: number, value: string) => void
   listRef: React.MutableRefObject<Array<HTMLElement | null>>
   floatingRef: React.MutableRefObject<HTMLElement | null>
   open: boolean
@@ -140,7 +141,7 @@ const SELECTION_KEYS = [' ', 'Enter']
 
 const TRIGGER_NAME = 'SelectTrigger'
 
-export type SelectTriggerProps = ButtonProps
+export type SelectTriggerProps = ListItemProps
 
 export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps>(
   (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
@@ -158,7 +159,14 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
     // const labelledBy = ariaLabelledby || labelId
 
     return (
-      <Button
+      <ListItem
+        backgrounded
+        radiused
+        hoverable
+        pressable
+        focusable
+        tabIndex={-1}
+        borderWidth={1}
         componentName={TRIGGER_NAME}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
@@ -265,6 +273,11 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   name: VIEWPORT_NAME,
   backgroundColor: '$background',
   elevate: true,
+  overflow: 'hidden',
+  
+  // works on web just not typed
+  // @ts-ignore
+  userSelect: 'none',
 
   variants: {
     size: {
@@ -343,31 +356,31 @@ interface SelectItemProps extends YStackProps {
   textValue?: string
 }
 
-const SelectItemFrame = styled(YStack, {
-  name: ITEM_NAME,
-  tag: 'li',
-  // @ts-ignore
-  role: 'option',
-  width: '100%',
+// const SelectItemFrame = styled(YStack, {
+//   name: ITEM_NAME,
+//   tag: 'li',
+//   // @ts-ignore
+//   role: 'option',
+//   width: '100%',
 
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
+//   hoverStyle: {
+//     backgroundColor: '$backgroundHover',
+//   },
 
-  focusStyle: {
-    backgroundColor: '$backgroundFocus',
-  },
+//   focusStyle: {
+//     backgroundColor: '$backgroundFocus',
+//   },
 
-  variants: {
-    size: {
-      '...size': getSelectItemSize,
-    },
-  },
+//   variants: {
+//     size: {
+//       '...size': getSelectItemSize,
+//     },
+//   },
 
-  defaultVariants: {
-    size: '$4',
-  },
-})
+//   defaultVariants: {
+//     size: '$4',
+//   },
+// })
 
 const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
@@ -394,13 +407,13 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       onChange,
       activeIndex,
       setActiveIndex,
+      setValueAtIndex,
       dataRef,
     } = context
 
     const composedRefs = useComposedRefs(
       forwardedRef,
       (node) => {
-        console.log('node', node)
         if (node instanceof HTMLElement) {
           listRef.current[index] = node
         }
@@ -408,11 +421,14 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       // isSelected ? context.onSelectedItemChange : undefined
     )
 
+    React.useEffect(() => {
+      setValueAtIndex(index, value)
+    }, [index])
+
     const timeoutRef = React.useRef<any>()
     const [allowMouseUp, setAllowMouseUp] = React.useState(false)
 
     function handleSelect() {
-      console.log('handling select!')
       setSelectedIndex(index)
       onChange(value)
       setOpen(false)
@@ -434,7 +450,6 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     }, [open, index, setActiveIndex, selectedIndex])
 
     function handleKeyDown(event: React.KeyboardEvent) {
-      console.log('item key down')
       if (event.key === 'Enter' || (event.key === ' ' && !dataRef.current.typing)) {
         event.preventDefault()
         handleSelect()
@@ -457,7 +472,12 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           // setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
         }, [])}
       >
-        <SelectItemFrame
+        <ListItem
+          backgrounded
+          hoverable
+          pressable
+          focusable
+          componentName={ITEM_NAME}
           ref={composedRefs}
           aria-labelledby={textId}
           // `isFocused` caveat fixes stuttering in VoiceOver
@@ -595,33 +615,22 @@ SelectGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'SelectLabel'
 
-const SelectLabelFrame = styled(SelectItemTextFrame, {
-  name: LABEL_NAME,
-
-  variants: {
-    size: {
-      '...size': (val: SizeTokens, extras) => {
-        const size = getSelectItemSize(val, extras)
-        return {
-          ...size,
-          paddingTop: size.paddingVertical * 4,
-        }
-      },
-    },
-  },
-
-  defaultVariants: {
-    size: '$4',
-  },
-})
-
-export type SelectLabelProps = GetProps<typeof SelectLabelFrame>
+export type SelectLabelProps = ListItemProps
 
 const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
   (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
     const { __scopeSelect, ...labelProps } = props
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
-    return <SelectLabelFrame id={groupContext.id} {...labelProps} ref={forwardedRef} />
+    return (
+      <ListItem
+        componentName={LABEL_NAME}
+        fontWeight="800"
+        id={groupContext.id}
+        {...labelProps}
+        // @ts-expect-error
+        ref={forwardedRef}
+      />
+    )
   }
 )
 
@@ -835,15 +844,7 @@ export const Select = withStaticProperties(
     const [showArrows, setShowArrows] = React.useState(false)
     const [scrollTop, setScrollTop] = React.useState(0)
     const listItemsRef = React.useRef<Array<HTMLElement | null>>([])
-    const listContentRef = React.useRef([
-      'Select...',
-      ...(React.Children.map(children, (child) =>
-        React.Children.map(
-          React.isValidElement(child) && child.props.children,
-          (child) => child.props.value
-        )
-      ) ?? []),
-    ])
+    const listContentRef = React.useRef<string[]>([])
 
     const [selectedIndex, setSelectedIndex] = React.useState(
       Math.max(0, listContentRef.current.indexOf(value))
@@ -978,11 +979,6 @@ export const Select = withStaticProperties(
       floatingRef.current &&
       scrollTop <
         floatingRef.current.scrollHeight - floatingRef.current.clientHeight - SCROLL_ARROW_THRESHOLD
-
-    console.log('Select', {
-      activeIndex,
-      selectedIndex,
-    })
 
     const interactions = useInteractions([
       useClick(context, { pointerDown: true }),
@@ -1219,12 +1215,6 @@ export const Select = withStaticProperties(
     ])
 
     React.useLayoutEffect(() => {
-      console.log(
-        'focusin',
-        selectedIndex,
-        listItemsRef.current[selectedIndex],
-        listItemsRef.current
-      )
       if (open && selectedIndex != null) {
         requestAnimationFrame(() => {
           listItemsRef.current[selectedIndex]?.focus({ preventScroll: true })
@@ -1266,6 +1256,9 @@ export const Select = withStaticProperties(
         onValueNodeChange={setValueNode}
         valueNodeHasChildren={valueNodeHasChildren}
         onValueNodeHasChildrenChange={setValueNodeHasChildren}
+        setValueAtIndex={(index, value) => {
+          listContentRef.current[index] = value
+        }}
         interactions={{
           ...interactions,
           getReferenceProps() {

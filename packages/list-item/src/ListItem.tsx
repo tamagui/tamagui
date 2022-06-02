@@ -51,6 +51,7 @@ const ListItemFrame = styled(ThemeableStack, {
   alignItems: 'center',
   flexWrap: 'nowrap',
   width: '100%',
+  borderColor: '$borderColor',
   maxWidth: '100%',
   overflow: 'hidden',
   flexDirection: 'row',
@@ -59,7 +60,7 @@ const ListItemFrame = styled(ThemeableStack, {
     size: {
       '...size': (val, { tokens }) => {
         return {
-          paddingVertical: getSize(val, -1),
+          paddingVertical: getSize(val, -2),
           paddingHorizontal: tokens.size[val],
         }
       },
