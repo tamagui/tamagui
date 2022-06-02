@@ -5,7 +5,6 @@
   - also aligns with stylex
 
 - 1.0
-  - space working with media queries
   - VisuallyHidden/display: none working with space
   - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
   - Input based on Button for icon/iconAfter
