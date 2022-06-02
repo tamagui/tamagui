@@ -139,8 +139,10 @@ export const getSplitStyles: StyleSplitter = (
             // runtime insert
             transform = val
           } else {
-            // error
-            console.trace('?', key, val, cur, props, state)
+            if (process.env.NODE_ENV === 'development') {
+              // error
+              console.trace('?', key, val, cur, props, state)
+            }
           }
         }
         if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
@@ -288,7 +290,7 @@ export const getSplitStyles: StyleSplitter = (
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
         const mediaStyle = getSubStyle(val, staticConfig, theme, props, state)
-        const shouldDoClasses = isWeb && !state.noClassNames
+        const shouldDoClasses = isWeb && !state.noClassNames && !state.dynamicStylesInline
 
         if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
           // prettier-ignore
@@ -364,10 +366,13 @@ export const getSplitStyles: StyleSplitter = (
     const atomic = getStylesAtomic(style)
     for (const atomicStyle of atomic) {
       const key = atomicStyle.property
-      addStyle(atomicStyle.identifier, atomicStyle.rules[0])
-      mergeClassName(key, atomicStyle.identifier)
+      if (!state.dynamicStylesInline) {
+        addStyle(atomicStyle.identifier, atomicStyle.rules[0])
+        mergeClassName(key, atomicStyle.identifier)
+      } else {
+        style[key] = atomicStyle.value
+      }
     }
-    style = {}
   }
 
   if (transforms) {

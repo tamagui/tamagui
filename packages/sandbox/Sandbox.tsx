@@ -1,10 +1,9 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { KitchenSink } from '@tamagui/kitchen-sink'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, SizableText, Square, YStack, styled } from 'tamagui'
+import { Button, Slider, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -36,19 +35,15 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack
-          space
-          ai="center"
-          debug="verbose"
-          $gtSm={{
-            space: '$10',
-          }}
-        >
+        <YStack space>
           {/* <DialogDemo /> */}
           {/* <KitchenSink /> */}
-          <Square bc="red" size={100} />
-          <Square bc="red" size={100} />
-          <Square bc="red" size={100} />
+          <Slider width={200} defaultValue={[50]} max={100} step={1}>
+            <Slider.Track>
+              <Slider.TrackActive />
+            </Slider.Track>
+            <Slider.Thumb hoverable bordered circular elevate index={0} />
+          </Slider>
         </YStack>
       </div>
     </Tamagui.Provider>
