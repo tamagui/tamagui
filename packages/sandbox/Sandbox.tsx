@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Slider, YStack } from 'tamagui'
+import { Button, H1, Slider, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -38,6 +38,31 @@ export const Sandbox = () => {
         <YStack space>
           {/* <DialogDemo /> */}
           {/* <KitchenSink /> */}
+
+          <H1
+            ta="left"
+            size="$9"
+            als="center"
+            maw={500}
+            $gtSm={{
+              mx: 0,
+              maxWidth: 800,
+              size: '$11',
+              ta: 'center',
+            }}
+            $gtMd={{
+              maxWidth: 900,
+              ta: 'center',
+              size: '$12',
+            }}
+            $gtLg={{
+              size: '$13',
+              maxWidth: 1200,
+            }}
+          >
+            Design Ssyadsasad faste Design Ssyadsasad faste Design Ssyadsasad faste
+          </H1>
+
           <Slider width={200} defaultValue={[50]} max={100} step={1}>
             <Slider.Track>
               <Slider.TrackActive />

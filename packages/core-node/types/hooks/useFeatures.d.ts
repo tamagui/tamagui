@@ -1,7 +1,6 @@
 import { RefObject } from 'react';
 import { View, ViewStyle } from 'react-native';
-import { PseudoStyles, SplitStyleState } from '../types';
-import { StaticConfigParsed, TamaguiComponentState, UseAnimationHook } from '../types';
+import { PseudoStyles, SplitStyleState, StaticConfigParsed, TamaguiComponentState, UseAnimationHook } from '../types';
 declare type FeatureUtils = {
     forceUpdate: Function;
     state: SplitStyleState;
@@ -14,6 +13,12 @@ declare type FeatureUtils = {
     onDidAnimate?: () => void;
     hostRef: RefObject<HTMLElement | View>;
 };
-export declare const useFeatures: (props: any, utils?: FeatureUtils) => JSX.Element[];
+export declare const useFeatures: (props: any, utils?: FeatureUtils) => {
+    elements: JSX.Element[];
+    enabled: {
+        animation?: boolean | undefined;
+        mediaQuery?: boolean | undefined;
+    };
+};
 export {};
 //# sourceMappingURL=useFeatures.d.ts.map

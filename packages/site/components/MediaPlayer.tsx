@@ -3,6 +3,7 @@ import React, { memo } from 'react'
 import {
   Button,
   Card,
+  CardProps,
   Image,
   Paragraph,
   Separator,
@@ -22,11 +23,10 @@ export const MediaPlayer = memo(
     onHoverSection,
     pointerEvents,
     pointerEventsControls,
-  }: {
-    theme?: ThemeName
+    ...cardProps
+  }: CardProps & {
     alt?: number | null
     onHoverSection?: (name: string) => void
-    pointerEvents?: any
     pointerEventsControls?: any
   }) => {
     const alt = altProp ?? 0
@@ -44,6 +44,7 @@ export const MediaPlayer = memo(
           pointerEvents={pointerEvents}
           p={0}
           ai="stretch"
+          {...cardProps}
         >
           <XStack ai="center" p="$4" space="$5">
             <Square pos="relative" ov="hidden" br="$6" size={90}>
