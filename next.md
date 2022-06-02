@@ -5,8 +5,9 @@
   - also aligns with stylex
 
 - 1.0
+  - space working with media queries
+  - VisuallyHidden/display: none working with space
   - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
-  - document <ListItem />
   - Input based on Button for icon/iconAfter
   - overwriting `disabled` in variants breaks types... (see ThemeableStack)
   - fix `as const` for variants with string const bug

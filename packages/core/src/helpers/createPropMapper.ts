@@ -73,6 +73,16 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
         }
 
         return Object.entries(expandStyles(variantValue))
+      } else {
+        // variant at key exists, but no matching variant value, return nothing
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            `No variant found: ${
+              staticConfig.componentName || '[UnnamedComponent]'
+            } has variant "${key}", but no matching value "${value}"`
+          )
+        }
+        return null
       }
     }
 
