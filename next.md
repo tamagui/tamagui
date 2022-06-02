@@ -135,6 +135,8 @@ const ornaments = {
 }
 ```
 
+- next css shaker 
+  - loads every page after build and finds all unused styles, produces minimal css
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)
 - compiler could insert special props like:
   - __noAnimations, __noTheme, __noSpace
