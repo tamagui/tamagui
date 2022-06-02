@@ -122,9 +122,10 @@ export function createComponent<
   }
 
   // see onConfiguredOnce below which attaches a name then to this component
-  const component = forwardRef<Ref, ComponentPropTypes>((props: any, forwardedRef) => {
-    // ridiculous fix because react inserts default props after your props for some reason...
-    props = tamaguiDefaultProps && !props.asChild ? { ...tamaguiDefaultProps, ...props } : props
+  const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
+    // React inserts default props after your props for some reason... order important
+    const props =
+      tamaguiDefaultProps && !propsIn.asChild ? { ...tamaguiDefaultProps, ...propsIn } : propsIn
 
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
@@ -139,7 +140,7 @@ export function createComponent<
         // prettier-ignore
         console.log('⚠️', componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
         // keep separate react native warn touches every value on prop causing weird behavior
-        console.log('props in:', props, Object.keys(props))
+        console.log('props in:', { propsIn, props, ordered: Object.keys(props) })
         if (props['debug'] === 'break') debugger
       }
     }

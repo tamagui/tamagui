@@ -266,8 +266,12 @@ export const getSplitStyles: StyleSplitter = (
         if (isWeb && !state.noClassNames) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
-            addStyle(style.identifier, style.rules[0])
-            mergeClassName(`${style.property}-${key}`, style.identifier)
+            const fullKey = `${style.property}-${key}`
+            if (!usedKeys.has(fullKey)) {
+              usedKeys.add(fullKey)
+              addStyle(style.identifier, style.rules[0])
+              mergeClassName(fullKey, style.identifier)
+            }
           }
         }
         continue
@@ -301,8 +305,12 @@ export const getSplitStyles: StyleSplitter = (
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
-            addStyle(out.identifier, out.styleRule)
-            mergeClassName(`${out.identifier}-${mediaKey}`, out.identifier)
+            const fullKey = `${out.identifier}-${mediaKey}`
+            if (!usedKeys.has(fullKey)) {
+              usedKeys.add(fullKey)
+              addStyle(out.identifier, out.styleRule)
+              mergeClassName(fullKey, out.identifier)
+            }
           }
         } else {
           if (mediaState[mediaKey]) {

@@ -39,29 +39,7 @@ export const Sandbox = () => {
           {/* <DialogDemo /> */}
           {/* <KitchenSink /> */}
 
-          <H1
-            ta="left"
-            size="$9"
-            als="center"
-            maw={500}
-            $gtSm={{
-              mx: 0,
-              maxWidth: 800,
-              size: '$11',
-              ta: 'center',
-            }}
-            $gtMd={{
-              maxWidth: 900,
-              ta: 'center',
-              size: '$12',
-            }}
-            $gtLg={{
-              size: '$13',
-              maxWidth: 1200,
-            }}
-          >
-            Design Ssyadsasad faste Design Ssyadsasad faste Design Ssyadsasad faste
-          </H1>
+          <Button hoverStyle={{ backgroundColor: 'red' }}>Plain</Button>
 
           <Slider width={200} defaultValue={[50]} max={100} step={1}>
             <Slider.Track>
