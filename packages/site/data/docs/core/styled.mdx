@@ -12,11 +12,15 @@ description: Extend and build custom and optimizable components.
 Create a new component by extending an existing one:
 
 ```jsx
-import { styled, Stack } from '@tamagui/core'
+import { styled, Stack, GetProps } from '@tamagui/core'
 
 export const Circle = styled(Stack, {
+  name: 'Circle', // useful for debugging, and Component themes
   borderRadius: 100_000_000,
 })
+
+// helper to get props for any TamaguiComponent
+export type CircleProps = GetProps<typeof Circle>
 ```
 
 Usage:
