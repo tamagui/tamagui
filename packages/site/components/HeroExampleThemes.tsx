@@ -262,7 +262,11 @@ export function HeroExampleThemes() {
                       }}
                     >
                       <Theme name={color as any}>
-                        <MediaPlayer pointerEvents="none" alt={alt ? +alt.replace('alt', '') : 0} />
+                        <MediaPlayer
+                          elevation="$6"
+                          pointerEvents="none"
+                          alt={alt ? +alt.replace('alt', '') : 0}
+                        />
                       </Theme>
                     </XStack>
                   )
@@ -273,7 +277,12 @@ export function HeroExampleThemes() {
 
           <YStack pe="none" fullscreen ai="center" jc="center" $xs={{ scale: 0.8 }}>
             <Theme name={colorName}>
-              <MediaPlayer pointerEvents="none" pointerEventsControls="auto" alt={curShadeI} />
+              <MediaPlayer
+                elevation="$6"
+                pointerEvents="none"
+                pointerEventsControls="auto"
+                alt={curShadeI}
+              />
             </Theme>
           </YStack>
         </YStack>

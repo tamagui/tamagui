@@ -290,7 +290,7 @@ export const getSplitStyles: StyleSplitter = (
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
         const mediaStyle = getSubStyle(val, staticConfig, theme, props, state)
-        const shouldDoClasses = isWeb && !state.noClassNames && !state.dynamicStylesInline
+        const shouldDoClasses = isWeb && !state.noClassNames
 
         if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
           // prettier-ignore
