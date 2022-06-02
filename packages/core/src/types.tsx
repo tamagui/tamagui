@@ -1036,6 +1036,7 @@ export type TamaguiComponentState = {
 
 export type SplitStyleState = TamaguiComponentState & {
   noClassNames?: boolean
+  dynamicStylesInline?: boolean
   resolveVariablesAs?: ResolveVariableTypes
   fallbackProps?: Record<string, any>
 }

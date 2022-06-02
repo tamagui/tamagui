@@ -155,10 +155,14 @@ export function createComponent<
       staticConfig,
       theme,
       !shouldAvoidClasses
-        ? state
+        ? {
+            ...state,
+            dynamicStylesInline: true,
+          }
         : {
             ...state,
             noClassNames: true,
+            dynamicStylesInline: true,
             resolveVariablesAs: 'value',
           },
       shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames
