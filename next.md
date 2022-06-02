@@ -5,6 +5,7 @@
   - also aligns with stylex
 
 - 1.0
+  - https://github.com/tamagui/tamagui/issues/53
   - VisuallyHidden/display: none working with space
   - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
   - Input based on Button for icon/iconAfter
