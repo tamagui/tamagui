@@ -1,12 +1,11 @@
 import React, { RefObject } from 'react'
 import { View, ViewStyle } from 'react-native'
 
-import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { getSubStyle } from '../helpers/getSplitStyles'
-import { rnw } from '../static'
-import { PseudoStyles, SplitStyleState } from '../types'
 import {
-  StaticConfig,
+  PseudoStyles,
+  SplitStyleState,
   StaticConfigParsed,
   TamaguiComponentState,
   UseAnimationHook,
@@ -45,53 +44,37 @@ const createDefinition = ({
 
 let featureDefinitions: Record<string, FeatureDefinition> | null = null
 
+type FeatureKeys = keyof ReturnType<typeof loadFeatures>
+
 export const useFeatures = (props: any, utils?: FeatureUtils) => {
   if (!featureDefinitions) {
     featureDefinitions = loadFeatures()
   }
-  const features: JSX.Element[] = []
+  const elements: JSX.Element[] = []
+  const enabled: { [key in FeatureKeys]?: boolean } = {}
   for (const name in featureDefinitions) {
     const { isEnabled, Component } = featureDefinitions[name]
     if (isEnabled(props) && Component) {
-      features.push(<Component key={name} {...props} _utils={utils} />)
+      enabled[name] = true
+      elements.push(<Component key={name} {...props} _utils={utils} />)
     }
   }
-  return features
+  return {
+    elements,
+    enabled,
+  }
 }
 
-function loadFeatures(): Record<string, FeatureDefinition> {
+function loadFeatures() {
   return {
     // loads animations and sets state with the results
     animation: loadAnimationFeature(),
 
-    // onLayout
-    // doesn't work because useLayoutEffect in child fires before parent is mounted
-    // onLayout: loadOnLayoutFeature(),
-
     // will update the parent whenever media query changes
     // no need on web, media queries are inserted and run in css
     mediaQuery: loadMediaQueryFeature(),
-  }
+  } as const
 }
-
-// function loadOnLayoutFeature() {
-//   return createDefinition({
-//     Component: (allProps) => {
-//       console.log('got layout', allProps._utils.hostRef, allProps.onLayout)
-
-//       useIsomorphicLayoutEffect(() => {
-//         console.log('wut is', allProps._utils.hostRef.current)
-//         setTimeout(() => {
-//           console.log('wut is2', allProps._utils.hostRef.current)
-//         })
-//       }, [])
-
-//       rnw.useElementLayout(allProps._utils.hostRef, allProps.onLayout)
-//       return null
-//     },
-//     propNames: ['onLayout'],
-//   })
-// }
 
 function loadAnimationFeature() {
   return createDefinition({
@@ -260,18 +243,18 @@ function loadMediaQueryFeature() {
 
   return createDefinition({
     Component: (props: any) => {
-      const keys = mediaPropNames.filter((x) => x in props)
+      const mediaKeys = mediaPropNames.filter((x) => x in props)
 
       useIsomorphicLayoutEffect(() => {
-        for (const key of keys) {
+        for (const key of mediaKeys) {
           addMediaQueryListener(key, props._utils.forceUpdate)
         }
         return () => {
-          for (const key of keys) {
+          for (const key of mediaKeys) {
             removeMediaQueryListener(key, props._utils.forceUpdate)
           }
         }
-      }, [keys.join(',')])
+      }, [mediaKeys.join(',')])
 
       return null
     },

@@ -30,9 +30,9 @@ A good example of this setup is [the source of this site itself](https://github.
 
 There is one special property of themes that's very helpful for what is essentially sub-themes, or tints.
 
-Basically, if you have a base `dark` theme and a `light` theme, you may want to have "tinted" versions of those themes. For example `light_pink` and `light_dark`. Instead of having hard-coded color values like `$pink3`, you create as many pink themes as you want: `light_pink_alt1`, `light_pink_alt2`, etc.
+Basically, if you have a base `dark` theme and a `light` theme, you may want to have "tinted" versions of those themes. For example `light_pink` and `dark_pink`. Instead of having hard-coded color values like `$pink3`, you create as many pink themes as you want: `light_pink_alt1`, `light_pink_alt2`, etc.
 
-Each of those themes is then smaller: just having values that map to ViewStyle or TextStyle, like `$color` (and that can postfix pseudo states, like `$colorHover`).
+Each of those themes is recommended to be small: just having values that map to ViewStyle or TextStyle, like `$color` (and that can postfix pseudo states, like `$colorHover`).
 
 Then, you just give your component a `theme="pink"` prop, or wrap it in `<Theme name="pink" />`. Note you can leave out the `light_` or even `light_pink` prefix, Tamagaui will nest properly so long as the parent is set.
 

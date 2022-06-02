@@ -26,6 +26,7 @@ import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { useIsTouchDevice } from './hooks/useIsTouchDevice'
+import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import {
@@ -192,7 +193,7 @@ export function createComponent<
       onPressOut,
       onHoverIn,
       onHoverOut,
-      space,
+      space: spaceProp,
       disabled: disabledProp,
       onMouseDown,
       onMouseEnter,
@@ -857,6 +858,17 @@ export function createComponent<
         }
       : null
 
+    let space = spaceProp
+    // find space by media query
+    if (features.enabled.mediaQuery) {
+      for (const key in mediaState) {
+        if (!mediaState[key]) continue
+        if (props[key] && props[key].space !== undefined) {
+          space = props[key].space
+        }
+      }
+    }
+
     let childEls =
       !children || asChild
         ? children
@@ -882,15 +894,6 @@ export function createComponent<
         onPressOut,
       }
     }
-
-    // if (asChild) {
-    //   elementType = Slot
-    //   const onlyChild = React.Children.only(children)
-    //   const { children: onlyChildren, ...restProps } = onlyChild.props
-    //   viewProps = { ...props, ...restProps }
-    //   // childEls = onlyChildren
-    //   delete viewProps['asChild']
-    // }
 
     // EVENTS: web
     if (isWeb) {
@@ -965,10 +968,10 @@ export function createComponent<
       }
     }
 
-    if (features.length) {
+    if (features.elements.length) {
       return (
         <>
-          {features}
+          {features.elements}
           {content}
         </>
       )

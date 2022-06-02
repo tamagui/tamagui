@@ -4,7 +4,7 @@ import '@tamagui/polyfill-dev'
 import { KitchenSink } from '@tamagui/kitchen-sink'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, SizableText, YStack, styled } from 'tamagui'
+import { Button, SizableText, Square, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -36,9 +36,19 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack space ai="center">
+        <YStack
+          space
+          ai="center"
+          debug="verbose"
+          $gtSm={{
+            space: '$10',
+          }}
+        >
           {/* <DialogDemo /> */}
-          <KitchenSink />
+          {/* <KitchenSink /> */}
+          <Square bc="red" size={100} />
+          <Square bc="red" size={100} />
+          <Square bc="red" size={100} />
         </YStack>
       </div>
     </Tamagui.Provider>
