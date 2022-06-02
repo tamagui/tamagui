@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.0.1-beta.44",
+  "version": "1.0.1-beta.45",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -16,14 +16,14 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.44"
+    "@tamagui/core": "^1.0.1-beta.45"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.44",
+    "@tamagui/build": "^1.0.1-beta.45",
     "react": "*",
     "react-dom": "*"
   },
