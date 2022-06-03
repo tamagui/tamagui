@@ -2,9 +2,10 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { ChevronDown } from '@tamagui/feather-icons'
+import { TooltipDemo } from '@tamagui/kitchen-sink'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Avatar, Button, H1, Select, Square, YStack } from 'tamagui'
+import { Button, Select, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -37,58 +38,57 @@ export const Sandbox = () => {
         }}
       >
         <YStack space ai="center">
-          <Button>Hello world</Button>
+          <TooltipDemo />
 
-          <Square size="$8" />
-
-          <Avatar circular size="$10">
-            <Avatar.Image src="http://placekitten.com/150/150" width={150} height={150} />
-            <Avatar.Fallback bc="red" />
-          </Avatar>
-
-          <Select defaultValue="blueberry">
-            <Select.Trigger w={200} iconAfter={ChevronDown}>
-              <Select.Value placeholder="Something" />
-            </Select.Trigger>
-
-            <Select.Content>
-              <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
-
-              <Select.Viewport minWidth={200}>
-                <Select.Group>
-                  <Select.Label>Fruits</Select.Label>
-                  <Select.Item value="apple" index={0}>
-                    <Select.ItemText>Apple</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="banana" index={1}>
-                    <Select.ItemText>Banana</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="blueberry" index={2}>
-                    <Select.ItemText>Blueberry</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="berry" index={3}>
-                    <Select.ItemText>Berry</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="strawberry" index={4}>
-                    <Select.ItemText>Strawberry</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="kiwi" index={5}>
-                    <Select.ItemText>Kiwi</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="grap" index={6}>
-                    <Select.ItemText>Grap</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item value="orange" index={7}>
-                    <Select.ItemText>Orange</Select.ItemText>
-                  </Select.Item>
-                </Select.Group>
-              </Select.Viewport>
-
-              <Select.ScrollDownButton>👇</Select.ScrollDownButton>
-            </Select.Content>
-          </Select>
+          {/* <SelectDemo /> */}
         </YStack>
       </div>
     </Tamagui.Provider>
+  )
+}
+
+function SelectDemo() {
+  return (
+    <Select defaultValue="blueberry">
+      <Select.Trigger w={200} iconAfter={ChevronDown}>
+        <Select.Value placeholder="Something" />
+      </Select.Trigger>
+
+      <Select.Content>
+        <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
+
+        <Select.Viewport minWidth={200}>
+          <Select.Group>
+            <Select.Label>Fruits</Select.Label>
+            <Select.Item value="apple" index={0}>
+              <Select.ItemText>Apple</Select.ItemText>
+            </Select.Item>
+            <Select.Item value="banana" index={1}>
+              <Select.ItemText>Banana</Select.ItemText>
+            </Select.Item>
+            <Select.Item value="blueberry" index={2}>
+              <Select.ItemText>Blueberry</Select.ItemText>
+            </Select.Item>
+            <Select.Item value="berry" index={3}>
+              <Select.ItemText>Berry</Select.ItemText>
+            </Select.Item>
+            <Select.Item value="strawberry" index={4}>
+              <Select.ItemText>Strawberry</Select.ItemText>
+            </Select.Item>
+            <Select.Item value="kiwi" index={5}>
+              <Select.ItemText>Kiwi</Select.ItemText>
+            </Select.Item>
+            <Select.Item value="grap" index={6}>
+              <Select.ItemText>Grap</Select.ItemText>
+            </Select.Item>
+            <Select.Item value="orange" index={7}>
+              <Select.ItemText>Orange</Select.ItemText>
+            </Select.Item>
+          </Select.Group>
+        </Select.Viewport>
+
+        <Select.ScrollDownButton>👇</Select.ScrollDownButton>
+      </Select.Content>
+    </Select>
   )
 }
