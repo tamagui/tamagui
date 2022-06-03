@@ -279,8 +279,8 @@ export const PopperArrow = PopperArrowFrame.extractable(
       <PopperArrowFrame
         {...arrowProps}
         ref={refs}
-        rotate="45deg"
         {...arrowStyle}
+        rotate="45deg"
         {...(primaryPlacement === 'top' && {
           borderBottomWidth: borderWidth,
           borderRightWidth: borderWidth,
