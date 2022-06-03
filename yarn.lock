@@ -3496,6 +3496,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/avatar@^1.0.1-beta.46, @tamagui/avatar@workspace:packages/avatar":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/avatar@workspace:packages/avatar"
+  dependencies:
+    "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@tamagui/build": ^1.0.1-beta.46
+    "@tamagui/core": ^1.0.1-beta.46
+    "@tamagui/image": ^1.0.1-beta.46
+    "@tamagui/shapes": ^1.0.1-beta.46
+    "@tamagui/text": ^1.0.1-beta.46
+    "@types/react-dom": ^18.0.3
+    "@types/react-native": ^0.67.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/babel-plugin@workspace:packages/babel-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/babel-plugin@workspace:packages/babel-plugin"
@@ -3825,6 +3847,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/image@^1.0.1-beta.46, @tamagui/image@workspace:packages/image":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/image@workspace:packages/image"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.46
+    "@tamagui/core": ^1.0.1-beta.46
+    react: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/kitchen-sink@^1.0.1-beta.46, @tamagui/kitchen-sink@workspace:packages/kitchen-sink":
   version: 0.0.0-use.local
   resolution: "@tamagui/kitchen-sink@workspace:packages/kitchen-sink"
@@ -4108,6 +4144,19 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/shapes@^1.0.1-beta.46, @tamagui/shapes@workspace:packages/shapes":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/shapes@workspace:packages/shapes"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.46
+    "@tamagui/core": ^1.0.1-beta.46
+    "@tamagui/stacks": ^1.0.1-beta.46
+    react: "*"
+  peerDependencies:
+    react: "*"
   languageName: unknown
   linkType: soft
 
@@ -18019,6 +18068,7 @@ __metadata:
     "@react-native-aria/overlays": ^0.3.2
     "@react-native-community/blur": ^3.6.0
     "@tamagui/animate-presence": ^1.0.1-beta.46
+    "@tamagui/avatar": ^1.0.1-beta.46
     "@tamagui/build": ^1.0.1-beta.46
     "@tamagui/button": ^1.0.1-beta.46
     "@tamagui/card": ^1.0.1-beta.46
@@ -18030,12 +18080,14 @@ __metadata:
     "@tamagui/fake-react-native": ^1.0.1-beta.46
     "@tamagui/font-size": ^1.0.1-beta.46
     "@tamagui/helpers": ^1.0.1-beta.46
+    "@tamagui/image": ^1.0.1-beta.46
     "@tamagui/list-item": ^1.0.1-beta.46
     "@tamagui/popover": ^1.0.1-beta.46
     "@tamagui/popper": ^1.0.1-beta.46
     "@tamagui/progress": ^1.0.1-beta.46
     "@tamagui/select": ^1.0.1-beta.46
     "@tamagui/separator": ^1.0.1-beta.46
+    "@tamagui/shapes": ^1.0.1-beta.46
     "@tamagui/slider": ^1.0.1-beta.46
     "@tamagui/stacks": ^1.0.1-beta.46
     "@tamagui/text": ^1.0.1-beta.46

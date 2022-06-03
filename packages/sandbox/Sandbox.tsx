@@ -4,7 +4,7 @@ import '@tamagui/polyfill-dev'
 import { ChevronDown } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, H1, Select, Slider, YStack } from 'tamagui'
+import { Avatar, Button, H1, Select, Square, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -38,6 +38,13 @@ export const Sandbox = () => {
       >
         <YStack space ai="center">
           <Button>Hello world</Button>
+
+          <Square size="$8" />
+
+          <Avatar circular size="$10">
+            <Avatar.Image src="http://placekitten.com/150/150" width={150} height={150} />
+            <Avatar.Fallback bc="red" />
+          </Avatar>
 
           <Select defaultValue="blueberry">
             <Select.Trigger w={200} iconAfter={ChevronDown}>

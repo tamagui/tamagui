@@ -1135,6 +1135,7 @@ export const Spacer = createComponent<SpacerProps>({
       true: {
         flex: 1,
       },
+      ':number': (flex) => ({ flex }),
     },
 
     direction: {

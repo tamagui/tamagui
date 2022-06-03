@@ -14,13 +14,13 @@ import {
   themeable,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
+import { getShapeSize } from '@tamagui/shapes'
 import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
 
 import { useLabelContext } from './Label'
-import { getSquareSize } from './Square'
 
 const SWITCH_NAME = 'Switch'
 
@@ -43,10 +43,10 @@ const HEIGHT_SIZE = 1
 
 const getSwitchHeight: SizeVariantSpreadFunction<any> = (val, extras) =>
   // @ts-ignore works but need to improve types
-  getSquareSize(getSize(val, HEIGHT_SIZE), extras)
+  getShapeSize(getSize(val, HEIGHT_SIZE), extras)
 const getSwitchWidth: SizeVariantSpreadFunction<any> = (val, extras) =>
   // @ts-ignore works but need to improve types
-  getSquareSize(getSize(val, WIDTH_SIZE), extras)
+  getShapeSize(getSize(val, WIDTH_SIZE), extras)
 
 const SwitchFrame = styled(XStack, {
   name: 'Switch',

@@ -3,6 +3,8 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import * as React from 'react'
 
+import { isWeb } from '../constants/platform'
+
 /* -------------------------------------------------------------------------------------------------
  * Slot
  * -----------------------------------------------------------------------------------------------*/
@@ -58,15 +60,17 @@ export const Slottable = ({ children }: { children: React.ReactNode }) => {
 
 type AnyProps = Record<string, any>
 
-function isSlottable(child: React.ReactNode): child is React.ReactElement {
-  return React.isValidElement(child)
-}
+// function isSlottable(child: React.ReactNode): child is React.ReactElement {
+//   return React.isValidElement(child)
+// }
 
-const pressMap = {
-  onPress: 'onClick',
-  onPressOut: 'onMouseOut',
-  onPressIn: 'onMouseIn',
-}
+const pressMap = isWeb
+  ? {
+      onPress: 'onClick',
+      onPressOut: 'onMouseUp',
+      onPressIn: 'onMouseDown',
+    }
+  : {}
 
 function mergeProps(child: any, slotProps: AnyProps) {
   const childProps = child.props

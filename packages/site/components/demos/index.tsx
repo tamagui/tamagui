@@ -14,6 +14,7 @@ export { default as AnimationsDemo } from './AnimationsDemo'
 export { default as LabelDemo } from './LabelDemo'
 export { default as GroupDemo } from './GroupDemo'
 export { default as CardDemo } from './CardDemo'
+export { default as AvatarDemo } from './AvatarDemo'
 export { default as ProgressDemo } from './ProgressDemo'
 export { default as ListItemDemo } from './ListItemDemo'
 

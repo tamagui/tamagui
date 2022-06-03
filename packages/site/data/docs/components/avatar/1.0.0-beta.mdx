@@ -1,0 +1,64 @@
+---
+title: Avatar
+description: Display aspect-fixed images with a fallback while loading
+name: text
+component: Avatar
+---
+
+# Avatar
+
+<Description>Display aspect-fixed images with a fallback while loading</Description>
+
+<HeroContainer>
+  <AvatarDemo />
+</HeroContainer>
+
+```jsx hero template=Avatar
+
+```
+
+<Highlights
+  features={[
+    'Accepts size prop that stays in sync with other components.',
+    'Completely control styles on every element.',
+    'Automatically swaps fallback for image on load.',
+  ]}
+/>
+
+### Usage
+
+```jsx
+import { Avatar } from 'tamagui'
+
+export default () => (
+  <Avatar circular size="$6">
+    <Avatar.Image src="http://placekitten.com/200/300" />
+    <Avatar.Fallback bc="red" />
+  </Avatar>
+)
+```
+
+### API
+
+#### &lt;Avatar /&gt;
+
+Avatar extends [Square](/docs/components/shapes#shape-props), giving it all the [Tamagui standard props](/docs/intro/props) as well as `size` and `circular`.
+
+#### &lt;Avatar.Fallback /&gt;
+
+Avatar.Fallback extends [YStack](/docs/components/stacks), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'delayMs',
+      required: false,
+      type: 'number',
+      description: `Milliseconds to wait before showing the fallback, to prevent flicker.`,
+    },
+  ]}
+/>
+
+#### &lt;Avatar.Image /&gt;
+
+Avatar.Fallback extends [Image](/docs/components/image).

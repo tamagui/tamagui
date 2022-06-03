@@ -5,6 +5,7 @@
   - also aligns with stylex
 
 - 1.0
+  - styled(Button)
   - Switch on native
   - https://github.com/tamagui/tamagui/issues/53
   - VisuallyHidden/display: none working with space

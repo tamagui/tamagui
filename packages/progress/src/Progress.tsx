@@ -204,16 +204,5 @@ Progress.propTypes = {
   },
 }
 
-const Root = Progress
-const Indicator = ProgressIndicator
-
-export {
-  createProgressScope,
-  //
-  Progress,
-  ProgressIndicator,
-  //
-  Root,
-  Indicator,
-}
+export { createProgressScope, Progress, ProgressIndicator }
 export type { ProgressProps, ProgressIndicatorProps }

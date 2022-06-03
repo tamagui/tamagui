@@ -51,14 +51,3 @@ export const ThemeableStack = styled(YStack, {
 })
 
 export type ThemeableStackProps = GetProps<typeof ThemeableStack>
-
-const Test = styled(ThemeableStack, {
-  variants: {
-    something: {
-      true: {},
-    },
-  },
-})
-
-type T = GetProps<typeof Test>
-type x = T['chromeless']
