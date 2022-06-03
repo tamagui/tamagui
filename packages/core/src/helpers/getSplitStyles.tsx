@@ -335,13 +335,12 @@ export const getSplitStyles: StyleSplitter = (
         if (val && val[0] === '_') {
           classNames[key] = val
         } else {
-          if (
-            key in stylePropsTransform &&
-            (!isWeb ||
-              state.noClassNames ||
-              state.resolveVariablesAs === 'value' ||
-              state.resolveVariablesAs === 'both')
-          ) {
+          // const avoidMergeTransform =
+          //   !isWeb ||
+          //   state.noClassNames ||
+          //   state.resolveVariablesAs === 'value' ||
+          //   state.resolveVariablesAs === 'both'
+          if (key in stylePropsTransform) {
             mergeTransform(style, key, val, true)
           } else {
             style[key] = val
