@@ -10,6 +10,7 @@ import {
   SizeVariantSpreadFunction,
   getSize,
   getVariableValue,
+  isWeb,
   styled,
   themeable,
 } from '@tamagui/core'
@@ -143,7 +144,7 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
           onPress={(event) => {
             props.onPress?.(event)
             setChecked((prevChecked) => !prevChecked)
-            if (isFormControl) {
+            if (isWeb && isFormControl) {
               hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
               // if switch is in a form, stop propagation from the button so that we only propagate
               // one click event (from the input). We propagate changes from an input so that native
@@ -152,7 +153,7 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
             }
           }}
         />
-        {isFormControl && (
+        {isWeb && isFormControl && (
           <BubbleInput
             control={button}
             bubbles={!hasConsumerStoppedPropagationRef.current}
