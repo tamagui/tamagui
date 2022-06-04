@@ -5,7 +5,7 @@ import { ChevronDown } from '@tamagui/feather-icons'
 import { SeparatorDemo, TooltipDemo } from '@tamagui/kitchen-sink'
 import React, { memo, useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Select, Separator, SizableText, Square, YStack, styled } from 'tamagui'
+import { Button, Select, Separator, SizableText, Skeleton, Square, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -42,17 +42,14 @@ export const Sandbox = () => {
           {/* <SquareDemo /> */}
           {/* <SelectDemo /> */}
           {/* <SeparatorDemo /> */}
-          <StyledButton>hello world</StyledButton>
+          <Skeleton>
+            <Button>hello world</Button>
+          </Skeleton>
         </YStack>
       </div>
     </Tamagui.Provider>
   )
 }
-
-const StyledButton = styled(Button, {
-  debug: true,
-  backgroundColor: 'red',
-})
 
 function SelectDemo() {
   return (

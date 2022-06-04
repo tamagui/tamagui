@@ -17,7 +17,7 @@ export const VisuallyHidden = styled(Stack, {
         width: 'auto',
         height: 'auto',
       },
-    },
+    } as const,
 
     visible: {
       true: {
@@ -30,7 +30,7 @@ export const VisuallyHidden = styled(Stack, {
         opacity: 1,
         pointerEvents: 'auto',
       },
-    },
+    } as const,
   },
 })
 

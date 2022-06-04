@@ -41,6 +41,7 @@ export * from './views/Layouts';
 export * from './views/LinearGradient';
 export * from './views/Modal';
 export * from './views/Overlay';
+export * from './views/Skeleton';
 export * from './views/Spinner';
 export * from './views/Switch';
 export * from './views/Table';

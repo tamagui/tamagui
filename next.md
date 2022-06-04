@@ -197,3 +197,20 @@ const ornaments = {
 - vscode plugin to highlight the current node your cursors inside of in dom
 - blur prop built in ?
 
+
+
+### Skeleton
+
+- I think we ultimately need a new prop for all tamagui components skeleton, if true it will render the component as-is, but add an overlay view (SkeletonOverlay) that covers it with some default style, plus should set various things like pointerevents and aria-disabled
+
+- skeleton prop can also accept any react element, so you can do <Button skeleton={<MyCustomSkeleton />} and maybe that even receives some special prop that gives info on the Button to skeleton
+
+- we can add a defaultSkeleton to createTamagui so you can control that out of the box (defaults to SkeletonOverlay)
+
+- been wanting to add this to tamagui since forever but its a good use case here: we can add a  new option defaultProps to createTamagui, so you can do defaultProps: { Button: { skeleton: <SomeSpecialOneJustForButton /> } } which may be useful for if certain components have different needs
+
+- may eventually want something like skeletonStyle which only applies to the parent component when skeleton is on, this probably is necessary so you can do things like overflow: hidden; position: relative when skeletons are on, so they fit inside nicely and shadows dont overlap
+
+- a nice wrapper component <Skeleton>{...components}</Skeleton> and it will force all children that support it to have a skeleton, but runs into trouble with fully flattened components... we'd have to limit them to only accept skeletonStyle and not a sub-component i believe, this is my biggest ? right now... maybe nice to limit skeleton to only be style props, because otherwise can get heavy.. 
+
+- when you have Suspense this is a bit weird, but you can do something like <Suspense fallback={<Skeleton><MyLoadingView load={false} /></Skeleton>}><MyLoadingView /></Skeleton>
