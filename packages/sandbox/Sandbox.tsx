@@ -5,7 +5,7 @@ import { ChevronDown } from '@tamagui/feather-icons'
 import { TooltipDemo } from '@tamagui/kitchen-sink'
 import React, { memo, useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Select, Square, YStack } from 'tamagui'
+import { Button, Select, SizableText, Square, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -39,18 +39,35 @@ export const Sandbox = () => {
       >
         <YStack space ai="center">
           {/* <TooltipDemo /> */}
-          <SquareDemo />
+          {/* <SquareDemo /> */}
           {/* <SelectDemo /> */}
+          <StyledText underline>hello world</StyledText>
         </YStack>
       </div>
     </Tamagui.Provider>
   )
 }
 
+const StyledText = styled(SizableText, {
+  variants: {
+    underline: {
+      true: {
+        textDecorationLine: 'underline',
+      },
+      false: {
+        textDecorationLine: 'none',
+      },
+    } as const,
+  },
+  defaultVariants: {
+    underline: false,
+  },
+})
+
 const SquareDemo = memo(() => {
   return (
     <Square
-      // elevation="$2"
+      elevation="$2"
       w={100}
       h={100}
       // bc="$color"

@@ -150,7 +150,7 @@ export function expandStyle(key: string, value: any) {
       }
 
       case 'aspectRatio': {
-        return [key, value.toString()]
+        return [[key, value.toString()]]
       }
 
       // TODO: remove once this issue is fixed
@@ -170,7 +170,7 @@ export function expandStyle(key: string, value: any) {
       }
 
       case 'textDecorationLine': {
-        return ['textDecorationLine', value]
+        return [['textDecorationLine', value]]
       }
 
       case 'transform': {
