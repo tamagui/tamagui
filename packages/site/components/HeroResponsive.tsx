@@ -1,10 +1,14 @@
-import { ChevronLeft, ChevronRight, Lock, Monitor } from '@tamagui/feather-icons'
+import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/feather-icons'
 import throttle from 'lodash.throttle'
-import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
   Button,
   Circle,
+  H3,
+  H4,
+  H5,
   Image,
+  LinearGradient,
   Paragraph,
   Spacer,
   Theme,
@@ -43,6 +47,7 @@ export const HeroResponsive = memo(() => {
   const safariRef = useRef<HTMLElement | null>(null)
   const getState = useGet({ move, isDragging, bounding })
   const [sizeI, setSizeI] = useState(0)
+  const [hasInteracted, setHasInteracted] = useState(false)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
     setBounding(rect)
@@ -77,6 +82,7 @@ export const HeroResponsive = memo(() => {
       return
     }
     if (!state.bounding) return
+    setHasInteracted(true)
     const right = state.bounding.width + state.bounding.x
     const x = e.pageX - right
     const maxMove = breakpoints[breakpoints.length - 1].at - initialWidth + 120
@@ -183,9 +189,7 @@ export const HeroResponsive = memo(() => {
               }
             }}
           >
-            <Theme name="pink_alt2">
-              <Safari shouldLoad={hasIntersected} isSmall={isSmall} />
-            </Theme>
+            <Safari shouldLoad={hasInteracted} isSmall={isSmall} />
           </YStack>
 
           <Container zi={1} pos="absolute">
@@ -311,7 +315,6 @@ export const Safari = memo(
         className="unselectable"
         contain="paint"
         elevation="$6"
-        bc="$background"
         f={1}
         ov="hidden"
         br="$4"
@@ -319,7 +322,7 @@ export const Safari = memo(
         borderWidth={1}
         w="100%"
       >
-        <YStack px="$4" jc="center" borderBottomWidth={0} h={50} bc="$background">
+        <YStack bc="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
           <XStack pos="relative" ai="center" space="$4">
             <XStack space="$2">
               <Circle bc="$red10" size={10} />
@@ -358,7 +361,7 @@ export const Safari = memo(
           </XStack>
         </YStack>
 
-        <XStack mx={-2}>
+        <XStack bc="$background" mx={-2}>
           <Tab bc="var(--green7)" btlr={0}>
             Github
           </Tab>
@@ -370,20 +373,84 @@ export const Safari = memo(
           </Tab>
         </XStack>
 
-        <YStack bc="$background" h={browserHeight}>
-          <YStack h="100%" pe="none" bc="$background">
-            {!!shouldLoad && (
-              <iframe
-                title="Responsive demo"
-                style={{ display: isLoaded ? 'flex' : 'none', contain: 'paint' }}
-                onLoad={() => {
-                  setIsLoaded(true)
-                }}
-                width="100%"
-                height={browserHeight}
-                src="/responsive-demo"
-              />
+        <YStack pos="relative" bc="$backgroundStrong" h={browserHeight}>
+          <YStack h="100%" pe="none">
+            {shouldLoad && (
+              <YStack
+                fullscreen
+                contain="paint"
+                opacity={isLoaded ? 1 : 0}
+                backgroundColor="$background"
+                zIndex={10}
+              >
+                <iframe
+                  title="Responsive demo"
+                  style={{
+                    backgroundColor: 'transparent',
+                  }}
+                  onLoad={() => {
+                    setTimeout(() => {
+                      setIsLoaded(true)
+                    }, 100)
+                  }}
+                  width="100%"
+                  height={browserHeight}
+                  src="/responsive-demo"
+                />
+              </YStack>
             )}
+
+            <YStack zi={0} fullscreen p="$4">
+              <XStack ai="center" jc="center" pos="relative" br="$6" ov="hidden">
+                <YStack width={800} height={200}>
+                  <LinearGradient o={0.1} fullscreen colors={['$yellow10', '$green10']} />
+                </YStack>
+                <YStack p="$4" pos="absolute" fullscreen f={1}>
+                  <YStack f={1} />
+                  <XStack>
+                    <YStack f={1}>
+                      <Spacer $gtSmall={{ display: 'none' }} flex />
+                      <H3>Enchanting Garden</H3>
+                      <XStack ai="center" space>
+                        <MapPin size={12} color="var(--color)" />
+                        <H5>Kailua, HI</H5>
+                      </XStack>
+                    </YStack>
+                    <YStack ai="flex-end">
+                      <Spacer flex $gtSmall={{ display: 'none' }} />
+                      <H4>$45</H4>
+                      <Paragraph>/night</Paragraph>
+                    </YStack>
+                  </XStack>
+                </YStack>
+              </XStack>
+
+              <Spacer />
+
+              <YStack px="$4">
+                <XStack>
+                  <XStack ai="center" space>
+                    <Paragraph theme="alt2">4 guests</Paragraph>
+                    <Paragraph theme="alt2">&middot;</Paragraph>
+                    <Paragraph theme="alt2">Entire house</Paragraph>
+                  </XStack>
+                  <Spacer flex={1} />
+                  <XStack ai="center" space>
+                    <Star size={20} color="var(--purple10)" />
+                    <Paragraph theme="purple_alt2">4.55</Paragraph>
+                  </XStack>
+                </XStack>
+
+                <Spacer />
+
+                <Paragraph theme="alt1" size="$4">
+                  A lovely, private and very clean cottage with all amenities for a comfortable and
+                  peaceful stay. We are a 20 minute walk from the Hawaii Tropical Botanical Garden
+                  and well situated for touring to Akaka Falls, Volcano National Park, and many
+                  other destinations.
+                </Paragraph>
+              </YStack>
+            </YStack>
           </YStack>
         </YStack>
       </YStack>

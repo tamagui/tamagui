@@ -135,7 +135,6 @@ const resolveVariants: StyleResolver = (
     } else {
       // variant at key exists, but no matching variant value, return nothing
       if (process.env.NODE_ENV === 'development') {
-        console.log('staticConfig.validStyles', key, staticConfig.validStyles)
         if (staticConfig.validStyles?.[key]) {
           return null
         }
