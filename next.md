@@ -214,3 +214,20 @@ const ornaments = {
 - a nice wrapper component <Skeleton>{...components}</Skeleton> and it will force all children that support it to have a skeleton, but runs into trouble with fully flattened components... we'd have to limit them to only accept skeletonStyle and not a sub-component i believe, this is my biggest ? right now... maybe nice to limit skeleton to only be style props, because otherwise can get heavy.. 
 
 - when you have Suspense this is a bit weird, but you can do something like <Suspense fallback={<Skeleton><MyLoadingView load={false} /></Skeleton>}><MyLoadingView /></Skeleton>
+
+
+### Ornaments
+
+- <Button ornaments={[MyStyledOverlay]} />
+
+- they must be a plain styled() view, can't be a functional component that ensures we can extract them fully
+
+- this means they can be compiled away fully and limits weirdness, we're not trying to make some new react API inside react, just add a way to decorate things with themes
+
+- one great example of their use case is Skeleton, but another is more complex themes (see the attached screenshot). right now you can't really replicate that without making a very complex component with lots of sub-components, and it sort of breaks everything you like about styled() and compilation etc etc. And ideally you'd want to be able to make a component like that  entirely through themes.... 
+
+- make themes support ornaments... since we already have component-specificity with themes, you'd get some crazy ability: dark_Button could add a few ornaments and make that entire 8bit looking button (and it would swap out entirely on changing theme). if we get pseudos working as well, then dark_Button could have ornamentsFocus and ornamentsHover and we'd get that cool effect in the screenshot where you have little edges on each corner
+
+- i think for v1 too no media queries or pseudo states though, but we could add those eventually it just requires more logic/compilation
+
+- i think this solves somewhat the skeleton stuff in a few ways in that Skeleton can be a special ornament thats applied, and also it would be two parts: Skeleton.Frame and Skeleton.Shine. if animations work (this part is tricky as at least for web we'd only be able to support CSS)
