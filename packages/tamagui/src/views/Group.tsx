@@ -30,6 +30,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
   disabled?: boolean
   vertical?: boolean
   disablePassBorderRadius?: boolean
+  disablePassSize?: boolean
 }
 
 export const Group = forwardRef(
@@ -44,6 +45,7 @@ export const Group = forwardRef(
       vertical,
       disabled: disabledProp,
       disablePassBorderRadius,
+      disablePassSize,
       ...props
     }: GroupProps,
     ref
@@ -72,7 +74,9 @@ export const Group = forwardRef(
               borderBottomRightRadius: 0,
             }),
           disabled,
-          size,
+          ...(!disablePassSize && {
+            size,
+          }),
         })
       }
       if (i === childrens.length - 1) {
@@ -92,10 +96,20 @@ export const Group = forwardRef(
               borderTopRightRadius: 0,
             }),
           disabled,
-          size,
+          ...(!disablePassSize && {
+            size,
+          }),
         })
       }
-      return cloneElement(child, { disabled, size, borderRadius: 0 })
+      return cloneElement(child, {
+        disabled,
+        ...(!disablePassSize && {
+          size,
+        }),
+        ...(!disablePassBorderRadius && {
+          borderRadius: 0,
+        }),
+      })
     })
 
     const wrapScroll = (children: any) => {
