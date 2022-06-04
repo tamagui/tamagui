@@ -11,6 +11,7 @@ import {
   GenericTamaguiConfig,
   MediaQueryKey,
   TamaguiInternalConfig,
+  ThemeObject,
 } from './types'
 
 export type CreateTamaguiProps =
@@ -121,11 +122,33 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const hasDarkLight = 'light' in config.themes && 'dark' in config.themes
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
 
-    // themes
+    // dedupe themes to avoid duplciate CSS generation
+    const existing = new WeakMap()
+    const dedupedThemes: {
+      [key: string]: {
+        names: string[]
+        theme: ThemeObject
+      }
+    } = {}
+
+    // first, de-dupe
     for (const themeName in config.themes) {
-      // to allow using the same theme with diff names, be sure we don't mutate!
-      const theme = { ...config.themes[themeName] }
-      config.themes[themeName] = theme
+      const theme = config.themes[themeName]
+      if (existing.has(theme)) {
+        const e = existing.get(theme)
+        e.names.push(themeName)
+        continue
+      }
+      dedupedThemes[themeName] = {
+        names: [themeName],
+        theme: { ...config.themes[themeName] },
+      }
+      existing.set(theme, dedupedThemes[themeName])
+    }
+
+    // then, generate from de-duped
+    for (const themeName in dedupedThemes) {
+      const { theme, names } = dedupedThemes[themeName]
       let vars = ''
 
       for (const themeKey in theme) {
@@ -142,28 +165,31 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       if (isWeb) {
         const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
         const isDark = themeName.startsWith('dark')
-        const selector = `${CNP}${themeName}`
-        const selectors = [selector]
+        const selectors = names.map((name) => {
+          return `${CNP}${name}`
+        })
 
         // since we dont specify dark/light in classnames we have to do an awkward specificity war
         // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
         if (hasDarkLight) {
-          const childSelector = `${CNP}${themeName.replace('dark_', '').replace('light_', '')}`
-          const order = isDark ? ['dark', 'light'] : ['light', 'dark']
-          if (isDarkOrLightBase) {
-            order.reverse()
-          }
-          const [stronger, weaker] = order
-          const max = config.maxDarkLightNesting ?? 3
-          new Array(max * 2).fill(undefined).forEach((_, pi) => {
-            if (pi % 2 === 1) return
-            const parents = new Array(pi + 1).fill(undefined).map((_, psi) => {
-              return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
+          for (const subName of names) {
+            const childSelector = `${CNP}${subName.replace('dark_', '').replace('light_', '')}`
+            const order = isDark ? ['dark', 'light'] : ['light', 'dark']
+            if (isDarkOrLightBase) {
+              order.reverse()
+            }
+            const [stronger, weaker] = order
+            const max = config.maxDarkLightNesting ?? 3
+            new Array(max * 2).fill(undefined).forEach((_, pi) => {
+              if (pi % 2 === 1) return
+              const parents = new Array(pi + 1).fill(undefined).map((_, psi) => {
+                return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
+              })
+              selectors.push(
+                `${(parents.length > 1 ? parents.slice(1) : parents).join(' ')} ${childSelector}`
+              )
             })
-            selectors.push(
-              `${(parents.length > 1 ? parents.slice(1) : parents).join(' ')} ${childSelector}`
-            )
-          })
+          }
         }
 
         const rootSep = config.themeClassNameOnRoot ? '' : ' '

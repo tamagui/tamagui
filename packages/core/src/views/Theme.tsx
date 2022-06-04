@@ -15,19 +15,21 @@ export const Theme = memo(function Theme(props: ThemeProps) {
     props
   )
 
-  if (!themes || !name || !theme) {
+  const missingTheme = !themes || !name || !theme
+
+  // memo here, changing theme without re-rendering all children is a critical optimization
+  // may require some effort of end user to memoize but without this memo they'd have no option
+  const contents = useMemo(
+    () => (missingTheme ? null : wrapThemeManagerContext(props.children, themeManager)),
+    [props.children, themeManager]
+  )
+
+  if (missingTheme) {
     if (name && !theme && process.env.NODE_ENV === 'development') {
       console.warn(`No theme found by name ${name}`)
     }
     return props.children
   }
-
-  // memo here, changing theme without re-rendering all children is a critical optimization
-  // may require some effort of end user to memoize but without this memo they'd have no option
-  const contents = useMemo(
-    () => wrapThemeManagerContext(props.children, themeManager),
-    [props.children, themeManager]
-  )
 
   if (isWeb) {
     return (
