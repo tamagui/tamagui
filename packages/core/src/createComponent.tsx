@@ -1065,22 +1065,19 @@ export function createComponent<
     res = memo(res) as any
   }
 
-  res['staticConfig'] = {
+  res.staticConfig = {
     validStyles: staticConfig.validStyles || stylePropsView,
     ...staticConfig,
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    res['whyDidYouRender'] = true
-  }
-
   // res.extractable HoC
-  res['extractable'] = (Component: any, conf?: Partial<StaticConfig>) => {
-    Component['staticConfig'] = extendStaticConfig(
+  res.extractable = (Component: any, conf?: Partial<StaticConfig>) => {
+    Component.staticConfig = extendStaticConfig(
       {
         Component,
         ...conf,
         neverFlatten: true,
+        isExtractable: true,
         defaultProps: {
           ...Component.defaultProps,
           ...conf?.defaultProps,

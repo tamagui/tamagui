@@ -331,6 +331,7 @@ export declare type StaticConfig = {
     reactNativeWebComponent?: any;
     memo?: boolean;
     isTamagui?: boolean;
+    isExtractable?: boolean;
 };
 export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;

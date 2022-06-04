@@ -13,7 +13,6 @@ import {
   VariantDefinitions,
   VariantSpreadFunction,
 } from './types'
-import { Stack } from './views/Stack'
 
 // TODO may be able to use this in the options?: arg below directly
 export type StyledOptions<ParentComponent extends StylableComponent> = GetProps<ParentComponent> & {
@@ -36,6 +35,19 @@ export function styled<
   },
   staticExtractionOptions?: Partial<StaticConfig>
 ) {
+  // for now wrapping a styled() around an extractable() HOC (like Button) isn't allowed
+  if (process.env.NODE_ENV === 'development') {
+    if (Component['staticConfig'] && Component['staticConfig'].isExtractable) {
+      console.warn(
+        `Warning: Wrapping styled() around an extractable HOC component isn't allowed yet. Support for this is on the roadmap, see: https://github.com/tamagui/tamagui/issues/88.`
+      )
+      // return (props) => {
+      //   // @ts-ignore
+      //   return <Component {...options} {...props} />
+      // }
+    }
+  }
+
   const staticConfigProps = (() => {
     if (options) {
       const { variants, name, defaultVariants, ...defaultProps } = options

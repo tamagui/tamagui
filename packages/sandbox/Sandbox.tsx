@@ -42,7 +42,7 @@ export const Sandbox = () => {
           {/* <SquareDemo /> */}
           {/* <SelectDemo /> */}
           {/* <SeparatorDemo /> */}
-          <StyledButton />
+          <StyledButton>hello world</StyledButton>
         </YStack>
       </div>
     </Tamagui.Provider>
@@ -50,6 +50,7 @@ export const Sandbox = () => {
 }
 
 const StyledButton = styled(Button, {
+  debug: true,
   backgroundColor: 'red',
 })
 

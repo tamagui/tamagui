@@ -640,6 +640,11 @@ export type StaticConfig = {
    * Auto-detect, but can ovverride, passes styles properly to react-native-web
    */
   isTamagui?: boolean
+
+  /**
+   * Used internally to handle extractable HoC separate
+   */
+  isExtractable?: boolean
 }
 
 /**
