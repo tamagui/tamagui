@@ -1,13 +1,10 @@
 import highlightLine from '@lib/rehype-highlight-line'
 import highlightWord from '@lib/rehype-highlight-word'
-import hastToHtml from 'hast-util-to-html'
+import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
 // Inspired by https://github.com/rexxars/react-refractor
 import React from 'react'
 import refractor from 'refractor/core'
-import bash from 'refractor/lang/bash'
-import css from 'refractor/lang/css'
-import diff from 'refractor/lang/diff'
 import js from 'refractor/lang/javascript'
 import jsx from 'refractor/lang/jsx'
 import { GetProps } from 'tamagui'
@@ -17,9 +14,6 @@ import { Pre } from './Pre'
 
 refractor.register(js)
 refractor.register(jsx)
-refractor.register(bash)
-refractor.register(css)
-refractor.register(diff)
 
 type PreProps = Omit<GetProps<typeof Pre>, 'css'>
 
@@ -40,10 +34,10 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlo
   let result = refractor.highlight(value, language)
   result = highlightLine(result, rangeParser(line))
   result = highlightWord(result)
-  result = hastToHtml(result)
+  result = toHtml(result)
   const classes = `language-${language} ${className}`
   if (mode === 'typewriter') {
-    return <CodeTypewriter className={classes} css={css} variant="" value={result} {...props} />
+    return <CodeTypewriter className={classes} variant="" value={result} {...props} />
   }
 
   return (

@@ -92,8 +92,6 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
   const { tint } = useTint()
   const childrenMemo = useMemo(() => children, [children])
 
-  console.log('gc', gradient ? `$${tint}1` : null)
-
   return (
     <YStack
       zi={2}

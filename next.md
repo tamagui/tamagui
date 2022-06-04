@@ -198,6 +198,9 @@ const ornaments = {
 - blur prop built in ?
 
 
+site optimize:
+  - burntsienna (loading from potentially 3 places)
+
 
 ### Skeleton
 
@@ -231,3 +234,4 @@ const ornaments = {
 - i think for v1 too no media queries or pseudo states though, but we could add those eventually it just requires more logic/compilation
 
 - i think this solves somewhat the skeleton stuff in a few ways in that Skeleton can be a special ornament thats applied, and also it would be two parts: Skeleton.Frame and Skeleton.Shine. if animations work (this part is tricky as at least for web we'd only be able to support CSS)
+

@@ -1,8 +1,8 @@
 // Inspired by https://github.com/j0lv3r4/mdx-prism
 
-const hastToHtml = require('hast-util-to-html')
-const unified = require('unified')
-const parse = require('rehype-parse')
+import { toHtml } from 'hast-util-to-html'
+import parse from 'rehype-parse'
+import { unified } from 'unified'
 
 const lineNumberify = function lineNumberify(ast, lineNum = 1) {
   let lineNumber = lineNum
@@ -92,7 +92,7 @@ const MULTILINE_TOKEN_SPAN = /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g
 
 const applyMultilineFix = function (ast) {
   // AST to HTML
-  let html = hastToHtml(ast)
+  let html = toHtml(ast)
 
   // Fix JSX issue
   html = html.replace(MULTILINE_TOKEN_SPAN, (match, token) =>

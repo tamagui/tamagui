@@ -17,7 +17,7 @@ export function HeroExampleCode() {
   return (
     <>
       <ContainerLarge position="relative">
-        <YStack zi={1} space="$4">
+        <YStack zi={1} space="$6">
           <YStack space="$2">
             <HomeH2>DX 🤝 UX</HomeH2>
             <HomeH3>
@@ -25,7 +25,7 @@ export function HeroExampleCode() {
             </HomeH3>
           </YStack>
 
-          <Group theme={tint} maxWidth="100%" als="center" scrollable>
+          <Group bordered theme={tint} maxWidth="100%" als="center" scrollable>
             {examples.map((example, i) => {
               return (
                 <Button
@@ -108,7 +108,7 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <Group zi={10} mb="$-4" als="center">
+        <Group bordered zi={10} mb="$-4" als="center">
           {examples.map((example, i) => (
             <Button
               accessibilityLabel="See example"
