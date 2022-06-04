@@ -118,7 +118,7 @@ export const colorTokens = createVariables({
   },
 })
 
-export const darkColors = darkPostfix({
+export const darkColors = {
   ...colorTokens.dark.blue,
   ...colorTokens.dark.gray,
   ...colorTokens.dark.grayA,
@@ -130,7 +130,7 @@ export const darkColors = darkPostfix({
   ...colorTokens.dark.violet,
   ...colorTokens.dark.yellow,
   ...colorTokens.dark.teal,
-})
+}
 
 export const lightColors = {
   ...colorTokens.light.blue,
@@ -148,7 +148,7 @@ export const lightColors = {
 
 const allColors = {
   ...lightColors,
-  ...darkColors,
+  ...darkPostfix(darkColors),
 }
 
 function darkPostfix<A extends { [key: string]: Variable<string> }>(

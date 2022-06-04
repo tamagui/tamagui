@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import { ChevronDown } from '@tamagui/feather-icons'
 import { TooltipDemo } from '@tamagui/kitchen-sink'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { Button, Select, Square, YStack } from 'tamagui'
 
@@ -39,13 +39,25 @@ export const Sandbox = () => {
       >
         <YStack space ai="center">
           {/* <TooltipDemo /> */}
-          <Square debug="verbose" w={100} h={100} bc="$color" />
+          <SquareDemo />
           {/* <SelectDemo /> */}
         </YStack>
       </div>
     </Tamagui.Provider>
   )
 }
+
+const SquareDemo = memo(() => {
+  return (
+    <Square
+      // elevation="$2"
+      w={100}
+      h={100}
+      // bc="$color"
+      bc="$blue10"
+    />
+  )
+})
 
 function SelectDemo() {
   return (

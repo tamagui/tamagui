@@ -151,8 +151,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
       themes[themeName] = theme
 
-      if (themeName === 'light') console.log('made', themeName, theme)
-
       // set deduped
       dedupedThemes[themeName] = {
         names: [themeName],
@@ -189,10 +187,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
           vars += `--${themeKey}:${varVal};`
         }
-      }
-
-      if (themeName === 'light') {
-        console.log('vars', vars.split(';'))
       }
 
       if (isWeb) {

@@ -5,6 +5,7 @@
   - also aligns with stylex
 
 - 1.0
+  - fix light mode inverse when using prefers
   - styled(Button)
   - Switch on native
   - https://github.com/tamagui/tamagui/issues/53
@@ -59,6 +60,7 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - Group borderRadius adjustment should be based on it's borderWidth + padding, not always set to 1, needs to de-opt those props
   - <Tabs />
     - needs RovingFocusGroup
   - <Toast />

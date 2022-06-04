@@ -39,11 +39,13 @@ export default () => (
 )
 ```
 
-Group will pass it's border radius down. It ensures any items inside will get appropriately scaled border radius, subtracting 1px from inner items radius, to make sure it aligns.
+By default, Group will control the border radius of it's children automatically - the first and last children will get their start/end radius set to match group radius. If it's a `vertical` group, it will adjust top/bottom radius, if not, left/right.
+
+This ensures any items inside will get appropriately scaled border radius.
 
 ### Sizing
 
-The `size` property applies to radius, and passes to children:
+The `size` property will use your tokens to grab the appropriate radius for borderRadius values. It will also pass the `size` prop directly to `children` unless you set `disablePassSize`:
 
 ```jsx
 import { Group, Button } from 'tamagui'
@@ -88,6 +90,18 @@ Group extends [YStack](/docs/components/stacks), getting [Tamagui standard props
       required: false,
       type: 'boolean',
       description: `Pass disabled down to children.`,
+    },
+    {
+      name: 'disablePassBorderRadius',
+      required: false,
+      type: 'boolean',
+      description: `Disables passing border radius to first/last children.`,
+    },
+    {
+      name: 'disablePassSize',
+      required: false,
+      type: 'boolean',
+      description: `Disables passing size to children.`,
     },
   ]}
 />

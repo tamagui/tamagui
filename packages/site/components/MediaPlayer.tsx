@@ -19,7 +19,7 @@ import image from '../public/kanye.jpg'
 export const MediaPlayer = memo(
   ({
     theme,
-    alt: altProp,
+    alt,
     onHoverSection,
     pointerEvents,
     pointerEventsControls,
@@ -29,9 +29,8 @@ export const MediaPlayer = memo(
     onHoverSection?: (name: string) => void
     pointerEventsControls?: any
   }) => {
-    const alt = altProp ?? 0
     return (
-      <Theme name={`alt${alt}` as ThemeName}>
+      <Theme name={!alt ? null : (`alt${alt}` as ThemeName)}>
         <Card
           overflow="visible"
           bordered
@@ -66,8 +65,8 @@ export const MediaPlayer = memo(
             px="$6"
             py="$4"
             bc="$backgroundHover"
-            bbrr={15}
-            bblr={15}
+            bbrr={17}
+            bblr={17}
             ai="center"
             space="$5"
             jc="center"

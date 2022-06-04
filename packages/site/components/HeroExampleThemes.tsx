@@ -144,16 +144,17 @@ export function HeroExampleThemes() {
               A <span className="rainbow clip-text">new</span> theme&nbsp;engine
             </HomeH2>
             <HomeH3>
-              Themes that customize to the component, plus unlimited alternate shades.
+              Unlimited granular theme nesting, per-component themes, all extracted to CSS
+              variables.
             </HomeH3>
           </ContainerLarge>
         )
       }, [])}
 
-      <YStack mt="$4" ai="center" jc="center">
+      <YStack mt="$6" ai="center" jc="center">
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" space="$2">
-            <Group bc="$background" p="$1" br="$10" als="center">
+            <Group disablePassBorderRadius bordered p="$1" br="$10" als="center">
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = theme === name
                 return (
@@ -173,7 +174,7 @@ export function HeroExampleThemes() {
               })}
             </Group>
 
-            <Group bc="$background" p="$1" br="$10" als="center">
+            <Group disablePassBorderRadius bordered p="$1" br="$10" als="center">
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
@@ -188,7 +189,7 @@ export function HeroExampleThemes() {
               })}
             </Group>
 
-            <Group bc="$background" p="$1" br="$10" als="center">
+            <Group disablePassBorderRadius bordered p="$1" br="$10" als="center">
               <Theme name={colorName}>
                 <XStack>
                   {themes[1].map((name, i) => {
@@ -267,7 +268,7 @@ export function HeroExampleThemes() {
                         <MediaPlayer
                           elevation="$6"
                           pointerEvents="none"
-                          alt={alt ? +alt.replace('alt', '') : 0}
+                          alt={alt ? +alt.replace('alt', '') : null}
                         />
                       </Theme>
                     </XStack>

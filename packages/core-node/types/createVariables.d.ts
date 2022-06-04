@@ -1,13 +1,10 @@
 import { Variable } from './createVariable';
-declare type TokenObject = {
-    [key: string]: string | number;
-};
-declare type DeepTokenObject = {
-    [key: string]: string | number | TokenObject;
+declare type DeepTokenObject<Val extends string | number = any> = {
+    [key: string]: Val | DeepTokenObject<Val>;
 };
 declare type DeepVariableObject<A extends DeepTokenObject> = {
-    [Key in keyof A]: A[Key] extends string | number ? Variable<A[Key]> : A[Key] extends TokenObject ? DeepVariableObject<A[Key]> : never;
+    [Key in keyof A]: A[Key] extends string | number ? Variable<A[Key]> : A[Key] extends DeepTokenObject ? DeepVariableObject<A[Key]> : never;
 };
-export declare const createVariables: <A extends DeepTokenObject>(tokens: A, parentPath?: string) => DeepVariableObject<A>;
+export declare const createVariables: <A extends DeepTokenObject<any>>(tokens: A, parentPath?: string) => DeepVariableObject<A>;
 export {};
 //# sourceMappingURL=createVariables.d.ts.map

@@ -143,6 +143,8 @@ export class ThemeManager {
       if (!parentName.includes(THEME_NAME_SEPARATOR)) {
         // not found!
         console.warn('theme not found', name)
+        // this happens in next during _document.getInitialProps and has a terrible/non-existent stack trace
+        // throw new Error(`Theme not found: ${name}`)
         break
       }
       // go up one

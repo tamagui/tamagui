@@ -26,7 +26,7 @@ export const HomeH3 = styled(H3, {
   px: 30,
   size: '$8',
   letsp: -0.5,
-  maw: 540,
+  maw: 580,
 
   $sm: {
     fow: '400',
