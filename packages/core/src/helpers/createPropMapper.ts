@@ -2,11 +2,10 @@ import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { Variable, isVariable } from '../createVariable'
 import {
+  GenericVariantDefinitions,
   PropMapper,
-  SplitStyleState,
   StaticConfig,
   TamaguiInternalConfig,
-  ThemeObject,
   VariantSpreadFunction,
 } from '../types'
 import { expandStyle, expandStyles } from './generateAtomicStyles'
@@ -14,32 +13,6 @@ import { getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
-
-// goes through specificity finding best matching variant function
-function getVariantFunction(variant: any, key: string, value: any) {
-  if (typeof variant === 'function') {
-    return variant
-  }
-  for (const cat in tokenCategories) {
-    if (key in tokenCategories[cat]) {
-      const spreadVariant = variant[`...${cat}`]
-      if (spreadVariant) {
-        return spreadVariant
-      }
-    }
-  }
-  let fn: any
-  if (typeof value === 'number') {
-    fn = variant[':number']
-  } else if (typeof value === 'string') {
-    fn = variant[':string']
-  } else if (value === true || value === false) {
-    fn = variant[':boolean']
-  }
-  fn = fn || variant[value]
-  // fallback to size ultimately - could do token level detection
-  return fn || variant['...'] || variant['...size']
-}
 
 export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   const variants = staticConfig.variants || {}
@@ -58,33 +31,23 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
-    const variant = variants && variants[key]
 
-    if (variant && value !== undefined) {
-      let variantValue = getVariantFunction(variant, key, value)
-
-      if (variantValue) {
-        if (typeof variantValue === 'function') {
-          const fn = variantValue as VariantSpreadFunction<any>
-          variantValue = fn(value, getVariantExtras(props, theme, defaultProps, avoidDefaultProps))
-        }
-
-        if (isObj(variantValue)) {
-          variantValue = resolveTokens(variantValue, conf, theme, fontFamily, returnVariablesAs)
-        }
-
-        return Object.entries(expandStyles(variantValue))
-      } else {
-        // variant at key exists, but no matching variant value, return nothing
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            `No variant found: ${
-              staticConfig.componentName || '[UnnamedComponent]'
-            } has variant "${key}", but no matching value "${value}"`
-          )
-        }
-        return null
-      }
+    const variantValue = resolveVariants(
+      key,
+      value,
+      props,
+      defaultProps,
+      theme,
+      variants,
+      fontFamily,
+      conf,
+      returnVariablesAs,
+      staticConfig,
+      '',
+      avoidDefaultProps
+    )
+    if (variantValue) {
+      return variantValue
     }
 
     let shouldReturn = value !== undefined && value !== null
@@ -112,31 +75,153 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   return mapper
 }
 
-// TODO move this into the actual atomic style getter
-const resolveTokens = (
-  input: Object,
-  conf: TamaguiInternalConfig,
+type StyleResolver = (
+  key: string,
+  value: any,
+  props: Record<string, any>,
+  defaultProps: any,
   theme: any,
-  fontFamily: any,
-  resolveAs?: ResolveVariableTypes
+  variants: GenericVariantDefinitions,
+  fontFamily: string,
+  conf: TamaguiInternalConfig,
+  returnVariablesAs: 'auto' | 'value',
+  staticConfig: Partial<StaticConfig>,
+  parentVariantKey: string,
+  avoidDefaultProps?: boolean
+) => any
+
+const resolveVariants: StyleResolver = (
+  key,
+  value,
+  props,
+  defaultProps,
+  theme,
+  variants,
+  fontFamily,
+  conf,
+  returnVariablesAs,
+  staticConfig,
+  parentVariantKey,
+  avoidDefaultProps = false
+) => {
+  const variant = variants && variants[key]
+  if (variant && value !== undefined) {
+    let variantValue = getVariantDefinition(variant, key, value)
+
+    if (variantValue) {
+      if (typeof variantValue === 'function') {
+        const fn = variantValue as VariantSpreadFunction<any>
+        variantValue = fn(value, getVariantExtras(props, theme, defaultProps, avoidDefaultProps))
+      }
+
+      if (isObj(variantValue)) {
+        variantValue = resolveTokensAndVariants(
+          key,
+          variantValue,
+          props,
+          defaultProps,
+          theme,
+          variants,
+          fontFamily,
+          conf,
+          returnVariablesAs,
+          staticConfig,
+          parentVariantKey,
+          avoidDefaultProps
+        )
+      }
+
+      return Object.entries(expandStyles(variantValue))
+    } else {
+      // variant at key exists, but no matching variant value, return nothing
+      if (process.env.NODE_ENV === 'development') {
+        console.log('staticConfig.validStyles', key, staticConfig.validStyles)
+        if (staticConfig.validStyles?.[key]) {
+          return null
+        }
+        console.warn(
+          `No variant found: ${
+            staticConfig.componentName || '[UnnamedComponent]'
+          } has variant "${key}", but no matching value "${value}"`
+        )
+      }
+      return null
+    }
+  }
+}
+
+const resolveTokensAndVariants: StyleResolver = (
+  key, // we dont use key assume value is object instead
+  value,
+  props,
+  defaultProps,
+  theme,
+  variants,
+  fontFamily,
+  conf,
+  returnVariablesAs,
+  staticConfig,
+  parentVariantKey,
+  avoidDefaultProps
 ) => {
   let res = {}
-  for (const rKey in input) {
+  for (const rKey in value) {
     const fKey = conf.shorthands[rKey] || rKey
-    const val = input[rKey]
+    const val = value[rKey]
     if (isVariable(val)) {
-      res[fKey] =
-        resolveAs === 'variable' ? val : !isWeb || resolveAs === 'value' ? val.val : val.variable
+      res[fKey] = !isWeb || returnVariablesAs === 'value' ? val.val : val.variable
+      // res[fKey] =
+      //   resolveAs === 'variable' ? val : !isWeb || resolveAs === 'value' ? val.val : val.variable
+    } else if (variants[fKey]) {
+      // avoids infinite loop if variant is matching a style prop
+      // eg: { variants: { flex: { true: { flex: 2 } } } }
+      if (parentVariantKey === key) {
+        res[fKey] = val
+      } else {
+        res = {
+          ...res,
+          ...Object.fromEntries(
+            resolveVariants(
+              fKey,
+              val,
+              props,
+              defaultProps,
+              theme,
+              variants,
+              fontFamily,
+              conf,
+              returnVariablesAs,
+              staticConfig,
+              key,
+              avoidDefaultProps
+            )
+          ),
+        }
+      }
     } else if (typeof val === 'string') {
-      const fVal = val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily, resolveAs) : val
+      const fVal =
+        val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily, returnVariablesAs) : val
       res[fKey] = fVal
     } else {
       if (isObj(val)) {
-        // for things like shadowOffset, hoverStyle which is a sub-object
-        res[fKey] = resolveTokens(val, conf, theme, fontFamily, resolveAs)
+        // sub-objects: media queries, pseudos, shadowOffset
+        res[fKey] = resolveTokensAndVariants(
+          fKey,
+          val,
+          props,
+          defaultProps,
+          theme,
+          variants,
+          fontFamily,
+          conf,
+          returnVariablesAs,
+          staticConfig,
+          key,
+          avoidDefaultProps
+        )
       } else {
-        // nullish values cant be tokens so need no exrta parsing
-        res[fKey] = input[fKey]
+        // nullish values cant be tokens, need no extra parsing
+        res[fKey] = value[fKey]
       }
     }
     if (process.env.NODE_ENV === 'development') {
@@ -146,6 +231,32 @@ const resolveTokens = (
     }
   }
   return res
+}
+
+// goes through specificity finding best matching variant function
+function getVariantDefinition(variant: any, key: string, value: any) {
+  if (typeof variant === 'function') {
+    return variant
+  }
+  for (const cat in tokenCategories) {
+    if (key in tokenCategories[cat]) {
+      const spreadVariant = variant[`...${cat}`]
+      if (spreadVariant) {
+        return spreadVariant
+      }
+    }
+  }
+  let fn: any
+  if (typeof value === 'number') {
+    fn = variant[':number']
+  } else if (typeof value === 'string') {
+    fn = variant[':string']
+  } else if (value === true || value === false) {
+    fn = variant[':boolean']
+  }
+  fn = fn || variant[value]
+  // fallback to size ultimately - could do token level detection
+  return fn || variant['...'] || variant['...size']
 }
 
 const fontShorthand = {

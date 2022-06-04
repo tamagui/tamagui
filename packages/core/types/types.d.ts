@@ -299,15 +299,16 @@ export declare type StaticConfigParsed = StaticConfig & {
         };
     };
 };
-export declare type StaticConfig = {
-    Component?: React.FunctionComponent<any> & StaticComponentObject;
-    variants?: {
-        [key: string]: {
-            [key: string]: ((a: any, b: any) => any) | {
-                [key: string]: any;
-            };
+export declare type GenericVariantDefinitions = {
+    [key: string]: {
+        [key: string]: ((a: any, b: any) => any) | {
+            [key: string]: any;
         };
     };
+};
+export declare type StaticConfig = {
+    Component?: React.FunctionComponent<any> & StaticComponentObject;
+    variants?: GenericVariantDefinitions;
     componentName?: string;
     neverFlatten?: boolean | 'jsx';
     isText?: boolean;

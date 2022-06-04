@@ -541,18 +541,20 @@ export type StaticConfigParsed = StaticConfig & {
   }
 }
 
+export type GenericVariantDefinitions = {
+  [key: string]: {
+    [key: string]:
+      | ((a: any, b: any) => any)
+      | {
+          [key: string]: any
+        }
+  }
+}
+
 export type StaticConfig = {
   Component?: React.FunctionComponent<any> & StaticComponentObject
 
-  variants?: {
-    [key: string]: {
-      [key: string]:
-        | ((a: any, b: any) => any)
-        | {
-            [key: string]: any
-          }
-    }
-  }
+  variants?: GenericVariantDefinitions
 
   /**
    * Used for applying sub theme style

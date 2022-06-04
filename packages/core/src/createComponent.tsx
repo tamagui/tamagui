@@ -1,4 +1,4 @@
-import { stylePropsView } from '@tamagui/helpers'
+import { stylePropsView, validStyles } from '@tamagui/helpers'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
   Children,
@@ -1113,6 +1113,7 @@ export type SpacerProps = Omit<StackProps, 'flex' | 'direction'> & {
 export const Spacer = createComponent<SpacerProps>({
   memo: true,
   componentName: 'Spacer',
+  validStyles,
   defaultProps: {
     ...stackDefaultStyles,
     size: true,
@@ -1133,9 +1134,8 @@ export const Spacer = createComponent<SpacerProps>({
 
     flex: {
       true: {
-        flex: 1,
+        flexGrow: 1,
       },
-      ':number': (flex) => ({ flex }),
     },
 
     direction: {

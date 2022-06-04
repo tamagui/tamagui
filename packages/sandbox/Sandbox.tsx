@@ -41,7 +41,9 @@ export const Sandbox = () => {
           {/* <TooltipDemo /> */}
           {/* <SquareDemo /> */}
           {/* <SelectDemo /> */}
-          <StyledText underline>hello world</StyledText>
+          <StyledText hero underline debug="verbose">
+            hello world
+          </StyledText>
         </YStack>
       </div>
     </Tamagui.Provider>
@@ -50,6 +52,16 @@ export const Sandbox = () => {
 
 const StyledText = styled(SizableText, {
   variants: {
+    hero: {
+      true: {
+        size: '$10',
+
+        $sm: {
+          size: '$1',
+        },
+      },
+    } as const,
+
     underline: {
       true: {
         textDecorationLine: 'underline',
