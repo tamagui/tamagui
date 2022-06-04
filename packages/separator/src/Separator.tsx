@@ -1,4 +1,4 @@
-import { Stack, styled } from '@tamagui/core'
+import { Stack, isWeb, styled } from '@tamagui/core'
 
 export const Separator = styled(Stack, {
   name: 'Separator',
@@ -16,8 +16,11 @@ export const Separator = styled(Stack, {
       true: {
         y: 0,
         x: -0.5,
-        height: 'auto',
-        maxHeight: 'auto',
+        height: isWeb ? 'initial' : 'auto',
+        // maxHeight auto WILL BE passed to style attribute, but for some reason not used?
+        // almost seems like a react or browser bug, but for now `initial` works
+        // also, it doesn't happen for `height`, but for consistency using the same values
+        maxHeight: isWeb ? 'initial' : 'auto',
         width: 0,
         maxWidth: 0,
         borderBottomWidth: 0,

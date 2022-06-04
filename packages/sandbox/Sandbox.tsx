@@ -2,10 +2,10 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { ChevronDown } from '@tamagui/feather-icons'
-import { TooltipDemo } from '@tamagui/kitchen-sink'
+import { SeparatorDemo, TooltipDemo } from '@tamagui/kitchen-sink'
 import React, { memo, useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Select, SizableText, Square, YStack, styled } from 'tamagui'
+import { Button, Select, Separator, SizableText, Square, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -41,9 +41,7 @@ export const Sandbox = () => {
           {/* <TooltipDemo /> */}
           {/* <SquareDemo /> */}
           {/* <SelectDemo /> */}
-          <StyledText hero underline debug="verbose">
-            hello world
-          </StyledText>
+          <SeparatorDemo />
         </YStack>
       </div>
     </Tamagui.Provider>
