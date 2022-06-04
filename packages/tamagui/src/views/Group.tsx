@@ -29,6 +29,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & {
   scrollable?: boolean
   disabled?: boolean
   vertical?: boolean
+  disablePassBorderRadius?: boolean
 }
 
 export const Group = forwardRef(
@@ -42,6 +43,7 @@ export const Group = forwardRef(
       scrollable,
       vertical,
       disabled: disabledProp,
+      disablePassBorderRadius,
       ...props
     }: GroupProps,
     ref
@@ -55,36 +57,40 @@ export const Group = forwardRef(
       const size = child.props.size ?? sizeProp
       if (i === 0) {
         return cloneElement(child, {
-          ...(!vertical && {
-            borderTopLeftRadius: radius,
-            borderBottomLeftRadius: radius,
-            borderTopRightRadius: 0,
-            borderBottomRightRadius: 0,
-          }),
-          ...(vertical && {
-            borderTopLeftRadius: radius,
-            borderTopRightRadius: radius,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-          }),
+          ...(!disablePassBorderRadius &&
+            !vertical && {
+              borderTopLeftRadius: radius,
+              borderBottomLeftRadius: radius,
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+            }),
+          ...(!disablePassBorderRadius &&
+            vertical && {
+              borderTopLeftRadius: radius,
+              borderTopRightRadius: radius,
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+            }),
           disabled,
           size,
         })
       }
       if (i === childrens.length - 1) {
         return cloneElement(child, {
-          ...(!vertical && {
-            borderTopRightRadius: radius,
-            borderBottomRightRadius: radius,
-            borderTopLeftRadius: 0,
-            borderBottomLeftRadius: 0,
-          }),
-          ...(vertical && {
-            borderBottomLeftRadius: radius,
-            borderBottomRightRadius: radius,
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-          }),
+          ...(!disablePassBorderRadius &&
+            !vertical && {
+              borderTopRightRadius: radius,
+              borderBottomRightRadius: radius,
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+            }),
+          ...(!disablePassBorderRadius &&
+            vertical && {
+              borderBottomLeftRadius: radius,
+              borderBottomRightRadius: radius,
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+            }),
           disabled,
           size,
         })
