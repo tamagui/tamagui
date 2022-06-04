@@ -5,7 +5,7 @@ import { ChevronDown } from '@tamagui/feather-icons'
 import { TooltipDemo } from '@tamagui/kitchen-sink'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Select, YStack } from 'tamagui'
+import { Button, Select, Square, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -39,8 +39,8 @@ export const Sandbox = () => {
       >
         <YStack space ai="center">
           {/* <TooltipDemo /> */}
-
-          <SelectDemo />
+          <Square debug="verbose" w={100} h={100} bc="$color" />
+          {/* <SelectDemo /> */}
         </YStack>
       </div>
     </Tamagui.Provider>

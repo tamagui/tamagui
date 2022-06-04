@@ -10,7 +10,7 @@ export declare const getSizeScaledToFont: (val: string | number, { sizeX, sizeY 
     py: number;
     radius: import("@tamagui/core").VariableVal;
     size: import("@tamagui/core").VariableVal;
-    lineHeight: number | import("@tamagui/core").Variable | undefined;
+    lineHeight: number | import("@tamagui/core").Variable<any> | undefined;
     minHeight: number;
 };
 export declare const createGetStackSize: (scale: ScaleProps) => (val: SizeTokens | number, extras: VariantSpreadExtras<any>) => {

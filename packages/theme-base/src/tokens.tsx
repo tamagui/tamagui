@@ -1,7 +1,31 @@
-import { allLightColors, darkColorsPostfixed } from '@tamagui/colors'
+import {
+  blue,
+  blueDark,
+  gray,
+  grayA,
+  grayDark,
+  grayDarkA,
+  green,
+  greenDark,
+  orange,
+  orangeDark,
+  pink,
+  pinkDark,
+  purple,
+  purpleDark,
+  red,
+  redDark,
+  teal,
+  tealDark,
+  violet,
+  violetDark,
+  yellow,
+  yellowDark,
+} from '@tamagui/colors'
+import { Variable, createTokens, createVariables } from '@tamagui/core'
 
 // acknowledge you need more granularity with .5s
-export const sizeKeys = [
+const sizeKeys = [
   'true',
   '0',
   '0.25',
@@ -32,10 +56,10 @@ export const sizeKeys = [
 ] as const
 
 // slightly more than double every 2 indices apart
-export const getSizeAt = (index: number) =>
+const getSizeAt = (index: number) =>
   index === 0 ? 0 : Math.round(Math.pow(1.6, index)) + Math.floor(3 * index)
 
-export const size: {
+const size: {
   [key in typeof sizeKeys[any]]: number
 } = Object.fromEntries(
   sizeKeys.map((key) => {
@@ -49,14 +73,14 @@ type SizeKeys = keyof Sizes
 const spaces = Object.entries(size).map(([k, v]) => [k, Math.round(v * 0.75)])
 const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
 
-export const space: {
+const space: {
   [Key in `-${SizeKeys}` | SizeKeys]: Key extends keyof Sizes ? Sizes[Key] : number
 } = {
   ...Object.fromEntries(spaces),
   ...Object.fromEntries(spacesNegative),
 } as any
 
-export const zIndex = {
+const zIndex = {
   0: 0,
   1: 100,
   2: 200,
@@ -65,12 +89,77 @@ export const zIndex = {
   5: 500,
 }
 
-export const color = {
-  ...allLightColors,
-  ...darkColorsPostfixed,
+export const colorTokens = createVariables({
+  light: {
+    blue,
+    gray,
+    grayA,
+    green,
+    orange,
+    pink,
+    purple,
+    red,
+    violet,
+    yellow,
+    teal,
+  },
+  dark: {
+    blue: blueDark,
+    gray: grayDark,
+    grayA: grayDarkA,
+    green: greenDark,
+    orange: orangeDark,
+    pink: pinkDark,
+    purple: purpleDark,
+    red: redDark,
+    violet: violetDark,
+    yellow: yellowDark,
+    teal: tealDark,
+  },
+})
+
+export const darkColors = darkPostfix({
+  ...colorTokens.dark.blue,
+  ...colorTokens.dark.gray,
+  ...colorTokens.dark.grayA,
+  ...colorTokens.dark.green,
+  ...colorTokens.dark.orange,
+  ...colorTokens.dark.pink,
+  ...colorTokens.dark.purple,
+  ...colorTokens.dark.red,
+  ...colorTokens.dark.violet,
+  ...colorTokens.dark.yellow,
+  ...colorTokens.dark.teal,
+})
+
+export const lightColors = {
+  ...colorTokens.light.blue,
+  ...colorTokens.light.gray,
+  ...colorTokens.light.grayA,
+  ...colorTokens.light.green,
+  ...colorTokens.light.orange,
+  ...colorTokens.light.pink,
+  ...colorTokens.light.purple,
+  ...colorTokens.light.red,
+  ...colorTokens.light.violet,
+  ...colorTokens.light.yellow,
+  ...colorTokens.light.teal,
 }
 
-export const radius = {
+const allColors = {
+  ...lightColors,
+  ...darkColors,
+}
+
+function darkPostfix<A extends { [key: string]: Variable<string> }>(
+  obj: A
+): {
+  [Key in `${keyof A extends string ? keyof A : never}Dark`]: Variable<string>
+} {
+  return Object.fromEntries(Object.entries(obj).map(([k, v]) => [`${k}Dark`, v])) as any
+}
+
+const radius = {
   0: 0,
   1: 3,
   2: 5,
@@ -85,3 +174,11 @@ export const radius = {
   11: 42,
   12: 50,
 }
+
+export const tokens = createTokens({
+  color: allColors,
+  radius,
+  zIndex,
+  space,
+  size,
+})

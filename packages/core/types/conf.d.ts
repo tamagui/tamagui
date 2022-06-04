@@ -16,7 +16,7 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
 }, {
     [key: string]: import("./types").GenericFont<string | number>;
 }>;
-export declare const getTokens: () => import("./types").CreateTokens<import("./createVariable").Variable>;
+export declare const getTokens: () => import("./types").CreateTokens<import("./createVariable").Variable<any>>;
 export declare const getThemes: () => {
     [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
         [key: string]: import("./types").VariableVal;

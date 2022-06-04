@@ -2,8 +2,8 @@ import { createFiraMonoFont } from '@tamagui/font-fira-mono'
 import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
-import { color, radius, size, space, themes, zIndex } from '@tamagui/theme-base'
-import { createTamagui, createTokens } from 'tamagui'
+import { themes, tokens } from '@tamagui/theme-base'
+import { createTamagui } from 'tamagui'
 
 import { animations } from './constants/animations'
 import { media } from './constants/media'
@@ -45,14 +45,6 @@ const bodyFont = createInterFont(
   }
 )
 const firaFont = createFiraMonoFont()
-
-const tokens = createTokens({
-  size,
-  space,
-  zIndex,
-  color,
-  radius,
-})
 
 const config = createTamagui({
   defaultTheme: 'light',

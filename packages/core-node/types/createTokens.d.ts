@@ -1,7 +1,6 @@
 import { Variable } from './createVariable';
 import { CreateTokens } from './types';
 export declare function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T>;
-export declare const mapTokensToVariables: (tokens: CreateTokens, parentPath?: string) => CreateTokens<Variable>;
 declare type MakeTokens<T> = T extends {
     color: infer E;
     space: infer F;

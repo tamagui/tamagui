@@ -81,6 +81,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   })
 
   const themeConfig = (() => {
+    const themes = { ...config.themes }
     let cssRules: string[] = []
     const varsByValue = new Map<string, Variable>()
 
@@ -122,7 +123,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const hasDarkLight = 'light' in config.themes && 'dark' in config.themes
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
 
-    // dedupe themes to avoid duplciate CSS generation
+    // dedupe themes to avoid duplicate CSS generation
     const existing = new WeakMap()
     const dedupedThemes: {
       [key: string]: {
@@ -131,17 +132,31 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
     } = {}
 
-    // first, de-dupe
-    for (const themeName in config.themes) {
-      const theme = config.themes[themeName]
-      if (existing.has(theme)) {
-        const e = existing.get(theme)
+    // first, de-dupe and parse them
+    for (const themeName in themes) {
+      const rawTheme = themes[themeName]
+
+      // if existing, avoid
+      if (existing.has(rawTheme)) {
+        const e = existing.get(rawTheme)
         e.names.push(themeName)
         continue
       }
+
+      // parse into variables
+      const theme = { ...config.themes[themeName] }
+      for (const key in theme) {
+        // make sure properly names theme variables
+        ensureThemeVariable(theme, key)
+      }
+      themes[themeName] = theme
+
+      if (themeName === 'light') console.log('made', themeName, theme)
+
+      // set deduped
       dedupedThemes[themeName] = {
         names: [themeName],
-        theme: { ...config.themes[themeName] },
+        theme,
       }
       existing.set(theme, dedupedThemes[themeName])
     }
@@ -154,12 +169,30 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       for (const themeKey in theme) {
         if (isWeb) {
           const val = theme[themeKey]
-          // TODO sanity check is necessary
-          const varName = val instanceof Variable ? val.name : varsByValue[val]?.name
-          vars += `--${themeKey}:${varName ? createCSSVariable(varName) : `${val}`};`
+          let varName: string
+          let varVal: string
+
+          if (isVariable(val)) {
+            varName = val.key
+            varVal = val.isFloating ? val.val : createCSSVariable(varName)
+          } else {
+            varName = varsByValue[val]?.key
+            varVal = varName ? createCSSVariable(varName) : `${val}`
+          }
+
+          if (process.env.NODE_ENV === 'development') {
+            if (!varName) {
+              console.warn('no var name in theme', themeName, themeKey)
+              continue
+            }
+          }
+
+          vars += `--${themeKey}:${varVal};`
         }
-        // make sure properly names theme variables
-        ensureThemeVariable(theme, themeKey)
+      }
+
+      if (themeName === 'light') {
+        console.log('vars', vars.split(';'))
       }
 
       if (isWeb) {
@@ -214,6 +247,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const css = cssRules.join('\n')
 
     return {
+      themes,
       cssRules,
       css,
     }
@@ -262,10 +296,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     shorthands: {},
     media: {},
     ...config,
+    themes: themeConfig.themes,
     Provider: createTamaguiProvider({
       getCSS,
       defaultTheme: 'light',
       ...config,
+      themes: themeConfig.themes,
     }),
     fontsParsed,
     themeConfig,
@@ -304,18 +340,20 @@ const parseTokens = (tokens: any) => {
 // shared by createTamagui so extracted here
 function ensureThemeVariable(theme: any, key: string) {
   const val = theme[key]
+  const themeKey = key
   if (!isVariable(val)) {
     theme[key] = createVariable({
-      key,
-      name: key,
+      key: themeKey,
+      name: themeKey,
       val,
+      isFloating: true,
     })
   } else {
-    if (val.name !== key) {
+    if (val.name !== themeKey) {
       // rename to theme name
       theme[key] = createVariable({
-        key,
-        name: key,
+        key: val.name,
+        name: themeKey,
         val: val.val,
       })
     }

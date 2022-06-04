@@ -1,32 +1,14 @@
-import { Variable, createVariable } from './createVariable'
+import { Variable } from './createVariable'
+import { createVariables } from './createVariables'
 import { validateTokens } from './helpers/validate'
 import { CreateTokens } from './types'
 
 // tokens.color.dark.red ===> { var: `color-dark-red`, val: '' }
-
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
   if (process.env.NODE_ENV === 'development') {
     validateTokens(tokens)
   }
-  return mapTokensToVariables(tokens) as any
-}
-
-export const mapTokensToVariables = (
-  tokens: CreateTokens,
-  parentPath = ''
-): CreateTokens<Variable> => {
-  const res = {}
-  for (const key in tokens) {
-    let val = tokens[key]
-    const name = parentPath ? `${parentPath}-${key}` : key
-    if (val && typeof val === 'object') {
-      res[key] = mapTokensToVariables(tokens[key], name)
-    } else {
-      res[key] = createVariable({ val, name, key })
-    }
-  }
-  // @ts-expect-error
-  return res
+  return createVariables(tokens as any) as any
 }
 
 // verbose but gives us nice types...

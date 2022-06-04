@@ -20,6 +20,7 @@ import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
 
 export default function Home() {
+  return <SectionTinted contain="paint layout" gradient bubble />
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
@@ -91,6 +92,21 @@ const Section = styled(YStack, {
 const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...props }: any) => {
   const { tint } = useTint()
   const childrenMemo = useMemo(() => children, [children])
+
+  return (
+    <YStack
+      fullscreen
+      zi={-1}
+      debug="verbose"
+      bc={gradient ? `$${tint}1` : null}
+      {...(!bubble && {
+        btw: noBorderTop ? 0 : 1,
+        bbw: 1,
+        boc: `$${tint}3`,
+      })}
+    />
+  )
+
   return (
     <YStack
       zi={2}
@@ -111,6 +127,7 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
       <YStack
         fullscreen
         zi={-1}
+        debug="verbose"
         bc={gradient ? `$${tint}1` : null}
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,

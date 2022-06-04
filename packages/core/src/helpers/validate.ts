@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'development') {
   const fontOpt = {
     style: ow.optional.object.valuesOfType(ow.string),
     transform: ow.optional.object.valuesOfType(ow.string),
-    color: ow.optional.object.valuesOfType(ow.string),
+    color: ow.optional.object.valuesOfType(ow.any(ow.string, ow.object)),
   }
 
   Config = ow.object.exactShape({
@@ -75,6 +75,6 @@ if (process.env.NODE_ENV === 'development') {
     space: ow.object.nonEmpty.valuesOfType(ow.number),
     zIndex: ow.object.nonEmpty.valuesOfType(ow.number),
     radius: ow.object.nonEmpty.valuesOfType(ow.number),
-    color: ow.object.nonEmpty.valuesOfType(ow.string),
+    color: ow.object.nonEmpty.valuesOfType(ow.any(ow.string, ow.object)),
   })
 }

@@ -30,12 +30,8 @@ export const MediaPlayer = memo(
     pointerEventsControls?: any
   }) => {
     const alt = altProp ?? 0
-    const themeName = theme ?? (alt ? (`alt${alt}` as any) : null)
-    const barTheme = theme ?? (`alt${Math.min(3, alt + 1)}` as any)
-    const mainButtonTheme = theme ?? (`alt${Math.min(3, alt + 2)}` as any)
-
     return (
-      <Theme name={themeName}>
+      <Theme name={`alt${alt}` as ThemeName}>
         <Card
           overflow="visible"
           bordered
@@ -53,10 +49,10 @@ export const MediaPlayer = memo(
 
             <YStack miw={165} mt={-10} jc="center">
               <Paragraph fontWeight="700">Spaceship</Paragraph>
-              <Paragraph theme={barTheme} size="$3">
+              <Paragraph color="$colorHover" size="$3">
                 Kanye West
               </Paragraph>
-              <Paragraph theme={barTheme} size="$3">
+              <Paragraph color="$colorHover" size="$3">
                 College Dropout
               </Paragraph>
             </YStack>
@@ -64,38 +60,35 @@ export const MediaPlayer = memo(
 
           <Separator mb={-1} />
 
-          <Theme name={barTheme}>
-            <XStack
-              zi={1000}
-              w="100%"
-              px="$6"
-              py="$4"
-              bc="$background"
-              bbrr={15}
-              bblr={15}
-              ai="center"
-              space="$5"
-              jc="center"
-              pointerEvents={pointerEvents}
-            >
-              <Rewind size={20} />
-              <Button
-                theme={mainButtonTheme}
-                bordered
-                hoverStyle={{
-                  elevation: '$6',
-                  scale: 1.025,
-                }}
-                my="$-7"
-                icon={Pause}
-                size="$8"
-                circular
-                elevation="$4"
-                pointerEvents={pointerEventsControls}
-              />
-              <FastForward size={20} />
-            </XStack>
-          </Theme>
+          <XStack
+            zi={1000}
+            w="100%"
+            px="$6"
+            py="$4"
+            bc="$backgroundHover"
+            bbrr={15}
+            bblr={15}
+            ai="center"
+            space="$5"
+            jc="center"
+            pointerEvents={pointerEvents}
+          >
+            <Rewind size={20} />
+            <Button
+              bordered
+              hoverStyle={{
+                elevation: '$6',
+                scale: 1.025,
+              }}
+              my="$-7"
+              icon={Pause}
+              size="$8"
+              circular
+              elevation="$4"
+              pointerEvents={pointerEventsControls}
+            />
+            <FastForward size={20} />
+          </XStack>
         </Card>
       </Theme>
     )

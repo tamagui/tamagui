@@ -53,7 +53,8 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
     }
 
     const props = state.fallbackProps || propsIn
-    const returnVariablesAs = state.resolveVariablesAs || !!props.animation ? 'value' : 'auto'
+    const returnVariablesAs =
+      state.resolveVariablesAs === 'value' || !!props.animation ? 'value' : 'auto'
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
@@ -96,6 +97,7 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
 
     if (value) {
       if (value[0] === '$') {
+        // prettier-ignore
         value = getToken(key, value, conf, theme, fontFamily, returnVariablesAs)
       } else if (isVariable(value)) {
         value = getVariableValue(value, returnVariablesAs)
@@ -110,6 +112,7 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   return mapper
 }
 
+// TODO move this into the actual atomic style getter
 const resolveTokens = (
   input: Object,
   conf: TamaguiInternalConfig,

@@ -6,4 +6,6 @@ export const createTheme = <Theme extends GenericTheme>(
   theme: Theme
 ): {
   [K in keyof Theme]: Theme[K] | string | Variable
-} => theme
+} => {
+  return theme
+}

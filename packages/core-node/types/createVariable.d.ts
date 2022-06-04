@@ -1,22 +1,22 @@
-export declare const IS_VARIABLE_SYMBOL = "__isVariable__";
-export declare class Variable {
+declare const IS_VARIABLE_SYMBOL = "__isVariable__";
+export declare class Variable<A extends string | number = any> {
     [IS_VARIABLE_SYMBOL]: boolean;
     name: string;
-    val: string | number;
-    variable: string | number;
+    val: A;
+    variable: string;
     key: string;
-    constructor({ val, name, key }: VariableIn);
+    constructor(props: VariableIn);
     toString(): string;
 }
-declare type VariableIn = {
-    val: string | number | Variable;
+declare type VariableIn<A extends string | number = any> = {
+    val: A;
     name: string;
     key: string;
 };
-export declare const createVariable: (props: VariableIn) => Variable;
+export declare const createVariable: <A extends string | number = any>(props: VariableIn<A>) => Variable<any>;
 export declare function isVariable(v: Variable | any): v is Variable;
 export declare function getVariableValue(v: Variable | any): any;
 export declare function getVariableName(v: Variable | any): any;
-export declare const createCSSVariable: (val: string, includeVar?: boolean) => string;
+export declare const createCSSVariable: (nameProp: string, includeVar?: boolean) => string;
 export {};
 //# sourceMappingURL=createVariable.d.ts.map
