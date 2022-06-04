@@ -41,49 +41,16 @@ export const Sandbox = () => {
           {/* <TooltipDemo /> */}
           {/* <SquareDemo /> */}
           {/* <SelectDemo /> */}
-          <SeparatorDemo />
+          {/* <SeparatorDemo /> */}
+          <StyledButton />
         </YStack>
       </div>
     </Tamagui.Provider>
   )
 }
 
-const StyledText = styled(SizableText, {
-  variants: {
-    hero: {
-      true: {
-        size: '$10',
-
-        $sm: {
-          size: '$1',
-        },
-      },
-    } as const,
-
-    underline: {
-      true: {
-        textDecorationLine: 'underline',
-      },
-      false: {
-        textDecorationLine: 'none',
-      },
-    } as const,
-  },
-  defaultVariants: {
-    underline: false,
-  },
-})
-
-const SquareDemo = memo(() => {
-  return (
-    <Square
-      elevation="$2"
-      w={100}
-      h={100}
-      // bc="$color"
-      bc="$blue10"
-    />
-  )
+const StyledButton = styled(Button, {
+  backgroundColor: 'red',
 })
 
 function SelectDemo() {

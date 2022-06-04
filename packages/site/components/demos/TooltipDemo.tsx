@@ -6,9 +6,9 @@ export default function TooltipDemo() {
     <TooltipGroup delay={{ open: 3000, close: 100 }}>
       <YStack space="$2" als="center">
         <XStack space="$2">
-          <Demo groupId="0" placement="top-start" Icon={Circle} />
+          <Demo groupId="0" placement="top-end" Icon={Circle} />
           <Demo groupId="1" placement="top" Icon={ChevronUp} />
-          <Demo groupId="2" placement="top-end" Icon={Circle} />
+          <Demo groupId="2" placement="top-start" Icon={Circle} />
         </XStack>
         <XStack space="$2">
           <Demo groupId="3" placement="left" Icon={ChevronLeft} />
@@ -16,9 +16,9 @@ export default function TooltipDemo() {
           <Demo groupId="4" placement="right" Icon={ChevronRight} />
         </XStack>
         <XStack space="$2">
-          <Demo groupId="5" placement="bottom-start" Icon={Circle} />
+          <Demo groupId="5" placement="bottom-end" Icon={Circle} />
           <Demo groupId="6" placement="bottom" Icon={ChevronDown} />
-          <Demo groupId="7" placement="bottom-end" Icon={Circle} />
+          <Demo groupId="7" placement="bottom-start" Icon={Circle} />
         </XStack>
       </YStack>
     </TooltipGroup>
