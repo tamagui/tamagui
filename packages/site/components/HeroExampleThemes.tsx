@@ -23,7 +23,6 @@ for (let i = 0; i < themes[0].length; i++) {
 }
 
 const max = themes[1].length
-console.log('themeCombos', themeCombos)
 
 const flatToSplit = (i: number) => {
   const colorI = Math.floor(i / max)

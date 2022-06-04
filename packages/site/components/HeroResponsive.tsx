@@ -135,8 +135,14 @@ export const HeroResponsive = memo(() => {
 
   const media = useMedia()
   const [smIndex, setSmIndex] = useState(0)
-  const width = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
+  const [width, setWidth] = useState(initialWidth)
   const isSmall = initialWidth + Math.max(0, move) < 680
+
+  // ssr compat
+  const nextWidth = media.sm ? breakpoints[smIndex].at : initialWidth + Math.max(0, move)
+  useEffect(() => {
+    setWidth(nextWidth)
+  }, [nextWidth])
 
   const handleMarkerPress = useCallback((name) => {
     const next = (breakpoints.find((x) => x.name === name)?.at ?? 0) - initialWidth + 20
