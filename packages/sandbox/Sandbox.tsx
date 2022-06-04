@@ -38,9 +38,9 @@ export const Sandbox = () => {
         }}
       >
         <YStack space ai="center">
-          <TooltipDemo />
+          {/* <TooltipDemo /> */}
 
-          {/* <SelectDemo /> */}
+          <SelectDemo />
         </YStack>
       </div>
     </Tamagui.Provider>

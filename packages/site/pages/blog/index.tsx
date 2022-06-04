@@ -45,10 +45,10 @@ export default function Blog({ frontmatters }) {
                       {frontmatter.title}
                     </H3>
                     <XStack>
-                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt4">
+                      <Paragraph cursor="inherit" tag="time" size="$3" theme="alt3">
                         {format(parseISO(frontmatter.publishedAt), 'MMMM yyyy')}
                       </Paragraph>
-                      <Paragraph cursor="inherit" fow="800" theme="alt4" size="$3">
+                      <Paragraph cursor="inherit" fow="800" theme="alt3" size="$3">
                         &nbsp;by {authors[frontmatter.by].name}
                       </Paragraph>
                       {/* {frontmatter.type === 'changelog' && <Badge css={{ ml: '$2' }}>Changelog</Badge>} */}

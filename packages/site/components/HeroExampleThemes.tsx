@@ -11,7 +11,7 @@ import { useOnIntersecting } from './useOnIntersecting'
 
 const themes: (ThemeName | null)[][] = [
   ['orange', 'red', 'pink', null, 'green', 'teal', 'blue'],
-  [null, 'alt1', 'alt2', 'alt3'],
+  [null, 'alt1', 'alt2'],
 ]
 
 const themeCombos: string[] = []
@@ -22,9 +22,12 @@ for (let i = 0; i < themes[0].length; i++) {
   }
 }
 
+const max = themes[1].length
+console.log('themeCombos', themeCombos)
+
 const flatToSplit = (i: number) => {
-  const colorI = Math.floor(i / 4)
-  const shadeI = i % 4
+  const colorI = Math.floor(i / max)
+  const shadeI = i % max
   return [colorI, shadeI]
 }
 

@@ -25,7 +25,8 @@ type ThemeCreatorProps = {
 // helpers
 
 const alternates = [1, 2, 3, 4] as const
-type AltKeys = 1 | 2 | 3 | 4 // one less for dark_darker
+const alts = [1, 2, 3] as const
+type AltKeys = 1 | 2 | 3
 type AltName<Name extends string, Keys extends string | number> = `${Name}_alt${Keys}`
 type ThemeCreator<A = any> = (str: number, props: ThemeCreatorProps) => A
 
@@ -43,6 +44,8 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   const { shift = 0 } = props
   const theme = getTheme(0 + shift, props)
   let themeEntries: any[] = [[name, theme]]
+
+  // generate alternates (for use in other themes), but keep just alts
   const altThemes: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
     getTheme(alt + (props.isLight ? 1 : 0) + shift, props),
@@ -75,8 +78,9 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
 
   themeEntries = [
     ...themeEntries,
-    ...altThemes,
-    ...altButtonThemes,
+    // keep just alts
+    ...altThemes.slice(0, alts.length),
+    ...altButtonThemes.slice(0, alts.length),
     [`${name}_Button`, altThemes2[1][1]],
     [`${name}_DrawerFrame`, altThemes2[1][1]],
     [`${name}_SliderTrack`, altThemes[1][1]],
