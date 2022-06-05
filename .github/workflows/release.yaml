@@ -12,6 +12,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    environment: gh-pages
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
