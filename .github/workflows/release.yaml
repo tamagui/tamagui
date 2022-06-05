@@ -12,7 +12,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    environment: gh-pages
+    environment: github-pages
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -47,5 +47,3 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./packages/site/out
           cname: tamagui.dev
-
-      
