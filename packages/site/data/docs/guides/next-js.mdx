@@ -13,7 +13,7 @@ Check out the [source for this site](https://github.com/tamagui/tamagui/tree/mas
 
 You'll want to set up a `_document.tsx` and gather both the `react-native-web` style object using AppRegistry, as well as Tamagui styles using `Tamagui.getCSS()` into the head element:
 
-```jsx
+```tsx
 import NextDocument, { Head, Html, Main, NextScript } from 'next/document'
 import { Children } from 'react'
 import { AppRegistry } from 'react-native'
@@ -57,6 +57,7 @@ import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import React, { useMemo, useState } from 'react'
+
 import Tamagui from '../tamagui.config'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -64,9 +65,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {
-    return (
-      <Component {...pageProps} />
-    )
+    return <Component {...pageProps} />
   }, [pageProps])
 
   return (

@@ -335,17 +335,16 @@ The `createTamagui` function receives a configuration object:
 
 Import and use the Tamagui `Provider` component at the top component in your app.
 
-```jsx line=5-7
+```tsx line=5-7
 import React, { Suspense } from 'react'
+
 import Tamagui from './tamagui.config'
 
 export default function App() {
   return (
     <Tamagui.Provider>
       {/* if you use suspense, you'll want one here */}
-      <Suspense>
-      {/* The rest of your app here */}
-      </Suspense>
+      <Suspense>{/* The rest of your app here */}</Suspense>
     </Tamagui.Provider>
   )
 }
@@ -395,13 +394,11 @@ You're now ready to use Tamagui, import and use any components:
   <DemoButton />
 </Preview>
 
-```jsx class=preview line=5
+```tsx class=preview line=5
 import { Button } from 'tamagui'
 
 export default function Demo() {
-  return (
-    <Button>Button</Button>
-  )
+  return <Button>Button</Button>
 }
 ```
 

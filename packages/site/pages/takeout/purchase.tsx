@@ -30,6 +30,7 @@ import { ContainerLarge } from '../../components/Container'
 import { FlatBubbleCard } from '../../components/FlatBubbleCard'
 import { useTheme } from '../../components/NextTheme'
 import { useUser } from '../../hooks/useUser'
+import { getUserLayout } from '../../lib/getUserLayout'
 import { postData } from '../../lib/helpers'
 import { getStripe } from '../../lib/stripeClient'
 import { getActiveProductsWithPrices } from '../../lib/supabaseClient'
@@ -196,6 +197,8 @@ export default function TakeoutPurchasePage({ products }: Props) {
     </Theme>
   )
 }
+
+TakeoutPurchasePage.getLayout = getUserLayout
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<Props>> {
   const products = await getActiveProductsWithPrices()

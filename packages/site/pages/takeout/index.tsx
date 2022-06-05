@@ -1,6 +1,6 @@
-import '@takeout/font-noto-emoji/css/400.css'
-import '@tamagui/font-inter/css/200.css'
-import '@tamagui/font-inter/css/900.css'
+// import '@takeout/font-noto-emoji/css/400.css'
+// import '@tamagui/font-inter/css/200.css'
+// import '@tamagui/font-inter/css/900.css'
 
 import { HeaderIndependent } from '@components/Header'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
@@ -38,6 +38,7 @@ import { useTheme } from '../../components/NextTheme'
 import { NotoIcon } from '../../components/NotoIcon'
 import { TamaCard } from '../../components/TamaCard'
 import { useForwardToDashboard } from '../../hooks/useForwardToDashboard'
+import { getUserLayout } from '../../lib/getUserLayout'
 
 export default function TakeoutPage() {
   const { resolvedTheme } = useTheme()
@@ -243,6 +244,8 @@ export default function TakeoutPage() {
     </Theme>
   )
 }
+
+TakeoutPage.getLayout = getUserLayout
 
 const TakeoutHero = ({ parentRef }: { parentRef: any }) => {
   const { x, y, width, height, bounds, position } = useBoundedCursor({

@@ -9,9 +9,10 @@ import { GithubIcon } from '../components/GithubIcon'
 import { Notice } from '../components/Notice'
 import { LogoIcon } from '../components/TamaguiLogo'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
+import { getUserLayout } from '../lib/getUserLayout'
 import { getURL } from '../lib/helpers'
 
-export default function SignIn() {
+export default function SignInPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPasswordInput, setShowPasswordInput] = useState(false)
@@ -38,7 +39,7 @@ export default function SignIn() {
 
     const { error } = await supabaseClient.auth.signIn(
       { email, password },
-      { redirectTo: getURL() },
+      { redirectTo: getURL() }
     )
     if (error) {
       setMessage({ type: 'error', content: error.message })
@@ -73,12 +74,8 @@ export default function SignIn() {
 
           {message.content && (
             <Notice
-              className={`${
-                message.type === 'error' ? 'text-pink-500' : 'text-green-500'
-              } border ${
-                message.type === 'error'
-                  ? 'border-pink-500'
-                  : 'border-green-500'
+              className={`${message.type === 'error' ? 'text-pink-500' : 'text-green-500'} border ${
+                message.type === 'error' ? 'border-pink-500' : 'border-green-500'
               } p-3`}
             >
               <Paragraph>{message.content}</Paragraph>
@@ -155,10 +152,7 @@ export default function SignIn() {
                 setMessage({})
               }}
             >
-              <a>
-                Or sign in with {showPasswordInput ? 'magic link' : 'password'}
-              </a>
-              .
+              <a>Or sign in with {showPasswordInput ? 'magic link' : 'password'}</a>.
             </Paragraph>
 
             <Paragraph theme="alt2" ta="center" size="$2">
@@ -192,3 +186,5 @@ export default function SignIn() {
 
   return <div className="m-6">...</div>
 }
+
+SignInPage.getLayout = getUserLayout

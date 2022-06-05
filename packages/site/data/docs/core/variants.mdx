@@ -7,8 +7,8 @@ Variants let you create typed props quickly on your styled() components.
 
 Here's an example:
 
-```jsx
-import { styled, Stack } from '@tamagui/core'
+```tsx
+import { Stack, styled } from '@tamagui/core'
 
 export const Circle = styled(Stack, {
   borderRadius: 100_000_000,
@@ -42,7 +42,7 @@ export const Circle = styled(Stack, {
 
 We can use these like so:
 
-```jsx
+```tsx
 <Circle pin="top" centered size="$lg" />
 ```
 
@@ -52,13 +52,13 @@ We're showing off a few different styles of variants here. We'll expand on them 
 
 If you need more complex types, or simply prefer a shorter syntax, you can use a single function instead of using the object syntax for variants:
 
-```jsx
-import { styled, Stack } from '@tamagui/core'
+```tsx
+import { Stack, styled } from '@tamagui/core'
 
 export const MyStack = styled(Stack, {
   variants: {
     doubleMargin: (val: number) => ({
-      margin: val * 2
+      margin: val * 2,
     }),
   },
 })
@@ -82,8 +82,8 @@ You can use a pseudo Typescript syntax for other variants:
 
 Example:
 
-```jsx
-import { styled, Stack } from '@tamagui/core'
+```tsx
+import { Stack, styled } from '@tamagui/core'
 
 export const ColorfulStack = styled(Stack, {
   variants: {
@@ -94,8 +94,8 @@ export const ColorfulStack = styled(Stack, {
           color,
           borderColor: color,
         }
-      }
-    }
+      },
+    },
   },
 })
 ```
@@ -104,7 +104,7 @@ export const ColorfulStack = styled(Stack, {
 
 When you write variants, you have to be explicit so Typescript and the runtime know exactly which props you accept. This can be especially cumbersome when you want to "gather" all the values of a specific token. For example, without spread variants, if you wanted to have a `pad` property that accepted all the keys from `tokens.size`, you'd have to write this:
 
-```jsx
+```tsx
 // in your tamagui.config.ts:
 const tokens = createTokens({
   size: {
@@ -145,7 +145,7 @@ This is verbose, and only gets more verbose if you add more sizes. It would requ
 
 Spread variants solve this problem. Instead, we can write:
 
-```jsx
+```tsx
 // in your tamagui.config.ts:
 const tokens = createTokens({
   size: {
@@ -184,7 +184,7 @@ The Spread variant function will receive two arguments: the first is the value g
 
 Because you can expand them to any number of styles, they can save a ton of code:
 
-```jsx
+```tsx
 const Square = styled(Stack, {
   variants: {
     size: {
@@ -197,7 +197,7 @@ const Square = styled(Stack, {
         }
       },
     },
-  }
+  },
 })
 ```
 
@@ -205,8 +205,8 @@ const Square = styled(Stack, {
 
 Using '...' lets you use a function to grab all variants that don't match:
 
-```jsx
-import { styled, Stack } from '@tamagui/core'
+```tsx
+import { Stack, styled } from '@tamagui/core'
 
 export const ColorfulStack = styled(Stack, {
   variants: {
@@ -217,9 +217,9 @@ export const ColorfulStack = styled(Stack, {
       '...': (val) => {
         // this will catch any other values that don't match
         return {
-          color: val
+          color: val,
         }
-      }
+      },
     },
   },
 })
@@ -231,7 +231,7 @@ Sometimes you'd like to set a default value for a variant you've just set on you
 
 The `defaultVariants` option allows you to set these, properly typed:
 
-```jsx
+```tsx
 const Square = styled(Stack, {
   variants: {
     size: {
@@ -248,7 +248,7 @@ const Square = styled(Stack, {
 
   // <Square /> will get size '$10' from size tokens automatically
   defaultVariants: {
-    size: '$10'
-  }
+    size: '$10',
+  },
 })
 ```

@@ -5,7 +5,7 @@ description: Designing for different size screens.
 
 Define your media rules in the media object of your `tamagui.config.ts`:
 
-```jsx line=2-6
+```tsx line=2-6
 export default createTamagui({
   media: {
     xs: { maxWidth: 660 },
@@ -21,7 +21,7 @@ export default createTamagui({
     hoverNone: { hover: 'none' },
     pointerCoarse: { pointer: 'coarse' },
   },
-});
+})
 ```
 
 > Note: Choose the naming convention you prefer. We use `sm`, `md`, `lg` and `gtSm` etc.
@@ -36,8 +36,8 @@ Now in any component you may import and use `useMedia` or `$` prefixed media pro
 
 ### Inline props
 
-```jsx
-import { useMedia, XStack, Button } from 'tamagui' // note: design system can use @tamagui/core
+```tsx
+import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
 
 export default () => {
   const [x, setX] = useState(0)
@@ -45,10 +45,10 @@ export default () => {
     <XStack
       backgroundColor="red"
       $gtSm={{
-        backgroundColor: 'blue'
+        backgroundColor: 'blue',
       }}
       $gtMd={{
-        backgroundColor: x > 0.5 ? 'green' : 'yellow'
+        backgroundColor: x > 0.5 ? 'green' : 'yellow',
       }}
     >
       <Button onPress={() => setX(Math.random())}>Hello</Button>
@@ -61,8 +61,8 @@ In this example we are doing mobile-first design, where the base props will be o
 
 ### Hooks
 
-```jsx
-import { useMedia, XStack, Button } from 'tamagui' // note: design system can use @tamagui/core
+```tsx
+import { Button, XStack, useMedia } from 'tamagui' // note: design system can use @tamagui/core
 
 export default () => {
   const media = useMedia()
@@ -72,10 +72,10 @@ export default () => {
       // can be used as a ternary
       backgroundColor={media.sm ? 'red' : 'blue'}
       // can be used as a spread
-      {...media.lg && {
+      {...(media.lg && {
         x: 10,
         y: 10,
-      }}
+      })}
     >
       <Button>Hello</Button>
     </XStack>

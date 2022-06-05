@@ -8,10 +8,7 @@ import '../app.css'
 
 import { DocsPage } from '@components/DocsPage'
 import { Footer } from '@components/Footer'
-import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
-import { UserProvider } from '@supabase/supabase-auth-helpers/react'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
-import { MyUserContextProvider } from 'hooks/useUser'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import NextProgress from 'nextjs-progressbar'
@@ -39,11 +36,7 @@ export default function App(props: AppProps) {
       <NextProgress height={1} options={{ showSpinner: false }} />
       <NextThemeProvider onChangeTheme={setTheme}>
         <Tamagui.Provider disableRootThemeClass defaultTheme={theme}>
-          <UserProvider supabaseClient={supabaseClient}>
-            <MyUserContextProvider supabaseClient={supabaseClient}>
-              {contents}
-            </MyUserContextProvider>
-          </UserProvider>
+          {contents}
         </Tamagui.Provider>
       </NextThemeProvider>
     </>
@@ -54,7 +47,9 @@ function ContentInner({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const isDocs = router.pathname.includes('/docs')
   const isDemo = router.pathname.includes('/responsive-demo')
-  return (
+  // @ts-ignore
+  const getLayout = Component.getLayout || ((page) => page)
+  return getLayout(
     <>
       {isDocs ? (
         <DocsPage>

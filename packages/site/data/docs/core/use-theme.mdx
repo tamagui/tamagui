@@ -7,8 +7,8 @@ The hook for themes allows you to access theme values at runtime. If you use any
 
 You can mix and match the media query hook and inline style syntaxes as well:
 
-```jsx
-import { useMedia, useTheme, YStack } from 'tamagui'
+```tsx
+import { YStack, useMedia, useTheme } from 'tamagui'
 
 const App = () => {
   const theme = useTheme()
@@ -18,9 +18,9 @@ const App = () => {
     <YStack
       y={media.sm ? 10 : 0}
       backgroundColor={media.lg ? theme.red : theme.blue}
-      {...media.xl && {
-        y: theme.space2
-      }}
+      {...(media.xl && {
+        y: theme.space2,
+      })}
     />
   )
 }
@@ -28,8 +28,10 @@ const App = () => {
 
 This will compile on the web to:
 
-```jsx
-const _cn = " _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0"
+```tsx
+const _cn =
+  ' _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _transform-_sm_1exagq _transform-_sm0_1wpzndr _backgroundColor-_lg_no4z4g _backgroundColor-_lg0_1qoifqd _transform-_xl_gqa6p0'
+
 import { YStack, useMedia, useTheme } from 'tamagui'
 
 const App = () => {

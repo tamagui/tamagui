@@ -13,7 +13,7 @@ component: Spinner
   <SpinnerDemo />
 </HeroContainer>
 
-```jsx hero template=Spinner
+```tsx hero template=Spinner
 
 ```
 
@@ -29,12 +29,10 @@ component: Spinner
 
 Note that due to the fact that Spinner is an extension of React Native [ActivityIndicator](https://reactnative.dev/docs/activityindicator), and that only accepts size `small` or `large`, we are currently limited to just these sizes.
 
-```jsx
-import { Spinner, Button } from 'tamagui'
+```tsx
+import { Button, Spinner } from 'tamagui'
 
-export default () => (
-  <Spinner size="large" color="$green10" />
-)
+export default () => <Spinner size="large" color="$green10" />
 ```
 
 ### Spinner API

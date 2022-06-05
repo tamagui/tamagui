@@ -13,8 +13,8 @@ component: Unspaced
 
 When using `space`, you sometimes want certain children to not contribute to spacing. Use Unspaced to achieve this:
 
-```jsx
-import { YStack, Unspaced, Text } from 'tamagui'
+```tsx
+import { Text, Unspaced, YStack } from 'tamagui'
 
 export default () => (
   <YStack position="relative" space>
@@ -22,9 +22,7 @@ export default () => (
 
     {/* avoids extra space at end: */}
     <Unspaced>
-      <Text position="absolute">
-        Some absolute positoned text
-      </Text>
+      <Text position="absolute">Some absolute positoned text</Text>
     </Unspaced>
   </YStack>
 )

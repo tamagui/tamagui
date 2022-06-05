@@ -14,8 +14,8 @@ Changing themes in Tamagui is as easy as passing their name to the Theme compone
 
 Change themes anywhere in your app like so:
 
-```jsx
-import { Theme, Button } from '@tamagui/core'
+```tsx
+import { Button, Theme } from '@tamagui/core'
 
 export default () => (
   <Theme name="dark">
@@ -38,14 +38,14 @@ Then, you just give your component a `theme="pink"` prop, or wrap it in `<Theme 
 
 It's easier to understand with an example. First, define your tokens and themes:
 
-```jsx
-import { createTokens, createTamagui } from 'tamagui'
+```tsx
+import { createTamagui, createTokens } from 'tamagui'
 
 const tokens = createTokens({
   color: {
     pinkDark: '#610c62',
     pinkLight: '#f17efc',
-  }
+  },
 })
 
 export default createTamagui({
@@ -66,15 +66,15 @@ export default createTamagui({
     light_pink: {
       background: tokens.color.pinkLight,
       color: tokens.color.pinkDark,
-    }
-  }
+    },
+  },
 })
 ```
 
 Using the `_pink` suffix, the `Theme` component will now let us automatically do subsetting:
 
-```jsx
-import { Theme, Button } from 'tamagui'
+```tsx
+import { Button, Theme } from 'tamagui'
 
 export default () => {
   return (
@@ -100,7 +100,7 @@ The `ThemeInverse` component is handy for flipping from light to dark without ha
   <ThemeInverseDemo />
 </HeroContainer>
 
-```jsx hero template=ThemeInverse
+```tsx hero template=ThemeInverse
 
 ```
 

@@ -3,10 +3,13 @@
 import { toString } from 'hast-util-to-string'
 import rangeParser from 'parse-numeric-range'
 import { refractor } from 'refractor'
+import tsx from 'refractor/lang/tsx'
 import visit from 'unist-util-visit'
 
 import highlightLine from './rehype-highlight-line'
 import highlightWord from './rehype-highlight-word'
+
+refractor.register(tsx)
 
 export default (options = {}) => {
   return (tree) => {

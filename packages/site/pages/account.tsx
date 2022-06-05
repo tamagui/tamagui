@@ -6,11 +6,12 @@ import { ContainerLarge } from '../components/Container'
 import { Link } from '../components/Link'
 import { TamaCard } from '../components/TamaCard'
 import { useUser } from '../hooks/useUser'
+import { getUserLayout } from '../lib/getUserLayout'
 import { postData } from '../lib/helpers'
 
 export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 
-export default function Account({ user }: { user: User }) {
+export default function AccountPage({ user }: { user: User }) {
   const [loading, setLoading] = useState(false)
   const { isLoading, subscription, userDetails, signout } = useUser()
 
@@ -78,3 +79,5 @@ export default function Account({ user }: { user: User }) {
     </ContainerLarge>
   )
 }
+
+AccountPage.getLayout = getUserLayout

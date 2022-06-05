@@ -63,8 +63,8 @@ Now, create and export the components. You can re-export components from `tamagu
 
 `Circle.tsx`:
 
-```jsx
-import { styled, ZStack } from 'tamagui'
+```tsx
+import { ZStack, styled } from 'tamagui'
 
 export const ZCircle = styled(ZStack, {
   alignItems: 'center',
@@ -87,7 +87,7 @@ export const ZCircle = styled(ZStack, {
 
 And then export from `index.tsx`:
 
-```jsx
+```tsx
 export * from './Circle'
 ```
 
@@ -151,12 +151,10 @@ In your app, you should now be able to import and use your Circle component. Usi
 
 Anywhere in your app:
 
-```jsx
+```tsx
 import { Circle } from '@ourapp/components'
 
-export default () => (
-  <Circle size="$large" />
-)
+export default () => <Circle size="$large" />
 ```
 
 When it compiles you should see something like:
@@ -167,14 +165,12 @@ When it compiles you should see something like:
 
 To get more information on any extraction, use the `// debug` pragma:
 
-```jsx
+```tsx
 // debug
 // ^ the above pragma will direct Tamagui to output a lot of information on the extraction
 import { Circle } from '@ourapp/components'
 
-export default () => (
-  <Circle size="$large" />
-)
+export default () => <Circle size="$large" />
 ```
 
 You should see much more log output with details on how it extracted, including the final CSS and JS.

@@ -8,9 +8,10 @@ import { Button, Input } from 'tamagui'
 
 import { LogoIcon } from '../components/TamaguiLogo'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
+import { getUserLayout } from '../lib/getUserLayout'
 import { updateUserName } from '../lib/supabaseClient'
 
-const SignUp = () => {
+export default function SignUpPage() {
   const [newUser, setNewUser] = useState<User | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -111,4 +112,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+SignUpPage.getLayout = getUserLayout
