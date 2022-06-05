@@ -6,6 +6,12 @@ import { ArrowLeft, ArrowRight } from '@tamagui/feather-icons'
 import { useState } from 'react'
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
+import photo1 from '../../public/photo1.jpg'
+import photo2 from '../../public/photo2.jpg'
+import photo3 from '../../public/photo3.jpg'
+
+export const images = [photo1.src, photo2.src, photo3.src]
+
 const YStackEnterable = styled(YStack, {
   variants: {
     isLeft: { true: { x: -300, opacity: 0 } },
@@ -59,9 +65,3 @@ const wrap = (min: number, max: number, v: number) => {
   const rangeSize = max - min
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
 }
-
-export const images = [
-  require('../../public/photo1.jpg').default.src,
-  require('../../public/photo2.jpg').default.src,
-  require('../../public/photo3.jpg').default.src,
-]

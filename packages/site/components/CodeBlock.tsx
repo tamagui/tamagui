@@ -15,7 +15,7 @@ refractor.register(tsx)
 
 type PreProps = Omit<GetProps<typeof Pre>, 'css'>
 
-type CodeBlockProps = PreProps & {
+export type CodeBlockProps = PreProps & {
   language: 'js' | 'jsx' | 'bash' | 'css' | 'diff'
   value: string
   line?: string

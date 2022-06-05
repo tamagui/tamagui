@@ -3,7 +3,9 @@ import dynamic from 'next/dynamic'
 import React, { useEffect, useState } from 'react'
 import { YStack } from 'tamagui'
 
-type CodeDemoProps = React.ComponentProps<typeof CodeBlock>
+import type { CodeBlockProps } from './CodeBlock'
+
+type CodeDemoProps = CodeBlockProps
 
 export function CodeDemo({ css, line, maxHeight, height, ...props }: CodeDemoProps) {
   const [Comp, setComp] = useState<any>(null)

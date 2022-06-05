@@ -80,7 +80,8 @@ const transform = withPlugins(
 )
 
 module.exports = function (name, opts) {
-  return transform(name, {
+  /** @type {import('next').NextConfig} */
+  const finalConfig = {
     ...opts.defaultConfig,
     experimental: {
       ...opts.defaultConfig.experimental,
@@ -88,10 +89,14 @@ module.exports = function (name, opts) {
       scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,
+      reactMode: 'concurrent',
     },
     webpack5: true,
+    eslint: false,
     typescript: {
       ignoreBuildErrors: true,
     },
-  })
+  }
+
+  return transform(name, finalConfig)
 }
