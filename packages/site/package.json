@@ -8,7 +8,7 @@
     "dev:analyze": "ANALYZE=true yarn dev",
     "dev:inspect": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",
     "dev:extract": "DISABLE_EXTRACTION=false yarn dev",
-    "next:build": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
+    "next:build": "NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-https://akrzjiwwabjhzbvvnypu.supabase.co} NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY:-abc} NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next build",
     "next:export": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next export",
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start"
   },
