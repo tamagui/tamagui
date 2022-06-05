@@ -20,14 +20,11 @@
     "@types/react": "^17.0.35",
     "chokidar": "^3.5.2",
     "esbuild": "^0.14.36",
-    "esbuild-plugin-alias": "^0.2.1",
+    "esbuild-plugin-path-alias": "^1.0.6",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.7",
     "fs-extra": "^9.1.0",
-    "lodash": "^4.17.21",
-    "ts-transform-import-path-rewrite": "^0.3.0",
-    "ttypescript": "^1.5.13",
-    "typescript": "^4.7.2"
+    "lodash": "^4.17.21"
   },
   "publishConfig": {
     "access": "public"

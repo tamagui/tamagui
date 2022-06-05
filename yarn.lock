@@ -4985,14 +4985,11 @@ __metadata:
     "@types/react": ^17.0.35
     chokidar: ^3.5.2
     esbuild: ^0.14.36
-    esbuild-plugin-alias: ^0.2.1
+    esbuild-plugin-path-alias: ^1.0.6
     execa: ^5.0.0
     fast-glob: ^3.2.7
     fs-extra: ^9.1.0
     lodash: ^4.17.21
-    ts-transform-import-path-rewrite: ^0.3.0
-    ttypescript: ^1.5.13
-    typescript: ^4.7.2
   languageName: unknown
   linkType: soft
 
@@ -11167,10 +11164,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-plugin-alias@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "esbuild-plugin-alias@npm:0.2.1"
-  checksum: afe2d2c8b5f09d5321cb8d9c0825e8a9f6e03c2d50df92f953a291d4620cc29eddb3da9e33b238f6d8f77738e0277bdcb831f127399449fecf78fb84c04e5da9
+"esbuild-plugin-path-alias@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "esbuild-plugin-path-alias@npm:1.0.6"
+  peerDependencies:
+    esbuild: ^0.14.23
+  checksum: c8c5d689d6f2cb3de73dddacb8e66633f71633d0f6c63d074dc5f0674d6650961b30e008c971a80b7af8a3b442142312e436e3471943400bed3f49581b25f25d
   languageName: node
   linkType: hard
 
@@ -21701,7 +21700,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:>=1.9.0, resolve@npm:^1.10.0, resolve@npm:^1.13.1, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.3.2, resolve@npm:^1.8.1, resolve@npm:^1.9.0":
+"resolve@npm:^1.10.0, resolve@npm:^1.13.1, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.3.2, resolve@npm:^1.8.1, resolve@npm:^1.9.0":
   version: 1.22.0
   resolution: "resolve@npm:1.22.0"
   dependencies:
@@ -21723,7 +21722,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@>=1.9.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.13.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.8.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.13.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.8.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.9.0#~builtin<compat/resolve>":
   version: 1.22.0
   resolution: "resolve@patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"
   dependencies:
@@ -23953,15 +23952,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-transform-import-path-rewrite@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "ts-transform-import-path-rewrite@npm:0.3.0"
-  dependencies:
-    typescript: 4
-  checksum: 385defa2616b6fd47ee20f38f19185b0125c7dafedf6bd46a4de64343561f7d4c77869676aa6f12a22b3e04d00dcb5f0f3326d7555eb46cacba838e593560554
-  languageName: node
-  linkType: hard
-
 "tslib@npm:2.1.0":
   version: 2.1.0
   resolution: "tslib@npm:2.1.0"
@@ -23980,21 +23970,6 @@ __metadata:
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
-  languageName: node
-  linkType: hard
-
-"ttypescript@npm:^1.5.13":
-  version: 1.5.13
-  resolution: "ttypescript@npm:1.5.13"
-  dependencies:
-    resolve: ">=1.9.0"
-  peerDependencies:
-    ts-node: ">=8.0.2"
-    typescript: ">=3.2.2"
-  bin:
-    ttsc: bin/tsc
-    ttsserver: bin/tsserver
-  checksum: bd97f058520ebd6183446b2100bfc714c400455e2195c3711d00c3407521d99098a4a204f16200c14a115cd78a5005d4a790bf7fb73a1b21a513573291a9c1d0
   languageName: node
   linkType: hard
 

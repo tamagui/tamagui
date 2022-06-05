@@ -2,30 +2,36 @@
 
 const watch = process.argv.includes('--watch')
 const fs = require('fs-extra')
-const exec = require('execa')
 const esbuild = require('esbuild')
-const alias = require('esbuild-plugin-alias')
+const alias = require('./esbuildAliasPlugin')
 const _ = require('lodash')
+const tmpDir = require('os').tmpdir()
+const path = require('path')
 
 async function build() {
   console.log('building core-node...')
   try {
-    await fs.remove('dist')
-    await exec('yarn', ['ttsc', '--skipLibCheck', '--skipDefaultLibCheck'])
+    const outPath = path.join(tmpDir, 'core-node')
+    await fs.remove(outPath)
+    await fs.mkdir(outPath)
+    const inPath = path.join(__dirname, '..', 'core', 'src', 'static.ts')
     await esbuild.build({
       bundle: true,
-      entryPoints: ['./dist/core/src/static.js'],
-      outdir: 'dist',
+      entryPoints: [inPath],
+      outdir: outPath,
       format: 'cjs',
-      target: 'node16',
+      target: 'node14',
       platform: 'node',
       plugins: [
         alias({
-          'react-native': '@tamagui/proxy-worm',
+          'react-native': require.resolve('@tamagui/fake-react-native'),
+          'react-native-safe-area-context': require.resolve('@tamagui/fake-react-native'),
+          'react-native-gesture-handler': require.resolve('@tamagui/proxy-worm'),
         }),
       ],
     })
-    await fs.remove('dist/core')
+    await Promise.all([fs.remove('./dist'), fs.remove('./types')])
+    await fs.copy(outPath, './dist')
     await fs.copy('../core/types', './types')
   } catch (err) {
     if (err.message.includes(`Plugin "alias" returned`)) {
