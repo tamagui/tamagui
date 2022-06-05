@@ -2,11 +2,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 
 import { HomeScreen } from './features/home/screen'
-import { UserDetailScreen } from './features/user/detail-screen'
+import { DemoScreen } from './features/user/demo-screen'
 
 const Stack = createNativeStackNavigator<{
   home: undefined
-  'user-detail': {
+  demo: {
     id: string
   }
 }>()
@@ -22,8 +22,8 @@ export function Navigation() {
         }}
       />
       <Stack.Screen
-        name="user-detail"
-        component={UserDetailScreen}
+        name="demo"
+        component={DemoScreen}
         options={{
           title: 'User',
         }}

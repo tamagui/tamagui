@@ -6,7 +6,7 @@
 
 // const { useParam } = createParam<{ id: string }>()
 
-export function UserDetailScreen() {
+export function DemoScreen() {
   return null
 
   // const [id] = useParam('id')
