@@ -10,7 +10,7 @@ import { MediaPlayer } from './MediaPlayer'
 import { useOnIntersecting } from './useOnIntersecting'
 
 const themes: (ThemeName | null)[][] = [
-  ['orange', 'red', 'pink', null, 'green', 'teal', 'blue'],
+  ['orange', 'red', 'pink', 'green', 'teal', 'blue'],
   [null, 'alt1', 'alt2'],
 ]
 
@@ -115,7 +115,7 @@ export function HeroExampleThemes() {
         hasScrolledOnce = true
         // dont rush
         setTimeout(() => {
-          const index = themeCombos.indexOf('')
+          const index = themeCombos.indexOf('pink')
           moveToIndex(index)
           setScrollLock('shouldAnimate')
           scrollToIndex(index, true)
@@ -144,7 +144,7 @@ export function HeroExampleThemes() {
               A <span className="rainbow clip-text">new</span> theme&nbsp;engine
             </HomeH2>
             <HomeH3>
-              Unlimited granular theme nesting, per-component themes, all extracted to CSS
+              Unlimited themes, partial nesting, per-component themes - all extracted to CSS
               variables.
             </HomeH3>
           </ContainerLarge>
@@ -165,12 +165,6 @@ export function HeroExampleThemes() {
                     isActive={isActive}
                   />
                 )
-                // TODO fix
-                // return (
-                //   <Theme key={name} name={name}>
-                //     <ActiveCircle onPress={() => setTheme(name)} isActive={isActive} />
-                //   </Theme>
-                // )
               })}
             </Group>
 
@@ -217,6 +211,7 @@ export function HeroExampleThemes() {
           w="100%"
           pos="relative"
           pointerEvents={scrollLock === 'animate' ? 'none' : 'auto'}
+          maxWidth={1400}
         >
           <XStack
             className="scroll-horizontal no-scrollbar"
