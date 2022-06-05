@@ -372,8 +372,6 @@ export const themes: {
   [key in keyof typeof allThemes]: typeof baseThemes['light']
 } = allThemes as any
 
-if (typeof window !== 'undefined') console.log('theme', themes.light)
-
 // TODO
 // export function createThemes(props: {
 //   colors?:

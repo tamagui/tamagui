@@ -1387,7 +1387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-typescript@npm:^7.17.12":
+"@babel/plugin-syntax-typescript@npm:^7.17.12, @babel/plugin-syntax-typescript@npm:^7.3.3":
   version: 7.17.12
   resolution: "@babel/plugin-syntax-typescript@npm:7.17.12"
   dependencies:
@@ -2525,7 +2525,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.14.0, @babel/traverse@npm:^7.18.0, @babel/traverse@npm:^7.18.2, @babel/traverse@npm:^7.9.0":
+"@babel/traverse@npm:^7.14.0, @babel/traverse@npm:^7.16.0, @babel/traverse@npm:^7.18.0, @babel/traverse@npm:^7.18.2, @babel/traverse@npm:^7.9.0":
   version: 7.18.2
   resolution: "@babel/traverse@npm:7.18.2"
   dependencies:
@@ -2960,7 +2960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-config@npm:0.3.18, @expo/metro-config@npm:^0.3.16, @expo/metro-config@npm:~0.3.16":
+"@expo/metro-config@npm:0.3.18, @expo/metro-config@npm:^0.3.18, @expo/metro-config@npm:~0.3.16":
   version: 0.3.18
   resolution: "@expo/metro-config@npm:0.3.18"
   dependencies:
@@ -3098,7 +3098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/webpack-config@npm:^0.16.23":
+"@expo/webpack-config@npm:^0.16.24":
   version: 0.16.24
   resolution: "@expo/webpack-config@npm:0.16.24"
   dependencies:
@@ -4740,6 +4740,75 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rnx-kit/babel-preset-metro-react-native@npm:^1.0.17":
+  version: 1.1.0
+  resolution: "@rnx-kit/babel-preset-metro-react-native@npm:1.1.0"
+  dependencies:
+    babel-plugin-const-enum: ^1.0.0
+  peerDependencies:
+    "@babel/plugin-transform-typescript": ^7.0.0
+    metro-react-native-babel-preset: "*"
+  peerDependenciesMeta:
+    "@babel/plugin-transform-typescript":
+      optional: true
+  checksum: 1a00581b55e5b9bda09864c70223f53876d848268305fe5608191eda73c5cc897b33ed25013c10f1bc039de17fed93e2b83306ee945968cf5621d56e393efc58
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/metro-config@npm:^1.2.32":
+  version: 1.2.32
+  resolution: "@rnx-kit/metro-config@npm:1.2.32"
+  dependencies:
+    "@rnx-kit/babel-preset-metro-react-native": ^1.0.17
+    "@rnx-kit/tools-node": ^1.2.7
+    workspace-tools: ^0.18.3
+  peerDependencies:
+    metro-config: ">=0.58.0"
+    react: "*"
+    react-native: "*"
+  checksum: 56b427d28ae04c6bf8691c4f8d6de3c333049cf8fc9f44091f4c64e28dc64b98b64110d7cd03050956b0dcf93133a80d74bb89bf881a6f3c2d216952f4958bf9
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/metro-resolver-symlinks@npm:^0.1.20":
+  version: 0.1.20
+  resolution: "@rnx-kit/metro-resolver-symlinks@npm:0.1.20"
+  dependencies:
+    "@rnx-kit/tools-node": ^1.2.7
+    "@rnx-kit/tools-react-native": ^1.2.0
+    enhanced-resolve: ^5.8.3
+  checksum: 8a8b54d0db89a9bf7b22c8c12c10f018cc6d57c3452dc0509c5d4891063e92c558a496d3e0a421a658c2412fcad44d1a400f113d9be2d0e98fa1104b2c127311
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/tools-language@npm:^1.2.6":
+  version: 1.3.1
+  resolution: "@rnx-kit/tools-language@npm:1.3.1"
+  checksum: baaa9cdba3753ae3ee15e3c6cac506f9e54860b0aa133ee04d4cb8dce282a1d798d1e1bdd8c55cd94c8ef2dd7a49f089a426ff5835206232017d08de137c408f
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/tools-node@npm:^1.2.7":
+  version: 1.2.7
+  resolution: "@rnx-kit/tools-node@npm:1.2.7"
+  dependencies:
+    "@rnx-kit/tools-language": ^1.2.6
+    find-up: ^5.0.0
+    pkg-dir: ^5.0.0
+    pkg-up: ^3.1.0
+  checksum: 9bd5b6c239721985ea2492a2a41c7b7a6766e57ff92986d059d15ee02f572feb4e63bb6cd5c3d8ace9f5e6c38e350593c7d098d30223aca63c2850fe83171b42
+  languageName: node
+  linkType: hard
+
+"@rnx-kit/tools-react-native@npm:^1.2.0":
+  version: 1.2.2
+  resolution: "@rnx-kit/tools-react-native@npm:1.2.2"
+  dependencies:
+    "@rnx-kit/tools-node": ^1.2.7
+  checksum: c0e942dba964bb824e3e30ca1119921ce69a7eb272ec5e22e7a098a7fc98c6e09ed54dcf948ab781c3fbcc005b7b3783039c6aabc8efbf7fcd9ad7e8165c26aa
+  languageName: node
+  linkType: hard
+
 "@segment/loosely-validate-event@npm:^2.0.0":
   version: 2.0.0
   resolution: "@segment/loosely-validate-event@npm:2.0.0"
@@ -4857,7 +4926,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@^1.0.1-beta.48, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+"@tamagui/animations-reanimated@1.0.1-beta.48, @tamagui/animations-reanimated@^1.0.1-beta.48, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -4957,7 +5026,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@^1.0.1-beta.48, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@1.0.1-beta.48, @tamagui/colors@^1.0.1-beta.48, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -5091,7 +5160,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/drawer@^1.0.1-beta.48, @tamagui/drawer@workspace:packages/drawer":
+"@tamagui/drawer@1.0.1-beta.48, @tamagui/drawer@^1.0.1-beta.48, @tamagui/drawer@workspace:packages/drawer":
   version: 0.0.0-use.local
   resolution: "@tamagui/drawer@workspace:packages/drawer"
   dependencies:
@@ -5127,7 +5196,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/feather-icons@^1.0.1-beta.48, @tamagui/feather-icons@workspace:packages/feather-icons":
+"@tamagui/feather-icons@1.0.1-beta.48, @tamagui/feather-icons@^1.0.1-beta.48, @tamagui/feather-icons@workspace:packages/feather-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/feather-icons@workspace:packages/feather-icons"
   dependencies:
@@ -5171,7 +5240,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/font-inter@^1.0.1-beta.48, @tamagui/font-inter@workspace:packages/font-inter":
+"@tamagui/font-inter@1.0.1-beta.48, @tamagui/font-inter@^1.0.1-beta.48, @tamagui/font-inter@workspace:packages/font-inter":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-inter@workspace:packages/font-inter"
   dependencies:
@@ -5250,13 +5319,20 @@ __metadata:
   dependencies:
     "@babel/core": ^7.15.5
     "@babel/runtime": ^7.15.5
-    "@expo/metro-config": ^0.3.16
-    "@expo/webpack-config": ^0.16.23
+    "@expo/metro-config": ^0.3.18
+    "@expo/webpack-config": ^0.16.24
     "@react-navigation/native": ^6.0.10
     "@react-navigation/native-stack": ^6.6.2
+    "@rnx-kit/metro-config": ^1.2.32
+    "@rnx-kit/metro-resolver-symlinks": ^0.1.20
+    "@tamagui/animations-reanimated": 1.0.1-beta.48
     "@tamagui/babel-plugin": 1.0.1-beta.48
-    "@types/react": ^17.0.35
-    "@types/react-native": ^0.67.3
+    "@tamagui/colors": 1.0.1-beta.48
+    "@tamagui/drawer": 1.0.1-beta.48
+    "@tamagui/feather-icons": 1.0.1-beta.48
+    "@tamagui/font-inter": 1.0.1-beta.48
+    "@tamagui/shorthands": 1.0.1-beta.48
+    "@tamagui/theme-base": 1.0.1-beta.48
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     expo: ~45.0.3
     expo-font: ~10.1.0
@@ -5264,6 +5340,7 @@ __metadata:
     expo-linking: ^3.1.0
     expo-splash-screen: ~0.15.1
     expo-status-bar: ~1.3.0
+    metro-runtime: ^0.67.0
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -5273,6 +5350,7 @@ __metadata:
     react-native-screens: ~3.11.1
     react-native-svg: ^12.3.0
     react-native-web: ^0.17.5
+    solito: ^0.0.26
   languageName: unknown
   linkType: soft
 
@@ -5561,7 +5639,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/shorthands@^1.0.1-beta.48, @tamagui/shorthands@workspace:packages/shorthands":
+"@tamagui/shorthands@1.0.1-beta.48, @tamagui/shorthands@^1.0.1-beta.48, @tamagui/shorthands@workspace:packages/shorthands":
   version: 0.0.0-use.local
   resolution: "@tamagui/shorthands@workspace:packages/shorthands"
   dependencies:
@@ -5724,7 +5802,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-base@^1.0.1-beta.48, @tamagui/theme-base@workspace:packages/theme-base":
+"@tamagui/theme-base@1.0.1-beta.48, @tamagui/theme-base@^1.0.1-beta.48, @tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
@@ -6852,6 +6930,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@yarnpkg/lockfile@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@yarnpkg/lockfile@npm:1.1.0"
+  checksum: 05b881b4866a3546861fee756e6d3812776ea47fa6eb7098f983d6d0eefa02e12b66c3fff931574120f196286a7ad4879ce02743c8bb2be36c6a576c7852083a
+  languageName: node
+  linkType: hard
+
 "JSONStream@npm:^1.0.4":
   version: 1.3.5
   resolution: "JSONStream@npm:1.3.5"
@@ -7704,6 +7789,19 @@ __metadata:
     "@babel/core": ^7.0.0
     webpack: ">=2"
   checksum: a6605557885eabbc3250412405f2c63ca87287a95a439c643fdb47d5ea3d5326f72e43ab97be070316998cb685d5dfbc70927ce1abe8be7a6a4f5919287773fb
+  languageName: node
+  linkType: hard
+
+"babel-plugin-const-enum@npm:^1.0.0":
+  version: 1.2.0
+  resolution: "babel-plugin-const-enum@npm:1.2.0"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.0.0
+    "@babel/plugin-syntax-typescript": ^7.3.3
+    "@babel/traverse": ^7.16.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: fc840a71f6717a01b63853b8bc67f75c591ebacfd0d8739c68de02da5d6e48ea38086040427d553726c0e103d2e0ee8b4207827ef26b281247f671f868f78aae
   languageName: node
   linkType: hard
 
@@ -10843,7 +10941,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.9.2":
+"enhanced-resolve@npm:^5.8.3, enhanced-resolve@npm:^5.9.2":
   version: 5.9.3
   resolution: "enhanced-resolve@npm:5.9.3"
   dependencies:
@@ -12754,7 +12852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"git-url-parse@npm:^11.6.0":
+"git-url-parse@npm:^11.1.2, git-url-parse@npm:^11.6.0":
   version: 11.6.0
   resolution: "git-url-parse@npm:11.6.0"
   dependencies:
@@ -15480,6 +15578,13 @@ __metadata:
   version: 0.16.1
   resolution: "jimp-compact@npm:0.16.1"
   checksum: 5a1c62d70881b31f79ea65fecfe03617be0eb56139bc451f37e8972365c99ac3b52c5176c446ff27144c98ab664a99107ae08d347044e94e1de637f165b41a57
+  languageName: node
+  linkType: hard
+
+"jju@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "jju@npm:1.4.0"
+  checksum: 3790481bd2b7827dd6336e6e3dc2dcc6d425679ba7ebde7b679f61dceb4457ea0cda330972494de608571f4973c6dfb5f70fab6f3c5037dbab19ac449a60424f
   languageName: node
   linkType: hard
 
@@ -19418,6 +19523,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pkg-dir@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "pkg-dir@npm:5.0.0"
+  dependencies:
+    find-up: ^5.0.0
+  checksum: b167bb8dac7bbf22b1d5e30ec223e6b064b84b63010c9d49384619a36734caf95ed23ad23d4f9bd975e8e8082b60a83395f43a89bb192df53a7c25a38ecb57d9
+  languageName: node
+  linkType: hard
+
 "pkg-up@npm:3.1.0, pkg-up@npm:^3.1.0":
   version: 3.1.0
   resolution: "pkg-up@npm:3.1.0"
@@ -21142,6 +21256,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"read-yaml-file@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "read-yaml-file@npm:2.1.0"
+  dependencies:
+    js-yaml: ^4.0.0
+    strip-bom: ^4.0.0
+  checksum: 52765eb183e79466f51eebeb19b933cc0f0e907052d062d67300b97e79910064a24b370cdb0b5dd8b05afff3d0ec57282670fd9070dc608e13b11820ac79183d
+  languageName: node
+  linkType: hard
+
 "readable-stream@npm:3, readable-stream@npm:^3.0.0, readable-stream@npm:^3.0.2, readable-stream@npm:^3.0.6, readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
   version: 3.6.0
   resolution: "readable-stream@npm:3.6.0"
@@ -22568,6 +22692,13 @@ __metadata:
     ip: ^1.1.5
     smart-buffer: ^4.2.0
   checksum: dd9194293059d737759d5c69273850ad4149f448426249325c4bea0e340d1cf3d266c3b022694b0dcf5d31f759de23657244c481fc1e8322add80b7985c36b5e
+  languageName: node
+  linkType: hard
+
+"solito@npm:^0.0.26":
+  version: 0.0.26
+  resolution: "solito@npm:0.0.26"
+  checksum: c3cbee8e33bd9849d85bbe3e1c9d862eca06b17a2b76cd9d856d39cea01755faad92a2cfe37c77a8419ca8efa133b93935034996a3bc14522c270cb727a297d0
   languageName: node
   linkType: hard
 
@@ -25663,6 +25794,21 @@ __metadata:
   dependencies:
     microevent.ts: ~0.1.1
   checksum: 8f8607506172f44c05490f3ccf13e5c1f430eeb9b6116a405919c186b8b17add13bbb22467a0dbcd18ec7fcb080709a15738182e0003c5fbe2144721ea00f357
+  languageName: node
+  linkType: hard
+
+"workspace-tools@npm:^0.18.3":
+  version: 0.18.4
+  resolution: "workspace-tools@npm:0.18.4"
+  dependencies:
+    "@yarnpkg/lockfile": ^1.1.0
+    find-up: ^4.1.0
+    git-url-parse: ^11.1.2
+    globby: ^11.0.0
+    jju: ^1.4.0
+    multimatch: ^4.0.0
+    read-yaml-file: ^2.0.0
+  checksum: 1caa2c660b51eaea537e6d57d9a024b0abe7f51816c5723dd369992fe90c75e77129bc47b327044299585eab2d72495eb04fbcf7ff95d24872ce5e94a6c41ef0
   languageName: node
   linkType: hard
 

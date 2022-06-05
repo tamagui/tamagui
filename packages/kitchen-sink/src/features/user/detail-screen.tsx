@@ -1,22 +1,22 @@
-import { Button, Paragraph, YStack } from '@my/ui'
-import { ChevronLeft } from '@tamagui/feather-icons'
-import React from 'react'
-import { createParam } from 'solito'
-import { Link } from 'solito/link'
+// import { ChevronLeft } from '@tamagui/feather-icons'
+// import React from 'react'
+// import { createParam } from 'solito'
+// import { Link } from 'solito/link'
+// import { Button, Paragraph, YStack } from 'tamagui'
 
-const { useParam } = createParam<{ id: string }>()
+// const { useParam } = createParam<{ id: string }>()
 
 export function UserDetailScreen() {
-  const [id] = useParam('id')
+  return null
 
-  return (
-    <YStack f={1} jc="center" ai="center" space>
-      <Paragraph ta="center" fow="800">{`User ID: ${id}`}</Paragraph>
-      <Link href="/">
-        <Button icon={ChevronLeft}>
-          Go Home
-        </Button>
-      </Link>
-    </YStack>
-  )
+  // const [id] = useParam('id')
+
+  // return (
+  //   <YStack f={1} jc="center" ai="center" space>
+  //     <Paragraph ta="center" fow="800">{`User ID: ${id}`}</Paragraph>
+  //     <Link href="/">
+  //       <Button icon={ChevronLeft}>Go Home</Button>
+  //     </Link>
+  //   </YStack>
+  // )
 }

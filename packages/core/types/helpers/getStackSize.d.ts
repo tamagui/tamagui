@@ -1,5 +1,4 @@
-import { VariantSpreadExtras } from '@tamagui/core';
-import { SizeTokens } from '../types';
+import { SizeTokens, VariantSpreadExtras } from '../types';
 declare type ScaleProps = {
     sizeX: number;
     sizeY: number;
@@ -8,9 +7,9 @@ export declare type ScaleVariantExtras = Pick<VariantSpreadExtras<any>, 'tokens'
 export declare const getSizeScaledToFont: (val: string | number, { sizeX, sizeY }: ScaleProps, { tokens, props, fonts }: ScaleVariantExtras) => {
     px: number;
     py: number;
-    radius: any;
-    size: any;
-    lineHeight: any;
+    radius: import("../types").VariableVal;
+    size: import("../types").VariableVal;
+    lineHeight: number | import("../createVariable").Variable<any> | undefined;
     minHeight: number;
 };
 export declare const createGetStackSize: (scale: ScaleProps) => (val: SizeTokens | number, extras: VariantSpreadExtras<any>) => {

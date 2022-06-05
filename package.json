@@ -34,7 +34,7 @@
     "publish:no-version": "npm publish --workspaces",
     "publish:canary": "lerna publish --canary --preid beta.0 --force-publish --dist-tag canary",
     "version": "lerna version",
-    "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start",
+    "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
     "site": "yarn workspace @tamagui/site dev",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "ANALYZE=true yarn workspace @tamagui/site next:build && yarn workspace @tamagui/site next:start",

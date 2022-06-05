@@ -446,7 +446,7 @@ export const insertSplitStyles: StyleSplitter = (...args) => {
   return res
 }
 
-const effect = useInsertionEffect || useIsomorphicLayoutEffect
+const effect = isWeb ? useInsertionEffect || useIsomorphicLayoutEffect : useIsomorphicLayoutEffect
 
 export const useSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)

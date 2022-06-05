@@ -5,7 +5,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "expo start --dev-client --clear",
+    "start": "expo start --dev-client",
+    "start:clean": "watchman watch-del-all; rm -r $TMPDIR/metro-cache; yarn start -c",
     "android": "TAMAGUI_TARGET=native yarn expo run:android",
     "ios": "TAMAGUI_TARGET=native yarn expo run:ios",
     "web": "TAMAGUI_TARGET=web yarn expo start --web",
@@ -15,6 +16,13 @@
     "@babel/runtime": "^7.15.5",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "@tamagui/animations-reanimated": "1.0.1-beta.48",
+    "@tamagui/colors": "1.0.1-beta.48",
+    "@tamagui/drawer": "1.0.1-beta.48",
+    "@tamagui/feather-icons": "1.0.1-beta.48",
+    "@tamagui/font-inter": "1.0.1-beta.48",
+    "@tamagui/shorthands": "1.0.1-beta.48",
+    "@tamagui/theme-base": "1.0.1-beta.48",
     "expo": "~45.0.3",
     "expo-font": "~10.1.0",
     "expo-linear-gradient": "^11.0.3",
@@ -29,15 +37,17 @@
     "react-native-safe-area-context": "^4.2.5",
     "react-native-screens": "~3.11.1",
     "react-native-svg": "^12.3.0",
-    "react-native-web": "^0.17.5"
+    "react-native-web": "^0.17.5",
+    "solito": "^0.0.26"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
-    "@expo/metro-config": "^0.3.16",
-    "@expo/webpack-config": "^0.16.23",
+    "@expo/metro-config": "^0.3.18",
+    "@expo/webpack-config": "^0.16.24",
+    "@rnx-kit/metro-config": "^1.2.32",
+    "@rnx-kit/metro-resolver-symlinks": "^0.1.20",
     "@tamagui/babel-plugin": "1.0.1-beta.48",
-    "@types/react": "^17.0.35",
-    "@types/react-native": "^0.67.3",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.4"
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "metro-runtime": "^0.67.0"
   }
 }

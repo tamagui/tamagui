@@ -1,6 +1,5 @@
-import { VariantSpreadExtras, getVariableValue, isVariable } from '@tamagui/core'
-
-import { SizeTokens } from '../types'
+import { getVariableValue, isVariable } from '../createVariable'
+import { SizeTokens, VariantSpreadExtras } from '../types'
 
 // for use in sizable things
 

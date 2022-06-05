@@ -1,5 +1,6 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/core'
 import { useRef } from 'react'
+
+import { useIsomorphicLayoutEffect } from '../constants/platform'
 
 export function useIsMounted() {
   const isMounted = useRef(false)

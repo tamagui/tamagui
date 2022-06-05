@@ -1,4 +1,3 @@
-import { Tamagui } from './Tamagui'
 import { ConfigListener, TamaguiInternalConfig } from './types'
 
 let conf: TamaguiInternalConfig | null
@@ -23,9 +22,5 @@ export const onConfiguredOnce = (cb: ConfigListener) => {
     cb(conf!)
   } else {
     configListeners.add(cb)
-  }
-
-  if (!globalThis['Tamagui']) {
-    globalThis['Tamagui'] = Tamagui
   }
 }

@@ -1,36 +1,56 @@
-// Learn more https://docs.expo.io/guides/customizing-metro
-/**
- * @type {import('expo/metro-config')}
- */
 const { getDefaultConfig } = require('@expo/metro-config')
-const path = require('path')
+const { makeMetroConfig } = require('@rnx-kit/metro-config')
+const MetroSymlinksResolver = require('@rnx-kit/metro-resolver-symlinks')
 
-const projectRoot = __dirname
-const workspaceRoot = path.resolve(__dirname, '..')
+const conf = getDefaultConfig(__dirname)
+console.log('conf', conf)
 
-const config = getDefaultConfig(projectRoot)
+module.exports = makeMetroConfig({
+  projectRoot: __dirname,
+  resolver: {
+    resolveRequest: MetroSymlinksResolver(),
+  },
+})
 
-config.watchFolders = [workspaceRoot]
-config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(workspaceRoot, 'node_modules'),
-]
+// // Learn more https://docs.expo.io/guides/customizing-metro
+// /**
+//  * @type {import('expo/metro-config')}
+//  */
+//
+// const path = require('path')
 
-module.exports = config
+// const projectRoot = __dirname
+// const workspaceRoot = path.resolve(__dirname, '..')
 
-// const defaultSourceExts =
-//   require('metro-config/src/defaults/defaults').sourceExts
+// const config = getDefaultConfig(projectRoot)
 
-// module.exports = {
-//   transformer: {
-//     getTransformOptions: () => ({
-//       transform: {
-//         experimentalImportSupport: true,
-//         inlineRequires: true,
-//       },
-//     }),
-//   },
-//   resolver: {
-//     sourceExts: [...defaultSourceExts, 'cjs'],
-//   },
+// config.watchFolders = [workspaceRoot]
+// config.resolver.nodeModulesPaths = [
+//   path.resolve(projectRoot, 'node_modules'),
+//   path.resolve(workspaceRoot, 'node_modules'),
+// ]
+
+// config.resolver.extraNodeModules = {
+//   modules: workspaceRoot,
 // }
+
+// console.log('config', config)
+
+// module.exports = config
+
+// // const defaultSourceExts =
+// //   require('metro-config/src/defaults/defaults').sourceExts
+
+// // module.exports = {
+// //   transformer: {
+// //     getTransformOptions: () => ({
+// //       transform: {
+// //         experimentalImportSupport: true,
+// //         inlineRequires: true,
+// //       },
+// //     }),
+// //   },
+// //   resolver: {
+// //     sourceExts: [...defaultSourceExts, 'cjs'],
+// //   },
+// // }
