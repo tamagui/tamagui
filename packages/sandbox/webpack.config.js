@@ -34,6 +34,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     alias: {
       'react-native$': 'react-native-web',
+      'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
       'react-native-reanimated': require.resolve('react-native-reanimated'),
       'react-native-reanimated$': require.resolve('react-native-reanimated'),
     },

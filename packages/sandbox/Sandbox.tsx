@@ -38,6 +38,16 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
+        <YStack
+          space="$2"
+          ai="center"
+          scale={0.4}
+          $gtXs={{ scale: 0.6 }}
+          $gtSm={{ scale: 0.75 }}
+          $gtMd={{ scale: 0.9 }}
+        >
+          <Circle bc="red" size={100} />
+        </YStack>
         {/* <TooltipDemo /> */}
         {/* <SquareDemo /> */}
         {/* <SelectDemo /> */}

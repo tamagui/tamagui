@@ -112,20 +112,16 @@ export const getSplitStyles: StyleSplitter = (
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   let transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
-  function mergeClassName(key: string, val: string) {
+  function mergeClassName(key: string, val: string, isMediaOrPseudo = false) {
     if (!val) {
       // empty classnames passed by compiler sometimes
       return
     }
     if (val.startsWith('_transform-')) {
-      const isMediaOrPseudo = key !== 'transform'
-      const isMedia = isMediaOrPseudo && key[11] === '_'
-      const isPsuedo = (isMediaOrPseudo && key[11] === '0') || key.endsWith('Style')
-      const namespace: TransformNamespaceKey = isMedia
-        ? key.split('_')[2]
-        : isPsuedo
-        ? key.split('-')[1]
-        : 'transform'
+      // const isMediaOrPseudo = key !== 'transform'
+      // const isMedia = isMediaOrPseudo && key[11] === '_'
+      // const isPsuedo = (isMediaOrPseudo && key[11] === '0') || key.endsWith('Style')
+      const namespace: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
 
       let transform = insertedTransforms[val]
       if (isClient) {
@@ -148,11 +144,6 @@ export const getSplitStyles: StyleSplitter = (
         if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
           // prettier-ignore
           console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
-        }
-        if (process.env.NODE_ENV === 'development') {
-          if (!transform) {
-            console.trace('NO TRANSFORM?', { key, val, transform })
-          }
         }
       }
       transforms[namespace] = transforms[namespace] || ['', '']
@@ -205,20 +196,23 @@ export const getSplitStyles: StyleSplitter = (
       for (const cn of valInit.split(' ')) {
         if (cn[0] === '_') {
           // tamagui, merge it expanded on key, eventually this will go away with better compiler
-          const [shorthand, mediaOrPsuedo, rest] = cn.slice(1).split('-')
+          const [shorthand, mediaOrPsuedo] = cn.slice(1).split('-')
+          const isMedia = mediaOrPsuedo[0] === '_'
+          const isPseudo = mediaOrPsuedo[0] === '0'
+          const isMediaOrPseudo = isMedia || isPseudo
           let fullKey = conf.shorthands[shorthand]
-          if (mediaOrPsuedo[0] === '_') {
+          if (isMedia) {
             // is media
             let mediaShortKey = mediaOrPsuedo.slice(1)
             mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
             fullKey += `-${mediaShortKey}`
-          } else if (mediaOrPsuedo[0] === '0') {
+          } else if (isPseudo) {
             // is psuedo
             const pseudoShortKey = mediaOrPsuedo.slice(1)
             fullKey += `-${psuedoCNInverse[pseudoShortKey]}`
           }
           usedKeys.add(fullKey)
-          mergeClassName(fullKey, cn)
+          mergeClassName(fullKey, cn, isMediaOrPseudo)
         } else {
           nonTamaguis += ' ' + cn
         }
@@ -263,6 +257,8 @@ export const getSplitStyles: StyleSplitter = (
         ? [[keyInit, valInit]]
         : staticConfig.propMapper(keyInit, valInit, theme, props, state)
 
+    let isMediaOrPseudo = isMedia || isPseudo
+
     if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
       console.log('  » getSplitStyles', keyInit, expanded)
     }
@@ -277,12 +273,13 @@ export const getSplitStyles: StyleSplitter = (
 
       if (key !== 'target' && val && val[0] === '_') {
         usedKeys.add(key)
-        mergeClassName(key, val)
+        mergeClassName(key, val, isMediaOrPseudo)
         continue
       }
 
       isMedia = key[0] === '$'
       isPseudo = validPseudoKeys[key]
+      isMediaOrPseudo = isMedia || isPseudo
 
       if (
         (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) ||
@@ -307,7 +304,7 @@ export const getSplitStyles: StyleSplitter = (
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(style.identifier, style.rules[0])
-              mergeClassName(fullKey, style.identifier)
+              mergeClassName(fullKey, style.identifier, isMediaOrPseudo)
             }
           }
         }
@@ -347,12 +344,11 @@ export const getSplitStyles: StyleSplitter = (
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(out.identifier, out.styleRule)
-              mergeClassName(fullKey, out.identifier)
+              mergeClassName(fullKey, out.identifier, true)
             }
           }
         } else {
           if (mediaState[mediaKey]) {
-            // push()
             if (process.env.NODE_ENV === 'development' && props['debug']) {
               console.log('apply media style', mediaKey, mediaState)
             }
@@ -379,6 +375,9 @@ export const getSplitStyles: StyleSplitter = (
           //   state.resolveVariablesAs === 'value' ||
           //   state.resolveVariablesAs === 'both'
           if (key in stylePropsTransform) {
+            if (process.env.NODE_ENV === 'development' && props['debug']) {
+              console.log('mergeTransform', key, val)
+            }
             mergeTransform(style, key, val, true)
           } else {
             style[key] = val

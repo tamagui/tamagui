@@ -5,6 +5,9 @@
   - also aligns with stylex
 
 - 1.0
+  - TODO bug backgroundStrong on dark in light / not variabl
+  - make webpack plugin that does stuff from next-plugin and sandbox webpack etc
+  - compile styled() to just css classes
   - pressStyle on card regression
   - fix media scale on takeout
   - fix dark mode takeout

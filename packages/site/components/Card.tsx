@@ -12,4 +12,9 @@ export const Card = styled(YStack, {
     elevation: '$4',
     y: -4,
   },
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+    elevation: '$0',
+    y: 0,
+  },
 })

@@ -18,7 +18,6 @@ import {
   Spacer,
   Spinner,
   Square,
-  Switch,
   Theme,
   ThemeName,
   XStack,
@@ -64,7 +63,9 @@ export default function TakeoutPage() {
     <Theme name={themeName}>
       <TitleAndMetaTags title="Tamagui TAKEOUT" description="What's up with Tamagui." />
 
-      <YStack bc={themeName === 'dark' ? '$backgroundStrong' : '#f0f0f0'}>
+      {/* TODO bug backgroundStrong on dark in light / not variabl */}
+      {/*  bc={themeName === 'dark' ? '$backgroundStrong' : '#f0f0f0'} */}
+      <YStack>
         <HeaderIndependent />
         <Spacer size="$7" />
 
@@ -83,10 +84,11 @@ export default function TakeoutPage() {
             ref={containerRef}
             space="$2"
             ai="center"
-            $xs={{ scale: 0.4 }}
-            $sm={{ scale: 0.6 }}
-            $md={{ scale: 0.75 }}
-            $lg={{ scale: 0.9 }}
+            scale={0.4}
+            $gtXs={{ scale: 0.4 }}
+            $gtSm={{ scale: 0.6 }}
+            $gtMd={{ scale: 0.75 }}
+            $gtLg={{ scale: 0.9 }}
           >
             <YStack py="$11" pos="relative">
               <TakeoutHero parentRef={containerRef} />
