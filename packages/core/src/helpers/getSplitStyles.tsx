@@ -199,6 +199,9 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') {
       let nonTamaguis = ''
+      if (!valInit) {
+        continue
+      }
       for (const cn of valInit.split(' ')) {
         if (cn[0] === '_') {
           // tamagui, merge it expanded on key, eventually this will go away with better compiler
