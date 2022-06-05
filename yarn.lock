@@ -4976,6 +4976,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji":
+  version: 0.0.0-use.local
+  resolution: "@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.46
+    "@tamagui/core": ^1.0.1-beta.46
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/animate-presence@^1.0.1-beta.49, @tamagui/animate-presence@workspace:packages/animate-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
@@ -5050,7 +5059,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.0.1-beta.49, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.0.1-beta.46, @tamagui/build@^1.0.1-beta.49, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -5139,7 +5148,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.0.1-beta.49, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.0.1-beta.46, @tamagui/core@^1.0.1-beta.49, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:

@@ -1,3 +1,4 @@
+import { createNotoFont } from '@takeout/font-noto-emoji'
 import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
@@ -8,6 +9,7 @@ import { animations } from './constants/animations'
 import { media } from './constants/media'
 import { createGenericFont } from './lib/createGenericFont'
 
+const notoFont = createNotoFont()
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont({
   size: {
@@ -58,6 +60,7 @@ const config = createTamagui({
   themes,
   tokens,
   fonts: {
+    noto: notoFont as any,
     heading: headingFont,
     body: bodyFont,
     mono: monoFont,

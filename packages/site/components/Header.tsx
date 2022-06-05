@@ -2,7 +2,7 @@ import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { Button, Paragraph, Spacer, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { tints, useTint } from './ColorToggleButton'
@@ -75,9 +75,28 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
       <XStack pointerEvents="auto" tag="nav" space="$3">
         {isTakeout ? (
           <XStack ai="center" space="$2">
+            <NextLink href="/signin" passHref>
+              <Paragraph
+                fontFamily="$silkscreen"
+                px="$3"
+                py="$2"
+                letterSpacing={2}
+                cursor="pointer"
+                size="$3"
+                o={0.7}
+                hoverStyle={{ opacity: 1 }}
+                tag="a"
+                $xxs={{
+                  display: 'none',
+                }}
+              >
+                Login
+              </Paragraph>
+            </NextLink>
+
             <NextLink href="/takeout/purchase" passHref>
               <Button fontFamily="$silkscreen" size="$4" tag="a">
-                Buy
+                Purchase
               </Button>
             </NextLink>
 

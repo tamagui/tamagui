@@ -5,8 +5,10 @@
   - also aligns with stylex
 
 - 1.0
+  - pressStyle on card regression
+  - fix media scale on takeout
+  - fix dark mode takeout
   - fix light mode inverse when using prefers
-  - styled(Button)
   - Switch on native
   - https://github.com/tamagui/tamagui/issues/53
   - VisuallyHidden/display: none working with space
@@ -60,6 +62,7 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - styled(Button)
   - need to redo concatClassName(), can be removed entirely for non-flattened
   - Group borderRadius adjustment should be based on it's borderWidth + padding, not always set to 1, needs to de-opt those props
   - <Tabs />
