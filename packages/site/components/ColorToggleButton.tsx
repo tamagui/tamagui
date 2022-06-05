@@ -46,7 +46,7 @@ export const ColorToggleButton = (props: ButtonProps) => {
   return (
     <TooltipSimple groupId="header-actions-color" label="Change color">
       <Button onPress={setNextTint} {...props} aria-label="toggle a light and dark color scheme">
-        <Circle bw={1} boc="$color" m={2} size={12} backgroundColor={tint} />
+        <Circle bw={1} boc="#fff" m={2} size={12} backgroundColor={tint} />
       </Button>
     </TooltipSimple>
   )

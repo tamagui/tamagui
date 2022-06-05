@@ -49,7 +49,6 @@ export const HeroTypography = () => {
   return (
     <>
       <YStack fullscreen className="bg-grid-big mask-gradient-both" o={0.5} />
-      {/* <YStack theme="alt2" fullscreen className="hero-gradient-white mask-gradient-down" /> */}
       <ContainerLarge position="relative" space="$8">
         <YStack ref={ref} ai="center" space="$2">
           <HomeH2>Pluggable fonts, individually tuned.</HomeH2>

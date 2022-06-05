@@ -12,7 +12,7 @@ import {
   YStack,
 } from 'tamagui'
 
-export function KitchenSink() {
+export function Demos() {
   return <YStack space></YStack>
 }
 

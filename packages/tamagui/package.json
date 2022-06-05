@@ -25,8 +25,6 @@
   "dependencies": {
     "@radix-ui/react-use-callback-ref": "^0.1.0",
     "@radix-ui/react-use-previous": "^0.1.1",
-    "@react-native-aria/focus": "^0.2.5",
-    "@react-native-aria/overlays": "^0.3.2",
     "@react-native-community/blur": "^3.6.0",
     "@tamagui/animate-presence": "^1.0.1-beta.48",
     "@tamagui/avatar": "^1.0.1-beta.48",
@@ -55,7 +53,7 @@
     "@tamagui/use-controllable-state": "^1.0.1-beta.48",
     "@tamagui/use-debounce": "^1.0.1-beta.48",
     "@tamagui/use-force-update": "^1.0.1-beta.48",
-    "expo-linear-gradient": "~11.0.3",
+    "expo-linear-gradient": "^11.0.3",
     "expo-modules-core": "^0.9.1",
     "react": "*",
     "react-dom": "*",

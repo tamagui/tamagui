@@ -30,6 +30,8 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   //   // ok, no cache
   // }
 
+  const x = Math.random()
+  console.trace('register', x)
   const { unregister } = require('esbuild-register/dist/node').register({
     target: 'es2019',
     format: 'cjs',
@@ -50,6 +52,7 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     const Mod = require('module')
     const og = Mod.prototype.require
     Mod.prototype.require = function (path: string) {
+      console.log('load', path)
       if (path.endsWith('.css')) {
         return {}
       }
@@ -132,6 +135,7 @@ export function loadTamagui(props: { components: string[]; config: string }): {
   } catch (err) {
     throw err
   } finally {
+    console.log('unregister', x)
     unregister()
   }
 }

@@ -1,4 +1,3 @@
-import { createFiraMonoFont } from '@tamagui/font-fira-mono'
 import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
@@ -7,6 +6,7 @@ import { createTamagui } from 'tamagui'
 
 import { animations } from './constants/animations'
 import { media } from './constants/media'
+import { createGenericFont } from './lib/createGenericFont'
 
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont({
@@ -44,7 +44,9 @@ const bodyFont = createInterFont(
     sizeLineHeight: (size) => Math.round(size * 1.1 + (size > 20 ? 10 : 10)),
   }
 )
-const firaFont = createFiraMonoFont()
+const monoFont = createGenericFont(
+  `"ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`
+)
 
 const config = createTamagui({
   defaultTheme: 'light',
@@ -58,7 +60,7 @@ const config = createTamagui({
   fonts: {
     heading: headingFont,
     body: bodyFont,
-    mono: firaFont,
+    mono: monoFont,
     silkscreen: silkscreenFont,
   },
 })

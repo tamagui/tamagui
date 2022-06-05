@@ -72,7 +72,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           if ('type' in section) {
             if (section.type === 'hr') {
               return (
-                <YStack mx="$4">
+                <YStack key={`sep-${i}`} mx="$4">
                   {!!section.title ? (
                     <XStack ai="center" jc="center" space="$6" mb="$2" mt="$4">
                       <Separator my="$4" />

@@ -77,6 +77,8 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ['react-native-web$', 'react-native-web'],
             ['@testing-library/react-native', '@tamagui/proxy-worm'],
             ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']],
+            // fix reanimated 3
+            ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
             ...(tamaguiOptions.aliasReactPackages
               ? ([
                   ['react', 'react'],
@@ -166,7 +168,14 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
               }
             }
 
+            // must inline react-native so we can alias to react-native-web
+            if (fullPath === 'react-native' || fullPath.startsWith('react-native/')) {
+              return false
+            }
+
             if (
+              // feather icons uses react-native-svg which needs to be aliased
+              // fullPath.includes('/feather-icons/') ||
               fullPath.startsWith('react-native-web') ||
               fullPath.includes('node_modules/react-native-web') ||
               /^(react-dom|react)\/$/.test(fullPath)
