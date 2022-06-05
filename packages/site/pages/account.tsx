@@ -9,7 +9,7 @@ import { useUser } from '../hooks/useUser'
 import { getUserLayout } from '../lib/getUserLayout'
 import { postData } from '../lib/helpers'
 
-export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
+// export const getServerSideProps = withPageAuth({ redirectTo: '/signin' })
 
 export default function AccountPage({ user }: { user: User }) {
   const [loading, setLoading] = useState(false)
