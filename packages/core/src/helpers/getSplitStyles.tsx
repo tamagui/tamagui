@@ -19,7 +19,7 @@ import {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
-import { ViewStyleWithPseudos, getStylesAtomic } from './getStylesAtomic'
+import { ViewStyleWithPseudos, getStylesAtomic, psuedoCNInverse } from './getStylesAtomic'
 import {
   insertStyleRule,
   insertedTransforms,
@@ -188,7 +188,31 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (keyInit === 'className') {
-      mergeClassName(keyInit, valInit)
+      let nonTamaguis = ''
+      for (const cn of valInit.split(' ')) {
+        if (cn[0] === '_') {
+          // tamagui, merge it expanded on key, eventually this will go away with better compiler
+          const [shorthand, mediaOrPsuedo, rest] = cn.slice(1).split('-')
+          let fullKey = conf.shorthands[shorthand]
+          if (mediaOrPsuedo[0] === '_') {
+            // is media
+            let mediaShortKey = mediaOrPsuedo.slice(1)
+            mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
+            fullKey += `-${mediaShortKey}`
+          } else if (mediaOrPsuedo[0] === '0') {
+            // is psuedo
+            const pseudoShortKey = mediaOrPsuedo.slice(1)
+            fullKey += `-${psuedoCNInverse[pseudoShortKey]}`
+          }
+          usedKeys.add(fullKey)
+          mergeClassName(fullKey, cn)
+        } else {
+          nonTamaguis += ' ' + cn
+        }
+      }
+      if (nonTamaguis) {
+        mergeClassName(keyInit, nonTamaguis)
+      }
       continue
     }
 
@@ -305,7 +329,8 @@ export const getSplitStyles: StyleSplitter = (
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
-            const fullKey = `${out.identifier}-${mediaKey}`
+            // TODO handle psuedo + media, not too hard just need to set up example case
+            const fullKey = `${style.property}-${mediaKeyShort}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(out.identifier, out.styleRule)

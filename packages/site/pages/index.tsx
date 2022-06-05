@@ -5,6 +5,7 @@ import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { useMemo } from 'react'
 import { Separator, XStack, YStack, styled } from 'tamagui'
 
+import { ActiveCircle } from '../components/ActiveCircle'
 import { CocentricCircles } from '../components/CocentricCircles'
 import { useTint } from '../components/ColorToggleButton'
 import { ContainerLarge } from '../components/Container'

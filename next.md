@@ -60,6 +60,7 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - need to redo concatClassName(), can be removed entirely for non-flattened
   - Group borderRadius adjustment should be based on it's borderWidth + padding, not always set to 1, needs to de-opt those props
   - <Tabs />
     - needs RovingFocusGroup

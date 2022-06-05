@@ -22,6 +22,11 @@ export declare const pseudos: {
         readonly priority: 3;
     };
 };
+export declare const psuedoCNInverse: {
+    hover: string;
+    focus: string;
+    press: string;
+};
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: AtomicStyleOptions): StyleObject[];
 export {};
 //# sourceMappingURL=getStylesAtomic.d.ts.map

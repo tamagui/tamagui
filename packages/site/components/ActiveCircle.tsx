@@ -9,7 +9,7 @@ export const ActiveCircle = ({ isActive, backgroundColor, opacity, ...props }: a
       borderColor="transparent"
       borderWidth={1}
       mx="$1"
-      {...(!!isActive && {
+      {...(isActive && {
         borderColor: '$color',
       })}
       {...(!isActive && {

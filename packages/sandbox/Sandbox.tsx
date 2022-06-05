@@ -4,7 +4,7 @@ import '@tamagui/polyfill-dev'
 
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { H4 } from 'tamagui'
+import { Circle, H4, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 

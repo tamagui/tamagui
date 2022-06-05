@@ -36,6 +36,14 @@ type PseudoDescriptor = typeof pseudos[keyof typeof pseudos]
 
 const pseudosOrdered = Object.values(pseudos)
 
+// this is how compiler outputs psueodo identifier
+// TODO remove in next refactor
+export const psuedoCNInverse = {
+  hover: 'hoverStyle',
+  focus: 'focusStyle',
+  press: 'pressStyle',
+}
+
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options: AtomicStyleOptions = {}) {
   const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
   let res: StyleObject[] = []
