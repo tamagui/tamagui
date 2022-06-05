@@ -63,8 +63,10 @@ async function run() {
       )
     }
 
-    // lerna messes up and always needs a second yarn install
+    // lerna messes up and always needs a second yarn install + add + push
     await spawnify(`yarn install`)
+    await spawnify(`git add -A && git commit --amend --date=now`)
+    await spawnify(`git push --force-with-lease`)
 
     console.log((await exec(`git diff`)).stdout)
 
