@@ -1,6 +1,4 @@
-import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
-import React, { useState } from 'react'
-import { useWindowDimensions } from 'react-native'
+import React from 'react'
 import { useLink } from 'solito/link'
 import { Anchor, Button, H1, Paragraph, Separator, XStack, YStack } from 'tamagui'
 
@@ -33,7 +31,7 @@ export function HomeScreen() {
         </Paragraph>
       </YStack>
 
-      <XStack>
+      <XStack als="center">
         <Button {...linkProps}>Link to user</Button>
       </XStack>
     </YStack>

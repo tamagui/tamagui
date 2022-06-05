@@ -182,7 +182,17 @@ export const getSplitStyles: StyleSplitter = (
       if (!valInit) continue
       for (const key in valInit) {
         if (usedKeys.has(key)) continue
-        style[key] = valInit
+        if (valInit && typeof valInit === 'object') {
+          // newer react native versions return a full object instead of ID
+          for (const skey in valInit) {
+            if (usedKeys.has(skey)) continue
+            usedKeys.add(skey)
+            style[skey] = valInit[skey]
+          }
+        } else {
+          usedKeys.add(key)
+          style[key] = valInit
+        }
       }
       continue
     }
