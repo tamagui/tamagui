@@ -13,7 +13,7 @@ component: Group
   <GroupDemo />
 </HeroContainer>
 
-```jsx hero template=Group
+```tsx hero template=Group
 
 ```
 
@@ -27,8 +27,8 @@ component: Group
 
 ### Usage
 
-```jsx
-import { Group, Button } from 'tamagui'
+```tsx
+import { Button, Group } from 'tamagui'
 
 export default () => (
   <Group>
@@ -47,8 +47,8 @@ This ensures any items inside will get appropriately scaled border radius.
 
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values. It will also pass the `size` prop directly to `children` unless you set `disablePassSize`:
 
-```jsx
-import { Group, Button } from 'tamagui'
+```tsx
+import { Button, Group } from 'tamagui'
 
 export default () => (
   <Group size="$6">

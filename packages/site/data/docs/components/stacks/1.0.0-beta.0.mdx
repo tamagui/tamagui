@@ -13,7 +13,7 @@ component: Stacks
   <StacksDemo />
 </HeroContainer>
 
-```jsx hero template=Stacks
+```tsx hero template=Stacks
 
 ```
 
@@ -33,8 +33,8 @@ Stack props accept [every prop from react-native-web](https://necolas.github.io/
 
 In this example you'd show three `YStack` elements spaced out.
 
-```jsx
-import { YStack, XStack } from 'tamagui'
+```tsx
+import { XStack, YStack } from 'tamagui'
 
 export default () => (
   <XStack space>
@@ -42,7 +42,7 @@ export default () => (
     <YStack />
     <YStack />
   </XStack>
-);
+)
 ```
 
 To see all the style properties supported, see the [Props](/docs/intro/props) documentation.
@@ -51,8 +51,8 @@ To see all the style properties supported, see the [Props](/docs/intro/props) do
 
 An example using a wide variety of style properties:
 
-```jsx
-import { XStack, YStack, Text } from 'tamagui'
+```tsx
+import { Text, XStack, YStack } from 'tamagui'
 
 export default () => (
   <XStack
@@ -60,12 +60,12 @@ export default () => (
     flexWrap="wrap"
     backgroundColor="#fff"
     hoverStyle={{
-      backgroundColor: 'red'
+      backgroundColor: 'red',
     }}
     // media query
     $gtSm={{
       flexDirection: 'column',
-      flexWrap: 'nowrap'
+      flexWrap: 'nowrap',
     }}
   >
     <YStack space="$3">

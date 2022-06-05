@@ -25,8 +25,8 @@ export default createTamagui({
 
 Let's start with a full yet slimmed down `tamagui.config.ts`:
 
-```jsx
-import { createTamagui, createTokens, createFont } from 'tamagui'
+```tsx
+import { createFont, createTamagui, createTokens } from 'tamagui'
 
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
@@ -57,7 +57,7 @@ const interFont = createFont({
 const size = {
   0: 0,
   1: 5,
-  2: 10
+  2: 10,
   // ....
 }
 
@@ -68,7 +68,7 @@ export const tokens = createTokens({
   zIndex: { 0: 0, 1: 100, 2: 200 },
   color: {
     white: '#fff',
-    black: '#000'
+    black: '#000',
   },
 })
 
@@ -111,7 +111,6 @@ declare module 'tamagui' {
 }
 
 export default config
-
 ```
 
 The `createTamagui` function receives a configuration object:
@@ -125,15 +124,11 @@ The `createTamagui` function receives a configuration object:
 
 Import and use the Tamagui `Provider` component at the top component in your app.
 
-```jsx line=3-5
+```tsx line=3-5
 import Tamagui from './tamagui.config'
 
 export default function App() {
-  return (
-    <Tamagui.Provider>
-      {/* The rest of your app here */}
-    </Tamagui.Provider>
-  )
+  return <Tamagui.Provider>{/* The rest of your app here */}</Tamagui.Provider>
 }
 ```
 
@@ -172,7 +167,7 @@ Tokens have a structure inspired by but divergent from the [Theme UI spec](https
 
 The font tokens are a bit special and are created with `createFont`:
 
-```jsx
+```tsx
 const interFont = createFont({
   family: 'Inter, Helvetica, Arial, sans-serif',
   size: {
@@ -219,26 +214,21 @@ Things to note:
 
 The rest of the tokens categories besides font are flatter. The `space` and `size` generally share keys, and that space can generally use negative keys as well.
 
-```jsx
+```tsx
 // passed into createTamagui
 const tokens = createTokens({
   color: {
     white: '#fff',
-    black: '#000'
+    black: '#000',
   },
 })
 ```
 
 You access tokens then by using `$` prefixes in your values. Tamagui knows which tokens to use based on the style property you use.
 
-```jsx
+```tsx
 const App = () => (
-  <Text
-    fontSize="$lg"
-    lineHeight="$lg"
-    fontFamily="$mono"
-    color="$white"
-  >
+  <Text fontSize="$lg" lineHeight="$lg" fontFamily="$mono" color="$white">
     Hello world
   </Text>
 )
@@ -272,7 +262,7 @@ Themes live one level below tokens. Tokens are your variables, where themes use 
 
 Tamagui components in general expect a set of theme keys to be defined like the following, but you can deviate if you create your own design system. See [the source for the website](https://github.com/tamagui/tamagui/blob/master/packages/site/constants/themes.ts) for a fuller example.
 
-```jsx
+```tsx
 const light = {
   background: '#fff',
   backgroundHover: tokens.color.gray2,
@@ -299,7 +289,7 @@ You don't have to use tokens as your theme values, but if you do they avoid some
 
 To see how it works, here's a snippet from `InteractiveFrame` which is the frame component that's used in `Button`:
 
-```jsx
+```tsx
 export const InteractiveFrame = styled(XStack, {
   borderRadius: '$1',
   paddingVertical: '$2',
@@ -334,7 +324,7 @@ Shorthands are defined directly on your `createTamagui` call, rather than being 
 
 Here's an example of a partial shorthands configuration:
 
-```jsx
+```tsx
 const shorthands = {
   ac: 'alignContent',
   ai: 'alignItems',
@@ -350,7 +340,7 @@ const shorthands = {
 } as const
 
 export default createTamagui({
-  shorthands
+  shorthands,
 })
 ```
 

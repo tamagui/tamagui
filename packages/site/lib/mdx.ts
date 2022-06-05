@@ -11,7 +11,6 @@ import remarkSlug from 'remark-slug'
 import { Frontmatter } from '../frontmatter'
 import rehypeHighlightCode from './rehype-highlight-code'
 import rehypeMetaAttribute from './rehype-meta-attribute'
-import remarkHeroTemplate from './remark-hero-template'
 
 const ROOT_PATH = process.cwd()
 export const DATA_PATH = path.join(ROOT_PATH, 'data')
@@ -43,8 +42,7 @@ export const getMdxBySlug = async (basePath, slug) => {
   const { frontmatter, code } = await bundleMDX({
     source,
     mdxOptions(options) {
-      // @ts-ignore
-      options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkSlug, remarkHeroTemplate]
+      options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkSlug]
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         rehypeMetaAttribute,

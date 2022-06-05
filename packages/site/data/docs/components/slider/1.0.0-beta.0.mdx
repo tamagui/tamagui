@@ -13,7 +13,7 @@ component: Slider
   <SliderDemo />
 </HeroContainer>
 
-```jsx hero template=Slider
+```tsx hero template=Slider
 
 ```
 
@@ -30,7 +30,7 @@ component: Slider
 
 Slider comes as multiple components that ship with default styles and are sizable. The `size` prop on `<Slider />` will automatically pass size down to all the sub-components.
 
-```jsx
+```tsx
 import { Slider } from 'tamagui'
 
 export default () => (
@@ -45,7 +45,7 @@ export default () => (
 
 You can also optionally style any component, either using inline style props or by wrapping with `styled`:
 
-```jsx
+```tsx
 import { Slider, styled } from 'tamagui'
 
 const CustomSliderTrack = styled(Slider.Track, {

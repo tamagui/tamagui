@@ -7,7 +7,7 @@ description: Pluggable animation drivers.
   <AnimationsDemo />
 </HeroContainer>
 
-```jsx hero template=Animations
+```tsx hero template=Animations
 
 ```
 
@@ -117,7 +117,7 @@ Here's an example animating `hoverStyle`:
   <AnimationsHoverDemo />
 </HeroContainer>
 
-```jsx hero template=AnimationsHover
+```tsx hero template=AnimationsHover
 
 ```
 
@@ -129,7 +129,7 @@ Setting `enterStyle` styles on any component tell it to start with those styles,
   <AnimationsEnterDemo />
 </HeroContainer>
 
-```jsx hero template=AnimationsEnter
+```tsx hero template=AnimationsEnter
 
 ```
 
@@ -150,7 +150,7 @@ export default () => (
       y: {
         type: 'bouncy',
         overshootClamping: true,
-      }
+      },
     }}
   />
 )
@@ -173,9 +173,9 @@ export default () => (
         y: 'slow',
         scale: {
           type: 'fast',
-          repeat: 2
-        }
-      }
+          repeat: 2,
+        },
+      },
     ]}
   />
 )
@@ -222,7 +222,7 @@ Wrap one or more tamagui components with AnimatePresence. This enables the use t
   <AnimationsPresenceDemo />
 </HeroContainer>
 
-```jsx hero template=AnimationsPresence
+```tsx hero template=AnimationsPresence
 
 ```
 

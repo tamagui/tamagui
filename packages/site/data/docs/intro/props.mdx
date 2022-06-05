@@ -229,7 +229,7 @@ For styling, Tamagui adds flattened transform properties, pseudo states and medi
 
 Support for `hoverStyle`, `pressStyle`, and `focusStyle` is helpful as it turns what typically is complex stateful code into pure CSS on web, and a more performant StyleSheet.create (compared to inline styles) for native. They can be used with media queries as well.
 
-```jsx
+```tsx
 <Text color="red" hoverStyle={{ color: 'blue' }} />
 ```
 
@@ -262,17 +262,17 @@ Based on whatever media queries you define in `createTamagui`, you can now use a
 
 If you defined your media query like:
 
-```jsx
+```tsx
 createTamagui({
   media: {
-    sm: { maxWidth: 800 }
-  }
+    sm: { maxWidth: 800 },
+  },
 })
 ```
 
 Then you can use it like:
 
-```jsx
+```tsx
 <Text color="red" $sm={{ color: 'blue' }} />
 ```
 

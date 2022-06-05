@@ -106,7 +106,7 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
  * Any `motion` components that have an `exit` property defined will animate out when removed from
  * the tree.
  *
- * ```jsx
+ * ```tsx
  * import { motion, AnimatePresence } from 'framer-motion'
  *
  * export const Items = ({ items }) => (

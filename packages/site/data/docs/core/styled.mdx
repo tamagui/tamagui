@@ -11,8 +11,8 @@ description: Extend and build custom and optimizable components.
 
 Create a new component by extending an existing one:
 
-```jsx
-import { styled, Stack, GetProps } from '@tamagui/core'
+```tsx
+import { GetProps, Stack, styled } from '@tamagui/core'
 
 export const Circle = styled(Stack, {
   name: 'Circle', // useful for debugging, and Component themes
@@ -25,7 +25,7 @@ export type CircleProps = GetProps<typeof Circle>
 
 Usage:
 
-```jsx
+```tsx
 <Circle x={10} y={10} backgroundColor="red" />
 ```
 
@@ -39,8 +39,8 @@ You can pass any prop that is supported by the component you are extending, even
 
 Let's add some variants:
 
-```jsx
-import { styled, Stack } from '@tamagui/core'
+```tsx
+import { Stack, styled } from '@tamagui/core'
 
 export const Circle = styled(Stack, {
   borderRadius: 100_000_000,
@@ -70,12 +70,11 @@ export const Circle = styled(Stack, {
     },
   },
 })
-
 ```
 
 We can use these like so:
 
-```jsx
+```tsx
 <Circle pin="top" centered size="$lg" />
 ```
 

@@ -13,7 +13,7 @@ component: Paragraph
   <TextDemo />
 </HeroContainer>
 
-```jsx hero template=Text
+```tsx hero template=Text
 
 ```
 
@@ -31,8 +31,8 @@ Text in Tamagui matches to Text in react-native-web, just with the added [Tamagu
 
 It explicitly doesn't inherit your theme color or other font properties, as it's meant to be plain and used for extension. Below, we'll show `SizableText` which extends Text, and `Paragraph` which extends SizableText. Generally, Paragraph is the useful view as it will use theme values, while you can extend Text if you'd like to derive your own design system.
 
-```jsx
-import { YStack, XStack, Text } from 'tamagui'
+```tsx
+import { Text, XStack, YStack } from 'tamagui'
 
 export default () => (
   <>
@@ -69,7 +69,7 @@ Based on the values set in your tokens. It uses [spread variants](/docs/core/sty
 
 Finally Paragraph extends `SizableText` and simply sets some default values from your theme:
 
-```jsx
+```tsx
 export const Paragraph = styled(SizableText, {
   fontFamily: '$body',
   color: '$color',

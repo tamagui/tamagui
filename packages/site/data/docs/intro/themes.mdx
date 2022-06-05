@@ -12,7 +12,7 @@ You make a theme with `createTheme`, like so:
 ```tsx
 const dark = createTheme({
   background: '#000',
-  color: '#fff'
+  color: '#fff',
 })
 ```
 
@@ -25,7 +25,6 @@ const tokens = createTokens({
     white: '#fff',
   },
 })
-
 
 const dark = createTheme({
   background: tokens.color.black,
@@ -108,13 +107,13 @@ Putting this all together, you'll see how you can get complete control over Tama
 // this will customize all `Button` styles
 const dark_Button = createTheme({
   background: '#333',
-  color: '#999'
+  color: '#999',
 })
 
 // this will customize all `Button` styles inside the `dark_green` theme:
 const dark_green_Button = createTheme({
   background: 'darkgreen',
-  color: 'lightgreen'
+  color: 'lightgreen',
 })
 ```
 
@@ -125,7 +124,7 @@ import { Stack, styled } from '@tamagui/core'
 
 const Button = styled(Stack, {
   // note: this name will match it to any theme ending with `_Button`:
-  name: 'Button'
+  name: 'Button',
 })
 ```
 
@@ -205,7 +204,7 @@ export default config
 
 Let's start with an example of inline styling with a subset of the configuration:
 
-```jsx
+```tsx
 import { createTokens, createTamagui, YStack, Theme } from 'tamagui'
 
 const tokens = createTokens({
@@ -258,7 +257,7 @@ Which will automatically apply at runtime, or can be gathered for use in SSR usi
 
 Finally, the compiler on web will extract your views roughly as so:
 
-```jsx
+```tsx
 export const App = () => (
   <Provider defaultTheme="light">
     <div className="baCo-2nesi3" />
@@ -276,8 +275,9 @@ export const App = () => (
 
 Here's what we've landed on which helps ensure everything is typed properly. Use `createTheme`, which is a simple helper for creating a theme and having all the values turned into variables. Keep themes in a separate `themes.ts` file, and structure it like this:
 
-```jsx
+```tsx
 import { createTheme } from 'tamagui'
+
 import { tokens } from './tokens'
 
 const light = createTheme({

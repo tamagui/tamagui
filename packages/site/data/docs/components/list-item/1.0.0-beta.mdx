@@ -13,7 +13,7 @@ component: ListItem
   <ListItemDemo />
 </HeroContainer>
 
-```jsx hero template=ListItem
+```tsx hero template=ListItem
 
 ```
 
@@ -27,28 +27,20 @@ component: ListItem
 
 ### Usage
 
-```jsx
+```tsx
 import { ListItem } from 'tamagui'
 
-export default () => (
-  <ListItem>
-    Lorem ipsum
-  </ListItem>
-)
+export default () => <ListItem>Lorem ipsum</ListItem>
 ```
 
 ### Sizing
 
 Sizing listItems provides a unique challenge especially for a compiler, because you need to adjust many different properties - not just on the outer frame, but on the text wrapped inside. Tamagui supports adjusting the padding, border radius, font size and icons sizes all in one with the `size` prop.
 
-```jsx
+```tsx
 import { ListItem } from 'tamagui'
 
-export default () => (
-  <ListItem size="$6">
-    Lorem ipsum
-  </ListItem>
-)
+export default () => <ListItem size="$6">Lorem ipsum</ListItem>
 ```
 
 Given your theme defines a size `6`, the listItem will adjust all of the properties appropriately. You can also pass a plain number to get an arbitrary size.
