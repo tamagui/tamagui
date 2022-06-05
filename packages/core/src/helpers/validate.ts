@@ -71,10 +71,10 @@ if (process.env.NODE_ENV === 'development') {
   FontOptional = ow.object.partialShape(fontOpt)
 
   Tokens = ow.object.exactShape({
-    size: ow.object.nonEmpty.valuesOfType(ow.number),
-    space: ow.object.nonEmpty.valuesOfType(ow.number),
-    zIndex: ow.object.nonEmpty.valuesOfType(ow.number),
-    radius: ow.object.nonEmpty.valuesOfType(ow.number),
+    size: ow.object.nonEmpty.valuesOfType(ow.any(ow.number, ow.object)),
+    space: ow.object.nonEmpty.valuesOfType(ow.any(ow.number, ow.object)),
+    zIndex: ow.object.nonEmpty.valuesOfType(ow.any(ow.number, ow.object)),
+    radius: ow.object.nonEmpty.valuesOfType(ow.any(ow.number, ow.object)),
     color: ow.object.nonEmpty.valuesOfType(ow.any(ow.string, ow.object)),
   })
 }

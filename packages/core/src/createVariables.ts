@@ -27,7 +27,6 @@ export const createVariables = <A extends DeepTokenObject>(
         res[key] = val.map((val, i) => {
           const skey = `${key}-${i}`
           const sname = parentPath ? `${name}-${skey}` : skey
-          console.log('make it', val, key, sname)
           return isVariable(val)
             ? val
             : createVariable({
