@@ -10,7 +10,7 @@ module.exports = async function main() {
   await Promise.all([
     //
     extractStaticAppBabel(),
-    extractStaticWebpackApp(),
+    // extractStaticWebpackApp(),
   ])
   process.env.IS_STATIC = undefined
 }
@@ -19,7 +19,16 @@ const alias = {
   'react-native$': 'react-native-web',
   'react-native-reanimated$': '@tamagui/proxy-worm',
   'react-native-gesture-handler$': '@tamagui/proxy-worm',
+  'react-native-safe-area-context$': '@tamagui/fake-react-native',
   '@gorhom/bottom-sheet$': '@tamagui/proxy-worm',
+}
+
+const defines = {
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  __DEV__: JSON.stringify(false),
+  'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
+  'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
+  'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
 }
 
 async function extractStaticAppBabel() {
@@ -73,20 +82,13 @@ async function extractStaticAppBabel() {
         },
       ],
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        'process.env.DEBUG': JSON.stringify(process.env.DEBUG ?? ''),
-        'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
-        'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
-      }),
-    ],
+    plugins: [new webpack.DefinePlugin(defines)],
   })
 
   await new Promise((res) => {
     compiler.run((err, result) => {
-      // console.log({ err })
-      // console.log(result?.toString())
+      console.log({ err })
+      console.log(result?.toString())
       res()
     })
   })
@@ -145,14 +147,7 @@ async function extractStaticWebpackApp() {
         },
       ],
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
-        'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
-        'process.env.TAMAGUI_COMPILE_PROCESS': JSON.stringify(1),
-      }),
-    ],
+    plugins: [new webpack.DefinePlugin(defines)],
   })
 
   await new Promise((res) => {

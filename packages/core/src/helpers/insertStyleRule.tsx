@@ -41,6 +41,7 @@ const isClient = typeof document !== 'undefined'
 let hasInsertedSinceUpdate = true
 
 export function updateInserted() {
+  if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
   if (!hasInsertedSinceUpdate) {
     console.warn('hasnt inserted since')

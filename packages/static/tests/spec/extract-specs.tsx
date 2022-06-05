@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Spacer, Text, YStack, useMedia } from 'tamagui'
+import { Spacer, Text, XStack, YStack, useMedia } from 'tamagui'
 
 import Tamagui from '../lib/tamagui.config'
 import { testColor } from './constants'
@@ -17,7 +17,7 @@ export const Provider = (props) => <Tamagui.Provider>{props.children}</Tamagui.P
 const child = <Text>hello world</Text>
 
 export const Card = (props: any) => (
-  <Box
+  <XStack
     className="transition all ease-in ms100"
     borderRadius="$2"
     backgroundColor="$background"
@@ -104,8 +104,8 @@ export function Test1() {
 export function Test2(props: TestProps) {
   return (
     <>
-      <Box className="who" onPress={() => {}} overflow="hidden" />
-      <Box
+      <XStack className="who" onPress={() => {}} overflow="hidden" />
+      <XStack
         className="ease-in-out-top"
         backgroundColor="#000"
         paddingVertical={2}
@@ -116,7 +116,7 @@ export function Test2(props: TestProps) {
         })}
       >
         {child}
-      </Box>
+      </XStack>
     </>
   )
 }

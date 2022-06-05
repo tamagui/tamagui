@@ -9,7 +9,8 @@ export const externalizeModules: any = ({ context, request }, callback) => {
   }
   if (context.includes('node_modules')) {
     if (context.includes('react-native/')) {
-      context = context.replace('react-native/', 'react-native-web/')
+      return callback()
+      // context = context.replace('react-native/', 'react-native-web/')
     }
     if (context.includes('react-native-reanimated')) {
       return callback(undefined, 'react-native-reanimated')

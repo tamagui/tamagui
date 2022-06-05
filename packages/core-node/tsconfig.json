@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig",
-  "include": [
-    "../core/src"
-  ],
   "compilerOptions": {
     "rootDir": "../",
     "composite": true,
@@ -11,18 +8,6 @@
     "outDir": "dist",
     "module": "es2020",
     "target": "es2020",
-    "plugins": [
-      {
-        "transform": "ts-transform-import-path-rewrite",
-        "import": "transform",
-        "alias": {
-          "^(react-native)$": "@tamagui/fake-react-native",
-          "react-native-safe-area-context": "@tamagui/fake-react-native",
-          "react-native-gesture-handler": "@tamagui/proxy-worm"
-        },
-        "type": "config"
-      }
-    ]
   },
   "references": [
     {

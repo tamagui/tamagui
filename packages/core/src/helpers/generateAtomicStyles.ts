@@ -70,6 +70,10 @@ export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutp
     style.shadowRadius != null
   ) {
     boxShadowReducer(res, style)
+    delete res['shadowColor']
+    delete res['shadowOffset']
+    delete res['shadowOpacity']
+    delete res['shadowRadius']
   }
 
   if (
@@ -78,6 +82,9 @@ export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutp
     style.textShadowRadius != null
   ) {
     textShadowReducer(res, style)
+    delete res['textShadowColor']
+    delete res['textShadowOffset']
+    delete res['textShadowRadius']
   }
 
   const out = {}
@@ -139,50 +146,48 @@ export function expandStyle(key: string, value: any) {
   }
 
   // web only
-  if (isWeb) {
-    switch (key) {
-      // Ignore some React Native styles
-      case 'elevation':
-      case 'overlayColor':
-      case 'resizeMode':
-      case 'tintColor': {
-        break
-      }
+  switch (key) {
+    // Ignore some React Native styles
+    case 'elevation':
+    case 'overlayColor':
+    case 'resizeMode':
+    case 'tintColor': {
+      break
+    }
 
-      case 'aspectRatio': {
-        return [[key, value.toString()]]
-      }
+    case 'aspectRatio': {
+      return [[key, value.toString()]]
+    }
 
-      // TODO: remove once this issue is fixed
-      // https://github.com/rofrischmann/inline-style-prefixer/issues/159
-      case 'backgroundClip': {
-        if (value === 'text') {
-          return [
-            ['backgroundClip', value],
-            ['WebkitBackgroundClip', value],
-          ]
-        }
-        break
+    // TODO: remove once this issue is fixed
+    // https://github.com/rofrischmann/inline-style-prefixer/issues/159
+    case 'backgroundClip': {
+      if (value === 'text') {
+        return [
+          ['backgroundClip', value],
+          ['WebkitBackgroundClip', value],
+        ]
       }
+      break
+    }
 
-      case 'textAlignVertical': {
-        return [['verticalAlign', value === 'center' ? 'middle' : value]]
-      }
+    case 'textAlignVertical': {
+      return [['verticalAlign', value === 'center' ? 'middle' : value]]
+    }
 
-      case 'textDecorationLine': {
-        return [['textDecorationLine', value]]
-      }
+    case 'textDecorationLine': {
+      return [['textDecorationLine', value]]
+    }
 
-      case 'transform': {
-        if (Array.isArray(value)) {
-          return [[key, value.map(mapTransform).join(' ')]]
-        }
-        break
+    case 'transform': {
+      if (Array.isArray(value)) {
+        return [[key, value.map(mapTransform).join(' ')]]
       }
+      break
+    }
 
-      case 'writingDirection': {
-        return [['direction', value]]
-      }
+    case 'writingDirection': {
+      return [['direction', value]]
     }
   }
 
@@ -404,8 +409,11 @@ const colorProps = {
 }
 
 function normalizeValueWithProperty(value: any, property?: string): any {
-  if (isWeb) {
-    if ((property == null || !unitlessNumbers[property]) && typeof value === 'number') {
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    if (
+      (property === undefined || property === null || !unitlessNumbers[property]) &&
+      typeof value === 'number'
+    ) {
       return `${value}px`
     }
   }
@@ -419,7 +427,7 @@ const normalizeColor = (color?: number | string, opacity = 1): void | string => 
   if (color == null || color == undefined) {
     return
   }
-  if (isWeb) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
     if (typeof color === 'string' && isWebColor(color)) {
       return color
     }
