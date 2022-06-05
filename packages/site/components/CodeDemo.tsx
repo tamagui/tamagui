@@ -1,19 +1,18 @@
 // Inspired by https://github.com/rexxars/react-refractor
 import dynamic from 'next/dynamic'
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { YStack } from 'tamagui'
 
 import type { CodeBlockProps } from './CodeBlock'
 
-type CodeDemoProps = CodeBlockProps
-
-export function CodeDemo({ css, line, maxHeight, height, ...props }: CodeDemoProps) {
+export function CodeDemo({ css, line, maxHeight, height, ...props }: CodeBlockProps) {
   const [Comp, setComp] = useState<any>(null)
 
   useEffect(() => {
     const CodeBlock = dynamic(() => import('./CodeBlock'))
     setComp(CodeBlock)
   }, [])
+
   return (
     <YStack
       br="$8"

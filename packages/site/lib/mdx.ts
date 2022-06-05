@@ -6,9 +6,11 @@ import glob from 'glob'
 import matter from 'gray-matter'
 import { bundleMDX } from 'mdx-bundler'
 import readingTime from 'reading-time'
-import remarkSlug from 'remark-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeSlug from 'rehype-slug'
 
 import { Frontmatter } from '../frontmatter'
+import rehypeHeroTemplate from './rehype-hero-template'
 import rehypeHighlightCode from './rehype-highlight-code'
 import rehypeMetaAttribute from './rehype-meta-attribute'
 
@@ -24,7 +26,7 @@ export const getAllFrontmatter = (fromPath: string) => {
       const source = fs.readFileSync(path.join(filePath), 'utf8')
       const { data, content } = matter(source)
       return {
-        ...(data as Frontmatter),
+        ...data,
         slug: filePath.replace(`${DATA_PATH}/`, '').replace('.mdx', ''),
         readingTime: readingTime(content),
       } as Frontmatter
@@ -38,22 +40,26 @@ export const getMdxBySlug = async (basePath, slug) => {
     const versions = getAllVersionsFromPath(`docs/components/${slug}`)
     mdxPath += `/${versions[0]}`
   }
-  const source = fs.readFileSync(path.join(DATA_PATH, basePath, `${mdxPath}.mdx`), 'utf8')
+  const filePath = path.join(DATA_PATH, basePath, `${mdxPath}.mdx`)
+  const source = fs.readFileSync(filePath, 'utf8')
   const { frontmatter, code } = await bundleMDX({
     source,
     mdxOptions(options) {
-      options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkSlug]
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         rehypeMetaAttribute,
+        rehypeHeroTemplate,
         rehypeHighlightCode,
+        rehypeAutolinkHeadings,
+        rehypeSlug,
       ]
       return options
     },
   })
+
   return {
     frontmatter: {
-      ...(frontmatter as Frontmatter),
+      ...frontmatter,
       slug,
       readingTime: readingTime(code),
     } as Frontmatter,

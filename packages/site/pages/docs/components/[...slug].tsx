@@ -28,7 +28,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
         />
       )} */}
       <MDXProvider frontmatter={frontmatter}>
-        <Component components={components as any} />
+        <Component components={components} />
       </MDXProvider>
       <QuickNav key={frontmatter.slug} />
     </>

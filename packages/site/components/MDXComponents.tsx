@@ -238,7 +238,7 @@ export const components = {
         isCollapsible={hero !== undefined || collapsible !== undefined}
         isScrollable={scrollable !== undefined}
         showLineNumbers={showLineNumbers !== undefined}
-        {...(rest as any)}
+        {...rest}
       >
         {children}
       </DocCodeBlock>

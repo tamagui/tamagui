@@ -1,11 +1,11 @@
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
-import { forwardRef, useContext, useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, YStack } from 'tamagui'
 
 import { Code } from './Code'
-import { FrontmatterContext } from './MDXComponents'
+// import { FrontmatterContext } from './MDXComponents'
 import { Pre } from './Pre'
 
 export const DocCodeBlock = forwardRef((props: any, ref) => {
@@ -16,15 +16,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
     showLineNumbers = false,
     isHero = false,
     isCollapsible = false,
-    isScrollable = false,
-    variant,
     isHighlightingLines,
   } = props
   const [isCollapsed, setIsCollapsed] = useState(isHero || isCollapsible)
   const [hasCopied, setHasCopied] = useState(false)
   const [code, setCode] = useState(undefined)
   const preRef = useRef<any>(null)
-  const frontmatter = useContext(FrontmatterContext)
+  // const frontmatter = useContext(FrontmatterContext)
 
   useEffect(() => {
     if (preRef.current) {
@@ -114,9 +112,6 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             display="inline-flex"
             opacity={0}
             icon={hasCopied ? CheckCircle : Clipboard}
-            // css={{
-            //   '*:hover > &, &:focus': { opacity: 1, transition: '150ms linear' },
-            // }}
             onPress={() => setHasCopied(true)}
           ></Button>
         </YStack>

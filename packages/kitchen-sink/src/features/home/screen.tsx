@@ -1,6 +1,6 @@
 import React from 'react'
 import { UseLinkProps, useLink } from 'solito/link'
-import { Button, Group, ListItem, ListItemProps, Separator, XStack, YStack } from 'tamagui'
+import { Group, ListItem, ListItemProps, Separator, XStack, YStack } from 'tamagui'
 
 const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })

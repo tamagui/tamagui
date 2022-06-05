@@ -10,8 +10,7 @@ export default (options = {}) => {
   }
 
   function onelement(node) {
-    var match
-
+    let match
     if (node.tagName === 'code' && node.data && node.data.meta) {
       re.lastIndex = 0 // Reset regex.
 

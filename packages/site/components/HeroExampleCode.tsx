@@ -149,7 +149,7 @@ const examples = [
       examples: [
         {
           name: 'app.tsx',
-          language: 'jsx',
+          language: 'tsx',
           code: `import { YStack, Text } from 'tamagui'
 
 const App = () => (
@@ -163,7 +163,7 @@ const App = () => (
 
         {
           name: 'tamagui.config.ts',
-          language: 'jsx',
+          language: 'tsx',
           code: `export default createTamagui({
   shorthands: {
     px: 'paddingHorizontal',
@@ -190,7 +190,7 @@ const App = () => <div className={_cn}>
     Lorem ipsum dolor.
   </span>
 </div>`,
-          language: 'jsx',
+          language: 'tsx',
         },
         {
           name: 'app.css',
@@ -218,7 +218,7 @@ const App = () => <div className={_cn}>
       examples: [
         {
           name: 'app.tsx',
-          language: 'jsx',
+          language: 'tsx',
           code: `import { Paragraph, YStack } from 'tamagui'
 
 const App = (props) => (
@@ -257,7 +257,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
     </span>
   </div>
 `,
-          language: 'jsx',
+          language: 'tsx',
         },
         {
           name: 'app.css',
@@ -291,7 +291,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
       examples: [
         {
           name: 'app.tsx',
-          language: 'jsx',
+          language: 'tsx',
           code: `import { YStack } from 'tamagui'
 
 const App = () => (
@@ -322,7 +322,7 @@ const App = () => (
 import { YStack } from 'tamagui'
 
 const App = () => <div className={_cn} />`,
-          language: 'jsx',
+          language: 'tsx',
         },
         {
           name: 'app.css',
@@ -348,7 +348,7 @@ const App = () => <div className={_cn} />`,
       examples: [
         {
           name: 'app.tsx',
-          language: 'jsx',
+          language: 'tsx',
           code: `import { useMedia, useTheme, YStack } from 'tamagui'
 
 const App = () => {
@@ -380,7 +380,7 @@ import { YStack, useMedia, useTheme } from 'tamagui'
 const App = () => {
   return <div className={_cn} />
 }`,
-          language: 'jsx',
+          language: 'tsx',
         },
         {
           name: 'app.css',
