@@ -37,6 +37,10 @@ const transform = withPlugins(
         'VirtualizedSectionList',
         'FlatList',
         'CheckBox',
+        'Touchable',
+        'PressResponder',
+        'PanResponder',
+        'SectionList',
       ],
     }),
     // // template for modifying webpack further:
