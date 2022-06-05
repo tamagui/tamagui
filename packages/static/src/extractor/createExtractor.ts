@@ -36,7 +36,7 @@ import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
 import { timer } from './timer'
-import { validHTMLAttributes } from './validHTMLAttributes'
+import { validAccessibilityAttributes, validHTMLAttributes } from './validHTMLAttributes'
 
 const UNTOUCHED_PROPS = {
   key: true,
@@ -102,6 +102,7 @@ export function createExtractor() {
         disableDebugAttr,
         prefixLogs,
         excludeProps,
+        target,
         ...props
       }: ExtractorParseProps
     ) => {
@@ -115,6 +116,7 @@ export function createExtractor() {
         throw new Error(`Must provide components array with list of Tamagui component modules`)
       }
 
+      const isTargetingHTML = target === 'html'
       const ogDebug = shouldPrintDebug
       const tm = timer()
 
@@ -353,12 +355,15 @@ export function createExtractor() {
               ...(props.inlineProps || []),
               ...(staticConfig.inlineProps || []),
             ])
+
             const deoptProps = new Set([
               // always de-opt animation
               'animation',
               ...(props.deoptProps || []),
               ...(staticConfig.deoptProps || []),
             ])
+
+            const inlineWhenUnflattened = new Set([...(staticConfig.inlineWhenUnflattened || [])])
 
             // Generate scope object at this level
             const staticNamespace = getStaticBindingsForScope(
@@ -487,6 +492,7 @@ export function createExtractor() {
             let shouldDeopt = false
             const inlined = new Map<string, any>()
             let hasSetOptimized = false
+            const inlineWhenUnflattenedOGVals = {}
 
             // RUN first pass
 
@@ -721,10 +727,21 @@ export function createExtractor() {
                     { resolveVariablesAs: 'auto' }
                   )
                   if (out) {
-                    // translate to DOM-compat
-                    out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
-                    // remove className - we dont use rnw styling
-                    delete out.className
+                    if (!Array.isArray(out)) {
+                      console.warn(`Error expected array but got`, out)
+                      couldntParse = true
+                      shouldDeopt = true
+                    } else {
+                      out = Object.fromEntries(out)
+                    }
+                  }
+                  if (out) {
+                    if (isTargetingHTML) {
+                      // translate to DOM-compat
+                      out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
+                      // remove className - we dont use rnw styling
+                      delete out.className
+                    }
 
                     keys = Object.keys(out)
                   }
@@ -767,6 +784,11 @@ export function createExtractor() {
 
               // FAILED = dynamic or ternary, keep going
               if (styleValue !== FAILED_EVAL) {
+                if (inlineWhenUnflattened.has(name)) {
+                  // preserve original value for restoration
+                  inlineWhenUnflattenedOGVals[name] = { styleValue, attr }
+                }
+
                 if (isValidStyleKey(name)) {
                   if (shouldPrintDebug) {
                     console.log(`  style: ${name} =`, styleValue)
@@ -1567,6 +1589,26 @@ export function createExtractor() {
                     delete attr.value[key]
                   } else {
                     existingStyleKeys.add(key)
+                  }
+                }
+              }
+            }
+
+            // inlineWhenUnflattened
+            if (!shouldFlatten) {
+              if (Object.keys(inlineWhenUnflattenedOGVals).length) {
+                for (const [index, attr] of attrs.entries()) {
+                  if (attr.type === 'style') {
+                    for (const key in attr.value) {
+                      const val = inlineWhenUnflattenedOGVals[key]
+                      if (val) {
+                        // delete the style
+                        delete attr.value[key]
+
+                        // and insert it before
+                        attrs.splice(index - 1, 0, val.attr)
+                      }
+                    }
                   }
                 }
               }

@@ -562,7 +562,7 @@ export type StaticConfig = {
   componentName?: string
 
   /**
-   * If you need to pass context or something, prevents from ever
+   * (compiler) If you need to pass context or something, prevents from ever
    * flattening. The 'jsx' option means it will never flatten. if you
    * pass JSX as a children (if its purely string, it will still flatten).
    */
@@ -594,17 +594,23 @@ export type StaticConfig = {
   defaultProps?: any
 
   /**
-   * If these props are encountered, bail on all optimization.
+   * (compiler) If these props are encountered, bail on all optimization.
    */
   deoptProps?: Set<string>
 
   /**
-   * If these props are encountered, leave them un-extracted.
+   * (compiler) If these props are encountered, leave them un-extracted.
    */
   inlineProps?: Set<string>
 
   /**
-   * A bit odd, only for more advanced heirarchies.
+   * (compiler) If not flattening, leave this prop as original value.
+   * Only applies to style attributes
+   */
+  inlineWhenUnflattened?: Set<string>
+
+  /**
+   * (compiler) A bit odd, only for more advanced heirarchies.
    * Indicates that the component will set this prop so the
    * static extraction can ensure it sets them to ={undefined}
    * so they get overriddent. In the future, this can be smarter.

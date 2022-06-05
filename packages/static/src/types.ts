@@ -64,6 +64,7 @@ export type ExtractTagProps = {
 }
 
 export type ExtractorParseProps = TamaguiOptions & {
+  target: 'native' | 'html'
   sourcePath?: string
   shouldPrintDebug?: boolean | 'verbose'
   onExtractTag: (props: ExtractTagProps) => void

@@ -1,11 +1,10 @@
+// debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ChevronDown } from '@tamagui/feather-icons'
-import { SeparatorDemo, TooltipDemo } from '@tamagui/kitchen-sink'
-import React, { memo, useState } from 'react'
+import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Select, Separator, SizableText, Skeleton, Square, YStack } from 'tamagui'
+import { H4 } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -16,14 +15,16 @@ export const Sandbox = () => {
   const [theme, setTheme] = useState(scheme as any)
   return (
     <Tamagui.Provider injectCSS defaultTheme={theme}>
-      <Button
-        pos="absolute"
-        b={10}
-        l={10}
-        onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      <button
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          left: 20,
+        }}
+        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
         Switch theme
-      </Button>
+      </button>
 
       <div
         style={{
@@ -37,62 +38,60 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack space ai="center">
-          {/* <TooltipDemo /> */}
-          {/* <SquareDemo /> */}
-          {/* <SelectDemo /> */}
-          {/* <SeparatorDemo /> */}
-          <Skeleton>
+        {/* <TooltipDemo /> */}
+        {/* <SquareDemo /> */}
+        {/* <SelectDemo /> */}
+        {/* <SeparatorDemo /> */}
+        {/* <Skeleton>
             <Button>hello world</Button>
-          </Skeleton>
-        </YStack>
+          </Skeleton> */}
       </div>
     </Tamagui.Provider>
   )
 }
 
-function SelectDemo() {
-  return (
-    <Select defaultValue="blueberry">
-      <Select.Trigger w={200} iconAfter={ChevronDown}>
-        <Select.Value placeholder="Something" />
-      </Select.Trigger>
+// function SelectDemo() {
+//   return (
+//     <Select defaultValue="blueberry">
+//       <Select.Trigger w={200} iconAfter={ChevronDown}>
+//         <Select.Value placeholder="Something" />
+//       </Select.Trigger>
 
-      <Select.Content>
-        <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
+//       <Select.Content>
+//         <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
 
-        <Select.Viewport minWidth={200}>
-          <Select.Group>
-            <Select.Label>Fruits</Select.Label>
-            <Select.Item value="apple" index={0}>
-              <Select.ItemText>Apple</Select.ItemText>
-            </Select.Item>
-            <Select.Item value="banana" index={1}>
-              <Select.ItemText>Banana</Select.ItemText>
-            </Select.Item>
-            <Select.Item value="blueberry" index={2}>
-              <Select.ItemText>Blueberry</Select.ItemText>
-            </Select.Item>
-            <Select.Item value="berry" index={3}>
-              <Select.ItemText>Berry</Select.ItemText>
-            </Select.Item>
-            <Select.Item value="strawberry" index={4}>
-              <Select.ItemText>Strawberry</Select.ItemText>
-            </Select.Item>
-            <Select.Item value="kiwi" index={5}>
-              <Select.ItemText>Kiwi</Select.ItemText>
-            </Select.Item>
-            <Select.Item value="grap" index={6}>
-              <Select.ItemText>Grap</Select.ItemText>
-            </Select.Item>
-            <Select.Item value="orange" index={7}>
-              <Select.ItemText>Orange</Select.ItemText>
-            </Select.Item>
-          </Select.Group>
-        </Select.Viewport>
+//         <Select.Viewport minWidth={200}>
+//           <Select.Group>
+//             <Select.Label>Fruits</Select.Label>
+//             <Select.Item value="apple" index={0}>
+//               <Select.ItemText>Apple</Select.ItemText>
+//             </Select.Item>
+//             <Select.Item value="banana" index={1}>
+//               <Select.ItemText>Banana</Select.ItemText>
+//             </Select.Item>
+//             <Select.Item value="blueberry" index={2}>
+//               <Select.ItemText>Blueberry</Select.ItemText>
+//             </Select.Item>
+//             <Select.Item value="berry" index={3}>
+//               <Select.ItemText>Berry</Select.ItemText>
+//             </Select.Item>
+//             <Select.Item value="strawberry" index={4}>
+//               <Select.ItemText>Strawberry</Select.ItemText>
+//             </Select.Item>
+//             <Select.Item value="kiwi" index={5}>
+//               <Select.ItemText>Kiwi</Select.ItemText>
+//             </Select.Item>
+//             <Select.Item value="grap" index={6}>
+//               <Select.ItemText>Grap</Select.ItemText>
+//             </Select.Item>
+//             <Select.Item value="orange" index={7}>
+//               <Select.ItemText>Orange</Select.ItemText>
+//             </Select.Item>
+//           </Select.Group>
+//         </Select.Viewport>
 
-        <Select.ScrollDownButton>👇</Select.ScrollDownButton>
-      </Select.Content>
-    </Select>
-  )
-}
+//         <Select.ScrollDownButton>👇</Select.ScrollDownButton>
+//       </Select.Content>
+//     </Select>
+//   )
+// }

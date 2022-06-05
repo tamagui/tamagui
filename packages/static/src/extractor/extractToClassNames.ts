@@ -96,6 +96,7 @@ export function extractToClassNames({
     sourcePath,
     shouldPrintDebug,
     ...options,
+    target: 'html',
     getFlattenedNode: ({ tag }) => {
       hasFlattened = true
       return tag

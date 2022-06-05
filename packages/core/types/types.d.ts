@@ -320,6 +320,7 @@ export declare type StaticConfig = {
     defaultProps?: any;
     deoptProps?: Set<string>;
     inlineProps?: Set<string>;
+    inlineWhenUnflattened?: Set<string>;
     ensureOverriddenProp?: {
         [key: string]: boolean;
     };
