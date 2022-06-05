@@ -4,16 +4,14 @@ import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
 // Inspired by https://github.com/rexxars/react-refractor
 import React from 'react'
-import refractor from 'refractor/core'
-import js from 'refractor/lang/javascript'
-import jsx from 'refractor/lang/jsx'
+import { refractor } from 'refractor'
+import tsx from 'refractor/lang/tsx'
 import { GetProps } from 'tamagui'
 
 import { Code } from './Code'
 import { Pre } from './Pre'
 
-refractor.register(js)
-refractor.register(jsx)
+refractor.register(tsx)
 
 type PreProps = Omit<GetProps<typeof Pre>, 'css'>
 
@@ -31,7 +29,7 @@ export default React.forwardRef<HTMLPreElement, CodeBlockProps>(function CodeBlo
   forwardedRef
 ) {
   const { language, value, line = '0', className = '', mode, showLineNumbers, ...props } = _props
-  let result = refractor.highlight(value, language)
+  let result: any = refractor.highlight(value, language)
   result = highlightLine(result, rangeParser(line))
   result = highlightWord(result)
   result = toHtml(result)

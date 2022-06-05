@@ -1,9 +1,9 @@
 // Inspired by https://github.com/j0lv3r4/mdx-prism
 
-const rangeParser = require('parse-numeric-range')
-const visit = require('unist-util-visit')
-const nodeToString = require('hast-util-to-string')
-const refractor = require('refractor')
+import { toString } from 'hast-util-to-string'
+import rangeParser from 'parse-numeric-range'
+import { refractor } from 'refractor'
+import visit from 'unist-util-visit'
 
 import highlightLine from './rehype-highlight-line'
 import highlightWord from './rehype-highlight-word'
@@ -24,14 +24,12 @@ export default (options = {}) => {
     }
 
     const [_, lang] = node.properties.className[0].split('-')
-    const codeString = nodeToString(node)
+    const codeString = toString(node)
     let result = refractor.highlight(codeString, lang)
 
     const linesToHighlight = rangeParser(node.properties.line || '0')
     result = highlightLine(result, linesToHighlight)
 
-    result = highlightWord(result)
-
-    node.children = result
+    node.children = highlightWord(result)
   }
 }
