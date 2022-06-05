@@ -417,7 +417,7 @@ export function MDXProvider(props) {
   )
 }
 
-function unwrapText(children: any) {
+export function unwrapText(children: any) {
   // console.log('React.Children.toArray(children)', React.Children.toArray(children))
   return React.Children.toArray(children).map((x) => {
     // console.log('x', x.type)

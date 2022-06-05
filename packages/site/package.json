@@ -15,6 +15,8 @@
   "dependencies": {
     "@docsearch/css": "^3.0.0",
     "@docsearch/react": "^3.0.0",
+    "@stripe/stripe-js": "^1.29.0",
+    "@supabase/supabase-auth-helpers": "^1.4.1",
     "@tamagui/animate-presence": "^1.0.1-beta.49",
     "@tamagui/animations-reanimated": "^1.0.1-beta.49",
     "@tamagui/colors": "^1.0.1-beta.49",
@@ -51,6 +53,7 @@
     "remark-autolink-headings": "^6.0.1",
     "remark-slug": "^6.0.0",
     "seamless-scroll-polyfill": "^1.2.3",
+    "stripe": "^9.1.0",
     "tamagui": "^1.0.1-beta.49",
     "unified": "^10.1.2",
     "unist-util-visit": "^2.0.3"

@@ -3,22 +3,22 @@
   "compilerOptions": {
     "composite": true,
     // for jumping to things properly in vscode
-    "baseUrl": "../..",
+    "baseUrl": ".",
     "paths": {
       "tamagui": [
-        "packages/tamagui"
+        "../packages/tamagui"
       ],
       "@tamagui/*": [
-        "packages/*"
+        "../packages/*"
       ],
       "@components/*": [
-        "packages/site/components/*"
+        "./components/*"
       ],
       "@lib/*": [
-        "packages/site/lib/*"
+        "./lib/*"
       ],
       "@data/*": [
-        "packages/site/data/*"
+        "./data/*"
       ],
       "react-native": [
         "react-native-web"
