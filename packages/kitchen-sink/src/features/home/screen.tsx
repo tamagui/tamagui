@@ -1,11 +1,14 @@
 import React from 'react'
-import { Pressable } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
-import { Group, ListItem, Separator, XStack, YStack } from 'tamagui'
+import { Button, Group, ListItem, ListItemProps, Separator, XStack, YStack } from 'tamagui'
 
-const Link = ({ children, ...props }: UseLinkProps & { children?: any }) => {
-  const linkProps = useLink(props)
-  return <Pressable {...linkProps}>{children}</Pressable>
+const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
+  const linkProps = useLink({ href, as, shallow })
+  return (
+    <ListItem {...linkProps} {...props}>
+      {children}
+    </ListItem>
+  )
 }
 
 export function HomeScreen() {
@@ -13,21 +16,15 @@ export function HomeScreen() {
     <YStack f={1}>
       <YStack space="$4" maw={600} p="$3">
         <Group vertical bordered separator={<Separator />}>
-          <Link href="/demo/one">
-            <ListItem pressable size="$4">
-              Hello world
-            </ListItem>
-          </Link>
-          <Link href="/demo/one">
-            <ListItem pressable size="$4">
-              Hello world
-            </ListItem>
-          </Link>
-          <Link href="/demo/one">
-            <ListItem pressable size="$4">
-              Hello world
-            </ListItem>
-          </Link>
+          <LinkListItem href="/demo/one" pressable size="$4">
+            Hello world
+          </LinkListItem>
+          <LinkListItem href="/demo/one" pressable size="$4">
+            Hello world
+          </LinkListItem>
+          <LinkListItem href="/demo/one" pressable size="$4">
+            Hello world
+          </LinkListItem>
         </Group>
       </YStack>
 

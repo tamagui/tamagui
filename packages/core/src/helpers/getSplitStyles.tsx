@@ -19,7 +19,7 @@ import {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
-import { ViewStyleWithPseudos, getStylesAtomic, psuedoCNInverse } from './getStylesAtomic'
+import { getStylesAtomic, psuedoCNInverse } from './getStylesAtomic'
 import {
   insertStyleRule,
   insertedTransforms,
@@ -94,11 +94,13 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: StackProps = {}
   const pseudos: PseudoStyles = {}
   const medias: Record<MediaKeys, ViewStyle> = {}
+  const usedKeys = new Set<string>()
 
   let style: ViewStyle = {}
   let classNames: ClassNamesObject = {}
-
-  const usedKeys = new Set<string>()
+  // we need to gather these specific to each media query / pseudo
+  // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
+  let transforms: Record<TransformNamespaceKey, [string, string]> = {}
 
   const rulesToInsert: [string, string][] = []
   function addStyle(prop: string, rule: string) {
@@ -106,17 +108,9 @@ export const getSplitStyles: StyleSplitter = (
     updateInsertedCache(prop, rule)
   }
 
-  let cur: ViewStyleWithPseudos | null = null
-
-  // we need to gather these specific to each media query / pseudo
-  // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
-  let transforms: Record<TransformNamespaceKey, [string, string]> = {}
-
   function mergeClassName(key: string, val: string, isMediaOrPseudo = false) {
-    if (!val) {
-      // empty classnames passed by compiler sometimes
-      return
-    }
+    // empty classnames passed by compiler sometimes
+    if (!val) return
     if (val.startsWith('_transform-')) {
       // const isMediaOrPseudo = key !== 'transform'
       // const isMedia = isMediaOrPseudo && key[11] === '_'
@@ -135,10 +129,7 @@ export const getSplitStyles: StyleSplitter = (
             // runtime insert
             transform = val
           } else {
-            if (process.env.NODE_ENV === 'development') {
-              // error
-              console.trace('?', key, val, cur, props, state)
-            }
+            // shouldn't reach
           }
         }
         if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
@@ -162,7 +153,6 @@ export const getSplitStyles: StyleSplitter = (
 
   for (let i = propKeys.length - 1; i >= 0; i--) {
     const keyInit = propKeys[i]
-
     if (usedKeys.has(keyInit)) continue
     if (skipProps[keyInit]) continue
     if (!isWeb && keyInit.startsWith('data-')) continue
@@ -269,7 +259,6 @@ export const getSplitStyles: StyleSplitter = (
 
     for (const [key, val] of expanded) {
       if (val === undefined) continue
-      if (usedKeys.has(key)) continue
 
       if (key !== 'target' && val && val[0] === '_') {
         usedKeys.add(key)
@@ -280,6 +269,10 @@ export const getSplitStyles: StyleSplitter = (
       isMedia = key[0] === '$'
       isPseudo = validPseudoKeys[key]
       isMediaOrPseudo = isMedia || isPseudo
+
+      if (!isMediaOrPseudo) {
+        if (usedKeys.has(key)) continue
+      }
 
       if (
         (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) ||
@@ -369,11 +362,6 @@ export const getSplitStyles: StyleSplitter = (
         if (val && val[0] === '_') {
           classNames[key] = val
         } else {
-          // const avoidMergeTransform =
-          //   !isWeb ||
-          //   state.noClassNames ||
-          //   state.resolveVariablesAs === 'value' ||
-          //   state.resolveVariablesAs === 'both'
           if (key in stylePropsTransform) {
             if (process.env.NODE_ENV === 'development' && props['debug']) {
               console.log('mergeTransform', key, val)

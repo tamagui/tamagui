@@ -40,7 +40,6 @@ export const HeroResponsive = memo(() => {
   const [bounding, setBounding] = useState<DOMRect | null>(null)
   const prevMove = useRef(0)
   const initialWidth = 420
-  const [hasIntersected, setHasIntersected] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [move, setMove] = useState(0)
   const ref = useRef<HTMLDivElement | null>(null)
@@ -97,20 +96,11 @@ export const HeroResponsive = memo(() => {
     setIsDragging(false)
   }
 
-  // go ahead and pre-load before intersect anyway since it can take a sec
-  useEffect(() => {
-    const tm = setTimeout(() => {
-      setHasIntersected(true)
-    }, 1000)
-    return () => clearTimeout(tm)
-  }, [])
-
   useOnIntersecting(
     ref,
     ({ isIntersecting, dispose }, didResize) => {
       dispose?.()
       if (!isIntersecting) return
-      setHasIntersected(true)
       const node = safariRef.current
       if (!node) return
       if (didResize) {
@@ -185,6 +175,7 @@ export const HeroResponsive = memo(() => {
             ref={safariRef}
             onPress={() => {
               if (isTouchable) {
+                setHasInteracted(true)
                 setSmIndex((i) => (i + 1) % breakpoints.length)
               }
             }}
