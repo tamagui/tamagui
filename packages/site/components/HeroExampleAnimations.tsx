@@ -114,6 +114,7 @@ export function HeroExampleAnimations() {
             <CodeDemo
               pe={disableScrollPane ? 'none' : 'auto'}
               maxHeight={500}
+              height={500}
               maxWidth={530}
               language="jsx"
               value={`import { Button, Square } from 'tamagui'

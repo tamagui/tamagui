@@ -127,9 +127,10 @@ const CodeExamples = memo(({ examples }: any) => {
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>
           <CodeDemo
+            height={300}
             theme="Card"
             language={example.language as any}
-            maxHeight={400}
+            maxHeight={300}
             f={1}
             value={example.code}
           />
