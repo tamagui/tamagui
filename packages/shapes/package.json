@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shapes",
-  "version": "1.0.1-beta.49",
+  "version": "1.0.1-beta.50",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -18,14 +18,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.49",
-    "@tamagui/stacks": "^1.0.1-beta.49"
+    "@tamagui/core": "^1.0.1-beta.50",
+    "@tamagui/stacks": "^1.0.1-beta.50"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.49",
+    "@tamagui/build": "^1.0.1-beta.50",
     "react": "*"
   },
   "publishConfig": {
