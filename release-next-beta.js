@@ -64,7 +64,8 @@ async function run() {
 
       // lerna messes up yarn.lock and always needs a second yarn install + add + push
       await spawnify(`yarn install`)
-      await spawnify(`git add -A && git commit --amend --date=now`)
+      await spawnify(`git add -A`)
+      await spawnify(`git commit --amend --no-edit`)
     }
 
     console.log((await exec(`git diff`)).stdout)
