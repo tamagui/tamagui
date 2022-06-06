@@ -77,7 +77,6 @@ function mergeProps(child: any, slotProps: AnyProps) {
 
   // all child props should override
   const overrideProps = { ...childProps }
-
   const isHTMLChild = typeof child.type === 'string'
 
   if (isHTMLChild) {
@@ -101,10 +100,7 @@ function mergeProps(child: any, slotProps: AnyProps) {
     const isHandler = /^on[A-Z]/.test(propName)
     // if it's a handler, modify the override by composing the base handler
     if (isHandler) {
-      overrideProps[propName] = (...args: unknown[]) => {
-        childPropValue?.(...args)
-        slotPropValue?.(...args)
-      }
+      overrideProps[propName] = mergeEvent(childPropValue, slotPropValue)
     }
     // if it's `style`, we merge them
     else if (propName === 'style') {
@@ -115,4 +111,11 @@ function mergeProps(child: any, slotProps: AnyProps) {
   }
 
   return { ...slotProps, ...overrideProps }
+}
+
+export function mergeEvent(a?: Function, b?: Function) {
+  return (...args: unknown[]) => {
+    a?.(...args)
+    b?.(...args)
+  }
 }

@@ -6,18 +6,18 @@ import { H1, YStack } from 'tamagui'
 const { useParam } = createParam<{ id: string }>()
 
 const nameMap = {
-  'Input + Textarea': 'Forms',
+  Inputs: 'Forms',
 }
 
 export function DemoScreen() {
   const [id] = useParam('id')
   const name = id[0].toUpperCase() + id.slice(1)
-  const demoName = `${name}Demo`
-  const DemoComponent = Demos[nameMap[demoName] || demoName] ?? NotFound
+  const demoName = `${nameMap[name] || name}Demo`
+  const DemoComponent = Demos[demoName] ?? NotFound
 
   return (
     <YStack f={1} jc="center" ai="center" space>
-      <YStack maw={210} ai="center">
+      <YStack miw={200} maw={210} ai="center">
         <DemoComponent />
       </YStack>
     </YStack>

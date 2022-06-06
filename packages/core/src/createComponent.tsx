@@ -49,7 +49,7 @@ import {
   TamaguiInternalConfig,
   UseAnimationHook,
 } from './types'
-import { Slot } from './views/Slot'
+import { Slot, mergeEvent } from './views/Slot'
 import { TextAncestorContext } from './views/TextAncestorContext'
 
 React['keep']
@@ -759,6 +759,22 @@ export function createComponent<
         } else {
           Object.assign(viewProps, events)
         }
+      }
+    }
+
+    // add focus events
+    if (process.env.TAMAGUI_TARGET === 'native') {
+      const attachFocus = !!(
+        (pseudos && pseudos.focusStyle) ||
+        (initialPseudos && initialPseudos.focusStyle)
+      )
+      if (attachFocus) {
+        viewProps.onFocus = mergeEvent(viewProps.onFocus, () => {
+          setStateShallow({ focus: true })
+        })
+        viewProps.onBlur = mergeEvent(viewProps.onBlur, () => {
+          setStateShallow({ focus: false })
+        })
       }
     }
 
