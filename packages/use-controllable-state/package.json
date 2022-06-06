@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-controllable-state",
-  "version": "1.0.1-beta.53",
+  "version": "1.0.1-beta.54",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -25,7 +25,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.53",
+    "@tamagui/build": "^1.0.1-beta.54",
     "react": "*",
     "react-dom": "*"
   },
