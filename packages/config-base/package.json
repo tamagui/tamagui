@@ -1,0 +1,34 @@
+{
+  "name": "@tamagui/config-base",
+  "version": "1.0.1-beta.52",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@takeout/font-noto-emoji": "^1.0.1-beta.52",
+    "@tamagui/animations-reanimated": "^1.0.1-beta.52",
+    "@tamagui/colors": "^1.0.1-beta.52",
+    "@tamagui/core": "^1.0.1-beta.52",
+    "@tamagui/font-inter": "^1.0.1-beta.52",
+    "@tamagui/font-silkscreen": "^1.0.1-beta.52",
+    "@tamagui/shorthands": "^1.0.1-beta.52",
+    "@tamagui/theme-base": "^1.0.1-beta.52"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.52"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "@takeout/font-noto-emoji",
   "private": true,
-  "version": "1.0.1-beta.46",
+  "version": "1.0.1-beta.52",
   "types": "types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

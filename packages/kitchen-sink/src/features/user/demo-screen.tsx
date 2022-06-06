@@ -1,22 +1,27 @@
-// import { ChevronLeft } from '@tamagui/feather-icons'
-// import React from 'react'
-// import { createParam } from 'solito'
-// import { Link } from 'solito/link'
-// import { Button, Paragraph, YStack } from 'tamagui'
+import * as Demos from '@tamagui/demos'
+import React from 'react'
+import { createParam } from 'solito'
+import { H1, YStack } from 'tamagui'
 
-// const { useParam } = createParam<{ id: string }>()
+const { useParam } = createParam<{ id: string }>()
+
+const nameMap = {
+  'Input + Textarea': 'Forms',
+}
 
 export function DemoScreen() {
-  return null
+  const [id] = useParam('id')
+  const name = id[0].toUpperCase() + id.slice(1)
+  const demoName = `${name}Demo`
+  const DemoComponent = Demos[nameMap[demoName] || demoName] ?? NotFound
 
-  // const [id] = useParam('id')
-
-  // return (
-  //   <YStack f={1} jc="center" ai="center" space>
-  //     <Paragraph ta="center" fow="800">{`User ID: ${id}`}</Paragraph>
-  //     <Link href="/">
-  //       <Button icon={ChevronLeft}>Go Home</Button>
-  //     </Link>
-  //   </YStack>
-  // )
+  return (
+    <YStack f={1} jc="center" ai="center" space>
+      <YStack maw={210} ai="center">
+        <DemoComponent />
+      </YStack>
+    </YStack>
+  )
 }
+
+const NotFound = () => <H1>Not found!</H1>

@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "preserve"
+  },
+  "references": [
+    { "path": "../colors" },
+    { "path": "../shorthands" },
+    { "path": "../animations-reanimated" },
+    { "path": "../core" },
+    { "path": "../font-inter" },
+    { "path": "../font-silkscreen" },
+    { "path": "../core" }
+  ]
+}

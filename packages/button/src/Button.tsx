@@ -16,7 +16,7 @@ import {
   wrapStringChildrenInText,
 } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
-import { SizableText, SizableTextProps } from '@tamagui/text'
+import { SizableText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, useContext } from 'react'
 import { View } from 'react-native'
 
@@ -107,7 +107,8 @@ const ButtonFrame = styled(ThemeableStack, {
 export const ButtonText = styled(SizableText, {
   color: '$color',
   selectable: false,
-  flexGrow: 1,
+  // flexGrow 1 leads to inconsistent native style where text pushes to start of view
+  flexGrow: 0,
   flexShrink: 1,
   ellipse: true,
 })
@@ -146,17 +147,16 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   const contents = wrapStringChildrenInText(ButtonText, props)
 
   return (
-    // careful not to destructure and re-order props, order is important
-    <ButtonInsideButtonContext.Provider value={true}>
-      <ButtonFrame
-        fontFamily={fontFamily}
-        // fixes SSR issue + DOM nesting issue of not allowing button in button
-        {...(isInsideButton && {
-          tag: 'span',
-        })}
-        ref={ref as any}
-        {...rest}
-      >
+    <ButtonFrame
+      fontFamily={fontFamily}
+      // fixes SSR issue + DOM nesting issue of not allowing button in button
+      {...(isInsideButton && {
+        tag: 'span',
+      })}
+      ref={ref as any}
+      {...rest}
+    >
+      <ButtonInsideButtonContext.Provider value={true}>
         {themedIcon || themedIconAfter
           ? spacedChildren({
               // a bit arbitrary but scaling to font size is necessary so long as button does
@@ -167,8 +167,8 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
               children: [themedIcon, contents, themedIconAfter],
             })
           : contents}
-      </ButtonFrame>
-    </ButtonInsideButtonContext.Provider>
+      </ButtonInsideButtonContext.Provider>
+    </ButtonFrame>
   )
 })
 

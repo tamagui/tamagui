@@ -25,7 +25,7 @@ export function Navigation() {
         name="demo"
         component={DemoScreen}
         options={{
-          title: 'User',
+          title: 'Demo',
         }}
       />
     </Stack.Navigator>

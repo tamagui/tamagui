@@ -4976,7 +4976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji":
+"@takeout/font-noto-emoji@^1.0.1-beta.52, @takeout/font-noto-emoji@workspace:takeout/font-noto-emoji":
   version: 0.0.0-use.local
   resolution: "@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji"
   dependencies:
@@ -5131,6 +5131,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/config-base@^1.0.1-beta.52, @tamagui/config-base@workspace:packages/config-base":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/config-base@workspace:packages/config-base"
+  dependencies:
+    "@takeout/font-noto-emoji": ^1.0.1-beta.52
+    "@tamagui/animations-reanimated": ^1.0.1-beta.52
+    "@tamagui/build": ^1.0.1-beta.52
+    "@tamagui/colors": ^1.0.1-beta.52
+    "@tamagui/core": ^1.0.1-beta.52
+    "@tamagui/font-inter": ^1.0.1-beta.52
+    "@tamagui/font-silkscreen": ^1.0.1-beta.52
+    "@tamagui/shorthands": ^1.0.1-beta.52
+    "@tamagui/theme-base": ^1.0.1-beta.52
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/core-node@^1.0.1-beta.52, @tamagui/core-node@workspace:packages/core-node":
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
@@ -5190,6 +5206,7 @@ __metadata:
   resolution: "@tamagui/demos@workspace:packages/demos"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.52
+    "@tamagui/config-base": ^1.0.1-beta.52
     react: "*"
     react-dom: "*"
     tamagui: ^1.0.1-beta.52
@@ -5414,6 +5431,8 @@ __metadata:
     "@tamagui/animations-reanimated": ^1.0.1-beta.52
     "@tamagui/babel-plugin": ^1.0.1-beta.52
     "@tamagui/colors": ^1.0.1-beta.52
+    "@tamagui/config-base": ^1.0.1-beta.52
+    "@tamagui/demos": ^1.0.1-beta.52
     "@tamagui/drawer": ^1.0.1-beta.52
     "@tamagui/feather-icons": ^1.0.1-beta.52
     "@tamagui/font-inter": ^1.0.1-beta.52
@@ -5745,6 +5764,8 @@ __metadata:
     "@tamagui/animate-presence": ^1.0.1-beta.52
     "@tamagui/animations-reanimated": ^1.0.1-beta.52
     "@tamagui/colors": ^1.0.1-beta.52
+    "@tamagui/config-base": ^1.0.1-beta.52
+    "@tamagui/demos": ^1.0.1-beta.52
     "@tamagui/drawer": ^1.0.1-beta.52
     "@tamagui/feather-icons": ^1.0.1-beta.52
     "@tamagui/font-fira-mono": ^1.0.1-beta.52

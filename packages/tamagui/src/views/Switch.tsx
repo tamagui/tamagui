@@ -116,7 +116,7 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
     const labelledBy = ariaLabelledby || labelId
     const hasConsumerStoppedPropagationRef = React.useRef(false)
     // We set this to true by default so that events bubble to forms without JS (SSR)
-    const isFormControl = button ? Boolean(button.closest('form')) : true
+    const isFormControl = isWeb ? (button ? Boolean(button.closest('form')) : true) : false
     const [checked = false, setChecked] = useControllableState({
       prop: checkedProp,
       defaultProp: defaultChecked || false,
