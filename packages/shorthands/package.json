@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shorthands",
-  "version": "1.0.1-beta.52",
+  "version": "1.0.1-beta.53",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -17,7 +17,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.52"
+    "@tamagui/build": "^1.0.1-beta.53"
   },
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-direction",
-  "version": "1.0.1-beta.52",
+  "version": "1.0.1-beta.53",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,7 +16,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.52",
+    "@tamagui/build": "^1.0.1-beta.53",
     "react": "*"
   },
   "peerDependencies": {
