@@ -1,5 +1,5 @@
 import { GenericFont } from '@tamagui/core';
-export declare const createNotoFont: <A extends GenericFont<11 | 12 | 13 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 15>>(font?: { [Key in keyof Partial<A>]?: Partial<A[Key]> | undefined; }, { sizeLineHeight, sizeSize, webFallbackFonts, }?: {
+export declare const createNotoFont: <A extends GenericFont<11 | 12 | 13 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 15>>(font?: Partial<A> extends infer T ? { [Key in keyof T]?: Partial<A[Key]> | undefined; } : never, { sizeLineHeight, sizeSize, webFallbackFonts, }?: {
     sizeLineHeight?: ((fontSize: number) => number) | undefined;
     sizeSize?: ((size: number) => number) | undefined;
     webFallbackFonts?: string[] | undefined;
