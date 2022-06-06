@@ -45,8 +45,9 @@ export default function App(props: AppProps) {
 
 function ContentInner({ Component, pageProps }: AppProps) {
   const router = useRouter()
-  const isDocs = router.pathname.includes('/docs')
-  const isDemo = router.pathname.includes('/responsive-demo')
+  const isDocs = router.pathname.startsWith('/docs')
+  const isStudio = router.pathname.startsWith('/studio')
+  const isDemo = router.pathname.startsWith('/responsive-demo')
   // @ts-ignore
   const getLayout = Component.getLayout || ((page) => page)
   return getLayout(
@@ -58,7 +59,7 @@ function ContentInner({ Component, pageProps }: AppProps) {
       ) : (
         <Component {...pageProps} />
       )}
-      {!isDocs && !isDemo && <Footer />}
+      {!isDocs && !isDemo && !isStudio && <Footer />}
     </>
   )
 }
