@@ -11,7 +11,14 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
@@ -21,7 +28,6 @@ import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
-import { BaseButton } from './helpers/nativeGestureHandler'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
@@ -763,20 +769,13 @@ export function createComponent<
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (attachPress && events) {
         content = (
-          // bugfix: on native <Pressable /> pressing down and then moving finger off
-          // doesn't actually turn off press styles
-          // but react-native-gesture-handler doesn't pass GestureResponderEvent...
-          <Pressable onPressIn={events[pressInKey]} onPress={events[pressKey]}>
-            <BaseButton
-              onActiveStateChange={(isActive) => {
-                if (!isActive) {
-                  unPress()
-                }
-              }}
-            >
-              {content}
-            </BaseButton>
-          </Pressable>
+          <TouchableWithoutFeedback
+            onPressIn={events[pressInKey]}
+            onPress={events[pressKey]}
+            onPressOut={events[pressOutKey]}
+          >
+            {content}
+          </TouchableWithoutFeedback>
         )
       }
     }

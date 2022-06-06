@@ -56,7 +56,7 @@
 
 import * as React from 'react'
 
-import { useIsomorphicLayoutEffect } from '../constants/platform'
+import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 
 let serverHandoffComplete = false
 let id = 0
@@ -88,11 +88,15 @@ function useId(): string | undefined
 function useId(providedId?: number | string | undefined | null) {
   // TODO: Remove error flag when updating internal deps to React 18. None of
   // our tricks will play well with concurrent rendering anyway.
-  // @ts-expect-error
-  if (typeof React.useId === 'function') {
+
+  // native doesn't support until next react-native version, need to remove eventually
+  if (isWeb) {
     // @ts-expect-error
-    let id = React.useId(providedId)
-    return providedId != null ? providedId : id
+    if (typeof React.useId === 'function') {
+      // @ts-expect-error
+      let id = React.useId(providedId)
+      return providedId != null ? providedId : id
+    }
   }
 
   // If this instance isn't part of the initial render, we don't have to do the
