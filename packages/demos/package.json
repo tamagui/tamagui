@@ -16,6 +16,7 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
+    "@tamagui/config-base": "^1.0.1-beta.52",
     "tamagui": "^1.0.1-beta.52"
   },
   "peerDependencies": {
