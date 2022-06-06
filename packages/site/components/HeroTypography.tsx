@@ -1,4 +1,5 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
+import { useIsIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -21,7 +22,6 @@ import {
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
-import { useIsIntersecting } from './useOnIntersecting'
 
 const families = ['silkscreen', 'mono', 'inter']
 

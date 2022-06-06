@@ -1,11 +1,11 @@
-import { LogoWords, TamaguiLogo } from '@components/TamaguiLogo'
 import { ThemeToggle } from '@components/ThemeToggle'
+import { LogoWords, TamaguiLogo, tints } from '@tamagui/demos'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
-import { tints, useTint } from './ColorToggleButton'
+import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { GithubIcon } from './GithubIcon'
 import { HeaderFloating } from './HeaderFloating'

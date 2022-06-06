@@ -1,5 +1,6 @@
 import { Drawer } from '@tamagui/drawer'
 import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
+import React from 'react'
 import { useState } from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
 

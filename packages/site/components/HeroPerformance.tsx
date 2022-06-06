@@ -1,3 +1,4 @@
+import { useOnIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
@@ -7,7 +8,6 @@ import { ContainerLarge } from '../components/Container'
 import { HomeH2, HomeH3 } from '../components/HomeH2'
 import { CocentricCircles } from './CocentricCircles'
 import { useTint } from './ColorToggleButton'
-import { useOnIntersecting } from './useOnIntersecting'
 
 export function HeroPerformance() {
   const ref = useRef<HTMLElement>(null)

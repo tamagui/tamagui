@@ -1,4 +1,4 @@
-import { TamaguiLogo } from '@components/TamaguiLogo'
+import { TamaguiLogo } from '@tamagui/demos'
 import Link from 'next/link'
 import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
 

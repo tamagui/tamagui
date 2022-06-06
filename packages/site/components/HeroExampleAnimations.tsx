@@ -1,15 +1,15 @@
+import { animations } from '@tamagui/config-base'
+import { useOnIntersecting } from '@tamagui/demos'
 import { ArrowDown } from '@tamagui/feather-icons'
 import Link from 'next/link'
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
-import { animations } from '../constants/animations'
 import { CodeDemo } from './CodeDemo'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
-import AnimationsDemo from './demos/AnimationsDemo'
+import { AnimationsDemo } from './demos'
 import { HomeH2, HomeH3 } from './HomeH2'
-import { useOnIntersecting } from './useOnIntersecting'
 
 const animationDescriptions = [
   {

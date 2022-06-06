@@ -4,6 +4,7 @@
 
 import { HeaderIndependent } from '@components/Header'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { SliderDemo, SwitchDemo } from '@tamagui/demos'
 import { useRef, useState } from 'react'
 import {
   Button,
@@ -28,8 +29,6 @@ import {
 import { useTint } from '../../components/ColorToggleButton'
 import { ContainerLarge } from '../../components/Container'
 import { FormsDemo, StacksDemo } from '../../components/demos'
-import SliderDemo from '../../components/demos/SliderDemo'
-import SwitchDemo from '../../components/demos/SwitchDemo'
 import { FlatBubbleCard } from '../../components/FlatBubbleCard'
 import { HoverGlow, useBoundedCursor } from '../../components/HoverGlow'
 import { MediaPlayer } from '../../components/MediaPlayer'
@@ -353,7 +352,7 @@ const FloatingItemsBelow = () => {
             width={300}
             height={500}
             resizeMode="cover"
-            src={require('../../public/camera.jpg').default.src}
+            src={require('@tamagui/demos/public/camera.jpg').default.src}
           />
         </Card.Background>
       </Card>

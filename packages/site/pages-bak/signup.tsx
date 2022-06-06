@@ -1,12 +1,12 @@
 import { User } from '@supabase/gotrue-js'
 import { supabaseClient } from '@supabase/supabase-auth-helpers/nextjs'
 import { useUser } from '@supabase/supabase-auth-helpers/react'
+import { LogoIcon } from '@tamagui/demos'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useState } from 'react'
 import { Button, Input } from 'tamagui'
 
-import { LogoIcon } from '../components/TamaguiLogo'
 import { useForwardToDashboard } from '../hooks/useForwardToDashboard'
 import { getUserLayout } from '../lib/getUserLayout'
 import { updateUserName } from '../lib/supabaseClient'

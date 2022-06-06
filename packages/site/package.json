@@ -20,6 +20,8 @@
     "@tamagui/animate-presence": "^1.0.1-beta.52",
     "@tamagui/animations-reanimated": "^1.0.1-beta.52",
     "@tamagui/colors": "^1.0.1-beta.52",
+    "@tamagui/config-base": "^1.0.1-beta.52",
+    "@tamagui/demos": "^1.0.1-beta.52",
     "@tamagui/drawer": "^1.0.1-beta.52",
     "@tamagui/feather-icons": "^1.0.1-beta.52",
     "@tamagui/font-fira-mono": "^1.0.1-beta.52",

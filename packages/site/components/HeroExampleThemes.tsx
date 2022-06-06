@@ -1,3 +1,4 @@
+import { useOnIntersecting } from '@tamagui/demos'
 import { useTheme } from '@tamagui/next-theme'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Group, Theme, ThemeName, XStack, YStack, debounce } from 'tamagui'
@@ -7,7 +8,6 @@ import { ActiveCircle } from './ActiveCircle'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 import { MediaPlayer } from './MediaPlayer'
-import { useOnIntersecting } from './useOnIntersecting'
 
 const themes: (ThemeName | null)[][] = [
   ['orange', 'red', 'pink', 'green', 'teal', 'blue'],

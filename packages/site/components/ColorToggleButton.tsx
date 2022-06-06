@@ -1,9 +1,6 @@
+import { tints } from '@tamagui/demos'
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonProps, Circle, Square, ThemeName, TooltipSimple, styled } from 'tamagui'
-
-export const tints: ThemeName[] = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
-
-export const logoColors = tints.map((t) => `var(--${t}9)`)
 
 // no localstorage because its not important to remember and causes a flicker
 // const tintVal = typeof localStorage !== 'undefined' ? localStorage.getItem('tint') : 0
