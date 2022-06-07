@@ -14,6 +14,7 @@ export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'the
     shouldAddPrefersColorThemes?: boolean;
     themeClassNameOnRoot?: boolean;
 };
-export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
+export declare type InferTamaguiConfig<Conf extends CreateTamaguiProps> = Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>> ? TamaguiInternalConfig<A, B, C, D, E, F> : unknown;
+export declare function createTamagui<Conf extends CreateTamaguiProps>(config: Conf): InferTamaguiConfig<Conf>;
 export declare const reversedShorthands: Record<string, string>;
 //# sourceMappingURL=createTamagui.d.ts.map

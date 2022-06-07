@@ -192,5 +192,3 @@ export const tokens = createTokens({
   space,
   size,
 })
-
-console.log('size', { size, space })

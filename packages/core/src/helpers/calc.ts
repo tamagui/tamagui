@@ -60,6 +60,5 @@ const convertToVariableOrNumber = (v: any) => {
   if (typeof varOrVal === 'number') {
     return `${varOrVal}px`
   }
-  console.warn(`Non number given to calc, returning 0`)
-  return 0
+  return varOrVal
 }

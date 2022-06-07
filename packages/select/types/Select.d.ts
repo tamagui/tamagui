@@ -84,6 +84,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     scaleIcon?: number | undefined;
     spaceFlex?: number | boolean | undefined;
     scaleSpace?: number | undefined;
+    title?: React.ReactNode;
     subTitle?: React.ReactNode;
 } & React.RefAttributes<GenericElement>>;
 export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
@@ -496,6 +497,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         scaleIcon?: number | undefined;
         spaceFlex?: number | boolean | undefined;
         scaleSpace?: number | undefined;
+        title?: React.ReactNode;
         subTitle?: React.ReactNode;
     } & React.RefAttributes<TamaguiElement>>;
     ScrollDownButton: React.ForwardRefExoticComponent<SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
@@ -572,6 +574,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         scaleIcon?: number | undefined;
         spaceFlex?: number | boolean | undefined;
         scaleSpace?: number | undefined;
+        title?: React.ReactNode;
         subTitle?: React.ReactNode;
     } & React.RefAttributes<GenericElement>>;
     Value: React.ForwardRefExoticComponent<((Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {

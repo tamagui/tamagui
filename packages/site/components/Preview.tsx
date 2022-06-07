@@ -10,8 +10,9 @@ export const Preview = (props: YStackProps) => (
     borderColor="$borderColor"
     borderTopLeftRadius="$3"
     borderTopRightRadius="$3"
-    mb="$-1"
+    mb="$-4"
     padding="$3"
+    pb="$4"
     position="relative"
     ai="flex-start"
     {...props}

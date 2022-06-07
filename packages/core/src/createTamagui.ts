@@ -2,6 +2,7 @@ import { configListeners, getHasConfigured, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { Variable, createCSSVariable, createVariable, isVariable } from './createVariable'
+import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { getInsertedRules } from './helpers/insertStyleRule'
 import { configureMedia } from './hooks/useMedia'
@@ -51,11 +52,15 @@ export type CreateTamaguiProps =
 // config is re-run by the @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
 
+export type InferTamaguiConfig<Conf extends CreateTamaguiProps> = Conf extends Partial<
+  CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>
+>
+  ? TamaguiInternalConfig<A, B, C, D, E, F>
+  : unknown
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
-): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>>
-  ? TamaguiInternalConfig<A, B, C, D, E, F>
-  : unknown {
+): InferTamaguiConfig<Conf> {
   if (createdConfigs.has(config)) {
     return config as any
   }
@@ -67,18 +72,50 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     if (!config.themes) {
       throw new Error(`No themes provided to Tamagui config`)
     }
+    if (!config.fonts) {
+      throw new Error(`No fonts defined!`)
+    }
   }
 
   // test env loads a few times as it runs diff tests
   if (getHasConfigured()) {
     console.warn('Called createTamagui twice! Should never do so')
-    // throw new Error(`#000 createTamagui called twice`)
+    if (typeof document !== 'undefined') {
+      throw new Error(`#000 createTamagui called twice`)
+    }
   }
 
   configureMedia({
     queries: config.media as any,
     defaultActive: config.mediaQueryDefaultActive,
   })
+
+  const fontTokens = createVariables(config.fonts!)
+  const fontsParsed = (() => {
+    const res = {} as typeof fontTokens
+    for (const familyName in fontTokens) {
+      const definition = fontTokens[familyName]
+      const parsed = {}
+      for (const attrKey in definition) {
+        const attr = definition[attrKey]
+        if (attrKey === 'family') {
+          parsed[attrKey] = attr
+          continue
+        }
+        parsed[attrKey] = {}
+        for (const key in attr) {
+          let val = attr[key]
+          // is a theme reference
+          if (val.val[0] === '$') {
+            val = val.val
+          }
+          parsed[attrKey][`$${key}`] = val
+        }
+      }
+      res[`$${familyName}`] = parsed as any
+    }
+    return res!
+  })()
 
   const themeConfig = (() => {
     const themes = { ...config.themes }
@@ -100,21 +137,29 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       for (const key in config.tokens) {
         for (const skey in config.tokens[key]) {
           const val = config.tokens[key][skey]
-          if (key === 'font') {
-            for (const fkey in val) {
-              if (fkey === 'family') {
-                addVar(val[fkey])
+          addVar(val)
+        }
+      }
+
+      for (const key in fontsParsed) {
+        const val = fontsParsed[key]
+        for (const fkey in val) {
+          if (fkey === 'family') {
+            addVar(val[fkey])
+          } else {
+            for (const fskey in val[fkey]) {
+              const fval = val[fkey][fskey]
+              if (typeof fval === 'string') {
+                // no need to add its a theme reference
+                // tokenRules.add(`--var()`)
               } else {
-                for (const fskey in val[fkey]) {
-                  addVar(val[fkey][fskey])
-                }
+                addVar(val[fkey][fskey])
               }
             }
-          } else {
-            addVar(val)
           }
         }
       }
+
       const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
       cssRules.push(`:root {${sep}${[...tokenRules].join(`;${sep}`)}${sep}}`)
     }
@@ -249,30 +294,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // faster lookups token keys become $keys to match input
   const tokensParsed: any = parseTokens(config.tokens)
-
-  const fontsParsed = (() => {
-    if (!config.fonts) {
-      throw new Error(`No fonts defined!`)
-    }
-    const res = {} as typeof config.fonts
-    for (const familyName in config.fonts) {
-      const family = config.fonts[familyName]
-      const parsed = {}
-      for (const attrKey in family) {
-        const attr = family[attrKey]
-        if (attrKey === 'family') {
-          parsed[attrKey] = attr
-          continue
-        }
-        parsed[attrKey] = Object.keys(attr).reduce((acc, cur) => {
-          acc[`$${cur}`] = attr[cur]
-          return acc
-        }, {})
-      }
-      res[`$${familyName}`] = parsed as any
-    }
-    return res!
-  })()
 
   const getCSS = () => {
     return `${themeConfig.css}\n${getInsertedRules().join('\n')}`

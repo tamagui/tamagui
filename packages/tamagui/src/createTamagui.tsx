@@ -1,19 +1,12 @@
 import * as Core from '@tamagui/core'
-import {
-  CreateTamaguiConfig,
-  CreateTamaguiProps,
-  TamaguiInternalConfig,
-  TamaguiProviderProps,
-} from '@tamagui/core'
+import { CreateTamaguiProps, InferTamaguiConfig, TamaguiProviderProps } from '@tamagui/core'
 import * as React from 'react'
 
 import { SafeAreaProvider } from './views/SafeAreaProvider'
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
-): Conf extends Partial<CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>>
-  ? TamaguiInternalConfig<A, B, C, D, E, F>
-  : unknown {
+): InferTamaguiConfig<Conf> {
   const conf = Core.createTamagui(config)
 
   // add our providers
