@@ -1,9 +1,7 @@
 import { config } from '@tamagui/config-base'
-import { createTamagui } from 'tamagui'
+import { InferTamaguiConfig } from '@tamagui/core'
 
-const tamaConf = createTamagui(config)
-
-export type Conf = typeof tamaConf
+export type Conf = InferTamaguiConfig<typeof config>
 
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}

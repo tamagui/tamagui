@@ -10,7 +10,7 @@ const QuickNavLink = ({ href, ...rest }: LinkProps) => (
   <NextLink passHref href={href}>
     <Paragraph
       tag="a"
-      size="$2"
+      size="$3"
       fontSize="$2"
       color="$color"
       o={0.8}

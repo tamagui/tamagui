@@ -5207,6 +5207,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.54
     "@tamagui/config-base": ^1.0.1-beta.54
+    "@tamagui/core": ^1.0.1-beta.54
     react: "*"
     react-dom: "*"
     tamagui: ^1.0.1-beta.54

@@ -160,7 +160,7 @@ export const HeroResponsive = memo(() => {
           pos="absolute"
           zi={1}
           f={1}
-          space="$4"
+          space="$1"
           $sm={{
             scale,
             x: 150 - width / 2 - (smIndex ? (0.9 - scale) * 200 : 0),

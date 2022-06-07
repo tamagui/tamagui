@@ -246,7 +246,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               </Link>
 
               <XStack space="$1" ml="auto">
-                <ColorToggleButton />
+                <ColorToggleButton chromeless />
                 <ThemeToggle chromeless />
               </XStack>
 
@@ -256,7 +256,13 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                   display: 'none',
                 }}
               >
-                <Button noTextWrap onPress={() => setOpen(!open)} theme={open ? 'alt1' : undefined}>
+                <Button
+                  size="$3"
+                  chromeless
+                  noTextWrap
+                  onPress={() => setOpen(!open)}
+                  theme={open ? 'alt1' : undefined}
+                >
                   <Menu size={16} color="var(--color)" />
                 </Button>
               </YStack>

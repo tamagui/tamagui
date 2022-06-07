@@ -45,7 +45,7 @@ const bodyFont = createInterFont(
   {},
   {
     sizeSize: (size) => Math.round(size * 1.1),
-    sizeLineHeight: (size) => Math.round(size * 1.1 + (size > 13 ? 10 : 4)),
+    sizeLineHeight: (size) => Math.round(size * 1.15 + (size > 13 ? 14 : 4)),
   }
 )
 const monoFont = createGenericFont(

@@ -22,9 +22,7 @@ export default function DocGuidesPage({ frontmatter, code }: Doc) {
   return (
     <>
       <TitleAndMetaTags title={`${frontmatter.title} — Tamagui Guides`} />
-      <H1 letterSpacing={-1} fontWeight="700">
-        {frontmatter.title}
-      </H1>
+      <H1 mb="$2">{frontmatter.title}</H1>
       <Spacer size="$1" />
       <SubTitle>{frontmatter.description}</SubTitle>
       <Component components={components as any} />

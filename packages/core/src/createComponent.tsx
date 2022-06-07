@@ -205,6 +205,7 @@ export function createComponent<
       onHoverIn,
       onHoverOut,
       space: spaceProp,
+      spaceDirection: _spaceDirection,
       disabled: disabledProp,
       onMouseDown,
       onMouseEnter,

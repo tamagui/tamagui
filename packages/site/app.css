@@ -558,6 +558,10 @@ input, textarea {
   color: var(--colorTranslucent);
 }
 
+.DocSearch-Input {
+  font-size: 16px;
+}
+
 .DocSearch-Commands {
   display: none;
 }

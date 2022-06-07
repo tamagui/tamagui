@@ -14,7 +14,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         tag="a"
         ai="center"
-        py="$1.5"
+        py="$2"
         px="$4"
         opacity={pending ? 0.25 : 1}
         hoverStyle={{
@@ -32,6 +32,9 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
             backgroundColor: '$background',
           },
         })}
+        $sm={{
+          py: '$2.5',
+        }}
       >
         <SizableText
           size="$2"
