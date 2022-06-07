@@ -1,9 +1,8 @@
 import * as Helpers from '@tamagui/helpers';
-import { TamaguiInternalConfig } from './types';
 declare class TamaguiManager {
     rnw: any;
     Helpers: typeof Helpers;
-    get config(): TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
+    get config(): import("./types").TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
         [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
             [key: string]: import("./types").VariableVal;
         };

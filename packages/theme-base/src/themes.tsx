@@ -1,7 +1,7 @@
-import { Variable, createVariable, getVariableValue } from '@tamagui/core'
+import { Variable, createTheme, getVariableValue } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
-import { colorTokens, darkColors, lightColors, tokens } from './tokens'
+import { darkColors, lightColors, tokens } from './tokens'
 
 const { color } = tokens
 
@@ -62,6 +62,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   const darkerTheme = getTheme(Math.max(0, shift + (props.isLight ? 1 : -1)), props)
   const activeTheme = makeActiveTheme(theme)
 
+  // TODO can be de-duped
   const inverted = altThemes.map(([_name, theme]) => {
     return {
       ...theme,
@@ -102,7 +103,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   return themes as any
 }
 
-const createTheme = (
+const themeCreator = (
   str = 1,
   {
     backgrounds,
@@ -137,14 +138,14 @@ const createTheme = (
     backgroundHover: get(backgrounds, str + lighterDir),
     backgroundPress: get(backgrounds, str + darkerDir),
     backgroundFocus: get(backgrounds, str + darkerDir * 2),
-    backgroundTransparent: color.grayA1,
+    backgroundTransparent: color.grayA1Light,
     color: get(colors, 0 + str, 'color'),
     colorHover: get(colors, 1 + str, 'color'),
     colorPress: get(colors, 2 + str, 'color'),
     colorFocus: get(colors, 3 + str, 'color'),
     colorTranslucent,
     colorMid: (isLight ? colors : backgrounds)[Math.floor(colors.length / 2)],
-    shadowColor: isLight ? color.grayA2 : color.grayA8,
+    shadowColor: isLight ? color.grayA2Light : color.grayA8Light,
     shadowColorHover: darkColors[!isLight ? 1 : 8],
     shadowColorPress: darkColors[!isLight ? 1 : 8],
     shadowColorFocus: darkColors[!isLight ? 1 : 8],
@@ -181,37 +182,22 @@ const createTheme = (
   return theme
 }
 
-export const colorSchemes = [
-  { name: 'blue', colors: colorTokens.light.blue, darkColors: colorTokens.dark.blue },
-  { name: 'gray', colors: colorTokens.light.gray, darkColors: colorTokens.dark.gray },
-  { name: 'green', colors: colorTokens.light.green, darkColors: colorTokens.dark.green },
-  { name: 'orange', colors: colorTokens.light.orange, darkColors: colorTokens.dark.orange },
-  { name: 'pink', colors: colorTokens.light.pink, darkColors: colorTokens.dark.pink },
-  { name: 'purple', colors: colorTokens.light.purple, darkColors: colorTokens.dark.purple },
-  { name: 'red', colors: colorTokens.light.red, darkColors: colorTokens.dark.red },
-  { name: 'violet', colors: colorTokens.light.violet, darkColors: colorTokens.dark.violet },
-  { name: 'yellow', colors: colorTokens.light.yellow, darkColors: colorTokens.dark.yellow },
-  { name: 'teal', colors: colorTokens.light.teal, darkColors: colorTokens.dark.teal },
-] as const
-
-export type ColorNames = typeof colorSchemes[number]['name']
-
 const themeColors = {
   light: [
     '#fff',
     '#f4f4f4',
-    color.gray1,
-    color.gray2,
-    color.gray3,
-    color.gray4,
-    color.gray5,
-    color.gray6,
-    color.gray7,
-    color.gray8,
-    color.gray9,
-    color.gray10,
-    color.gray11,
-    color.gray12,
+    color.gray1Light,
+    color.gray2Light,
+    color.gray3Light,
+    color.gray4Light,
+    color.gray5Light,
+    color.gray6Light,
+    color.gray7Light,
+    color.gray8Light,
+    color.gray9Light,
+    color.gray10Light,
+    color.gray11Light,
+    color.gray12Light,
   ],
   dark: [
     '#111111',
@@ -229,7 +215,7 @@ const themeColors = {
   ],
 }
 
-const lightThemes = createThemesFrom('light', createTheme, {
+const lightThemes = createThemesFrom('light', themeCreator, {
   backgrounds: themeColors.light,
   // isBase: true,
   backgroundStrong: '#fafafa',
@@ -237,7 +223,7 @@ const lightThemes = createThemesFrom('light', createTheme, {
   isLight: true,
 })
 
-const darkThemes = createThemesFrom('dark', createTheme, {
+const darkThemes = createThemesFrom('dark', themeCreator, {
   backgrounds: themeColors.dark,
   colors: themeColors.light.slice(2),
   backgroundStrong: '#111',
@@ -248,6 +234,39 @@ const darkThemes = createThemesFrom('dark', createTheme, {
     color: [0, 4, 5, 5, 5, 5],
   },
 })
+
+const light = createTheme({
+  ...lightColors,
+  ...lightThemes.light,
+})
+
+const dark = createTheme({
+  ...darkColors,
+  ...darkThemes.dark,
+})
+
+const darkEntries = Object.entries(dark)
+const lightEntries = Object.entries(light)
+function findColors(prefix: string, dark = false) {
+  return Object.fromEntries(
+    (dark ? darkEntries : lightEntries).filter(([k]) => k.startsWith(prefix))
+  )
+}
+
+export const colorSchemes = [
+  { name: 'blue', colors: findColors('blue'), darkColors: findColors('blue', true) },
+  { name: 'gray', colors: findColors('gray'), darkColors: findColors('gray', true) },
+  { name: 'green', colors: findColors('green'), darkColors: findColors('green', true) },
+  { name: 'orange', colors: findColors('orange'), darkColors: findColors('orange', true) },
+  { name: 'pink', colors: findColors('pink'), darkColors: findColors('pink', true) },
+  { name: 'purple', colors: findColors('purple'), darkColors: findColors('purple', true) },
+  { name: 'red', colors: findColors('red'), darkColors: findColors('red', true) },
+  { name: 'violet', colors: findColors('violet'), darkColors: findColors('violet', true) },
+  { name: 'yellow', colors: findColors('yellow'), darkColors: findColors('yellow', true) },
+  { name: 'teal', colors: findColors('teal'), darkColors: findColors('teal', true) },
+] as const
+
+export type ColorNames = typeof colorSchemes[number]['name']
 
 // nice and flat
 export const colorNames = [
@@ -267,10 +286,7 @@ export const colorNames = [
 const baseThemes = {
   // light
   ...lightThemes,
-  light: {
-    ...lightColors,
-    ...lightThemes.light,
-  },
+  light,
   light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
   light_Button: lightThemes.light,
@@ -282,10 +298,7 @@ const baseThemes = {
 
   // dark
   ...darkThemes,
-  dark: {
-    ...darkColors,
-    ...darkThemes.dark,
-  },
+  dark,
   dark_active: makeActiveTheme(darkThemes.dark),
   dark_Card: darkThemes.dark,
   dark_DrawerFrame: darkThemes.dark_alt1,
@@ -316,29 +329,21 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
     { colors, backgrounds: darkColors },
   ].map((props, i) => {
     const isLight = i === 0
+    const colorsBase = Object.values(props.colors).slice(2)
     const [backgrounds, colors] = [
       Object.values(props.backgrounds),
-      Object.values(props.colors).slice(isLight ? 2 : 2),
+      isLight ? colorsBase : [colorsBase[0], '#ccc', ...colorsBase.slice(1)],
     ] as const
 
     const scheme = isLight ? 'light' : 'dark'
     const shift = isLight ? 0 : 1
 
     if (!isLight) {
-      const [_, h, sp, lp] = backgrounds[0].val.match(
-        /hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/
-      )!
-      const key = backgrounds[0].key.replace('1', '0')
-      backgrounds.unshift(
-        createVariable({
-          key,
-          name: key,
-          val: `hsl(${h}, ${sp}%, ${parseFloat(lp) / 2}%)`,
-        })
-      )
+      // const [_, h, sp, lp] = backgrounds[0].match(/hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/)!
+      // backgrounds.unshift(`hsl(${h}, ${sp}%, ${parseFloat(lp) / 2}%)`)
     }
 
-    const themeWithAlts = createThemesFrom(name, createTheme, {
+    const themeWithAlts = createThemesFrom(name, themeCreator, {
       colors,
       backgrounds,
       borderColors: backgrounds,
@@ -371,37 +376,3 @@ const allThemes = {
 export const themes: {
   [key in keyof typeof allThemes]: typeof baseThemes['light']
 } = allThemes as any
-
-// TODO
-// export function createThemes(props: {
-//   colors?:
-//     | 'amber'
-//     | 'blue'
-//     | 'bronze'
-//     | 'brown'
-//     | 'crimson'
-//     | 'cyan'
-//     | 'gold'
-//     | 'grass'
-//     | 'gray'
-//     | 'green'
-//     | 'indigo'
-//     | 'lime'
-//     | 'mint'
-//     | 'olive'
-//     | 'orange'
-//     | 'pink'
-//     | 'plum'
-//     | 'purple'
-//     | 'mauve'
-//     | 'red'
-//     | 'sage'
-//     | 'sand'
-//     | 'sky'
-//     | 'slate'
-//     | 'teal'
-//     | 'tomato'
-//     | 'violet'
-//     | 'yellow'
-//   alternates?: number
-// }) {}

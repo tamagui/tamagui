@@ -11,7 +11,7 @@ const TextAreaFrame = styled(InputFrame, {
   height: 'auto',
 
   focusStyle: {
-    margin: -1,
+    marginHorizontal: -1,
     borderColor: '$borderColorFocus',
     borderWidth: 2,
   },

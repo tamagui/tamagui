@@ -1,5 +1,4 @@
-import React from 'react'
-import { Paragraph, Text, XStack, YStack } from 'tamagui'
+import { Paragraph, XStack, YStack } from 'tamagui'
 
 import { CheckCircle } from './CheckCircle'
 

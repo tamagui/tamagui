@@ -79,10 +79,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   // test env loads a few times as it runs diff tests
   if (getHasConfigured()) {
-    console.warn('Called createTamagui twice! Should never do so')
-    if (typeof document !== 'undefined') {
-      throw new Error(`#000 createTamagui called twice`)
-    }
+    console.warn(`Warning: createTamagui called twice (maybe HMR)`)
   }
 
   configureMedia({
@@ -120,14 +117,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const themeConfig = (() => {
     const themes = { ...config.themes }
     let cssRules: string[] = []
-    const varsByValue = new Map<string, Variable>()
+    const tokensValueToVariable = new Map<string, Variable>()
 
     if (isWeb) {
       // tokens
       const tokenRules = new Set<string>()
 
       const addVar = (v: Variable) => {
-        varsByValue[v.val] = v
+        tokensValueToVariable.set(v.val, v)
         const rule = `--${createCSSVariable(v.name, false)}:${
           typeof v.val === 'number' ? `${v.val}px` : v.val
         }`
@@ -169,13 +166,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const CNP = `.${THEME_CLASSNAME_PREFIX}`
 
     // dedupe themes to avoid duplicate CSS generation
-    const existing = new WeakMap()
+    type DedupedTheme = {
+      names: string[]
+      theme: ThemeObject
+    }
     const dedupedThemes: {
-      [key: string]: {
-        names: string[]
-        theme: ThemeObject
-      }
+      [key: string]: DedupedTheme
     } = {}
+    const existing = new WeakMap<ThemeObject, DedupedTheme>()
 
     // first, de-dupe and parse them
     for (const themeName in themes) {
@@ -183,7 +181,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       // if existing, avoid
       if (existing.has(rawTheme)) {
-        const e = existing.get(rawTheme)
+        const e = existing.get(rawTheme)!
+        themes[themeName] = e.theme
         e.names.push(themeName)
         continue
       }
@@ -201,40 +200,26 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         names: [themeName],
         theme,
       }
-      existing.set(theme, dedupedThemes[themeName])
+      existing.set(config.themes[themeName], dedupedThemes[themeName])
     }
 
     // then, generate from de-duped
-    for (const themeName in dedupedThemes) {
-      const { theme, names } = dedupedThemes[themeName]
-      let vars = ''
+    if (isWeb) {
+      for (const themeName in dedupedThemes) {
+        const { theme, names } = dedupedThemes[themeName]
+        let vars = ''
 
-      for (const themeKey in theme) {
-        if (isWeb) {
-          const val = theme[themeKey]
-          let varName: string
-          let varVal: string
-
-          if (isVariable(val)) {
-            varName = val.key
-            varVal = val.isFloating ? val.val : createCSSVariable(varName)
+        for (const themeKey in theme) {
+          const variable = theme[themeKey] as Variable
+          let value: any = null
+          if (variable.isFloating || !tokensValueToVariable.has(variable.val)) {
+            value = variable.val
           } else {
-            varName = varsByValue[val]?.key
-            varVal = varName ? createCSSVariable(varName) : `${val}`
+            value = tokensValueToVariable.get(variable.val)!.variable
           }
-
-          if (process.env.NODE_ENV === 'development') {
-            if (!varName) {
-              console.warn('no var name in theme', themeName, themeKey)
-              continue
-            }
-          }
-
-          vars += `--${themeKey}:${varVal};`
+          vars += `--${themeKey}:${value};`
         }
-      }
 
-      if (isWeb) {
         const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
         const isDark = themeName.startsWith('dark')
         const selectors = names.map((name) => {
@@ -272,16 +257,51 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
           if (isDarkOrLightBase) {
             cssRules.push(
               `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
-    body { background:${theme.background}; color: ${theme.color} }
-    :root {${vars} } 
-  }`
+      body { background:${theme.background}; color: ${theme.color} }
+      :root {${vars} } 
+    }`
             )
           }
         }
       }
     }
 
-    varsByValue.clear()
+    // proxy upwards to get parent variables (themes are subset going down)
+    for (const themeName in themes) {
+      // we could test if this is better as just a straight object spread or fancier proxy
+      const cur: string[] = []
+      // if theme is dark_blue_alt1_Button
+      // this will be the parent names in order: ['dark', 'dark_blue', 'dark_blue_alt1"]
+      const parents = themeName
+        .split('_')
+        .slice(0, -1)
+        .map((part) => {
+          cur.push(part)
+          return cur.join('_')
+        })
+
+      if (!parents.length) continue
+
+      themes[themeName] = new Proxy(themes[themeName], {
+        get(target, key) {
+          if (Reflect.has(target, key)) {
+            return Reflect.get(target, key)
+          }
+          // check parents
+          for (let i = parents.length - 1; i >= 0; i--) {
+            const parent = themes[parents[i]]
+            if (!parent) {
+              continue
+            }
+            if (Reflect.has(parent, key)) {
+              return Reflect.get(parent, key)
+            }
+          }
+        },
+      })
+    }
+
+    tokensValueToVariable.clear()
     Object.freeze(cssRules)
     const css = cssRules.join('\n')
 
@@ -361,7 +381,6 @@ function ensureThemeVariable(theme: any, key: string) {
       key: themeKey,
       name: themeKey,
       val,
-      isFloating: true,
     })
   } else {
     if (val.name !== themeKey) {

@@ -122,10 +122,11 @@ const ProgressFrame = styled(ThemeableStack, {
   variants: {
     size: {
       '...size': (val) => {
-        const size = getSize(val, -2)
+        const size = Math.round(getVariableValue(getSize(val)) * 0.25)
         return {
           height: size,
-          width: getVariableValue(size) * 10,
+          minWidth: getVariableValue(size) * 20,
+          width: '100%',
         }
       },
     },

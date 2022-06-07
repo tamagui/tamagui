@@ -36,7 +36,7 @@ export const createVariables = <A extends DeepTokenObject>(
               })
         })
       } else {
-        res[key] = createVariables(tokens[key] as any, name)
+        res[key] = createVariables(tokens[key] as any, name === 'color' ? '' : name)
       }
     } else {
       res[key] = isVariable(val) ? val : createVariable({ val, name, key })

@@ -273,7 +273,7 @@ const getToken = (
 ) => {
   let valOrVar: any
   let hasSet = false
-  if (value in theme) {
+  if (theme[value]) {
     valOrVar = theme[value]
     hasSet = true
   } else {

@@ -27,7 +27,7 @@ export default function ProgressDemo() {
 
       <XStack ai="center" space pos="absolute" b={10} l={20} $sm={{ disp: 'none' }}>
         <Slider
-          size="$1"
+          size="$2"
           w={130}
           defaultValue={[4]}
           min={2}

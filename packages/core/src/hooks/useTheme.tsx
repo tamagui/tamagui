@@ -84,26 +84,16 @@ export const useTheme = (
         if (!name || key === '__proto__' || typeof key === 'symbol') {
           // TODO make this pattern better
           if (key === GetThemeManager) {
-            if (process.env.NODE_ENV === 'development') {
-              if (props?.debug) {
-                // prettier-ignore
-                console.log('did change', { themeName, didChangeTheme, name, componentName }, themeManager?.parentName)
-              }
+            if (process.env.NODE_ENV === 'development' && props?.debug) {
+              console.log('>>', { themeName, didChangeTheme, name, componentName }, themeManager)
             }
-            if (!didChangeTheme) {
-              return null
-            }
+            if (!didChangeTheme) return null
             return themeManager
           }
           return Reflect.get(_, key)
         }
         if (typeof key !== 'string' || key === '$typeof') {
           return Reflect.get(_, key)
-        }
-        if (process.env.NODE_ENV === 'development') {
-          if (key === '__state') {
-            return state.current
-          }
         }
         if (key === 'name') {
           return name
@@ -131,11 +121,6 @@ export const useTheme = (
           }
           return val
         }
-        // react native debuger uses toJSON
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`No theme value "${String(key)}" in ${name}`)
-        }
-        return Reflect.get(_, key)
       },
     })
   }, [name, theme, className, didChangeTheme])

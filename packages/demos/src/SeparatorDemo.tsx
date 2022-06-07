@@ -5,7 +5,7 @@ export default function SeparatorDemo() {
   return (
     <YStack w="100%" maw={300} mx={15}>
       <Paragraph fontWeight="800">Tamagui</Paragraph>
-      <Paragraph>An cross-platform component library.</Paragraph>
+      <Paragraph>A cross-platform component library.</Paragraph>
       <Separator my={15} />
       <XStack h={20} ai="center">
         <Paragraph>Blog</Paragraph>

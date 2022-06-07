@@ -99,19 +99,19 @@ const zIndex = {
   5: 500,
 }
 
-export const colorTokens = createVariables({
+const colorTokens = {
   light: {
-    blue,
-    gray,
-    grayA,
-    green,
-    orange,
-    pink,
-    purple,
-    red,
-    violet,
-    yellow,
-    teal,
+    blue: blue,
+    gray: gray,
+    grayA: grayA,
+    green: green,
+    orange: orange,
+    pink: pink,
+    purple: purple,
+    red: red,
+    violet: violet,
+    yellow: yellow,
+    teal: teal,
   },
   dark: {
     blue: blueDark,
@@ -126,7 +126,7 @@ export const colorTokens = createVariables({
     yellow: yellowDark,
     teal: tealDark,
   },
-})
+}
 
 export const darkColors = {
   ...colorTokens.dark.blue,
@@ -157,16 +157,17 @@ export const lightColors = {
 }
 
 const allColors = {
-  ...lightColors,
-  ...darkPostfix(darkColors),
+  ...postfixObjKeys(lightColors, 'Light'),
+  ...postfixObjKeys(darkColors, 'Dark'),
 }
 
-function darkPostfix<A extends { [key: string]: Variable<string> }>(
-  obj: A
+function postfixObjKeys<A extends { [key: string]: Variable<string> | string }, B extends string>(
+  obj: A,
+  postfix: B
 ): {
-  [Key in `${keyof A extends string ? keyof A : never}Dark`]: Variable<string>
+  [Key in `${keyof A extends string ? keyof A : never}${B}`]: Variable<string> | string
 } {
-  return Object.fromEntries(Object.entries(obj).map(([k, v]) => [`${k}Dark`, v])) as any
+  return Object.fromEntries(Object.entries(obj).map(([k, v]) => [`${k}${postfix}`, v])) as any
 }
 
 const radius = {

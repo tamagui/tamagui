@@ -1,13 +1,14 @@
-// debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import { Tamagui as TT } from '@tamagui/core'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { Circle, H4, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
+TT['keep']
 React['keep']
 
 export const Sandbox = () => {

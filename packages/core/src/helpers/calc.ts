@@ -36,7 +36,6 @@ export const calc = (...valuesAndOperators: (CalcVal | Operator)[]) => {
         res += convertToVariableOrNumber(cur)
       }
     }
-    console.log('got', res, 'from', valuesAndOperators)
     return res + ')'
   }
 

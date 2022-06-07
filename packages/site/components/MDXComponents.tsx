@@ -139,7 +139,7 @@ export const components = {
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mt="$6" s {...props} />,
+  h4: (props) => <H4 mt="$6" {...props} />,
   h5: (props) => <H5 mt="$5" {...props} />,
 
   p: (props) => <Paragraph className="paragraph" display="block" mb="$2" mt="$2" {...props} />,
