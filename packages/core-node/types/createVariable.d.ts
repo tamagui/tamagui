@@ -19,6 +19,7 @@ export declare const createVariable: <A extends string | number = any>(props: Va
 export declare function isVariable(v: Variable | any): v is Variable;
 export declare function getVariableValue(v: Variable | any): any;
 export declare function getVariableName(v: Variable | any): any;
+export declare function getVariableVariable(v: Variable | any): any;
 export declare const createCSSVariable: (nameProp: string, includeVar?: boolean) => string;
 export {};
 //# sourceMappingURL=createVariable.d.ts.map

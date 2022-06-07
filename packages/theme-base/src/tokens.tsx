@@ -24,53 +24,63 @@ import {
 } from '@tamagui/colors'
 import { Variable, createTokens, createVariables } from '@tamagui/core'
 
-// acknowledge you need more granularity with .5s
-const sizeKeys = [
-  'true',
-  '0',
-  '0.25',
-  '0.5',
-  '1',
-  '1.5',
-  '2',
-  '2.5',
-  '3',
-  '3.5',
-  '4',
-  '4.5',
-  '5',
-  '5.5',
-  '6',
-  '6.5',
-  '7',
-  '7.5',
-  '8',
-  '8.5',
-  '9',
-  '9.5',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-] as const
-
-// slightly more than double every 2 indices apart
-const getSizeAt = (index: number) =>
-  index === 0 ? 0 : Math.round(Math.pow(1.6, index)) + Math.floor(3 * index)
-
-const size: {
-  [key in typeof sizeKeys[any]]: number
-} = Object.fromEntries(
-  sizeKeys.map((key) => {
-    return [key, getSizeAt(key === 'true' ? 4 : +key)]
-  })
-) as any
+// should roughly map to button/input etc height at each level
+// fonts should match that height/lineHeight at each stop
+// so these are really non-linear on purpose
+// why?
+//   - at sizes <1, used for fine grained things (borders, smallest paddingY)
+//     - so smallest padY should be roughly 1-4px so it can join with lineHeight
+//   - at sizes >=1, have to consider "pressability" (jumps up)
+//   - after that it should go upwards somewhat naturally
+//   - H1 / headings top out at 10 naturally, so after 10 we can go upwards faster
+//  but also one more wrinkle...
+//  space is used in conjunction with size
+//  i'm setting space to generally just a fixed fraction of size (~1/3-2/3 still fine tuning)
+const size = {
+  0: 0,
+  0.25: 2,
+  0.5: 4,
+  0.75: 8,
+  1: 20,
+  1.5: 24,
+  2: 28,
+  2.5: 32,
+  3: 36,
+  3.5: 40,
+  4: 44,
+  true: 44,
+  4.5: 48,
+  5: 52,
+  5.5: 59,
+  6: 64,
+  6.5: 69,
+  7: 74,
+  7.6: 79,
+  8: 84,
+  8.5: 89,
+  9: 94,
+  9.5: 99,
+  10: 104,
+  11: 124,
+  12: 144,
+  13: 164,
+  14: 184,
+  15: 204,
+  16: 224,
+  17: 224,
+  18: 244,
+  19: 264,
+  20: 284,
+}
 
 type Sizes = typeof size
-type SizeKeys = keyof Sizes
+type SizeKeys = `${keyof Sizes}`
 
-const spaces = Object.entries(size).map(([k, v]) => [k, Math.round(v * 0.75)])
+const spaces = Object.entries(size).map(([k, v]) => [
+  k,
+  Math.max(0, v <= 16 ? Math.round(v * 0.333) : Math.floor(v * 0.7 - 12)),
+])
+
 const spacesNegative = spaces.map(([k, v]) => [`-${k}`, -v])
 
 const space: {
@@ -182,3 +192,5 @@ export const tokens = createTokens({
   space,
   size,
 })
+
+console.log('size', { size, space })

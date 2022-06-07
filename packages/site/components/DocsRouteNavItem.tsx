@@ -14,7 +14,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         tag="a"
         ai="center"
-        py={4}
+        py="$1.5"
         px="$4"
         opacity={pending ? 0.25 : 1}
         hoverStyle={{

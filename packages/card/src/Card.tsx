@@ -33,7 +33,7 @@ const CardFrame = styled(ThemeableStack, {
     size: {
       '...size': (val, { tokens }) => {
         return {
-          borderRadius: tokens.size[val] ?? val,
+          borderRadius: tokens.radius[val] ?? val,
         }
       },
     },
@@ -54,7 +54,7 @@ const CardHeader = styled(ThemeableStack, {
     size: {
       '...size': (val, { tokens }) => {
         return {
-          padding: tokens.size[val] ?? val,
+          padding: tokens.space[val] ?? val,
         }
       },
     },

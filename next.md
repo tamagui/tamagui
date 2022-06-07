@@ -204,6 +204,7 @@ const ornaments = {
 - https://github.com/react-native-menu/menu
 - vscode plugin to highlight the current node your cursors inside of in dom
 - blur prop built in ?
+- // TODO fix any type
 
 
 site optimize:

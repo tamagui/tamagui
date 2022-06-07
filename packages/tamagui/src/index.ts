@@ -102,6 +102,7 @@ export {
   isWebIOS,
   isWebTouchable,
   // helpers
+  calc,
   addMediaQueryListener,
   createComponent,
   createFont,

@@ -6,6 +6,7 @@ import {
   StackProps,
   getTokens,
   getVariableValue,
+  stepTokenUpOrDown,
   styled,
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
@@ -248,7 +249,7 @@ export const PopperArrow = PopperArrowFrame.extractable(
     const context = usePopperContext(ARROW_NAME, __scopePopper)
     const tokens = getTokens()
     const sizeVal = sizeProp ?? context.size
-    const sizeValResolved = getVariableValue(tokens.size[sizeVal as any] ?? sizeVal ?? 12)
+    const sizeValResolved = getVariableValue(stepTokenUpOrDown(tokens.space, sizeVal, 0))
     const size = +sizeValResolved
     const { placement } = context
     const { x, y } = context.arrowStyle || { x: 0, y: 0 }

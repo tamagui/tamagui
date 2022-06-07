@@ -8,6 +8,7 @@ import {
   getVariableValue,
   styled,
   themeable,
+  withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
 import {
@@ -60,8 +61,8 @@ const ListItemFrame = styled(ThemeableStack, {
     size: {
       '...size': (val, { tokens }) => {
         return {
-          paddingVertical: getSize(val, -2),
-          paddingHorizontal: tokens.size[val],
+          height: tokens.size[val],
+          paddingHorizontal: tokens.space[val],
         }
       },
     },
@@ -174,7 +175,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
   )
 })
 
-export const ListItem: ReactComponentWithRef<ListItemProps, HTMLLIElement | View> =
+const ListItemInner: ReactComponentWithRef<ListItemProps, HTMLLIElement | View> =
   ListItemFrame.extractable(themeable(ListItemComponent as any) as any, {
     inlineProps: new Set([
       // text props go here (can't really optimize them, but we never fully extract listItem anyway)
@@ -186,3 +187,8 @@ export const ListItem: ReactComponentWithRef<ListItemProps, HTMLLIElement | View
       'textAlign',
     ]),
   })
+
+export const ListItem = withStaticProperties(ListItemInner, {
+  Text: ListItemText,
+  Subtitle: ListItemSubtitle,
+})

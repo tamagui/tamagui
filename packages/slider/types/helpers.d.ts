@@ -1,4 +1,3 @@
-import { SizeTokens } from '@tamagui/core';
 export declare function getNextSortedValues(prevValues: number[] | undefined, nextValue: number, atIndex: number): number[];
 export declare function convertValueToPercentage(value: number, min: number, max: number): number;
 export declare function getLabel(index: number, totalValues: number): string | undefined;
@@ -8,5 +7,4 @@ export declare function hasMinStepsBetweenValues(values: number[], minStepsBetwe
 export declare function linearScale(input: readonly [number, number], output: readonly [number, number]): (value: number) => number;
 export declare function getDecimalCount(value: number): number;
 export declare function roundValue(value: number, decimalCount: number): number;
-export declare function getSize(size?: SizeTokens): number | null;
 //# sourceMappingURL=helpers.d.ts.map
