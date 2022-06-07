@@ -1,6 +1,7 @@
 import { ButtonDemo, FormsDemo } from '@tamagui/demos'
+import { Sun } from '@tamagui/feather-icons'
 import React from 'react'
-import { ScrollView, useColorScheme } from 'react-native'
+import { ScrollView, TextInput, useColorScheme } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Group,
@@ -32,10 +33,10 @@ export function HomeScreen() {
         <H1 size="$9">Demos</H1>
 
         <Group vertical>
-          <ListItem pressable>
+          <ListItem pressable icon={Sun}>
             <ListItem.Text>Theme {scheme}</ListItem.Text>
             <Spacer flex />
-            <Switch bc="red">
+            <Switch bc="$blue10">
               <Switch.Thumb animation="bouncy" />
             </Switch>
           </ListItem>

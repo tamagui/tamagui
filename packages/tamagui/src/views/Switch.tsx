@@ -39,8 +39,8 @@ const [SwitchProvider, useSwitchContext] = createSwitchContext<{
  * Switch
  * -----------------------------------------------------------------------------------------------*/
 
-const getSwitchHeight = (val: SizeTokens) => getSize(val, -1)
-const getSwitchWidth = (val: SizeTokens) => getVariableValue(getSize(val, -1)) * 2
+const getSwitchHeight = (val: SizeTokens) => getSize(val, -2)
+const getSwitchWidth = (val: SizeTokens) => getVariableValue(getSize(val, -2)) * 2
 
 const SwitchFrame = styled(XStack, {
   name: 'Switch',
@@ -57,11 +57,12 @@ const SwitchFrame = styled(XStack, {
   variants: {
     size: {
       '...size': (val) => {
-        const height = getSwitchHeight(val)
-        const width = getSwitchWidth(val)
+        const height = calc(getSwitchHeight(val), '+', 4)
+        const width = calc(getSwitchWidth(val), '+', 4)
         return {
-          height: calc(height, '+', 4),
-          width: calc(width, '+', 4),
+          height,
+          minHeight: height,
+          width,
         }
       },
     },

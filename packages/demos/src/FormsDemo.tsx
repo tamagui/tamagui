@@ -7,7 +7,7 @@ export default function FormsDemo() {
       <FormDemo size="$1" />
       <FormDemo size="$2" />
       <FormDemo size="$4" />
-      <TextArea numberOfLines={2} />
+      <TextArea numberOfLines={4} />
     </YStack>
   )
 }

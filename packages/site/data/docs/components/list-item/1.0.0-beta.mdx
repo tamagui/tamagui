@@ -56,6 +56,18 @@ ListItems extend Stack views inheriting all the [Tamagui standard props](/docs/i
 <PropsTable
   data={[
     {
+      name: 'title',
+      required: false,
+      type: 'React.ReactNode',
+      description: `Can use either children or title + subTitle to set the contents.`,
+    },
+    {
+      name: 'subTitle',
+      required: false,
+      type: 'React.ReactNode',
+      description: `Sets a subTitle, recommended to use with title.`,
+    },
+    {
       name: 'size',
       required: false,
       type: 'string | tokens.size',
