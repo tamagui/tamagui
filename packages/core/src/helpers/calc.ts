@@ -30,11 +30,13 @@ export const calc = (...valuesAndOperators: (CalcVal | Operator)[]) => {
     let res = 'calc('
     for (const cur of valuesAndOperators) {
       if (operators[cur as any]) {
-        res += cur
+        // spaces are significant
+        res += ' ' + cur + ' '
       } else {
         res += convertToVariableOrNumber(cur)
       }
     }
+    console.log('got', res, 'from', valuesAndOperators)
     return res + ')'
   }
 

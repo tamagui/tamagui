@@ -33,19 +33,19 @@ const headingFont = createInterFont({
     5: 2,
     6: 1,
     7: 0,
-    8: -1,
-    9: -2,
-    10: -2,
-    12: -3,
-    14: -4,
-    15: -5,
+    8: 0,
+    9: -1,
+    10: -1,
+    12: -2,
+    14: -3,
+    15: -4,
   },
 })
 const bodyFont = createInterFont(
   {},
   {
-    sizeSize: (size) => Math.round(size * 1.1),
-    sizeLineHeight: (size) => Math.round(size * 1.15 + (size > 13 ? 14 : 4)),
+    sizeSize: (size) => Math.round(size * 1.15),
+    sizeLineHeight: (size) => Math.round(size * 1.1 + (size > 13 ? 12 : 4)),
   }
 )
 const monoFont = createGenericFont(

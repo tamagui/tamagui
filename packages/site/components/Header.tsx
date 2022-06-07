@@ -107,7 +107,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             <NextLink href="/docs/intro/installation" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
-                px="$2"
+                px="$3"
                 py="$2"
                 letterSpacing={2}
                 cursor="pointer"
@@ -123,7 +123,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             <NextLink href="/blog" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
-                px="$2"
+                px="$3"
                 py="$2"
                 letterSpacing={2}
                 cursor="pointer"

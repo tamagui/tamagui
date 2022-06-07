@@ -62,7 +62,7 @@ const ListItemFrame = styled(ThemeableStack, {
     size: {
       '...size': (val, { tokens }) => {
         return {
-          height: tokens.size[val],
+          minHeight: tokens.size[val],
           paddingHorizontal: tokens.space[val],
         }
       },

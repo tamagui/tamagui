@@ -38,6 +38,7 @@ import { Highlights } from './Highlights'
 import { HR } from './HR'
 import { LI } from './LI'
 import { MediaPlayer } from './MediaPlayer'
+import { Notice } from './Notice'
 import { OffsetBox } from './OffsetBox'
 import { Preview } from './Preview'
 import { PropsTable } from './PropsTable'
@@ -119,31 +120,7 @@ export const components = {
     />
   ),
 
-  Notice: ({ children, ...props }) => {
-    return (
-      <Theme name="yellow">
-        <XStack
-          borderWidth={1}
-          borderColor="$borderColor"
-          p="$4"
-          pr="$6"
-          bc="$background"
-          br="$2"
-          my="$4"
-          space="$3"
-          pos="relative"
-          {...props}
-        >
-          <Paragraph py="$0.5" theme="alt1" mt={-3} mb={-3} className="paragraph-parent" size="$2">
-            {unwrapText(children)}
-          </Paragraph>
-          <Circle bw={1} pos="absolute" t="$-3" r="$-3" boc="$borderColor" size="$7">
-            <HelpCircle size={22} color="var(--yellow11)" />
-          </Circle>
-        </XStack>
-      </Theme>
-    )
-  },
+  Notice,
 
   h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
 
