@@ -1,30 +1,65 @@
 import { isWeb } from '../constants/platform'
-import { getVariableVariable } from '../createVariable'
-import { SizeTokens, SpaceTokens } from '../types'
+import { getVariableValue, getVariableVariable } from '../createVariable'
+import { FontLineHeightTokens, FontSizeTokens, SizeTokens, SpaceTokens } from '../types'
 
-export type CalcVal = string | number | SizeTokens | SpaceTokens
+/**
+ * Simple calc() that handles native + web
+ *   on web: outputs a calc() string
+ *   on native: outputs a plain number
+ */
 
-export const calc = (aProp: CalcVal, operator: '+' | '-' | '/' | '*', bProp: CalcVal) => {
-  const [a, b] = [aProp, bProp].map(convertToVariableOrNumber)
+export type CalcVal =
+  | string
+  | number
+  | SizeTokens
+  | SpaceTokens
+  | FontSizeTokens
+  | FontLineHeightTokens
+
+const operators = {
+  '+': (a: number, b: number) => a + b,
+  '-': (a: number, b: number) => a - b,
+  '/': (a: number, b: number) => a / b,
+  '*': (a: number, b: number) => a * b,
+}
+
+type Operator = keyof typeof operators
+
+export const calc = (...valuesAndOperators: (CalcVal | Operator)[]) => {
   if (isWeb) {
-    return `calc(${a} ${operator} ${b})`
+    let res = 'calc('
+    for (const cur of valuesAndOperators) {
+      if (operators[cur as any]) {
+        res += cur
+      } else {
+        res += convertToVariableOrNumber(cur)
+      }
+    }
+    return res + ')'
   }
-  switch (operator) {
-    case '+':
-      return a + b
-    case '-':
-      return a - b
-    case '/':
-      return a / b
-    case '*':
-      return a * b
+
+  let res = 0
+  let nextOp: any = null
+  for (const cur of valuesAndOperators) {
+    if (operators[cur as any]) {
+      nextOp = operators[cur as any]
+    } else {
+      if (nextOp) {
+        res = nextOp(res, cur)
+        nextOp = null
+      } else {
+        res = +cur
+      }
+    }
   }
+  return res
 }
 
 const convertToVariableOrNumber = (v: any) => {
   const varOrVal = getVariableVariable(v)
   if (typeof varOrVal === 'number') {
-    return isWeb ? `${varOrVal}px` : varOrVal
+    return `${varOrVal}px`
   }
-  return +varOrVal
+  console.warn(`Non number given to calc, returning 0`)
+  return 0
 }

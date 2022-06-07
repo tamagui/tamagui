@@ -13,6 +13,7 @@ export declare type ListItemProps = Omit<TextParentStyles, 'TextComponent'> & Ge
     scaleIcon?: number;
     spaceFlex?: number | boolean;
     scaleSpace?: number;
+    title?: React.ReactNode;
     subTitle?: React.ReactNode;
 };
 declare const ListItemFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{

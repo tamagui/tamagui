@@ -41,7 +41,8 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent'> &
     spaceFlex?: number | boolean
     // adjust internal space relative to icon size
     scaleSpace?: number
-
+    // title
+    title?: React.ReactNode
     // subtitle
     subTitle?: React.ReactNode
   }
@@ -125,6 +126,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
     fontFamily,
     textAlign,
     textProps,
+    title,
     ...rest
   } = props as ListItemProps
 
@@ -147,20 +149,24 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
               <Spacer size={spaceSize} />
             </>
           ) : null}
-          <YStack>
-            {contents}
-            {subTitle ? (
-              typeof subTitle === 'string' ? (
-                // TODO can use theme but we need to standardize to alt themes
-                // or standardize on subtle colors in themes
-                <ListItemSubtitle opacity={0.65} size={subtitleSize}>
-                  {subTitle}
-                </ListItemSubtitle>
-              ) : (
-                subTitle
-              )
-            ) : null}
-          </YStack>
+          {/* helper for common title/subtitle pttern */}
+          {!!(title || subTitle) && (
+            <YStack flex={1}>
+              <ListItemText>{title}</ListItemText>
+              {subTitle ? (
+                typeof subTitle === 'string' ? (
+                  // TODO can use theme but we need to standardize to alt themes
+                  // or standardize on subtle colors in themes
+                  <ListItemSubtitle opacity={0.65} size={subtitleSize}>
+                    {subTitle}
+                  </ListItemSubtitle>
+                ) : (
+                  subTitle
+                )
+              ) : null}
+            </YStack>
+          )}
+          {contents}
           {themedIconAfter ? (
             <>
               <Spacer flex size={spaceSize} />
