@@ -23,7 +23,7 @@ export const HeroBelow = memo(() => {
           <IconStack theme="purple_alt2">
             <Cpu size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$6" my="$3" mb="$2">
+          <H3 size="$5" my="$4" mb="$2">
             Performant
           </H3>
           <Paragraph size="$3" theme="alt1">
@@ -36,7 +36,7 @@ export const HeroBelow = memo(() => {
           <IconStack theme="green_alt2">
             <Compass size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$6" my="$3" mb="$2">
+          <H3 size="$5" my="$4" mb="$2">
             Easy to adopt
           </H3>
           <Paragraph size="$3" theme="alt1">
@@ -52,7 +52,7 @@ export const HeroBelow = memo(() => {
           <IconStack theme="pink_alt2">
             <Layers size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$6" my="$3" mb="$2">
+          <H3 size="$5" my="$4" mb="$2">
             Productive
           </H3>
           <Paragraph size="$3" theme="alt1">

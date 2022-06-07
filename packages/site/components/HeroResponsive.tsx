@@ -150,7 +150,7 @@ export const HeroResponsive = memo(() => {
   const scale = 0.8 - Math.min(0.25, smIndex * 0.18)
 
   return (
-    <YStack ref={ref} y={0} mt={-150} pos="relative">
+    <YStack ref={ref} y={0} mt={-80} pos="relative">
       <ContainerLarge pos="relative">
         <Header />
         <Spacer size="$6" />
@@ -160,7 +160,7 @@ export const HeroResponsive = memo(() => {
           pos="absolute"
           zi={1}
           f={1}
-          space="$1"
+          space="$4"
           $sm={{
             scale,
             x: 150 - width / 2 - (smIndex ? (0.9 - scale) * 200 : 0),
@@ -248,18 +248,18 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-      <XStack y={-48} ai="flex-start">
+      <XStack y={-60} ai="flex-start">
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           accessibilityLabel={`Responsive size ${name}`}
           borderWidth={1}
-          size="$2"
+          size="$3"
           circular
           pos="absolute"
           top={0}
           left={0}
           y={-20}
-          x={-19}
+          x={-17}
           fontSize={12}
           onPress={() => {
             onPress(name)
