@@ -13,7 +13,13 @@ import {
 } from '@floating-ui/react-dom-interactions'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { composeEventHandlers, useId, withStaticProperties } from '@tamagui/core'
+import {
+  Theme,
+  composeEventHandlers,
+  useId,
+  useThemeName,
+  withStaticProperties,
+} from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 // import { DismissableLayer } from '@tamagui/react-dismissable-layer'
@@ -173,6 +179,7 @@ const PopoverContentModal = React.forwardRef<PopoverContentTypeElement, PopoverC
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isRightClickOutsideRef = React.useRef(false)
+    const themeName = useThemeName()
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
     // React.useEffect(() => {
@@ -184,37 +191,39 @@ const PopoverContentModal = React.forwardRef<PopoverContentTypeElement, PopoverC
 
     return (
       <PortalWrapper>
-        {/* <RemoveScroll allowPinchZoom={allowPinchZoom}> */}
-        <PopoverContentImpl
-          {...contentModalProps}
-          ref={composedRefs}
-          // we make sure we're not trapping once it's been closed
-          // (closed !== unmounted when animating out)
-          trapFocus={context.open}
-          disableOutsidePointerEvents
-          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-            event.preventDefault()
-            if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-          })}
-          onPointerDownOutside={composeEventHandlers(
-            props.onPointerDownOutside,
-            (event) => {
-              // @ts-expect-error
-              const originalEvent = event.detail.originalEvent
-              const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
-              const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-              isRightClickOutsideRef.current = isRightClick
-            },
-            { checkDefaultPrevented: false }
-          )}
-          // When focus is trapped, a `focusout` event may still happen.
-          // We make sure we don't trigger our `onDismiss` in such case.
-          onFocusOutside={composeEventHandlers(
-            props.onFocusOutside,
-            (event) => event.preventDefault(),
-            { checkDefaultPrevented: false }
-          )}
-        />
+        <Theme name={themeName}>
+          {/* <RemoveScroll allowPinchZoom={allowPinchZoom}> */}
+          <PopoverContentImpl
+            {...contentModalProps}
+            ref={composedRefs}
+            // we make sure we're not trapping once it's been closed
+            // (closed !== unmounted when animating out)
+            trapFocus={context.open}
+            disableOutsidePointerEvents
+            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+              event.preventDefault()
+              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+            })}
+            onPointerDownOutside={composeEventHandlers(
+              props.onPointerDownOutside,
+              (event) => {
+                // @ts-expect-error
+                const originalEvent = event.detail.originalEvent
+                const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
+                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                isRightClickOutsideRef.current = isRightClick
+              },
+              { checkDefaultPrevented: false }
+            )}
+            // When focus is trapped, a `focusout` event may still happen.
+            // We make sure we don't trigger our `onDismiss` in such case.
+            onFocusOutside={composeEventHandlers(
+              props.onFocusOutside,
+              (event) => event.preventDefault(),
+              { checkDefaultPrevented: false }
+            )}
+          />
+        </Theme>
         {/* </RemoveScroll> */}
       </PortalWrapper>
     )

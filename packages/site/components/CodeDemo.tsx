@@ -5,7 +5,7 @@ import { YStack } from 'tamagui'
 
 import type { CodeBlockProps } from './CodeBlock'
 
-export function CodeDemo({ css, line, maxHeight, height, ...props }: CodeBlockProps) {
+export function CodeDemo({ css, line, maxHeight, height, minWidth, ...props }: CodeBlockProps) {
   const [Comp, setComp] = useState<any>(null)
 
   useEffect(() => {
@@ -19,6 +19,7 @@ export function CodeDemo({ css, line, maxHeight, height, ...props }: CodeBlockPr
       className="scroll-vertical"
       maxHeight={maxHeight}
       height={height}
+      minWidth={minWidth}
       bc="$backgroundHover"
       boc="$borderColor"
       bw={1}

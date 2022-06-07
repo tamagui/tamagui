@@ -227,7 +227,7 @@ const PopperArrowFrame = styled(YStack, {
   borderColor: '$borderColor',
   backgroundColor: '$background',
   position: 'absolute',
-  zIndex: 1,
+  zIndex: 0,
   pointerEvents: 'none',
   // TODO bug not applying
   // rotate: '45deg',

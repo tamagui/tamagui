@@ -116,6 +116,7 @@ export function HeroExampleAnimations() {
               maxHeight={500}
               height={500}
               maxWidth={530}
+              minWidth={530}
               language="tsx"
               value={`import { Button, Square } from 'tamagui'
 

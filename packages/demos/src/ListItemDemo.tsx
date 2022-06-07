@@ -1,4 +1,4 @@
-import { Cloud, Moon, Star, Sun } from '@tamagui/feather-icons'
+import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/feather-icons'
 import { Group, ListItem, Separator, XStack } from 'tamagui'
 
 export default function ListItemDemo() {
@@ -31,9 +31,9 @@ function ListItemDemo1() {
 
 function ListItemDemo2() {
   return (
-    <Group als="center" bordered w={240} size="$5" vertical separator={<Separator />}>
-      <ListItem title="Star" subTitle="Subtitle" iconAfter={Star} />
-      <ListItem title="Moon" subTitle="Subtitle" iconAfter={Moon} />
+    <Group als="center" bordered w={240} size="$6" vertical separator={<Separator />}>
+      <ListItem hoverable title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
+      <ListItem hoverable title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
     </Group>
   )
 }

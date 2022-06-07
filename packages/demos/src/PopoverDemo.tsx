@@ -21,6 +21,8 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
         elevation="$4"
         enterStyle={{ x: 0, y: -10, o: 0 }}
         exitStyle={{ x: 0, y: -10, o: 0 }}
+        p="$2"
+        br="$4"
         x={0}
         y={0}
         o={1}

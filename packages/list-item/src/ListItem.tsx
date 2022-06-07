@@ -102,6 +102,7 @@ export const ListItemText = styled(SizableText, {
 
 export const ListItemSubtitle = styled(ListItemText, {
   color: '$colorPress',
+  size: '$3',
 })
 
 const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
@@ -131,7 +132,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
   } = props as ListItemProps
 
   const size = props.size || '$4'
-  const subtitleSizeToken = getSize(size, -2)
+  const subtitleSizeToken = getSize(size, -3)
   const subtitleSize = `$${subtitleSizeToken.key}` as FontSizeTokens
   const iconSize = getFontSize(size) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
@@ -157,7 +158,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
                 typeof subTitle === 'string' ? (
                   // TODO can use theme but we need to standardize to alt themes
                   // or standardize on subtle colors in themes
-                  <ListItemSubtitle opacity={0.65} size={subtitleSize}>
+                  <ListItemSubtitle marginTop="$-2" opacity={0.65} size={subtitleSize}>
                     {subTitle}
                   </ListItemSubtitle>
                 ) : (

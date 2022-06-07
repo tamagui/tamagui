@@ -181,12 +181,14 @@ export function createComponent<
     const hasEnterStyle = !!props.enterStyle
     const hostRef = useRef<HTMLElement | View>(null)
 
+    const animationFeatureStylesIn = props.animation ? { ...defaultNativeStyle, ...style } : null
+
     const features = useFeatures(props, {
       forceUpdate,
       setStateShallow,
       useAnimations,
       state,
-      style: props.animation ? { ...defaultNativeStyle, ...style } : null,
+      style: animationFeatureStylesIn,
       pseudos,
       staticConfig,
       theme,
