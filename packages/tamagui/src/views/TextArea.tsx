@@ -1,9 +1,10 @@
 import { GetProps, styled } from '@tamagui/core'
 
+import { focusableInputHOC } from '../helpers/focusableInputHOC'
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
-import { Input } from './Input'
+import { InputFrame } from './Input'
 
-export const TextArea = styled(Input, {
+const TextAreaFrame = styled(InputFrame, {
   name: 'TextArea',
   multiline: true,
   numberOfLines: 4,
@@ -23,3 +24,5 @@ export const TextArea = styled(Input, {
 })
 
 export type TextAreaProps = GetProps<typeof TextArea>
+
+export const TextArea = InputFrame.extractable(focusableInputHOC(TextAreaFrame))

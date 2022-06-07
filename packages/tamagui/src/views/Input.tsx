@@ -1,9 +1,10 @@
 import { GetProps, styled } from '@tamagui/core'
 import { TextInput } from 'react-native'
 
+import { focusableInputHOC } from '../helpers/focusableInputHOC'
 import { inputSizeVariant } from '../helpers/inputHelpers'
 
-export const Input = styled(TextInput, {
+export const InputFrame = styled(TextInput, {
   name: 'Input',
   borderWidth: 1,
   color: '$color',
@@ -31,14 +32,6 @@ export const Input = styled(TextInput, {
   },
 })
 
-export type InputProps = GetProps<typeof Input>
+export type InputProps = GetProps<typeof InputFrame>
 
-// fixes flex bug:
-// <XStack space="$1">
-//   <Input flex={1} size="$1" placeholder="Size 1..." />
-//   <Button size="$1">Go</Button>
-// </XStack>
-// ...(isWeb && {
-// flex: 1,
-// width: '0%',
-// }),
+export const Input = InputFrame.extractable(focusableInputHOC(InputFrame))

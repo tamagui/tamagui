@@ -1,4 +1,5 @@
 import { GetProps } from '@tamagui/core';
+export declare type TextAreaProps = GetProps<typeof TextArea>;
 export declare const TextArea: import("@tamagui/core").TamaguiComponent<import("react-native").TextInputProps & Omit<import("@tamagui/core").TextProps, keyof import("react-native").TextInputProps> & Omit<{
     size?: import("@tamagui/core").SizeTokens | undefined;
 }, "size"> & {
@@ -16,5 +17,4 @@ export declare const TextArea: import("@tamagui/core").TamaguiComponent<import("
 } & {
     size?: import("@tamagui/core").SizeTokens | undefined;
 }>;
-export declare type TextAreaProps = GetProps<typeof TextArea>;
 //# sourceMappingURL=TextArea.d.ts.map

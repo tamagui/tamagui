@@ -11,9 +11,15 @@ const nameMap = {
 
 export function DemoScreen() {
   const [id] = useParam('id')
-  const name = id[0].toUpperCase() + id.slice(1)
+  const name = id
+    .split('-')
+    .map((segment) => {
+      return segment[0].toUpperCase() + segment.slice(1)
+    })
+    .join('')
   const demoName = `${nameMap[name] || name}Demo`
   const DemoComponent = Demos[demoName] ?? NotFound
+  console.log('Demos', Demos, demoName)
 
   return (
     <YStack f={1} jc="center" ai="center" space>

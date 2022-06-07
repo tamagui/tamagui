@@ -21,6 +21,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { View } from 'react-native'
 
+import { registerFocusable } from '../lib/registerFocusable'
 import { useLabelContext } from './Label'
 
 const SWITCH_NAME = 'Switch'
@@ -112,6 +113,15 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
       defaultProp: defaultChecked || false,
       onChange: onCheckedChange,
     })
+
+    React.useEffect(() => {
+      if (!props.id) return
+      return registerFocusable(props.id, {
+        focus: () => {
+          setChecked((x) => !x)
+        },
+      })
+    }, [props.id])
 
     return (
       <SwitchProvider scope={__scopeSwitch} checked={checked} disabled={disabled} size={size}>
