@@ -70,68 +70,70 @@ export const HeroTypography = () => {
             h={300}
             w="40%"
             space="$0.5"
-            ai="flex-end"
+            jc="center"
             scale={1.1}
-            x={0}
-            // y={-20}
+            x={-20}
+            y={-10}
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
-            <AnimatePresence exitBeforeEnter>
-              <AnimatedHeading
-                key={`${family}1`}
-                index={0}
-                Component={H1}
-                family={family}
-                color="$pink10"
-              >
-                Swappable
-              </AnimatedHeading>
-              <AnimatedHeading
-                key={`${family}2`}
-                index={1}
-                Component={H2}
-                family={family}
-                color="$blue10"
-              >
-                typed, compiled
-              </AnimatedHeading>
-              <AnimatedHeading
-                key={`${family}3`}
-                index={2}
-                Component={H3}
-                family={family}
-                color="$purple10"
-              >
-                custom per-size
-              </AnimatedHeading>
-              <AnimatedHeading
-                key={`${family}4`}
-                index={3}
-                Component={H4}
-                family={family}
-                color="$green10"
-              >
-                premade or custom
-              </AnimatedHeading>
-              <AnimatedHeading
-                key={`${family}5`}
-                index={4}
-                Component={H5}
-                family={family}
-                color="$orange10"
-              >
-                easy to author
-              </AnimatedHeading>
-              <AnimatedHeading
-                key={`${family}6`}
-                index={5}
-                Component={H6}
-                family={family}
-                color="$red10"
-              >
-                font themes
-              </AnimatedHeading>
-            </AnimatePresence>
+            <YStack ai="flex-end" h={270}>
+              <AnimatePresence exitBeforeEnter>
+                <AnimatedHeading
+                  key={`${family}1`}
+                  index={0}
+                  Component={H1}
+                  family={family}
+                  color="$pink10"
+                >
+                  Swappable
+                </AnimatedHeading>
+                <AnimatedHeading
+                  key={`${family}2`}
+                  index={1}
+                  Component={H2}
+                  family={family}
+                  color="$blue10"
+                >
+                  typed, compiled
+                </AnimatedHeading>
+                <AnimatedHeading
+                  key={`${family}3`}
+                  index={2}
+                  Component={H3}
+                  family={family}
+                  color="$purple10"
+                >
+                  custom per-size
+                </AnimatedHeading>
+                <AnimatedHeading
+                  key={`${family}4`}
+                  index={3}
+                  Component={H4}
+                  family={family}
+                  color="$green10"
+                >
+                  premade or custom
+                </AnimatedHeading>
+                <AnimatedHeading
+                  key={`${family}5`}
+                  index={4}
+                  Component={H5}
+                  family={family}
+                  color="$orange10"
+                >
+                  easy to author
+                </AnimatedHeading>
+                <AnimatedHeading
+                  key={`${family}6`}
+                  index={5}
+                  Component={H6}
+                  family={family}
+                  color="$red10"
+                >
+                  font themes
+                </AnimatedHeading>
+              </AnimatePresence>
+            </YStack>
           </YStack>
         </XStack>
       </ContainerLarge>

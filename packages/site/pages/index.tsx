@@ -31,7 +31,7 @@ export default function Home() {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <YStack elevation="$2" bc="$background" py="$8" pb={78}>
+      <YStack elevation="$1" bc="$background" py="$8" pb="$10">
         <HeroBelow />
       </YStack>
       <Separator />
@@ -53,7 +53,7 @@ export default function Home() {
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
         <HeroExampleCode />
       </Section>
-      <Section bc="$background" mt={-100} bbw={1} bbc="$borderColor" mb="$-5">
+      <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">
         <FeaturesGrid />
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
       </Section>
@@ -63,7 +63,7 @@ export default function Home() {
       <Section zi={10}>
         <HeroExampleProps />
       </Section>
-      <Section mt={-70} zi={0}>
+      <Section zi={0}>
         <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={-615} left={0} right={0} ai="center">
           <CocentricCircles />
         </YStack>
@@ -76,7 +76,7 @@ export default function Home() {
 const Section = styled(YStack, {
   name: 'Section',
   pos: 'relative',
-  py: '$12',
+  py: '$14',
   zi: 2,
 
   variants: {
@@ -97,7 +97,7 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
       zi={2}
       contain="paint"
       pos="relative"
-      py="$12"
+      py="$14"
       elevation="$2"
       {...(bubble && {
         maw: 1400,

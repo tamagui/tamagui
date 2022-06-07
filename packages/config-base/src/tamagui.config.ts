@@ -14,6 +14,7 @@ import { media } from './media'
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont({
   size: {
+    5: 13,
     6: 15,
   },
   transform: {

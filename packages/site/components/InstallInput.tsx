@@ -41,7 +41,7 @@ export const InstallInput = memo(() => {
           accessibilityLabel={installScript}
           borderRadius="$8"
           mr="$-7"
-          x={-3}
+          x={-1}
           // TODO broken in latest
           icon={
             hasCopied ? (

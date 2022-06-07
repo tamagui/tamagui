@@ -54,14 +54,14 @@ const HeroTop = memo(() => {
         ov="hidden"
         space="$6"
         position="relative"
-        pt="$8"
-        mb="$4"
+        pt="$11"
+        mb="$10"
         $sm={{
           maxWidth: '100%',
           mx: 'auto',
         }}
       >
-        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$4">
+        <YStack ai="flex-start" $gtSm={{ ai: 'center' }} space="$5">
           <H1
             ta="left"
             size="$9"
