@@ -1,7 +1,18 @@
+import { ButtonDemo, FormsDemo } from '@tamagui/demos'
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, useColorScheme } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
-import { Group, H1, ListItem, ListItemProps, Separator, XStack, YStack } from 'tamagui'
+import {
+  Group,
+  H1,
+  ListItem,
+  ListItemProps,
+  Separator,
+  Spacer,
+  Switch,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
@@ -13,15 +24,27 @@ const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & 
 }
 
 export function HomeScreen() {
+  const scheme = useColorScheme()
+
   return (
     <ScrollView>
       <YStack p="$3" pb="$8" f={1} space>
         <H1 size="$9">Demos</H1>
 
+        <Group vertical>
+          <ListItem pressable>
+            <ListItem.Text>Theme {scheme}</ListItem.Text>
+            <Spacer flex />
+            <Switch bc="red">
+              <Switch.Thumb animation="bouncy" />
+            </Switch>
+          </ListItem>
+        </Group>
+
         <YStack space="$4" maw={600}>
           {demos.map((group, i) => {
             return (
-              <Group key={i} vertical bordered separator={<Separator />}>
+              <Group key={i} vertical separator={<Separator />}>
                 {group.pages.map((page) => {
                   return (
                     <LinkListItem key={page.route} href={page.route} pressable size="$4">

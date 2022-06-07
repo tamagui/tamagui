@@ -7,17 +7,7 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import {
-  Button,
-  H3,
-  Paragraph,
-  Separator,
-  Text,
-  Theme,
-  VisuallyHidden,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button, Paragraph, Separator, Text, Theme, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
 import { ColorToggleButton, useTint } from './ColorToggleButton'
@@ -74,12 +64,12 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               return (
                 <YStack key={`sep-${i}`} mx="$4">
                   {!!section.title ? (
-                    <XStack ai="center" jc="center" space="$6" mb="$2" mt="$4">
-                      <Separator my="$4" />
+                    <XStack ai="center" jc="center" space="$6" spaceDirection="row" mb="$2" mt="$1">
+                      <Separator />
                       <Paragraph als="center" size="$2" fow="800">
                         {section.title}
                       </Paragraph>
-                      <Separator my="$4" />
+                      <Separator />
                     </XStack>
                   ) : (
                     <Separator my="$4" />
@@ -127,7 +117,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           top={15}
           right={30}
           ai="center"
-          space="$6"
+          space="$4"
         >
           <AlphaButton />
 

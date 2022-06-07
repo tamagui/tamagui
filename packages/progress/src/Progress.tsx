@@ -1,9 +1,9 @@
 // forked from Radix UI
 // https://github.com/radix-ui/primitives/blob/main/packages/react/progress/src/Progress.tsx
 
-import { GetProps, styled, withStaticProperties } from '@tamagui/core'
+import { GetProps, getSize, getVariableValue, styled, withStaticProperties } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { ThemeableStack, YStackProps, getCircleSize } from '@tamagui/stacks'
+import { ThemeableStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -121,12 +121,11 @@ const ProgressFrame = styled(ThemeableStack, {
 
   variants: {
     size: {
-      '...size': (val, extras) => {
-        const circleSize = getCircleSize(val, extras)
-        const size = circleSize / 3
+      '...size': (val) => {
+        const size = getSize(val, -2)
         return {
           height: size,
-          width: size * 20,
+          width: getVariableValue(size) * 10,
         }
       },
     },

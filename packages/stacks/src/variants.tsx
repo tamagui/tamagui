@@ -1,12 +1,4 @@
-import { ScaleVariantExtras, SizeTokens, buttonScaling, getSizeScaledToFont } from '@tamagui/core'
-
 import { getElevation } from './Stacks'
-
-export function getCircleSize(size: SizeTokens, extras: ScaleVariantExtras) {
-  const sizeVal = size ?? '$4'
-  const scale = getSizeScaledToFont(sizeVal, buttonScaling, extras)
-  return scale.minHeight
-}
 
 export const elevate = {
   true: (_, extras) => {
@@ -59,9 +51,8 @@ export const radiused = {
 }
 
 export const circular = {
-  true: (_, extras) => {
-    const { props } = extras
-    const size = getCircleSize(props.size, extras)
+  true: (_, { props, tokens }) => {
+    const size = tokens.size[props.size]
     return {
       width: size,
       height: size,

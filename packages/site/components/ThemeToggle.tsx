@@ -22,6 +22,7 @@ export const ThemeToggle = (props: ButtonProps) => {
   return (
     <TooltipSimple groupId="header-actions-theme" label={`Switch theme (${theme})`}>
       <Button
+        size="$3"
         onPress={toggleTheme}
         {...props}
         aria-label="toggle a light and dark color scheme"

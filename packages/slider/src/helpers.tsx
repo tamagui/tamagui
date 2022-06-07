@@ -100,12 +100,3 @@ export function roundValue(value: number, decimalCount: number) {
   const rounder = Math.pow(10, decimalCount)
   return Math.round(value * rounder) / rounder
 }
-
-export function getSize(size?: SizeTokens) {
-  const tokens = getTokens()
-  return typeof size === 'number'
-    ? size
-    : size
-    ? (getVariableValue(tokens.size[size]) as number)
-    : null
-}

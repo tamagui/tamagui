@@ -67,6 +67,11 @@ export function getVariableName(v: Variable | any) {
   return v
 }
 
+export function getVariableVariable(v: Variable | any) {
+  if (isVariable(v)) return v.variable
+  return v
+}
+
 // bugfix { space: { 0.5: 10 } } was generating var(--space-0.5) (invalid CSS):
 export const createCSSVariable = (nameProp: string, includeVar = true) => {
   if (process.env.NODE_ENV === 'development') {

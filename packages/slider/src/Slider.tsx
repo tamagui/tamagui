@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { getButtonSize, isWeb, styled, withStaticProperties } from '@tamagui/core'
+import { getButtonSize, getSize, isWeb, styled, withStaticProperties } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -183,6 +183,7 @@ const SliderTrackFrame = styled(SliderFrame, {
   backgroundColor: '$background',
   position: 'relative',
   borderRadius: 100_000,
+  overflow: 'hidden',
 })
 
 const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
@@ -280,7 +281,15 @@ const SliderThumbFrame = styled(ThemeableStack, {
 
   variants: {
     size: {
-      '...size': getButtonSize,
+      '...size': (val) => {
+        const size = typeof val === 'number' ? val : getSize(val, -1)
+        return {
+          width: size,
+          height: size,
+          minWidth: size,
+          minHeight: size,
+        }
+      },
     },
   },
 })
@@ -354,7 +363,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
                 right: 'auto',
               }),
             })}
-        size={sizeProp ?? context.size ?? 30}
+        size={sizeProp ?? context.size ?? '$4'}
         onLayout={(e) => {
           setSize(e.nativeEvent.layout[orientation.sizeProp])
         }}
@@ -464,7 +473,7 @@ const Slider = withStaticProperties(
         thumbs={thumbRefs.current}
         values={values}
         orientation={orientation}
-        size={sizeProp || 20}
+        size={sizeProp}
       >
         <SliderOriented
           aria-disabled={disabled}

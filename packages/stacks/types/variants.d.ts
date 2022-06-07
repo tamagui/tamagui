@@ -1,6 +1,4 @@
 /// <reference types="react" />
-import { ScaleVariantExtras, SizeTokens } from '@tamagui/core';
-export declare function getCircleSize(size: SizeTokens, extras: ScaleVariantExtras): number;
 export declare const elevate: {
     true: (_: any, extras: any) => {
         [x: `$${string}`]: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>) | import("@tamagui/core").Variable<any> | undefined;
@@ -139,7 +137,7 @@ export declare const elevate: {
         flexGrow?: number | import("@tamagui/core").Variable<any> | undefined;
         flexShrink?: number | import("@tamagui/core").Variable<any> | undefined;
         flexWrap?: import("@tamagui/core").Variable<any> | "wrap" | "nowrap" | "wrap-reverse" | undefined;
-        height?: SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
+        height?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         justifyContent?: import("@tamagui/core").Variable<any> | "flex-start" | "flex-end" | "center" | "space-between" | "space-around" | "space-evenly" | undefined;
         left?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         margin?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
@@ -151,10 +149,10 @@ export declare const elevate: {
         marginStart?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         marginTop?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         marginVertical?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
-        maxHeight?: SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
-        maxWidth?: SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
-        minHeight?: SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
-        minWidth?: SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
+        maxHeight?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
+        maxWidth?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
+        minHeight?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
+        minWidth?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         overflow?: import("@tamagui/core").Variable<any> | "visible" | "hidden" | "scroll" | undefined;
         padding?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         paddingBottom?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
@@ -169,7 +167,7 @@ export declare const elevate: {
         right?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         start?: string | number | import("@tamagui/core").Variable<any> | undefined;
         top?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
-        width?: SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
+        width?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         zIndex?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | import("@tamagui/core").ZIndexTokens | undefined;
         direction?: "inherit" | import("@tamagui/core").Variable<any> | "ltr" | "rtl" | undefined;
         shadowColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
@@ -181,7 +179,7 @@ export declare const elevate: {
             height: number;
         } | undefined;
         shadowOpacity?: number | import("@tamagui/core").Variable<any> | undefined;
-        shadowRadius?: SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
+        shadowRadius?: import("@tamagui/core").SizeTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;
         transform?: import("@tamagui/core").Variable<any> | (import("react-native").PerpectiveTransform | import("react-native").RotateTransform | import("react-native").RotateXTransform | import("react-native").RotateYTransform | import("react-native").RotateZTransform | import("react-native").ScaleTransform | import("react-native").ScaleXTransform | import("react-native").ScaleYTransform | import("react-native").TranslateXTransform | import("react-native").TranslateYTransform | import("react-native").SkewXTransform | import("react-native").SkewYTransform | import("react-native").MatrixTransform)[] | undefined;
         transformMatrix?: number[] | import("@tamagui/core").Variable<any> | undefined;
         rotation?: number | import("@tamagui/core").Variable<any> | undefined;
@@ -224,13 +222,16 @@ export declare const radiused: {
     };
 };
 export declare const circular: {
-    true: (_: any, extras: any) => {
-        width: number;
-        height: number;
-        maxWidth: number;
-        maxHeight: number;
-        minWidth: number;
-        minHeight: number;
+    true: (_: any, { props, tokens }: {
+        props: any;
+        tokens: any;
+    }) => {
+        width: any;
+        height: any;
+        maxWidth: any;
+        maxHeight: any;
+        minWidth: any;
+        minHeight: any;
         borderRadius: number;
         paddingVertical: number;
         paddingHorizontal: number;

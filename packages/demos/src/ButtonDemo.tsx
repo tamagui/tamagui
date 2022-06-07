@@ -4,7 +4,7 @@ import { Button, Group, XStack, YStack } from 'tamagui'
 
 export default function ButtonDemo(props) {
   return (
-    <YStack p="$3" space="$2" {...props}>
+    <YStack p="$3" space {...props}>
       <Button>Plain</Button>
       <Button als="center" icon={Airplay} size="$6">
         Large
@@ -17,19 +17,19 @@ export default function ButtonDemo(props) {
           Yellow
         </Button>
       </Group>
-      <XStack space>
-        <Button themeInverse size="$2">
+      <XStack space="$2">
+        <Button themeInverse size="$3">
           Small Inverse
         </Button>
-        <Button iconAfter={Activity} size="$2">
+        <Button iconAfter={Activity} size="$3">
           After
         </Button>
       </XStack>
       <Group>
-        <Button w="50%" br={0} size="$1" disabled>
+        <Button w="50%" br={0} size="$2" disabled>
           disabled
         </Button>
-        <Button w="50%" br={0} size="$1" chromeless>
+        <Button w="50%" br={0} size="$2" chromeless>
           chromeless
         </Button>
       </Group>

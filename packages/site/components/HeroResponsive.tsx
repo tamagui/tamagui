@@ -141,6 +141,7 @@ export const HeroResponsive = memo(() => {
   }, [nextWidth])
 
   const handleMarkerPress = useCallback((name) => {
+    setHasInteracted(true)
     const next = (breakpoints.find((x) => x.name === name)?.at ?? 0) - initialWidth + 20
     setMove(next)
     prevMove.current = 0
@@ -252,7 +253,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
         <Button
           accessibilityLabel={`Responsive size ${name}`}
           borderWidth={1}
-          size="$4"
+          size="$2"
           circular
           pos="absolute"
           top={0}

@@ -9,7 +9,7 @@ export const getTextSize: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   const font = fonts[family] || fonts['$body']
   if (!font) {
     console.warn('⚠️ no font found', { family, fontTokens: Object.keys(fonts), val })
-    return
+    return {} as any
   }
   const fontFamily = font.family
   const fontSize = props.fontSize || font.size[val]

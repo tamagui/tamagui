@@ -344,13 +344,6 @@ const tokenCategories = {
     minHeight: true,
     maxWidth: true,
     maxHeight: true,
-    padding: true,
-    paddingLeft: true,
-    paddingRight: true,
-    paddingTop: true,
-    paddingBottom: true,
-    paddingVertical: true,
-    paddingHorizontal: true,
   },
   color: {
     color: true,

@@ -2,8 +2,8 @@
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
 
-import { composeEventHandlers, isWeb, styled } from '@tamagui/core'
-import { YStack, getCircleSize } from '@tamagui/stacks'
+import { composeEventHandlers, getSize, getVariableValue, isWeb, styled } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 
 import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
@@ -24,8 +24,7 @@ export const SliderFrame = styled(DirectionalYStack, {
   variants: {
     size: (val, extras) => {
       const orientation = extras.props.orientation
-      const circleSize = getCircleSize(val, extras)
-      const size = circleSize / 8
+      const size = Math.round(getVariableValue(getSize(val)) / 6)
       if (orientation === 'horizontal') {
         return {
           height: size,

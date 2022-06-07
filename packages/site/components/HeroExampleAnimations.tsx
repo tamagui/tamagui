@@ -47,7 +47,7 @@ export function HeroExampleAnimations() {
             <Button
               tag="span"
               pe="none"
-              size="$3"
+              size="$2"
               theme="pink"
               pos="absolute"
               t={-10}

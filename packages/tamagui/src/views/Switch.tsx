@@ -8,6 +8,7 @@ import {
   ReactComponentWithRef,
   SizeTokens,
   SizeVariantSpreadFunction,
+  calc,
   getSize,
   getVariableValue,
   isWeb,
@@ -15,7 +16,6 @@ import {
   themeable,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
-import { getShapeSize } from '@tamagui/shapes'
 import { ThemeableStack, XStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
@@ -39,15 +39,8 @@ const [SwitchProvider, useSwitchContext] = createSwitchContext<{
  * Switch
  * -----------------------------------------------------------------------------------------------*/
 
-const WIDTH_SIZE = 3
-const HEIGHT_SIZE = 1
-
-const getSwitchHeight: SizeVariantSpreadFunction<any> = (val, extras) =>
-  // @ts-ignore works but need to improve types
-  getShapeSize(getSize(val, HEIGHT_SIZE), extras)
-const getSwitchWidth: SizeVariantSpreadFunction<any> = (val, extras) =>
-  // @ts-ignore works but need to improve types
-  getShapeSize(getSize(val, WIDTH_SIZE), extras)
+const getSwitchHeight = (val: SizeTokens) => getSize(val, -1)
+const getSwitchWidth = (val: SizeTokens) => getVariableValue(getSize(val, -1)) * 2
 
 const SwitchFrame = styled(XStack, {
   name: 'Switch',
@@ -63,16 +56,12 @@ const SwitchFrame = styled(XStack, {
 
   variants: {
     size: {
-      '...size': (val, extras) => {
-        const { height, minHeight, maxHeight } = getSwitchHeight(val, extras)!
-        const { width, minWidth, maxWidth } = getSwitchWidth(val, extras)!
+      '...size': (val) => {
+        const height = getSwitchHeight(val)
+        const width = getSwitchWidth(val)
         return {
-          height: height + 2,
-          minHeight: minHeight + 2,
-          maxHeight: maxHeight + 2,
-          width: getVariableValue(width) + 4,
-          minWidth: minWidth + 2,
-          maxWidth: maxWidth + 2,
+          height: calc(height, '+', 4),
+          width: calc(width, '+', 4),
         }
       },
     },
@@ -194,7 +183,10 @@ const SwitchThumbFrame = styled(ThemeableStack, {
 
   variants: {
     size: {
-      '...size': getSwitchHeight,
+      '...size': (val) => ({
+        height: getSwitchHeight(val),
+        width: getSwitchHeight(val),
+      }),
     },
   },
 
@@ -218,8 +210,7 @@ export const SwitchThumb = SwitchThumbFrame.extractable(
           {...thumbProps}
           x={
             checked
-              ? getVariableValue(getSize(size, WIDTH_SIZE)) -
-                getVariableValue(getSize(size, HEIGHT_SIZE))
+              ? getVariableValue(getSwitchWidth(size)) - getVariableValue(getSwitchHeight(size))
               : 0
           }
           ref={forwardedRef}

@@ -76,7 +76,7 @@ export default function Home() {
 const Section = styled(YStack, {
   name: 'Section',
   pos: 'relative',
-  py: '$10',
+  py: '$12',
   zi: 2,
 
   variants: {
@@ -97,7 +97,7 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
       zi={2}
       contain="paint"
       pos="relative"
-      py="$9"
+      py="$12"
       elevation="$2"
       {...(bubble && {
         maw: 1400,

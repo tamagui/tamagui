@@ -41,11 +41,11 @@ export const LabelFrame = styled(SizableText, {
   variants: {
     size: {
       '...size': (val, extras) => {
+        const { borderRadius, ...buttonStyle } = getButtonSize(val, extras)
         const style = {
-          ...getButtonSize(val, extras),
+          ...buttonStyle,
           ...getTextSize(val, extras),
         }
-        delete style.borderRadius
         return style
       },
     },

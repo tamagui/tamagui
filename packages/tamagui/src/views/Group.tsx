@@ -5,8 +5,6 @@ import { ScrollView } from 'react-native'
 
 export const GroupFrame = styled(ThemeableStack, {
   name: 'GroupFrame',
-  borderWidth: 1,
-  borderColor: 'transparent',
   backgroundColor: '$background',
   y: 0,
   overflow: 'hidden',
