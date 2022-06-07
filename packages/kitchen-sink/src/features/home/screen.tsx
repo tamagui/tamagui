@@ -1,4 +1,4 @@
-import { ButtonDemo, FormsDemo } from '@tamagui/demos'
+import { ButtonDemo, FormsDemo, LabelDemo } from '@tamagui/demos'
 import { Sun } from '@tamagui/feather-icons'
 import React from 'react'
 import { ScrollView, TextInput, useColorScheme } from 'react-native'
