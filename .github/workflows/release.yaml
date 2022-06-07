@@ -38,8 +38,7 @@ jobs:
 
       - name: Build Site
         run: |
-          yarn --cwd packages/site next:build
-          yarn --cwd packages/site next:export
+          yarn --cwd packages/site vercel:build
 
       - name: Deploy Website
         uses: peaceiris/actions-gh-pages@v3

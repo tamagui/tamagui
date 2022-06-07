@@ -32,12 +32,8 @@ function ListItemDemo1() {
 function ListItemDemo2() {
   return (
     <Group als="center" bordered w={240} size="$5" vertical separator={<Separator />}>
-      <ListItem subTitle="Subtitle" iconAfter={Star}>
-        Star
-      </ListItem>
-      <ListItem subTitle="Subtitle" iconAfter={Moon}>
-        Moon
-      </ListItem>
+      <ListItem title="Star" subTitle="Subtitle" iconAfter={Star} />
+      <ListItem title="Moon" subTitle="Subtitle" iconAfter={Moon} />
     </Group>
   )
 }
