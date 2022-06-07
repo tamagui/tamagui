@@ -5,6 +5,9 @@
   - also aligns with stylex
 
 - 1.0
+  - document no need to use compiler during install
+  - document rationale on size/space 
+   - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - TODO bug backgroundStrong on dark in light / not variabl
   - make webpack plugin that does stuff from next-plugin and sandbox webpack etc
   - compile styled() to just css classes
