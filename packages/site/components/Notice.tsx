@@ -1,7 +1,7 @@
 import React from 'react'
 import { Paragraph, Theme, XStack } from 'tamagui'
 
-import { unwrapText } from './MDXComponents'
+import { unwrapText } from './unwrapText'
 
 export const Notice = ({ children, theme = 'yellow', ...props }: any) => {
   return (

@@ -21,6 +21,7 @@ export default class Document extends NextDocument {
     return (
       <Html>
         <Head>
+          <link href="/fonts/inter.css" rel="stylesheet" />
           <meta name="docsearch:language" content="en" />
           <meta name="docsearch:version" content="1.0.0,latest" />
         </Head>
