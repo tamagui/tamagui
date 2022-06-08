@@ -4,7 +4,7 @@ type DeepTokenObject<Val extends string | number = any> = {
   [key: string]: Val | DeepTokenObject<Val>
 }
 
-type DeepVariableObject<A extends DeepTokenObject> = {
+export type DeepVariableObject<A extends DeepTokenObject> = {
   [Key in keyof A]: A[Key] extends string | number
     ? Variable<A[Key]>
     : A[Key] extends DeepTokenObject

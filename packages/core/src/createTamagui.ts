@@ -1,11 +1,17 @@
 import { configListeners, getHasConfigured, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
-import { Variable, createCSSVariable, createVariable, isVariable } from './createVariable'
+import { Variable, createVariable, isVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { getInsertedRules } from './helpers/insertStyleRule'
+import {
+  registerCSSVariable,
+  tokenRules,
+  tokensValueToVariable,
+} from './helpers/registerCSSVariable'
 import { configureMedia } from './hooks/useMedia'
+import { parseFont, registerFontVariables } from './insertFont'
 import {
   AnimationDriver,
   CreateTamaguiConfig,
@@ -73,7 +79,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       throw new Error(`No themes provided to Tamagui config`)
     }
     if (!config.fonts) {
-      throw new Error(`No fonts defined!`)
+      throw new Error(`No fonts provided to Tamagui config`)
     }
   }
 
@@ -91,25 +97,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {
-      const definition = fontTokens[familyName]
-      const parsed = {}
-      for (const attrKey in definition) {
-        const attr = definition[attrKey]
-        if (attrKey === 'family') {
-          parsed[attrKey] = attr
-          continue
-        }
-        parsed[attrKey] = {}
-        for (const key in attr) {
-          let val = attr[key]
-          // is a theme reference
-          if (val.val[0] === '$') {
-            val = val.val
-          }
-          parsed[attrKey][`$${key}`] = val
-        }
-      }
-      res[`$${familyName}`] = parsed as any
+      res[`$${familyName}`] = parseFont(fontTokens[familyName])
     }
     return res!
   })()
@@ -117,44 +105,18 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const themeConfig = (() => {
     const themes = { ...config.themes }
     let cssRules: string[] = []
-    const tokensValueToVariable = new Map<string, Variable>()
 
     if (isWeb) {
-      // tokens
-      const tokenRules = new Set<string>()
-
-      const addVar = (v: Variable) => {
-        tokensValueToVariable.set(v.val, v)
-        const rule = `--${createCSSVariable(v.name, false)}:${
-          typeof v.val === 'number' ? `${v.val}px` : v.val
-        }`
-        tokenRules.add(rule)
-      }
-
       for (const key in config.tokens) {
         for (const skey in config.tokens[key]) {
           const val = config.tokens[key][skey]
-          addVar(val)
+          registerCSSVariable(val)
         }
       }
 
       for (const key in fontsParsed) {
         const val = fontsParsed[key]
-        for (const fkey in val) {
-          if (fkey === 'family') {
-            addVar(val[fkey])
-          } else {
-            for (const fskey in val[fkey]) {
-              const fval = val[fkey][fskey]
-              if (typeof fval === 'string') {
-                // no need to add its a theme reference
-                // tokenRules.add(`--var()`)
-              } else {
-                addVar(val[fkey][fskey])
-              }
-            }
-          }
-        }
+        registerFontVariables(val)
       }
 
       const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''

@@ -115,7 +115,7 @@ type GenericMedia<K extends string = string> = {
   }
 }
 
-type GenericFonts = {
+export type GenericFonts = {
   [key: string]: GenericFont
 }
 

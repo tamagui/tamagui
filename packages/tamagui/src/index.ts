@@ -118,6 +118,7 @@ export {
   getTokens,
   getVariableValue,
   getVariableName,
+  insertFont,
   isObj,
   isTamaguiElement,
   isVariable,

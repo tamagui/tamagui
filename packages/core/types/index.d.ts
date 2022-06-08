@@ -7,6 +7,7 @@ export * from './createFont';
 export * from './createTokens';
 export * from './createVariable';
 export * from './createVariables';
+export * from './insertFont';
 export * from './styled';
 export * from './types';
 export { RNWTextProps, RNWViewProps } from './types-rnw';

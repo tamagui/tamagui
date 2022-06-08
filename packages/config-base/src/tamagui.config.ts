@@ -1,4 +1,3 @@
-// import { createNotoFont } from '@takeout/font-noto-emoji'
 import { createInterFont } from '@tamagui/font-inter'
 import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { shorthands } from '@tamagui/shorthands'
@@ -8,9 +7,6 @@ import { animations } from './animations'
 import { createGenericFont } from './createGenericFont'
 import { media } from './media'
 
-// import { createTamagui } from 'tamagui'
-
-// const notoFont = createNotoFont()
 const silkscreenFont = createSilkscreenFont()
 const headingFont = createInterFont({
   size: {
@@ -69,11 +65,3 @@ export const config = {
     silkscreen: silkscreenFont,
   },
 }
-
-// export type Conf = typeof config
-
-// declare module 'tamagui' {
-//   interface TamaguiCustomConfig extends Conf {}
-// }
-
-// export default config

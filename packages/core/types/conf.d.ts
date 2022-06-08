@@ -1,5 +1,6 @@
 import { ConfigListener, TamaguiInternalConfig } from './types';
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
+export declare const setConfigFont: (name: string, font: any) => void;
 export declare const getHasConfigured: () => boolean;
 export declare const getConfig: () => TamaguiInternalConfig<import("./types").CreateTokens<import("./types").VariableVal>, {
     [key: string]: Partial<import("./types").TamaguiBaseTheme> & {
@@ -13,9 +14,7 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
     [key: string]: string | {
         [key: string]: any;
     };
-}, {
-    [key: string]: import("./types").GenericFont<string | number>;
-}>;
+}, import("./types").GenericFonts>;
 export declare const getTokens: () => import("./types").CreateTokens<import("./createVariable").Variable<any>>;
 export declare const getThemes: () => {
     [key: string]: Partial<import("./types").TamaguiBaseTheme> & {

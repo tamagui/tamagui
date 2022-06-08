@@ -10,6 +10,13 @@ export const setConfig = (next: TamaguiInternalConfig) => {
   }
 }
 
+export const setConfigFont = (name: string, font: any) => {
+  if (process.env.NODE_ENV === 'development') {
+    if (!conf) throw new Error(`Haven't called createTamagui yet`)
+  }
+  Object.assign(conf!.fonts, { [name]: font })
+}
+
 export const getHasConfigured = () => !!conf
 export const getConfig = () => conf!
 export const getTokens = () => conf!.tokensParsed

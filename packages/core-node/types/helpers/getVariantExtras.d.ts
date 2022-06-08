@@ -1,7 +1,5 @@
 export declare function getVariantExtras(props: any, theme?: any, defaultProps?: any, avoidDefaultProps?: boolean): {
-    fonts: {
-        [key: string]: import("..").GenericFont<string | number>;
-    };
+    fonts: import("..").GenericFonts;
     tokens: import("..").CreateTokens<import("..").Variable<any>>;
     theme: any;
     props: any;

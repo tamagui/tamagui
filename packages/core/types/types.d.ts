@@ -86,7 +86,7 @@ declare type GenericMedia<K extends string = string> = {
         [key: string]: number | string;
     };
 };
-declare type GenericFonts = {
+export declare type GenericFonts = {
     [key: string]: GenericFont;
 };
 declare type GenericAnimations = {
