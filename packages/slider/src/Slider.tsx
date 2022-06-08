@@ -376,7 +376,7 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
          * snap into the correct position during hydration which would be visually jarring for
          * slower connections.
          */
-        style={value === undefined ? { display: 'none' } : props.style}
+        // style={value === undefined ? { display: 'none' } : props.style}
         onFocus={composeEventHandlers(props.onFocus, () => {
           context.valueIndexToChangeRef.current = index
         })}
@@ -422,8 +422,10 @@ const Slider = withStaticProperties(
       prop: value,
       defaultProp: defaultValue,
       onChange: (value) => {
-        const thumbs = [...thumbRefs.current]
-        thumbs[valueIndexToChangeRef.current]?.focus()
+        if (isWeb) {
+          const thumbs = [...thumbRefs.current]
+          thumbs[valueIndexToChangeRef.current]?.focus()
+        }
         onValueChange(value)
       },
     })
@@ -578,4 +580,5 @@ export {
   Range,
   Thumb,
 }
+
 export type { SliderProps, SliderTrackProps, SliderTrackActiveProps, SliderThumbProps }

@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { DismissableBranchProps, DismissableProps } from './DismissableProps';
-export declare const Dismissable: (props: DismissableProps) => import("react").ReactNode;
-export declare const DismissableBranch: (props: DismissableBranchProps) => import("react").ReactNode;
+import { DismissableProps } from './DismissableProps';
+export declare const Dismissable: import("react").ForwardRefExoticComponent<DismissableProps & import("react").RefAttributes<unknown>>;
+export declare const DismissableBranch: import("react").ForwardRefExoticComponent<import("react").RefAttributes<unknown>>;
 //# sourceMappingURL=Dismissable.native.d.ts.map

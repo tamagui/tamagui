@@ -124,6 +124,9 @@ const DialogPortal: React.FC<DialogPortalProps> = (props: ScopedProps<DialogPort
   if (!context.modal) {
     return contents
   }
+  if (!isWeb && !isShowing) {
+    return contents
+  }
   return (
     <PortalProvider scope={__scopeDialog} forceMount={forceMount}>
       <Portal

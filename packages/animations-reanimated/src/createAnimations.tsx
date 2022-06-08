@@ -1,6 +1,6 @@
 import { AnimatePresenceContext, useEntering } from '@tamagui/animate-presence'
-import { AnimationDriver, AnimationKeys, AnimationProp } from '@tamagui/core'
-import { useCallback, useContext, useEffect, useMemo } from 'react'
+import { AnimationDriver, AnimationProp } from '@tamagui/core'
+import { useCallback, useContext, useMemo } from 'react'
 import Animated, {
   WithDecayConfig,
   WithSpringConfig,

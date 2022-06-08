@@ -1,9 +1,11 @@
+import { forwardRef } from 'react'
+
 import { DismissableBranchProps, DismissableProps } from './DismissableProps'
 
-export const Dismissable = (props: DismissableProps) => {
-  return props.children
-}
+export const Dismissable = forwardRef((props: DismissableProps, _ref) => {
+  return props.children as any
+})
 
-export const DismissableBranch = (props: DismissableBranchProps) => {
-  return props.children
-}
+export const DismissableBranch = forwardRef((props: DismissableBranchProps, _ref) => {
+  return props.children as any
+})

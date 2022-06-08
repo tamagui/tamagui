@@ -11,14 +11,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'

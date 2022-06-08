@@ -95,8 +95,6 @@ function loadAnimationFeature() {
         return null
       }
 
-      // const animatedStyleIn =
-
       // we always have .animation set
       const propsWithAnimation = props as UseAnimationProps
 

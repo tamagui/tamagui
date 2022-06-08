@@ -84,7 +84,7 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
           // // Prevent browser focus behaviour because we focus a thumb manually when values change.
           // Touch devices have a delay before focusing so won't focus if touch immediately moves
           // away from target (sliding). We want thumb to focus regardless.
-          if (target instanceof HTMLElement) {
+          if (isWeb && target instanceof HTMLElement) {
             if (context.thumbs.has(target)) {
               target.focus()
             }

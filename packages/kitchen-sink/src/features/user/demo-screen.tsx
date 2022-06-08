@@ -19,7 +19,6 @@ export function DemoScreen() {
     .join('')
   const demoName = `${nameMap[name] || name}Demo`
   const DemoComponent = Demos[demoName] ?? NotFound
-  console.log('Demos', Demos, demoName)
 
   return (
     <YStack f={1} jc="center" ai="center" space>
