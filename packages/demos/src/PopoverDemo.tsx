@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronLeft, ChevronRight } from '@tamagui/feather-icons'
+import React from 'react'
 import { Button, Input, Label, Popover, PopoverProps, XStack, YStack } from 'tamagui'
 
 export default function PopoverDemo() {

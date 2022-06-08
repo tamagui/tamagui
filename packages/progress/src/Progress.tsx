@@ -10,7 +10,7 @@ import { View } from 'react-native'
 const PROGRESS_NAME = 'Progress'
 
 const [createProgressContext, createProgressScope] = createContextScope(PROGRESS_NAME)
-type ProgressContextValue = { value: number | null; max: number }
+type ProgressContextValue = { value: number | null; max: number; width: number }
 const [ProgressProvider, useProgressContext] =
   createProgressContext<ProgressContextValue>(PROGRESS_NAME)
 
@@ -35,13 +35,15 @@ const ProgressIndicator = ProgressIndicatorFrame.extractable(
     (props: ScopedProps<ProgressIndicatorProps>, forwardedRef) => {
       const { __scopeProgress, ...indicatorProps } = props
       const context = useProgressContext(INDICATOR_NAME, __scopeProgress)
-      const progress = context.max - (context.value ?? 0)
+      const pct = context.max - (context.value ?? 0)
+      const x = -context.width * (pct / 100)
       return (
         <ProgressIndicatorFrame
           data-state={getProgressState(context.value, context.max)}
           data-value={context.value ?? undefined}
           data-max={context.max}
-          x={`${-progress}%`}
+          x={x}
+          width={context.width}
           {...indicatorProps}
           ref={forwardedRef}
         />
@@ -155,9 +157,10 @@ const Progress = withStaticProperties(
         const max = isValidMaxNumber(maxProp) ? maxProp : DEFAULT_MAX
         const value = isValidValueNumber(valueProp, max) ? valueProp : null
         const valueLabel = isNumber(value) ? getValueLabel(value, max) : undefined
+        const [width, setWidth] = React.useState(0)
 
         return (
-          <ProgressProvider scope={__scopeProgress} value={value} max={max}>
+          <ProgressProvider scope={__scopeProgress} value={value} max={max} width={width}>
             <ProgressFrame
               size={size}
               aria-valuemax={max}
@@ -170,6 +173,10 @@ const Progress = withStaticProperties(
               data-value={value ?? undefined}
               data-max={max}
               {...progressProps}
+              onLayout={(e) => {
+                setWidth(e.nativeEvent.layout.width)
+                progressProps.onLayout?.(e)
+              }}
               ref={forwardedRef}
             />
           </ProgressProvider>
