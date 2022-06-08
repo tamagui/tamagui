@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development next-remote-watch ./data",
     "clean:build": "rm -r .next || true; rm -r node_modules/.cache || true",
-    "vercel:build": "rm -r pages/studio && rm -r pages/takeout && rm pages/account.tsx pages/signup.tsx pages/signin.tsx && rm  && yarn next:build && yarn next:export",
+    "vercel:build": "rm -r pages/studio && rm -r pages/takeout && rm pages/account.tsx pages/signup.tsx pages/signin.tsx && yarn next:build && yarn next:export",
     "dev:analyze": "ANALYZE=true yarn dev",
     "dev:inspect": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",
     "dev:extract": "DISABLE_EXTRACTION=false yarn dev",
