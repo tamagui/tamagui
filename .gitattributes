@@ -1,1 +1,2 @@
 packages/site/pages/studio/** filter=git-crypt diff=git-crypt
+packages/site/pages/takeout/** filter=git-crypt diff=git-crypt
