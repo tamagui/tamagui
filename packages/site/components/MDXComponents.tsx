@@ -1,4 +1,4 @@
-import { HelpCircle, Link } from '@tamagui/feather-icons'
+import { Link } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import NextRouter from 'next/router'
 import rangeParser from 'parse-numeric-range'
@@ -6,14 +6,12 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  Circle,
   Group,
   H1,
   H2,
   H3,
   H4,
   H5,
-  H6,
   Image,
   ImageProps,
   Paragraph,
@@ -142,7 +140,7 @@ export const components = {
   h4: (props) => <H4 mt="$6" {...props} />,
   h5: (props) => <H5 mt="$5" {...props} />,
 
-  p: (props) => <Paragraph className="paragraph" display="block" mb="$2" mt="$2" {...props} />,
+  p: (props) => <Paragraph className="paragraph" display="block" my="$3" {...props} />,
 
   a: ({ href = '', children, ...props }) => {
     return (

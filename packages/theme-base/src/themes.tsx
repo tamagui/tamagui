@@ -1,4 +1,4 @@
-import { Variable, createTheme, getVariableValue } from '@tamagui/core'
+import { Variable, createTheme, createVariable, getVariableValue } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
 import { darkColors, lightColors, tokens } from './tokens'
@@ -48,7 +48,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   // generate alternates (for use in other themes), but keep just alts
   const altThemes: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
-    getTheme(alt + (props.isLight ? 1 : 0) + shift, props),
+    getTheme(alt + (props.isLight ? 0 : 0) + shift, props),
   ])
   const altThemes2: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
@@ -245,43 +245,9 @@ const dark = createTheme({
   ...darkThemes.dark,
 })
 
-const darkEntries = Object.entries(dark)
-const lightEntries = Object.entries(light)
-function findColors(prefix: string, dark = false) {
-  return Object.fromEntries(
-    (dark ? darkEntries : lightEntries).filter(([k]) => k.startsWith(prefix))
-  )
+type ThemeBase = {
+  [Key in keyof typeof dark]: string
 }
-
-export const colorSchemes = [
-  { name: 'blue', colors: findColors('blue'), darkColors: findColors('blue', true) },
-  { name: 'gray', colors: findColors('gray'), darkColors: findColors('gray', true) },
-  { name: 'green', colors: findColors('green'), darkColors: findColors('green', true) },
-  { name: 'orange', colors: findColors('orange'), darkColors: findColors('orange', true) },
-  { name: 'pink', colors: findColors('pink'), darkColors: findColors('pink', true) },
-  { name: 'purple', colors: findColors('purple'), darkColors: findColors('purple', true) },
-  { name: 'red', colors: findColors('red'), darkColors: findColors('red', true) },
-  { name: 'violet', colors: findColors('violet'), darkColors: findColors('violet', true) },
-  { name: 'yellow', colors: findColors('yellow'), darkColors: findColors('yellow', true) },
-  { name: 'teal', colors: findColors('teal'), darkColors: findColors('teal', true) },
-] as const
-
-export type ColorNames = typeof colorSchemes[number]['name']
-
-// nice and flat
-export const colorNames = [
-  'blue',
-  'gray',
-  'green',
-  'indigo',
-  'orange',
-  'pink',
-  'purple',
-  'red',
-  'violet',
-  'yellow',
-  'teal',
-] as const
 
 const baseThemes = {
   // light
@@ -318,6 +284,41 @@ function makeActiveTheme(theme: any) {
   return res
 }
 
+const darkEntries = Object.entries(dark)
+const lightEntries = Object.entries(light)
+function findColors(prefix: string, dark = false): ThemeBase {
+  return Object.fromEntries(
+    (dark ? darkEntries : lightEntries).filter(([k]) => k.startsWith(prefix))
+  ) as any
+}
+
+export const colorSchemes = [
+  { name: 'blue', colors: findColors('blue'), darkColors: findColors('blue', true) },
+  { name: 'gray', colors: findColors('gray'), darkColors: findColors('gray', true) },
+  { name: 'green', colors: findColors('green'), darkColors: findColors('green', true) },
+  { name: 'orange', colors: findColors('orange'), darkColors: findColors('orange', true) },
+  { name: 'pink', colors: findColors('pink'), darkColors: findColors('pink', true) },
+  { name: 'purple', colors: findColors('purple'), darkColors: findColors('purple', true) },
+  { name: 'red', colors: findColors('red'), darkColors: findColors('red', true) },
+  { name: 'yellow', colors: findColors('yellow'), darkColors: findColors('yellow', true) },
+  { name: 'teal', colors: findColors('teal'), darkColors: findColors('teal', true) },
+] as const
+
+export type ColorNames = typeof colorSchemes[number]['name']
+
+// nice and flat
+export const colorNames: ColorNames[] = [
+  'blue',
+  'gray',
+  'green',
+  'orange',
+  'pink',
+  'purple',
+  'red',
+  'yellow',
+  'teal',
+]
+
 type ColorThemeNames =
   | ColorNames
   | AltName<`light_${ColorNames}`, AltKeys>
@@ -338,10 +339,10 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
     const scheme = isLight ? 'light' : 'dark'
     const shift = isLight ? 0 : 1
 
-    if (!isLight) {
-      // const [_, h, sp, lp] = backgrounds[0].match(/hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/)!
-      // backgrounds.unshift(`hsl(${h}, ${sp}%, ${parseFloat(lp) / 2}%)`)
-    }
+    // if (!isLight) {
+    //   const [_, h, sp, lp] = backgrounds[0].match(/hsl\(([0-9\.]+), ([0-9\.]+)\%, ([0-9\.]+)\%\)/)!
+    //   backgrounds.unshift(`hsl(${h}, ${sp}%, ${parseFloat(lp) / 2}%)`)
+    // }
 
     const themeWithAlts = createThemesFrom(name, themeCreator, {
       colors,
@@ -351,7 +352,7 @@ const colorThemeEntries = colorSchemes.flatMap(({ name, colors, darkColors }) =>
       shift,
       isBase: false,
       offsets: {
-        background: isLight ? [1, 1, 1, 1, 1, 1] : null,
+        background: isLight ? [2, 2, 2, 2, 2, 2] : null,
         borderColor: isLight ? [2, 2, 2, 3, 2] : null,
         color: isLight ? [0, 0, -1, -2, -3, -3, -4] : [-1, -1, -1, -1, -1, -1],
       },

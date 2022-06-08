@@ -23,7 +23,13 @@ You can also instantly fork the starter repo to your Github and deploy it with V
 
 ```bash
 yarn add tamagui react-native-web
+```
 
+From here you can skip to configuration! The rest of this document helps you set up compilation, which is completely optional. All Tamagui features work at runtime as well.
+
+The compiler does add helpful debug properties with line, component and filename to every component, but it's completely optional and we recommend continuing to [Configuration](/docs/intro/configuration) if you're just starting out, before you get into the weeds of setting up compile-time optimization.
+
+```bash
 # for web, webpack, only:
 yarn add tamagui-loader
 # for react-native, only:

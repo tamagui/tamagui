@@ -3,9 +3,9 @@ import { Paragraph, Theme, XStack } from 'tamagui'
 
 import { unwrapText } from './MDXComponents'
 
-export const Notice = ({ children, ...props }) => {
+export const Notice = ({ children, theme = 'yellow', ...props }: any) => {
   return (
-    <Theme name="yellow">
+    <Theme name={theme}>
       <XStack
         borderWidth={1}
         borderColor="$borderColor"

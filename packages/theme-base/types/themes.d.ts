@@ -1,87 +1,162 @@
 import { Variable } from '@tamagui/core';
-export declare const colorSchemes: readonly [{
-    readonly name: "blue";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "gray";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "green";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "orange";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "pink";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "purple";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "red";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "violet";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "yellow";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}, {
-    readonly name: "teal";
-    readonly colors: {
-        [k: string]: any;
-    };
-    readonly darkColors: {
-        [k: string]: any;
-    };
-}];
-export declare type ColorNames = typeof colorSchemes[number]['name'];
-export declare const colorNames: readonly ["blue", "gray", "green", "indigo", "orange", "pink", "purple", "red", "violet", "yellow", "teal"];
+declare const dark: {
+    background: any;
+    backgroundStrong: any;
+    backgroundSoft: any;
+    backgroundHover: any;
+    backgroundPress: any;
+    backgroundFocus: any;
+    backgroundTransparent: string | Variable<any>;
+    color: any;
+    colorHover: any;
+    colorPress: any;
+    colorFocus: any;
+    colorTranslucent: string | Variable<any>;
+    colorMid: string | Variable<any>;
+    shadowColor: string | Variable<any>;
+    shadowColorHover: string | Variable<any>;
+    shadowColorPress: string | Variable<any>;
+    shadowColorFocus: string | Variable<any>;
+    borderColor: string | Variable<any>;
+    borderColorHover: string | Variable<any>;
+    borderColorPress: string | Variable<any>;
+    borderColorFocus: string | Variable<any>;
+    teal1: string | Variable<any>;
+    teal2: string | Variable<any>;
+    teal3: string | Variable<any>;
+    teal4: string | Variable<any>;
+    teal5: string | Variable<any>;
+    teal6: string | Variable<any>;
+    teal7: string | Variable<any>;
+    teal8: string | Variable<any>;
+    teal9: string | Variable<any>;
+    teal10: string | Variable<any>;
+    teal11: string | Variable<any>;
+    teal12: string | Variable<any>;
+    yellow1: string | Variable<any>;
+    yellow2: string | Variable<any>;
+    yellow3: string | Variable<any>;
+    yellow4: string | Variable<any>;
+    yellow5: string | Variable<any>;
+    yellow6: string | Variable<any>;
+    yellow7: string | Variable<any>;
+    yellow8: string | Variable<any>;
+    yellow9: string | Variable<any>;
+    yellow10: string | Variable<any>;
+    yellow11: string | Variable<any>;
+    yellow12: string | Variable<any>;
+    violet1: string | Variable<any>;
+    violet2: string | Variable<any>;
+    violet3: string | Variable<any>;
+    violet4: string | Variable<any>;
+    violet5: string | Variable<any>;
+    violet6: string | Variable<any>;
+    violet7: string | Variable<any>;
+    violet8: string | Variable<any>;
+    violet9: string | Variable<any>;
+    violet10: string | Variable<any>;
+    violet11: string | Variable<any>;
+    violet12: string | Variable<any>;
+    red1: string | Variable<any>;
+    red2: string | Variable<any>;
+    red3: string | Variable<any>;
+    red4: string | Variable<any>;
+    red5: string | Variable<any>;
+    red6: string | Variable<any>;
+    red7: string | Variable<any>;
+    red8: string | Variable<any>;
+    red9: string | Variable<any>;
+    red10: string | Variable<any>;
+    red11: string | Variable<any>;
+    red12: string | Variable<any>;
+    purple1: string | Variable<any>;
+    purple2: string | Variable<any>;
+    purple3: string | Variable<any>;
+    purple4: string | Variable<any>;
+    purple5: string | Variable<any>;
+    purple6: string | Variable<any>;
+    purple7: string | Variable<any>;
+    purple8: string | Variable<any>;
+    purple9: string | Variable<any>;
+    purple10: string | Variable<any>;
+    purple11: string | Variable<any>;
+    purple12: string | Variable<any>;
+    pink1: string | Variable<any>;
+    pink2: string | Variable<any>;
+    pink3: string | Variable<any>;
+    pink4: string | Variable<any>;
+    pink5: string | Variable<any>;
+    pink6: string | Variable<any>;
+    pink7: string | Variable<any>;
+    pink8: string | Variable<any>;
+    pink9: string | Variable<any>;
+    pink10: string | Variable<any>;
+    pink11: string | Variable<any>;
+    pink12: string | Variable<any>;
+    orange1: string | Variable<any>;
+    orange2: string | Variable<any>;
+    orange3: string | Variable<any>;
+    orange4: string | Variable<any>;
+    orange5: string | Variable<any>;
+    orange6: string | Variable<any>;
+    orange7: string | Variable<any>;
+    orange8: string | Variable<any>;
+    orange9: string | Variable<any>;
+    orange10: string | Variable<any>;
+    orange11: string | Variable<any>;
+    orange12: string | Variable<any>;
+    green1: string | Variable<any>;
+    green2: string | Variable<any>;
+    green3: string | Variable<any>;
+    green4: string | Variable<any>;
+    green5: string | Variable<any>;
+    green6: string | Variable<any>;
+    green7: string | Variable<any>;
+    green8: string | Variable<any>;
+    green9: string | Variable<any>;
+    green10: string | Variable<any>;
+    green11: string | Variable<any>;
+    green12: string | Variable<any>;
+    grayA1: string | Variable<any>;
+    grayA2: string | Variable<any>;
+    grayA3: string | Variable<any>;
+    grayA4: string | Variable<any>;
+    grayA5: string | Variable<any>;
+    grayA6: string | Variable<any>;
+    grayA7: string | Variable<any>;
+    grayA8: string | Variable<any>;
+    grayA9: string | Variable<any>;
+    grayA10: string | Variable<any>;
+    grayA11: string | Variable<any>;
+    grayA12: string | Variable<any>;
+    gray1: string | Variable<any>;
+    gray2: string | Variable<any>;
+    gray3: string | Variable<any>;
+    gray4: string | Variable<any>;
+    gray5: string | Variable<any>;
+    gray6: string | Variable<any>;
+    gray7: string | Variable<any>;
+    gray8: string | Variable<any>;
+    gray9: string | Variable<any>;
+    gray10: string | Variable<any>;
+    gray11: string | Variable<any>;
+    gray12: string | Variable<any>;
+    blue1: string | Variable<any>;
+    blue2: string | Variable<any>;
+    blue3: string | Variable<any>;
+    blue4: string | Variable<any>;
+    blue5: string | Variable<any>;
+    blue6: string | Variable<any>;
+    blue7: string | Variable<any>;
+    blue8: string | Variable<any>;
+    blue9: string | Variable<any>;
+    blue10: string | Variable<any>;
+    blue11: string | Variable<any>;
+    blue12: string | Variable<any>;
+};
+declare type ThemeBase = {
+    [Key in keyof typeof dark]: string;
+};
 declare const baseThemes: {
     dark: {
         background: any;
@@ -902,6 +977,45 @@ declare const baseThemes: {
         borderColorFocus: string | Variable<any>;
     };
 };
+export declare const colorSchemes: readonly [{
+    readonly name: "blue";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "gray";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "green";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "orange";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "pink";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "purple";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "red";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "yellow";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}, {
+    readonly name: "teal";
+    readonly colors: ThemeBase;
+    readonly darkColors: ThemeBase;
+}];
+export declare type ColorNames = typeof colorSchemes[number]['name'];
+export declare const colorNames: ColorNames[];
 declare const allThemes: {
     readonly blue: {
         background: any;
@@ -1042,29 +1156,6 @@ declare const allThemes: {
         borderColorFocus: string | Variable<any>;
     };
     readonly red: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: Variable<any>;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable<any>;
-        shadowColor: Variable<any>;
-        shadowColorHover: string | Variable<any>;
-        shadowColorPress: string | Variable<any>;
-        shadowColorFocus: string | Variable<any>;
-        borderColor: string | Variable<any>;
-        borderColorHover: string | Variable<any>;
-        borderColorPress: string | Variable<any>;
-        borderColorFocus: string | Variable<any>;
-    };
-    readonly violet: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -1594,75 +1685,6 @@ declare const allThemes: {
         borderColorFocus: string | Variable<any>;
     };
     readonly light_red_alt3: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: Variable<any>;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable<any>;
-        shadowColor: Variable<any>;
-        shadowColorHover: string | Variable<any>;
-        shadowColorPress: string | Variable<any>;
-        shadowColorFocus: string | Variable<any>;
-        borderColor: string | Variable<any>;
-        borderColorHover: string | Variable<any>;
-        borderColorPress: string | Variable<any>;
-        borderColorFocus: string | Variable<any>;
-    };
-    readonly light_violet_alt1: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: Variable<any>;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable<any>;
-        shadowColor: Variable<any>;
-        shadowColorHover: string | Variable<any>;
-        shadowColorPress: string | Variable<any>;
-        shadowColorFocus: string | Variable<any>;
-        borderColor: string | Variable<any>;
-        borderColorHover: string | Variable<any>;
-        borderColorPress: string | Variable<any>;
-        borderColorFocus: string | Variable<any>;
-    };
-    readonly light_violet_alt2: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: Variable<any>;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable<any>;
-        shadowColor: Variable<any>;
-        shadowColorHover: string | Variable<any>;
-        shadowColorPress: string | Variable<any>;
-        shadowColorFocus: string | Variable<any>;
-        borderColor: string | Variable<any>;
-        borderColorHover: string | Variable<any>;
-        borderColorPress: string | Variable<any>;
-        borderColorFocus: string | Variable<any>;
-    };
-    readonly light_violet_alt3: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
@@ -2284,75 +2306,6 @@ declare const allThemes: {
         borderColorFocus: string | Variable<any>;
     };
     readonly dark_red_alt3: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: Variable<any>;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable<any>;
-        shadowColor: Variable<any>;
-        shadowColorHover: string | Variable<any>;
-        shadowColorPress: string | Variable<any>;
-        shadowColorFocus: string | Variable<any>;
-        borderColor: string | Variable<any>;
-        borderColorHover: string | Variable<any>;
-        borderColorPress: string | Variable<any>;
-        borderColorFocus: string | Variable<any>;
-    };
-    readonly dark_violet_alt1: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: Variable<any>;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable<any>;
-        shadowColor: Variable<any>;
-        shadowColorHover: string | Variable<any>;
-        shadowColorPress: string | Variable<any>;
-        shadowColorFocus: string | Variable<any>;
-        borderColor: string | Variable<any>;
-        borderColorHover: string | Variable<any>;
-        borderColorPress: string | Variable<any>;
-        borderColorFocus: string | Variable<any>;
-    };
-    readonly dark_violet_alt2: {
-        background: any;
-        backgroundStrong: any;
-        backgroundSoft: any;
-        backgroundHover: any;
-        backgroundPress: any;
-        backgroundFocus: any;
-        backgroundTransparent: Variable<any>;
-        color: any;
-        colorHover: any;
-        colorPress: any;
-        colorFocus: any;
-        colorTranslucent: string;
-        colorMid: string | Variable<any>;
-        shadowColor: Variable<any>;
-        shadowColorHover: string | Variable<any>;
-        shadowColorPress: string | Variable<any>;
-        shadowColorFocus: string | Variable<any>;
-        borderColor: string | Variable<any>;
-        borderColorHover: string | Variable<any>;
-        borderColorPress: string | Variable<any>;
-        borderColorFocus: string | Variable<any>;
-    };
-    readonly dark_violet_alt3: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
