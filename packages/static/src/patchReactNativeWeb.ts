@@ -9,7 +9,7 @@ import * as fs from 'fs-extra'
 
 // keep it sync
 export function patchReactNativeWeb(dir: string = require.resolve('react-native-web')) {
-  const rootDir = dir.replace(/\/dist.*/, '')
+  const rootDir = dir.replace(/[\/\\]dist.*/, '')
   const modulePath = path.join(rootDir, 'dist', 'tamagui-exports.js')
   const cjsPath = path.join(rootDir, 'dist', 'cjs', 'tamagui-exports.js')
   const shouldPatchExports =
