@@ -68,7 +68,7 @@ async function run() {
       await spawnify(`git commit --amend --no-edit`)
 
       // then push tag
-      await spawnify(`git push origin ${version}`)
+      await spawnify(`git push origin v${version}`)
     }
 
     console.log((await exec(`git diff`)).stdout)
