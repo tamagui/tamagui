@@ -59,13 +59,16 @@ async function run() {
       }
 
       await spawnify(
-        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --force-publish`
+        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --force-publish --no-push`
       )
 
       // lerna messes up yarn.lock and always needs a second yarn install + add + push
       await spawnify(`yarn install`)
       await spawnify(`git add -A`)
       await spawnify(`git commit --amend --no-edit`)
+
+      // then push tag
+      await spawnify(`git push origin ${version}`)
     }
 
     console.log((await exec(`git diff`)).stdout)
