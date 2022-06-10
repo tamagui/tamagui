@@ -23,9 +23,9 @@ import { HeroPerformance } from '../components/HeroPerformance'
 import { HeroResponsive } from '../components/HeroResponsive'
 import { HeroTypography } from '../components/HeroTypography'
 import { InstallInput } from '../components/InstallInput'
+import { animationCode, compilationCode } from '../lib/codeExamples'
 import rehypeHighlightLine from '../lib/rehype-highlight-line'
 import rehypeHighlightWord from '../lib/rehype-highlight-word'
-import { animationCode, compilationCode } from './codeExamples'
 
 export default function Home({ animationCode, compilationExamples }) {
   return (
