@@ -21,7 +21,7 @@ import { InstallInput } from '../components/InstallInput'
 
 export default function Home() {
   return (
-    <Suspense fallback={null}>
+    <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating isHome />
       <Hero />
@@ -69,7 +69,7 @@ export default function Home() {
         </YStack>
         <Community />
       </Section>
-    </Suspense>
+    </>
   )
 }
 
