@@ -21,7 +21,7 @@ import { InstallInput } from '../components/InstallInput'
 
 export default function Home() {
   return (
-    <>
+    <Suspense fallback={null}>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating isHome />
       <Hero />
@@ -39,48 +39,37 @@ export default function Home() {
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>
-      <Suspense fallback={null}>
-        <Section pb="$0" zi={10}>
-          <HeroResponsive />
-        </Section>
-        <SectionTinted contain="paint layout" gradient bubble>
-          <HeroPerformance />
-        </SectionTinted>
-        <SectionTinted contain="paint layout" noBorderTop zi={100}>
-          <YStack fullscreen className="bg-grid-big mask-gradient-up" />
-          <HeroExampleAnimations />
-        </SectionTinted>
-        <Section bc="$background" contain="paint layout" zi={10}>
-          <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
-          <HeroExampleCode />
-        </Section>
-        <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">
-          <FeaturesGrid />
-          <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
-        </Section>
-        <SectionTinted contain="paint layout" bubble gradient>
-          <HeroTypography />
-        </SectionTinted>
-        <Section zi={10}>
-          <HeroExampleProps />
-        </Section>
-        <Section zi={0}>
-          <YStack
-            pe="none"
-            zi={-1}
-            pos="absolute"
-            o={0.1}
-            top={-615}
-            left={0}
-            right={0}
-            ai="center"
-          >
-            <CocentricCircles />
-          </YStack>
-          <Community />
-        </Section>
-      </Suspense>
-    </>
+      <Section pb="$0" zi={10}>
+        <HeroResponsive />
+      </Section>
+      <SectionTinted contain="paint layout" gradient bubble>
+        <HeroPerformance />
+      </SectionTinted>
+      <SectionTinted contain="paint layout" noBorderTop zi={100}>
+        <YStack fullscreen className="bg-grid-big mask-gradient-up" />
+        <HeroExampleAnimations />
+      </SectionTinted>
+      <Section bc="$background" contain="paint layout" zi={10}>
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
+        <HeroExampleCode />
+      </Section>
+      <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">
+        <FeaturesGrid />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
+      </Section>
+      <SectionTinted contain="paint layout" bubble gradient>
+        <HeroTypography />
+      </SectionTinted>
+      <Section zi={10}>
+        <HeroExampleProps />
+      </Section>
+      <Section zi={0}>
+        <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={-615} left={0} right={0} ai="center">
+          <CocentricCircles />
+        </YStack>
+        <Community />
+      </Section>
+    </Suspense>
   )
 }
 
