@@ -6,7 +6,4 @@ export const Pre = styled(YStack, {
   padding: '$4',
   borderRadius: '$4',
   bc: '$background',
-  borderWidth: 0.5,
-  borderColor: '$borderColorHover',
-  my: '$3',
 })

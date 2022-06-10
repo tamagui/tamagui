@@ -24,7 +24,7 @@ export function FeaturesGrid() {
               </H4>
               <Paragraph theme="alt2">
                 Typed inline styles, themes, tokens, shorthands, media queries, animations, and
-                hooks for all the above.
+                hooks that optimize.
               </Paragraph>
             </YStack>
 
@@ -33,8 +33,8 @@ export function FeaturesGrid() {
                 Fast, all ways
               </H4>
               <Paragraph theme="alt2">
-                Save time writing code - write inline styles without performance downside, even with
-                conditional logic.
+                Get faster feedback - inline styles author much faster, without performance
+                downside.
               </Paragraph>
             </YStack>
 
@@ -53,7 +53,7 @@ export function FeaturesGrid() {
                 Dev tools
               </H4>
               <Paragraph theme="alt2">
-                Debug props and pragmas, dev-time filename:linenumber props added on every element,
+                Debug props and pragmas, dev-time fileName/lineNumber props added on every element,
                 global Tamagui for state introspection.
               </Paragraph>
             </YStack>
@@ -73,8 +73,7 @@ export function FeaturesGrid() {
                 Components
               </H4>
               <Paragraph theme="alt2">
-                Components that go further smoothing the differences between Native and Web, like
-                Image and LinearGradient.
+                Components that smooth out bumps and add features between Native and Web.
               </Paragraph>
             </YStack>
           </Grid>

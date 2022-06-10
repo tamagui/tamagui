@@ -49,7 +49,7 @@ export const Footer = () => {
             <Paragraph size="$3">built with Tamagui</Paragraph>
           </YStack>
 
-          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$4">
+          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$3">
             <H4 mb="$3" size="$4" fontFamily="$silkscreen">
               Overview
             </H4>
@@ -60,7 +60,7 @@ export const Footer = () => {
           <ParagraphLink href="/docs/frequently-asked-questions">FAQ</ParagraphLink> */}
           </YStack>
 
-          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$4">
+          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$3">
             <H4 mb="$3" size="$4" fontFamily="$silkscreen">
               Docs
             </H4>
@@ -69,7 +69,7 @@ export const Footer = () => {
             <ParagraphLink href="/docs/core/styled">Variants</ParagraphLink>
           </YStack>
 
-          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$4">
+          <YStack ai="flex-start" $sm={{ ai: 'center' }} px="$4" py="$5" flex={1.5} space="$3">
             <H4 mb="$3" size="$4" fontFamily="$silkscreen">
               Community
             </H4>

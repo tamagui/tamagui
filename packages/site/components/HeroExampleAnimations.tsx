@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React, { memo, useRef, useState } from 'react'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
-import { CodeDemo } from './CodeDemo'
+import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
 import { AnimationsDemo } from './demos'
@@ -34,7 +34,7 @@ const animationDescriptions = [
 
 let hasScrolledOnce = false
 
-export function HeroExampleAnimations() {
+export function HeroExampleAnimations({ animationCode }) {
   const { tint } = useTint()
   const [disableScrollPane, setDisableScrollPane] = useState(true)
 
@@ -111,81 +111,14 @@ export function HeroExampleAnimations() {
               </Button>
             </YStack>
 
-            <CodeDemo
+            <CodeDemoPreParsed
               pe={disableScrollPane ? 'none' : 'auto'}
               maxHeight={500}
               height={500}
               maxWidth={530}
               minWidth={530}
               language="tsx"
-              value={`import { Button, Square } from 'tamagui'
-
-export default () => {
-  const [positionI, setPositionI] = React.useState(0)
-  return (
-    <>
-      <Square
-        animation="animation
-        size={110}
-        bc="$pink10"
-        br="$9"
-        hoverStyle={{
-          scale: 1.1,
-        }}
-        pressStyle={{
-          scale: 0.9,
-        }}
-        {...positions[positionI]}
-      >
-        <LogoIcon />
-      </Square>
-
-      <Button
-        pos="absolute"
-        b={20}
-        l={20}
-        icon={require('@tamagui/feather-icons').Play}
-        size="$6"
-        circular
-        onPress={() => setPositionI(i => (i + 1) % positions.length)}
-      />
-    </>
-  )
-}
-
-export const positions = [
-  {
-    x: 0,
-    y: 0,
-    scale: 1,
-    rotate: '0deg',
-  },
-  {
-    x: -50,
-    y: -50,
-    scale: 0.5,
-    rotate: '-45deg',
-    hoverStyle: {
-      scale: 0.6,
-    },
-    pressStyle: {
-      scale: 0.4,
-    },
-  },
-  {
-    x: 50,
-    y: 50,
-    scale: 1,
-    rotate: '180deg',
-    hoverStyle: {
-      scale: 1.1,
-    },
-    pressStyle: {
-      scale: 0.9,
-    },
-  },
-]
-`}
+              source={animationCode}
             />
           </YStack>
         </XStack>
