@@ -48,7 +48,6 @@ const skipProps = {
     selectable: true,
     cursor: true,
     contain: true,
-    pointerEvents: true,
     boxSizing: true,
     boxShadow: true,
   }),
