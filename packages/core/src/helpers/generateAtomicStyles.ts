@@ -53,11 +53,14 @@ const STYLE_SHORT_FORM_EXPANSIONS = {
   margin: ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'],
   marginHorizontal: ['marginRight', 'marginLeft'],
   marginVertical: ['marginTop', 'marginBottom'],
-  overflow: ['overflowX', 'overflowY'],
   overscrollBehavior: ['overscrollBehaviorX', 'overscrollBehaviorY'],
   padding: ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'],
   paddingHorizontal: ['paddingRight', 'paddingLeft'],
   paddingVertical: ['paddingTop', 'paddingBottom'],
+  ...(isWeb && {
+    // react-native doesn't support X / Y
+    overflow: ['overflowX', 'overflowY'],
+  }),
 }
 
 export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutput => {
