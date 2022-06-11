@@ -22,7 +22,6 @@ type AnimationConfig =
   | ({ type: 'timing'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithTimingConfig)
   | ({ type: 'spring'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithSpringConfig)
   | ({ type: 'decay'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithDecayConfig)
-// | ({ type: 'transition' } & TransitionProps)
 
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
   const AnimatedView = Animated.View

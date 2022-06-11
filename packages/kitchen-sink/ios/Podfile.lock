@@ -18,6 +18,9 @@ PODS:
   - ExpoModulesCore (0.9.1):
     - React-Core
     - ReactCommon/turbomodule/core
+  - EXScreenOrientation (4.2.0):
+    - ExpoModulesCore
+    - React-Core
   - EXSplashScreen (0.15.1):
     - ExpoModulesCore
     - React-Core
@@ -356,6 +359,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../../../node_modules/expo-keep-awake/ios`)
   - ExpoLinearGradient (from `../../../node_modules/expo-linear-gradient/ios`)
   - ExpoModulesCore (from `../../../node_modules/expo-modules-core/ios`)
+  - EXScreenOrientation (from `../../../node_modules/expo-screen-orientation/ios`)
   - EXSplashScreen (from `../../../node_modules/expo-splash-screen/ios`)
   - FBLazyVector (from `../../../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../../../node_modules/react-native/React/FBReactNativeSpec`)
@@ -419,6 +423,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/expo-linear-gradient/ios"
   ExpoModulesCore:
     :path: "../../../node_modules/expo-modules-core/ios"
+  EXScreenOrientation:
+    :path: "../../../node_modules/expo-screen-orientation/ios"
   EXSplashScreen:
     :path: "../../../node_modules/expo-splash-screen/ios"
   FBLazyVector:
@@ -501,6 +507,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: c0c494b442ecd8122974c13b93ccfb57bd408e88
   ExpoLinearGradient: 0debcf7d6cd7fea3050c218544f0db2de9a64f42
   ExpoModulesCore: 5597629698cc026bd3dff1ef182fe2cc67c31084
+  EXScreenOrientation: e3c072fb0add472a3037482ea43ccbade9b88a25
   EXSplashScreen: 34f460788db8d682883871708dddbfac72095bb7
   FBLazyVector: a7a655862f6b09625d11c772296b01cd5164b648
   FBReactNativeSpec: 91faa68b60c86473607f191d94d60e6e0a40957e

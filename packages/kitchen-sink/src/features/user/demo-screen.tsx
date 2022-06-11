@@ -21,8 +21,8 @@ export function DemoScreen() {
   const DemoComponent = Demos[demoName] ?? NotFound
 
   return (
-    <YStack f={1} jc="center" ai="center" space>
-      <YStack miw={200} maw={210} ai="center">
+    <YStack bc="$backgroundStrong" f={1} jc="center" ai="center" space>
+      <YStack miw={200} maw={300} ai="center">
         <DemoComponent />
       </YStack>
     </YStack>

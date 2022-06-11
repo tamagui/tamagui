@@ -1,9 +1,9 @@
-import { ButtonDemo, FormsDemo, LabelDemo } from '@tamagui/demos'
-import { Sun } from '@tamagui/feather-icons'
+import { Moon, Sun } from '@tamagui/feather-icons'
 import React from 'react'
-import { ScrollView, TextInput, useColorScheme } from 'react-native'
+import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
+  Button,
   Group,
   H1,
   ListItem,
@@ -15,6 +15,8 @@ import {
   YStack,
 } from 'tamagui'
 
+import { useThemeControl } from '../../useTheme'
+
 const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
   return (
@@ -25,21 +27,13 @@ const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & 
 }
 
 export function HomeScreen() {
-  const scheme = useColorScheme()
-
   return (
     <ScrollView>
-      <YStack p="$3" pb="$8" f={1} space>
+      <YStack bc="$backgroundStrong" p="$3" pb="$8" f={1} space>
         <H1 size="$9">Demos</H1>
 
         <Group vertical>
-          <ListItem pressable icon={Sun}>
-            <ListItem.Text>Theme {scheme}</ListItem.Text>
-            <Spacer flex />
-            <Switch bc="$blue10">
-              <Switch.Thumb animation="bouncy" />
-            </Switch>
-          </ListItem>
+          <ColorSchemeListItem />
         </Group>
 
         <YStack space="$4" maw={600}>
@@ -61,6 +55,28 @@ export function HomeScreen() {
         <XStack als="center"></XStack>
       </YStack>
     </ScrollView>
+  )
+}
+
+const ColorSchemeListItem = () => {
+  const theme = useThemeControl()
+  const checked = theme.value === 'light'
+
+  return (
+    <ListItem
+      pressable
+      onPress={() => {
+        theme.set(theme.value === 'dark' ? 'light' : 'dark')
+      }}
+    >
+      <ListItem.Text>Theme</ListItem.Text>
+      <Spacer flex />
+      <Button chromeless disabled w={20} icon={Moon} />
+      <Switch checked={checked} bc="$blue10">
+        <Switch.Thumb animation="bouncy" />
+      </Switch>
+      <Button chromeless disabled w={20} icon={Sun} />
+    </ListItem>
   )
 }
 
@@ -90,7 +106,6 @@ const demos = [
     pages: [
       { title: 'Dialog', route: '/demo/dialog' },
       { title: 'Popover', route: '/demo/popover' },
-      { title: 'Tooltip', route: '/demo/tooltip' },
     ],
   },
 
@@ -116,12 +131,6 @@ const demos = [
 
   {
     label: 'Etc',
-    pages: [
-      { title: 'Anchor', route: '/demo/anchor' },
-      { title: 'HTML Elements', route: '/demo/html-elements' },
-      { title: 'Spinner', route: '/demo/spinner' },
-      { title: 'Unspaced', route: '/demo/unspaced' },
-      { title: 'VisuallyHidden', route: '/demo/visually-hidden' },
-    ],
+    pages: [{ title: 'Spinner', route: '/demo/spinner' }],
   },
 ]

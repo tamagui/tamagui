@@ -1,9 +1,10 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/feather-icons'
+import React from 'react'
 import { Group, ListItem, Separator, XStack } from 'tamagui'
 
 export default function ListItemDemo() {
   return (
-    <XStack $sm={{ als: 'flex-start' }} px="$4" space>
+    <XStack $sm={{ flexDirection: 'column' }} px="$4" space>
       <ListItemDemo1 />
       <ListItemDemo2 />
     </XStack>

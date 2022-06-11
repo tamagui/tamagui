@@ -45,7 +45,7 @@ export default declare(function snackBabelPlugin(
 
     visitor: {
       Program: {
-        enter(this: any, root, state) {
+        enter(this: any, root) {
           let sourcePath = this.file.opts.filename
 
           // this filename comes back incorrect in react-native, it adds /ios/ for some reason

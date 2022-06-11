@@ -121,6 +121,7 @@ export {
   insertFont,
   isObj,
   isTamaguiElement,
+  isTamaguiComponent,
   isVariable,
   matchMedia,
   mediaObjectToString,

@@ -6,7 +6,7 @@ import camera from '../../public/camera.jpg'
 
 export default function CardDemo() {
   return (
-    <XStack $sm={{ als: 'flex-start' }} px="$4" space>
+    <XStack $sm={{ flexDirection: 'column' }} px="$4" space>
       <DemoCard
         animation="bouncy"
         size="$4"

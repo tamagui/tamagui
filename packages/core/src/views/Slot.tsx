@@ -97,7 +97,7 @@ function mergeProps(child: any, slotProps: AnyProps) {
       delete overrideProps[propName]
     }
 
-    const isHandler = /^on[A-Z]/.test(propName)
+    const isHandler = handleRegex.test(propName)
     // if it's a handler, modify the override by composing the base handler
     if (isHandler) {
       overrideProps[propName] = mergeEvent(childPropValue, slotPropValue)
@@ -112,6 +112,8 @@ function mergeProps(child: any, slotProps: AnyProps) {
 
   return { ...slotProps, ...overrideProps }
 }
+
+const handleRegex = /^on[A-Z]/
 
 export function mergeEvent(a?: Function, b?: Function) {
   return (...args: unknown[]) => {
