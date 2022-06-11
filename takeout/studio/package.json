@@ -2,6 +2,7 @@
   "name": "@takeout/studio",
   "version": "1.0.1-beta.59",
   "source": "src/index.ts",
+  "private": true,
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",

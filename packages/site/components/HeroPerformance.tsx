@@ -33,7 +33,8 @@ export function HeroPerformance() {
             Best in class.
           </HomeH2>
           <HomeH3 maw={580}>
-            Media Queries. Themes. Inline styles, even with logic. All compiled to atomic CSS.
+            An advanced compiler flattens your view hierarchy and turns media queries, themes, and
+            inline styles (even with logic) into fast CSS.
           </HomeH3>
         </YStack>
 

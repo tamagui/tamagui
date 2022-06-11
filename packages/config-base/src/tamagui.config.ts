@@ -8,35 +8,38 @@ import { createGenericFont } from './createGenericFont'
 import { media } from './media'
 
 const silkscreenFont = createSilkscreenFont()
-const headingFont = createInterFont({
-  size: {
-    5: 13,
-    6: 15,
+const headingFont = createInterFont(
+  {
+    size: {
+      5: 13,
+      6: 15,
+    },
+    transform: {
+      6: 'uppercase',
+      7: 'none',
+    },
+    weight: {
+      6: '400',
+      7: '700',
+    },
+    color: {
+      6: '$colorFocus',
+      7: '$color',
+    },
+    letterSpacing: {
+      5: 2,
+      6: 1,
+      7: 0,
+      8: 0,
+      9: -1,
+      10: -1,
+      12: -2,
+      14: -3,
+      15: -4,
+    },
   },
-  transform: {
-    6: 'uppercase',
-    7: 'none',
-  },
-  weight: {
-    6: '400',
-    7: '700',
-  },
-  color: {
-    6: '$colorFocus',
-    7: '$color',
-  },
-  letterSpacing: {
-    5: 2,
-    6: 1,
-    7: 0,
-    8: 0,
-    9: -1,
-    10: -1,
-    12: -2,
-    14: -3,
-    15: -4,
-  },
-}, {sizeLineHeight: (size) => size * 1.1})
+  { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 0)) }
+)
 const bodyFont = createInterFont(
   {},
   {
