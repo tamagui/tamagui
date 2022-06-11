@@ -9,7 +9,21 @@ import normalizeCSSColor from 'normalize-css-color'
 import { TextStyle, ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
-import { prefixInlineStyles, prefixStyles } from './prefixStyles'
+
+type Value = Object | Array<any> | string | number
+export type Style = { [key: string]: Value }
+
+type Rule = string
+type Rules = Array<Rule>
+
+export type RulesData = {
+  property?: string
+  value?: string
+  identifier: string
+  rules: Rules
+}
+
+type CompilerOutput = { [key: string]: RulesData }
 
 export function expandStyles(style: any) {
   const res = {}
@@ -19,48 +33,14 @@ export function expandStyles(style: any) {
   return res
 }
 
-// TODO can use for inline styles...
-/**
- * Compile simple style object to inline DOM styles.
- * No support for 'animationKeyframes', 'placeholderTextColor', 'scrollbarWidth', or 'pointerEvents'.
- */
-export function inline(style: Style): Object {
-  return prefixInlineStyles(expandStyles(style))
-}
-
-type Rule = string
-type Rules = Array<Rule>
-export type RulesData = {
-  property?: string
-  value?: string
-  identifier: string
-  rules: Rules
-}
-type CompilerOutput = { [key: string]: RulesData }
-type Value = Object | Array<any> | string | number
-export type Style = { [key: string]: Value }
-
-const STYLE_SHORT_FORM_EXPANSIONS = {
-  borderColor: ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'],
-  borderRadius: [
-    'borderTopLeftRadius',
-    'borderTopRightRadius',
-    'borderBottomRightRadius',
-    'borderBottomLeftRadius',
-  ],
-  borderStyle: ['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'],
-  borderWidth: ['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'],
-  margin: ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'],
-  marginHorizontal: ['marginRight', 'marginLeft'],
-  marginVertical: ['marginTop', 'marginBottom'],
-  overscrollBehavior: ['overscrollBehaviorX', 'overscrollBehaviorY'],
-  padding: ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'],
-  paddingHorizontal: ['paddingRight', 'paddingLeft'],
-  paddingVertical: ['paddingTop', 'paddingBottom'],
-  ...(isWeb && {
-    // react-native doesn't support X / Y
-    overflow: ['overflowX', 'overflowY'],
-  }),
+function updateReactDOMStyle(style: Object, key: string, value: any) {
+  value = normalizeValueWithProperty(value, key)
+  const out = expandStyle(key, value)
+  if (out) {
+    Object.assign(style, Object.fromEntries(out))
+  } else {
+    style[key] = value
+  }
 }
 
 export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutput => {
@@ -100,11 +80,11 @@ export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutp
         const { identifier } = cachedResult
         out[identifier] = cachedResult
       } else {
-        const identifier = createIdentifier('r', key, value)
+        const identifier = simpleHash(key + value)
         const rules = createAtomicRules(identifier, key, value)
         const cachedResult = cache.set(key, valueString, {
           property: key,
-          value: stringifyValueWithProperty(value, key),
+          value: valueString,
           identifier,
           rules,
         })
@@ -114,16 +94,6 @@ export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutp
   }
 
   return out
-}
-
-function updateReactDOMStyle(style: Object, key: string, value: any) {
-  value = normalizeValueWithProperty(value, key)
-  const out = expandStyle(key, value)
-  if (out) {
-    Object.assign(style, Object.fromEntries(out))
-  } else {
-    style[key] = value
-  }
 }
 
 export function expandStyle(key: string, value: any) {
@@ -213,22 +183,10 @@ function createAtomicRules(identifier: string, property, value): Rules {
   // Handle non-standard properties and object values that require multiple
   // CSS rules to be created.
   switch (property) {
-    case 'animationKeyframes': {
-      const { animationNames, rules: keyframesRules } = processKeyframesValue(value)
-      const block = createDeclarationBlock({ animationName: animationNames.join(',') })
-      rules.push(`${selector}${block}`, ...keyframesRules)
-      break
-    }
-
     // Equivalent to using '::placeholder'
     case 'placeholderTextColor': {
       const block = createDeclarationBlock({ color: value, opacity: 1 })
-      rules.push(
-        `${selector}::-webkit-input-placeholder${block}`,
-        `${selector}::-moz-placeholder${block}`,
-        `${selector}:-ms-input-placeholder${block}`,
-        `${selector}::placeholder${block}`
-      )
+      rules.push(`${selector}::placeholder${block}`)
       break
     }
 
@@ -276,74 +234,15 @@ function createAtomicRules(identifier: string, property, value): Rules {
 }
 
 /**
- * Create CSS keyframes rules and names from a StyleSheet keyframes object.
- */
-function processKeyframesValue(keyframesValue: number | string[]) {
-  if (typeof keyframesValue === 'number') {
-    throw new Error(`Invalid CSS keyframes type: ${typeof keyframesValue}`)
-  }
-
-  const animationNames: string[] = []
-  const rules: string[] = []
-  const value = Array.isArray(keyframesValue) ? keyframesValue : [keyframesValue]
-
-  for (const keyframes of value) {
-    if (typeof keyframes === 'string') {
-      // Support external animation libraries (identifiers only)
-      animationNames.push(keyframes)
-    } else {
-      // Create rules for each of the keyframes
-      const { identifier, rules: keyframesRules } = createKeyframes(keyframes)
-      animationNames.push(identifier)
-      rules.push(...keyframesRules)
-    }
-  }
-
-  return { animationNames, rules }
-}
-
-/**
- * Create individual CSS keyframes rules.
- */
-function createKeyframes(keyframes) {
-  const prefixes = ['-webkit-', '']
-  const identifier = createIdentifier('r', 'animation', keyframes)
-
-  const steps =
-    '{' +
-    Object.keys(keyframes)
-      .map((stepName) => {
-        const rule = keyframes[stepName]
-        const block = createDeclarationBlock(rule)
-        return `${stepName}${block}`
-      })
-      .join('') +
-    '}'
-
-  const rules = prefixes.map((prefix) => {
-    return `@${prefix}keyframes ${identifier}${steps}`
-  })
-  return { identifier, rules }
-}
-
-/**
  * Creates a CSS declaration block from a StyleSheet object.
  */
 function createDeclarationBlock(style: Style) {
-  const domStyle = prefixStyles(expandStyles(style))
+  const domStyle = expandStyles(style)
   const declarationsString = Object.keys(domStyle)
     .map((property) => {
       const value = domStyle[property]
       const prop = hyphenateStyleName(property)
-      // The prefixer may return an array of values:
-      // { display: [ '-webkit-flex', 'flex' ] }
-      // to represent "fallback" declarations
-      // { display: -webkit-flex; display: flex; }
-      if (Array.isArray(value)) {
-        return value.map((v) => `${prop}:${v}`).join(';')
-      } else {
-        return `${prop}:${value}`
-      }
+      return `${prop}:${value}`
     })
     // Once properties are hyphenated, this will put the vendor
     // prefixed and short-form properties first in the list.
@@ -351,11 +250,6 @@ function createDeclarationBlock(style: Style) {
     .join(';')
 
   return `{${declarationsString};}`
-}
-
-function createIdentifier(prefix: string, name: string, value): string {
-  const hashedString = simpleHash(name + stringifyValueWithProperty(value, name))
-  return `${prefix}-${hashedString}`
 }
 
 const cache = {
@@ -515,15 +409,6 @@ const unitlessNumbers = {
  * Support style names that may come passed in prefixed by adding permutations
  * of vendor prefixes.
  */
-const prefixes = ['ms', 'Moz', 'O', 'Webkit']
-const prefixKey = (prefix: string, key: string) => {
-  return prefix + key.charAt(0).toUpperCase() + key.substring(1)
-}
-Object.keys(unitlessNumbers).forEach((prop) => {
-  prefixes.forEach((prefix) => {
-    unitlessNumbers[prefixKey(prefix, prop)] = unitlessNumbers[prop]
-  })
-})
 
 const resolveShadowValue = (style: ViewStyle): void | string => {
   const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
@@ -565,4 +450,27 @@ function textShadowReducer(resolvedStyle, style) {
   ) {
     resolvedStyle.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
   }
+}
+
+const STYLE_SHORT_FORM_EXPANSIONS = {
+  borderColor: ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'],
+  borderRadius: [
+    'borderTopLeftRadius',
+    'borderTopRightRadius',
+    'borderBottomRightRadius',
+    'borderBottomLeftRadius',
+  ],
+  borderStyle: ['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'],
+  borderWidth: ['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'],
+  margin: ['marginTop', 'marginRight', 'marginBottom', 'marginLeft'],
+  marginHorizontal: ['marginRight', 'marginLeft'],
+  marginVertical: ['marginTop', 'marginBottom'],
+  overscrollBehavior: ['overscrollBehaviorX', 'overscrollBehaviorY'],
+  padding: ['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'],
+  paddingHorizontal: ['paddingRight', 'paddingLeft'],
+  paddingVertical: ['paddingTop', 'paddingBottom'],
+  ...(isWeb && {
+    // react-native doesn't support X / Y
+    overflow: ['overflowX', 'overflowY'],
+  }),
 }

@@ -109,8 +109,7 @@ function getAtomicStyle(
   // TODO ... and then also avoid this loop! n^4
   return Object.keys(atomicStyles).map((key) => {
     const val = atomicStyles[key]
-    // r-transform-1ns13n
-    const [_, hash] = val.identifier.split('-')
+    const hash = val.identifier
     // pseudos have a `--` to be easier to find with concatClassNames
     const psuedoPrefix = pseudo ? `0${pseudo.name}-` : ''
     if (!val.property) {

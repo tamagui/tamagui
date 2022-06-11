@@ -34,7 +34,7 @@ const breakpoints = [
   { name: 'md', at: demoMedia[2] },
   { name: 'lg', at: demoMedia[3] },
 ]
-const browserHeight = 445
+const browserHeight = 485
 
 export const HeroResponsive = memo(() => {
   const [bounding, setBounding] = useState<DOMRect | null>(null)
@@ -236,7 +236,7 @@ export const HeroResponsive = memo(() => {
           <XStack pos="absolute" t={0} l={0} r={0} bbw={1} boc="$color" opacity={0.1} />
           <YStack pos="relative" f={1} h="100%" w="100%">
             <YStack theme="darker" fullscreen className="mask-gradient-down" zi={-1}>
-              <YStack fullscreen className="bg-grid" opacity={0.5} />
+              <YStack fullscreen className="bg-grid" opacity={0.75} />
             </YStack>
           </YStack>
         </YStack>
@@ -248,7 +248,7 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-      <XStack y={-60} ai="flex-start">
+      <XStack y={-54} ai="flex-start">
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           accessibilityLabel={`Responsive size ${name}`}

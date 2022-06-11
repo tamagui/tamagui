@@ -1,5 +1,4 @@
 import {
-  ExtractedResponse,
   TamaguiOptions,
   createExtractor,
   extractToClassNames,
@@ -13,7 +12,6 @@ Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
 
 let index = 0
-let hasLogged = false
 let hasPatched = false
 
 process.env.TAMAGUI_TARGET = 'web'

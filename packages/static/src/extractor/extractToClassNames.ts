@@ -189,28 +189,12 @@ export function extractToClassNames({
                   t.jsxAttribute(t.jsxIdentifier(style.property), t.stringLiteral(style.identifier))
                 )
               }
-
-              // for (const key in attr.value) {
-              //   if (pseudos.some((x) => x[0] === key)) {
-              //     // we handled pseudos above...
-              //     continue
-              //   }
-              //   // leave them as attributes
-              //   finalAttrs.push(
-              //     t.jsxAttribute(t.jsxIdentifier(key), t.stringLiteral(attr.value[key]))
-              //   )
-              // }
             } else {
               const styles = addStyles(attr.value)
               const newClassNames = concatClassName(styles.map((x) => x.identifier).join(' '))
               const existing = finalClassNames.find(
                 (x) => x.type == 'StringLiteral'
               ) as t.StringLiteral | null
-
-              // const newClassNames = concatClassName(Object.values(attr.value))
-              // const existing = finalClassNames.find(
-              //   (x) => x.type == 'StringLiteral'
-              // ) as t.StringLiteral | null
 
               if (existing) {
                 existing.value = `${existing.value} ${newClassNames}`
@@ -342,20 +326,7 @@ export function extractToClassNames({
 
       const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
 
-      for (const { className, rules, identifier, value } of finalStyles) {
-        // console.log('backvalue', identifier, value)
-        // ast.program.body.unshift(
-        //   t.expressionStatement(
-        //     t.callExpression(
-        //       t.memberExpression(
-        //         t.callExpression(t.identifier('require'), [t.stringLiteral('@tamagui/core')]),
-        //         t.identifier('setIdentifierValue')
-        //       ),
-        //       [t.stringLiteral(identifier), t.stringLiteral(value)]
-        //     )
-        //   )
-        // )
-
+      for (const { className, rules } of finalStyles) {
         if (cssMap.has(className)) {
           if (comment) {
             const val = cssMap.get(className)!
