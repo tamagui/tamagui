@@ -33,7 +33,7 @@ export default function App(props: AppProps) {
     <>
       <NextProgress height={1} options={{ showSpinner: false }} />
       <NextThemeProvider onChangeTheme={setTheme}>
-        <Tamagui.Provider disableRootThemeClass defaultTheme={theme}>
+        <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
           {contents}
         </Tamagui.Provider>
       </NextThemeProvider>

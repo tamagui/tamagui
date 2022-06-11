@@ -132,11 +132,18 @@ export default function App() {
 }
 ```
 
+#### Using Tamagui Provider
+
 Tamagui.Provider takes a few properties:
 
 <PropsTable
   data={[
-    { name: 'defaultTheme', required: true, type: 'string' },
+    {
+      name: 'defaultTheme',
+      required: true,
+      type: 'string',
+      description: `The initial top level theme.`,
+    },
     {
       name: 'disableRootThemeClass',
       required: false,
@@ -145,19 +152,33 @@ Tamagui.Provider takes a few properties:
         'Disable inserting a theme class in the DOM or context, allowing you to manually place it higher. For custom use cases like integration with next-theme.',
     },
     {
-      name: 'injectCSS',
+      name: 'disableInjectCSS',
       required: false,
       type: 'boolean',
-      description: `By default Tamagui won't insert any of your CSS, letting you control if you want to serve it at build time. But if you're not doing any SSR stuff, this is a simple way to have your theme and base CSS inserted automatically.`,
+      description: `By default Tamagui inserts CSS with a useLayoutEffect on load. But if you're not setting up SSR you'll want to use getCSS() instead and enable this prop.`,
+    },
+    {
+      name: 'disableRootThemeClass',
+      required: false,
+      type: 'boolean',
+      description: `Tamagui will insert your current root theme onto the body unless this property is enabled. This typically can be left off.`,
     },
     {
       name: 'initialWindowMetrics',
       required: false,
       type: 'react-native-safe-area-context Metrics',
     },
-    { name: 'children', required: false, type: 'any' },
   ]}
 />
+
+If you use `disableInjectCSS`, you'll need to use this somewhere to insert your CSS into head:
+
+```tsx
+import Tamagui from './tamagui.config'
+
+const css = Tamagui.getCSS()
+// insert into your head
+```
 
 ## Tokens
 

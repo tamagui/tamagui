@@ -12,14 +12,14 @@ export function createTamaguiProvider({
   getCSS: () => string
 }) {
   return function TamaguiProvider({
-    injectCSS,
+    disableInjectCSS,
     children,
     ...themePropsProvider
   }: TamaguiProviderProps) {
     // inject CSS if asked to (not SSR compliant)
     if (typeof document !== 'undefined') {
       React.useLayoutEffect(() => {
-        if (!injectCSS) return
+        if (disableInjectCSS) return
         const style = document.createElement('style')
         style.appendChild(document.createTextNode(getCSS()))
         document.head.appendChild(style)

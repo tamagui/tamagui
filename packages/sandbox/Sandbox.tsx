@@ -15,7 +15,7 @@ export const Sandbox = () => {
   const scheme = useColorScheme()
   const [theme, setTheme] = useState(scheme as any)
   return (
-    <Tamagui.Provider injectCSS defaultTheme={theme}>
+    <Tamagui.Provider defaultTheme={theme}>
       <button
         style={{
           position: 'absolute',

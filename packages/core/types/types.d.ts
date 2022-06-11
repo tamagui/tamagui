@@ -286,7 +286,7 @@ declare type StaticComponentObject = {
     extractable: <X>(a: X, opts?: Partial<StaticConfig>) => X;
 };
 export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'children'>> & {
-    injectCSS?: boolean;
+    disableInjectCSS?: boolean;
     children?: React.ReactNode;
 };
 export declare type PropMapper = (key: string, value: any, theme: ThemeObject, props: Record<string, any>, state: Partial<SplitStyleState>, avoidDefaultProps?: boolean) => undefined | [string, any][];

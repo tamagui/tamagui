@@ -68,11 +68,12 @@ export default function App({ Component, pageProps }: AppProps) {
     return <Component {...pageProps} />
   }, [pageProps])
 
+  // because we do our custom getCSS() above, we disableInjectCSS here
   return (
     <>
       <Head>{/* ... */}</Head>
       <NextThemeProvider onChangeTheme={setTheme}>
-        <Tamagui.Provider disableRootThemeClass defaultTheme={theme}>
+        <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
           {contents}
         </Tamagui.Provider>
       </NextThemeProvider>

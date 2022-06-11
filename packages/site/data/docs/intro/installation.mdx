@@ -356,35 +356,7 @@ export default function App() {
 }
 ```
 
-Tamagui.Provider has optional props:
-
-<PropsTable
-  data={[
-    {
-      name: 'injectCSS',
-      required: false,
-      type: 'boolean',
-      description: `When true, injects Tamagui generated CSS into the head on mount.`,
-    },
-    {
-      name: 'fallback',
-      required: false,
-      type: 'boolean',
-      description: `TamaguiProvider wraps Suspense inside to prevent theme flickering, provide a fallback here.`,
-    },
-  ]}
-/>
-
-Note, you'll need to handle injecting CSS either through `injectCSS`, or by gathering it yourself and inserting it:
-
-```tsx
-import Tamagui from './tamagui.config'
-
-const css = Tamagui.getCSS()
-// insert into your head
-```
-
-Even when using Webpack, some CSS won't be extracted and so will need to come from this helper.
+Tamagui.Provider has optional props, [see the docs for them here](/docs/intro/configuration#using-tamagui-provider).
 
 Finally, you may want to reset your CSS on your web app, we provide a very minimal one you can import. For Next.js apps, do so at the top of your `_app.tsx`:
 
