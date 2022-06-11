@@ -29,6 +29,7 @@ import { useIsTouchDevice } from './hooks/useIsTouchDevice'
 import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
+import { Pressability } from './Pressability'
 import {
   SpaceFlexDirection,
   SpaceTokens,
@@ -793,7 +794,6 @@ export function createComponent<
       ? null
       : useMemo(() => {
           if (attachPress && events) {
-            const Pressability = require('react-native/Libraries/Pressability/Pressability').default
             const pressability = new Pressability(events)
             internal.current!.unmountEffects = [
               () => {

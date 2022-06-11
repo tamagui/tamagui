@@ -50,8 +50,11 @@ export const HeroTypography = () => {
     <>
       <YStack fullscreen className="bg-grid-big mask-gradient-both" o={0.5} />
       <ContainerLarge position="relative" space="$8">
-        <YStack ref={ref} ai="center" space="$2">
-          <HomeH2>Pluggable fonts, individually tuned.</HomeH2>
+        <YStack ref={ref} ai="center" space="$3">
+          <HomeH2>
+            Beautifully expressive font systems with{' '}
+            <span className="clip-text rainbow">rythym</span>.
+          </HomeH2>
         </YStack>
 
         <XStack
@@ -149,11 +152,12 @@ const OverlayCard = () => {
     <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
       <YStack jc="center" p="$6" space="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
         <Paragraph ta="left" size="$8" fow="400" letsp={-1}>
-          Share fonts as npm packages with complete control over vertical rhythm.
+          Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 
         <Paragraph ta="left" size="$6" theme="alt2" fow="400">
-          Tune families across every size step - weights, spacing, line-height, and letter-spacing.
+          Typed, sizable fonts with control over every facet - weight, spacing, line-height,
+          letter-spacing, color and more.
         </Paragraph>
 
         <Link href="/docs/intro/configuration" passHref>

@@ -114,7 +114,7 @@ span._display-1adg3ll > span._display-xoduu5 {
   background: linear-gradient(
     180deg,
     var(--backgroundStrong) 0%,
-    transparent 90%
+    transparent 60%
   );
 }
 
@@ -602,4 +602,8 @@ input, textarea {
 
 .ta-right {
   text-align: right;
+}
+
+.themes-fader { 
+  background: linear-gradient(to right, var(--backgroundStrong), transparent 20%, transparent 80%, var(--backgroundStrong));
 }

@@ -38,18 +38,13 @@ const Features = ({ items, ...props }: any) => {
 export const HeroExampleProps = () => {
   return (
     <ContainerLarge position="relative">
-      <YStack ai="center" space="$2">
-        <HomeH2 fow="300">
-          &lt;
-          <span style={{ fontWeight: '800' }} className="rainbow clip-text">
-            Propful
-          </span>{' '}
-          /&gt;
+      <YStack ai="center">
+        <HomeH2>
+          <span className="rainbow clip-text">More powerful</span> props on every component
         </HomeH2>
-        <HomeH3>Properly powerful props on every component.</HomeH3>
       </YStack>
 
-      <XStack px="$6" pt="$6" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
+      <XStack px="$6" pt="$8" space="$4" $sm={{ flexDirection: 'column', px: 0 }}>
         <YStack w="50%" $sm={{ w: '100%' }}>
           <Features
             space="$4"

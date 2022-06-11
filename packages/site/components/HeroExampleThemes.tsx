@@ -139,13 +139,12 @@ export function HeroExampleThemes() {
     <YStack>
       {useMemo(() => {
         return (
-          <ContainerLarge position="relative" space="$2">
+          <ContainerLarge position="relative" space="$3">
             <HomeH2>
-              A <span className="rainbow clip-text">new</span> theme&nbsp;engine
+              A colorful <span className="rainbow clip-text">revolution.</span>
             </HomeH2>
             <HomeH3>
-              Unlimited themes, partial nesting, per-component themes - all extracted to CSS
-              variables.
+              The most powerful theme system, all compiled to clean CSS - customized to the element.
             </HomeH3>
           </ContainerLarge>
         )
@@ -230,6 +229,7 @@ export function HeroExampleThemes() {
               }
             }}
           >
+            <YStack fullscreen pe="none" zIndex={100} className="themes-fader" />
             <XStack
               ai="center"
               jc="center"

@@ -40,22 +40,10 @@ export function HeroExampleAnimations({ animationCode }) {
 
   return (
     <YStack>
-      <ContainerLarge position="relative" space="$6">
+      <ContainerLarge position="relative" space="$8">
         <YStack zi={1} space="$1">
           <HomeH2 pos="relative">
-            <span className="rainbow clip-text">Animated</span>
-            <Button
-              tag="span"
-              pe="none"
-              size="$2"
-              theme="pink"
-              pos="absolute"
-              t={-10}
-              r={-70}
-              rotate="5deg"
-            >
-              New
-            </Button>
+            Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
           <HomeH3>Plug-and-play drivers for every platform.</HomeH3>
         </YStack>
@@ -123,7 +111,7 @@ export function HeroExampleAnimations({ animationCode }) {
           </YStack>
         </XStack>
 
-        <XStack als="center" space="$1">
+        <XStack als="center" space="$3">
           <Link href="/docs/core/animations#css" passHref>
             <Button accessibilityLabel="CSS docs" fontFamily="$silkscreen" theme={tint} tag="a">
               CSS &raquo;

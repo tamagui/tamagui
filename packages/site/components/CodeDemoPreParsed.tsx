@@ -22,7 +22,7 @@ export function CodeDemoPreParsed({
       f={1}
       {...props}
     >
-      <Pre>
+      <Pre f={1}>
         <Code dangerouslySetInnerHTML={{ __html: source }} />
       </Pre>
     </YStack>

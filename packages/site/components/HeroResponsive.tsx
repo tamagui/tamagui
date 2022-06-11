@@ -276,23 +276,18 @@ const Header = memo(() => {
   return (
     <YStack f={1} space="$3">
       <XStack>
-        <HomeH2 als="flex-start">Responsive</HomeH2>
-
-        <Spacer size="$6" />
-
-        <XStack jc="center" ai="center" $sm={{ display: 'none' }}>
-          <IconStack als="center" theme="alt2" p="$3">
-            <Monitor size={26} />
-          </IconStack>
-        </XStack>
+        <HomeH2 ta="left" als="flex-start">
+          <span className="rainbow clip-text">Ridiculously</span> responsive.
+        </HomeH2>
       </XStack>
 
       <Paragraph size="$7" theme="alt2">
-        Responsive on Native & Web, without performance downside.
+        Native & Web unified, with <em>no</em> performance downside.
       </Paragraph>
 
-      <Paragraph maxWidth={450} size="$5" theme="alt3">
-        Tamagui compiles to hoisted CSS/StyleSheets, moving styles outside of render/runtime.
+      <Paragraph maxWidth={450} size="$6" theme="alt3">
+        Compile responsive styles to CSS or StyleSheet, turning the impossible and janky into
+        buttery smooth 🧈 beauty.
       </Paragraph>
     </YStack>
   )

@@ -29,7 +29,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
   const maxValue = Math.max(...data.map((r) => r.value))
 
   return (
-    <YStack space="$1" my="$4">
+    <YStack space="$2" my="$4">
       {data.map((result, i) => {
         const width = `${(result.value / maxValue) * 100}%`
         return (

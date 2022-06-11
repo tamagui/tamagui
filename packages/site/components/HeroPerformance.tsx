@@ -29,9 +29,10 @@ export function HeroPerformance() {
 
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
-          <HomeH2 ref={ref}>Less time debugging performance.</HomeH2>
+          <HomeH2 ref={ref}>The #1 Performer 🏆</HomeH2>
           <HomeH3 maw={580}>
-            Media queries, themes and inline, logical styles all compile to performant atomic CSS.
+            Media queries, themes - even inline, logical styles all compiled to performant atomic
+            CSS.
           </HomeH3>
         </YStack>
 

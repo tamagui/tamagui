@@ -1,19 +1,17 @@
 import { Grid, H4, Paragraph, YStack } from 'tamagui'
 
-import { CocentricCircles } from './CocentricCircles'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'
 
 export function FeaturesGrid() {
   return (
     <>
-      {/* <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={285} left={0} right={0} ai="center">
-        <CocentricCircles />
-      </YStack> */}
       <ContainerLarge space="$8">
-        <YStack zi={1} space="$1">
-          <HomeH2 className="rainbow clip-text">All-in-one</HomeH2>
-          <HomeH3>Rapidly iterate on truly cross-platform&nbsp;apps.</HomeH3>
+        <YStack zi={1} space="$3">
+          <HomeH2>
+            <span className="rainbow clip-text">Years of developer-time</span>, out of the box.
+          </HomeH2>
+          <HomeH3>Start from day one years of features and polish.</HomeH3>
         </YStack>
 
         <YStack maw={950} als="center">

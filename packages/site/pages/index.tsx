@@ -39,7 +39,7 @@ export default function Home({ animationCode, compilationExamples }) {
           <InstallInput />
         </XStack>
       </ContainerLarge>
-      <YStack elevation="$1" bc="$background" py="$8" pb="$10">
+      <YStack elevation="$1" py="$8" pb="$10">
         <HeroBelow />
       </YStack>
       <Separator />

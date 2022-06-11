@@ -17,16 +17,17 @@ export const HeroBelow = memo(() => {
         flexWrap="nowrap"
         px="$2"
         mb={-8}
+        py="$4"
         $sm={{ flexDirection: 'column' }}
       >
         <YStack width="33%" $sm={{ width: 'auto', maxWidth: 500, mx: 'auto' }} flexShrink={1}>
           <IconStack theme="purple_alt2">
             <Cpu size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$5" my="$4" mb="$2">
+          <H3 size="$6" my="$4" mb="$2">
             Performant
           </H3>
-          <Paragraph size="$3" theme="alt1">
+          <Paragraph size="$4" theme="alt1">
             The fastest UI kit - thanks to an advanced compiler that handles styles, media queries,
             CSS variables, and tree&nbsp;flattening.
           </Paragraph>
@@ -36,10 +37,10 @@ export const HeroBelow = memo(() => {
           <IconStack theme="green_alt2">
             <Compass size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$5" my="$4" mb="$2">
+          <H3 size="$6" my="$4" mb="$2">
             Easy to adopt
           </H3>
-          <Paragraph size="$3" theme="alt1">
+          <Paragraph size="$4" theme="alt1">
             Works with React Native and{' '}
             <Link target="_blank" href="https://necolas.github.io/react-native-web/">
               Web
@@ -52,10 +53,10 @@ export const HeroBelow = memo(() => {
           <IconStack theme="pink_alt2">
             <Layers size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$5" my="$4" mb="$2">
+          <H3 size="$6" my="$4" mb="$2">
             Productive
           </H3>
-          <Paragraph size="$3" theme="alt1">
+          <Paragraph size="$4" theme="alt1">
             Typed inline styles without performance downside with themes, tokens, shorthands, media
             queries, and animations.
           </Paragraph>

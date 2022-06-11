@@ -8,10 +8,10 @@ import { HomeH2, HomeH3 } from './HomeH2'
 
 export function Community() {
   return (
-    <ContainerLarge my="$-6" space="$6">
-      <YStack zi={1} space="$2">
-        <HomeH2>Get involved</HomeH2>
-        <HomeH3>Join the community on these platforms</HomeH3>
+    <ContainerLarge mt="$-8" mb="$6" space="$6">
+      <YStack zi={1} space="$3">
+        <HomeH2>Feels like home.</HomeH2>
+        <HomeH3>Join an active and growing community</HomeH3>
       </YStack>
 
       <YStack maxWidth="100%" fs={0} als="center">

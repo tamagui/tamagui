@@ -26,7 +26,7 @@ export function Hero() {
   return (
     <YStack pos="relative" pe="auto">
       <Theme name={tint}>
-        <YStack fullscreen zi={0} className="hero-gradient-2" opacity={0.5} />
+        <YStack fullscreen zi={0} className="hero-gradient-2" opacity={0.48} />
         <HeroTop />
       </Theme>
     </YStack>
@@ -88,7 +88,7 @@ const HeroTop = memo(() => {
             </TooltipSimple>{' '}
             design systems for React&nbsp;Native &&nbsp;Web
             <Text fontSize="inherit" letsp="inherit" fontFamily="inherit" $sm={{ display: 'none' }}>
-              , faster
+              , faster.
             </Text>
           </H1>
 

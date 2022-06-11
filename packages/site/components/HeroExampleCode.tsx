@@ -18,11 +18,11 @@ export function HeroExampleCode({ examples }) {
     <>
       <ContainerLarge position="relative">
         <YStack zi={1} space="$6">
-          <YStack space="$2">
-            <HomeH2>DX 🤝 UX</HomeH2>
-            <HomeH3>
-              Maintainable, cross-platform, performant + easier&nbsp;to&nbsp;use and debug.
-            </HomeH3>
+          <YStack space="$3">
+            <HomeH2>
+              Incredible features, <span className="rainbow clip-text">insanely&nbsp;fast</span>.
+            </HomeH2>
+            <HomeH3>Modern features 🤝 unmatched performance.</HomeH3>
           </YStack>
 
           <Group bordered theme={tint} maxWidth="100%" als="center" scrollable>
