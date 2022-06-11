@@ -218,7 +218,7 @@ const themeColors = {
 const lightThemes = createThemesFrom('light', themeCreator, {
   backgrounds: themeColors.light,
   // isBase: true,
-  backgroundStrong: '#fafafa',
+  backgroundStrong: '#f2f2f2', // matches iOS
   borderColors: themeColors.light.slice(2),
   isLight: true,
 })
@@ -226,7 +226,7 @@ const lightThemes = createThemesFrom('light', themeCreator, {
 const darkThemes = createThemesFrom('dark', themeCreator, {
   backgrounds: themeColors.dark,
   colors: themeColors.light.slice(2),
-  backgroundStrong: '#111',
+  backgroundStrong: '#000',
   isBase: true,
   isLight: false,
   shift: 1,
@@ -256,8 +256,8 @@ const baseThemes = {
   light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
   light_Button: lightThemes.light,
-  light_SliderTrack: lightThemes.light_alt1,
-  light_SliderTrackActive: lightThemes.light_alt2,
+  light_SliderTrack: lightThemes.light_alt2,
+  light_SliderTrackActive: lightThemes.light_alt3,
   light_Switch: lightThemes.light,
   light_SwitchThumb: lightThemes.light_alt1,
   light_DrawerFrame: lightThemes.light_alt1,
@@ -267,9 +267,9 @@ const baseThemes = {
   dark,
   dark_active: makeActiveTheme(darkThemes.dark),
   dark_Card: darkThemes.dark,
-  dark_DrawerFrame: darkThemes.dark_alt1,
+  dark_DrawerFrame: darkThemes.dark_alt2,
   dark_SliderTrack: darkThemes.dark_darker,
-  dark_SliderTrackActive: darkThemes.dark_alt1,
+  dark_SliderTrackActive: darkThemes.dark_alt3,
   dark_Switch: darkThemes.dark_darker,
   dark_SwitchThumb: darkThemes.dark_alt1,
   dark_Button: darkThemes.dark_alt1,
