@@ -1,12 +1,14 @@
 // used for focusing on native
 
-type Focusable = { focus: Function }
+import { Focusable } from './focusable'
 
 const InputsMap = new Map<string, Focusable>()
 
 export const registerFocusable = (id: string, input: Focusable) => {
-  if (InputsMap.has(id)) {
-    console.warn(`Warning, duplicate ID for input: ${id}`)
+  if (process.env.NODE_ENV !== 'production') {
+    if (InputsMap.has(id)) {
+      console.warn(`Warning, duplicate ID for input: ${id}`)
+    }
   }
   InputsMap.set(id, input)
   return () => {
@@ -18,7 +20,17 @@ export const unregisterFocusable = (id: string) => {
   InputsMap.delete(id)
 }
 
-export const focusFocusable = (id: string) => {
+export const focusFocusable = (id: string, select = false) => {
   const input = InputsMap.get(id)
-  input?.focus()
+  if (!input) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('No input found for id', id)
+    }
+    return
+  }
+  if (select || !input.focusAndSelect) {
+    input.focus()
+  } else {
+    input.focusAndSelect()
+  }
 }

@@ -1,4 +1,6 @@
-export const registerFocusable = (id: string, input: { focus: Function }) => {
+import { Focusable } from './focusable'
+
+export const registerFocusable = (id: string, input: Focusable) => {
   // noop focus is handed natively
 }
 
