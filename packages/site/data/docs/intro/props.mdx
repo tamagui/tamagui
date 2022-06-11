@@ -16,6 +16,65 @@ You may also want to reference the [react-native-web docs](https://necolas.githu
 - [Interactions](https://necolas.github.io/react-native-web/docs/interactions/)
 - [Localization](https://necolas.github.io/react-native-web/docs/localization/)
 
+Tamagui adds a few extra props, [read those below](#tamagui-props).
+
+### Style prop ordering
+
+Tamagui props are sensitive to their order. This is actually a huge feature, that without would leave you with impossible styling challenges. Let's first explain how it works, and then why it's necessary.
+
+#### How it works
+
+You define a new styled component:
+
+```tsx
+const CalHeader = styled(Text, {
+  variants: {
+    isHero: {
+      fontSize: 36,
+      backgroundColor: 'blue',
+      color: 'white',
+    }
+  }
+})
+```
+
+And then use it in a view you're building:
+
+```tsx
+export const MyCalendar = (props: { isHero?: boolean; headerFontSize?: number }) => {
+  return (
+    <>
+      {/* ... some other components... */}
+      <CalHeader isHero={props.isHero} fontSize={props.headerFontSize}>
+        {monthName}
+      </CalHeader>
+    </>
+  )
+}
+```
+
+Notice two things: `isHero` sets a variety of properties, but you want to allow overriding one of those properties, `fontSize`.
+
+If Tamagui didn't respect the order of the props on the JSX element of `CalHeader`, you wouldn't know if the `isHero` font size wins, or if the `headerFontSize` wins.
+
+CSS does a "last defined style wins", which is a huge pain because it means you have to carefully manage the order your CSS is actually loaded into the document. Tamagui could do something similar, with a "inline props always win, defined props go in order of definition", but this would be dramatically less flexible.
+
+Especially when it comes to spreading props downwards. Because Tamagui supports prop order, you have complete control over which styles you want to always win, vs which can be overriden by a user:
+
+```tsx
+export const MyCalendarHeader = (props: CalHeaderProps) => {
+  return (
+    <CalHeader isHero {...props} fontSize={36}>
+      {monthName}
+    </CalHeader>
+  )
+}
+```
+
+This component defaults to `isHero` styles, but if a user passes in `isHero` as `false`, it will disable all those styles. But because `fontSize` is **always** after the spread, it will always be set to 36.
+
+### Tamagui props
+
 Outside of flat style properties, Tamagui adds the following props:
 
 <PropsTable
