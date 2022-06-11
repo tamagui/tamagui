@@ -1,4 +1,4 @@
-import { stylePropsView, validStyles } from '@tamagui/helpers'
+import { composeEventHandlers, stylePropsView, validStyles } from '@tamagui/helpers'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
   Children,
@@ -8,6 +8,7 @@ import React, {
   memo,
   useCallback,
   useContext,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -484,7 +485,7 @@ export function createComponent<
     }
 
     // isMounted
-    const internal = useRef<{ isMounted: boolean }>()
+    const internal = useRef<{ isMounted: boolean; unmountEffects?: Function[] }>()
     if (!internal.current) {
       internal.current = {
         isMounted: true,
@@ -504,6 +505,7 @@ export function createComponent<
       return () => {
         mouseUps.delete(unPress)
         internal.current!.isMounted = false
+        internal.current!.unmountEffects?.forEach((cb) => cb())
       }
     }, [hasEnterStyle, props.animation])
 
@@ -583,8 +585,8 @@ export function createComponent<
     // TODO need to loop active variants and see if they have matchin pseudos and apply as well
     const initialPseudos = initialSplitStyles.pseudos
     const attachPress = !!(
-      (pseudos && pseudos.pressStyle) ||
-      (initialPseudos && initialPseudos.pressStyle) ||
+      pseudos?.pressStyle ||
+      initialPseudos?.pressStyle ||
       onPress ||
       onPressOut ||
       onPressIn ||
@@ -692,6 +694,18 @@ export function createComponent<
                 onPress?.(e)
               }
             : null,
+
+          // replicating TouchableWithoutFeedback
+          ...(!isWeb && {
+            cancelable: !props.rejectResponderTermination,
+            disabled: props.disabled !== null ? props.disabled : props.accessibilityState?.disabled,
+            hitSlop: props.hitSlop,
+            delayLongPress: props.delayLongPress,
+            delayPressIn: props.delayPressIn,
+            delayPressOut: props.delayPressOut,
+            focusable: viewProps.focusable ?? true,
+            minPressDuration: 0,
+          }),
         }
       : null
 
@@ -774,23 +788,41 @@ export function createComponent<
       }
     }
 
-    content = createElement(elementType, viewProps, childEls)
+    // only ever create once, use .configure() to update later
+    const pressability = isWeb
+      ? null
+      : useMemo(() => {
+          if (attachPress && events) {
+            const Pressability = require('react-native/Libraries/Pressability/Pressability').default
+            const pressability = new Pressability(events)
+            internal.current!.unmountEffects = [
+              () => {
+                pressability.reset()
+              },
+            ]
+            return pressability
+          }
+        }, [])
 
     // EVENTS native
-    // native just wrap in <Pressable />
+    // replicates TouchableWithoutFeedback
     if (process.env.TAMAGUI_TARGET === 'native') {
       if (attachPress && events) {
-        content = (
-          <TouchableWithoutFeedback
-            onPressIn={events[pressInKey]}
-            onPress={events[pressKey]}
-            onPressOut={events[pressOutKey]}
-          >
-            {content}
-          </TouchableWithoutFeedback>
-        )
+        pressability.configure(events)
+        const eventHandlers = pressability.getEventHandlers()
+        for (const key in eventHandlers) {
+          if (key === 'onBlur' || key === 'onFocus') {
+            // avoids the default
+            continue
+          }
+          const og = props[key]
+          const val = eventHandlers[key]
+          viewProps[key] = og ? composeEventHandlers(og, val) : val
+        }
       }
     }
+
+    content = createElement(elementType, viewProps, childEls)
 
     if (isWeb && events && attachHover) {
       content = (
