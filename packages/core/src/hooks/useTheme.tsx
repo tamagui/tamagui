@@ -2,7 +2,7 @@ import { useForceUpdate } from '@tamagui/use-force-update'
 import React, { useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { getConfig } from '../conf'
-import { useIsomorphicLayoutEffect } from '../constants/platform'
+import { isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { areEqualSets } from '../helpers/areEqualSets'
 import { ThemeContext } from '../ThemeContext'
 import { GetNextThemeProps, ThemeManager, ThemeManagerContext, emptyManager } from '../ThemeManager'
@@ -170,7 +170,7 @@ export const useChangeThemeEffect = (
     return new ThemeManager(next.name, next.theme, parentManager, reset)
   })
 
-  if (typeof document !== 'undefined') {
+  if (!isWeb || typeof document !== 'undefined') {
     useLayoutEffect(() => {
       if (!themeManager) return
       if (next?.name) {
