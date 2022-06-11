@@ -50,7 +50,13 @@ async function run() {
 
       version = answer.version
 
-      await exec(`yarn build`)
+      console.log('Run build & fix')
+
+      await Promise.all([
+        //
+        exec(`yarn build`),
+        exec(`yarn fix`),
+      ])
 
       console.log('checking no git changes...')
       const out = await exec(`git status --porcelain`)
