@@ -53,6 +53,8 @@ export const MyCalendar = (props: { isHero?: boolean; headerFontSize?: number })
 }
 ```
 
+#### Why it's important
+
 Notice two things: `isHero` sets a variety of properties, but you want to allow overriding one of those properties, `fontSize`.
 
 If Tamagui didn't respect the order of the props on the JSX element of `CalHeader`, you wouldn't know if the `isHero` font size wins, or if the `headerFontSize` wins.
