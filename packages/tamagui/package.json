@@ -11,6 +11,7 @@
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": [
+    "src",
     "types",
     "dist"
   ],

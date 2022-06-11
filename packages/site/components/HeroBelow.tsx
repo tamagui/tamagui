@@ -24,10 +24,10 @@ export const HeroBelow = memo(() => {
           <IconStack theme="purple_alt2">
             <Cpu size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$6" my="$4" mb="$2">
+          <H3 color="$color" size="$6" my="$5" mb="$2">
             Performant
           </H3>
-          <Paragraph size="$4" theme="alt1">
+          <Paragraph size="$4" theme="alt2">
             The fastest UI kit - thanks to an advanced compiler that handles styles, media queries,
             CSS variables, and tree&nbsp;flattening.
           </Paragraph>
@@ -37,15 +37,12 @@ export const HeroBelow = memo(() => {
           <IconStack theme="green_alt2">
             <Compass size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$6" my="$4" mb="$2">
+          <H3 color="$color" size="$6" my="$5" mb="$2">
             Easy to adopt
           </H3>
-          <Paragraph size="$4" theme="alt1">
-            Works with React Native and{' '}
-            <Link target="_blank" href="https://necolas.github.io/react-native-web/">
-              Web
-            </Link>
-            . Use it as a style library or full component kit. Comes with beautiful themes, or BYO.
+          <Paragraph size="$4" theme="alt2">
+            Works with React - Native and Web . Use it as a style library or full component kit.
+            Comes with beautiful themes, or BYO.
           </Paragraph>
         </YStack>
 
@@ -53,10 +50,10 @@ export const HeroBelow = memo(() => {
           <IconStack theme="pink_alt2">
             <Layers size={18} color="var(--colorHover)" />
           </IconStack>
-          <H3 size="$6" my="$4" mb="$2">
+          <H3 color="$color" size="$6" my="$5" mb="$2">
             Productive
           </H3>
-          <Paragraph size="$4" theme="alt1">
+          <Paragraph size="$4" theme="alt2">
             Typed inline styles without performance downside with themes, tokens, shorthands, media
             queries, and animations.
           </Paragraph>

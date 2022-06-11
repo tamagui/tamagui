@@ -41,11 +41,14 @@ export function HeroExampleAnimations({ animationCode }) {
   return (
     <YStack>
       <ContainerLarge position="relative" space="$8">
-        <YStack zi={1} space="$1">
+        <YStack zi={1} space="$3">
           <HomeH2 pos="relative">
             Universal <span className="rainbow clip-text">Animations</span>
           </HomeH2>
-          <HomeH3>Plug-and-play drivers for every platform.</HomeH3>
+          <HomeH3>
+            Better platform targeting with animation drivers that can be changed without changing
+            code.
+          </HomeH3>
         </YStack>
 
         <XStack>

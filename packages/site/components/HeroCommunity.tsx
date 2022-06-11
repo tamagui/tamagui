@@ -10,7 +10,9 @@ export function Community() {
   return (
     <ContainerLarge mt="$-8" mb="$6" space="$6">
       <YStack zi={1} space="$3">
-        <HomeH2>Feels like home.</HomeH2>
+        <HomeH2>
+          Feels like <span className="rainbow clip-text">home</span>.
+        </HomeH2>
         <HomeH3>Join an active and growing community</HomeH3>
       </YStack>
 

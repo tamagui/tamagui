@@ -36,7 +36,7 @@ const headingFont = createInterFont({
     14: -3,
     15: -4,
   },
-})
+}, {sizeLineHeight: (size) => size * 1.1})
 const bodyFont = createInterFont(
   {},
   {

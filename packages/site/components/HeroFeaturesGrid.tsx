@@ -9,7 +9,7 @@ export function FeaturesGrid() {
       <ContainerLarge space="$8">
         <YStack zi={1} space="$3">
           <HomeH2>
-            <span className="rainbow clip-text">Years of developer-time</span>, out of the box.
+            <span className="rainbow clip-text">Years of developer-time</span> out of the box.
           </HomeH2>
           <HomeH3>Start from day one years of features and polish.</HomeH3>
         </YStack>

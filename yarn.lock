@@ -4985,6 +4985,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@takeout/studio@workspace:takeout/studio":
+  version: 0.0.0-use.local
+  resolution: "@takeout/studio@workspace:takeout/studio"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.59
+    "@tamagui/core": ^1.0.1-beta.59
+    "@tamagui/static": ^1.0.1-beta.59
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/animate-presence@^1.0.1-beta.59, @tamagui/animate-presence@workspace:packages/animate-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"

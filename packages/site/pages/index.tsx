@@ -33,7 +33,7 @@ export default function Home({ animationCode, compilationExamples }) {
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating isHome />
       <Hero />
-      <Separator />
+      <Separator o={0.65} />
       <ContainerLarge contain="layout" fd="column" pos="relative" zi={100000}>
         <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <InstallInput />
@@ -43,51 +43,40 @@ export default function Home({ animationCode, compilationExamples }) {
         <HeroBelow />
       </YStack>
       <Separator />
-      <Suspense fallback={null}>
-        <Section contain="paint layout" pos="relative" zi={1000}>
-          <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
-          <HeroExampleThemes />
-        </Section>
-        <Section pb="$0" zi={10}>
-          <HeroResponsive />
-        </Section>
-        <SectionTinted contain="paint layout" gradient bubble>
-          <HeroPerformance />
-        </SectionTinted>
-        <SectionTinted contain="paint layout" noBorderTop zi={100}>
-          <YStack fullscreen className="bg-grid-big mask-gradient-up" />
-          <HeroExampleAnimations animationCode={animationCode} />
-        </SectionTinted>
-        <Section bc="$background" contain="paint layout" zi={10}>
-          <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
-          <HeroExampleCode examples={compilationExamples} />
-        </Section>
-        <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">
-          <FeaturesGrid />
-          <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
-        </Section>
-        <SectionTinted contain="paint layout" bubble gradient>
-          <HeroTypography />
-        </SectionTinted>
-        <Section zi={10}>
-          <HeroExampleProps />
-        </Section>
-        <Section zi={0}>
-          <YStack
-            pe="none"
-            zi={-1}
-            pos="absolute"
-            o={0.1}
-            top={-615}
-            left={0}
-            right={0}
-            ai="center"
-          >
-            <CocentricCircles />
-          </YStack>
-          <Community />
-        </Section>
-      </Suspense>
+      <Section contain="paint layout" pos="relative" zi={1000}>
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
+        <HeroExampleThemes />
+      </Section>
+      <Section pb="$0" zi={10}>
+        <HeroResponsive />
+      </Section>
+      <SectionTinted contain="paint layout" gradient bubble>
+        <HeroPerformance />
+      </SectionTinted>
+      <SectionTinted contain="paint layout" noBorderTop zi={100}>
+        <YStack fullscreen className="bg-grid-big mask-gradient-up" />
+        <HeroExampleAnimations animationCode={animationCode} />
+      </SectionTinted>
+      <Section bc="$background" contain="paint layout" zi={10}>
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
+        <HeroExampleCode examples={compilationExamples} />
+      </Section>
+      <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">
+        <FeaturesGrid />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-up" />
+      </Section>
+      <SectionTinted contain="paint layout" bubble gradient>
+        <HeroTypography />
+      </SectionTinted>
+      <Section zi={10}>
+        <HeroExampleProps />
+      </Section>
+      <Section zi={0}>
+        <YStack pe="none" zi={-1} pos="absolute" o={0.1} top={-615} left={0} right={0} ai="center">
+          <CocentricCircles />
+        </YStack>
+        <Community />
+      </Section>
     </>
   )
 }
@@ -131,7 +120,7 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
       <YStack
         fullscreen
         zi={-1}
-        bc={gradient ? `$${tint}1` : null}
+        bc={gradient ? `$${tint}2` : null}
         {...(!bubble && {
           btw: noBorderTop ? 0 : 1,
           bbw: 1,

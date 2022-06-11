@@ -277,17 +277,17 @@ const Header = memo(() => {
     <YStack f={1} space="$3">
       <XStack>
         <HomeH2 ta="left" als="flex-start">
-          <span className="rainbow clip-text">Ridiculously</span> responsive.
+          <span className="rainbow clip-text">Responsive</span>, for real.
         </HomeH2>
       </XStack>
 
       <Paragraph size="$7" theme="alt2">
-        Native & Web unified, with <em>no</em> performance downside.
+        One codebase (native and web) - <span>no</span> performance downside.
       </Paragraph>
 
       <Paragraph maxWidth={450} size="$6" theme="alt3">
-        Compile responsive styles to CSS or StyleSheet, turning the impossible and janky into
-        buttery smooth 🧈 beauty.
+        Compile inline responsive styling to CSS (web) and StyleSheet (native), turning painfully
+        janky into buttery smooth 🧈.
       </Paragraph>
     </YStack>
   )

@@ -29,10 +29,11 @@ export function HeroPerformance() {
 
       <YStack ai="center" zi={1} space="$4">
         <YStack ai="center" space="$2">
-          <HomeH2 ref={ref}>The #1 Performer 🏆</HomeH2>
+          <HomeH2 maw={400} ref={ref}>
+            Best in class.
+          </HomeH2>
           <HomeH3 maw={580}>
-            Media queries, themes - even inline, logical styles all compiled to performant atomic
-            CSS.
+            Media Queries. Themes. Inline styles, even with logic. All compiled to atomic CSS.
           </HomeH3>
         </YStack>
 

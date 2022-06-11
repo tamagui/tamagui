@@ -7,11 +7,9 @@ export const HomeH2 = styled(H2, {
   size: '$11',
   maw: 720,
   mt: '$-2',
-
   $sm: {
     size: '$10',
   },
-
   $xs: {
     size: '$9',
   },
