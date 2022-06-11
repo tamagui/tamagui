@@ -1,4 +1,4 @@
-import { ColorTokens, themeable, useTheme } from '@tamagui/core'
+import { ColorTokens, styled, themeable, useTheme } from '@tamagui/core'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -25,7 +25,7 @@ export const LinearGradient: React.ForwardRefExoticComponent<
       const colors = useLinearGradientColors(colorsProp || [])
       return (
         // @ts-expect-error we have slight diff in RNWProps
-        <YStack ref={ref} position="relative" overflow="hidden" {...stackProps}>
+        <LinearGradientFrame ref={ref} {...stackProps}>
           <ExpoLinearGradient
             start={start}
             end={end}
@@ -33,11 +33,17 @@ export const LinearGradient: React.ForwardRefExoticComponent<
             locations={locations}
             style={[StyleSheet.absoluteFill]}
           />
-        </YStack>
+        </LinearGradientFrame>
       )
     })
   )
 ) as any
+
+const LinearGradientFrame = styled(YStack, {
+  name: 'LinearGradient',
+  overflow: 'hidden',
+  position: 'relative',
+})
 
 // resolve tamagui theme values
 const useLinearGradientColors = (colors: string[]) => {
