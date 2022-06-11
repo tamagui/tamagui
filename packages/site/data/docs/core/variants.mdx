@@ -252,3 +252,61 @@ const Square = styled(Stack, {
   },
 })
 ```
+
+### Variants and Pseudos, Media Queries
+
+Variants have the full power of the Tamagui styling system, including pseudo and media styles:
+
+```tsx
+const SizedText = styled(Text, {
+  variants: {
+    size: {
+      md: {
+         fontSize: '$sm',
+
+         $gtMd: {
+            fontSize: '$md',
+         },
+
+        $gt2xl: {
+            fontSize: '$lg',
+         }
+      }
+    }
+  }
+})
+```
+
+### Variants and Parent Variants
+
+Styled components can access their parent components variants, even in their variants:
+
+```tsx
+const ColorfulText = styled(Text, {
+  variants: {
+    colored: {
+      true: {
+        color: '$color'
+      }
+    },
+
+    large: {
+      true: {
+        fontSize: '$8'
+      }
+    }
+  }
+})
+
+const MyParagraph = styled(ColorfulText, {
+  colored: true,
+
+  variants: {
+    hero: {
+      true: {
+        large: true,
+      }
+    }
+  }
+})
+```
