@@ -36,7 +36,7 @@ import { logLines } from './logLines'
 import { normalizeTernaries } from './normalizeTernaries'
 import { removeUnusedHooks } from './removeUnusedHooks'
 import { timer } from './timer'
-import { validAccessibilityAttributes, validHTMLAttributes } from './validHTMLAttributes'
+import { validHTMLAttributes } from './validHTMLAttributes'
 
 const UNTOUCHED_PROPS = {
   key: true,
@@ -135,9 +135,20 @@ export function createExtractor() {
 
       loadedTamaguiConfig = tamaguiConfig as any
 
-      const defaultTheme = proxyThemeVariables(
+      const proxiedTheme = proxyThemeVariables(
         tamaguiConfig.themes[Object.keys(tamaguiConfig.themes)[0]]
       )
+
+      type AccessListener = (key: string) => void
+      const themeAccessListeners = new Set<AccessListener>()
+      const defaultTheme = new Proxy(proxiedTheme, {
+        get(target, key) {
+          if (key[0] === '$') {
+            themeAccessListeners.forEach((cb) => cb(String(key)))
+          }
+          return Reflect.get(target, key)
+        },
+      })
 
       const body = fileOrPath.type === 'Program' ? fileOrPath.get('body') : fileOrPath.program.body
 
@@ -1138,6 +1149,15 @@ export function createExtractor() {
               !hasSpread &&
               staticConfig.neverFlatten !== true &&
               (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+
+            if (disableExtractVariables) {
+              themeAccessListeners.add((key) => {
+                shouldFlatten = false
+                if (shouldPrintDebug) {
+                  console.log(' ! accessing theme key, avoid flatten', key)
+                }
+              })
+            }
 
             if (shouldPrintDebug) {
               // prettier-ignore
