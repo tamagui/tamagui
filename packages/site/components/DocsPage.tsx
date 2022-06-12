@@ -1,3 +1,4 @@
+// debug
 import { ThemeToggle } from '@components/ThemeToggle'
 import { allDocsRoutes, docsRoutes } from '@lib/docsRoutes'
 import { LogoIcon } from '@tamagui/demos'
@@ -224,6 +225,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
           maxHeight="auto"
           borderColor="$borderColor"
           borderRightWidth={1}
+          className="test123"
           overflow="hidden"
           $gtSm={{
             position: 'fixed' as any,

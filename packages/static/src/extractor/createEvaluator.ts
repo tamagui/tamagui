@@ -5,6 +5,7 @@ import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
 import type { TamaguiConfig } from '@tamagui/core'
 import { createCSSVariable } from '@tamagui/core-node'
+import esbuild from 'esbuild'
 
 import { FAILED_EVAL } from '../constants'
 import { evaluateAstNode } from './evaluateAstNode'
@@ -46,10 +47,14 @@ export function createEvaluator({
       return staticNamespace[n.name]
     }
     const evalContext = vm.createContext(staticNamespace)
-    const code = `(${generate(n as any).code})`
-    // if (shouldPrintDebug) {
-    //   console.log('evaluating', { n, code, evalContext })
-    // }
+    const codeWithTypescriptAnnotations = `(${generate(n as any).code})`
+    const code = esbuild
+      .transformSync(codeWithTypescriptAnnotations, { loader: 'tsx' })
+      .code.replace(/;\n$/, '')
+
+    if (shouldPrintDebug) {
+      console.log('evaluating', code)
+    }
     return vm.runInContext(code, evalContext)
   }
 

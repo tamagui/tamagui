@@ -539,6 +539,8 @@ export function createExtractor() {
                     console.log('Error extracting attribute', err.message, err.stack)
                     console.log('node', path.node)
                   }
+                  // dont flatten if we run into error
+                  inlined.set(`${Math.random()}`, 'spread')
                   return {
                     type: 'attr',
                     value: path.node,
