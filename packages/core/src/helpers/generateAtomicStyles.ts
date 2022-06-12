@@ -80,8 +80,8 @@ export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutp
         const { identifier } = cachedResult
         out[identifier] = cachedResult
       } else {
-        const identifier = simpleHash(key + value)
-        const rules = createAtomicRules(identifier, key, value)
+        const identifier = simpleHash(key + valueString)
+        const rules = createAtomicRules(identifier, key, valueString)
         const cachedResult = cache.set(key, valueString, {
           property: key,
           value: valueString,
@@ -272,10 +272,7 @@ const cache = {
 
 function stringifyValueWithProperty(value: Value, property?: string): string {
   // e.g., 0 => '0px', 'black' => 'rgba(0,0,0,1)'
-  const normalizedValue = normalizeValueWithProperty(value, property)
-  return typeof normalizedValue !== 'string'
-    ? JSON.stringify(normalizedValue || '')
-    : normalizedValue
+  return normalizeValueWithProperty(value, property, process.env.TAMAGUI_TARGET === 'web')
 }
 
 // { scale: 2 } => 'scale(2)'
@@ -287,7 +284,11 @@ const mapTransform = (transform) => {
   if (type === 'matrix' || type === 'matrix3d') {
     return `${type}(${value.join(',')})`
   } else {
-    const normalizedValue = normalizeValueWithProperty(value, type)
+    const normalizedValue = normalizeValueWithProperty(
+      value,
+      type,
+      process.env.TAMAGUI_TARGET === 'web'
+    )
     return `${type}(${normalizedValue})`
   }
 }
@@ -305,14 +306,20 @@ const colorProps = {
   textShadowColor: true,
 }
 
-function normalizeValueWithProperty(value: any, property?: string): any {
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    if (
-      (property === undefined || property === null || !unitlessNumbers[property]) &&
-      typeof value === 'number'
-    ) {
+function normalizeValueWithProperty(value: any, property?: string, coerceToString = false): any {
+  if (coerceToString) {
+    if (property === undefined || property === null) {
+      return ''
+    }
+    if (typeof value === 'number' && !unitlessNumbers[property]) {
       return `${value}px`
     }
+    if (process.env.NODE_ENV === 'development') {
+      if (typeof value !== 'string' && typeof value !== 'number') {
+        console.warn('Weird value (expected string/number):', value)
+      }
+    }
+    return `${value}`
   }
   if (property && colorProps[property]) {
     return normalizeColor(value)
