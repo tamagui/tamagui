@@ -28,7 +28,7 @@ export function createGenericFont<A extends GenericFont<keyof typeof genericFont
     family,
     size,
     lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, +v * 1.3])
+      Object.entries(size).map(([k, v]) => [k, +v * 1.35])
     ) as typeof size,
     weight: { 0: '300' },
     letterSpacing: { 4: 0 },
