@@ -1,4 +1,4 @@
-import { GetProps, getTokens, getVariableValue, spacedChildren, styled } from '@tamagui/core'
+import { GetProps, getTokens, getVariableValue, spacedChildren, styled, mergeProps } from '@tamagui/core'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import React, { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
@@ -57,6 +57,9 @@ export const Group = forwardRef(
       const size = child.props.size ?? sizeProp
       if (i === 0) {
         return cloneElement(child, {
+          ...(!disablePassSize && {
+            size,
+          }),
           ...(!disablePassBorderRadius &&
             !vertical && {
               borderTopLeftRadius: radius,
@@ -72,13 +75,13 @@ export const Group = forwardRef(
               borderBottomRightRadius: 0,
             }),
           disabled,
-          ...(!disablePassSize && {
-            size,
-          }),
         })
       }
       if (i === childrens.length - 1) {
         return cloneElement(child, {
+          ...(!disablePassSize && {
+            size,
+          }),
           ...(!disablePassBorderRadius &&
             !vertical && {
               borderTopRightRadius: radius,
@@ -94,9 +97,6 @@ export const Group = forwardRef(
               borderTopRightRadius: 0,
             }),
           disabled,
-          ...(!disablePassSize && {
-            size,
-          }),
         })
       }
       return cloneElement(child, {
