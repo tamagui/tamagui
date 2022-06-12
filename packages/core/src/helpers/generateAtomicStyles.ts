@@ -272,7 +272,7 @@ const cache = {
 
 function stringifyValueWithProperty(value: Value, property?: string): string {
   // e.g., 0 => '0px', 'black' => 'rgba(0,0,0,1)'
-  return normalizeValueWithProperty(value, property, process.env.TAMAGUI_TARGET === 'web')
+  return normalizeValueWithProperty(value, property)
 }
 
 // { scale: 2 } => 'scale(2)'
@@ -284,11 +284,7 @@ const mapTransform = (transform) => {
   if (type === 'matrix' || type === 'matrix3d') {
     return `${type}(${value.join(',')})`
   } else {
-    const normalizedValue = normalizeValueWithProperty(
-      value,
-      type,
-      process.env.TAMAGUI_TARGET === 'web'
-    )
+    const normalizedValue = normalizeValueWithProperty(value, type)
     return `${type}(${normalizedValue})`
   }
 }
@@ -306,16 +302,15 @@ const colorProps = {
   textShadowColor: true,
 }
 
-function normalizeValueWithProperty(value: any, property?: string, coerceToString = false): any {
-  if (coerceToString) {
-    if (property === undefined || property === null) {
-      return ''
-    }
-    if (typeof value === 'number' && !unitlessNumbers[property]) {
+function normalizeValueWithProperty(value: any, property?: string): any {
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    const shouldCoerceToPx =
+      property === undefined || property === null || !unitlessNumbers[property]
+    if (typeof value === 'number' && shouldCoerceToPx) {
       return `${value}px`
     }
     if (process.env.NODE_ENV === 'development') {
-      if (typeof value !== 'string' && typeof value !== 'number') {
+      if (!shouldCoerceToPx && typeof value !== 'string' && typeof value !== 'number') {
         console.warn('Weird value (expected string/number):', value)
       }
     }
