@@ -54,7 +54,7 @@ export default function Home({ animationCode, compilationExamples }) {
         <HeroPerformance />
       </SectionTinted>
       <SectionTinted contain="paint layout" noBorderTop zi={100}>
-        <YStack fullscreen className="bg-grid-big mask-gradient-up" />
+        <YStack fullscreen className="bg-grid mask-gradient-up" />
         <HeroExampleAnimations animationCode={animationCode} />
       </SectionTinted>
       <Section bc="$background" contain="paint layout" zi={10}>

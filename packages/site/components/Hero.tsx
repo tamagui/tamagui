@@ -37,7 +37,7 @@ const HeroTop = memo(() => {
   return (
     <ContainerLarge pos="relative">
       <YStack
-        className="bg-grid-big mask-gradient-up"
+        className="bg-grid mask-gradient-up"
         fullscreen
         top="auto"
         height={500}
@@ -133,7 +133,10 @@ const HeroTop = memo(() => {
               tag="a"
               size="$5"
               fontWeight="800"
-              bw={1}
+              bordered
+              bw={2}
+              // @ts-ignore
+              tabIndex={0}
             >
               Get started
             </Button>

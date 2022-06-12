@@ -296,15 +296,8 @@ iframe {
 .bg-grid {
   contain: paint;
   background-position: center center;
-  background-image: url("/grid.png");
-  opacity: 0.25;
-}
-
-.bg-grid-big {
-  contain: paint;
-  background-position: center center;
-  background-image: url("/grid.png");
-  opacity: 0.25;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC");
+  opacity: 0.22;
 }
 
 .mask-gradient-both {
