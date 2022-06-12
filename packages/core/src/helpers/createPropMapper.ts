@@ -2,6 +2,7 @@ import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { Variable, isVariable } from '../createVariable'
 import {
+  DebugProp,
   GenericVariantDefinitions,
   PropMapper,
   StaticConfig,
@@ -12,13 +13,21 @@ import { expandStyle, expandStyles } from './generateAtomicStyles'
 import { getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 
-export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both'
+export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both' | 'non-color-value'
 
 export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   const variants = staticConfig.variants || {}
   const defaultProps = staticConfig.defaultProps || {}
 
-  const mapper: PropMapper = (key, value, theme, propsIn, state, avoidDefaultProps = false) => {
+  const mapper: PropMapper = (
+    key,
+    value,
+    theme,
+    propsIn,
+    state,
+    avoidDefaultProps = false,
+    debug
+  ) => {
     const conf = getConfig()
     if (!conf) {
       console.trace('no conf! err')
@@ -27,7 +36,7 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
 
     const props = state.fallbackProps || propsIn
     const returnVariablesAs =
-      state.resolveVariablesAs === 'value' || !!props.animation ? 'value' : 'auto'
+      state.resolveVariablesAs === 'value' || !!props.animation ? 'non-color-value' : 'auto'
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
@@ -61,9 +70,9 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
     if (value) {
       if (value[0] === '$') {
         // prettier-ignore
-        value = getToken(key, value, conf, theme, fontFamily, returnVariablesAs)
+        value = getToken(key, value, conf, theme, fontFamily, returnVariablesAs, debug)
       } else if (isVariable(value)) {
-        value = getVariableValue(value, returnVariablesAs)
+        value = getVariableValue(key, value, returnVariablesAs)
       }
     }
 
@@ -84,10 +93,11 @@ type StyleResolver = (
   variants: GenericVariantDefinitions,
   fontFamily: string,
   conf: TamaguiInternalConfig,
-  returnVariablesAs: 'auto' | 'value',
+  returnVariablesAs: 'auto' | 'value' | 'non-color-value',
   staticConfig: Partial<StaticConfig>,
   parentVariantKey: string,
-  avoidDefaultProps?: boolean
+  avoidDefaultProps?: boolean,
+  debug?: DebugProp
 ) => any
 
 const resolveVariants: StyleResolver = (
@@ -102,7 +112,8 @@ const resolveVariants: StyleResolver = (
   returnVariablesAs,
   staticConfig,
   parentVariantKey,
-  avoidDefaultProps = false
+  avoidDefaultProps = false,
+  debug
 ) => {
   const variant = variants && variants[key]
   if (variant && value !== undefined) {
@@ -127,7 +138,8 @@ const resolveVariants: StyleResolver = (
           returnVariablesAs,
           staticConfig,
           parentVariantKey,
-          avoidDefaultProps
+          avoidDefaultProps,
+          debug
         )
       }
 
@@ -138,10 +150,9 @@ const resolveVariants: StyleResolver = (
         if (staticConfig.validStyles?.[key]) {
           return null
         }
+        const name = staticConfig.componentName || '[UnnamedComponent]'
         console.warn(
-          `No variant found: ${
-            staticConfig.componentName || '[UnnamedComponent]'
-          } has variant "${key}", but no matching value "${value}"`
+          `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
         )
       }
       return null
@@ -161,7 +172,8 @@ const resolveTokensAndVariants: StyleResolver = (
   returnVariablesAs,
   staticConfig,
   parentVariantKey,
-  avoidDefaultProps
+  avoidDefaultProps,
+  debug
 ) => {
   let res = {}
   for (const rKey in value) {
@@ -169,8 +181,6 @@ const resolveTokensAndVariants: StyleResolver = (
     const val = value[rKey]
     if (isVariable(val)) {
       res[fKey] = !isWeb || returnVariablesAs === 'value' ? val.val : val.variable
-      // res[fKey] =
-      //   resolveAs === 'variable' ? val : !isWeb || resolveAs === 'value' ? val.val : val.variable
     } else if (variants[fKey]) {
       // avoids infinite loop if variant is matching a style prop
       // eg: { variants: { flex: { true: { flex: 2 } } } }
@@ -192,14 +202,17 @@ const resolveTokensAndVariants: StyleResolver = (
               returnVariablesAs,
               staticConfig,
               key,
-              avoidDefaultProps
+              avoidDefaultProps,
+              debug
             )
           ),
         }
       }
     } else if (typeof val === 'string') {
       const fVal =
-        val[0] === '$' ? getToken(fKey, val, conf, theme, fontFamily, returnVariablesAs) : val
+        val[0] === '$'
+          ? getToken(fKey, val, conf, theme, fontFamily, returnVariablesAs, debug)
+          : val
       res[fKey] = fVal
     } else {
       if (isObj(val)) {
@@ -216,7 +229,8 @@ const resolveTokensAndVariants: StyleResolver = (
           returnVariablesAs,
           staticConfig,
           key,
-          avoidDefaultProps
+          avoidDefaultProps,
+          debug
         )
       } else {
         // nullish values cant be tokens, need no extra parsing
@@ -269,7 +283,8 @@ const getToken = (
   { tokensParsed, fontsParsed }: TamaguiInternalConfig,
   theme: any,
   fontFamily: string | undefined = '$body',
-  resolveAs?: ResolveVariableTypes
+  resolveAs?: ResolveVariableTypes,
+  debug?: DebugProp
 ) => {
   let valOrVar: any
   let hasSet = false
@@ -308,21 +323,45 @@ const getToken = (
     }
   }
   if (hasSet) {
-    return getVariableValue(valOrVar, resolveAs)
+    return getVariableValue(key, valOrVar, resolveAs)
   }
   if (process.env.NODE_ENV === 'development') {
     if (value && value[0] === '$') {
-      console.warn(`⚠️ Missing token:`, key, value, fontFamily, theme, fontsParsed)
+      console.warn(
+        `⚠️ You've passed the value "${value}" to the style property "${key}", but there's no theme or token with the key "${value}". Using theme "${theme.name}".
+
+Set the debug prop to true to see more detailed debug information.`
+      )
+      if (debug) {
+        if (typeof window !== 'undefined') {
+          console.log('Looked in:')
+          console.log('Theme:', theme)
+          console.log('Tokens:', tokensParsed)
+          console.log('Fonts:', fontsParsed)
+        }
+      }
       return null
     }
   }
   return value
 }
 
-function getVariableValue(valOrVar: Variable | any, resolveAs: ResolveVariableTypes = 'auto') {
+function getVariableValue(
+  key: string,
+  valOrVar: Variable | any,
+  resolveAs: ResolveVariableTypes = 'auto'
+) {
   if (isVariable(valOrVar)) {
     if (resolveAs === 'variable') {
       return valOrVar
+    }
+    if (resolveAs === 'non-color-value') {
+      if (isWeb) {
+        if (key in tokenCategories.color) {
+          return valOrVar.variable
+        }
+      }
+      return valOrVar.val
     }
     if (!isWeb || resolveAs === 'value') {
       return valOrVar.val
