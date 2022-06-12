@@ -12,7 +12,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
@@ -22,6 +22,7 @@ import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { getAllSelectors } from './helpers/insertStyleRule'
+import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
@@ -124,9 +125,14 @@ export function createComponent<
 
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
-    // React inserts default props after your props for some reason... order important
-    const props =
-      tamaguiDefaultProps && !propsIn.asChild ? { ...tamaguiDefaultProps, ...propsIn } : propsIn
+    // React inserts default props after your props for some reason...
+    // order important so we do loops, you can't just spread because JS does weird things
+    let props: any
+    if (tamaguiDefaultProps && !propsIn.asChild) {
+      props = mergeProps(tamaguiDefaultProps, propsIn)
+    } else {
+      props = propsIn
+    }
 
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
@@ -167,7 +173,8 @@ export function createComponent<
             dynamicStylesInline: true,
             resolveVariablesAs: 'value',
           },
-      shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames
+      shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames,
+      props['debug']
     )
 
     const { viewProps: viewPropsIn, pseudos, medias, style, classNames } = splitStyles
@@ -879,15 +886,22 @@ export function createComponent<
     initialTheme =
       initialTheme ||
       proxyThemeVariables(conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]])
-    initialSplitStyles = insertSplitStyles(staticConfig.defaultProps, staticConfig, initialTheme, {
-      mounted: true,
-      hover: false,
-      press: false,
-      pressIn: false,
-      focus: false,
-      resolveVariablesAs: 'both',
-      keepVariantsAsProps: true,
-    })
+    initialSplitStyles = insertSplitStyles(
+      staticConfig.defaultProps,
+      staticConfig,
+      initialTheme,
+      {
+        mounted: true,
+        hover: false,
+        press: false,
+        pressIn: false,
+        focus: false,
+        resolveVariablesAs: 'both',
+        keepVariantsAsProps: true,
+      },
+      undefined,
+      staticConfig.defaultProps['debug']
+    )
 
     // this ruins the prop order!!!
     // can't believe it but it puts default props after props?
