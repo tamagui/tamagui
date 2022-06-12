@@ -102,7 +102,7 @@ export const getSplitStyles: StyleSplitter = (
   let classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
-  let transforms: Record<TransformNamespaceKey, [string, string]> = {}
+  let transforms = null as Record<TransformNamespaceKey, [string, string]> | null
 
   const rulesToInsert: [string, string][] = []
   function addStyle(prop: string, rule: string) {
@@ -125,13 +125,17 @@ export const getSplitStyles: StyleSplitter = (
           // HMR or loaded a new chunk
           updateInserted()
           transform = insertedTransforms[val]
+          if (process.env.NODE_ENV === 'development') {
+            if (!transform) {
+              console.warn('no transform, error', val)
+              debugger
+            }
+          }
         }
         if (!transform) {
           if (isWeb && val[0] !== '_') {
             // runtime insert
             transform = val
-          } else {
-            // shouldn't reach
           }
         }
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
@@ -139,6 +143,7 @@ export const getSplitStyles: StyleSplitter = (
           console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
         }
       }
+      transforms = transforms || {}
       transforms[namespace] = transforms[namespace] || ['', '']
       const identifier = val.replace('_transform', '')
       transforms[namespace][0] += identifier
@@ -284,6 +289,7 @@ export const getSplitStyles: StyleSplitter = (
         (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) ||
         (staticConfig.inlineProps && staticConfig.inlineProps.has(key))
       ) {
+        usedKeys.add(key)
         viewProps[key] = val
       }
 
@@ -302,7 +308,7 @@ export const getSplitStyles: StyleSplitter = (
             const fullKey = `${style.property}-${key}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
-              addStyle(style.identifier, style.rules[0])
+              addStyle(style.identifier, style.rules.join(';'))
               mergeClassName(fullKey, style.identifier, isMediaOrPseudo)
             }
           }
@@ -407,7 +413,7 @@ export const getSplitStyles: StyleSplitter = (
     for (const atomicStyle of atomic) {
       const key = atomicStyle.property
       if (!state.dynamicStylesInline) {
-        addStyle(atomicStyle.identifier, atomicStyle.rules[0])
+        addStyle(atomicStyle.identifier, atomicStyle.rules.join(';'))
         mergeClassName(key, atomicStyle.identifier)
       } else {
         style[key] = atomicStyle.value
@@ -417,12 +423,15 @@ export const getSplitStyles: StyleSplitter = (
 
   if (transforms) {
     for (const namespace in transforms) {
+      if (!transforms[namespace]) {
+        console.warn('Error no transform')
+        continue
+      }
       const [hash, val] = transforms[namespace]
       const identifier = `_transform${hash}`
       if (isClient) {
         if (!insertedTransforms[identifier]) {
           const rule = `.${identifier} { transform: ${val}; }`
-          console.log('add', rule)
           addStyle(identifier, rule)
         }
       }

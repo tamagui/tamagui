@@ -79,7 +79,8 @@ const sheet = isClient ? document.head.appendChild(document.createElement('style
 export function updateInsertedCache(identifier: string, rule: string) {
   if (insertedSelectors[identifier]) return
   insertedSelectors[identifier] = rule
-  if (identifier.startsWith('_transform')) {
+  const isTransform = identifier.startsWith('_transform')
+  if (isTransform) {
     addTransform(identifier, rule)
   }
 }

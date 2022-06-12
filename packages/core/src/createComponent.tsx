@@ -147,7 +147,11 @@ export function createComponent<
         // prettier-ignore
         console.log('⚠️', componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
         // keep separate react native warn touches every value on prop causing weird behavior
-        console.log('props in:', { propsIn, props, ordered: Object.keys(props) })
+        console.log('props in:', {
+          propsIn,
+          props,
+          ordered: Object.keys(props),
+        })
         if (props['debug'] === 'break') debugger
       }
     }
@@ -903,12 +907,8 @@ export function createComponent<
       staticConfig.defaultProps['debug']
     )
 
-    // this ruins the prop order!!!
-    // can't believe it but it puts default props after props?
-    const defaults = {
-      ...component.defaultProps,
-      ...initialSplitStyles.viewProps,
-    }
+    // must preserve prop order
+    const defaults = mergeProps(component.defaultProps as any, initialSplitStyles.viewProps)
 
     defaultNativeStyle = {}
 

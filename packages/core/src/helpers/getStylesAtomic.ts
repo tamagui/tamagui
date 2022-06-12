@@ -90,7 +90,7 @@ function getAtomicStyle(
 
   if (options.splitTransforms && style.transform) {
     let { transform, ...rest } = style
-    Object.assign(atomicStyles, generateAtomicStyles(rest))
+    style = rest
     for (const t of transform) {
       const tKey = Object.keys(t)[0]
       const transformProperty = invertMapTransformKeys[tKey] || tKey
@@ -101,9 +101,10 @@ function getAtomicStyle(
         transformProperty,
       }
     }
-  } else {
-    // TODO we can do this all in one loop likely inside getSplitStyles in existing loop and avoid O(n^3)...
-    atomicStyles = generateAtomicStyles(style)
+  }
+
+  if (style) {
+    Object.assign(atomicStyles, generateAtomicStyles(style))
   }
 
   // TODO ... and then also avoid this loop! n^4
@@ -143,7 +144,7 @@ function getAtomicStyle(
     const result: StyleObject = {
       property: val.transformProperty || val.property,
       pseudo: pseudo?.name,
-      value: val.value || '',
+      value: val.value as any,
       identifier,
       className,
       rules,

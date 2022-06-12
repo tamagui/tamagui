@@ -29,7 +29,7 @@ export const createMediaStyle = (
   const screenStr = negate ? 'not all' : 'screen'
   const mediaSelector = mediaObjectToString(mediaQueries[mediaKey])
   const mediaQuery = `${screenStr} and ${mediaSelector}`
-  const styleInner = rules[0].replace(identifier, nextIdentifier)
+  const styleInner = rules.map((rule) => rule.replace(identifier, nextIdentifier)).join(';')
   // combines media queries if they already exist
   let styleRule = ''
   if (styleInner.includes('@media')) {

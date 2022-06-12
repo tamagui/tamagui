@@ -1,4 +1,11 @@
-import { GetProps, getTokens, getVariableValue, spacedChildren, styled } from '@tamagui/core'
+import {
+  GetProps,
+  getTokens,
+  getVariableValue,
+  mergeProps,
+  spacedChildren,
+  styled,
+} from '@tamagui/core'
 import { ThemeableStack } from '@tamagui/stacks'
 import React, { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import { ScrollView } from 'react-native'
@@ -39,25 +46,27 @@ export const Group = GroupFrame.extractable(
         space,
         spaceDirection,
         separator,
-        size: sizeProp = '$4',
+        size: sizeProp,
         scrollable,
         vertical,
         disabled: disabledProp,
-        disablePassBorderRadius,
-        disablePassSize,
+        disablePassBorderRadius: disablePassBorderRadiusProp,
+        disablePassSize: disablePassSizeProp,
         ...props
       }: GroupProps,
       ref
     ) => {
       const radius = getVariableValue(getTokens().radius[sizeProp]) - 1
+      const disablePassBorderRadius = disablePassBorderRadiusProp ?? typeof radius !== 'number'
       const childrens = Children.toArray(childrenProp)
+      const disablePassSize = disablePassSizeProp ?? sizeProp === undefined
       const children = childrens.map((child, i) => {
-        if (!radius) return child
         if (!isValidElement(child)) return child
         const disabled = child.props.disabled ?? disabledProp
-        const size = child.props.size ?? sizeProp
+        const size = disablePassSize ? child.props.size : sizeProp
+
         if (i === 0) {
-          return cloneElement(child, {
+          return cloneElementWithPropOrder(child, {
             ...(!disablePassSize && {
               size,
             }),
@@ -79,7 +88,7 @@ export const Group = GroupFrame.extractable(
           })
         }
         if (i === childrens.length - 1) {
-          return cloneElement(child, {
+          return cloneElementWithPropOrder(child, {
             ...(!disablePassSize && {
               size,
             }),
@@ -100,7 +109,7 @@ export const Group = GroupFrame.extractable(
             disabled,
           })
         }
-        return cloneElement(child, {
+        return cloneElementWithPropOrder(child, {
           disabled,
           ...(!disablePassSize && {
             size,
@@ -149,3 +158,8 @@ export const Group = GroupFrame.extractable(
     }
   )
 )
+
+const cloneElementWithPropOrder = (child: any, props: Object) => {
+  const next = mergeProps(child.props, props)
+  return React.cloneElement({ ...child, props: null }, next)
+}

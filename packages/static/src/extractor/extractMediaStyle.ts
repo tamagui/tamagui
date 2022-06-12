@@ -60,7 +60,9 @@ export function extractMediaStyle(
       const screenStr = negate ? 'not all' : 'screen'
       const mediaQuery = `${screenStr} and ${mediaSelector}`
       const precendencePrefix = mediaKeyPrecendence[key]
-      const styleInner = style.rules[0].replace(style.identifier, identifier)
+      const styleInner = style.rules
+        .map((rule) => rule.replace(style.identifier, identifier))
+        .join(';')
       // combines media queries if they already exist
       let styleRule = ''
       if (styleInner.includes('@media')) {

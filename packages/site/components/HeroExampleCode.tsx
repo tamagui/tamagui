@@ -36,7 +36,6 @@ export function HeroExampleCode({ examples }) {
                   borderRadius={0}
                   size="$4"
                   fontFamily="$silkscreen"
-                  // fontWeight={i === activeIndex ? '700' : '400'}
                 >
                   {example.name}
                 </Button>
@@ -108,7 +107,7 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <Group bordered zi={10} mb="$-4" als="center">
+        <Group bordered zi={10} mb="$-2" als="center">
           {examples.map((example, i) => (
             <Button
               accessibilityLabel="See example"

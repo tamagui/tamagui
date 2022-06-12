@@ -2,6 +2,7 @@ import { stylePropsView } from '@tamagui/helpers'
 
 import { StaticConfig, StaticConfigParsed, StylableComponent } from '../types'
 import { createPropMapper } from './createPropMapper'
+import { mergeProps } from './mergeProps'
 
 export function extendStaticConfig(config: Partial<StaticConfig>, parent?: StylableComponent) {
   if (!parent || !('staticConfig' in parent)) {
@@ -41,12 +42,16 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
           ...config.validStyles,
         }
       : parent.staticConfig.validStyles || stylePropsView,
-    defaultProps: {
-      ...parent.staticConfig.defaultProps,
-      ...parent.staticConfig.defaultVariants,
-      ...config.defaultProps,
-      ...config.defaultVariants,
-    },
+    defaultProps: mergeProps(
+      {
+        ...parent.staticConfig.defaultProps,
+        ...parent.staticConfig.defaultVariants,
+      },
+      {
+        ...config.defaultProps,
+        ...config.defaultVariants,
+      }
+    ),
   })
 }
 

@@ -26,9 +26,22 @@ export type RulesData = {
 
 type CompilerOutput = { [key: string]: RulesData }
 
+const reducedStyleKeys = {
+  shadowColor: true,
+  shadowOffset: true,
+  shadowOpacity: true,
+  shadowRadius: true,
+  textShadowColor: true,
+  textShadowOffset: true,
+  textShadowRadius: true,
+}
+
 export function expandStyles(style: any) {
   const res = {}
+  boxShadowReducer(res, style)
+  textShadowReducer(res, style)
   for (const key in style) {
+    if (reducedStyleKeys[key]) continue
     if (key in pseudos) {
       res[key] = expandStyles(style[key])
     } else {
@@ -50,30 +63,6 @@ function updateReactDOMStyle(style: Object, key: string, value: any) {
 
 export const generateAtomicStyles = (style: ViewStyle & TextStyle): CompilerOutput => {
   const res = expandStyles(style)
-
-  if (
-    style.shadowColor != null ||
-    style.shadowOffset != null ||
-    style.shadowOpacity != null ||
-    style.shadowRadius != null
-  ) {
-    boxShadowReducer(res, style)
-    delete res['shadowColor']
-    delete res['shadowOffset']
-    delete res['shadowOpacity']
-    delete res['shadowRadius']
-  }
-
-  if (
-    style.textShadowColor != null ||
-    style.textShadowOffset != null ||
-    style.textShadowRadius != null
-  ) {
-    textShadowReducer(res, style)
-    delete res['textShadowColor']
-    delete res['textShadowOffset']
-    delete res['textShadowRadius']
-  }
 
   const out = {}
   for (const key in res) {
@@ -310,16 +299,11 @@ const colorProps = {
 function normalizeValueWithProperty(value: any, property?: string): any {
   if (process.env.TAMAGUI_TARGET === 'web') {
     const shouldCoerceToPx =
-      property === undefined || property === null || !unitlessNumbers[property]
-    if (typeof value === 'number' && shouldCoerceToPx) {
+      typeof value === 'number' &&
+      (property === undefined || property === null || !unitlessNumbers[property])
+    if (shouldCoerceToPx) {
       return `${value}px`
     }
-    if (process.env.NODE_ENV === 'development') {
-      if (!shouldCoerceToPx && typeof value !== 'string' && typeof value !== 'number') {
-        console.warn('Weird value (expected string/number):', value)
-      }
-    }
-    return `${value}`
   }
   if (property && colorProps[property]) {
     return normalizeColor(value)
@@ -419,15 +403,15 @@ const unitlessNumbers = {
 
 const resolveShadowValue = (style: ViewStyle): void | string => {
   const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
+  if (shadowRadius === undefined) {
+    return
+  }
   const { height, width } = shadowOffset || defaultOffset
   const offsetX = normalizeValueWithProperty(width)
   const offsetY = normalizeValueWithProperty(height)
   const blurRadius = normalizeValueWithProperty(shadowRadius || 0)
-  // @ts-ignore
-  const color = normalizeColor(shadowColor || 'black', shadowOpacity)
-  if (color != null && offsetX != null && offsetY != null && blurRadius != null) {
-    return `${offsetX} ${offsetY} ${blurRadius} ${color}`
-  }
+  const color = normalizeColor(String(shadowColor || 'black'), shadowOpacity)
+  return `${offsetX} ${offsetY} ${blurRadius} ${color}`
 }
 
 function boxShadowReducer(resolvedStyle, style) {

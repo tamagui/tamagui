@@ -13,10 +13,8 @@ export function themeable<Component extends (props: any) => any>(
   component: Component,
   opts?: { componentName?: string }
 ) {
-  const withThemeComponent = forwardRef(function WithTheme(
-    { themeInverse, theme, ...rest }: any,
-    ref
-  ) {
+  const withThemeComponent = forwardRef(function WithTheme(props: any, ref) {
+    const { themeInverse, theme, ...rest } = props
     const element = React.createElement(component, { ...rest, ref } as any)
     if (themeInverse) {
       return <ThemeInverse>{element}</ThemeInverse>
