@@ -5,6 +5,7 @@
   - also aligns with stylex
 
 - 1.0
+  - add _isExtracted via compiler (non-flat) to indicate no need to runtime merge defaultprops?
   - FAQ
   - document .extractable
   - switch focusstyle on prod

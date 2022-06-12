@@ -1432,9 +1432,11 @@ export function createExtractor() {
                 const key = cur.value.name.name
                 // undefined = boolean true
                 const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
-                foundStaticProps = {
-                  ...foundStaticProps,
-                  [key]: value,
+                if (value !== FAILED_EVAL) {
+                  foundStaticProps = {
+                    ...foundStaticProps,
+                    [key]: value,
+                  }
                 }
               }
             }
@@ -1481,6 +1483,7 @@ export function createExtractor() {
                     ...state,
                     fallbackProps: completeProps,
                   },
+                  undefined,
                   props['debug']
                 )
                 const outStyle = {

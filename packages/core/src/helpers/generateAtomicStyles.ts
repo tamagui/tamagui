@@ -9,6 +9,7 @@ import normalizeCSSColor from 'normalize-css-color'
 import { TextStyle, ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
+import { pseudos } from './getStylesAtomic'
 
 type Value = Object | Array<any> | string | number
 export type Style = { [key: string]: Value }
@@ -28,7 +29,11 @@ type CompilerOutput = { [key: string]: RulesData }
 export function expandStyles(style: any) {
   const res = {}
   for (const key in style) {
-    updateReactDOMStyle(res, key, style[key])
+    if (key in pseudos) {
+      res[key] = expandStyles(style[key])
+    } else {
+      updateReactDOMStyle(res, key, style[key])
+    }
   }
   return res
 }

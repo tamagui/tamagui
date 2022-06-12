@@ -3,9 +3,11 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Tamagui as TT } from '@tamagui/core'
+import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, Circle, H4, Paragraph, Square, YStack } from 'tamagui'
+import { Group, XStack } from 'tamagui'
+import { ListItem, Separator } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -40,22 +42,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Square
-          animation={'bouncy'}
-          size={110}
-          bc="$pink10"
-          br="$9"
-          hoverStyle={{
-            scale: 1.1,
-          }}
-          pressStyle={{
-            scale: 0.9,
-          }}
-          x={100}
-          y={100}
-          scale={1}
-          debug="verbose"
-        ></Square>
+        <ListItem debug="verbose" hoverable />
       </div>
     </Tamagui.Provider>
   )
