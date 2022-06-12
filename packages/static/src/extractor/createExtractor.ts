@@ -6,6 +6,7 @@ import {
   PseudoStyles,
   StaticConfigParsed,
   TamaguiInternalConfig,
+  expandStyles,
   getSplitStyles,
   mediaQueryConfig,
   normalizeStyleObject,
@@ -735,7 +736,9 @@ export function createExtractor() {
                     styleValue,
                     defaultTheme,
                     staticConfig.defaultProps,
-                    { resolveVariablesAs: 'auto' }
+                    { resolveVariablesAs: 'auto' },
+                    undefined,
+                    shouldPrintDebug
                   )
                   if (out) {
                     if (!Array.isArray(out)) {
@@ -769,7 +772,11 @@ export function createExtractor() {
                       attr: path.node,
                     } as const
                   }
-                  if (validHTMLAttributes[key]) {
+                  if (
+                    validHTMLAttributes[key] ||
+                    key.startsWith('aria-') ||
+                    key.startsWith('data-')
+                  ) {
                     return attr
                   }
                   if (shouldPrintDebug) {
@@ -1404,38 +1411,50 @@ export function createExtractor() {
             }
 
             // evaluates all static attributes into a simple object
-            const completeStaticProps = Object.keys(attrs).reduce((acc, index) => {
-              const cur = attrs[index] as ExtractedAttr
+            let foundStaticProps = {}
+            for (const key in attrs) {
+              const cur = attrs[key]
               if (cur.type === 'style') {
                 normalizeStyleObject(cur.value)
-                Object.assign(acc, cur.value)
+                foundStaticProps = {
+                  ...foundStaticProps,
+                  ...expandStyles(cur.value),
+                }
+                continue
               }
               if (cur.type === 'attr') {
                 if (t.isJSXSpreadAttribute(cur.value)) {
-                  return acc
+                  continue
                 }
                 if (!t.isJSXIdentifier(cur.value.name)) {
-                  return acc
+                  continue
                 }
                 const key = cur.value.name.name
                 // undefined = boolean true
                 const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
-                if (value === FAILED_EVAL) {
-                  return acc
+                foundStaticProps = {
+                  ...foundStaticProps,
+                  [key]: value,
                 }
-                acc[key] = value
               }
-              return acc
-            }, {})
+            }
 
-            const completeProps = {
-              ...staticConfig.defaultProps,
-              ...completeStaticProps,
+            // must preserve exact order
+            const completeProps = {}
+            for (const key in staticConfig.defaultProps) {
+              if (!(key in foundStaticProps)) {
+                completeProps[key] = staticConfig.defaultProps[key]
+              }
+            }
+            for (const key in foundStaticProps) {
+              completeProps[key] = foundStaticProps[key]
             }
 
             if (shouldPrintDebug) {
               console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))
               console.log('  - defaultProps: \n', logLines(objToStr(staticConfig.defaultProps)))
+              // prettier-ignore
+              console.log('  - foundStaticProps: \n', logLines(objToStr(foundStaticProps)))
               console.log('  - completeProps: \n', logLines(objToStr(completeProps)))
             }
 
@@ -1454,10 +1473,16 @@ export function createExtractor() {
                 }
               }
               try {
-                const out = getSplitStyles(props, staticConfig, defaultTheme, {
-                  ...state,
-                  fallbackProps: completeProps,
-                })
+                const out = getSplitStyles(
+                  props,
+                  staticConfig,
+                  defaultTheme,
+                  {
+                    ...state,
+                    fallbackProps: completeProps,
+                  },
+                  props['debug']
+                )
                 const outStyle = {
                   ...out.style,
                   ...out.pseudos,
@@ -1503,7 +1528,7 @@ export function createExtractor() {
 
             // any extra styles added in postprocess should be added to first group as they wont be overriden
             const addInitialStyleKeys = shouldFlatten
-              ? difference(Object.keys(completeStyles), Object.keys(completeStaticProps))
+              ? difference(Object.keys(completeStyles), Object.keys(foundStaticProps))
               : []
 
             if (addInitialStyleKeys.length) {
@@ -1525,8 +1550,6 @@ export function createExtractor() {
               // prettier-ignore
               console.log('   -- addInitialStyleKeys', addInitialStyleKeys.join(', '), { shouldFlatten })
               // prettier-ignore
-              console.log('   -- completeStaticProps:\n', logLines(objToStr(completeStaticProps)))
-              // prettier-ignore
               console.log('   -- completeStyles:\n', logLines(objToStr(completeStyles)))
             }
 
@@ -1535,7 +1558,6 @@ export function createExtractor() {
             // fix up ternaries, combine final style values
             for (const attr of attrs) {
               try {
-                if (shouldPrintDebug) console.log('  *', attrStr(attr))
                 switch (attr.type) {
                   case 'ternary':
                     const a = getStyles(attr.value.alternate, 'ternary.alternate')
@@ -1545,8 +1567,7 @@ export function createExtractor() {
                     if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
                     continue
                   case 'style':
-                    // prettier-ignore
-                    if (shouldPrintDebug) console.log('  * styles in', logLines(objToStr(attr.value)))
+                    if (shouldPrintDebug) console.log('  * styles in', attr.value)
                     // expand variants and such
                     // get the keys we need
                     const styles = getStyles(attr.value, 'style')
@@ -1565,6 +1586,11 @@ export function createExtractor() {
                 // any error de-opt
                 getStyleError = err
               }
+            }
+
+            if (shouldPrintDebug) {
+              // prettier-ignore
+              console.log('  - attrs (ternaries/combined):\n', logLines(attrs.map(attrStr).join(', ')))
             }
 
             tm.mark('jsx-element-styles', shouldPrintDebug === 'verbose')
