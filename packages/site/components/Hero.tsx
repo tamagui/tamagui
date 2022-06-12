@@ -43,7 +43,6 @@ const HeroTop = memo(() => {
         height={500}
         left={-1000}
         right={-1000}
-        opacity={0.6}
         pe="none"
       />
 

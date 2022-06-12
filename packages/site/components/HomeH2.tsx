@@ -28,6 +28,8 @@ export const HomeH3 = styled(H3, {
 
   $sm: {
     fow: '400',
-    size: '$7',
+    size: '$6',
+    color: '$color',
+    textTransform: 'none',
   },
 })

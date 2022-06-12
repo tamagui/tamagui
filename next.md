@@ -5,6 +5,9 @@
   - also aligns with stylex
 
 - 1.0
+  - FAQ
+  - document .extractable
+  - switch focusstyle on prod
   - need an active theme thats blue in theme-base by default
   - sizing.mdx - rationale on size/space 
    - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
@@ -12,8 +15,6 @@
   - make webpack plugin that does stuff from next-plugin and sandbox webpack etc
   - compile styled() to just css classes
   - pressStyle on card regression
-  - fix media scale on takeout
-  - fix dark mode takeout
   - fix light mode inverse when using prefers
   - Switch on native
   - https://github.com/tamagui/tamagui/issues/53
@@ -28,6 +29,7 @@
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
     - make all inverse by default? i think so? or else make sub-themes handle it...
+  - next.js plugin support .web.ts files
   - input type="email", button type="submit" etc
     - its fine to wrap input in HOC like button
     - normalize divergent android/ios:
@@ -63,7 +65,6 @@
   - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here
   - maybe <UL /> <LI /> <OL />
-  - focusStyle on native
   - document exported helpers getTokens, useThemeName, getFontSize, spacedChildren
   - // TODO infer ref
 

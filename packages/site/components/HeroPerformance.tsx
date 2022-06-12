@@ -23,7 +23,7 @@ export function HeroPerformance() {
 
   return (
     <ContainerLarge position="relative">
-      <YStack pos="absolute" o={0.1} top={-1000} left={0} right={0} x={500} ai="center">
+      <YStack pos="absolute" o={0.15} top={-1000} left={0} right={0} x={500} ai="center">
         <CocentricCircles />
       </YStack>
 
@@ -32,9 +32,9 @@ export function HeroPerformance() {
           <HomeH2 maw={400} ref={ref}>
             Best in class.
           </HomeH2>
-          <HomeH3 maw={580}>
-            An advanced compiler flattens your view hierarchy and turns media queries, themes, and
-            inline styles (even with logic) into fast CSS.
+          <HomeH3 maw={680}>
+            Advanced optimizing compilation flattens views & turns all types of styling (even
+            inline, logical ones) into fast CSS.
           </HomeH3>
         </YStack>
 

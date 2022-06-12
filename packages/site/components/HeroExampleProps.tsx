@@ -40,7 +40,7 @@ export const HeroExampleProps = () => {
     <ContainerLarge position="relative">
       <YStack ai="center">
         <HomeH2>
-          <span className="rainbow clip-text">More powerful</span> props on every component
+          <span className="rainbow clip-text">More powerful</span> props on every component.
         </HomeH2>
       </YStack>
 

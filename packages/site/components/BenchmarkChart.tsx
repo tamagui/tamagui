@@ -33,7 +33,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
       {data.map((result, i) => {
         const width = `${(result.value / maxValue) * 100}%`
         return (
-          <XStack space="$2" key={i}>
+          <XStack space="$3" key={i}>
             <YStack w={large ? 120 : 70}>
               <Paragraph
                 key={result.name}
@@ -52,7 +52,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                 o={result.name === 'Tamagui' ? 1 : skipOthers ? 1 : 1}
                 width={width}
                 height={20}
-                br="$1"
+                br="$2"
                 position="relative"
                 jc="center"
                 scaleX={1}
@@ -63,7 +63,7 @@ export function BenchmarkChart({ data, large, skipOthers = false, animateEnter =
                   },
                 })}
               >
-                <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-1" x="100%">
+                <Paragraph size="$1" whiteSpace="nowrap" position="absolute" right="$-2" x="100%">
                   {result.value}ms
                 </Paragraph>
               </YStack>

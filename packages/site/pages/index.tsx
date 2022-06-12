@@ -69,6 +69,7 @@ export default function Home({ animationCode, compilationExamples }) {
         <HeroTypography />
       </SectionTinted>
       <Section zi={10}>
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleProps />
       </Section>
       <Section zi={0}>

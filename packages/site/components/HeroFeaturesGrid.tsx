@@ -11,7 +11,7 @@ export function FeaturesGrid() {
           <HomeH2>
             <span className="rainbow clip-text">Years of developer-time</span> out of the box.
           </HomeH2>
-          <HomeH3>Start from day one with more than you'd have on year two.</HomeH3>
+          <HomeH3>Start day one with more than you'd build by year two.</HomeH3>
         </YStack>
 
         <YStack maw={950} als="center">
