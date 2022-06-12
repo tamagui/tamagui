@@ -7,6 +7,7 @@ import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
 export declare type SpaceFlexDirection = ViewStyle['flexDirection'] | 'both';
 export declare type TamaguiElement = HTMLElement | View;
+export declare type DebugProp = boolean | 'break' | 'verbose';
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
     space?: SpaceTokens;
@@ -18,7 +19,7 @@ export declare type TamaguiComponentPropsBase = {
     animation?: AnimationProp;
     animateOnly?: string[];
     children?: any | any[];
-    debug?: boolean | 'break' | 'verbose';
+    debug?: DebugProp;
     disabled?: boolean;
     className?: string;
     id?: string;
@@ -289,7 +290,7 @@ export declare type TamaguiProviderProps = Partial<Omit<ThemeProviderProps, 'chi
     disableInjectCSS?: boolean;
     children?: React.ReactNode;
 };
-export declare type PropMapper = (key: string, value: any, theme: ThemeObject, props: Record<string, any>, state: Partial<SplitStyleState>, avoidDefaultProps?: boolean) => undefined | [string, any][];
+export declare type PropMapper = (key: string, value: any, theme: ThemeObject, props: Record<string, any>, state: Partial<SplitStyleState>, avoidDefaultProps?: boolean, debug?: DebugProp) => undefined | [string, any][];
 export declare type StaticConfigParsed = StaticConfig & {
     parsed: true;
     propMapper: PropMapper;

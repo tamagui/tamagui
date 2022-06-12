@@ -1,10 +1,11 @@
+// debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Tamagui as TT } from '@tamagui/core'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Circle, H4, YStack } from 'tamagui'
+import { Button, Circle, H4, Paragraph, Square, YStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -39,23 +40,22 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack
-          space="$2"
-          ai="center"
-          scale={0.4}
-          $gtXs={{ scale: 0.6 }}
-          $gtSm={{ scale: 0.75 }}
-          $gtMd={{ scale: 0.9 }}
-        >
-          <Circle bc="red" size={100} />
-        </YStack>
-        {/* <TooltipDemo /> */}
-        {/* <SquareDemo /> */}
-        {/* <SelectDemo /> */}
-        {/* <SeparatorDemo /> */}
-        {/* <Skeleton>
-            <Button>hello world</Button>
-          </Skeleton> */}
+        <Square
+          animation={'bouncy'}
+          size={110}
+          bc="$pink10"
+          br="$9"
+          hoverStyle={{
+            scale: 1.1,
+          }}
+          pressStyle={{
+            scale: 0.9,
+          }}
+          x={100}
+          y={100}
+          scale={1}
+          debug="verbose"
+        ></Square>
       </div>
     </Tamagui.Provider>
   )

@@ -1,3 +1,4 @@
+// debug
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
 import { forwardRef, useEffect, useRef, useState } from 'react'
@@ -104,13 +105,13 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             </ScrollView>
           </Pre>
           <Button
+            className="copy-code"
             aria-label="Copy code to clipboard"
             position="absolute"
             size="$2"
             top="$3"
             right="$3"
             display="inline-flex"
-            opacity={0}
             icon={hasCopied ? CheckCircle : Clipboard}
             onPress={() => setHasCopied(true)}
           ></Button>

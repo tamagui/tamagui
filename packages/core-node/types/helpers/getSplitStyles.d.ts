@@ -1,5 +1,5 @@
 import { ViewStyle } from 'react-native';
-import { MediaKeys, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, ThemeObject } from '../types';
+import { DebugProp, MediaKeys, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, ThemeObject } from '../types';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
 export declare type ClassNamesObject = Record<string, string>;
 export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
@@ -7,7 +7,7 @@ declare type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState & {
     keepVariantsAsProps?: boolean;
-}, defaultClassNames?: any) => {
+}, defaultClassNames?: any, debug?: DebugProp) => {
     pseudos: PseudoStyles;
     medias: Record<MediaKeys, ViewStyle>;
     style: ViewStyle;

@@ -128,10 +128,10 @@ const HeroTop = memo(() => {
             <Button
               accessibilityLabel="Get started (docs)"
               fontFamily="$silkscreen"
-              borderRadius={1000}
               iconAfter={ArrowRight}
               tag="a"
               size="$5"
+              borderRadius={1000}
               fontWeight="800"
               bordered
               bw={2}

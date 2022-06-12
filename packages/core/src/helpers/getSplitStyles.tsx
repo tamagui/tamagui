@@ -7,6 +7,7 @@ import { getConfig } from '../conf'
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import {
+  DebugProp,
   MediaKeys,
   MediaQueryKey,
   PseudoStyles,
@@ -64,7 +65,8 @@ type StyleSplitter = (
   state: SplitStyleState & {
     keepVariantsAsProps?: boolean
   },
-  defaultClassNames?: any
+  defaultClassNames?: any,
+  debug?: DebugProp
 ) => {
   pseudos: PseudoStyles
   medias: Record<MediaKeys, ViewStyle>
@@ -86,7 +88,8 @@ export const getSplitStyles: StyleSplitter = (
   staticConfig,
   theme,
   state,
-  defaultClassNames
+  defaultClassNames,
+  debug
 ) => {
   conf = conf || getConfig()
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
@@ -131,7 +134,7 @@ export const getSplitStyles: StyleSplitter = (
             // shouldn't reach
           }
         }
-        if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
         }
@@ -149,6 +152,10 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const propKeys = Object.keys(props)
+
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+    console.log('propKeys', propKeys)
+  }
 
   for (let i = propKeys.length - 1; i >= 0; i--) {
     const keyInit = propKeys[i]
@@ -244,11 +251,11 @@ export const getSplitStyles: StyleSplitter = (
     const expanded =
       isMedia || isPseudo
         ? [[keyInit, valInit]]
-        : staticConfig.propMapper(keyInit, valInit, theme, props, state)
+        : staticConfig.propMapper(keyInit, valInit, theme, props, state, undefined, debug)
 
     let isMediaOrPseudo = isMedia || isPseudo
 
-    if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+    if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.log('  » getSplitStyles', keyInit, expanded)
     }
 
@@ -309,8 +316,10 @@ export const getSplitStyles: StyleSplitter = (
         const mediaKeyShort = mediaKey.slice(1)
 
         if (!mediaQueryConfig[mediaKeyShort]) {
-          // this isn't a media key, pass through
-          viewProps[key] = val
+          if (!usedKeys.has(key)) {
+            // this isn't a media key, pass through
+            viewProps[key] = val
+          }
           continue
         }
 
@@ -322,7 +331,7 @@ export const getSplitStyles: StyleSplitter = (
         const mediaStyle = getSubStyle(val, staticConfig, theme, props, state)
         const shouldDoClasses = isWeb && !state.noClassNames
 
-        if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
           console.log('  » getSplitStyles mediaStyle', { mediaKey, mediaStyle, props, shouldDoClasses })
         }
@@ -341,7 +350,7 @@ export const getSplitStyles: StyleSplitter = (
           }
         } else {
           if (mediaState[mediaKey]) {
-            if (process.env.NODE_ENV === 'development' && props['debug']) {
+            if (process.env.NODE_ENV === 'development' && debug) {
               console.log('apply media style', mediaKey, mediaState)
             }
             Object.assign(shouldDoClasses ? medias : style, mediaStyle)
@@ -362,8 +371,8 @@ export const getSplitStyles: StyleSplitter = (
           classNames[key] = val
         } else {
           if (key in stylePropsTransform) {
-            if (process.env.NODE_ENV === 'development' && props['debug']) {
-              console.log('mergeTransform', key, val)
+            if (process.env.NODE_ENV === 'development' && debug) {
+              console.log('  > mergeTransform', key, val)
             }
             mergeTransform(style, key, val, true)
           } else {
@@ -413,6 +422,7 @@ export const getSplitStyles: StyleSplitter = (
       if (isClient) {
         if (!insertedTransforms[identifier]) {
           const rule = `.${identifier} { transform: ${val}; }`
+          console.log('add', rule)
           addStyle(identifier, rule)
         }
       }
@@ -420,7 +430,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && props['debug'] === 'verbose') {
+  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (typeof document !== 'undefined') {
       // prettier-ignore
       console.log('  » getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state })

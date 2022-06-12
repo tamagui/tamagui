@@ -23,6 +23,8 @@ export type SpaceFlexDirection = ViewStyle['flexDirection'] | 'both'
 
 export type TamaguiElement = HTMLElement | View
 
+export type DebugProp = boolean | 'break' | 'verbose'
+
 //
 // base props that are accepted by createComponent (additional to react-native-web)
 //
@@ -35,7 +37,7 @@ export type TamaguiComponentPropsBase = {
   animation?: AnimationProp
   animateOnly?: string[]
   children?: any | any[]
-  debug?: boolean | 'break' | 'verbose'
+  debug?: DebugProp
   disabled?: boolean
   className?: string
   id?: string
@@ -528,7 +530,8 @@ export type PropMapper = (
   theme: ThemeObject,
   props: Record<string, any>,
   state: Partial<SplitStyleState>,
-  avoidDefaultProps?: boolean
+  avoidDefaultProps?: boolean,
+  debug?: DebugProp
 ) => undefined | [string, any][]
 
 export type StaticConfigParsed = StaticConfig & {
