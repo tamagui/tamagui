@@ -56,7 +56,7 @@ export const Group = GroupFrame.extractable(
       }: GroupProps,
       ref
     ) => {
-      const radius = getVariableValue(getTokens().radius[sizeProp]) - 1
+      const radius = sizeProp ? getVariableValue(getTokens().radius[sizeProp]) - 1 : undefined
       const disablePassBorderRadius = disablePassBorderRadiusProp ?? typeof radius !== 'number'
       const childrens = Children.toArray(childrenProp)
       const disablePassSize = disablePassSizeProp ?? sizeProp === undefined

@@ -148,34 +148,26 @@ export const SearchButton = (props: ButtonProps) => {
     }
   }, [onInput, ref])
 
-  const val = (
-    <Button
-      accessibilityLabel="Search docs"
-      ref={ref as any}
-      onPress={onOpen}
-      className="all ease-in ms100"
-      jc="flex-start"
-      textAlign="left"
-      icon={SearchIcon}
-      hoverStyle={{
-        elevation: '$4',
-      }}
-      borderRadius={100}
-      iconAfter={
-        isTouch ? null : (
-          // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
-          <Button tag="span" size="$2" chromeless borderWidth={0} pe="none" o={0.35}>
-            /
-          </Button>
-        )
-      }
-      {...props}
-    />
-  )
-
   return (
     <TooltipSimple groupId="header-actions-search" label="Search docs..">
-      {val}
+      <Button
+        accessibilityLabel="Search docs"
+        ref={ref as any}
+        onPress={onOpen}
+        className="all ease-in ms100"
+        jc="flex-start"
+        textAlign="left"
+        icon={SearchIcon}
+        iconAfter={
+          isTouch ? null : (
+            // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
+            <Button tag="span" size="$2" chromeless borderWidth={0} pe="none" o={0.35}>
+              /
+            </Button>
+          )
+        }
+        {...props}
+      />
     </TooltipSimple>
   )
 }

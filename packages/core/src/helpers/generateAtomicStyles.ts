@@ -9,7 +9,7 @@ import normalizeCSSColor from 'normalize-css-color'
 import { TextStyle, ViewStyle } from 'react-native'
 
 import { isWeb } from '../constants/platform'
-import { pseudos } from './getStylesAtomic'
+import { pseudos } from './pseudos'
 
 type Value = Object | Array<any> | string | number
 export type Style = { [key: string]: Value }
@@ -329,6 +329,7 @@ const normalizeColor = (color?: number | string, opacity = 1): void | string => 
     const alpha = (a * opacity).toFixed(2)
     return `rgba(${r},${g},${b},${alpha})`
   }
+  return `${color}`
 }
 
 const isWebColor = (color: string): boolean =>

@@ -23,6 +23,7 @@ export * from './helpers/getExpandedShorthands';
 export * from './helpers/getSize';
 export * from './helpers/getSplitStyles';
 export * from './helpers/getStylesAtomic';
+export * from './helpers/pseudos';
 export * from './helpers/mergeProps';
 export { expandStyles } from './helpers/generateAtomicStyles';
 export * from './helpers/getTextSize';

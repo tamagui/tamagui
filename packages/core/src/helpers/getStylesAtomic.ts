@@ -5,6 +5,7 @@ import { reversedShorthands } from '../createTamagui'
 import { isVariable } from '../createVariable'
 import { RulesData, generateAtomicStyles } from './generateAtomicStyles'
 import { invertMapTransformKeys, mergeTransform } from './mergeTransform'
+import { pseudos } from './pseudos'
 
 export type ViewStyleWithPseudos = ViewStyle & {
   hoverStyle?: ViewStyle
@@ -15,22 +16,6 @@ export type ViewStyleWithPseudos = ViewStyle & {
 type AtomicStyleOptions = {
   splitTransforms?: boolean
 }
-
-// *0 order matches to *1
-export const pseudos = {
-  hoverStyle: {
-    name: 'hover',
-    priority: 1,
-  },
-  pressStyle: {
-    name: 'active',
-    priority: 2,
-  },
-  focusStyle: {
-    name: 'focus',
-    priority: 3,
-  },
-} as const
 
 type PseudoDescriptor = typeof pseudos[keyof typeof pseudos]
 

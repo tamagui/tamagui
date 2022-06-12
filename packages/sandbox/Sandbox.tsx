@@ -42,7 +42,21 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <ListItem debug="verbose" hoverable />
+        <XStack
+          borderWidth={1}
+          borderColor="$borderColor"
+          px="$7"
+          pl="$6"
+          height={48}
+          ai="center"
+          als="center"
+          elevation="$2"
+          br="$10"
+          bc="$background"
+          hoverStyle={{
+            bc: '$background',
+          }}
+        />
       </div>
     </Tamagui.Provider>
   )

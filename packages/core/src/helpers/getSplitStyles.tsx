@@ -127,8 +127,7 @@ export const getSplitStyles: StyleSplitter = (
           transform = insertedTransforms[val]
           if (process.env.NODE_ENV === 'development') {
             if (!transform) {
-              console.warn('no transform, error', val)
-              debugger
+              console.warn('no transform, error', { insertedTransforms, val })
             }
           }
         }

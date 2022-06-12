@@ -32,14 +32,14 @@ export function HomeScreen() {
       <YStack bc="$backgroundStrong" p="$3" pb="$8" f={1} space>
         <H1 size="$9">Demos</H1>
 
-        <Group vertical>
+        <Group size="$4" vertical>
           <ColorSchemeListItem />
         </Group>
 
         <YStack space="$4" maw={600}>
           {demos.map((group, i) => {
             return (
-              <Group key={i} vertical separator={<Separator />}>
+              <Group size="$4" key={i} vertical separator={<Separator />}>
                 {group.pages.map((page) => {
                   return (
                     <LinkListItem key={page.route} href={page.route} pressable size="$4">
@@ -51,8 +51,6 @@ export function HomeScreen() {
             )
           })}
         </YStack>
-
-        <XStack als="center"></XStack>
       </YStack>
     </ScrollView>
   )

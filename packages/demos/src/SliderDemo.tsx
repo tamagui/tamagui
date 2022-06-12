@@ -5,9 +5,7 @@ export default function SliderDemo() {
   return (
     <XStack height={200} ai="center" space="$8">
       <SimpleSlider height={200} orientation="vertical" />
-      <SimpleSlider step={10} width={200} defaultValue={[25, 75]}>
-        <Slider.Thumb hoverable bordered circular elevate index={1} />
-      </SimpleSlider>
+      <SimpleSlider width={200} />
     </XStack>
   )
 }
