@@ -1,4 +1,3 @@
-// debug
 import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
 import { forwardRef, useEffect, useRef, useState } from 'react'
