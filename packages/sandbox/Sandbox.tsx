@@ -1,16 +1,14 @@
+globalThis['React'] = require('React')
+
 // debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Tamagui as TT } from '@tamagui/core'
-import React, { useState } from 'react'
+import { Studio } from '@takeout/studio'
+import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { H6 } from 'tamagui'
 
 import Tamagui from './tamagui.config'
-
-TT['keep']
-React['keep']
 
 export const Sandbox = () => {
   const scheme = useColorScheme()
@@ -40,7 +38,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <H6>hello world</H6>
+        <Studio />
       </div>
     </Tamagui.Provider>
   )

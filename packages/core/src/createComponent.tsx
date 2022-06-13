@@ -14,7 +14,7 @@ import React, {
 } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 
-import { onConfiguredOnce } from './conf'
+import { getConfig, onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { rnw } from './constants/rnw'
@@ -904,8 +904,48 @@ export function createComponent<
     initialTheme =
       initialTheme ||
       proxyThemeVariables(conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]])
+
+    // adds in user defined default props
+    const config = getConfig()
+
+    let defaultPropsIn = staticConfig.defaultProps
+
+    // because we run createTamagui after styled() defs, have to do some work here
+    const parentNames = [...(staticConfig.parentNames || []), staticConfig.componentName]
+
+    // gather defaults props one time and merge downwards
+    // find last unprocessed and process
+    if (config.defaultProps && parentNames) {
+      const len = parentNames.length
+      let prev
+
+      for (let i = 0; i < len; i++) {
+        const n = parentNames[i]
+        if (!n) continue
+        if (DefaultProps.has(n)) {
+          prev = DefaultProps.get(n)
+          continue
+        }
+        const props = config.defaultProps[n]
+        if (!props) {
+          if (prev) {
+            DefaultProps.set(n, prev)
+          }
+          continue
+        }
+        prev = mergeProps(prev || {}, props)
+        DefaultProps.set(n, prev)
+      }
+
+      // overwrite the user defined defaults on top of internal defined defaults
+      const ourDefaultsMerged = DefaultProps.get(staticConfig.componentName)
+      if (ourDefaultsMerged) {
+        defaultPropsIn = mergeProps(defaultPropsIn, ourDefaultsMerged)
+      }
+    }
+
     initialSplitStyles = insertSplitStyles(
-      staticConfig.defaultProps,
+      defaultPropsIn,
       staticConfig,
       initialTheme,
       {
@@ -991,6 +1031,8 @@ export function createComponent<
 
   return res
 }
+
+const DefaultProps = new Map()
 
 // for elements to avoid spacing
 export const Unspaced = (props: { children?: any }) => {

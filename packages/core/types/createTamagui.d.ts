@@ -1,5 +1,6 @@
+import { SpacerProps } from './createComponent';
 import { Variable } from './createVariable';
-import { AnimationDriver, CreateTamaguiConfig, GenericTamaguiConfig, MediaQueryKey, TamaguiInternalConfig } from './types';
+import { AnimationDriver, CreateTamaguiConfig, GenericTamaguiConfig, MediaQueryKey, StackProps, TamaguiInternalConfig, TextProps } from './types';
 export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
     animations?: AnimationDriver<any>;
     tokens: GenericTamaguiConfig['tokens'];
@@ -7,6 +8,11 @@ export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'the
         [key: string]: {
             [key: string]: string | number | Variable;
         };
+    };
+    defaultProps?: Record<string, any> & {
+        Stack?: StackProps;
+        Text?: TextProps;
+        Spacer?: SpacerProps;
     };
     mediaQueryDefaultActive?: MediaQueryKey[];
     cssStyleSeparator?: string;

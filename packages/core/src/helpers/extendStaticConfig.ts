@@ -9,8 +9,9 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
     return parseStaticConfig(config)
   }
 
+  const parentStaticConf = parent.staticConfig as StaticConfig
   const variants = {
-    ...parent.staticConfig.variants,
+    ...parentStaticConf.variants,
   }
 
   // merge variants... can we type this?
@@ -27,25 +28,32 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
     }
   }
 
+  // include our own
+  const parentNames = [...(parentStaticConf.parentNames || [])]
+  if (parentStaticConf.componentName) {
+    parentNames.push(parentStaticConf.componentName)
+  }
+
   return parseStaticConfig({
-    ...parent.staticConfig,
+    ...parentStaticConf,
     ...config,
     variants,
-    isZStack: config.isZStack || parent.staticConfig.isZStack,
-    isText: config.isText || parent.staticConfig.isText || false,
-    isInput: config.isInput || parent.staticConfig.isInput || false,
-    neverFlatten: config.neverFlatten || parent.staticConfig.neverFlatten,
-    ensureOverriddenProp: config.ensureOverriddenProp ?? parent.staticConfig.ensureOverriddenProp,
+    parentNames,
+    isZStack: config.isZStack || parentStaticConf.isZStack,
+    isText: config.isText || parentStaticConf.isText || false,
+    isInput: config.isInput || parentStaticConf.isInput || false,
+    neverFlatten: config.neverFlatten || parentStaticConf.neverFlatten,
+    ensureOverriddenProp: config.ensureOverriddenProp ?? parentStaticConf.ensureOverriddenProp,
     validStyles: config.validStyles
       ? {
-          ...parent.staticConfig.validStyles,
+          ...parentStaticConf.validStyles,
           ...config.validStyles,
         }
-      : parent.staticConfig.validStyles || stylePropsView,
+      : parentStaticConf.validStyles || stylePropsView,
     defaultProps: mergeProps(
       {
-        ...parent.staticConfig.defaultProps,
-        ...parent.staticConfig.defaultVariants,
+        ...parentStaticConf.defaultProps,
+        ...parentStaticConf.defaultVariants,
       },
       {
         ...config.defaultProps,

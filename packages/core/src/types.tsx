@@ -162,6 +162,7 @@ export type CreateTamaguiConfig<
   shorthands: C
   media: D
   animations: AnimationDriver<E>
+  defaultProps?: Record<string, Object>
 }
 
 // for use in creation functions so it doesnt get overwrtitten
@@ -655,6 +656,11 @@ export type StaticConfig = {
    * Used internally to handle extractable HoC separate
    */
   isExtractable?: boolean
+
+  /**
+   * Used insternally to attach default props to names
+   */
+  parentNames?: string[]
 }
 
 /**

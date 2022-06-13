@@ -1,6 +1,7 @@
 import { configListeners, getHasConfigured, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
+import { SpacerProps } from './createComponent'
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
@@ -17,7 +18,9 @@ import {
   CreateTamaguiConfig,
   GenericTamaguiConfig,
   MediaQueryKey,
+  StackProps,
   TamaguiInternalConfig,
+  TextProps,
   ThemeObject,
 } from './types'
 
@@ -30,6 +33,12 @@ export type CreateTamaguiProps =
       [key: string]: {
         [key: string]: string | number | Variable
       }
+    }
+
+    defaultProps?: Record<string, any> & {
+      Stack?: StackProps
+      Text?: TextProps
+      Spacer?: SpacerProps
     }
 
     // for the first render, determines which media queries are true

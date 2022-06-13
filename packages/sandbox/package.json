@@ -9,6 +9,7 @@
     "dev:motion": "TARGET=motion NODE_ENV=development webpack serve"
   },
   "dependencies": {
+    "@takeout/studio": "^1.0.1-beta.64",
     "@tamagui/animations-css": "^1.0.1-beta.64",
     "@tamagui/animations-motion": "^1.0.1-beta.64",
     "@tamagui/animations-reanimated": "^1.0.1-beta.64",

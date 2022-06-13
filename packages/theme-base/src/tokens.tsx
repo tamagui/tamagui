@@ -22,7 +22,7 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { Variable, createTokens, createVariables } from '@tamagui/core'
+import { Variable, createTokens } from '@tamagui/core'
 
 // should roughly map to button/input etc height at each level
 // fonts should match that height/lineHeight at each stop

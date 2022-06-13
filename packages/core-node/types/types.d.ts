@@ -108,6 +108,7 @@ export declare type CreateTamaguiConfig<A extends GenericTokens, B extends Gener
     shorthands: C;
     media: D;
     animations: AnimationDriver<E>;
+    defaultProps?: Record<string, Object>;
 };
 export declare type GenericTamaguiConfig = CreateTamaguiConfig<GenericTokens, GenericThemes, GenericShorthands, GenericMedia, GenericAnimations, GenericFonts>;
 export declare type ThemeObject = TamaguiConfig['themes'][keyof TamaguiConfig['themes']];
@@ -334,6 +335,7 @@ export declare type StaticConfig = {
     memo?: boolean;
     isTamagui?: boolean;
     isExtractable?: boolean;
+    parentNames?: string[];
 };
 export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;

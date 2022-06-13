@@ -4985,7 +4985,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@takeout/studio@workspace:takeout/studio":
+"@takeout/studio@^1.0.1-beta.64, @takeout/studio@workspace:takeout/studio":
   version: 0.0.0-use.local
   resolution: "@takeout/studio@workspace:takeout/studio"
   dependencies:
@@ -5707,6 +5707,7 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.4
+    "@takeout/studio": ^1.0.1-beta.64
     "@tamagui/animations-css": ^1.0.1-beta.64
     "@tamagui/animations-motion": ^1.0.1-beta.64
     "@tamagui/animations-reanimated": ^1.0.1-beta.64

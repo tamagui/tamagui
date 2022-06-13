@@ -1,4 +1,3 @@
-// debug
 import { ThemeToggle } from '@components/ThemeToggle'
 import { allDocsRoutes, docsRoutes } from '@lib/docsRoutes'
 import { LogoIcon } from '@tamagui/demos'
