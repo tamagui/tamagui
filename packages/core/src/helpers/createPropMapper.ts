@@ -383,6 +383,10 @@ function getVariableValue(
 const tokenCategories = {
   radius: {
     borderRadius: true,
+    borderTopLeftRadius: true,
+    borderTopRightRadius: true,
+    borderBottomLeftRadius: true,
+    borderBottomRightRadius: true,
   },
   size: {
     width: true,

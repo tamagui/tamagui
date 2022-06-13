@@ -3,7 +3,7 @@ import { CheckCircle, Clipboard } from '@tamagui/feather-icons'
 import copy from 'copy-to-clipboard'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ScrollView } from 'react-native'
-import { Button, YStack } from 'tamagui'
+import { Button, TooltipSimple, YStack } from 'tamagui'
 
 import { Code } from './Code'
 // import { FrontmatterContext } from './MDXComponents'
@@ -104,17 +104,22 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               </Code>
             </ScrollView>
           </Pre>
-          <Button
-            className="copy-code"
-            aria-label="Copy code to clipboard"
-            position="absolute"
-            size="$2"
-            top="$3"
-            right="$3"
-            display="inline-flex"
-            icon={hasCopied ? CheckCircle : Clipboard}
-            onPress={() => setHasCopied(true)}
-          ></Button>
+          <TooltipSimple label={hasCopied ? 'Copied' : 'Copy to clipboard'}>
+            <Button
+              className="copy-code"
+              aria-label="Copy code to clipboard"
+              position="absolute"
+              size="$2"
+              top="$3"
+              right="$3"
+              display="inline-flex"
+              icon={hasCopied ? CheckCircle : Clipboard}
+              onPress={() => setHasCopied(true)}
+              $sm={{
+                display: 'none',
+              }}
+            />
+          </TooltipSimple>
         </YStack>
       )}
     </YStack>

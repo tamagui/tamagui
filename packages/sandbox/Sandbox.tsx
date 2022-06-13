@@ -3,11 +3,9 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Tamagui as TT } from '@tamagui/core'
-import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/feather-icons'
 import React, { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Group, XStack } from 'tamagui'
-import { ListItem, Separator } from 'tamagui'
+import { H6 } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -42,21 +40,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <XStack
-          borderWidth={1}
-          borderColor="$borderColor"
-          px="$7"
-          pl="$6"
-          height={48}
-          ai="center"
-          als="center"
-          elevation="$2"
-          br="$10"
-          bc="$background"
-          hoverStyle={{
-            bc: '$background',
-          }}
-        />
+        <H6>hello world</H6>
       </div>
     </Tamagui.Provider>
   )

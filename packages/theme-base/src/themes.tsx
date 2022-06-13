@@ -1,4 +1,4 @@
-import { Variable, createTheme, createVariable, getVariableValue } from '@tamagui/core'
+import { Variable, createTheme, getVariableValue, isWeb } from '@tamagui/core'
 
 import { setColorAlpha } from './colorUtils'
 import { darkColors, lightColors, tokens } from './tokens'
@@ -217,8 +217,8 @@ const themeColors = {
 
 const lightThemes = createThemesFrom('light', themeCreator, {
   backgrounds: themeColors.light,
-  // isBase: true,
-  backgroundStrong: '#f2f2f2', // matches iOS
+  // for now web non-ios style native is...
+  backgroundStrong: isWeb ? '#fefefe' : '#f2f2f2',
   borderColors: themeColors.light.slice(2),
   isLight: true,
 })
