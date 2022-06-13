@@ -12,13 +12,13 @@ export const Notice = ({ children, theme = 'yellow', ...props }: any) => {
         p="$4"
         py="$3"
         bc="$background"
-        br="$2"
+        br="$4"
         space="$3"
         my="$4"
         pos="relative"
         {...props}
       >
-        <Paragraph py="$0.5" theme="alt1" mt={-3} mb={-3} className="paragraph-parent" size="$2">
+        <Paragraph py="$2" theme="alt1" mt={-3} mb={-3} className="paragraph-parent">
           {unwrapText(children)}
         </Paragraph>
       </XStack>

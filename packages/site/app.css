@@ -297,8 +297,11 @@ iframe {
   contain: paint;
   background-position: center center;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEWBgYFHcEyMaNnGAAAAAnRSTlP/AOW3MEoAAAAQSURBVHgBY4CA+v9AMBJIALryrr41QoYVAAAAAElFTkSuQmCC");
-  opacity: 0.22;
+  opacity: 0.15;
 }
+
+.tui_dark .bg-grid { opacity: 0.3; }
+@media (prefer-color-scheme: dark){ .bg-grid { opacity: 0.3; } }
 
 .mask-gradient-both {
   mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent, rgba(0, 0, 0, 1.0));

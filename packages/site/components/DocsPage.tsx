@@ -66,11 +66,11 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 <YStack key={`sep-${i}`} mx="$4">
                   {!!section.title ? (
                     <XStack ai="center" jc="center" space="$6" spaceDirection="row" mb="$2" mt="$1">
-                      <Separator />
+                      <Separator o={0.65} />
                       <Paragraph als="center" size="$2" fow="800">
                         {section.title}
                       </Paragraph>
-                      <Separator />
+                      <Separator o={0.65} />
                     </XStack>
                   ) : (
                     <Separator my="$4" />
@@ -122,7 +122,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         >
           <AlphaButton />
 
-          <SearchButton />
+          <SearchButton br="$10" elevation="$4" />
 
           <NextLink href="https://github.com/tamagui/tamagui" passHref>
             <YStack opacity={0.65} hoverStyle={{ opacity: 1 }} tag="a" target="_blank">

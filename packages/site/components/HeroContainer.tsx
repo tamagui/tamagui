@@ -17,7 +17,7 @@ export function HeroContainer({
   return (
     <YStack
       className="hero-gradient hero-scroll"
-      bc="$backgroundHover"
+      // bc="$backgroundHover"
       mt="$4"
       mb="$4"
       position="relative"

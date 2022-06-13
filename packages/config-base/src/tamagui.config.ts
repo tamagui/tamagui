@@ -47,8 +47,35 @@ const bodyFont = createInterFont(
     sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 12 : 4)),
   }
 )
+
 const monoFont = createGenericFont(
-  `"ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`
+  `"ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace`,
+  {
+    weight: {
+      1: '500',
+    },
+    size: {
+      1: 10,
+      2: 11,
+      3: 12,
+      4: 13,
+      5: 15,
+      6: 16,
+      7: 20,
+      8: 22,
+      9: 30,
+      10: 42,
+      11: 52,
+      12: 62,
+      13: 72,
+      14: 92,
+      15: 114,
+      16: 124,
+    },
+  },
+  {
+    sizeLineHeight: (x) => x * 1.5,
+  }
 )
 
 export const config = {

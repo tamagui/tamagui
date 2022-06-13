@@ -17,6 +17,8 @@ declare const genericFontSizes: {
     readonly 15: 114;
     readonly 16: 124;
 };
-export declare function createGenericFont<A extends GenericFont<keyof typeof genericFontSizes>>(family: string, font?: Partial<A>): A;
+export declare function createGenericFont<A extends GenericFont<keyof typeof genericFontSizes>>(family: string, font?: Partial<A>, { sizeLineHeight, }?: {
+    sizeLineHeight?: (val: number) => number;
+}): A;
 export {};
 //# sourceMappingURL=createGenericFont.d.ts.map

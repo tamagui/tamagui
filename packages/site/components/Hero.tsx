@@ -40,7 +40,7 @@ const HeroTop = memo(() => {
         className="bg-grid mask-gradient-up"
         fullscreen
         top="auto"
-        height={500}
+        height={521}
         left={-1000}
         right={-1000}
         pe="none"
