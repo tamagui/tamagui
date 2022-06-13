@@ -53,6 +53,9 @@ export type TamaguiComponentPropsBase = {
   onMouseEnter?: (e: MouseEvent) => any
   onMouseLeave?: (e: MouseEvent) => any
   onMouseDown?: (e: MouseEvent) => any
+  // WEB STYLES
+  userSelect?: Properties['userSelect']
+  cursor?: Properties['cursor']
 }
 
 export type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<
@@ -479,11 +482,9 @@ export type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVisibility
     ellipse?: boolean
     selectable?: boolean
     textDecorationDistance?: number
-    userSelect?: Properties['userSelect']
     textOverflow?: Properties['textOverflow']
     whiteSpace?: Properties['whiteSpace']
     wordWrap?: Properties['wordWrap']
-    cursor?: Properties['cursor']
   }
 
 export type TextPropsBaseShared = Omit<ReactTextProps, 'children'> &

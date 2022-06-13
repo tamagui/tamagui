@@ -34,6 +34,8 @@ export declare type TamaguiComponentPropsBase = {
     onMouseEnter?: (e: MouseEvent) => any;
     onMouseLeave?: (e: MouseEvent) => any;
     onMouseDown?: (e: MouseEvent) => any;
+    userSelect?: Properties['userSelect'];
+    cursor?: Properties['cursor'];
 };
 export declare type ReactComponentWithRef<Props, Ref> = React.ForwardRefExoticComponent<Props & React.RefAttributes<Ref>>;
 export declare type ConfigListener = (conf: TamaguiInternalConfig) => void;
@@ -270,11 +272,9 @@ export declare type TextStylePropsBase = Omit<TextStyle, 'display' | 'backfaceVi
     ellipse?: boolean;
     selectable?: boolean;
     textDecorationDistance?: number;
-    userSelect?: Properties['userSelect'];
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];
     wordWrap?: Properties['wordWrap'];
-    cursor?: Properties['cursor'];
 };
 export declare type TextPropsBaseShared = Omit<ReactTextProps, 'children'> & RNWTextProps & TamaguiComponentPropsBase;
 export declare type TextPropsBase = TextPropsBaseShared & WithThemeAndShorthands<TextStylePropsBase>;

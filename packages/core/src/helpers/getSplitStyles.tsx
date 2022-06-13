@@ -258,7 +258,7 @@ export const getSplitStyles: StyleSplitter = (
     let isMediaOrPseudo = isMedia || isPseudo
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.log('  » getSplitStyles', keyInit, expanded)
+      console.log('  » getSplitStyles', keyInit, expanded, [...usedKeys], { ...style })
     }
 
     if (!expanded) {
