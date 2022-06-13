@@ -1,9 +1,6 @@
 import { Tag } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
-import { Button, SizableText, Text, YStack } from 'tamagui'
-
-import { useTint } from './ColorToggleButton'
+import { Button } from 'tamagui'
 
 export const AlphaButton = () => {
   return (
@@ -11,7 +8,7 @@ export const AlphaButton = () => {
       <Button
         accessibilityLabel="Beta blog post"
         rotate="1.25deg"
-        mx="$1"
+        mx="$2"
         theme="pink_alt2"
         cursor="pointer"
         opacity={0.9}

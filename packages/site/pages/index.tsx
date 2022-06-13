@@ -33,7 +33,7 @@ export default function Home({ animationCode, compilationExamples }) {
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />
       <HeaderFloating isHome />
       <Hero />
-      <Separator o={0.65} />
+      <Separator />
       <ContainerLarge contain="layout" fd="column" pos="relative" zi={100000}>
         <XStack als="center" pos="absolute" y={-28} jc="center" ai="center">
           <InstallInput />
@@ -58,7 +58,7 @@ export default function Home({ animationCode, compilationExamples }) {
         <HeroExampleAnimations animationCode={animationCode} />
       </SectionTinted>
       <Section bc="$background" contain="paint layout" zi={10}>
-        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid-big mask-gradient-down" />
+        <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />
       </Section>
       <Section bc="$background" mt="$-10" bbw={1} bbc="$borderColor" mb="$-5">

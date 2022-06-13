@@ -114,9 +114,6 @@ export const getSplitStyles: StyleSplitter = (
     // empty classnames passed by compiler sometimes
     if (!val) return
     if (val.startsWith('_transform-')) {
-      // const isMediaOrPseudo = key !== 'transform'
-      // const isMedia = isMediaOrPseudo && key[11] === '_'
-      // const isPsuedo = (isMediaOrPseudo && key[11] === '0') || key.endsWith('Style')
       const namespace: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
 
       let transform = insertedTransforms[val]
@@ -218,6 +215,7 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       if (nonTamaguis) {
+        usedKeys.add(keyInit)
         mergeClassName(keyInit, nonTamaguis)
       }
       continue

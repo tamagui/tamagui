@@ -82,13 +82,7 @@ export function HeroExampleAnimations({ animationCode }) {
               ai="center"
               jc="center"
             >
-              <YStack
-                fullscreen
-                top="60%"
-                // className="mask-gradient-up"
-                o={0.5}
-                // bc="rgba(0,0,0,0.2)"
-              />
+              <YStack fullscreen top="60%" o={0.5} />
               <Button
                 accessibilityLabel="View more"
                 y={200}

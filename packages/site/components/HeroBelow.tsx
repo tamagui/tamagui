@@ -4,7 +4,6 @@ import { H3, Paragraph, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
 import { IconStack } from './IconStack'
-import { Link } from './Link'
 
 export const HeroBelow = memo(() => {
   return (
