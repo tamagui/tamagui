@@ -31,7 +31,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+          ./scripts/ci-prepare.sh && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
 
       - name: Build JS
         run: yarn build:js

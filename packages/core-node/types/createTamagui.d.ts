@@ -9,7 +9,7 @@ export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'the
             [key: string]: string | number | Variable;
         };
     };
-    defaultProps?: {
+    defaultProps?: Record<string, any> & {
         Stack?: StackProps;
         Text?: TextProps;
         Spacer?: SpacerProps;
