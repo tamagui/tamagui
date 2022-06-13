@@ -18,6 +18,7 @@ import { onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { rnw } from './constants/rnw'
+import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
 import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
@@ -162,21 +163,22 @@ export function createComponent<
     const setStateShallow = createShallowUpdate(set_)
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
+    const splitStyleState = !shouldAvoidClasses
+      ? {
+          ...state,
+          dynamicStylesInline: true,
+        }
+      : ({
+          ...state,
+          noClassNames: true,
+          dynamicStylesInline: true,
+          resolveVariablesAs: 'value',
+        } as const)
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
       theme,
-      !shouldAvoidClasses
-        ? {
-            ...state,
-            dynamicStylesInline: true,
-          }
-        : {
-            ...state,
-            noClassNames: true,
-            dynamicStylesInline: true,
-            resolveVariablesAs: 'value',
-          },
+      splitStyleState,
       shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames,
       props['debug']
     )
@@ -242,7 +244,6 @@ export function createComponent<
     let elementType = isText
       ? (isAnimated ? AnimatedText || Text : null) || BaseTextComponent
       : (isAnimated ? AnimatedView || View : null) || BaseViewComponent
-    const isAnimatedReactNativeComponent = isAnimated && typeof elementType !== 'string'
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
@@ -581,7 +582,7 @@ export function createComponent<
         console.log('  » className', { splitStyles, style, isStringElement, pseudos, state, classNames, propsClassName: props.className, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
       }
 
-      if (staticConfig.isReactNativeWeb || isAnimatedReactNativeComponent) {
+      if (staticConfig.isReactNativeWeb) {
         viewProps.dataSet = {
           ...viewProps.dataSet,
           className: className,
@@ -836,19 +837,31 @@ export function createComponent<
 
     content = createElement(elementType, viewProps, childEls)
 
-    if (isWeb && events && attachHover) {
-      content = (
-        <span
-          className="tui_Hoverable"
-          style={{
-            display: 'contents',
-          }}
-          onMouseEnter={events.onMouseEnter}
-          onMouseLeave={events.onMouseLeave}
-        >
-          {content}
-        </span>
-      )
+    if (isWeb) {
+      // only necessary when animating because some AnimatedView which wraps RNW View doesn't forward dataSet className
+      const isAnimatedRNWView = isAnimated && typeof elementType !== 'string' // assuming for now as reanimated is only driver
+      const shouldWrapWithComponentTheme =
+        isAnimatedRNWView && getReturnVariablesAs(props, splitStyleState) === 'non-color-value'
+      const shouldWrapWithHover = events && attachHover
+
+      if (shouldWrapWithHover || shouldWrapWithComponentTheme) {
+        const themeClassName = shouldWrapWithComponentTheme ? `${theme.className}` : ''
+        const hoverClassName = shouldWrapWithHover ? 'tui_Hoverable' : ''
+        content = (
+          <span
+            className={`${hoverClassName} ${themeClassName}`}
+            style={{
+              display: 'contents',
+            }}
+            {...(shouldWrapWithHover && {
+              onMouseEnter: events.onMouseEnter,
+              onMouseLeave: events.onMouseLeave,
+            })}
+          >
+            {content}
+          </span>
+        )
+      }
     }
 
     if (process.env.NODE_ENV === 'development') {

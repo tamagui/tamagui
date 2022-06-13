@@ -5,6 +5,7 @@ import {
   DebugProp,
   GenericVariantDefinitions,
   PropMapper,
+  SplitStyleState,
   StaticConfig,
   TamaguiInternalConfig,
   VariantSpreadFunction,
@@ -14,6 +15,14 @@ import { getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both' | 'non-color-value'
+
+export const getReturnVariablesAs = (props: any, state: Partial<SplitStyleState>) => {
+  return !!props.animation || state.resolveVariablesAs === 'value'
+    ? isWeb
+      ? 'non-color-value'
+      : 'value'
+    : 'auto'
+}
 
 export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   const variants = staticConfig.variants || {}
@@ -35,8 +44,7 @@ export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
     }
 
     const props = state.fallbackProps || propsIn
-    const returnVariablesAs =
-      state.resolveVariablesAs === 'value' || !!props.animation ? 'non-color-value' : 'auto'
+    const returnVariablesAs = getReturnVariablesAs(props, state)
 
     // handled here because we need to resolve this off tokens, its the only one-off like this
     const fontFamily = props.fontFamily || defaultProps.fontFamily || '$body'
