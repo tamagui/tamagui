@@ -1,11 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 rm -r takeout
-mkdir takeout
-
-pushd packages/site || exit
-
-  rm -r pages/studio pages/takeout
-  rm pages/account.tsx pages/signup.tsx pages/signin.tsx
-  
-popd || exit
+rm -r packages/sandbox
+rm -r packages/site/pages/studio
+rm -r packages/site/pages/takeout
+rm    packages/site/pages/account.tsx
+rm    packages/site/pages/signup.tsx
+rm    packages/site/pages/signin.tsx
