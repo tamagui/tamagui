@@ -49,7 +49,6 @@ import { Paragraph } from '@tamagui/text'
 // import { Primitive } from '@tamagui/react-primitive'
 // import type * as Radix from '@tamagui/react-primitive'
 import { useControllableState } from '@tamagui/use-controllable-state'
-// import { useLayoutEffect } from '@tamagui/react-use-layout-effect'
 // import { usePrevious } from '@tamagui/react-use-previous'
 // import { VisuallyHidden } from '@tamagui/core'
 // import { hideOthers } from 'aria-hidden'
@@ -91,6 +90,7 @@ const MIN_HEIGHT = 80
 const FALLBACK_THRESHOLD = 16
 
 interface SelectContextValue {
+  size?: SizeTokens
   value: any
   selectedIndex: number
   setSelectedIndex: (index: number) => void
@@ -168,6 +168,7 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
         tabIndex={-1}
         borderWidth={1}
         componentName={TRIGGER_NAME}
+        size={context.size}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
         aria-autocomplete="none"
@@ -214,6 +215,7 @@ const SelectValue = SelectValueFrame.extractable(
 
       return (
         <SelectValueFrame
+          size={context.size}
           ref={composedRefs}
           // we don't want events from the portalled `SelectValue` children to bubble
           // through the item they came from
@@ -274,9 +276,6 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   backgroundColor: '$background',
   elevate: true,
   overflow: 'hidden',
-  
-  // works on web just not typed
-  // @ts-ignore
   userSelect: 'none',
 
   variants: {
@@ -316,6 +315,7 @@ const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
         <FloatingFocusManager context={context.floatingContext} preventTabbing>
           <div {...context.interactions.getFloatingProps()}>
             <SelectViewportFrame
+              size={context.size}
               data-radix-select-viewport=""
               // @ts-ignore
               role="presentation"
@@ -486,6 +486,7 @@ const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           aria-disabled={disabled || undefined}
           data-disabled={disabled ? '' : undefined}
           tabIndex={disabled ? undefined : -1}
+          size={context.size}
           {...itemProps}
           {...selectItemProps}
         />
@@ -525,7 +526,12 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
 
     return (
       <>
-        <SelectItemTextFrame id={itemContext.textId} {...itemTextProps} ref={composedRefs} />
+        <SelectItemTextFrame
+          size={context.size}
+          id={itemContext.textId}
+          {...itemTextProps}
+          ref={composedRefs}
+        />
 
         {/* Portal the select item text into the trigger value node */}
         {itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren
@@ -620,12 +626,14 @@ export type SelectLabelProps = ListItemProps
 const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
   (props: ScopedProps<SelectLabelProps>, forwardedRef) => {
     const { __scopeSelect, ...labelProps } = props
+    const context = useSelectContext(LABEL_NAME, __scopeSelect)
     const groupContext = useSelectGroupContext(LABEL_NAME, __scopeSelect)
     return (
       <ListItem
         componentName={LABEL_NAME}
         fontWeight="800"
         id={groupContext.id}
+        size={context.size}
         {...labelProps}
         // @ts-expect-error
         ref={forwardedRef}
@@ -804,6 +812,7 @@ export interface SelectProps {
   dir?: Direction
   name?: string
   autoComplete?: string
+  size?: SizeTokens
 }
 
 export const Select = withStaticProperties(
@@ -817,6 +826,7 @@ export const Select = withStaticProperties(
       value: valueProp,
       defaultValue,
       onValueChange,
+      size: sizeProp,
       dir,
       name,
       autoComplete,
@@ -1248,6 +1258,7 @@ export const Select = withStaticProperties(
 
     return (
       <SelectProvider
+        size={sizeProp}
         scope={__scopeSelect}
         increaseHeight={increaseHeight}
         forceUpdate={forceUpdate}

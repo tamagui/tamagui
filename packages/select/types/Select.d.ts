@@ -117,55 +117,7 @@ export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<(Omit<
 } & ({} | {
     [x: string]: undefined;
 })>;
-export declare const SelectViewportFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
-}, "fontFamily" | "focusable" | "backgrounded" | "radiused" | "hoverable" | "pressable" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
-} & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
-}, "fontFamily" | "focusable" | "backgrounded" | "radiused" | "hoverable" | "pressable" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
-}>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-    readonly fullscreen?: boolean | undefined;
-    readonly elevation?: SizeTokens | undefined;
-}, "fontFamily" | "focusable" | "backgrounded" | "radiused" | "hoverable" | "pressable" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
-    fontFamily?: unknown;
-    backgrounded?: boolean | undefined;
-    radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
-    circular?: boolean | undefined;
-    padded?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: number | boolean | undefined;
-    transparent?: boolean | undefined;
-    chromeless?: boolean | undefined;
-}>>) | (Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+export declare const SelectViewportFrame: import("@tamagui/core").TamaguiComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -181,8 +133,8 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, string | number> & {
-    [x: string]: undefined;
+}, "size"> & {
+    size?: SizeTokens | undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -199,8 +151,8 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, string | number> & {
-    [x: string]: undefined;
+}, "size"> & {
+    size?: SizeTokens | undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -217,9 +169,9 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, string | number> & {
-    [x: string]: undefined;
-}>>), any, import("@tamagui/core").StackPropsBase, {
+}, "size"> & {
+    size?: SizeTokens | undefined;
+}>>, any, import("@tamagui/core").StackPropsBase, {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 } & {
@@ -235,9 +187,9 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-} & ({} | {
-    [x: string]: undefined;
-})>;
+} & {
+    size?: SizeTokens | undefined;
+}>;
 export declare type SelectViewportProps = GetProps<typeof SelectViewportFrame>;
 interface SelectItemProps extends YStackProps {
     value: string;
@@ -286,6 +238,7 @@ export interface SelectProps {
     dir?: Direction;
     name?: string;
     autoComplete?: string;
+    size?: SizeTokens;
 }
 export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) & {
     Content: React.ForwardRefExoticComponent<Pick<any, string | number | symbol> & React.RefAttributes<any>>;
@@ -640,55 +593,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     }>> & {
         placeholder?: React.ReactNode;
     }, string | number>) & React.RefAttributes<TamaguiElement>>;
-    Viewport: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        readonly fullscreen?: boolean | undefined;
-        readonly elevation?: SizeTokens | undefined;
-    }, "fontFamily" | "focusable" | "backgrounded" | "radiused" | "hoverable" | "pressable" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
-        fontFamily?: unknown;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverable?: boolean | undefined;
-        pressable?: boolean | undefined;
-        focusable?: boolean | undefined;
-        circular?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
-    } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        readonly fullscreen?: boolean | undefined;
-        readonly elevation?: SizeTokens | undefined;
-    }, "fontFamily" | "focusable" | "backgrounded" | "radiused" | "hoverable" | "pressable" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
-        fontFamily?: unknown;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverable?: boolean | undefined;
-        pressable?: boolean | undefined;
-        focusable?: boolean | undefined;
-        circular?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
-    }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
-        readonly fullscreen?: boolean | undefined;
-        readonly elevation?: SizeTokens | undefined;
-    }, "fontFamily" | "focusable" | "backgrounded" | "radiused" | "hoverable" | "pressable" | "circular" | "padded" | "elevate" | "bordered" | "transparent" | "chromeless"> & {
-        fontFamily?: unknown;
-        backgrounded?: boolean | undefined;
-        radiused?: boolean | undefined;
-        hoverable?: boolean | undefined;
-        pressable?: boolean | undefined;
-        focusable?: boolean | undefined;
-        circular?: boolean | undefined;
-        padded?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: number | boolean | undefined;
-        transparent?: boolean | undefined;
-        chromeless?: boolean | undefined;
-    }>>) | Pick<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+    Viewport: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
     } & {
@@ -704,8 +609,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, string | number> & {
-        [x: string]: undefined;
+    }, "size"> & {
+        size?: SizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -722,8 +627,8 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, string | number> & {
-        [x: string]: undefined;
+    }, "size"> & {
+        size?: SizeTokens | undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: SizeTokens | undefined;
@@ -740,9 +645,9 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, string | number> & {
-        [x: string]: undefined;
-    }>>, string | number>) & React.RefAttributes<TamaguiElement>>;
+    }, "size"> & {
+        size?: SizeTokens | undefined;
+    }>> & React.RefAttributes<TamaguiElement>>;
 };
 export { createSelectScope };
 //# sourceMappingURL=Select.d.ts.map
