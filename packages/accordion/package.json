@@ -1,0 +1,44 @@
+{
+  "name": "@tamagui/accordion",
+  "version": "1.0.1-beta.64",
+  "sideEffects": true,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "dependencies": {
+    "@gorhom/bottom-sheet": "^4.3.1",
+    "@tamagui/compose-refs": "^1.0.1-beta.64",
+    "@tamagui/core": "^1.0.1-beta.64",
+    "@tamagui/create-context": "^1.0.1-beta.64",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.64",
+    "@tamagui/stacks": "^1.0.1-beta.64",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.64",
+    "react-native-reanimated": "~2.8.0"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "react-native-gesture-handler": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.64",
+    "react": "*",
+    "react-dom": "*",
+    "react-native-gesture-handler": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+}
