@@ -20,7 +20,7 @@ function SwitchWithLabel(props: { size: SizeTokens }) {
       </Label>
       <Separator mih={20} vertical />
       <Switch id="switch-1" size={props.size}>
-        <Switch.Thumb debug="verbose" animation="bouncy" />
+        <Switch.Thumb animation="bouncy" />
       </Switch>
     </XStack>
   )
