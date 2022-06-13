@@ -13,6 +13,7 @@ export { default as ThemeInverseDemo } from './ThemeInverseDemo';
 export { default as FormsDemo } from './FormsDemo';
 export { default as LinearGradientDemo } from './LinearGradientDemo';
 export { default as HeadingsDemo } from './HeadingsDemo';
+export { default as SelectDemo } from './SelectDemo';
 export { default as SeparatorDemo } from './SeparatorDemo';
 export { default as ImageDemo } from './ImageDemo';
 export { default as AnimationsDemo } from './AnimationsDemo';

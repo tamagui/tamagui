@@ -5,6 +5,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Studio } from '@takeout/studio'
+import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
 
@@ -38,54 +39,9 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Studio />
+        {/* <Studio /> */}
+        <SelectDemo />
       </div>
     </Tamagui.Provider>
   )
 }
-
-// function SelectDemo() {
-//   return (
-//     <Select defaultValue="blueberry">
-//       <Select.Trigger w={200} iconAfter={ChevronDown}>
-//         <Select.Value placeholder="Something" />
-//       </Select.Trigger>
-
-//       <Select.Content>
-//         <Select.ScrollUpButton>☝️</Select.ScrollUpButton>
-
-//         <Select.Viewport minWidth={200}>
-//           <Select.Group>
-//             <Select.Label>Fruits</Select.Label>
-//             <Select.Item value="apple" index={0}>
-//               <Select.ItemText>Apple</Select.ItemText>
-//             </Select.Item>
-//             <Select.Item value="banana" index={1}>
-//               <Select.ItemText>Banana</Select.ItemText>
-//             </Select.Item>
-//             <Select.Item value="blueberry" index={2}>
-//               <Select.ItemText>Blueberry</Select.ItemText>
-//             </Select.Item>
-//             <Select.Item value="berry" index={3}>
-//               <Select.ItemText>Berry</Select.ItemText>
-//             </Select.Item>
-//             <Select.Item value="strawberry" index={4}>
-//               <Select.ItemText>Strawberry</Select.ItemText>
-//             </Select.Item>
-//             <Select.Item value="kiwi" index={5}>
-//               <Select.ItemText>Kiwi</Select.ItemText>
-//             </Select.Item>
-//             <Select.Item value="grap" index={6}>
-//               <Select.ItemText>Grap</Select.ItemText>
-//             </Select.Item>
-//             <Select.Item value="orange" index={7}>
-//               <Select.ItemText>Orange</Select.ItemText>
-//             </Select.Item>
-//           </Select.Group>
-//         </Select.Viewport>
-
-//         <Select.ScrollDownButton>👇</Select.ScrollDownButton>
-//       </Select.Content>
-//     </Select>
-//   )
-// }

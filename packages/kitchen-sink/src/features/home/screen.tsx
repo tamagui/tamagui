@@ -96,6 +96,7 @@ const demos = [
       { title: 'Progress', route: '/demo/progress' },
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
+      { title: 'Select', route: '/demo/select' },
     ],
   },
 
