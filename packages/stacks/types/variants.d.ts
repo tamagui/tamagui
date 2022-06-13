@@ -87,7 +87,7 @@ export declare const elevate: {
         animation?: import("@tamagui/core").Variable<any> | import("@tamagui/core").AnimationProp | undefined;
         animateOnly?: import("@tamagui/core").Variable<any> | string[] | undefined;
         children?: any;
-        debug?: boolean | import("@tamagui/core").Variable<any> | "break" | "verbose" | undefined;
+        debug?: import("@tamagui/core").Variable<any> | import("@tamagui/core").DebugProp | undefined;
         disabled?: boolean | import("@tamagui/core").Variable<any> | undefined;
         className?: string | import("@tamagui/core").Variable<any> | undefined;
         id?: string | import("@tamagui/core").Variable<any> | undefined;

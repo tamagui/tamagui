@@ -7,7 +7,6 @@ import {
   GetProps,
   ReactComponentWithRef,
   SizeTokens,
-  SizeVariantSpreadFunction,
   calc,
   getSize,
   getVariableValue,

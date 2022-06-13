@@ -242,6 +242,7 @@ export function createComponent<
     let elementType = isText
       ? (isAnimated ? AnimatedText || Text : null) || BaseTextComponent
       : (isAnimated ? AnimatedView || View : null) || BaseViewComponent
+    const isAnimatedReactNativeComponent = isAnimated && typeof elementType !== 'string'
 
     elementType = Component || elementType
     const isStringElement = typeof elementType === 'string'
@@ -580,7 +581,7 @@ export function createComponent<
         console.log('  » className', { splitStyles, style, isStringElement, pseudos, state, classNames, propsClassName: props.className, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
       }
 
-      if (staticConfig.isReactNativeWeb) {
+      if (staticConfig.isReactNativeWeb || isAnimatedReactNativeComponent) {
         viewProps.dataSet = {
           ...viewProps.dataSet,
           className: className,
