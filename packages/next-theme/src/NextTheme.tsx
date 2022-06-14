@@ -74,7 +74,7 @@ export const useRootTheme = () => {
   const isClient = typeof document !== 'undefined'
   // @ts-ignore
   const classes = isClient ? [...document.documentElement.classList] : []
-  const isDark = classes.includes('tui_dark')
+  const isDark = classes.includes('t_dark')
   return useState(isDark ? 'dark' : 'light')
 }
 
@@ -89,8 +89,8 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   attribute = 'class',
   onChangeTheme,
   value = {
-    dark: 'tui_dark',
-    light: 'tui_light',
+    dark: 't_dark',
+    light: 't_light',
   },
   children,
 }) => {
@@ -129,7 +129,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       name = value?.[resolved] || resolved
     }
 
-    onChangeTheme?.(name.replace('tui_', ''))
+    onChangeTheme?.(name.replace('t_', ''))
 
     if (updateDOM) {
       const d = document.documentElement

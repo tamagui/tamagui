@@ -282,7 +282,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
     size: {
       '...size': (val, { tokens }) => {
         return {
-          borderRadius: tokens.size[val] ?? val,
+          borderRadius: tokens.radius[val] ?? val,
         }
       },
     },

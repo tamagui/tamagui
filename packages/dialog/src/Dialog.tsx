@@ -169,10 +169,10 @@ interface DialogOverlayProps extends YStackProps {
 }
 
 const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
-  (props: ScopedProps<DialogOverlayProps>, forwardedRef) => {
-    const portalContext = usePortalContext(OVERLAY_NAME, props.__scopeDialog)
+  ({ __scopeDialog, ...props }: ScopedProps<DialogOverlayProps>, forwardedRef) => {
+    const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
     const { forceMount = portalContext.forceMount, ...overlayProps } = props
-    const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog)
+    const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
 
     if (!context.modal) {
       return null
@@ -256,10 +256,10 @@ type DialogContentProps = DialogContentFrameProps & {
 }
 
 const DialogContent = React.forwardRef<TamaguiElement, DialogContentProps>(
-  (props: ScopedProps<DialogContentProps>, forwardedRef) => {
-    const portalContext = usePortalContext(CONTENT_NAME, props.__scopeDialog)
+  ({ __scopeDialog, ...props }: ScopedProps<DialogContentProps>, forwardedRef) => {
+    const portalContext = usePortalContext(CONTENT_NAME, __scopeDialog)
     const { forceMount = portalContext.forceMount, ...contentProps } = props
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog)
+    const context = useDialogContext(CONTENT_NAME, __scopeDialog)
     return (
       <>
         {context.modal ? (
@@ -280,8 +280,8 @@ interface DialogContentTypeProps
   extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {}
 
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
-  (props: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog)
+  ({ __scopeDialog, ...props }: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
+    const context = useDialogContext(CONTENT_NAME, __scopeDialog)
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
@@ -601,11 +601,11 @@ const Dialog = withStaticProperties(
       defaultOpen = false,
       onOpenChange,
       modal = true,
-      allowPinchZoom,
+      allowPinchZoom = false,
     } = props
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
-    const [open = false, setOpen] = useControllableState({
+    const [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen,
       onChange: onOpenChange,
@@ -623,7 +623,7 @@ const Dialog = withStaticProperties(
         onOpenChange={setOpen}
         onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
         modal={modal}
-        allowPinchZoom={allowPinchZoom || false}
+        allowPinchZoom={allowPinchZoom}
       >
         {children}
       </DialogProvider>

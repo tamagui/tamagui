@@ -52,7 +52,7 @@ a {
 
 :is(
   p a,
-  span:not(.tui_Theme, .tui_Hoverable) a,
+  span:not(.t_Theme, .t_Hoverable) a,
   footer a
 ) {
   text-decoration: underline;
@@ -70,7 +70,7 @@ a {
 
 :is(
   p a,
-  span:not(.tui_Theme, .tui_Hoverable) a
+  span:not(.t_Theme, .t_Hoverable) a
 ):hover {
   text-decoration-style: solid;
   background-color: var(--pink1);
@@ -294,7 +294,7 @@ iframe {
   opacity: 0.1;
 }
 
-.tui_dark .bg-grid { opacity: 0.2; }
+.t_dark .bg-grid { opacity: 0.2; }
 @media (prefer-color-scheme: dark){ .bg-grid { opacity: 0.2; } }
 
 .mask-gradient-both {
@@ -561,7 +561,7 @@ input, textarea {
   margin-right: 10px;
 }
 
-.tui_dark .DocSearch {
+.t_dark .DocSearch {
   --docsearch-container-background: rgba(25, 25, 25, 0.6);
   --docsearch-hit-shadow: none;
   --docsearch-hit-background: #333;

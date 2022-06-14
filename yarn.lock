@@ -3277,6 +3277,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@icons/material@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "@icons/material@npm:0.2.4"
+  peerDependencies:
+    react: "*"
+  checksum: 24baa360cb83f7e1a9e6784ac11185d57eb895b0efd3070ec915693378330f35ff9feb248f650b9649fa3e1045601286585dc05795a4c734d4849b33900351ee
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -4992,7 +5001,9 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.59
     "@tamagui/core": ^1.0.1-beta.59
     "@tamagui/static": ^1.0.1-beta.59
+    react-color: ^2.19.3
     ts-morph: ^15.1.0
+    valtio: ^1.6.1
   languageName: unknown
   linkType: soft
 
@@ -16443,6 +16454,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-es@npm:^4.17.15":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
+  languageName: node
+  linkType: hard
+
 "lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
@@ -16492,7 +16510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:>=3.5 <5, lodash@npm:^4, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.13, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.17.5, lodash@npm:^4.7.0":
+"lodash@npm:>=3.5 <5, lodash@npm:^4, lodash@npm:^4.0.1, lodash@npm:^4.17.10, lodash@npm:^4.17.11, lodash@npm:^4.17.13, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.17.5, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -16724,6 +16742,13 @@ __metadata:
   version: 1.1.1
   resolution: "markdown-extensions@npm:1.1.1"
   checksum: 8a6dd128be1c524049ea6a41a9193715c2835d3d706af4b8b714ff2043a82786dbcd4a8f1fa9ddd28facbc444426c97515aef2d1f3dd11d5e2d63749ba577b1e
+  languageName: node
+  linkType: hard
+
+"material-colors@npm:^1.2.1":
+  version: 1.2.6
+  resolution: "material-colors@npm:1.2.6"
+  checksum: 72d005ccccb82bab68eef3cd757e802668634fc86976dedb9fc564ce994f2d3258273766b7efecb7404a0031969e2d72201a1b74169763f0a53c0dd8d649209f
   languageName: node
   linkType: hard
 
@@ -20889,6 +20914,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-compare@npm:2.1.0":
+  version: 2.1.0
+  resolution: "proxy-compare@npm:2.1.0"
+  checksum: e431403abbb52468045635f434846c55b388c3ccf4012efe729e3fa846513b5d49e2488328582d5be792e7b9b0ba5f5a111887b3a2c4f9a273fc432ab79c7b63
+  languageName: node
+  linkType: hard
+
 "prr@npm:~1.0.1":
   version: 1.0.1
   resolution: "prr@npm:1.0.1"
@@ -21092,6 +21124,23 @@ __metadata:
   bin:
     rc: ./cli.js
   checksum: 2e26e052f8be2abd64e6d1dabfbd7be03f80ec18ccbc49562d31f617d0015fbdbcf0f9eed30346ea6ab789e0fdfe4337f033f8016efdbee0df5354751842080e
+  languageName: node
+  linkType: hard
+
+"react-color@npm:^2.19.3":
+  version: 2.19.3
+  resolution: "react-color@npm:2.19.3"
+  dependencies:
+    "@icons/material": ^0.2.4
+    lodash: ^4.17.15
+    lodash-es: ^4.17.15
+    material-colors: ^1.2.1
+    prop-types: ^15.5.10
+    reactcss: ^1.2.0
+    tinycolor2: ^1.4.1
+  peerDependencies:
+    react: "*"
+  checksum: 40b49e1aa2ab27a099cc37a3fa2d5bb906b8def4dbe2d922c0e42365e386d82b03f9b06a2b29a44a51f1e114cef72e61c0ba0740581a128d951936ea4617429b
   languageName: node
   linkType: hard
 
@@ -21467,6 +21516,15 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: 5bb296b561b43ef2220395da4faac86c14a087c8c80e1a7598a5740f01ee605c11eaf249985c1e2000971c4cd32ccb46d40f00479bbd9fb6b1c7cf857393b7d4
+  languageName: node
+  linkType: hard
+
+"reactcss@npm:^1.2.0":
+  version: 1.2.3
+  resolution: "reactcss@npm:1.2.3"
+  dependencies:
+    lodash: ^4.0.1
+  checksum: c53e386a0881f1477e1cff661f6a6ad4c662230941f3827862193ac30f9b75cdf7bc7b4c7e5ca543d3e4e80fee1a3e9fa0056c206b1c0423726c41773ab3fe45
   languageName: node
   linkType: hard
 
@@ -24180,6 +24238,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tinycolor2@npm:^1.4.1":
+  version: 1.4.2
+  resolution: "tinycolor2@npm:1.4.2"
+  checksum: 57ed262e08815a4ab0ed933edafdbc6555a17081781766149813b44a080ecbe58b3ee281e81c0e75b42e4d41679f138cfa98eabf043f829e0683c04adb12c031
+  languageName: node
+  linkType: hard
+
 "tmp@npm:^0.0.33":
   version: 0.0.33
   resolution: "tmp@npm:0.0.33"
@@ -25447,6 +25512,36 @@ __metadata:
   dependencies:
     builtins: ^5.0.0
   checksum: a32fd537bad17fcb59cfd58ae95a414d443866020d448ec3b22e8d40550cb585026582a57efbe1f132b882eea4da8ac38ee35f7be0dd72988a3cb55d305a20c1
+  languageName: node
+  linkType: hard
+
+"valtio@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "valtio@npm:1.6.1"
+  dependencies:
+    proxy-compare: 2.1.0
+    use-sync-external-store: 1.1.0
+  peerDependencies:
+    "@babel/helper-module-imports": ">=7.12"
+    "@babel/types": ">=7.13"
+    aslemammad-vite-plugin-macro: ">=1.0.0-alpha.1"
+    babel-plugin-macros: ">=3.0"
+    react: ">=16.8"
+    vite: ">=2.8.6"
+  peerDependenciesMeta:
+    "@babel/helper-module-imports":
+      optional: true
+    "@babel/types":
+      optional: true
+    aslemammad-vite-plugin-macro:
+      optional: true
+    babel-plugin-macros:
+      optional: true
+    react:
+      optional: true
+    vite:
+      optional: true
+  checksum: 7f707ad74a9897dafd8cc4453b85b8f9bb799ab85cbaa4c412ccb1ffddcd8df624716f5bd56f9a56b1c15a35cf9cb2742c9af4335db077e57ef85ae7366a3c93
   languageName: node
   linkType: hard
 

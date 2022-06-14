@@ -2,12 +2,14 @@ globalThis['React'] = require('React')
 
 // debug
 import '@tamagui/core/reset.css'
+import '@tamagui/site/public/fonts/inter.css'
 import '@tamagui/polyfill-dev'
 
 import { Studio } from '@takeout/studio'
 import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
+import { Button } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -39,8 +41,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        {/* <Studio /> */}
-        <SelectDemo />
+        <Studio />
+        {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>
   )
