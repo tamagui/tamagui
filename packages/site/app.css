@@ -52,7 +52,6 @@ a {
 
 :is(
   p a,
-  span:not(.t_Theme, .t_Hoverable) a,
   footer a
 ) {
   text-decoration: underline;
@@ -70,7 +69,6 @@ a {
 
 :is(
   p a,
-  span:not(.t_Theme, .t_Hoverable) a
 ):hover {
   text-decoration-style: solid;
   background-color: var(--pink1);
