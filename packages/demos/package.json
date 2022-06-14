@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "1.0.1-beta.65",
+  "version": "1.0.1-beta.66",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,16 +17,16 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/config-base": "^1.0.1-beta.65",
-    "@tamagui/core": "^1.0.1-beta.65",
-    "tamagui": "^1.0.1-beta.65"
+    "@tamagui/config-base": "^1.0.1-beta.66",
+    "@tamagui/core": "^1.0.1-beta.66",
+    "tamagui": "^1.0.1-beta.66"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.65",
+    "@tamagui/build": "^1.0.1-beta.66",
     "react": "*",
     "react-dom": "*"
   },
