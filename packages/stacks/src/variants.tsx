@@ -36,7 +36,7 @@ export const padded = {
   true: (_, extras) => {
     const { tokens, props } = extras
     return {
-      padding: tokens.size[props.size] || tokens.size['$4'],
+      padding: tokens.space[props.size] || tokens.space['$4'],
     }
   },
 }
