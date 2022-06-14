@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "1.0.1-beta.65",
+  "version": "1.0.1-beta.66",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -19,14 +19,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.65"
+    "@tamagui/core": "^1.0.1-beta.66"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.65",
+    "@tamagui/build": "^1.0.1-beta.66",
     "react": "*",
     "react-native": "*"
   },
