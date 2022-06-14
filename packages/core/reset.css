@@ -34,4 +34,5 @@ li,
 pre,
 dialog {
   all: unset;
+  box-sizing: border-box;
 }
