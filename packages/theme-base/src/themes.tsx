@@ -235,6 +235,9 @@ const darkThemes = createThemesFrom('dark', themeCreator, {
   },
 })
 
+darkThemes.dark_darker.background = '#030303'
+darkThemes.dark_darker.backgroundStrong = '#000'
+
 const light = createTheme({
   ...lightColors,
   ...lightThemes.light,
@@ -255,11 +258,11 @@ const baseThemes = {
   light,
   light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
-  light_Button: lightThemes.light,
+  light_Button: lightThemes.light_alt1,
   light_SliderTrack: lightThemes.light_alt2,
   light_SliderTrackActive: lightThemes.light_alt3,
-  light_Switch: lightThemes.light,
-  light_SwitchThumb: lightThemes.light_alt1,
+  light_Switch: lightThemes.light_alt1,
+  light_SwitchThumb: darkThemes.dark,
   light_DrawerFrame: lightThemes.light_alt1,
 
   // dark
@@ -271,7 +274,8 @@ const baseThemes = {
   dark_SliderTrack: darkThemes.dark_darker,
   dark_SliderTrackActive: darkThemes.dark_alt3,
   dark_Switch: darkThemes.dark_darker,
-  dark_SwitchThumb: darkThemes.dark_alt1,
+  // dark_SwitchThumb: darkThemes.dark_alt2,
+  dark_SwitchThumb: lightThemes.light_alt3,
   dark_Button: darkThemes.dark_alt1,
 }
 
