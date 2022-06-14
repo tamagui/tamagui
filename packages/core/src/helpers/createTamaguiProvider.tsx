@@ -1,16 +1,11 @@
 import * as React from 'react'
 
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
-import { TamaguiProviderProps } from '../types'
+import { TamaguiInternalConfig, TamaguiProviderProps } from '../types'
 import { TextAncestorProvider } from '../views/TextAncestorContext'
-import { ThemeProvider, ThemeProviderProps } from '../views/ThemeProvider'
+import { ThemeProvider } from '../views/ThemeProvider'
 
-export function createTamaguiProvider({
-  getCSS,
-  ...themeProps
-}: ThemeProviderProps & {
-  getCSS: () => string
-}) {
+export function createTamaguiProvider(config: TamaguiInternalConfig) {
   return function TamaguiProvider({
     disableInjectCSS,
     children,
@@ -21,18 +16,24 @@ export function createTamaguiProvider({
       React.useLayoutEffect(() => {
         if (disableInjectCSS) return
         const style = document.createElement('style')
-        style.appendChild(document.createTextNode(getCSS()))
+        style.appendChild(document.createTextNode(config.getCSS()))
         document.head.appendChild(style)
         return () => {
           document.head.removeChild(style)
         }
-      }, [])
+      }, [disableInjectCSS])
     }
 
     return (
       <ButtonInsideButtonContext.Provider value={false}>
         <TextAncestorProvider>
-          <ThemeProvider {...themeProps} {...themePropsProvider}>
+          <ThemeProvider
+            themes={config.themes}
+            defaultTheme={config.defaultTheme || 'light'}
+            themeClassNameOnRoot={config.themeClassNameOnRoot}
+            disableRootThemeClass={config.disableRootThemeClass}
+            {...themePropsProvider}
+          >
             {children}
           </ThemeProvider>
         </TextAncestorProvider>

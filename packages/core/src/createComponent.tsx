@@ -846,7 +846,7 @@ export function createComponent<
 
       if (shouldWrapWithHover || shouldWrapWithComponentTheme) {
         const themeClassName = shouldWrapWithComponentTheme ? `${theme.className}` : ''
-        const hoverClassName = shouldWrapWithHover ? 'tui_Hoverable' : ''
+        const hoverClassName = shouldWrapWithHover ? 't_Hoverable' : ''
         content = (
           <span
             className={`${hoverClassName} ${themeClassName}`}

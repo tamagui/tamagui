@@ -4,6 +4,7 @@ export declare type ThemeProviderProps = {
     themes: any;
     defaultTheme: string;
     disableRootThemeClass?: boolean;
+    themeClassNameOnRoot?: boolean;
     children?: any;
     reset?: boolean;
 };

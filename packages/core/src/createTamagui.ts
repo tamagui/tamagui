@@ -13,6 +13,7 @@ import {
 } from './helpers/registerCSSVariable'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
+import { Tamagui } from './Tamagui'
 import {
   AnimationDriver,
   CreateTamaguiConfig,
@@ -192,7 +193,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         }
 
         const isDarkOrLightBase = themeName === 'dark' || themeName === 'light'
-        const isDark = themeName.startsWith('dark')
         const selectors = names.map((name) => {
           return `${CNP}${name}`
         })
@@ -201,6 +201,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
         if (hasDarkLight) {
           for (const subName of names) {
+            const isDark = subName.startsWith('dark')
             const childSelector = `${CNP}${subName.replace('dark_', '').replace('light_', '')}`
             const order = isDark ? ['dark', 'light'] : ['light', 'dark']
             if (isDarkOrLightBase) {
@@ -223,7 +224,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const rootSep = config.themeClassNameOnRoot ? '' : ' '
         cssRules.push(`${selectors.map((x) => `:root${rootSep}${x}`).join(', ')} {${vars}}`)
 
-        if (config.shouldAddPrefersColorThemes ?? true) {
+        if (config.shouldAddPrefersColorThemes) {
+          const isDark = themeName.startsWith('dark')
           // add media prefers for dark/light base
           if (isDarkOrLightBase) {
             cssRules.push(
@@ -297,24 +299,22 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   const next: TamaguiInternalConfig = {
+    defaultTheme: 'light',
     fonts: {},
     animations: {} as any,
     shorthands: {},
     media: {},
     ...config,
     themes: themeConfig.themes,
-    Provider: createTamaguiProvider({
-      getCSS,
-      defaultTheme: 'light',
-      ...config,
-      themes: themeConfig.themes,
-    }),
     fontsParsed,
     themeConfig,
     tokensParsed,
     parsed: true,
     getCSS,
+    Provider: null as any,
   }
+
+  next.Provider = createTamaguiProvider(next)
 
   setConfig(next)
 
@@ -324,6 +324,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   createdConfigs.set(next, true)
+
+  if (process.env.NODE_ENV === 'development') {
+    if (!globalThis['Tamagui']) {
+      globalThis['Tamagui'] = Tamagui
+    }
+  }
 
   // @ts-expect-error
   return next

@@ -207,6 +207,9 @@ export type TamaguiInternalConfig<
   fontsParsed: GenericFonts
   getCSS: () => string
   parsed: boolean
+
+  // just passed in from CreateTamaguiProps
+  themeClassNameOnRoot?: boolean
 }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations']

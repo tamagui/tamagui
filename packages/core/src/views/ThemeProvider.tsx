@@ -13,6 +13,7 @@ export type ThemeProviderProps = {
   themes: any
   defaultTheme: string
   disableRootThemeClass?: boolean
+  themeClassNameOnRoot?: boolean
   children?: any
   reset?: boolean
 }
@@ -29,9 +30,10 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
         return
       }
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
-      document.body.classList.add(cn)
+      const target = props.themeClassNameOnRoot ? document.documentElement : document.body
+      target.classList.add(cn)
       return () => {
-        document.body.classList.remove(cn)
+        target.classList.remove(cn)
       }
     }, [props.defaultTheme, props.disableRootThemeClass])
   }

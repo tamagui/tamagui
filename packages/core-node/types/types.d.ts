@@ -128,6 +128,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
     fontsParsed: GenericFonts;
     getCSS: () => string;
     parsed: boolean;
+    themeClassNameOnRoot?: boolean;
 };
 export declare type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations'];
 export declare type UnionableString = string & {};

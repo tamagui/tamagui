@@ -1,7 +1,4 @@
 /// <reference types="react" />
-import { TamaguiProviderProps } from '../types';
-import { ThemeProviderProps } from '../views/ThemeProvider';
-export declare function createTamaguiProvider({ getCSS, ...themeProps }: ThemeProviderProps & {
-    getCSS: () => string;
-}): ({ disableInjectCSS, children, ...themePropsProvider }: TamaguiProviderProps) => JSX.Element;
+import { TamaguiInternalConfig, TamaguiProviderProps } from '../types';
+export declare function createTamaguiProvider(config: TamaguiInternalConfig): ({ disableInjectCSS, children, ...themePropsProvider }: TamaguiProviderProps) => JSX.Element;
 //# sourceMappingURL=createTamaguiProvider.d.ts.map

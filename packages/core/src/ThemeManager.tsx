@@ -181,7 +181,7 @@ export class ThemeManager {
   }
 
   #getClassName(name: string) {
-    return `${THEME_CLASSNAME_PREFIX}${name} tui_theme`.replace('light_', '').replace('dark_', '')
+    return `${THEME_CLASSNAME_PREFIX}${name} t_Theme`.replace('light_', '').replace('dark_', '')
   }
 
   track(uuid: any, keys: Set<string>) {

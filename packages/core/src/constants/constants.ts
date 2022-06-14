@@ -1,7 +1,7 @@
 import { isWeb } from './platform'
 
 export const THEME_NAME_SEPARATOR = '_'
-export const THEME_CLASSNAME_PREFIX = `tui_`
+export const THEME_CLASSNAME_PREFIX = `t_`
 
 export const stackDefaultStyles = {
   alignItems: 'stretch',

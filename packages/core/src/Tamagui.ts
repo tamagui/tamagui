@@ -42,7 +42,3 @@ export const getValueFromIdentifier = (identifier: string) => {
 export const setIdentifierValue = (identifier: string, value: any) => {
   identifierToValue.set(identifier, value)
 }
-
-if (!globalThis['Tamagui']) {
-  globalThis['Tamagui'] = Tamagui
-}

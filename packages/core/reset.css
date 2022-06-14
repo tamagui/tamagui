@@ -14,6 +14,15 @@ a {
   color: inherit;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+li, select, input, button, [role="slider"] {
+  outline: none;
+}
+
 p,
 input,
 textarea,
@@ -23,11 +32,6 @@ ul,
 ol,
 li,
 pre,
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-}
-
-li, select, input, button, [role="slider"] {
-  outline: none;
+dialog {
+  all: unset;
 }
