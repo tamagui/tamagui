@@ -35,7 +35,6 @@ export const LabelFrame = styled(SizableText, {
   backgroundColor: 'transparent',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
   cursor: 'default',
   pressStyle: {
     color: '$colorPress',
@@ -43,13 +42,13 @@ export const LabelFrame = styled(SizableText, {
   variants: {
     size: {
       '...size': (val, extras) => {
-        const { borderRadius: _, ...buttonStyle } = getButtonSize(val, extras)
-        const style = {
-          ...buttonStyle,
+        const buttonStyle = getButtonSize(val, extras)
+        return {
           ...getTextSize(val, extras),
+          paddingHorizontal: buttonStyle.paddingHorizontal,
+          height: buttonStyle.height,
           lineHeight: buttonStyle.height,
         }
-        return style
       },
     },
   },
