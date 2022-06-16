@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/list-item",
-  "version": "1.0.1-beta.66",
+  "version": "1.0.1-beta.67",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,16 +17,16 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.66",
-    "@tamagui/font-size": "^1.0.1-beta.66",
-    "@tamagui/helpers-tamagui": "^1.0.1-beta.66"
+    "@tamagui/core": "^1.0.1-beta.67",
+    "@tamagui/font-size": "^1.0.1-beta.67",
+    "@tamagui/helpers-tamagui": "^1.0.1-beta.67"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.66",
+    "@tamagui/build": "^1.0.1-beta.67",
     "react": "*",
     "react-dom": "*"
   },
