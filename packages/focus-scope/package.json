@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "1.0.1-beta.66",
+  "version": "1.0.1-beta.67",
   "sideEffects": true,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,14 +20,14 @@
   },
   "dependencies": {
     "@radix-ui/react-use-callback-ref": "^0.1.0",
-    "@tamagui/compose-refs": "^1.0.1-beta.66"
+    "@tamagui/compose-refs": "^1.0.1-beta.67"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.66",
+    "@tamagui/build": "^1.0.1-beta.67",
     "react": "*",
     "react-dom": "*"
   },
