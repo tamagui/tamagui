@@ -247,23 +247,20 @@ export const SelectIcon = styled(XStack, {
 
 const CONTENT_NAME = 'SelectContent'
 
-type SelectContentElement = any
-type SelectContentProps = any
+export type SelectContentProps = { children?: React.ReactNode }
 
-const SelectContent = React.forwardRef<SelectContentElement, SelectContentProps>(
-  ({ children, __scopeSelect }: ScopedProps<SelectContentProps>, forwardedRef) => {
-    const context = useSelectContext(CONTENT_NAME, __scopeSelect)
-    return (
-      <FloatingPortal>
-        {context.open ? (
-          <FloatingOverlay lockScroll>{children}</FloatingOverlay>
-        ) : (
-          <div style={{ display: 'none' }}>{children}</div>
-        )}
-      </FloatingPortal>
-    )
-  }
-)
+const SelectContent = ({ children, __scopeSelect }: ScopedProps<SelectContentProps>) => {
+  const context = useSelectContext(CONTENT_NAME, __scopeSelect)
+  return (
+    <FloatingPortal>
+      {context.open ? (
+        <FloatingOverlay lockScroll>{children}</FloatingOverlay>
+      ) : (
+        <div style={{ display: 'none' }}>{children}</div>
+      )}
+    </FloatingPortal>
+  )
+}
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport
@@ -295,7 +292,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
 
 export type SelectViewportProps = GetProps<typeof SelectViewportFrame>
 
-const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
+export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportProps>(
   (props: ScopedProps<SelectViewportProps>, forwardedRef) => {
     const { __scopeSelect, children, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
@@ -349,40 +346,16 @@ type SelectItemContextValue = {
 const [SelectItemContextProvider, useSelectItemContext] =
   createSelectContext<SelectItemContextValue>(ITEM_NAME)
 
-interface SelectItemProps extends YStackProps {
+export interface SelectItemProps extends YStackProps {
   value: string
   index: number
   disabled?: boolean
   textValue?: string
 }
 
-// const SelectItemFrame = styled(YStack, {
-//   name: ITEM_NAME,
-//   tag: 'li',
-//   // @ts-ignore
-//   role: 'option',
-//   width: '100%',
+// TODO styled(ListItem, { name: 'SelectItem' })
 
-//   hoverStyle: {
-//     backgroundColor: '$backgroundHover',
-//   },
-
-//   focusStyle: {
-//     backgroundColor: '$backgroundFocus',
-//   },
-
-//   variants: {
-//     size: {
-//       '...size': getSelectItemSize,
-//     },
-//   },
-
-//   defaultVariants: {
-//     size: '$4',
-//   },
-// })
-
-const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
+export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
   (props: ScopedProps<SelectItemProps>, forwardedRef) => {
     const {
       __scopeSelect,
@@ -802,6 +775,7 @@ export const SelectSeparator = styled(Separator, {
  * -----------------------------------------------------------------------------------------------*/
 
 export interface SelectProps {
+  id?: string
   children?: React.ReactNode
   value?: string
   defaultValue?: string
@@ -818,6 +792,8 @@ export interface SelectProps {
 export const Select = withStaticProperties(
   (props: ScopedProps<SelectProps>) => {
     const {
+      // TODO use id for focusing from label
+      id,
       __scopeSelect,
       children,
       open: openProp,
