@@ -5,6 +5,7 @@ import React, {
   Fragment,
   createElement,
   forwardRef,
+  isValidElement,
   memo,
   useCallback,
   useContext,
@@ -1114,11 +1115,11 @@ export function spacedChildren({
 }: SpacedChildrenProps) {
   const hasSpace = !!(space || spaceFlex)
   const hasSeparator = !(separator === undefined || separator === null)
-  if (!hasSpace && !hasSeparator) {
+  if (!hasSpace && !hasSeparator && !isZStack) {
     return children
   }
   const childrenList = Children.toArray(children)
-  if (childrenList.length <= 1) {
+  if (childrenList.length <= 1 && !isZStack) {
     return childrenList
   }
   const final: any[] = []
@@ -1136,6 +1137,16 @@ export function spacedChildren({
       final.push(
         <Fragment key={index}>{isZStack ? <AbsoluteFill>{child}</AbsoluteFill> : child}</Fragment>
       )
+    }
+
+    // first child unspaced avoid insert space
+    if (isUnspaced(child) && index === 0) {
+      continue
+    }
+
+    // no spacing on ZStack
+    if (isZStack) {
+      continue
     }
 
     const next = childrenList[index + 1]
@@ -1208,23 +1219,11 @@ function isUnspaced(child: any) {
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
 }
 
-export function AbsoluteFill(props: any) {
-  return isWeb ? (
-    <div
-      style={
-        {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        } as any
-      }
-    >
+export function AbsoluteFill(props: { children?: React.ReactNode }) {
+  return (
+    <View pointerEvents="box-none" style={StyleSheet.absoluteFill}>
       {props.children}
-    </div>
-  ) : (
-    <View style={StyleSheet.absoluteFill}>{props.child}</View>
+    </View>
   )
 }
 

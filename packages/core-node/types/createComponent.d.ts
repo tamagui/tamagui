@@ -24,7 +24,9 @@ export declare type SpacedChildrenProps = {
     separator?: React.ReactNode;
 };
 export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, separator, }: SpacedChildrenProps): any;
-export declare function AbsoluteFill(props: any): JSX.Element;
+export declare function AbsoluteFill(props: {
+    children?: React.ReactNode;
+}): JSX.Element;
 export declare function assignNativePropsToWeb(elementType: string, viewProps: any, nativeProps: any): void;
 export {};
 //# sourceMappingURL=createComponent.d.ts.map
