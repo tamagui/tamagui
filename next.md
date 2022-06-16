@@ -5,7 +5,7 @@
   - also aligns with stylex
 
 - 1.0
-  - use :is() for shorter css generation
+  - compiler support pointerevents box-none
   - add _isExtracted via compiler (non-flat) to indicate no need to runtime merge defaultprops?
   - FAQ
   - document .extractable
@@ -16,7 +16,6 @@
   - TODO bug backgroundStrong on dark in light / not variabl
   - make webpack plugin that does stuff from next-plugin and sandbox webpack etc
   - compile styled() to just css classes
-  - pressStyle on card regression
   - fix light mode inverse when using prefers
   - Switch on native
   - https://github.com/tamagui/tamagui/issues/53
