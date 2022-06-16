@@ -9,6 +9,9 @@ import {
 } from '@tamagui/core'
 
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = '$4', extras) => {
+  if (extras.props.multiline || extras.props.numberOfLines > 1) {
+    return textAreaSizeVariant(val, extras)
+  }
   const buttonStyles = getButtonSize(val, extras)
   const paddingHorizontal = stepTokenUpOrDown(extras.tokens.space, val, -1, [2])
   const fontStyle = getTextSize(val, extras)
