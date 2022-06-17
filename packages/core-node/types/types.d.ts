@@ -248,7 +248,7 @@ export declare type PseudoProps<A> = {
     exitStyle?: A | null;
     enterStyle?: A | null;
 };
-export declare type PsuedoPropKeys = keyof PseudoProps<any>;
+export declare type PseudoPropKeys = keyof PseudoProps<any>;
 export declare type PseudoStyles = {
     hoverStyle?: ViewStyle;
     pressStyle?: ViewStyle;

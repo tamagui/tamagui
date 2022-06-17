@@ -5005,7 +5005,6 @@ __metadata:
     react-native: "*"
     tamagui: ^1.0.1-beta.64
     ts-morph: ^15.1.0
-    uuid: ^8.3.2
     valtio: ^1.6.1
   languageName: unknown
   linkType: soft
@@ -5240,6 +5239,7 @@ __metadata:
   dependencies:
     "@expo/match-media": ^0.3.0
     "@tamagui/build": ^1.0.1-beta.67
+    "@tamagui/compose-refs": ^1.0.1-beta.67
     "@tamagui/helpers": ^1.0.1-beta.67
     "@tamagui/ow": ^0.28.1
     "@tamagui/use-debounce": ^1.0.1-beta.67

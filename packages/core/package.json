@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "@expo/match-media": "^0.3.0",
+    "@tamagui/compose-refs": "^1.0.1-beta.67",
     "@tamagui/helpers": "^1.0.1-beta.67",
     "@tamagui/ow": "^0.28.1",
     "@tamagui/use-debounce": "^1.0.1-beta.67",
