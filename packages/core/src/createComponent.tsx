@@ -5,7 +5,6 @@ import React, {
   Fragment,
   createElement,
   forwardRef,
-  isValidElement,
   memo,
   useCallback,
   useContext,
@@ -52,7 +51,7 @@ import { TextAncestorContext } from './views/TextAncestorContext'
 
 React['keep']
 
-const defaultComponentState: TamaguiComponentState = {
+const defaultComponentState: TamaguiComponentState = Object.freeze({
   hover: false,
   press: false,
   pressIn: false,
@@ -60,7 +59,7 @@ const defaultComponentState: TamaguiComponentState = {
   // only used by enterStyle
   mounted: false,
   animation: null,
-}
+})
 
 export const mouseUps = new Set<Function>()
 if (typeof document !== 'undefined') {
@@ -112,19 +111,6 @@ export function createComponent<
   let tamaguiDefaultProps: any
   let initialSplitStyles: SplitStyleResult
 
-  function addPseudoToStyles(styles: any[], name: string, pseudos: any) {
-    // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
-    const pseudoStyle = pseudos[name]
-    const shouldNestObject = isWeb && name !== 'enterStyle' && name !== 'exitStyle'
-    const defaultPseudoStyle = initialSplitStyles.pseudos[name]
-    if (defaultPseudoStyle) {
-      styles.push(shouldNestObject ? { [name]: defaultPseudoStyle } : defaultPseudoStyle)
-    }
-    if (pseudoStyle) {
-      styles.push(shouldNestObject ? { [name]: pseudoStyle } : pseudoStyle)
-    }
-  }
-
   // see onConfiguredOnce below which attaches a name then to this component
   const component = forwardRef<Ref, ComponentPropTypes>((propsIn: any, forwardedRef) => {
     // React inserts default props after your props for some reason...
@@ -160,21 +146,32 @@ export function createComponent<
 
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
-    const [state, set_] = useState<TamaguiComponentState>(defaultComponentState)
-    const setStateShallow = createShallowUpdate(set_)
+    const statesUsed = useState<TamaguiComponentState>(defaultComponentState)
+    const setStateShallow = createShallowUpdate(statesUsed[1])
+    let state = statesUsed[0]
+
+    // allow forcing a pseudo state on
+    if (propsIn.forceStyle) {
+      state = {
+        ...state,
+        [propsIn.forceStyle]: true,
+      }
+    }
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
-    const splitStyleState = !shouldAvoidClasses
-      ? {
-          ...state,
-          dynamicStylesInline: true,
-        }
-      : ({
-          ...state,
-          noClassNames: true,
-          dynamicStylesInline: true,
-          resolveVariablesAs: 'value',
-        } as const)
+    const shouldForcePseudo = !!propsIn.forceStyle
+    const splitStyleState =
+      !shouldAvoidClasses && !shouldForcePseudo
+        ? {
+            ...state,
+            dynamicStylesInline: true,
+          }
+        : ({
+            ...state,
+            noClassNames: true,
+            dynamicStylesInline: true,
+            resolveVariablesAs: 'value',
+          } as const)
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
@@ -224,8 +221,8 @@ export function createComponent<
       hrefAttrs,
       separator,
       // ignore from here on out
-      // for next/link compat etc
-      // @ts-ignore
+      forceStyle: _forceStyle,
+      // @ts-ignore  for next/link compat etc
       onClick,
       theme: _themeProp,
       // @ts-ignore
@@ -528,7 +525,7 @@ export function createComponent<
 
     const animationStyles = state.animation ? state.animation.style : null
 
-    if (isStringElement && shouldAvoidClasses) {
+    if (isStringElement && shouldAvoidClasses && !shouldForcePseudo) {
       styles = {
         ...defaultNativeStyle,
         ...(animationStyles ?? style),
@@ -545,10 +542,26 @@ export function createComponent<
         medias,
       ]
       if (!animationStyles) {
-        !state.mounted && addPseudoToStyles(styles, 'enterStyle', pseudos)
-        state.hover && addPseudoToStyles(styles, 'hoverStyle', pseudos)
-        state.focus && addPseudoToStyles(styles, 'focusStyle', pseudos)
-        state.press && addPseudoToStyles(styles, 'pressStyle', pseudos)
+        const initPseudos = initialSplitStyles.pseudos
+        const force = shouldForcePseudo
+        !state.mounted && addPseudoToStyles(styles, initPseudos, pseudos, 'enterStyle')
+        state.hover && addPseudoToStyles(styles, initPseudos, pseudos, 'hoverStyle', force)
+        state.focus && addPseudoToStyles(styles, initPseudos, pseudos, 'focusStyle', force)
+        state.press && addPseudoToStyles(styles, initPseudos, pseudos, 'pressStyle', force)
+        if (props['debug']) {
+          console.log('wtf', state, styles)
+        }
+      }
+      // ugly but for now...
+      if (shouldForcePseudo) {
+        const next = {}
+        for (const style of styles) {
+          if (style) {
+            Object.assign(next, style)
+          }
+        }
+        // @ts-ignore
+        Object.assign(splitStyles.style, next)
       }
     }
 
@@ -1426,5 +1439,22 @@ export function assignNativePropsToWeb(elementType: string, viewProps: any, nati
 
   if (nativeProps.nativeID) {
     viewProps.id = nativeProps.nativeID
+  }
+}
+
+function addPseudoToStyles(
+  styles: any[],
+  initialPseudos: SplitStyleResult['pseudos'],
+  pseudos: any,
+  name: string,
+  force = false
+) {
+  // on web use pseudo object { hoverStyle } to keep specificity with concatClassName
+  const pseudoStyle = pseudos[name]
+  const shouldNestObject = isWeb && name !== 'enterStyle' && name !== 'exitStyle'
+  const defaultPseudoStyle = initialPseudos[name]
+  const style = defaultPseudoStyle ? { ...defaultPseudoStyle, ...pseudoStyle } : pseudoStyle
+  if (style) {
+    styles.push(shouldNestObject && !force ? { [name]: style } : style)
   }
 }

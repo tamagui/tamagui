@@ -126,7 +126,7 @@ describe('webpack-tests', () => {
   //   t.is(1, 1)
   // })
 
-  test('14. extracts psuedo styles and evaluates constants', async () => {
+  test('14. extracts pseudo styles and evaluates constants', async () => {
     const { test14 } = context
     const out = test14.renderer.toJSON()
     expect(out).toMatchSnapshot()

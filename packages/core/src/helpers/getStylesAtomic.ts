@@ -23,7 +23,7 @@ const pseudosOrdered = Object.values(pseudos)
 
 // this is how compiler outputs psueodo identifier
 // TODO remove in next refactor
-export const psuedoCNInverse = {
+export const pseudoCNInverse = {
   hover: 'hoverStyle',
   focus: 'focusStyle',
   press: 'pressStyle',
@@ -97,18 +97,18 @@ function getAtomicStyle(
     const val = atomicStyles[key]
     const hash = val.identifier
     // pseudos have a `--` to be easier to find with concatClassNames
-    const psuedoPrefix = pseudo ? `0${pseudo.name}-` : ''
+    const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
     if (!val.property) {
       throw new Error(`no prop`)
     }
     const shortProp = reversedShorthands[val.property] || val.property
-    const identifier = `_${shortProp}-${psuedoPrefix}${hash}`
+    const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
     const className = `.${identifier}`
     const rules = val.rules.map((rule) => {
       if (pseudo) {
-        const psuedoPrefixSelect = [...Array(pseudo.priority)].map(() => ':root').join('') + ' '
+        const pseudoPrefixSelect = [...Array(pseudo.priority)].map(() => ':root').join('') + ' '
         let res = rule
-          .replace(`.${val.identifier}`, `${psuedoPrefixSelect} ${className}`)
+          .replace(`.${val.identifier}`, `${pseudoPrefixSelect} ${className}`)
           .replace('{', `:${pseudo.name}{`)
           // important to override inline styles
           .replace(';', ' !important;')

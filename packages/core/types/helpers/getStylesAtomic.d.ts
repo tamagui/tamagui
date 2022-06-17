@@ -8,7 +8,7 @@ export declare type ViewStyleWithPseudos = ViewStyle & {
 declare type AtomicStyleOptions = {
     splitTransforms?: boolean;
 };
-export declare const psuedoCNInverse: {
+export declare const pseudoCNInverse: {
     hover: string;
     focus: string;
     press: string;

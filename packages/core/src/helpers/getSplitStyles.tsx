@@ -10,8 +10,8 @@ import {
   DebugProp,
   MediaKeys,
   MediaQueryKey,
+  PseudoPropKeys,
   PseudoStyles,
-  PsuedoPropKeys,
   SplitStyleState,
   StackProps,
   StaticConfigParsed,
@@ -20,7 +20,7 @@ import {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
-import { getStylesAtomic, psuedoCNInverse } from './getStylesAtomic'
+import { getStylesAtomic, pseudoCNInverse } from './getStylesAtomic'
 import {
   insertStyleRule,
   insertedTransforms,
@@ -28,6 +28,7 @@ import {
   updateInsertedCache,
 } from './insertStyleRule'
 import { mergeTransform } from './mergeTransform'
+import { pseudos as pseudoAttrs } from './pseudos'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 export type ClassNamesObject = Record<string, string>
@@ -54,7 +55,7 @@ const skipProps = {
   }),
 }
 
-type TransformNamespaceKey = 'transform' | PsuedoPropKeys | MediaQueryKey
+type TransformNamespaceKey = 'transform' | PseudoPropKeys | MediaQueryKey
 
 let conf: TamaguiInternalConfig
 
@@ -193,20 +194,20 @@ export const getSplitStyles: StyleSplitter = (
       for (const cn of valInit.split(' ')) {
         if (cn[0] === '_') {
           // tamagui, merge it expanded on key, eventually this will go away with better compiler
-          const [shorthand, mediaOrPsuedo] = cn.slice(1).split('-')
-          const isMedia = mediaOrPsuedo[0] === '_'
-          const isPseudo = mediaOrPsuedo[0] === '0'
+          const [shorthand, mediaOrPseudo] = cn.slice(1).split('-')
+          const isMedia = mediaOrPseudo[0] === '_'
+          const isPseudo = mediaOrPseudo[0] === '0'
           const isMediaOrPseudo = isMedia || isPseudo
           let fullKey = conf.shorthands[shorthand]
           if (isMedia) {
             // is media
-            let mediaShortKey = mediaOrPsuedo.slice(1)
+            let mediaShortKey = mediaOrPseudo.slice(1)
             mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
             fullKey += `-${mediaShortKey}`
           } else if (isPseudo) {
-            // is psuedo
-            const pseudoShortKey = mediaOrPsuedo.slice(1)
-            fullKey += `-${psuedoCNInverse[pseudoShortKey]}`
+            // is pseudo
+            const pseudoShortKey = mediaOrPseudo.slice(1)
+            fullKey += `-${pseudoCNInverse[pseudoShortKey]}`
           }
           usedKeys.add(fullKey)
           mergeClassName(fullKey, cn, isMediaOrPseudo)
@@ -300,6 +301,10 @@ export const getSplitStyles: StyleSplitter = (
         pseudos[key] = pseudos[key] || {}
         pseudos[key] = getSubStyle(val, staticConfig, theme, props, state, true)
         if (isWeb && !state.noClassNames) {
+          const shorthand = pseudoAttrs[key].name
+          if (props.forceStyle?.[shorthand]) {
+            console.warn('force')
+          }
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
             const fullKey = `${style.property}-${key}`
@@ -343,7 +348,7 @@ export const getSplitStyles: StyleSplitter = (
           const mediaStyles = getStylesAtomic(mediaStyle)
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
-            // TODO handle psuedo + media, not too hard just need to set up example case
+            // TODO handle pseudo + media, not too hard just need to set up example case
             const fullKey = `${style.property}-${mediaKeyShort}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)

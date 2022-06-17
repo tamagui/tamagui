@@ -26,6 +26,7 @@ export declare type TamaguiComponentPropsBase = {
     tag?: string;
     theme?: ThemeName | null;
     componentName?: string;
+    forceStyle?: 'hover' | 'press' | 'focus';
     onHoverIn?: (e: MouseEvent) => any;
     onHoverOut?: (e: MouseEvent) => any;
     onPress?: (e: GestureResponderEvent) => any;
@@ -247,7 +248,7 @@ export declare type PseudoProps<A> = {
     exitStyle?: A | null;
     enterStyle?: A | null;
 };
-export declare type PsuedoPropKeys = keyof PseudoProps<any>;
+export declare type PseudoPropKeys = keyof PseudoProps<any>;
 export declare type PseudoStyles = {
     hoverStyle?: ViewStyle;
     pressStyle?: ViewStyle;

@@ -208,7 +208,7 @@ exports[`12. ternary multiple on same key 1`] = `
 />
 `;
 
-exports[`14. extracts psuedo styles and evaluates constants 1`] = `
+exports[`14. extracts pseudo styles and evaluates constants 1`] = `
 <div
   className=" _alignItems-1oszu61 _boxSizing-deolkf _display-6koalj _flexBasis-1mlwlqe _flexDirection-eqz5dr _flexShrink-1q142lx _backgroundColor--hover-1g6456j _backgroundColor--active-57dg7b "
 />

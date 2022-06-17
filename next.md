@@ -164,7 +164,7 @@ const ornaments = {
   - https://github.com/react-native-masked-view/masked-view
 - react-native-skia / svg image support
 - beforeStyle, afterStyle could work ...
-  - only if we can do with psuedos:
+  - only if we can do with pseudos:
     - focusStyle={{ after: { fullscreen: true, border... } }}
     - allows for proper focused borders that don't require super hacks
     - see Switch

@@ -65,7 +65,7 @@ export const HeroExampleProps = () => {
             items={[
               <FeatureItem label="Themes">Change theme on any component.</FeatureItem>,
               <FeatureItem label="Animations">
-                Animate every component, enter and exit styling, works with psuedo states.
+                Animate every component, enter and exit styling, works with pseudo states.
               </FeatureItem>,
               <FeatureItem label="DOM escape hatches">
                 Support for className and other HTML attributes.

@@ -26,6 +26,7 @@ export declare type TamaguiComponentPropsBase = {
     tag?: string;
     theme?: ThemeName | null;
     componentName?: string;
+    forceStyle?: 'hover' | 'press' | 'focus';
     onHoverIn?: (e: MouseEvent) => any;
     onHoverOut?: (e: MouseEvent) => any;
     onPress?: (e: GestureResponderEvent) => any;

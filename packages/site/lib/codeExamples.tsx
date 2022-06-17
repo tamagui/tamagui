@@ -104,7 +104,7 @@ const App = () => (
     },
     output: {
       description:
-        'Shorthands work with the compiler support of media queries, psuedo styling and conditional logic.',
+        'Shorthands work with the compiler support of media queries, pseudo styling and conditional logic.',
       examples: [
         {
           name: 'app.js',
@@ -214,7 +214,7 @@ const App = props => <div className={concatClassName(_cn + (props.big ? _cn2 : _
     name: 'Media',
     input: {
       description:
-        'Psuedo and media query styles extract at compile-time, fallback gracefully at runtime.',
+        'Pseudo and media query styles extract at compile-time, fallback gracefully at runtime.',
       examples: [
         {
           name: 'app.tsx',

@@ -44,6 +44,7 @@ export type TamaguiComponentPropsBase = {
   tag?: string
   theme?: ThemeName | null
   componentName?: string
+  forceStyle?: 'hover' | 'press' | 'focus'
   onHoverIn?: (e: MouseEvent) => any
   onHoverOut?: (e: MouseEvent) => any
   onPress?: (e: GestureResponderEvent) => any
@@ -415,7 +416,7 @@ export type PseudoProps<A> = {
   enterStyle?: A | null
 }
 
-export type PsuedoPropKeys = keyof PseudoProps<any>
+export type PseudoPropKeys = keyof PseudoProps<any>
 
 export type PseudoStyles = {
   hoverStyle?: ViewStyle
@@ -432,7 +433,7 @@ type WithThemeAndShorthands<A extends object> = WithThemeValues<A> &
   WithShorthands<WithThemeValues<A>>
 
 //
-// combines all of theme, shorthands, psuedos...
+// combines all of theme, shorthands, pseudos...
 //
 type WithThemeShorthandsAndPseudos<A extends object> =
   | WithThemeAndShorthands<A> & PseudoProps<WithThemeAndShorthands<A>>

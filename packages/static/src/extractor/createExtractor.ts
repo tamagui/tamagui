@@ -1580,7 +1580,7 @@ export function createExtractor() {
                     if (shouldPrintDebug) console.log('  * styles out', logLines(objToStr(styles)))
                     if (styles) {
                       // but actually resolve them to the full object
-                      // TODO media/psuedo merging
+                      // TODO media/pseudo merging
                       attr.value = Object.fromEntries(
                         Object.keys(styles).map((k) => [k, completeStyles[k]])
                       )
