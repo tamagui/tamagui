@@ -160,16 +160,19 @@ export function createComponent<
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
     const shouldForcePseudo = !!propsIn.forceStyle
+    const hasTextAncestor = !!(isWeb ? useContext(TextAncestorContext) : false)
     const splitStyleState =
       !shouldAvoidClasses && !shouldForcePseudo
         ? {
             ...state,
+            hasTextAncestor,
             dynamicStylesInline: true,
           }
         : ({
             ...state,
             noClassNames: true,
             dynamicStylesInline: true,
+            hasTextAncestor,
             resolveVariablesAs: 'value',
           } as const)
     const splitStyles = useSplitStyles(
@@ -233,7 +236,6 @@ export function createComponent<
 
     // get the right component
     const isTaggable = !Component || typeof Component === 'string'
-    const hasTextAncestor = isWeb ? useContext(TextAncestorContext) : false
 
     // default to tag, fallback to component (when both strings)
     const element = isWeb ? (isTaggable ? tag || Component : Component) : Component
@@ -534,10 +536,6 @@ export function createComponent<
     } else {
       styles = [
         isWeb ? null : defaultNativeStyleSheet ? (defaultNativeStyleSheet.base as ViewStyle) : null,
-        // parity w react-native-web, only for text in text
-        // TODO this should be able to be done w css to replicate after extraction:
-        //  (.text .text { display: inline-flex; }) (but if they set display we'd need stronger precendence)
-        // isText && hasTextAncestor && isWeb ? { display: 'inline-flex' } : null,
         animationStyles ?? style,
         medias,
       ]

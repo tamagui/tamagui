@@ -7,6 +7,7 @@ declare type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState & {
     keepVariantsAsProps?: boolean;
+    hasTextAncestor?: boolean;
 }, defaultClassNames?: any, debug?: DebugProp) => {
     pseudos: PseudoStyles;
     medias: Record<MediaKeys, ViewStyle>;

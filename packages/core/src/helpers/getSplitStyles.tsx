@@ -65,6 +65,7 @@ type StyleSplitter = (
   theme: ThemeObject,
   state: SplitStyleState & {
     keepVariantsAsProps?: boolean
+    hasTextAncestor?: boolean
   },
   defaultClassNames?: any,
   debug?: DebugProp
@@ -108,6 +109,10 @@ export const getSplitStyles: StyleSplitter = (
   const usedKeys = new Set<string>()
 
   let style: ViewStyle = {}
+  if (state.hasTextAncestor) {
+    // parity with react-native-web
+    style.display = 'inline-flex' as any
+  }
   let classNames: ClassNamesObject = {}
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]

@@ -41,8 +41,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Button />
-        {/* <Studio /> */}
+        <Studio />
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>
