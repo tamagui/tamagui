@@ -15,6 +15,11 @@ declare type StyleSplitter = (props: {
     rulesToInsert: [string, string][];
     viewProps: StackProps;
 };
+export declare const pseudoCNInverse: {
+    hover: string;
+    focus: string;
+    press: string;
+};
 export declare const getSplitStyles: StyleSplitter;
 export declare const insertSplitStyles: StyleSplitter;
 export declare const useSplitStyles: StyleSplitter;

@@ -9,6 +9,7 @@ import { Studio } from '@takeout/studio'
 import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
+import { Button } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -40,7 +41,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Studio />
+        <Button />
+        {/* <Studio /> */}
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>

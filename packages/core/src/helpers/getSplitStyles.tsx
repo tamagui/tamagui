@@ -20,7 +20,7 @@ import {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
-import { getStylesAtomic, pseudoCNInverse } from './getStylesAtomic'
+import { getStylesAtomic } from './getStylesAtomic'
 import {
   insertStyleRule,
   insertedTransforms,
@@ -75,6 +75,14 @@ type StyleSplitter = (
   classNames: ClassNamesObject
   rulesToInsert: [string, string][]
   viewProps: StackProps
+}
+
+// this is how compiler outputs psueodo identifier
+// TODO remove in next refactor
+export const pseudoCNInverse = {
+  hover: 'hoverStyle',
+  focus: 'focusStyle',
+  press: 'pressStyle',
 }
 
 // loop props backwards
@@ -149,6 +157,10 @@ export const getSplitStyles: StyleSplitter = (
         transforms[namespace][1] += transform
       }
     } else {
+      if (key === 'borderBottomColor' && val === '_bbc-0hover-115rkfj') {
+        debugger
+      }
+
       classNames[key] = val
     }
   }

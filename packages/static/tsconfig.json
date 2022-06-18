@@ -5,8 +5,7 @@
     "rootDir": "../.."
   },
   "include": [
-    "src",
-    "jest-setup.ts"
+    "src"
   ],
   "references": [
     {

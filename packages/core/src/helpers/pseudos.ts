@@ -14,3 +14,5 @@ export const pseudos = {
     priority: 3,
   },
 } as const
+
+export type PseudoDescriptor = typeof pseudos[keyof typeof pseudos]

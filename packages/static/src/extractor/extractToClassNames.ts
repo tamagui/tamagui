@@ -326,7 +326,8 @@ export function extractToClassNames({
 
       const comment = util.format('/* %s:%s (%s) */', filePath, lineNumbers, originalNodeName)
 
-      for (const { className, rules } of finalStyles) {
+      for (const { identifier, rules } of finalStyles) {
+        const className = `.${identifier}`
         if (cssMap.has(className)) {
           if (comment) {
             const val = cssMap.get(className)!

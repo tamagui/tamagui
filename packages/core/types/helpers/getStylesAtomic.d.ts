@@ -8,11 +8,6 @@ export declare type ViewStyleWithPseudos = ViewStyle & {
 declare type AtomicStyleOptions = {
     splitTransforms?: boolean;
 };
-export declare const pseudoCNInverse: {
-    hover: string;
-    focus: string;
-    press: string;
-};
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: AtomicStyleOptions): StyleObject[];
 export {};
 //# sourceMappingURL=getStylesAtomic.d.ts.map

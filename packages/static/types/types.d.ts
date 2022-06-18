@@ -1,7 +1,9 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { PseudoStyles } from '@tamagui/core-node';
+import { StyleObject } from '@tamagui/core-node';
 import { ViewStyle } from 'react-native';
+export type { StyleObject } from '@tamagui/helpers';
 export declare type ClassNameObject = t.StringLiteral | t.Expression;
 export interface CacheObject {
     [key: string]: any;
@@ -68,13 +70,6 @@ export interface Ternary {
     consequent: Object | null;
     alternate: Object | null;
 }
-export declare type StyleObject = {
-    property: string;
-    value: string;
-    className: string;
-    identifier: string;
-    rules: string[];
-};
 export declare type ClassNameToStyleObj = {
     [key: string]: StyleObject;
 };

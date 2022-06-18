@@ -12,4 +12,5 @@ export declare const pseudos: {
         readonly priority: 3;
     };
 };
+export declare type PseudoDescriptor = typeof pseudos[keyof typeof pseudos];
 //# sourceMappingURL=pseudos.d.ts.map
