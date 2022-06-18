@@ -10,7 +10,7 @@ module.exports = async function main() {
   await Promise.all([
     //
     extractStaticAppBabel(),
-    // extractStaticWebpackApp(),
+    extractStaticWebpackApp(),
   ])
   process.env.IS_STATIC = undefined
 }

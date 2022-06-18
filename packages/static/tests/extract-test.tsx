@@ -16,7 +16,6 @@ describe('extract-tests', () => {
       borderBottomColor: 'blue',
     }
     const styles = getStylesAtomic(style)
-    console.log('styles', styles)
     const style1 = styles.find((x) => x.property === 'backgroundColor')
     const style2 = styles.find((x) => x.property === 'transform')
     const style3 = styles.find((x) => x.property === 'boxShadow')

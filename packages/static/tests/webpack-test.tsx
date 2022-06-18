@@ -10,8 +10,6 @@ process.env.IS_STATIC = ''
 let context: any = {}
 
 describe('webpack-tests', () => {
-  return
-
   const app = require('./spec/out/out-webpack')
 
   beforeAll(async () => {
@@ -19,10 +17,23 @@ describe('webpack-tests', () => {
       Object.keys(app).map((key) => {
         return act(() => {
           const App = app[key]
+          const Provider = app.Provider
           context[key.toLowerCase()] = {
-            Element: App,
-            renderer: TestRenderer.create(<App conditional={true} />),
-            rendererFalse: TestRenderer.create(<App conditional={false} />),
+            Element: (props) => (
+              <Provider>
+                <App {...props} />
+              </Provider>
+            ),
+            renderer: TestRenderer.create(
+              <Provider>
+                <App conditional={true} />
+              </Provider>
+            ),
+            rendererFalse: TestRenderer.create(
+              <Provider>
+                <App conditional={false} />
+              </Provider>
+            ),
           }
         })
       }),

@@ -46,10 +46,10 @@ describe('flatten-tests', () => {
     expect(sheetStyles['0']).toEqual({
       transform: [
         {
-          translateY: 10,
+          translateY: '10px',
         },
         {
-          translateX: 20,
+          translateX: '20px',
         },
         {
           rotate: '10deg',

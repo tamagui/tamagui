@@ -2,6 +2,7 @@ module.exports = {
   ...require('../../jest.config'),
   globalSetup: './tests/lib/preTest',
   testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   moduleNameMapper: {
     '\\.(css)$': '<rootDir>/__mocks__/styleMock.js',
     '^react-native$': 'react-native-web',

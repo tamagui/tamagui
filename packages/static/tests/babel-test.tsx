@@ -39,16 +39,18 @@ test('styles - 6. spread ternary', async () => {
 
 test.skip('styles - 11. all in one', async () => {
   const [truthy, falsy] = await getTestElements(app.Provider, app.Test11)
-  expect(truthy.style.height).toBe('31px')
-  expect(truthy.style.borderTopLeftRadius).toBe('8px')
-  expect(truthy.style.borderTopColor).toBe('rgba(0,0,0,0.15)')
-  expect(truthy.style['overflow-x']).toBe('hidden')
-  expect(truthy.style.backgroundColor).toBe('rgb(0, 0, 255)')
-  expect(falsy.style.height).toBe('0px')
-  expect(falsy.style.borderTopLeftRadius).toBe('0px')
-  expect(falsy.style.borderTopColor).toBe('rgba(0,0,0,0.15)')
-  expect(falsy.style['overflow-x']).toBe('hidden')
-  expect(falsy.style.backgroundColor).toBe('rgb(0, 0, 255)')
+  expect(truthy.element).toHaveStyle({
+    height: '31px',
+  })
+  // expect(truthy.style.borderTopLeftRadius).toBe('8px')
+  // expect(truthy.style.borderTopColor).toBe('rgba(0,0,0,0.15)')
+  // expect(truthy.style['overflow-x']).toBe('hidden')
+  // expect(truthy.style.backgroundColor).toBe('rgb(0, 0, 255)')
+  // expect(falsy.style.height).toBe('0px')
+  // expect(falsy.style.borderTopLeftRadius).toBe('0px')
+  // expect(falsy.style.borderTopColor).toBe('rgba(0,0,0,0.15)')
+  // expect(falsy.style['overflow-x']).toBe('hidden')
+  // expect(falsy.style.backgroundColor).toBe('rgb(0, 0, 255)')
 })
 
 test('basic extraction', async () => {
@@ -61,7 +63,7 @@ test('basic extraction', async () => {
     }
   `)
   const code = output?.code ?? ''
-  expect(code.includes(`"backgroundColor": "red"`)).toBeTruthy()
+  expect(code.includes(`"backgroundColor": "rgba(255,0,0,1.00)"`)).toBeTruthy()
 })
 
 test('basic conditional extraction', async () => {
@@ -97,8 +99,8 @@ test('flat transform props', async () => {
   `)
   const code = output?.code ?? ''
   expect(code.includes(`  "scale": 2`)).toBeTruthy()
-  expect(code.includes(`  "translateX": 10`)).toBeTruthy()
-  expect(code.includes(`  "translateY": 20`)).toBeTruthy()
+  expect(code.includes(`  "translateX": "10px"`)).toBeTruthy()
+  expect(code.includes(`  "translateY": "20px"`)).toBeTruthy()
   expect(code.includes(`  "rotate": "10deg"`)).toBeTruthy()
 })
 
