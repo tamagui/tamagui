@@ -89,7 +89,7 @@ AvatarImage.displayName = IMAGE_NAME
 
 const FALLBACK_NAME = 'AvatarFallback'
 
-const AvatarFallbackFrame = styled(YStack, {
+export const AvatarFallbackFrame = styled(YStack, {
   name: FALLBACK_NAME,
   position: 'absolute',
   fullscreen: true,

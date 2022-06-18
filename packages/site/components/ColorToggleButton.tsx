@@ -53,7 +53,3 @@ export const ColorToggleButton = (props: ButtonProps) => {
     </TooltipSimple>
   )
 }
-
-const Diamond = styled(Square, {
-  rotate: '45deg',
-})

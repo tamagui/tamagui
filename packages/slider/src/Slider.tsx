@@ -176,7 +176,7 @@ const TRACK_NAME = 'SliderTrack'
 
 type SliderTrackElement = HTMLElement | View
 
-const SliderTrackFrame = styled(SliderFrame, {
+export const SliderTrackFrame = styled(SliderFrame, {
   name: 'SliderTrack',
   height: '100%',
   width: '100%',
@@ -214,7 +214,7 @@ const RANGE_NAME = 'SliderTrackActive'
 type SliderTrackActiveElement = HTMLElement | View
 interface SliderTrackActiveProps extends YStackProps {}
 
-const SliderTrackActiveFrame = styled(SliderFrame, {
+export const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
   backgroundColor: '$background',
   position: 'absolute',
@@ -267,7 +267,7 @@ SliderTrackActive.displayName = RANGE_NAME
 
 const THUMB_NAME = 'SliderThumb'
 
-const SliderThumbFrame = styled(ThemeableStack, {
+export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
   position: 'absolute',
   // TODO not taking up 2

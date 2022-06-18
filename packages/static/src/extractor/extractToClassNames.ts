@@ -97,6 +97,10 @@ export function extractToClassNames({
     shouldPrintDebug,
     ...options,
     target: 'html',
+    extractStyledDefinitions: true,
+    onStyleRule(identifier, rules) {
+      cssMap.set(`.${identifier}`, { css: rules.join(';'), commentTexts: [] })
+    },
     getFlattenedNode: ({ tag }) => {
       hasFlattened = true
       return tag
@@ -112,6 +116,10 @@ export function extractToClassNames({
       programPath,
       isFlattened,
     }) => {
+      // reset hasFlattened
+      const didFlattenThisTag = hasFlattened
+      hasFlattened = false
+
       let finalClassNames: ClassNameObject[] = []
       let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
       let finalStyles: StyleObject[] = []
@@ -156,37 +164,17 @@ export function extractToClassNames({
         switch (attr.type) {
           case 'style':
             if (!isFlattened) {
-              // only ever one at a time i believe so we can be lazy with this access
-              const { hoverStyle, pressStyle, focusStyle } = attr.value
-              const pseudos = [
-                ['hoverStyle', hoverStyle],
-                ['pressStyle', pressStyle],
-                ['focusStyle', focusStyle],
-              ] as const
-
               const styles = getStylesAtomic(attr.value, {
                 splitTransforms: true,
               })
+
               finalStyles = [...finalStyles, ...styles]
 
-              for (const [key, value] of pseudos) {
-                if (value && Object.keys(value).length) {
-                  finalAttrs.push(
-                    t.jsxAttribute(
-                      t.jsxIdentifier(key),
-                      t.jsxExpressionContainer(literalToAst(value))
-                    )
-                  )
-                }
-              }
-
               for (const style of styles) {
-                if (style.pseudo) {
-                  continue
-                }
                 //  leave them  as attributes
+                const prop = style.pseudo ? `${style.property}-${style.pseudo}` : style.property
                 finalAttrs.push(
-                  t.jsxAttribute(t.jsxIdentifier(style.property), t.stringLiteral(style.identifier))
+                  t.jsxAttribute(t.jsxIdentifier(prop), t.stringLiteral(style.identifier))
                 )
               }
             } else {
@@ -305,7 +293,7 @@ export function extractToClassNames({
 
         // if has some spreads, use concat helper
         if (nameExpr && !t.isIdentifier(nameExpr)) {
-          if (!hasFlattened) {
+          if (!didFlattenThisTag) {
             // not flat
           } else {
             ensureImportingConcat(programPath)
@@ -348,7 +336,7 @@ export function extractToClassNames({
     },
   })
 
-  if (!res || (!res.modified && !res.optimized && !res.flattened)) {
+  if (!res || (!res.modified && !res.optimized && !res.flattened && !res.styled)) {
     if (shouldPrintDebug) {
       console.log('no res or none modified', res)
     }
@@ -402,6 +390,8 @@ export function extractToClassNames({
       .slice(0, 22)
       .trim()
       .padStart(24)
+
+    const numStyled = `${res.styled}`.padStart(3)
     const numOptimized = `${res.optimized}`.padStart(3)
     const numFound = `${res.found}`.padStart(3)
     const numFlattened = `${res.flattened}`.padStart(3)
@@ -409,12 +399,10 @@ export function extractToClassNames({
     const timing = Date.now() - start
     const timingWarning = timing > 50 ? '⚠️' : timing > 150 ? '☢️' : ''
     const timingStr = `${timing}ms${timingWarning}`.padStart(6)
+    const pre = getPrefixLogs(options)
+    const memStr = memory ? `(${memory})` : ''
     console.log(
-      `${getPrefixLogs(
-        options
-      )} ${path}  ${numFound}   · ${numOptimized}   · ${numFlattened}  ${timingStr} ${
-        memory ? `(${memory})` : ''
-      }`
+      `${pre} ${path}  ${numFound} · ${numOptimized} · ${numFlattened} · ${numStyled}  ${timingStr} ${memStr}`
     )
   }
 

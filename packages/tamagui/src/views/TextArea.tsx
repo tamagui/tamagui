@@ -4,7 +4,7 @@ import { focusableInputHOC } from '../helpers/focusableInputHOC'
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
 import { InputFrame } from './Input'
 
-const TextAreaFrame = styled(InputFrame, {
+export const TextAreaFrame = styled(InputFrame, {
   name: 'TextArea',
   multiline: true,
   numberOfLines: 4,

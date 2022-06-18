@@ -23,7 +23,7 @@ const INDICATOR_NAME = 'ProgressIndicator'
 type ProgressIndicatorElement = TamaguiElement
 interface ProgressIndicatorProps extends YStackProps {}
 
-const ProgressIndicatorFrame = styled(ThemeableStack, {
+export const ProgressIndicatorFrame = styled(ThemeableStack, {
   name: INDICATOR_NAME,
   height: '100%',
   width: '100%',
@@ -115,7 +115,7 @@ type TamaguiElement = HTMLElement | View
 
 type ProgressElement = TamaguiElement
 
-const ProgressFrame = styled(ThemeableStack, {
+export const ProgressFrame = styled(ThemeableStack, {
   name: PROGRESS_NAME,
   borderRadius: 100_000,
   overflow: 'hidden',

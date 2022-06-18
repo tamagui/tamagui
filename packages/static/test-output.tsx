@@ -2,12 +2,23 @@ import * as babel from '@babel/core'
 
 async function run() {
   const output = await extractBabel(`
-      import { Separator } from 'tamagui'
-      export function Test() {
-        return (
-          <Separator />
-        )
-      }
+      import { YStack, styled } from 'tamagui'
+      
+      const Me = styled(YStack, {
+        backgroundColor: 'red',
+        borderWidth: 2,
+        borderColor: '$borderColor',
+        borderRadius: '$4',
+        shadowColor: 'red',
+        shadowRadius: 100,
+        
+        hoverStyle: {
+          backgroundColor: 'green'
+        },
+
+        variants: {},
+        defaultVariants: {},
+      })
     `)
 
   console.log(output?.code)

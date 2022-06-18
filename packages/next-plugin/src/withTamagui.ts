@@ -107,7 +107,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           try {
             const regexStr = `\/react-native-web\/.*(${excludeExports.join('|')}).*\/`
             const regex = new RegExp(regexStr)
-            console.log(prefix, 'exclude', regexStr)
+            // console.log(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
               new webpack.NormalModuleReplacementPlugin(
                 regex,

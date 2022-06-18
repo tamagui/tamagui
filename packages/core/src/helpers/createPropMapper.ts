@@ -158,6 +158,10 @@ const resolveVariants: StyleResolver = (
         if (staticConfig.validStyles?.[key]) {
           return null
         }
+        if (value === false) {
+          // don't warn on missing false values, common to only use true
+          return null
+        }
         const name = staticConfig.componentName || '[UnnamedComponent]'
         console.warn(
           `No variant found: ${name} has variant "${key}", but no matching value "${value}"`

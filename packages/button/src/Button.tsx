@@ -44,7 +44,7 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
     scaleSpace?: number
   }
 
-const ButtonFrame = styled(ThemeableStack, {
+export const ButtonFrame = styled(ThemeableStack, {
   name: 'Button',
   tag: 'button',
   hoverable: true,

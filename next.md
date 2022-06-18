@@ -5,7 +5,8 @@
   - also aligns with stylex
 
 - 1.0
-  - compiler support pointerevents box-none
+  - another couple passes over style system to reduce work and size
+  - cache at variant level (?)
   - add _isExtracted via compiler (non-flat) to indicate no need to runtime merge defaultprops?
   - FAQ
   - document .extractable

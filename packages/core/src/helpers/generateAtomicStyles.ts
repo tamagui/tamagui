@@ -36,6 +36,7 @@ export const generateAtomicStyles = (
         const rules = createAtomicRules(identifier, key, valueString, pseudo)
         const styleObject: StyleObject = {
           property: key,
+          pseudo: pseudo?.name,
           value,
           identifier,
           rules,

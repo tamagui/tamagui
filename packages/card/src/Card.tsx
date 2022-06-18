@@ -23,7 +23,7 @@ type CardContextValue = {
 const [createCardContext, createCardScope] = createContextScope(CARD_NAME)
 const [CardProvider, useCardContext] = createCardContext<CardContextValue>(CARD_NAME)
 
-const CardFrame = styled(ThemeableStack, {
+export const CardFrame = styled(ThemeableStack, {
   name: 'Card',
   backgroundColor: '$background',
   position: 'relative',
@@ -44,7 +44,7 @@ const CardFrame = styled(ThemeableStack, {
   },
 })
 
-const CardHeader = styled(ThemeableStack, {
+export const CardHeader = styled(ThemeableStack, {
   name: 'CardHeader',
   zIndex: 10,
   backgroundColor: 'transparent',
@@ -61,7 +61,7 @@ const CardHeader = styled(ThemeableStack, {
   },
 })
 
-const CardFooter = styled(CardHeader, {
+export const CardFooter = styled(CardHeader, {
   name: 'CardFooter',
   zIndex: 5,
   flexDirection: 'row',
@@ -69,7 +69,7 @@ const CardFooter = styled(CardHeader, {
   marginBottom: 0,
 })
 
-const CardBackground = styled(ThemeableStack, {
+export const CardBackground = styled(ThemeableStack, {
   name: 'CardBackground',
   zIndex: 0,
   fullscreen: true,
@@ -111,4 +111,4 @@ export const Card = withStaticProperties(
   }
 )
 
-export { createCardScope, useCardContext, CardHeader, CardFooter, CardBackground }
+export { createCardScope, useCardContext }

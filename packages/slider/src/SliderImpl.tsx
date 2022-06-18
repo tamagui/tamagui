@@ -77,7 +77,6 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
             }
           },
         })}
-        debug="verbose"
         onMoveShouldSetResponderCapture={() => true}
         onScrollShouldSetResponder={() => true}
         onScrollShouldSetResponderCapture={() => true}

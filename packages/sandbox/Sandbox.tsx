@@ -1,3 +1,4 @@
+// debug
 globalThis['React'] = require('React')
 
 // debug
@@ -9,7 +10,7 @@ import { Studio } from '@takeout/studio'
 import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button } from 'tamagui'
+import { Button, H1, H3, Paragraph } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -41,7 +42,30 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Studio />
+        <H1
+          ta="left"
+          size="$9"
+          als="center"
+          maw={500}
+          $gtSm={{
+            mx: 0,
+            maxWidth: 800,
+            size: '$11',
+            ta: 'center',
+          }}
+          $gtMd={{
+            maxWidth: 900,
+            ta: 'center',
+            size: '$12',
+          }}
+          $gtLg={{
+            size: '$13',
+            maxWidth: 1200,
+          }}
+        >
+          Hello world
+        </H1>
+        {/* <Studio /> */}
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>

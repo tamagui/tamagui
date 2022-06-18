@@ -8,6 +8,7 @@ import {
   TamaguiInternalConfig,
   expandStyles,
   getSplitStyles,
+  getStylesAtomic,
   mediaQueryConfig,
   normalizeStyleObject,
   proxyThemeVariables,
@@ -82,6 +83,19 @@ export function createExtractor() {
   let loadedTamaguiConfig: TamaguiInternalConfig
   let hasLogged = false
 
+  function isValidStyleKey(name: string, staticConfig: StaticConfigParsed) {
+    return !!(
+      !!staticConfig.validStyles?.[name] ||
+      !!pseudos[name] ||
+      // disable variants because caching at the variant level = less work
+      // and expanding variants can get huge, i'm betting cost of many props
+      // is more than cost of expanding variants once for cache
+      // staticConfig.variants?.[name] ||
+      loadedTamaguiConfig.shorthands[name] ||
+      (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
+    )
+  }
+
   return {
     getTamagui() {
       return loadedTamaguiConfig
@@ -95,12 +109,14 @@ export function createExtractor() {
         shouldPrintDebug = false,
         sourcePath = '',
         onExtractTag,
+        onStyleRule,
         getFlattenedNode,
         disable,
         disableExtraction,
         disableExtractInlineMedia,
         disableExtractVariables,
         disableDebugAttr,
+        extractStyledDefinitions,
         prefixLogs,
         excludeProps,
         target,
@@ -177,8 +193,21 @@ export function createExtractor() {
 
       for (const bodyPath of body) {
         if (bodyPath.type !== 'ImportDeclaration') continue
-        const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as any
+        const node = ('node' in bodyPath ? bodyPath.node : bodyPath) as t.ImportDeclaration
         const from = node.source.value
+        // if importing styled()
+        if (extractStyledDefinitions) {
+          if (from === '@tamagui/core' || from === 'tamagui') {
+            if (
+              node.specifiers.some((specifier) => {
+                return specifier.local.name === 'styled'
+              })
+            ) {
+              doesUseValidImport = true
+              break
+            }
+          }
+        }
         const isValidImport = props.components.includes(from) || isInternalImport(from)
         if (isValidImport) {
           const isValidComponent = node.specifiers.some((specifier) => {
@@ -221,6 +250,7 @@ export function createExtractor() {
       let programPath: NodePath<t.Program>
 
       const res = {
+        styled: 0,
         flattened: 0,
         optimized: 0,
         modified: 0,
@@ -233,6 +263,138 @@ export function createExtractor() {
             programPath = path
           },
         },
+
+        CallExpression(path) {
+          if (disable || disableExtraction) {
+            return
+          }
+
+          if (!t.isIdentifier(path.node.callee) || path.node.callee.name !== 'styled') {
+            return
+          }
+
+          const name =
+            t.isVariableDeclarator(path.parent) && t.isIdentifier(path.parent.id)
+              ? path.parent.id.name
+              : 'unknown'
+          const definition = path.node.arguments[1]
+
+          if (!name || !definition || !t.isObjectExpression(definition)) {
+            return
+          }
+
+          const Component = validComponents[name] as
+            | { staticConfig: StaticConfigParsed }
+            | undefined
+
+          if (!Component) {
+            if (shouldPrintDebug) {
+              console.log(
+                `Didn't recognize styled(${name}), ${name} isn't in design system provided to tamagui.config.ts`
+              )
+            }
+            return
+          }
+
+          const componentSkipProps = new Set([
+            ...(Component.staticConfig.inlineWhenUnflattened || []),
+            ...(Component.staticConfig.inlineProps || []),
+            ...(Component.staticConfig.deoptProps || []),
+          ])
+
+          // for now dont parse variants, spreads, etc
+          const skipped: (t.ObjectProperty | t.SpreadElement | t.ObjectMethod)[] = []
+          const styles = {}
+
+          // for now skip variants, will return to them
+          const skipProps = {
+            variants: true,
+            defaultVariants: true,
+            name: true,
+          }
+
+          // Generate scope object at this level
+          const staticNamespace = getStaticBindingsForScope(
+            path.scope,
+            importsWhitelist,
+            sourcePath,
+            bindingCache,
+            shouldPrintDebug
+          )
+
+          const attemptEval = !evaluateVars
+            ? evaluateAstNode
+            : createEvaluator({
+                tamaguiConfig,
+                staticNamespace,
+                sourcePath,
+                shouldPrintDebug,
+              })
+          const attemptEvalSafe = createSafeEvaluator(attemptEval)
+
+          for (const property of definition.properties) {
+            if (
+              !t.isObjectProperty(property) ||
+              !t.isIdentifier(property.key) ||
+              skipProps[property.key.name] ||
+              !isValidStyleKey(property.key.name, Component.staticConfig) ||
+              componentSkipProps.has(property.key.name)
+            ) {
+              skipped.push(property)
+              continue
+            }
+            // attempt eval
+            const out = attemptEvalSafe(property.value)
+            if (out === FAILED_EVAL) {
+              skipped.push(property)
+            } else {
+              styles[property.key.name] = out
+            }
+          }
+
+          // turn parsed styles into CSS
+          const out = getSplitStyles(styles, Component.staticConfig, defaultTheme, {
+            focus: false,
+            hover: false,
+            mounted: false,
+            press: false,
+            pressIn: false,
+            resolveVariablesAs: 'variable',
+          })
+
+          const classNames = {
+            ...out.classNames,
+          }
+
+          // add in the style object as classnames
+          const atomics = getStylesAtomic(out.style)
+          for (const atomic of atomics) {
+            for (const rule of atomic.rules) {
+              out.rulesToInsert.push([atomic.identifier, rule])
+            }
+            classNames[atomic.property] = atomic.identifier
+          }
+
+          // leave only un-parsed props...
+          definition.properties = skipped
+
+          // ... + key: className
+          for (const cn in classNames) {
+            const val = classNames[cn]
+            definition.properties.push(t.objectProperty(t.stringLiteral(cn), t.stringLiteral(val)))
+          }
+
+          for (const [identifier, rule] of out.rulesToInsert) {
+            onStyleRule?.(identifier, [rule])
+          }
+
+          res.styled++
+
+          if (shouldPrintDebug) {
+            console.log(`Extracted styled(${name}) props:`, styles)
+          }
+        },
+
         JSXElement(traversePath) {
           tm.mark('jsx-element', shouldPrintDebug === 'verbose')
 
@@ -322,11 +484,10 @@ export function createExtractor() {
 
             const shouldLog = !hasLogged
             if (shouldLog) {
+              console.log(`  1️⃣  Inline optimized  2️⃣  Inline flattened  3️⃣  styled() extracted`)
               const prefix = '      |'
-              console.log(
-                prefixLogs || prefix,
-                '                          total · optimized · flattened '
-              )
+              // prettier-ignore
+              console.log(prefixLogs || prefix, '                         total ·  1️⃣  ·  2️⃣  ·  3️⃣')
               hasLogged = true
             }
             if (disableExtraction) {
@@ -334,18 +495,9 @@ export function createExtractor() {
             }
 
             const { staticConfig } = component
+            const variants = staticConfig.variants || {}
             const isTextView = staticConfig.isText || false
             const validStyles = staticConfig?.validStyles ?? {}
-
-            function isValidStyleKey(name: string) {
-              return !!(
-                !!validStyles[name] ||
-                !!pseudos[name] ||
-                staticConfig.variants?.[name] ||
-                tamaguiConfig.shorthands[name] ||
-                (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
-              )
-            }
 
             // find tag="a" tag="main" etc dom indicators
             let tagName = staticConfig.defaultProps?.tag ?? (isTextView ? 'span' : 'div')
@@ -389,7 +541,6 @@ export function createExtractor() {
             const attemptEval = !evaluateVars
               ? evaluateAstNode
               : createEvaluator({
-                  // @ts-ignore
                   tamaguiConfig,
                   staticNamespace,
                   sourcePath,
@@ -470,35 +621,6 @@ export function createExtractor() {
 
             // set flattened
             node.attributes = flattenedAttrs
-
-            // add in NON-STYLE default props
-            if (staticConfig.defaultProps) {
-              for (const key in staticConfig.defaultProps) {
-                if (isValidStyleKey(key)) {
-                  continue
-                }
-                const serialize = require('babel-literal-to-ast')
-                const val = staticConfig.defaultProps[key]
-                try {
-                  const serializedDefaultProp = serialize(val)
-                  node.attributes.unshift(
-                    t.jsxAttribute(
-                      t.jsxIdentifier(key),
-                      typeof val === 'string'
-                        ? t.stringLiteral(val)
-                        : t.jsxExpressionContainer(serializedDefaultProp)
-                    )
-                  )
-                } catch (err) {
-                  console.warn(
-                    `⚠️ Error evaluating default prop for component ${node.name.name}, prop ${key}\n error: ${err}\n value:`,
-                    val,
-                    '\n defaultProps:',
-                    staticConfig.defaultProps
-                  )
-                }
-              }
-            }
 
             let attrs: ExtractedAttr[] = []
             let shouldDeopt = false
@@ -727,50 +849,50 @@ export function createExtractor() {
 
               // never flatten if a prop isn't a valid static attribute
               // only post prop-mapping
-              if (!isValidStyleKey(name)) {
+              if (!variants[name] && !isValidStyleKey(name, staticConfig)) {
                 let keys = [name]
                 let out: any = null
-                if (staticConfig.propMapper) {
-                  // for now passing empty props {}, a bit odd, need to at least document
-                  // for now we don't expose custom components so just noting behavior
-                  out = staticConfig.propMapper(
-                    name,
-                    styleValue,
-                    defaultTheme,
-                    staticConfig.defaultProps,
-                    { resolveVariablesAs: 'auto' },
-                    undefined,
-                    shouldPrintDebug
-                  )
-                  if (out) {
-                    if (!Array.isArray(out)) {
-                      console.warn(`Error expected array but got`, out)
-                      couldntParse = true
-                      shouldDeopt = true
-                    } else {
-                      out = Object.fromEntries(out)
-                    }
-                  }
-                  if (out) {
-                    if (isTargetingHTML) {
-                      // translate to DOM-compat
-                      out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
-                      // remove className - we dont use rnw styling
-                      delete out.className
-                    }
 
+                // for now passing empty props {}, a bit odd, need to at least document
+                // for now we don't expose custom components so just noting behavior
+                out = staticConfig.propMapper(
+                  name,
+                  styleValue,
+                  defaultTheme,
+                  staticConfig.defaultProps,
+                  { resolveVariablesAs: 'auto' },
+                  undefined,
+                  shouldPrintDebug
+                )
+                if (out) {
+                  if (!Array.isArray(out)) {
+                    console.warn(`Error expected array but got`, out)
+                    couldntParse = true
+                    shouldDeopt = true
+                  } else {
+                    out = Object.fromEntries(out)
                     keys = Object.keys(out)
                   }
+                }
+                if (out) {
+                  if (isTargetingHTML) {
+                    // translate to DOM-compat
+                    out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
+                    // remove className - we dont use rnw styling
+                    delete out.className
+                  }
+
+                  keys = Object.keys(out)
                 }
 
                 let didInline = false
                 const attributes = keys.map((key) => {
                   const val = out[key]
-                  if (isValidStyleKey(key)) {
+                  if (isValidStyleKey(key, staticConfig)) {
                     return {
                       type: 'style',
-                      value: { [name]: styleValue },
-                      name,
+                      value: { [key]: styleValue },
+                      name: key,
                       attr: path.node,
                     } as const
                   }
@@ -809,7 +931,7 @@ export function createExtractor() {
                   inlineWhenUnflattenedOGVals[name] = { styleValue, attr }
                 }
 
-                if (isValidStyleKey(name)) {
+                if (isValidStyleKey(name, staticConfig)) {
                   if (shouldPrintDebug) {
                     console.log(`  style: ${name} =`, styleValue)
                   }
@@ -974,7 +1096,7 @@ export function createExtractor() {
                     return false
                   }
                   const propName = prop.key['name']
-                  if (!isValidStyleKey(propName) && propName !== 'tag') {
+                  if (!isValidStyleKey(propName, staticConfig) && propName !== 'tag') {
                     if (shouldPrintDebug) {
                       console.log('  not a valid style prop!', propName)
                     }
@@ -1211,7 +1333,7 @@ export function createExtractor() {
             // only if we flatten, ensure the default styles are there
             if (shouldFlatten && staticConfig.defaultProps) {
               const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap((key) => {
-                if (!isValidStyleKey(key)) {
+                if (!isValidStyleKey(key, staticConfig)) {
                   return []
                 }
                 const value = staticConfig.defaultProps[key]
@@ -1404,7 +1526,7 @@ export function createExtractor() {
             }, [])
 
             const state = {
-              noClassNames: true,
+              noClassNames: false,
               focus: false,
               hover: false,
               mounted: true, // TODO match logic in createComponent
@@ -1488,19 +1610,22 @@ export function createExtractor() {
                   undefined,
                   props['debug']
                 )
+
+                // console.log('outout', out)
+
                 const outStyle = {
                   ...out.style,
                   ...out.pseudos,
                 }
-                omitInvalidStyles(outStyle)
-                if (shouldPrintDebug) {
-                  // prettier-ignore
-                  console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
-                  // prettier-ignore
-                  console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
-                  // prettier-ignore
-                  console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
-                }
+                // omitInvalidStyles(outStyle)
+                // if (shouldPrintDebug) {
+                //   // prettier-ignore
+                //   console.log(`       getStyles ${debugName} (props):\n`, logLines(objToStr(props)))
+                //   // prettier-ignore
+                //   console.log(`       getStyles ${debugName} (out.viewProps):\n`, logLines(objToStr(out.viewProps)))
+                //   // prettier-ignore
+                //   console.log(`       getStyles ${debugName} (out.style):\n`, logLines(objToStr(outStyle || {}), true))
+                // }
                 return outStyle
               } catch (err: any) {
                 console.log('error', err.message, err.stack)
@@ -1553,9 +1678,9 @@ export function createExtractor() {
 
             if (shouldPrintDebug) {
               // prettier-ignore
-              console.log('   -- addInitialStyleKeys', addInitialStyleKeys.join(', '), { shouldFlatten })
+              if (shouldFlatten) console.log('   -- addInitialStyleKeys', addInitialStyleKeys.join(', '))
               // prettier-ignore
-              console.log('   -- completeStyles:\n', logLines(objToStr(completeStyles)))
+              // console.log('   -- completeStyles:\n', logLines(objToStr(completeStyles)))
             }
 
             let getStyleError: any = null
@@ -1572,19 +1697,13 @@ export function createExtractor() {
                     if (shouldPrintDebug) console.log('     => tern ', attrStr(attr))
                     continue
                   case 'style':
-                    if (shouldPrintDebug) console.log('  * styles in', attr.value)
                     // expand variants and such
-                    // get the keys we need
                     const styles = getStyles(attr.value, 'style')
-                    // prettier-ignore
-                    if (shouldPrintDebug) console.log('  * styles out', logLines(objToStr(styles)))
                     if (styles) {
-                      // but actually resolve them to the full object
-                      // TODO media/pseudo merging
-                      attr.value = Object.fromEntries(
-                        Object.keys(styles).map((k) => [k, completeStyles[k]])
-                      )
+                      attr.value = styles
                     }
+                    // prettier-ignore
+                    if (shouldPrintDebug) console.log('  * styles (in)', logLines(objToStr(attr.value)), ' (out)', logLines(objToStr(styles)))
                     continue
                 }
               } catch (err) {

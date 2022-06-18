@@ -9,6 +9,11 @@ export const EnsureFlexed = styled(Text, {
   display: 'flex',
   fontSize: 200,
   children: `wwwwwwwwwwwwwwwwwww`,
+
+  hoverStyle: {
+    backgroundColor: 'red',
+  },
+
   pointerEvents: 'none',
 })
 

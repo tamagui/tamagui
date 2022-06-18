@@ -43,7 +43,7 @@ const [SwitchProvider, useSwitchContext] = createSwitchContext<{
 const getSwitchHeight = (val: SizeTokens) => Math.round(getVariableValue(getSize(val)) * 0.65)
 const getSwitchWidth = (val: SizeTokens) => getSwitchHeight(val) * 2
 
-const SwitchFrame = styled(XStack, {
+export const SwitchFrame = styled(XStack, {
   name: 'Switch',
   tag: 'button',
   borderRadius: 1000,
@@ -187,7 +187,7 @@ export const Switch: ReactComponentWithRef<SwitchProps, HTMLButtonElement | View
 
 const THUMB_NAME = 'SwitchThumb'
 
-const SwitchThumbFrame = styled(ThemeableStack, {
+export const SwitchThumbFrame = styled(ThemeableStack, {
   name: 'SwitchThumb',
   backgroundColor: '$background',
   borderRadius: 1000,

@@ -47,7 +47,7 @@ export type ListItemProps = Omit<TextParentStyles, 'TextComponent'> &
     subTitle?: React.ReactNode
   }
 
-const ListItemFrame = styled(ThemeableStack, {
+export const ListItemFrame = styled(ThemeableStack, {
   name: 'ListItem',
   tag: 'li',
   alignItems: 'center',

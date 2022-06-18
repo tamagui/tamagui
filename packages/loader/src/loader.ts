@@ -8,6 +8,9 @@ import { LoaderContext } from 'webpack'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
 
+// pass loader as path
+const CSS_LOADER_PATH = require.resolve('./css')
+
 Error.stackTraceLimit = Infinity
 const extractor = createExtractor()
 
@@ -54,7 +57,7 @@ export function loader(this: LoaderContext<any>, source: string) {
     const extracted = extractToClassNames({
       loader: this,
       extractor,
-      cssLoaderPath: require.resolve('./css'),
+      cssLoaderPath: CSS_LOADER_PATH,
       source,
       threaded,
       sourcePath,

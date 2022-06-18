@@ -81,22 +81,25 @@ const transform = withPlugins(
 
 module.exports = function (name, opts) {
   /** @type {import('next').NextConfig} */
-  const finalConfig = {
-    ...opts.defaultConfig,
+  const out = transform(name, opts)
+
+  return {
+    ...out,
     experimental: {
-      ...opts.defaultConfig.experimental,
+      ...out.experimental,
       plugins: true,
       scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,
       reactMode: 'concurrent',
     },
-    webpack5: true,
-    eslint: false,
+    eslint: {
+      ...out.eslint,
+      ignoreDuringBuilds: true,
+    },
     typescript: {
+      ...out.typescript,
       ignoreBuildErrors: true,
     },
   }
-
-  return transform(name, finalConfig)
 }

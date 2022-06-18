@@ -5,7 +5,7 @@ export declare function createEvaluator({ tamaguiConfig, staticNamespace, source
     tamaguiConfig: TamaguiConfig;
     staticNamespace: Record<string, any>;
     sourcePath: string;
-    traversePath: NodePath<t.JSXElement>;
+    traversePath?: NodePath<t.JSXElement>;
     shouldPrintDebug: boolean | 'verbose';
 }): (n: t.Node) => any;
 export declare function createSafeEvaluator(attemptEval: (n: t.Node) => any): (n: t.Node) => any;

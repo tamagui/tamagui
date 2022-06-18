@@ -4,7 +4,7 @@ import { LoaderContext } from 'webpack'
 export const extractedInfoByFile = new Map<string, ExtractedResponse>()
 export const stylePathToFilePath = new Map<string, string>()
 
-export default function loader(this: LoaderContext<any>, source: string) {
+export default function loader(this: LoaderContext<any>) {
   this.async()
   const options: TamaguiOptions = { ...this.getOptions() }
   const sourcePath = `${this.resourcePath}`

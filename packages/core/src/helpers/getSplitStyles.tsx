@@ -162,10 +162,6 @@ export const getSplitStyles: StyleSplitter = (
         transforms[namespace][1] += transform
       }
     } else {
-      if (key === 'borderBottomColor' && val === '_bbc-0hover-115rkfj') {
-        debugger
-      }
-
       classNames[key] = val
     }
   }
@@ -220,11 +216,11 @@ export const getSplitStyles: StyleSplitter = (
             // is media
             let mediaShortKey = mediaOrPseudo.slice(1)
             mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
-            fullKey += `-${mediaShortKey}`
+            fullKey += `_${mediaShortKey}`
           } else if (isPseudo) {
             // is pseudo
             const pseudoShortKey = mediaOrPseudo.slice(1)
-            fullKey += `-${pseudoCNInverse[pseudoShortKey]}`
+            fullKey += `_${pseudoShortKey}`
           }
           usedKeys.add(fullKey)
           mergeClassName(fullKey, cn, isMediaOrPseudo)
@@ -239,7 +235,8 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (validStyleProps[keyInit] && valInit && valInit[0] === '_') {
+    // not the strongest check for now we can make better..
+    if (valInit && valInit[0] === '_') {
       usedKeys.add(keyInit)
       mergeClassName(keyInit, valInit)
       continue
@@ -324,7 +321,7 @@ export const getSplitStyles: StyleSplitter = (
           }
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
-            const fullKey = `${style.property}-${key}`
+            const fullKey = `${style.property}_${pseudoAttrs[key].name}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(style.identifier, style.rules.join(';'))
@@ -366,7 +363,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             // TODO handle pseudo + media, not too hard just need to set up example case
-            const fullKey = `${style.property}-${mediaKeyShort}`
+            const fullKey = `${style.property}_${mediaKeyShort}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(out.identifier, out.styleRule)
@@ -394,24 +391,17 @@ export const getSplitStyles: StyleSplitter = (
         usedKeys.add(key)
         if (val && val[0] === '_') {
           classNames[key] = val
+        } else if (key in stylePropsTransform) {
+          mergeTransform(style, key, val, true)
         } else {
-          if (key in stylePropsTransform) {
-            if (process.env.NODE_ENV === 'development' && debug) {
-              console.log('  > mergeTransform', key, val)
-            }
-            mergeTransform(style, key, val, true)
-          } else {
-            style[key] = val
-          }
+          style[key] = val
         }
-
         continue
       }
 
       // pass to view props
       if (!staticConfig.variants || !(key in staticConfig.variants)) {
         if (!skipProps[key]) {
-          // push()
           viewProps[key] = val
           usedKeys.add(key)
         }

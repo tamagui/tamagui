@@ -144,6 +144,10 @@ export function createComponent<
       }
     }
 
+    if (propsIn['backgroundColor']?.includes('0hover')) {
+      debugger
+    }
+
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
     const statesUsed = useState<TamaguiComponentState>(defaultComponentState)
@@ -951,6 +955,10 @@ export function createComponent<
       if (ourDefaultsMerged) {
         defaultPropsIn = mergeProps(defaultPropsIn, ourDefaultsMerged)
       }
+    }
+
+    if (process.env.NODE_ENV === 'development' && defaultPropsIn['debug'] === 'break') {
+      debugger
     }
 
     initialSplitStyles = insertSplitStyles(

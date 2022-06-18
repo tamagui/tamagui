@@ -476,7 +476,7 @@ SelectItem.displayName = ITEM_NAME
 
 const ITEM_TEXT_NAME = 'SelectItemText'
 
-const SelectItemTextFrame = styled(Paragraph, {
+export const SelectItemTextFrame = styled(Paragraph, {
   name: ITEM_TEXT_NAME,
   cursor: 'default',
 })
@@ -561,7 +561,7 @@ type SelectGroupContextValue = { id: string }
 const [SelectGroupContextProvider, useSelectGroupContext] =
   createSelectContext<SelectGroupContextValue>(GROUP_NAME)
 
-const SelectGroupFrame = styled(YStack, {
+export const SelectGroupFrame = styled(YStack, {
   name: GROUP_NAME,
   width: '100%',
 })

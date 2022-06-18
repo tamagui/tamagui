@@ -21,7 +21,7 @@ export function createEvaluator({
   tamaguiConfig: TamaguiConfig
   staticNamespace: Record<string, any>
   sourcePath: string
-  traversePath: NodePath<t.JSXElement>
+  traversePath?: NodePath<t.JSXElement>
   shouldPrintDebug: boolean | 'verbose'
 }) {
   // called when evaluateAstNode encounters a dynamic-looking prop
@@ -30,6 +30,7 @@ export function createEvaluator({
     if (
       t.isMemberExpression(n) &&
       t.isIdentifier(n.property) &&
+      traversePath &&
       isValidThemeHook(traversePath, n, sourcePath)
     ) {
       const key = n.property.name

@@ -62,6 +62,8 @@ export declare type ExtractorParseProps = TamaguiOptions & {
         isTextView: boolean;
         tag: string;
     }) => string;
+    extractStyledDefinitions?: boolean;
+    onStyleRule?: (identifier: string, rules: string[]) => void;
 };
 export interface Ternary {
     test: t.Expression;
