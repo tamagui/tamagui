@@ -548,9 +548,6 @@ export function createComponent<
         state.hover && addPseudoToStyles(styles, initPseudos, pseudos, 'hoverStyle', force)
         state.focus && addPseudoToStyles(styles, initPseudos, pseudos, 'focusStyle', force)
         state.press && addPseudoToStyles(styles, initPseudos, pseudos, 'pressStyle', force)
-        if (props['debug']) {
-          console.log('wtf', state, styles)
-        }
       }
       // ugly but for now...
       if (shouldForcePseudo) {
@@ -881,7 +878,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent: elementType, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig } : null) })
+        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent: elementType, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo } : null) })
       }
     }
 

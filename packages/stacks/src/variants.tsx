@@ -74,12 +74,7 @@ export const hoverable = {
       borderColor: '$borderColorHover',
     },
   },
-  false: {
-    hoverStyle: {
-      backgroundColor: '$background',
-      borderColor: '$borderColor',
-    },
-  },
+  false: {},
 }
 
 export const pressable = {
@@ -89,12 +84,7 @@ export const pressable = {
       borderColor: '$borderColorPress',
     },
   },
-  false: {
-    pressStyle: {
-      backgroundColor: '$background',
-      borderColor: '$borderColor',
-    },
-  },
+  false: {},
 }
 
 export const focusable = {
@@ -104,10 +94,5 @@ export const focusable = {
       borderColor: '$borderColorFocus',
     },
   },
-  false: {
-    focusStyle: {
-      backgroundColor: '$background',
-      borderColor: '$borderColor',
-    },
-  },
+  false: {},
 }

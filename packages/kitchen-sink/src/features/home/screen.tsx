@@ -1,6 +1,7 @@
+import { SliderDemo } from '@tamagui/demos'
 import { Moon, Sun } from '@tamagui/feather-icons'
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -11,7 +12,6 @@ import {
   Separator,
   Spacer,
   Switch,
-  XStack,
   YStack,
 } from 'tamagui'
 

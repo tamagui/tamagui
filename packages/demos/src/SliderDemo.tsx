@@ -1,5 +1,4 @@
-import React from 'react'
-import { SizeTokens, Slider, SliderProps, Spacer, XStack, YStack } from 'tamagui'
+import { Slider, SliderProps, XStack } from 'tamagui'
 
 export default function SliderDemo() {
   return (
@@ -16,7 +15,7 @@ function SimpleSlider({ children, ...props }: SliderProps) {
       <Slider.Track>
         <Slider.TrackActive />
       </Slider.Track>
-      <Slider.Thumb hoverable bordered circular elevate index={0} />
+      <Slider.Thumb bordered circular elevate index={0} />
       {children}
     </Slider>
   )

@@ -94,6 +94,7 @@ export declare const elevate: {
         tag?: string | import("@tamagui/core").Variable<any> | undefined;
         theme?: import("@tamagui/core").Variable<any> | import("@tamagui/core").ThemeName | null | undefined;
         componentName?: string | import("@tamagui/core").Variable<any> | undefined;
+        forceStyle?: import("@tamagui/core").Variable<any> | "hover" | "press" | "focus" | undefined;
         onHoverIn?: import("@tamagui/core").Variable<any> | ((e: MouseEvent) => any) | undefined;
         onHoverOut?: import("@tamagui/core").Variable<any> | ((e: MouseEvent) => any) | undefined;
         onPress?: ((e: import("react-native").GestureResponderEvent) => any) | import("@tamagui/core").Variable<any> | undefined;
@@ -245,12 +246,7 @@ export declare const hoverable: {
             borderColor: string;
         };
     };
-    false: {
-        hoverStyle: {
-            backgroundColor: string;
-            borderColor: string;
-        };
-    };
+    false: {};
 };
 export declare const pressable: {
     true: {
@@ -259,12 +255,7 @@ export declare const pressable: {
             borderColor: string;
         };
     };
-    false: {
-        pressStyle: {
-            backgroundColor: string;
-            borderColor: string;
-        };
-    };
+    false: {};
 };
 export declare const focusable: {
     true: {
@@ -273,11 +264,6 @@ export declare const focusable: {
             borderColor: string;
         };
     };
-    false: {
-        focusStyle: {
-            backgroundColor: string;
-            borderColor: string;
-        };
-    };
+    false: {};
 };
 //# sourceMappingURL=variants.d.ts.map
