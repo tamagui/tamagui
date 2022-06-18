@@ -77,7 +77,17 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
             }
           },
         })}
+        debug="verbose"
+        onMoveShouldSetResponderCapture={() => true}
+        onScrollShouldSetResponder={() => true}
+        onScrollShouldSetResponderCapture={() => true}
+        onMoveShouldSetResponder={() => true}
         onStartShouldSetResponder={() => true}
+        onStartShouldSetResponderCapture={() => true}
+        onResponderTerminationRequest={() => {
+          console.log('got??/')
+          return false
+        }}
         onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
           const target = event.target as HTMLElement | number
           const isStartingOnThumb = context.thumbs.has(event.target)
@@ -92,6 +102,10 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
           onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track')
         })}
         onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
+          console.log('gogo')
+          event.preventDefault()
+          event.stopPropagation()
+
           // const target = event.target as HTMLElement
           onSlideMove(event)
         })}

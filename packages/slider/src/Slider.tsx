@@ -1,7 +1,7 @@
 // forked from radix-ui
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { getButtonSize, getSize, isWeb, styled, withStaticProperties } from '@tamagui/core'
+import { getSize, isWeb, styled, withStaticProperties } from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -275,9 +275,9 @@ const SliderThumbFrame = styled(ThemeableStack, {
   // OR THIS
   borderWidth: 2,
   backgrounded: true,
-  pressable: true,
-  focusable: true,
-  hoverable: true,
+  pressable: isWeb,
+  focusable: isWeb,
+  hoverable: isWeb,
 
   variants: {
     size: {
@@ -379,6 +379,11 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         // style={value === undefined ? { display: 'none' } : props.style}
         onFocus={composeEventHandlers(props.onFocus, () => {
           context.valueIndexToChangeRef.current = index
+        })}
+        // temp fix to make slider work nicely on native
+        // we just let the events propagate to the track
+        {...(!isWeb && {
+          pointerEvents: 'none',
         })}
       />
     )
