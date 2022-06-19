@@ -8,3 +8,7 @@ const mapTransformKeys = {
   x: 'translateX',
   y: 'translateY',
 }
+export const invertMapTransformKeys = {
+  translateX: 'x',
+  translateY: 'y',
+}

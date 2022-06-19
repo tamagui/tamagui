@@ -130,7 +130,7 @@ export function createComponent<
       ? `is_${props.componentName}`
       : defaultComponentClassName
 
-    if (process.env.NODE_ENV === 'development') {
+    if (true) {
       if (props['debug']) {
         // prettier-ignore
         console.log('⚠️', componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
@@ -142,10 +142,6 @@ export function createComponent<
         })
         if (props['debug'] === 'break') debugger
       }
-    }
-
-    if (propsIn['backgroundColor']?.includes('0hover')) {
-      debugger
     }
 
     const forceUpdate = useForceUpdate()
@@ -184,7 +180,7 @@ export function createComponent<
       staticConfig,
       theme,
       splitStyleState,
-      shouldAvoidClasses || props.asChild ? null : initialSplitStyles.classNames,
+      props.asChild ? null : initialSplitStyles.classNames,
       props['debug']
     )
 
@@ -494,7 +490,7 @@ export function createComponent<
     }
 
     // from react-native-web
-    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
+    if (true && !isText && isWeb) {
       Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
           console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
@@ -577,16 +573,6 @@ export function createComponent<
         classNames ? Object.values(classNames).join(' ') : '',
       ]
 
-      if (!shouldAvoidClasses) {
-        if (classNames) {
-          classList.push(Object.values(classNames).join(' '))
-        }
-        // TODO restore this to isText classList
-        // hasTextAncestor === true && cssText.textHasAncestor,
-        // TODO MOVE TO VARIANTS [number] [any]
-        // numberOfLines != null && numberOfLines > 1 && cssText.textMultiLine,
-      }
-
       const className = classList.join(' ')
       const style = animationStyles ?? splitStyles.style
 
@@ -595,10 +581,17 @@ export function createComponent<
         console.log('  » className', { splitStyles, style, isStringElement, pseudos, state, classNames, propsClassName: props.className, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
       }
 
-      if (staticConfig.isReactNativeWeb) {
+      // TODO this is specific to reanimated rn
+      const isAnimatedReactNativeWeb = props.animation && avoidClasses
+
+      if (staticConfig.isReactNativeWeb || isAnimatedReactNativeWeb) {
         viewProps.dataSet = {
           ...viewProps.dataSet,
-          className: className,
+          className,
+          id: props.id,
+        }
+        if (props['data-is']) {
+          viewProps.dataSet.is = props['data-is']
         }
       } else {
         viewProps.className = className
@@ -880,7 +873,7 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
-        console.log('  » ', { propsIn: { ...props }, propsOut: { ...viewProps }, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent: elementType, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo } : null) })
+        console.log('⭐️', { propsIn: { ...props }, propsOut: { ...viewProps }, elementType, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent: elementType, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo } : null) })
       }
     }
 
@@ -988,7 +981,7 @@ export function createComponent<
     // split - keep variables on props to be processed using theme values at runtime (native)
     for (const key in staticConfig.defaultProps) {
       const val = staticConfig.defaultProps[key]
-      if ((typeof val === 'string' && val[0] === '$') || !validStyles[key]) {
+      if ((typeof val === 'string' && val[0] === '$') || !validStyles[key] || val[0] === '_') {
         defaults[key] = val
       } else {
         defaultNativeStyle[key] = val

@@ -95,74 +95,71 @@ if (shouldClean || shouldCleanBuildOnly) {
       }
     }
 
+    async function buildJs() {
+      if (skipJS) {
+        return
+      }
+      const start = Date.now()
+      return await Promise.all([
+        pkgMain
+          ? esbuild.build({
+              entryPoints: files,
+              outdir: 'dist/cjs',
+              bundle: false,
+              sourcemap: true,
+              target: 'node14',
+              keepNames: true,
+              format: 'cjs',
+              color: true,
+              logLevel: 'error',
+              plugins: [externalPlugin],
+              minify: false,
+              platform: 'node',
+            })
+          : null,
+        // dont bundle for tree shaking
+        pkgModule
+          ? esbuild.build({
+              entryPoints: files,
+              outdir: 'dist/esm',
+              sourcemap: true,
+              target: 'es2019',
+              keepNames: true,
+              format: 'esm',
+              color: true,
+              logLevel: 'error',
+              minify: false,
+              platform: 'neutral',
+            })
+          : null,
+        esbuild.build({
+          // only diff is jsx preserve and outdir
+          jsx: 'preserve',
+          outdir: 'dist/jsx',
+          entryPoints: files,
+          sourcemap: false,
+          target: 'es2019',
+          keepNames: true,
+          format: 'esm',
+          color: true,
+          logLevel: 'error',
+          minify: false,
+          platform: 'neutral',
+        }),
+      ]).then(() => {
+        console.log(`built js in ${Date.now() - start}ms`)
+      })
+    }
+
     const externalPlugin = createExternalPlugin({
       skipNodeModulesBundle: true,
     })
 
     try {
       await Promise.all([
+        //
         buildTsc(),
-        ...(skipJS
-          ? []
-          : [
-              pkgMain
-                ? esbuild
-                    .build({
-                      entryPoints: files,
-                      outdir: 'dist/cjs',
-                      bundle: false,
-                      sourcemap: true,
-                      target: 'node14',
-                      keepNames: true,
-                      format: 'cjs',
-                      color: true,
-                      logLevel: 'error',
-                      plugins: [externalPlugin],
-                      minify: false,
-                      platform: 'node',
-                    })
-                    .then(() => {
-                      console.log(' >-> commonjs')
-                    })
-                : null,
-              // dont bundle for tree shaking
-              pkgModule
-                ? esbuild
-                    .build({
-                      entryPoints: files,
-                      outdir: 'dist/esm',
-                      sourcemap: true,
-                      target: 'es2019',
-                      keepNames: true,
-                      format: 'esm',
-                      color: true,
-                      logLevel: 'error',
-                      minify: false,
-                      platform: 'neutral',
-                    })
-                    .then(() => {
-                      console.log(' >-> esm')
-                    })
-                : null,
-              esbuild
-                .build({
-                  // only diff is jsx preserve and outdir
-                  jsx: 'preserve',
-                  outdir: 'dist/jsx',
-                  entryPoints: files,
-                  sourcemap: false,
-                  target: 'es2019',
-                  keepNames: true,
-                  format: 'esm',
-                  color: true,
-                  logLevel: 'error',
-                  minify: false,
-                  platform: 'neutral',
-                })
-                .then(() => {
-                  console.log(' >-> jsx')
-                }),
-            ]),
+        buildJs(),
       ])
     } catch (error) {
       console.log('error', error)

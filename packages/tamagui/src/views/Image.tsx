@@ -8,6 +8,7 @@ const StyledImage = styled(
   RNImage,
   {
     name: 'Image',
+    zIndex: 1,
     position: 'relative',
     source: { uri: '' },
   },

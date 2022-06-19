@@ -20,6 +20,7 @@ export default (props) => {
   return (
     <>
       <Square
+        focusable={false}
         animation={props.animation || 'bouncy'}
         onPress={() => next()}
         size={110}

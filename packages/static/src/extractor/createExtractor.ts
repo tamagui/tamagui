@@ -625,6 +625,7 @@ export function createExtractor() {
             let attrs: ExtractedAttr[] = []
             let shouldDeopt = false
             const inlined = new Map<string, any>()
+            const variantValues = new Map<string, any>()
             let hasSetOptimized = false
             const inlineWhenUnflattenedOGVals = {}
 
@@ -948,6 +949,9 @@ export function createExtractor() {
                     attr: path.node,
                   }
                 } else {
+                  if (variants[name]) {
+                    variantValues.set(name, styleValue)
+                  }
                   inlined.set(name, true)
                   return attr
                 }
@@ -1270,9 +1274,14 @@ export function createExtractor() {
 
             let themeVal = inlined.get('theme')
             inlined.delete('theme')
-            const allOtherPropsExtractable = [...inlined].every(([k, v]) => INLINE_EXTRACTABLE[k])
-            const shouldWrapThme = allOtherPropsExtractable && !!themeVal
-            const canFlattenProps = inlined.size === 0 || shouldWrapThme || allOtherPropsExtractable
+
+            for (const [key] of [...inlined]) {
+              if (INLINE_EXTRACTABLE[key] || staticConfig.variants?.[key]) {
+                inlined.delete(key)
+              }
+            }
+
+            const canFlattenProps = inlined.size === 0
 
             let shouldFlatten =
               !shouldDeopt &&
@@ -1280,6 +1289,8 @@ export function createExtractor() {
               !hasSpread &&
               staticConfig.neverFlatten !== true &&
               (staticConfig.neverFlatten === 'jsx' ? hasOnlyStringChildren : true)
+
+            const shouldWrapTheme = shouldFlatten && themeVal
 
             if (disableExtractVariables) {
               themeAccessListeners.add((key) => {
@@ -1292,13 +1303,15 @@ export function createExtractor() {
 
             if (shouldPrintDebug) {
               // prettier-ignore
-              console.log(' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapThme, allOtherPropsExtractable, hasOnlyStringChildren }))
+              console.log(' - flatten?', objToStr({ hasSpread, shouldDeopt, shouldFlatten, canFlattenProps, shouldWrapTheme, hasOnlyStringChildren }), 'inlined', [...inlined])
             }
 
             // wrap theme around children on flatten
-            if (shouldFlatten && shouldWrapThme) {
+            // TODO move this to bottom and re-check shouldFlatten
+            // account for shouldFlatten could change w the above block "if (disableExtractVariables)"
+            if (shouldFlatten && shouldWrapTheme) {
               if (shouldPrintDebug) {
-                console.log('  - wrapping theme', allOtherPropsExtractable, themeVal)
+                console.log('  - wrapping theme', themeVal)
               }
 
               // remove theme attribute from flattened node
@@ -1400,9 +1413,56 @@ export function createExtractor() {
               if (!cur) return acc
               if (cur.type === 'attr' && !t.isJSXSpreadAttribute(cur.value)) {
                 if (shouldFlatten) {
-                  if (cur.value.name.name === 'tag') {
-                    // remove tag=""
-                    return acc
+                  const name = cur.value.name.name
+                  if (typeof name === 'string') {
+                    if (name === 'tag') {
+                      // remove tag=""
+                      return acc
+                    }
+
+                    // if flattening expand variants
+                    if (variants[name] && variantValues.has(name)) {
+                      let out = Object.fromEntries(
+                        staticConfig.propMapper(
+                          name,
+                          variantValues.get(name),
+                          defaultTheme,
+                          staticConfig.defaultProps,
+                          { resolveVariablesAs: 'auto' },
+                          undefined,
+                          shouldPrintDebug
+                        ) || []
+                      )
+                      if (out && isTargetingHTML) {
+                        // translate to DOM-compat
+                        out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
+                        // remove className - we dont use rnw styling
+                        delete out.className
+                      }
+                      for (const key in out) {
+                        const value = out[key]
+                        if (isValidStyleKey(key, staticConfig)) {
+                          acc.push({
+                            type: 'style',
+                            value: { [key]: value },
+                            name: key,
+                            attr: cur.value,
+                          } as const)
+                        } else {
+                          acc.push({
+                            type: 'attr',
+                            value: t.jsxAttribute(
+                              t.jsxIdentifier(key),
+                              t.jsxExpressionContainer(
+                                typeof value === 'string'
+                                  ? t.stringLiteral(value)
+                                  : literalToAst(value)
+                              )
+                            ),
+                          })
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -1731,7 +1791,7 @@ export function createExtractor() {
               const attr = attrs[i]
 
               // if flattening map inline props to proper flattened names
-              if (shouldFlatten && canFlattenProps) {
+              if (shouldFlatten) {
                 if (attr.type === 'attr') {
                   if (t.isJSXAttribute(attr.value)) {
                     if (t.isJSXIdentifier(attr.value.name)) {
@@ -1739,6 +1799,15 @@ export function createExtractor() {
                       if (INLINE_EXTRACTABLE[name]) {
                         // map to HTML only name
                         attr.value.name.name = INLINE_EXTRACTABLE[name]
+                      }
+
+                      // if flattening expand turn variants into styles
+                      if (staticConfig.variants?.[name]) {
+                        const expanded = getStyles({})
+                        // attrs[i] = {
+                        //   type: 'style',
+                        //   value:
+                        // }
                       }
                     }
                   }

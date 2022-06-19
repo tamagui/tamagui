@@ -13,8 +13,8 @@ export default function CardDemo() {
         w={250}
         h={300}
         scale={0.9}
-        hoverStyle={{ scale: 0.95 }}
-        pressStyle={{ scale: 0.85 }}
+        hoverStyle={{ scale: 0.925 }}
+        pressStyle={{ scale: 0.875 }}
       />
       <DemoCard size="$5" w={250} h={300} />
     </XStack>
@@ -23,7 +23,7 @@ export default function CardDemo() {
 
 function DemoCard(props: CardProps) {
   return (
-    <Card theme="dark" elevate size="$4" {...props}>
+    <Card theme="dark" elevate size="$4" bordered {...props}>
       <Card.Header padded>
         <H2>Sony A7IV</H2>
         <Paragraph theme="alt2">Now available</Paragraph>

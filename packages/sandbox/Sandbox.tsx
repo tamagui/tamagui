@@ -7,10 +7,10 @@ import '@tamagui/site/public/fonts/inter.css'
 import '@tamagui/polyfill-dev'
 
 import { Studio } from '@takeout/studio'
-import { SelectDemo } from '@tamagui/demos'
+import { AnimationsDemo, SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, H1, H3, Paragraph } from 'tamagui'
+import { Button, H1, H3, Paragraph, Square, YStack, ZStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -42,30 +42,24 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <H1
-          ta="left"
-          size="$9"
-          als="center"
-          maw={500}
-          $gtSm={{
-            mx: 0,
-            maxWidth: 800,
-            size: '$11',
-            ta: 'center',
+        {/* <YStack debug="verbose" fullscreen y={20} x={20} bw={2} bc="$color" br="$4" p="$2" /> */}
+        {/* <Square
+          debug
+          focusable={false}
+          animation="bouncy"
+          size={110}
+          bc="$pink10"
+          br="$9"
+          hoverStyle={{
+            scale: 1.1,
           }}
-          $gtMd={{
-            maxWidth: 900,
-            ta: 'center',
-            size: '$12',
-          }}
-          $gtLg={{
-            size: '$13',
-            maxWidth: 1200,
+          pressStyle={{
+            scale: 0.9,
           }}
         >
-          Hello world
-        </H1>
-        {/* <Studio /> */}
+          <Square size={20} bc="blue" />
+        </Square> */}
+        <Studio />
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>

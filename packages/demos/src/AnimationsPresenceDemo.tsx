@@ -46,19 +46,21 @@ export default () => {
       <Button
         accessibilityLabel="Carousel left"
         icon={ArrowLeft}
-        circular
         size="$5"
         pos="absolute"
         l="$4"
+        circular
+        elevate
         onPress={() => paginate(-1)}
       />
       <Button
         accessibilityLabel="Carousel right"
         icon={ArrowRight}
-        circular
         size="$5"
         pos="absolute"
         r="$4"
+        circular
+        elevate
         onPress={() => paginate(1)}
       />
     </XStack>

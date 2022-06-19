@@ -3,7 +3,7 @@ import { ViewStyle } from 'react-native'
 
 import { isVariable } from '../createVariable'
 import { generateAtomicStyles } from './generateAtomicStyles'
-import { mergeTransform } from './mergeTransform'
+import { invertMapTransformKeys, mergeTransform } from './mergeTransform'
 import { PseudoDescriptor, pseudos } from './pseudos'
 
 // refactor this file away next...
@@ -15,6 +15,7 @@ export type ViewStyleWithPseudos = ViewStyle & {
 }
 
 type AtomicStyleOptions = {
+  // StyleObject.propererty will be original transform key, so extractor can keep prop/spread logic
   splitTransforms?: boolean
 }
 
@@ -70,7 +71,13 @@ function getAtomicStyle(
     let atomicStyles: StyleObject[] = []
     let { transform, ...rest } = style
     for (const t of transform) {
-      atomicStyles.push(generateAtomicStyles({ transform: [t] }, pseudo)[0])
+      const tKey = Object.keys(t)[0]
+      const transformProperty = invertMapTransformKeys[tKey] || tKey
+      const out = generateAtomicStyles({ transform: [t] }, pseudo)[0]
+      atomicStyles.push({
+        ...out,
+        property: transformProperty,
+      })
     }
     return [...atomicStyles, ...generateAtomicStyles(rest, pseudo)]
   }

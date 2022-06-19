@@ -91,7 +91,6 @@ module.exports = function (name, opts) {
       scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,
-      reactMode: 'concurrent',
     },
     eslint: {
       ...out.eslint,

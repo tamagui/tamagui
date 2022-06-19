@@ -5,6 +5,7 @@
   - also aligns with stylex
 
 - 1.0
+  - dialog fieldset horizontal + label press to focus
   - another couple passes over style system to reduce work and size
   - cache at variant level (?)
   - add _isExtracted via compiler (non-flat) to indicate no need to runtime merge defaultprops?

@@ -33,6 +33,8 @@ async function build() {
     await Promise.all([fs.remove('./dist'), fs.remove('./types')])
     await fs.copy(outPath, './dist')
     await fs.copy('../core/types', './types')
+    // reset
+    tries = 0
   } catch (err) {
     if (err.message.includes(`Plugin "alias" returned`)) {
       console.log(`Initial watch err, retry`)
@@ -53,7 +55,7 @@ async function buildretry() {
   tries++
   clearTimeout(tm)
   if (tries > 30) {
-    console.error('failed after 30 tries')
+    console.error('Error! failed after 30 tries')
     return
   }
   try {

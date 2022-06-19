@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 import { refractor } from 'refractor'
 import css from 'refractor/lang/css'
 import tsx from 'refractor/lang/tsx'
-import { Button, Separator, XStack, YStack, styled } from 'tamagui'
+import { Separator, XStack, YStack, styled } from 'tamagui'
 
 import { CocentricCircles } from '../components/CocentricCircles'
 import { useTint } from '../components/ColorToggleButton'

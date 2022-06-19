@@ -167,6 +167,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const propKeys = Object.keys(props)
+  const shouldDoClasses = isWeb && !state.noClassNames
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.log('propKeys', propKeys)
@@ -314,11 +315,7 @@ export const getSplitStyles: StyleSplitter = (
         }
         pseudos[key] = pseudos[key] || {}
         pseudos[key] = getSubStyle(val, staticConfig, theme, props, state, true)
-        if (isWeb && !state.noClassNames) {
-          const shorthand = pseudoAttrs[key].name
-          if (props.forceStyle?.[shorthand]) {
-            console.warn('force')
-          }
+        if (shouldDoClasses) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
             const fullKey = `${style.property}_${pseudoAttrs[key].name}`
@@ -351,7 +348,6 @@ export const getSplitStyles: StyleSplitter = (
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
         const mediaStyle = getSubStyle(val, staticConfig, theme, props, state)
-        const shouldDoClasses = isWeb && !state.noClassNames
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
@@ -417,7 +413,7 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (isWeb && !state.noClassNames) {
+  if (shouldDoClasses) {
     const atomic = getStylesAtomic(style)
     for (const atomicStyle of atomic) {
       const key = atomicStyle.property

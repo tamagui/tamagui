@@ -7882,13 +7882,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array-find-index@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "array-find-index@npm:1.0.2"
-  checksum: aac128bf369e1ac6c06ff0bb330788371c0e256f71279fb92d745e26fb4b9db8920e485b4ec25e841c93146bf71a34dcdbcefa115e7e0f96927a214d237b7081
-  languageName: node
-  linkType: hard
-
 "array-flatten@npm:1.1.1":
   version: 1.1.1
   resolution: "array-flatten@npm:1.1.1"
@@ -21788,21 +21781,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:0.17.5":
-  version: 0.17.5
-  resolution: "react-native-web@npm:0.17.5"
+"react-native-web@npm:0.18.1":
+  version: 0.18.1
+  resolution: "react-native-web@npm:0.18.1"
   dependencies:
-    array-find-index: ^1.0.2
     create-react-class: ^15.7.0
     fbjs: ^3.0.0
-    hyphenate-style-name: ^1.0.4
     inline-style-prefixer: ^6.0.0
     normalize-css-color: ^1.0.2
+    postcss-value-parser: ^4.2.0
     prop-types: ^15.6.0
+    styleq: ^0.1.2
   peerDependencies:
-    react: ">=17.0.1"
-    react-dom: ">=17.0.1"
-  checksum: 548cbba9f8fd081a08d0d882f7db9f5cd38e9706f2261c3f296a8406b2455beba0e80b294b5d052a927b0b2dcfbd5af59a3441ae78a7d407feee59e2f9487232
+    react: ">=17.0.2"
+    react-dom: ">=17.0.2"
+  checksum: 4f2e49e73b6804027c0cfe5d614727e63d77c15bc814c7268eebecaa1c322945f9811eb83dbc6511147503c222ebb2a3259285458ccc9b978972281e2e6fa991
   languageName: node
   linkType: hard
 
@@ -24135,6 +24128,13 @@ __metadata:
   peerDependencies:
     postcss: ^8.2.15
   checksum: 310b3452c11fd443b0d327aa2d5b43ae7479407339204b7ad11cf2e16d33b690c1cbf47a21b737ef112411e53563f0f996c5fa3642d135c896329950a008277f
+  languageName: node
+  linkType: hard
+
+"styleq@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "styleq@npm:0.1.2"
+  checksum: 050be47448efcb4abd778629ebe09f2db138e0b59504e8442e35432387d98bd696f0efe6962965c26eff5ee54a30ba4615806761b8f040a47874a62dd237e09f
   languageName: node
   linkType: hard
 
