@@ -84,7 +84,28 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         presence?.enterVariant,
       ]
 
+      const callback = (isExiting: boolean, exitingStyleProps: Record<string, boolean>, key: string, value: any) => {
+        'worklet'
+        return (completed: boolean, recentValue?: any) => {
+          'worklet'
+          runOnJS(reanimatedOnDidAnimated)(key, completed, recentValue, {
+            attemptedValue: value,
+          })
+          if (isExiting) {
+            exitingStyleProps[key] = false
+            const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
+            // if this is true, then we've finished our exit animations
+            if (!areStylesExiting) {
+              if (safeToUnmount) {
+                runOnJS(safeToUnmount)()
+              }
+            }
+          }
+        }
+      }
+
       const animatedStyle = useAnimatedStyle(() => {
+        'worklet'
         const style = animatedStyles
 
         const final = {
@@ -102,28 +123,12 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
         for (const key in style) {
           const value = style[key]
-          const animationConfig = getAnimationConfig(key, animations, props.animation) as any
+          const animationConfig = getAnimationConfig(key, animations, props.animation)
           const { animation, config, shouldRepeat, repeatCount, repeatReverse } = getAnimation(
             key,
             animationConfig,
             props.animateOnly
           )
-
-          const callback: (completed: boolean, value?: any) => void = (completed, recentValue) => {
-            runOnJS(reanimatedOnDidAnimated)(key, completed, recentValue, {
-              attemptedValue: value,
-            })
-            if (isExiting) {
-              exitingStyleProps[key] = false
-              const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
-              // if this is true, then we've finished our exit animations
-              if (!areStylesExiting) {
-                if (safeToUnmount) {
-                  runOnJS(safeToUnmount)()
-                }
-              }
-            }
-          }
 
           let { delayMs = null } = animationDelay(key, animationConfig, delay)
 
@@ -136,7 +141,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             for (const transformObject of value) {
               const key = Object.keys(transformObject)[0]
               const transformValue = transformObject[key]
-              let finalValue = animation(transformValue, config, callback)
+              let finalValue = animation(transformValue, config, callback(isExiting, exitingStyleProps, key, value))
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
               }
@@ -151,7 +156,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             // shadows
             final[key] = {}
             for (const innerStyleKey of Object.keys(value || {})) {
-              let finalValue = animation(value, config, callback)
+              let finalValue = animation(value, config, callback(isExiting, exitingStyleProps, key, value))
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
               }
@@ -164,7 +169,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             continue
           }
 
-          let finalValue = animation(value, config, callback)
+          let finalValue = animation(value, config, callback(isExiting, exitingStyleProps, key, value))
           if (shouldRepeat) {
             finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
           }
@@ -194,6 +199,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 }
 
 function getAnimationConfig(key: string, animations: AnimationsConfig, animation?: AnimationProp) {
+  'worklet'
   if (typeof animation === 'string') {
     return animations[animation]
   }
@@ -201,7 +207,7 @@ function getAnimationConfig(key: string, animations: AnimationsConfig, animation
   let extraConf: any
   if (Array.isArray(animation)) {
     type = animation[0] as string
-    const conf = animation[1]?.[key]
+    const conf = animation[1] && animation[1][key]
     if (conf) {
       if (typeof conf === 'string') {
         type = conf
