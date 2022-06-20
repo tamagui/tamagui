@@ -1768,7 +1768,9 @@ export function createExtractor() {
                       attr.value = styles
                     }
                     // prettier-ignore
-                    if (shouldPrintDebug) console.log('  * styles (in)', logLines(objToStr(attr.value)), ' (out)', logLines(objToStr(styles)))
+                    if (shouldPrintDebug) console.log('  * styles (in)', logLines(objToStr(attr.value)))
+                    // prettier-ignore
+                    if (shouldPrintDebug) console.log('  * styles (out)', logLines(objToStr(styles)))
                     continue
                 }
               } catch (err) {

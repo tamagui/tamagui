@@ -42,22 +42,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Paragraph
-          fontFamily="$silkscreen"
-          px="$3"
-          py="$2"
-          letterSpacing={2}
-          cursor="pointer"
-          size="$3"
-          o={0.7}
-          hoverStyle={{ opacity: 1 }}
-          tag="a"
-          $xxs={{
-            display: 'none',
-          }}
-        >
-          Login
-        </Paragraph>
+        <YStack pos="absolute" o={0.15} top={-1000} left={0} right={0} x={500} ai="center" />
         {/* <Studio /> */}
         {/* <SelectDemo /> */}
       </div>

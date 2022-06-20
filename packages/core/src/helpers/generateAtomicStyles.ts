@@ -8,6 +8,7 @@ import hyphenateStyleName from 'hyphenate-style-name'
 import normalizeCSSColor from 'normalize-css-color'
 import { TextStyle, ViewStyle } from 'react-native'
 
+import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { reversedShorthands } from '../createTamagui'
 import { PseudoDescriptor, pseudos } from './pseudos'
@@ -62,13 +63,19 @@ const reducedStyleKeys = {
   textShadowRadius: true,
 }
 
+let shorthands: Record<string, string> | null = null
+
 // can likely remove this and include in other loops
 export function expandStyles(style: any) {
   const res = {}
   boxShadowReducer(res, style)
   textShadowReducer(res, style)
   borderReducer(res, style)
-  for (const key in style) {
+  for (let key in style) {
+    shorthands = shorthands || getConfig().shorthands
+    if (shorthands) {
+      key = shorthands[key] || key
+    }
     if (reducedStyleKeys[key]) continue
     if (key in pseudos) {
       res[key] = expandStyles(style[key])
