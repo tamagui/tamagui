@@ -20,8 +20,8 @@ export function useEntering(): [boolean | undefined, undefined | (() => void)] {
   // either be null or non-null for the lifespan of the component.
 
   useEffect(() => {
-    register(id)
-  }, [])
+    return register(id)
+  }, [id])
 
   return isEntering === false
     ? [false, safeToRemove]
