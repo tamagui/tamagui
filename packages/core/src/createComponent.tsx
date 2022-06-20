@@ -431,7 +431,7 @@ export function createComponent<
         }
       }
 
-      if (props.href != null && hrefAttrs != null) {
+      if (props.href != undefined && hrefAttrs != undefined) {
         const { download, rel, target } = hrefAttrs
         if (download != null) {
           viewProps.download = download
@@ -444,11 +444,13 @@ export function createComponent<
         }
       }
 
-      const role = viewProps.role
-
       // FOCUS
       // "focusable" indicates that an element may be a keyboard tab-stop.
-      const _focusable = focusable != null ? focusable : accessible
+      const _focusable = focusable != undefined ? focusable : accessible
+      const role = viewProps.role
+      if (props['debug']) {
+        console.log('_focusable', focusable)
+      }
       if (_focusable === false) {
         viewProps.tabIndex = '-1'
       }
@@ -475,11 +477,10 @@ export function createComponent<
         if (_focusable !== false) {
           viewProps.tabIndex = '0'
         }
-      } else {
-        // Everything else must explicitly set the prop
-        if (_focusable === true) {
-          viewProps.tabIndex = '0'
-        }
+      }
+      // Everything else must explicitly set the prop
+      if (_focusable === true) {
+        viewProps.tabIndex = '0'
       }
     } else {
       viewProps = nonTamaguiProps
@@ -487,6 +488,10 @@ export function createComponent<
         // @ts-ignore
         viewProps.ref = forwardedRef
       }
+    }
+
+    if (props['debug']) {
+      console.log('viewProps', elementType, viewProps.role, viewProps.tabIndex)
     }
 
     // from react-native-web
