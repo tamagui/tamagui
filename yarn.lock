@@ -6080,6 +6080,8 @@ __metadata:
     webpack: ^5.73.0
   peerDependencies:
     react-native-web: "*"
+  bin:
+    patch: ./patch.js
   languageName: unknown
   linkType: soft
 

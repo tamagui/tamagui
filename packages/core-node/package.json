@@ -16,6 +16,7 @@
     "@tamagui/helpers": "^1.0.1-beta.70"
   },
   "devDependencies": {
+    "@tamagui/static": "^1.0.1-beta.70",
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.35",
     "chokidar": "^3.5.2",
