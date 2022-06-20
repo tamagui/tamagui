@@ -12,19 +12,19 @@ export const bordered = (val: boolean | number, { props }) => {
     borderWidth: typeof val === 'number' ? val : 1,
     borderColor: '$borderColor',
 
-    ...(props.hoverable && {
+    ...(props.hoverTheme && {
       hoverStyle: {
         borderColor: '$borderColorHover',
       },
     }),
 
-    ...(props.pressable && {
+    ...(props.pressTheme && {
       pressStyle: {
         borderColor: '$borderColorPress',
       },
     }),
 
-    ...(props.focusable && {
+    ...(props.focusTheme && {
       focusStyle: {
         borderColor: '$borderColorFocus',
       },
@@ -67,7 +67,7 @@ export const circular = {
   },
 }
 
-export const hoverable = {
+export const hoverTheme = {
   true: {
     hoverStyle: {
       backgroundColor: '$backgroundHover',
@@ -77,7 +77,7 @@ export const hoverable = {
   false: {},
 }
 
-export const pressable = {
+export const pressTheme = {
   true: {
     pressStyle: {
       backgroundColor: '$backgroundPress',
@@ -87,7 +87,7 @@ export const pressable = {
   false: {},
 }
 
-export const focusable = {
+export const focusTheme = {
   true: {
     focusStyle: {
       backgroundColor: '$backgroundFocus',

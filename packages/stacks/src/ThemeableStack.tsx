@@ -5,10 +5,10 @@ import {
   bordered,
   circular,
   elevate,
-  focusable,
-  hoverable,
+  focusTheme,
+  hoverTheme,
   padded,
-  pressable,
+  pressTheme,
   radiused,
 } from './variants'
 
@@ -26,9 +26,9 @@ export const ThemeableStack = styled(YStack, {
     },
 
     radiused,
-    hoverable,
-    pressable,
-    focusable,
+    hoverTheme,
+    pressTheme,
+    focusTheme,
     circular,
     padded,
     elevate,
