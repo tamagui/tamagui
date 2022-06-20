@@ -5330,6 +5330,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/core-node@workspace:packages/core-node"
   dependencies:
+    "@tamagui/core": ^1.0.1-beta.70
     "@tamagui/helpers": ^1.0.1-beta.70
     "@types/node": ^16.11.9
     "@types/react": ^17.0.35
@@ -5725,6 +5726,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tamagui/patch-rnw@workspace:packages/patch-rnw":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/patch-rnw@workspace:packages/patch-rnw"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.70
+    fs-extra: ^9.1.0
+    react-native-web: ^0.17.5
+  peerDependencies:
+    react-native-web: "*"
+  bin:
+    patch: ./patch.js
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/polyfill-dev@^1.0.1-beta.70, @tamagui/polyfill-dev@workspace:packages/polyfill-dev":
   version: 0.0.0-use.local
   resolution: "@tamagui/polyfill-dev@workspace:packages/polyfill-dev"
@@ -6080,8 +6095,6 @@ __metadata:
     webpack: ^5.73.0
   peerDependencies:
     react-native-web: "*"
-  bin:
-    patch: ./patch.js
   languageName: unknown
   linkType: soft
 

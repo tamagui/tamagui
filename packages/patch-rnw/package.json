@@ -1,0 +1,37 @@
+{
+  "name": "@tamagui/patch-rnw",
+  "version": "1.0.1-beta.70",
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "bin": {
+    "patch": "./patch.js"
+  },
+  "files": [
+    "patches",
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build && node node_modules/.bin/patch",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@tamagui/build": "^1.0.1-beta.70",
+    "fs-extra": "^9.1.0"
+  },
+  "peerDependencies": {
+    "react-native-web": "*"
+  },
+  "devDependencies": {
+    "react-native-web": "^0.17.5"
+  }
+}

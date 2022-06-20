@@ -4,5 +4,5 @@ export { literalToAst } from './extractor/literalToAst';
 export * from './constants';
 export * from './extractor/extractToClassNames';
 export * from './extractor/extractHelpers';
-export * from './patchReactNativeWeb';
+export * from '@tamagui/patch-rnw';
 //# sourceMappingURL=index.d.ts.map
