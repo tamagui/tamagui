@@ -275,9 +275,9 @@ export const SliderThumbFrame = styled(ThemeableStack, {
   // OR THIS
   borderWidth: 2,
   backgrounded: true,
-  pressable: isWeb,
-  focusable: isWeb,
-  hoverable: isWeb,
+  pressTheme: isWeb,
+  focusTheme: isWeb,
+  hoverTheme: isWeb,
 
   variants: {
     size: {

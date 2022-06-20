@@ -62,7 +62,7 @@ const ColorSchemeListItem = () => {
 
   return (
     <ListItem
-      pressable
+      pressTheme
       onPress={() => {
         theme.set(theme.value === 'dark' ? 'light' : 'dark')
       }}

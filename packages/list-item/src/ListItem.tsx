@@ -74,7 +74,6 @@ export const ListItemFrame = styled(ThemeableStack, {
           backgroundColor: '$background',
         },
       },
-      false: {},
     },
 
     disabled: {
@@ -83,7 +82,6 @@ export const ListItemFrame = styled(ThemeableStack, {
         // TODO breaking types
         pointerEvents: 'none' as any,
       },
-      false: {},
     },
   },
 
