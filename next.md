@@ -5,10 +5,8 @@
   - also aligns with stylex
 
 - 1.0
-  - dialog fieldset horizontal + label press to focus
   - another couple passes over style system to reduce work and size
   - cache at variant level (?)
-  - add _isExtracted via compiler (non-flat) to indicate no need to runtime merge defaultprops?
   - FAQ
   - document .extractable
   - switch focusstyle on prod
@@ -17,9 +15,7 @@
    - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - TODO bug backgroundStrong on dark in light / not variabl
   - make webpack plugin that does stuff from next-plugin and sandbox webpack etc
-  - compile styled() to just css classes
   - fix light mode inverse when using prefers
-  - Switch on native
   - https://github.com/tamagui/tamagui/issues/53
   - VisuallyHidden/display: none working with space
   - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
@@ -32,7 +28,6 @@
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
     - make all inverse by default? i think so? or else make sub-themes handle it...
-  - next.js plugin support .web.ts files
   - input type="email", button type="submit" etc
     - its fine to wrap input in HOC like button
     - normalize divergent android/ios:
@@ -54,9 +49,7 @@
   - size=5.5 icon scales diff
   - size={55} doesnt set size only icon
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
-  - theme light needs darker shadows?
-  - much better PropsTable (expo has nice ones https://docs.expo.dev/versions/latest/sdk/linear-gradient/)
-  - <Select />, <Dialog /> (AlertDialog)
+  - <Select /> (AlertDialog)
   
   - <SelectableList /> (type = multi | single)
     - in place of Radio (+ checkbox)
@@ -72,6 +65,7 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
   - // native doesn't support until next react-native version, need to remove eventually
   - styled(Button)
   - need to redo concatClassName(), can be removed entirely for non-flattened
