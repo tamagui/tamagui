@@ -45,6 +45,7 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
       },
       false: {
         userSelect: 'none',
+        cursor: 'default',
       },
     },
 
