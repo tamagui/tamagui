@@ -45,8 +45,8 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     const { __scopeAvatar, src, onLoadingStatusChange = () => {}, ...imageProps } = props
     const context = useAvatarContext(IMAGE_NAME, __scopeAvatar)
     const [status, setStatus] = React.useState<ImageLoadingStatus>('idle')
-    const extras = getVariantExtras(props)
-    const shapeSize = getVariableValue(getShapeSize(context.size, extras)?.width)
+    // const extras = getVariantExtras(props)
+    // const shapeSize = getVariableValue(getShapeSize(context.size, extras)?.width)
 
     React.useEffect(() => {
       setStatus('idle')
@@ -66,9 +66,9 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
           ref={forwardedRef}
           // @ts-ignore
           src={src}
-          onLoadStart={() => {
-            // setStatus('loading')
-          }}
+          // onLoadStart={() => {
+          //   // setStatus('loading')
+          // }}
           onError={() => {
             setStatus('error')
           }}

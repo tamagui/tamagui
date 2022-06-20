@@ -1,4 +1,4 @@
-import { GetProps, StackProps, getExpandedShorthands, styled } from '@tamagui/core'
+import { GetProps, StackProps, getExpandedShorthands, isWeb, styled } from '@tamagui/core'
 import React from 'react'
 import { Image as RNImage } from 'react-native'
 
@@ -29,7 +29,7 @@ export type ImageProps = BaseProps & Omit<StackProps, keyof BaseProps>
 export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => {
   const props = getExpandedShorthands(inProps)
   const { src, width = 100, height = 100, ...rest } = props
-  const source = typeof src === 'string' ? { uri: src, width, height } : src
+  const source = typeof src === 'string' ? { uri: src, ...(isWeb && { width, height }) } : src
   const defaultSource = Array.isArray(source) ? source[0] : source
 
   if (!defaultSource) {
@@ -38,6 +38,12 @@ export const Image: React.FC<ImageProps> = StyledImage.extractable((inProps) => 
   }
 
   // must set defaultSource to allow SSR, default it to the same as src
-  // @ts-ignore we pass all react-native-web props down
-  return <StyledImage defaultSource={defaultSource} source={source} {...rest} />
+  return (
+    <StyledImage
+      {...(!isWeb && { style: { width, height } })}
+      defaultSource={defaultSource}
+      source={source}
+      {...(rest as any)}
+    />
+  )
 })
