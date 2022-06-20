@@ -239,7 +239,7 @@ export declare const circular: {
         paddingHorizontal: number;
     };
 };
-export declare const hoverable: {
+export declare const hoverTheme: {
     true: {
         hoverStyle: {
             backgroundColor: string;
@@ -248,7 +248,7 @@ export declare const hoverable: {
     };
     false: {};
 };
-export declare const pressable: {
+export declare const pressTheme: {
     true: {
         pressStyle: {
             backgroundColor: string;
@@ -257,7 +257,7 @@ export declare const pressable: {
     };
     false: {};
 };
-export declare const focusable: {
+export declare const focusTheme: {
     true: {
         focusStyle: {
             backgroundColor: string;
