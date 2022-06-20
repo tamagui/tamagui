@@ -110,9 +110,9 @@ import { styled } from '@tamagui/core'
 import { ThemeableStack } from '@tamagui/stacks' // or tamagui
 
 const MyCard = styled(ThemeableStack, {
-  hoverable: true,
-  pressable: true,
-  focusable: true,
+  hoverTheme: true,
+  pressTheme: true,
+  focusTheme: true,
   bordered: true,
 })
 ```
@@ -122,21 +122,21 @@ Beyond Stacks props, ThemeableStacks add:
 <PropsTable
   data={[
     {
-      name: 'hoverable',
+      name: 'hoverTheme',
       required: false,
       default: false,
       type: 'boolean',
       description: `Sets backgroundColor and borderColor to matching theme values on hover.`,
     },
     {
-      name: 'focusable',
+      name: 'focusTheme',
       required: false,
       default: false,
       type: 'boolean',
       description: `Sets backgroundColor and borderColor to matching theme values on hover.`,
     },
     {
-      name: 'pressable',
+      name: 'pressTheme',
       required: false,
       default: false,
       type: 'boolean',

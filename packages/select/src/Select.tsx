@@ -162,10 +162,10 @@ export const SelectTrigger = React.forwardRef<GenericElement, SelectTriggerProps
       <ListItem
         backgrounded
         radiused
-        hoverable
-        pressable
-        focusable
-        tabIndex={-1}
+        hoverTheme
+        pressTheme
+        focusTheme
+        focusable={false}
         borderWidth={1}
         componentName={TRIGGER_NAME}
         size={context.size}
@@ -447,9 +447,9 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       >
         <ListItem
           backgrounded
-          hoverable
-          pressable
-          focusable
+          hoverTheme
+          pressTheme
+          focusTheme
           componentName={ITEM_NAME}
           ref={composedRefs}
           aria-labelledby={textId}

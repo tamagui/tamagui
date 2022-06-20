@@ -47,8 +47,9 @@ export type ButtonProps = Omit<TextParentStyles, 'TextComponent'> &
 export const ButtonFrame = styled(ThemeableStack, {
   name: 'Button',
   tag: 'button',
-  hoverable: true,
-  pressable: true,
+  focusable: true,
+  hoverTheme: true,
+  pressTheme: true,
   backgrounded: true,
   borderWidth: 1,
   borderColor: 'transparent',
