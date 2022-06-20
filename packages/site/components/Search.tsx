@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import {
   createContext,
   lazy,
+  memo,
   useCallback,
   useContext,
   useEffect,
@@ -25,7 +26,7 @@ const API_KEY = '10e7bbeb85d3909346e1519bfcdf82dc'
 const APP_ID = 'AIE0I4P8ZS'
 const INDEX = 'tamagui'
 
-export function SearchProvider({ children }) {
+export const SearchProvider = memo(({ children }) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [initialQuery, setInitialQuery] = useState(null)
@@ -112,7 +113,7 @@ export function SearchProvider({ children }) {
         )}
     </>
   )
-}
+})
 
 const ResultItem = ({ hit, children }) => {
   const isResult = hit.isResult?.()
@@ -127,7 +128,7 @@ const ResultItem = ({ hit, children }) => {
   )
 }
 
-export const SearchButton = (props: ButtonProps) => {
+export const SearchButton = memo((props: ButtonProps) => {
   const { onOpen, onInput } = useContext(SearchContext)
   const isTouch = useIsTouchDevice()
   const ref = useRef()
@@ -170,7 +171,7 @@ export const SearchButton = (props: ButtonProps) => {
       />
     </TooltipSimple>
   )
-}
+})
 
 const useSearchKeyboard = ({ isOpen, onOpen, onClose }: any) => {
   useEffect(() => {

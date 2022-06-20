@@ -1408,6 +1408,57 @@ export function createExtractor() {
               console.log('  - ensureOverriden:', Object.keys(ensureOverridden).join(', '))
             }
 
+            const state = {
+              noClassNames: false,
+              focus: false,
+              hover: false,
+              mounted: true, // TODO match logic in createComponent
+              press: false,
+              pressIn: false,
+            }
+
+            // evaluates all static attributes into a simple object
+            let foundStaticProps = {}
+            for (const key in attrs) {
+              const cur = attrs[key]
+              if (cur.type === 'style') {
+                normalizeStyleObject(cur.value)
+                foundStaticProps = {
+                  ...foundStaticProps,
+                  ...expandStyles(cur.value),
+                }
+                continue
+              }
+              if (cur.type === 'attr') {
+                if (t.isJSXSpreadAttribute(cur.value)) {
+                  continue
+                }
+                if (!t.isJSXIdentifier(cur.value.name)) {
+                  continue
+                }
+                const key = cur.value.name.name
+                // undefined = boolean true
+                const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
+                if (value !== FAILED_EVAL) {
+                  foundStaticProps = {
+                    ...foundStaticProps,
+                    [key]: value,
+                  }
+                }
+              }
+            }
+
+            // must preserve exact order
+            const completeProps = {}
+            for (const key in staticConfig.defaultProps) {
+              if (!(key in foundStaticProps)) {
+                completeProps[key] = staticConfig.defaultProps[key]
+              }
+            }
+            for (const key in foundStaticProps) {
+              completeProps[key] = foundStaticProps[key]
+            }
+
             // expand shorthands, de-opt variables
             attrs = attrs.reduce<ExtractedAttr[]>((acc, cur) => {
               if (!cur) return acc
@@ -1420,24 +1471,28 @@ export function createExtractor() {
                       return acc
                     }
 
-                    // if flattening expand variants
+                    // if flattening, expand variants
                     if (variants[name] && variantValues.has(name)) {
                       let out = Object.fromEntries(
                         staticConfig.propMapper(
                           name,
                           variantValues.get(name),
                           defaultTheme,
-                          staticConfig.defaultProps,
-                          { resolveVariablesAs: 'auto' },
+                          completeProps,
+                          { ...state, resolveVariablesAs: 'auto' },
                           undefined,
                           shouldPrintDebug
                         ) || []
                       )
                       if (out && isTargetingHTML) {
+                        const cn = out.className
                         // translate to DOM-compat
                         out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
-                        // remove className - we dont use rnw styling
-                        delete out.className
+                        // remove rnw className use ours
+                        out.className = cn
+                      }
+                      if (shouldPrintDebug) {
+                        console.log(' - expanded variant', name, out)
                       }
                       for (const key in out) {
                         const value = out[key]
@@ -1466,6 +1521,7 @@ export function createExtractor() {
                   }
                 }
               }
+
               if (cur.type !== 'style') {
                 acc.push(cur)
                 return acc
@@ -1584,57 +1640,6 @@ export function createExtractor() {
               acc.push(cur)
               return acc
             }, [])
-
-            const state = {
-              noClassNames: false,
-              focus: false,
-              hover: false,
-              mounted: true, // TODO match logic in createComponent
-              press: false,
-              pressIn: false,
-            }
-
-            // evaluates all static attributes into a simple object
-            let foundStaticProps = {}
-            for (const key in attrs) {
-              const cur = attrs[key]
-              if (cur.type === 'style') {
-                normalizeStyleObject(cur.value)
-                foundStaticProps = {
-                  ...foundStaticProps,
-                  ...expandStyles(cur.value),
-                }
-                continue
-              }
-              if (cur.type === 'attr') {
-                if (t.isJSXSpreadAttribute(cur.value)) {
-                  continue
-                }
-                if (!t.isJSXIdentifier(cur.value.name)) {
-                  continue
-                }
-                const key = cur.value.name.name
-                // undefined = boolean true
-                const value = attemptEvalSafe(cur.value.value || t.booleanLiteral(true))
-                if (value !== FAILED_EVAL) {
-                  foundStaticProps = {
-                    ...foundStaticProps,
-                    [key]: value,
-                  }
-                }
-              }
-            }
-
-            // must preserve exact order
-            const completeProps = {}
-            for (const key in staticConfig.defaultProps) {
-              if (!(key in foundStaticProps)) {
-                completeProps[key] = staticConfig.defaultProps[key]
-              }
-            }
-            for (const key in foundStaticProps) {
-              completeProps[key] = foundStaticProps[key]
-            }
 
             if (shouldPrintDebug) {
               console.log('  - attrs (combined 🔀): \n', logLines(attrs.map(attrStr).join(', ')))

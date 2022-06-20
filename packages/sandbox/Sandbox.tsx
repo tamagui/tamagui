@@ -42,24 +42,23 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        {/* <YStack debug="verbose" fullscreen y={20} x={20} bw={2} bc="$color" br="$4" p="$2" /> */}
-        {/* <Square
-          debug
-          focusable={false}
-          animation="bouncy"
-          size={110}
-          bc="$pink10"
-          br="$9"
-          hoverStyle={{
-            scale: 1.1,
-          }}
-          pressStyle={{
-            scale: 0.9,
+        <Paragraph
+          fontFamily="$silkscreen"
+          px="$3"
+          py="$2"
+          letterSpacing={2}
+          cursor="pointer"
+          size="$3"
+          o={0.7}
+          hoverStyle={{ opacity: 1 }}
+          tag="a"
+          $xxs={{
+            display: 'none',
           }}
         >
-          <Square size={20} bc="blue" />
-        </Square> */}
-        <Studio />
+          Login
+        </Paragraph>
+        {/* <Studio /> */}
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>

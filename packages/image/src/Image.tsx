@@ -10,6 +10,7 @@ const StyledImage = styled(
     name: 'Image',
     position: 'relative',
     source: { uri: '' },
+    zIndex: 1,
   },
   {
     inlineProps: new Set(['src', 'width', 'height']),
