@@ -13,7 +13,7 @@
   },
   "scripts": {
     "remove:takeout": "rm -r takeout && rm -r packages/sandbox",
-    "postinstall": "manypkg check && yarn build",
+    "postinstall": "manypkg check && yarn build:js",
     "check": "manypkg check",
     "build": "yarn build:js && yarn build:types",
     "build:force": "yarn clean:build && yarn build:js --force && yarn build:types --force",

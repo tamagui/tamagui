@@ -1,7 +1,5 @@
-// debug
 globalThis['React'] = require('React')
 
-// debug
 import '@tamagui/core/reset.css'
 import '@tamagui/site/public/fonts/inter.css'
 import '@tamagui/polyfill-dev'
@@ -42,8 +40,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack pos="absolute" o={0.15} top={-1000} left={0} right={0} x={500} ai="center" />
-        {/* <Studio /> */}
+        <Studio />
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>

@@ -1,4 +1,3 @@
-// debug
 import { useOnIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
