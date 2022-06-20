@@ -7,6 +7,7 @@
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
   "files": [
+    "patches",
     "src",
     "types",
     "dist"
