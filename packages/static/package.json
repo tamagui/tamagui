@@ -6,9 +6,6 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
-  "bin": {
-    "patch": "./patch.js"
-  },
   "files": [
     "patches",
     "src",
@@ -16,7 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tamagui-build && node node_modules/.bin/patch",
+    "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
