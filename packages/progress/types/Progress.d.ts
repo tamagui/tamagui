@@ -8,13 +8,13 @@ interface ProgressIndicatorProps extends YStackProps {
 export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -24,13 +24,13 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -40,13 +40,13 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}, "focusable" | "fontFamily" | "hoverable" | "pressable" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
+}, "fontFamily" | "hoverTheme" | "pressTheme" | "focusTheme" | "circular" | "elevate" | "bordered" | "transparent" | "backgrounded" | "radiused" | "padded" | "chromeless"> & {
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -60,9 +60,9 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -78,9 +78,9 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -96,9 +96,9 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -114,9 +114,9 @@ export declare const ProgressIndicatorFrame: import("@tamagui/core").TamaguiComp
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -135,9 +135,9 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -153,9 +153,9 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -171,9 +171,9 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -189,9 +189,9 @@ export declare const ProgressFrame: import("@tamagui/core").TamaguiComponent<Omi
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -213,9 +213,9 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("react-nativ
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -231,9 +231,9 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("react-nativ
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -249,9 +249,9 @@ declare const Progress: React.ForwardRefExoticComponent<Omit<import("react-nativ
     fontFamily?: unknown;
     backgrounded?: boolean | undefined;
     radiused?: boolean | undefined;
-    hoverable?: boolean | undefined;
-    pressable?: boolean | undefined;
-    focusable?: boolean | undefined;
+    hoverTheme?: boolean | undefined;
+    pressTheme?: boolean | undefined;
+    focusTheme?: boolean | undefined;
     circular?: boolean | undefined;
     padded?: boolean | undefined;
     elevate?: boolean | undefined;
