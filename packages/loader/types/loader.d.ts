@@ -1,3 +1,4 @@
-import { LoaderContext } from 'webpack';
-export declare function loader(this: LoaderContext<any>, source: string): void;
+import { TamaguiOptions } from '@tamagui/static';
+import type { RawLoaderDefinitionFunction } from 'webpack';
+export declare const loader: RawLoaderDefinitionFunction<TamaguiOptions>;
 //# sourceMappingURL=loader.d.ts.map

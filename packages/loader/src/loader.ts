@@ -4,7 +4,7 @@ import {
   extractToClassNames,
   patchReactNativeWeb,
 } from '@tamagui/static'
-import { LoaderContext } from 'webpack'
+import type { LoaderContext, RawLoaderDefinitionFunction } from 'webpack'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
 
@@ -19,9 +19,10 @@ let hasPatched = false
 
 process.env.TAMAGUI_TARGET = 'web'
 
-export function loader(this: LoaderContext<any>, source: string) {
-  this.cacheable()
+export const loader: RawLoaderDefinitionFunction<TamaguiOptions> = function loader(this, sourceIn) {
+  this.cacheable(true)
   this.async()
+  const source = sourceIn.toString()
 
   if (!process.env.TAMAGUI_DISABLE_RNW_PATCH && !hasPatched) {
     patchReactNativeWeb()
@@ -54,20 +55,30 @@ export function loader(this: LoaderContext<any>, source: string) {
 
     const cssPath = threaded ? `${sourcePath}.module.css` : `${sourcePath}.${index++}.module.css`
 
+    // cssLoaderPath: CSS_LOADER_PATH,
+    // threaded,
+    // cssPath,
+
     const extracted = extractToClassNames({
-      loader: this,
       extractor,
-      cssLoaderPath: CSS_LOADER_PATH,
       source,
-      threaded,
       sourcePath,
-      cssPath,
       options,
       shouldPrintDebug,
     })
 
     if (!extracted) {
       return this.callback(null, source)
+    }
+
+    // add import to css
+    if (extracted.styles) {
+      const cssQuery = threaded
+        ? `cssData=${Buffer.from(extracted.styles).toString('base64')}`
+        : `cssPath=${cssPath}`
+      const remReq = this.remainingRequest
+      const importPath = `${cssPath}!=!${CSS_LOADER_PATH}?${cssQuery}!${remReq}`
+      extracted.js = `${extracted.js}\n\nrequire(${JSON.stringify(importPath)})`
     }
 
     extractedInfoByFile.set(sourcePath, extracted)

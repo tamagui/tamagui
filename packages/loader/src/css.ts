@@ -22,7 +22,7 @@ export default function loader(this: LoaderContext<any>) {
     // get output CSS
     out = Buffer.from(options.cssData, 'base64').toString('utf-8')
   }
-  if (options.cssData || options.cssPath) {
+  if (out) {
     // use original JS sourcemap
     return this.callback(null, out || '')
   }
