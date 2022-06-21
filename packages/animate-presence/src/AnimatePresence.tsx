@@ -1,4 +1,9 @@
-import { useForceUpdate, useIsomorphicLayoutEffect, useUnmountEffect } from '@tamagui/core'
+import {
+  useForceUpdate,
+  useIsMounted,
+  useIsomorphicLayoutEffect,
+  useUnmountEffect,
+} from '@tamagui/core'
 import React, {
   Children,
   ReactElement,
@@ -7,47 +12,13 @@ import React, {
   isValidElement,
   useContext,
   useRef,
-  useState,
 } from 'react'
 
 import { LayoutGroupContext } from './LayoutGroupContext'
 import { PresenceChild } from './PresenceChild'
+import { AnimatePresenceProps } from './types'
 
 React['keep']
-
-export interface AnimatePresenceProps {
-  /**
-   * By passing `initial={false}`, `AnimatePresence` will disable any initial animations on children
-   * that are present when the component is first rendered.
-   */
-  initial?: boolean
-
-  /**
-   * When a component is removed, there's no longer a chance to update its props. So if a component's `exit`
-   * prop is defined as a dynamic variant and you want to pass a new `custom` prop, you can do so via `AnimatePresence`.
-   * This will ensure all leaving components animate using the latest data.
-   */
-  exitVariant?: string | null
-
-  enterVariant?: string | null
-
-  /**
-   * Fires when all exiting nodes have completed animating out.
-   */
-  onExitComplete?: () => void
-
-  /**
-   * If set to `true`, `AnimatePresence` will only render one component at a time. The exiting component
-   * will finish its exit animation before the entering component is rendered.
-   */
-  exitBeforeEnter?: boolean
-
-  /**
-   * Used in Framer to flag that sibling children *shouldn't* re-render as a result of a
-   * child being removed.
-   */
-  presenceAffectsLayout?: boolean
-}
 
 type ComponentKey = string | number
 
@@ -127,7 +98,7 @@ function onlyElements(children: ReactNode): ReactElement<any>[] {
  *
  * If a child contains multiple `motion` components with `exit` props, it will only unmount the child
  * once all `motion` components have finished animating out. Likewise, any components using
- * `useEntering` all need to call `safeToRemove`.
+ * `usePresence` all need to call `safeToRemove`.
  *
  * @public
  */
@@ -148,11 +119,7 @@ export const AnimatePresence: React.FunctionComponent<
   const forceRenderLayoutGroup = useContext(LayoutGroupContext).forceRender
   if (forceRenderLayoutGroup) forceRender = forceRenderLayoutGroup
 
-  const [isMounted, setIsMounted] = useState(false)
-
-  useIsomorphicLayoutEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const isMounted = useIsMounted()
 
   // Filter out any children that aren't ReactElements. We can only track ReactElements with a props.key
   const filteredChildren = onlyElements(children)
@@ -189,7 +156,7 @@ export const AnimatePresence: React.FunctionComponent<
         {childrenToRender.map((child) => (
           <PresenceChild
             key={getChildKey(child)}
-            isEntering
+            isPresent
             exitVariant={exitVariant}
             enterVariant={enterVariant}
             initial={initial ? undefined : false}
@@ -214,7 +181,6 @@ export const AnimatePresence: React.FunctionComponent<
   const numPresent = presentKeys.length
   for (let i = 0; i < numPresent; i++) {
     const key = presentKeys[i]
-
     if (targetKeys.indexOf(key) === -1) {
       exiting.add(key)
     }
@@ -242,7 +208,7 @@ export const AnimatePresence: React.FunctionComponent<
       0,
       <PresenceChild
         key={getChildKey(child)}
-        isEntering={false}
+        isPresent={false}
         onExitComplete={() => {
           allChildren.delete(key)
           exiting.delete(key)
@@ -257,7 +223,7 @@ export const AnimatePresence: React.FunctionComponent<
           if (!exiting.size) {
             presentChildren.current = filteredChildren
 
-            if (isMounted === false) return
+            if (isMounted.current === false) return
 
             forceRender()
             onExitComplete?.()
@@ -281,7 +247,7 @@ export const AnimatePresence: React.FunctionComponent<
     ) : (
       <PresenceChild
         key={getChildKey(child)}
-        isEntering={undefined}
+        isPresent
         exitVariant={exitVariant}
         enterVariant={enterVariant}
         presenceAffectsLayout={presenceAffectsLayout}

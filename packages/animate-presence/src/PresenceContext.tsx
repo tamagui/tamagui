@@ -2,14 +2,15 @@ import { createContext } from 'react'
 
 import { VariantLabels } from './types'
 
-export interface AnimatePresenceContextProps {
+export interface PresenceContextProps {
   id: string
-  isEntering: boolean | undefined
+  isPresent: boolean
   register: (id: string) => () => void
   onExitComplete?: (id: string) => void
   initial?: false | VariantLabels
+  custom?: any
   exitVariant?: string | null
   enterVariant?: string | null
 }
 
-export const AnimatePresenceContext = createContext<AnimatePresenceContextProps | null>(null)
+export const PresenceContext = createContext<PresenceContextProps | null>(null)
