@@ -38,7 +38,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     Text: AnimatedText,
     useAnimations: (props, helpers) => {
       const { pseudos, onDidAnimate, delay, getStyle, state, staticConfig } = helpers
-      const [isEntering, sendExitComplete] = usePresence()
+      const [isPresent, sendExitComplete] = usePresence()
       const presence = useContext(PresenceContext)
 
       const exitStyle = presence?.exitVariant
@@ -52,11 +52,16 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         [onDidAnimate]
       )
 
+      const isExiting = isPresent === false
+      const isEntering = !state.mounted
+
       const all = getStyle({
+        isExiting,
         isEntering,
         exitVariant: presence?.exitVariant,
         enterVariant: presence?.enterVariant,
       })
+
       const [animatedStyles, nonAnimatedStyle] = [{}, {}]
       const animatedStyleKey = {
         transform: true,
@@ -78,7 +83,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         state.pressIn,
         state.focus,
         delay,
-        isEntering,
+        isPresent,
         onDidAnimate,
         reanimatedOnDidAnimated,
         presence?.exitVariant,
@@ -119,7 +124,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           transform: [] as any[],
         }
 
-        const isExiting = isEntering === false
+        const isExiting = isPresent === false
 
         const exitingStyleProps: Record<string, boolean> = {}
         if (exitStyle) {

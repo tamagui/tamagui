@@ -103,35 +103,33 @@ function loadAnimationFeature() {
         pseudos,
         onDidAnimate,
         staticConfig,
-        getStyle({ isEntering, exitVariant, enterVariant } = {}) {
+        getStyle({ isExiting, isEntering, exitVariant, enterVariant } = {}) {
           // we have to merge such that transforms keys all exist
           const style = inStyle || {}
 
-          const enterStyle =
-            isEntering === true || state.mounted === false
-              ? enterVariant && staticConfig.variants?.[enterVariant]['true']
-                ? getSubStyle(
-                    staticConfig.variants?.[enterVariant]['true'],
-                    staticConfig,
-                    theme,
-                    props,
-                    state
-                  ) || pseudos.enterStyle
-                : null || pseudos.enterStyle
-              : null
+          const enterStyle = isEntering
+            ? enterVariant && staticConfig.variants?.[enterVariant]['true']
+              ? getSubStyle(
+                  staticConfig.variants?.[enterVariant]['true'],
+                  staticConfig,
+                  theme,
+                  props,
+                  state
+                ) || pseudos.enterStyle
+              : null || pseudos.enterStyle
+            : null
 
-          const exitStyle =
-            isEntering === false
-              ? exitVariant && staticConfig.variants?.[exitVariant]['true']
-                ? getSubStyle(
-                    staticConfig.variants?.[exitVariant]['true'],
-                    staticConfig,
-                    theme,
-                    props,
-                    state
-                  ) || pseudos.exitStyle
-                : null || pseudos.exitStyle
-              : null
+          const exitStyle = isExiting
+            ? exitVariant && staticConfig.variants?.[exitVariant]['true']
+              ? getSubStyle(
+                  staticConfig.variants?.[exitVariant]['true'],
+                  staticConfig,
+                  theme,
+                  props,
+                  state
+                ) || pseudos.exitStyle
+              : null || pseudos.exitStyle
+            : null
 
           // if you have hoverStyle={{ scale: 1.1 }} and don't have scale set on the base style
           // no animation will run! this is really confusing. this will look at all variants,

@@ -421,6 +421,7 @@ export declare type UseAnimationHelpers = {
     staticConfig: StaticConfigParsed;
     getStyle: (props?: {
         isEntering?: boolean;
+        isExiting?: boolean;
         exitVariant?: string | null;
         enterVariant?: string | null;
     }) => ViewStyle;

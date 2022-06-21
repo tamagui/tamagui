@@ -36,7 +36,6 @@ export const PresenceChild = ({
         exitVariant,
         enterVariant,
         onExitComplete: (id: string) => {
-          console.log('got exit complete', id, children)
           presenceChildren.set(id, true)
           for (const isComplete of presenceChildren.values()) {
             if (!isComplete) {
@@ -68,9 +67,7 @@ export const PresenceChild = ({
    * component immediately.
    */
   React.useEffect(() => {
-    if (isPresent === false && !presenceChildren.size) {
-      onExitComplete?.()
-    }
+    !isPresent && !presenceChildren.size && onExitComplete?.()
   }, [isPresent])
 
   return <PresenceContext.Provider value={context}>{children}</PresenceContext.Provider>
