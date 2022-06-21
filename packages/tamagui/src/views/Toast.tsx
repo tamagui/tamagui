@@ -1,6 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { AnimationKeys, Text, isWeb } from '@tamagui/core'
+import { AnimationKeys, Theme, isWeb } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
+import { Paragraph } from '@tamagui/text'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import { memo, useCallback, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
@@ -85,31 +86,22 @@ export const ToastRoot = memo(function ToastRoot(props: { animation?: AnimationK
       zIndex={10000000000}
       padding="5%"
     >
-      <AnimatePresence>
-        {state.show && !!state.content && (
-          <YStack
-            animation={props.animation || ('toast' as any)}
-            backgroundColor={
-              // TODO theme
-              state.type === 'info'
-                ? 'rgba(100, 140, 100, 0.95)'
-                : state.type === 'success'
-                ? 'rgba(20,180,120,0.95)'
-                : 'rgba(190,60,60, 0.95)'
-            }
-            shadowColor="rgba(0,0,0,0.35)"
-            shadowOffset={{ height: 10, width: 0 }}
-            shadowRadius={40}
-            borderRadius={12}
-            paddingHorizontal={18}
-            paddingVertical={12}
-          >
-            <Text color="#fff" fontSize={18} fontWeight="600">
-              {state.content}
-            </Text>
-          </YStack>
-        )}
-      </AnimatePresence>
+      <Theme name={state.type === 'info' ? null : state.type === 'success' ? 'green' : 'red'}>
+        <AnimatePresence>
+          {state.show && !!state.content && (
+            <YStack
+              animation={props.animation || ('toast' as any)}
+              backgroundColor="$background"
+              elevation="$2"
+              borderRadius="$4"
+              paddingHorizontal="$4"
+              paddingVertical="$3"
+            >
+              <Paragraph>{state.content}</Paragraph>
+            </YStack>
+          )}
+        </AnimatePresence>
+      </Theme>
     </YStack>
   )
 

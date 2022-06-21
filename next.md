@@ -5,6 +5,7 @@
   - also aligns with stylex
 
 - 1.0
+  - <Toast />
   - another couple passes over style system to reduce work and size
   - cache at variant level (?)
   - FAQ
