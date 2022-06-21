@@ -20,7 +20,6 @@ import { isSimpleSpread } from './extractHelpers'
 import { extractMediaStyle } from './extractMediaStyle'
 import { getPrefixLogs } from './getPrefixLogs'
 import { hoistClassNames } from './hoistClassNames'
-import { literalToAst } from './literalToAst'
 import { logLines } from './logLines'
 import { timer } from './timer'
 
@@ -40,25 +39,17 @@ export type ExtractedResponse = {
 }
 
 export function extractToClassNames({
-  loader,
   extractor,
   source,
   sourcePath,
   options,
   shouldPrintDebug,
-  cssLoaderPath,
-  threaded,
-  cssPath,
 }: {
-  loader: LoaderContext<any>
-  cssLoaderPath: string
   extractor: Extractor
   source: string | Buffer
   sourcePath: string
   options: TamaguiOptions
   shouldPrintDebug: boolean | 'verbose'
-  cssPath: string
-  threaded?: boolean
 }): ExtractedResponse | null {
   const tm = timer()
 
@@ -78,7 +69,6 @@ export function extractToClassNames({
   let ast: t.File
 
   try {
-    // @ts-ignore
     ast = babelParse(source)
   } catch (err) {
     console.error('babel parse error:', sourcePath)
@@ -347,15 +337,6 @@ export function extractToClassNames({
     .map((x) => x.css)
     .join('\n')
     .trim()
-
-  if (styles) {
-    const cssQuery = threaded
-      ? `cssData=${Buffer.from(styles).toString('base64')}`
-      : `cssPath=${cssPath}`
-    const remReq = loader.remainingRequest
-    const importPath = `${cssPath}!=!${cssLoaderPath}?${cssQuery}!${remReq}`
-    ast.program.body.unshift(t.importDeclaration([], t.stringLiteral(importPath)))
-  }
 
   const result = generate(
     ast,

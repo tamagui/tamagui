@@ -34,13 +34,13 @@ export default function DialogDemo() {
           <Dialog.Description>
             Make changes to your profile here. Click save when you're done.
           </Dialog.Description>
-          <Fieldset horizontal>
+          <Fieldset space="$4" horizontal>
             <Label w={160} justifyContent="flex-end" htmlFor="name">
               Name
             </Label>
             <Input f={1} id="name" defaultValue="Nate Wienert" />
           </Fieldset>
-          <Fieldset horizontal>
+          <Fieldset space="$4" horizontal>
             <Label w={160} justifyContent="flex-end" htmlFor="username">
               Username
             </Label>

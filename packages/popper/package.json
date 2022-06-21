@@ -1,7 +1,9 @@
 {
   "name": "@tamagui/popper",
   "version": "1.0.1-beta.70",
-  "sideEffects": true,
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
