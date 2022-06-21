@@ -1,3 +1,4 @@
+export const plugin = {}
 // fork from https://github.com/seek-oss/vanilla-extract/blob/master/packages/vite-plugin/src/index.ts
 
 // import path from 'path'
