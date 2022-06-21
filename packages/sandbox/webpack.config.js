@@ -4,10 +4,10 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { shouldExclude } = require('tamagui-loader')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
-
-const target = process.env.TARGET || 'css'
+const target = process.env.TAMAGUI_TARGET || 'web'
 
 const boolVals = {
   true: true,
@@ -26,6 +26,7 @@ console.log('disableExtraction', disableExtraction)
 
 module.exports = /** @type { import('webpack').Configuration } */ {
   context: __dirname,
+  // stats: 'verbose', // detailed, normal
   mode: 'development',
   entry: ['./index.tsx'],
   devtool: 'source-map',
@@ -65,6 +66,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
               },
             ],
           },
+
           {
             test: /(bottom-sheet).*\.[tj]sx?$/,
             use: [
@@ -80,6 +82,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
               },
             ],
           },
+
           {
             test: /\.(ts|js)x?$/,
             exclude: (path) => shouldExclude(path, __dirname, tamaguiOptions),
@@ -102,10 +105,12 @@ module.exports = /** @type { import('webpack').Configuration } */ {
               },
             ],
           },
+
           {
             test: /\.css$/,
-            use: ['style-loader', 'css-loader'],
+            use: [MiniCSSExtractPlugin.loader, 'css-loader'],
           },
+
           {
             test: /\.(png|jpg|gif|woff|woff2)$/i,
             use: [
@@ -124,6 +129,11 @@ module.exports = /** @type { import('webpack').Configuration } */ {
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
+    new MiniCSSExtractPlugin({
+      filename: 'static/css/[name].[contenthash].css',
+      ignoreOrder: true,
+      runtime: false,
+    }),
     new ReactRefreshWebpackPlugin(),
     new webpack.DefinePlugin({
       process: {
@@ -131,7 +141,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
           __DEV__: NODE_ENV === 'development' ? 'true' : 'false',
           IS_STATIC: '""',
           NODE_ENV: JSON.stringify(NODE_ENV),
-          TAMAGUI_TARGET: JSON.stringify('web'),
+          TAMAGUI_TARGET: JSON.stringify(target),
           DEBUG: JSON.stringify(process.env.DEBUG || 0),
         },
       },

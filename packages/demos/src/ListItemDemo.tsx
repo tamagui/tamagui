@@ -14,16 +14,16 @@ export default function ListItemDemo() {
 function ListItemDemo1() {
   return (
     <Group als="center" bordered w={240} size="$4" vertical>
-      <ListItem hoverable icon={Star}>
+      <ListItem hoverTheme icon={Star}>
         Star
       </ListItem>
-      <ListItem hoverable icon={Moon}>
+      <ListItem hoverTheme icon={Moon}>
         Moon
       </ListItem>
-      <ListItem hoverable icon={Sun}>
+      <ListItem hoverTheme icon={Sun}>
         Sun
       </ListItem>
-      <ListItem hoverable icon={Cloud}>
+      <ListItem hoverTheme icon={Cloud}>
         Cloud
       </ListItem>
     </Group>
@@ -33,8 +33,8 @@ function ListItemDemo1() {
 function ListItemDemo2() {
   return (
     <Group als="center" bordered w={240} size="$6" vertical separator={<Separator />}>
-      <ListItem hoverable title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
-      <ListItem hoverable title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
+      <ListItem hoverTheme title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
+      <ListItem hoverTheme title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
     </Group>
   )
 }

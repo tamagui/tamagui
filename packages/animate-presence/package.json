@@ -2,6 +2,7 @@
   "name": "@tamagui/animate-presence",
   "version": "1.0.1-beta.70",
   "source": "src/index.ts",
+  "sideEffects": false,
   "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",

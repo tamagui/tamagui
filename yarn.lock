@@ -5686,7 +5686,7 @@ __metadata:
     "@tamagui/static": ^1.0.1-beta.70
     babel-loader: ^8.2.5
     browserslist: ^4.19.1
-    css-loader: ^5.2.4
+    css-loader: ^6.7.1
     css-minimizer-webpack-plugin: ^3.4.1
     esbuild-loader: ^2.18.0
     mini-css-extract-plugin: ^2.6.0
@@ -5862,7 +5862,7 @@ __metadata:
     "@tamagui/theme-base": ^1.0.1-beta.70
     "@welldone-software/why-did-you-render": ^7.0.1
     babel-polyfill: ^6.26.0
-    css-loader: ^5.2.4
+    css-loader: ^6.7.1
     esbuild-loader: ^2.18.0
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
@@ -5873,6 +5873,7 @@ __metadata:
     react-native-reanimated: ~2.8.0
     react-native-web: ^0.17.5
     react-refresh: ^0.11.0
+    style-loader: ^3.3.1
     tamagui: ^1.0.1-beta.70
     tamagui-loader: ^1.0.1-beta.70
     thread-loader: ^3.0.4
@@ -6073,7 +6074,7 @@ __metadata:
     "@types/webpack": ^4.41.26
     babel-literal-to-ast: ^2.1.0
     babel-loader: ^8.2.5
-    css-loader: ^5.2.4
+    css-loader: ^6.7.1
     esbuild: ^0.14.36
     esbuild-loader: ^2.18.0
     esbuild-register: ^3.3.2
@@ -6089,7 +6090,7 @@ __metadata:
     react-dom: "*"
     react-native-web: ^0.17.5
     react-test-renderer: ^18.2.0
-    style-loader: ^3.3.0
+    style-loader: ^3.3.1
     tamagui: ^1.0.1-beta.70
     typescript: ^4.7.2
     webpack: ^5.73.0
@@ -10315,23 +10316,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^5.2.4":
-  version: 5.2.7
-  resolution: "css-loader@npm:5.2.7"
+"css-loader@npm:^6.7.1":
+  version: 6.7.1
+  resolution: "css-loader@npm:6.7.1"
   dependencies:
     icss-utils: ^5.1.0
-    loader-utils: ^2.0.0
-    postcss: ^8.2.15
+    postcss: ^8.4.7
     postcss-modules-extract-imports: ^3.0.0
     postcss-modules-local-by-default: ^4.0.0
     postcss-modules-scope: ^3.0.0
     postcss-modules-values: ^4.0.0
-    postcss-value-parser: ^4.1.0
-    schema-utils: ^3.0.0
+    postcss-value-parser: ^4.2.0
     semver: ^7.3.5
   peerDependencies:
-    webpack: ^4.27.0 || ^5.0.0
-  checksum: fb0742b30ac0919f94b99a323bdefe6d48ae46d66c7d966aae59031350532f368f8bba5951fcd268f2e053c5e6e4655551076268e9073ccb58e453f98ae58f8e
+    webpack: ^5.0.0
+  checksum: 170fdbc630a05a43679ef60fa97694766b568dbde37adccc0faafa964fc675f08b976bc68837bb73b61d60240e8d2cbcbf51540fe94ebc9dafc56e7c46ba5527
   languageName: node
   linkType: hard
 
@@ -18618,7 +18617,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.23, nanoid@npm:^3.1.30, nanoid@npm:^3.3.1, nanoid@npm:^3.3.3":
+"nanoid@npm:^3.1.23, nanoid@npm:^3.1.30, nanoid@npm:^3.3.1, nanoid@npm:^3.3.3, nanoid@npm:^3.3.4":
   version: 3.3.4
   resolution: "nanoid@npm:3.3.4"
   bin:
@@ -21080,7 +21079,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.15, postcss@npm:^8.3.5":
+"postcss@npm:^8.3.5":
   version: 8.4.13
   resolution: "postcss@npm:8.4.13"
   dependencies:
@@ -21088,6 +21087,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 514fb3552805a5d039a2d6b4df3e73f657001716ca93c0d57e6067b0473abdea70276d80afc96005c9aaff82ed5d98062bd97724d3f47ca400fba0b5e9e436ed
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.7":
+  version: 8.4.14
+  resolution: "postcss@npm:8.4.14"
+  dependencies:
+    nanoid: ^3.3.4
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: fe58766ff32e4becf65a7d57678995cfd239df6deed2fe0557f038b47c94e4132e7e5f68b5aa820c13adfec32e523b693efaeb65798efb995ce49ccd83953816
   languageName: node
   linkType: hard
 
@@ -24079,7 +24089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-loader@npm:^3.3.0":
+"style-loader@npm:^3.3.1":
   version: 3.3.1
   resolution: "style-loader@npm:3.3.1"
   peerDependencies:

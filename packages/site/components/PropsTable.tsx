@@ -55,9 +55,10 @@ export function PropsTable({
         <H3 size="$3">Props</H3>
       </XStack>
       {data.map(({ name, type, required, default: defaultValue, description }, i) => (
-        <ListItem btw={1} boc="$borderColor" key={`${name}-${i}`} p={0}>
+        <ListItem key={`${name}-${i}`} p={0}>
           <YStack width="100%">
-            <XStack py="$3" px="$4" backgroundColor="$background" $sm={{ flexDirection: 'column' }}>
+            <XStack pos="relative" py="$3" px="$4" $sm={{ flexDirection: 'column' }}>
+              <YStack fullscreen backgroundColor="$background" zi={-1} o={0.5} />
               <XStack miw="30%" ai="center" space>
                 <H4
                   color="$color"

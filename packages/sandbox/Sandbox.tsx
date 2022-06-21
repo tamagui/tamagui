@@ -1,7 +1,6 @@
 globalThis['React'] = require('React')
 
 import '@tamagui/core/reset.css'
-import '@tamagui/site/public/fonts/inter.css'
 import '@tamagui/polyfill-dev'
 
 import { Studio } from '@takeout/studio'
@@ -17,6 +16,8 @@ export const Sandbox = () => {
   const [theme, setTheme] = useState(scheme as any)
   return (
     <Tamagui.Provider defaultTheme={theme}>
+      <link href="/fonts/inter.css" rel="stylesheet" />
+
       <button
         style={{
           position: 'absolute',
@@ -40,8 +41,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <SwitchDemo />
-        {/* <Studio /> */}
+        {/* <SwitchDemo /> */}
+        <Studio />
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>

@@ -64,7 +64,7 @@
     "@types/react-native": "^0.67.3",
     "@types/webpack": "^4.41.26",
     "babel-loader": "^8.2.5",
-    "css-loader": "^5.2.4",
+    "css-loader": "^6.7.1",
     "esbuild-loader": "^2.18.0",
     "jest": "^28.1.1",
     "jest-dom": "^4.0.0",
@@ -74,7 +74,7 @@
     "react-dom": "*",
     "react-native-web": "^0.17.5",
     "react-test-renderer": "^18.2.0",
-    "style-loader": "^3.3.0",
+    "style-loader": "^3.3.1",
     "typescript": "^4.7.2",
     "webpack": "^5.73.0"
   },

@@ -8,7 +8,7 @@ export const InputFrame = styled(TextInput, {
   name: 'Input',
   borderWidth: 1,
   color: '$color',
-  focusable: false,
+  focusable: true,
   borderColor: '$borderColor',
   backgroundColor: '$background',
 

@@ -108,6 +108,7 @@ export const ButtonFrame = styled(ThemeableStack, {
 export const ButtonText = styled(SizableText, {
   color: '$color',
   selectable: false,
+  cursor: 'inherit',
   // flexGrow 1 leads to inconsistent native style where text pushes to start of view
   flexGrow: 0,
   flexShrink: 1,
