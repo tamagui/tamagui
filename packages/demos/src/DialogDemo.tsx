@@ -9,7 +9,13 @@ export default function DialogDemo() {
         <Button>Edit Profile</Button>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay key="overlay" o={0.5} />
+        <Dialog.Overlay
+          key="overlay"
+          animation="quick"
+          o={0.5}
+          enterStyle={{ o: 0 }}
+          exitStyle={{ o: 0 }}
+        />
         <Dialog.Content
           bordered
           elevate

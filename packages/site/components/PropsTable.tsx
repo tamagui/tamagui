@@ -111,7 +111,7 @@ export function PropsTable({
               </XStack>
             </XStack>
 
-            {description && (
+            {!!description && (
               <YStack py="$2" px="$4">
                 <Paragraph size="$2" o={0.65}>
                   {description}

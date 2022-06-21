@@ -318,7 +318,8 @@ export const getSplitStyles: StyleSplitter = (
         if (shouldDoClasses) {
           const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
           for (const style of pseudoStyles) {
-            const fullKey = `${style.property}_${pseudoAttrs[key].name}`
+            const postfix = pseudoAttrs[key]?.name || key // exitStyle/enterStyle dont have pseudoAttrs
+            const fullKey = `${style.property}_${postfix}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(style.identifier, style.rules.join(';'))

@@ -1,7 +1,8 @@
-import { AnimatePresenceContext, useEntering } from '@tamagui/animate-presence'
+import { PresenceContext, usePresence } from '@tamagui/animate-presence'
 import { AnimationDriver, AnimationProp } from '@tamagui/core'
 import { useCallback, useContext, useMemo } from 'react'
 import Animated, {
+  AnimationCallback,
   WithDecayConfig,
   WithSpringConfig,
   WithTimingConfig,
@@ -37,8 +38,8 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     Text: AnimatedText,
     useAnimations: (props, helpers) => {
       const { pseudos, onDidAnimate, delay, getStyle, state, staticConfig } = helpers
-      const [isEntering, safeToUnmount] = useEntering()
-      const presence = useContext(AnimatePresenceContext)
+      const [isEntering, sendExitComplete] = usePresence()
+      const presence = useContext(PresenceContext)
 
       const exitStyle = presence?.exitVariant
         ? staticConfig.variantsParsed?.[presence.exitVariant]?.true || pseudos.exitStyle
@@ -84,11 +85,16 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         presence?.enterVariant,
       ]
 
-      const callback = (isExiting: boolean, exitingStyleProps: Record<string, boolean>, key: string, value: any) => {
+      const callback = (
+        isExiting: boolean,
+        exitingStyleProps: Record<string, boolean>,
+        key: string,
+        value: any
+      ) => {
         'worklet'
-        return (completed: boolean, recentValue?: any) => {
+        const callback: AnimationCallback = (completed, current) => {
           'worklet'
-          runOnJS(reanimatedOnDidAnimated)(key, completed, recentValue, {
+          runOnJS(reanimatedOnDidAnimated)(key, completed, current, {
             attemptedValue: value,
           })
           if (isExiting) {
@@ -96,12 +102,13 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
             // if this is true, then we've finished our exit animations
             if (!areStylesExiting) {
-              if (safeToUnmount) {
-                runOnJS(safeToUnmount)()
+              if (sendExitComplete) {
+                runOnJS(sendExitComplete)()
               }
             }
           }
         }
+        return callback
       }
 
       const animatedStyle = useAnimatedStyle(() => {
@@ -116,8 +123,15 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
         const exitingStyleProps: Record<string, boolean> = {}
         if (exitStyle) {
-          for (const key of Object.keys(exitStyle)) {
-            exitingStyleProps[key] = true
+          for (const key in exitStyle) {
+            if (key === 'transform') {
+              for (const attr of exitStyle[key]) {
+                const tkey = Object.keys(attr)[0]
+                exitingStyleProps[tkey] = true
+              }
+            } else {
+              exitingStyleProps[key] = true
+            }
           }
         }
 
@@ -132,6 +146,15 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
           let { delayMs = null } = animationDelay(key, animationConfig, delay)
 
+          if (!animation) {
+            console.warn('No animation for', key, 'in', style)
+            continue
+          }
+          if (!config) {
+            console.warn('No animation config for', key, 'in', style)
+            continue
+          }
+
           if (key === 'transform') {
             if (!Array.isArray(value)) {
               console.error(`Invalid transform value. Needs to be an array.`)
@@ -141,7 +164,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             for (const transformObject of value) {
               const key = Object.keys(transformObject)[0]
               const transformValue = transformObject[key]
-              let finalValue = animation(transformValue, config, callback(isExiting, exitingStyleProps, key, value))
+              let finalValue = animation(
+                transformValue,
+                config as any,
+                callback(isExiting, exitingStyleProps, key, value)
+              )
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
               }
@@ -156,7 +183,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             // shadows
             final[key] = {}
             for (const innerStyleKey of Object.keys(value || {})) {
-              let finalValue = animation(value, config, callback(isExiting, exitingStyleProps, key, value))
+              let finalValue = animation(
+                value,
+                config as any,
+                callback(isExiting, exitingStyleProps, key, value)
+              )
               if (shouldRepeat) {
                 finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
               }
@@ -169,7 +200,11 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             continue
           }
 
-          let finalValue = animation(value, config, callback(isExiting, exitingStyleProps, key, value))
+          let finalValue = animation(
+            value,
+            config as any,
+            callback(isExiting, exitingStyleProps, key, value)
+          )
           if (shouldRepeat) {
             finalValue = withRepeat(finalValue, repeatCount, repeatReverse)
           }
@@ -336,7 +371,7 @@ function getAnimation(
   }
 
   let config = animationConfig
-  let animation: any
+  let animation: typeof withTiming | typeof withSpring | typeof withDecay
 
   if (animationType === 'timing') {
     animation = withTiming
