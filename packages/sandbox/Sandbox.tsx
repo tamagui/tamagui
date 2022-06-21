@@ -5,7 +5,7 @@ import '@tamagui/site/public/fonts/inter.css'
 import '@tamagui/polyfill-dev'
 
 import { Studio } from '@takeout/studio'
-import { AnimationsDemo, SelectDemo } from '@tamagui/demos'
+import { AnimationsDemo, SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { Button, H1, H3, Paragraph, Square, YStack, ZStack } from 'tamagui'
@@ -40,7 +40,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Studio />
+        <SwitchDemo />
+        {/* <Studio /> */}
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>
