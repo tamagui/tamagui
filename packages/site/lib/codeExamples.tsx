@@ -5,7 +5,7 @@ export default () => {
   return (
     <>
       <Square
-        animation="animation
+        animation="bouncy"
         size={110}
         bc="$pink10"
         br="$9"
