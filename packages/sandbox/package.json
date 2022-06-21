@@ -36,7 +36,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-polyfill": "^6.26.0",
-    "css-loader": "^6.7.1",
+    "css-loader": "^5.2.4",
     "esbuild-loader": "^2.18.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
