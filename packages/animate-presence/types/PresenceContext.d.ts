@@ -1,13 +1,14 @@
 /// <reference types="react" />
 import { VariantLabels } from './types';
-export interface AnimatePresenceContextProps {
+export interface PresenceContextProps {
     id: string;
-    isEntering: boolean | undefined;
+    isPresent: boolean;
     register: (id: string) => () => void;
     onExitComplete?: (id: string) => void;
     initial?: false | VariantLabels;
+    custom?: any;
     exitVariant?: string | null;
     enterVariant?: string | null;
 }
-export declare const AnimatePresenceContext: import("react").Context<AnimatePresenceContextProps | null>;
-//# sourceMappingURL=AnimatePresenceContext.d.ts.map
+export declare const PresenceContext: import("react").Context<PresenceContextProps | null>;
+//# sourceMappingURL=PresenceContext.d.ts.map
