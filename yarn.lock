@@ -5878,6 +5878,7 @@ __metadata:
     tamagui-loader: ^1.0.1-beta.70
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
+    vite: ^2.9.12
     webpack: ^5.73.0
     webpack-bundle-analyzer: ^4.5.0
     webpack-cli: ^4.9.2
@@ -6209,6 +6210,17 @@ __metadata:
     react-native: "*"
   peerDependencies:
     react-native: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/vite-plugin@workspace:packages/vite-plugin":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/vite-plugin@workspace:packages/vite-plugin"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.70
+    "@tamagui/static": ^1.0.1-beta.70
+    fs-extra: ^9.1.0
+    lodash: ^4.17.21
   languageName: unknown
   linkType: soft
 
@@ -15059,7 +15071,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.5.0, is-core-module@npm:^2.8.1":
+"is-core-module@npm:^2.5.0, is-core-module@npm:^2.8.1, is-core-module@npm:^2.9.0":
   version: 2.9.0
   resolution: "is-core-module@npm:2.9.0"
   dependencies:
@@ -21090,7 +21102,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.7":
+"postcss@npm:^8.4.13, postcss@npm:^8.4.7":
   version: 8.4.14
   resolution: "postcss@npm:8.4.14"
   dependencies:
@@ -22639,6 +22651,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve@npm:^1.22.0":
+  version: 1.22.1
+  resolution: "resolve@npm:1.22.1"
+  dependencies:
+    is-core-module: ^2.9.0
+    path-parse: ^1.0.7
+    supports-preserve-symlinks-flag: ^1.0.0
+  bin:
+    resolve: bin/resolve
+  checksum: 07af5fc1e81aa1d866cbc9e9460fbb67318a10fa3c4deadc35c3ad8a898ee9a71a86a65e4755ac3195e0ea0cfbe201eb323ebe655ce90526fd61917313a34e4e
+  languageName: node
+  linkType: hard
+
 "resolve@npm:~1.7.1":
   version: 1.7.1
   resolution: "resolve@npm:1.7.1"
@@ -22658,6 +22683,19 @@ __metadata:
   bin:
     resolve: bin/resolve
   checksum: c79ecaea36c872ee4a79e3db0d3d4160b593f2ca16e031d8283735acd01715a203607e9ded3f91f68899c2937fa0d49390cddbe0fb2852629212f3cda283f4a7
+  languageName: node
+  linkType: hard
+
+"resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>":
+  version: 1.22.1
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
+  dependencies:
+    is-core-module: ^2.9.0
+    path-parse: ^1.0.7
+    supports-preserve-symlinks-flag: ^1.0.0
+  bin:
+    resolve: bin/resolve
+  checksum: 5656f4d0bedcf8eb52685c1abdf8fbe73a1603bb1160a24d716e27a57f6cecbe2432ff9c89c2bd57542c3a7b9d14b1882b73bfe2e9d7849c9a4c0b8b39f02b8b
   languageName: node
   linkType: hard
 
@@ -22811,6 +22849,20 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 3ea587b981a19016297edb96d1ffe48af7e6af69660e3b371dbfc73722a73a0b0e9be5c88089fbeeb866c389c1098e07f64929c7414290504b855f54f901ab10
+  languageName: node
+  linkType: hard
+
+"rollup@npm:^2.59.0":
+  version: 2.75.7
+  resolution: "rollup@npm:2.75.7"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: a6331d46b01062b184efdcb42ce12caf2e1575f989963944534b02f5855f6f3bc239ed0c1a18893572d7695af6d83166f3aef59dbd0365084e1531cb67824674
   languageName: node
   linkType: hard
 
@@ -26055,6 +26107,35 @@ __metadata:
     unist-util-stringify-position: ^3.0.0
     vfile-message: ^3.0.0
   checksum: c352a76974c4ce0a0177e157335c95a647dae9e510ed4fad9b328479eb46230dc9ade8793d4c8b7f78263314797fc5026ff14da086e3805d530645e7d8057dcb
+  languageName: node
+  linkType: hard
+
+"vite@npm:^2.9.12":
+  version: 2.9.12
+  resolution: "vite@npm:2.9.12"
+  dependencies:
+    esbuild: ^0.14.27
+    fsevents: ~2.3.2
+    postcss: ^8.4.13
+    resolve: ^1.22.0
+    rollup: ^2.59.0
+  peerDependencies:
+    less: "*"
+    sass: "*"
+    stylus: "*"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    less:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 33cf8b6bfbbcae4b7f856d739ae519bed6b1ce23fc652ca98db1d4878bf35424885951c13e0d2536248423a0836d91ef7cae744ff40cbcbd6e7ffe495bd15ea5
   languageName: node
   linkType: hard
 

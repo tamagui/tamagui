@@ -1,0 +1,31 @@
+{
+  "name": "@tamagui/vite-plugin",
+  "version": "1.0.1-beta.70",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "license": "MIT",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/static": "^1.0.1-beta.70",
+    "fs-extra": "^9.1.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.70"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
