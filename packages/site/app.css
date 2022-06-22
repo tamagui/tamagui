@@ -593,5 +593,5 @@ input, textarea {
 }
 
 .themes-fader { 
-  background: linear-gradient(to right, var(--backgroundStrong), transparent 20%, transparent 80%, var(--backgroundStrong));
+  background: linear-gradient(to right, var(--backgroundStrong), transparent 10%, transparent 90%, var(--backgroundStrong));
 }
