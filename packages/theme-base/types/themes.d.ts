@@ -21,6 +21,18 @@ declare const dark: {
     borderColorHover: string | Variable<any>;
     borderColorPress: string | Variable<any>;
     borderColorFocus: string | Variable<any>;
+    step1: string | Variable<any>;
+    step2: string | Variable<any>;
+    step3: string | Variable<any>;
+    step4: string | Variable<any>;
+    step5: string | Variable<any>;
+    step6: string | Variable<any>;
+    step7: string | Variable<any>;
+    step8: string | Variable<any>;
+    step9: string | Variable<any>;
+    step10: string | Variable<any>;
+    step11: string | Variable<any>;
+    step12: string | Variable<any>;
     teal1: string | Variable<any>;
     teal2: string | Variable<any>;
     teal3: string | Variable<any>;
@@ -180,6 +192,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
         teal1: string | Variable<any>;
         teal2: string | Variable<any>;
         teal3: string | Variable<any>;
@@ -336,6 +360,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_DrawerFrame: {
         background: any;
@@ -359,6 +395,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_SliderTrack: {
         background: any;
@@ -382,6 +430,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_SliderTrackActive: {
         background: any;
@@ -405,6 +465,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_Switch: {
         background: any;
@@ -428,6 +500,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_SwitchThumb: {
         background: any;
@@ -451,6 +535,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_Button: {
         background: any;
@@ -474,6 +570,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_alt1: {
         background: any;
@@ -497,6 +605,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_alt2: {
         background: any;
@@ -520,6 +640,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_alt3: {
         background: any;
@@ -543,6 +675,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     dark_darker: {
         background: any;
@@ -566,6 +710,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light: {
         background: any;
@@ -589,6 +745,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
         teal1: string | Variable<any>;
         teal2: string | Variable<any>;
         teal3: string | Variable<any>;
@@ -745,6 +913,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_Button: {
         background: any;
@@ -768,6 +948,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_SliderTrack: {
         background: any;
@@ -791,6 +983,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_SliderTrackActive: {
         background: any;
@@ -814,6 +1018,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_Switch: {
         background: any;
@@ -837,6 +1053,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_SwitchThumb: {
         background: any;
@@ -860,6 +1088,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_DrawerFrame: {
         background: any;
@@ -883,6 +1123,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_alt1: {
         background: any;
@@ -906,6 +1158,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_alt2: {
         background: any;
@@ -929,6 +1193,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_alt3: {
         background: any;
@@ -952,6 +1228,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     light_darker: {
         background: any;
@@ -975,6 +1263,18 @@ declare const baseThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
 };
 export declare const colorSchemes: readonly [{
@@ -1039,6 +1339,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly gray: {
         background: any;
@@ -1062,6 +1374,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly green: {
         background: any;
@@ -1085,6 +1409,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly orange: {
         background: any;
@@ -1108,6 +1444,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly pink: {
         background: any;
@@ -1131,6 +1479,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly purple: {
         background: any;
@@ -1154,6 +1514,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly red: {
         background: any;
@@ -1177,6 +1549,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly yellow: {
         background: any;
@@ -1200,6 +1584,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly teal: {
         background: any;
@@ -1223,6 +1619,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_blue_alt1: {
         background: any;
@@ -1246,6 +1654,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_blue_alt2: {
         background: any;
@@ -1269,6 +1689,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_blue_alt3: {
         background: any;
@@ -1292,6 +1724,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_gray_alt1: {
         background: any;
@@ -1315,6 +1759,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_gray_alt2: {
         background: any;
@@ -1338,6 +1794,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_gray_alt3: {
         background: any;
@@ -1361,6 +1829,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_green_alt1: {
         background: any;
@@ -1384,6 +1864,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_green_alt2: {
         background: any;
@@ -1407,6 +1899,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_green_alt3: {
         background: any;
@@ -1430,6 +1934,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_orange_alt1: {
         background: any;
@@ -1453,6 +1969,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_orange_alt2: {
         background: any;
@@ -1476,6 +2004,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_orange_alt3: {
         background: any;
@@ -1499,6 +2039,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_pink_alt1: {
         background: any;
@@ -1522,6 +2074,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_pink_alt2: {
         background: any;
@@ -1545,6 +2109,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_pink_alt3: {
         background: any;
@@ -1568,6 +2144,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_purple_alt1: {
         background: any;
@@ -1591,6 +2179,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_purple_alt2: {
         background: any;
@@ -1614,6 +2214,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_purple_alt3: {
         background: any;
@@ -1637,6 +2249,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_red_alt1: {
         background: any;
@@ -1660,6 +2284,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_red_alt2: {
         background: any;
@@ -1683,6 +2319,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_red_alt3: {
         background: any;
@@ -1706,6 +2354,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_yellow_alt1: {
         background: any;
@@ -1729,6 +2389,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_yellow_alt2: {
         background: any;
@@ -1752,6 +2424,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_yellow_alt3: {
         background: any;
@@ -1775,6 +2459,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_teal_alt1: {
         background: any;
@@ -1798,6 +2494,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_teal_alt2: {
         background: any;
@@ -1821,6 +2529,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_teal_alt3: {
         background: any;
@@ -1844,6 +2564,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_blue_alt1: {
         background: any;
@@ -1867,6 +2599,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_blue_alt2: {
         background: any;
@@ -1890,6 +2634,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_blue_alt3: {
         background: any;
@@ -1913,6 +2669,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_gray_alt1: {
         background: any;
@@ -1936,6 +2704,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_gray_alt2: {
         background: any;
@@ -1959,6 +2739,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_gray_alt3: {
         background: any;
@@ -1982,6 +2774,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_green_alt1: {
         background: any;
@@ -2005,6 +2809,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_green_alt2: {
         background: any;
@@ -2028,6 +2844,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_green_alt3: {
         background: any;
@@ -2051,6 +2879,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_orange_alt1: {
         background: any;
@@ -2074,6 +2914,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_orange_alt2: {
         background: any;
@@ -2097,6 +2949,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_orange_alt3: {
         background: any;
@@ -2120,6 +2984,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_pink_alt1: {
         background: any;
@@ -2143,6 +3019,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_pink_alt2: {
         background: any;
@@ -2166,6 +3054,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_pink_alt3: {
         background: any;
@@ -2189,6 +3089,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_purple_alt1: {
         background: any;
@@ -2212,6 +3124,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_purple_alt2: {
         background: any;
@@ -2235,6 +3159,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_purple_alt3: {
         background: any;
@@ -2258,6 +3194,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_red_alt1: {
         background: any;
@@ -2281,6 +3229,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_red_alt2: {
         background: any;
@@ -2304,6 +3264,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_red_alt3: {
         background: any;
@@ -2327,6 +3299,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_yellow_alt1: {
         background: any;
@@ -2350,6 +3334,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_yellow_alt2: {
         background: any;
@@ -2373,6 +3369,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_yellow_alt3: {
         background: any;
@@ -2396,6 +3404,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_teal_alt1: {
         background: any;
@@ -2419,6 +3439,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_teal_alt2: {
         background: any;
@@ -2442,6 +3474,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_teal_alt3: {
         background: any;
@@ -2465,6 +3509,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark: {
         background: any;
@@ -2488,6 +3544,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
         teal1: string | Variable<any>;
         teal2: string | Variable<any>;
         teal3: string | Variable<any>;
@@ -2644,6 +3712,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_DrawerFrame: {
         background: any;
@@ -2667,6 +3747,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_SliderTrack: {
         background: any;
@@ -2690,6 +3782,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_SliderTrackActive: {
         background: any;
@@ -2713,6 +3817,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_Switch: {
         background: any;
@@ -2736,6 +3852,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_SwitchThumb: {
         background: any;
@@ -2759,6 +3887,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_Button: {
         background: any;
@@ -2782,6 +3922,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_alt1: {
         background: any;
@@ -2805,6 +3957,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_alt2: {
         background: any;
@@ -2828,6 +3992,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_alt3: {
         background: any;
@@ -2851,6 +4027,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly dark_darker: {
         background: any;
@@ -2874,6 +4062,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light: {
         background: any;
@@ -2897,6 +4097,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
         teal1: string | Variable<any>;
         teal2: string | Variable<any>;
         teal3: string | Variable<any>;
@@ -3053,6 +4265,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_Button: {
         background: any;
@@ -3076,6 +4300,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_SliderTrack: {
         background: any;
@@ -3099,6 +4335,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_SliderTrackActive: {
         background: any;
@@ -3122,6 +4370,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_Switch: {
         background: any;
@@ -3145,6 +4405,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_SwitchThumb: {
         background: any;
@@ -3168,6 +4440,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_DrawerFrame: {
         background: any;
@@ -3191,6 +4475,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_alt1: {
         background: any;
@@ -3214,6 +4510,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_alt2: {
         background: any;
@@ -3237,6 +4545,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_alt3: {
         background: any;
@@ -3260,6 +4580,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
     readonly light_darker: {
         background: any;
@@ -3283,6 +4615,18 @@ declare const allThemes: {
         borderColorHover: string | Variable<any>;
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
+        step1: string | Variable<any>;
+        step2: string | Variable<any>;
+        step3: string | Variable<any>;
+        step4: string | Variable<any>;
+        step5: string | Variable<any>;
+        step6: string | Variable<any>;
+        step7: string | Variable<any>;
+        step8: string | Variable<any>;
+        step9: string | Variable<any>;
+        step10: string | Variable<any>;
+        step11: string | Variable<any>;
+        step12: string | Variable<any>;
     };
 };
 export declare const themes: {
