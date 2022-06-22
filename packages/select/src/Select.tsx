@@ -194,6 +194,7 @@ const VALUE_NAME = 'SelectValue'
 
 const SelectValueFrame = styled(Paragraph, {
   name: VALUE_NAME,
+  selectable: false,
 })
 
 type SelectValueProps = GetProps<typeof SelectValueFrame> & {
