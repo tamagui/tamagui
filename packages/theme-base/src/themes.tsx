@@ -153,6 +153,18 @@ const themeCreator = (
     borderColorHover: null as any as string | Variable,
     borderColorPress: null as any as string | Variable,
     borderColorFocus: null as any as string | Variable,
+    step1: backgrounds[0],
+    step2: backgrounds[1],
+    step3: backgrounds[2],
+    step4: backgrounds[3],
+    step5: backgrounds[4],
+    step6: backgrounds[5],
+    step7: backgrounds[6],
+    step8: backgrounds[7],
+    step9: backgrounds[8],
+    step10: backgrounds[9],
+    step11: backgrounds[10],
+    step12: backgrounds[11],
   }
 
   if (isBase) {
