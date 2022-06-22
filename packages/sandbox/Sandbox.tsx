@@ -4,10 +4,28 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Studio } from '@takeout/studio'
-import { AnimationsDemo, AnimationsPresenceDemo, SelectDemo, SwitchDemo } from '@tamagui/demos'
+import {
+  AnimationsDemo,
+  AnimationsPresenceDemo,
+  AvatarDemo,
+  DialogDemo,
+  SelectDemo,
+  SwitchDemo,
+} from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, H1, H3, ListItem, Paragraph, SelectItem, Square, YStack, ZStack } from 'tamagui'
+import {
+  Button,
+  Dialog,
+  H1,
+  H3,
+  ListItem,
+  Paragraph,
+  SelectItem,
+  Square,
+  YStack,
+  ZStack,
+} from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -43,7 +61,9 @@ export const Sandbox = () => {
       >
         {/* <SwitchDemo /> */}
         {/* <Studio /> */}
-        <SelectDemo />
+        {/* <SelectDemo /> */}
+        {/* <DialogDemo /> */}
+        <AvatarDemo />
       </div>
     </Tamagui.Provider>
   )
