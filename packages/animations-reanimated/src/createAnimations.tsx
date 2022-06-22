@@ -97,7 +97,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         value: any
       ) => {
         'worklet'
-        const callback: AnimationCallback = (completed, current) => {
+        return (completed, current) => {
           'worklet'
           runOnJS(reanimatedOnDidAnimated)(key, completed, current, {
             attemptedValue: value,
@@ -113,7 +113,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             }
           }
         }
-        return callback
       }
 
       const animatedStyle = useAnimatedStyle(() => {
@@ -220,10 +219,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
           }
 
           // end for (key in mergedStyles)
-        }
-
-        if (process.env.NODE_ENV === 'development' && props['debug']) {
-          console.log('animation style', final)
         }
 
         return final
