@@ -70,14 +70,6 @@ function getVisualOffsetTop() {
   return !/^((?!chrome|android).)*safari/i.test(userAgent) ? visualViewport.offsetTop : 0
 }
 
-const getSelectItemSize = (val: SizeTokens, { tokens }: VariantSpreadExtras<any>) => {
-  const padding = getVariableValue(tokens.size[val])
-  return {
-    paddingHorizontal: padding / 2,
-    paddingVertical: padding / 4,
-  }
-}
-
 /* -------------------------------------------------------------------------------------------------
  * SelectContext
  * -----------------------------------------------------------------------------------------------*/
@@ -131,9 +123,6 @@ const [SelectProvider, useSelectContext] = createSelectContext<SelectContextValu
 type GenericElement = HTMLElement | View
 
 type Direction = 'ltr' | 'rtl'
-
-const OPEN_KEYS = [' ', 'Enter', 'ArrowUp', 'ArrowDown']
-const SELECTION_KEYS = [' ', 'Enter']
 
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger
