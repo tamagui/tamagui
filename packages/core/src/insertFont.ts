@@ -10,7 +10,7 @@ export function insertFont<A extends GenericFont>(name: string, fontIn: A): Deep
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
   registerFontVariables(parsed)
-  setConfigFont(name, parsed)
+  setConfigFont(name, tokened, parsed)
   return parsed
 }
 
