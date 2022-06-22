@@ -7,7 +7,7 @@ import { Studio } from '@takeout/studio'
 import { AnimationsDemo, AnimationsPresenceDemo, SelectDemo, SwitchDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Button, H1, H3, Paragraph, Square, YStack, ZStack } from 'tamagui'
+import { Button, H1, H3, ListItem, Paragraph, SelectItem, Square, YStack, ZStack } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -42,8 +42,9 @@ export const Sandbox = () => {
         }}
       >
         {/* <SwitchDemo /> */}
-        <Studio />
+        {/* <Studio /> */}
         {/* <SelectDemo /> */}
+        <ListItem title="hhihi">Hello wordl</ListItem>
       </div>
     </Tamagui.Provider>
   )

@@ -100,6 +100,8 @@ export const ListItemText = styled(SizableText, {
 
 export const ListItemSubtitle = styled(ListItemText, {
   color: '$colorPress',
+  marginTop: '$-2',
+  opacity: 0.65,
   size: '$3',
 })
 
@@ -140,42 +142,36 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
 
   return (
     <ListItemFrame fontFamily={fontFamily} ref={ref as any} {...rest}>
-      {themedIcon || themedIconAfter ? (
+      {themedIcon ? (
         <>
-          {themedIcon ? (
-            <>
-              {themedIcon}
-              <Spacer size={spaceSize} />
-            </>
-          ) : null}
-          {/* helper for common title/subtitle pttern */}
-          {!!(title || subTitle) && (
-            <YStack flex={1}>
-              <ListItemText>{title}</ListItemText>
-              {subTitle ? (
-                typeof subTitle === 'string' ? (
-                  // TODO can use theme but we need to standardize to alt themes
-                  // or standardize on subtle colors in themes
-                  <ListItemSubtitle marginTop="$-2" opacity={0.65} size={subtitleSize}>
-                    {subTitle}
-                  </ListItemSubtitle>
-                ) : (
-                  subTitle
-                )
-              ) : null}
-            </YStack>
-          )}
-          {contents}
-          {themedIconAfter ? (
-            <>
-              <Spacer flex size={spaceSize} />
-              {themedIconAfter}
-            </>
-          ) : null}
+          {themedIcon}
+          <Spacer size={spaceSize} />
         </>
+      ) : null}
+      {/* helper for common title/subtitle pttern */}
+      {Boolean(title || subTitle) ? (
+        <YStack flex={1}>
+          <ListItemText>{title}</ListItemText>
+          {subTitle ? (
+            typeof subTitle === 'string' ? (
+              // TODO can use theme but we need to standardize to alt themes
+              // or standardize on subtle colors in themes
+              <ListItemSubtitle size={subtitleSize}>{subTitle}</ListItemSubtitle>
+            ) : (
+              subTitle
+            )
+          ) : null}
+          {contents}
+        </YStack>
       ) : (
         contents
       )}
+      {themedIconAfter ? (
+        <>
+          <Spacer flex size={spaceSize} />
+          {themedIconAfter}
+        </>
+      ) : null}
     </ListItemFrame>
   )
 })
