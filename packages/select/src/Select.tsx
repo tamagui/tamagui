@@ -275,6 +275,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   elevate: true,
   overflow: 'hidden',
   userSelect: 'none',
+  maxHeight: '100%',
 
   variants: {
     size: {
@@ -408,7 +409,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       setOpen(false)
     }
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
       clearTimeout(timeoutRef.current)
       if (open) {
         if (selectedIndex !== index) {
@@ -443,7 +444,8 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         textId={textId || ''}
         isSelected={isSelected}
         onItemTextChange={React.useCallback((node) => {
-          // setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
+          // @ts-ignore
+          setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
         }, [])}
       >
         <ListItem
@@ -479,7 +481,7 @@ const ITEM_TEXT_NAME = 'SelectItemText'
 
 export const SelectItemTextFrame = styled(Paragraph, {
   name: ITEM_TEXT_NAME,
-  cursor: 'default',
+  selectable: false,
 })
 
 type SelectItemTextProps = GetProps<typeof SelectItemTextFrame>
@@ -718,6 +720,7 @@ const SelectScrollButtonImpl = React.forwardRef<
   const handleScrollArrowChange = () => {
     const floating = floatingRef.current
     const isUp = dir === 'up'
+
     if (floating) {
       const value = isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY
       const multi =
@@ -727,6 +730,7 @@ const SelectScrollButtonImpl = React.forwardRef<
             floating.scrollHeight - floating.clientHeight - SCROLL_ARROW_THRESHOLD * 2)
           ? 2
           : 1
+
       floating.scrollTop += multi * (isUp ? -SCROLL_ARROW_VELOCITY : SCROLL_ARROW_VELOCITY)
 
       increaseHeight(floating, multi === 2 ? value * 2 : value)
@@ -741,6 +745,7 @@ const SelectScrollButtonImpl = React.forwardRef<
       componentName={componentName}
       aria-hidden
       {...scrollIndicatorProps}
+      zIndex={1000}
       // @ts-expect-error
       position={strategy}
       left={x || 0}
@@ -836,6 +841,7 @@ export const Select = withStaticProperties(
     const [selectedIndex, setSelectedIndex] = React.useState(
       Math.max(0, listContentRef.current.indexOf(value))
     )
+
     const [controlledScrolling, setControlledScrolling] = React.useState(false)
     const [middlewareType, setMiddlewareType] = React.useState<'align' | 'fallback'>('align')
 
@@ -1272,6 +1278,11 @@ export const Select = withStaticProperties(
                 position: strategy,
                 top: y ?? '',
                 left: x ?? '',
+                outline: 0,
+                overflowY: 'auto',
+                listStyleType: 'none',
+                scrollbarWidth: 'none',
+                userSelect: 'none',
               },
               onPointerEnter() {
                 setControlledScrolling(false)
@@ -1296,22 +1307,12 @@ export const Select = withStaticProperties(
         dataRef={context.dataRef}
         listRef={listItemsRef}
         onChange={setValue}
-        selectedIndex={0}
+        selectedIndex={selectedIndex}
         setActiveIndex={setActiveIndex}
         setOpen={setOpen}
         setSelectedIndex={setSelectedIndex}
         value={value}
-        // trigger={trigger}
-        // onTriggerChange={setTrigger}
-        // contentId={useId() || ''}
-        // value={value}
-        // onValueChange={setValue}
         open={open}
-        // onOpenChange={setOpen}
-        // TODO
-        // dir={'rtl'} //direction}
-        // bubbleSelect={bubbleSelect}
-        // triggerPointerDownPosRef={triggerPointerDownPosRef}
       >
         {/* <Collection.Provider scope={__scopeSelect}>{children}</Collection.Provider> */}
         {children}

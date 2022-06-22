@@ -1,5 +1,5 @@
-import { ChevronDown } from '@tamagui/feather-icons'
-import { Select, Text } from 'tamagui'
+import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
+import { LinearGradient, Select, Text, YStack } from 'tamagui'
 
 export default function SelectDemo() {
   return (
@@ -9,8 +9,16 @@ export default function SelectDemo() {
       </Select.Trigger>
 
       <Select.Content>
-        <Select.ScrollUpButton>
-          <Text>☝️</Text>
+        <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">
+          <YStack zi={10}>
+            <ChevronUp size={20} />
+          </YStack>
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            fullscreen
+            colors={['$background', '$backgroundTransparent']}
+          />
         </Select.ScrollUpButton>
 
         <Select.Viewport minWidth={200}>
@@ -26,8 +34,16 @@ export default function SelectDemo() {
           </Select.Group>
         </Select.Viewport>
 
-        <Select.ScrollDownButton>
-          <Text>👇</Text>
+        <Select.ScrollDownButton ai="center" jc="center" pos="relative" w="100%" h="$3">
+          <YStack zi={10}>
+            <ChevronDown size={20} />
+          </YStack>
+          <LinearGradient
+            start={[0, 0]}
+            end={[0, 1]}
+            fullscreen
+            colors={['$backgroundTransparent', '$background']}
+          />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>
