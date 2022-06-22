@@ -45,8 +45,8 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     const { __scopeAvatar, src, onLoadingStatusChange = () => {}, ...imageProps } = props
     const context = useAvatarContext(IMAGE_NAME, __scopeAvatar)
     const [status, setStatus] = React.useState<ImageLoadingStatus>('idle')
-    // const extras = getVariantExtras(props)
-    // const shapeSize = getVariableValue(getShapeSize(context.size, extras)?.width)
+    const extras = getVariantExtras(props)
+    const shapeSize = getVariableValue(getShapeSize(context.size, extras)?.width) as number
 
     React.useEffect(() => {
       setStatus('idle')
@@ -61,6 +61,11 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
       <YStack fullscreen zIndex={1}>
         <Image
           fullscreen
+          {...(typeof shapeSize === 'number' &&
+            !isNaN(shapeSize) && {
+              width: shapeSize,
+              height: shapeSize,
+            })}
           {...imageProps}
           // @ts-ignore
           ref={forwardedRef}
