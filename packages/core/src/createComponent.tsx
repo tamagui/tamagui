@@ -218,6 +218,7 @@ export function createComponent<
       space: spaceProp,
       spaceDirection: _spaceDirection,
       disabled: disabledProp,
+      onMouseUp,
       onMouseDown,
       onMouseEnter,
       onMouseLeave,
@@ -661,6 +662,7 @@ export function createComponent<
             ? (e) => {
                 unPress()
                 onPressOut?.(e)
+                onMouseUp?.(e)
               }
             : undefined,
           ...(isHoverable && {
@@ -813,24 +815,22 @@ export function createComponent<
       }
     }
 
-    // only ever create once, use .configure() to update later
-    const pressability = isWeb
-      ? null
-      : useMemo(() => {
-          if (attachPress && events) {
-            const pressability = new Pressability(events)
-            internal.current!.unmountEffects = [
-              () => {
-                pressability.reset()
-              },
-            ]
-            return pressability
-          }
-        }, [])
-
     // EVENTS native
     // replicates TouchableWithoutFeedback
     if (process.env.TAMAGUI_TARGET === 'native') {
+      // only ever create once, use .configure() to update later
+      const pressability = useMemo(() => {
+        if (attachPress && events) {
+          const pressability = new Pressability(events)
+          internal.current!.unmountEffects = [
+            () => {
+              pressability.reset()
+            },
+          ]
+          return pressability
+        }
+      }, [])
+
       if (attachPress && events) {
         pressability.configure(events)
         const eventHandlers = pressability.getEventHandlers()
