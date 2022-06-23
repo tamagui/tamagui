@@ -38,8 +38,6 @@ export default function AccountPage({ user }: { user: User }) {
 
   return (
     <ContainerLarge py="$6">
-      <Button onPress={() => signout()}>Logout</Button>
-
       <H1>Account</H1>
 
       <XStack flexWrap="wrap" mb="$-4">
@@ -75,6 +73,12 @@ export default function AccountPage({ user }: { user: User }) {
         >
           <Paragraph>{user ? user.email : undefined}</Paragraph>
         </TamaCard>
+
+        <Link w="100%" href="/studio">
+          <TamaCard title="Studio"></TamaCard>
+        </Link>
+
+        <Button onPress={() => signout()}>Logout</Button>
       </XStack>
     </ContainerLarge>
   )

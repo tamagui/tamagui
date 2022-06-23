@@ -1,14 +1,7 @@
-import '@docsearch/css'
-import '@tamagui/core/reset.css'
-import '@tamagui/font-silkscreen/css/400.css'
-
-import '../app.css'
-
 import { DocsPage } from '@components/DocsPage'
 import { Footer } from '@components/Footer'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import NextProgress from 'nextjs-progressbar'
 import { useMemo } from 'react'
@@ -16,9 +9,7 @@ import { useMemo } from 'react'
 import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
 
-Error.stackTraceLimit = Infinity
-
-function App(props: AppProps) {
+export function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
 
   // memo to avoid re-render on dark/light change
@@ -62,8 +53,3 @@ function ContentInner({ Component, pageProps }: AppProps) {
     </>
   )
 }
-
-// for developing the studio without ssr pain in the ass
-export default dynamic(() => Promise.resolve(App), {
-  ssr: false,
-})

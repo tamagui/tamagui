@@ -8,7 +8,7 @@ export function useForwardToDashboard() {
 
   useEffect(() => {
     if (user) {
-      router.replace('/account')
+      router.replace('/studio')
     }
   }, [user])
 }

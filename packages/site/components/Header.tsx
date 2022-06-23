@@ -1,5 +1,6 @@
 import { ThemeToggle } from '@components/ThemeToggle'
 import { LogoWords, TamaguiLogo, tints } from '@tamagui/demos'
+import Link from 'next/link'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
@@ -52,6 +53,12 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
         )}
 
         <ThemeSearchButtonGroup />
+
+        {isTakeout && (
+          <Link href="/takeout">
+            <Button size="$2">Back to takeout</Button>
+          </Link>
+        )}
       </XStack>
 
       <XStack
@@ -95,12 +102,10 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
             </NextLink>
 
             <NextLink href="/takeout/purchase" passHref>
-              <Button fontFamily="$silkscreen" size="$4" tag="a">
+              <Button fontFamily="$silkscreen" size="$3" tag="a">
                 Purchase
               </Button>
             </NextLink>
-
-            <ThemeToggle chromeless={floating} />
           </XStack>
         ) : (
           <XStack ai="center" space="$2">
