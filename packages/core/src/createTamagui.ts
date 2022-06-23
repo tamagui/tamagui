@@ -125,8 +125,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       }
 
       for (const key in fontsParsed) {
-        const val = fontsParsed[key]
-        registerFontVariables(val)
+        const fontParsed = fontsParsed[key]
+        registerFontVariables(fontParsed)
       }
 
       const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
