@@ -1,3 +1,4 @@
+import { isWeb } from '@tamagui/core'
 import { setConfigFont } from './conf'
 import { createFont } from './createFont'
 import { Variable } from './createVariable'
@@ -9,7 +10,13 @@ export function insertFont<A extends GenericFont>(name: string, fontIn: A): Deep
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
-  registerFontVariables(parsed)
+  if (isWeb && typeof document !== 'undefined') {
+    const css = registerFontVariables(parsed, true)
+    const style = document.createElement('style')
+    style.innerText = `:root {${css}}`
+    style.setAttribute('data-tamagui-font', name)
+    document.head.appendChild(style)
+  }
   setConfigFont(name, tokened, parsed)
   return parsed
 }
@@ -35,20 +42,23 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
   return parsed
 }
 
-export function registerFontVariables(parsedFont: any) {
+export function registerFontVariables(parsedFont: any, collect = false) {
+  let vals = ''
   for (const fkey in parsedFont) {
     if (fkey === 'family') {
-      registerCSSVariable(parsedFont[fkey])
+      const val = registerCSSVariable(parsedFont[fkey])
+      if (collect) vals += val + ';'
     } else {
       for (const fskey in parsedFont[fkey]) {
         const fval = parsedFont[fkey][fskey]
         if (typeof fval === 'string') {
-          // no need to add its a theme reference
-          // tokenRules.add(`--var()`)
+          // no need to add its a theme reference like "$borderColor"
         } else {
-          registerCSSVariable(parsedFont[fkey][fskey])
+          const val = registerCSSVariable(parsedFont[fkey][fskey])
+          if (collect) vals += val + ';'
         }
       }
     }
   }
+  return vals
 }
