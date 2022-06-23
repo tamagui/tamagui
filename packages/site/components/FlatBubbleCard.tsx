@@ -2,7 +2,7 @@ import { YStack, styled } from 'tamagui'
 
 export const FlatBubbleCard = styled(YStack, {
   padding: '$6',
-  borderRadius: '$6',
+  borderRadius: '$3',
   backgroundColor: '$gray2',
   flex: 1,
   mb: '$4',
@@ -25,18 +25,23 @@ export const FlatBubbleCard = styled(YStack, {
     },
 
     highlight: {
-      true: {
-        borderWidth: 2,
-        borderColor: '$blue6',
-        // shadowColor: '$blue4',
-        // shadowRadius: 20,
-        // shadowOffset: { height: 3, width: 0 },
-      },
-      false: {
-        margin: 1,
-        borderWidth: 1,
-        borderColor: '$borderColorPress',
-      },
+      '...': (val) => ({
+        backgroundColor: val,
+      }),
     },
+    // {
+    //   // true: {
+    //   //   borderWidth: 2,
+    //   //   borderColor: '$blue6',
+    //   //   // shadowColor: '$blue4',
+    //   //   // shadowRadius: 20,
+    //   //   // shadowOffset: { height: 3, width: 0 },
+    //   // },
+    //   // false: {
+    //   //   margin: 1,
+    //   //   borderWidth: 1,
+    //   //   borderColor: '$borderColorPress',
+    //   // },
+    // },
   },
 })

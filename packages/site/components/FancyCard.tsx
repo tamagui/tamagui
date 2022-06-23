@@ -9,13 +9,14 @@ export const FancyCard = styled(YStack, {
   // borderWidth: 1,
   // borderColor: '$borderColorHover',
   borderRadius: '$6',
-  backgroundColor: '$background',
+  // backgroundColor: '$background',
   flexShrink: 1,
-  elevation: '$2',
+  elevation: '$1',
   hoverStyle: {
-    backgroundColor: '$backgroundHover',
+    // backgroundColor: '$backgroundHover',
     borderColor: 'rgba(150,150,150,0.4)',
-    elevation: '$4',
+    elevation: '$6',
+    y: '$-2',
   },
 })
 
