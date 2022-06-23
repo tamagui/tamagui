@@ -60,10 +60,10 @@ export const Sandbox = () => {
         }}
       >
         {/* <SwitchDemo /> */}
-        {/* <Studio /> */}
+        <Studio />
         {/* <SelectDemo /> */}
         {/* <DialogDemo /> */}
-        <AvatarDemo />
+        {/* <AvatarDemo /> */}
       </div>
     </Tamagui.Provider>
   )
