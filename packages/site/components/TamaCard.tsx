@@ -1,8 +1,7 @@
-import { useRef } from 'react'
-import { H3, Paragraph, XStack, YStack } from 'tamagui'
+import { H3, Paragraph, XStack, YStack, useComposedRefs } from 'tamagui'
 
 import { FancyCard, OuterSubtleBorder } from './FancyCard'
-import { HoverGlow } from './HoverGlow'
+import { useHoverGlow } from './HoverGlow'
 import { NotoIcon } from './NotoIcon'
 
 export const TamaCard = ({
@@ -14,10 +13,34 @@ export const TamaCard = ({
   footer,
   children,
 }: any) => {
-  const containerRef = useRef(null)
+  const shadow = useHoverGlow({
+    resist: 80,
+    borderRadius: 0,
+    strategy: 'blur',
+    blurPct: 10,
+    initialOffset: {
+      y: 20,
+    },
+    full: true,
+    scale: 1,
+    color: 'var(--shadowColor)',
+    background: 'transparent',
+    opacity: 0.5,
+    inverse: true,
+  })
+  const glow = useHoverGlow({
+    resist: 30,
+    full: true,
+    scale: 3.5,
+    color: 'var(--color)',
+    background: 'transparent',
+    opacity: 0.095,
+  })
+  const containerRef = useComposedRefs(glow.parentRef, shadow.parentRef)
   return (
     <YStack
       className="transition all ease-in ms100"
+      pos="relative"
       width="calc(33.33%)"
       $md={{
         width: 'calc(50%)',
@@ -31,34 +54,11 @@ export const TamaCard = ({
     >
       <OuterSubtleBorder>
         {/* shadow */}
-        <HoverGlow
-          resist={80}
-          borderRadius={0}
-          strategy="blur"
-          blurPct={10}
-          initialOffset={{
-            y: 20,
-          }}
-          full
-          scale={1}
-          color="var(--shadowColor)"
-          background="transparent"
-          opacity={0.5}
-          inverse
-          parentRef={containerRef}
-        />
+        {shadow.element}
         <FancyCard ov="hidden" y={0}>
           <YStack ref={containerRef}>
             {/* glow */}
-            <HoverGlow
-              resist={30}
-              full
-              scale={2.25}
-              color="var(--color)"
-              background="transparent"
-              opacity={0.095}
-              parentRef={containerRef}
-            />
+            {glow.element}
             <XStack py="$2" space="$5">
               <YStack f={1} space="$4" ai="center">
                 {!!icon && (
