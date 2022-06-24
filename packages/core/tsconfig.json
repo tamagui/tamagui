@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "rootDir": "src",
+    "outDir": "types"
   },
   "references": [
     {
