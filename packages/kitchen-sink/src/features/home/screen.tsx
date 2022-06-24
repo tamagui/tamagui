@@ -1,7 +1,6 @@
-import { SliderDemo } from '@tamagui/demos'
 import { Moon, Sun } from '@tamagui/feather-icons'
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -28,6 +27,7 @@ const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & 
 
 export function HomeScreen() {
   return (
+    // @ts-ignore
     <ScrollView>
       <YStack bc="$backgroundStrong" p="$3" pb="$8" f={1} space>
         <H1 size="$9">Demos</H1>
@@ -42,7 +42,7 @@ export function HomeScreen() {
               <Group size="$4" key={i} vertical separator={<Separator />}>
                 {group.pages.map((page) => {
                   return (
-                    <LinkListItem key={page.route} href={page.route} pressable size="$4">
+                    <LinkListItem key={page.route} href={page.route} pressTheme size="$4">
                       {page.title}
                     </LinkListItem>
                   )

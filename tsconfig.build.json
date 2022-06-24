@@ -7,5 +7,7 @@
   },
   "references": [
     { "path": "packages/site" },
+    { "path": "packages/sandbox" },
+    { "path": "packages/kitchen-sink" },
   ]
 }
