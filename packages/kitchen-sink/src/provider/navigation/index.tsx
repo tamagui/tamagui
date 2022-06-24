@@ -44,7 +44,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
           home: '',
           demo: 'demo/:id',
         },
-      },
+      } as const,
     }),
     []
   )

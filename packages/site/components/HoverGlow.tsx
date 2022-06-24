@@ -18,6 +18,7 @@ interface BoundedCursorProps {
   offset?: { x?: number; y?: number }
   limitToParentSize?: boolean
   debug?: boolean
+  disableUpdates?: boolean
 }
 
 type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
@@ -213,6 +214,7 @@ export const useRelativePositionedItem = (
     full,
     inverse,
     debug,
+    disableUpdates,
     throttle = 16,
   } = props
   const [parentNode, setParentNode] = useState<HTMLElement>()
@@ -245,6 +247,7 @@ export const useRelativePositionedItem = (
   const callback = useCallback(
     (position: { x: number; y: number }) => {
       if (!onChangePosition) return
+      if (disableUpdates) return
       const { width, height } = getGlowBounds()
       const bounds = getParentBounds()
       const containerBounds = getRelativeToParentBounds()
@@ -274,7 +277,7 @@ export const useRelativePositionedItem = (
       y = y - halfH + misfitY
       y = y + (offset.y || 0)
 
-      if (debug) {
+      if (process.env.NODE_ENV === 'development' && debug) {
         console.table({
           start: {
             x: position.x,
@@ -317,9 +320,7 @@ export const useRelativePositionedItem = (
       `,
       })
     },
-    // getBounds is getter
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getGlowBounds, onChangePosition, inverse, resist, boundPct, debug]
+    [getGlowBounds, onChangePosition, inverse, resist, boundPct, debug, disableUpdates]
   )
 
   const setInitialPosition = useCallback(() => {
@@ -362,7 +363,6 @@ export const useRelativePositionedItem = (
 
     const trackMouse = (val: boolean) => () => {
       track = val
-      console.log('track', parentNode, val)
       if (!val) {
         // reset to center on mouseleave
         setInitialPosition()
