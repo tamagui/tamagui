@@ -11,7 +11,7 @@ export const createFont = <A extends GenericFont>(font: A): A => {
 
   for (const key in font) {
     if (key === 'size' || key === 'family') continue
-    const section = font[key]
+    const section = font[key] as Object
     const keys = Object.keys(section)
 
     // fill with first filled in value to start
