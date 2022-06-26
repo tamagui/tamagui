@@ -984,12 +984,14 @@ export function createComponent<
     const validStyles = staticConfig.validStyles || stylePropsView
 
     // split - keep variables on props to be processed using theme values at runtime (native)
-    for (const key in staticConfig.defaultProps) {
-      const val = staticConfig.defaultProps[key]
-      if ((typeof val === 'string' && val[0] === '$') || !validStyles[key] || val[0] === '_') {
-        defaults[key] = val
-      } else {
-        defaultNativeStyle[key] = val
+    if (!isWeb) {
+      for (const key in defaults) {
+        const val = defaults[key]
+        if ((typeof val === 'string' && val[0] === '$') || !validStyles[key] || val[0] === '_') {
+          defaults[key] = val
+        } else {
+          defaultNativeStyle[key] = val
+        }
       }
     }
 

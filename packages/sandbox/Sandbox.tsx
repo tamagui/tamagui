@@ -1,3 +1,5 @@
+// debug
+
 globalThis['React'] = require('React')
 
 import '@tamagui/core/reset.css'
@@ -6,8 +8,15 @@ import '@tamagui/polyfill-dev'
 import { Studio } from '@takeout/studio'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
+import { Input, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
+
+const StyledInput = styled(Input, {
+  debug: 'verbose',
+  borderColor: 'transparent',
+  borderWidth: '0px',
+})
 
 export const Sandbox = () => {
   const scheme = useColorScheme()
@@ -39,7 +48,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Studio />
+        <StyledInput />
+        {/* <Studio /> */}
       </div>
     </Tamagui.Provider>
   )
