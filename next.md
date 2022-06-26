@@ -6,8 +6,6 @@
 
 - 1.0
   - <Toast />
-  - another couple passes over style system to reduce work and size
-  - cache at variant level (?)
   - FAQ
   - document .extractable
   - switch focusstyle on prod
@@ -64,6 +62,8 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - cache at variant level (?)
+  - another couple passes over style system to reduce work and size
   - sizing.mdx - rationale on size/space 
    - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
