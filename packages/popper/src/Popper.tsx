@@ -11,7 +11,13 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import { SizableStack, SizableStackProps, YStack, YStackProps } from '@tamagui/stacks'
+import {
+  SizableStack,
+  SizableStackProps,
+  ThemeableStack,
+  YStack,
+  YStackProps,
+} from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
 
@@ -155,10 +161,11 @@ type PopperContentElement = HTMLElement | View
 
 export type PopperContentProps = SizableStackProps
 
-const PopperContentFrame = styled(SizableStack, {
+const PopperContentFrame = styled(ThemeableStack, {
   name: 'PopperContent',
   backgroundColor: '$background',
   alignItems: 'center',
+  radiused: true,
 
   defaultVariants: {
     size: '$4',
@@ -180,7 +187,8 @@ export const PopperContent = PopperContentFrame.extractable(
             data-placement={placement}
             data-strategy={strategy}
             {...contentProps}
-            size={contentProps.size ?? size}
+            // @ts-ignore
+            size={contentProps.size || size}
           />
         )
       }, [placement, strategy, props])
