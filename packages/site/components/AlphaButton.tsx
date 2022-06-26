@@ -6,7 +6,7 @@ import { Button, SizableText, Text } from 'tamagui'
 import { useTint } from './ColorToggleButton'
 
 export const AlphaButton = () => {
-  if (process.env.STUDIO_ON == '0') {
+  if (process.env.STUDIO_ON !== '1') {
     return (
       <NextLink href="/blog/tamagui-enters-beta-themes-and-animations" passHref>
         <Button
