@@ -33,7 +33,7 @@ import { usePressable } from './hooks/usePressable'
 import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
 import { Pressability } from './Pressability'
 import {
-  SpaceFlexDirection,
+  SpaceDirection,
   SpaceTokens,
   StackProps,
   StaticConfig,
@@ -1060,8 +1060,6 @@ Unspaced['isUnspaced'] = true
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 
-type SpaceDirection = 'vertical' | 'horizontal'
-
 export type SpacerProps = Omit<StackProps, 'flex' | 'direction'> & {
   size?: number | SpaceTokens
   flex?: boolean | number
@@ -1108,7 +1106,7 @@ export const Spacer = createComponent<SpacerProps>({
   },
 
   defaultVariants: {
-    direction: 'horizontal',
+    direction: 'both',
   },
 })
 
@@ -1117,7 +1115,7 @@ export type SpacedChildrenProps = {
   children?: any
   space?: any
   spaceFlex?: boolean | number
-  direction?: SpaceFlexDirection
+  direction?: SpaceDirection
   separator?: React.ReactNode
 }
 
@@ -1216,14 +1214,8 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
   return (
     <Spacer
       key={key}
-      direction={
-        direction === 'both'
-          ? undefined
-          : direction === 'row' || direction === 'row-reverse'
-          ? 'horizontal'
-          : 'vertical'
-      }
       size={space}
+      direction={direction}
       {...(spaceFlex && {
         flex: spaceFlex,
       })}

@@ -5,13 +5,13 @@ import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
 import { ThemeProviderProps } from './views/ThemeProvider';
-export declare type SpaceFlexDirection = ViewStyle['flexDirection'] | 'both';
+export declare type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export declare type TamaguiElement = HTMLElement | View;
 export declare type DebugProp = boolean | 'break' | 'verbose';
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
     space?: SpaceTokens;
-    spaceDirection?: SpaceFlexDirection;
+    spaceDirection?: SpaceDirection;
     separator?: React.ReactNode;
     dangerouslySetInnerHTML?: {
         __html: string;

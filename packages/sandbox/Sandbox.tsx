@@ -8,6 +8,7 @@ import '@tamagui/polyfill-dev'
 import { PopoverDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
+import { SizableText, Square, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -41,7 +42,6 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <PopoverDemo />
         {/* <Studio /> */}
       </div>
     </Tamagui.Provider>
