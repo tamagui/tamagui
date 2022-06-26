@@ -12,8 +12,6 @@
   - document .extractable
   - switch focusstyle on prod
   - need an active theme thats blue in theme-base by default
-  - sizing.mdx - rationale on size/space 
-   - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - TODO bug backgroundStrong on dark in light / not variabl
   - make webpack plugin that does stuff from next-plugin and sandbox webpack etc
   - fix light mode inverse when using prefers
@@ -66,6 +64,8 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - sizing.mdx - rationale on size/space 
+   - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
   - // native doesn't support until next react-native version, need to remove eventually
   - styled(Button)

@@ -11,7 +11,7 @@ import { TextStyle, ViewStyle } from 'react-native'
 import { getConfig } from '../conf'
 import { isWeb } from '../constants/platform'
 import { reversedShorthands } from '../createTamagui'
-import { PseudoDescriptor, pseudos } from './pseudos'
+import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
 type Value = Object | Array<any> | string | number
 export type Style = { [key: string]: Value }
@@ -77,7 +77,7 @@ export function expandStyles(style: any) {
       key = shorthands[key] || key
     }
     if (reducedStyleKeys[key]) continue
-    if (key in pseudos) {
+    if (key in pseudoDescriptors) {
       res[key] = expandStyles(style[key])
     } else {
       const val = normalizeValueWithProperty(style[key], key)
@@ -121,8 +121,8 @@ function createDeclarationBlock(style: Style, important = false) {
 
 const pseudoSelectorPrefixes = (() => {
   const res: Record<string, string> = {}
-  for (const key in pseudos) {
-    const pseudo = pseudos[key]
+  for (const key in pseudoDescriptors) {
+    const pseudo = pseudoDescriptors[key]
     res[pseudo.name] = [...Array(pseudo.priority)].map(() => ':root').join('') + ' '
   }
   return res

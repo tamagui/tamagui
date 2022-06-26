@@ -13,4 +13,4 @@ export declare const pseudoDescriptors: {
     };
 };
 export declare type PseudoDescriptor = typeof pseudoDescriptors[keyof typeof pseudoDescriptors];
-//# sourceMappingURL=pseudos.d.ts.map
+//# sourceMappingURL=pseudoDescriptors.d.ts.map

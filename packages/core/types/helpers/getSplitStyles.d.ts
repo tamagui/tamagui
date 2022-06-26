@@ -13,7 +13,7 @@ declare type StyleSplitter = (props: {
     medias: Record<MediaKeys, ViewStyle>;
     style: ViewStyle;
     classNames: ClassNamesObject;
-    rulesToInsert: [string, string][];
+    rulesToInsert: [string, string][] | null;
     viewProps: StackProps;
 };
 export declare const pseudoCNInverse: {

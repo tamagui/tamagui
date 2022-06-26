@@ -4,7 +4,7 @@ import { ViewStyle } from 'react-native'
 import { isVariable } from '../createVariable'
 import { generateAtomicStyles } from './generateAtomicStyles'
 import { invertMapTransformKeys, mergeTransform } from './mergeTransform'
-import { PseudoDescriptor, pseudos } from './pseudos'
+import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
 // refactor this file away next...
 
@@ -19,7 +19,7 @@ type AtomicStyleOptions = {
   splitTransforms?: boolean
 }
 
-const pseudosOrdered = Object.values(pseudos)
+const pseudosOrdered = Object.values(pseudoDescriptors)
 
 export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: AtomicStyleOptions) {
   // performance optimization
@@ -51,7 +51,7 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: Atomic
   return res
 }
 
-function getAtomicStyle(
+export function getAtomicStyle(
   style: ViewStyle,
   pseudo?: PseudoDescriptor,
   options?: AtomicStyleOptions

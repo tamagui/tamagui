@@ -12,7 +12,7 @@ import {
   mediaQueryConfig,
   normalizeStyleObject,
   proxyThemeVariables,
-  pseudos,
+  pseudoDescriptors,
   rnw,
   stylePropsTransform,
 } from '@tamagui/core-node'
@@ -86,7 +86,7 @@ export function createExtractor() {
   function isValidStyleKey(name: string, staticConfig: StaticConfigParsed) {
     return !!(
       !!staticConfig.validStyles?.[name] ||
-      !!pseudos[name] ||
+      !!pseudoDescriptors[name] ||
       // disable variants because caching at the variant level = less work
       // and expanding variants can get huge, i'm betting cost of many props
       // is more than cost of expanding variants once for cache
@@ -370,6 +370,7 @@ export function createExtractor() {
           const atomics = getStylesAtomic(out.style)
           for (const atomic of atomics) {
             for (const rule of atomic.rules) {
+              out.rulesToInsert = out.rulesToInsert || []
               out.rulesToInsert.push([atomic.identifier, rule])
             }
             classNames[atomic.property] = atomic.identifier
@@ -384,8 +385,10 @@ export function createExtractor() {
             definition.properties.push(t.objectProperty(t.stringLiteral(cn), t.stringLiteral(val)))
           }
 
-          for (const [identifier, rule] of out.rulesToInsert) {
-            onStyleRule?.(identifier, [rule])
+          if (out.rulesToInsert) {
+            for (const [identifier, rule] of out.rulesToInsert) {
+              onStyleRule?.(identifier, [rule])
+            }
           }
 
           res.styled++
@@ -1570,7 +1573,7 @@ export function createExtractor() {
               normalizeStyleObject(next)
               for (const key in next) {
                 // merge pseudos
-                if (pseudos[key]) {
+                if (pseudoDescriptors[key]) {
                   prev[key] = prev[key] || {}
                   if (shouldPrintDebug) {
                     if (!next[key] || !prev[key]) {
@@ -1597,7 +1600,7 @@ export function createExtractor() {
                   // (stylePropsTransform[key] ||
                   // de-opt if non-style
                   !validStyles[key] &&
-                  !pseudos[key] &&
+                  !pseudoDescriptors[key] &&
                   !key.startsWith('data-')
 
                 if (shouldKeepOriginalAttr) {
@@ -1704,7 +1707,7 @@ export function createExtractor() {
                   if (
                     stylePropsTransform[key] ||
                     (!staticConfig.validStyles[key] &&
-                      !pseudos[key] &&
+                      !pseudoDescriptors[key] &&
                       !/(hoverStyle|focusStyle|pressStyle)$/.test(key))
                   ) {
                     if (shouldPrintDebug) console.log(' delete invalid style', key)
