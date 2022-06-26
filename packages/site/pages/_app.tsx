@@ -11,7 +11,7 @@ import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import NextProgress from 'nextjs-progressbar'
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 
 import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
@@ -31,14 +31,14 @@ function App(props: AppProps) {
   }, [props])
 
   return (
-    <>
+    <Suspense fallback={null}>
       <NextProgress height={1} options={{ showSpinner: false }} />
       <NextThemeProvider onChangeTheme={setTheme}>
         <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
           {contents}
         </Tamagui.Provider>
       </NextThemeProvider>
-    </>
+    </Suspense>
   )
 }
 
