@@ -98,6 +98,10 @@ async function run() {
         if (location === '.') {
           continue
         }
+        if (name.startsWith('@takeout')) {
+          console.log('Skip takeout packages')
+          continue
+        }
         console.log(`\nPublishing ${name}...`)
         const cwd = path.join(__dirname, location)
         const pkg = await fs.readJSON(path.join(cwd, 'package.json'))
