@@ -16,6 +16,21 @@ import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 type Value = Object | Array<any> | string | number
 export type Style = { [key: string]: Value }
 
+class Cache {
+  values: Record<string, any> = {}
+
+  get(key: string, valStr: string) {
+    return this.values[key]?.[valStr]
+  }
+
+  set(key: string, valStr: string, object: any) {
+    this.values[key] ??= {}
+    this.values[key][valStr] = object
+  }
+}
+
+const cache = new Cache()
+
 export const generateAtomicStyles = (
   style: ViewStyle & TextStyle,
   pseudo?: PseudoDescriptor
@@ -24,13 +39,14 @@ export const generateAtomicStyles = (
   const out: StyleObject[] = []
   for (const key in res) {
     const value = res[key]
-    if (value != null) {
-      const valueString = stringifyValueWithProperty(value, key)
-      const hash = simpleHash(key + valueString + (pseudo?.name || ''))
-      const cachedResult = cache.get(hash, valueString)
-      if (cachedResult != null) {
+    if (value != null && value != undefined) {
+      const valueString = normalizeValueWithProperty(value, key)
+      const uid = key + (pseudo?.name || '')
+      const cachedResult = cache.get(uid, valueString)
+      if (cachedResult != undefined) {
         out.push(cachedResult)
       } else {
+        const hash = simpleHash(uid + valueString)
         const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
         const shortProp = reversedShorthands[key] || key
         const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
@@ -42,13 +58,10 @@ export const generateAtomicStyles = (
           identifier,
           rules,
         }
-        cache.set(hash, valueString, styleObject)
+        cache.set(uid, valueString, styleObject)
         out.push(styleObject)
       }
     }
-  }
-  if (style.borderColor === 'transparent') {
-    debugger
   }
   return out
 }
@@ -67,10 +80,43 @@ let shorthands: Record<string, string> | null = null
 
 // can likely remove this and include in other loops
 export function expandStyles(style: any) {
-  const res = {}
-  boxShadowReducer(res, style)
-  textShadowReducer(res, style)
-  borderReducer(res, style)
+  const res: Record<string, any> = {}
+
+  // box-shadow
+  const { boxShadow, shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
+  if (shadowRadius !== undefined) {
+    const { height, width } = shadowOffset || defaultOffset
+    const offsetX = normalizeValueWithProperty(width)
+    const offsetY = normalizeValueWithProperty(height)
+    const blurRadius = normalizeValueWithProperty(shadowRadius || 0)
+    const color = normalizeColor(String(shadowColor || 'black'), shadowOpacity)
+    const shadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
+    res.boxShadow = boxShadow ? `${boxShadow}, ${shadow}` : shadow
+  } else if (boxShadow) {
+    res.boxShadow = boxShadow
+  }
+
+  // text-shadow
+  const { textShadowColor, textShadowOffset, textShadowRadius } = style
+  if (textShadowColor || textShadowOffset || textShadowRadius) {
+    const { height, width } = textShadowOffset || defaultOffset
+    const radius = textShadowRadius || 0
+    const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
+    if (color && (height !== 0 || width !== 0 || radius !== 0)) {
+      const blurRadius = normalizeValueWithProperty(radius)
+      const offsetX = normalizeValueWithProperty(width)
+      const offsetY = normalizeValueWithProperty(height)
+      res.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
+    }
+  }
+
+  // ensure border style set by default to solid
+  for (const key in borderDefaults) {
+    if (key in style) {
+      res[borderDefaults[key]] = style[borderDefaults[key]] || 'solid'
+    }
+  }
+
   for (let key in style) {
     shorthands = shorthands || getConfig().shorthands
     if (shorthands) {
@@ -90,15 +136,6 @@ export function expandStyles(style: any) {
     }
   }
   return res
-}
-
-// why is this diff from react-native-web!? need to figure out
-function borderReducer(res: any, cur: any) {
-  for (const key in borderDefaults) {
-    if (key in cur) {
-      res[borderDefaults[key]] = cur[borderDefaults[key]] || 'solid'
-    }
-  }
 }
 
 const borderDefaults = {
@@ -283,29 +320,6 @@ export function expandStyle(key: string, value: any) {
   }
 }
 
-const cache = {
-  get(property, value) {
-    if (
-      cache[property] != null &&
-      cache[property].hasOwnProperty(value) &&
-      cache[property][value] != null
-    ) {
-      return cache[property][value]
-    }
-  },
-  set(property, value, object) {
-    if (cache[property] == null) {
-      cache[property] = {}
-    }
-    return (cache[property][value] = object)
-  },
-}
-
-function stringifyValueWithProperty(value: Value, property?: string): string {
-  // e.g., 0 => '0px', 'black' => 'rgba(0,0,0,1)'
-  return normalizeValueWithProperty(value, property)
-}
-
 // { scale: 2 } => 'scale(2)'
 // { translateX: 20 } => 'translateX(20px)'
 // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
@@ -437,53 +451,7 @@ const unitlessNumbers = {
   shadowOpacity: true,
 }
 
-/**
- * Support style names that may come passed in prefixed by adding permutations
- * of vendor prefixes.
- */
-
-const resolveShadowValue = (style: ViewStyle): void | string => {
-  const { shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
-  if (shadowRadius === undefined) {
-    return
-  }
-  const { height, width } = shadowOffset || defaultOffset
-  const offsetX = normalizeValueWithProperty(width)
-  const offsetY = normalizeValueWithProperty(height)
-  const blurRadius = normalizeValueWithProperty(shadowRadius || 0)
-  const color = normalizeColor(String(shadowColor || 'black'), shadowOpacity)
-  return `${offsetX} ${offsetY} ${blurRadius} ${color}`
-}
-
-function boxShadowReducer(resolvedStyle: any, style: any) {
-  const { boxShadow } = style
-  const shadow = resolveShadowValue(style)
-  if (shadow != null) {
-    resolvedStyle.boxShadow = boxShadow ? `${boxShadow}, ${shadow}` : shadow
-  }
-}
-
 const defaultOffset = { height: 0, width: 0 }
-
-function textShadowReducer(resolvedStyle: any, style: any) {
-  const { textShadowColor, textShadowOffset, textShadowRadius } = style
-  const { height, width } = textShadowOffset || defaultOffset
-  const radius = textShadowRadius || 0
-  const offsetX = normalizeValueWithProperty(width)
-  const offsetY = normalizeValueWithProperty(height)
-  const blurRadius = normalizeValueWithProperty(radius)
-  const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
-
-  if (
-    color &&
-    (height !== 0 || width !== 0 || radius !== 0) &&
-    offsetX != null &&
-    offsetY != null &&
-    blurRadius != null
-  ) {
-    resolvedStyle.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
-  }
-}
 
 const STYLE_SHORT_FORM_EXPANSIONS = {
   borderColor: ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'],
