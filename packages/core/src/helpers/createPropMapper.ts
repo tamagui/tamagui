@@ -151,7 +151,9 @@ const resolveVariants: StyleResolver = (
         )
       }
 
-      return Object.entries(expandStyles(variantValue))
+      if (variantValue) {
+        return Object.entries(expandStyles(variantValue))
+      }
     } else {
       // variant at key exists, but no matching variant value, return nothing
       if (process.env.NODE_ENV === 'development') {
