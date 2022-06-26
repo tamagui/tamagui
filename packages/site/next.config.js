@@ -83,11 +83,14 @@ module.exports = function (name, opts) {
   /** @type {import('next').NextConfig} */
   const out = transform(name, opts)
 
-  return {
+  /** @type {import('next').NextConfig} */
+  const final = {
     ...out,
+    // reactStrictMode: true,
     experimental: {
       ...out.experimental,
-      plugins: true,
+      // plugins: true,
+      // reactRoot: true,
       scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,
@@ -101,4 +104,6 @@ module.exports = function (name, opts) {
       ignoreBuildErrors: true,
     },
   }
+
+  return final
 }

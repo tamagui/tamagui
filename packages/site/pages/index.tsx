@@ -47,6 +47,8 @@ export default function Home({ animationCode, compilationExamples }) {
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleThemes />
       </Section>
+      {/* below the fold */}
+      {/* <Suspense fallback={null}> */}
       <Section pb="$0" zi={10}>
         <HeroResponsive />
       </Section>
@@ -78,6 +80,7 @@ export default function Home({ animationCode, compilationExamples }) {
         </YStack>
         <Community />
       </Section>
+      {/* </Suspense> */}
     </>
   )
 }
