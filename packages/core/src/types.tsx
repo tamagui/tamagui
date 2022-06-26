@@ -19,7 +19,7 @@ import { ResolveVariableTypes } from './helpers/createPropMapper'
 import { RNWTextProps, RNWViewProps } from './types-rnw'
 import { ThemeProviderProps } from './views/ThemeProvider'
 
-export type SpaceFlexDirection = ViewStyle['flexDirection'] | 'both'
+export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
 
 export type TamaguiElement = HTMLElement | View
 
@@ -31,7 +31,7 @@ export type DebugProp = boolean | 'break' | 'verbose'
 export type TamaguiComponentPropsBase = {
   asChild?: boolean
   space?: SpaceTokens
-  spaceDirection?: SpaceFlexDirection
+  spaceDirection?: SpaceDirection
   separator?: React.ReactNode
   dangerouslySetInnerHTML?: { __html: string }
   animation?: AnimationProp

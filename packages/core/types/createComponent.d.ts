@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpaceFlexDirection, SpaceTokens, StackProps, StaticConfig, StaticConfigParsed, StylableComponent, TamaguiComponent, TamaguiElement } from './types';
+import { SpaceDirection, SpaceTokens, StackProps, StaticConfig, StaticConfigParsed, StylableComponent, TamaguiComponent, TamaguiElement } from './types';
 export declare const mouseUps: Set<Function>;
 export declare function createComponent<ComponentPropTypes extends Object = {}, Ref = TamaguiElement, BaseProps = never>(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent): TamaguiComponent<ComponentPropTypes, Ref, BaseProps, {}>;
 export declare const Unspaced: {
@@ -8,7 +8,6 @@ export declare const Unspaced: {
     }): any;
     isUnspaced: boolean;
 };
-declare type SpaceDirection = 'vertical' | 'horizontal';
 export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction'> & {
     size?: number | SpaceTokens;
     flex?: boolean | number;
@@ -20,7 +19,7 @@ export declare type SpacedChildrenProps = {
     children?: any;
     space?: any;
     spaceFlex?: boolean | number;
-    direction?: SpaceFlexDirection;
+    direction?: SpaceDirection;
     separator?: React.ReactNode;
 };
 export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, separator, }: SpacedChildrenProps): any;
@@ -28,5 +27,4 @@ export declare function AbsoluteFill(props: {
     children?: React.ReactNode;
 }): JSX.Element;
 export declare function assignNativePropsToWeb(elementType: string, viewProps: any, nativeProps: any): void;
-export {};
 //# sourceMappingURL=createComponent.d.ts.map

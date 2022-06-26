@@ -145,7 +145,7 @@ async function buildJs() {
           outdir: flatOut ? 'dist' : 'dist/cjs',
           bundle: false,
           sourcemap: true,
-          target: 'node16',
+          target: 'node14',
           keepNames: false,
           format: 'cjs',
           color: true,
