@@ -1,36 +1,27 @@
 import { join } from 'path'
 
-import type { TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core'
+import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core'
 import { createTamagui } from '@tamagui/core-node'
 
 let loadedTamagui: any = null
 
-export function loadTamagui(props: { components: string[]; config: string }): {
+type NameToPaths = {
+  [key: string]: Set<string>
+}
+
+export type TamaguiProjectInfo = {
   components: Record<string, TamaguiComponent>
   tamaguiConfig: TamaguiInternalConfig
-} {
+  nameToPaths: NameToPaths
+}
+
+export function loadTamagui(props: { components: string[]; config: string }): TamaguiProjectInfo {
   if (loadedTamagui) {
     return loadedTamagui
   }
 
   const configPath = join(process.cwd(), props.config)
 
-  // threaded caching avoiding 1s loading of large configs every save
-  // const cachePath = join(cacheDir, 'tamagui-conf-cached.json')
-  // const confStat = statSync(configPath)
-
-  // // TODO may want to disable, its pretty optimistic at caching...
-  // try {
-  //   const confCache = readFileSync(cachePath, 'utf-8')
-  //   const confParsed = JSON.parse(confCache)
-  //   if (confParsed && confParsed.mtime === confStat.mtime) {
-  //     return confParsed.value
-  //   }
-  // } catch {
-  //   // ok, no cache
-  // }
-
-  const x = Math.random()
   const { unregister } = require('esbuild-register/dist/node').register({
     target: 'es2019',
     format: 'cjs',
@@ -50,6 +41,8 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     const rnw = require('react-native-web')
     const Mod = require('module')
     const og = Mod.prototype.require
+    const nameToPaths: NameToPaths = {}
+
     Mod.prototype.require = function (path: string) {
       if (path.endsWith('.css')) {
         return {}
@@ -69,7 +62,30 @@ export function loadTamagui(props: { components: string[]; config: string }): {
         return rnw
       }
       try {
-        return og.apply(this, arguments)
+        const out = og.apply(this, arguments)
+        if (!nameToPaths[path]) {
+          if (out && typeof out === 'object') {
+            for (const key in out) {
+              try {
+                const conf = out[key]?.staticConfig as StaticConfig
+                if (conf) {
+                  if (conf.componentName) {
+                    nameToPaths[conf.componentName] ??= new Set()
+                    const fullName = path.startsWith('.')
+                      ? join(`${this.path.replace(/dist(\/cjs)?/, 'src')}`, path)
+                      : path
+                    nameToPaths[conf.componentName].add(fullName)
+                  } else {
+                    // console.log('no name component', path)
+                  }
+                }
+              } catch {
+                // ok
+              }
+            }
+          }
+        }
+        return out
       } catch (err: any) {
         console.error('Tamagui error loading file:\n', path, err.message, '\n', err.stack)
         // avoid infinite loops
@@ -97,9 +113,11 @@ export function loadTamagui(props: { components: string[]; config: string }): {
       const exported = require(moduleName)
       for (const Name in exported) {
         const val = exported[Name]
-        const staticConfig = val?.staticConfig
+        const staticConfig = val?.staticConfig as StaticConfig | undefined
         if (staticConfig) {
-          Object.assign(components, { [Name]: { staticConfig } })
+          // remove non-stringifyable
+          const { Component, reactNativeWebComponent, ...sc } = staticConfig
+          Object.assign(components, { [Name]: { staticConfig: sc } })
         }
       }
     }
@@ -114,24 +132,12 @@ export function loadTamagui(props: { components: string[]; config: string }): {
     loadedTamagui = {
       components,
       tamaguiConfig,
+      nameToPaths,
     }
-
-    // save cache
-    // try {
-    //   writeFileSync(
-    //     cachePath,
-    //     JSON.stringify({
-    //       value: loadedTamagui,
-    //       mtime: confStat.mtime,
-    //     })
-    //   )
-    // } catch (err: any) {
-    //   console.log(`Error: tamagui config not stringifiable, caching disabled "${err.message}"`)
-    // }
 
     return loadedTamagui
   } catch (err) {
-    console.log('err', err)
+    console.log('Error loading Tamagui', err)
     throw err
   } finally {
     unregister()

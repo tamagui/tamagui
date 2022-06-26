@@ -35,3 +35,7 @@ dialog {
   all: unset;
   box-sizing: border-box;
 }
+
+.is_Anchor:has(.is_Button) {
+  text-decoration: none;
+}

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@expo/package-manager": "^0.0.50",
-    "chalk": "2.4.2",
+    "chalk": "^5.0.1",
     "commander": "2.20.0",
     "cpy": "7.3.0",
     "cross-spawn": "6.0.5",
