@@ -86,8 +86,8 @@ export function expandStyles(style: any) {
   const { boxShadow, shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
   if (shadowRadius !== undefined) {
     const { height, width } = shadowOffset || defaultOffset
-    const offsetX = normalizeValueWithProperty(width)
-    const offsetY = normalizeValueWithProperty(height)
+    const offsetX = normalizeValueWithProperty(width || 0)
+    const offsetY = normalizeValueWithProperty(height || 0)
     const blurRadius = normalizeValueWithProperty(shadowRadius || 0)
     const color = normalizeColor(String(shadowColor || 'black'), shadowOpacity)
     const shadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
