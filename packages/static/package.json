@@ -48,7 +48,7 @@
     "esbuild": "^0.14.36",
     "esbuild-register": "^3.3.2",
     "find-cache-dir": "^3.3.2",
-    "fs-extra": "^9.1.0",
+    "fs-extra": "^10.1.0",
     "invariant": "^2.2.4",
     "lodash": "^4.17.21",
     "tamagui": "^1.0.1-beta.75"

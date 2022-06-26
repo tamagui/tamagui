@@ -19,6 +19,7 @@
     "@tamagui/animations-reanimated": "^1.0.1-beta.75",
     "@tamagui/colors": "^1.0.1-beta.75",
     "@tamagui/config-base": "^1.0.1-beta.75",
+    "@tamagui/core": "^1.0.1-beta.75",
     "@tamagui/demos": "^1.0.1-beta.75",
     "@tamagui/drawer": "^1.0.1-beta.75",
     "@tamagui/feather-icons": "^1.0.1-beta.75",

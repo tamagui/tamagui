@@ -19,6 +19,9 @@ const pkg = fs.readJSONSync('./package.json')
 let shouldSkipInitialTypes = !!process.env.SKIP_TYPES_INITIAL
 const pkgMain = pkg.main
 const pkgModule = pkg.module
+const pkgModuleJSX = pkg['module:jsx']
+
+const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
 async function clean() {
   try {
@@ -128,7 +131,7 @@ async function buildJs() {
   if (skipJS) {
     return
   }
-  let files = (await fg(['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.css'])).filter(
+  let files = (await fg(['src/**/*.(m)?ts(x)?', 'src/**/*.css'])).filter(
     (x) => !x.includes('.d.ts')
   )
   const externalPlugin = createExternalPlugin({
@@ -139,10 +142,10 @@ async function buildJs() {
     pkgMain
       ? esbuild.build({
           entryPoints: files,
-          outdir: 'dist/cjs',
+          outdir: flatOut ? 'dist' : 'dist/cjs',
           bundle: false,
           sourcemap: true,
-          target: 'node14',
+          target: 'node16',
           keepNames: false,
           format: 'cjs',
           color: true,
@@ -156,8 +159,24 @@ async function buildJs() {
     pkgModule
       ? esbuild.build({
           entryPoints: files,
-          outdir: 'dist/esm',
+          outdir: flatOut ? 'dist' : 'dist/esm',
           sourcemap: true,
+          target: 'node16',
+          keepNames: false,
+          format: 'esm',
+          color: true,
+          logLevel: 'error',
+          minify: false,
+          platform: 'neutral',
+        })
+      : null,
+    pkgModuleJSX
+      ? esbuild.build({
+          // only diff is jsx preserve and outdir
+          jsx: 'preserve',
+          outdir: flatOut ? 'dist' : 'dist/jsx',
+          entryPoints: files,
+          sourcemap: false,
           target: 'es2019',
           keepNames: false,
           format: 'esm',
@@ -167,20 +186,6 @@ async function buildJs() {
           platform: 'neutral',
         })
       : null,
-    esbuild.build({
-      // only diff is jsx preserve and outdir
-      jsx: 'preserve',
-      outdir: 'dist/jsx',
-      entryPoints: files,
-      sourcemap: false,
-      target: 'es2019',
-      keepNames: false,
-      format: 'esm',
-      color: true,
-      logLevel: 'error',
-      minify: false,
-      platform: 'neutral',
-    }),
   ]).then(() => {
     if (process.env.DEBUG) console.log(`built js in ${Date.now() - start}ms`)
   })

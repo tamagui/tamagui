@@ -5,4 +5,5 @@ export * from './constants';
 export * from './extractor/extractToClassNames';
 export * from './extractor/extractHelpers';
 export * from '@tamagui/patch-rnw';
+export * from './extractor/loadTamagui';
 //# sourceMappingURL=index.d.ts.map

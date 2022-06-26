@@ -1,5 +1,7 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
   "workbench.colorCustomizations": {
     "[Nüshu]": {
       "statusBar.background": "#cf95ba",
