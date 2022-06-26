@@ -1,6 +1,6 @@
 import { StyleObject } from '@tamagui/helpers';
 import { TextStyle, ViewStyle } from 'react-native';
-import { PseudoDescriptor } from './pseudos';
+import { PseudoDescriptor } from './pseudoDescriptors';
 declare type Value = Object | Array<any> | string | number;
 export declare type Style = {
     [key: string]: Value;

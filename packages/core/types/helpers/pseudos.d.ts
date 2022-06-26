@@ -1,4 +1,4 @@
-export declare const pseudos: {
+export declare const pseudoDescriptors: {
     readonly hoverStyle: {
         readonly name: "hover";
         readonly priority: 1;
@@ -12,5 +12,5 @@ export declare const pseudos: {
         readonly priority: 3;
     };
 };
-export declare type PseudoDescriptor = typeof pseudos[keyof typeof pseudos];
+export declare type PseudoDescriptor = typeof pseudoDescriptors[keyof typeof pseudoDescriptors];
 //# sourceMappingURL=pseudos.d.ts.map

@@ -20,14 +20,18 @@ function addTransform(identifier: string, css: string, rule?: CSSRule) {
       console.trace()
       console.groupEnd()
     } else {
-      console.error(`Missing transform`, identifier, css, rule)
+      console.warn(`Missing transform`, identifier, css, rule)
     }
-    return
+    return false
   }
   const startI = s + 'transform:'.length
   const endI = css.indexOf(';')
   const value = css.slice(startI, endI)
-  insertedTransforms[identifier] = value
+  if (!insertedTransforms[identifier]) {
+    insertedTransforms[identifier] = value
+    return true
+  }
+  return false
 }
 
 const isClient = typeof document !== 'undefined'
@@ -43,10 +47,7 @@ let hasInsertedSinceUpdate = true
 export function updateInserted() {
   if (process.env.NODE_ENV === 'test') return
   if (!isClient) return
-  if (!hasInsertedSinceUpdate) {
-    console.warn('hasnt inserted since')
-    return
-  }
+  if (!hasInsertedSinceUpdate) return
   const sheets = document.styleSheets
   if (!sheets) return
   for (let i = 0; i < sheets.length; i++) {
@@ -77,12 +78,12 @@ updateInserted()
 const sheet = isClient ? document.head.appendChild(document.createElement('style')).sheet : null
 
 export function updateInsertedCache(identifier: string, rule: string) {
-  if (insertedSelectors[identifier]) return
+  if (insertedSelectors[identifier]) return false
   insertedSelectors[identifier] = rule
-  const isTransform = identifier.startsWith('_transform')
-  if (isTransform) {
-    addTransform(identifier, rule)
+  if (identifier.startsWith('_transform')) {
+    return addTransform(identifier, rule)
   }
+  return true
 }
 
 export function insertStyleRule(identifier: string, rule: string) {

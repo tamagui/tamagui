@@ -1,6 +1,6 @@
 // *0 order matches to *1
 
-export const pseudos = {
+export const pseudoDescriptors = {
   hoverStyle: {
     name: 'hover',
     priority: 1,
@@ -15,4 +15,4 @@ export const pseudos = {
   },
 } as const
 
-export type PseudoDescriptor = typeof pseudos[keyof typeof pseudos]
+export type PseudoDescriptor = typeof pseudoDescriptors[keyof typeof pseudoDescriptors]

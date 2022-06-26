@@ -20,7 +20,7 @@ import {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixNativeShadow } from './fixNativeShadow'
-import { getStylesAtomic } from './getStylesAtomic'
+import { getAtomicStyle, getStylesAtomic } from './getStylesAtomic'
 import {
   insertStyleRule,
   insertedTransforms,
@@ -28,7 +28,7 @@ import {
   updateInsertedCache,
 } from './insertStyleRule'
 import { mergeTransform } from './mergeTransform'
-import { pseudos as pseudoAttrs } from './pseudos'
+import { pseudoDescriptors as pseudoAttrs, pseudoDescriptors } from './pseudoDescriptors'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 export type ClassNamesObject = Record<string, string>
@@ -74,7 +74,7 @@ type StyleSplitter = (
   medias: Record<MediaKeys, ViewStyle>
   style: ViewStyle
   classNames: ClassNamesObject
-  rulesToInsert: [string, string][]
+  rulesToInsert: [string, string][] | null
   viewProps: StackProps
 }
 
@@ -118,10 +118,12 @@ export const getSplitStyles: StyleSplitter = (
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   let transforms = null as Record<TransformNamespaceKey, [string, string]> | null
 
-  const rulesToInsert: [string, string][] = []
+  let rulesToInsert: [string, string][] | null = null
   function addStyle(prop: string, rule: string) {
-    rulesToInsert.push([prop, rule])
-    updateInsertedCache(prop, rule)
+    if (updateInsertedCache(prop, rule)) {
+      rulesToInsert = rulesToInsert || []
+      rulesToInsert.push([prop, rule])
+    }
   }
 
   function mergeClassName(key: string, val: string, isMediaOrPseudo = false) {
@@ -202,9 +204,7 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') {
       let nonTamaguis = ''
-      if (!valInit) {
-        continue
-      }
+      if (!valInit) continue
       for (const cn of valInit.split(' ')) {
         if (cn[0] === '_') {
           // tamagui, merge it expanded on key, eventually this will go away with better compiler
@@ -316,7 +316,7 @@ export const getSplitStyles: StyleSplitter = (
         pseudos[key] = pseudos[key] || {}
         pseudos[key] = getSubStyle(val, staticConfig, theme, props, state, true)
         if (shouldDoClasses) {
-          const pseudoStyles = getStylesAtomic({ [key]: pseudos[key] })
+          const pseudoStyles = getAtomicStyle(pseudos[key], pseudoDescriptors[key])
           for (const style of pseudoStyles) {
             const postfix = pseudoAttrs[key]?.name || key // exitStyle/enterStyle dont have pseudoAttrs
             const fullKey = `${style.property}_${postfix}`
@@ -464,8 +464,10 @@ export const getSplitStyles: StyleSplitter = (
 
 export const insertSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
-  for (const [prop, rule] of res.rulesToInsert) {
-    insertStyleRule(prop, rule)
+  if (res.rulesToInsert) {
+    for (const [prop, rule] of res.rulesToInsert) {
+      insertStyleRule(prop, rule)
+    }
   }
   return res
 }
@@ -475,6 +477,7 @@ const effect = isWeb ? useInsertionEffect || useIsomorphicLayoutEffect : useIsom
 export const useSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
   effect(() => {
+    if (!res.rulesToInsert) return
     for (const [prop, rule] of res.rulesToInsert) {
       insertStyleRule(prop, rule)
     }
