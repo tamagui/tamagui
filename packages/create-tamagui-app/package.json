@@ -2,7 +2,7 @@
   "name": "create-tamagui-app",
   "version": "1.0.1-beta.78",
   "bin": "./run.js",
-  "main": "dist/cjs",
+  "main": "dist",
   "files": [
     "run.js",
     "dist"
