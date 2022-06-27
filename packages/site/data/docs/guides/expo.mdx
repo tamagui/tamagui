@@ -8,3 +8,36 @@ description: How to set up Tamagui with Expo
 If you'd like to get a good idea of a set up with Expo, try out `npx create-tamagui-app@latest` which generates a managed expo project.
 
 [The source for that is here](https://github.com/tamagui/starters).
+
+More examples:
+
+- [Tamagui Expo](https://github.com/ivopr/tamagui-expo)
+
+Some notes:
+
+Expo is on React 17 still. Make sure you de-dupe react so there's only one copy. With `yarn`, you'll set `resolutions` something like this:
+
+```json
+{
+  "resolutions": {
+    "@types/react": "17.0.21",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-native-web": "^0.18"
+  }
+}
+```
+
+And you'll likely want the following dependencies:
+
+```json
+{
+  "dependencies": {
+    "react-native-reanimated": "~2.8.0",
+    "react-native-safe-area-context": "^4.2.5",
+    "react-native-screens": "~3.11.1",
+    "react-native-svg": "12.3.0",
+    "react-native-web": "^0.18"
+  }
+}
+```
