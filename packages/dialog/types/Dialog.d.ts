@@ -185,43 +185,57 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -231,7 +245,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -241,7 +257,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -251,7 +269,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -261,7 +281,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -271,7 +293,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -281,7 +305,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -291,7 +317,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -301,7 +329,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -311,7 +341,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -321,7 +353,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -331,7 +365,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -341,7 +377,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -359,7 +397,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -377,7 +417,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -395,7 +437,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -413,7 +457,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -431,7 +477,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -449,7 +497,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -467,7 +517,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -485,7 +537,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -503,7 +557,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -521,7 +577,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -539,7 +597,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -557,7 +617,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -575,7 +637,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -593,7 +657,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -611,7 +677,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -629,7 +697,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -647,7 +717,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -665,7 +737,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -683,7 +757,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -701,7 +777,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -719,7 +797,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -737,7 +817,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -755,7 +837,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -773,7 +857,9 @@ declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<(Omit<i
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").TextPropsBase, ((({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -825,43 +911,57 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -871,7 +971,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -881,7 +983,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -891,7 +995,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -901,7 +1007,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -911,7 +1019,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -921,7 +1031,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -931,7 +1043,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -941,7 +1055,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -951,7 +1067,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -961,7 +1079,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -971,7 +1091,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -981,7 +1103,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -999,7 +1123,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1017,7 +1143,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1035,7 +1163,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1053,7 +1183,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1071,7 +1203,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1089,7 +1223,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1107,7 +1243,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1125,7 +1263,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1143,7 +1283,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1161,7 +1303,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1179,7 +1323,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1197,7 +1343,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1215,7 +1363,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1233,7 +1383,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1251,7 +1403,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1269,7 +1423,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1287,7 +1443,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1305,7 +1463,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1323,7 +1483,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1341,7 +1503,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1359,7 +1523,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1377,7 +1543,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1395,7 +1563,9 @@ declare const DialogTitle: React.ForwardRefExoticComponent<((Omit<import("react-
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1432,43 +1602,57 @@ declare const DialogDescriptionFrame: import("@tamagui/core").TamaguiComponent<(
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>>) | (Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").TextPropsBase, ({
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })) & ({} | {
     [x: string]: undefined;
@@ -1496,37 +1680,49 @@ declare const DialogDescription: React.ForwardRefExoticComponent<((Omit<import("
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 }), string | number> & {
     [x: string]: undefined;
@@ -1633,43 +1829,57 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1679,7 +1889,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1689,7 +1901,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1699,7 +1913,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1709,7 +1925,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1719,7 +1937,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1729,7 +1949,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1739,7 +1961,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1749,7 +1973,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1759,7 +1985,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1769,7 +1997,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1779,7 +2009,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1789,7 +2021,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1807,7 +2041,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1825,7 +2061,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1843,7 +2081,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1861,7 +2101,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1879,7 +2121,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1897,7 +2141,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1915,7 +2161,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1933,7 +2181,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1951,7 +2201,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1969,7 +2221,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -1987,7 +2241,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2005,7 +2261,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2023,7 +2281,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2041,7 +2301,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2059,7 +2321,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2077,7 +2341,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2095,7 +2361,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2113,7 +2381,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2131,7 +2401,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2149,7 +2421,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2167,7 +2441,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2185,7 +2461,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2203,7 +2481,9 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<(({
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     })) & ({} | {
         [x: string]: undefined;
@@ -2240,37 +2520,49 @@ declare const Dialog: ((props: ScopedProps<DialogProps>) => JSX.Element) & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>>, string | number> | Pick<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    } & ({} | {
+    } | ({
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    } & {
         [x: string]: undefined;
     }), string | number> & {
         [x: string]: undefined;

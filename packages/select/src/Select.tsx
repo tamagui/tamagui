@@ -18,17 +18,11 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react-dom-interactions'
-import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
 import { usePrevious } from '@radix-ui/react-use-previous'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
-  Text,
-  VariantSpreadExtras,
-  VariantSpreadFunction,
-  composeEventHandlers,
-  getVariableValue,
   styled,
   useIsomorphicLayoutEffect,
   withStaticProperties,
@@ -39,10 +33,9 @@ import {
 import { useId } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
-import { clamp } from '@tamagui/helpers'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
 // import { useLabelContext } from '@tamagui/react-label'
-import { Portal } from '@tamagui/portal'
+// import { Portal } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
 import { ThemeableStack, XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
@@ -67,7 +60,7 @@ if (isFirefox) {
   document.body.classList.add('firefox')
 }
 function getVisualOffsetTop() {
-  return !/^((?!chrome|android).)*safari/i.test(userAgent) ? visualViewport.offsetTop : 0
+  return !/^((?!chrome|android).)*safari/i.test(userAgent) ? visualViewport?.offsetTop ?? 0 : 0
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -991,13 +984,14 @@ export const Select = withStaticProperties(
         const rect = floating.getBoundingClientRect()
         const rectTop = rect.top
         const rectBottom = rect.bottom
-        const visualMaxHeight = visualViewport.height - WINDOW_PADDING * 2
+        const viewportHeight = visualViewport?.height ?? 0
+        const visualMaxHeight = viewportHeight - WINDOW_PADDING * 2
 
         if (
           amount < 0 &&
           selectedIndexRef.current != null &&
           Math.round(rectBottom) <
-            Math.round(visualViewport.height + getVisualOffsetTop() - WINDOW_PADDING)
+            Math.round(viewportHeight + getVisualOffsetTop() - WINDOW_PADDING)
         ) {
           floating.style.maxHeight = `${Math.min(visualMaxHeight, currentMaxHeight - amount)}px`
         }
@@ -1044,7 +1038,8 @@ export const Select = withStaticProperties(
 
         if (
           Math.abs(
-            (currentTarget?.offsetHeight ?? 0) - (visualViewport.height - WINDOW_PADDING * 2)
+            (currentTarget?.offsetHeight ?? 0) -
+              ((visualViewport?.height ?? 0) - WINDOW_PADDING * 2)
           ) > 1 &&
           !pinching
         ) {
@@ -1177,7 +1172,8 @@ export const Select = withStaticProperties(
         floating.scrollTop = middlewareData.size?.y
 
         const closeToBottom =
-          visualViewport.height + getVisualOffsetTop() - referenceRect.bottom < FALLBACK_THRESHOLD
+          (visualViewport?.height ?? 0) + getVisualOffsetTop() - referenceRect.bottom <
+          FALLBACK_THRESHOLD
         const closeToTop = referenceRect.top < FALLBACK_THRESHOLD
 
         if (floating.offsetHeight < MIN_HEIGHT || closeToTop || closeToBottom) {

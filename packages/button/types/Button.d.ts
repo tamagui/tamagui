@@ -116,7 +116,9 @@ export declare const ButtonText: import("@tamagui/core").TamaguiComponent<(Omit<
     [x: string]: undefined;
 }>>), any, import("@tamagui/core").TextPropsBase, {
     size?: import("@tamagui/core").FontSizeTokens | undefined;
-} & ({} | {
+} | ({
+    size?: import("@tamagui/core").FontSizeTokens | undefined;
+} & {
     [x: string]: undefined;
 })>;
 export declare const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View>;

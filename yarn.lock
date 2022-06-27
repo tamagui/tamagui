@@ -5263,7 +5263,7 @@ __metadata:
     fs-extra: ^10.1.0
     json5: ^2.2.0
     lodash.debounce: ^4.0.8
-    typescript: ^4.7.2
+    typescript: ^4.8.0-beta
   bin:
     tamagui-build: tamagui-build.js
   languageName: unknown
@@ -5399,7 +5399,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native-web: ^0.17.5
-    typescript: ^4.7.2
+    typescript: ^4.8.0-beta
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -6129,7 +6129,7 @@ __metadata:
     react-test-renderer: ^18.2.0
     style-loader: ^3.3.1
     tamagui: ^1.0.1-beta.76
-    typescript: ^4.7.2
+    typescript: ^4.8.0-beta
     webpack: ^5.73.0
   peerDependencies:
     react-native-web: "*"
@@ -24559,7 +24559,7 @@ __metadata:
     pretty-quick: ^3.1.2
     prompts: 2.1.0
     turbo: ^1.3.1
-    typescript: ^4.7.2
+    typescript: ^4.8.0-beta
     ultra-runner: ^3.10.5
   languageName: unknown
   linkType: soft
@@ -25471,23 +25471,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.7.4":
-  version: 4.7.4
-  resolution: "typescript@npm:4.7.4"
+"typescript@npm:4.8.0-beta":
+  version: 4.8.0-beta
+  resolution: "typescript@npm:4.8.0-beta"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5750181b1cd7e6482c4195825547e70f944114fb47e58e4aa7553e62f11b3f3173766aef9c281783edfd881f7b8299cf35e3ca8caebe73d8464528c907a164df
+  checksum: a96bd6f92aafecc1286e0fc16d4680fda557ef259be60878bd7a17df48ad3af8b049e81f80f4483c4da6cd180377d2eba0287c71de74f8de2195f08de98cbb09
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>":
-  version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"
+"typescript@patch:typescript@npm%3A4.8.0-beta#~builtin<compat/typescript>":
+  version: 4.8.0-beta
+  resolution: "typescript@patch:typescript@npm%3A4.8.0-beta#~builtin<compat/typescript>::version=4.8.0-beta&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 9096d8f6c16cb80ef3bf96fcbbd055bf1c4a43bd14f3b7be45a9fbe7ada46ec977f604d5feed3263b4f2aa7d4c7477ce5f9cd87de0d6feedec69a983f3a4f93e
+  checksum: 034224067be9bed501811eaa3c251c5ed7aec459265dea5253185918685628c7e5678436066ac7c5817ef98d59e8d4104606f5294103ebcb4a6f69e2c109c27f
   languageName: node
   linkType: hard
 

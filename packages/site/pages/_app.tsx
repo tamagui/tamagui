@@ -18,7 +18,7 @@ import Tamagui from '../tamagui.config'
 
 Error.stackTraceLimit = Infinity
 
-function App(props: AppProps) {
+export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
 
   // memo to avoid re-render on dark/light change
@@ -62,8 +62,3 @@ function ContentInner({ Component, pageProps }: AppProps) {
     </>
   )
 }
-
-// for developing the studio without ssr pain in the ass
-export default dynamic(() => Promise.resolve(App), {
-  ssr: false,
-})

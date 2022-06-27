@@ -11,13 +11,7 @@ import {
   useIsomorphicLayoutEffect,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
-import {
-  SizableStack,
-  SizableStackProps,
-  ThemeableStack,
-  YStack,
-  YStackProps,
-} from '@tamagui/stacks'
+import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import * as React from 'react'
 import { View } from 'react-native'
 

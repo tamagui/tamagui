@@ -9,28 +9,28 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     size?: any;
 }>>) | (Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 }, string | number> & {
@@ -39,7 +39,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 }, string | number> & {
@@ -48,7 +48,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 }, string | number> & {
@@ -57,7 +57,7 @@ export declare const SliderTrackFrame: import("@tamagui/core").TamaguiComponent<
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 } & ({} | {
@@ -71,28 +71,28 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     size?: any;
 } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     size?: any;
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 }, "size"> & {
     size?: any;
 }>>) | (Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 }, string | number> & {
@@ -101,7 +101,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 }, string | number> & {
@@ -110,7 +110,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 }, string | number> & {
@@ -119,7 +119,7 @@ export declare const SliderTrackActiveFrame: import("@tamagui/core").TamaguiComp
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 } & {
-    orientation?: "horizontal" | "vertical" | undefined;
+    orientation?: "vertical" | "horizontal" | undefined;
 } & {
     size?: any;
 } & ({} | {

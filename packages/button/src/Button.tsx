@@ -165,7 +165,10 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
               space: spaceSize,
               spaceFlex,
               separator,
-              direction: props.flexDirection || 'row',
+              direction:
+                props.flexDirection === 'column' || props.flexDirection === 'column-reverse'
+                  ? 'vertical'
+                  : 'horizontal',
               children: [themedIcon, contents, themedIconAfter],
             })
           : contents}

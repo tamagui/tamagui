@@ -1,4 +1,4 @@
-import { isWeb } from '@tamagui/core'
+
 import { setConfigFont } from './conf'
 import { createFont } from './createFont'
 import { Variable } from './createVariable'
@@ -10,7 +10,7 @@ export function insertFont<A extends GenericFont>(name: string, fontIn: A): Deep
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
-  if (isWeb && typeof document !== 'undefined') {
+  if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
     const css = registerFontVariables(parsed, true)
     const style = document.createElement('style')
     style.innerText = `:root {${css}}`
