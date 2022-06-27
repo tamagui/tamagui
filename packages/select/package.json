@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/select",
-  "version": "1.0.1-beta.76",
+  "version": "1.0.1-beta.77",
   "sideEffects": [
     "*.css"
   ],
@@ -26,14 +26,14 @@
     "@floating-ui/react-native": "^0.7.0",
     "@radix-ui/react-use-callback-ref": "^0.1.0",
     "@radix-ui/react-use-previous": "^0.1.1",
-    "@tamagui/compose-refs": "^1.0.1-beta.76",
-    "@tamagui/core": "^1.0.1-beta.76",
-    "@tamagui/create-context": "^1.0.1-beta.76",
-    "@tamagui/list-item": "^1.0.1-beta.76",
-    "@tamagui/separator": "^1.0.1-beta.76",
-    "@tamagui/stacks": "^1.0.1-beta.76",
-    "@tamagui/text": "^1.0.1-beta.76",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.76"
+    "@tamagui/compose-refs": "^1.0.1-beta.77",
+    "@tamagui/core": "^1.0.1-beta.77",
+    "@tamagui/create-context": "^1.0.1-beta.77",
+    "@tamagui/list-item": "^1.0.1-beta.77",
+    "@tamagui/separator": "^1.0.1-beta.77",
+    "@tamagui/stacks": "^1.0.1-beta.77",
+    "@tamagui/text": "^1.0.1-beta.77",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.77"
   },
   "peerDependencies": {
     "react": "*",
@@ -41,7 +41,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.76",
+    "@tamagui/build": "^1.0.1-beta.77",
     "@types/react-native": "^0.67.3",
     "react": "*",
     "react-dom": "*",
