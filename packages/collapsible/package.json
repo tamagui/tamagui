@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/collapsible",
-  "version": "1.0.1-beta.78",
+  "version": "1.0.1-beta.79",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -18,12 +18,12 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.3.1",
-    "@tamagui/compose-refs": "^1.0.1-beta.78",
-    "@tamagui/core": "^1.0.1-beta.78",
-    "@tamagui/create-context": "^1.0.1-beta.78",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.78",
-    "@tamagui/stacks": "^1.0.1-beta.78",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.78",
+    "@tamagui/compose-refs": "^1.0.1-beta.79",
+    "@tamagui/core": "^1.0.1-beta.79",
+    "@tamagui/create-context": "^1.0.1-beta.79",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.79",
+    "@tamagui/stacks": "^1.0.1-beta.79",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.79",
     "react-native-reanimated": "~2.8.0"
   },
   "peerDependencies": {
@@ -32,7 +32,7 @@
     "react-native-gesture-handler": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.78",
+    "@tamagui/build": "^1.0.1-beta.79",
     "react": "*",
     "react-dom": "*",
     "react-native-gesture-handler": "*"
