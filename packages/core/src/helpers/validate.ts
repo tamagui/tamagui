@@ -1,6 +1,6 @@
 // published a patched version that works on native
 // @ts-ignore
-const { default: ow } = require('@tamagui/ow/dev-only')
+import { default as ow } from '@tamagui/ow/dev-only'
 
 let Config: any
 let Tokens: any

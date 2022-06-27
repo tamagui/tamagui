@@ -1,16 +1,16 @@
-// debug
-
-globalThis['React'] = require('React')
-
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { PopoverDemo } from '@tamagui/demos'
+import { Studio } from '@takeout/studio'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { SizableText, Square, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
+
+// webpack fix..
+if (typeof require !== 'undefined') {
+  globalThis['React'] = require('react')
+}
 
 export const Sandbox = () => {
   const scheme = useColorScheme()
@@ -42,7 +42,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        {/* <Studio /> */}
+        <Studio />
       </div>
     </Tamagui.Provider>
   )

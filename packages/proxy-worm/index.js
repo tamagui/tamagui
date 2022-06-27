@@ -10,6 +10,7 @@ function worm(root = false) {
     : function () {
         return worm()
       }
+
   return new Proxy(obj, {
     get() {
       return worm()

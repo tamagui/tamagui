@@ -101,7 +101,7 @@ export declare const elevate: {
         onPressIn?: ((e: import("react-native").GestureResponderEvent) => any) | import("@tamagui/core").Variable<any> | undefined;
         onPressOut?: ((e: import("react-native").GestureResponderEvent) => any) | import("@tamagui/core").Variable<any> | undefined;
         userSelect?: import("@tamagui/core").Variable<any> | import("csstype").Property.UserSelect | undefined;
-        cursor?: string | import("@tamagui/core").Variable<any> | undefined;
+        cursor?: (import("csstype").Property.Cursor & string) | import("@tamagui/core").Variable<any> | undefined;
         backgroundColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomColor?: import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | import("@tamagui/core").ColorTokens | import("react-native").OpaqueColorValue | undefined;
         borderBottomEndRadius?: import("@tamagui/core").SpaceTokens | import("@tamagui/core").ThemeValueFallback | import("@tamagui/core").Variable<any> | undefined;

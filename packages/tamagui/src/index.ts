@@ -28,8 +28,7 @@ export * from '@tamagui/use-force-update'
 
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported
-export {
-  // types
+export type {
   AnimationKeys,
   ColorTokens,
   CreateTamaguiConfig,
@@ -85,6 +84,9 @@ export {
   VariantSpreadExtras,
   VariantSpreadFunction,
   ZIndexTokens,
+} from '@tamagui/core'
+
+export {
   // components
   Spacer,
   Stack,
