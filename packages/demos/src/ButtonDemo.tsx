@@ -10,10 +10,10 @@ export default function ButtonDemo(props) {
         Large
       </Button>
       <Group>
-        <Button w="50%" size="$3" br={0} theme="alt2">
+        <Button w="50%" size="$3" theme="alt2">
           Alt2
         </Button>
-        <Button w="50%" size="$3" br={0} theme="yellow">
+        <Button w="50%" size="$3" theme="yellow">
           Yellow
         </Button>
       </Group>
@@ -26,10 +26,10 @@ export default function ButtonDemo(props) {
         </Button>
       </XStack>
       <Group>
-        <Button w="50%" br={0} size="$2" disabled>
+        <Button w="50%" size="$2" disabled>
           disabled
         </Button>
-        <Button w="50%" br={0} size="$2" chromeless>
+        <Button w="50%" size="$2" chromeless>
           chromeless
         </Button>
       </Group>

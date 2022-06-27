@@ -5,7 +5,7 @@ description: How to create and use themes in Tamagui.
 
 Themes in Tamagui are powerful. They work a bit differently than you may expect. If you just want to dive in and copy a complete theme config, head down to [Quick Start](#quick-start).
 
-Because themes are so flexible and can adapt to every component, we're working on better high level libraries to generate themes from colors. Until then, you can roll your own, or use/fork our `@tamagui/theme-base` package.
+Because themes are powerful and can adapt to every component, we're working on better high level libraries to generate themes from colors. Until then, you can roll your own, or use/fork our `@tamagui/theme-base` package.
 
 You make a theme with `createTheme`, like so:
 
@@ -13,10 +13,13 @@ You make a theme with `createTheme`, like so:
 const dark = createTheme({
   background: '#000',
   color: '#fff',
+  // define any key to any string or number value
 })
 ```
 
-You can pass any token to a theme, and doing so is a nice way to share colors in a type-friendly way, and to save bundle-size on the client (they will be shared as CSS Variables:
+Tamagui has settled on matching keys mostly to style properties, which pseudos defined like `backgroundHover`. This makes it easy for themes to apply to any component.
+
+You can pass tokens as values to any theme property, doing share colors in a type-friendly way and saves on bundle-size (using CSS Variables):
 
 ```tsx
 const tokens = createTokens({
