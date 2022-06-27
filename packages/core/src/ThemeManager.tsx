@@ -103,7 +103,7 @@ export class ThemeManager {
       return {
         name: name,
         theme: themes[name],
-        className: this.#getClassName(name),
+        className: this.getClassName(name),
       }
     }
 
@@ -118,7 +118,7 @@ export class ThemeManager {
         ]
         for (const name of names) {
           if (name in themes) {
-            const className = this.#getClassName(name)
+            const className = this.getClassName(name)
             return { name, theme: themes[name], className }
           }
         }
@@ -176,11 +176,11 @@ export class ThemeManager {
     return {
       name: nextName,
       theme,
-      className: this.#getClassName(nextName),
+      className: this.getClassName(nextName),
     }
   }
 
-  #getClassName(name: string) {
+  getClassName(name: string) {
     return `${THEME_CLASSNAME_PREFIX}${name} t_Theme`.replace('light_', '').replace('dark_', '')
   }
 

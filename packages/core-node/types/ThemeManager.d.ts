@@ -14,7 +14,6 @@ export declare type GetNextThemeProps = {
     reset?: boolean;
 };
 export declare class ThemeManager {
-    #private;
     name: string;
     theme: ThemeObject | null;
     parentManager: ThemeManager | null;
@@ -41,6 +40,7 @@ export declare class ThemeManager {
         }) | null;
         className?: undefined;
     };
+    getClassName(name: string): string;
     track(uuid: any, keys: Set<string>): void;
     notifyListeners(): void;
     onChangeTheme(cb: ThemeListener): () => void;

@@ -452,6 +452,11 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  // @ts-ignore
+  if (viewProps['direction'] === 'both') {
+    console.warn('???????', viewProps, props)
+  }
+
   return {
     viewProps,
     style,

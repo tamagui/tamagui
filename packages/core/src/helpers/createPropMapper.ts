@@ -201,9 +201,9 @@ const resolveTokensAndVariants: StyleResolver = (
       if (parentVariantKey === key) {
         res[fKey] = val
       } else {
-        res = {
-          ...res,
-          ...Object.fromEntries(
+        Object.assign(
+          res,
+          Object.fromEntries(
             resolveVariants(
               fKey,
               val,
@@ -219,8 +219,8 @@ const resolveTokensAndVariants: StyleResolver = (
               avoidDefaultProps,
               debug
             )
-          ),
-        }
+          )
+        )
       }
     } else if (typeof val === 'string') {
       const fVal =

@@ -985,8 +985,8 @@ export function createComponent<
 
     // split - keep variables on props to be processed using theme values at runtime (native)
     if (!isWeb) {
-      for (const key in defaults) {
-        const val = defaults[key]
+      for (const key in staticConfig.defaultProps) {
+        const val = staticConfig.defaultProps[key]
         if ((typeof val === 'string' && val[0] === '$') || !validStyles[key] || val[0] === '_') {
           defaults[key] = val
         } else {
@@ -1102,6 +1102,7 @@ export const Spacer = createComponent<SpacerProps>({
         width: 0,
         minWidth: 0,
       },
+      both: {},
     },
   },
 
