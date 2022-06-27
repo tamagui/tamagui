@@ -255,6 +255,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   name: VIEWPORT_NAME,
   backgroundColor: '$background',
   elevate: true,
+  bordered: true,
   overflow: 'hidden',
   userSelect: 'none',
   maxHeight: '100%',
@@ -1255,19 +1256,20 @@ export const Select = withStaticProperties(
               },
             })
           },
-          getFloatingProps() {
+          getFloatingProps(props) {
             return interactions.getFloatingProps({
               ref: floating,
               className: 'Select',
+              ...props,
               style: {
                 position: strategy,
                 top: y ?? '',
                 left: x ?? '',
                 outline: 0,
-                overflowY: 'auto',
                 listStyleType: 'none',
                 scrollbarWidth: 'none',
                 userSelect: 'none',
+                ...props?.style,
               },
               onPointerEnter() {
                 setControlledScrolling(false)
