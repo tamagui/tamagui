@@ -6,6 +6,7 @@ function proxyWorm() {
       StyleSheet: {
         create() {},
       },
+      addPoolingTo() {},
     },
     {
       get(target, key) {

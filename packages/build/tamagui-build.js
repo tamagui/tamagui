@@ -76,8 +76,10 @@ async function build() {
     ])
     console.log('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
-    console.log(error.message)
-    process.exit(1)
+    console.error(`Error building:`, error.message)
+    if (!shouldWatch) {
+      process.exit(1)
+    }
   }
 }
 
@@ -170,7 +172,7 @@ async function buildJs() {
           jsx: 'preserve',
           outdir: flatOut ? 'dist' : 'dist/jsx',
           entryPoints: files,
-          sourcemap: false,
+          sourcemap: true,
           target: 'es2019',
           keepNames: false,
           format: 'esm',

@@ -10,7 +10,7 @@ export * from './createVariables';
 export * from './insertFont';
 export * from './styled';
 export * from './types';
-export { RNWTextProps, RNWViewProps } from './types-rnw';
+export type { RNWTextProps, RNWViewProps } from './types-rnw';
 export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } from './conf';
 export * from './constants/constants';
 export * from './constants/platform';

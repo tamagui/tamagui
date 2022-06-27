@@ -88,6 +88,7 @@ module.exports = /** @type { import('webpack').Configuration } */ {
             exclude: (path) => shouldExclude(path, __dirname, tamaguiOptions),
             use: [
               'thread-loader',
+
               {
                 loader: 'esbuild-loader',
                 options: {
@@ -95,10 +96,11 @@ module.exports = /** @type { import('webpack').Configuration } */ {
                   target: 'es2020',
                   loader: 'tsx',
                   minify: false,
-                  banner:
-                    "import { createElement } from '@welldone-software/why-did-you-render';\n",
+                  // not working apparently
+                  banner: "import { createElement } from 'react';\n",
                 },
               },
+
               {
                 loader: 'tamagui-loader',
                 options: tamaguiOptions,
