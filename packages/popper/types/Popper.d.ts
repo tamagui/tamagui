@@ -1,11 +1,25 @@
 import { SizeTokens } from '@tamagui/core';
+import { Scope } from '@tamagui/create-context';
 import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Placement, flip, shift } from './floating';
+import { Coords, Placement, flip, shift } from './floating';
+import { UseFloatingResult } from './useFloating';
 declare type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 declare type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export declare const createPopperScope: import("@tamagui/create-context").CreateScope;
+declare type PopperContextValue = UseFloatingResult & {
+    isMounted: boolean;
+    anchorRef: any;
+    size?: SizeTokens;
+    placement?: Placement;
+    arrowRef: any;
+    onArrowSize?: (val: number) => void;
+    arrowStyle?: Partial<Coords> & {
+        centerOffset: number;
+    };
+};
+declare const usePopperContext: (consumerName: string, scope: Scope<PopperContextValue | undefined>) => PopperContextValue;
 export declare type PopperProps = {
     size?: SizeTokens;
     children?: React.ReactNode;
@@ -87,5 +101,5 @@ export declare const PopperArrow: React.ForwardRefExoticComponent<Omit<import("r
     offset?: number | undefined;
     size?: SizeTokens | undefined;
 } & React.RefAttributes<PopperArrowElement>>;
-export {};
+export { usePopperContext };
 //# sourceMappingURL=Popper.d.ts.map

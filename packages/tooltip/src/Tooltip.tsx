@@ -23,14 +23,32 @@ import {
   __PopoverProviderInternal,
   usePopoverScope,
 } from '@tamagui/popover'
-import { FloatingOverrideContext, Popper, PopperProps, UseFloatingFn } from '@tamagui/popper'
+import {
+  FloatingOverrideContext,
+  Popper,
+  PopperProps,
+  UseFloatingFn,
+  usePopperContext,
+} from '@tamagui/popper'
 import { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
 
-const TooltipContent = React.forwardRef((props: PopoverContentProps, ref: any) => {
-  return <PopoverContent componentName="TooltipContent" pointerEvents="none" ref={ref} {...props} />
-})
+const TooltipContent = React.forwardRef(
+  ({ __scopePopover, ...props }: ScopedProps<PopoverContentProps, 'Popover'>, ref: any) => {
+    const popperScope = usePopoverScope(__scopePopover)
+    const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
+    return (
+      <PopoverContent
+        paddingHorizontal={props.size || popper.size || '$2'}
+        componentName="TooltipContent"
+        pointerEvents="none"
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
 
 const TooltipArrow = React.forwardRef((props: PopoverArrowProps, ref: any) => {
   return <PopoverArrow componentName="TooltipArrow" ref={ref} {...props} />

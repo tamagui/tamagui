@@ -231,8 +231,6 @@ const PopperArrowFrame = styled(YStack, {
   position: 'absolute',
   zIndex: 0,
   pointerEvents: 'none',
-  // TODO bug not applying
-  // rotate: '45deg',
 })
 
 const opposites = {
@@ -308,3 +306,5 @@ export const PopperArrow = PopperArrowFrame.extractable(
 PopperArrow.displayName = ARROW_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
+
+export { usePopperContext }
