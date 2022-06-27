@@ -146,9 +146,9 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
           webpackConfig.optimization.minimizer.push(new CssMinimizerPlugin())
         }
 
-        if (!webpackConfig.resolve.extensions.includes('.web.js')) {
-          webpackConfig.resolve.extensions = ['.web.js', ...webpackConfig.resolve.extensions]
-        }
+        webpackConfig.resolve.extensions = [
+          ...new Set(['.web.tsx', '.web.ts', '.web.js', ...webpackConfig.resolve.extensions]),
+        ]
 
         // look for compiled js with jsx intact as specified by module:jsx
         webpackConfig.resolve.mainFields.unshift('module:jsx')

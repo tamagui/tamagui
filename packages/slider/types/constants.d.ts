@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { SizeTokens } from '@tamagui/core';
 import { Direction, SliderContextValue } from './types';
 export declare const SLIDER_NAME = "Slider";
