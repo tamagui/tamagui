@@ -247,7 +247,7 @@ const DialogContentFrame = styled(ThemeableStack, {
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
-type DialogContentProps = DialogContentFrameProps & {
+interface DialogContentProps extends DialogContentFrameProps, DialogContentTypeProps {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -592,53 +592,63 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef, des
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
 
-const Dialog = withStaticProperties(
-  function Dialog(props: ScopedProps<DialogProps>) {
-    const {
-      __scopeDialog,
-      children,
-      open: openProp,
-      defaultOpen = false,
-      onOpenChange,
-      modal = true,
-      allowPinchZoom = false,
-    } = props
-    const triggerRef = React.useRef<HTMLButtonElement>(null)
-    const contentRef = React.useRef<TamaguiElement>(null)
-    const [open, setOpen] = useControllableState({
-      prop: openProp,
-      defaultProp: defaultOpen,
-      onChange: onOpenChange,
-    })
+const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogProps>(function Dialog(
+  props: ScopedProps<DialogProps>,
+  ref
+) {
+  const {
+    __scopeDialog,
+    children,
+    open: openProp,
+    defaultOpen = false,
+    onOpenChange,
+    modal = true,
+    allowPinchZoom = false,
+  } = props
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
+  const contentRef = React.useRef<TamaguiElement>(null)
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  })
 
-    return (
-      <DialogProvider
-        scope={__scopeDialog}
-        triggerRef={triggerRef}
-        contentRef={contentRef}
-        contentId={useId() || ''}
-        titleId={useId() || ''}
-        descriptionId={useId() || ''}
-        open={open}
-        onOpenChange={setOpen}
-        onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
-        modal={modal}
-        allowPinchZoom={allowPinchZoom}
-      >
-        {children}
-      </DialogProvider>
-    )
-  },
-  {
-    Trigger: DialogTrigger,
-    Portal: DialogPortal,
-    Overlay: DialogOverlay,
-    Content: DialogContent,
-    Title: DialogTitle,
-    Description: DialogDescription,
-    Close: DialogClose,
-  }
-)
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      open: setOpen,
+    }),
+    []
+  )
+
+  return (
+    <DialogProvider
+      scope={__scopeDialog}
+      triggerRef={triggerRef}
+      contentRef={contentRef}
+      contentId={useId() || ''}
+      titleId={useId() || ''}
+      descriptionId={useId() || ''}
+      open={open}
+      onOpenChange={setOpen}
+      onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
+      modal={modal}
+      allowPinchZoom={allowPinchZoom}
+    >
+      {children}
+    </DialogProvider>
+  )
+})
+
+const Dialog = withStaticProperties(DialogInner, {
+  Trigger: DialogTrigger,
+  Portal: DialogPortal,
+  Overlay: DialogOverlay,
+  Content: DialogContent,
+  Title: DialogTitle,
+  Description: DialogDescription,
+  Close: DialogClose,
+})
 
 export {
   createDialogScope,
