@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text",
-  "version": "1.0.1-beta.77",
+  "version": "1.0.1-beta.78",
   "sideEffects": [
     "*.css"
   ],
@@ -19,14 +19,14 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.77"
+    "@tamagui/core": "^1.0.1-beta.78"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.77",
+    "@tamagui/build": "^1.0.1-beta.78",
     "react": "*",
     "react-dom": "*"
   },
