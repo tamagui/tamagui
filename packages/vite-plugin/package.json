@@ -18,6 +18,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/core-node": "^1.0.1-beta.80",
+    "@tamagui/proxy-worm": "^1.0.1-beta.80",
     "@tamagui/static": "^1.0.1-beta.80",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21"
