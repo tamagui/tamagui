@@ -1,4 +1,68 @@
-export const plugin = {}
+import type { TamaguiOptions } from '@tamagui/static'
+import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
+
+export function tamaguiPlugin(options?: TamaguiOptions): Plugin {
+  return {
+    name: 'tamagui',
+    enforce: 'pre',
+
+    config(userConfig, env) {
+      return {
+        esbuild: {
+          loader: 'tsx',
+        },
+        define: {
+          global: {},
+          _frameTimestamp: undefined,
+          _WORKLET: false,
+          process: {
+            env: {
+              TAMAGUI_TARGET: process.env.TAMAGUI_TARGET || 'web',
+              NODE_ENV: process.env.NODE_ENV || env.mode,
+            },
+          },
+        },
+        optimizeDeps: {
+          esbuildOptions: {
+            resolveExtensions: [
+              '.web.js',
+              '.web.ts',
+              '.web.tsx',
+              '.js',
+              '.jsx',
+              '.json',
+              '.ts',
+              '.tsx',
+              '.mjs',
+            ],
+            loader: {
+              '.js': 'jsx',
+            },
+          },
+        },
+        resolve: {
+          extensions: [
+            '.web.js',
+            '.web.ts',
+            '.web.tsx',
+            '.js',
+            '.jsx',
+            '.json',
+            '.ts',
+            '.tsx',
+            '.mjs',
+          ],
+          alias: {
+            'react-native/Libraries/Renderer/shims/ReactFabric': '@tamagui/proxy-worm',
+            'react-native/Libraries/Utilities/codegenNativeComponent': '@tamagui/proxy-worm',
+            'react-native': 'react-native-web',
+          },
+        },
+      }
+    },
+  }
+}
+
 // fork from https://github.com/seek-oss/vanilla-extract/blob/master/packages/vite-plugin/src/index.ts
 
 // import path from 'path'

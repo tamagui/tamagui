@@ -49,6 +49,7 @@
     "@expo/webpack-config": "^0.16.24",
     "@rnx-kit/metro-config": "^1.2.32",
     "@rnx-kit/metro-resolver-symlinks": "^0.1.20",
+    "@takeout/cli": "^1.0.1-beta.75",
     "@tamagui/babel-plugin": "^1.0.1-beta.80",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "metro-runtime": "^0.67.0"

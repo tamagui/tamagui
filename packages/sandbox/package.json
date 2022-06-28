@@ -23,6 +23,7 @@
     "@tamagui/shorthands": "^1.0.1-beta.80",
     "@tamagui/slider": "^1.0.1-beta.80",
     "@tamagui/theme-base": "^1.0.1-beta.80",
+    "@tamagui/vite-plugin": "^1.0.1-beta.80",
     "motion": "^10.6.2",
     "react": "*",
     "react-dom": "*",

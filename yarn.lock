@@ -5089,17 +5089,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@takeout/cli@workspace:takeout/cli":
+"@takeout/cli@^1.0.1-beta.75, @takeout/cli@workspace:takeout/cli":
   version: 0.0.0-use.local
   resolution: "@takeout/cli@workspace:takeout/cli"
   dependencies:
-    "@takeout/studio": ^1.0.1-beta.75
-    "@tamagui/build": ^1.0.1-beta.75
-    "@tamagui/static": ^1.0.1-beta.75
+    "@takeout/studio": ^1.0.1-beta.80
+    "@tamagui/build": ^1.0.1-beta.80
+    "@tamagui/static": ^1.0.1-beta.80
+    "@tamagui/vite-plugin": ^1.0.1-beta.80
+    "@types/compression": ^1.7.2
+    "@types/morgan": ^1.9.3
     arg: ^5.0.2
     chalk: ^5.0.1
+    compression: ^1.7.4
+    express: ^4.18.1
+    express-http-proxy: ^1.6.3
     fs-extra: ^10.1.0
+    get-port: ^6.1.2
     graphology: ^0.24.1
+    morgan: ^1.10.0
     ts-morph: ^15.1.0
     url: ^0.11.0
     vite: ^2.9.12
@@ -5114,26 +5122,28 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@takeout/font-noto-emoji@workspace:takeout/font-noto-emoji"
   dependencies:
-    "@tamagui/build": ^1.0.1-beta.46
-    "@tamagui/core": ^1.0.1-beta.46
+    "@tamagui/build": ^1.0.1-beta.80
+    "@tamagui/core": ^1.0.1-beta.80
   languageName: unknown
   linkType: soft
 
-"@takeout/studio@^1.0.1-beta.64, @takeout/studio@^1.0.1-beta.75, @takeout/studio@workspace:takeout/studio":
+"@takeout/studio@^1.0.1-beta.64, @takeout/studio@^1.0.1-beta.80, @takeout/studio@workspace:takeout/studio":
   version: 0.0.0-use.local
   resolution: "@takeout/studio@workspace:takeout/studio"
   dependencies:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.7
-    "@tamagui/animations-reanimated": ^1.0.1-beta.75
+    "@tamagui/animations-reanimated": ^1.0.1-beta.80
     "@tamagui/build": ^1.0.1-beta.64
-    "@tamagui/colors": ^1.0.1-beta.75
-    "@tamagui/core": ^1.0.1-beta.75
-    "@tamagui/drawer": ^1.0.1-beta.75
-    "@tamagui/feather-icons": ^1.0.1-beta.75
-    "@tamagui/static": ^1.0.1-beta.75
-    "@tamagui/theme-base": ^1.0.1-beta.75
+    "@tamagui/colors": ^1.0.1-beta.80
+    "@tamagui/config-base": ^1.0.1-beta.80
+    "@tamagui/core": ^1.0.1-beta.80
+    "@tamagui/drawer": ^1.0.1-beta.80
+    "@tamagui/feather-icons": ^1.0.1-beta.80
+    "@tamagui/polyfill-dev": ^1.0.1-beta.80
+    "@tamagui/static": ^1.0.1-beta.80
+    "@tamagui/theme-base": ^1.0.1-beta.80
     "@types/d3-scale": ^4.0.2
     "@types/lodash-es": ^4.17.6
     "@types/uuid": ^8.3.4
@@ -5152,8 +5162,8 @@ __metadata:
     react-native: "*"
     react-refresh: ^0.14.0
     style-loader: ^3.3.1
-    tamagui: ^1.0.1-beta.64
-    tamagui-loader: ^1.0.1-beta.75
+    tamagui: ^1.0.1-beta.80
+    tamagui-loader: ^1.0.1-beta.80
     thread-loader: ^3.0.4
     ts-morph: ^15.1.0
     url-loader: ^4.1.1
@@ -5214,7 +5224,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/animations-reanimated@^1.0.1-beta.75, @tamagui/animations-reanimated@^1.0.1-beta.80, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
+"@tamagui/animations-reanimated@^1.0.1-beta.80, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
   dependencies:
@@ -5261,7 +5271,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/build@^1.0.1-beta.46, @tamagui/build@^1.0.1-beta.64, @tamagui/build@^1.0.1-beta.75, @tamagui/build@^1.0.1-beta.80, @tamagui/build@workspace:packages/build":
+"@tamagui/build@^1.0.1-beta.64, @tamagui/build@^1.0.1-beta.80, @tamagui/build@workspace:packages/build":
   version: 0.0.0-use.local
   resolution: "@tamagui/build@workspace:packages/build"
   dependencies:
@@ -5336,7 +5346,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/colors@^1.0.1-beta.75, @tamagui/colors@^1.0.1-beta.80, @tamagui/colors@workspace:packages/colors":
+"@tamagui/colors@^1.0.1-beta.80, @tamagui/colors@workspace:packages/colors":
   version: 0.0.0-use.local
   resolution: "@tamagui/colors@workspace:packages/colors"
   dependencies:
@@ -5388,7 +5398,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/core@^1.0.1-beta.46, @tamagui/core@^1.0.1-beta.75, @tamagui/core@^1.0.1-beta.80, @tamagui/core@workspace:packages/core":
+"@tamagui/core@^1.0.1-beta.80, @tamagui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@tamagui/core@workspace:packages/core"
   dependencies:
@@ -5488,7 +5498,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/drawer@^1.0.1-beta.75, @tamagui/drawer@^1.0.1-beta.80, @tamagui/drawer@workspace:packages/drawer":
+"@tamagui/drawer@^1.0.1-beta.80, @tamagui/drawer@workspace:packages/drawer":
   version: 0.0.0-use.local
   resolution: "@tamagui/drawer@workspace:packages/drawer"
   dependencies:
@@ -5524,7 +5534,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/feather-icons@^1.0.1-beta.75, @tamagui/feather-icons@^1.0.1-beta.80, @tamagui/feather-icons@workspace:packages/feather-icons":
+"@tamagui/feather-icons@^1.0.1-beta.80, @tamagui/feather-icons@workspace:packages/feather-icons":
   version: 0.0.0-use.local
   resolution: "@tamagui/feather-icons@workspace:packages/feather-icons"
   dependencies:
@@ -5653,6 +5663,7 @@ __metadata:
     "@react-navigation/native-stack": ^6.6.2
     "@rnx-kit/metro-config": ^1.2.32
     "@rnx-kit/metro-resolver-symlinks": ^0.1.20
+    "@takeout/cli": ^1.0.1-beta.75
     "@tamagui/animations-reanimated": ^1.0.1-beta.80
     "@tamagui/babel-plugin": ^1.0.1-beta.80
     "@tamagui/colors": ^1.0.1-beta.80
@@ -5905,6 +5916,7 @@ __metadata:
     "@tamagui/shorthands": ^1.0.1-beta.80
     "@tamagui/slider": ^1.0.1-beta.80
     "@tamagui/theme-base": ^1.0.1-beta.80
+    "@tamagui/vite-plugin": ^1.0.1-beta.80
     "@vitejs/plugin-react": ^1.3.2
     babel-polyfill: ^6.26.0
     css-loader: ^5.2.4
@@ -6094,7 +6106,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/static@^1.0.1-beta.75, @tamagui/static@^1.0.1-beta.80, @tamagui/static@workspace:packages/static":
+"@tamagui/static@^1.0.1-beta.80, @tamagui/static@workspace:packages/static":
   version: 0.0.0-use.local
   resolution: "@tamagui/static@workspace:packages/static"
   dependencies:
@@ -6161,7 +6173,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/theme-base@^1.0.1-beta.75, @tamagui/theme-base@^1.0.1-beta.80, @tamagui/theme-base@workspace:packages/theme-base":
+"@tamagui/theme-base@^1.0.1-beta.80, @tamagui/theme-base@workspace:packages/theme-base":
   version: 0.0.0-use.local
   resolution: "@tamagui/theme-base@workspace:packages/theme-base"
   dependencies:
@@ -6260,11 +6272,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/vite-plugin@workspace:packages/vite-plugin":
+"@tamagui/vite-plugin@^1.0.1-beta.80, @tamagui/vite-plugin@workspace:packages/vite-plugin":
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.80
+    "@tamagui/core-node": ^1.0.1-beta.80
+    "@tamagui/proxy-worm": ^1.0.1-beta.80
     "@tamagui/static": ^1.0.1-beta.80
     fs-extra: ^10.1.0
     lodash: ^4.17.21
@@ -6445,6 +6459,15 @@ __metadata:
     "@types/node": "*"
     "@types/responselike": "*"
   checksum: 667d25808dbf46fe104d6f029e0281ff56058d50c7c1b9182774b3e38bb9c1124f56e4c367ba54f92dbde2d1cc573f26eb0e9748710b2822bc0fd1e5498859c6
+  languageName: node
+  linkType: hard
+
+"@types/compression@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "@types/compression@npm:1.7.2"
+  dependencies:
+    "@types/express": "*"
+  checksum: 3457f9d39ed73d58387bccf15bcfe8e140298c5d6e90fe354dfeb24ec7828432658caebee8ab6f4e4ac39a7d03bc0a6a52686d7fb2fe405fbdefede41d6b5834
   languageName: node
   linkType: hard
 
@@ -6792,6 +6815,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 0d01e11b5b959625385a482ad29ea16352be42506b459555b0f77fd82235e9c540946cc9c05a73fed1ae30b132914baaa4ccf257ed2cad20bc9773f0a06f4bac
+  languageName: node
+  linkType: hard
+
+"@types/morgan@npm:^1.9.3":
+  version: 1.9.3
+  resolution: "@types/morgan@npm:1.9.3"
+  dependencies:
+    "@types/node": "*"
+  checksum: 0b9bc8641ce03f7176f617523b8da300e5d47225b1667396749950ac7fdfa1f990447d490648fbaff050c2b0ef5fa60c3f2f00c6b76efec06fe5148de5020813
   languageName: node
   linkType: hard
 
@@ -8594,6 +8626,15 @@ __metadata:
     mixin-deep: ^1.2.0
     pascalcase: ^0.1.1
   checksum: a4a146b912e27eea8f66d09cb0c9eab666f32ce27859a7dfd50f38cd069a2557b39f16dba1bc2aecb3b44bf096738dd207b7970d99b0318423285ab1b1994edd
+  languageName: node
+  linkType: hard
+
+"basic-auth@npm:~2.0.1":
+  version: 2.0.1
+  resolution: "basic-auth@npm:2.0.1"
+  dependencies:
+    safe-buffer: 5.1.2
+  checksum: 3419b805d5dfc518f3a05dcf42aa53aa9ce820e50b6df5097f9e186322e1bc733c36722b624802cd37e791035aa73b828ed814d8362333d42d7f5cd04d7a5e48
   languageName: node
   linkType: hard
 
@@ -10912,7 +10953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.1.0, debug@npm:^3.1.1, debug@npm:^3.2.5":
+"debug@npm:^3.0.1, debug@npm:^3.1.0, debug@npm:^3.1.1, debug@npm:^3.2.5":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
@@ -11167,7 +11208,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"depd@npm:2.0.0":
+"depd@npm:2.0.0, depd@npm:~2.0.0":
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
   checksum: abbe19c768c97ee2eed6282d8ce3031126662252c58d711f646921c9623f9052e3e1906443066beec1095832f534e57c523b7333f8e7e0d93051ab6baef5ab3a
@@ -11773,6 +11814,13 @@ __metadata:
     es5-ext: ^0.10.35
     es6-symbol: ^3.1.1
   checksum: 6e48b1c2d962c21dee604b3d9f0bc3889f11ed5a8b33689155a2065d20e3107e2a69cc63a71bd125aeee3a589182f8bbcb5c8a05b6a8f38fa4205671b6d09697
+  languageName: node
+  linkType: hard
+
+"es6-promise@npm:^4.1.1":
+  version: 4.2.8
+  resolution: "es6-promise@npm:4.2.8"
+  checksum: 95614a88873611cb9165a85d36afa7268af5c03a378b35ca7bda9508e1d4f1f6f19a788d4bc755b3fd37c8ebba40782018e02034564ff24c9d6fa37e959ad57d
   languageName: node
   linkType: hard
 
@@ -12575,7 +12623,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.17.1, express@npm:^4.17.3":
+"express-http-proxy@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "express-http-proxy@npm:1.6.3"
+  dependencies:
+    debug: ^3.0.1
+    es6-promise: ^4.1.1
+    raw-body: ^2.3.0
+  checksum: 67fa357a29404e22778cfa59e60cdf410d876caeeaab7d34946d40ac6555cfcc666a0fd28fc087149b1f9bbb8349b057ad575485331126b1b99b696ab2528488
+  languageName: node
+  linkType: hard
+
+"express@npm:^4.17.1, express@npm:^4.17.3, express@npm:^4.18.1":
   version: 4.18.1
   resolution: "express@npm:4.18.1"
   dependencies:
@@ -13447,6 +13506,13 @@ __metadata:
   version: 3.2.0
   resolution: "get-port@npm:3.2.0"
   checksum: 31f530326569683ac4b7452eb7573c40e9dbe52aec14d80745c35475261e6389160da153d5b8ae911150b4ce99003472b30c69ba5be0cedeaa7865b95542d168
+  languageName: node
+  linkType: hard
+
+"get-port@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "get-port@npm:6.1.2"
+  checksum: e3c3d591492a11393455ef220f24c812a28f7da56ec3e4a2512d931a1f196d42850b50ac6138349a44622eda6dc3c0ccd8495cd91376d968e2d9e6f6f849e0a9
   languageName: node
   linkType: hard
 
@@ -18642,6 +18708,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"morgan@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "morgan@npm:1.10.0"
+  dependencies:
+    basic-auth: ~2.0.1
+    debug: 2.6.9
+    depd: ~2.0.0
+    on-finished: ~2.3.0
+    on-headers: ~1.0.2
+  checksum: fb41e226ab5a1abf7e8909e486b387076534716d60207e361acfb5df78b84d703a7b7ea58f3046a9fd0b83d3c94bfabde32323341a1f1b26ce50680abd2ea5dd
+  languageName: node
+  linkType: hard
+
 "motion@npm:^10.6.2":
   version: 10.8.1
   resolution: "motion@npm:10.8.1"
@@ -21729,7 +21808,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"raw-body@npm:2.5.1":
+"raw-body@npm:2.5.1, raw-body@npm:^2.3.0":
   version: 2.5.1
   resolution: "raw-body@npm:2.5.1"
   dependencies:
@@ -24562,7 +24641,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tamagui-loader@^1.0.1-beta.75, tamagui-loader@^1.0.1-beta.80, tamagui-loader@workspace:packages/loader":
+"tamagui-loader@^1.0.1-beta.80, tamagui-loader@workspace:packages/loader":
   version: 0.0.0-use.local
   resolution: "tamagui-loader@workspace:packages/loader"
   dependencies:
@@ -24598,7 +24677,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"tamagui@^1.0.1-beta.64, tamagui@^1.0.1-beta.80, tamagui@workspace:packages/tamagui":
+"tamagui@^1.0.1-beta.80, tamagui@workspace:packages/tamagui":
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
