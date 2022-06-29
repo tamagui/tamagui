@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "1.0.1-beta.80",
+  "version": "1.0.1-beta.81",
   "sideEffects": [
     "*.css"
   ],
@@ -22,15 +22,15 @@
   },
   "dependencies": {
     "@floating-ui/react-dom-interactions": "^0.5.0",
-    "@tamagui/compose-refs": "^1.0.1-beta.80",
-    "@tamagui/core": "^1.0.1-beta.80",
-    "@tamagui/create-context": "^1.0.1-beta.80",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.80",
-    "@tamagui/popover": "^1.0.1-beta.80",
-    "@tamagui/popper": "^1.0.1-beta.80",
-    "@tamagui/stacks": "^1.0.1-beta.80",
-    "@tamagui/text": "^1.0.1-beta.80",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.80"
+    "@tamagui/compose-refs": "^1.0.1-beta.81",
+    "@tamagui/core": "^1.0.1-beta.81",
+    "@tamagui/create-context": "^1.0.1-beta.81",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.81",
+    "@tamagui/popover": "^1.0.1-beta.81",
+    "@tamagui/popper": "^1.0.1-beta.81",
+    "@tamagui/stacks": "^1.0.1-beta.81",
+    "@tamagui/text": "^1.0.1-beta.81",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.81"
   },
   "peerDependencies": {
     "react": "*",
@@ -38,7 +38,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.80",
+    "@tamagui/build": "^1.0.1-beta.81",
     "@types/react-dom": "^18.0.3",
     "@types/react-native": "^0.67.3",
     "react": "*",
