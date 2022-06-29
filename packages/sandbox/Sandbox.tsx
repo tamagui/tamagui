@@ -4,6 +4,7 @@ import '@tamagui/polyfill-dev'
 import { Studio } from '@takeout/studio'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
+import { Anchor } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -42,7 +43,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Studio />
+        <Anchor target="_blank">hello</Anchor>
+        {/* <Studio /> */}
       </div>
     </Tamagui.Provider>
   )
