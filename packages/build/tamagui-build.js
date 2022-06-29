@@ -77,9 +77,6 @@ async function build() {
     console.log('built', pkg.name, 'in', Date.now() - start, 'ms')
   } catch (error) {
     console.error(`Error building:`, error.message)
-    if (!shouldWatch) {
-      process.exit(1)
-    }
   }
 }
 
