@@ -182,7 +182,6 @@ export const getSplitStyles: StyleSplitter = (
     if (!isWeb && keyInit.startsWith('data-')) continue
 
     const valInit = props[keyInit]
-
     if (keyInit === 'style' || keyInit.startsWith('_style')) {
       if (!valInit) continue
       for (const key in valInit) {
@@ -236,10 +235,13 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    // not the strongest check for now we can make better..
     if (valInit && valInit[0] === '_') {
-      usedKeys.add(keyInit)
-      mergeClassName(keyInit, valInit)
+      // if valid style key (or pseudo like color-hover):
+      // this conditional and esp the pseudo check rarely runs so not a perf issue
+      if (validStyles[keyInit] || (keyInit.includes('-') && validStyles[keyInit.split('-')[0]])) {
+        usedKeys.add(keyInit)
+        mergeClassName(keyInit, valInit)
+      }
       continue
     }
 
