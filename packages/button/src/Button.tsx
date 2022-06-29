@@ -1,7 +1,7 @@
 import {
   ButtonInsideButtonContext,
   GetProps,
-  ReactComponentWithRef,
+  TamaguiComponent,
   ThemeableProps,
   getButtonSize,
   getVariableValue,
@@ -177,7 +177,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   )
 })
 
-export const Button: ReactComponentWithRef<ButtonProps, HTMLButtonElement | View> =
+export const Button: TamaguiComponent<ButtonProps, HTMLButtonElement | View> =
   ButtonFrame.extractable(themeable(ButtonComponent as any) as any, {
     inlineProps: new Set([
       // text props go here (can't really optimize them, but we never fully extract button anyway)

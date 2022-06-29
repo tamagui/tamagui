@@ -1,8 +1,8 @@
 import {
   FontSizeTokens,
   GetProps,
-  ReactComponentWithRef,
   Spacer,
+  TamaguiComponent,
   ThemeableProps,
   getSize,
   getVariableValue,
@@ -176,7 +176,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
   )
 })
 
-const ListItemInner: ReactComponentWithRef<ListItemProps, HTMLLIElement | View> =
+const ListItemInner: TamaguiComponent<ListItemProps, HTMLLIElement | View> =
   ListItemFrame.extractable(themeable(ListItemComponent as any) as any, {
     inlineProps: new Set([
       // text props go here (can't really optimize them, but we never fully extract listItem anyway)
