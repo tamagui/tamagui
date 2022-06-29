@@ -14,8 +14,7 @@ import prompts from 'prompts'
 import tar from 'tar'
 import validateProjectName from 'validate-npm-package-name'
 
-// @ts-ignore
-import packageJson from '../../package.json'
+import packageJson from '../package.json'
 
 const pipeline = promisify(Stream.pipeline)
 
