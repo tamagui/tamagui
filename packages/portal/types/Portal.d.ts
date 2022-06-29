@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import '@tamagui/polyfill-dev';
 import { YStackProps } from '@tamagui/stacks';
 export declare type PortalProps = YStackProps;
