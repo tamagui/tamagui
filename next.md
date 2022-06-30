@@ -6,6 +6,8 @@
 
 - 1.0
   - <Toast />
+  - verify Popover.Content size matches size of Popover if unset on content
+  - asChild shouldn't mess up hooks
   - FAQ
   - document .extractable
   - switch focusstyle on prod
