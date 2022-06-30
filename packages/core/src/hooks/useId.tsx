@@ -91,10 +91,8 @@ function useId(providedId?: number | string | undefined | null) {
 
   // native doesn't support until next react-native version, need to remove eventually
   if (isWeb) {
-    // @ts-expect-error
     if (typeof React.useId === 'function') {
-      // @ts-expect-error
-      let id = React.useId(providedId)
+      let id = React.useId()
       return providedId != null ? providedId : id
     }
   }

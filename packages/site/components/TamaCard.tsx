@@ -30,8 +30,6 @@ export const TamaCard = ({
   })
   const glow = useHoverGlow({
     resist: 70,
-    // debug: true,
-    // full: true,
     size: 800,
     color: 'var(--color)',
     opacity: 0.075,

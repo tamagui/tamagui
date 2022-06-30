@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 export interface UseThemeProps {
     themes: string[];
     forcedTheme?: string;
@@ -9,6 +9,7 @@ export interface UseThemeProps {
     systemTheme?: 'dark' | 'light';
 }
 export interface ThemeProviderProps {
+    children?: any;
     themes?: string[];
     forcedTheme?: string;
     enableSystem?: boolean;

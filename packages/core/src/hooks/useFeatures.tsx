@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React, { RefObject, startTransition } from 'react'
 import { View, ViewStyle } from 'react-native'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
@@ -161,8 +161,10 @@ function loadAnimationFeature() {
       })
 
       useIsomorphicLayoutEffect(() => {
-        setStateShallow({
-          animation: res,
+        startTransition(() => {
+          setStateShallow({
+            animation: res,
+          })
         })
       }, [res])
 

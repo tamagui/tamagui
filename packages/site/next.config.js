@@ -86,11 +86,8 @@ module.exports = function (name, opts) {
   /** @type {import('next').NextConfig} */
   const final = {
     ...out,
-    // reactStrictMode: true,
     experimental: {
       ...out.experimental,
-      // plugins: true,
-      // reactRoot: true,
       scrollRestoration: true,
       legacyBrowsers: false,
       browsersListForSwc: true,

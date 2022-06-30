@@ -2,9 +2,11 @@
 // forked temporarily due to buggy theme change
 
 import NextHead from 'next/head'
-import React, {
+import * as React from 'react'
+import {
   createContext,
   memo,
+  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -33,6 +35,7 @@ export interface UseThemeProps {
 }
 
 export interface ThemeProviderProps {
+  children?: any
   /** List of all available theme names */
   themes?: string[]
   /** Forced theme name for the current page */
@@ -52,7 +55,6 @@ export interface ThemeProviderProps {
   attribute?: string | 'class'
   /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
   value?: ValueObject
-
   onChangeTheme?: (name: string) => void
 }
 
@@ -96,12 +98,15 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
 }) => {
   const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme))
   const [resolvedTheme, setResolvedTheme] = useState(() => getTheme(storageKey))
+  // const resolvedTheme = React.useDeferredValue(resolvedThemeFast)
   const attrs = !value ? themes : Object.values(value)
 
   const handleMediaQuery = useCallback(
     (e?) => {
       const systemTheme = getSystemTheme(e)
-      setResolvedTheme(systemTheme)
+      startTransition(async () => {
+        setResolvedTheme(systemTheme)
+      })
       if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
     },
     [theme, forcedTheme]
@@ -163,7 +168,9 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       } else {
         handleChangeTheme(newTheme)
       }
-      setThemeState(newTheme)
+      startTransition(() => {
+        setThemeState(newTheme)
+      })
     },
     [forcedTheme]
   )
@@ -176,7 +183,9 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       }
       // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
       const theme = e.newValue || defaultTheme
-      setTheme(theme)
+      startTransition(() => {
+        setTheme(theme)
+      })
     }
     window.addEventListener('storage', handleStorage)
     return () => {
@@ -221,6 +230,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       systemTheme: (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined,
     } as const
   }, [theme, forcedTheme, resolvedTheme, enableSystem])
+
 
   return (
     <ThemeContext.Provider value={contextValue}>

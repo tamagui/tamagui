@@ -6,6 +6,7 @@ import React, {
   createElement,
   forwardRef,
   memo,
+  startTransition,
   useCallback,
   useContext,
   useMemo,
@@ -516,8 +517,10 @@ export function createComponent<
       // we need to use state to properly have mounted go from false => true
       if (typeof window !== 'undefined' && (hasEnterStyle || props.animation)) {
         // for SSR we never set mounted, ensuring enterStyle={{}} is set by default
-        setStateShallow({
-          mounted: true,
+        startTransition(() => {
+          setStateShallow({
+            mounted: true,
+          })
         })
       }
 
@@ -1140,10 +1143,7 @@ export function spacedChildren({
   const final: any[] = []
   for (const [index, child] of childrenList.entries()) {
     const isEmpty =
-      child === null ||
-      child === undefined ||
-      child === false ||
-      (Array.isArray(child) && child.length === 0)
+      child === null || child === undefined || (Array.isArray(child) && child.length === 0)
 
     // push them all, but wrap some in Fragment
     if (isEmpty || !child || (child['key'] && !isZStack)) {

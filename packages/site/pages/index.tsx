@@ -4,7 +4,7 @@ import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 import { refractor } from 'refractor'
 import css from 'refractor/lang/css'
 import tsx from 'refractor/lang/tsx'
@@ -39,6 +39,7 @@ export default function Home({ animationCode, compilationExamples }) {
           <InstallInput />
         </XStack>
       </ContainerLarge>
+      {/* <Suspense fallback={null}> */}
       <YStack elevation="$1" py="$8" pb="$10">
         <HeroBelow />
       </YStack>
@@ -55,10 +56,12 @@ export default function Home({ animationCode, compilationExamples }) {
       <SectionTinted contain="paint layout" gradient bubble>
         <HeroPerformance />
       </SectionTinted>
+      {/* </Suspense> */}
       <SectionTinted contain="paint layout" noBorderTop zi={100}>
         <YStack fullscreen className="bg-grid mask-gradient-up" />
         <HeroExampleAnimations animationCode={animationCode} />
       </SectionTinted>
+      {/* <Suspense fallback={null}> */}
       <Section bc="$background" contain="paint layout" zi={10}>
         <YStack pe="none" zi={0} fullscreen className="bg-dot-grid mask-gradient-down" />
         <HeroExampleCode examples={compilationExamples} />
@@ -80,6 +83,8 @@ export default function Home({ animationCode, compilationExamples }) {
         </YStack>
         <Community />
       </Section>
+      {/* </Suspense> */}
+
       {/* </Suspense> */}
     </>
   )

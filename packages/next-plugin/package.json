@@ -24,9 +24,9 @@
     "@tamagui/proxy-worm": "^1.0.1-beta.85",
     "@tamagui/static": "^1.0.1-beta.85",
     "babel-loader": "^8.2.5",
-    "browserslist": "^4.19.1",
+    "browserslist": "^4.21.1",
     "css-loader": "^5.2.4",
-    "css-minimizer-webpack-plugin": "^3.4.1",
+    "css-minimizer-webpack-plugin": "^4.0.0",
     "esbuild-loader": "^2.18.0",
     "mini-css-extract-plugin": "^2.6.0",
     "next-compose-plugins": "^2.2.1",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.85",
-    "next": "^12.1.6"
+    "next": "^12.2.0"
   },
   "peerDependencies": {
     "next": ">=12.0.0"
