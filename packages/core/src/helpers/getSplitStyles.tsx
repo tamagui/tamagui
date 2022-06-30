@@ -122,7 +122,7 @@ export const getSplitStyles: StyleSplitter = (
 
   let rulesToInsert: [string, string][] | null = null
   function addStyle(prop: string, rule: string) {
-    if (process.env.IS_STATIC === 'is_static' || updateInsertedCache(prop, rule)) {
+    if (!isClient || updateInsertedCache(prop, rule)) {
       rulesToInsert = rulesToInsert || []
       rulesToInsert.push([prop, rule])
     }
