@@ -23,8 +23,10 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
+  Theme,
   styled,
   useIsomorphicLayoutEffect,
+  useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
 // import { useDirection } from '@tamagui/react-direction'
@@ -234,13 +236,17 @@ export type SelectContentProps = { children?: React.ReactNode }
 
 const SelectContent = ({ children, __scopeSelect }: ScopedProps<SelectContentProps>) => {
   const context = useSelectContext(CONTENT_NAME, __scopeSelect)
+  const themeName = useThemeName()
+
   return (
     <FloatingPortal>
-      {context.open ? (
-        <FloatingOverlay lockScroll>{children}</FloatingOverlay>
-      ) : (
-        <div style={{ display: 'none' }}>{children}</div>
-      )}
+      <Theme name={themeName}>
+        {context.open ? (
+          <FloatingOverlay lockScroll>{children}</FloatingOverlay>
+        ) : (
+          <div style={{ display: 'none' }}>{children}</div>
+        )}
+      </Theme>
     </FloatingPortal>
   )
 }
