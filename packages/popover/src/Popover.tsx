@@ -28,6 +28,7 @@ import {
   Popper,
   PopperAnchor,
   PopperArrow,
+  PopperArrowProps,
   PopperContent,
   PopperContentProps,
   PopperProps,
@@ -450,7 +451,7 @@ PopoverClose.displayName = CLOSE_NAME
 const ARROW_NAME = 'PopoverArrow'
 
 type PopoverArrowElement = HTMLElement | View
-export type PopoverArrowProps = YStackProps
+export type PopoverArrowProps = PopperArrowProps
 
 export const PopoverArrow = React.forwardRef<PopoverArrowElement, PopoverArrowProps>(
   (props: ScopedProps<PopoverArrowProps>, forwardedRef) => {
