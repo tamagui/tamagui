@@ -66,7 +66,8 @@ export default declare(function snackBabelPlugin(
             return
           }
 
-          const shouldPrintDebug = firstComment?.trim() === 'debug'
+          const shouldPrintDebug =
+            firstComment?.trim() === 'debug' || process.env.DEBUG?.startsWith('tamagui')
 
           function addSheetStyle(style: any, node: t.JSXOpeningElement) {
             const styleIndex = `${Object.keys(sheetStyles).length}`

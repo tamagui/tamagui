@@ -116,7 +116,7 @@ export function createExtractor() {
         disableExtractInlineMedia,
         disableExtractVariables,
         disableDebugAttr,
-        extractStyledDefinitions,
+        extractStyledDefinitions = false,
         prefixLogs,
         excludeProps,
         target,
@@ -265,7 +265,7 @@ export function createExtractor() {
         },
 
         CallExpression(path) {
-          if (disable || disableExtraction) {
+          if (disable || disableExtraction || extractStyledDefinitions === false) {
             return
           }
 
@@ -368,6 +368,11 @@ export function createExtractor() {
 
           // add in the style object as classnames
           const atomics = getStylesAtomic(out.style)
+
+          if (shouldPrintDebug) {
+            console.log('Exctacting styled()', styles, out, 'to', atomics)
+          }
+
           for (const atomic of atomics) {
             for (const rule of atomic.rules) {
               out.rulesToInsert = out.rulesToInsert || []

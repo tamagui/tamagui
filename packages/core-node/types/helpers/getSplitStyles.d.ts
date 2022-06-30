@@ -16,6 +16,7 @@ declare type StyleSplitter = (props: {
     rulesToInsert: [string, string][] | null;
     viewProps: StackProps;
 };
+export declare const PROP_SPLIT = "-";
 export declare const pseudoCNInverse: {
     hover: string;
     focus: string;

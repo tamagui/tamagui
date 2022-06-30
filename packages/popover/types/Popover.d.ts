@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
 import type { Scope } from '@tamagui/create-context';
-import { PopperContentProps, PopperProps } from '@tamagui/popper';
+import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { GestureResponderEvent, View } from 'react-native';
@@ -87,7 +87,7 @@ export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<import("
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
 }>> & React.RefAttributes<PopoverCloseElement>>;
 declare type PopoverArrowElement = HTMLElement | View;
-export declare type PopoverArrowProps = YStackProps;
+export declare type PopoverArrowProps = PopperArrowProps;
 export declare const PopoverArrow: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -97,7 +97,10 @@ export declare const PopoverArrow: React.ForwardRefExoticComponent<Omit<import("
 }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-}>> & React.RefAttributes<PopoverArrowElement>>;
+}>> & {
+    offset?: number | undefined;
+    size?: import("@tamagui/core").SizeTokens | undefined;
+} & React.RefAttributes<PopoverArrowElement>>;
 export declare type PopoverProps = PopperProps & {
     open?: boolean;
     defaultOpen?: boolean;
@@ -124,7 +127,10 @@ export declare const Popover: React.FC<PopoverProps> & {
     }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
-    }>> & React.RefAttributes<PopoverArrowElement>>;
+    }>> & {
+        offset?: number | undefined;
+        size?: import("@tamagui/core").SizeTokens | undefined;
+    } & React.RefAttributes<PopoverArrowElement>>;
     Trigger: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
         readonly fullscreen?: boolean | undefined;
         readonly elevation?: import("@tamagui/core").SizeTokens | undefined;

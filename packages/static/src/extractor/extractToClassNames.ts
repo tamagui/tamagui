@@ -8,7 +8,6 @@ import { getStylesAtomic } from '@tamagui/core-node'
 import { concatClassName } from '@tamagui/helpers'
 import invariant from 'invariant'
 import { ViewStyle } from 'react-native'
-import { LoaderContext } from 'webpack'
 
 import { CONCAT_CLASSNAME_IMPORT } from '../constants'
 import { ClassNameObject, StyleObject, TamaguiOptions, Ternary } from '../types'

@@ -28,7 +28,7 @@ import {
   updateInsertedCache,
 } from './insertStyleRule'
 import { mergeTransform } from './mergeTransform'
-import { pseudoDescriptors as pseudoAttrs, pseudoDescriptors } from './pseudoDescriptors'
+import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 export type ClassNamesObject = Record<string, string>
@@ -78,6 +78,8 @@ type StyleSplitter = (
   viewProps: StackProps
 }
 
+export const PROP_SPLIT = '-'
+
 // this is how compiler outputs psueodo identifier
 // TODO remove in next refactor
 export const pseudoCNInverse = {
@@ -120,7 +122,7 @@ export const getSplitStyles: StyleSplitter = (
 
   let rulesToInsert: [string, string][] | null = null
   function addStyle(prop: string, rule: string) {
-    if (updateInsertedCache(prop, rule)) {
+    if (process.env.IS_STATIC === 'is_static' || updateInsertedCache(prop, rule)) {
       rulesToInsert = rulesToInsert || []
       rulesToInsert.push([prop, rule])
     }
@@ -154,6 +156,7 @@ export const getSplitStyles: StyleSplitter = (
           // prettier-ignore
           console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
         }
+        // debugger
       }
       transforms = transforms || {}
       transforms[namespace] = transforms[namespace] || ['', '']
@@ -169,7 +172,7 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   const propKeys = Object.keys(props)
-  const shouldDoClasses = isWeb && !state.noClassNames
+  const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.log('propKeys', propKeys)
@@ -216,11 +219,11 @@ export const getSplitStyles: StyleSplitter = (
             // is media
             let mediaShortKey = mediaOrPseudo.slice(1)
             mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
-            fullKey += `_${mediaShortKey}`
+            fullKey += `${PROP_SPLIT}${mediaShortKey}`
           } else if (isPseudo) {
             // is pseudo
             const pseudoShortKey = mediaOrPseudo.slice(1)
-            fullKey += `_${pseudoShortKey}`
+            fullKey += `${PROP_SPLIT}${pseudoShortKey}`
           }
           usedKeys.add(fullKey)
           mergeClassName(fullKey, cn, isMediaOrPseudo)
@@ -238,9 +241,14 @@ export const getSplitStyles: StyleSplitter = (
     if (valInit && valInit[0] === '_') {
       // if valid style key (or pseudo like color-hover):
       // this conditional and esp the pseudo check rarely runs so not a perf issue
-      if (validStyles[keyInit] || (keyInit.includes('-') && validStyles[keyInit.split('-')[0]])) {
+      const isValidClassName = validStyles[keyInit]
+      const isMediaOrPseudo =
+        !isValidClassName &&
+        keyInit.includes(PROP_SPLIT) &&
+        validStyles[keyInit.split(PROP_SPLIT)[0]]
+      if (isValidClassName || isMediaOrPseudo) {
         usedKeys.add(keyInit)
-        mergeClassName(keyInit, valInit)
+        mergeClassName(keyInit, valInit, isMediaOrPseudo)
         continue
       }
     }
@@ -286,12 +294,6 @@ export const getSplitStyles: StyleSplitter = (
     for (const [key, val] of expanded) {
       if (val === undefined) continue
 
-      if (key !== 'target' && val && val[0] === '_') {
-        usedKeys.add(key)
-        mergeClassName(key, val, isMediaOrPseudo)
-        continue
-      }
-
       isMedia = key[0] === '$'
       isPseudo = validPseudoKeys[key]
       isMediaOrPseudo = isMedia || isPseudo
@@ -320,8 +322,8 @@ export const getSplitStyles: StyleSplitter = (
         if (shouldDoClasses) {
           const pseudoStyles = getAtomicStyle(pseudos[key], pseudoDescriptors[key])
           for (const style of pseudoStyles) {
-            const postfix = pseudoAttrs[key]?.name || key // exitStyle/enterStyle dont have pseudoAttrs
-            const fullKey = `${style.property}_${postfix}`
+            const postfix = pseudoDescriptors[key]?.name || key // exitStyle/enterStyle dont have pseudoDescriptors
+            const fullKey = `${style.property}${PROP_SPLIT}${postfix}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(style.identifier, style.rules.join(';'))
@@ -362,7 +364,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of mediaStyles) {
             const out = createMediaStyle(style, mediaKeyShort, mediaQueryConfig)
             // TODO handle pseudo + media, not too hard just need to set up example case
-            const fullKey = `${style.property}_${mediaKeyShort}`
+            const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
               addStyle(out.identifier, out.styleRule)

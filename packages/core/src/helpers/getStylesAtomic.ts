@@ -3,6 +3,7 @@ import { ViewStyle } from 'react-native'
 
 import { isVariable } from '../createVariable'
 import { generateAtomicStyles } from './generateAtomicStyles'
+import { PROP_SPLIT } from './getSplitStyles'
 import { invertMapTransformKeys, mergeTransform } from './mergeTransform'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
@@ -27,25 +28,15 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: Atomic
     return getAtomicStyle(stylesIn, undefined, options)
   }
 
+  console.log('go')
+
   // only for pseudos
   const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
   let res: StyleObject[] = []
   // *1 order matched to *0
   for (const [index, style] of [hoverStyle, pressStyle, focusStyle, base].entries()) {
-    if (!style || !Object.keys(style).length) {
-      continue
-    }
+    if (!style) continue
     const pseudo = pseudosOrdered[index]
-    for (const skey in style) {
-      const val = style[skey]
-      if (isVariable(val)) {
-        style[skey] = val.toString()
-      }
-      if (stylePropsTransform[skey]) {
-        delete style[skey]
-        mergeTransform(style, skey, val)
-      }
-    }
     res = [...res, ...getAtomicStyle(style, pseudo, options)]
   }
   return res
@@ -67,20 +58,21 @@ export function getAtomicStyle(
     }
   }
 
-  if (options && options.splitTransforms && style.transform) {
-    let atomicStyles: StyleObject[] = []
-    let { transform, ...rest } = style
-    for (const t of transform) {
-      const tKey = Object.keys(t)[0]
-      const transformProperty = invertMapTransformKeys[tKey] || tKey
-      const out = generateAtomicStyles({ transform: [t] }, pseudo)[0]
-      atomicStyles.push({
-        ...out,
-        property: transformProperty,
-      })
-    }
-    return [...atomicStyles, ...generateAtomicStyles(rest, pseudo)]
-  }
+  // if (options && options.splitTransforms && style.transform) {
+  //   let atomicStyles: StyleObject[] = []
+  //   let { transform, ...rest } = style
+  //   // for (const t of transform) {
+  //   //   const tKey = Object.keys(t)[0]
+  //   //   const transformProperty = invertMapTransformKeys[tKey] || tKey
+  //   //   const out = generateAtomicStyles({ transform: [t] }, pseudo)[0]
+  //   //   atomicStyles.push({
+  //   //     ...out,
+  //   //     property: transformProperty + (out.pseudo ? `${PROP_SPLIT}${out.pseudo}` : ''),
+  //   //   })
+  //   // }
+  //   console.log('rest', rest)
+  //   return [...atomicStyles, ...generateAtomicStyles(rest, pseudo)]
+  // }
 
   return generateAtomicStyles(style, pseudo)
 }

@@ -4,16 +4,12 @@ async function run() {
   const output = await extractBabel(`
       import { YStack, styled } from 'tamagui'
       
-      const Me = styled(YStack, {
+      const XStack = styled(YStack, {
         backgroundColor: 'red',
-        borderWidth: 2,
-        borderColor: '$borderColor',
-        borderRadius: '$4',
-        shadowColor: 'red',
-        shadowRadius: 100,
         
         hoverStyle: {
-          backgroundColor: 'green'
+          x: 10,
+          y: 100,
         },
 
         variants: {},
