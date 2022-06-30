@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Metrics } from 'react-native-safe-area-context';
 export declare const SafeAreaProvider: ({ initialWindowMetrics, children, }: {
     children?: any;

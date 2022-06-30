@@ -68,7 +68,7 @@ interface ValueObject {
   [themeName: string]: string
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+export const ThemeProvider: React.FC<ThemeProviderProps & { children?: React.ReactNode }> = ({
   forcedTheme,
   disableTransitionOnChange = false,
   enableSystem = true,

@@ -55,10 +55,6 @@ export const loader: RawLoaderDefinitionFunction<TamaguiOptions> = function load
 
     const cssPath = threaded ? `${sourcePath}.module.css` : `${sourcePath}.${index++}.module.css`
 
-    // cssLoaderPath: CSS_LOADER_PATH,
-    // threaded,
-    // cssPath,
-
     const extracted = extractToClassNames({
       extractor,
       source,

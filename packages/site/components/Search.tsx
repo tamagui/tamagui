@@ -26,7 +26,7 @@ const API_KEY = '10e7bbeb85d3909346e1519bfcdf82dc'
 const APP_ID = 'AIE0I4P8ZS'
 const INDEX = 'tamagui'
 
-export const SearchProvider = memo(({ children }) => {
+export const SearchProvider = memo(({ children }: any) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [initialQuery, setInitialQuery] = useState(null)

@@ -3,7 +3,7 @@ import { Theme } from 'tamagui'
 
 import { useTint } from '../components/ColorToggleButton'
 
-export const ThemeTint = memo((props) => {
+export const ThemeTint = memo((props: { children?: React.ReactNode }) => {
   const { tint } = useTint()
 
   const children = useMemo(() => props.children, [props.children])
