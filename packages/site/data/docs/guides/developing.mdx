@@ -52,15 +52,15 @@ For component that extends a Text-based component, a further classname is set of
 
 The classnames `is_Paragraph` and `font_body` will be output to DOM.
 
-## Dev tools
+## Debugging
 
-Tamagui has two ways of giving you a lot more insight into what's happening.
+Tamagui has two three of giving you a lot more insight into what's happening at compile-time.
 
 ### Debug pragma
 
-Adding `// debug` to the top of any file will output a verbose stream of everything Tamagui is doing at compile-time. Use `// debug-verbose` to get much more information including more granular timings.
+To see what's being extracted, why, and every step along the optimization pipeline, add `// debug` to the top of any file. Adding `// debug-verbose` will show even more information, including more granular timings.
 
-Use it to see what's being extracted, why, and every step along the optimization pipeline.
+If you're developing in your design system package that is built with @tamagui/build, esbuild will strip this banner. You can try using `//! debug` (esbuild only preserves comments at the top that start with `//!`), but still occasionally esbuild will insert a helpers above the comment, breaking it, so be sure to check the built file in `dist/jsx`.
 
 ### Debug prop
 
@@ -76,9 +76,13 @@ And you'll see props, styles, and a variety of variables relevant to processing 
 
 You can do `<Button debug="break" />` to have it break at the beginning of rendering, or `<Button debug="verbose" />` to have it output more detailed debug information.
 
-### Global Tamagui
+### DEBUG env
 
-In development mode, there's a global `Tamagui` with a lot of helpful internals, including your entire parsed config from `tamagui.config.ts`.
+If you set `DEBUG=tamagui` before your build command, you will get the full debug output of every file built. This is useful for seeing everything that's happening across every file, and especially helpful for diagnosing production issues.
+
+## Runtime introspection
+
+In development mode, Tamagui sets the variable `Tamagui` onto `globalThis` with a lot of helpful internals, including your entire parsed config from `tamagui.config.ts`.
 
 Beyond your config, you have:
 
