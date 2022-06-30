@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development TAMAGUI_TARGET=web DISABLE_EXTRACTION=true vite",
-    "dev:extract": "vite",
+    "dev:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "dev:webpack": "DISABLE_EXTRACTION=true NODE_ENV=development webpack serve",
     "dev:webpack:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve"
   },

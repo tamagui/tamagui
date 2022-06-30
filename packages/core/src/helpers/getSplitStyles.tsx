@@ -241,8 +241,8 @@ export const getSplitStyles: StyleSplitter = (
       if (validStyles[keyInit] || (keyInit.includes('-') && validStyles[keyInit.split('-')[0]])) {
         usedKeys.add(keyInit)
         mergeClassName(keyInit, valInit)
+        continue
       }
-      continue
     }
 
     if (

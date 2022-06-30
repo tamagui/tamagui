@@ -1,3 +1,4 @@
+//! debug
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
@@ -43,6 +44,9 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
+        <Anchor target="_blank" href="https://google.com">
+          test 23
+        </Anchor>
         {/* <Studio /> */}
       </div>
     </Tamagui.Provider>
