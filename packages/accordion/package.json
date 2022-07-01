@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/accordion",
-  "version": "1.0.1-beta.89",
+  "version": "1.0.1-beta.90",
   "sideEffects": [
     "*.css"
   ],
@@ -20,12 +20,12 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.3.1",
-    "@tamagui/compose-refs": "^1.0.1-beta.89",
-    "@tamagui/core": "^1.0.1-beta.89",
-    "@tamagui/create-context": "^1.0.1-beta.89",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.89",
-    "@tamagui/stacks": "^1.0.1-beta.89",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.89",
+    "@tamagui/compose-refs": "^1.0.1-beta.90",
+    "@tamagui/core": "^1.0.1-beta.90",
+    "@tamagui/create-context": "^1.0.1-beta.90",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.90",
+    "@tamagui/stacks": "^1.0.1-beta.90",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.90",
     "react-native-reanimated": "~2.8.0"
   },
   "peerDependencies": {
@@ -34,7 +34,7 @@
     "react-native-gesture-handler": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.89",
+    "@tamagui/build": "^1.0.1-beta.90",
     "react": "*",
     "react-dom": "*",
     "react-native-gesture-handler": "*"
