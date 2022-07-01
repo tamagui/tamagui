@@ -114,14 +114,16 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement | View, SwitchProps>(
       onChange: onCheckedChange,
     })
 
-    React.useEffect(() => {
-      if (!props.id) return
-      return registerFocusable(props.id, {
-        focus: () => {
-          setChecked((x) => !x)
-        },
-      })
-    }, [props.id])
+    if (!isWeb) {
+      React.useEffect(() => {
+        if (!props.id) return
+        return registerFocusable(props.id, {
+          focus: () => {
+            setChecked((x) => !x)
+          },
+        })
+      }, [props.id])
+    }
 
     return (
       <SwitchProvider scope={__scopeSwitch} checked={checked} disabled={disabled} size={size}>
