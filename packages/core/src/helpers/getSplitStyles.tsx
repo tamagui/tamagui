@@ -119,7 +119,11 @@ export const getSplitStyles: StyleSplitter = (
   let rulesToInsert: [string, string][] | null = null
   function addStyle(prop: string, rule: string) {
     if (isWeb) {
-      if (updateInsertedCache(prop, rule)) {
+      // NOTE this is super tricky
+      // for some reason, next.js dev SSR actually misses a lot of styles (pre-hydrate) with || !isClient
+      // which doesn't really make sense, because that should strictly extract *more* css, but oh well
+      // meanwhile, production builds *need* to always be truthy here for node, thus the cheat conditional
+      if (updateInsertedCache(prop, rule) || (!isClient && process.env.NODE_ENV === 'production')) {
         rulesToInsert = rulesToInsert || []
         rulesToInsert.push([prop, rule])
       }
