@@ -24,7 +24,6 @@
     "@tamagui/slider": "^1.0.1-beta.90",
     "@tamagui/theme-base": "^1.0.1-beta.90",
     "@tamagui/vite-plugin": "^1.0.1-beta.90",
-    "motion": "^10.6.2",
     "react": "*",
     "react-dom": "*",
     "react-native-reanimated": "~2.8.0",

@@ -103,7 +103,9 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   const handleMediaQuery = useCallback(
     (e?) => {
       const systemTheme = getSystemTheme(e)
-      setResolvedTheme(systemTheme)
+      React.startTransition(() => {
+        setResolvedTheme(systemTheme)
+      })
       if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
     },
     [theme, forcedTheme]

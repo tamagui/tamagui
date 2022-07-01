@@ -3981,110 +3981,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@motionone/animation@npm:^10.8.0":
-  version: 10.8.0
-  resolution: "@motionone/animation@npm:10.8.0"
-  dependencies:
-    "@motionone/easing": ^10.8.0
-    "@motionone/types": ^10.8.0
-    "@motionone/utils": ^10.8.0
-    tslib: ^2.3.1
-  checksum: 5cbe56cdcaf84feeffaa1729b59930bb48fe289b45a17b83980fa0041c084b8a2bc2e4a3be6de58f602f7181e3dc412e8811863dd5aea8a5bcfabd85b6c0fc2c
-  languageName: node
-  linkType: hard
-
-"@motionone/dom@npm:^10.8.1":
-  version: 10.8.1
-  resolution: "@motionone/dom@npm:10.8.1"
-  dependencies:
-    "@motionone/animation": ^10.8.0
-    "@motionone/generators": ^10.8.0
-    "@motionone/types": ^10.8.0
-    "@motionone/utils": ^10.8.0
-    hey-listen: ^1.0.8
-    tslib: ^2.3.1
-  checksum: 56746eb4c7e9a4ded616c3f9458195239e9501a0689fc8e64ec54cfbe1a64c4e768ccfba7738680aa929086cc410773fc9f78ea902f6bce4dff2268ff5bb0e23
-  languageName: node
-  linkType: hard
-
-"@motionone/easing@npm:^10.8.0":
-  version: 10.8.0
-  resolution: "@motionone/easing@npm:10.8.0"
-  dependencies:
-    "@motionone/utils": ^10.8.0
-    tslib: ^2.3.1
-  checksum: 9a5185e21ba9f863f6d127b7d7cf44e168d9b17f81ba87c15662b3fdb691012ff86cf3b74a2ef200c30dc4a5a970ec0b6cf58498e44842e80e1f580b1bff7cd6
-  languageName: node
-  linkType: hard
-
-"@motionone/generators@npm:^10.8.0":
-  version: 10.8.0
-  resolution: "@motionone/generators@npm:10.8.0"
-  dependencies:
-    "@motionone/types": ^10.8.0
-    "@motionone/utils": ^10.8.0
-    tslib: ^2.3.1
-  checksum: db25e2d11a059f6864a40101c0235a935715f8b2e21aaedc9c9d46e679d33aaca6724df4c4f21d54990b0abf2df7ed238595cf6099eb12625c8aeee30e162a54
-  languageName: node
-  linkType: hard
-
-"@motionone/react@npm:^10.8.1":
-  version: 10.8.1
-  resolution: "@motionone/react@npm:10.8.1"
-  dependencies:
-    "@motionone/dom": ^10.8.1
-    hey-listen: ^1.0.8
-    tslib: ^2.3.1
-  peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  checksum: 8cdd18b527743b146bf94deda1d959af80d7c50bd5c9afd62d2d502a024b6a1846ab103be233a1b00758194abdc1fa4a9699ed4adb048b10c8566203b75382aa
-  languageName: node
-  linkType: hard
-
-"@motionone/svelte@npm:^10.8.1":
-  version: 10.8.1
-  resolution: "@motionone/svelte@npm:10.8.1"
-  dependencies:
-    "@motionone/dom": ^10.8.1
-    tslib: ^2.3.1
-  checksum: b05d598fe400d6a5b73796e87a7671db0b17f023471d19caf1e53eef7f8734e363dc24aa3e7fa8d61288461b1380f597eef277494eb37e42ac837fbd7366a326
-  languageName: node
-  linkType: hard
-
-"@motionone/types@npm:^10.8.0":
-  version: 10.8.0
-  resolution: "@motionone/types@npm:10.8.0"
-  checksum: 3a00be6a67a999b2854210343023e91ef385adb704a65edbb4e08c293118f542cafb1e066486e63d0ae843b5f71f2416dd9cd46b79f877f8f0f6c750324eab5f
-  languageName: node
-  linkType: hard
-
-"@motionone/utils@npm:^10.8.0":
-  version: 10.8.0
-  resolution: "@motionone/utils@npm:10.8.0"
-  dependencies:
-    "@motionone/types": ^10.8.0
-    hey-listen: ^1.0.8
-    tslib: ^2.3.1
-  checksum: d3e3126e6fcd1531f8d46a0861b641ecdbeb34712741ef0c3d70cc89e4b9913c38708686e3ae4308330119f66b95e29aad9cb6462ed20fef5b4a80fdfe9e81ed
-  languageName: node
-  linkType: hard
-
-"@motionone/vue@npm:^10.8.1":
-  version: 10.8.1
-  resolution: "@motionone/vue@npm:10.8.1"
-  dependencies:
-    "@motionone/dom": ^10.8.1
-    tslib: ^2.3.1
-  checksum: 0415831e6e7b5a3167495a350c50af21e673b804c4a14dc05e9f5fb5923e8f6a9b08d138f9ef8bcada95cfecbb28669d3a51f35d9319781dfa4defe659920d72
-  languageName: node
-  linkType: hard
-
 "@mrmlnc/readdir-enhanced@npm:^2.2.1":
   version: 2.2.1
   resolution: "@mrmlnc/readdir-enhanced@npm:2.2.1"
@@ -5941,7 +5837,6 @@ __metadata:
     file-loader: ^6.2.0
     html-webpack-plugin: ^5.5.0
     mini-css-extract-plugin: ^2.6.0
-    motion: ^10.6.2
     react: "*"
     react-dom: "*"
     react-native-reanimated: ~2.8.0
@@ -14353,13 +14248,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hey-listen@npm:^1.0.8":
-  version: 1.0.8
-  resolution: "hey-listen@npm:1.0.8"
-  checksum: 6bad60b367688f5348e25e7ca3276a74b59ac5a09b0455e6ff8ab7d4a9e38cd2116c708a7dcd8a954d27253ce1d8717ec891d175723ea739885b828cf44e4072
-  languageName: node
-  linkType: hard
-
 "hoist-non-react-statics@npm:^3.3.0":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
@@ -18763,19 +18651,6 @@ __metadata:
     on-finished: ~2.3.0
     on-headers: ~1.0.2
   checksum: fb41e226ab5a1abf7e8909e486b387076534716d60207e361acfb5df78b84d703a7b7ea58f3046a9fd0b83d3c94bfabde32323341a1f1b26ce50680abd2ea5dd
-  languageName: node
-  linkType: hard
-
-"motion@npm:^10.6.2":
-  version: 10.8.1
-  resolution: "motion@npm:10.8.1"
-  dependencies:
-    "@motionone/animation": ^10.8.0
-    "@motionone/dom": ^10.8.1
-    "@motionone/react": ^10.8.1
-    "@motionone/svelte": ^10.8.1
-    "@motionone/vue": ^10.8.1
-  checksum: 8f621bb8f95fb731b11f2889bff454e4e36130fc7d6f0aec0d2f9c3767704641d6f4d09dea6455e15a0f67537b4006955413a4fef6c2c3ae99e09dbacfe5009e
   languageName: node
   linkType: hard
 

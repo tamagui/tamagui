@@ -10,7 +10,8 @@ import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import NextProgress from 'nextjs-progressbar'
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
+import { Square } from 'tamagui'
 
 import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
@@ -38,7 +39,7 @@ export default function App(props: AppProps) {
         }}
       >
         <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
-          {contents}
+          <Suspense fallback={null}>{contents}</Suspense>
         </Tamagui.Provider>
       </NextThemeProvider>
     </>

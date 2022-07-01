@@ -4,11 +4,11 @@ import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { toHtml } from 'hast-util-to-html'
 import rangeParser from 'parse-numeric-range'
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 import { refractor } from 'refractor'
 import css from 'refractor/lang/css'
 import tsx from 'refractor/lang/tsx'
-import { Separator, XStack, YStack, styled } from 'tamagui'
+import { Separator, Square, XStack, YStack, styled } from 'tamagui'
 
 import { CocentricCircles } from '../components/CocentricCircles'
 import { useTint } from '../components/ColorToggleButton'
@@ -83,9 +83,6 @@ export default function Home({ animationCode, compilationExamples }) {
         </YStack>
         <Community />
       </Section>
-      {/* </Suspense> */}
-
-      {/* </Suspense> */}
     </>
   )
 }

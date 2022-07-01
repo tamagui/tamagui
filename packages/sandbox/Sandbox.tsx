@@ -2,9 +2,10 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { Studio } from '@takeout/studio'
+import { SelectDemo, StacksDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Anchor, Button, styled } from 'tamagui'
+import { Anchor, Button, Select, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -16,6 +17,7 @@ if (typeof require !== 'undefined') {
 export const Sandbox = () => {
   const scheme = useColorScheme()
   const [theme, setTheme] = useState(scheme as any)
+
   return (
     <Tamagui.Provider defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />
@@ -43,9 +45,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Anchor target="_blank" href="https://google.com">
-          test 23
-        </Anchor>
+        <SelectDemo />
         {/* <Studio /> */}
       </div>
     </Tamagui.Provider>

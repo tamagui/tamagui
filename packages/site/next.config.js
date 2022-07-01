@@ -47,7 +47,10 @@ const transform = withPlugins(
     // (nextConfig = {}) => {
     //   return Object.assign({}, nextConfig, {
     //     webpack(config, options) {
-    //       config.optimization.minimize = false
+    //       Object.assign(config.resolve.alias, {
+    //         'react-native-reanimated': 'react-native-reanimated/src/index',
+    //       })
+    //       console.log('config', config.resolve.alias)
     //       if (typeof nextConfig.webpack === 'function') {
     //         return nextConfig.webpack(config, options)
     //       }
