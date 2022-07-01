@@ -13,4 +13,18 @@ export default defineConfig({
     }),
     tamaguiPlugin(),
   ],
+  // esbuild: {
+  //   jsxFactory: '_jsx',
+  //   jsxFragment: '_jsxFragment',
+  //   jsxInject: `import { createElement as _jsx, Fragment as _jsxFragment } from 'react'`,
+  // },
+  // optimizeDeps: {
+  //   esbuildOptions: {
+  //     jsxFactory: '_jsx',
+  //     jsxFragment: '_jsxFragment',
+  //     banner: {
+  //       js: `import { createElement as _jsx, Fragment as _jsxFragment } from 'react'`,
+  //     },
+  //   },
+  // },
 })

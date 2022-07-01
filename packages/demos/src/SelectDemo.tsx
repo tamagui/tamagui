@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
+import React from 'react'
 import { LinearGradient, Select, Text, YStack } from 'tamagui'
 
 export default function SelectDemo() {

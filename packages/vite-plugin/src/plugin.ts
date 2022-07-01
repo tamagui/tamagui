@@ -41,6 +41,8 @@ export function tamaguiPlugin(options?: TamaguiOptions): Plugin {
           },
         },
         resolve: {
+          // for once it extracts
+          // mainFields: ['module:jsx', 'module', 'jsnext:main', 'jsnext'],
           extensions: [
             '.web.js',
             '.web.ts',

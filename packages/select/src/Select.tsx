@@ -29,29 +29,17 @@ import {
   useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
-// import { useDirection } from '@tamagui/react-direction'
-// import { DismissableLayer } from '@tamagui/react-dismissable-layer'
-// import { FocusScope } from '@tamagui/react-focus-scope'
 import { useId } from '@tamagui/core'
 import { createContextScope } from '@tamagui/create-context'
 import type { Scope } from '@tamagui/create-context'
 import { ListItem, ListItemProps } from '@tamagui/list-item'
-// import { useLabelContext } from '@tamagui/react-label'
-// import { Portal } from '@tamagui/portal'
 import { Separator } from '@tamagui/separator'
 import { ThemeableStack, XStack, YStack, YStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
-// import { Primitive } from '@tamagui/react-primitive'
-// import type * as Radix from '@tamagui/react-primitive'
 import { useControllableState } from '@tamagui/use-controllable-state'
-// import { usePrevious } from '@tamagui/react-use-previous'
-// import { VisuallyHidden } from '@tamagui/core'
-// import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { View } from 'react-native'
-
-// import { RemoveScroll } from 'react-remove-scroll'
 
 type TamaguiElement = HTMLElement | View
 
@@ -238,15 +226,15 @@ const SelectContent = ({ children, __scopeSelect }: ScopedProps<SelectContentPro
   const context = useSelectContext(CONTENT_NAME, __scopeSelect)
   const themeName = useThemeName()
 
+  const contents = <Theme name={themeName}>{children}</Theme>
+
   return (
     <FloatingPortal>
-      <Theme name={themeName}>
-        {context.open ? (
-          <FloatingOverlay lockScroll>{children}</FloatingOverlay>
-        ) : (
-          <div style={{ display: 'none' }}>{children}</div>
-        )}
-      </Theme>
+      {context.open ? (
+        <FloatingOverlay lockScroll>{contents}</FloatingOverlay>
+      ) : (
+        <div style={{ display: 'none' }}>{contents}</div>
+      )}
     </FloatingPortal>
   )
 }
@@ -264,7 +252,6 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   bordered: true,
   overflow: 'hidden',
   userSelect: 'none',
-  maxHeight: '100%',
 
   variants: {
     size: {
@@ -287,32 +274,30 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
   (props: ScopedProps<SelectViewportProps>, forwardedRef) => {
     const { __scopeSelect, children, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
-    const composedRefs = useComposedRefs(
-      forwardedRef
-      // contentContext.onViewportChange
-    )
-    const prevScrollTopRef = React.useRef(0)
+    const { style, ...floatingProps } = context.interactions.getFloatingProps()
+    delete style['scrollbarWidth']
+    delete style['listStyleType']
     return (
       <>
         {/* Hide scrollbars cross-browser and enable momentum scroll for touch devices */}
         <style
           dangerouslySetInnerHTML={{
-            __html: `[data-radix-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-select-viewport]::-webkit-scrollbar{display:none}`,
+            __html: `[data-tamagui-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-tamagui-select-viewport]::-webkit-scrollbar{display:none}`,
           }}
         />
         <FloatingFocusManager context={context.floatingContext} preventTabbing>
-          <div {...context.interactions.getFloatingProps()}>
-            <SelectViewportFrame
-              size={context.size}
-              data-radix-select-viewport=""
-              // @ts-ignore
-              role="presentation"
-              {...viewportProps}
-              ref={composedRefs}
-            >
-              {children}
-            </SelectViewportFrame>
-          </div>
+          <SelectViewportFrame
+            size={context.size}
+            data-tamagui-select-viewport=""
+            // @ts-ignore
+            role="presentation"
+            {...viewportProps}
+            ref={forwardedRef}
+            {...floatingProps}
+            {...style}
+          >
+            {children}
+          </SelectViewportFrame>
         </FloatingFocusManager>
       </>
     )
@@ -482,12 +467,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const ref = React.useRef<TamaguiElement | null>(null)
-    const composedRefs = useComposedRefs(
-      forwardedRef,
-      ref,
-      itemContext.onItemTextChange
-      // itemContext.isSelected ? contentContext.onSelectedItemTextChange : undefined
-    )
+    const composedRefs = useComposedRefs(forwardedRef, ref, itemContext.onItemTextChange)
 
     return (
       <>
@@ -891,8 +871,7 @@ export const Select = withStaticProperties(
 
                   return -offsetTop - height - (itemHeight - height) / 2
                 }),
-                // Custom `size` that can handle the opposite direction of the
-                // placement
+                // Custom `size` that can handle the opposite direction of the placement
                 {
                   name: 'size',
                   async fn(args) {
@@ -1307,7 +1286,6 @@ export const Select = withStaticProperties(
         value={value}
         open={open}
       >
-        {/* <Collection.Provider scope={__scopeSelect}>{children}</Collection.Provider> */}
         {children}
         {/* {isFormControl ? (
         <BubbleSelect
