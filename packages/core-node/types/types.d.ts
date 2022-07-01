@@ -434,7 +434,6 @@ export declare type UseAnimationHelpers = {
 };
 export declare type UseAnimationHook = (props: UseAnimationProps, helpers: UseAnimationHelpers) => {
     style?: StackStylePropsBase | StackStylePropsBase[];
-    safeToUnmount?: () => void;
 };
 export {};
 //# sourceMappingURL=types.d.ts.map

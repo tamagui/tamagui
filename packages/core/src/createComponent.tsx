@@ -6,7 +6,6 @@ import React, {
   createElement,
   forwardRef,
   memo,
-  startTransition,
   useCallback,
   useContext,
   useMemo,
@@ -517,10 +516,8 @@ export function createComponent<
       // we need to use state to properly have mounted go from false => true
       if (typeof window !== 'undefined' && (hasEnterStyle || props.animation)) {
         // for SSR we never set mounted, ensuring enterStyle={{}} is set by default
-        startTransition(() => {
-          setStateShallow({
-            mounted: true,
-          })
+        setStateShallow({
+          mounted: true,
         })
       }
 

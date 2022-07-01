@@ -6,7 +6,6 @@ import * as React from 'react'
 import {
   createContext,
   memo,
-  startTransition,
   useCallback,
   useContext,
   useEffect,
@@ -104,9 +103,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   const handleMediaQuery = useCallback(
     (e?) => {
       const systemTheme = getSystemTheme(e)
-      startTransition(async () => {
-        setResolvedTheme(systemTheme)
-      })
+      setResolvedTheme(systemTheme)
       if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
     },
     [theme, forcedTheme]
@@ -168,9 +165,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       } else {
         handleChangeTheme(newTheme)
       }
-      startTransition(() => {
-        setThemeState(newTheme)
-      })
+      setThemeState(newTheme)
     },
     [forcedTheme]
   )
@@ -183,9 +178,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       }
       // If default theme set, use it if localstorage === null (happens on local storage manual deletion)
       const theme = e.newValue || defaultTheme
-      startTransition(() => {
-        setTheme(theme)
-      })
+      setTheme(theme)
     }
     window.addEventListener('storage', handleStorage)
     return () => {
@@ -230,7 +223,6 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
       systemTheme: (enableSystem ? resolvedTheme : undefined) as 'light' | 'dark' | undefined,
     } as const
   }, [theme, forcedTheme, resolvedTheme, enableSystem])
-
 
   return (
     <ThemeContext.Provider value={contextValue}>

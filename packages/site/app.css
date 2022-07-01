@@ -52,6 +52,7 @@ a {
 
 :is(
   p a,
+  li a,
   footer a
 ) {
   text-decoration: underline;
@@ -69,6 +70,7 @@ a {
 
 :is(
   p a,
+  li a
 ):hover {
   text-decoration-style: solid;
   background-color: var(--pink1);

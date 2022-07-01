@@ -1110,5 +1110,4 @@ export type UseAnimationHook = (
   helpers: UseAnimationHelpers
 ) => {
   style?: StackStylePropsBase | StackStylePropsBase[]
-  safeToUnmount?: () => void
 }
