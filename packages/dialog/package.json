@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "1.0.1-beta.87",
+  "version": "1.0.1-beta.88",
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
@@ -21,18 +21,18 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/animate-presence": "^1.0.1-beta.87",
-    "@tamagui/compose-refs": "^1.0.1-beta.87",
-    "@tamagui/core": "^1.0.1-beta.87",
-    "@tamagui/create-context": "^1.0.1-beta.87",
-    "@tamagui/dismissable": "^1.0.1-beta.87",
-    "@tamagui/focus-scope": "^1.0.1-beta.87",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.87",
-    "@tamagui/popper": "^1.0.1-beta.87",
-    "@tamagui/portal": "^1.0.1-beta.87",
-    "@tamagui/stacks": "^1.0.1-beta.87",
-    "@tamagui/text": "^1.0.1-beta.87",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.87",
+    "@tamagui/animate-presence": "^1.0.1-beta.88",
+    "@tamagui/compose-refs": "^1.0.1-beta.88",
+    "@tamagui/core": "^1.0.1-beta.88",
+    "@tamagui/create-context": "^1.0.1-beta.88",
+    "@tamagui/dismissable": "^1.0.1-beta.88",
+    "@tamagui/focus-scope": "^1.0.1-beta.88",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.88",
+    "@tamagui/popper": "^1.0.1-beta.88",
+    "@tamagui/portal": "^1.0.1-beta.88",
+    "@tamagui/stacks": "^1.0.1-beta.88",
+    "@tamagui/text": "^1.0.1-beta.88",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.88",
     "react-remove-scroll": "^2.5.3"
   },
   "peerDependencies": {
@@ -41,7 +41,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.87",
+    "@tamagui/build": "^1.0.1-beta.88",
     "@types/react-dom": "^18.0.3",
     "@types/react-native": "^0.67.3",
     "react": "*",
