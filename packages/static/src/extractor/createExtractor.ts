@@ -298,18 +298,17 @@ export function createExtractor() {
             ...(Component.staticConfig.inlineWhenUnflattened || []),
             ...(Component.staticConfig.inlineProps || []),
             ...(Component.staticConfig.deoptProps || []),
+            // for now skip variants, will return to them
+            'variants',
+            'defaultVariants',
+            // skip fontFamily its basically a "variant", important for theme use to be value always
+            'fontFamily',
+            'name',
           ])
 
           // for now dont parse variants, spreads, etc
           const skipped: (t.ObjectProperty | t.SpreadElement | t.ObjectMethod)[] = []
           const styles = {}
-
-          // for now skip variants, will return to them
-          const skipProps = {
-            variants: true,
-            defaultVariants: true,
-            name: true,
-          }
 
           // Generate scope object at this level
           const staticNamespace = getStaticBindingsForScope(
@@ -334,8 +333,9 @@ export function createExtractor() {
             if (
               !t.isObjectProperty(property) ||
               !t.isIdentifier(property.key) ||
-              skipProps[property.key.name] ||
               !isValidStyleKey(property.key.name, Component.staticConfig) ||
+              // skip variants
+              Component.staticConfig.variants?.[property.key.name] ||
               componentSkipProps.has(property.key.name)
             ) {
               skipped.push(property)
@@ -384,6 +384,9 @@ export function createExtractor() {
 
           // ... + key: className
           for (const cn in classNames) {
+            if (componentSkipProps.has(cn)) {
+              continue
+            }
             const val = classNames[cn]
             definition.properties.push(t.objectProperty(t.stringLiteral(cn), t.stringLiteral(val)))
           }

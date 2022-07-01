@@ -5,10 +5,7 @@ export declare type ClassNamesObject = Record<string, string>;
 export declare type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 declare type StyleSplitter = (props: {
     [key: string]: any;
-}, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState & {
-    keepVariantsAsProps?: boolean;
-    hasTextAncestor?: boolean;
-}, defaultClassNames?: any, debug?: DebugProp) => {
+}, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState, defaultClassNames?: any, debug?: DebugProp) => {
     pseudos: PseudoStyles;
     medias: Record<MediaKeys, ViewStyle>;
     style: ViewStyle;

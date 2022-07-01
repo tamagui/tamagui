@@ -1,10 +1,7 @@
-import { StyleObject, stylePropsTransform } from '@tamagui/helpers'
+import { StyleObject } from '@tamagui/helpers'
 import { ViewStyle } from 'react-native'
 
-import { isVariable } from '../createVariable'
 import { generateAtomicStyles } from './generateAtomicStyles'
-import { PROP_SPLIT } from './getSplitStyles'
-import { invertMapTransformKeys, mergeTransform } from './mergeTransform'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
 // refactor this file away next...
@@ -15,17 +12,12 @@ export type ViewStyleWithPseudos = ViewStyle & {
   focusStyle?: ViewStyle
 }
 
-type AtomicStyleOptions = {
-  // StyleObject.propererty will be original transform key, so extractor can keep prop/spread logic
-  splitTransforms?: boolean
-}
-
 const pseudosOrdered = Object.values(pseudoDescriptors)
 
-export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: AtomicStyleOptions) {
+export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   // performance optimization
   if (!stylesIn.hoverStyle && !stylesIn.pressStyle && !stylesIn.focusStyle) {
-    return getAtomicStyle(stylesIn, undefined, options)
+    return getAtomicStyle(stylesIn)
   }
 
   // only for pseudos
@@ -35,16 +27,12 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: Atomic
   for (const [index, style] of [hoverStyle, pressStyle, focusStyle, base].entries()) {
     if (!style) continue
     const pseudo = pseudosOrdered[index]
-    res = [...res, ...getAtomicStyle(style, pseudo, options)]
+    res = [...res, ...getAtomicStyle(style, pseudo)]
   }
   return res
 }
 
-export function getAtomicStyle(
-  style: ViewStyle,
-  pseudo?: PseudoDescriptor,
-  options?: AtomicStyleOptions
-): StyleObject[] {
+export function getAtomicStyle(style: ViewStyle, pseudo?: PseudoDescriptor): StyleObject[] {
   if (process.env.NODE_ENV === 'development') {
     if (!style || typeof style !== 'object') {
       throw new Error(`Wrong style type: "${typeof style}": ${style}`)
@@ -55,22 +43,6 @@ export function getAtomicStyle(
       return []
     }
   }
-
-  // if (options && options.splitTransforms && style.transform) {
-  //   let atomicStyles: StyleObject[] = []
-  //   let { transform, ...rest } = style
-  //   // for (const t of transform) {
-  //   //   const tKey = Object.keys(t)[0]
-  //   //   const transformProperty = invertMapTransformKeys[tKey] || tKey
-  //   //   const out = generateAtomicStyles({ transform: [t] }, pseudo)[0]
-  //   //   atomicStyles.push({
-  //   //     ...out,
-  //   //     property: transformProperty + (out.pseudo ? `${PROP_SPLIT}${out.pseudo}` : ''),
-  //   //   })
-  //   // }
-  //   console.log('rest', rest)
-  //   return [...atomicStyles, ...generateAtomicStyles(rest, pseudo)]
-  // }
 
   return generateAtomicStyles(style, pseudo)
 }

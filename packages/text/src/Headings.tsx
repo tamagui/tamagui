@@ -15,6 +15,7 @@ export const H1 = styled(Heading, {
   name: 'H1',
   tag: 'h1',
   size: '$10',
+  debug: 'verbose',
 })
 
 export const H2 = styled(Heading, {

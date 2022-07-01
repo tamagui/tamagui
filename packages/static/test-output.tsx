@@ -2,18 +2,25 @@ import * as babel from '@babel/core'
 
 async function run() {
   const output = await extractBabel(`
-      import { YStack, styled } from 'tamagui'
+      import { Text, styled } from 'tamagui'
       
-      const XStack = styled(YStack, {
-        backgroundColor: 'red',
+      const XStack = styled(Text, {
+        fontFamily: '$heading',
         
         hoverStyle: {
-          x: 10,
-          y: 100,
+          fontFamily: '$heading'
         },
 
         variants: {},
         defaultVariants: {},
+      })
+
+      const XStack2 = styled(XStack, {
+        fontFamily: '$heading',
+        
+        hoverStyle: {
+          fontFamily: '$heading'
+        },
       })
     `)
 

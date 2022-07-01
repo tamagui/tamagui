@@ -5,6 +5,7 @@ module.exports = {
       {
         components: ['tamagui'],
         config: './tests/lib/tamagui.config.js',
+        forceExtractStyleDefinitions: true,
       },
     ],
     [

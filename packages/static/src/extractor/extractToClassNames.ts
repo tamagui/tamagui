@@ -153,9 +153,7 @@ export function extractToClassNames({
         switch (attr.type) {
           case 'style':
             if (!isFlattened) {
-              const styles = getStylesAtomic(attr.value, {
-                splitTransforms: true,
-              })
+              const styles = getStylesAtomic(attr.value)
 
               finalStyles = [...finalStyles, ...styles]
 

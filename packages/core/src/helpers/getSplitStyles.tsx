@@ -63,10 +63,7 @@ type StyleSplitter = (
   props: { [key: string]: any },
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
-  state: SplitStyleState & {
-    keepVariantsAsProps?: boolean
-    hasTextAncestor?: boolean
-  },
+  state: SplitStyleState,
   defaultClassNames?: any,
   debug?: DebugProp
 ) => {
@@ -186,6 +183,7 @@ export const getSplitStyles: StyleSplitter = (
     if (!isWeb && keyInit.startsWith('data-')) continue
 
     const valInit = props[keyInit]
+
     if (keyInit === 'style' || keyInit.startsWith('_style')) {
       if (!valInit) continue
       for (const key in valInit) {
@@ -305,7 +303,8 @@ export const getSplitStyles: StyleSplitter = (
 
       if (
         (staticConfig.deoptProps && staticConfig.deoptProps.has(key)) ||
-        (staticConfig.inlineProps && staticConfig.inlineProps.has(key))
+        (staticConfig.inlineProps && staticConfig.inlineProps.has(key)) ||
+        (staticConfig.inlineWhenUnflattened && staticConfig.inlineWhenUnflattened.has(key))
       ) {
         usedKeys.add(key)
         viewProps[key] = val
@@ -383,7 +382,7 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      if (!isWeb && key === 'pointerEvents') {
+      if ((!isWeb && key === 'pointerEvents') || (state.avoidFontFamily && key === 'fontFamily')) {
         usedKeys.add(key)
         viewProps[key] = val
         continue

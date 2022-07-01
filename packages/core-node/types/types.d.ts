@@ -405,6 +405,9 @@ export declare type SplitStyleState = TamaguiComponentState & {
     dynamicStylesInline?: boolean;
     resolveVariablesAs?: ResolveVariableTypes;
     fallbackProps?: Record<string, any>;
+    keepVariantsAsProps?: boolean;
+    hasTextAncestor?: boolean;
+    avoidFontFamily?: boolean;
 };
 declare type AnimationConfig = {
     [key: string]: any;

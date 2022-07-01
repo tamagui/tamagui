@@ -956,8 +956,10 @@ export function createComponent<
       }
     }
 
-    if (defaultPropsIn['debug'] === 'break') {
-      debugger
+    if (process.env.NODE_ENV === 'development') {
+      if (defaultPropsIn['debug'] === 'break') {
+        debugger
+      }
     }
 
     // remove all classNames
@@ -1029,6 +1031,7 @@ export function createComponent<
           tamaguiDefaultProps,
           defaultNativeStyle,
           defaults,
+          defaultPropsIn,
         })
       }
     }

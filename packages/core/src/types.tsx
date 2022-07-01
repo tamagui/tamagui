@@ -1067,6 +1067,10 @@ export type SplitStyleState = TamaguiComponentState & {
   dynamicStylesInline?: boolean
   resolveVariablesAs?: ResolveVariableTypes
   fallbackProps?: Record<string, any>
+  keepVariantsAsProps?: boolean
+  hasTextAncestor?: boolean
+  // because fontFamily is a special prop that influences many others / uses themes
+  avoidFontFamily?: boolean
 }
 
 // Animations:
