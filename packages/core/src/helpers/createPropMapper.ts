@@ -13,6 +13,7 @@ import {
 import { expandStyle, expandStyles } from './generateAtomicStyles'
 import { getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
+import { mergeProps } from './mergeProps'
 
 export type ResolveVariableTypes = 'auto' | 'value' | 'variable' | 'both' | 'non-color-value'
 
@@ -26,7 +27,9 @@ export const getReturnVariablesAs = (props: any, state: Partial<SplitStyleState>
 
 export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
   const variants = staticConfig.variants || {}
-  const defaultProps = staticConfig.defaultProps || {}
+
+  // temp remove classnames
+  const defaultProps = mergeProps(staticConfig.defaultProps || {}, {}, true)[0]
 
   const mapper: PropMapper = (
     key,

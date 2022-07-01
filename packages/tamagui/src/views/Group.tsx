@@ -146,6 +146,6 @@ export const Group = GroupFrame.extractable(
 )
 
 const cloneElementWithPropOrder = (child: any, props: Object) => {
-  const next = mergeProps(child.props, props)
+  const next = mergeProps(child.props, props)[0]
   return React.cloneElement({ ...child, props: null }, next)
 }

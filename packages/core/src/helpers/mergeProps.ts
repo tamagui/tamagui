@@ -8,18 +8,27 @@
  *      b, a
  */
 
-export const mergeProps = (a: Object, b: Object) => {
-  const out = {}
+export const mergeProps = (a: Object, b: Object, leaveOutClassNames = false) => {
+  const out: Record<string, string> = {}
+  const outCns: Record<string, string> = leaveOutClassNames ? {} : (null as any)
 
   for (const key in a) {
     if (!(key in b)) {
-      out[key] = a[key]
+      if (leaveOutClassNames && a[key]?.[0] === '_') {
+        outCns[key] = a[key]
+      } else {
+        out[key] = a[key]
+      }
     }
   }
 
   for (const key in b) {
-    out[key] = b[key]
+    if (leaveOutClassNames && b[key]?.[0] === '_') {
+      outCns[key] = b[key]
+    } else {
+      out[key] = b[key]
+    }
   }
 
-  return out
+  return [out, outCns] as const
 }

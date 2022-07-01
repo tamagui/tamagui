@@ -118,7 +118,7 @@ export function createComponent<
     // order important so we do loops, you can't just spread because JS does weird things
     let props: any
     if (tamaguiDefaultProps && !propsIn.asChild) {
-      props = mergeProps(tamaguiDefaultProps, propsIn)
+      props = mergeProps(tamaguiDefaultProps, propsIn)[0]
     } else {
       props = propsIn
     }
@@ -131,7 +131,7 @@ export function createComponent<
       ? `is_${props.componentName}`
       : defaultComponentClassName
 
-    if (true) {
+    if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
         // prettier-ignore
         console.log('⚠️', componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
@@ -141,7 +141,9 @@ export function createComponent<
           props,
           ordered: Object.keys(props),
         })
-        if (props['debug'] === 'break') debugger
+        if (props['debug'] === 'break') {
+          debugger
+        }
       }
     }
 
@@ -450,9 +452,6 @@ export function createComponent<
       // "focusable" indicates that an element may be a keyboard tab-stop.
       const _focusable = focusable != undefined ? focusable : accessible
       const role = viewProps.role
-      if (props['debug']) {
-        console.log('_focusable', focusable)
-      }
       if (_focusable === false) {
         viewProps.tabIndex = '-1'
       }
@@ -492,7 +491,7 @@ export function createComponent<
       }
     }
 
-    if (props['debug']) {
+    if (process.env.NODE_ENV === 'development' && props['debug']) {
       console.log('viewProps', elementType, viewProps.role, viewProps.tabIndex)
     }
 
@@ -925,10 +924,9 @@ export function createComponent<
     let defaultPropsIn = staticConfig.defaultProps
 
     // because we run createTamagui after styled() defs, have to do some work here
-    const parentNames = [...(staticConfig.parentNames || []), staticConfig.componentName]
-
     // gather defaults props one time and merge downwards
     // find last unprocessed and process
+    const parentNames = [...(staticConfig.parentNames || []), staticConfig.componentName]
     if (config.defaultProps && parentNames) {
       const len = parentNames.length
       let prev
@@ -947,23 +945,26 @@ export function createComponent<
           }
           continue
         }
-        prev = mergeProps(prev || {}, props)
+        prev = mergeProps(prev || {}, props)[0]
         DefaultProps.set(n, prev)
       }
 
       // overwrite the user defined defaults on top of internal defined defaults
       const ourDefaultsMerged = DefaultProps.get(staticConfig.componentName)
       if (ourDefaultsMerged) {
-        defaultPropsIn = mergeProps(defaultPropsIn, ourDefaultsMerged)
+        defaultPropsIn = mergeProps(defaultPropsIn, ourDefaultsMerged)[0]
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && defaultPropsIn['debug'] === 'break') {
+    if (defaultPropsIn['debug'] === 'break') {
       debugger
     }
 
+    // remove all classNames
+    const [parentProps, parentClassNames] = mergeProps(defaultPropsIn, {}, true)
+
     initialSplitStyles = insertSplitStyles(
-      defaultPropsIn,
+      parentProps,
       staticConfig,
       initialTheme,
       {
@@ -980,7 +981,20 @@ export function createComponent<
     )
 
     // must preserve prop order
-    const defaults = mergeProps(component.defaultProps as any, initialSplitStyles.viewProps)
+    // leave out className because we handle that already with initialSplitStyles.classNames
+    // otherwise it confuses variant functions getting className props
+    const [defaults, defaultsClassnames] = mergeProps(
+      component.defaultProps as any,
+      initialSplitStyles.viewProps,
+      true
+    )
+
+    // avoid passing className props to variants
+    initialSplitStyles.classNames = {
+      ...parentClassNames,
+      ...defaultsClassnames,
+      ...initialSplitStyles.classNames,
+    }
 
     defaultNativeStyle = {}
 
@@ -990,7 +1004,7 @@ export function createComponent<
     if (!isWeb) {
       for (const key in staticConfig.defaultProps) {
         const val = staticConfig.defaultProps[key]
-        if ((typeof val === 'string' && val[0] === '$') || !validStyles[key] || val[0] === '_') {
+        if ((typeof val === 'string' && val[0] === '$') || !validStyles[key]) {
           defaults[key] = val
         } else {
           defaultNativeStyle[key] = val

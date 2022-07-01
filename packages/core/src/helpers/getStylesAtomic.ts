@@ -28,8 +28,6 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos, options?: Atomic
     return getAtomicStyle(stylesIn, undefined, options)
   }
 
-  console.log('go')
-
   // only for pseudos
   const { hoverStyle, pressStyle, focusStyle, ...base } = stylesIn
   let res: StyleObject[] = []

@@ -87,10 +87,8 @@ export function createExtractor() {
     return !!(
       !!staticConfig.validStyles?.[name] ||
       !!pseudoDescriptors[name] ||
-      // disable variants because caching at the variant level = less work
-      // and expanding variants can get huge, i'm betting cost of many props
-      // is more than cost of expanding variants once for cache
-      // staticConfig.variants?.[name] ||
+      // dont disable variants or else you lose many things flattening
+      staticConfig.variants?.[name] ||
       loadedTamaguiConfig.shorthands[name] ||
       (name[0] === '$' ? !!mediaQueryConfig[name.slice(1)] : false)
     )

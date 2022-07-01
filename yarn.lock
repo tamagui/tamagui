@@ -5691,6 +5691,7 @@ __metadata:
     "@tamagui/font-inter": ^1.0.1-beta.86
     "@tamagui/shorthands": ^1.0.1-beta.86
     "@tamagui/theme-base": ^1.0.1-beta.86
+    "@types/react": ^18.0.14
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     expo: ~45.0.3
     expo-font: ~10.1.0

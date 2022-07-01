@@ -175,10 +175,11 @@ export const getSplitStyles: StyleSplitter = (
   const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    console.log('propKeys', propKeys)
+    console.log('propKeys', propKeys, props)
   }
 
-  for (let i = propKeys.length - 1; i >= 0; i--) {
+  const len = propKeys.length
+  for (let i = len - 1; i >= 0; i--) {
     const keyInit = propKeys[i]
     if (usedKeys.has(keyInit)) continue
     if (skipProps[keyInit]) continue
@@ -284,7 +285,7 @@ export const getSplitStyles: StyleSplitter = (
     let isMediaOrPseudo = isMedia || isPseudo
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.log('  » getSplitStyles', keyInit, expanded)
+      console.log('  » getSplitStyles', keyInit, valInit, expanded)
     }
 
     if (!expanded) {

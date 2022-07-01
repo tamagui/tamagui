@@ -59,7 +59,7 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
         ...config.defaultProps,
         ...config.defaultVariants,
       }
-    ),
+    )[0],
   })
 }
 
