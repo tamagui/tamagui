@@ -148,7 +148,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 <NextLink href={previous.route} passHref>
                   <YStack
                     hoverStyle={{
-                      backgroundColor: '$backgroundHover',
+                      borderColor: '$borderColorHover',
                     }}
                     flex={1}
                     width="50%"
@@ -163,10 +163,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     aria-label={`Previous page: ${previous.title}`}
                     ai="flex-start"
                   >
-                    <Paragraph theme="alt1" size="$5">
+                    <Paragraph selectable={false} theme="alt1" size="$5">
                       Previous
                     </Paragraph>
-                    <Paragraph size="$3" color="$gray10">
+                    <Paragraph selectable={false} size="$3" color="$gray10">
                       {previous.title}
                     </Paragraph>
                   </YStack>
@@ -176,7 +176,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                 <NextLink href={next.route} passHref>
                   <YStack
                     hoverStyle={{
-                      backgroundColor: '$backgroundHover',
+                      borderColor: '$borderColorHover',
                     }}
                     width="50%"
                     flex={1}
@@ -191,10 +191,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
                     aria-label={`Previous page: ${next.title}`}
                     ai="flex-end"
                   >
-                    <Paragraph theme="alt1" size="$5">
+                    <Paragraph selectable={false} theme="alt1" size="$5">
                       Next
                     </Paragraph>
-                    <Paragraph size="$3" color="$gray10">
+                    <Paragraph selectable={false} size="$3" color="$gray10">
                       {next.title}
                     </Paragraph>
                   </YStack>

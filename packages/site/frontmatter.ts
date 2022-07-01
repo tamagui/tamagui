@@ -1,6 +1,9 @@
 export type Frontmatter = {
   title: string
   description?: string
+  name?: string
+  versions?: string[]
+  version?: string
   by?: string
   publishedAt?: string
   relatedIds?: string[]

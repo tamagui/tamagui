@@ -1,10 +1,11 @@
-import { ExternalLink } from '@tamagui/feather-icons'
+import { ChevronDown, ChevronUp, ExternalLink } from '@tamagui/feather-icons'
 import { useRouter } from 'next/router'
 import React from 'react'
-// import { Select } from '@components/Select'
 import {
   H2,
+  LinearGradient,
   Paragraph,
+  Select,
   Separator,
   SizableText,
   Text,
@@ -16,9 +17,6 @@ import {
 import { Features } from './Features'
 import { Link } from './Link'
 import { FrontmatterContext } from './MDXComponents'
-
-// TODO
-const Select = (props) => <select {...props} />
 
 export function Highlights({ features, disableLinks }: any) {
   const router = useRouter()
@@ -55,20 +53,49 @@ export function Highlights({ features, disableLinks }: any) {
 
           <YStack ai="center">
             <Select
-              // @ts-ignore
+              size="$2"
               value={frontmatter.version}
-              // @ts-ignore
-              onChange={(e) => router.push(`./${frontmatter.name}/${e.target.value}`)}
+              onValueChange={(value) => router.push(`./${frontmatter.name}/${value}`)}
             >
-              {/* @ts-ignore */}
-              {(frontmatter.versions || []).map((v, i) => {
-                return (
-                  <option key={v} value={v}>
-                    {v}
-                    {i === 0 && ' (latest)'}
-                  </option>
-                )
-              })}
+              <Select.Trigger w={200} iconAfter={ChevronDown}>
+                <Select.Value placeholder="Something" />
+              </Select.Trigger>
+
+              <Select.Content>
+                <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">
+                  <YStack zi={10}>
+                    <ChevronUp size={20} />
+                  </YStack>
+                  <LinearGradient
+                    start={[0, 0]}
+                    end={[0, 1]}
+                    fullscreen
+                    colors={['$background', '$backgroundTransparent']}
+                  />
+                </Select.ScrollUpButton>
+
+                <Select.Viewport minWidth={180}>
+                  {(frontmatter.versions || []).map((version, i) => {
+                    return (
+                      <Select.Item index={i} key={version} value={version}>
+                        <Select.ItemText>{version}</Select.ItemText>
+                      </Select.Item>
+                    )
+                  })}
+                </Select.Viewport>
+
+                <Select.ScrollDownButton ai="center" jc="center" pos="relative" w="100%" h="$3">
+                  <YStack zi={10}>
+                    <ChevronDown size={20} />
+                  </YStack>
+                  <LinearGradient
+                    start={[0, 0]}
+                    end={[0, 1]}
+                    fullscreen
+                    colors={['$backgroundTransparent', '$background']}
+                  />
+                </Select.ScrollDownButton>
+              </Select.Content>
             </Select>
           </YStack>
 
