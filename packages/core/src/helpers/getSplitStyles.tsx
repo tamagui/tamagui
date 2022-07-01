@@ -3,7 +3,7 @@ import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'
-import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { isClient, isSSR, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import {
   DebugProp,
@@ -118,9 +118,11 @@ export const getSplitStyles: StyleSplitter = (
 
   let rulesToInsert: [string, string][] | null = null
   function addStyle(prop: string, rule: string) {
-    if (!isClient || updateInsertedCache(prop, rule)) {
-      rulesToInsert = rulesToInsert || []
-      rulesToInsert.push([prop, rule])
+    if (isWeb) {
+      if (updateInsertedCache(prop, rule)) {
+        rulesToInsert = rulesToInsert || []
+        rulesToInsert.push([prop, rule])
+      }
     }
   }
 

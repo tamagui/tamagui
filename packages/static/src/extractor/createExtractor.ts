@@ -509,7 +509,7 @@ export function createExtractor() {
             const validStyles = staticConfig?.validStyles ?? {}
 
             // find tag="a" tag="main" etc dom indicators
-            let tagName = staticConfig.defaultProps?.tag ?? (isTextView ? 'span' : 'div')
+            let tagName = staticConfig.defaultProps.tag ?? (isTextView ? 'span' : 'div')
             traversePath
               .get('openingElement')
               .get('attributes')
@@ -1353,7 +1353,7 @@ export function createExtractor() {
             }
 
             // only if we flatten, ensure the default styles are there
-            if (shouldFlatten && staticConfig.defaultProps) {
+            if (shouldFlatten) {
               const defaultStyleAttrs = Object.keys(staticConfig.defaultProps).flatMap((key) => {
                 if (!isValidStyleKey(key, staticConfig)) {
                   return []

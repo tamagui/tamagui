@@ -3,11 +3,7 @@ import { Platform } from 'react-native'
 
 export const isAndroid = Platform?.OS === 'android'
 export const isIOS = Platform?.OS === 'ios'
-
-export const isWeb =
-  process.env.TAMAGUI_TARGET !== 'native' &&
-  (process.env.TAMAGUI_TARGET === 'web' || Platform?.OS === 'web')
-
+export const isWeb = process.env.TAMAGUI_TARGET === 'web'
 export const isSSR = isWeb && typeof window === 'undefined'
 export const isClient = isWeb && typeof window !== 'undefined'
 export const useIsomorphicLayoutEffect = isSSR ? useEffect : useLayoutEffect

@@ -321,7 +321,7 @@ export declare type StaticConfig = {
     validStyles?: {
         [key: string]: boolean;
     };
-    defaultProps?: Record<string, any>;
+    defaultProps: Record<string, any>;
     deoptProps?: Set<string>;
     inlineProps?: Set<string>;
     inlineWhenUnflattened?: Set<string>;

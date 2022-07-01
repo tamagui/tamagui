@@ -600,7 +600,7 @@ export type StaticConfig = {
   /**
    * Same as React.defaultProps, be sure to sync
    */
-  defaultProps?: Record<string, any>
+  defaultProps: Record<string, any>
 
   /**
    * (compiler) If these props are encountered, bail on all optimization.

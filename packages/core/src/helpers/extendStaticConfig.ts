@@ -65,6 +65,7 @@ export function extendStaticConfig(config: Partial<StaticConfig>, parent?: Styla
 
 export const parseStaticConfig = (config: Partial<StaticConfig>): StaticConfigParsed => {
   return {
+    defaultProps: {},
     ...config,
     parsed: true,
     propMapper: createPropMapper(config),
