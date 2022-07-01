@@ -321,7 +321,7 @@ export declare type StaticConfig = {
     validStyles?: {
         [key: string]: boolean;
     };
-    defaultProps?: any;
+    defaultProps?: Record<string, any>;
     deoptProps?: Set<string>;
     inlineProps?: Set<string>;
     inlineWhenUnflattened?: Set<string>;
@@ -407,7 +407,6 @@ export declare type SplitStyleState = TamaguiComponentState & {
     fallbackProps?: Record<string, any>;
     keepVariantsAsProps?: boolean;
     hasTextAncestor?: boolean;
-    avoidFontFamily?: boolean;
 };
 declare type AnimationConfig = {
     [key: string]: any;

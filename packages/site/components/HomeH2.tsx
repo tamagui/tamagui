@@ -1,9 +1,7 @@
-// debug
 import { H2, H3, styled } from 'tamagui'
 
 export const HomeH2 = styled(H2, {
   name: 'HomeH2',
-  debug: 'verbose',
   ta: 'center',
   als: 'center',
   size: '$11',

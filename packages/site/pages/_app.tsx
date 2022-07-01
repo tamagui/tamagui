@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import NextProgress from 'nextjs-progressbar'
 import { Suspense, startTransition, useMemo } from 'react'
-import { Separator } from 'tamagui'
+import { Separator, Square, YStack } from 'tamagui'
 
 import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
@@ -21,6 +21,22 @@ Error.stackTraceLimit = Infinity
 
 export default function App(props: AppProps) {
   const [theme, setTheme] = useRootTheme()
+
+  // return (
+  //   <NextThemeProvider
+  //     onChangeTheme={(next) => {
+  //       startTransition(() => {
+  //         setTheme(next)
+  //       })
+  //     }}
+  //   >
+  //     <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
+  //       <Suspense fallback={null}>
+  //         <Square bc="red" size="$10" />
+  //       </Suspense>
+  //     </Tamagui.Provider>
+  //   </NextThemeProvider>
+  // )
 
   // memo to avoid re-render on dark/light change
   const contents = useMemo(() => {

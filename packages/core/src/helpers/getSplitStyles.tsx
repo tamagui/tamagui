@@ -1,5 +1,4 @@
 import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
-// @ts-ignore
 import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
@@ -153,7 +152,6 @@ export const getSplitStyles: StyleSplitter = (
           // prettier-ignore
           console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
         }
-        // debugger
       }
       transforms = transforms || {}
       transforms[namespace] = transforms[namespace] || ['', '']
@@ -178,6 +176,7 @@ export const getSplitStyles: StyleSplitter = (
   const len = propKeys.length
   for (let i = len - 1; i >= 0; i--) {
     const keyInit = propKeys[i]
+
     if (usedKeys.has(keyInit)) continue
     if (skipProps[keyInit]) continue
     if (!isWeb && keyInit.startsWith('data-')) continue
@@ -307,7 +306,7 @@ export const getSplitStyles: StyleSplitter = (
         (staticConfig.inlineWhenUnflattened && staticConfig.inlineWhenUnflattened.has(key))
       ) {
         usedKeys.add(key)
-        viewProps[key] = val
+        viewProps[key] = props[key] ?? val
       }
 
       // pseudo
@@ -382,7 +381,7 @@ export const getSplitStyles: StyleSplitter = (
         continue
       }
 
-      if ((!isWeb && key === 'pointerEvents') || (state.avoidFontFamily && key === 'fontFamily')) {
+      if (!isWeb && key === 'pointerEvents') {
         usedKeys.add(key)
         viewProps[key] = val
         continue
@@ -456,11 +455,6 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  // @ts-ignore
-  if (viewProps['direction'] === 'both') {
-    console.warn('???????', viewProps, props)
-  }
-
   return {
     viewProps,
     style,
@@ -481,16 +475,19 @@ export const insertSplitStyles: StyleSplitter = (...args) => {
   return res
 }
 
-const effect = isWeb ? useInsertionEffect || useIsomorphicLayoutEffect : useIsomorphicLayoutEffect
+// on native no need to insert any css
+const useInsertEffectCompat = isWeb ? useInsertionEffect || useIsomorphicLayoutEffect : () => {}
 
 export const useSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
-  effect(() => {
+
+  useInsertEffectCompat(() => {
     if (!res.rulesToInsert) return
     for (const [prop, rule] of res.rulesToInsert) {
       insertStyleRule(prop, rule)
     }
-  })
+  }, [res.rulesToInsert])
+
   return res
 }
 

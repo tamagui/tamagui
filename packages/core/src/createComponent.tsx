@@ -19,6 +19,7 @@ import { getConfig, onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
 import { rnw } from './constants/rnw'
+import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
 import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
 import { extendStaticConfig, parseStaticConfig } from './helpers/extendStaticConfig'
@@ -896,7 +897,9 @@ export function createComponent<
     return content
   })
 
-  component.displayName = staticConfig.componentName
+  if (staticConfig.componentName) {
+    component.displayName = staticConfig.componentName
+  }
 
   // Once configuration is run and all components are registered
   // get default props + className and analyze styles
@@ -921,45 +924,26 @@ export function createComponent<
     // adds in user defined default props
     const config = getConfig()
 
-    let defaultPropsIn = staticConfig.defaultProps
+    let defaultPropsIn = staticConfig.defaultProps || {}
 
     // because we run createTamagui after styled() defs, have to do some work here
     // gather defaults props one time and merge downwards
     // find last unprocessed and process
     const parentNames = [...(staticConfig.parentNames || []), staticConfig.componentName]
-    if (config.defaultProps && parentNames) {
-      const len = parentNames.length
-      let prev
 
-      for (let i = 0; i < len; i++) {
-        const n = parentNames[i]
-        if (!n) continue
-        if (DefaultProps.has(n)) {
-          prev = DefaultProps.get(n)
-          continue
-        }
-        const props = config.defaultProps[n]
-        if (!props) {
-          if (prev) {
-            DefaultProps.set(n, prev)
-          }
-          continue
-        }
-        prev = mergeProps(prev || {}, props)[0]
-        DefaultProps.set(n, prev)
-      }
-
-      // overwrite the user defined defaults on top of internal defined defaults
-      const ourDefaultsMerged = DefaultProps.get(staticConfig.componentName)
-      if (ourDefaultsMerged) {
-        defaultPropsIn = mergeProps(defaultPropsIn, ourDefaultsMerged)[0]
-      }
+    if (config.defaultProps && parentNames && staticConfig.componentName) {
+      defaultPropsIn = mergeConfigDefaultProps(
+        staticConfig.componentName,
+        defaultPropsIn,
+        config.defaultProps,
+        parentNames
+      )
     }
 
-    if (process.env.NODE_ENV === 'development') {
-      if (defaultPropsIn['debug'] === 'break') {
-        debugger
-      }
+    const debug = process.env.NODE_ENV === 'development' ? defaultPropsIn['debug'] : false
+
+    if (process.env.NODE_ENV === 'development' && debug === 'break') {
+      debugger
     }
 
     // remove all classNames
@@ -979,7 +963,7 @@ export function createComponent<
         keepVariantsAsProps: true,
       },
       undefined,
-      staticConfig.defaultProps['debug']
+      debug
     )
 
     // must preserve prop order
@@ -990,6 +974,10 @@ export function createComponent<
       initialSplitStyles.viewProps,
       true
     )
+
+    if (debug) {
+      console.warn(defaults, component.defaultProps, initialSplitStyles)
+    }
 
     // avoid passing className props to variants
     initialSplitStyles.classNames = {
@@ -1023,7 +1011,7 @@ export function createComponent<
     }
 
     // add debug logs
-    if (process.env.NODE_ENV === 'development' && staticConfig.defaultProps?.debug) {
+    if (process.env.NODE_ENV === 'development' && debug) {
       if (process.env.IS_STATIC !== 'is_static') {
         console.log(`🐛 [${staticConfig.componentName || 'Component'}]`, {
           staticConfig,
@@ -1068,8 +1056,6 @@ export function createComponent<
 
   return res
 }
-
-const DefaultProps = new Map()
 
 // for elements to avoid spacing
 export const Unspaced = (props: { children?: any }) => {
@@ -1260,11 +1246,11 @@ export function AbsoluteFill(props: { children?: React.ReactNode }) {
 //   content = createElement(TextAncestorContext.Provider, { value: true }, content)
 // }
 
-function processIDRefList(idRefList: string | Array<string>): string {
+export function processIDRefList(idRefList: string | Array<string>): string {
   return Array.isArray(idRefList) ? idRefList.join(' ') : idRefList
 }
 
-const accessibilityRoleToWebRole = {
+export const accessibilityRoleToWebRole = {
   adjustable: 'slider',
   button: 'button',
   header: 'heading',
@@ -1277,182 +1263,6 @@ const accessibilityRoleToWebRole = {
   search: 'search',
   summary: 'region',
   text: null,
-}
-
-// adapted from react-native-web
-export function assignNativePropsToWeb(elementType: string, viewProps: any, nativeProps: any) {
-  if (!viewProps.role && nativeProps.accessibilityRole) {
-    if (nativeProps.accessibilityRole === 'none') {
-      viewProps.role = 'presentation'
-    } else {
-      const webRole = accessibilityRoleToWebRole[nativeProps.accessibilityRole]
-      if (webRole != null) {
-        viewProps.role = webRole || nativeProps.accessibilityRole
-      }
-    }
-  }
-
-  if (nativeProps.accessibilityActiveDescendant != null) {
-    viewProps['aria-activedescendant'] = nativeProps.accessibilityActiveDescendant
-  }
-  if (nativeProps.accessibilityAtomic != null) {
-    viewProps['aria-atomic'] = nativeProps.accessibilityAtomic
-  }
-  if (nativeProps.accessibilityAutoComplete != null) {
-    viewProps['aria-autocomplete'] = nativeProps.accessibilityAutoComplete
-  }
-  if (nativeProps.accessibilityBusy != null) {
-    viewProps['aria-busy'] = nativeProps.accessibilityBusy
-  }
-  if (nativeProps.accessibilityChecked != null) {
-    viewProps['aria-checked'] = nativeProps.accessibilityChecked
-  }
-  if (nativeProps.accessibilityColumnCount != null) {
-    viewProps['aria-colcount'] = nativeProps.accessibilityColumnCount
-  }
-  if (nativeProps.accessibilityColumnIndex != null) {
-    viewProps['aria-colindex'] = nativeProps.accessibilityColumnIndex
-  }
-  if (nativeProps.accessibilityColumnSpan != null) {
-    viewProps['aria-colspan'] = nativeProps.accessibilityColumnSpan
-  }
-  if (nativeProps.accessibilityControls != null) {
-    viewProps['aria-controls'] = processIDRefList(nativeProps.accessibilityControls)
-  }
-  if (nativeProps.accessibilityCurrent != null) {
-    viewProps['aria-current'] = nativeProps.accessibilityCurrent
-  }
-  if (nativeProps.accessibilityDescribedBy != null) {
-    viewProps['aria-describedby'] = processIDRefList(nativeProps.accessibilityDescribedBy)
-  }
-  if (nativeProps.accessibilityDetails != null) {
-    viewProps['aria-details'] = nativeProps.accessibilityDetails
-  }
-  if (nativeProps.disabled === true) {
-    viewProps['aria-disabled'] = true
-    // Enhance with native semantics
-    if (
-      elementType === 'button' ||
-      elementType === 'form' ||
-      elementType === 'input' ||
-      elementType === 'select' ||
-      elementType === 'textarea'
-    ) {
-      viewProps.disabled = true
-    }
-  }
-  if (nativeProps.accessibilityErrorMessage != null) {
-    viewProps['aria-errormessage'] = nativeProps.accessibilityErrorMessage
-  }
-  if (nativeProps.accessibilityExpanded != null) {
-    viewProps['aria-expanded'] = nativeProps.accessibilityExpanded
-  }
-  if (nativeProps.accessibilityFlowTo != null) {
-    viewProps['aria-flowto'] = processIDRefList(nativeProps.accessibilityFlowTo)
-  }
-  if (nativeProps.accessibilityHasPopup != null) {
-    viewProps['aria-haspopup'] = nativeProps.accessibilityHasPopup
-  }
-  if (nativeProps.accessibilityHidden === true) {
-    viewProps['aria-hidden'] = nativeProps.accessibilityHidden
-  }
-  if (nativeProps.accessibilityInvalid != null) {
-    viewProps['aria-invalid'] = nativeProps.accessibilityInvalid
-  }
-  if (
-    nativeProps.accessibilityKeyShortcuts != null &&
-    Array.isArray(nativeProps.accessibilityKeyShortcuts)
-  ) {
-    viewProps['aria-keyshortcuts'] = nativeProps.accessibilityKeyShortcuts.join(' ')
-  }
-  if (nativeProps.accessibilityLabel != null) {
-    viewProps['aria-label'] = nativeProps.accessibilityLabel
-  }
-  if (nativeProps.accessibilityLabelledBy != null) {
-    viewProps['aria-labelledby'] = processIDRefList(nativeProps.accessibilityLabelledBy)
-  }
-  if (nativeProps.accessibilityLevel != null) {
-    viewProps['aria-level'] = nativeProps.accessibilityLevel
-  }
-  if (nativeProps.accessibilityLiveRegion != null) {
-    viewProps['aria-live'] =
-      nativeProps.accessibilityLiveRegion === 'none' ? 'off' : nativeProps.accessibilityLiveRegion
-  }
-  if (nativeProps.accessibilityModal != null) {
-    viewProps['aria-modal'] = nativeProps.accessibilityModal
-  }
-  if (nativeProps.accessibilityMultiline != null) {
-    viewProps['aria-multiline'] = nativeProps.accessibilityMultiline
-  }
-  if (nativeProps.accessibilityMultiSelectable != null) {
-    viewProps['aria-multiselectable'] = nativeProps.accessibilityMultiSelectable
-  }
-  if (nativeProps.accessibilityOrientation != null) {
-    viewProps['aria-orientation'] = nativeProps.accessibilityOrientation
-  }
-  if (nativeProps.accessibilityOwns != null) {
-    viewProps['aria-owns'] = processIDRefList(nativeProps.accessibilityOwns)
-  }
-  if (nativeProps.accessibilityPlaceholder != null) {
-    viewProps['aria-placeholder'] = nativeProps.accessibilityPlaceholder
-  }
-  if (nativeProps.accessibilityPosInSet != null) {
-    viewProps['aria-posinset'] = nativeProps.accessibilityPosInSet
-  }
-  if (nativeProps.accessibilityPressed != null) {
-    viewProps['aria-pressed'] = nativeProps.accessibilityPressed
-  }
-  if (nativeProps.accessibilityReadOnly != null) {
-    viewProps['aria-readonly'] = nativeProps.accessibilityReadOnly
-    // Enhance with native semantics
-    if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
-      viewProps.readOnly = true
-    }
-  }
-  if (nativeProps.accessibilityRequired != null) {
-    viewProps['aria-required'] = nativeProps.accessibilityRequired
-    // Enhance with native semantics
-    if (elementType === 'input' || elementType === 'select' || elementType === 'textarea') {
-      viewProps.required = true
-    }
-  }
-  if (nativeProps.accessibilityRoleDescription != null) {
-    viewProps['aria-roledescription'] = nativeProps.accessibilityRoleDescription
-  }
-  if (nativeProps.accessibilityRowCount != null) {
-    viewProps['aria-rowcount'] = nativeProps.accessibilityRowCount
-  }
-  if (nativeProps.accessibilityRowIndex != null) {
-    viewProps['aria-rowindex'] = nativeProps.accessibilityRowIndex
-  }
-  if (nativeProps.accessibilityRowSpan != null) {
-    viewProps['aria-rowspan'] = nativeProps.accessibilityRowSpan
-  }
-  if (nativeProps.accessibilitySelected != null) {
-    viewProps['aria-selected'] = nativeProps.accessibilitySelected
-  }
-  if (nativeProps.accessibilitySetSize != null) {
-    viewProps['aria-setsize'] = nativeProps.accessibilitySetSize
-  }
-  if (nativeProps.accessibilitySort != null) {
-    viewProps['aria-sort'] = nativeProps.accessibilitySort
-  }
-  if (nativeProps.accessibilityValueMax != null) {
-    viewProps['aria-valuemax'] = nativeProps.accessibilityValueMax
-  }
-  if (nativeProps.accessibilityValueMin != null) {
-    viewProps['aria-valuemin'] = nativeProps.accessibilityValueMin
-  }
-  if (nativeProps.accessibilityValueNow != null) {
-    viewProps['aria-valuenow'] = nativeProps.accessibilityValueNow
-  }
-  if (nativeProps.accessibilityValueText != null) {
-    viewProps['aria-valuetext'] = nativeProps.accessibilityValueText
-  }
-
-  if (nativeProps.nativeID) {
-    viewProps.id = nativeProps.nativeID
-  }
 }
 
 function addPseudoToStyles(
@@ -1470,4 +1280,42 @@ function addPseudoToStyles(
   if (style) {
     styles.push(shouldNestObject && !force ? { [name]: style } : style)
   }
+}
+
+const DefaultProps = new Map()
+
+function mergeConfigDefaultProps(
+  name: string,
+  props: Record<string, any>,
+  configDefaults: Record<string, Object>,
+  parentNames: (string | undefined)[]
+) {
+  const len = parentNames.length
+  let prev
+
+  for (let i = 0; i < len; i++) {
+    const n = parentNames[i]
+    if (!n) continue
+    if (DefaultProps.has(n)) {
+      prev = DefaultProps.get(n)
+      continue
+    }
+    const props = configDefaults[n]
+    if (!props) {
+      if (prev) {
+        DefaultProps.set(n, prev)
+      }
+      continue
+    }
+    prev = mergeProps(prev || {}, props)[0]
+    console.log('set prev', prev)
+    DefaultProps.set(n, prev)
+  }
+
+  // overwrite the user defined defaults on top of internal defined defaults
+  const ourDefaultsMerged = DefaultProps.get(name)
+  if (ourDefaultsMerged) {
+    return mergeProps(props, ourDefaultsMerged)[0]
+  }
+  return props
 }

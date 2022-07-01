@@ -26,5 +26,19 @@ export declare function spacedChildren({ isZStack, children, space, direction, s
 export declare function AbsoluteFill(props: {
     children?: React.ReactNode;
 }): JSX.Element;
-export declare function assignNativePropsToWeb(elementType: string, viewProps: any, nativeProps: any): void;
+export declare function processIDRefList(idRefList: string | Array<string>): string;
+export declare const accessibilityRoleToWebRole: {
+    adjustable: string;
+    button: string;
+    header: string;
+    image: string;
+    imagebutton: null;
+    keyboardkey: null;
+    label: null;
+    link: string;
+    none: string;
+    search: string;
+    summary: string;
+    text: null;
+};
 //# sourceMappingURL=createComponent.d.ts.map

@@ -600,7 +600,7 @@ export type StaticConfig = {
   /**
    * Same as React.defaultProps, be sure to sync
    */
-  defaultProps?: any
+  defaultProps?: Record<string, any>
 
   /**
    * (compiler) If these props are encountered, bail on all optimization.
@@ -1069,8 +1069,6 @@ export type SplitStyleState = TamaguiComponentState & {
   fallbackProps?: Record<string, any>
   keepVariantsAsProps?: boolean
   hasTextAncestor?: boolean
-  // because fontFamily is a special prop that influences many others / uses themes
-  avoidFontFamily?: boolean
 }
 
 // Animations:
