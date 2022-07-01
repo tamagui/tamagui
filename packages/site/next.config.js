@@ -33,6 +33,8 @@ const transform = withPlugins(
         'Picker',
         'Animated',
         'AnimatedFlatList',
+        'Modal',
+        'PressResponder',
         'VirtualizedList',
         'VirtualizedSectionList',
         'FlatList',
@@ -47,10 +49,18 @@ const transform = withPlugins(
     // (nextConfig = {}) => {
     //   return Object.assign({}, nextConfig, {
     //     webpack(config, options) {
-    //       Object.assign(config.resolve.alias, {
-    //         'react-native-reanimated': 'react-native-reanimated/src/index',
-    //       })
-    //       console.log('config', config.resolve.alias)
+    //       const webpack = require('webpack')
+    //       config.plugins.push(
+    //         new webpack.NormalModuleReplacementPlugin(
+    //           /.*react-native-reanimated\/lib\/reanimated1.*/,
+    //           require.resolve('@tamagui/proxy-worm/empty-react-native-view')
+    //         )
+    //       )
+
+    //       // Object.assign(config.resolve.alias, {
+    //       //   'react-native-reanimated': require.resolve('react-native-reanimated/lib/index'),
+    //       // })
+    //       // console.log('config', config.resolve.alias)
     //       if (typeof nextConfig.webpack === 'function') {
     //         return nextConfig.webpack(config, options)
     //       }
