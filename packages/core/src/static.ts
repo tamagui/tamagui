@@ -19,6 +19,8 @@ export * from './helpers/proxyThemeVariables'
 export * from './helpers/getSplitStyles'
 export * from '@tamagui/helpers'
 
-export * from './constants/rnw'
-
 export * from './types'
+
+// node only rnw export
+const interopRequire = (x: any) => ('default' in x ? x.default : x)
+export const rnw: any = interopRequire(require('react-native-web/dist/cjs/tamagui-exports'))
