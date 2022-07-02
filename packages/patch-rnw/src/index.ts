@@ -50,14 +50,6 @@ export function patchReactNativeWeb(dir: string = require.resolve('react-native-
       target: path.join(rootDir, 'dist', 'cjs', 'modules', 'createDOMProps', 'index.js'),
       patched: path.join(__dirname, '..', '..', 'patches', '18', 'createDOMProps.cjs.js'),
     },
-    {
-      target: path.join(rootDir, 'dist', 'exports', 'Dimensions', 'index.js'),
-      patched: path.join(__dirname, '..', '..', 'patches', '18', 'Dimensions_index.js'),
-    },
-    {
-      target: path.join(rootDir, 'dist', 'cjs', 'exports', 'Dimensions', 'index.js'),
-      patched: path.join(__dirname, '..', '..', 'patches', '18', 'Dimensions_index.cjs.js'),
-    },
   ]
 
   for (const { target, patched } of patches) {

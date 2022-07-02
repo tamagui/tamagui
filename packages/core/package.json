@@ -40,7 +40,7 @@
     "@types/react": "^18.0.14",
     "csstype": "^3.0.10",
     "esbuild": "^0.14.36",
-    "react-native-web": "^0.17.5",
+    "react-native-web": "^0.18.3",
     "typescript": "^4.7.4"
   },
   "publishConfig": {

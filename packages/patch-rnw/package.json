@@ -32,6 +32,6 @@
     "react-native-web": "*"
   },
   "devDependencies": {
-    "react-native-web": "^0.17.5"
+    "react-native-web": "^0.18.3"
   }
 }
