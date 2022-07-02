@@ -99,6 +99,7 @@ module.exports = function (name, opts) {
   /** @type {import('next').NextConfig} */
   const final = {
     ...out,
+    productionBrowserSourceMaps: process.env.ANALYZE === 'true',
     experimental: {
       ...out.experimental,
       scrollRestoration: true,

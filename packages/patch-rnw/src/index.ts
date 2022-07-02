@@ -41,26 +41,32 @@ export function patchReactNativeWeb(dir: string = require.resolve('react-native-
     fs.writeFileSync(cjsPath, cjsExports)
   }
 
-  // patch createDOMProps
-  const dpFile = path.join(rootDir, 'dist', 'modules', 'createDOMProps', 'index.js')
-  const dpPatched = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'patches', '18', 'createDOMProps.js'),
-    'utf-8'
-  )
-  const dpFileCJS = path.join(rootDir, 'dist', 'cjs', 'modules', 'createDOMProps', 'index.js')
-  const dpCJSPatched = fs.readFileSync(
-    path.join(__dirname, '..', '..', 'patches', '18', 'createDOMProps.cjs.js'),
-    'utf-8'
-  )
-  const alreadyPatchedDOMProps =
-    fs.readFileSync(dpFile, 'utf-8') === dpPatched &&
-    fs.readFileSync(dpFileCJS, 'utf-8') === dpCJSPatched
+  const patches = [
+    {
+      target: path.join(rootDir, 'dist', 'modules', 'createDOMProps', 'index.js'),
+      patched: path.join(__dirname, '..', '..', 'patches', '18', 'createDOMProps.js'),
+    },
+    {
+      target: path.join(rootDir, 'dist', 'cjs', 'modules', 'createDOMProps', 'index.js'),
+      patched: path.join(__dirname, '..', '..', 'patches', '18', 'createDOMProps.cjs.js'),
+    },
+    {
+      target: path.join(rootDir, 'dist', 'exports', 'Dimensions', 'index.js'),
+      patched: path.join(__dirname, '..', '..', 'patches', '18', 'Dimensions_index.js'),
+    },
+    {
+      target: path.join(rootDir, 'dist', 'cjs', 'exports', 'Dimensions', 'index.js'),
+      patched: path.join(__dirname, '..', '..', 'patches', '18', 'Dimensions_index.cjs.js'),
+    },
+  ]
 
-  if (!alreadyPatchedDOMProps) {
-    console.log('      | patch ' + path.relative(rootDir, dpFile))
-    fs.writeFileSync(dpFile, dpPatched)
-    console.log('      | patch ' + path.relative(rootDir, dpFileCJS))
-    fs.writeFileSync(dpFileCJS, dpCJSPatched)
+  for (const { target, patched } of patches) {
+    const patchedSrc = fs.readFileSync(patched, 'utf-8')
+    if (fs.readFileSync(target, 'utf-8') !== patchedSrc) {
+      // fs.moveSync(target, `${target}.bak`) // could exist already and fail
+      fs.writeFileSync(target, patchedSrc)
+      console.log(`      | patched `, path.relative(rootDir, target))
+    }
   }
 
   // export tamagui exports from root

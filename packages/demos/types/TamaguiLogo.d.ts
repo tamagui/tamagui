@@ -22,5 +22,5 @@ export declare const LogoWords: ({ color, downscale, onHoverLetter, }: {
     downscale?: number | undefined;
     onHoverLetter?: any;
 }) => JSX.Element;
-export declare const LogoIcon: ({ downscale }: any) => JSX.Element;
+export declare const LogoIcon: ({ downscale, color }: any) => JSX.Element;
 //# sourceMappingURL=TamaguiLogo.d.ts.map

@@ -5101,7 +5101,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: "*"
-    react-native-reanimated: ~2.8.0
+    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5267,7 +5267,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: "*"
-    react-native-reanimated: ~2.8.0
+    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5442,7 +5442,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: "*"
-    react-native-reanimated: ~2.8.0
+    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5617,7 +5617,7 @@ __metadata:
     react-dom: "*"
     react-native: "*"
     react-native-gesture-handler: "*"
-    react-native-reanimated: ~2.8.0
+    react-native-reanimated: ^2.8.0
     react-native-safe-area-context: ^4.3.1
     react-native-screens: ~3.11.1
     react-native-svg: ^12.3.0
@@ -5654,7 +5654,7 @@ __metadata:
     react: "*"
     react-dom: "*"
     react-native-gesture-handler: "*"
-    react-native-reanimated: ~2.8.0
+    react-native-reanimated: ^2.8.0
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -5856,7 +5856,7 @@ __metadata:
     mini-css-extract-plugin: ^2.6.0
     react: "*"
     react-dom: "*"
-    react-native-reanimated: ~2.8.0
+    react-native-reanimated: ^2.8.0
     react-native-web: ^0.17.5
     react-refresh: ^0.14.0
     style-loader: ^3.3.1
@@ -24656,7 +24656,6 @@ __metadata:
     expo-modules-core: ^0.9.1
     react: "*"
     react-dom: "*"
-    react-native-safe-area-context: ^4.3.1
     react-native-web: ^0.17.5
   peerDependencies:
     react-native-web: "*"
