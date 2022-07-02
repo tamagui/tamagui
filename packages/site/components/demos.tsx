@@ -23,6 +23,7 @@ export const DrawerDemo = dynamic(() => import('./DrawerDemo'))
 export { TooltipDemo } from '@tamagui/demos'
 export { PopoverDemo } from '@tamagui/demos'
 export { DialogDemo } from '@tamagui/demos'
+export { AnimationsDemo } from '@tamagui/demos'
 export { AnimationsHoverDemo } from '@tamagui/demos'
 export { AnimationsEnterDemo } from '@tamagui/demos'
 export { AnimationsPresenceDemo } from '@tamagui/demos'
