@@ -1,24 +1,14 @@
-import { Search as SearchIcon } from '@tamagui/feather-icons'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import {
-  createContext,
-  lazy,
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { lazy, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Button, ButtonProps, Paragraph, TooltipSimple, useIsTouchDevice } from 'tamagui'
+import { Paragraph } from 'tamagui'
+
+import { SearchContext } from './SearchContext'
 
 const DocSearchModal = dynamic(() => import('./DocSearch'))
-const SearchContext = createContext<any>(null)
 
 // const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
 // const ACTION_KEY_APPLE = ['⌘', 'Command']
@@ -116,62 +106,12 @@ export const SearchProvider = memo(({ children }: any) => {
 })
 
 const ResultItem = ({ hit, children }) => {
-  const isResult = hit.isResult?.()
-  const isParent = hit.isParent?.()
-  const isFirstChild = hit.isFirst?.()
-  const isLastChild = hit.isLast?.()
-  const isChild = hit.isChild?.()
   return (
     <Link href={hit.url}>
       <Paragraph tag="a">{children}</Paragraph>
     </Link>
   )
 }
-
-export const SearchButton = memo((props: ButtonProps) => {
-  const { onOpen, onInput } = useContext(SearchContext)
-  const isTouch = useIsTouchDevice()
-  const ref = useRef()
-
-  useEffect(() => {
-    const onKeyDown = (event: any) => {
-      if (!ref || ref.current !== document.activeElement || !onInput) {
-        return
-      }
-      if (!/[a-zA-Z0-9]/.test(String.fromCharCode(event.keyCode))) {
-        return
-      }
-      onInput(event)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => {
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [onInput, ref])
-
-  return (
-    <TooltipSimple groupId="header-actions-search" label="Search docs..">
-      <Button
-        accessibilityLabel="Search docs"
-        ref={ref as any}
-        onPress={onOpen}
-        className="all ease-in ms100"
-        jc="flex-start"
-        textAlign="left"
-        icon={SearchIcon}
-        iconAfter={
-          isTouch ? null : (
-            // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
-            <Button tag="span" size="$2" chromeless borderWidth={0} pe="none" o={0.35}>
-              /
-            </Button>
-          )
-        }
-        {...props}
-      />
-    </TooltipSimple>
-  )
-})
 
 const useSearchKeyboard = ({ isOpen, onOpen, onClose }: any) => {
   useEffect(() => {

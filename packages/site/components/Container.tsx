@@ -10,7 +10,7 @@ export const Container = styled(YStack, {
   },
 
   $gtMd: {
-    maxWidth: 700,
+    maxWidth: 780,
   },
 })
 

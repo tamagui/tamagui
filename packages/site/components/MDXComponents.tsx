@@ -139,7 +139,9 @@ export const components = {
   h4: (props) => <H4 mt="$6" {...props} />,
   h5: (props) => <H5 mt="$5" {...props} />,
 
-  p: (props) => <Paragraph className="paragraph" display="block" my="$3" {...props} />,
+  p: (props) => (
+    <Paragraph className="docs-paragraph" display="block" my="$3" size="$5" {...props} />
+  ),
 
   a: ({ href = '', children, ...props }) => {
     return (
@@ -205,17 +207,19 @@ export const components = {
       return <CodeInline>{children}</CodeInline>
     }
     return (
-      <DocCodeBlock
-        isHighlightingLines={line !== undefined}
-        className={className}
-        isHero={hero !== undefined}
-        isCollapsible={hero !== undefined || collapsible !== undefined}
-        isScrollable={scrollable !== undefined}
-        showLineNumbers={showLineNumbers !== undefined}
-        {...rest}
-      >
-        {children}
-      </DocCodeBlock>
+      <YStack mt="$3">
+        <DocCodeBlock
+          isHighlightingLines={line !== undefined}
+          className={className}
+          isHero={hero !== undefined}
+          isCollapsible={hero !== undefined || collapsible !== undefined}
+          isScrollable={scrollable !== undefined}
+          showLineNumbers={showLineNumbers !== undefined}
+          {...rest}
+        >
+          {children}
+        </DocCodeBlock>
+      </YStack>
     )
   },
 

@@ -25,11 +25,13 @@ export function Highlights({ features, disableLinks }: any) {
   return (
     <YStack
       my="$2"
+      f={1}
       $gtSm={{
         fd: 'row',
       }}
     >
       <YStack
+        f={1}
         mih={142}
         $gtSm={{
           flex: 1,

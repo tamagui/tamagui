@@ -16,7 +16,7 @@ import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { GithubIcon } from './GithubIcon'
 import { Link } from './Link'
 import { NavHeading } from './NavHeading'
-import { SearchButton } from './Search'
+import { SearchButton } from './SearchButton'
 
 const allNotPending = allDocsRoutes.filter((x) => !x['pending'])
 
@@ -222,16 +222,12 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
   return (
     <Theme name={tint}>
       <YStack
+        overflow="hidden"
         $gtSm={{
           flexDirection: 'row',
         }}
       >
         <YStack
-          width="100%"
-          maxHeight="auto"
-          borderColor="$borderColor"
-          borderRightWidth={1}
-          className="test123"
           overflow="hidden"
           $gtSm={{
             position: 'fixed' as any,
@@ -239,8 +235,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             left: 0,
             bottom: 0,
             width: 230,
-            borderRightWidth: 1,
-            borderRightColor: '$borderColor',
           }}
         >
           <ScrollView>

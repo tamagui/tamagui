@@ -63,7 +63,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
           display="inline-flex"
           alignItems="center"
           justifyContent="flex-end"
-          top={-60}
+          top={-70}
           r="$6"
           $gtMd={{
             r: '$7',

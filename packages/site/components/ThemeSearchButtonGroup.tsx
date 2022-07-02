@@ -2,7 +2,7 @@ import { ThemeToggle } from '@components/ThemeToggle'
 import { Group, TooltipGroup } from 'tamagui'
 
 import { ColorToggleButton } from './ColorToggleButton'
-import { SearchButton } from './Search'
+import { SearchButton } from './SearchButton'
 
 export function ThemeSearchButtonGroup() {
   return (

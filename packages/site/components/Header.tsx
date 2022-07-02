@@ -119,6 +119,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
                 size="$3"
                 o={0.7}
                 hoverStyle={{ opacity: 1 }}
+                pressStyle={{ opacity: 0.5 }}
                 tag="a"
               >
                 Docs
@@ -135,6 +136,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
                 size="$3"
                 o={0.7}
                 hoverStyle={{ opacity: 1 }}
+                pressStyle={{ opacity: 0.5 }}
                 tag="a"
                 $xxs={{
                   display: 'none',

@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import * as React from 'react'
-import { SizableText, Spacer, XStack } from 'tamagui'
+import { SizableText, Spacer, XStack, YStack } from 'tamagui'
 
 import { NavItemProps } from './DocsPage'
 import { ExternalIcon } from './ExternalIcon'
@@ -10,6 +10,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
   return (
     <NextLink href={href} passHref>
       <XStack
+        className="docs-nav-item all ease-in ms150"
         {...props}
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         tag="a"
@@ -17,27 +18,28 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         py="$1.5"
         px="$4"
         opacity={pending ? 0.25 : 1}
-        hoverStyle={{
-          backgroundColor: '$background',
-          opacity: 1,
-        }}
         pressStyle={{
           backgroundColor: '$background',
-          opacity: 0.6,
         }}
         pointerEvents={pending ? 'none' : 'auto'}
-        {...(active && {
-          backgroundColor: '$background',
-          hoverStyle: {
-            backgroundColor: '$background',
-          },
-        })}
+        pos="relative"
         $sm={{
           py: '$2',
         }}
       >
+        <YStack
+          className="sidebar-indicator"
+          o={active ? 1 : 0}
+          pos="absolute"
+          t={0}
+          b={0}
+          l={0}
+          w="$0.5"
+          bc={active ? '$color' : '$backgroundHover'}
+        />
         <SizableText
-          size="$2"
+          className="name"
+          size="$4"
           userSelect="none"
           opacity={0.65}
           {...(active && {

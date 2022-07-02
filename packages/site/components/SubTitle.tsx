@@ -9,9 +9,9 @@ export const SubTitle = ({ children, ...props }) => {
       <H3
         pos="relative"
         width="max-content"
-        size="$7"
+        size="$8"
         letterSpacing={-1}
-        theme="alt2"
+        theme="alt3"
         fontWeight="300"
         tag="p"
         maxWidth="100%"

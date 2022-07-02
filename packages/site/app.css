@@ -531,3 +531,11 @@ input, textarea {
   background: linear-gradient(to right, var(--backgroundStrong), transparent 10%, transparent 90%, var(--backgroundStrong));
 }
 
+.docs-nav-item:hover .sidebar-indicator,
+.docs-nav-item:hover .name {
+  opacity: 1 !important;
+}
+
+.t_dark .docs-paragraph {
+  opacity: 0.8;
+}
