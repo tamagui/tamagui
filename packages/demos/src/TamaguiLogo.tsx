@@ -103,7 +103,12 @@ export const LogoIcon = ({ downscale = 2 }: any) => {
         opacity: 0.7,
       }}
     >
-      <img width={450 / 8 / downscale} height={420 / 8 / downscale} src="/tamagui-icon.svg" />
+      <img
+        className="tamagui-icon"
+        width={450 / 8 / downscale}
+        height={420 / 8 / downscale}
+        src="/tamagui-icon.svg"
+      />
     </YStack>
   )
 }

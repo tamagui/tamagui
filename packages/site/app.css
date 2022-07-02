@@ -293,7 +293,18 @@ iframe {
 }
 
 .t_dark .bg-grid { opacity: 0.2; }
-@media (prefer-color-scheme: dark){ .bg-grid { opacity: 0.2; } }
+
+@media (prefer-color-scheme: dark) {
+  .bg-grid { opacity: 0.2; }
+
+  .tamagui-icon {
+    filter: invert(100%);
+  }
+}
+
+.t_dark .tamagui-icon {
+  filter: invert(100%);
+}
 
 .mask-gradient-both {
   mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent, rgba(0, 0, 0, 1.0));
@@ -519,3 +530,4 @@ input, textarea {
 .themes-fader { 
   background: linear-gradient(to right, var(--backgroundStrong), transparent 10%, transparent 90%, var(--backgroundStrong));
 }
+

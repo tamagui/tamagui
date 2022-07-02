@@ -31,8 +31,8 @@ export const TamaCard = ({
   const glow = useHoverGlow({
     resist: 70,
     size: 800,
-    color: 'var(--color)',
-    opacity: 0.075,
+    color: 'var(--pink10)',
+    opacity: 0.2,
   })
   const containerRef = useComposedRefs(glow.parentRef, shadow.parentRef)
   return (
@@ -44,7 +44,7 @@ export const TamaCard = ({
         width: 'calc(50%)',
       }}
       $sm={{ width: 'auto', minWidth: '100%' }}
-      p="$4"
+      p="$3"
       hoverStyle={{
         zIndex: 1000,
       }}
@@ -84,7 +84,7 @@ export const TamaCard = ({
                 </XStack>
               )}
 
-              <Paragraph cursor="default" theme="alt3" size="$7">
+              <Paragraph cursor="default" theme="alt3" size="$5" fow="500">
                 {children || description}
               </Paragraph>
 

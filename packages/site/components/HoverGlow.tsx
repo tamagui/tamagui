@@ -31,6 +31,7 @@ type HoverGlowProps = BoundedCursorProps & {
   strategy?: 'blur' | 'radial-gradient'
   glowProps?: DivProps
   style?: DivProps['style']
+  restingStyle?: DivProps['style']
 }
 
 export function useHoverGlow(props: HoverGlowProps) {
@@ -43,6 +44,10 @@ export function useHoverGlow(props: HoverGlowProps) {
     strategy = 'radial-gradient',
     glowProps,
     style,
+    full,
+    scale,
+    size,
+    restingStyle,
   } = props
   const elementRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef('')
@@ -51,7 +56,9 @@ export function useHoverGlow(props: HoverGlowProps) {
       ...props,
       itemRef: elementRef,
     },
-    ({ transform, position }) => {
+    ({ transform, position, isResting }) => {
+      if (transform === transformRef.current) return
+
       if (process.env.NODE_ENV === 'development' && props.debug) {
         if (parentNode) {
           if (!parentNode['originalBorderStyle']) {
@@ -75,31 +82,36 @@ height: ${parentBounds.height}`
         }
       }
       transformRef.current = transform
-      const style = getStyle(transform)
-      Object.assign(elementRef.current?.style || {}, style)
+      Object.assign(elementRef.current?.style || {}, getStyle(transform, isResting))
     }
   )
 
   if (process.env.NODE_ENV === 'development') {
     // unset border on debug off
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       if (!props.debug) {
         if (!parentNode) return
         Object.assign(parentNode.style, {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           border: parentNode['originalBorderStyle'],
         })
       }
-    }, [props.debug])
+    }, [parentNode, props.debug])
   }
 
-  const getStyle = (transform: string): CSSProperties => {
-    const { width, height } = getGlowBounds()
+  const getStyle = (transform: string, isResting = true): CSSProperties => {
+    const bounds = getGlowBounds()
+    // estimate size close to final measured size
+    const fullSize = full ? `calc(100 * ${scale || 1})%` : 0
+    const width = bounds.width || size || fullSize
+    const height = bounds.height || size || fullSize
     return {
       position: 'absolute',
       top: '0px',
       left: '0px',
       pointerEvents: 'none',
-      opacity,
+      opacity: transform ? opacity : 0,
       ...(strategy === 'radial-gradient' && {
         background: `radial-gradient(${color} ${0 + (20 - blurPct)}%, ${background} 70%)`,
       }),
@@ -110,7 +122,10 @@ height: ${parentBounds.height}`
       borderRadius,
       height: `${height}px`,
       width: `${width}px`,
-      transition: 'all linear 100ms',
+      // nice fade in effect after first measure/show
+      transition: transform
+        ? 'transform linear 100ms, opacity ease-in 300ms'
+        : 'opacity ease-in 300ms',
       transform,
       ...(props.debug && {
         background: 'yellow',
@@ -118,6 +133,7 @@ height: ${parentBounds.height}`
         filter: 'none',
       }),
       ...style,
+      ...(isResting && restingStyle),
     }
   }
 
@@ -143,6 +159,7 @@ height: ${parentBounds.height}`
           {crosshair}
           <div
             style={{
+              pointerEvents: 'none',
               position: 'absolute',
               bottom: 0,
               left: 0,
@@ -152,27 +169,17 @@ height: ${parentBounds.height}`
               border: '1px solid grey',
             }}
           >
-            <div style={{ position: 'absolute', bottom: -25, right: 0, color: 'grey' }}>
+            <div
+              style={{
+                position: 'absolute',
+                bottom: -25,
+                right: 0,
+                color: 'grey',
+              }}
+            >
               glow container
             </div>
           </div>
-          <div
-            className="hoverglow-debug"
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              zIndex: 100_000,
-              background: 'red',
-              color: '#fff',
-              whiteSpace: 'pre',
-              width: 130,
-              height: 130,
-              fontSize: 12,
-              fontFamily: 'monospace',
-              padding: 10,
-            }}
-          />
         </>
       ),
     }
@@ -187,11 +194,10 @@ height: ${parentBounds.height}`
 function findRelativePositionedParent(node?: HTMLElement | null) {
   let parent = node?.parentElement
   while (parent) {
-    if (parent.style.position) {
+    if (getComputedStyle(parent).position) {
       return parent
-    } else {
-      parent = parent.parentElement
     }
+    parent = parent.parentElement
   }
 }
 
@@ -199,7 +205,11 @@ export const useRelativePositionedItem = (
   props: BoundedCursorProps & {
     itemRef?: { current?: HTMLElement | null }
   },
-  onChangePosition?: (props: { position: { x: number; y: number }; transform: string }) => void
+  onChangePosition?: (props: {
+    position: { x: number; y: number }
+    transform: string
+    isResting: boolean
+  }) => void
 ) => {
   const {
     limitToParentSize,
@@ -214,11 +224,14 @@ export const useRelativePositionedItem = (
     full,
     inverse,
     debug,
-    disableUpdates,
     throttle = 16,
+    disableUpdates,
   } = props
   const [parentNode, setParentNode] = useState<HTMLElement>()
   const isMounted = useIsMounted()
+  const state = useRef({
+    tracking: false,
+  })
   const relativeToParentNode = findRelativePositionedParent(props.itemRef?.current)
   const getRelativeToParentBounds = useGetBounds(relativeToParentNode)
   const getParentBounds = useGetBounds(parentNode, () => {
@@ -229,7 +242,10 @@ export const useRelativePositionedItem = (
 
   const getGlowBounds = useCallback(() => {
     const bounds = getParentBounds()
-    if (!bounds) return { width: 0, height: 0 }
+    if (!bounds) {
+      return { width: 0, height: 0 }
+    }
+
     const width = Math.min(
       limitToParentSize ? bounds.width : Infinity,
       scale * (full ? bounds.width : size || propWidth)
@@ -278,12 +294,13 @@ export const useRelativePositionedItem = (
       y = y + (offset.y || 0)
 
       if (process.env.NODE_ENV === 'development' && debug) {
+        // eslint-disable-next-line no-console
         console.table({
           start: {
             x: position.x,
             y: position.y,
-            position: [position.x, position.y].map((x) => Math.round(x)).join(', '),
-            bounds: [bounds.width, bounds.height].map((x) => Math.round(x)).join(', '),
+            position: [position.x, position.y].map((val) => Math.round(val)).join(', '),
+            bounds: [bounds.width, bounds.height].map((val) => Math.round(val)).join(', '),
             glowDimensions: [width, height].join(', '),
           },
           resisted: {
@@ -309,6 +326,7 @@ export const useRelativePositionedItem = (
       }
 
       onChangePosition({
+        isResting: !state.current.tracking,
         position: {
           x,
           y,
@@ -320,7 +338,19 @@ export const useRelativePositionedItem = (
       `,
       })
     },
-    [getGlowBounds, onChangePosition, inverse, resist, boundPct, debug, disableUpdates]
+    [
+      onChangePosition,
+      disableUpdates,
+      getGlowBounds,
+      getParentBounds,
+      getRelativeToParentBounds,
+      inverse,
+      resist,
+      boundPct,
+      offset.x,
+      offset.y,
+      debug,
+    ]
   )
 
   const setInitialPosition = useCallback(() => {
@@ -336,11 +366,10 @@ export const useRelativePositionedItem = (
     setInitialPosition()
   }, [setInitialPosition])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!parentNode) return
 
     const disposers = new Set<() => void>()
-    let track = false
 
     // force re-calc offsets after scrolls
     const resetLastDimensions = () => {
@@ -352,9 +381,9 @@ export const useRelativePositionedItem = (
     addEvent(disposers, topWindow, 'mouseup', resetLastDimensions)
 
     const handleMove = throttleFn((e: MouseEvent) => {
-      if (!track) return
+      if (!state.current.tracking) return
       if (!isMounted.current) return
-      const [x, y] = getOffset(e, parentNode, debug)
+      const [x, y] = getOffset(e, parentNode)
       callback({
         x: x + offX,
         y: y + offY,
@@ -362,7 +391,7 @@ export const useRelativePositionedItem = (
     }, throttle)
 
     const trackMouse = (val: boolean) => () => {
-      track = val
+      state.current.tracking = val
       if (!val) {
         // reset to center on mouseleave
         setInitialPosition()
@@ -415,7 +444,7 @@ const inversed = (inverse: boolean | undefined, parentSize: number, coord: numbe
 
 const lastDimensions = new WeakMap<HTMLElement, DOMRect | null>()
 
-const getOffset = (ev: MouseEvent, parentElement?: HTMLElement, debug?: boolean) => {
+const getOffset = (ev: MouseEvent, parentElement?: HTMLElement) => {
   const parent = (parentElement || ev.currentTarget) as HTMLElement
   const canMeasure = 'getBoundingClientRect' in parent
   if (!canMeasure) return [0, 0]
@@ -428,10 +457,6 @@ const getOffset = (ev: MouseEvent, parentElement?: HTMLElement, debug?: boolean)
   }
   const xOffset = clientX - parentDimensions.left
   const yOffset = clientY - parentDimensions.top
-  if (debug) {
-    // prettier-ignore
-    console.table([{ clientX, clientY, xOffset, yOffset, parentLeft: parentDimensions.left, parentTop: parentDimensions.top }])
-  }
   return [xOffset, yOffset] as const
 }
 
@@ -490,7 +515,16 @@ const addEvent = <K extends keyof HTMLElementEventMap>(
 
 const crosshair =
   process.env.NODE_ENV === 'development' ? (
-    <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 100_000 }}>
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        zIndex: 100_000,
+      }}
+    >
       <div
         style={{
           width: 1,

@@ -16,7 +16,7 @@ export const FancyCard = styled(YStack, {
     // backgroundColor: '$backgroundHover',
     borderColor: 'rgba(150,150,150,0.4)',
     elevation: '$6',
-    y: '$-2',
+    y: '$-1',
   },
 })
 
