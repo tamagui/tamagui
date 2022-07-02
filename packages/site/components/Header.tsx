@@ -1,4 +1,3 @@
-import { ThemeToggle } from '@components/ThemeToggle'
 import { LogoWords, TamaguiLogo, tints } from '@tamagui/demos'
 import Link from 'next/link'
 import NextLink from 'next/link'

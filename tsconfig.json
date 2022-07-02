@@ -9,6 +9,9 @@
       ],
       "@tamagui/*": [
         "packages/*"
+      ],
+      "@takeout/*": [
+        "takeout/*"
       ]
     },
     "outDir": "dist",
@@ -23,7 +26,6 @@
     "preserveSymlinks": true,
     "jsx": "react",
     "module": "system",
-    // "noErrorTruncation": true,
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitAny": false,

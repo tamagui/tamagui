@@ -23,22 +23,16 @@ export { ListItemDemo } from '@tamagui/demos'
 
 export const DrawerDemo = dynamic(() => import('./DrawerDemo'))
 
-export const TooltipDemo = dynamic(() => import('@tamagui/demos/dist/jsx/TooltipDemo'))
-export const PopoverDemo = dynamic(() => import('@tamagui/demos/dist/jsx/PopoverDemo'))
-export const DialogDemo = dynamic(() => import('@tamagui/demos/dist/jsx/DialogDemo'))
-export const AnimationsHoverDemo = dynamic(
-  () => import('@tamagui/demos/dist/jsx/AnimationsHoverDemo')
-)
-export const AnimationsEnterDemo = dynamic(
-  () => import('@tamagui/demos/dist/jsx/AnimationsEnterDemo')
-)
-export const AnimationsPresenceDemo = dynamic(
-  () => import('@tamagui/demos/dist/jsx/AnimationsPresenceDemo')
-)
-export const SwitchDemo = dynamic(() => import('@tamagui/demos/dist/jsx/SwitchDemo'))
-export const SliderDemo = dynamic(() => import('@tamagui/demos/dist/jsx/SliderDemo'))
-export const SpinnerDemo = dynamic(() => import('@tamagui/demos/dist/jsx/SpinnerDemo'))
-export const FeatherIconsDemo = dynamic(() => import('@tamagui/demos/dist/jsx/FeatherIconsDemo'))
+export { TooltipDemo } from '@tamagui/demos'
+export { PopoverDemo } from '@tamagui/demos'
+export { DialogDemo } from '@tamagui/demos'
+export { AnimationsHoverDemo } from '@tamagui/demos'
+export { AnimationsEnterDemo } from '@tamagui/demos'
+export { AnimationsPresenceDemo } from '@tamagui/demos'
+export { SwitchDemo } from '@tamagui/demos'
+export { SliderDemo } from '@tamagui/demos'
+export { SpinnerDemo } from '@tamagui/demos'
+export { FeatherIconsDemo } from '@tamagui/demos'
 
 export const AnimationsDemo = (props) => {
   const { tint } = useTint()

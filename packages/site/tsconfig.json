@@ -6,10 +6,13 @@
     "baseUrl": ".",
     "paths": {
       "tamagui": [
-        "../packages/tamagui"
+        "../tamagui"
       ],
       "@tamagui/*": [
-        "../packages/*"
+        "../*"
+      ],
+      "@takeout/*": [
+        "../../takeout/*"
       ],
       "@components/*": [
         "./components/*"
@@ -55,6 +58,9 @@
   "references": [
     {
       "path": "../colors"
+    },
+    {
+      "path": "../../takeout/studio"
     },
     {
       "path": "../theme-base"
