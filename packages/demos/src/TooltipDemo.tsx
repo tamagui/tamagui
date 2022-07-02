@@ -2,7 +2,7 @@ import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Circle } from '@tama
 import React from 'react'
 import { Button, Paragraph, Tooltip, TooltipGroup, TooltipProps, XStack, YStack } from 'tamagui'
 
-export default function TooltipDemo() {
+export function TooltipDemo() {
   return (
     <TooltipGroup delay={{ open: 3000, close: 100 }}>
       <YStack space="$2" als="center">

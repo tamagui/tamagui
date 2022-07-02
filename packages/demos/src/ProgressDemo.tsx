@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { Button, Paragraph, Progress, SizeTokens, Slider, XStack, YStack } from 'tamagui'
 
-export default function ProgressDemo() {
+export function ProgressDemo() {
   const [size, setSize] = useState(4)
   const [progress, setProgress] = useState(20)
   const sizeProp = `$${size}` as SizeTokens

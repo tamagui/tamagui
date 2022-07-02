@@ -5,10 +5,10 @@ import Link from 'next/link'
 import React, { memo, useRef, useState } from 'react'
 import { Button, Paragraph, Separator, Theme, XStack, YStack } from 'tamagui'
 
+import { AnimationsDemo } from './AnimationsDemo'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
 import { useTint } from './ColorToggleButton'
 import { ContainerLarge } from './Container'
-import { AnimationsDemo } from './demos'
 import { HomeH2, HomeH3 } from './HomeH2'
 
 const animationDescriptions = [

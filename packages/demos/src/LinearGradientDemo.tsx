@@ -1,7 +1,7 @@
 import React from 'react'
 import { LinearGradient } from 'tamagui'
 
-export default function LinearGradientDemo() {
+export function LinearGradientDemo() {
   return (
     <LinearGradient
       als="center"

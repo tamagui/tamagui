@@ -1,6 +1,6 @@
 import { Slider, SliderProps, XStack } from 'tamagui'
 
-export default function SliderDemo() {
+export function SliderDemo() {
   return (
     <XStack height={200} ai="center" space="$8">
       <SimpleSlider height={200} orientation="vertical" />

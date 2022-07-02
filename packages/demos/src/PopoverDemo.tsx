@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronLeft, ChevronRight } from '@tamagui/feather-icons'
 import { Button, Input, Label, Popover, PopoverProps, XStack, YStack } from 'tamagui'
 
-export default function PopoverDemo() {
+export function PopoverDemo() {
   return (
     <XStack space="$2">
       <Demo placement="left" Icon={ChevronLeft} />

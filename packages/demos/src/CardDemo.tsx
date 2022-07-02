@@ -4,7 +4,7 @@ import { Button, Card, CardProps, H2, H3, Image, Paragraph, XStack } from 'tamag
 // @ts-ignore
 import camera from '../../public/camera.jpg'
 
-export default function CardDemo() {
+export function CardDemo() {
   return (
     <XStack $sm={{ flexDirection: 'column' }} px="$4" space>
       <DemoCard

@@ -1,5 +1,4 @@
 /// <reference types="react" />
 export declare const images: any[];
-declare const _default: () => JSX.Element;
-export default _default;
+export declare function AnimationsPresenceDemo(): JSX.Element;
 //# sourceMappingURL=AnimationsPresenceDemo.d.ts.map

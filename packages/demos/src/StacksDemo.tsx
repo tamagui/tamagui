@@ -1,7 +1,7 @@
 import React from 'react'
 import { XStack, YStack, ZStack } from 'tamagui'
 
-export default function StacksDemo() {
+export function StacksDemo() {
   return (
     <XStack als="center" space>
       <YStack flex={1} space="$2" bw={2} boc="$color" br="$4" p="$2">

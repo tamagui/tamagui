@@ -1,3 +1,3 @@
 /// <reference types="react" />
-export default function StacksDemo(): JSX.Element;
+export declare function StacksDemo(): JSX.Element;
 //# sourceMappingURL=StacksDemo.d.ts.map

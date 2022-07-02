@@ -1,7 +1,7 @@
 import React from 'react'
 import { Avatar, XStack } from 'tamagui'
 
-export default function AvatarDemo() {
+export function AvatarDemo() {
   return (
     <XStack ai="center" space="$6">
       <Avatar circular size="$10">

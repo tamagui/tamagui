@@ -1,6 +1,5 @@
 /// <reference types="react" />
-declare const _default: (props: any) => JSX.Element;
-export default _default;
+export declare function AnimationsDemo(props: any): JSX.Element;
 export declare const positions: ({
     x: number;
     y: number;

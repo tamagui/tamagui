@@ -2,7 +2,7 @@ import { X } from '@tamagui/feather-icons'
 import React from 'react'
 import { Button, Dialog, Fieldset, Input, Label, Unspaced, YStack } from 'tamagui'
 
-export default function DialogDemo() {
+export function DialogDemo() {
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>

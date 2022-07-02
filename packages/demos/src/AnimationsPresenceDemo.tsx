@@ -23,7 +23,7 @@ const YStackEnterable = styled(YStack, {
   },
 })
 
-export default () => {
+export function AnimationsPresenceDemo() {
   const [[page, direction], setPage] = useState([0, 0])
 
   const imageIndex = wrap(0, images.length, page)

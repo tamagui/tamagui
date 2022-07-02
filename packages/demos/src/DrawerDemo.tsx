@@ -4,7 +4,7 @@ import React from 'react'
 import { useState } from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
 
-export default function DrawerDemo() {
+export function DrawerDemo() {
   const [show, setShow] = useState(false)
   return (
     <YStack minWidth={230} w="100%" h="100%" ai="center" jc="center" position="relative">

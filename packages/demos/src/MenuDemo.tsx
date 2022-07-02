@@ -3,7 +3,7 @@ import { Menu } from '@tamagui/menu'
 import React, { useState } from 'react'
 import { Button, H4, Paragraph, YStack } from 'tamagui'
 
-export default function MenuDemo() {
+export function MenuDemo() {
   const [show, setShow] = useState(false)
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Paragraph, Separator, XStack, YStack } from 'tamagui'
 
-export default function SeparatorDemo() {
+export function SeparatorDemo() {
   return (
     <YStack w="100%" maw={300} mx={15}>
       <Paragraph fontWeight="800">Tamagui</Paragraph>

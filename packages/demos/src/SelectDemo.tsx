@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
 import React from 'react'
 import { LinearGradient, Select, Text, YStack } from 'tamagui'
 
-export default function SelectDemo() {
+export function SelectDemo() {
   return (
     <Select defaultValue="apple">
       <Select.Trigger w={200} iconAfter={ChevronDown}>

@@ -1,3 +1,3 @@
 /// <reference types="react" />
-export default function FeatherIconsDemo(): JSX.Element;
+export declare function FeatherIconsDemo(): JSX.Element;
 //# sourceMappingURL=FeatherIconsDemo.d.ts.map

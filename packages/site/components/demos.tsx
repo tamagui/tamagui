@@ -1,7 +1,4 @@
-import { AnimationsDemo as AnimationsDemoBase } from '@tamagui/demos'
 import dynamic from 'next/dynamic'
-
-import { useTint } from './ColorToggleButton'
 
 export { StacksDemo } from '@tamagui/demos'
 export { ShapesDemo } from '@tamagui/demos'
@@ -33,8 +30,3 @@ export { SwitchDemo } from '@tamagui/demos'
 export { SliderDemo } from '@tamagui/demos'
 export { SpinnerDemo } from '@tamagui/demos'
 export { FeatherIconsDemo } from '@tamagui/demos'
-
-export const AnimationsDemo = (props) => {
-  const { tint } = useTint()
-  return <AnimationsDemoBase tint={tint} {...props} />
-}

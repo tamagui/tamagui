@@ -3,7 +3,7 @@ import { Square } from 'tamagui'
 
 import { LogoIcon } from './TamaguiLogo'
 
-export default () => {
+export function AnimationsHoverDemo() {
   return (
     <Square
       bc="$pink10"

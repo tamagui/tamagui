@@ -2,7 +2,7 @@ import { Activity, Airplay } from '@tamagui/feather-icons'
 import React from 'react'
 import { Button, Group, ListItem, Separator, YStack } from 'tamagui'
 
-export default function GroupDemo() {
+export function GroupDemo() {
   return (
     <YStack p="$3" space="$2" ai="center">
       <Group size="$3">

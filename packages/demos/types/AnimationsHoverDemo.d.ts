@@ -1,4 +1,3 @@
 /// <reference types="react" />
-declare const _default: () => JSX.Element;
-export default _default;
+export declare function AnimationsHoverDemo(): JSX.Element;
 //# sourceMappingURL=AnimationsHoverDemo.d.ts.map

@@ -10,7 +10,7 @@ const featherIcons = Object.keys(FeatherIcons).map((name) => ({
   Icon: FeatherIcons[name],
 }))
 
-export default function FeatherIconsDemo() {
+export function FeatherIconsDemo() {
   const [searchRaw, setSearch] = useState('')
   const search = useDebounceValue(searchRaw, 400)
 

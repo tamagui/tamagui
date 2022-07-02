@@ -2,7 +2,7 @@ import { Activity, Airplay } from '@tamagui/feather-icons'
 import React from 'react'
 import { Button, Group, XStack, YStack } from 'tamagui'
 
-export default function ButtonDemo(props) {
+export function ButtonDemo(props) {
   return (
     <YStack p="$3" space {...props}>
       <Button>Plain</Button>

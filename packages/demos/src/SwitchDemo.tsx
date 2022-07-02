@@ -1,7 +1,7 @@
 import React from 'react'
 import { Label, Separator, SizeTokens, Switch, XStack, YStack } from 'tamagui'
 
-export default function SwitchDemo() {
+export function SwitchDemo() {
   return (
     <YStack w={300} ai="center" space="$3">
       <SwitchWithLabel size="$2" />

@@ -4,7 +4,7 @@ import { Button, Square, useControllableState } from 'tamagui'
 
 import { LogoIcon } from './TamaguiLogo'
 
-export default (props) => {
+export function AnimationsDemo(props) {
   const [positionI, setPositionI] = useControllableState({
     strategy: 'most-recent-wins',
     prop: props.position,
