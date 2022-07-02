@@ -92,10 +92,9 @@ export const LogoWords = ({
       />
     </svg>
   )
-  // return <Image width={206 / 2} height={31 / 2} src={logo.src} />
 }
 
-export const LogoIcon = ({ downscale = 2, color = 'var(--color)' }: any) => {
+export const LogoIcon = ({ downscale = 2 }: any) => {
   return (
     <YStack
       als="center"
@@ -104,70 +103,7 @@ export const LogoIcon = ({ downscale = 2, color = 'var(--color)' }: any) => {
         opacity: 0.7,
       }}
     >
-      <svg
-        width={450 / 8 / downscale}
-        height={420 / 8 / downscale}
-        viewBox="0 0 450 420"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-      >
-        <g
-          transform="translate(225.000000, 210.000000) scale(-1, 1) translate(-225.000000, -210.000000) "
-          fill={color}
-        >
-          <rect fill={color} x="150" y="0" width="20" height="20"></rect>
-          <rect fill={color} x="180" y="0" width="20" height="20"></rect>
-          <rect fill={color} x="210" y="0" width="20" height="20"></rect>
-          <rect fill={color} x="240" y="0" width="20" height="20"></rect>
-          <rect fill={color} x="270" y="0" width="20" height="20"></rect>
-          <rect fill={color} x="300" y="0" width="20" height="20"></rect>
-          <rect fill={color} x="330" y="30" width="20" height="20"></rect>
-          <rect fill={color} x="360" y="60" width="20" height="20"></rect>
-          <rect fill={color} x="390" y="90" width="20" height="20"></rect>
-          <rect fill={color} x="390" y="120" width="20" height="20"></rect>
-          <rect fill={color} x="390" y="150" width="20" height="20"></rect>
-          <rect fill={color} x="390" y="180" width="20" height="20"></rect>
-          <rect fill={color} x="420" y="210" width="20" height="20"></rect>
-          <rect fill={color} x="420" y="240" width="20" height="20"></rect>
-          <rect fill={color} x="420" y="270" width="20" height="20"></rect>
-          <rect fill={color} x="390" y="300" width="20" height="20"></rect>
-          <rect fill={color} x="360" y="330" width="20" height="20"></rect>
-          <rect fill={color} x="330" y="360" width="20" height="20"></rect>
-          <rect fill={color} x="300" y="390" width="20" height="20"></rect>
-          <rect fill={color} x="270" y="390" width="20" height="20"></rect>
-          <rect fill={color} x="240" y="360" width="20" height="20"></rect>
-          <rect fill={color} x="210" y="360" width="20" height="20"></rect>
-          <rect fill={color} x="210" y="390" width="20" height="20"></rect>
-          <rect fill={color} x="180" y="390" width="20" height="20"></rect>
-          <rect fill={color} x="150" y="360" width="20" height="20"></rect>
-          <rect fill={color} x="150" y="330" width="20" height="20"></rect>
-          <rect fill={color} x="120" y="300" width="20" height="20"></rect>
-          <rect fill={color} x="90" y="240" width="20" height="20"></rect>
-          <rect fill={color} x="90" y="270" width="20" height="20"></rect>
-          <rect fill={color} x="90" y="210" width="20" height="20"></rect>
-          <rect fill={color} x="60" y="180" width="20" height="20"></rect>
-          <rect fill={color} x="30" y="180" width="20" height="20"></rect>
-          <rect fill={color} x="0" y="150" width="20" height="20"></rect>
-          <rect fill={color} x="30" y="120" width="20" height="20"></rect>
-          <rect fill={color} x="60" y="120" width="20" height="20"></rect>
-          <rect fill={color} x="90" y="120" width="20" height="20"></rect>
-          <rect fill={color} x="0" y="90" width="20" height="20"></rect>
-          <rect fill={color} x="0" y="120" width="20" height="20"></rect>
-          <rect fill={color} x="30" y="60" width="20" height="20"></rect>
-          <rect fill={color} x="30" y="60" width="20" height="20"></rect>
-          <rect fill={color} x="60" y="60" width="20" height="20"></rect>
-          <rect fill={color} x="120" y="30" width="20" height="20"></rect>
-          <rect fill={color} x="150" y="60" width="20" height="20"></rect>
-          <rect fill={color} x="240" y="90" width="20" height="20"></rect>
-          <rect fill={color} x="240" y="210" width="20" height="20"></rect>
-          <rect fill={color} x="240" y="240" width="20" height="20"></rect>
-          <rect fill={color} x="270" y="270" width="20" height="20"></rect>
-          <rect fill={color} x="300" y="240" width="20" height="20"></rect>
-          <rect fill={color} x="300" y="210" width="20" height="20"></rect>
-          <rect fill={color} x="90" y="60" width="20" height="20"></rect>
-        </g>
-      </svg>
+      <img width={450 / 8 / downscale} height={420 / 8 / downscale} src="/tamagui-icon.svg" />
     </YStack>
   )
 }

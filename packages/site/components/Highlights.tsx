@@ -15,8 +15,8 @@ import {
 } from 'tamagui'
 
 import { Features } from './Features'
+import { FrontmatterContext } from './FrontmatterContext'
 import { Link } from './Link'
-import { FrontmatterContext } from './MDXComponents'
 
 export function Highlights({ features, disableLinks }: any) {
   const router = useRouter()

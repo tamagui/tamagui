@@ -14,7 +14,6 @@
     "next:start": "NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production next start"
   },
   "dependencies": {
-    "@docsearch/css": "^3.0.0",
     "@docsearch/react": "^3.0.0",
     "@stripe/stripe-js": "^1.29.0",
     "@supabase/supabase-auth-helpers": "^1.4.1",
@@ -62,7 +61,7 @@
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^12.0.10",
+    "@next/bundle-analyzer": "^12.2.0",
     "@tamagui/next-plugin": "^1.0.1-beta.91",
     "@types/lodash.throttle": "^4.1.6",
     "@types/react-native": "^0.67.3",

@@ -24,7 +24,6 @@ import {
   YStack,
 } from 'tamagui'
 
-import { Frontmatter } from '../frontmatter'
 import { BenchmarkChart } from './BenchmarkChart'
 import { Code, CodeInline } from './Code'
 import * as Demos from './demos'
@@ -378,19 +377,6 @@ const LinkHeading = ({ id, children, ...props }: { id: string } & XStackProps) =
     </YStack>
   </XStack>
 )
-
-export const FrontmatterContext = React.createContext<Frontmatter>({} as any)
-
-// Custom provider for next-mdx-remote
-// https://github.com/hashicorp/next-mdx-remote#using-providers
-export function MDXProvider(props) {
-  const { frontmatter, children } = props
-  return (
-    <>
-      <FrontmatterContext.Provider value={frontmatter}>{children}</FrontmatterContext.Provider>
-    </>
-  )
-}
 
 const getNonTextChildren = (children) =>
   React.Children.map(children, (x) => (typeof x !== 'string' ? x : null)).flat()

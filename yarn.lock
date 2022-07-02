@@ -2685,7 +2685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/css@npm:3.1.0, @docsearch/css@npm:^3.0.0":
+"@docsearch/css@npm:3.1.0":
   version: 3.1.0
   resolution: "@docsearch/css@npm:3.1.0"
   checksum: 05e6ed291e47fed4382790aec726317e37418ee4a600b64525a30a6cf54c187bb35ab0fd24fadad0125b8ceb66cb58d456992666d78233bfd8bce29ebe64b599
@@ -3991,12 +3991,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:^12.0.10":
-  version: 12.1.6
-  resolution: "@next/bundle-analyzer@npm:12.1.6"
+"@next/bundle-analyzer@npm:^12.2.0":
+  version: 12.2.0
+  resolution: "@next/bundle-analyzer@npm:12.2.0"
   dependencies:
     webpack-bundle-analyzer: 4.3.0
-  checksum: cf37be49d45d706aea95df489656341bec64783e567067d15036b25330d7a69204987b2c402277f201b9bf943de588323b120fd8096bb3d6846a054bbb2cdc7e
+  checksum: e08770ed2f7bfa4fb38c29d58d1e3ad198fa7e9a8c061ea5e15950dd10576bed0b5b8c19266e18503af1d211a0d8d450b5fed4926f6863135b38e585d6fd1980
   languageName: node
   linkType: hard
 
@@ -5136,6 +5136,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/animations-react-native@workspace:packages/animations-react-native":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/animations-react-native@workspace:packages/animations-react-native"
+  dependencies:
+    "@tamagui/animate-presence": ^1.0.1-beta.91
+    "@tamagui/build": ^1.0.1-beta.91
+    "@tamagui/core": ^1.0.1-beta.91
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/animations-reanimated@^1.0.1-beta.80, @tamagui/animations-reanimated@^1.0.1-beta.91, @tamagui/animations-reanimated@workspace:packages/animations-reanimated":
   version: 0.0.0-use.local
   resolution: "@tamagui/animations-reanimated@workspace:packages/animations-reanimated"
@@ -5143,7 +5160,7 @@ __metadata:
     "@tamagui/animate-presence": ^1.0.1-beta.91
     "@tamagui/build": ^1.0.1-beta.91
     "@tamagui/core": ^1.0.1-beta.91
-    react-native-reanimated: ~2.8.0
+    react-native-reanimated: ^2.8.0
   languageName: unknown
   linkType: soft
 
@@ -5924,9 +5941,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/site@workspace:packages/site"
   dependencies:
-    "@docsearch/css": ^3.0.0
     "@docsearch/react": ^3.0.0
-    "@next/bundle-analyzer": ^12.0.10
+    "@next/bundle-analyzer": ^12.2.0
     "@stripe/stripe-js": ^1.29.0
     "@supabase/supabase-auth-helpers": ^1.4.1
     "@tamagui/animate-presence": ^1.0.1-beta.91

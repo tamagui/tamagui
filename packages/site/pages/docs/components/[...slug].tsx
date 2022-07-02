@@ -1,10 +1,12 @@
-import { MDXProvider, components } from '@components/MDXComponents'
+import { components } from '@components/MDXComponents'
+import { MDXProvider } from '@components/MDXProvider'
 import { QuickNav } from '@components/QuickNav'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
 import { getAllFrontmatter, getAllVersionsFromPath, getMdxBySlug } from '@lib/mdx'
 import { getMDXComponent } from 'mdx-bundler/client'
 import React from 'react'
 
+import { DocsPage } from '../../../components/DocsPage'
 import type { Frontmatter } from '../../../frontmatter'
 
 type Doc = {
@@ -15,7 +17,7 @@ type Doc = {
 export default function DocComponentsPage({ frontmatter, code }: Doc) {
   const Component = React.useMemo(() => getMDXComponent(code), [code])
   return (
-    <>
+    <DocsPage>
       <TitleAndMetaTags
         title={`${frontmatter.title} — Tamagui`}
         description={frontmatter.description}
@@ -31,7 +33,7 @@ export default function DocComponentsPage({ frontmatter, code }: Doc) {
         <Component components={components} />
       </MDXProvider>
       <QuickNav key={frontmatter.slug} />
-    </>
+    </DocsPage>
   )
 }
 

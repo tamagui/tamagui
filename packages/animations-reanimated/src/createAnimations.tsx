@@ -2,7 +2,6 @@ import { PresenceContext, usePresence } from '@tamagui/animate-presence'
 import { AnimationDriver, AnimationProp } from '@tamagui/core'
 import { useCallback, useContext, useMemo } from 'react'
 import Animated, {
-  AnimationCallback,
   WithDecayConfig,
   WithSpringConfig,
   WithTimingConfig,

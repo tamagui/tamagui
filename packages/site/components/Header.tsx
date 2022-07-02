@@ -109,7 +109,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
           </XStack>
         ) : (
           <XStack ai="center" space="$2">
-            <NextLink href="/docs/intro/installation" passHref>
+            <NextLink prefetch={false} href="/docs/intro/installation" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
                 px="$3"
@@ -125,7 +125,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
               </Paragraph>
             </NextLink>
 
-            <NextLink href="/blog" passHref>
+            <NextLink prefetch={false} href="/blog" passHref>
               <Paragraph
                 fontFamily="$silkscreen"
                 px="$3"

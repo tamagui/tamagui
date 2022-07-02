@@ -5,7 +5,6 @@ import { ScrollView } from 'react-native'
 import { Button, TooltipSimple, YStack } from 'tamagui'
 
 import { Code } from './Code'
-// import { FrontmatterContext } from './MDXComponents'
 import { Pre } from './Pre'
 
 export const DocCodeBlock = forwardRef((props: any, ref) => {

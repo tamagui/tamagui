@@ -124,7 +124,7 @@ const HeroTop = memo(() => {
         </YStack>
 
         <XStack ai="center" jc="center" space="$4">
-          <NextLink href="/docs/intro/introduction" passHref>
+          <NextLink prefetch={false} href="/docs/intro/introduction" passHref>
             <Button
               accessibilityLabel="Get started (docs)"
               fontFamily="$silkscreen"

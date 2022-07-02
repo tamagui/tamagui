@@ -1,17 +1,13 @@
-import '@docsearch/css'
 import '@tamagui/core/reset.css'
 import '@tamagui/font-silkscreen/css/400.css'
 
 import '../app.css'
 
-import { DocsPage } from '@components/DocsPage'
 import { Footer } from '@components/Footer'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import NextProgress from 'nextjs-progressbar'
 import { Suspense, useMemo } from 'react'
-import { Square } from 'tamagui'
 
 import { SearchProvider } from '../components/Search'
 import Tamagui from '../tamagui.config'
@@ -32,7 +28,6 @@ export default function App(props: AppProps) {
 
   return (
     <>
-      <NextProgress height={1} options={{ showSpinner: false }} />
       <NextThemeProvider
         onChangeTheme={(next) => {
           setTheme(next)
@@ -55,13 +50,7 @@ function ContentInner({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
   return getLayout(
     <>
-      {isDocs ? (
-        <DocsPage>
-          <Component {...pageProps} />
-        </DocsPage>
-      ) : (
-        <Component {...pageProps} />
-      )}
+      <Component {...pageProps} />
       {!isDocs && !isDemo && !isStudio && <Footer />}
     </>
   )

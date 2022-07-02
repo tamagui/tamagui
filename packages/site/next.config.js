@@ -19,7 +19,8 @@ const disableExtraction =
 const transform = withPlugins(
   [
     withBundleAnalyzer({
-      enabled: process.env.ANALYZE === 'true',
+      enabled: process.env.NODE_ENV === 'production',
+      openAnalyzer: process.env.ANALYZE === 'true',
     }),
     withTamagui({
       config: './tamagui.config.ts',
@@ -40,7 +41,6 @@ const transform = withPlugins(
         'FlatList',
         'CheckBox',
         'Touchable',
-        'PressResponder',
         'PanResponder',
         'SectionList',
       ],
@@ -52,8 +52,8 @@ const transform = withPlugins(
     //       const webpack = require('webpack')
     //       config.plugins.push(
     //         new webpack.NormalModuleReplacementPlugin(
-    //           /.*react-native-reanimated\/lib\/reanimated1.*/,
-    //           require.resolve('@tamagui/proxy-worm/empty-react-native-view')
+    //           /.*web-vitals.*/,
+    //           require.resolve('@tamagui/proxy-worm')
     //         )
     //       )
 
