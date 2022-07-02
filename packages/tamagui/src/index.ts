@@ -1,7 +1,5 @@
 import './polyfills'
 
-export { useSafeAreaInsets } from 'react-native-safe-area-context'
-
 export * from '@tamagui/avatar'
 export * from '@tamagui/button'
 export * from '@tamagui/dialog'
