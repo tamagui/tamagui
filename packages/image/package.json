@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "1.0.1-beta.91",
+  "version": "1.0.1-beta.92",
   "sideEffects": [
     "*.css"
   ],
@@ -21,14 +21,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.91"
+    "@tamagui/core": "^1.0.1-beta.92"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.91",
+    "@tamagui/build": "^1.0.1-beta.92",
     "react": "*",
     "react-native": "*"
   },
