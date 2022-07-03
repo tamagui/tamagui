@@ -30,9 +30,11 @@ You define a new styled component:
 const CalHeader = styled(Text, {
   variants: {
     isHero: {
-      fontSize: 36,
-      backgroundColor: 'blue',
-      color: 'white',
+      true: {
+        fontSize: 36,
+        backgroundColor: 'blue',
+        color: 'white',
+      },
     },
   },
 })
