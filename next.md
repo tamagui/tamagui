@@ -1,15 +1,8 @@
-- Group make media style size use properly
-- fix compiler on bootstrap repo not accepting packages/app
-- use style values instead of classnames when non-extracted
-  - think of <YStack x={cursor.position} /> we'll generate infinite classnames
-  - also aligns with stylex
-
 - 1.0
+  - Group make media style size use properly
   - <Toast />
   - verify Popover.Content size matches size of Popover if unset on content
-  - asChild shouldn't mess up hooks
   - FAQ
-  - document .extractable
   - switch focusstyle on prod
   - need an active theme thats blue in theme-base by default
   - TODO bug backgroundStrong on dark in light / not variabl

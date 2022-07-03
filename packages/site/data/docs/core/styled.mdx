@@ -79,3 +79,71 @@ We can use these like so:
 ```
 
 To learn more about to use them and all the special types, [see the docs on variants](/docs/core/variants).
+
+## Advanced
+
+If you are building a design system, you may like the `.extractable` static property that styled compoennts include. It's useful for when you need a component with some logic inside of it (more than what styled variants support), but still want to support compiler extraction.
+
+It's easier to understand through example. Let's say you want a component that always puts an icon somewhere inside of it:
+
+```tsx
+import { Heart } from '@tamagui/feather-icons'
+import { GetProps, YStack, styled } from 'tamagui'
+
+// not exported
+const CircleFrame = styled(YStack, {
+  alignItems: 'center',
+  justifyContent: 'center',
+  // ... your custom styles here
+})
+
+type CircleProps = GetProps<typeof CircleFrame>
+
+export const CustomCircle = ({ children, ...props }: CircleProps) => {
+  return (
+    <CircleFrame {...props}>
+      <Heart size={20} />
+      {children}
+    </CircleFrame>
+  )
+}
+```
+
+As written above, when you use `CustomCircle`, the Tamagui compiler won't know to extract usages of it, so this will be left entirely to run at runtime:
+
+```tsx
+export default () => (
+  <CustomCircle x={10} y={10} scale={1.5} hoverStyle={{ x: 20, y: 20 }}>
+    {/* ... your contents ... */}
+  </CustomCircle>
+)
+```
+
+This should work fine, but ideally you get some optimization on this. Let's make a change to the `CustomCircle` definition:
+
+```tsx
+export const CustomCircle = CircleFrame.extractable(({ children, ...props }: CircleProps) => {
+  return (
+    <CircleFrame {...props}>
+      <Heart size={20} />
+      {children}
+    </CircleFrame>
+  )
+})
+```
+
+Now we wrap `CustomCircle` with `CircleFrame.extractable`. Notice, as is shown above, components wrapped with extractable must return a single component, the component that extractable comes from. In this case CustomCircle must return a single `CircleFrame`, and spread all the props it accepts down to it.
+
+Now, when use CustomCircle, the compiler can do something like this:
+
+```tsx
+cont _cn = `transform-1234 hover-transform-1234`
+
+export default () => (
+  <CustomCircle className={_cn}>
+    {/* ... your contents ... */}
+  </CustomCircle>
+)
+```
+
+This nets you some runtime performance and ensures any unique styles are pulled into CSS at build-time.
