@@ -1,5 +1,6 @@
 import type { TamaguiOptions } from '@tamagui/static'
-import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
+import type { Plugin } from 'vite'
+import envPlugin from 'vite-plugin-environment'
 
 export function tamaguiPlugin(options?: TamaguiOptions): Plugin {
   return {
@@ -8,6 +9,7 @@ export function tamaguiPlugin(options?: TamaguiOptions): Plugin {
 
     config(userConfig, env) {
       return {
+        plugins: [envPlugin(['NODE_ENV', 'TAMAGUI_TARGET'])],
         esbuild: {
           loader: 'tsx',
         },

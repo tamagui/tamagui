@@ -15,15 +15,18 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "test": "vitest --config ../vite-plugin-internal/vite.config.ts"
   },
   "dependencies": {
     "@tamagui/text": "^1.0.1-beta.93"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.93",
+    "@tamagui/vite-plugin-internal": "^1.0.1-beta.93",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "vitest": "^0.16.0"
   },
   "peerDependencies": {
     "react": "*",

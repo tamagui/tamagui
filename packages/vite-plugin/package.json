@@ -25,7 +25,8 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.93"
+    "@tamagui/build": "^1.0.1-beta.93",
+    "vite-plugin-environment": "^1.1.1"
   },
   "publishConfig": {
     "access": "public"
