@@ -397,29 +397,27 @@ export function createComponent<
 
       assignNativePropsToWeb(elementType, viewProps, nonTamaguiProps)
 
-      if (!asChild) {
-        rnw.useElementLayout(hostRef, onLayout)
+      rnw.useElementLayout(hostRef, onLayout)
 
-        // from react-native-web
-        rnw.useResponderEvents(hostRef, {
-          onMoveShouldSetResponder,
-          onMoveShouldSetResponderCapture,
-          onResponderEnd,
-          onResponderGrant,
-          onResponderMove,
-          onResponderReject,
-          onResponderRelease,
-          onResponderStart,
-          onResponderTerminate,
-          onResponderTerminationRequest,
-          onScrollShouldSetResponder,
-          onScrollShouldSetResponderCapture,
-          onSelectionChangeShouldSetResponder,
-          onSelectionChangeShouldSetResponderCapture,
-          onStartShouldSetResponder,
-          onStartShouldSetResponderCapture,
-        })
-      }
+      // from react-native-web
+      rnw.useResponderEvents(hostRef, {
+        onMoveShouldSetResponder,
+        onMoveShouldSetResponderCapture,
+        onResponderEnd,
+        onResponderGrant,
+        onResponderMove,
+        onResponderReject,
+        onResponderRelease,
+        onResponderStart,
+        onResponderTerminate,
+        onResponderTerminationRequest,
+        onScrollShouldSetResponder,
+        onScrollShouldSetResponderCapture,
+        onSelectionChangeShouldSetResponder,
+        onSelectionChangeShouldSetResponderCapture,
+        onStartShouldSetResponder,
+        onStartShouldSetResponderCapture,
+      })
 
       // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(viewProps)
