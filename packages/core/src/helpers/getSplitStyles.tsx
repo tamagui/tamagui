@@ -3,7 +3,7 @@ import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'
-import { isClient, isSSR, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import {
   DebugProp,
@@ -118,7 +118,7 @@ export const getSplitStyles: StyleSplitter = (
 
   let rulesToInsert: [string, string][] | null = null
   function addStyle(prop: string, rule: string) {
-    if (isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
       // NOTE this is super tricky
       // for some reason, next.js dev SSR actually misses a lot of styles (pre-hydrate) with || !isClient
       // which doesn't really make sense, because that should strictly extract *more* css, but oh well
@@ -131,44 +131,46 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   function mergeClassName(key: string, val: string, isMediaOrPseudo = false) {
-    // empty classnames passed by compiler sometimes
-    if (!val) return
-    if (val.startsWith('_transform-')) {
-      const namespace: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      // empty classnames passed by compiler sometimes
+      if (!val) return
+      if (val.startsWith('_transform-')) {
+        const namespace: TransformNamespaceKey = isMediaOrPseudo ? key : 'transform'
 
-      let transform = insertedTransforms[val]
-      if (isClient) {
-        if (!transform) {
-          // HMR or loaded a new chunk
-          updateInserted()
-          transform = insertedTransforms[val]
-          if (process.env.NODE_ENV === 'development') {
-            if (!transform) {
-              console.warn('no transform found', { insertedTransforms, val })
+        let transform = insertedTransforms[val]
+        if (isClient) {
+          if (!transform) {
+            // HMR or loaded a new chunk
+            updateInserted()
+            transform = insertedTransforms[val]
+            if (process.env.NODE_ENV === 'development') {
+              if (!transform) {
+                console.warn('no transform found', { insertedTransforms, val })
+              }
             }
           }
-        }
-        if (!transform) {
-          if (isWeb && val[0] !== '_') {
-            // runtime insert
-            transform = val
+          if (!transform) {
+            if (isWeb && val[0] !== '_') {
+              // runtime insert
+              transform = val
+            }
+          }
+          if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
+            // prettier-ignore
+            console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
           }
         }
-        if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-          // prettier-ignore
-          console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
+        transforms = transforms || {}
+        transforms[namespace] = transforms[namespace] || ['', '']
+        const identifier = val.replace('_transform', '')
+        transforms[namespace][0] += identifier
+        // ssr doesn't need to do anything just make the right classname
+        if (transform) {
+          transforms[namespace][1] += transform
         }
+      } else {
+        classNames[key] = val
       }
-      transforms = transforms || {}
-      transforms[namespace] = transforms[namespace] || ['', '']
-      const identifier = val.replace('_transform', '')
-      transforms[namespace][0] += identifier
-      // ssr doesn't need to do anything just make the right classname
-      if (transform) {
-        transforms[namespace][1] += transform
-      }
-    } else {
-      classNames[key] = val
     }
   }
 
@@ -208,52 +210,54 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (keyInit === 'className') {
-      let nonTamaguis = ''
-      if (!valInit) continue
-      for (const cn of valInit.split(' ')) {
-        if (cn[0] === '_') {
-          // tamagui, merge it expanded on key, eventually this will go away with better compiler
-          const [shorthand, mediaOrPseudo] = cn.slice(1).split('-')
-          const isMedia = mediaOrPseudo[0] === '_'
-          const isPseudo = mediaOrPseudo[0] === '0'
-          const isMediaOrPseudo = isMedia || isPseudo
-          let fullKey = conf.shorthands[shorthand]
-          if (isMedia) {
-            // is media
-            let mediaShortKey = mediaOrPseudo.slice(1)
-            mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
-            fullKey += `${PROP_SPLIT}${mediaShortKey}`
-          } else if (isPseudo) {
-            // is pseudo
-            const pseudoShortKey = mediaOrPseudo.slice(1)
-            fullKey += `${PROP_SPLIT}${pseudoShortKey}`
+    if (process.env.TAMAGUI_TARGET === 'web') {
+      if (keyInit === 'className') {
+        let nonTamaguis = ''
+        if (!valInit) continue
+        for (const cn of valInit.split(' ')) {
+          if (cn[0] === '_') {
+            // tamagui, merge it expanded on key, eventually this will go away with better compiler
+            const [shorthand, mediaOrPseudo] = cn.slice(1).split('-')
+            const isMedia = mediaOrPseudo[0] === '_'
+            const isPseudo = mediaOrPseudo[0] === '0'
+            const isMediaOrPseudo = isMedia || isPseudo
+            let fullKey = conf.shorthands[shorthand]
+            if (isMedia) {
+              // is media
+              let mediaShortKey = mediaOrPseudo.slice(1)
+              mediaShortKey = mediaShortKey.slice(0, mediaShortKey.indexOf('_'))
+              fullKey += `${PROP_SPLIT}${mediaShortKey}`
+            } else if (isPseudo) {
+              // is pseudo
+              const pseudoShortKey = mediaOrPseudo.slice(1)
+              fullKey += `${PROP_SPLIT}${pseudoShortKey}`
+            }
+            usedKeys.add(fullKey)
+            mergeClassName(fullKey, cn, isMediaOrPseudo)
+          } else {
+            nonTamaguis += ' ' + cn
           }
-          usedKeys.add(fullKey)
-          mergeClassName(fullKey, cn, isMediaOrPseudo)
-        } else {
-          nonTamaguis += ' ' + cn
         }
-      }
-      if (nonTamaguis) {
-        usedKeys.add(keyInit)
-        mergeClassName(keyInit, nonTamaguis)
-      }
-      continue
-    }
-
-    if (valInit && valInit[0] === '_') {
-      // if valid style key (or pseudo like color-hover):
-      // this conditional and esp the pseudo check rarely runs so not a perf issue
-      const isValidClassName = validStyles[keyInit]
-      const isMediaOrPseudo =
-        !isValidClassName &&
-        keyInit.includes(PROP_SPLIT) &&
-        validStyles[keyInit.split(PROP_SPLIT)[0]]
-      if (isValidClassName || isMediaOrPseudo) {
-        usedKeys.add(keyInit)
-        mergeClassName(keyInit, valInit, isMediaOrPseudo)
+        if (nonTamaguis) {
+          usedKeys.add(keyInit)
+          mergeClassName(keyInit, nonTamaguis)
+        }
         continue
+      }
+
+      if (valInit && valInit[0] === '_') {
+        // if valid style key (or pseudo like color-hover):
+        // this conditional and esp the pseudo check rarely runs so not a perf issue
+        const isValidClassName = validStyles[keyInit]
+        const isMediaOrPseudo =
+          !isValidClassName &&
+          keyInit.includes(PROP_SPLIT) &&
+          validStyles[keyInit.split(PROP_SPLIT)[0]]
+        if (isValidClassName || isMediaOrPseudo) {
+          usedKeys.add(keyInit)
+          mergeClassName(keyInit, valInit, isMediaOrPseudo)
+          continue
+        }
       }
     }
 
@@ -436,21 +440,23 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (transforms) {
-    for (const namespace in transforms) {
-      if (!transforms[namespace]) {
-        console.warn('Error no transform')
-        continue
-      }
-      const [hash, val] = transforms[namespace]
-      const identifier = `_transform${hash}`
-      if (isClient) {
-        if (!insertedTransforms[identifier]) {
-          const rule = `.${identifier} { transform: ${val}; }`
-          addStyle(identifier, rule)
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    if (transforms) {
+      for (const namespace in transforms) {
+        if (!transforms[namespace]) {
+          console.warn('Error no transform')
+          continue
         }
+        const [hash, val] = transforms[namespace]
+        const identifier = `_transform${hash}`
+        if (isClient) {
+          if (!insertedTransforms[identifier]) {
+            const rule = `.${identifier} { transform: ${val}; }`
+            addStyle(identifier, rule)
+          }
+        }
+        classNames[namespace] = identifier
       }
-      classNames[namespace] = identifier
     }
   }
 

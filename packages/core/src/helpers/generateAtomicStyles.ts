@@ -82,38 +82,40 @@ let shorthands: Record<string, string> | null = null
 export function expandStyles(style: any) {
   const res: Record<string, any> = {}
 
-  // box-shadow
-  const { boxShadow, shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
-  if (shadowRadius !== undefined) {
-    const { height, width } = shadowOffset || defaultOffset
-    const offsetX = normalizeValueWithProperty(width || 0)
-    const offsetY = normalizeValueWithProperty(height || 0)
-    const blurRadius = normalizeValueWithProperty(shadowRadius || 0)
-    const color = normalizeColor(String(shadowColor || 'black'), shadowOpacity)
-    const shadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
-    res.boxShadow = boxShadow ? `${boxShadow}, ${shadow}` : shadow
-  } else if (boxShadow) {
-    res.boxShadow = boxShadow
-  }
-
-  // text-shadow
-  const { textShadowColor, textShadowOffset, textShadowRadius } = style
-  if (textShadowColor || textShadowOffset || textShadowRadius) {
-    const { height, width } = textShadowOffset || defaultOffset
-    const radius = textShadowRadius || 0
-    const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
-    if (color && (height !== 0 || width !== 0 || radius !== 0)) {
-      const blurRadius = normalizeValueWithProperty(radius)
-      const offsetX = normalizeValueWithProperty(width)
-      const offsetY = normalizeValueWithProperty(height)
-      res.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    // box-shadow
+    const { boxShadow, shadowColor, shadowOffset, shadowOpacity, shadowRadius } = style
+    if (shadowRadius !== undefined) {
+      const { height, width } = shadowOffset || defaultOffset
+      const offsetX = normalizeValueWithProperty(width || 0)
+      const offsetY = normalizeValueWithProperty(height || 0)
+      const blurRadius = normalizeValueWithProperty(shadowRadius || 0)
+      const color = normalizeColor(String(shadowColor || 'black'), shadowOpacity)
+      const shadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
+      res.boxShadow = boxShadow ? `${boxShadow}, ${shadow}` : shadow
+    } else if (boxShadow) {
+      res.boxShadow = boxShadow
     }
-  }
 
-  // ensure border style set by default to solid
-  for (const key in borderDefaults) {
-    if (key in style) {
-      res[borderDefaults[key]] = style[borderDefaults[key]] || 'solid'
+    // text-shadow
+    const { textShadowColor, textShadowOffset, textShadowRadius } = style
+    if (textShadowColor || textShadowOffset || textShadowRadius) {
+      const { height, width } = textShadowOffset || defaultOffset
+      const radius = textShadowRadius || 0
+      const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
+      if (color && (height !== 0 || width !== 0 || radius !== 0)) {
+        const blurRadius = normalizeValueWithProperty(radius)
+        const offsetX = normalizeValueWithProperty(width)
+        const offsetY = normalizeValueWithProperty(height)
+        res.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
+      }
+    }
+
+    // ensure border style set by default to solid
+    for (const key in borderDefaults) {
+      if (key in style) {
+        res[borderDefaults[key]] = style[borderDefaults[key]] || 'solid'
+      }
     }
   }
 
@@ -135,6 +137,7 @@ export function expandStyles(style: any) {
       }
     }
   }
+
   return res
 }
 
@@ -241,6 +244,10 @@ function createAtomicRules(
 }
 
 export function expandStyle(key: string, value: any) {
+  if (process.env.TAMAGUI_TARGET !== 'web') {
+    return [[key, value]]
+  }
+
   if (key === 'flex') {
     // The 'flex' property value in React Native must be a positive integer,
     // 0, or -1.
@@ -314,7 +321,7 @@ export function expandStyle(key: string, value: any) {
       return [key, value]
     })
   } else {
-    if (isWeb && Array.isArray(value)) {
+    if (Array.isArray(value)) {
       return [[key, value.join(',')]]
     }
   }
