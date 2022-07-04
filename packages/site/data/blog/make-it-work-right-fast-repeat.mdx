@@ -1,0 +1,28 @@
+---
+title: Make it Fast, Make it Right, Make it Work
+publishedAt: '2022-07-04'
+description: Software development is a quine
+by: nate
+---
+
+Building Tamagui, I've come back to the mantra "[Make it work, make it right, make it fast](https://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast)" quite a lot (I'll abbreviate the phrase as MW-MR-MF). It makes sense - one of the main pitches of Tamagui is performance. But I think the mantra needs a simple tweak to really capture what I think is the "right" way to develop a library.
+
+The basics idea of MW-MR-MF is easy enough to grasp. It basically wants to save you a lot of wasted development time - if you don't get your program right _first_, you'll never know if you performance improvements will stick, and you'll likely just end up with more bugs. You'll waste time with regressions and edge cases you never considered, and will be stuck re-doing performance optimizations.
+
+This is true. It rings a bit of TDD with its focus on correctness. But in reality, I think there's a hidden fourth step, and also an inversion of steps when you're at the design stage:
+
+## Think it fast, then Make it Work, Make it Right, Make it Fast, then Repeat
+
+If you're lucky, making a program fast after you get it right is simply a refactor. But that's not always the case.
+
+I actually built an optimizing compiler for a UI kit before Tamagui, that largely looked and felt the same. But the compiler came late in its development. In a sense, I followed the steps of MW-MR-MF.
+
+But the problem was, well, **it was impossible to make it fast**.
+
+I'd built a number of features into that UI kit that simply didn't work with a compiler. They were too dynamic, and required local state that was nearly impossible to capture at compile-time. At one point I decided I needed to write my style generator entirely to use [atomic CSS](), which would fix my problems. But three weeks of intense work, long days and late nights later, I rage-quit. It was simply impossible, even with a full test-suite, to get it to work.
+
+Or rather, it wasn't impossible, it was just I'd have to remove a few features to get it to behave. And doing so would mean a near total rewrite.
+
+### Think it fast
+
+After a few months of burn-out, I started back on a new project.

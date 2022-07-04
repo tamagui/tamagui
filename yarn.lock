@@ -5001,7 +5001,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@takeout/cli@^1.0.1-beta.75, @takeout/cli@workspace:takeout/cli":
+"@takeout/cli@workspace:takeout/cli":
   version: 0.0.0-use.local
   resolution: "@takeout/cli@workspace:takeout/cli"
   dependencies:
@@ -5039,7 +5039,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@takeout/studio@^1.0.1-beta.64, @takeout/studio@^1.0.1-beta.80, @takeout/studio@workspace:takeout/studio":
+"@takeout/studio@^1.0.1-beta.80, @takeout/studio@workspace:takeout/studio":
   version: 0.0.0-use.local
   resolution: "@takeout/studio@workspace:takeout/studio"
   dependencies:
@@ -5594,7 +5594,6 @@ __metadata:
     "@react-navigation/native-stack": ^6.6.2
     "@rnx-kit/metro-config": ^1.2.32
     "@rnx-kit/metro-resolver-symlinks": ^0.1.20
-    "@takeout/cli": ^1.0.1-beta.75
     "@tamagui/animations-reanimated": ^1.0.1-beta.93
     "@tamagui/babel-plugin": ^1.0.1-beta.93
     "@tamagui/colors": ^1.0.1-beta.93
@@ -5834,7 +5833,6 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.7
-    "@takeout/studio": ^1.0.1-beta.64
     "@tamagui/animations-css": ^1.0.1-beta.93
     "@tamagui/animations-motion": ^1.0.1-beta.93
     "@tamagui/animations-reanimated": ^1.0.1-beta.93

@@ -39,7 +39,7 @@
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "yarn workspace @tamagui/site ci:build && yarn workspace @tamagui/site next:start",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
-    "studio": "yarn workspace @tamagui/kitchen-sink tg dev",
+    "studio": "cd packages/kitchen-sink && ../../node_modules/.bin/tg dev",
     "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",

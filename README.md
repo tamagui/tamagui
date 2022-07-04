@@ -19,101 +19,68 @@ In exchange you add some complexity with the compiler - but - it's both optional
 
 The compiler does a lot, too - it analyzes logic, spreads, and nested ternaries, even flattening fully analyzable components to reduce tree depth signficantly.
 
-#### Works with React ❤️
+[Read more on the website](https://tamagui.dev/docs/intro/introduction).
 
-Work with your favorite libraries: `react-native` and `react-native-web` augmenting them with features and performance.
+---
 
-#### Themed, Responsive
+## Contributing
 
-Inline typed theme and media props, and accompanying `useTheme` and `useMedia` hooks work how you'd expect them to, but also compile away.
+Tamagui is a monorepo that makes it easy to contribute.
 
-#### Faster Runtime
+As of now Tamagui has some encrypted files relating to upcoming features that you'll need to remove before install:
 
-Almost no prop interpolation on inline styles and dynamic styles. Even with complex logical styling you get less runtime, light CSS output, and flatter component trees. CSS media queries and CSS variables run much faster than JS.
+```
+./script/ci-prepare.sh
+```
 
-#### Less Runtime
+Then install:
 
-Tamagui adds some to bundle size, but dramatically reduces render performance and extract what would be many style objects out at build time. Strictly style components (with no un-parseable props) are flattened to `div` or `span`, saving tree depth and hook calls.
+```
+yarn
+```
 
-#### Server-Side Rendering
+While developing, you'll want to run the build watcher in a dedicated terminal:
 
-Tamagui supports cross-browser server-side rendering ([see how we do it with Next.js](https://github.com/tamagui/tamagui/tree/master/packages/site)), even for responsive styles and variants.
+```
+yarn watch
+```
 
+It's easiest to use the `sandbox` project to test and develop things for web:
 
-## Key Features
+```
+yarn sandbox
+```
 
-### Variants
+This runs a client-side only vite build of tamagui, with a complete configuration already set up.
 
-[Variants](/docs/core/styled#variants) as a first-class citizen, so you can design composable component APIs. Define a single variant, multiple variants, and even [Spread Variants](/docs/core/styled#spread-variants) which allow you to return dynamic styles, even at compile-time.
+To test on native, `kitchen-sink` is equally light weight and well set up:
 
-### Tokens
+```
+yarn kitchen-sink
+```
 
-Define your own [tokens](/docs/intro/configuration) and seamlessly apply them as CSS values. CSS Properties are automatically mapped to token scales. Tokens can even be used in shorthand CSS properties.
+Once you've made changes, you can add tests. All compiler and CSS generation tests live in `packages/static`.
 
-### Themes
+Before submitting a PR, check everything works across every combination of environments.
 
-Tamagui provides a simple [theming](/docs/intro/themes) experience out of the box. Create as many themes as you need, and apply them wherever you want. Each theme generates a CSS class name which overrides the default tokens.
+To do so, run the site, first in development to test if it works entirely at runtime:
 
-### Shorthands
+```
+yarn site
+```
 
-[Shorthands](/docs/intro/configuration#shorthands) allow you to map shorthand properties to their longer cousins. This lets you create Tailwinds-like quick properties to style. These work with TypeScript as well, and are designed so you can bring them with you across different tamagui component kits.
+You replace _app.tsx to return just your component/use case. If it looks good, try running again with the compiler on:
 
-### Responsivity
+```
+yarn site:extract
+```
 
-Tamagui lets you configure [media queries](/docs/core/use-media) and apply variants responsively using `$` props.
+Finally, if that looks good, build to production and test that:
 
-### Animations
+```
+yarn site:prod
+```
 
-Plug-in [animations](/docs/core/animations) with incredibly simple syntax.
+This flow ensures it works with Vite, Webpack, Metro, Next.js with SSR, and with the compiler both on and off.
 
-### Fonts
-
-A unique font system means you can publish and share font bundles including all their styles - vertical rythyms and all, and still get all the benefits of compilation speed.
-
-### Hooks
-
-The `useMedia` and `useTheme` hooks work reactively, avoiding re-renders, while giving you the same typed access as your normally have to your design system values. They work with the compiler as well when possible.
-
-### Developer Experience
-
-Tamagui provides a fully-typed API so all your TypeScript style properties, values, media queries and shorthands will be auto-completed for you. It provides a `// debug` pragma and `debug` prop that both allow easy introspection into whats happening at compile and runtime. In dev mode it puts a `data-` attribute that links every DOM node back to your original source.
-
-<br />
-
-### Why inline style props?
-
-#### 🏎 Faster to write
-
-Inline styles have a few developer-speed benefits over `StyleSheet.create`: they require fewer imports and fewer lines of code, and they save you from jumping between the top and bottom of your file whenever you want to change a style so you can see exactly whats happening where it's happening.
-
-#### 💀 Easier to maintain, no dead code
-
-`StyleSheet.create` forces you to manually link together the style with the node that's using the style. When you delete the style, you must delete the node, and when you delete a node, you have to manually check to be see if any other node is using that style before removing it.
-
-#### 📚 Less reading/writing and naming
-
-Fast inline styles and common tokens mean less having to name things. Shorthand style props that are flat often make the difference between one line and multiple.
-
-#### 💃 Encourages dynamic styles
-
-Changing between a style that's determined by a ternary or conditional and one that's static shouldn't be a hard choice. With StyleSheet there's some friction as you have to either inline it and save time and readability or extract it to the bottom and gain performance. With inline styles (and the compiler) you no longer have that friction: convert any prop to have a ternary and it works the same, and runs fast.
-
-
-## Community
-
-We're excited to see the community adopt Tamagui, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
-
-- [Discord](https://discord.gg/4qh6tdcVDa)
-- [Twitter](https://twitter.com/tamagui_js)
-- [GitHub Discussions](https://github.com/tamagui/tamagui/discussions)
-- [GitHub](https://github.com/tamagui/tamagui)
-
-
-## Credits
-
-A big thanks to:
-
-- [JSXStyle](https://github.com/jsxstyle/jsxstyle) for providing the original version of the compiler.
-- [Modulz](https://github.com/modulz) for the bones of the website and inspiration on some Radix-like component APIs.
-- [Moti](https://moti.fyi) for the foundation of the reanimated driver.
-- [Framer Motion](https://github.com/framer/motion) for the AnimatePresence functionality.
+Our plan is to add integration tests to cover all this and more soon!
