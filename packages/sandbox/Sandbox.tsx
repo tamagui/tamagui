@@ -1,8 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { Studio } from '@takeout/studio'
-import { SelectDemo, StacksDemo } from '@tamagui/demos'
+import { SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { Anchor, Button, Select, styled } from 'tamagui'
@@ -46,7 +45,6 @@ export const Sandbox = () => {
         }}
       >
         <SelectDemo />
-        {/* <Studio /> */}
       </div>
     </Tamagui.Provider>
   )

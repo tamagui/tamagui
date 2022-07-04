@@ -1,13 +1,13 @@
 import { expect, test } from 'vitest'
 
-import { wrapStringChildrenInText } from './wrapStringChildrenInText'
+import { wrapChildrenInText } from './wrapChildrenInText'
 
 const Comp = () => {}
 const re = <div data-id={Math.random()} />
 const reID = re.props['data-id']
 
 test('should wrap all string children, not wrap others', () => {
-  const out = wrapStringChildrenInText(Comp, {
+  const out = wrapChildrenInText(Comp, {
     children: [re, 'a', 'b', re, 'c', re, 'd'],
   }) as any
 
@@ -28,7 +28,7 @@ test('should wrap all string children, not wrap others', () => {
 })
 
 test('should first child string', () => {
-  const out = wrapStringChildrenInText(Comp, {
+  const out = wrapChildrenInText(Comp, {
     children: ['a', re],
   }) as any
 

@@ -74,7 +74,7 @@
   "packageManager": "yarn@3.2.1",
   "dependencies": {
     "@babel/runtime": "^7.15.5",
-    "@lerna-lite/cli": "^1.0.5",
+    "@lerna-lite/cli": "^1.6.0",
     "@manypkg/cli": "^0.19.1",
     "@monorepo-utils/workspaces-to-typescript-project-references": "^2.7.4",
     "@types/node": "^16.11.9",

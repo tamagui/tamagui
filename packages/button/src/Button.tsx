@@ -10,13 +10,9 @@ import {
   themeable,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import {
-  TextParentStyles,
-  useGetThemedIcon,
-  wrapStringChildrenInText,
-} from '@tamagui/helpers-tamagui'
+import { TextParentStyles, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
-import { SizableText } from '@tamagui/text'
+import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, useContext } from 'react'
 import { View } from 'react-native'
 
@@ -146,7 +142,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace
-  const contents = wrapStringChildrenInText(ButtonText, props)
+  const contents = wrapChildrenInText(ButtonText, props)
 
   return (
     <ButtonFrame

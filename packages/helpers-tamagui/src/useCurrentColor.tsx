@@ -1,5 +1,5 @@
 import { ColorTokens, ThemeValueFallback, useTheme } from '@tamagui/core'
-import { TextStyle } from 'react-native'
+import type { TextStyle } from 'react-native'
 
 export const useCurrentColor = (colorProp: ColorProp) => {
   const theme = useTheme()
