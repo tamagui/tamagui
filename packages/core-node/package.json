@@ -20,7 +20,7 @@
     "@types/node": "^16.11.9",
     "@types/react": "^18.0.14",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.14.36",
+    "esbuild": "^0.14.48",
     "esbuild-plugin-path-alias": "^1.0.6",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
