@@ -19,7 +19,6 @@ export const getElevation: SizeVariantSpreadFunction<StackProps> = (size, extras
   const { tokens } = extras
   const token = tokens.size[size]
   const sizeNum = (isVariable(token) ? +token.val : size) as number
-  // TODO this could be configurable with require('tamagui').configure({ elevation: () => {} })
   return getSizedElevation(sizeNum, extras)
 }
 

@@ -7,6 +7,7 @@ import {
   PropMapper,
   SplitStyleState,
   StaticConfig,
+  StaticConfigParsed,
   TamaguiInternalConfig,
   VariantSpreadFunction,
 } from '../types'
@@ -25,7 +26,7 @@ export const getReturnVariablesAs = (props: any, state: Partial<SplitStyleState>
     : 'auto'
 }
 
-export const createPropMapper = (staticConfig: Partial<StaticConfig>) => {
+export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   const variants = staticConfig.variants || {}
 
   // temp remove classnames
@@ -108,7 +109,7 @@ type StyleResolver = (
   fontFamily: string,
   conf: TamaguiInternalConfig,
   returnVariablesAs: 'auto' | 'value' | 'non-color-value',
-  staticConfig: Partial<StaticConfig>,
+  staticConfig: StaticConfigParsed,
   parentVariantKey: string,
   avoidDefaultProps?: boolean,
   debug?: DebugProp
@@ -131,7 +132,7 @@ const resolveVariants: StyleResolver = (
 ) => {
   const variant = variants && variants[key]
   if (variant && value !== undefined) {
-    let variantValue = getVariantDefinition(variant, key, value)
+    let variantValue = getVariantDefinition(variant, key, value, conf)
 
     if (variantValue) {
       if (typeof variantValue === 'function') {
@@ -267,17 +268,28 @@ const resolveTokensAndVariants: StyleResolver = (
 }
 
 // goes through specificity finding best matching variant function
-function getVariantDefinition(variant: any, key: string, value: any) {
+function getVariantDefinition(variant: any, key: string, value: any, conf: TamaguiInternalConfig) {
   if (typeof variant === 'function') {
     return variant
   }
-  for (const cat in tokenCategories) {
-    if (key in tokenCategories[cat]) {
-      const spreadVariant = variant[`...${cat}`]
-      if (spreadVariant) {
-        return spreadVariant
-      }
-    }
+  if (variant[value]) {
+    return variant[value]
+  }
+  const { tokensParsed } = conf
+  if (variant['...size'] && value in tokensParsed.size) {
+    return variant['...size']
+  }
+  if (variant['...color'] && value in tokensParsed.color) {
+    return variant['...color']
+  }
+  if (variant['...radius'] && value in tokensParsed.radius) {
+    return variant['...radius']
+  }
+  if (variant['...space'] && value in tokensParsed.space) {
+    return variant['...space']
+  }
+  if (variant['...zIndex'] && value in tokensParsed.zIndex) {
+    return variant['...zIndex']
   }
   let fn: any
   if (typeof value === 'number') {
@@ -287,8 +299,7 @@ function getVariantDefinition(variant: any, key: string, value: any) {
   } else if (value === true || value === false) {
     fn = variant[':boolean']
   }
-  fn = fn || variant[value]
-  // fallback to size ultimately - could do token level detection
+  // fallback to catch all or size
   return fn || variant['...'] || variant['...size']
 }
 

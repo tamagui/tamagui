@@ -124,7 +124,9 @@ export function expandStyles(style: any) {
     if (shorthands) {
       key = shorthands[key] || key
     }
-    if (reducedStyleKeys[key]) continue
+    if (isWeb && reducedStyleKeys[key]) {
+      continue
+    }
     if (key in pseudoDescriptors) {
       res[key] = expandStyles(style[key])
     } else {
