@@ -10,7 +10,6 @@ import {
   getSplitStyles,
   getStylesAtomic,
   mediaQueryConfig,
-  normalizeStyleObject,
   proxyThemeVariables,
   pseudoDescriptors,
   rnw,
@@ -874,6 +873,7 @@ export function createExtractor() {
                   undefined,
                   shouldPrintDebug
                 )
+
                 if (out) {
                   if (!Array.isArray(out)) {
                     console.warn(`Error expected array but got`, out)
@@ -1431,7 +1431,6 @@ export function createExtractor() {
             for (const key in attrs) {
               const cur = attrs[key]
               if (cur.type === 'style') {
-                normalizeStyleObject(cur.value)
                 foundStaticProps = {
                   ...foundStaticProps,
                   ...expandStyles(cur.value),
@@ -1575,8 +1574,8 @@ export function createExtractor() {
             // merge styles, leave undefined values
             let prev: ExtractedAttr | null = null
 
-            function mergeStyles(prev: ViewStyle & PseudoStyles, next: ViewStyle & PseudoStyles) {
-              normalizeStyleObject(next)
+            function mergeStyles(prev: ViewStyle & PseudoStyles, nextIn: ViewStyle & PseudoStyles) {
+              const next = expandStyles(nextIn)
               for (const key in next) {
                 // merge pseudos
                 if (pseudoDescriptors[key]) {

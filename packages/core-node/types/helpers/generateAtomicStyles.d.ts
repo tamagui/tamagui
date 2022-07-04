@@ -7,6 +7,17 @@ export declare type Style = {
 };
 export declare const generateAtomicStyles: (style: ViewStyle & TextStyle, pseudo?: PseudoDescriptor) => StyleObject[];
 export declare function expandStyles(style: any): Record<string, any>;
-export declare function expandStyle(key: string, value: any): any;
+export declare const colorProps: {
+    backgroundColor: boolean;
+    borderColor: boolean;
+    borderTopColor: boolean;
+    borderRightColor: boolean;
+    borderBottomColor: boolean;
+    borderLeftColor: boolean;
+    color: boolean;
+    shadowColor: boolean;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
+};
 export {};
 //# sourceMappingURL=generateAtomicStyles.d.ts.map

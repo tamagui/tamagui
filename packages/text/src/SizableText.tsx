@@ -1,4 +1,4 @@
-import { GetProps, Text, getTextSize, styled } from '@tamagui/core'
+import { GetProps, Text, getFont, styled } from '@tamagui/core'
 
 export const SizableText = styled(
   Text,
@@ -7,7 +7,7 @@ export const SizableText = styled(
     fontFamily: '$body',
 
     variants: {
-      size: getTextSize,
+      size: getFont,
     },
 
     defaultVariants: {

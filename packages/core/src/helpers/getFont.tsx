@@ -1,7 +1,7 @@
 import { getVariableValue } from '../createVariable'
 import { FontSizeTokens, TextProps, VariantSpreadFunction } from '../types'
 
-export const getTextSize: VariantSpreadFunction<TextProps, FontSizeTokens> = (
+export const getFont: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   val = '$4',
   { fonts, theme, props }
 ) => {
@@ -19,7 +19,7 @@ export const getTextSize: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   const fontStyle = props.fontStyle || font.style?.[val]
   const textTransform = props.textTransform || font.transform?.[val]
   const color = props.color || font.color?.[val] || theme.color
-  return {
+  const style = {
     color,
     fontStyle,
     textTransform,
@@ -28,5 +28,11 @@ export const getTextSize: VariantSpreadFunction<TextProps, FontSizeTokens> = (
     letterSpacing,
     fontSize,
     lineHeight,
-  } as any
+  }
+  if (process.env.NODE_ENV === 'development') {
+    if (props['debug']) {
+      console.log('getFont', val, style, 'from props', props)
+    }
+  }
+  return style
 }

@@ -6,12 +6,12 @@ import {
   GenericVariantDefinitions,
   PropMapper,
   SplitStyleState,
-  StaticConfig,
   StaticConfigParsed,
   TamaguiInternalConfig,
   VariantSpreadFunction,
 } from '../types'
-import { expandStyle, expandStyles } from './generateAtomicStyles'
+import { expandStyle } from './expandStyle'
+import { expandStyles } from './expandStyles'
 import { getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { mergeProps } from './mergeProps'
@@ -67,6 +67,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       '',
       avoidDefaultProps
     )
+
     if (variantValue) {
       if (process.env.NODE_ENV === 'development') {
         if (debug) console.log('propMapped', key, value, 'with', propsIn, 'to', variantValue)

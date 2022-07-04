@@ -1,4 +1,12 @@
 - 1.0
+  - principles doc to explain:
+    - everything works runtime + compile the same
+    - designed for apps so trades off bigger bundle size and somewhat slower initial render performance for render speed (and authoring speed)
+  - cleanup run on style logic
+    - can move all of expandStyle() into propMapper()
+    - then remove expandStyle()
+    - lets do TDD for this and test native/web diffs
+  - generateAtomicStyles should be no-op / unused on native, any shared logic in in should move upwards, remove that inner loop there...
   - Group make media style size use properly
   - <Toast />
   - verify Popover.Content size matches size of Popover if unset on content

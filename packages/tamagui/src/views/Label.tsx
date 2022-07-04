@@ -3,7 +3,7 @@ import {
   GetProps,
   ReactComponentWithRef,
   getButtonSize,
-  getTextSize,
+  getFont,
   isWeb,
   styled,
   themeable,
@@ -44,7 +44,7 @@ export const LabelFrame = styled(SizableText, {
       '...size': (val, extras) => {
         const buttonStyle = getButtonSize(val, extras)
         return {
-          ...getTextSize(val, extras),
+          ...getFont(val, extras),
           height: buttonStyle.height,
           lineHeight: buttonStyle.height,
         }

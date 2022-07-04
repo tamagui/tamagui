@@ -18,7 +18,6 @@ import {
   ThemeObject,
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
-import { fixNativeShadow } from './fixNativeShadow'
 import { getAtomicStyle, getStylesAtomic } from './getStylesAtomic'
 import {
   insertStyleRule,
@@ -27,6 +26,7 @@ import {
   updateInsertedCache,
 } from './insertStyleRule'
 import { mergeTransform } from './mergeTransform'
+import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { pseudoDescriptors } from './pseudoDescriptors'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
@@ -269,8 +269,16 @@ export const getSplitStyles: StyleSplitter = (
       viewProps[keyInit] = valInit
     }
 
+    /**
+     * There's (some) reason to this madness: we want to allow returning media/pseudo from variants
+     * Say you have a variant hoverable: { true: { hoverStyle: {} } }
+     * We run propMapper first to expand variant, then we run the inner loop and look again
+     * for if there's a pseudo/media returned from it.
+     */
+
     let isMedia = keyInit[0] === '$'
     let isPseudo = validPseudoKeys[keyInit]
+    let isMediaOrPseudo = isMedia || isPseudo
 
     if (
       !isMedia &&
@@ -288,8 +296,6 @@ export const getSplitStyles: StyleSplitter = (
       isMedia || isPseudo
         ? [[keyInit, valInit]]
         : staticConfig.propMapper(keyInit, valInit, theme, props, state, undefined, debug)
-
-    let isMediaOrPseudo = isMedia || isPseudo
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.log('  » getSplitStyles', keyInit, valInit, expanded)
@@ -404,7 +410,7 @@ export const getSplitStyles: StyleSplitter = (
         } else if (key in stylePropsTransform) {
           mergeTransform(style, key, val, true)
         } else {
-          style[key] = val
+          style[key] = normalizeValueWithProperty(val, key)
         }
         continue
       }
@@ -444,7 +450,9 @@ export const getSplitStyles: StyleSplitter = (
     if (transforms) {
       for (const namespace in transforms) {
         if (!transforms[namespace]) {
-          console.warn('Error no transform')
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('Error no transform', transforms, namespace)
+          }
           continue
         }
         const [hash, val] = transforms[namespace]
@@ -477,6 +485,30 @@ export const getSplitStyles: StyleSplitter = (
   }
 }
 
+export const getSubStyle = (
+  styleIn: Object,
+  staticConfig: StaticConfigParsed,
+  theme: ThemeObject,
+  props: any,
+  state: SplitStyleState,
+  avoidDefaultProps?: boolean
+): ViewStyle => {
+  const styleOut: ViewStyle = {}
+  for (const key in styleIn) {
+    const val = styleIn[key]
+    const expanded = staticConfig.propMapper(key, val, theme, props, state, avoidDefaultProps)
+    if (!expanded) continue
+    for (const [skey, sval] of expanded) {
+      if (skey in stylePropsTransform) {
+        mergeTransform(styleOut, skey, sval)
+      } else {
+        styleOut[skey] = normalizeValueWithProperty(sval, key)
+      }
+    }
+  }
+  return styleOut
+}
+
 export const insertSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
   if (res.rulesToInsert) {
@@ -501,34 +533,4 @@ export const useSplitStyles: StyleSplitter = (...args) => {
   }, [res.rulesToInsert])
 
   return res
-}
-
-export const getSubStyle = (
-  styleIn: Object,
-  staticConfig: StaticConfigParsed,
-  theme: ThemeObject,
-  props: any,
-  state: SplitStyleState,
-  avoidDefaultProps?: boolean
-): ViewStyle => {
-  const styleOut: ViewStyle = {}
-  for (const key in styleIn) {
-    const val = styleIn[key]
-    const expanded = staticConfig.propMapper(key, val, theme, props, state, avoidDefaultProps)
-    if (!expanded) continue
-    for (const [skey, sval] of expanded) {
-      if (skey in stylePropsTransform) {
-        mergeTransform(styleOut, skey, sval)
-      } else {
-        styleOut[skey] = sval
-      }
-    }
-  }
-  return styleOut
-}
-
-export function normalizeStyleObject(style: any) {
-  if (!isWeb) {
-    fixNativeShadow(style)
-  }
 }

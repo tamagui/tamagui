@@ -8,4 +8,9 @@ export declare type ViewStyleWithPseudos = ViewStyle & {
 };
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos): StyleObject[];
 export declare function getAtomicStyle(style: ViewStyle, pseudo?: PseudoDescriptor): StyleObject[];
+declare type Value = Object | Array<any> | string | number;
+export declare type Style = {
+    [key: string]: Value;
+};
+export {};
 //# sourceMappingURL=getStylesAtomic.d.ts.map

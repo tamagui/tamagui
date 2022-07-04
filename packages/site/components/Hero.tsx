@@ -101,6 +101,7 @@ const HeroTop = memo(() => {
           >
             <Paragraph
               color="$gray10"
+              debug="verbose"
               size="$6"
               fontFamily="$silkscreen"
               ta="left"
