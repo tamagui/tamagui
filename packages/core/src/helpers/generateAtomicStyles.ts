@@ -119,6 +119,7 @@ export function expandStyles(style: any) {
     }
   }
 
+  // think this loop is ultimately unnecessary here and could be merged with higher up loop
   for (let key in style) {
     shorthands = shorthands || getConfig().shorthands
     if (shorthands) {
@@ -131,10 +132,27 @@ export function expandStyles(style: any) {
       res[key] = expandStyles(style[key])
     } else {
       const val = normalizeValueWithProperty(style[key], key)
-      const out = expandStyle(key, val)
-      if (out) {
-        Object.assign(res, Object.fromEntries(out))
+
+      if (isWeb) {
+        // this is messy, no need for Object.fromEntries
+        const out = expandStyle(key, val)
+        if (out) {
+          Object.assign(res, Object.fromEntries(out))
+        } else {
+          res[key] = val
+        }
       } else {
+        if (key === 'shadowRadius') {
+          // fix weird incosistent behavior of shadows on native
+          if (val) {
+            if (!style.shadowOffset) {
+              res.shadowOffset = defaultOffset
+            }
+            if (style.shadowOpacity == undefined) {
+              res.shadowOpacity = 1
+            }
+          }
+        }
         res[key] = val
       }
     }
