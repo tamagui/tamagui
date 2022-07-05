@@ -8,25 +8,19 @@ import { normalizeColor } from './normalizeColor'
 const cache = {}
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
-  if (property === undefined || property === null) {
-    return value
-  }
-  const cached = cache[value]?.[property]
-  if (cached) {
-    return cached
-  }
+  const cached = cache[value]
+  if (cached) return cached
   let res = value
   if (
     process.env.TAMAGUI_TARGET === 'web' &&
     typeof value === 'number' &&
-    !unitlessNumbers[property]
+    (property === undefined || !unitlessNumbers[property])
   ) {
     res = `${value}px`
   } else if (property && colorProps[property]) {
+    cache[value] = res
     res = normalizeColor(value)
   }
-  cache[value] ||= {}
-  cache[value][property] = res
   return res
 }
 

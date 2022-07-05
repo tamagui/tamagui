@@ -331,7 +331,7 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
         pseudos[key] = pseudos[key] || {}
-        pseudos[key] = getSubStyle(val, staticConfig, theme, props, state, true)
+        pseudos[key] = getSubStyle(val, staticConfig, theme, props, state, conf, true)
         if (shouldDoClasses) {
           const pseudoStyles = getAtomicStyle(pseudos[key], pseudoDescriptors[key])
           for (const style of pseudoStyles) {
@@ -365,7 +365,7 @@ export const getSplitStyles: StyleSplitter = (
         // TODO test proxy here instead of merge
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-        const mediaStyle = getSubStyle(val, staticConfig, theme, props, state)
+        const mediaStyle = getSubStyle(val, staticConfig, theme, props, state, conf)
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
@@ -494,11 +494,13 @@ export const getSubStyle = (
   theme: ThemeObject,
   props: any,
   state: SplitStyleState,
+  conf: TamaguiInternalConfig,
   avoidDefaultProps?: boolean
 ): ViewStyle => {
   const styleOut: ViewStyle = {}
-  for (const key in styleIn) {
+  for (let key in styleIn) {
     const val = styleIn[key]
+    key = conf.shorthands[key] || key
     const expanded = staticConfig.propMapper(key, val, theme, props, state, avoidDefaultProps)
     if (!expanded) continue
     for (const [skey, sval] of expanded) {

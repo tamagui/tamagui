@@ -203,9 +203,9 @@ const AnimatedHeading = ({
           pr: 0,
         }}
         fontFamily={`$${family}`}
-        textShadowColor="$background"
-        textShadowRadius={10}
-        textShadowOffset={{ width: 0, height: 5 }}
+        textShadowColor="$shadowColorFocus"
+        textShadowRadius={3}
+        textShadowOffset={{ width: 0, height: 3 }}
         ellipse
         {...rest}
       >

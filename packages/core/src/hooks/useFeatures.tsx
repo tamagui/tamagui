@@ -1,6 +1,8 @@
-import React, { RefObject } from 'react'
+import React from 'react'
+import { RefObject } from 'react'
 import { View, ViewStyle } from 'react-native'
 
+import { getConfig } from '../conf'
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { getSubStyle } from '../helpers/getSplitStyles'
 import {
@@ -8,6 +10,7 @@ import {
   SplitStyleState,
   StaticConfigParsed,
   TamaguiComponentState,
+  TamaguiInternalConfig,
   UseAnimationHook,
   UseAnimationProps,
 } from '../types'
@@ -43,6 +46,7 @@ const createDefinition = ({
 })
 
 let featureDefinitions: Record<string, FeatureDefinition> | null = null
+let tamaguiConfig: TamaguiInternalConfig
 
 type FeatureKeys = keyof ReturnType<typeof loadFeatures>
 
@@ -77,6 +81,8 @@ function loadFeatures() {
 }
 
 function loadAnimationFeature() {
+  tamaguiConfig = tamaguiConfig || getConfig()
+
   return createDefinition({
     Component: ({ _utils, ...props }) => {
       const {
@@ -114,7 +120,8 @@ function loadAnimationFeature() {
                   staticConfig,
                   theme,
                   props,
-                  state
+                  state,
+                  tamaguiConfig
                 ) || pseudos.enterStyle
               : null || pseudos.enterStyle
             : null
@@ -126,7 +133,8 @@ function loadAnimationFeature() {
                   staticConfig,
                   theme,
                   props,
-                  state
+                  state,
+                  tamaguiConfig
                 ) || pseudos.exitStyle
               : null || pseudos.exitStyle
             : null
