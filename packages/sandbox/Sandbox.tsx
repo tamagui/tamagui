@@ -44,7 +44,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <YStack debug bw={1} boc="red" w={100} h={100} />
+        <YStack debug="verbose" bw={1} boc="red" w={100} h={100} />
         {/* <SelectDemo /> */}
       </div>
     </Tamagui.Provider>

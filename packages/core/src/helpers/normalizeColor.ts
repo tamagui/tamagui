@@ -1,33 +1,25 @@
 import normalizeCSSColor from 'normalize-css-color'
 
-const cache = {}
-
 export const normalizeColor = (color?: number | string | null, opacity = 1) => {
   if (color == null || color == undefined) {
     return
   }
-  const cached = cache[color]
-  if (cached) {
-    return cached
-  }
-  let res = color
   if (
     color[0] === '$' ||
     (process.env.TAMAGUI_TARGET === 'web' &&
       typeof color === 'string' &&
       (webColors[color] || color[0] === '_' || color.startsWith('var(')))
   ) {
-    res = color
+    return color
   } else {
     const rgba = colorToRGBA(color)
     if (rgba != null) {
       const [r, g, b, a] = rgba
       const alpha = (opacity ?? a).toFixed(2)
-      res = `rgba(${r},${g},${b},${alpha})`
+      return `rgba(${r},${g},${b},${alpha})`
     }
   }
-  cache[color] = res
-  return res
+  return color
 }
 
 const webColors = {

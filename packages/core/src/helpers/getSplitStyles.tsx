@@ -18,6 +18,7 @@ import {
   ThemeObject,
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
+import { fixStyles } from './expandStyles'
 import { getAtomicStyle, getStylesAtomic } from './getStylesAtomic'
 import {
   insertStyleRule,
@@ -176,12 +177,9 @@ export const getSplitStyles: StyleSplitter = (
 
   const propKeys = Object.keys(props)
   const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames
-
-  if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-    console.log('propKeys', propKeys, props)
-  }
-
   const len = propKeys.length
+
+  // loop backwards so we can skip already-used props
   for (let i = len - 1; i >= 0; i--) {
     const keyInit = propKeys[i]
 
@@ -425,6 +423,8 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
+  fixStyles(style)
+
   // add in defaults if not set:
   if (defaultClassNames) {
     classNames = {
@@ -506,6 +506,9 @@ export const getSubStyle = (
       }
     }
   }
+
+  fixStyles(styleOut)
+
   return styleOut
 }
 

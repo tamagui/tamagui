@@ -38,20 +38,22 @@ export function expandStyles(style: Record<string, any>) {
     }
   }
 
-  const { shadowRadius } = style
+  fixStyles(res)
 
-  if (shadowRadius) {
-    Object.assign(res, normalizeShadow(style))
+  return res
+}
+
+export function fixStyles(style: Record<string, any>) {
+  if (style.shadowRadius) {
+    Object.assign(style, normalizeShadow(style))
   }
 
   // ensure border style set by default to solid
   for (const key in borderDefaults) {
-    if (res[key] && !res[borderDefaults[key]]) {
-      res[borderDefaults[key]] = 'solid'
+    if (style[key] && !style[borderDefaults[key]]) {
+      style[borderDefaults[key]] = 'solid'
     }
   }
-
-  return res
 }
 
 function normalizeShadow({

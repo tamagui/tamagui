@@ -5,20 +5,29 @@
 
 import { normalizeColor } from './normalizeColor'
 
+const cache = {}
+
 export function normalizeValueWithProperty(value: any, property?: string): any {
   if (property === undefined || property === null) {
     return value
   }
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    const shouldCoerceToPx = typeof value === 'number' && !unitlessNumbers[property]
-    if (shouldCoerceToPx) {
-      return `${value}px`
-    }
+  const cached = cache[value]?.[property]
+  if (cached) {
+    return cached
   }
-  if (property && colorProps[property]) {
-    return normalizeColor(value)
+  let res = value
+  if (
+    process.env.TAMAGUI_TARGET === 'web' &&
+    typeof value === 'number' &&
+    !unitlessNumbers[property]
+  ) {
+    res = `${value}px`
+  } else if (property && colorProps[property]) {
+    res = normalizeColor(value)
   }
-  return value
+  cache[value] ||= {}
+  cache[value][property] = res
+  return res
 }
 
 const colorProps = {
@@ -40,9 +49,6 @@ const unitlessNumbers = {
   borderImageOutset: true,
   borderImageSlice: true,
   borderImageWidth: true,
-  boxFlex: true,
-  boxFleGroup: true,
-  boxOrdinalGroup: true,
   columnCount: true,
   flex: true,
   flexGrow: true,
@@ -67,14 +73,6 @@ const unitlessNumbers = {
   widows: true,
   zIndex: true,
   zoom: true,
-  fillOpacity: true,
-  floodOpacity: true,
-  stopOpacity: true,
-  strokeDasharray: true,
-  strokeDashoffset: true,
-  strokeMiterlimit: true,
-  strokeOpacity: true,
-  strokeWidth: true,
   scale: true,
   scaleX: true,
   scaleY: true,
