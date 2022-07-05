@@ -424,7 +424,6 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       >
         <ListItem
           backgrounded
-          hoverTheme
           pressTheme
           focusTheme
           componentName={ITEM_NAME}
@@ -720,9 +719,6 @@ const SelectScrollButtonImpl = React.forwardRef<
       left={x || 0}
       top={y || 0}
       width={`calc(${(floatingRef.current?.offsetWidth ?? 0) - 2}px)`}
-      background={`linear-gradient(to ${
-        dir === 'up' ? 'bottom' : 'top'
-      }, #29282b 50%, rgba(53, 54, 55, 0.01))`}
       onPointerMove={() => {
         if (!loopingRef.current) {
           intervalRef.current = setInterval(handleScrollArrowChange, 1000 / 60)
