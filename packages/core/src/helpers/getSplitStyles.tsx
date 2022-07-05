@@ -19,7 +19,7 @@ import {
 } from '../types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
-import { getAtomicStyle, getStylesAtomic } from './getStylesAtomic'
+import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   insertStyleRule,
   insertedTransforms,
@@ -424,6 +424,9 @@ export const getSplitStyles: StyleSplitter = (
   }
 
   fixStyles(style)
+  if (isWeb) {
+    styleToCSS(style)
+  }
 
   // add in defaults if not set:
   if (defaultClassNames) {

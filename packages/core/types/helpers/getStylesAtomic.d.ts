@@ -8,6 +8,7 @@ export declare type ViewStyleWithPseudos = ViewStyle & {
 };
 export declare function getStylesAtomic(stylesIn: ViewStyleWithPseudos): StyleObject[];
 export declare function getAtomicStyle(style: ViewStyle, pseudo?: PseudoDescriptor): StyleObject[];
+export declare function styleToCSS(style: Record<string, any>): void;
 declare type Value = Object | Array<any> | string | number;
 export declare type Style = {
     [key: string]: Value;

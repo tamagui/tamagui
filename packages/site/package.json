@@ -3,7 +3,7 @@
   "version": "1.0.1-beta.93",
   "private": true,
   "scripts": {
-    "dev": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development next-remote-watch ./data",
+    "dev": "./scripts/dev.sh",
     "clean:build": "rm -r .next || true; rm -r node_modules/.cache || true",
     "ci:build": "yarn next:build && yarn next:export",
     "dev:analyze": "ANALYZE=true yarn dev",

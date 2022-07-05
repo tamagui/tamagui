@@ -1,3 +1,4 @@
+import { composeRefs } from '@tamagui/compose-refs'
 import { composeEventHandlers, stylePropsView, validStyles } from '@tamagui/helpers'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
@@ -123,6 +124,7 @@ export function createComponent<
       props = propsIn
     }
 
+    const hostRef = useRef<HTMLElement | View>(null)
     const { Component, isText, isZStack } = staticConfig
     const componentName = props.componentName || staticConfig.componentName
     const componentClassName = props.asChild
@@ -139,6 +141,7 @@ export function createComponent<
         const banner = `${name} ${propsIn['data-is'] || ''}`
         console.group(`%c 🐛 ${banner}`, 'background: yellow;')
         console.log('props', propsIn)
+        console.log('ref', hostRef)
         if (props['debug'] === 'break') {
           debugger
         }
@@ -189,7 +192,6 @@ export function createComponent<
     const useAnimations = tamaguiConfig.animations?.useAnimations as UseAnimationHook | undefined
     const isAnimated = !!(useAnimations && props.animation)
     const hasEnterStyle = !!props.enterStyle
-    const hostRef = useRef<HTMLElement | View>(null)
 
     const animationFeatureStylesIn = props.animation ? { ...defaultNativeStyle, ...style } : null
 
@@ -259,7 +261,7 @@ export function createComponent<
     let viewProps: Record<string, any>
 
     // if react-native-web view just pass all props down
-    if (isWeb && !staticConfig.isReactNativeWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web' && !staticConfig.isReactNativeWeb) {
       // otherwise replicate react-native-web functionality
       const {
         // event props
@@ -419,17 +421,9 @@ export function createComponent<
 
       // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(viewProps)
-      const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef)
 
-      if (!isAnimated) {
-        // @ts-ignore
-        viewProps.ref = setRef
-      } else {
-        if (forwardedRef) {
-          // @ts-ignore
-          viewProps.ref = forwardedRef
-        }
-      }
+      const setRef = composeRefs(hostRef, platformMethodsRef, forwardedRef as any)
+      viewProps.ref = setRef
 
       if (props.href != undefined && hrefAttrs != undefined) {
         const { download, rel, target } = hrefAttrs
@@ -557,7 +551,7 @@ export function createComponent<
       }
     }
 
-    if (isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
       const fontFamilyName = isText
         ? props.fontFamily || staticConfig.defaultProps.fontFamily
         : null
@@ -834,7 +828,7 @@ export function createComponent<
 
     content = createElement(elementType, viewProps, childEls)
 
-    if (isWeb) {
+    if (process.env.TAMAGUI_TARGET === 'web') {
       // only necessary when animating because some AnimatedView which wraps RNW View doesn't forward dataSet className
       const isAnimatedRNWView = isAnimated && typeof elementType !== 'string' // assuming for now as reanimated is only driver
       const shouldWrapWithComponentTheme =
@@ -868,8 +862,10 @@ export function createComponent<
           console.log(key, viewProps[key])
         }
         console.groupEnd()
-        // prettier-ignore
-        console.log({ state, viewProps, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+        if (typeof window !== 'undefined') {
+          // prettier-ignore
+          console.log({ state, viewProps, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+        }
         console.groupEnd()
       }
     }

@@ -84,7 +84,11 @@ export const useTheme = (
         if (!name || key === '__proto__' || typeof key === 'symbol') {
           // TODO make this pattern better
           if (key === GetThemeManager) {
-            if (process.env.NODE_ENV === 'development' && props?.debug) {
+            if (
+              process.env.NODE_ENV === 'development' &&
+              props?.debug &&
+              typeof window !== 'undefined'
+            ) {
               console.log('>>', { themeName, didChangeTheme, name, componentName }, themeManager)
             }
             if (!didChangeTheme) return null

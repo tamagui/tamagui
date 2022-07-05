@@ -35,7 +35,7 @@
     "version": "lerna version",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
-    "site": "yarn workspace @tamagui/site dev",
+    "site": "cd packages/site && ./scripts/dev.sh",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "yarn workspace @tamagui/site ci:build && yarn workspace @tamagui/site next:start",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",

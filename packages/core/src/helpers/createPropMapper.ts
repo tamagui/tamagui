@@ -69,9 +69,6 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     )
 
     if (variantValue) {
-      if (process.env.NODE_ENV === 'development') {
-        if (debug) console.log('propMapped', key, value, 'with', propsIn, 'to', variantValue)
-      }
       return variantValue
     }
 

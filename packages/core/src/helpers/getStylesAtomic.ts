@@ -69,37 +69,10 @@ const generateAtomicStyles = (
     }
   }
 
-  // box-shadow
-  const { shadowOffset, shadowRadius, shadowColor } = style
-  if (style.shadowRadius !== undefined) {
-    const offset = shadowOffset || defaultOffset
-    const color = shadowColor as string
-    if (!color) {
-      console.warn('should not happen..')
-    }
-    const shadow = `${offset.width} ${offset.height} ${shadowRadius} ${color}`
-    style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
-  }
-
-  // text-shadow
-  const { textShadowColor, textShadowOffset, textShadowRadius } = style
-  if (textShadowColor || textShadowOffset || textShadowRadius) {
-    const { height, width } = textShadowOffset || defaultOffset
-    const radius = textShadowRadius || 0
-    const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
-    if (color && (height !== 0 || width !== 0 || radius !== 0)) {
-      const blurRadius = normalizeValueWithProperty(radius)
-      const offsetX = normalizeValueWithProperty(width)
-      const offsetY = normalizeValueWithProperty(height)
-      style.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
-    }
-  }
+  styleToCSS(style)
 
   const out: StyleObject[] = []
   for (const key in style) {
-    if (reducedStyleKeys[key]) {
-      continue
-    }
     const value = style[key]
     if (value != null && value != undefined) {
       const uid = key + (pseudo?.name || '')
@@ -128,6 +101,36 @@ const generateAtomicStyles = (
   return out
 }
 
+export function styleToCSS(style: Record<string, any>) {
+  // box-shadow
+  const { shadowOffset, shadowRadius, shadowColor } = style
+  if (style.shadowRadius !== undefined) {
+    const offset = shadowOffset || defaultOffset
+    const shadow = `${offset.width}px ${offset.height}px ${shadowRadius} ${shadowColor}`
+    style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
+    delete style.shadowOffset
+    delete style.shadowRadius
+    delete style.shadowColor
+  }
+
+  // text-shadow
+  const { textShadowColor, textShadowOffset, textShadowRadius } = style
+  if (textShadowColor || textShadowOffset || textShadowRadius) {
+    const { height, width } = textShadowOffset || defaultOffset
+    const radius = textShadowRadius || 0
+    const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
+    if (color && (height !== 0 || width !== 0 || radius !== 0)) {
+      const blurRadius = normalizeValueWithProperty(radius)
+      const offsetX = normalizeValueWithProperty(width)
+      const offsetY = normalizeValueWithProperty(height)
+      style.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
+    }
+    delete style.textShadowColor
+    delete style.textShadowOffset
+    delete style.textShadowRadius
+  }
+}
+
 // { scale: 2 } => 'scale(2)'
 // { translateX: 20 } => 'translateX(20px)'
 // { matrix: [1,2,3,4,5,6] } => 'matrix(1,2,3,4,5,6)'
@@ -140,16 +143,6 @@ const mapTransform = (transform) => {
     const normalizedValue = normalizeValueWithProperty(value, type)
     return `${type}(${normalizedValue})`
   }
-}
-
-const reducedStyleKeys = {
-  shadowColor: true,
-  shadowOffset: true,
-  shadowOpacity: true,
-  shadowRadius: true,
-  textShadowColor: true,
-  textShadowOffset: true,
-  textShadowRadius: true,
 }
 
 // cache
