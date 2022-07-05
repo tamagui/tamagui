@@ -250,7 +250,7 @@ export const SelectViewportFrame = styled(ThemeableStack, {
   backgroundColor: '$background',
   elevate: true,
   bordered: true,
-  overflow: 'hidden',
+  overflow: 'scroll',
   userSelect: 'none',
 
   variants: {

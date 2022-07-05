@@ -1,4 +1,3 @@
-import { composeRefs } from '@tamagui/compose-refs'
 import { composeEventHandlers, stylePropsView, validStyles } from '@tamagui/helpers'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
@@ -422,7 +421,7 @@ export function createComponent<
       // from react-native-web
       const platformMethodsRef = rnw.usePlatformMethods(viewProps)
 
-      const setRef = composeRefs(hostRef, platformMethodsRef, forwardedRef as any)
+      const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any)
       viewProps.ref = setRef
 
       if (props.href != undefined && hrefAttrs != undefined) {
