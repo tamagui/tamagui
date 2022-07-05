@@ -133,14 +133,12 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        // prettier-ignore
-        console.log('⚠️', componentName || Component?.displayName || Component?.name || '[Unnamed Component]', 'debug on')
-        // keep separate react native warn touches every value on prop causing weird behavior
-        console.log('props in:', {
-          propsIn,
-          props,
-          ordered: Object.keys(props),
-        })
+        const name = `${
+          componentName || Component?.displayName || Component?.name || '[Unnamed Component]'
+        }`
+        const banner = `${name} ${propsIn['data-is'] || ''}`
+        console.group(`%c 🐛 ${banner}`, 'background: yellow;')
+        console.log('props', propsIn)
         if (props['debug'] === 'break') {
           debugger
         }
@@ -489,12 +487,7 @@ export function createComponent<
       }
     }
 
-    if (process.env.NODE_ENV === 'development' && props['debug']) {
-      console.log('viewProps', elementType, viewProps.role, viewProps.tabIndex)
-    }
-
-    // from react-native-web
-    if (true && !isText && isWeb) {
+    if (process.env.NODE_ENV === 'development' && !isText && isWeb) {
       Children.toArray(props.children).forEach((item) => {
         if (typeof item === 'string') {
           console.error(`Unexpected text node: ${item}. A text node cannot be a child of a <View>.`)
@@ -579,11 +572,6 @@ export function createComponent<
 
       const className = classList.join(' ')
       const style = animationStyles ?? splitStyles.style
-
-      if (process.env.NODE_ENV === 'development' && props['debug']) {
-        // prettier-ignore
-        console.log('  » className', { splitStyles, style, isStringElement, pseudos, state, classNames, propsClassName: props.className, classList, className: className.trim().split(' '), themeClassName: theme.className, values: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) })
-      }
 
       // TODO this is specific to reanimated rn
       const isAnimatedReactNativeWeb = props.animation && avoidClasses
@@ -875,8 +863,14 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
+        console.groupCollapsed(elementType, `props out`, viewProps)
+        for (const key in viewProps) {
+          console.log(key, viewProps[key])
+        }
+        console.groupEnd()
         // prettier-ignore
-        console.log('⭐️', { propsIn: { ...props }, propsOut: { ...viewProps }, elementType, state, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, ViewComponent: elementType, viewProps, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo } : null) })
+        console.log({ state, viewProps, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+        console.groupEnd()
       }
     }
 
@@ -969,10 +963,6 @@ export function createComponent<
       initialSplitStyles.viewProps,
       true
     )
-
-    if (debug) {
-      console.warn(defaults, component.defaultProps, initialSplitStyles)
-    }
 
     // avoid passing className props to variants
     initialSplitStyles.classNames = {

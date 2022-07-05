@@ -6,10 +6,11 @@
 import { normalizeColor } from './normalizeColor'
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
+  if (property === undefined || property === null) {
+    return value
+  }
   if (process.env.TAMAGUI_TARGET === 'web') {
-    const shouldCoerceToPx =
-      typeof value === 'number' &&
-      (property === undefined || property === null || !unitlessNumbers[property])
+    const shouldCoerceToPx = typeof value === 'number' && !unitlessNumbers[property]
     if (shouldCoerceToPx) {
       return `${value}px`
     }

@@ -80,7 +80,7 @@ export function expandStyle(key: string, value: any) {
   }
 }
 
-const STYLE_SHORT_FORM_EXPANSIONS = {
+const STYLE_SHORT_FORM_EXPANSIONS: Record<string, string[]> = {
   borderColor: ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'],
   borderRadius: [
     'borderTopLeftRadius',

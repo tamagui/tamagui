@@ -38,10 +38,6 @@ export function expandStyles(style: Record<string, any>) {
     }
   }
 
-  if (style.boxShadow) {
-    debugger
-  }
-
   const { shadowRadius } = style
 
   if (shadowRadius) {
