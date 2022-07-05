@@ -14,25 +14,28 @@ export const TamaCard = ({
   children,
 }: any) => {
   const shadow = useHoverGlow({
-    resist: 80,
+    resist: 92,
     borderRadius: 0,
     strategy: 'blur',
-    blurPct: 10,
+    blurPct: 4,
     initialOffset: {
-      y: 20,
+      y: -100,
     },
     full: true,
     scale: 1,
-    color: 'var(--shadowColor)',
+    color: '$colorMid',
     background: 'transparent',
-    opacity: 0.5,
+    opacity: 1,
     inverse: true,
   })
   const glow = useHoverGlow({
-    resist: 70,
-    size: 800,
-    color: 'var(--pink10)',
-    opacity: 0.2,
+    resist: 0,
+    size: 300,
+    color: 'var(--color)',
+    opacity: 0.18,
+    style: {
+      zIndex: -1,
+    },
   })
   const containerRef = useComposedRefs(glow.parentRef, shadow.parentRef)
   return (
@@ -50,50 +53,48 @@ export const TamaCard = ({
       }}
     >
       {/* shadow */}
-      {/* {shadow.element} */}
-      <FancyCard ov="hidden" y={0}>
-        <YStack ref={containerRef}>
-          {/* glow */}
-          {glow.element}
-          <XStack p="$2" space>
-            <YStack f={1} space="$2" ai="center">
-              <H3
-                als="flex-start"
-                fontFamily="$silkscreen"
-                size="$7"
-                fow="200"
-                color="$color"
-                cursor="default"
-                letterSpacing={1}
-              >
-                {title}
-              </H3>
+      {shadow.element}
+      <FancyCard ref={containerRef} ov="hidden" y={0}>
+        {/* glow */}
+        {glow.element}
+        <XStack bc="$backgroundStrong" f={1} p="$5" m={1} br="$6" space>
+          <YStack f={1} space="$2" ai="center">
+            <H3
+              als="flex-start"
+              fontFamily="$silkscreen"
+              size="$7"
+              fow="200"
+              color="$color"
+              cursor="default"
+              letterSpacing={1}
+            >
+              {title}
+            </H3>
 
-              {!!(subtitlePre || subtitlePost) && (
-                <XStack>
-                  {!!subtitlePre && (
-                    <Paragraph cursor="default" tag="time" size="$7" theme="alt3">
-                      {subtitlePre}
-                    </Paragraph>
-                  )}
-                  {!!subtitlePost && (
-                    <Paragraph cursor="default" fow="800" theme="alt3" size="$7">
-                      {subtitlePost}
-                    </Paragraph>
-                  )}
-                </XStack>
-              )}
+            {!!(subtitlePre || subtitlePost) && (
+              <XStack>
+                {!!subtitlePre && (
+                  <Paragraph cursor="default" tag="time" size="$7" theme="alt3">
+                    {subtitlePre}
+                  </Paragraph>
+                )}
+                {!!subtitlePost && (
+                  <Paragraph cursor="default" fow="800" theme="alt3" size="$7">
+                    {subtitlePost}
+                  </Paragraph>
+                )}
+              </XStack>
+            )}
 
-              <Paragraph cursor="default" theme="alt3" size="$5" fow="500">
-                {children || description}
-              </Paragraph>
+            <Paragraph o={0.65} cursor="default" theme="alt3" size="$4" fow="500">
+              {children || description}
+            </Paragraph>
 
-              {footer}
-            </YStack>
+            {footer}
+          </YStack>
 
-            {!!icon && <NotoIcon size="$7">{icon}</NotoIcon>}
-          </XStack>
-        </YStack>
+          {!!icon && <NotoIcon size="$11">{icon}</NotoIcon>}
+        </XStack>
       </FancyCard>
     </YStack>
   )

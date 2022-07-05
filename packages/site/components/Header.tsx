@@ -53,11 +53,11 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
 
         <ThemeSearchButtonGroup />
 
-        {isTakeout && (
+        {/* {isTakeout && (
           <Link href="/takeout">
             <Button size="$2">Back to takeout</Button>
           </Link>
-        )}
+        )} */}
       </XStack>
 
       <XStack
