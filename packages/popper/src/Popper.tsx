@@ -15,7 +15,7 @@ import { SizableStackProps, ThemeableStack, YStack, YStackProps } from '@tamagui
 import * as React from 'react'
 import { View } from 'react-native'
 
-import { Coords, Placement, arrow, autoUpdate, flip, offset, shift } from './floating'
+import { Coords, Placement, Strategy, arrow, autoUpdate, flip, offset, shift } from './floating'
 import { UseFloatingResult, useFloating } from './useFloating'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
@@ -51,10 +51,19 @@ export type PopperProps = {
   placement?: Placement
   stayInFrame?: ShiftProps
   allowFlip?: FlipProps
+  strategy?: Strategy
 }
 
 export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) => {
-  const { __scopePopper, children, size, placement = 'bottom', stayInFrame, allowFlip } = props
+  const {
+    __scopePopper,
+    children,
+    size,
+    strategy = 'absolute',
+    placement = 'bottom',
+    stayInFrame,
+    allowFlip,
+  } = props
 
   const [isMounted, setIsMounted] = React.useState(false)
   useIsomorphicLayoutEffect(() => {
@@ -67,6 +76,7 @@ export const Popper: React.FC<PopperProps> = (props: ScopedProps<PopperProps>) =
   const arrowRef = React.useRef()
 
   const floating = useFloating({
+    strategy,
     placement,
     middleware: [
       stayInFrame ? shift(stayInFrame) : (null as any),
@@ -161,6 +171,17 @@ const PopperContentFrame = styled(ThemeableStack, {
   alignItems: 'center',
   radiused: true,
 
+  variants: {
+    size: {
+      '...size': (val, { tokens }) => {
+        return {
+          padding: tokens.space[val],
+          borderRadius: tokens.radius[val],
+        }
+      },
+    },
+  },
+
   defaultVariants: {
     size: '$4',
   },
@@ -194,10 +215,11 @@ export const PopperContent = PopperContentFrame.extractable(
 
       const frameProps = {
         ref: contentRefs,
-        x: (x as any) || 0,
-        y: (y as any) || 0,
-        position: 'absolute',
+        x: x || 0,
+        y: y || 0,
+        position: strategy,
       }
+      console.log('frameProps', frameProps, strategy)
 
       // outer frame because we explicitly dont want animation to apply to this
       return (
@@ -249,7 +271,7 @@ export const PopperArrow = PopperArrowFrame.extractable(
     const context = usePopperContext(ARROW_NAME, __scopePopper)
     const tokens = getTokens()
     const sizeVal = sizeProp ?? context.size
-    const sizeValResolved = getVariableValue(stepTokenUpOrDown(tokens.space, sizeVal, 0))
+    const sizeValResolved = getVariableValue(stepTokenUpOrDown(tokens.space, sizeVal, -2, [2]))
     const size = +sizeValResolved
     const { placement } = context
     const { x, y } = context.arrowStyle || { x: 0, y: 0 }
