@@ -1,4 +1,7 @@
 {
+  "eslint.workingDirectories": [
+    "packages/*/src"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "workbench.colorCustomizations": {
     "[Nüshu]": {

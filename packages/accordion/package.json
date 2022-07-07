@@ -16,7 +16,9 @@
   ],
   "scripts": {
     "build": "tamagui-build",
-    "watch": "tamagui-build --watch"
+    "watch": "tamagui-build --watch",
+    "lint-check": "eslint --cache --cache-location=node_modules/.cache/.eslintcache --ext=.js,.jsx,.ts,.tsx src",
+    "lint": "yarn lint-check --fix src"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.3.1",

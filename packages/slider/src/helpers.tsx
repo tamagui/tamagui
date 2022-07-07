@@ -1,5 +1,3 @@
-import { SizeTokens, getTokens, getVariableValue } from '@tamagui/core'
-
 export function getNextSortedValues(prevValues: number[] = [], nextValue: number, atIndex: number) {
   const nextValues = [...prevValues]
   nextValues[atIndex] = nextValue
