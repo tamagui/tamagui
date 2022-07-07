@@ -14,7 +14,7 @@ export function SwitchDemo() {
 
 function SwitchWithLabel(props: { size: SizeTokens }) {
   return (
-    <XStack w={300} x={-60} ai="center" space="$4">
+    <XStack w={300} ai="center" space="$4">
       <Label pr="$0" miw={200} jc="flex-end" size={props.size} htmlFor="switch-1">
         Dark mode
       </Label>

@@ -1,4 +1,4 @@
-import { Moon, Sun } from '@tamagui/feather-icons'
+import { ChevronRight, Moon, Sun } from '@tamagui/feather-icons'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
@@ -12,14 +12,16 @@ import {
   Spacer,
   Switch,
   YStack,
+  useTheme,
 } from 'tamagui'
 
 import { useThemeControl } from '../../useTheme'
 
 const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & ListItemProps) => {
   const linkProps = useLink({ href, as, shallow })
+  const theme = useTheme()
   return (
-    <ListItem {...linkProps} {...props}>
+    <ListItem {...linkProps} {...props} iconAfter={<ChevronRight color={theme.colorPress} />}>
       {children}
     </ListItem>
   )
@@ -96,17 +98,16 @@ const demos = [
       { title: 'Progress', route: '/demo/progress' },
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
-      { title: 'Select', route: '/demo/select' },
     ],
   },
 
-  {
-    label: 'Panels',
-    pages: [
-      { title: 'Dialog', route: '/demo/dialog' },
-      { title: 'Popover', route: '/demo/popover' },
-    ],
-  },
+  // {
+  //   label: 'Panels',
+  //   pages: [
+  //     { title: 'Dialog', route: '/demo/dialog' },
+  //     { title: 'Popover', route: '/demo/popover' },
+  //   ],
+  // },
 
   {
     label: 'Content',
