@@ -201,40 +201,44 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         // use config.maxDarkLightNesting to determine how deep you can nest until it breaks
         if (hasDarkLight) {
           for (const subName of names) {
-            const isDark = subName.startsWith('dark')
-            const childSelector = `${CNP}${subName.replace('dark_', '').replace('light_', '')}`
+            const isDark = isDarkOrLightBase || subName.startsWith('dark_')
+            const childSelector = `${CNP}${subName.replace(isDark ? 'dark_' : 'light_', '')}`
             const order = isDark ? ['dark', 'light'] : ['light', 'dark']
             if (isDarkOrLightBase) {
               order.reverse()
             }
             const [stronger, weaker] = order
             const max = config.maxDarkLightNesting ?? 3
-            new Array(max * 2).fill(undefined).forEach((_, pi) => {
-              if (pi % 2 === 1) return
+
+            new Array(Math.round(max * 1.5)).fill(undefined).forEach((_, pi) => {
+              const isOdd = pi % 2 === 1
+              if (isOdd && pi < 3) return
               const parents = new Array(pi + 1).fill(undefined).map((_, psi) => {
                 return `${CNP}${psi % 2 === 0 ? stronger : weaker}`
               })
-              selectors.push(
-                `${(parents.length > 1 ? parents.slice(1) : parents).join(' ')} ${childSelector}`
-              )
+              let parentSelectors = parents.length > 1 ? parents.slice(1) : parents
+              if (isOdd) {
+                const [_first, second, ...rest] = parentSelectors
+                parentSelectors = [second, ...rest, second]
+              }
+              selectors.push(`${parentSelectors.join(' ')} ${childSelector}`)
             })
           }
         }
 
         const rootSep = config.themeClassNameOnRoot ? '' : ' '
-        cssRules.push(`${selectors.map((x) => `:root${rootSep}${x}`).join(', ')} {${vars}}`)
+        const css = `${selectors.map((x) => `:root${rootSep}${x}`).join(', ')} {${vars}}`
+        cssRules.push(css)
 
-        if (config.shouldAddPrefersColorThemes) {
-          const isDark = themeName.startsWith('dark')
+        if (config.shouldAddPrefersColorThemes && isDarkOrLightBase) {
           // add media prefers for dark/light base
-          if (isDarkOrLightBase) {
-            cssRules.push(
-              `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
+          const isDark = themeName.startsWith('dark')
+          cssRules.push(
+            `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
       body { background:${theme.background}; color: ${theme.color} }
       :root {${vars} } 
     }`
-            )
-          }
+          )
         }
       }
     }
