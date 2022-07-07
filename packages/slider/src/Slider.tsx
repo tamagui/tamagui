@@ -1,7 +1,14 @@
 // forked from radix-ui
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { getSize, isWeb, styled, withStaticProperties } from '@tamagui/core'
+import {
+  SizeTokens,
+  getSize,
+  getVariableValue,
+  isWeb,
+  styled,
+  withStaticProperties,
+} from '@tamagui/core'
 import { clamp, composeEventHandlers } from '@tamagui/helpers'
 import { SizableStackProps, ThemeableStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -267,6 +274,18 @@ SliderTrackActive.displayName = RANGE_NAME
 
 const THUMB_NAME = 'SliderThumb'
 
+// TODO make this customizable through tamagui
+// so we can accurately use it for estimatedSize below
+const getThumbSize = (val?: SizeTokens | number) => {
+  const size = typeof val === 'number' ? val : getSize(val, -1)
+  return {
+    width: size,
+    height: size,
+    minWidth: size,
+    minHeight: size,
+  }
+}
+
 export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
   position: 'absolute',
@@ -281,15 +300,7 @@ export const SliderThumbFrame = styled(ThemeableStack, {
 
   variants: {
     size: {
-      '...size': (val) => {
-        const size = typeof val === 'number' ? val : getSize(val, -1)
-        return {
-          width: size,
-          height: size,
-          minWidth: size,
-          minHeight: size,
-        }
-      },
+      '...size': getThumbSize,
     },
   },
 })
@@ -312,7 +323,11 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const [size, setSize] = React.useState(0)
+    const [size, setSize] = React.useState(() => {
+      // for SSR
+      const estimatedSize = getVariableValue(getThumbSize(sizeProp).width)
+      return estimatedSize
+    })
 
     const thumbInBoundsOffset = size
       ? getThumbInBoundsOffset(size, percent, orientation.direction)
