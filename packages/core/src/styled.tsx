@@ -4,6 +4,8 @@ import { createComponent } from './createComponent'
 import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,
+  GetStyledVariants,
+  GetVariantProps,
   GetVariantValues,
   MediaProps,
   PseudoProps,
@@ -116,34 +118,21 @@ export function styled<
   >
 }
 
-// breaking...
-// TODO see core/types.ts bug
-
-// export const XStack = styled(Stack, {
+// import { Stack } from './views/Stack'
+// const X = styled(Stack, {
 //   variants: {
-//     horizontal: {
+//     size: {
+//       '...size': (val) => {
+//         return {}
+//       }
+//     },
+//     disabled: {
 //       true: {
-//         // flexDirection: 'row',
-//         width: 0,
+//         opacity: 0.5,
+//         pointerEvents: 'none',
 //       },
 //     },
-//   },
+//   }
 // })
-
-// const Separator = styled(Stack, {
-//   variants: {
-//     vertical: {
-//       true: {
-//         flexDirection: 'row',
-//       },
-//     },
-//   },
-//            <--- have to add as const to get working???
-// })
-
-// type props = GetProps<typeof XStack>
-// type variants = typeof XStack extends TamaguiComponent<any, infer Variants> ? Variants : never
-// type variants2 = typeof Separator extends TamaguiComponent<any, infer Variants> ? Variants : never
-
-// const x = <XStack horizontal />
-// const x2 = <Separator vertical />
+// type variants = GetStyledVariants<typeof X>
+// const y = <X disabled size="$10" />

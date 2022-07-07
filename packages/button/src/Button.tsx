@@ -88,8 +88,6 @@ export const ButtonFrame = styled(ThemeableStack, {
         pointerEvents: 'none',
       },
     },
-
-    // TODO see core/styled.ts bug
   } as const,
 
   defaultVariants: {

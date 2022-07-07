@@ -5,17 +5,12 @@
       - trades off bigger bundle size / a bit more init/memory
   - Group make media style size use properly
   - <Toast />
-  - verify Popover.Content size matches size of Popover if unset on content
   - FAQ
   - need an active theme thats blue in theme-base by default
-  - TODO bug backgroundStrong on dark in light / not variabl
   - fix light mode inverse when using prefers
   - https://github.com/tamagui/tamagui/issues/53
   - VisuallyHidden/display: none working with space
   - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
-  - Input based on Button for icon/iconAfter
-  - overwriting `disabled` in variants breaks types... (see ThemeableStack)
-  - fix `as const` for variants with string const bug
   - sell sizing story better - home hero, blog post?
   - sell compiler much better in hero
   - html props: role, tabIndex, input type
@@ -35,8 +30,6 @@
   - tokens-only type/docs
   - fix /types import
   - validate Label with Select, Input, Switch etc all work with it
-  - better docs on @tamagui/stacks (Sizable, ThemeableSizable, export variants)
-  - add more of a kitchen sink demo to starters
   - test Android in starters repo
   - size=5.5 icon scales diff
   - size={55} doesnt set size only icon
@@ -49,12 +42,12 @@
 
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
-  - 0% bug // TODO i think media + pseudo needs handling here
   - maybe <UL /> <LI /> <OL />
   - document exported helpers getTokens, useThemeName, getFontSize, spacedChildren
   - // TODO infer ref
 
 (potentially 1.0)
+  - Input based on Button for icon/iconAfter
   - cache at variant level (?)
   - another couple passes over style system to reduce work and size
   - sizing.mdx - rationale on size/space 
