@@ -47,7 +47,10 @@ export const Sandbox = () => {
       >
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
-        <Button size={50} icon={Sun}></Button>
+
+        <Theme name="dark">
+          <ButtonDemo />
+        </Theme>
       </div>
     </Tamagui.Provider>
   )
