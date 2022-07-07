@@ -176,7 +176,7 @@ export const PopoverContent = React.forwardRef<PopoverContentTypeElement, Popove
     return (
       <Portal>
         <Theme name={themeName}>
-          <RemoveScroll allowPinchZoom={allowPinchZoom}>
+          <RemoveScroll enabled={context.open} allowPinchZoom={allowPinchZoom}>
             <PopoverContentImpl
               {...contentModalProps}
               ref={composedRefs}

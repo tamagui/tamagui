@@ -246,7 +246,7 @@ const lightThemes = createThemesFrom('light', themeCreator, {
 const darkThemes = createThemesFrom('dark', themeCreator, {
   backgrounds: themeColors.dark,
   colors: themeColors.light.slice(2),
-  backgroundStrong: '#000',
+  backgroundStrong: '#070707',
   isBase: true,
   isLight: false,
   shift: 1,
@@ -395,8 +395,6 @@ const allThemes = {
   ...baseThemes,
   ...colorThemes,
 } as const
-
-console.log('allThemes', allThemes)
 
 export const themes: {
   [key in keyof typeof allThemes]: typeof baseThemes['light']
