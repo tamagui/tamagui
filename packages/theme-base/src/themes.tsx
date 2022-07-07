@@ -84,7 +84,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     ...altButtonThemes.slice(0, alts.length),
     [`${name}_Button`, altThemes2[1][1]],
     [`${name}_DrawerFrame`, altThemes2[1][1]],
-    [`${name}_SliderTrack`, altThemes[1][1]],
+    [`${name}_SliderTrack`, altThemes[0][1]],
     [`${name}_SliderTrackActive`, altThemes[3][1]],
     [`${name}_SliderThumb`, inverted[2]],
     [`${name}_Progress`, altThemes[2][1]],
