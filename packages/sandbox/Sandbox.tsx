@@ -1,7 +1,7 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonDemo, PopoverDemo, SelectDemo } from '@tamagui/demos'
+import { ButtonDemo, DialogDemo, PopoverDemo, SelectDemo } from '@tamagui/demos'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { Anchor, Button, Select, Theme, XStack, YStack, styled } from 'tamagui'
@@ -44,26 +44,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <XStack space>
-          <ButtonDemo />
-          <Theme name="pink">
-            <YStack bc="$background">
-              <ButtonDemo />
-            </YStack>
-          </Theme>
-          <Theme name="dark">
-            <YStack bc="$background">
-              <ButtonDemo />
-            </YStack>
-          </Theme>
-          <Theme name="dark">
-            <Theme name="pink">
-              <YStack bc="$background">
-                <ButtonDemo />
-              </YStack>
-            </Theme>
-          </Theme>
-        </XStack>
+        {/* <DialogDemo /> */}
+        <PopoverDemo />
       </div>
     </Tamagui.Provider>
   )

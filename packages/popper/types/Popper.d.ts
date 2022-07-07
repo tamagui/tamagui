@@ -4,11 +4,11 @@ import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
 import { Coords, Placement, Strategy, flip, shift } from './floating';
-import { UseFloatingResult } from './useFloating';
+import { UseFloatingReturn } from './useFloating';
 declare type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 declare type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
 export declare const createPopperScope: import("@tamagui/create-context").CreateScope;
-declare type PopperContextValue = UseFloatingResult & {
+declare type PopperContextValue = UseFloatingReturn & {
     isMounted: boolean;
     anchorRef: any;
     size?: SizeTokens;

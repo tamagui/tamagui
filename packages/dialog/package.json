@@ -33,7 +33,8 @@
     "@tamagui/stacks": "^1.0.1-beta.94",
     "@tamagui/text": "^1.0.1-beta.94",
     "@tamagui/use-controllable-state": "^1.0.1-beta.94",
-    "react-remove-scroll": "^2.5.3"
+    "aria-hidden": "^1.1.3",
+    "react-remove-scroll": "^2.5.5"
   },
   "peerDependencies": {
     "react": "*",
