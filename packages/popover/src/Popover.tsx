@@ -3,6 +3,8 @@
 import '@tamagui/polyfill-dev'
 
 import {
+  FloatingFocusManager,
+  Props,
   useDismiss,
   useFloating,
   useFocus,
@@ -22,7 +24,6 @@ import {
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
-// import { useFocusGuards } from '@tamagui/react-focus-guards'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import {
   FloatingOverrideContext,
@@ -33,17 +34,16 @@ import {
   PopperContent,
   PopperContentProps,
   PopperProps,
-  UseFloatingFn,
   createPopperScope,
+  usePopperContext,
 } from '@tamagui/popper'
 import { Portal } from '@tamagui/portal'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-// import { hideOthers } from 'aria-hidden'
+import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
 import { View } from 'react-native'
-
-// import { RemoveScroll } from 'react-remove-scroll'
+import { RemoveScroll } from 'react-remove-scroll'
 
 const POPOVER_NAME = 'Popover'
 
@@ -154,7 +154,7 @@ export interface PopoverContentTypeProps
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-type RemoveScrollProps = any //React.ComponentProps<typeof RemoveScroll>
+type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 type PopoverContentTypeElement = PopoverContentImplElement
 
 export const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
@@ -167,46 +167,47 @@ export const PopoverContent = React.forwardRef<PopoverContentTypeElement, Popove
     const themeName = useThemeName()
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    // React.useEffect(() => {
-    //   const content = contentRef.current
-    //   if (content) return hideOthers(content)
-    // }, [])
+    React.useEffect(() => {
+      if (!context.open) return
+      const content = contentRef.current
+      if (content) return hideOthers(content)
+    }, [context.open])
 
     return (
       <Portal>
         <Theme name={themeName}>
-          {/* <RemoveScroll allowPinchZoom={allowPinchZoom}> */}
-          <PopoverContentImpl
-            {...contentModalProps}
-            ref={composedRefs}
-            // we make sure we're not trapping once it's been closed
-            // (closed !== unmounted when animating out)
-            trapFocus={context.open}
-            disableOutsidePointerEvents
-            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-              event.preventDefault()
-              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-            })}
-            onPointerDownOutside={composeEventHandlers(
-              props.onPointerDownOutside,
-              (event) => {
-                const originalEvent = event.detail.originalEvent
-                const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
-                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                isRightClickOutsideRef.current = isRightClick
-              },
-              { checkDefaultPrevented: false }
-            )}
-            // When focus is trapped, a `focusout` event may still happen.
-            // We make sure we don't trigger our `onDismiss` in such case.
-            onFocusOutside={composeEventHandlers(
-              props.onFocusOutside,
-              (event) => event.preventDefault(),
-              { checkDefaultPrevented: false }
-            )}
-          />
+          <RemoveScroll allowPinchZoom={allowPinchZoom}>
+            <PopoverContentImpl
+              {...contentModalProps}
+              ref={composedRefs}
+              // we make sure we're not trapping once it's been closed
+              // (closed !== unmounted when animating out)
+              trapFocus={context.open}
+              disableOutsidePointerEvents
+              onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+                event.preventDefault()
+                if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+              })}
+              onPointerDownOutside={composeEventHandlers(
+                props.onPointerDownOutside,
+                (event) => {
+                  const originalEvent = event.detail.originalEvent
+                  const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
+                  const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                  isRightClickOutsideRef.current = isRightClick
+                },
+                { checkDefaultPrevented: false }
+              )}
+              // When focus is trapped, a `focusout` event may still happen.
+              // We make sure we don't trigger our `onDismiss` in such case.
+              onFocusOutside={composeEventHandlers(
+                props.onFocusOutside,
+                (event) => event.preventDefault(),
+                { checkDefaultPrevented: false }
+              )}
+            />
+          </RemoveScroll>
         </Theme>
-        {/* </RemoveScroll> */}
       </Portal>
     )
   }
@@ -250,44 +251,46 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
       onPointerDownOutside,
       onFocusOutside,
       onInteractOutside,
+      children,
       ...contentProps
     } = props
     const popperScope = usePopoverScope(__scopePopover)
     const context = usePopoverInternalContext(CONTENT_NAME, popperScope.__scopePopover)
+    // const popperContext = usePopperContext(CONTENT_NAME, popperScope.__scopePopper)
 
-    // Make sure the whole tree has focus guards as our `Popover` may be
-    // the last element in the DOM (beacuse of the `Portal`)
-    // useFocusGuards()
+    // const handleDismiss = React.useCallback(() => context.onOpenChange(false), [])
+    // <Dismissable
+    //     disableOutsidePointerEvents={disableOutsidePointerEvents}
+    //     // onInteractOutside={onInteractOutside}
+    //     onEscapeKeyDown={onEscapeKeyDown}
+    //     // onPointerDownOutside={onPointerDownOutside}
+    //     // onFocusOutside={onFocusOutside}
+    //     onDismiss={handleDismiss}
+    //   >
 
     return (
-      <FocusScope
-        loop
-        trapped={trapFocus}
-        onMountAutoFocus={onOpenAutoFocus}
-        onUnmountAutoFocus={onCloseAutoFocus}
-      >
-        <Dismissable
-          disableOutsidePointerEvents={disableOutsidePointerEvents}
-          onInteractOutside={onInteractOutside}
-          onEscapeKeyDown={onEscapeKeyDown}
-          onPointerDownOutside={onPointerDownOutside}
-          onFocusOutside={onFocusOutside}
-          onDismiss={() => context.onOpenChange(false)}
-        >
-          <AnimatePresence>
-            {!!context.open && (
-              <PopperContent
-                data-state={getState(context.open)}
-                id={context.contentId}
-                pointerEvents="auto"
-                {...popperScope}
-                {...contentProps}
-                ref={forwardedRef}
-              />
-            )}
-          </AnimatePresence>
-        </Dismissable>
-      </FocusScope>
+      <AnimatePresence>
+        {!!context.open && (
+          <PopperContent
+            key="popper-content"
+            data-state={getState(context.open)}
+            id={context.contentId}
+            pointerEvents="auto"
+            {...popperScope}
+            {...contentProps}
+            ref={forwardedRef}
+          >
+            <FocusScope
+              loop
+              trapped={trapFocus ?? context.open}
+              onMountAutoFocus={onOpenAutoFocus}
+              onUnmountAutoFocus={onCloseAutoFocus}
+            >
+              <div style={{ display: 'contents' }}>{children}</div>
+            </FocusScope>
+          </PopperContent>
+        )}
+      </AnimatePresence>
     )
   }
 )
@@ -365,25 +368,26 @@ export const Popover = withStaticProperties(
       onChange: onOpenChange,
     })
 
-    const useFloatingFn: UseFloatingFn = (props) => {
-      const floating = useFloating({
-        ...props,
-        open,
-        onOpenChange: setOpen,
-      })
-      const { getReferenceProps, getFloatingProps } = useInteractions([
-        useFocus(floating.context),
-        useRole(floating.context, { role: 'dialog' }),
-        useDismiss(floating.context),
-      ])
-      return {
-        ...floating,
-        getReferenceProps,
-        getFloatingProps,
-      } as any
-    }
-
-    const useFloatingContext = React.useCallback(useFloatingFn, [open])
+    const useFloatingContext = React.useCallback(
+      (props: Props) => {
+        const floating = useFloating({
+          ...props,
+          open,
+          onOpenChange: setOpen,
+        })
+        const { getReferenceProps, getFloatingProps } = useInteractions([
+          useFocus(floating.context),
+          useRole(floating.context, { role: 'dialog' }),
+          useDismiss(floating.context),
+        ])
+        return {
+          ...floating,
+          getReferenceProps,
+          getFloatingProps,
+        }
+      },
+      [open]
+    )
 
     return (
       <FloatingOverrideContext.Provider value={useFloatingContext}>
