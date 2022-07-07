@@ -136,7 +136,7 @@ const ButtonComponent = forwardRef((props: ButtonProps, ref) => {
 
   const isInsideButton = useContext(ButtonInsideButtonContext)
   const size = props.size || '$4'
-  const iconSize = getFontSize(size) * scaleIcon
+  const iconSize = (typeof size === 'number' ? size * 0.5 : getFontSize(size)) * scaleIcon
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color })
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map(getThemedIcon)
   const spaceSize = getVariableValue(iconSize) * scaleSpace

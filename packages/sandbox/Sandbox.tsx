@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import { ButtonDemo, DialogDemo, PopoverDemo, SelectDemo } from '@tamagui/demos'
+import { Sun } from '@tamagui/feather-icons'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { Anchor, Button, Select, Theme, XStack, YStack, styled } from 'tamagui'
@@ -45,7 +46,8 @@ export const Sandbox = () => {
         }}
       >
         {/* <DialogDemo /> */}
-        <PopoverDemo />
+        {/* <PopoverDemo /> */}
+        <Button size={50} icon={Sun}></Button>
       </div>
     </Tamagui.Provider>
   )

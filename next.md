@@ -31,8 +31,6 @@
   - fix /types import
   - validate Label with Select, Input, Switch etc all work with it
   - test Android in starters repo
-  - size=5.5 icon scales diff
-  - size={55} doesnt set size only icon
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   
   - <SelectableList /> (type = multi | single)
