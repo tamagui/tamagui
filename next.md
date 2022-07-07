@@ -22,23 +22,21 @@
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
     - make all inverse by default? i think so? or else make sub-themes handle it...
-  - input type="email", button type="submit" etc
-    - its fine to wrap input in HOC like button
-    - normalize divergent android/ios:
-      - https://reactnative.dev/docs/textinput
-        - android accepts "autoComplete"
-        - ios accepts "textContentType"
-        - set secureTextEntry automatically for type="password"
+  - POTENTIAL, i think rnw does support this its just trickier params, amy not want to do this:
+    - input type="email", button type="submit" etc
+      - its fine to wrap input in HOC like button
+      - normalize divergent android/ios:
+        - https://reactnative.dev/docs/textinput
+          - android accepts "autoComplete"
+          - ios accepts "textContentType"
+          - set secureTextEntry automatically for type="password"
   - form onSubmit
-  - // TODO bug not applying
   - shorthands-only type/docs
   - tokens-only type/docs
   - fix /types import
-  - make Label work on native with touch event (require single <Label.Provider> at root)
-    - make sure Select, Input, Switch etc all work with it
-  - document $body being default font family
+  - validate Label with Select, Input, Switch etc all work with it
   - better docs on @tamagui/stacks (Sizable, ThemeableSizable, export variants)
-  - add more of a kitchen sink demo to starts
+  - add more of a kitchen sink demo to starters
   - test Android in starters repo
   - size=5.5 icon scales diff
   - size={55} doesnt set size only icon
