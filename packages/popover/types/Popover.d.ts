@@ -7,6 +7,7 @@ import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popp
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
+import { RemoveScroll } from 'react-remove-scroll';
 export declare const usePopoverScope: (scope: Scope<any>) => {
     [__scopeProp: string]: Scope<any>;
 };
@@ -57,7 +58,7 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 export declare type PopoverContentProps = PopoverContentTypeProps;
-declare type RemoveScrollProps = any;
+declare type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverContentTypeProps & React.RefAttributes<HTMLElement | View>>;
 export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children'> {
     trapFocus?: FocusScopeProps['trapped'];
