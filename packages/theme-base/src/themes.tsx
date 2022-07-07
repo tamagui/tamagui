@@ -238,6 +238,9 @@ const lightThemes = createThemesFrom('light', themeCreator, {
   backgroundStrong: isWeb ? '#fefefe' : '#f2f2f2',
   borderColors: themeColors.light.slice(2),
   isLight: true,
+  offsets: {
+    background: [2, 2, 2, 2, 2, 2],
+  },
 })
 
 const darkThemes = createThemesFrom('dark', themeCreator, {
@@ -275,7 +278,6 @@ const baseThemes = {
   light,
   light_active: makeActiveTheme(lightThemes.light),
   light_Card: lightThemes.light,
-  light_Button: lightThemes.light_alt1,
   light_SliderTrack: lightThemes.light_alt2,
   light_SliderTrackActive: lightThemes.light_alt3,
   light_Switch: lightThemes.light_alt1,
@@ -291,7 +293,6 @@ const baseThemes = {
   dark_SliderTrack: darkThemes.dark_darker,
   dark_SliderTrackActive: darkThemes.dark_alt3,
   dark_Switch: darkThemes.dark_darker,
-  // dark_SwitchThumb: darkThemes.dark_alt2,
   dark_SwitchThumb: lightThemes.light_alt3,
   dark_Button: darkThemes.dark_alt1,
 }
@@ -394,6 +395,8 @@ const allThemes = {
   ...baseThemes,
   ...colorThemes,
 } as const
+
+console.log('allThemes', allThemes)
 
 export const themes: {
   [key in keyof typeof allThemes]: typeof baseThemes['light']
