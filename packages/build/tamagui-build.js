@@ -196,10 +196,9 @@ async function esbuildWriteIfChanged(opts) {
     if (!built.outputFiles) {
       return
     }
-    const [firstFile] = built.outputFiles
     await Promise.all(
       built.outputFiles.map(async (file) => {
-        const outDir = dirname(firstFile.path)
+        const outDir = dirname(file.path)
         await fs.ensureDir(outDir)
         const outString = new TextDecoder().decode(file.contents)
         if (
