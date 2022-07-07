@@ -87,6 +87,7 @@ export const ListItemFrame = styled(ThemeableStack, {
 })
 
 export const ListItemText = styled(SizableText, {
+  name: 'ListItemText',
   color: '$color',
   selectable: false,
   flexGrow: 1,
@@ -95,12 +96,18 @@ export const ListItemText = styled(SizableText, {
 })
 
 export const ListItemSubtitle = styled(ListItemText, {
+  name: 'ListItemSubtitle',
   color: '$colorPress',
   marginTop: '$-2',
   opacity: 0.65,
   ellipse: true,
   maxWidth: '100%',
   size: '$3',
+})
+
+const ListItemTitle = styled(ListItemText, {
+  name: 'ListItemTitle',
+  ellipse: true,
 })
 
 const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
@@ -149,7 +156,7 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
       {/* helper for common title/subtitle pttern */}
       {Boolean(title || subTitle) ? (
         <YStack flex={1}>
-          <ListItemText>{title}</ListItemText>
+          <ListItemTitle>{title}</ListItemTitle>
           {subTitle ? (
             typeof subTitle === 'string' ? (
               // TODO can use theme but we need to standardize to alt themes
