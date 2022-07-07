@@ -357,7 +357,6 @@ export const Popover = withStaticProperties(
       ...restProps
     } = props
     const popperScope = usePopoverScope(__scopePopover)
-    console.log('popperScope', popperScope)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
     const [open, setOpen] = useControllableState({
