@@ -41,14 +41,12 @@
   - size=5.5 icon scales diff
   - size={55} doesnt set size only icon
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
-  - <Select /> (AlertDialog)
   
   - <SelectableList /> (type = multi | single)
     - in place of Radio (+ checkbox)
     - needs ToggleGroup
       - needs RovingFocusGroup
 
-  - <LinearGradient /> colors accept theme types
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
   - 0% bug // TODO i think media + pseudo needs handling here

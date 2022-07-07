@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronLeft, ChevronRight } from '@tamagui/feather-icons'
+import React from 'react'
 import { Button, Input, Label, Popover, PopoverProps, XStack, YStack } from 'tamagui'
 
 export function PopoverDemo() {
@@ -13,16 +14,13 @@ export function PopoverDemo() {
 
 export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
   return (
-    <Popover modal {...props}>
+    <Popover size="$5" {...props}>
       <Popover.Trigger>
         <Button icon={Icon} />
       </Popover.Trigger>
       <Popover.Content
-        elevation="$4"
         enterStyle={{ x: 0, y: -10, o: 0 }}
         exitStyle={{ x: 0, y: -10, o: 0 }}
-        p="$2"
-        br="$4"
         x={0}
         y={0}
         o={1}
@@ -31,14 +29,12 @@ export function Demo({ Icon, ...props }: PopoverProps & { Icon?: any }) {
       >
         <Popover.Arrow />
 
-        <YStack p="$3">
-          <XStack space="$3">
-            <Label size="$3" htmlFor="name">
-              Name
-            </Label>
-            <Input size="$3" id="name" />
-          </XStack>
-        </YStack>
+        <XStack space="$3">
+          <Label size="$3" htmlFor="name">
+            Name
+          </Label>
+          <Input size="$3" id="name" />
+        </XStack>
       </Popover.Content>
     </Popover>
   )

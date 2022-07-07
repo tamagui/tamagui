@@ -3,7 +3,7 @@ import { Scope } from '@tamagui/create-context';
 import { SizableStackProps, YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Coords, Placement, flip, shift } from './floating';
+import { Coords, Placement, Strategy, flip, shift } from './floating';
 import { UseFloatingResult } from './useFloating';
 declare type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never;
 declare type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never;
@@ -26,6 +26,7 @@ export declare type PopperProps = {
     placement?: Placement;
     stayInFrame?: ShiftProps;
     allowFlip?: FlipProps;
+    strategy?: Strategy;
 };
 export declare const Popper: React.FC<PopperProps>;
 declare type PopperAnchorRef = HTMLElement | View;
