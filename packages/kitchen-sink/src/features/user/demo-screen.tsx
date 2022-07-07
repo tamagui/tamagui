@@ -22,7 +22,7 @@ export function DemoScreen() {
 
   return (
     <YStack bc="$backgroundStrong" f={1} jc="center" ai="center" space>
-      <YStack miw={200} maw={300} ai="center">
+      <YStack miw={200} maw={340} ai="center" bc="$background" p="$6" br="$6">
         <DemoComponent />
       </YStack>
     </YStack>
