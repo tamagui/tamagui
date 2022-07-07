@@ -6,6 +6,7 @@ const esbuild = require('esbuild')
 const fg = require('fast-glob')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
+const { dirname } = require('path')
 
 const jsOnly = !!process.env.JS_ONLY
 const skipJS = !!(process.env.SKIP_JS || false)
@@ -133,7 +134,7 @@ async function buildJs() {
   const start = Date.now()
   return await Promise.all([
     pkgMain
-      ? esbuild.build({
+      ? esbuildWriteIfChanged({
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/cjs',
           bundle: false,
@@ -150,7 +151,7 @@ async function buildJs() {
       : null,
     // dont bundle for tree shaking
     pkgModule
-      ? esbuild.build({
+      ? esbuildWriteIfChanged({
           entryPoints: files,
           outdir: flatOut ? 'dist' : 'dist/esm',
           sourcemap: true,
@@ -164,7 +165,7 @@ async function buildJs() {
         })
       : null,
     pkgModuleJSX
-      ? esbuild.build({
+      ? esbuildWriteIfChanged({
           // only diff is jsx preserve and outdir
           jsx: 'preserve',
           outdir: flatOut ? 'dist' : 'dist/jsx',
@@ -182,4 +183,35 @@ async function buildJs() {
   ]).then(() => {
     if (process.env.DEBUG) console.log(`built js in ${Date.now() - start}ms`)
   })
+}
+
+/**
+ * esbuild but avoids touching unchanged files to not freak out vite
+ * @param {esbuild.BuildOptions} opts
+ * @returns {Promise<void>}
+ */
+async function esbuildWriteIfChanged(opts) {
+  if (shouldWatch) {
+    const built = await esbuild.build({ ...opts, write: false })
+    if (!built.outputFiles) {
+      return
+    }
+    const [firstFile] = built.outputFiles
+    await Promise.all(
+      built.outputFiles.map(async (file) => {
+        const outDir = dirname(firstFile.path)
+        await fs.ensureDir(outDir)
+        const outString = new TextDecoder().decode(file.contents)
+        if (
+          !(await fs.pathExists(file.path)) ||
+          (await fs.readFile(file.path, 'utf8')) !== outString
+        ) {
+          // console.log('write', file.path)
+          await fs.writeFile(file.path, outString)
+        }
+      })
+    )
+  } else {
+    await esbuild.build(opts)
+  }
 }

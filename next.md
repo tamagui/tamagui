@@ -7,8 +7,6 @@
   - <Toast />
   - FAQ
   - need an active theme thats blue in theme-base by default
-  - fix light mode inverse when using prefers
-  - https://github.com/tamagui/tamagui/issues/53
   - VisuallyHidden/display: none working with space
   - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
   - sell sizing story better - home hero, blog post?
@@ -45,6 +43,7 @@
   - // TODO infer ref
 
 (potentially 1.0)
+  - super short classnames for themes in production
   - Input based on Button for icon/iconAfter
   - cache at variant level (?)
   - another couple passes over style system to reduce work and size
@@ -87,8 +86,6 @@ takeout:
     - tamagui test ./packages/site/components/OffsetBox.tsx
     - tamagui debug ./packages/site/components/OffsetBox.tsx
   - ios/android specific themes
-  - basic styled() extraction to css at compile time
-  - compiler hot reload
   - VSCode
     - move from functional component to styled() and back
     - built in jsx => css converter
