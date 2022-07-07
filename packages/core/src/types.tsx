@@ -684,6 +684,15 @@ export type StylableComponent =
   | typeof TextInput
   | typeof Image
 
+export type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<
+  any,
+  any,
+  any,
+  infer Variants
+>
+  ? Variants
+  : never
+
 export type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<
   any,
   any,
@@ -710,6 +719,7 @@ export type SpreadKeys =
   | '...lineHeight'
   | '...letterSpacing'
   | '...size'
+  | '...space'
   | '...color'
   | '...zIndex'
   | '...theme'
@@ -730,6 +740,8 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
               ? FontSizeVariantSpreadFunction<MyProps>
               : Key extends '...size'
               ? SizeVariantSpreadFunction<MyProps>
+              : Key extends '...space'
+              ? SpaceVariantSpreadFunction<MyProps>
               : Key extends '...color'
               ? ColorVariantSpreadFunction<MyProps>
               : Key extends '...lineHeight'
@@ -748,7 +760,9 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object
               ? ThemeVariantSpreadFunction<MyProps>
               : never
           } & {
-            [Key in string | number]?: MyProps | VariantSpreadFunction<MyProps, Val>
+            [Key in string | number | 'true' | 'false']?:
+              | MyProps
+              | VariantSpreadFunction<MyProps, Val>
           } & {
             [Key in VariantTypeKeys]?: Key extends ':number'
               ? VariantSpreadFunction<MyProps, number>
@@ -808,6 +822,7 @@ export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFun
   FontSizeTokens
 >
 export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>
+export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SpaceTokens>
 export type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ColorTokens>
 export type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,

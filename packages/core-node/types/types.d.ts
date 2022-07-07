@@ -340,16 +340,17 @@ export declare type StaticConfig = {
     parentNames?: string[];
 };
 export declare type StylableComponent = TamaguiComponent | React.Component | React.ForwardRefExoticComponent<any> | ReactComponentWithRef<any, any> | (new (props: any) => any) | typeof View | typeof Text | typeof TextInput | typeof Image;
+export declare type GetStyledVariants<A extends TamaguiComponent> = A extends TamaguiComponent<any, any, any, infer Variants> ? Variants : never;
 export declare type GetBaseProps<A extends StylableComponent> = A extends TamaguiComponent<any, any, infer BaseProps> ? BaseProps : never;
 export declare type GetProps<A extends StylableComponent> = A extends TamaguiComponent<infer Props> ? Props : A extends React.Component<infer Props> ? GetGenericComponentTamaguiProps<Props> : A extends new (props: infer Props) => any ? GetGenericComponentTamaguiProps<Props> : {};
 declare type GetGenericComponentTamaguiProps<P> = P & Omit<'textAlign' extends keyof P ? TextProps : StackProps, keyof P>;
-export declare type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...color' | '...zIndex' | '...theme' | '...radius';
+export declare type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...space' | '...color' | '...zIndex' | '...theme' | '...radius';
 export declare type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, MyProps extends Object = GetProps<Parent>, Val = any> = VariantDefinitionFromProps<MyProps, Val>;
 export declare type VariantDefinitionFromProps<MyProps, Val> = MyProps extends Object ? {
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
-        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
+        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
     } & {
-        [Key in string | number]?: MyProps | VariantSpreadFunction<MyProps, Val>;
+        [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val>;
     } & {
         [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
     });
@@ -377,6 +378,7 @@ export declare type VariantTypeKeys = ':string' | ':boolean' | ':number';
 export declare type GetVariantValues<Key> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Key;
 export declare type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontSizeTokens>;
 export declare type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>;
+export declare type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SpaceTokens>;
 export declare type ColorVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, ColorTokens>;
 export declare type FontLineHeightVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLineHeightTokens>;
 export declare type FontLetterSpacingVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontLetterSpacingTokens>;

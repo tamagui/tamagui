@@ -129,7 +129,6 @@ export const Tooltip = withStaticProperties(
             hasCustomAnchor={hasCustomAnchor}
             onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
             onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}
-            modal
           >
             {children}
           </__PopoverProviderInternal>
