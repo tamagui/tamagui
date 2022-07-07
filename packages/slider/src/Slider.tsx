@@ -219,7 +219,7 @@ SliderTrack.displayName = TRACK_NAME
 const RANGE_NAME = 'SliderTrackActive'
 
 type SliderTrackActiveElement = HTMLElement | View
-interface SliderTrackActiveProps extends YStackProps {}
+type SliderTrackActiveProps = YStackProps
 
 export const SliderTrackActiveFrame = styled(SliderFrame, {
   name: 'SliderTrackActive',
@@ -355,10 +355,13 @@ const SliderThumb = React.forwardRef<SliderThumbElement, SliderThumbProps>(
         aria-orientation={context.orientation}
         data-orientation={context.orientation}
         data-disabled={context.disabled ? '' : undefined}
-        // TODO
-        // @ts-ignore
         tabIndex={context.disabled ? undefined : 0}
         {...thumbProps}
+        onStartShouldSetResponderCapture={() => true}
+        onResponderGrant={() => console.log('grant')}
+        onResponderMove={() => {
+          console.log('move')
+        }}
         {...(context.orientation === 'horizontal'
           ? {
               x: thumbInBoundsOffset - size / 2,
@@ -435,8 +438,8 @@ const Slider = withStaticProperties(
     const valueIndexToChangeRef = React.useRef<number>(0)
     const isHorizontal = orientation === 'horizontal'
     // We set this to true by default so that events bubble to forms without JS (SSR)
-    // TODO
-    // const isFormControl = slider ? Boolean(slider.closest('form')) : true
+    // const isFormControl =
+    //   sliderRef.current instanceof HTMLElement ? Boolean(sliderRef.current.closest('form')) : true
 
     const [values = [], setValues] = useControllableState({
       prop: value,
@@ -553,7 +556,7 @@ Slider.displayName = SLIDER_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-// TODO
+// // TODO
 // const BubbleInput = (props: any) => {
 //   const { value, ...inputProps } = props
 //   const ref = React.useRef<HTMLInputElement>(null)

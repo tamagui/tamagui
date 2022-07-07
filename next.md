@@ -26,7 +26,6 @@
   - form onSubmit
   - shorthands-only type/docs
   - tokens-only type/docs
-  - fix /types import
   - validate Label with Select, Input, Switch etc all work with it
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
