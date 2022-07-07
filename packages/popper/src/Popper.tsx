@@ -16,7 +16,7 @@ import * as React from 'react'
 import { View } from 'react-native'
 
 import { Coords, Placement, Strategy, arrow, autoUpdate, flip, offset, shift } from './floating'
-import { UseFloatingResult, useFloating } from './useFloating'
+import { UseFloatingReturn, useFloating } from './useFloating'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -32,7 +32,7 @@ const [createPopperContext, createScope] = createContextScope(POPPER_NAME)
 
 export const createPopperScope = createScope
 
-type PopperContextValue = UseFloatingResult & {
+type PopperContextValue = UseFloatingReturn & {
   isMounted: boolean
   anchorRef: any
   size?: SizeTokens
@@ -219,7 +219,6 @@ export const PopperContent = PopperContentFrame.extractable(
         y: y || 0,
         position: strategy,
       }
-      console.log('frameProps', frameProps, strategy)
 
       // outer frame because we explicitly dont want animation to apply to this
       return (

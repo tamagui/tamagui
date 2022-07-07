@@ -18,10 +18,10 @@ import { Portal, PortalProps } from '@tamagui/portal'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
 import { View } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
-// import { hideOthers } from 'aria-hidden';
 
 const DIALOG_NAME = 'Dialog'
 
@@ -41,7 +41,6 @@ type DialogContextValue = {
   onOpenToggle(): void
   modal: boolean
   allowPinchZoom: boolean
-  // allowPinchZoom: DialogProps['allowPinchZoom'];
 }
 
 const [DialogProvider, useDialogContext] = createDialogContext<DialogContextValue>(DIALOG_NAME)
@@ -286,13 +285,11 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
     // aria-hide everything except the content (better supported equivalent to setting aria-modal)
-    // React.useEffect(() => {
-    //   const content = contentRef.current
-    //   if (content) {
-    //     console.log('should hide others')
-    //     // return hideOthers(content)
-    //   }
-    // }, [])
+    React.useEffect(() => {
+      if (!context.open) return
+      const content = contentRef.current
+      if (content) return hideOthers(content)
+    }, [context.open])
 
     return (
       <DialogContentImpl
@@ -412,10 +409,6 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
 
-    // Make sure the whole tree has focus guards as our `Dialog` will be
-    // the last element in the DOM (beacuse of the `Portal`)
-    // useFocusGuards();
-
     return (
       <>
         <FocusScope
@@ -443,7 +436,7 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
             />
           </Dismissable>
         </FocusScope>
-        {process.env.NODE_ENV !== 'production' && (
+        {process.env.NODE_ENV === 'development' && (
           <>
             <TitleWarning titleId={context.titleId} />
             <DescriptionWarning contentRef={contentRef} descriptionId={context.descriptionId} />
