@@ -98,6 +98,8 @@ export const ListItemSubtitle = styled(ListItemText, {
   color: '$colorPress',
   marginTop: '$-2',
   opacity: 0.65,
+  ellipse: true,
+  maxWidth: '100%',
   size: '$3',
 })
 
