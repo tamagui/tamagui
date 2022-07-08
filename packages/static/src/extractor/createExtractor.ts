@@ -6,13 +6,13 @@ import {
   PseudoStyles,
   StaticConfigParsed,
   TamaguiInternalConfig,
+  createDOMProps,
   expandStyles,
   getSplitStyles,
   getStylesAtomic,
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
-  rnw,
   stylePropsTransform,
 } from '@tamagui/core-node'
 import { difference, pick } from 'lodash'
@@ -887,7 +887,7 @@ export function createExtractor() {
                 if (out) {
                   if (isTargetingHTML) {
                     // translate to DOM-compat
-                    out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
+                    out = createDOMProps(isTextView ? 'span' : 'div', out)
                     // remove className - we dont use rnw styling
                     delete out.className
                   }
@@ -1281,7 +1281,7 @@ export function createExtractor() {
                 (traversePath.node.children &&
                   traversePath.node.children.every((x) => x.type === 'JSXText')))
 
-            let themeVal = inlined.get('theme')
+            const themeVal = inlined.get('theme')
             inlined.delete('theme')
 
             for (const [key] of [...inlined]) {
@@ -1495,7 +1495,7 @@ export function createExtractor() {
                       if (out && isTargetingHTML) {
                         const cn = out.className
                         // translate to DOM-compat
-                        out = rnw.createDOMProps(isTextView ? 'span' : 'div', out)
+                        out = createDOMProps(isTextView ? 'span' : 'div', out)
                         // remove rnw className use ours
                         out.className = cn
                       }
@@ -1897,8 +1897,6 @@ export function createExtractor() {
               isFlattened: shouldFlatten,
               programPath,
             })
-          } catch (err) {
-            throw err
           } finally {
             if (debugPropValue) {
               shouldPrintDebug = ogDebug

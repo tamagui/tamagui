@@ -12,7 +12,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   rules: {
-    'react-hooks/rules-of-hooks': 'error',
+    'no-inner-declarations': 'off',
     'react-hooks/exhaustive-deps': 'warn',
     'react/prop-types': 'off',
     'react/display-name': 'off',

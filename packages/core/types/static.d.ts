@@ -15,5 +15,5 @@ export * from './helpers/proxyThemeVariables';
 export * from './helpers/getSplitStyles';
 export * from '@tamagui/helpers';
 export * from './types';
-export declare const rnw: any;
+export * from '@tamagui/rnw';
 //# sourceMappingURL=static.d.ts.map
