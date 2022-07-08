@@ -1,12 +1,15 @@
 {
-  "name": "@tamagui/demos",
+  "name": "@tamagui/drawer-simple",
   "version": "1.0.1-beta.97",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
   "module:jsx": "dist/jsx",
+  "license": "MIT",
   "files": [
     "src",
     "types",
@@ -17,29 +20,21 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/avatar": "^1.0.1-beta.97",
-    "@tamagui/button": "^1.0.1-beta.97",
-    "@tamagui/config-base": "^1.0.1-beta.97",
     "@tamagui/core": "^1.0.1-beta.97",
-    "@tamagui/drawer": "^1.0.1-beta.97",
-    "@tamagui/drawer-simple": "^1.0.1-beta.97",
-    "@tamagui/list-item": "^1.0.1-beta.97",
-    "@tamagui/menu": "^1.0.1-beta.97",
-    "@tamagui/popover": "^1.0.1-beta.97",
-    "@tamagui/progress": "^1.0.1-beta.97",
-    "@tamagui/select": "^1.0.1-beta.97",
-    "@tamagui/slider": "^1.0.1-beta.97",
+    "@tamagui/create-context": "^1.0.1-beta.97",
     "@tamagui/stacks": "^1.0.1-beta.97",
-    "tamagui": "^1.0.1-beta.97"
+    "@tamagui/use-controllable-state": "^1.0.1-beta.97"
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.97",
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "react-native": "*"
   },
   "publishConfig": {
     "access": "public"

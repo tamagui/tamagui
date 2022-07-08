@@ -4,6 +4,7 @@ import '@tamagui/polyfill-dev'
 import {
   ButtonDemo,
   DialogDemo,
+  DrawerSimpleDemo,
   PopoverDemo,
   SelectDemo,
   SliderDemo,
@@ -57,7 +58,8 @@ export const Sandbox = () => {
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        <SelectDemo />
+        {/* <SelectDemo /> */}
+        <DrawerSimpleDemo />
         {/* <Theme name="dark">
           <ButtonDemo />
         </Theme> */}

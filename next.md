@@ -1,4 +1,9 @@
 - 1.0
+  - rename/document <Sheet >
+  - renm
+  - <Select /> sheet version on small screen
+  - <Dialog /> sheet version on small screen
+  
   - principles doc to explain:
     - everything works runtime + compile the same
     - designed for apps - so runtime performance key
@@ -50,29 +55,17 @@
    - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
   - // native doesn't support until next react-native version, need to remove eventually
-  - styled(Button)
-  - need to redo concatClassName(), can be removed entirely for non-flattened
   - Group borderRadius adjustment should be based on it's borderWidth + padding, not always set to 1, needs to de-opt those props
   - <Tabs />
     - needs RovingFocusGroup
-  - <Toast />
   - `blur` style prop
   - explore removing need for patching react-native-web
       - PR to rnw to publish pieces we need
-  - web-only mode:
-    - alias react-native => @tamagui/react-native-web-only ?
-  - Stacks / Grid 
-    - https://mobily.github.io/stacks/docs/changelog
-      - https://github.com/mobily/stacks/blob/master/src/Stacks_component_Grid.res
-    - maybe redo space to use this logic too if done at runtime (and then that allows moving to gap / compilation)
-  - createTamagui({ defaultProps: { Button: {} } }) for any component
   - `space` should work with media queries
   - Text numberOfLines / context fix
   - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
     - Docs/ability to configure stricted theme values (dont accept anything but tokens)
   - add fonts section to guides
-  - auto skeleton components
-  - simple <Table /> could be similar to PropsTable
 
 takeout:
   - customizable createTheme()

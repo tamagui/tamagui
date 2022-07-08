@@ -24,6 +24,7 @@
     "@tamagui/compose-refs": "^1.0.1-beta.97",
     "@tamagui/helpers": "^1.0.1-beta.97",
     "@tamagui/ow": "^0.28.1",
+    "@tamagui/rnw": "^1.0.1-beta.97",
     "@tamagui/use-debounce": "^1.0.1-beta.97",
     "@tamagui/use-force-update": "^1.0.1-beta.97",
     "expo-screen-orientation": "^4.2.0",

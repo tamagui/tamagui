@@ -22,5 +22,5 @@ export * from '@tamagui/helpers'
 export * from './types'
 
 // node only rnw export
-const interopRequire = (x: any) => ('default' in x ? x.default : x)
-export const rnw: any = interopRequire(require('react-native-web/dist/cjs/tamagui-exports'))
+import * as RNW from '@tamagui/rnw'
+export const rnw = RNW

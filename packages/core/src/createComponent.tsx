@@ -1,4 +1,10 @@
 import { composeEventHandlers, stylePropsView, validStyles } from '@tamagui/helpers'
+import {
+  useElementLayout,
+  useMergeRefs,
+  usePlatformMethods,
+  useResponderEvents,
+} from '@tamagui/rnw'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import React, {
   Children,
@@ -17,7 +23,6 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { getConfig, onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
-import { rnw } from './constants/rnw'
 import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
 import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
@@ -396,10 +401,10 @@ export function createComponent<
 
       assignNativePropsToWeb(elementType, viewProps, nonTamaguiProps)
 
-      rnw.useElementLayout(hostRef, onLayout)
+      useElementLayout(hostRef, onLayout)
 
       // from react-native-web
-      rnw.useResponderEvents(hostRef, {
+      useResponderEvents(hostRef, {
         onMoveShouldSetResponder,
         onMoveShouldSetResponderCapture,
         onResponderEnd,
@@ -419,9 +424,9 @@ export function createComponent<
       })
 
       // from react-native-web
-      const platformMethodsRef = rnw.usePlatformMethods(viewProps)
+      const platformMethodsRef = usePlatformMethods(viewProps)
 
-      const setRef = rnw.useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any)
+      const setRef = useMergeRefs(hostRef, platformMethodsRef, forwardedRef as any)
       viewProps.ref = setRef
 
       if (props.href != undefined && hrefAttrs != undefined) {
@@ -647,7 +652,7 @@ export function createComponent<
           ...(isHoverable && {
             onMouseEnter: attachHover
               ? (e) => {
-                  let next: Partial<typeof state> = {}
+                  const next: Partial<typeof state> = {}
                   if (attachHover) {
                     next.hover = true
                   }
@@ -663,7 +668,7 @@ export function createComponent<
               : undefined,
             onMouseLeave: attachHover
               ? (e) => {
-                  let next: Partial<typeof state> = {}
+                  const next: Partial<typeof state> = {}
                   mouseUps.add(unPress)
                   if (attachHover) {
                     next.hover = false
@@ -726,7 +731,7 @@ export function createComponent<
       }
     }
 
-    let childEls =
+    const childEls =
       !children || asChild
         ? children
         : wrapThemeManagerContext(

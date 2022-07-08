@@ -1,7 +1,7 @@
 import * as Helpers from '@tamagui/helpers'
+import * as rnw from '@tamagui/rnw'
 
 import { getConfig } from './conf'
-import { rnw } from './constants/rnw'
 import { getAllSelectors, getAllTransforms, getInsertedRules } from './helpers/insertStyleRule'
 
 // serves a central store for state

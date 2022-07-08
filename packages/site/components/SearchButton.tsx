@@ -1,4 +1,5 @@
 import { Search as SearchIcon } from '@tamagui/feather-icons'
+import React from 'react'
 import { memo, useContext, useEffect, useRef } from 'react'
 import { Button, ButtonProps, TooltipSimple, useIsTouchDevice } from 'tamagui'
 

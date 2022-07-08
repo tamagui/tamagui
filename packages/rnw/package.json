@@ -1,0 +1,19 @@
+{
+  "name": "@tamagui/rnw",
+  "version": "1.0.1-beta.97",
+  "main": "index.js",
+  "module": "index.esm.js",
+  "scripts": {
+    "build": "true",
+    "watch": "true"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react-native-web": "*"
+  },
+  "devDependencies": {
+    "react-native-web": "^0.18.3"
+  }
+}
