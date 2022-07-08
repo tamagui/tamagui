@@ -23,13 +23,14 @@ export function useControllableState<T>({
   useEffect(() => {
     currentProp.current = prop
     setVal((prev) => getNextStateWithCallback(prev, prop, handleChange))
-  }, [prop])
+  }, [handleChange, prop])
 
   return [
     val,
     useCallback(
-      (next: any) => {
+      (next: unknown) => {
         if (propWins && currentProp.current !== undefined) {
+          handleChange(next as T)
           return
         }
         setVal((prev) => {
@@ -40,8 +41,8 @@ export function useControllableState<T>({
           )
         })
       },
-      [setVal, propWins]
-    ) as any,
+      [propWins, handleChange]
+    ),
   ]
 }
 

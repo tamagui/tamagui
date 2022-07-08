@@ -56,7 +56,8 @@ export const Sandbox = () => {
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
-        <SliderDemo />
+        {/* <SliderDemo /> */}
+        <SelectDemo />
         {/* <Theme name="dark">
           <ButtonDemo />
         </Theme> */}
