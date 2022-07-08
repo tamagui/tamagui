@@ -1,17 +1,34 @@
 - 1.0
+  - `_active` style offical
+    - <SwitchTrack /> gets active theme by default when toggled
+
   - add ui package setting custom types example in starter
   - <Switch /> active state style
-  - rename/document <Sheet >
-  - renm
+  - <Sheet /> attach="bottom" os default
+    - <ActionSheet />
   - <Select /> sheet version on small screen
   - <Dialog /> sheet version on small screen
-  
+  - <ContextMenu />
+  - <Menu /> somewhat like accordion with ListItems
+  - <Radio />
+  - <Checkbox />
+  - <Group> working with both
+  - <Select multi> (share logic with Grouped Radio/Checkbox)
+  - <Select><SearchInput /></Select>
+  - <Autocomplete />
+  - <Tabs /> ()
+  - <Accordion />
+  - <Icon /> can use theme values and size values  
+  - <Toast />
+  - <Form onSubmit /> 
+    - native works by attaching state to a FormContext
+    - web works by just listening for event and using FormData()
+
   - principles doc to explain:
     - everything works runtime + compile the same
     - designed for apps - so runtime performance key
       - trades off bigger bundle size / a bit more init/memory
   - Group make media style size use properly
-  - <Toast />
   - FAQ
   - need an active theme thats blue in theme-base by default
   - VisuallyHidden/display: none working with space
@@ -30,18 +47,11 @@
           - android accepts "autoComplete"
           - ios accepts "textContentType"
           - set secureTextEntry automatically for type="password"
-  - form onSubmit
   - shorthands-only type/docs
   - tokens-only type/docs
   - validate Label with Select, Input, Switch etc all work with it
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
-  
-  - <SelectableList /> (type = multi | single)
-    - in place of Radio (+ checkbox)
-    - needs ToggleGroup
-      - needs RovingFocusGroup
-
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
   - maybe <UL /> <LI /> <OL />
@@ -57,12 +67,9 @@
    - (size = height of button, 1 = smallest button, 10 = largest, 4 = natural, 6 = typical largest, 2 = typical smallest)
   - ci should include a fake publish + reinstall step, because sometimes package.json.files[] is missing new files
   - // native doesn't support until next react-native version, need to remove eventually
-  - Group borderRadius adjustment should be based on it's borderWidth + padding, not always set to 1, needs to de-opt those props
   - <Tabs />
     - needs RovingFocusGroup
   - `blur` style prop
-  - explore removing need for patching react-native-web
-      - PR to rnw to publish pieces we need
   - `space` should work with media queries
   - Text numberOfLines / context fix
   - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
@@ -163,8 +170,6 @@ const ornaments = {
 - <SizableFrame />, <EnsureFlexed />
 - document/release <ThemeReverse />
 - container queries
-- <Menu />
-- <PopoverDrawer /> + <MenuDrawer />
 - // TODO only on hoverable/pressable!
 - options to render to native components in more places
 - <Group />
