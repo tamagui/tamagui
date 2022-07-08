@@ -5,9 +5,10 @@
 import { composeEventHandlers, getSize, getVariableValue, isWeb, styled } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
+import { View } from 'react-native'
 
 import { ARROW_KEYS, PAGE_KEYS, SLIDER_NAME, useSliderContext } from './constants'
-import { ScopedProps, SliderImplElement, SliderImplProps } from './types'
+import { ScopedProps, SliderImplProps } from './types'
 
 export const DirectionalYStack = styled(YStack, {
   variants: {
@@ -41,7 +42,7 @@ export const SliderFrame = styled(DirectionalYStack, {
   },
 })
 
-export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
+export const SliderImpl = React.forwardRef<View, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
     const {
       __scopeSlider,
@@ -82,14 +83,14 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
         onScrollShouldSetResponderCapture={() => true}
         onMoveShouldSetResponder={() => true}
         onStartShouldSetResponder={() => true}
-        onStartShouldSetResponderCapture={() => true}
+        // onStartShouldSetResponderCapture={() => true}
         onResponderTerminationRequest={() => {
-          console.log('got??/')
           return false
         }}
         onResponderGrant={composeEventHandlers(props.onResponderGrant, (event) => {
           const target = event.target as HTMLElement | number
-          const isStartingOnThumb = context.thumbs.has(event.target)
+          console.log('target', target, context.thumbs.has(target), context.thumbs)
+          const isStartingOnThumb = context.thumbs.has(target)
           // // Prevent browser focus behaviour because we focus a thumb manually when values change.
           // Touch devices have a delay before focusing so won't focus if touch immediately moves
           // away from target (sliding). We want thumb to focus regardless.
@@ -101,7 +102,6 @@ export const SliderImpl = React.forwardRef<SliderImplElement, SliderImplProps>(
           onSlideStart(event, isStartingOnThumb ? 'thumb' : 'track')
         })}
         onResponderMove={composeEventHandlers(props.onResponderMove, (event) => {
-          console.log('gogo')
           event.preventDefault()
           event.stopPropagation()
 
