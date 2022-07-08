@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/drawer-simple",
-  "version": "1.0.1-beta.97",
+  "version": "1.0.1-beta.98",
   "sideEffects": [
     "*.css"
   ],
@@ -20,10 +20,10 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.97",
-    "@tamagui/create-context": "^1.0.1-beta.97",
-    "@tamagui/stacks": "^1.0.1-beta.97",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.97"
+    "@tamagui/core": "^1.0.1-beta.98",
+    "@tamagui/create-context": "^1.0.1-beta.98",
+    "@tamagui/stacks": "^1.0.1-beta.98",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.98"
   },
   "peerDependencies": {
     "react": "*",
@@ -31,7 +31,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.97",
+    "@tamagui/build": "^1.0.1-beta.98",
     "react": "*",
     "react-dom": "*",
     "react-native": "*"

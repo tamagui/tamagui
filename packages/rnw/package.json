@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/rnw",
-  "version": "1.0.1-beta.97",
+  "version": "1.0.1-beta.98",
   "main": "index.js",
   "module": "index.esm.js",
   "types": "./types.d.ts",
