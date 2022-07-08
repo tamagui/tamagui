@@ -145,7 +145,7 @@ PopoverTrigger.displayName = TRIGGER_NAME
 const CONTENT_NAME = 'PopoverContent'
 
 export interface PopoverContentTypeProps
-  extends Omit<PopoverContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
+  extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
   /**
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
@@ -159,7 +159,7 @@ type PopoverContentTypeElement = PopoverContentImplElement
 
 export const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
   (props: ScopedProps<PopoverContentTypeProps>, forwardedRef) => {
-    const { allowPinchZoom, ...contentModalProps } = props
+    const { allowPinchZoom, trapFocus, ...contentModalProps } = props
     const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
@@ -182,7 +182,7 @@ export const PopoverContent = React.forwardRef<PopoverContentTypeElement, Popove
               ref={composedRefs}
               // we make sure we're not trapping once it's been closed
               // (closed !== unmounted when animating out)
-              trapFocus={context.open}
+              trapFocus={trapFocus ?? context.open}
               disableOutsidePointerEvents
               onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
                 event.preventDefault()
