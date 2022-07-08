@@ -144,22 +144,24 @@ PopoverTrigger.displayName = TRIGGER_NAME
 
 const CONTENT_NAME = 'PopoverContent'
 
+export type PopoverContentProps = PopoverContentTypeProps
+
+type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
+type PopoverContentTypeElement = PopoverContentImplElement
+
 export interface PopoverContentTypeProps
   extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
   /**
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
+
+  disableRemoveScroll?: boolean
 }
-
-export type PopoverContentProps = PopoverContentTypeProps
-
-type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
-type PopoverContentTypeElement = PopoverContentImplElement
 
 export const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
   (props: ScopedProps<PopoverContentTypeProps>, forwardedRef) => {
-    const { allowPinchZoom, trapFocus, ...contentModalProps } = props
+    const { allowPinchZoom, trapFocus, disableRemoveScroll, ...contentModalProps } = props
     const context = usePopoverInternalContext(CONTENT_NAME, props.__scopePopover)
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
@@ -176,7 +178,10 @@ export const PopoverContent = React.forwardRef<PopoverContentTypeElement, Popove
     return (
       <Portal>
         <Theme name={themeName}>
-          <RemoveScroll enabled={context.open} allowPinchZoom={allowPinchZoom}>
+          <RemoveScroll
+            enabled={disableRemoveScroll ? false : context.open}
+            allowPinchZoom={allowPinchZoom}
+          >
             <PopoverContentImpl
               {...contentModalProps}
               ref={composedRefs}
@@ -280,14 +285,18 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
             {...contentProps}
             ref={forwardedRef}
           >
-            <FocusScope
-              loop
-              trapped={trapFocus ?? context.open}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-            >
-              <div style={{ display: 'contents' }}>{children}</div>
-            </FocusScope>
+            {trapFocus === false ? (
+              children
+            ) : (
+              <FocusScope
+                loop
+                trapped={trapFocus ?? context.open}
+                onMountAutoFocus={onOpenAutoFocus}
+                onUnmountAutoFocus={onCloseAutoFocus}
+              >
+                <div style={{ display: 'contents' }}>{children}</div>
+              </FocusScope>
+            )}
           </PopperContent>
         )}
       </AnimatePresence>
