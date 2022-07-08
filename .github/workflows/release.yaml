@@ -15,34 +15,27 @@ jobs:
     environment: github-pages
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 16.x
-        uses: actions/setup-node@master
-        with:
-          node-version: 16.x
+      - name: Install
+        uses: ./.github/actions/install
 
-      - name: install yarn
-        run: |
-          npm i yarn -g
-          yarn set version 3.2.0
+      - name: Check
+        run: yarn check
 
-      - name: Install Dependencies
-        run: |
-          ./scripts/ci-prepare.sh && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install
+      - name: Lint
+        run: yarn lint
 
-      - name: Build JS
-        run: yarn build:js
+      - name: Test
+        run: yarn test
 
-      - name: Build Site
-        run: |
-          yarn --cwd packages/site ci:build
+      - name: Release Site
+        uses: ./.github/actions/release-site
 
-      - name: Deploy Website
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./packages/site/out
-          cname: tamagui.dev
+      # test this later...
+      # - name: Publish Beta
+      #   run: yarn release:beta --ci
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

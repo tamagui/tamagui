@@ -1,0 +1,46 @@
+name: Checks
+
+on:
+  push:
+    paths-ignore:
+      - 'assets/**'
+      - '.vscode/**'
+    branches-ignore:
+      - master
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install
+        uses: ./.github/actions/install
+      - name: Check
+        run: yarn check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install
+        uses: ./.github/actions/install
+      - name: Test
+        run: yarn test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install
+        uses: ./.github/actions/install
+      - name: Lint
+        run: yarn lint

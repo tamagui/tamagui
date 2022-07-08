@@ -12,7 +12,7 @@
     ]
   },
   "scripts": {
-    "postinstall": "manypkg check && yarn build:js",
+    "postinstall": "manypkg check",
     "check": "manypkg check",
     "build": "turbo run build",
     "build:force": "yarn clean:build && turbo run build --force",

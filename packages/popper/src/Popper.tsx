@@ -250,7 +250,7 @@ const PopperArrowFrame = styled(YStack, {
   borderColor: '$borderColor',
   backgroundColor: '$background',
   position: 'absolute',
-  zIndex: 0,
+  zIndex: -1,
   pointerEvents: 'none',
 })
 
@@ -278,7 +278,7 @@ export const PopperArrow = PopperArrowFrame.extractable(
 
     const primaryPlacement = placement ? placement.split('-')[0] : 'top'
 
-    let arrowStyle: StackProps = { x, y, width: size, height: size }
+    const arrowStyle: StackProps = { x, y, width: size, height: size }
     if (primaryPlacement) {
       const oppSide = opposites[primaryPlacement]
       if (oppSide) {

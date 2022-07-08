@@ -1,8 +1,16 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
-import { ButtonDemo, DialogDemo, PopoverDemo, SelectDemo } from '@tamagui/demos'
+import {
+  ButtonDemo,
+  DialogDemo,
+  PopoverDemo,
+  SelectDemo,
+  SliderDemo,
+  TooltipDemo,
+} from '@tamagui/demos'
 import { Sun } from '@tamagui/feather-icons'
+import React from 'react'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { Anchor, Button, Select, Theme, XStack, YStack, styled } from 'tamagui'
@@ -47,10 +55,11 @@ export const Sandbox = () => {
       >
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
-
-        <Theme name="dark">
+        {/* <TooltipDemo /> */}
+        <SliderDemo />
+        {/* <Theme name="dark">
           <ButtonDemo />
-        </Theme>
+        </Theme> */}
       </div>
     </Tamagui.Provider>
   )
