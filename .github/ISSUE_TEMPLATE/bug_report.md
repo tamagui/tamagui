@@ -13,7 +13,5 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Include steps to reproduce.
 
-**Environment (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**System Info (please complete the following information):** 
+Output of `npx envinfo --system --npmPackages '{vitest,vite,@vitejs/*}' --binaries --browsers`
