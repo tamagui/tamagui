@@ -28,11 +28,20 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: yarn test
+      # - name: Test
+      #   run: yarn test
 
-      - name: Release Site
-        uses: ./.github/actions/release-site
+      - name: Build Site
+        shell: bash
+        run: |
+          yarn --cwd packages/site ci:build
+
+      - name: Deploy Website
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./packages/site/out
+          cname: tamagui.dev
 
       # test this later...
       # - name: Publish Beta
