@@ -16,7 +16,6 @@ export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } f
 
 export * from './constants/constants'
 export * from './constants/platform'
-export * from './constants/rnw'
 
 export * from './helpers/calc'
 export * from './helpers/createShallowUpdate'

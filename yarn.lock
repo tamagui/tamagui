@@ -2528,6 +2528,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.18.6":
+  version: 7.18.6
+  resolution: "@babel/runtime@npm:7.18.6"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 8b707b64ae0524db617d0c49933b258b96376a38307dc0be8fb42db5697608bcc1eba459acce541e376cff5ed5c5287d24db5780bd776b7c75ba2c2e26ff8a2c
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:*, @babel/template@npm:^7.0.0, @babel/template@npm:^7.16.7, @babel/template@npm:^7.3.3, @babel/template@npm:^7.8.6":
   version: 7.16.7
   resolution: "@babel/template@npm:7.16.7"
@@ -5400,6 +5409,7 @@ __metadata:
     "@tamagui/compose-refs": ^1.0.1-beta.97
     "@tamagui/helpers": ^1.0.1-beta.97
     "@tamagui/ow": ^0.28.1
+    "@tamagui/rnw": ^1.0.1-beta.97
     "@tamagui/use-debounce": ^1.0.1-beta.97
     "@tamagui/use-force-update": ^1.0.1-beta.97
     "@types/react": ^18.0.14
@@ -5432,9 +5442,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/demos@workspace:packages/demos"
   dependencies:
+    "@tamagui/avatar": ^1.0.1-beta.97
     "@tamagui/build": ^1.0.1-beta.97
+    "@tamagui/button": ^1.0.1-beta.97
     "@tamagui/config-base": ^1.0.1-beta.97
     "@tamagui/core": ^1.0.1-beta.97
+    "@tamagui/drawer": ^1.0.1-beta.97
+    "@tamagui/drawer-simple": ^1.0.1-beta.97
+    "@tamagui/list-item": ^1.0.1-beta.97
+    "@tamagui/menu": ^1.0.1-beta.97
+    "@tamagui/popover": ^1.0.1-beta.97
+    "@tamagui/progress": ^1.0.1-beta.97
+    "@tamagui/select": ^1.0.1-beta.97
+    "@tamagui/slider": ^1.0.1-beta.97
+    "@tamagui/stacks": ^1.0.1-beta.97
     react: "*"
     react-dom: "*"
     tamagui: ^1.0.1-beta.97
@@ -5489,6 +5510,25 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/drawer-simple@^1.0.1-beta.97, @tamagui/drawer-simple@workspace:packages/drawer-simple":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/drawer-simple@workspace:packages/drawer-simple"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.97
+    "@tamagui/core": ^1.0.1-beta.97
+    "@tamagui/create-context": ^1.0.1-beta.97
+    "@tamagui/stacks": ^1.0.1-beta.97
+    "@tamagui/use-controllable-state": ^1.0.1-beta.97
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -5892,6 +5932,16 @@ __metadata:
 "@tamagui/proxy-worm@^1.0.1-beta.97, @tamagui/proxy-worm@workspace:packages/proxy-worm":
   version: 0.0.0-use.local
   resolution: "@tamagui/proxy-worm@workspace:packages/proxy-worm"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/rnw@^1.0.1-beta.97, @tamagui/rnw@workspace:packages/rnw":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/rnw@workspace:packages/rnw"
+  dependencies:
+    react-native-web: ^0.18.3
+  peerDependencies:
+    react-native-web: "*"
   languageName: unknown
   linkType: soft
 
@@ -13160,7 +13210,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fbjs@npm:^3.0.0":
+"fbjs@npm:^3.0.0, fbjs@npm:^3.0.4":
   version: 3.0.4
   resolution: "fbjs@npm:3.0.4"
   dependencies:
@@ -15252,7 +15302,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inline-style-prefixer@npm:^6.0.0":
+"inline-style-prefixer@npm:^6.0.1":
   version: 6.0.1
   resolution: "inline-style-prefixer@npm:6.0.1"
   dependencies:
@@ -21819,7 +21869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:*, prop-types@npm:^15.5.10, prop-types@npm:^15.6.0, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:*, prop-types@npm:^15.5.10, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -22318,21 +22368,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:0.18.3":
-  version: 0.18.3
-  resolution: "react-native-web@npm:0.18.3"
+"react-native-web@npm:0.18.6":
+  version: 0.18.6
+  resolution: "react-native-web@npm:0.18.6"
   dependencies:
+    "@babel/runtime": ^7.18.6
     create-react-class: ^15.7.0
-    fbjs: ^3.0.0
-    inline-style-prefixer: ^6.0.0
+    fbjs: ^3.0.4
+    inline-style-prefixer: ^6.0.1
     normalize-css-color: ^1.0.2
     postcss-value-parser: ^4.2.0
-    prop-types: ^15.6.0
     styleq: ^0.1.2
   peerDependencies:
-    react: ">=17.0.2"
-    react-dom: ">=17.0.2"
-  checksum: 071e30ae87b139547edd2f9d02ab57fdcfe4593579bc95080fc3d7c5a3f198ed9f8de467f41c5da778c403a1b76f89248dcb80523860924252819fe3a9fe9559
+    react: ^17.0.2
+    react-dom: ^17.0.2
+  checksum: 6d12e5cc69bc9350519840ba661fc0e66a55834e3e3e43bdb76295e23ef6421064e9dfe4d6921144eb071be3657e3646b218093d5d6baccde10e082c1f138838
   languageName: node
   linkType: hard
 

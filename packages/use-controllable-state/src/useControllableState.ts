@@ -22,7 +22,9 @@ export function useControllableState<T>({
 
   useEffect(() => {
     currentProp.current = prop
-    setVal((prev) => getNextStateWithCallback(prev, prop, handleChange))
+    setVal((prev) => {
+      return getNextStateWithCallback(prev, prop, handleChange)
+    })
   }, [handleChange, prop])
 
   return [

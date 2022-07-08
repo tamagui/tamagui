@@ -14,7 +14,7 @@ export function tamaguiPlugin(options?: TamaguiOptions): Plugin {
           loader: 'tsx',
         },
         define: {
-          global: {},
+          'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
           process: {
