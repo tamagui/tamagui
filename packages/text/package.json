@@ -33,7 +33,7 @@
     "@tamagui/vite-plugin-internal": "^1.0.1-beta.95",
     "react": "*",
     "react-dom": "*",
-    "vitest": "^0.16.0"
+    "vitest": "^0.17.1"
   },
   "publishConfig": {
     "access": "public"
