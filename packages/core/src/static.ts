@@ -22,5 +22,4 @@ export * from '@tamagui/helpers'
 export * from './types'
 
 // node only rnw export
-import * as RNW from '@tamagui/rnw'
-export const rnw = RNW
+export * from '@tamagui/rnw'

@@ -1,4 +1,6 @@
 - 1.0
+  - add ui package setting custom types example in starter
+  - <Switch /> active state style
   - rename/document <Sheet >
   - renm
   - <Select /> sheet version on small screen

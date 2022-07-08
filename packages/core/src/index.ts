@@ -16,6 +16,7 @@ export { getHasConfigured, getConfig, getThemes, getTokens, onConfiguredOnce } f
 
 export * from './constants/constants'
 export * from './constants/platform'
+export { createDOMProps } from '@tamagui/rnw'
 
 export * from './helpers/calc'
 export * from './helpers/createShallowUpdate'
@@ -50,7 +51,7 @@ export * from './hooks/useUnmountEffect'
 export * from './views/Slot'
 export * from './views/Stack'
 export * from './views/Text'
-export * from './views/TextAncestorContext'
+export { TextAncestorProvider, TextAncestorContext } from './views/TextAncestorContext'
 export * from './views/Theme'
 export * from './views/ThemeInverse'
 export * from './views/ThemeProvider'
