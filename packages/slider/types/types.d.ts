@@ -2,12 +2,10 @@
 import type { GestureReponderEvent, SizeTokens } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import type { SizableStackProps } from '@tamagui/stacks';
-import type { View } from 'react-native';
 export declare type ScopedProps<P> = P & {
     __scopeSlider?: Scope;
 };
 export declare type Direction = 'ltr' | 'rtl';
-export declare type SliderImplElement = HTMLElement | View;
 declare type SliderImplPrivateProps = {
     onSlideStart(event: GestureReponderEvent, target: 'thumb' | 'track'): void;
     onSlideMove(event: GestureReponderEvent): void;
