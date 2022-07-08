@@ -40,7 +40,8 @@ const TooltipContent = React.forwardRef(
     const popper = usePopperContext('PopperContent', popperScope['__scopePopper'])
     return (
       <PopoverContent
-        paddingHorizontal={props.size || popper.size || '$2'}
+        trapFocus={false}
+        padding={props.size || popper.size || '$2'}
         componentName="TooltipContent"
         pointerEvents="none"
         ref={ref}
@@ -71,7 +72,14 @@ export const TooltipGroup = FloatingDelayGroup
 
 export const Tooltip = withStaticProperties(
   ((props: ScopedProps<TooltipProps, 'Popover'>) => {
-    const { __scopePopover, children, restMs = 500, delay: delayProp, ...restProps } = props
+    const {
+      __scopePopover,
+      children,
+      restMs = 500,
+      delay: delayProp,
+      onOpenChange: onOpenChangeProp,
+      ...restProps
+    } = props
     const popperScope = usePopoverScope(__scopePopover)
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
@@ -80,15 +88,16 @@ export const Tooltip = withStaticProperties(
     const [open, setOpen] = React.useState(false)
     const id = props.groupId
 
+    // TODO useEvent when ready
     const onOpenChange = React.useCallback(
       (open) => {
         setOpen(open)
         if (open) {
           setCurrentId(id)
         }
-        props.onOpenChange?.(open)
+        onOpenChangeProp?.(open)
       },
-      [id, setCurrentId]
+      [id, setCurrentId, onOpenChangeProp]
     )
 
     const useFloatingFn: UseFloatingFn = (props) => {
@@ -160,6 +169,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
 }) => {
   let context
   try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     context = useDelayGroupContext()
   } catch {
     // ok
@@ -187,7 +197,9 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = ({
         {...contentProps}
       >
         <Tooltip.Arrow />
-        <Paragraph size="$2">{label}</Paragraph>
+        <Paragraph size="$2" lineHeight="$1">
+          {label}
+        </Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )

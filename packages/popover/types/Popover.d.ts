@@ -54,7 +54,7 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
 }>> & React.RefAttributes<PopoverTriggerElement>>;
-export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
+export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }
 export declare type PopoverContentProps = PopoverContentTypeProps;
