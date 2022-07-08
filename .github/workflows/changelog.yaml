@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ github.token }}"
           prerelease: false

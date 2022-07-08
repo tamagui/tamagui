@@ -42,7 +42,9 @@ export function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         animation="bouncy"
       >
         <Tooltip.Arrow />
-        <Paragraph>Hello world</Paragraph>
+        <Paragraph size="$2" lineHeight="$1">
+          Hello world
+        </Paragraph>
       </Tooltip.Content>
     </Tooltip>
   )

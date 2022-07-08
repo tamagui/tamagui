@@ -9,6 +9,7 @@ const nextVersion = `1.0.1-beta.${+curVersion.split('.')[3] + 1}`
 
 const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')
+const isCI = process.argv.includes('--ci')
 
 const spawnify = async (cmd, opts) => {
   console.log('>', cmd)
@@ -41,12 +42,14 @@ async function run() {
     let version = curVersion
 
     if (!skipVersion) {
-      const answer = await prompts({
-        type: 'text',
-        name: 'version',
-        message: 'Version?',
-        initial: nextVersion,
-      })
+      const answer = isCI
+        ? { version: nextVersion }
+        : await prompts({
+            type: 'text',
+            name: 'version',
+            message: 'Version?',
+            initial: nextVersion,
+          })
 
       version = answer.version
 
@@ -79,14 +82,16 @@ async function run() {
 
     console.log((await exec(`git diff`)).stdout)
 
-    const { confirmed } = await prompts({
-      type: 'confirm',
-      name: 'confirmed',
-      message: 'Ready to publish?',
-    })
+    if (!isCI) {
+      const { confirmed } = await prompts({
+        type: 'confirm',
+        name: 'confirmed',
+        message: 'Ready to publish?',
+      })
 
-    if (!confirmed) {
-      process.exit(0)
+      if (!confirmed) {
+        process.exit(0)
+      }
     }
 
     if (!skipPublish) {
@@ -127,6 +132,7 @@ async function run() {
     }
   } catch (err) {
     console.log('\nError:\n', err)
+    process.exit(1)
   }
 }
 
