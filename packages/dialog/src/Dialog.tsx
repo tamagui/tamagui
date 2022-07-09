@@ -611,7 +611,7 @@ const DialogInner = React.forwardRef<{ open: (val: boolean) => void }, DialogPro
     () => ({
       open: setOpen,
     }),
-    []
+    [setOpen]
   )
 
   return (

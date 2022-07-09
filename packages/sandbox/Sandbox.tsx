@@ -2,11 +2,12 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import {
+  AnimationsDemo,
   ButtonDemo,
   DialogDemo,
-  DrawerSimpleDemo,
   PopoverDemo,
   SelectDemo,
+  SheetDemo,
   SliderDemo,
   TooltipDemo,
 } from '@tamagui/demos'
@@ -54,18 +55,19 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
+        <AnimationsDemo />
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
-        {/* <DrawerSimpleDemo /> */}
-        <XStack space>
+        {/* <SheetDemo /> */}
+        {/* <XStack space>
           <Square size={100} bc="red" />
           <Square $lg={{ display: 'none' }} size={100} bc="red" />
           <Square size={100} bc="red" />
           <Square size={100} bc="red" />
-        </XStack>
+        </XStack> */}
         {/* <Theme name="dark">
           <ButtonDemo />
         </Theme> */}

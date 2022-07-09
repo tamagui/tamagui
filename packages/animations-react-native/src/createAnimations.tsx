@@ -67,7 +67,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         }
       }
 
-      const animatedStyle = animatedStyleKey
+      const animatedStyle = {}
 
       const args = [
         JSON.stringify(all),

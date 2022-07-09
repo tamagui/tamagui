@@ -1,5 +1,5 @@
 {
-  "name": "@tamagui/drawer-simple",
+  "name": "@tamagui/sheet",
   "version": "1.0.1-beta.99",
   "sideEffects": [
     "*.css"

@@ -5966,12 +5966,12 @@ __metadata:
     "@tamagui/config-base": ^1.0.1-beta.99
     "@tamagui/core": ^1.0.1-beta.99
     "@tamagui/drawer": ^1.0.1-beta.99
-    "@tamagui/drawer-simple": ^1.0.1-beta.99
     "@tamagui/list-item": ^1.0.1-beta.99
     "@tamagui/menu": ^1.0.1-beta.99
     "@tamagui/popover": ^1.0.1-beta.99
     "@tamagui/progress": ^1.0.1-beta.99
     "@tamagui/select": ^1.0.1-beta.99
+    "@tamagui/sheet": ^1.0.1-beta.99
     "@tamagui/slider": ^1.0.1-beta.99
     "@tamagui/stacks": ^1.0.1-beta.99
     react: "*"
@@ -6028,25 +6028,6 @@ __metadata:
   peerDependencies:
     react: "*"
     react-dom: "*"
-  languageName: unknown
-  linkType: soft
-
-"@tamagui/drawer-simple@^1.0.1-beta.99, @tamagui/drawer-simple@workspace:packages/drawer-simple":
-  version: 0.0.0-use.local
-  resolution: "@tamagui/drawer-simple@workspace:packages/drawer-simple"
-  dependencies:
-    "@tamagui/build": ^1.0.1-beta.99
-    "@tamagui/core": ^1.0.1-beta.99
-    "@tamagui/create-context": ^1.0.1-beta.99
-    "@tamagui/stacks": ^1.0.1-beta.99
-    "@tamagui/use-controllable-state": ^1.0.1-beta.99
-    react: "*"
-    react-dom: "*"
-    react-native: "*"
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6563,6 +6544,25 @@ __metadata:
     react: "*"
   peerDependencies:
     react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/sheet@^1.0.1-beta.99, @tamagui/sheet@workspace:packages/sheet":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/sheet@workspace:packages/sheet"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.99
+    "@tamagui/core": ^1.0.1-beta.99
+    "@tamagui/create-context": ^1.0.1-beta.99
+    "@tamagui/stacks": ^1.0.1-beta.99
+    "@tamagui/use-controllable-state": ^1.0.1-beta.99
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 

@@ -1,9 +1,9 @@
-import { Drawer } from '@tamagui/drawer-simple'
 import { ChevronDown } from '@tamagui/feather-icons'
+import { Drawer } from '@tamagui/sheet'
 import React, { useState } from 'react'
-import { Button, H1 } from 'tamagui'
+import { Button } from 'tamagui'
 
-export const DrawerSimpleDemo = () => {
+export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
 
   return (

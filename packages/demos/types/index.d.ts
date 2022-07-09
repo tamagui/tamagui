@@ -6,7 +6,7 @@ export { AvatarDemo } from './AvatarDemo';
 export { ButtonDemo } from './ButtonDemo';
 export { CardDemo } from './CardDemo';
 export { DialogDemo } from './DialogDemo';
-export { DrawerSimpleDemo } from './DrawerSimpleDemo';
+export { SheetDemo } from './SheetDemo';
 export { FeatherIconsDemo } from './FeatherIconsDemo';
 export { FormsDemo } from './FormsDemo';
 export { GroupDemo } from './GroupDemo';
