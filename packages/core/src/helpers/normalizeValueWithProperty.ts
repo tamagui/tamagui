@@ -18,8 +18,8 @@ export function normalizeValueWithProperty(value: any, property?: string): any {
   ) {
     res = `${value}px`
   } else if (property && colorProps[property]) {
-    cache[value] = res
     res = normalizeColor(value)
+    cache[value] = res
   }
   return res
 }

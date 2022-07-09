@@ -45,7 +45,7 @@ const processColor = (color?: number | string) => {
   if (color === undefined || color === null) {
     return null
   }
-  let intColor = normalizeCSSColor(color)
+  const intColor = normalizeCSSColor(color)
   if (intColor === undefined || intColor === null) {
     return null
   }

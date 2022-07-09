@@ -6,10 +6,6 @@
 import { isWeb } from '../constants/platform'
 
 export function expandStyle(key: string, value: any) {
-  if (key === 'transform') {
-    return
-  }
-
   if (process.env.TAMAGUI_TARGET === 'web') {
     if (key === 'flex') {
       // The 'flex' property value in React Native must be a positive integer,
@@ -34,14 +30,6 @@ export function expandStyle(key: string, value: any) {
 
     // web only
     switch (key) {
-      // Ignore some React Native styles
-      case 'elevation':
-      case 'overlayColor':
-      case 'resizeMode':
-      case 'tintColor': {
-        break
-      }
-
       case 'aspectRatio': {
         return [[key, value.toString()]]
       }

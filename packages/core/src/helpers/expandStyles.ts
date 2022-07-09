@@ -56,6 +56,14 @@ export function fixStyles(style: Record<string, any>) {
   }
 }
 
+const borderDefaults = {
+  borderWidth: 'borderStyle',
+  borderBottomWidth: 'borderBottomStyle',
+  borderTopWidth: 'borderTopStyle',
+  borderLeftWidth: 'borderLeftStyle',
+  borderRightWidth: 'borderRightStyle',
+}
+
 function normalizeShadow({
   shadowColor,
   shadowOffset,
@@ -93,12 +101,4 @@ function normalizeShadow({
         }
       })()),
   }
-}
-
-const borderDefaults = {
-  borderWidth: 'borderStyle',
-  borderBottomWidth: 'borderBottomStyle',
-  borderTopWidth: 'borderTopStyle',
-  borderLeftWidth: 'borderLeftStyle',
-  borderRightWidth: 'borderRightStyle',
 }

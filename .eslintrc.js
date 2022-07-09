@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn',
     'react-hooks/rules-of-hooks': 'warn',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
   settings: {
     react: {
