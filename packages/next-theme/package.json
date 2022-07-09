@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "1.0.1-beta.99",
+  "version": "1.0.1-beta.100",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -16,13 +16,13 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.99"
+    "@tamagui/core": "^1.0.1-beta.100"
   },
   "peerDependencies": {
     "react": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.99",
+    "@tamagui/build": "^1.0.1-beta.100",
     "react": "*"
   },
   "publishConfig": {
