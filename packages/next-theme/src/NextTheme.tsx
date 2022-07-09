@@ -79,6 +79,9 @@ export const useRootTheme = () => {
   return useState(isDark ? 'dark' : 'light')
 }
 
+// backwards compat
+const startTransition = React.startTransition || ((cb) => cb())
+
 export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   forcedTheme,
   disableTransitionOnChange = true,
@@ -103,7 +106,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   const handleMediaQuery = useCallback(
     (e?) => {
       const systemTheme = getSystemTheme(e)
-      React.startTransition(() => {
+      startTransition(() => {
         setResolvedTheme(systemTheme)
       })
       if (theme === 'system' && !forcedTheme) handleChangeTheme(systemTheme, false)
@@ -192,7 +195,7 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   useIsomorphicLayoutEffect(() => {
     if (!enableColorScheme) return
 
-    let colorScheme =
+    const colorScheme =
       // If theme is forced to light or dark, use that
       forcedTheme && colorSchemes.includes(forcedTheme)
         ? forcedTheme
