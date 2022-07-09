@@ -14,7 +14,7 @@ import { Sun } from '@tamagui/feather-icons'
 import React from 'react'
 import { useState } from 'react'
 import { useColorScheme } from 'react-native'
-import { Anchor, Button, Select, Theme, XStack, YStack, styled } from 'tamagui'
+import { Anchor, Button, Select, Square, Theme, XStack, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -59,7 +59,13 @@ export const Sandbox = () => {
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
-        <DrawerSimpleDemo />
+        {/* <DrawerSimpleDemo /> */}
+        <XStack space>
+          <Square size={100} bc="red" />
+          <Square $lg={{ display: 'none' }} size={100} bc="red" />
+          <Square size={100} bc="red" />
+          <Square size={100} bc="red" />
+        </XStack>
         {/* <Theme name="dark">
           <ButtonDemo />
         </Theme> */}

@@ -1051,8 +1051,8 @@ Unspaced['isUnspaced'] = true
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 
-export type SpacerProps = Omit<StackProps, 'flex' | 'direction'> & {
-  size?: number | SpaceTokens
+export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & {
+  size?: number | SpaceTokens | null
   flex?: boolean | number
   direction?: SpaceDirection
 }
@@ -1104,8 +1104,8 @@ export const Spacer = createComponent<SpacerProps>({
 
 export type SpacedChildrenProps = {
   isZStack?: boolean
-  children?: any
-  space?: any
+  children?: React.ReactNode
+  space?: SpaceTokens | number | null
   spaceFlex?: boolean | number
   direction?: SpaceDirection
   separator?: React.ReactNode
@@ -1128,7 +1128,7 @@ export function spacedChildren({
   if (childrenList.length <= 1 && !isZStack) {
     return childrenList
   }
-  const final: any[] = []
+  const final: React.ReactNode[] = []
   for (const [index, child] of childrenList.entries()) {
     const isEmpty =
       child === null || child === undefined || (Array.isArray(child) && child.length === 0)
@@ -1212,7 +1212,8 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
   )
 }
 
-function isUnspaced(child: any) {
+function isUnspaced(child: React.ReactNode) {
+  // console.log('unspaced?', child)
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
 }
 

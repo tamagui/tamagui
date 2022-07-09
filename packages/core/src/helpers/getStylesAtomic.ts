@@ -8,7 +8,8 @@ import hyphenateStyleName from 'hyphenate-style-name'
 import { TextStyle, ViewStyle } from 'react-native'
 
 import { reversedShorthands } from '../createTamagui'
-import { defaultOffset, expandStyles } from './expandStyles'
+import { cssHash } from './cssHash'
+import { defaultOffset } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
@@ -60,7 +61,7 @@ const generateAtomicStyles = (
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
   // were converting to css styles
-  const style = styleIn as Record<string, any>
+  const style = styleIn as Record<string, string | null | undefined>
 
   // transform
   if (style.transform) {
@@ -80,7 +81,11 @@ const generateAtomicStyles = (
       if (cachedResult != undefined) {
         out.push(cachedResult)
       } else {
-        const hash = simpleHash(uid + value)
+        const hash = presetHashes[value]
+          ? value
+          : typeof value === 'string'
+          ? simpleHash(value)
+          : `${value}`.replace('.', 'dot')
         const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
         const shortProp = reversedShorthands[key] || key
         const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
@@ -97,8 +102,11 @@ const generateAtomicStyles = (
       }
     }
   }
-
   return out
+}
+
+const presetHashes = {
+  none: true,
 }
 
 export function styleToCSS(style: Record<string, any>) {

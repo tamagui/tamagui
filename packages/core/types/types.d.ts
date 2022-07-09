@@ -10,7 +10,7 @@ export declare type TamaguiElement = HTMLElement | View;
 export declare type DebugProp = boolean | 'break' | 'verbose';
 export declare type TamaguiComponentPropsBase = {
     asChild?: boolean;
-    space?: SpaceTokens;
+    space?: SpaceTokens | null;
     spaceDirection?: SpaceDirection;
     separator?: React.ReactNode;
     dangerouslySetInnerHTML?: {

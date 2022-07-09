@@ -8,21 +8,21 @@ export declare const Unspaced: {
     }): any;
     isUnspaced: boolean;
 };
-export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction'> & {
-    size?: number | SpaceTokens;
+export declare type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & {
+    size?: number | SpaceTokens | null;
     flex?: boolean | number;
     direction?: SpaceDirection;
 };
 export declare const Spacer: TamaguiComponent<SpacerProps, TamaguiElement, never, {}>;
 export declare type SpacedChildrenProps = {
     isZStack?: boolean;
-    children?: any;
-    space?: any;
+    children?: React.ReactNode;
+    space?: SpaceTokens | number | null;
     spaceFlex?: boolean | number;
     direction?: SpaceDirection;
     separator?: React.ReactNode;
 };
-export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, separator, }: SpacedChildrenProps): any;
+export declare function spacedChildren({ isZStack, children, space, direction, spaceFlex, separator, }: SpacedChildrenProps): React.ReactNode;
 export declare function AbsoluteFill(props: {
     children?: React.ReactNode;
 }): JSX.Element;
