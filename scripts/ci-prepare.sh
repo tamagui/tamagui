@@ -1,6 +1,7 @@
 #!/bin/bash
 
 rm -r takeout
+rm -r takeout-apps
 rm -r packages/site/pages/studio
 rm -r packages/site/pages/takeout
 rm    packages/site/pages/account.tsx

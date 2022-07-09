@@ -8,7 +8,8 @@
   "workspaces": {
     "packages": [
       "packages/*",
-      "takeout/*"
+      "takeout/*",
+      "takeout-apps/*"
     ]
   },
   "scripts": {
@@ -34,6 +35,8 @@
     "publish:no-version": "npm publish --workspaces",
     "publish:canary": "lerna publish --canary --preid beta.0 --force-publish --dist-tag canary",
     "version": "lerna version",
+    "tamagram:web": "yarn workspace @tamagui/tamagram web",
+    "tamagram:native": "yarn workspace @tamagui/tamagram native",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "site": "cd packages/site && ./scripts/dev.sh",

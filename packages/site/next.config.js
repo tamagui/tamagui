@@ -41,7 +41,6 @@ const transform = withPlugins(
         'FlatList',
         'CheckBox',
         'Touchable',
-        'PanResponder',
         'SectionList',
       ],
     }),
