@@ -64,19 +64,10 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
               return (
                 <YStack key={`sep-${i}`} mx="$4">
                   {!!section.title ? (
-                    <XStack
-                      ai="center"
-                      jc="center"
-                      space="$6"
-                      spaceDirection="horizontal"
-                      mb="$2"
-                      mt="$1"
-                    >
-                      <Separator o={0.65} />
-                      <Paragraph als="center" size="$2" fow="800">
+                    <XStack ai="center" space="$6" spaceDirection="horizontal" mb="$2" mt="$3">
+                      <Paragraph als="center" size="$4" fow="800">
                         {section.title}
                       </Paragraph>
-                      <Separator o={0.65} />
                     </XStack>
                   ) : (
                     <Separator my="$4" />
@@ -271,6 +262,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
 
             <YStack
               display={open ? 'flex' : 'none'}
+              mt="$2"
               $gtSm={{
                 display: 'block',
               }}

@@ -1,7 +1,7 @@
 ---
 title: Sheet
 description: A simple sheet component
-name: text
+name: sheet
 component: Sheet
 ---
 
@@ -89,6 +89,16 @@ Contains every component for the sheet.
       type: 'Animated.SpringAnimationConfig',
       default: 'true',
       description: `Customize the spring used, passed to react-native Animated.spring().`,
+    },
+    {
+      name: 'disableDrag',
+      type: 'boolean',
+      description: `Disables all touch events to drag the sheet.`,
+    },
+    {
+      name: 'modal',
+      type: 'boolean',
+      description: `Renders sheet into the root of your app instead of inline.`,
     },
   ]}
 />

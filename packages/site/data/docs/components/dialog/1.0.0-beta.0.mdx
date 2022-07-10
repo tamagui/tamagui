@@ -1,7 +1,7 @@
 ---
 title: Dialog
 description: A simple dialog component
-name: text
+name: dialog
 component: Dialog
 ---
 
@@ -167,7 +167,7 @@ Closes the Dialog. Recommended to use with your own component and `asChild`.
 
 Just [Tamagui Props](/docs/intro/props).
 
-#### &lt;Sheet /&gt;
+#### &lt;Sheet /&gt; <Beta />
 
 When used alongside `sheetBreakpoint`, Dialog will render as a sheet when that breakpoint is active.
 
@@ -201,3 +201,8 @@ export default () => (
   </Dialog>
 )
 ```
+
+<Notice>
+  Note that Dialog.Sheet currently doesn't preserve state of the contents when it transitions
+  between Sheet and Portal. In the future, we can do this on the web using react-reparenting.
+</Notice>

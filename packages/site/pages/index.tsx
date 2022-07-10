@@ -1,5 +1,6 @@
 import { Hero } from '@components/Hero'
 import { TitleAndMetaTags } from '@components/TitleAndMetaTags'
+import { SheetDemo } from '@tamagui/demos'
 import { Community } from '@tamagui/site/components/HeroCommunity'
 import { FeaturesGrid } from '@tamagui/site/components/HeroFeaturesGrid'
 import { toHtml } from 'hast-util-to-html'
@@ -28,6 +29,8 @@ import rehypeHighlightLine from '../lib/rehype-highlight-line'
 import rehypeHighlightWord from '../lib/rehype-highlight-word'
 
 export default function Home({ animationCode, compilationExamples }) {
+  // return <SheetDemo />
+
   return (
     <>
       <TitleAndMetaTags title="Tamagui — React Native + Web UI kit" />

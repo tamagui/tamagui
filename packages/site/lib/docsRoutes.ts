@@ -59,9 +59,9 @@ export const docsRoutes = [
     pages: [
       { title: 'Dialog', route: '/docs/components/dialog' },
       { title: 'Popover', route: '/docs/components/popover' },
-      { title: 'Tooltip', route: '/docs/components/tooltip' },
-      { title: 'Portal', route: '/docs/components/portal' },
+      // { title: 'Portal', route: '/docs/components/portal' },
       { title: 'Sheet', route: '/docs/components/sheet' },
+      { title: 'Tooltip', route: '/docs/components/tooltip' },
     ],
   },
 

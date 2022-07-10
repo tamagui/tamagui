@@ -2235,6 +2235,7 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         children?: React.ReactNode;
         dismissOnOverlayPress?: boolean | undefined;
         animationConfig?: import("react-native").Animated.SpringAnimationConfig | undefined;
+        disableDrag?: boolean | undefined;
     } & {
         __scopeSheet?: Scope<any>;
     } & React.RefAttributes<View>, "theme" | "themeInverse"> & {

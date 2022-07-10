@@ -21,6 +21,7 @@ import { Link } from './Link'
 export function Highlights({ features, disableLinks }: any) {
   const router = useRouter()
   const frontmatter = React.useContext(FrontmatterContext)
+  console.log('frontmatter', frontmatter)
 
   return (
     <YStack
@@ -57,7 +58,11 @@ export function Highlights({ features, disableLinks }: any) {
             <Select
               size="$2"
               value={frontmatter.version}
-              onValueChange={(value) => router.push(`./${frontmatter.name}/${value}`)}
+              onValueChange={(value) => {
+                if (value) {
+                  router.push(`./${frontmatter.name}/${value}`)
+                }
+              }}
             >
               <Select.Trigger w={200} iconAfter={ChevronDown}>
                 <Select.Value placeholder="Something" />
@@ -77,13 +82,16 @@ export function Highlights({ features, disableLinks }: any) {
                 </Select.ScrollUpButton>
 
                 <Select.Viewport minWidth={180}>
-                  {(frontmatter.versions || []).map((version, i) => {
-                    return (
-                      <Select.Item index={i} key={version} value={version}>
-                        <Select.ItemText>{version}</Select.ItemText>
-                      </Select.Item>
-                    )
-                  })}
+                  <Select.Group>
+                    <Select.Label>Versions</Select.Label>
+                    {(frontmatter.versions || []).map((version, i) => {
+                      return (
+                        <Select.Item index={i + 1} key={version} value={version}>
+                          <Select.ItemText>{version}</Select.ItemText>
+                        </Select.Item>
+                      )
+                    })}
+                  </Select.Group>
                 </Select.Viewport>
 
                 <Select.ScrollDownButton ai="center" jc="center" pos="relative" w="100%" h="$3">

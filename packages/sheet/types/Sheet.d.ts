@@ -14,6 +14,8 @@ export declare type SheetProps = ScopedProps<{
     children?: ReactNode;
     dismissOnOverlayPress?: boolean;
     animationConfig?: Animated.SpringAnimationConfig;
+    disableDrag?: boolean;
+    modal?: boolean;
 }, 'Sheet'>;
 declare type PositionChangeHandler = ((position: number) => void) | React.Dispatch<React.SetStateAction<number>>;
 declare type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
@@ -114,6 +116,8 @@ export declare const Sheet: ((props: Omit<{
     children?: ReactNode;
     dismissOnOverlayPress?: boolean | undefined;
     animationConfig?: Animated.SpringAnimationConfig | undefined;
+    disableDrag?: boolean | undefined;
+    modal?: boolean | undefined;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & React.RefAttributes<View>, "theme" | "themeInverse"> & {
@@ -154,11 +158,12 @@ export declare const Sheet: ((props: Omit<{
     Overlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
 };
 declare type SheetControllerContextValue = {
-    open: boolean;
-    hidden: boolean;
+    disableDrag?: boolean;
+    open?: boolean;
+    hidden?: boolean;
     onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void);
 };
-export declare const SheetController: ({ children, onChangeOpen: onChangeOpenProp, ...value }: SheetControllerContextValue & {
+export declare const SheetController: ({ children, onChangeOpen: onChangeOpenProp, ...value }: Partial<SheetControllerContextValue> & {
     children?: React.ReactNode;
 }) => JSX.Element;
 export { createSheetScope };

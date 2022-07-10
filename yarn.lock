@@ -6524,7 +6524,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.100
     "@tamagui/stacks": ^1.0.1-beta.100
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"

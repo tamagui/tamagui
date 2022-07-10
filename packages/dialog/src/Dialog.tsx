@@ -716,6 +716,7 @@ const DialogSheetController = (
   const getShowSheet = useGet(showSheet)
   return (
     <SheetController
+      disableDrag
       onChangeOpen={(val) => {
         if (getShowSheet()) {
           props.onChangeOpen(val)

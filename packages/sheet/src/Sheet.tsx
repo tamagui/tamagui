@@ -1,14 +1,18 @@
 import {
   GetProps,
+  Theme,
   isClient,
   isWeb,
   mergeEvent,
   styled,
   themeable,
   useEvent,
+  useIsomorphicLayoutEffect,
+  useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
+import { Portal } from '@tamagui/portal'
 import { XStack, XStackProps, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, {
@@ -46,6 +50,8 @@ export type SheetProps = ScopedProps<
     children?: ReactNode
     dismissOnOverlayPress?: boolean
     animationConfig?: Animated.SpringAnimationConfig
+    disableDrag?: boolean
+    modal?: boolean
   },
   'Sheet'
 >
@@ -189,11 +195,15 @@ export const Sheet = withStaticProperties(
         defaultPosition,
         dismissOnOverlayPress = true,
         animationConfig,
+        disableDrag: disableDragProp,
+        modal,
       } = props
 
       // allows for sheets to be controlled by other components
       const controller = useContext(SheetControllerContext)
       const isHidden = controller?.hidden || false
+      const disableDrag = disableDragProp ?? controller?.disableDrag
+      const themeName = useThemeName()
 
       const onChangeOpenInternal = (val: boolean) => {
         controller?.onChangeOpen?.(val)
@@ -224,6 +234,14 @@ export const Sheet = withStaticProperties(
         positionValue.current = new Animated.Value(HIDDEN_SIZE)
       }
 
+      const [isResizing, setIsResizing] = useState(true)
+      useLayoutEffect(() => {
+        if (!isResizing) {
+          setIsResizing(true)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [modal])
+
       const spring = useRef<Animated.CompositeAnimation | null>(null)
       function stopSpring() {
         spring.current?.stop()
@@ -252,7 +270,10 @@ export const Sheet = withStaticProperties(
         const toValue = isHidden || position === -1 ? hiddenValue : positions[position]
         if (pos['_value'] === toValue) return
         stopSpring()
-        if (isHidden) {
+        if (isHidden || isResizing) {
+          if (isResizing) {
+            setIsResizing(false)
+          }
           Animated.timing(pos, {
             useNativeDriver: !isWeb,
             toValue,
@@ -276,6 +297,7 @@ export const Sheet = withStaticProperties(
       }, [isHidden, frameSize, position, animateTo])
 
       const panResponder = useMemo(() => {
+        if (disableDrag) return
         if (!frameSize) return
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -331,12 +353,13 @@ export const Sheet = withStaticProperties(
           onPanResponderTerminate: finish,
           onPanResponderRelease: finish,
         })
-      }, [animateTo, frameSize, positions, setPosition])
+      }, [disableDrag, animateTo, frameSize, positions, setPosition])
 
       let handleComponent: React.ReactElement | null = null
       let overlayComponent: React.ReactElement | null = null
       let frameComponent: React.ReactElement | null = null
 
+      // TODO do more radix-like and don't require direct children descendents
       React.Children.forEach(childrenProp, (child) => {
         if (isValidElement(child)) {
           const name = child.type?.['staticConfig']?.componentName
@@ -362,7 +385,7 @@ export const Sheet = withStaticProperties(
         return null
       }
 
-      return (
+      const contents = (
         <SheetProvider
           dismissOnOverlayPress={dismissOnOverlayPress}
           open={open}
@@ -373,14 +396,19 @@ export const Sheet = withStaticProperties(
           setPosition={setPosition}
           setOpen={setOpen}
         >
-          {overlayComponent}
+          {isResizing ? null : overlayComponent}
           {/* no fancy hidden animation etc for handle for now */}
           {isHidden ? null : handleComponent}
           <Animated.View
             ref={ref}
             {...panResponder?.panHandlers}
             onLayout={(e) => {
-              setFrameSize(e.nativeEvent.layout.height)
+              const next = e.nativeEvent.layout.height
+              setFrameSize((prev) => {
+                const isBigChange = Math.abs(prev - next) > 50
+                setIsResizing(isBigChange)
+                return next
+              })
             }}
             // pointerEvents={open ? 'auto' : 'none'}
             style={{
@@ -391,10 +419,20 @@ export const Sheet = withStaticProperties(
               transform: [{ translateY: frameSize === 0 ? HIDDEN_SIZE : positionValue.current }],
             }}
           >
-            {frameComponent}
+            {isResizing ? null : frameComponent}
           </Animated.View>
         </SheetProvider>
       )
+
+      if (modal) {
+        return (
+          <Portal>
+            <Theme name={themeName}>{contents}</Theme>
+          </Portal>
+        )
+      }
+
+      return contents
     }),
     {
       componentName: 'Sheet',
@@ -430,9 +468,10 @@ function resisted(y: number, minY: number, maxOverflow = 25) {
 }
 
 type SheetControllerContextValue = {
-  open: boolean
+  disableDrag?: boolean
+  open?: boolean
   // hide without "closing" to prevent re-animation when shown again
-  hidden: boolean
+  hidden?: boolean
   onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
 }
 
@@ -442,22 +481,32 @@ export const SheetController = ({
   children,
   onChangeOpen: onChangeOpenProp,
   ...value
-}: SheetControllerContextValue & { children?: React.ReactNode }) => {
+}: Partial<SheetControllerContextValue> & { children?: React.ReactNode }) => {
   const onChangeOpen = useEvent(onChangeOpenProp)
 
   const memoValue = useMemo(
     () => ({
       open: value.open,
-      hidden: value.hidden || false,
+      hidden: value.hidden,
+      disableDrag: value.disableDrag,
       onChangeOpen,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value.open, value.hidden]
+    [onChangeOpen, value.open, value.hidden, value.disableDrag]
   )
 
   return (
     <SheetControllerContext.Provider value={memoValue}>{children}</SheetControllerContext.Provider>
   )
+}
+
+function useLastRenderValue<A>(val: A): A | undefined {
+  const ref = useRef<A>(val)
+  useIsomorphicLayoutEffect(() => {
+    return () => {
+      ref.current = val
+    }
+  })
+  return ref.current as A
 }
 
 export { createSheetScope }

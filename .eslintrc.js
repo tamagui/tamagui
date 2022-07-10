@@ -23,6 +23,7 @@ module.exports = {
     'react/no-unescaped-entities': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    'no-extra-boolean-cast': 'off',
   },
   settings: {
     react: {

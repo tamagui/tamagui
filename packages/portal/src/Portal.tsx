@@ -10,7 +10,15 @@ import { Modal } from 'react-native'
 export type PortalProps = YStackProps
 
 export const Portal = (props: PortalProps) => {
-  const contents = <YStack pointerEvents="none" fullscreen {...props} />
+  const contents = (
+    <YStack
+      pointerEvents="none"
+      fullscreen
+      // @ts-expect-error ok on web
+      position={isWeb ? 'fixed' : 'absolute'}
+      {...props}
+    />
+  )
 
   if (!isWeb) {
     // check if theme stays in context here

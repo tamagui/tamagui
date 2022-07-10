@@ -15,7 +15,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         tag="a"
         ai="center"
-        py="$1.5"
+        py="$1"
         px="$4"
         opacity={pending ? 0.25 : 1}
         pressStyle={{
@@ -56,7 +56,7 @@ export function DocsRouteNavItem({ children, active, href, pending, ...props }: 
             <ExternalIcon />
           </XStack>
         )}
-        {!!pending ? (
+        {pending ? (
           <>
             <XStack flex={1} />
             <SizableText theme="alt2" size="$1" px="$2" py="$1" bc="$background" borderRadius="$3">
