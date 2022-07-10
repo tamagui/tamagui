@@ -13,6 +13,7 @@ type ThemeCreatorProps = {
   backgroundStrong?: string | Variable
   borderColors?: (string | Variable)[]
   colors?: (string | Variable)[]
+  activeTheme?: any
   offsets?: {
     color?: number[] | null
     background?: number[] | null
@@ -60,7 +61,12 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   })
   // add these after alts since we rely on positioning
   const darkerTheme = getTheme(Math.max(0, shift + (props.isLight ? 1 : -1)), props)
-  const activeTheme = makeActiveTheme(theme)
+  const activeTheme =
+    props.activeTheme ||
+    makeActiveTheme({
+      ...theme,
+      background: props.backgrounds[5],
+    })
 
   // TODO can be de-duped
   const inverted = altThemes.map(([_name, theme]) => {
@@ -90,6 +96,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     [`${name}_Progress`, altThemes[2][1]],
     [`${name}_ProgressIndicator`, inverted[2]],
     [`${name}_Switch`, altThemes[0][1]],
+    [`${name}_SwitchThumb`, inverted[2]],
     [`${name}_TooltipArrow`, altThemes[1][1]],
     [`${name}_TooltipContent`, altThemes[1][1]],
     [`${name}_darker`, darkerTheme],

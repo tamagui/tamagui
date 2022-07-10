@@ -2,6 +2,7 @@ import { configListeners, getHasConfigured, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { SpacerProps } from './createComponent'
+import { themeToVariableToValueMap } from './createTheme'
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
@@ -11,6 +12,7 @@ import {
   tokenRules,
   tokensValueToVariable,
 } from './helpers/registerCSSVariable'
+import { GetThemeUnwrapped } from './hooks/getThemeUnwrapped'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
@@ -114,7 +116,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const themeConfig = (() => {
     const themes = { ...config.themes }
-    let cssRules: string[] = []
+    const cssRules: string[] = []
 
     if (isWeb) {
       for (const key in config.tokens) {
@@ -181,9 +183,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const { theme, names } = dedupedThemes[themeName]
         let vars = ''
 
+        themeToVariableToValueMap.set(theme, {})
+        const varToValMap = themeToVariableToValueMap.get(theme)
         for (const themeKey in theme) {
           const variable = theme[themeKey] as Variable
           let value: any = null
+          if (varToValMap) {
+            varToValMap[variable.variable] = variable.val
+          }
           if (variable.isFloating || !tokensValueToVariable.has(variable.val)) {
             value = variable.val
           } else {
@@ -259,8 +266,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       if (!parents.length) continue
 
-      themes[themeName] = new Proxy(themes[themeName], {
+      const og = themes[themeName]
+      themes[themeName] = new Proxy(og, {
         get(target, key) {
+          if (key === GetThemeUnwrapped) {
+            return og
+          }
           if (Reflect.has(target, key)) {
             return Reflect.get(target, key)
           }
@@ -274,6 +285,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
               return Reflect.get(parent, key)
             }
           }
+          return Reflect.get(target, key)
         },
       })
     }

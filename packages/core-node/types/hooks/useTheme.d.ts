@@ -23,10 +23,10 @@ export declare const useChangeThemeEffect: (name?: string | null, componentName?
     };
     themeManager: ThemeManager | null;
     name: string;
-    theme: Partial<import("../types").TamaguiBaseTheme> & {
+    theme: (Partial<import("../types").TamaguiBaseTheme> & {
         [key: string]: import("../types").VariableVal;
-    };
-    className: string;
+    }) | null;
+    className?: undefined;
 } | {
     themes: {
         [key: string]: Partial<import("../types").TamaguiBaseTheme> & {
@@ -35,9 +35,7 @@ export declare const useChangeThemeEffect: (name?: string | null, componentName?
     };
     themeManager: ThemeManager | null;
     name: string;
-    theme: (Partial<import("../types").TamaguiBaseTheme> & {
-        [key: string]: import("../types").VariableVal;
-    }) | null;
-    className?: undefined;
+    theme: any;
+    className: string;
 };
 //# sourceMappingURL=useTheme.d.ts.map

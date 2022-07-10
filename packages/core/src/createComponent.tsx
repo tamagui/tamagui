@@ -36,7 +36,7 @@ import { useFeatures } from './hooks/useFeatures'
 import { useIsTouchDevice } from './hooks/useIsTouchDevice'
 import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
-import { getThemeDidChange, getThemeManager, useTheme } from './hooks/useTheme'
+import { getThemeManager, useTheme } from './hooks/useTheme'
 import { Pressability } from './Pressability'
 import {
   SpaceDirection,
@@ -54,7 +54,6 @@ import {
 } from './types'
 import { Slot, mergeEvent } from './views/Slot'
 import { TextAncestorContext } from './views/TextAncestorContext'
-import { Theme } from './views/Theme'
 
 React['keep']
 
@@ -882,7 +881,7 @@ export function createComponent<
         console.groupEnd()
         if (typeof window !== 'undefined') {
           // prettier-ignore
-          console.log({ state, viewProps, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
+          console.log({ state, tamaguiDefaultProps, viewProps, splitStyles, animationStyles, isStringElement, classNamesIn: props.className?.split(' '), classNamesOut: viewProps.className?.split(' '), events, shouldAttach, styles, pseudos, content, childEls, shouldAvoidClasses, avoidClasses, animation: props.animation, style, defaultNativeStyle, initialSplitStyles, ...(typeof window !== 'undefined' ? { theme, themeClassName:  theme.className, staticConfig, tamaguiConfig, events, shouldAvoidClasses, shouldForcePseudo, classNames: Object.fromEntries(Object.entries(classNames).map(([k, v]) => [v, getAllSelectors()[v]])) } : null) })
         }
         console.groupEnd()
       }

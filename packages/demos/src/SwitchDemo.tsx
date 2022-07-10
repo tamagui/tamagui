@@ -13,13 +13,14 @@ export function SwitchDemo() {
 }
 
 function SwitchWithLabel(props: { size: SizeTokens }) {
+  const id = `switch-${props.size.toString().slice(1)}`
   return (
     <XStack w={300} ai="center" space="$4">
-      <Label pr="$0" miw={200} jc="flex-end" size={props.size} htmlFor="switch-1">
+      <Label pr="$0" miw={200} jc="flex-end" size={props.size} htmlFor={id}>
         Dark mode
       </Label>
       <Separator mih={20} vertical />
-      <Switch id="switch-1" size={props.size}>
+      <Switch id={id} debug={props.size === '$5'} animation="bouncy" size={props.size}>
         <Switch.Thumb animation="bouncy" />
       </Switch>
     </XStack>

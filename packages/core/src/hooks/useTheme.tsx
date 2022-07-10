@@ -7,6 +7,7 @@ import { areEqualSets } from '../helpers/areEqualSets'
 import { ThemeContext } from '../ThemeContext'
 import { GetNextThemeProps, ThemeManager, ThemeManagerContext, emptyManager } from '../ThemeManager'
 import { ThemeName, ThemeObject } from '../types'
+import { GetThemeUnwrapped } from './getThemeUnwrapped'
 import { useConstant } from './useConstant'
 
 export type ThemeProps = {
@@ -81,6 +82,9 @@ export const useTheme = (
         return Reflect.has(theme, key)
       },
       get(_, key) {
+        if (key === GetThemeUnwrapped) {
+          return theme
+        }
         if (key === GetThemeManager) {
           return themeManager
         }

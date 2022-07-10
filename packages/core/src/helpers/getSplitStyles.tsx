@@ -4,7 +4,10 @@ import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
+import { themeToVariableToValueMap } from '../createTheme'
+import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
+import { GetThemeUnwrapped } from '../hooks/useTheme'
 import {
   DebugProp,
   MediaKeys,
@@ -21,6 +24,7 @@ import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
+  getAllSelectors,
   insertStyleRule,
   insertedTransforms,
   updateInserted,
@@ -106,8 +110,11 @@ export const getSplitStyles: StyleSplitter = (
   const pseudos: PseudoStyles = {}
   const medias: Record<MediaKeys, ViewStyle> = {}
   const usedKeys = new Set<string>()
+  const propKeys = Object.keys(props)
+  const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames
+  const len = propKeys.length
 
-  let style: ViewStyle = {}
+  const style: ViewStyle = {}
   if (state.hasTextAncestor) {
     // parity with react-native-web
     style.display = 'inline-flex' as any
@@ -174,10 +181,6 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
   }
-
-  const propKeys = Object.keys(props)
-  const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames
-  const len = propKeys.length
 
   // loop backwards so we can skip already-used props
   for (let i = len - 1; i >= 0; i--) {
@@ -447,6 +450,35 @@ export const getSplitStyles: StyleSplitter = (
         style[key] = atomicStyle.value
       }
     }
+  } else {
+    if (classNames && state.resolveVariablesAs === 'value') {
+      // getting real values for colors for animations (reverse mapped from CSS)
+      // this isn't beautiful, but will do relatively fine performance for now
+      // const selectors = getAllSelectors()
+      // for (const key in classNames) {
+      //   if (key.endsWith('Color')) {
+      //     const selector = classNames[key]
+      //     let value = selectorValuesCache[selector]
+      //     if (!value) {
+      //       const css = selectors[selector]
+      //       value = css.replace(/.*:/, '').replace(/;.*/, '')
+      //       if (value) {
+      //         const themeUnwrapped = getThemeUnwrapped(theme)
+      //         const map = themeToVariableToValueMap.get(themeUnwrapped)
+      //         console.log('map', map, theme.name)
+      //         if (map && value.startsWith('var(')) {
+      //           value = map[value]
+      //         }
+      //         selectorValuesCache[selector] = value
+      //       } else {
+      //         // err
+      //         continue
+      //       }
+      //     }
+      //     style[key] = value
+      //   }
+      // }
+    }
   }
 
   if (process.env.TAMAGUI_TARGET === 'web') {
@@ -487,6 +519,8 @@ export const getSplitStyles: StyleSplitter = (
     rulesToInsert,
   }
 }
+
+const selectorValuesCache = {}
 
 export const getSubStyle = (
   styleIn: Object,

@@ -23,6 +23,13 @@ type AnimationConfig =
   | ({ type: 'spring'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithSpringConfig)
   | ({ type: 'decay'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithDecayConfig)
 
+const animatedStyleKey = {
+  transform: true,
+  opacity: true,
+  backgroundColor: true,
+  color: true,
+}
+
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
   const AnimatedView = Animated.View
   const AnimatedText = Animated.Text
@@ -62,10 +69,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       })
 
       const [animatedStyles, nonAnimatedStyle] = [{}, {}]
-      const animatedStyleKey = {
-        transform: true,
-        opacity: true,
-      }
       for (const key of Object.keys(all)) {
         if (animatedStyleKey[key]) {
           animatedStyles[key] = all[key]
@@ -147,7 +150,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
             props.animateOnly
           )
 
-          let { delayMs = null } = animationDelay(key, animationConfig, delay)
+          const { delayMs = null } = animationDelay(key, animationConfig, delay)
 
           if (!animation) {
             console.warn('No animation for', key, 'in', style)
@@ -354,7 +357,7 @@ function getAnimation(
   }
 
   let repeatCount = 0
-  let repeatReverse = animationConfig.repeatReverse || false
+  const repeatReverse = animationConfig.repeatReverse || false
   let animationType: Required<TransitionConfig>['type'] = animationConfig?.type || 'spring'
 
   if (isColor(key) || key === 'opacity') {

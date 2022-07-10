@@ -8,7 +8,6 @@ import hyphenateStyleName from 'hyphenate-style-name'
 import { TextStyle, ViewStyle } from 'react-native'
 
 import { reversedShorthands } from '../createTamagui'
-import { cssHash } from './cssHash'
 import { defaultOffset } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'

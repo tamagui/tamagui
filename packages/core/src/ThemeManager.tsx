@@ -2,6 +2,7 @@ import { createContext } from 'react'
 
 import { getThemes } from './conf'
 import { THEME_CLASSNAME_PREFIX, THEME_NAME_SEPARATOR } from './constants/constants'
+import { getThemeUnwrapped } from './hooks/getThemeUnwrapped'
 import { ThemeObject, Themes } from './types'
 
 type ThemeListener = (name: string | null, themeManager: ThemeManager) => void
@@ -179,7 +180,7 @@ export class ThemeManager {
 
     return {
       name: nextName,
-      theme,
+      theme: getThemeUnwrapped(theme),
       className: this.getClassName(nextName),
     }
   }

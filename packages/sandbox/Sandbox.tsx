@@ -9,6 +9,7 @@ import {
   SelectDemo,
   SheetDemo,
   SliderDemo,
+  SwitchDemo,
   TooltipDemo,
 } from '@tamagui/demos'
 import { Sun } from '@tamagui/feather-icons'
@@ -62,7 +63,7 @@ export const Sandbox = () => {
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
         {/* <SheetDemo /> */}
-        <DialogDemo />
+        <SwitchDemo />
         {/* <XStack space>
           <Square size={100} bc="red" />
           <Square $lg={{ display: 'none' }} size={100} bc="red" />
