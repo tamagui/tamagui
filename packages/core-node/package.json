@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/core-node",
-  "version": "1.0.1-beta.101",
+  "version": "1.0.1-beta.102",
   "main": "index.js",
   "types": "types/static",
   "scripts": {
@@ -13,8 +13,8 @@
     ]
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.101",
-    "@tamagui/helpers": "^1.0.1-beta.101"
+    "@tamagui/core": "^1.0.1-beta.102",
+    "@tamagui/helpers": "^1.0.1-beta.102"
   },
   "devDependencies": {
     "@types/node": "^16.11.9",
