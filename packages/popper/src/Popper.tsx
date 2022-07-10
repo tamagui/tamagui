@@ -328,4 +328,4 @@ PopperArrow.displayName = ARROW_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export { PopperProvider, usePopperContext }
+export { usePopperContext }
