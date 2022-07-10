@@ -56,7 +56,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        {/* <AnimationsDemo /> */}
+        <AnimationsDemo />
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}

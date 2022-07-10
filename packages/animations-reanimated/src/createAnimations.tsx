@@ -26,8 +26,8 @@ type AnimationConfig =
 const animatedStyleKey = {
   transform: true,
   opacity: true,
-  backgroundColor: true,
-  color: true,
+  // backgroundColor: true,
+  // color: true,
 }
 
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
