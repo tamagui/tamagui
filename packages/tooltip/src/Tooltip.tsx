@@ -11,7 +11,7 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react-dom-interactions'
-import { useId, withStaticProperties } from '@tamagui/core'
+import { useEvent, useId, withStaticProperties } from '@tamagui/core'
 import { ScopedProps } from '@tamagui/create-context'
 import {
   PopoverAnchor,
@@ -89,17 +89,13 @@ export const Tooltip = withStaticProperties(
     const [open, setOpen] = React.useState(false)
     const id = props.groupId
 
-    // TODO useEvent when ready
-    const onOpenChange = React.useCallback(
-      (open) => {
-        setOpen(open)
-        if (open) {
-          setCurrentId(id)
-        }
-        onOpenChangeProp?.(open)
-      },
-      [id, setCurrentId, onOpenChangeProp]
-    )
+    const onOpenChange = useEvent((open) => {
+      setOpen(open)
+      if (open) {
+        setCurrentId(id)
+      }
+      onOpenChangeProp?.(open)
+    })
 
     const useFloatingFn: UseFloatingFn = (props) => {
       const floating = useFloating({

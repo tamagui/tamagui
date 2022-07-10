@@ -1,5 +1,5 @@
-import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 
 import { FocusScopeProps } from './FocusScopeProps'
@@ -27,8 +27,8 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>((props, 
     ...scopeProps
   } = props
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
-  const onMountAutoFocus = useCallbackRef(onMountAutoFocusProp)
-  const onUnmountAutoFocus = useCallbackRef(onUnmountAutoFocusProp)
+  const onMountAutoFocus = useEvent(onMountAutoFocusProp)
+  const onUnmountAutoFocus = useEvent(onUnmountAutoFocusProp)
   const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
   const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node))
 

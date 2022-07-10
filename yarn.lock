@@ -4925,7 +4925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-use-callback-ref@npm:0.1.0, @radix-ui/react-use-callback-ref@npm:^0.1.0":
+"@radix-ui/react-use-callback-ref@npm:0.1.0":
   version: 0.1.0
   resolution: "@radix-ui/react-use-callback-ref@npm:0.1.0"
   dependencies:
@@ -5789,12 +5789,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/avatar@workspace:packages/avatar"
   dependencies:
-    "@radix-ui/react-use-callback-ref": ^0.1.0
     "@tamagui/build": ^1.0.1-beta.100
     "@tamagui/core": ^1.0.1-beta.100
     "@tamagui/image": ^1.0.1-beta.100
     "@tamagui/shapes": ^1.0.1-beta.100
     "@tamagui/text": ^1.0.1-beta.100
+    "@tamagui/use-event": ^1.0.1-beta.100
     "@types/react-dom": ^18.0.3
     "@types/react-native": ^0.69.2
     react: "*"
@@ -5979,6 +5979,7 @@ __metadata:
     "@tamagui/ow": ^0.28.1
     "@tamagui/rnw": ^1.0.1-beta.100
     "@tamagui/use-debounce": ^1.0.1-beta.100
+    "@tamagui/use-event": ^1.0.1-beta.100
     "@tamagui/use-force-update": ^1.0.1-beta.100
     "@types/react": ^18.0.14
     csstype: ^3.0.10
@@ -6068,11 +6069,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/dismissable@workspace:packages/dismissable"
   dependencies:
-    "@radix-ui/react-use-callback-ref": ^0.1.0
     "@radix-ui/react-use-escape-keydown": ^0.1.0
     "@tamagui/build": ^1.0.1-beta.100
     "@tamagui/compose-refs": ^1.0.1-beta.100
     "@tamagui/core": ^1.0.1-beta.100
+    "@tamagui/use-event": ^1.0.1-beta.100
     react: "*"
     react-dom: "*"
   peerDependencies:
@@ -6173,9 +6174,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/focus-scope@workspace:packages/focus-scope"
   dependencies:
-    "@radix-ui/react-use-callback-ref": ^0.1.0
     "@tamagui/build": ^1.0.1-beta.100
     "@tamagui/compose-refs": ^1.0.1-beta.100
+    "@tamagui/use-event": ^1.0.1-beta.100
     react: "*"
     react-dom: "*"
   peerDependencies:
@@ -6521,9 +6522,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/portal@workspace:packages/portal"
   dependencies:
-    "@gorhom/portal": ^1.0.14
     "@tamagui/build": ^1.0.1-beta.100
-    "@types/react-native": ^0.69.2
+    "@tamagui/stacks": ^1.0.1-beta.100
+    "@types/react-native": ^0.67.3
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -6624,7 +6625,6 @@ __metadata:
     "@floating-ui/react-dom": 0.7.0
     "@floating-ui/react-dom-interactions": ^0.5.0
     "@floating-ui/react-native": ^0.7.0
-    "@radix-ui/react-use-callback-ref": ^0.1.0
     "@radix-ui/react-use-previous": ^0.1.1
     "@tamagui/build": ^1.0.1-beta.100
     "@tamagui/compose-refs": ^1.0.1-beta.100
@@ -6635,6 +6635,7 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-beta.100
     "@tamagui/text": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
+    "@tamagui/use-event": ^1.0.1-beta.100
     "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
@@ -6940,8 +6941,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/use-controllable-state@workspace:packages/use-controllable-state"
   dependencies:
-    "@radix-ui/react-use-callback-ref": ^0.1.0
     "@tamagui/build": ^1.0.1-beta.100
+    "@tamagui/use-event": ^1.0.1-beta.100
     react: "*"
     react-dom: "*"
   peerDependencies:
@@ -6964,6 +6965,17 @@ __metadata:
 "@tamagui/use-direction@^1.0.1-beta.100, @tamagui/use-direction@workspace:packages/use-direction":
   version: 0.0.0-use.local
   resolution: "@tamagui/use-direction@workspace:packages/use-direction"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.100
+    react: "*"
+  peerDependencies:
+    react: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/use-event@^1.0.1-beta.100, @tamagui/use-event@workspace:packages/use-event":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/use-event@workspace:packages/use-event"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.100
     react: "*"
@@ -26120,7 +26132,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
-    "@radix-ui/react-use-callback-ref": ^0.1.0
+    "@gorhom/portal": ^1.0.14
     "@radix-ui/react-use-previous": ^0.1.1
     "@react-native-community/blur": ^3.6.0
     "@tamagui/animate-presence": ^1.0.1-beta.100
@@ -26151,6 +26163,7 @@ __metadata:
     "@tamagui/tooltip": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
     "@tamagui/use-debounce": ^1.0.1-beta.100
+    "@tamagui/use-event": ^1.0.1-beta.100
     "@tamagui/use-force-update": ^1.0.1-beta.100
     "@types/node": ^16.11.9
     "@types/react": ^18.0.14

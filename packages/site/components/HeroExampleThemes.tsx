@@ -1,9 +1,8 @@
 import { useOnIntersecting } from '@tamagui/demos'
 import { useTheme } from '@tamagui/next-theme'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Group, Theme, ThemeName, XStack, YStack, debounce } from 'tamagui'
+import { Group, Theme, ThemeName, XStack, YStack, debounce, useGet } from 'tamagui'
 
-import { useGet } from '../hooks/useGet'
 import { ActiveCircle } from './ActiveCircle'
 import { ContainerLarge } from './Container'
 import { HomeH2, HomeH3 } from './HomeH2'

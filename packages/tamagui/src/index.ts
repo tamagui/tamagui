@@ -135,6 +135,8 @@ export {
   withStaticProperties,
   // hooks
   useConstant,
+  useGet,
+  useEvent,
   useDefaultThemeName,
   useIsMounted,
   useIsomorphicLayoutEffect,

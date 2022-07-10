@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import '@tamagui/polyfill-dev'
 
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'

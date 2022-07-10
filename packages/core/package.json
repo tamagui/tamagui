@@ -26,6 +26,7 @@
     "@tamagui/ow": "^0.28.1",
     "@tamagui/rnw": "^1.0.1-beta.100",
     "@tamagui/use-debounce": "^1.0.1-beta.100",
+    "@tamagui/use-event": "^1.0.1-beta.100",
     "@tamagui/use-force-update": "^1.0.1-beta.100",
     "expo-screen-orientation": "^4.2.0",
     "hyphenate-style-name": "^1.0.4",

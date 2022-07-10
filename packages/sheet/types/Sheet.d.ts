@@ -154,10 +154,11 @@ export declare const Sheet: ((props: Omit<{
     Overlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
 };
 declare type SheetControllerContextValue = {
-    visible: boolean;
+    open: boolean;
+    hidden: boolean;
     onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void);
 };
-export declare const SheetController: ({ children, ...value }: SheetControllerContextValue & {
+export declare const SheetController: ({ children, onChangeOpen: onChangeOpenProp, ...value }: SheetControllerContextValue & {
     children?: React.ReactNode;
 }) => JSX.Element;
 export { createSheetScope };

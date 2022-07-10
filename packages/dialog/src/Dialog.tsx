@@ -1,5 +1,7 @@
+import { Portal, PortalHost } from '@gorhom/portal'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { useEvent, useGet } from '@tamagui/core'
 import {
   GetProps,
   MediaPropKeys,
@@ -16,7 +18,6 @@ import {
 import { Scope, createContext, createContextScope } from '@tamagui/create-context'
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
-import { Portal, PortalHost, PortalProps } from '@tamagui/portal'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
@@ -113,6 +114,9 @@ const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValu
   forceMount: undefined,
 })
 
+type PortalType = typeof Portal
+type PortalProps = PortalType extends (props: infer Props) => any ? Props : never
+
 type DialogPortalProps = Omit<PortalProps, 'asChild'> &
   YStackProps & {
     /**
@@ -188,14 +192,15 @@ const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
     const portalContext = usePortalContext(OVERLAY_NAME, __scopeDialog)
     const { forceMount = portalContext.forceMount, ...overlayProps } = props
     const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+    const showSheet = useShowDialogSheet(context)
 
-    if (!context.modal || context.sheetBreakpoint) {
-      return null
+    if (!forceMount) {
+      if (!context.modal || showSheet) {
+        return null
+      }
     }
 
-    // <AnimatePresence>
     return <DialogOverlayImpl {...overlayProps} ref={forwardedRef} />
-    // </AnimatePresence>
   }
 )
 
@@ -707,26 +712,31 @@ const DialogSheetController = (
 ) => {
   const context = useDialogContext('DialogSheetController', props.__scopeDialog)
   const showSheet = useShowDialogSheet(context)
+  const breakpointActive = useDialogBreakpointActive(context)
+  const getShowSheet = useGet(showSheet)
   return (
     <SheetController
       onChangeOpen={(val) => {
-        if (showSheet) {
+        if (getShowSheet()) {
           props.onChangeOpen(val)
         }
       }}
-      visible={showSheet}
+      open={context.open}
+      hidden={breakpointActive === false}
     >
       {props.children}
     </SheetController>
   )
 }
 
-const useShowDialogSheet = (context: DialogContextValue) => {
+const useDialogBreakpointActive = (context: DialogContextValue) => {
   const media = useMedia()
-  if (!context.sheetBreakpoint || context.open === false) {
-    return false
-  }
-  return media[context.sheetBreakpoint]
+  return context.sheetBreakpoint ? media[context.sheetBreakpoint] : false
+}
+
+const useShowDialogSheet = (context: DialogContextValue) => {
+  const breakpointActive = useDialogBreakpointActive(context)
+  return context.open === false ? false : breakpointActive
 }
 
 export {

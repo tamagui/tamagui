@@ -1,8 +1,11 @@
 import React from 'react';
-export declare function useControllableState<T>({ prop, defaultProp, onChange, strategy, }: {
+declare type ChangeCb<T> = ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>;
+export declare function useControllableState<T>({ prop, defaultProp, onChange, strategy, preventUpdate, }: {
     prop?: T | undefined;
     defaultProp: T;
-    onChange?: ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>;
+    onChange?: ChangeCb<T>;
     strategy?: 'prop-wins' | 'most-recent-wins';
+    preventUpdate?: boolean;
 }): [T, React.Dispatch<React.SetStateAction<T>>];
+export {};
 //# sourceMappingURL=useControllableState.d.ts.map

@@ -1,10 +1,10 @@
 // forked from radix-ui
 // https://github.com/radix-ui/primitives/blob/cfd8dcba5fa6a0e751486af418d05a7b88a7f541/packages/react/dismissable-layer/src/DismissableLayer.tsx#L324
 
-import { useCallbackRef } from '@radix-ui/react-use-callback-ref'
 import { useEscapeKeydown } from '@radix-ui/react-use-escape-keydown'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/core'
+import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
@@ -198,7 +198,7 @@ export type FocusOutsideEvent = CustomEvent<{ originalEvent: FocusEvent }>
  * Returns props to pass to the node we want to check for outside events.
  */
 function usePointerDownOutside(onPointerDownOutside?: (event: PointerDownOutsideEvent) => void) {
-  const handlePointerDownOutside = useCallbackRef(onPointerDownOutside) as EventListener
+  const handlePointerDownOutside = useEvent(onPointerDownOutside) as EventListener
   const isPointerInsideReactTreeRef = React.useRef(false)
   const handleClickRef = React.useRef(() => {})
 
@@ -272,7 +272,7 @@ function usePointerDownOutside(onPointerDownOutside?: (event: PointerDownOutside
  * Returns props to pass to the root (node) of the subtree we want to check.
  */
 function useFocusOutside(onFocusOutside?: (event: FocusOutsideEvent) => void) {
-  const handleFocusOutside = useCallbackRef(onFocusOutside) as EventListener
+  const handleFocusOutside = useEvent(onFocusOutside) as EventListener
   const isFocusInsideReactTreeRef = React.useRef(false)
 
   React.useEffect(() => {

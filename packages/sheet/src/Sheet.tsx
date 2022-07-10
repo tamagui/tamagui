@@ -7,6 +7,7 @@ import {
   mergeEvent,
   styled,
   themeable,
+  useEvent,
   withStaticProperties,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
@@ -17,7 +18,6 @@ import React, {
   createContext,
   forwardRef,
   isValidElement,
-  useCallback,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -55,6 +55,7 @@ type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetSta
 type SheetContextValue = Required<
   Pick<SheetProps, 'open' | 'position' | 'snapPoints' | 'dismissOnOverlayPress'>
 > & {
+  hidden: boolean
   setPosition: React.Dispatch<React.SetStateAction<number>>
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -135,7 +136,7 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
     const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
     return (
       <SheetOverlayFrame
-        closed={context.open === false}
+        closed={!context.open || context.hidden}
         {...props}
         onPress={mergeEvent(
           props.onPress,
@@ -206,6 +207,7 @@ export const Sheet = withStaticProperties(
       } catch {
         // uncontrolled
       }
+      const isHidden = controller?.hidden || false
 
       const onChangeOpenInternal = (val: boolean) => {
         controller?.onChangeOpen?.(val)
@@ -213,7 +215,7 @@ export const Sheet = withStaticProperties(
       }
 
       const [open, setOpen] = useControllableState({
-        prop: controller?.visible ?? openProp,
+        prop: controller?.open ?? openProp,
         defaultProp: defaultOpen || true,
         onChange: onChangeOpenInternal,
         strategy: controller ? 'most-recent-wins' : 'prop-wins',
@@ -230,17 +232,21 @@ export const Sheet = withStaticProperties(
         onChange: onChangePosition,
       })
       const position = open === false ? -1 : position_
+
       const positionValue = useRef<Animated.Value>()
+      if (!positionValue.current) {
+        positionValue.current = new Animated.Value(HIDDEN_SIZE)
+      }
+
       const spring = useRef<Animated.CompositeAnimation | null>(null)
+      function stopSpring() {
+        spring.current?.stop()
+        spring.current = null
+      }
 
       // open must set position
       if (open && position < 0) {
         setPosition(0)
-      }
-
-      function stopSpring() {
-        spring.current?.stop()
-        spring.current = null
       }
 
       const positions = useMemo(
@@ -248,35 +254,37 @@ export const Sheet = withStaticProperties(
         [frameSize, snapPoints]
       )
 
-      if (!positionValue.current) {
-        positionValue.current = new Animated.Value(HIDDEN_SIZE)
-      }
-
-      const animateTo = useCallback(
-        (position: number) => {
-          if (!positionValue.current) return
-          if (frameSize === 0) return
-          const toValue =
-            position === -1 ? (frameSize === 0 ? HIDDEN_SIZE : frameSize) : positions[position]
-          if (positionValue.current['_value'] === toValue) return
-          stopSpring()
-          // dont bounce on initial measure to bottom
-          const overshootClamping = positionValue.current['_value'] === HIDDEN_SIZE
-          spring.current = Animated.spring(positionValue.current, {
+      const animateTo = useEvent((position: number) => {
+        if (isHidden && open) return
+        const pos = positionValue.current
+        if (!pos) return
+        if (frameSize === 0) return
+        const hiddenValue = frameSize === 0 ? HIDDEN_SIZE : frameSize
+        const toValue = isHidden || position === -1 ? hiddenValue : positions[position]
+        if (pos['_value'] === toValue) return
+        stopSpring()
+        if (isHidden) {
+          Animated.timing(pos, {
             useNativeDriver: !isWeb,
             toValue,
-            overshootClamping,
-            ...animationConfig,
-          })
-          spring.current.start(({ finished }) => finished && stopSpring())
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [positions, frameSize, JSON.stringify(animationConfig || null)]
-      )
+            duration: 0,
+          }).start()
+          return
+        }
+        // dont bounce on initial measure to bottom
+        const overshootClamping = pos['_value'] === HIDDEN_SIZE
+        spring.current = Animated.spring(pos, {
+          useNativeDriver: !isWeb,
+          toValue,
+          overshootClamping,
+          ...animationConfig,
+        })
+        spring.current.start(({ finished }) => finished && stopSpring())
+      })
 
       useLayoutEffect(() => {
         animateTo(position)
-      }, [position, animateTo])
+      }, [isHidden, position, animateTo])
 
       const panResponder = useMemo(() => {
         if (!frameSize) return
@@ -345,10 +353,17 @@ export const Sheet = withStaticProperties(
         }
       })
 
+      const preventShown = controller?.hidden && controller?.open
+
+      if (preventShown) {
+        return null
+      }
+
       return (
         <SheetProvider
           dismissOnOverlayPress={dismissOnOverlayPress}
           open={open}
+          hidden={isHidden}
           scope={__scopeSheet}
           position={position}
           snapPoints={snapPoints}
@@ -356,7 +371,8 @@ export const Sheet = withStaticProperties(
           setOpen={setOpen}
         >
           {overlayComponent}
-          {handleComponent}
+          {/* no fancy hidden animation etc for handle for now */}
+          {isHidden ? null : handleComponent}
           <Animated.View
             ref={ref}
             {...panResponder?.panHandlers}
@@ -411,26 +427,33 @@ function resisted(y: number, minY: number, maxOverflow = 25) {
 }
 
 type SheetControllerContextValue = {
-  visible: boolean
+  open: boolean
+  // hide without "closing" to prevent re-animation when shown again
+  hidden: boolean
   onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
 }
 
 const SheetControllerContext = createContext<SheetControllerContextValue>({
-  visible: false,
+  open: false,
+  hidden: false,
 })
 
 export const SheetController = ({
   children,
+  onChangeOpen: onChangeOpenProp,
   ...value
 }: SheetControllerContextValue & { children?: React.ReactNode }) => {
-  const memoValue = useMemo(
-    () => value,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value.visible]
-  )
+  const onChangeOpen = useEvent(onChangeOpenProp)
 
-  // always up to date, todo useEvent
-  memoValue.onChangeOpen = value.onChangeOpen
+  const memoValue = useMemo(
+    () => ({
+      open: value.open,
+      hidden: value.hidden || false,
+      onChangeOpen,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [value.open, value.hidden]
+  )
 
   return (
     <SheetControllerContext.Provider value={memoValue}>{children}</SheetControllerContext.Provider>
@@ -438,5 +461,3 @@ export const SheetController = ({
 }
 
 export { createSheetScope }
-
-/* eslint-enable react-hooks/rules-of-hooks */

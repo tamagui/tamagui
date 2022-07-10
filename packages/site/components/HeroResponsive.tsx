@@ -18,11 +18,11 @@ import {
   YStack,
   isTouchable,
   useDebounce,
+  useGet,
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
 
-import { useGet } from '../hooks/useGet'
 import favicon from '../public/favicon.svg'
 import { Container, ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'

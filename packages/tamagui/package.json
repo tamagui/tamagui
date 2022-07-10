@@ -24,7 +24,7 @@
     "lint-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
-    "@radix-ui/react-use-callback-ref": "^0.1.0",
+    "@gorhom/portal": "^1.0.14",
     "@radix-ui/react-use-previous": "^0.1.1",
     "@react-native-community/blur": "^3.6.0",
     "@tamagui/animate-presence": "^1.0.1-beta.100",
@@ -54,6 +54,7 @@
     "@tamagui/tooltip": "^1.0.1-beta.100",
     "@tamagui/use-controllable-state": "^1.0.1-beta.100",
     "@tamagui/use-debounce": "^1.0.1-beta.100",
+    "@tamagui/use-event": "^1.0.1-beta.100",
     "@tamagui/use-force-update": "^1.0.1-beta.100",
     "expo-linear-gradient": "^11.0.3",
     "expo-modules-core": "^0.9.1",
