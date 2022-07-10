@@ -1,6 +1,7 @@
 // https://raw.githubusercontent.com/pacocoursey/next-themes/master/index.tsx
 // forked temporarily due to buggy theme change
 
+import { startTransition } from '@tamagui/core'
 import NextHead from 'next/head'
 import * as React from 'react'
 import {
@@ -79,9 +80,6 @@ export const useRootTheme = () => {
   return useState(isDark ? 'dark' : 'light')
 }
 
-// backwards compat
-const startTransition = React.startTransition || ((cb) => cb())
-
 export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   forcedTheme,
   disableTransitionOnChange = true,
@@ -121,8 +119,6 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
   const handleChangeTheme = useCallback((theme, updateStorage = true, updateDOM = true) => {
     let name = value?.[theme] || theme
 
-    const enable = disableTransitionOnChange && updateDOM ? disableAnimation() : null
-
     if (updateStorage) {
       try {
         localStorage.setItem(storageKey, theme)
@@ -140,14 +136,12 @@ export const NextThemeProvider: React.FC<ThemeProviderProps> = ({
 
     if (updateDOM) {
       const d = document.documentElement
-
       if (attribute === 'class') {
         d.classList.remove(...attrs)
         d.classList.add(name)
       } else {
         d.setAttribute(attribute, name)
       }
-      enable?.()
     }
   }, [])
 
@@ -338,26 +332,6 @@ const getTheme = (key: string, fallback?: string) => {
     // Unsupported
   }
   return theme || fallback
-}
-
-const disableAnimation = () => {
-  const css = document.createElement('style')
-  css.appendChild(
-    document.createTextNode(
-      `*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}`
-    )
-  )
-  document.head.appendChild(css)
-
-  return () => {
-    // Force restyle
-    ;(() => window.getComputedStyle(document.body))()
-
-    // Wait for next tick before removing
-    setTimeout(() => {
-      document.head.removeChild(css)
-    }, 1)
-  }
 }
 
 const getSystemTheme = (e?: MediaQueryList) => {

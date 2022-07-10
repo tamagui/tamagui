@@ -2,7 +2,7 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { useIsSSR } from '@tamagui/core'
+import { startTransition, useIsSSR } from '@tamagui/core'
 import { nanoid } from 'nanoid/non-secure'
 import { ReactNode, useMemo, useRef } from 'react'
 import React, { createContext, memo, useCallback, useContext, useEffect, useReducer } from 'react'
@@ -221,8 +221,16 @@ const PortalProviderComponent = ({
   children,
 }: PortalProviderProps) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const transitionDispatch = useMemo(() => {
+    const next = (value: any) => {
+      startTransition(() => {
+        dispatch(value)
+      })
+    }
+    return next as typeof dispatch
+  }, [dispatch])
   return (
-    <PortalDispatchContext.Provider value={dispatch}>
+    <PortalDispatchContext.Provider value={transitionDispatch}>
       <PortalStateContext.Provider value={state}>
         {children}
         {shouldAddRootHost && <PortalHost name={rootHostName} />}

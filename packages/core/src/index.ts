@@ -34,6 +34,7 @@ export * from './helpers/isObj'
 export * from './helpers/isTamaguiElement'
 export * from './helpers/isTamaguiComponent'
 export * from './helpers/matchMedia'
+export * from './helpers/startTransition'
 export * from './helpers/themeable'
 export * from './helpers/withStaticProperties'
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { isSSR, isWeb } from '../constants/platform'
+import { startTransition } from '../helpers/startTransition'
 
 // because any change before first useEffect causes hydration / mismatch issues
 
@@ -9,7 +10,9 @@ export const useIsSSR = () => {
 
   useEffect(() => {
     if (isWeb && !isSSR) {
-      setVal(false)
+      startTransition(() => {
+        setVal(false)
+      })
     }
   }, [])
 

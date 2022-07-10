@@ -3721,18 +3721,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/portal@npm:^1.0.14":
-  version: 1.0.14
-  resolution: "@gorhom/portal@npm:1.0.14"
-  dependencies:
-    nanoid: ^3.3.1
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 227bb96a2db854ab29bb9da8d4f3823c7f7448358de459709dd1b78522110da564c9a8734c6bc7d7153ed7c99320e0fb5d60b420c2ebb75ecaf2f0d757f410f9
-  languageName: node
-  linkType: hard
-
 "@graphql-typed-document-node/core@npm:^3.1.0, @graphql-typed-document-node/core@npm:^3.1.1":
   version: 3.1.1
   resolution: "@graphql-typed-document-node/core@npm:3.1.1"
@@ -5700,7 +5688,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/accordion@workspace:packages/accordion"
   dependencies:
-    "@gorhom/bottom-sheet": ^4.3.1
     "@tamagui/build": ^1.0.1-beta.101
     "@tamagui/compose-refs": ^1.0.1-beta.101
     "@tamagui/core": ^1.0.1-beta.101
@@ -5890,7 +5877,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/collapsible@workspace:packages/collapsible"
   dependencies:
-    "@gorhom/bottom-sheet": ^4.3.1
     "@tamagui/build": ^1.0.1-beta.101
     "@tamagui/compose-refs": ^1.0.1-beta.101
     "@tamagui/core": ^1.0.1-beta.101
@@ -6343,7 +6329,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/menu@workspace:packages/menu"
   dependencies:
-    "@gorhom/bottom-sheet": ^4.3.1
     "@tamagui/build": ^1.0.1-beta.101
     "@tamagui/core": ^1.0.1-beta.101
     "@tamagui/polyfill-dev": ^1.0.1-beta.101
@@ -26133,7 +26118,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tamagui@workspace:packages/tamagui"
   dependencies:
-    "@gorhom/portal": ^1.0.14
     "@radix-ui/react-use-previous": ^0.1.1
     "@react-native-community/blur": ^3.6.0
     "@tamagui/animate-presence": ^1.0.1-beta.101
