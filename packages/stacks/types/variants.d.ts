@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare const elevate: {
     true: (_: boolean, extras: any) => {
         [x: `$${string}`]: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>) | import("@tamagui/core").Variable<any> | undefined;
@@ -44,7 +43,7 @@ export declare const elevate: {
             label?: string | undefined;
         }>[] | undefined;
         accessibilityLabel?: string | import("@tamagui/core").Variable<any> | undefined;
-        accessibilityRole?: "none" | "button" | "link" | "search" | "image" | "keyboardkey" | "text" | "adjustable" | "imagebutton" | "header" | "summary" | import("@tamagui/core").Variable<any> | undefined;
+        accessibilityRole?: "none" | "button" | "link" | "search" | "image" | "keyboardkey" | "text" | "adjustable" | "imagebutton" | "header" | "summary" | "list" | import("@tamagui/core").Variable<any> | undefined;
         accessibilityState?: import("react-native").AccessibilityState | import("@tamagui/core").Variable<any> | undefined;
         accessibilityHint?: string | import("@tamagui/core").Variable<any> | undefined;
         accessibilityValue?: import("@tamagui/core").Variable<any> | import("react-native").AccessibilityValue | undefined;
