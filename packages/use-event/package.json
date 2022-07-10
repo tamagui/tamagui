@@ -1,7 +1,6 @@
 {
-  "name": "@tamagui/portal",
+  "name": "@tamagui/use-event",
   "version": "1.0.1-beta.100",
-  "source": "src/index.ts",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -17,20 +16,12 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/stacks": "^1.0.1-beta.100"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-dom": "*",
-    "react-native": "*"
-  },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.100",
-    "@types/react-native": "^0.67.3",
-    "react": "*",
-    "react-dom": "*",
-    "react-native": "*"
+    "react": "*"
+  },
+  "peerDependencies": {
+    "react": "*"
   },
   "publishConfig": {
     "access": "public"
