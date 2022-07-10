@@ -84,13 +84,12 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
     ...altButtonThemes.slice(0, alts.length),
     [`${name}_Button`, altThemes2[1][1]],
     [`${name}_DrawerFrame`, altThemes2[1][1]],
-    [`${name}_SliderTrack`, altThemes[0][1]],
+    [`${name}_SliderTrack`, altThemes[2][1]],
     [`${name}_SliderTrackActive`, altThemes[3][1]],
     [`${name}_SliderThumb`, inverted[2]],
     [`${name}_Progress`, altThemes[2][1]],
     [`${name}_ProgressIndicator`, inverted[2]],
     [`${name}_Switch`, altThemes[0][1]],
-    [`${name}_SwitchThumb`, inverted[2]],
     [`${name}_TooltipArrow`, altThemes[1][1]],
     [`${name}_TooltipContent`, altThemes[1][1]],
     [`${name}_darker`, darkerTheme],
@@ -281,8 +280,7 @@ const baseThemes = {
   light_Card: lightThemes.light,
   light_SliderTrack: lightThemes.light_alt2,
   light_SliderTrackActive: lightThemes.light_alt3,
-  light_Switch: lightThemes.light_alt1,
-  light_SwitchThumb: darkThemes.dark,
+  light_Switch: lightThemes.light_alt3,
   light_DrawerFrame: lightThemes.light_alt1,
 
   // dark
@@ -294,8 +292,8 @@ const baseThemes = {
   dark_DrawerFrame: darkThemes.dark_alt2,
   dark_SliderTrack: darkThemes.dark_darker,
   dark_SliderTrackActive: darkThemes.dark_alt3,
-  dark_Switch: darkThemes.dark_darker,
-  dark_SwitchThumb: lightThemes.light_alt3,
+  dark_Switch: darkThemes.dark_alt3,
+  dark_SwitchThumb: darkThemes.dark_darker,
   dark_Button: darkThemes.dark_alt1,
 }
 
@@ -394,8 +392,14 @@ function makeActiveTheme(theme: any) {
 }
 
 // add in base _active themes
-baseThemes.dark_active = makeActiveTheme(colorThemes.dark_blue_alt3)
-baseThemes.light_active = makeActiveTheme(colorThemes.light_blue_alt3)
+baseThemes.dark_active = makeActiveTheme({
+  ...colorThemes.dark_blue_alt3,
+  background: darkColors.blue10,
+})
+baseThemes.light_active = makeActiveTheme({
+  ...colorThemes.light_blue_alt3,
+  background: darkColors.blue10,
+})
 
 const allThemes = {
   ...baseThemes,
