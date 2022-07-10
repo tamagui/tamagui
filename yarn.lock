@@ -6171,6 +6171,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/focusable@^1.0.1-beta.102, @tamagui/focusable@workspace:packages/focusable":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/focusable@workspace:packages/focusable"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.102
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/font-fira-mono@^1.0.1-beta.102, @tamagui/font-fira-mono@workspace:packages/font-fira-mono":
   version: 0.0.0-use.local
   resolution: "@tamagui/font-fira-mono@workspace:packages/font-fira-mono"
@@ -6306,6 +6314,27 @@ __metadata:
     react-native-svg: ^12.3.0
     react-native-web: ^0.18.3
     solito: ^0.0.26
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/label@^1.0.1-beta.102, @tamagui/label@workspace:packages/label":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/label@workspace:packages/label"
+  dependencies:
+    "@tamagui/build": ^1.0.1-beta.102
+    "@tamagui/compose-refs": ^1.0.1-beta.102
+    "@tamagui/core": ^1.0.1-beta.102
+    "@tamagui/create-context": ^1.0.1-beta.102
+    "@tamagui/focusable": ^1.0.1-beta.102
+    "@tamagui/text": ^1.0.1-beta.102
+    "@types/react-native": ^0.69.2
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 
@@ -6839,6 +6868,30 @@ __metadata:
     webpack: ^5.73.0
   peerDependencies:
     react-native-web: "*"
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/switch@workspace:packages/switch":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/switch@workspace:packages/switch"
+  dependencies:
+    "@radix-ui/react-use-previous": ^0.1.1
+    "@tamagui/build": ^1.0.1-beta.102
+    "@tamagui/compose-refs": ^1.0.1-beta.102
+    "@tamagui/core": ^1.0.1-beta.102
+    "@tamagui/create-context": ^1.0.1-beta.102
+    "@tamagui/focusable": ^1.0.1-beta.102
+    "@tamagui/label": ^1.0.1-beta.102
+    "@tamagui/stacks": ^1.0.1-beta.102
+    "@tamagui/use-controllable-state": ^1.0.1-beta.102
+    "@types/react-native": ^0.69.2
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
   languageName: unknown
   linkType: soft
 

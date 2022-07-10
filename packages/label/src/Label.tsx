@@ -10,11 +10,10 @@ import {
   useId,
 } from '@tamagui/core'
 import { createContext } from '@tamagui/create-context'
+import { focusFocusable } from '@tamagui/focusable'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
 import { View } from 'react-native'
-
-import { focusFocusable } from '../lib/registerFocusable'
 
 const NAME = 'Label'
 

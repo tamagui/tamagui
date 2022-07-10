@@ -1,0 +1,38 @@
+{
+  "name": "@tamagui/focusable",
+  "version": "1.0.1-beta.102",
+  "sideEffects": false,
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "license": "MIT",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.0.1-beta.102",
+    "@tamagui/compose-refs": "^1.0.1-beta.102"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.102",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

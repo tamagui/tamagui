@@ -3,7 +3,7 @@ import { isTamaguiComponent } from '@tamagui/core'
 import React, { useRef } from 'react'
 import { forwardRef, useCallback, useEffect } from 'react'
 
-import { registerFocusable, unregisterFocusable } from '../lib/registerFocusable'
+import { registerFocusable, unregisterFocusable } from './registerFocusable'
 
 export function focusableInputHOC<A extends Function>(Component: A): A {
   return forwardRef(

@@ -1,6 +1,6 @@
 import { GetProps, styled } from '@tamagui/core'
+import { focusableInputHOC } from '@tamagui/focusable'
 
-import { focusableInputHOC } from '../helpers/focusableInputHOC'
 import { textAreaSizeVariant } from '../helpers/inputHelpers'
 import { InputFrame } from './Input'
 

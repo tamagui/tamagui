@@ -1,0 +1,48 @@
+{
+  "name": "@tamagui/switch",
+  "version": "1.0.1-beta.102",
+  "sideEffects": [
+    "*.css"
+  ],
+  "source": "src/index.ts",
+  "types": "./types/index.d.ts",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
+  },
+  "dependencies": {
+    "@radix-ui/react-use-previous": "^0.1.1",
+    "@tamagui/compose-refs": "^1.0.1-beta.102",
+    "@tamagui/core": "^1.0.1-beta.102",
+    "@tamagui/create-context": "^1.0.1-beta.102",
+    "@tamagui/focusable": "^1.0.1-beta.102",
+    "@tamagui/label": "^1.0.1-beta.102",
+    "@tamagui/stacks": "^1.0.1-beta.102",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.102"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "^1.0.1-beta.102",
+    "@types/react-native": "^0.69.2",
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
