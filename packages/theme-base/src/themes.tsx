@@ -49,7 +49,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   // generate alternates (for use in other themes), but keep just alts
   const altThemes: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
-    getTheme(alt + (props.isLight ? 0 : 0) + shift, props),
+    getTheme(alt * 2 + shift, props),
   ])
   const altThemes2: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
@@ -288,6 +288,7 @@ const baseThemes = {
   light_SliderTrack: lightThemes.light_alt2,
   light_SliderTrackActive: lightThemes.light_alt3,
   light_Switch: lightThemes.light_alt3,
+  light_SwitchThumb: lightThemes.light,
   light_DrawerFrame: lightThemes.light_alt1,
 
   // dark

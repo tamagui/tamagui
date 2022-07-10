@@ -184,36 +184,36 @@ export const Switch = withStaticProperties(
 
         return (
           <SwitchProvider scope={__scopeSwitch} checked={checked} disabled={disabled} size={size}>
-            <Theme name={checked ? 'active' : null}>
-              <SwitchFrame
-                size={size}
-                // @ts-ignore
-                role="switch"
-                aria-checked={checked}
-                aria-labelledby={labelledBy}
-                aria-required={required}
-                data-state={getState(checked)}
-                data-disabled={disabled ? '' : undefined}
-                disabled={disabled}
-                // @ts-ignore
-                tabIndex={disabled ? undefined : 0}
-                // @ts-ignore
-                value={value}
-                {...switchProps}
-                ref={composedRefs}
-                onPress={(event) => {
-                  props.onPress?.(event)
-                  setChecked((prevChecked) => !prevChecked)
-                  if (isWeb && isFormControl) {
-                    hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
-                    // if switch is in a form, stop propagation from the button so that we only propagate
-                    // one click event (from the input). We propagate changes from an input so that native
-                    // form validation works and form events reflect switch updates.
-                    if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
-                  }
-                }}
-              />
-            </Theme>
+            <SwitchFrame
+              size={size}
+              // @ts-ignore
+              role="switch"
+              aria-checked={checked}
+              aria-labelledby={labelledBy}
+              aria-required={required}
+              data-state={getState(checked)}
+              data-disabled={disabled ? '' : undefined}
+              disabled={disabled}
+              theme={checked ? 'active' : null}
+              themeShallow
+              // @ts-ignore
+              tabIndex={disabled ? undefined : 0}
+              // @ts-ignore
+              value={value}
+              {...switchProps}
+              ref={composedRefs}
+              onPress={(event) => {
+                props.onPress?.(event)
+                setChecked((prevChecked) => !prevChecked)
+                if (isWeb && isFormControl) {
+                  hasConsumerStoppedPropagationRef.current = event.isPropagationStopped()
+                  // if switch is in a form, stop propagation from the button so that we only propagate
+                  // one click event (from the input). We propagate changes from an input so that native
+                  // form validation works and form events reflect switch updates.
+                  if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation()
+                }
+              }}
+            />
             {isWeb && isFormControl && (
               <BubbleInput
                 control={button}

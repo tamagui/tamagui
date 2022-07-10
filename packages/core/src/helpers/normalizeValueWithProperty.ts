@@ -6,7 +6,6 @@
 import { normalizeColor } from './normalizeColor'
 
 const cache = {}
-console.log('cache', cache)
 
 export function normalizeValueWithProperty(value: any, property?: string): any {
   const cached = cache[value]

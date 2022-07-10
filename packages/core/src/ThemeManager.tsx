@@ -174,8 +174,10 @@ export class ThemeManager {
       theme = themes[`light_${nextName}`]
     }
 
-    if (process.env.NODE_ENV === 'development' && debug) {
-      console.log('getNextTheme', { props, nextName, parentName }, this)
+    if (process.env.NODE_ENV === 'development') {
+      if (debug) {
+        console.log('getNextTheme', this.getClassName(nextName), { props, nextName, parentName })
+      }
     }
 
     return {

@@ -20,7 +20,7 @@ function SwitchWithLabel(props: { size: SizeTokens }) {
         Dark mode
       </Label>
       <Separator mih={20} vertical />
-      <Switch id={id} debug={props.size === '$5'} animation="bouncy" size={props.size}>
+      <Switch id={id} size={props.size}>
         <Switch.Thumb animation="bouncy" />
       </Switch>
     </XStack>

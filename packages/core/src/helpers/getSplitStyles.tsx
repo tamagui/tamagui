@@ -7,7 +7,6 @@ import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platfor
 import { themeToVariableToValueMap } from '../createTheme'
 import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
-import { GetThemeUnwrapped } from '../hooks/useTheme'
 import {
   DebugProp,
   MediaKeys,
@@ -454,6 +453,7 @@ export const getSplitStyles: StyleSplitter = (
     if (classNames && state.resolveVariablesAs === 'value') {
       // getting real values for colors for animations (reverse mapped from CSS)
       // this isn't beautiful, but will do relatively fine performance for now
+      // has a bug still - try adding <Switch theme="bouncy" /> should animate bg color on active
       // const selectors = getAllSelectors()
       // for (const key in classNames) {
       //   if (key.endsWith('Color')) {
@@ -465,17 +465,20 @@ export const getSplitStyles: StyleSplitter = (
       //       if (value) {
       //         const themeUnwrapped = getThemeUnwrapped(theme)
       //         const map = themeToVariableToValueMap.get(themeUnwrapped)
-      //         console.log('map', map, theme.name)
       //         if (map && value.startsWith('var(')) {
       //           value = map[value]
       //         }
-      //         selectorValuesCache[selector] = value
+      //         if (value) {
+      //           selectorValuesCache[selector] = value
+      //         }
       //       } else {
       //         // err
       //         continue
       //       }
       //     }
-      //     style[key] = value
+      //     if (value) {
+      //       style[key] = value
+      //     }
       //   }
       // }
     }

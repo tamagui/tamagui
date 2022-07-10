@@ -1,3 +1,4 @@
+import React from 'react'
 import { H3, ThemeReset } from 'tamagui'
 
 export const SubTitle = ({ children, ...props }) => {
@@ -11,7 +12,7 @@ export const SubTitle = ({ children, ...props }) => {
         width="max-content"
         size="$8"
         letterSpacing={-1}
-        theme="alt3"
+        theme="alt1"
         fontWeight="300"
         tag="p"
         maxWidth="100%"

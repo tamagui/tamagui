@@ -859,6 +859,29 @@ declare const baseThemes: {
         borderColorPress: string | Variable<any>;
         borderColorFocus: string | Variable<any>;
     };
+    light_SwitchThumb: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: Variable<any>;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable<any>;
+        shadowColor: Variable<any>;
+        shadowColorHover: string | Variable<any>;
+        shadowColorPress: string | Variable<any>;
+        shadowColorFocus: string | Variable<any>;
+        borderColor: string | Variable<any>;
+        borderColorHover: string | Variable<any>;
+        borderColorPress: string | Variable<any>;
+        borderColorFocus: string | Variable<any>;
+    };
     light_DrawerFrame: {
         background: any;
         backgroundStrong: any;
@@ -3143,6 +3166,29 @@ declare const allThemes: {
         borderColorFocus: string | Variable<any>;
     };
     readonly light_Switch: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: Variable<any>;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable<any>;
+        shadowColor: Variable<any>;
+        shadowColorHover: string | Variable<any>;
+        shadowColorPress: string | Variable<any>;
+        shadowColorFocus: string | Variable<any>;
+        borderColor: string | Variable<any>;
+        borderColorHover: string | Variable<any>;
+        borderColorPress: string | Variable<any>;
+        borderColorFocus: string | Variable<any>;
+    };
+    readonly light_SwitchThumb: {
         background: any;
         backgroundStrong: any;
         backgroundSoft: any;
