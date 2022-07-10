@@ -24,7 +24,6 @@
     "lint-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
-    "@gorhom/portal": "^1.0.14",
     "@radix-ui/react-use-previous": "^0.1.1",
     "@react-native-community/blur": "^3.6.0",
     "@tamagui/animate-presence": "^1.0.1-beta.101",

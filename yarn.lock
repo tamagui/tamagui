@@ -6523,6 +6523,7 @@ __metadata:
   resolution: "@tamagui/portal@workspace:packages/portal"
   dependencies:
     "@tamagui/build": ^1.0.1-beta.101
+    "@tamagui/core": ^1.0.1-beta.101
     "@tamagui/stacks": ^1.0.1-beta.101
     "@types/react-native": ^0.69.2
     react: "*"

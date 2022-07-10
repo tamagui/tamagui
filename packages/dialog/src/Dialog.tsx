@@ -1,7 +1,6 @@
-import { Portal, PortalHost } from '@gorhom/portal'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { useEvent, useGet } from '@tamagui/core'
+import { useGet } from '@tamagui/core'
 import {
   GetProps,
   MediaPropKeys,
@@ -18,6 +17,7 @@ import {
 import { Scope, createContext, createContextScope } from '@tamagui/create-context'
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
+import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
@@ -114,10 +114,7 @@ const [PortalProvider, usePortalContext] = createDialogContext<PortalContextValu
   forceMount: undefined,
 })
 
-type PortalType = typeof Portal
-type PortalProps = PortalType extends (props: infer Props) => any ? Props : never
-
-type DialogPortalProps = Omit<PortalProps, 'asChild'> &
+type DialogPortalProps = Omit<PortalItemProps, 'asChild'> &
   YStackProps & {
     /**
      * Used to force mounting when more control is needed. Useful when
@@ -148,7 +145,7 @@ const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
       return contents
     }
     return (
-      <Portal>
+      <PortalItem>
         {/* have to re-propogate context, sketch */}
         <DialogProvider scope={__scopeDialog} {...context}>
           <Theme name={themeName}>
@@ -159,7 +156,7 @@ const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
             </PortalProvider>
           </Theme>
         </DialogProvider>
-      </Portal>
+      </PortalItem>
     )
   }
 )
@@ -447,7 +444,11 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
     )
 
     if (showSheet) {
-      return <Portal hostName={`${context.scopeKey}SheetContents`}>{contentProps.children}</Portal>
+      return (
+        <PortalItem hostName={`${context.scopeKey}SheetContents`}>
+          {contentProps.children}
+        </PortalItem>
+      )
     }
 
     return (
@@ -716,7 +717,6 @@ const DialogSheetController = (
   const getShowSheet = useGet(showSheet)
   return (
     <SheetController
-      disableDrag
       onChangeOpen={(val) => {
         if (getShowSheet()) {
           props.onChangeOpen(val)

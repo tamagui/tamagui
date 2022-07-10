@@ -9,17 +9,16 @@ import {
 } from '@gorhom/bottom-sheet'
 import { composeRefs } from '@tamagui/compose-refs'
 import {
-  isSSR,
-  isWeb,
   styled,
   themeable,
+  useIsSSR,
   useIsomorphicLayoutEffect,
   withStaticProperties,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { XStack, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import React, { ReactNode, forwardRef, isValidElement, useEffect, useRef, useState } from 'react'
+import React, { ReactNode, forwardRef, isValidElement, useRef } from 'react'
 
 type OpenChangeHandler =
   | ((showing: boolean) => void)
@@ -85,16 +84,6 @@ export type DrawerProps = ScopedProps<
   defaultOpen?: boolean
   onChangeOpen?: OpenChangeHandler
   children?: ReactNode
-}
-
-const useIsSSR = () => {
-  const [val, setVal] = useState(isWeb ? isSSR : false)
-  useEffect(() => {
-    if (isWeb && !isSSR) {
-      setVal(false)
-    }
-  }, [])
-  return val
 }
 
 export const Drawer = withStaticProperties(

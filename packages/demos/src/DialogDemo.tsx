@@ -9,7 +9,7 @@ export function DialogDemo() {
         <Button>Edit Profile</Button>
       </Dialog.Trigger>
 
-      <Dialog.Sheet>
+      <Dialog.Sheet modal>
         <Dialog.Sheet.Frame>
           <Dialog.SheetContents />
         </Dialog.Sheet.Frame>

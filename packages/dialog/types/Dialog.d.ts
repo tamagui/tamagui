@@ -1,8 +1,8 @@
-import { Portal } from '@gorhom/portal';
 import { GetProps, MediaPropKeys } from '@tamagui/core';
 import { Scope } from '@tamagui/create-context';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
+import { PortalItemProps } from '@tamagui/portal';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
@@ -25,9 +25,7 @@ declare type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 interface DialogTriggerProps extends YStackProps {
 }
 declare const DialogTrigger: React.ForwardRefExoticComponent<DialogTriggerProps & React.RefAttributes<TamaguiElement>>;
-declare type PortalType = typeof Portal;
-declare type PortalProps = PortalType extends (props: infer Props) => any ? Props : never;
-declare type DialogPortalProps = Omit<PortalProps, 'asChild'> & YStackProps & {
+declare type DialogPortalProps = Omit<PortalItemProps, 'asChild'> & YStackProps & {
     forceMount?: true;
 };
 export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {

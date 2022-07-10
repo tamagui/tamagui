@@ -1,6 +1,6 @@
-import { PortalProvider } from '@gorhom/portal'
 import * as Core from '@tamagui/core'
 import { CreateTamaguiProps, InferTamaguiConfig, TamaguiProviderProps } from '@tamagui/core'
+import { PortalProvider } from '@tamagui/portal'
 import * as React from 'react'
 
 // this was used to wrap SafeAreaProvider, but no more, but leaving for now...
