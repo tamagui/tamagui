@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 
 export { StacksDemo } from '@tamagui/demos'
+export { SheetDemo } from '@tamagui/demos'
 export { ShapesDemo } from '@tamagui/demos'
 export { TextDemo } from '@tamagui/demos'
 export { ButtonDemo } from '@tamagui/demos'

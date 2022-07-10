@@ -32,7 +32,6 @@ const transform = withPlugins(
         'Switch',
         'ProgressBar',
         'Picker',
-        'Animated',
         'AnimatedFlatList',
         'Modal',
         'PressResponder',

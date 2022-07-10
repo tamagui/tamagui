@@ -25,6 +25,7 @@ export function HeroContainer({
       alignItems={alignItems || 'center'}
       justifyContent="center"
       py={70}
+      pos="relative"
       minHeight={300}
       y={0}
       borderRadius="$4"

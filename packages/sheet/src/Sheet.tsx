@@ -1,8 +1,6 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import {
   GetProps,
-  isSSR,
+  isClient,
   isWeb,
   mergeEvent,
   styled,
@@ -25,7 +23,13 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { Animated, PanResponder, View } from 'react-native'
+import {
+  Animated,
+  GestureResponderEvent,
+  PanResponder,
+  PanResponderGestureState,
+  View,
+} from 'react-native'
 
 const SHEET_NAME = 'Sheet'
 const SHEET_HANDLE_NAME = 'SheetHandle'
@@ -151,6 +155,11 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
   }
 )
 
+const selectionStyleSheet = isClient ? document.createElement('style') : null
+if (selectionStyleSheet) {
+  document.head.appendChild(selectionStyleSheet)
+}
+
 export const SheetFrame = styled(YStack, {
   name: 'SheetFrame',
   flex: 1,
@@ -161,16 +170,6 @@ export const SheetFrame = styled(YStack, {
   width: '100%',
   pointerEvents: 'auto',
 })
-
-const useIsSSR = () => {
-  const [val, setVal] = useState(isWeb ? isSSR : false)
-  useEffect(() => {
-    if (isWeb && !isSSR) {
-      setVal(false)
-    }
-  }, [])
-  return val
-}
 
 // set all the way off screen
 const HIDDEN_SIZE = 10_000
@@ -192,21 +191,8 @@ export const Sheet = withStaticProperties(
         animationConfig,
       } = props
 
-      const isServerSide = useIsSSR()
-
-      // we can put non-server side hooks after conditional because based on env
-      if (isServerSide) {
-        return null
-      }
-
       // allows for sheets to be controlled by other components
-      let controller: SheetControllerContextValue | null = null
-      try {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        controller = useContext(SheetControllerContext)
-      } catch {
-        // uncontrolled
-      }
+      const controller = useContext(SheetControllerContext)
       const isHidden = controller?.hidden || false
 
       const onChangeOpenInternal = (val: boolean) => {
@@ -245,9 +231,12 @@ export const Sheet = withStaticProperties(
       }
 
       // open must set position
-      if (open && position < 0) {
-        setPosition(0)
-      }
+      const shouldSetPositionOpen = open && position < 0
+      useEffect(() => {
+        if (shouldSetPositionOpen) {
+          setPosition(0)
+        }
+      }, [setPosition, shouldSetPositionOpen])
 
       const positions = useMemo(
         () => snapPoints.map((point) => getPercentSize(point, frameSize)),
@@ -255,8 +244,8 @@ export const Sheet = withStaticProperties(
       )
 
       const animateTo = useEvent((position: number) => {
-        if (isHidden && open) return
         const pos = positionValue.current
+        if (isHidden && open) return
         if (!pos) return
         if (frameSize === 0) return
         const hiddenValue = frameSize === 0 ? HIDDEN_SIZE : frameSize
@@ -284,7 +273,7 @@ export const Sheet = withStaticProperties(
 
       useLayoutEffect(() => {
         animateTo(position)
-      }, [isHidden, position, animateTo])
+      }, [isHidden, frameSize, position, animateTo])
 
       const panResponder = useMemo(() => {
         if (!frameSize) return
@@ -294,13 +283,43 @@ export const Sheet = withStaticProperties(
         const minY = positions[0]
         let startY = pos['_value']
 
+        function makeUnselectable(val: boolean) {
+          if (!selectionStyleSheet) return
+          if (!val) {
+            selectionStyleSheet.innerText = ``
+          } else {
+            selectionStyleSheet.innerText = `:root * { user-select: none !important; -webkit-user-select: none !important; }`
+          }
+        }
+
+        const finish = (_e: GestureResponderEvent, { vy, dy }: PanResponderGestureState) => {
+          makeUnselectable(false)
+          const at = dy + startY
+          // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
+          // lets base our multiplier on the total layout height
+          const end = at + frameSize * vy * 0.33
+          let closestPoint = 0
+          let dist = Infinity
+          for (let i = 0; i < positions.length; i++) {
+            const position = positions[i]
+            const curDist = end > position ? end - position : position - end
+            if (curDist < dist) {
+              dist = curDist
+              closestPoint = i
+            }
+          }
+          // have to call both because state may not change but need to snap back
+          setPosition(closestPoint)
+          animateTo(closestPoint)
+        }
+
         return PanResponder.create({
           onMoveShouldSetPanResponder: (_e, { dy }) => {
             // we could do some detection of other touchables and cancel here..
-            // console.log('wut is', _e)
             return Math.abs(dy) > 6
           },
           onPanResponderGrant: () => {
+            makeUnselectable(true)
             stopSpring()
             startY = pos['_value']
           },
@@ -308,25 +327,9 @@ export const Sheet = withStaticProperties(
             const to = dy + startY
             pos.setValue(resisted(to, minY))
           },
-          onPanResponderRelease: (_e, { vy, dy }) => {
-            const at = dy + startY
-            // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
-            // lets base our multiplier on the total layout height
-            const end = at + frameSize * vy * 0.33
-            let closestPoint = 0
-            let dist = Infinity
-            for (let i = 0; i < positions.length; i++) {
-              const position = positions[i]
-              const curDist = end > position ? end - position : position - end
-              if (curDist < dist) {
-                dist = curDist
-                closestPoint = i
-              }
-            }
-            // have to call both because state may not change but need to snap back
-            setPosition(closestPoint)
-            animateTo(closestPoint)
-          },
+          onPanResponderEnd: finish,
+          onPanResponderTerminate: finish,
+          onPanResponderRelease: finish,
         })
       }, [animateTo, frameSize, positions, setPosition])
 
@@ -379,7 +382,7 @@ export const Sheet = withStaticProperties(
             onLayout={(e) => {
               setFrameSize(e.nativeEvent.layout.height)
             }}
-            pointerEvents="none"
+            // pointerEvents={open ? 'auto' : 'none'}
             style={{
               position: 'absolute',
               zIndex: 10,
@@ -433,10 +436,7 @@ type SheetControllerContextValue = {
   onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
 }
 
-const SheetControllerContext = createContext<SheetControllerContextValue>({
-  open: false,
-  hidden: false,
-})
+const SheetControllerContext = createContext<SheetControllerContextValue | null>(null)
 
 export const SheetController = ({
   children,
