@@ -131,7 +131,7 @@ const themeCreator = (
 
   const colorTranslucent = setColorAlpha(getVariableValue(get(colors, 0 + str, 'color')), 0.5)
 
-  let theme = {
+  const theme = {
     background: get(backgrounds, str),
     backgroundStrong: backgroundStrong || get(backgrounds, str + strongerDir * 2),
     backgroundSoft: get(backgrounds, str + softerDir * 2),
@@ -276,7 +276,8 @@ const baseThemes = {
   // light
   ...lightThemes,
   light,
-  light_active: makeActiveTheme(lightThemes.light),
+  // reserving in types, updating later
+  light_active: lightThemes.light,
   light_Card: lightThemes.light,
   light_SliderTrack: lightThemes.light_alt2,
   light_SliderTrackActive: lightThemes.light_alt3,
@@ -287,7 +288,8 @@ const baseThemes = {
   // dark
   ...darkThemes,
   dark,
-  dark_active: makeActiveTheme(darkThemes.dark),
+  // reserving in types, updating later
+  dark_active: darkThemes.dark,
   dark_Card: darkThemes.dark,
   dark_DrawerFrame: darkThemes.dark_alt2,
   dark_SliderTrack: darkThemes.dark_darker,
@@ -295,15 +297,6 @@ const baseThemes = {
   dark_Switch: darkThemes.dark_darker,
   dark_SwitchThumb: lightThemes.light_alt3,
   dark_Button: darkThemes.dark_alt1,
-}
-
-function makeActiveTheme(theme: any) {
-  const res = { ...theme }
-  res.backgroundHover = res.background
-  res.colorHover = res.color
-  res.backgroundPress = res.background
-  res.colorPress = res.color
-  return res
 }
 
 const darkEntries = Object.entries(dark)
@@ -390,6 +383,19 @@ type MyThemeBase = typeof baseThemes['light_alt1']
 const colorThemes: {
   [key in ColorThemeNames]: MyThemeBase
 } = Object.fromEntries(colorThemeEntries) as any
+
+function makeActiveTheme(theme: any) {
+  const res = { ...theme }
+  res.backgroundHover = res.background
+  res.colorHover = res.color
+  res.backgroundPress = res.background
+  res.colorPress = res.color
+  return res
+}
+
+// add in base _active themes
+baseThemes.dark_active = makeActiveTheme(colorThemes.dark_blue_alt3)
+baseThemes.light_active = makeActiveTheme(colorThemes.light_blue_alt3)
 
 const allThemes = {
   ...baseThemes,

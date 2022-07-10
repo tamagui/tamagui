@@ -313,7 +313,29 @@ declare const baseThemes: {
         blue11: string | Variable<any>;
         blue12: string | Variable<any>;
     };
-    dark_active: any;
+    dark_active: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: Variable<any>;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable<any>;
+        shadowColor: Variable<any>;
+        shadowColorHover: string | Variable<any>;
+        shadowColorPress: string | Variable<any>;
+        shadowColorFocus: string | Variable<any>;
+        borderColor: string | Variable<any>;
+        borderColorHover: string | Variable<any>;
+        borderColorPress: string | Variable<any>;
+        borderColorFocus: string | Variable<any>;
+    };
     dark_Card: {
         background: any;
         backgroundStrong: any;
@@ -722,7 +744,29 @@ declare const baseThemes: {
         blue11: string | Variable<any>;
         blue12: string | Variable<any>;
     };
-    light_active: any;
+    light_active: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: Variable<any>;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable<any>;
+        shadowColor: Variable<any>;
+        shadowColorHover: string | Variable<any>;
+        shadowColorPress: string | Variable<any>;
+        shadowColorFocus: string | Variable<any>;
+        borderColor: string | Variable<any>;
+        borderColorHover: string | Variable<any>;
+        borderColorPress: string | Variable<any>;
+        borderColorFocus: string | Variable<any>;
+    };
     light_Card: {
         background: any;
         backgroundStrong: any;
@@ -2598,7 +2642,29 @@ declare const allThemes: {
         blue11: string | Variable<any>;
         blue12: string | Variable<any>;
     };
-    readonly dark_active: any;
+    readonly dark_active: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: Variable<any>;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable<any>;
+        shadowColor: Variable<any>;
+        shadowColorHover: string | Variable<any>;
+        shadowColorPress: string | Variable<any>;
+        shadowColorFocus: string | Variable<any>;
+        borderColor: string | Variable<any>;
+        borderColorHover: string | Variable<any>;
+        borderColorPress: string | Variable<any>;
+        borderColorFocus: string | Variable<any>;
+    };
     readonly dark_Card: {
         background: any;
         backgroundStrong: any;
@@ -3007,7 +3073,29 @@ declare const allThemes: {
         blue11: string | Variable<any>;
         blue12: string | Variable<any>;
     };
-    readonly light_active: any;
+    readonly light_active: {
+        background: any;
+        backgroundStrong: any;
+        backgroundSoft: any;
+        backgroundHover: any;
+        backgroundPress: any;
+        backgroundFocus: any;
+        backgroundTransparent: Variable<any>;
+        color: any;
+        colorHover: any;
+        colorPress: any;
+        colorFocus: any;
+        colorTranslucent: string;
+        colorMid: string | Variable<any>;
+        shadowColor: Variable<any>;
+        shadowColorHover: string | Variable<any>;
+        shadowColorPress: string | Variable<any>;
+        shadowColorFocus: string | Variable<any>;
+        borderColor: string | Variable<any>;
+        borderColorHover: string | Variable<any>;
+        borderColorPress: string | Variable<any>;
+        borderColorFocus: string | Variable<any>;
+    };
     readonly light_Card: {
         background: any;
         backgroundStrong: any;
