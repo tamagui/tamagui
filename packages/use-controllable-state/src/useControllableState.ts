@@ -24,14 +24,12 @@ export function useControllableState<T>({
   const propWins = strategy === 'prop-wins'
 
   // TODO can try no useEffect here right? just if()
-  useEffect(() => {
-    if (preventUpdate) return
+  if (currentProp.current !== prop && !preventUpdate) {
     currentProp.current = prop
     setVal((prev) => {
       return getNextStateWithCallback(prev, prop, onChange)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prop])
+  }
 
   return [
     val,
