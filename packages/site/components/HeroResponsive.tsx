@@ -1,7 +1,7 @@
+import { throttle } from '@github/mini-throttle'
 import { demoMedia } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/feather-icons'
-import throttle from 'lodash.throttle'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
   Button,
@@ -26,7 +26,6 @@ import { useGet } from '../hooks/useGet'
 import favicon from '../public/favicon.svg'
 import { Container, ContainerLarge } from './Container'
 import { HomeH2 } from './HomeH2'
-import { IconStack } from './IconStack'
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },

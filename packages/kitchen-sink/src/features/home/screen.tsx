@@ -29,7 +29,7 @@ const LinkListItem = ({ children, href, as, shallow, ...props }: UseLinkProps & 
 
 export function HomeScreen() {
   return (
-    // @ts-ignore
+    // @ts-expect-error
     <ScrollView>
       <YStack bc="$backgroundStrong" p="$3" pb="$8" f={1} space>
         <H1 size="$9">Demos</H1>

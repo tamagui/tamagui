@@ -1,0 +1,108 @@
+---
+title: Sheet
+description: A simple sheet component
+name: text
+component: Sheet
+---
+
+# Sheet
+
+<Description>A bottom sheet that slides up.</Description>
+
+<HeroContainer>
+  <SheetDemo />
+</HeroContainer>
+
+```tsx hero template=Sheet
+
+```
+
+<Highlights
+  features={[
+    `Lightweight implementation with dragging support.`,
+    `Multiple snap point support.`,
+    `Automatically adjusts to screen size.`,
+    `Accepts animations, themes, size props and more.`,
+  ]}
+/>
+
+### Anatomy
+
+```tsx
+import { Sheet } from '@tamagui/sheet' // or from 'tamagui'
+
+export default () => (
+  <Sheet>
+    <Sheet.Overlay />
+    <Sheet.Frame>
+      <Sheet.Handle />
+      {/* ...inner contents */}
+    </Sheet.Frame>
+  </Sheet>
+)
+```
+
+### API
+
+#### &lt;Sheet /&gt;
+
+Contains every component for the sheet.
+
+<PropsTable
+  data={[
+    { name: 'open', type: 'boolean', description: `Set to use as controlled component.` },
+    { name: 'defaultOpen', type: 'boolean', description: `Uncontrolled open state on mount.` },
+    {
+      name: 'onChangeOpen',
+      type: '(open: boolean) => void',
+      description: `Called on change open, controlled or uncontrolled.`,
+    },
+    {
+      name: 'position',
+      type: 'number',
+      description: `Controlled position, set to an index of snapPoints.`,
+    },
+    {
+      name: 'defaultPosition',
+      type: 'number',
+      description: `Uncontrolled default position on mount.`,
+    },
+    {
+      name: 'snapPoints',
+      type: 'number[]',
+      default: `[80, 10]`,
+      description: `Array of numbers, 0-100 that correspont to % of the screen it should take up. Should go from most visible to least visible in order. Use "open" prop for fully closed.`,
+    },
+    {
+      name: 'onChangePosition',
+      type: '(position: number) => void',
+      description: `Called on change position, controlled or uncontrolled.`,
+    },
+    {
+      name: 'dismissOnOverlayPress',
+      type: 'boolean',
+      default: 'true',
+      description: `Controls tapping on the overlay to close, defaults to true.`,
+    },
+    {
+      name: 'animationConfig',
+      type: 'Animated.SpringAnimationConfig',
+      default: 'true',
+      description: `Customize the spring used, passed to react-native Animated.spring().`,
+    },
+  ]}
+/>
+
+#### &lt;Overlay /&gt;
+
+Displays behind Frame. Extends [YStack](/docs/components/stacks).
+
+#### &lt;Frame /&gt;
+
+Contains the content. Extends [YStack](/docs/components/stacks).
+
+#### &lt;Handle /&gt;
+
+Shows a handle above the frame by default, on tap it will cycle between `snapPoints` but this can be overriden with `onPress`.
+
+Extends [XStack](/docs/components/stacks).

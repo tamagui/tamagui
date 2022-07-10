@@ -55,13 +55,14 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <AnimationsDemo />
+        {/* <AnimationsDemo /> */}
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
         {/* <SheetDemo /> */}
+        <DialogDemo />
         {/* <XStack space>
           <Square size={100} bc="red" />
           <Square $lg={{ display: 'none' }} size={100} bc="red" />

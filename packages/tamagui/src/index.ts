@@ -23,6 +23,7 @@ export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
+export * from '@tamagui/portal'
 
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported

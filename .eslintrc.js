@@ -19,9 +19,10 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-unused-vars': 'warn',
-    '@typescript-eslint/ban-ts-comment': 'warn',
     'react-hooks/rules-of-hooks': 'warn',
+    'react/no-unescaped-entities': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
   settings: {
     react: {

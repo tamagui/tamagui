@@ -1,6 +1,7 @@
-import throttle from 'lodash.throttle'
+import { throttle } from '@github/mini-throttle'
+import React from 'react'
 import { useEffect, useState } from 'react'
-import { Theme, XStack } from 'tamagui'
+import { XStack } from 'tamagui'
 
 import { ContainerLarge } from '../components/Container'
 import { Header } from '../components/Header'

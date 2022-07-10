@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@docsearch/react": "^3.0.0",
+    "@github/mini-throttle": "^2.1.0",
     "@stripe/stripe-js": "^1.29.0",
     "@supabase/supabase-auth-helpers": "^1.4.1",
     "@tamagui/animate-presence": "^1.0.1-beta.100",
@@ -38,7 +39,6 @@
     "gray-matter": "^4.0.2",
     "hast-util-to-html": "^8.0.3",
     "hast-util-to-string": "^2.0.0",
-    "lodash.throttle": "^4.1.1",
     "mdx-bundler": "^9.0.1",
     "next": "^12.2.0",
     "nextjs-progressbar": "^0.0.14",
@@ -63,8 +63,7 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^12.2.0",
     "@tamagui/next-plugin": "^1.0.1-beta.100",
-    "@types/lodash.throttle": "^4.1.6",
-    "@types/react-native": "^0.67.3",
+    "@types/react-native": "^0.69.2",
     "mini-css-extract-plugin": "^2.6.0",
     "next-compose-plugins": "^2.2.1",
     "next-remote-watch": "^1.0.0",

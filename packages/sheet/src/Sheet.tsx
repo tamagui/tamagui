@@ -1,29 +1,72 @@
-import { isSSR, isWeb, styled, themeable, withStaticProperties } from '@tamagui/core'
+/* eslint-disable react-hooks/rules-of-hooks */
+
+import {
+  GetProps,
+  isSSR,
+  isWeb,
+  mergeEvent,
+  styled,
+  themeable,
+  withStaticProperties,
+} from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { XStack, XStackProps, YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, {
   ReactNode,
+  createContext,
   forwardRef,
   isValidElement,
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react'
-import { Animated, LayoutRectangle, PanResponder, View } from 'react-native'
+import { Animated, PanResponder, View } from 'react-native'
+
+const SHEET_NAME = 'Sheet'
+const SHEET_HANDLE_NAME = 'SheetHandle'
+
+export type SheetProps = ScopedProps<
+  {
+    open?: boolean
+    defaultOpen?: boolean
+    onChangeOpen?: OpenChangeHandler
+    position?: number
+    defaultPosition?: number
+    snapPoints?: number[]
+    onChangePosition?: PositionChangeHandler
+    children?: ReactNode
+    dismissOnOverlayPress?: boolean
+    animationConfig?: Animated.SpringAnimationConfig
+  },
+  'Sheet'
+>
 
 type PositionChangeHandler =
   | ((position: number) => void)
   | React.Dispatch<React.SetStateAction<number>>
 
-const DRAWER_NAME = 'Drawer'
-const DRAWER_HANDLE_NAME = 'DrawerHandle'
+type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>
 
-export const DrawerHandleFrame = styled(XStack, {
-  name: DRAWER_HANDLE_NAME,
+type SheetContextValue = Required<
+  Pick<SheetProps, 'open' | 'position' | 'snapPoints' | 'dismissOnOverlayPress'>
+> & {
+  setPosition: React.Dispatch<React.SetStateAction<number>>
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
+const [SheetProvider, useSheetContext] = createSheetContext<SheetContextValue>(
+  SHEET_NAME,
+  {} as any
+)
+
+export const SheetHandleFrame = styled(XStack, {
+  name: SHEET_HANDLE_NAME,
   height: 10,
   borderRadius: 100,
   backgroundColor: '$background',
@@ -41,12 +84,18 @@ export const DrawerHandleFrame = styled(XStack, {
   },
 })
 
-export const DrawerHandle = DrawerHandleFrame.extractable(
-  ({ __scopeDrawer, ...props }: ScopedProps<XStackProps, 'Drawer'>) => {
-    const context = useDrawerContext(DRAWER_HANDLE_NAME, __scopeDrawer)
+type SheetScopedProps<A> = ScopedProps<A, 'Sheet'>
+
+export const SheetHandle = SheetHandleFrame.extractable(
+  ({ __scopeSheet, ...props }: SheetScopedProps<XStackProps>) => {
+    const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
+
+    if (context.open === false) {
+      return null
+    }
 
     return (
-      <DrawerHandleFrame
+      <SheetHandleFrame
         onPress={() => {
           const nextPos = (context.position + 1) % context.snapPoints.length
           context.setPosition(nextPos)
@@ -57,47 +106,60 @@ export const DrawerHandle = DrawerHandleFrame.extractable(
   }
 )
 
-type DrawerContextValue = {
-  position: number
-  snapPoints: number[]
-  setPosition: React.Dispatch<React.SetStateAction<number>>
-}
-
-const [createDrawerContext, createDrawerScope] = createContextScope(DRAWER_NAME)
-const [DrawerProvider, useDrawerContext] = createDrawerContext<DrawerContextValue>(
-  DRAWER_NAME,
-  {} as any
-)
-
-export const DrawerBackdrop = styled(YStack, {
-  name: 'DrawerBackdrop',
+export const SheetOverlayFrame = styled(YStack, {
+  name: 'SheetOverlay',
+  // TODO this should be $background without opacity and just customized by theme
   backgroundColor: '$color',
   fullscreen: true,
   opacity: 0.2,
+  zIndex: 0,
+
+  variants: {
+    closed: {
+      true: {
+        opacity: 0,
+        pointerEvents: 'none',
+      },
+      false: {
+        pointerEvents: 'auto',
+      },
+      // TODO still have as const bug
+    } as const,
+  },
 })
 
-export const DrawerFrame = styled(YStack, {
-  name: 'DrawerFrame',
+export type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>
+
+export const SheetOverlay = SheetOverlayFrame.extractable(
+  ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => {
+    const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
+    return (
+      <SheetOverlayFrame
+        closed={context.open === false}
+        {...props}
+        onPress={mergeEvent(
+          props.onPress,
+          context.dismissOnOverlayPress
+            ? () => {
+                context.setOpen(false)
+              }
+            : undefined
+        )}
+      />
+    )
+  }
+)
+
+export const SheetFrame = styled(YStack, {
+  name: 'SheetFrame',
   flex: 1,
   backgroundColor: '$background',
   borderTopLeftRadius: '$4',
   borderTopRightRadius: '$4',
   padding: '$4',
   width: '100%',
+  pointerEvents: 'auto',
 })
-
-export type DrawerProps = ScopedProps<
-  {
-    open?: boolean
-    defaultOpen?: boolean
-    defaultPosition?: number
-    snapPoints?: number[]
-    position?: number
-    onChangePosition?: PositionChangeHandler
-    children?: ReactNode
-  },
-  'Drawer'
->
 
 const useIsSSR = () => {
   const [val, setVal] = useState(isWeb ? isSSR : false)
@@ -109,80 +171,115 @@ const useIsSSR = () => {
   return val
 }
 
-export const Drawer = withStaticProperties(
+// set all the way off screen
+const HIDDEN_SIZE = 10_000
+
+export const Sheet = withStaticProperties(
   themeable(
-    forwardRef<View, DrawerProps>((props, ref) => {
+    forwardRef<View, SheetProps>((props, ref) => {
       const {
-        __scopeDrawer,
+        __scopeSheet,
         snapPoints: snapPointsProp = [80, 10],
+        open: openProp,
+        defaultOpen,
         children: childrenProp,
         position: positionProp,
         onChangePosition,
+        onChangeOpen,
         defaultPosition,
-        ...rest
+        dismissOnOverlayPress = true,
+        animationConfig,
       } = props
+
       const isServerSide = useIsSSR()
-
-      const [position, setPosition] = useControllableState({
-        prop: positionProp,
-        defaultProp: defaultPosition || 0,
-        onChange: onChangePosition,
-        strategy: 'most-recent-wins',
-      })
-
-      const [layout, setLayout] = useState<LayoutRectangle>()
-
-      const positionValue = useRef<Animated.Value>()
-      if (!positionValue.current) {
-        positionValue.current = new Animated.Value(position)
-      }
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      const snapPoints = useMemo(() => snapPointsProp, [JSON.stringify(snapPointsProp)])
 
       // we can put non-server side hooks after conditional because based on env
       if (isServerSide) {
         return null
       }
 
-      // eslint-disable-next-line react-hooks/rules-of-hooks
+      // allows for sheets to be controlled by other components
+      let controller: SheetControllerContextValue | null = null
+      try {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        controller = useContext(SheetControllerContext)
+      } catch {
+        // uncontrolled
+      }
+
+      const onChangeOpenInternal = (val: boolean) => {
+        controller?.onChangeOpen?.(val)
+        onChangeOpen?.(val)
+      }
+
+      const [open, setOpen] = useControllableState({
+        prop: controller?.visible ?? openProp,
+        defaultProp: defaultOpen || true,
+        onChange: onChangeOpenInternal,
+        strategy: controller ? 'most-recent-wins' : 'prop-wins',
+      })
+
+      const [frameSize, setFrameSize] = useState<number>(0)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const snapPoints = useMemo(() => snapPointsProp, [JSON.stringify(snapPointsProp)])
+
+      // lets set -1 to be always the "open = false" position
+      const [position_, setPosition] = useControllableState({
+        prop: positionProp,
+        defaultProp: defaultPosition || (open ? 0 : -1),
+        onChange: onChangePosition,
+      })
+      const position = open === false ? -1 : position_
+      const positionValue = useRef<Animated.Value>()
       const spring = useRef<Animated.CompositeAnimation | null>(null)
+
+      // open must set position
+      if (open && position < 0) {
+        setPosition(0)
+      }
 
       function stopSpring() {
         spring.current?.stop()
         spring.current = null
       }
 
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const positions = useMemo(
-        () => snapPoints.map((point) => getYForPosition(point, layout)),
-        [layout, snapPoints]
+        () => snapPoints.map((point) => getPercentSize(point, frameSize)),
+        [frameSize, snapPoints]
       )
 
-      // eslint-disable-next-line react-hooks/rules-of-hooks
+      if (!positionValue.current) {
+        positionValue.current = new Animated.Value(HIDDEN_SIZE)
+      }
+
       const animateTo = useCallback(
         (position: number) => {
           if (!positionValue.current) return
-          const toValue = positions[position]
+          if (frameSize === 0) return
+          const toValue =
+            position === -1 ? (frameSize === 0 ? HIDDEN_SIZE : frameSize) : positions[position]
+          if (positionValue.current['_value'] === toValue) return
           stopSpring()
+          // dont bounce on initial measure to bottom
+          const overshootClamping = positionValue.current['_value'] === HIDDEN_SIZE
           spring.current = Animated.spring(positionValue.current, {
             useNativeDriver: !isWeb,
             toValue,
+            overshootClamping,
+            ...animationConfig,
           })
           spring.current.start(({ finished }) => finished && stopSpring())
         },
-        [positions]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [positions, frameSize, JSON.stringify(animationConfig || null)]
       )
 
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       useLayoutEffect(() => {
         animateTo(position)
       }, [position, animateTo])
 
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const panResponder = useMemo(() => {
-        if (!layout) return
-        console.log('setup pan')
+        if (!frameSize) return
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const pos = positionValue.current!
@@ -207,7 +304,7 @@ export const Drawer = withStaticProperties(
             const at = dy + startY
             // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
             // lets base our multiplier on the total layout height
-            const end = at + layout.height * vy * 0.33
+            const end = at + frameSize * vy * 0.33
             let closestPoint = 0
             let dist = Infinity
             for (let i = 0; i < positions.length; i++) {
@@ -223,74 +320,82 @@ export const Drawer = withStaticProperties(
             animateTo(closestPoint)
           },
         })
-      }, [layout, positions, setPosition])
+      }, [animateTo, frameSize, positions, setPosition])
 
       let handleComponent: React.ReactElement | null = null
-      let backdropComponent: React.ReactElement | null = null
+      let overlayComponent: React.ReactElement | null = null
       let frameComponent: React.ReactElement | null = null
 
       React.Children.forEach(childrenProp, (child) => {
         if (isValidElement(child)) {
-          switch (child.type?.['staticConfig'].componentName) {
-            case 'DrawerHandle':
+          const name = child.type?.['staticConfig']?.componentName
+          switch (name) {
+            case 'SheetHandle':
               handleComponent = child
               break
-            case 'DrawerFrame':
+            case 'SheetFrame':
               frameComponent = child
               break
-            case 'DrawerBackdrop':
-              backdropComponent = child
+            case 'SheetOverlay':
+              overlayComponent = child
               break
             default:
-              console.warn('Warning: passed invalid child to Drawer', child)
+              console.warn('Warning: passed invalid child to Sheet', child)
           }
         }
       })
 
       return (
-        <DrawerProvider
-          scope={__scopeDrawer}
+        <SheetProvider
+          dismissOnOverlayPress={dismissOnOverlayPress}
+          open={open}
+          scope={__scopeSheet}
           position={position}
           snapPoints={snapPoints}
           setPosition={setPosition}
+          setOpen={setOpen}
         >
-          {backdropComponent}
+          {overlayComponent}
           {handleComponent}
           <Animated.View
+            ref={ref}
             {...panResponder?.panHandlers}
             onLayout={(e) => {
-              setLayout(e.nativeEvent.layout)
+              setFrameSize(e.nativeEvent.layout.height)
             }}
+            pointerEvents="none"
             style={{
+              position: 'absolute',
+              zIndex: 10,
               width: '100%',
               height: '100%',
-              transform: [{ translateY: positionValue.current }],
+              transform: [{ translateY: frameSize === 0 ? HIDDEN_SIZE : positionValue.current }],
             }}
           >
             {frameComponent}
           </Animated.View>
-        </DrawerProvider>
+        </SheetProvider>
       )
     }),
     {
-      componentName: 'Drawer',
+      componentName: 'Sheet',
     }
   ),
   {
-    Handle: DrawerHandle,
-    Frame: DrawerFrame,
-    Backdrop: DrawerBackdrop,
+    Handle: SheetHandle,
+    Frame: SheetFrame,
+    Overlay: SheetOverlay,
   }
 )
 
-function getYForPosition(point?: number, layout?: LayoutRectangle) {
-  if (!layout) return 0
+function getPercentSize(point?: number, frameSize?: number) {
+  if (!frameSize) return 0
   if (point === undefined) {
     console.warn(`No snapPoint`)
     return 0
   }
   const pct = point / 100
-  const next = layout.height - pct * layout.height
+  const next = frameSize - pct * frameSize
   return next
 }
 
@@ -305,4 +410,33 @@ function resisted(y: number, minY: number, maxOverflow = 25) {
   return y
 }
 
-export { createDrawerScope }
+type SheetControllerContextValue = {
+  visible: boolean
+  onChangeOpen?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
+}
+
+const SheetControllerContext = createContext<SheetControllerContextValue>({
+  visible: false,
+})
+
+export const SheetController = ({
+  children,
+  ...value
+}: SheetControllerContextValue & { children?: React.ReactNode }) => {
+  const memoValue = useMemo(
+    () => value,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [value.visible]
+  )
+
+  // always up to date, todo useEvent
+  memoValue.onChangeOpen = value.onChangeOpen
+
+  return (
+    <SheetControllerContext.Provider value={memoValue}>{children}</SheetControllerContext.Provider>
+  )
+}
+
+export { createSheetScope }
+
+/* eslint-enable react-hooks/rules-of-hooks */

@@ -3685,6 +3685,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@github/mini-throttle@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@github/mini-throttle@npm:2.1.0"
+  checksum: c4c83e0215e591981194f42637528d7c883671df81b2b77f104998ab25940c9ccc9d72820c2ac0d266da9430512bfbac948878382c26eeb68c3d68cd375aa407
+  languageName: node
+  linkType: hard
+
 "@gorhom/bottom-sheet@npm:^4.3.1":
   version: 4.3.1
   resolution: "@gorhom/bottom-sheet@npm:4.3.1"
@@ -3711,6 +3718,18 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 4dd471feedc0dbcc06e9ba725695727448b79550fdc95e5888ea3c2aa9dd51ffffaa0ec2c3e762526c8eef4a36cebd625f73271a3bc31b80786af5a90ba2ea5b
+  languageName: node
+  linkType: hard
+
+"@gorhom/portal@npm:^1.0.14":
+  version: 1.0.14
+  resolution: "@gorhom/portal@npm:1.0.14"
+  dependencies:
+    nanoid: ^3.3.1
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 227bb96a2db854ab29bb9da8d4f3823c7f7448358de459709dd1b78522110da564c9a8734c6bc7d7153ed7c99320e0fb5d60b420c2ebb75ecaf2f0d757f410f9
   languageName: node
   linkType: hard
 
@@ -5777,7 +5796,7 @@ __metadata:
     "@tamagui/shapes": ^1.0.1-beta.100
     "@tamagui/text": ^1.0.1-beta.100
     "@types/react-dom": ^18.0.3
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -5856,7 +5875,7 @@ __metadata:
     "@tamagui/core": ^1.0.1-beta.100
     "@tamagui/create-context": ^1.0.1-beta.100
     "@tamagui/stacks": ^1.0.1-beta.100
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -6032,7 +6051,7 @@ __metadata:
     "@tamagui/text": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
     "@types/react-dom": ^18.0.3
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     aria-hidden: ^1.1.3
     react: "*"
     react-dom: "*"
@@ -6462,7 +6481,7 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
     "@types/react-dom": ^18.0.3
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     aria-hidden: ^1.1.3
     react: "*"
     react-dom: "*"
@@ -6487,7 +6506,7 @@ __metadata:
     "@tamagui/create-context": ^1.0.1-beta.100
     "@tamagui/stacks": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -6502,9 +6521,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@tamagui/portal@workspace:packages/portal"
   dependencies:
+    "@gorhom/portal": ^1.0.14
     "@tamagui/build": ^1.0.1-beta.100
-    "@tamagui/stacks": ^1.0.1-beta.100
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -6524,7 +6543,7 @@ __metadata:
     "@tamagui/core": ^1.0.1-beta.100
     "@tamagui/create-context": ^1.0.1-beta.100
     "@tamagui/stacks": ^1.0.1-beta.100
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -6616,7 +6635,7 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-beta.100
     "@tamagui/text": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -6693,6 +6712,7 @@ __metadata:
   resolution: "@tamagui/site@workspace:packages/site"
   dependencies:
     "@docsearch/react": ^3.0.0
+    "@github/mini-throttle": ^2.1.0
     "@next/bundle-analyzer": ^12.2.0
     "@stripe/stripe-js": ^1.29.0
     "@supabase/supabase-auth-helpers": ^1.4.1
@@ -6711,8 +6731,7 @@ __metadata:
     "@tamagui/next-theme": ^1.0.1-beta.100
     "@tamagui/shorthands": ^1.0.1-beta.100
     "@tamagui/theme-base": ^1.0.1-beta.100
-    "@types/lodash.throttle": ^4.1.6
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     compare-versions: ^4.1.3
     copy-to-clipboard: ^3.3.1
     date-fns: ^2.26.0
@@ -6720,7 +6739,6 @@ __metadata:
     gray-matter: ^4.0.2
     hast-util-to-html: ^8.0.3
     hast-util-to-string: ^2.0.0
-    lodash.throttle: ^4.1.1
     mdx-bundler: ^9.0.1
     mini-css-extract-plugin: ^2.6.0
     next: ^12.2.0
@@ -6760,7 +6778,7 @@ __metadata:
     "@tamagui/stacks": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
     "@tamagui/use-direction": ^1.0.1-beta.100
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -6808,7 +6826,7 @@ __metadata:
     "@testing-library/react": ^13.3.0
     "@types/jest": "*"
     "@types/node": ^16.11.9
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     "@types/webpack": ^4.41.26
     babel-literal-to-ast: ^2.1.0
     babel-loader: ^8.2.5
@@ -6844,7 +6862,7 @@ __metadata:
     "@manypkg/cli": ^0.19.1
     "@tamagui/vite-plugin": ^1.0.1-beta.99
     "@types/react": ^18.0.14
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     "@vitejs/plugin-react": ^1.3.2
     eslint: ^8.19.0
     prettier: ^2.6.1
@@ -6907,7 +6925,7 @@ __metadata:
     "@tamagui/text": ^1.0.1-beta.100
     "@tamagui/use-controllable-state": ^1.0.1-beta.100
     "@types/react-dom": ^18.0.3
-    "@types/react-native": ^0.67.3
+    "@types/react-native": ^0.69.2
     react: "*"
     react-dom: "*"
     react-native: "*"
@@ -7488,15 +7506,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.throttle@npm:^4.1.6":
-  version: 4.1.7
-  resolution: "@types/lodash.throttle@npm:4.1.7"
-  dependencies:
-    "@types/lodash": "*"
-  checksum: 6e1b3836488fecbdc537b6ad9b3fe4855c7336b0fa388773cd57d486619f565a48cabc04b28677fd3819be3f2d13d2bb8f9d4428aa5632885c86cb99729bfd69
-  languageName: node
-  linkType: hard
-
 "@types/lodash@npm:*":
   version: 4.14.182
   resolution: "@types/lodash@npm:4.14.182"
@@ -7682,12 +7691,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native@npm:0.66.3":
-  version: 0.66.3
-  resolution: "@types/react-native@npm:0.66.3"
+"@types/react-native@npm:0.69.2":
+  version: 0.69.2
+  resolution: "@types/react-native@npm:0.69.2"
   dependencies:
     "@types/react": "*"
-  checksum: 3122fde6cd47ab3de57302f44a360baf049bd1655f17c08c4389e6cbe1eca94e741e30b5c2600ce8b9f3a3da81548f0080c00c333ce8aca72e6a0bf06f68b78a
+  checksum: 210a658415726e15560a9b7ee2392e9ac5d89587aac86b9d4e73367c154e0fb79161e7933cc66b72bf562cd6f42f36d6563bd1ae272da57b6b96a45c25881869
   languageName: node
   linkType: hard
 
@@ -13655,7 +13664,7 @@ __metadata:
     "@expo/webpack-config": ^0.16.23
     "@tamagui/babel-plugin": 1.0.1-beta.99
     "@types/react": ^17.0.21
-    "@types/react-native": ^0.67.4
+    "@types/react-native": ^0.69.2
     app: "*"
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     expo: ^45.0.3
@@ -26131,6 +26140,7 @@ __metadata:
     "@tamagui/list-item": ^1.0.1-beta.100
     "@tamagui/popover": ^1.0.1-beta.100
     "@tamagui/popper": ^1.0.1-beta.100
+    "@tamagui/portal": ^1.0.1-beta.100
     "@tamagui/progress": ^1.0.1-beta.100
     "@tamagui/select": ^1.0.1-beta.100
     "@tamagui/separator": ^1.0.1-beta.100

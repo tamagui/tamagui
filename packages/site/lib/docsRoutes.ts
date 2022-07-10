@@ -60,6 +60,8 @@ export const docsRoutes = [
       { title: 'Dialog', route: '/docs/components/dialog' },
       { title: 'Popover', route: '/docs/components/popover' },
       { title: 'Tooltip', route: '/docs/components/tooltip' },
+      { title: 'Portal', route: '/docs/components/portal' },
+      { title: 'Sheet', route: '/docs/components/sheet' },
     ],
   },
 
@@ -101,7 +103,7 @@ export const docsRoutes = [
 
   {
     pages: [
-      { title: 'Drawer', route: '/docs/components/drawer' },
+      // { title: 'Drawer', route: '/docs/components/drawer' },
       // { title: 'Menu', route: '/docs/components/menu' },
       { title: 'Feather Icons', route: '/docs/components/feather-icons' },
     ],

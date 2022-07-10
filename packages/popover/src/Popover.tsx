@@ -3,7 +3,6 @@
 import '@tamagui/polyfill-dev'
 
 import {
-  FloatingFocusManager,
   Props,
   useDismiss,
   useFloating,
@@ -23,7 +22,7 @@ import {
 } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
-import { Dismissable, DismissableProps } from '@tamagui/dismissable'
+import { DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import {
   FloatingOverrideContext,
@@ -35,7 +34,6 @@ import {
   PopperContentProps,
   PopperProps,
   createPopperScope,
-  usePopperContext,
 } from '@tamagui/popper'
 import { Portal } from '@tamagui/portal'
 import { YStack, YStackProps } from '@tamagui/stacks'
@@ -395,7 +393,7 @@ export const Popover = withStaticProperties(
           getFloatingProps,
         }
       },
-      [open]
+      [open, setOpen]
     )
 
     return (

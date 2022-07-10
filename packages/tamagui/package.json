@@ -43,6 +43,7 @@
     "@tamagui/list-item": "^1.0.1-beta.100",
     "@tamagui/popover": "^1.0.1-beta.100",
     "@tamagui/popper": "^1.0.1-beta.100",
+    "@tamagui/portal": "^1.0.1-beta.100",
     "@tamagui/progress": "^1.0.1-beta.100",
     "@tamagui/select": "^1.0.1-beta.100",
     "@tamagui/separator": "^1.0.1-beta.100",

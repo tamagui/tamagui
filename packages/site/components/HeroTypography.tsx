@@ -54,7 +54,7 @@ export const HeroTypography = () => {
         <YStack ref={ref} ai="center" space="$3">
           <HomeH2>
             Beautifully expressive font systems with{' '}
-            <span className="clip-text rainbow">rythym</span>.
+            <span className="clip-text rainbow">rhythm</span>.
           </HomeH2>
         </YStack>
 

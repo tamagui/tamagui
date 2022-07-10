@@ -1,5 +1,6 @@
 import * as Core from '@tamagui/core'
 import { CreateTamaguiProps, InferTamaguiConfig, TamaguiProviderProps } from '@tamagui/core'
+import { PortalProvider } from '@tamagui/portal'
 import * as React from 'react'
 
 // this was used to wrap SafeAreaProvider, but no more, but leaving for now...
@@ -13,9 +14,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const OGProvider = conf.Provider
   conf.Provider = ({ children, ...props }: TamaguiProviderProps) => {
     return (
-      <>
-        <OGProvider {...props}>{children}</OGProvider>
-      </>
+      <OGProvider {...props}>
+        <PortalProvider>{children}</PortalProvider>
+      </OGProvider>
     )
   }
 

@@ -61,7 +61,7 @@
     "@testing-library/react": "^13.3.0",
     "@types/jest": "*",
     "@types/node": "^16.11.9",
-    "@types/react-native": "^0.67.3",
+    "@types/react-native": "^0.69.2",
     "@types/webpack": "^4.41.26",
     "babel-loader": "^8.2.5",
     "css-loader": "^5.2.4",

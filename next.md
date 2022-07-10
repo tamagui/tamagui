@@ -1,7 +1,32 @@
 - 1.0
+
+
+font language support:
+
+```
+const enBody = createFont(...)
+const cnBody = createFont(...)
+
+createTamagui({
+  fonts: {
+    body_en:
+    body_cn:
+  }
+})
+
+render(
+  <TamaguiProvider>
+    <FontLanguage default="en" body="en">
+    </FontLanuage>
+  </TamaguiProvider>
+)
+```
+
   - `_active` style offical
     - <SwitchTrack /> gets active theme by default when toggled
 
+  - // TODO still have as const bug
+  - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
   - <Switch /> active state style
   - <Sheet /> attach="bottom" os default

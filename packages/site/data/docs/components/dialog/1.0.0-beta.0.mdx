@@ -68,31 +68,32 @@ Contains every component for the dialog. Beyond [Tamagui Props](/docs/intro/prop
     {
       name: 'size',
       type: 'SizeTokens',
-      required: false,
       description: `Passes size down too all sub-components when set for padding, arrow, borderRadius`,
     },
     {
       name: 'open',
       type: 'boolean',
-      required: false,
       description: ``,
     },
     {
       name: 'defaultOpen',
       type: 'boolean',
-      required: false,
     },
     {
       name: 'onOpenChange',
       type: '(open: boolean) => void',
-      required: false,
     },
     {
       name: 'modal',
       type: 'boolean',
       default: 'true',
-      required: false,
       description: `Renders into root of app instead of inline`,
+    },
+    {
+      name: 'sheetBreakpoint',
+      type: 'MediaPropKeys | false',
+      default: false,
+      description: `Set this to a media breakpoint and Dialog will show as a Sheet, if given Dialog.Sheet`,
     },
   ]}
 />
@@ -165,3 +166,38 @@ Defaults to Paragraph, see [Paragraph](/docs/components/text).
 Closes the Dialog. Recommended to use with your own component and `asChild`.
 
 Just [Tamagui Props](/docs/intro/props).
+
+#### &lt;Sheet /&gt;
+
+When used alongside `sheetBreakpoint`, Dialog will render as a sheet when that breakpoint is active.
+
+See [Sheet](/docs/components/sheet) for more props.
+
+Must use `Dialog.SheetContents` inside the `Dialog.Sheet.Frame` to insert the contents given to `Dialog.Content`
+
+```tsx
+import { Dialog } from '@tamagui/dialog' // or from 'tamagui'
+
+export default () => (
+  <Dialog sheetBreakpoint="$sm">
+    <Dialog.Trigger />
+
+    <Dialog.Sheet>
+      <Dialog.Sheet.Frame>
+        <Dialog.SheetContents />
+      </Dialog.Sheet.Frame>
+      <Dialog.Sheet.Overlay />
+    </Dialog.Sheet>
+
+    <Dialog.Portal>
+      <Dialog.Overlay />
+      <Dialog.Content>
+        <Dialog.Title />
+        <Dialog.Description />
+        <Dialog.Close />
+        {/* ... */}
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog>
+)
+```

@@ -4,10 +4,18 @@ import { Button, Dialog, Fieldset, Input, Label, Unspaced, YStack } from 'tamagu
 
 export function DialogDemo() {
   return (
-    <Dialog modal>
+    <Dialog sheetBreakpoint="$sm" modal>
       <Dialog.Trigger asChild>
         <Button>Edit Profile</Button>
       </Dialog.Trigger>
+
+      <Dialog.Sheet>
+        <Dialog.Sheet.Frame>
+          <Dialog.SheetContents />
+        </Dialog.Sheet.Frame>
+        <Dialog.Sheet.Overlay />
+      </Dialog.Sheet>
+
       <Dialog.Portal>
         <Dialog.Overlay
           key="overlay"
@@ -20,7 +28,6 @@ export function DialogDemo() {
           bordered
           elevate
           key="content"
-          space
           animation={[
             'quick',
             {
@@ -36,36 +43,38 @@ export function DialogDemo() {
           opacity={1}
           y={0}
         >
-          <Dialog.Title>Edit profile</Dialog.Title>
-          <Dialog.Description>
-            Make changes to your profile here. Click save when you're done.
-          </Dialog.Description>
-          <Fieldset space="$4" horizontal>
-            <Label w={160} justifyContent="flex-end" htmlFor="name">
-              Name
-            </Label>
-            <Input f={1} id="name" defaultValue="Nate Wienert" />
-          </Fieldset>
-          <Fieldset space="$4" horizontal>
-            <Label w={160} justifyContent="flex-end" htmlFor="username">
-              Username
-            </Label>
-            <Input f={1} id="username" defaultValue="@natebirdman" />
-          </Fieldset>
+          <YStack space>
+            <Dialog.Title>Edit profile</Dialog.Title>
+            <Dialog.Description>
+              Make changes to your profile here. Click save when you're done.
+            </Dialog.Description>
+            <Fieldset space="$4" horizontal>
+              <Label w={160} justifyContent="flex-end" htmlFor="name">
+                Name
+              </Label>
+              <Input f={1} id="name" defaultValue="Nate Wienert" />
+            </Fieldset>
+            <Fieldset space="$4" horizontal>
+              <Label w={160} justifyContent="flex-end" htmlFor="username">
+                Username
+              </Label>
+              <Input f={1} id="username" defaultValue="@natebirdman" />
+            </Fieldset>
 
-          <YStack ai="flex-end" mt="$2">
-            <Dialog.Close asChild>
-              <Button theme="alt1" aria-label="Close">
-                Save changes
-              </Button>
-            </Dialog.Close>
+            <YStack ai="flex-end" mt="$2">
+              <Dialog.Close asChild>
+                <Button theme="alt1" aria-label="Close">
+                  Save changes
+                </Button>
+              </Dialog.Close>
+            </YStack>
+
+            <Unspaced>
+              <Dialog.Close asChild>
+                <Button pos="absolute" t="$4" r="$4" circular icon={X} />
+              </Dialog.Close>
+            </Unspaced>
           </YStack>
-
-          <Unspaced>
-            <Dialog.Close asChild>
-              <Button pos="absolute" t="$4" r="$4" circular icon={X} />
-            </Dialog.Close>
-          </Unspaced>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
