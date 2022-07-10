@@ -1,6 +1,3 @@
-/// <reference types="react" />
 import '@tamagui/polyfill-dev';
-import { YStackProps } from '@tamagui/stacks';
-export declare type PortalProps = YStackProps;
-export declare const Portal: (props: PortalProps) => JSX.Element | null;
+export * from '@gorhom/portal';
 //# sourceMappingURL=Portal.d.ts.map
