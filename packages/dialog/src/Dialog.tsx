@@ -141,7 +141,7 @@ const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
     const isShowing = forceMount || context.open
     const contents = <AnimatePresence>{isShowing ? children : null}</AnimatePresence>
     const isSheet = useShowDialogSheet(context)
-    if (!context.modal || isSheet || (!isWeb && !isShowing)) {
+    if (!context.modal || isSheet) {
       return contents
     }
     return (
@@ -449,6 +449,10 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           {contentProps.children}
         </PortalItem>
       )
+    }
+
+    if (!isWeb) {
+      return contents
     }
 
     return (

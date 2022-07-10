@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import React, { useMemo } from 'react'
 import { AsyncStorage, Linking, Platform } from 'react-native'
 
-const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1'
+const PERSISTENCE_KEY = 'NAVIGATION_STATE_V2'
 
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = React.useState(false)

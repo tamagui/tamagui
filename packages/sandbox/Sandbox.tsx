@@ -63,7 +63,7 @@ export const Sandbox = () => {
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
         {/* <SheetDemo /> */}
-        <SwitchDemo />
+        {/* <SwitchDemo /> */}
         {/* <XStack space>
           <Square size={100} bc="red" />
           <Square $lg={{ display: 'none' }} size={100} bc="red" />

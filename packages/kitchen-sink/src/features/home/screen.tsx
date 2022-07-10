@@ -101,13 +101,13 @@ const demos = [
     ],
   },
 
-  // {
-  //   label: 'Panels',
-  //   pages: [
-  //     { title: 'Dialog', route: '/demo/dialog' },
-  //     { title: 'Popover', route: '/demo/popover' },
-  //   ],
-  // },
+  {
+    label: 'Panels',
+    pages: [
+      { title: 'Dialog', route: '/demo/dialog' },
+      { title: 'Sheet', route: '/demo/sheet' },
+    ],
+  },
 
   {
     label: 'Content',

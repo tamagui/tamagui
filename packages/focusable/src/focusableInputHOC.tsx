@@ -43,9 +43,9 @@ export function focusableInputHOC<A extends Function>(Component: A): A {
       const combinedRefs = composeRefs(ref, inputRef)
 
       useEffect(() => {
+        if (!props.id) return
         return () => {
-          if (!props.id) return
-          unregisterFocusable(props.id)
+          unregisterFocusable(props.id!)
         }
       }, [props.id])
 

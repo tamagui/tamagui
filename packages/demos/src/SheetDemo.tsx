@@ -1,18 +1,18 @@
 import { ChevronDown } from '@tamagui/feather-icons'
 import { Sheet } from '@tamagui/sheet'
 import React, { useState } from 'react'
-import { Button, XStack } from 'tamagui'
+import { Button, XStack, isWeb } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
   const [open, setOpen] = useState(true)
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(isWeb ? false : true)
 
   return (
     <>
       <XStack space>
         <Button onPress={() => setOpen(true)}>Open</Button>
-        <Button onPress={() => setModal((x) => !x)}>{modal ? 'Modal' : 'Inline'}</Button>
+        {isWeb && <Button onPress={() => setModal((x) => !x)}>{modal ? 'Modal' : 'Inline'}</Button>}
       </XStack>
       <Sheet
         modal={modal}

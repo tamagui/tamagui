@@ -410,7 +410,7 @@ export const Sheet = withStaticProperties(
                 return next
               })
             }}
-            // pointerEvents={open ? 'auto' : 'none'}
+            pointerEvents={open ? 'auto' : 'none'}
             style={{
               position: 'absolute',
               zIndex: 10,
@@ -497,16 +497,6 @@ export const SheetController = ({
   return (
     <SheetControllerContext.Provider value={memoValue}>{children}</SheetControllerContext.Provider>
   )
-}
-
-function useLastRenderValue<A>(val: A): A | undefined {
-  const ref = useRef<A>(val)
-  useIsomorphicLayoutEffect(() => {
-    return () => {
-      ref.current = val
-    }
-  })
-  return ref.current as A
 }
 
 export { createSheetScope }
