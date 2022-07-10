@@ -69,6 +69,7 @@ export const components = {
       <a
         href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftamagui%2Fstarters&root-directory=next-expo-solito/next&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftamagui.dev&project-name=tamagui-app&repo-name=tamagui-app&demo-title=Tamagui%20App%20%E2%9A%A1%EF%B8%8F&demo-description=Tamagui%20React%20Native%20%2B%20Next.js%20starter&demo-url=https%3A%2F%2Ftamagui.dev%2Fstarter&demo-image=https%3A%2F%2Ftamagui.dev%2Fblog%2Fintroducing-tamagui%2Fhero.png"
         target="_blank"
+        rel="noreferrer"
       >
         <img
           alt="Deploy with Vercel"
@@ -129,7 +130,7 @@ export const components = {
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading mt="$5" mb="$1" id={id}>
-      <H3 size="$8" data-heading {...props}>
+      <H3 nativeID={id} size="$8" data-heading {...props}>
         {children}
       </H3>
       {getNonTextChildren(children)}

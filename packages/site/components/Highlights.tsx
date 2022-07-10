@@ -21,7 +21,6 @@ import { Link } from './Link'
 export function Highlights({ features, disableLinks }: any) {
   const router = useRouter()
   const frontmatter = React.useContext(FrontmatterContext)
-  console.log('frontmatter', frontmatter)
 
   return (
     <YStack
