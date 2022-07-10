@@ -23,6 +23,7 @@ export declare class ThemeManager {
     themeListeners: Set<ThemeListener>;
     className: string | null;
     constructor(name?: string, theme?: ThemeObject | null, parentManager?: ThemeManager | null, reset?: boolean);
+    get didChangeTheme(): boolean | null;
     get parentName(): string | null;
     get fullName(): string;
     getValue(key: string): import("./types").VariableVal | undefined;

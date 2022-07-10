@@ -31,7 +31,7 @@ export const useTheme = (
   props?: ThemeProps,
   forceUpdate?: any
 ): ThemeObject => {
-  const { name, theme, themes, themeManager, className, didChangeTheme } = useChangeThemeEffect(
+  const { name, theme, themes, themeManager, className } = useChangeThemeEffect(
     themeName,
     componentName,
     props,
@@ -81,29 +81,17 @@ export const useTheme = (
         return Reflect.has(theme, key)
       },
       get(_, key) {
-        if (!name || key === '__proto__' || typeof key === 'symbol') {
-          // TODO make this pattern better
-          if (key === GetThemeManager) {
-            if (
-              process.env.NODE_ENV === 'development' &&
-              props?.debug &&
-              typeof window !== 'undefined'
-            ) {
-              console.log('>>', { themeName, didChangeTheme, name, componentName }, themeManager)
-            }
-            if (!didChangeTheme) return null
-            return themeManager
-          }
-          return Reflect.get(_, key)
-        }
-        if (typeof key !== 'string' || key === '$typeof') {
-          return Reflect.get(_, key)
+        if (key === GetThemeManager) {
+          return themeManager
         }
         if (key === 'name') {
           return name
         }
         if (key === 'className') {
           return className
+        }
+        if (!name || key === '__proto__' || typeof key === 'symbol' || key === '$typeof') {
+          return Reflect.get(_, key)
         }
         if (!themeManager) {
           console.error('No themeManager')
@@ -127,13 +115,14 @@ export const useTheme = (
         }
       },
     })
-  }, [name, theme, className, didChangeTheme])
+  }, [name, theme, className])
 }
 
-const GetThemeManager = Symbol('GetThemeManager')
+const GetThemeManager = Symbol()
 
-export const getThemeManagerIfChanged = (theme: any) => {
-  return theme?.[GetThemeManager]
+export const getThemeManager = (theme: any): ThemeManager | undefined => {
+  if (!theme) return
+  return theme[GetThemeManager]
 }
 
 export const useThemeName = (opts?: { parent?: true }) => {
@@ -168,6 +157,7 @@ export const useChangeThemeEffect = (
   const reset = props?.reset || false
   const getThemeProps: GetNextThemeProps = { name, componentName, themes, reset }
   const next = parentManager.getNextTheme(getThemeProps, debug)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const forceUpdate = forceUpdateProp || useForceUpdate()
   const themeManager = useConstant<ThemeManager | null>(() => {
     if (!next) return null
@@ -175,6 +165,7 @@ export const useChangeThemeEffect = (
   })
 
   if (!isWeb || typeof document !== 'undefined') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useLayoutEffect(() => {
       if (!themeManager) return
       if (next?.name) {
@@ -190,15 +181,12 @@ export const useChangeThemeEffect = (
     }, [themes, name, componentName, debug, next?.name])
   }
 
-  const didChangeTheme = next && parentManager && next.name !== parentManager.fullName
-
   return {
     ...(parentManager && {
       name: parentManager.name,
       theme: parentManager.theme,
     }),
     ...next,
-    didChangeTheme,
     themes,
     themeManager,
   }

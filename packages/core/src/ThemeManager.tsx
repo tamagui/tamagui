@@ -51,6 +51,10 @@ export class ThemeManager {
     }
   }
 
+  get didChangeTheme() {
+    return this.parentManager && this.name !== this.parentManager.fullName
+  }
+
   get parentName() {
     return this.parentManager?.name || null
   }

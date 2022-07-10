@@ -40,6 +40,7 @@ export type TamaguiComponentPropsBase = {
   debug?: DebugProp
   disabled?: boolean
   className?: string
+  themeShallow?: boolean
   id?: string
   tag?: string
   theme?: ThemeName | null

@@ -36,7 +36,7 @@ import { useFeatures } from './hooks/useFeatures'
 import { useIsTouchDevice } from './hooks/useIsTouchDevice'
 import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
-import { getThemeManagerIfChanged, useTheme } from './hooks/useTheme'
+import { getThemeDidChange, getThemeManager, useTheme } from './hooks/useTheme'
 import { Pressability } from './Pressability'
 import {
   SpaceDirection,
@@ -54,6 +54,7 @@ import {
 } from './types'
 import { Slot, mergeEvent } from './views/Slot'
 import { TextAncestorContext } from './views/TextAncestorContext'
+import { Theme } from './views/Theme'
 
 React['keep']
 
@@ -222,6 +223,7 @@ export function createComponent<
       onPressOut,
       onHoverIn,
       onHoverOut,
+      themeShallow,
       space: spaceProp,
       spaceDirection: _spaceDirection,
       disabled: disabledProp,
@@ -731,6 +733,15 @@ export function createComponent<
       }
     }
 
+    const themeManager = getThemeManager(theme)
+
+    const shouldSetChildrenThemeToParent = Boolean(
+      themeShallow && themeManager && themeManager.didChangeTheme
+    )
+
+    const shouldProvideThemeManager =
+      shouldSetChildrenThemeToParent || (themeManager && themeManager.didChangeTheme)
+
     const childEls =
       !children || asChild
         ? children
@@ -742,7 +753,9 @@ export function createComponent<
               direction: props.spaceDirection || 'both',
               isZStack,
             }),
-            getThemeManagerIfChanged(theme)
+            // only set context if changed theme
+            shouldProvideThemeManager ? themeManager : undefined,
+            shouldSetChildrenThemeToParent
           )
 
     let content: any
@@ -759,6 +772,7 @@ export function createComponent<
 
     // EVENTS: web
     if (isWeb) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const [pressableProps] = usePressable(
         events
           ? {
@@ -874,16 +888,14 @@ export function createComponent<
       }
     }
 
-    if (features.elements.length) {
-      return (
-        <>
-          {features.elements}
-          {content}
-        </>
-      )
-    }
-
-    return content
+    return features.elements.length ? (
+      <>
+        {features.elements}
+        {content}
+      </>
+    ) : (
+      content
+    )
   })
 
   if (staticConfig.componentName) {
