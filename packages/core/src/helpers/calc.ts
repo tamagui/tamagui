@@ -1,5 +1,5 @@
 import { isWeb } from '../constants/platform'
-import { getVariableValue, getVariableVariable } from '../createVariable'
+import { getVariableVariable } from '../createVariable'
 import { FontLineHeightTokens, FontSizeTokens, SizeTokens, SpaceTokens } from '../types'
 
 /**

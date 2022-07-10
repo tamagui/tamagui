@@ -25,6 +25,7 @@ export const docsRoutes = [
       { title: 'Theme', route: '/docs/core/theme' },
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'useTheme', route: '/docs/core/use-theme' },
+      { title: 'Exports', route: '/docs/core/exports' },
     ],
   },
 

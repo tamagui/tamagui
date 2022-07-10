@@ -1,0 +1,113 @@
+---
+title: 'Exports: Hooks, Helpers and Constants'
+description: The base exports of @tamagui/core.
+---
+
+Let's take a quick look through some of the useful other exports in `@tamagui/core`.
+
+## Constants
+
+[Constants exported](https://github.com/tamagui/tamagui/blob/master/packages/core/src/constants/platform.ts):
+
+- `isWeb` - `process.env.TAMAGUI_TARGET === 'web'`. Should be true both for SSR and Client side web targets.
+- `isWindowDefined` - `typeof window === 'undefined'`
+- `isSSR` - `isWeb && !isWindowDefined`.
+- `isClient` - `isWeb && isWindowDefined`.
+- `useIsomorphicLayoutEffect` - `isSSR ? useEffect : useLayoutEffect`. Helper for SSR rendering without warnings.
+- `isChrome` - client-side Chrome
+- `isWebTouchable` - web-only touch-device (client side only)
+- `isTouchable` - True for any touch device (client side only).
+
+---
+
+## Helpers
+
+### isTamaguiComponent
+
+```tsx
+(component: any; name?: string) => boolean
+```
+
+If no name given, true if a Tamagui component, if name given ensures it's the specific named Tamagui component.
+
+### isTamaguiElement
+
+```tsx
+(child: any; name?: string) => boolean
+```
+
+If no name given, true if a Tamagui ReactElement, if name given ensures it's the specific named Tamagui component element.
+
+### TamaguiComponent.extractable
+
+Returned by the core components and any styled components, it's a higher order component that [hints to the compiler that the wrapped component returns a single element - itself](https://github.com/tamagui/tamagui/blob/296a71b74d3020a28e3bafd1abb748a67d535be4/packages/tamagui/src/views/Anchor.tsx#L22).
+
+This will ensure `isTamaguiElement` is true for the wrapped component elements, and the compiler will do partial optimizations with prop extraction.
+
+### getTokens
+
+```tsx
+;() => TokensParsed
+```
+
+Returns the parsed Tamagui config object of all your tokens, can be used at runtime to get values from tokens.
+
+### getSize
+
+```tsx
+(size?: SizeTokens, shift = 0, bounds = [0]) => Variable<SizeToken> | undefined
+```
+
+Can be used to get the corresponding variable for a size, while also shift the size size up or down a step or more (bounded).
+
+### getExpandedShorthands
+
+```tsx
+;(props: Object) => Object
+```
+
+Take props, returns new object with all shorthand props expanded.
+
+### themeable
+
+```tsx
+themeable<Comp extends ReactComponentLike>(component: Comp): Comp
+```
+
+[A higher order component](https://github.com/tamagui/tamagui/blob/master/packages/core/src/helpers/themeable.tsx) that accepts `theme` and `themeInverse`, rendering them onto `Theme` before rendering your component.
+
+---
+
+## Hooks
+
+### useConstant
+
+A [less likely to be clobbered](https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily) `useMemo`.
+
+### useEvent
+
+A shim of [the upcoming React hook](https://github.com/reactjs/rfcs/blob/useevent/text/0000-useevent.md).
+
+### useGet
+
+```tsx
+useGet<A>(currentValue: A): () => A
+```
+
+Create a getter function that's always up to date with the given currentValue
+
+### useId
+
+Backwards compatible [React useId](https://reactjs.org/docs/hooks-reference.html#useid).
+
+### useIsMounted
+
+Returns a ref that is false once unmounted.
+
+### useIsTouchDevice
+
+SSR-friendly, only true on client side touch device.
+
+### useThemeName
+
+Returns the string name of the current theme.

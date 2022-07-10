@@ -81,7 +81,6 @@ render(
   - <Spacer /> doesnt work w media query display none
   - compiler work visually hidden
   - maybe <UL /> <LI /> <OL />
-  - document exported helpers getTokens, useThemeName, getFontSize, spacedChildren
   - // TODO infer ref
 
 (potentially 1.0)

@@ -101,7 +101,6 @@ export {
   isSSR,
   isTouchable,
   isWeb,
-  isWebIOS,
   isWebTouchable,
   // helpers
   calc,
