@@ -49,7 +49,7 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   // generate alternates (for use in other themes), but keep just alts
   const altThemes: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
-    getTheme(alt * 2 + shift, props),
+    getTheme(alt * 1 + shift, props),
   ])
   const altThemes2: any[] = alternates.map((alt) => [
     `${name}_alt${alt}`,
