@@ -369,10 +369,8 @@ export function createExtractor() {
           }
 
           for (const atomic of atomics) {
-            for (const rule of atomic.rules) {
-              out.rulesToInsert = out.rulesToInsert || []
-              out.rulesToInsert.push([atomic.identifier, rule])
-            }
+            out.rulesToInsert = out.rulesToInsert || []
+            out.rulesToInsert.push(atomic)
             classNames[atomic.property] = atomic.identifier
           }
 
@@ -389,8 +387,8 @@ export function createExtractor() {
           }
 
           if (out.rulesToInsert) {
-            for (const [identifier, rule] of out.rulesToInsert) {
-              onStyleRule?.(identifier, [rule])
+            for (const { identifier, rules } of out.rulesToInsert) {
+              onStyleRule?.(identifier, rules)
             }
           }
 

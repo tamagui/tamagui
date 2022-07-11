@@ -1,4 +1,10 @@
-import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
+import {
+  StyleObject,
+  stylePropsText,
+  stylePropsTransform,
+  validPseudoKeys,
+  validStyles,
+} from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
@@ -23,8 +29,10 @@ import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
+  PartialStyleObject,
+  RulesToInsert,
   getAllSelectors,
-  insertStyleRule,
+  insertStyleRules,
   insertedTransforms,
   updateInserted,
   updateInsertedCache,
@@ -74,7 +82,7 @@ type StyleSplitter = (
   medias: Record<MediaKeys, ViewStyle>
   style: ViewStyle
   classNames: ClassNamesObject
-  rulesToInsert: [string, string][] | null
+  rulesToInsert: RulesToInsert
   viewProps: StackProps
 }
 
@@ -112,7 +120,7 @@ export const getSplitStyles: StyleSplitter = (
   const propKeys = Object.keys(props)
   const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames
   const len = propKeys.length
-
+  const rulesToInsert: RulesToInsert = []
   const style: ViewStyle = {}
   if (state.hasTextAncestor) {
     // parity with react-native-web
@@ -122,20 +130,6 @@ export const getSplitStyles: StyleSplitter = (
   // we need to gather these specific to each media query / pseudo
   // value is [hash, val], so ["-jnjad-asdnjk", "scaleX(1) rotate(10deg)"]
   let transforms = null as Record<TransformNamespaceKey, [string, string]> | null
-
-  let rulesToInsert: [string, string][] | null = null
-  function addStyle(prop: string, rule: string) {
-    if (process.env.TAMAGUI_TARGET === 'web') {
-      // NOTE this is super tricky
-      // for some reason, next.js dev SSR actually misses a lot of styles (pre-hydrate) with || !isClient
-      // which doesn't really make sense, because that should strictly extract *more* css, but oh well
-      // meanwhile, production builds *need* to always be truthy here for node, thus the cheat conditional
-      if (updateInsertedCache(prop, rule) || (!isClient && process.env.NODE_ENV === 'production')) {
-        rulesToInsert = rulesToInsert || []
-        rulesToInsert.push([prop, rule])
-      }
-    }
-  }
 
   function mergeClassName(key: string, val: string, isMediaOrPseudo = false) {
     if (process.env.TAMAGUI_TARGET === 'web') {
@@ -341,7 +335,7 @@ export const getSplitStyles: StyleSplitter = (
             const fullKey = `${style.property}${PROP_SPLIT}${postfix}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
-              addStyle(style.identifier, style.rules.join(';'))
+              addStyleToInsertRules(rulesToInsert, style)
               mergeClassName(fullKey, style.identifier, isMediaOrPseudo)
             }
           }
@@ -382,7 +376,7 @@ export const getSplitStyles: StyleSplitter = (
             const fullKey = `${style.property}${PROP_SPLIT}${mediaKeyShort}`
             if (!usedKeys.has(fullKey)) {
               usedKeys.add(fullKey)
-              addStyle(out.identifier, out.styleRule)
+              addStyleToInsertRules(rulesToInsert, out)
               mergeClassName(fullKey, out.identifier, true)
             }
           }
@@ -410,7 +404,13 @@ export const getSplitStyles: StyleSplitter = (
         } else if (key in stylePropsTransform) {
           mergeTransform(style, key, val, true)
         } else {
+          // if (key === 'pointerEvents') {
+          //   // pointer events can be box-none which requires css
+          //   addStyleToInsertRules(out.identifier, out.styleRule)
+          //   mergeClassName(fullKey, out.identifier, true)
+          // } else {
           style[key] = normalizeValueWithProperty(val, key)
+          // }
         }
         continue
       }
@@ -442,8 +442,10 @@ export const getSplitStyles: StyleSplitter = (
     const atomic = getStylesAtomic(style)
     for (const atomicStyle of atomic) {
       const key = atomicStyle.property
-      if (!state.dynamicStylesInline) {
-        addStyle(atomicStyle.identifier, atomicStyle.rules.join(';'))
+      // pointerEvents box-none must be CSS-ified
+      // should probably have a few more exceptions here!
+      if (key === 'pointerEvents' || !state.dynamicStylesInline) {
+        addStyleToInsertRules(rulesToInsert, atomicStyle)
         mergeClassName(key, atomicStyle.identifier)
       } else {
         style[key] = atomicStyle.value
@@ -498,7 +500,11 @@ export const getSplitStyles: StyleSplitter = (
         if (isClient) {
           if (!insertedTransforms[identifier]) {
             const rule = `.${identifier} { transform: ${val}; }`
-            addStyle(identifier, rule)
+            addStyleToInsertRules(rulesToInsert, {
+              identifier,
+              rules: [rule],
+              property: namespace,
+            })
           }
         }
         classNames[namespace] = identifier
@@ -509,7 +515,7 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (typeof document !== 'undefined') {
       // prettier-ignore
-      console.log('  » getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state })
+      console.log('  » getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state, rulesToInsert })
     }
   }
 
@@ -522,8 +528,6 @@ export const getSplitStyles: StyleSplitter = (
     rulesToInsert,
   }
 }
-
-const selectorValuesCache = {}
 
 export const getSubStyle = (
   styleIn: Object,
@@ -556,11 +560,7 @@ export const getSubStyle = (
 
 export const insertSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
-  if (res.rulesToInsert) {
-    for (const [prop, rule] of res.rulesToInsert) {
-      insertStyleRule(prop, rule)
-    }
-  }
+  insertStyleRules(res.rulesToInsert)
   return res
 }
 
@@ -571,11 +571,24 @@ export const useSplitStyles: StyleSplitter = (...args) => {
   const res = getSplitStyles(...args)
 
   useInsertEffectCompat(() => {
-    if (!res.rulesToInsert) return
-    for (const [prop, rule] of res.rulesToInsert) {
-      insertStyleRule(prop, rule)
-    }
+    insertStyleRules(res.rulesToInsert)
   }, [res.rulesToInsert])
 
   return res
+}
+
+function addStyleToInsertRules(rulesToInsert: RulesToInsert, styleObject: PartialStyleObject) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    // NOTE this is super tricky
+    // for some reason, next.js dev SSR actually misses a lot of styles (pre-hydrate) with || !isClient
+    // which doesn't really make sense, because that should strictly extract *more* css, but oh well
+    // meanwhile, production builds *need* to always be truthy here for node, thus the cheat conditional
+    if (
+      styleObject.property === 'pointerEvents' ||
+      updateInsertedCache(styleObject.identifier, styleObject.rules) ||
+      (!isClient && process.env.NODE_ENV === 'production')
+    ) {
+      rulesToInsert.push(styleObject)
+    }
+  }
 }

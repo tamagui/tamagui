@@ -216,19 +216,17 @@ function createAtomicRules(
     case 'pointerEvents': {
       let finalValue = value
       if (value === 'auto' || value === 'box-only') {
-        finalValue = 'auto!important'
+        finalValue = 'auto'
         if (value === 'box-only') {
-          const block = createDeclarationBlock({ pointerEvents: 'none' }, important)
-          rules.push(`${selector}>*${block}`)
+          rules.push(`${selector}>*${boxOnly}`)
         }
       } else if (value === 'none' || value === 'box-none') {
-        finalValue = 'none!important'
+        finalValue = 'none'
         if (value === 'box-none') {
-          const block = createDeclarationBlock({ pointerEvents: 'auto' }, important)
-          rules.push(`${selector}>*${block}`)
+          rules.push(`${selector}>*${boxNone}`)
         }
       }
-      const block = createDeclarationBlock({ pointerEvents: finalValue }, important)
+      const block = createDeclarationBlock({ pointerEvents: finalValue }, true)
       rules.push(`${selector}${block}`)
       break
     }
@@ -262,3 +260,6 @@ function createAtomicRules(
 
   return rules
 }
+
+const boxNone = createDeclarationBlock({ pointerEvents: 'auto' }, true)
+const boxOnly = createDeclarationBlock({ pointerEvents: 'none' }, true)

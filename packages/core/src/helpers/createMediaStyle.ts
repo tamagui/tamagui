@@ -2,18 +2,19 @@ import { StyleObject } from '@tamagui/helpers'
 
 import { mediaObjectToString } from '../hooks/useMedia'
 import { MediaQueries } from '../types'
+import { PartialStyleObject } from './insertStyleRule'
 
 // TODO have this be used by extractMediaStyle in tamagui static
 // not synced to static/constants for now
 export const MEDIA_SEP = '_'
 
 export const createMediaStyle = (
-  { identifier, rules }: StyleObject,
+  { property, identifier, rules }: StyleObject,
   mediaKey: string,
   mediaQueries: MediaQueries,
   negate?: boolean,
   importance?: number
-) => {
+): PartialStyleObject => {
   const mediaKeys = Object.keys(mediaQueries)
   const importance_ = Math.max(
     0,
@@ -40,7 +41,8 @@ export const createMediaStyle = (
   }
   styleRule = styleRule.replace(';}', ' !important;}')
   return {
-    styleRule,
+    property,
+    rules: [styleRule],
     identifier: nextIdentifier,
   }
 }

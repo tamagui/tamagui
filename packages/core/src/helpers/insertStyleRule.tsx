@@ -2,6 +2,8 @@
 // this should avoid re-inserts, but need to test the perf trade-offs
 // i tested with the site itself and the initial insert was trivial
 
+import { StyleObject } from '@tamagui/helpers'
+
 const allSelectors = {}
 const insertedSelectors = {}
 export const insertedTransforms = {}
@@ -107,18 +109,27 @@ updateInserted()
 
 const sheet = isClient ? document.head.appendChild(document.createElement('style')).sheet : null
 
-export function updateInsertedCache(identifier: string, rule: string) {
+export function updateInsertedCache(identifier: string, rules: string[]) {
   if (insertedSelectors[identifier]) return false
-  insertedSelectors[identifier] = rule
+  insertedSelectors[identifier] = rules
   if (identifier.startsWith('_transform')) {
-    return addTransform(identifier, rule)
+    return addTransform(identifier, rules[0])
   }
   return true
 }
 
-export function insertStyleRule(identifier: string, rule: string) {
-  if (allSelectors[identifier]) return
-  updateInsertedCache(identifier, rule)
-  allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rule : true
-  sheet?.insertRule(rule, sheet.cssRules.length)
+// [property, identifier, rules]
+export type PartialStyleObject = Pick<StyleObject, 'identifier' | 'property' | 'rules'>
+export type RulesToInsert = PartialStyleObject[]
+
+export function insertStyleRules(rulesToInsert: RulesToInsert) {
+  // // pointerevents can have more than one, others could to needs some refactor
+  for (const { identifier, rules } of rulesToInsert) {
+    if (allSelectors[identifier] || !sheet) return
+    allSelectors[identifier] = process.env.NODE_ENV === 'development' ? rules : true
+    updateInsertedCache(identifier, rules)
+    for (const rule of rules) {
+      sheet.insertRule(rule, sheet.cssRules.length)
+    }
+  }
 }
