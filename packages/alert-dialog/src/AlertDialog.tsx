@@ -1,0 +1,313 @@
+// forked from radix-ui
+// https://github.com/radix-ui/primitives/blob/main/packages/react/alert-dialog/src/AlertDialog.tsx
+
+import { useComposedRefs } from '@tamagui/compose-refs'
+import {
+  Slottable,
+  TamaguiElement,
+  composeEventHandlers,
+  isWeb,
+  withStaticProperties,
+} from '@tamagui/core'
+import { Scope, createContextScope } from '@tamagui/create-context'
+import {
+  Dialog,
+  DialogClose,
+  DialogCloseProps,
+  DialogContent,
+  DialogContentProps,
+  DialogDescription,
+  DialogDescriptionProps,
+  DialogOverlay,
+  DialogOverlayProps,
+  DialogPortal,
+  DialogPortalProps,
+  DialogProps,
+  DialogTitle,
+  DialogTitleProps,
+  DialogTrigger,
+  DialogTriggerProps,
+  DialogWarningProvider,
+  createDialogScope,
+} from '@tamagui/dialog'
+import * as React from 'react'
+
+const ROOT_NAME = 'AlertDialog'
+
+type ScopedProps<P> = P & { __scopeAlertDialog?: Scope }
+const [createAlertDialogContext, createAlertDialogScope] = createContextScope(ROOT_NAME, [
+  createDialogScope,
+])
+
+const useDialogScope = createDialogScope()
+
+interface AlertDialogProps extends Omit<DialogProps, 'modal'> {}
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogTrigger
+ * -----------------------------------------------------------------------------------------------*/
+const TRIGGER_NAME = 'AlertDialogTrigger'
+
+interface AlertDialogTriggerProps extends DialogTriggerProps {}
+
+const AlertDialogTrigger = React.forwardRef<TamaguiElement, AlertDialogTriggerProps>(
+  (props: ScopedProps<AlertDialogTriggerProps>, forwardedRef) => {
+    const { __scopeAlertDialog, ...triggerProps } = props
+    const dialogScope = useDialogScope(__scopeAlertDialog)
+    return <DialogTrigger {...dialogScope} {...triggerProps} ref={forwardedRef} />
+  }
+)
+
+AlertDialogTrigger.displayName = TRIGGER_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogPortal
+ * -----------------------------------------------------------------------------------------------*/
+
+const PORTAL_NAME = 'AlertDialogPortal'
+
+interface AlertDialogPortalProps extends DialogPortalProps {}
+
+const AlertDialogPortal: React.FC<AlertDialogPortalProps> = (
+  props: ScopedProps<AlertDialogPortalProps>
+) => {
+  const { __scopeAlertDialog, ...portalProps } = props
+  const dialogScope = useDialogScope(__scopeAlertDialog)
+  return <DialogPortal {...dialogScope} {...portalProps} />
+}
+
+AlertDialogPortal.displayName = PORTAL_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogOverlay
+ * -----------------------------------------------------------------------------------------------*/
+
+const OVERLAY_NAME = 'AlertDialogOverlay'
+
+interface AlertDialogOverlayProps extends DialogOverlayProps {}
+
+const AlertDialogOverlay = React.forwardRef<TamaguiElement, AlertDialogOverlayProps>(
+  (props: ScopedProps<AlertDialogOverlayProps>, forwardedRef) => {
+    const { __scopeAlertDialog, ...overlayProps } = props
+    const dialogScope = useDialogScope(__scopeAlertDialog)
+    return <DialogOverlay {...dialogScope} {...overlayProps} ref={forwardedRef} />
+  }
+)
+
+AlertDialogOverlay.displayName = OVERLAY_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogContent
+ * -----------------------------------------------------------------------------------------------*/
+
+const CONTENT_NAME = 'AlertDialogContent'
+
+type AlertDialogContentContextValue = {
+  cancelRef: React.MutableRefObject<TamaguiElement | null>
+}
+
+const [AlertDialogContentProvider, useAlertDialogContentContext] =
+  createAlertDialogContext<AlertDialogContentContextValue>(CONTENT_NAME)
+
+interface AlertDialogContentProps
+  extends Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'> {}
+
+const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentProps>(
+  (props: ScopedProps<AlertDialogContentProps>, forwardedRef) => {
+    const { __scopeAlertDialog, children, ...contentProps } = props
+    const dialogScope = useDialogScope(__scopeAlertDialog)
+    const contentRef = React.useRef<TamaguiElement>(null)
+    const composedRefs = useComposedRefs(forwardedRef, contentRef)
+    const cancelRef = React.useRef<TamaguiElement | null>(null)
+
+    return (
+      <DialogWarningProvider
+        contentName={CONTENT_NAME}
+        titleName={TITLE_NAME}
+        docsSlug="alert-dialog"
+      >
+        <AlertDialogContentProvider scope={__scopeAlertDialog} cancelRef={cancelRef}>
+          <DialogContent
+            // @ts-ignore
+            role="alertdialog"
+            {...dialogScope}
+            {...contentProps}
+            ref={composedRefs}
+            onOpenAutoFocus={composeEventHandlers(contentProps.onOpenAutoFocus, (event) => {
+              event.preventDefault()
+              if (isWeb) {
+                // @ts-ignore
+                cancelRef.current?.focus({ preventScroll: true })
+              }
+            })}
+            onPointerDownOutside={(event) => event.preventDefault()}
+            onInteractOutside={(event) => event.preventDefault()}
+          >
+            {/**
+             * We have to use `Slottable` here as we cannot wrap the `AlertDialogContentProvider`
+             * around everything, otherwise the `DescriptionWarning` would be rendered straight away.
+             * This is because we want the accessibility checks to run only once the content is actually
+             * open and that behaviour is already encapsulated in `DialogContent`.
+             */}
+            <Slottable>{children}</Slottable>
+            {process.env.NODE_ENV === 'development' && (
+              <DescriptionWarning contentRef={contentRef} />
+            )}
+          </DialogContent>
+        </AlertDialogContentProvider>
+      </DialogWarningProvider>
+    )
+  }
+)
+
+AlertDialogContent.displayName = CONTENT_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogTitle
+ * -----------------------------------------------------------------------------------------------*/
+
+const TITLE_NAME = 'AlertDialogTitle'
+
+type AlertDialogTitleProps = DialogTitleProps
+
+const AlertDialogTitle = React.forwardRef<TamaguiElement, AlertDialogTitleProps>(
+  (props: ScopedProps<AlertDialogTitleProps>, forwardedRef) => {
+    const { __scopeAlertDialog, ...titleProps } = props
+    const dialogScope = useDialogScope(__scopeAlertDialog)
+    return <DialogTitle {...dialogScope} {...titleProps} ref={forwardedRef} />
+  }
+)
+
+AlertDialogTitle.displayName = TITLE_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogDescription
+ * -----------------------------------------------------------------------------------------------*/
+
+const DESCRIPTION_NAME = 'AlertDialogDescription'
+
+type AlertDialogDescriptionProps = DialogDescriptionProps
+
+const AlertDialogDescription = React.forwardRef<TamaguiElement, AlertDialogDescriptionProps>(
+  (props: ScopedProps<AlertDialogDescriptionProps>, forwardedRef) => {
+    const { __scopeAlertDialog, ...descriptionProps } = props
+    const dialogScope = useDialogScope(__scopeAlertDialog)
+    return <DialogDescription {...dialogScope} {...descriptionProps} ref={forwardedRef} />
+  }
+)
+
+AlertDialogDescription.displayName = DESCRIPTION_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogAction
+ * -----------------------------------------------------------------------------------------------*/
+
+const ACTION_NAME = 'AlertDialogAction'
+
+type AlertDialogActionProps = DialogCloseProps
+
+const AlertDialogAction = React.forwardRef<TamaguiElement, AlertDialogActionProps>(
+  (props: ScopedProps<AlertDialogActionProps>, forwardedRef) => {
+    const { __scopeAlertDialog, ...actionProps } = props
+    const dialogScope = useDialogScope(__scopeAlertDialog)
+    return <DialogClose {...dialogScope} {...actionProps} ref={forwardedRef} />
+  }
+)
+
+AlertDialogAction.displayName = ACTION_NAME
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialogCancel
+ * -----------------------------------------------------------------------------------------------*/
+
+const CANCEL_NAME = 'AlertDialogCancel'
+
+interface AlertDialogCancelProps extends DialogCloseProps {}
+
+const AlertDialogCancel = React.forwardRef<TamaguiElement, AlertDialogCancelProps>(
+  (props: ScopedProps<AlertDialogCancelProps>, forwardedRef) => {
+    const { __scopeAlertDialog, ...cancelProps } = props
+    const { cancelRef } = useAlertDialogContentContext(CANCEL_NAME, __scopeAlertDialog)
+    const dialogScope = useDialogScope(__scopeAlertDialog)
+    const ref = useComposedRefs(forwardedRef, cancelRef)
+    return <DialogClose {...dialogScope} {...cancelProps} ref={ref} />
+  }
+)
+
+AlertDialogCancel.displayName = CANCEL_NAME
+
+/* ---------------------------------------------------------------------------------------------- */
+
+type DescriptionWarningProps = {
+  contentRef: React.RefObject<TamaguiElement>
+}
+
+const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) => {
+  const MESSAGE = `\`${CONTENT_NAME}\` requires a description for the component to be accessible for screen reader users.
+
+You can add a description to the \`${CONTENT_NAME}\` by passing a \`${DESCRIPTION_NAME}\` component as a child, which also benefits sighted users by adding visible context to the dialog.
+
+Alternatively, you can use your own component as a description by assigning it an \`id\` and passing the same value to the \`aria-describedby\` prop in \`${CONTENT_NAME}\`. If the description is confusing or duplicative for sighted users, you can use the \`@radix-ui/react-visually-hidden\` primitive as a wrapper around your description component.
+
+For more information, see https://tamagui.dev/docs/components/alert-dialog`
+
+  React.useEffect(() => {
+    if (!isWeb) return
+    const hasDescription = document.getElementById(
+      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+      contentRef.current?.getAttribute('aria-describedby')!
+    )
+    if (!hasDescription) console.warn(MESSAGE)
+  }, [MESSAGE, contentRef])
+
+  return null
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialog
+ * -----------------------------------------------------------------------------------------------*/
+
+const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDialogProps>) => {
+  const { __scopeAlertDialog, ...alertDialogProps } = props
+  const dialogScope = useDialogScope(__scopeAlertDialog)
+  return <Dialog {...dialogScope} {...alertDialogProps} modal={true} />
+}
+
+const AlertDialog = withStaticProperties(AlertDialogInner, {
+  Trigger: AlertDialogTrigger,
+  Portal: AlertDialogPortal,
+  Overlay: AlertDialogOverlay,
+  Content: AlertDialogContent,
+  Action: AlertDialogAction,
+  Cancel: AlertDialogCancel,
+  Title: AlertDialogTitle,
+  Description: AlertDialogDescription,
+})
+
+AlertDialog.displayName = ROOT_NAME
+
+export {
+  createAlertDialogScope,
+  //
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogTitle,
+  AlertDialogDescription,
+}
+export type {
+  AlertDialogProps,
+  AlertDialogTriggerProps,
+  AlertDialogPortalProps,
+  AlertDialogOverlayProps,
+  AlertDialogContentProps,
+  AlertDialogActionProps,
+  AlertDialogCancelProps,
+  AlertDialogTitleProps,
+  AlertDialogDescriptionProps,
+}

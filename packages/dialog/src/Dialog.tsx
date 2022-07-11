@@ -5,6 +5,7 @@ import {
   GetProps,
   MediaPropKeys,
   Slot,
+  TamaguiElement,
   Theme,
   composeEventHandlers,
   isWeb,
@@ -24,13 +25,11 @@ import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
-import { View } from 'react-native'
 import { RemoveScroll } from 'react-remove-scroll'
 
 const DIALOG_NAME = 'Dialog'
 
 type ScopedProps<P> = P & { __scopeDialog?: Scope }
-type TamaguiElement = HTMLElement | View
 
 const [createDialogContext, createDialogScope] = createContextScope(DIALOG_NAME)
 
@@ -197,18 +196,19 @@ const DialogOverlay = React.forwardRef<TamaguiElement, DialogOverlayProps>(
       }
     }
 
-    return <DialogOverlayImpl {...overlayProps} ref={forwardedRef} />
+    return <DialogOverlayImpl context={context} {...overlayProps} ref={forwardedRef} />
   }
 )
 
 DialogOverlay.displayName = OVERLAY_NAME
 
-type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame>
+type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame> & {
+  context: DialogContextValue
+}
 
 const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProps>(
-  (props: ScopedProps<DialogOverlayImplProps>, forwardedRef) => {
-    const { __scopeDialog, ...overlayProps } = props
-    const context = useDialogContext(OVERLAY_NAME, __scopeDialog)
+  (props, forwardedRef) => {
+    const { context, ...overlayProps } = props
     const content = (
       <DialogOverlayFrame
         data-state={getState(context.open)}
@@ -264,7 +264,9 @@ const DialogContentFrame = styled(ThemeableStack, {
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
-interface DialogContentProps extends DialogContentFrameProps, DialogContentTypeProps {
+interface DialogContentProps
+  extends DialogContentFrameProps,
+    Omit<DialogContentTypeProps, 'context'> {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -282,9 +284,9 @@ const DialogContent = DialogContentFrame.extractable(
       return (
         <>
           {context.modal ? (
-            <DialogContentModal {...contentProps} ref={forwardedRef} />
+            <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
           ) : (
-            <DialogContentNonModal {...contentProps} ref={forwardedRef} />
+            <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
           )}
         </>
       )
@@ -297,11 +299,12 @@ DialogContent.displayName = CONTENT_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 interface DialogContentTypeProps
-  extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {}
+  extends Omit<DialogContentImplProps, 'trapFocus' | 'disableOutsidePointerEvents'> {
+  context: DialogContextValue
+}
 
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
-  ({ __scopeDialog, children, ...props }: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME, __scopeDialog)
+  ({ children, context, ...props }: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
@@ -315,6 +318,7 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
     return (
       <DialogContentImpl
         {...props}
+        context={context}
         ref={composedRefs}
         // we make sure focus isn't trapped once `DialogContent` has been closed
         // (closed !== unmounted when animating out)
@@ -348,7 +352,6 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
 
 const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
   (props: ScopedProps<DialogContentTypeProps>, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog)
     const hasInteractedOutsideRef = React.useRef(false)
 
     return (
@@ -361,7 +364,9 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
           props.onCloseAutoFocus?.(event)
 
           if (!event.defaultPrevented) {
-            if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
+            if (!hasInteractedOutsideRef.current) {
+              props.context.triggerRef.current?.focus()
+            }
             // Always prevent auto focus because we either focus manually or want user agent focus
             event.preventDefault()
           }
@@ -380,7 +385,7 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
           // We use `onInteractOutside` as some browsers also
           // focus on pointer down, creating the same issue.
           const target = event.target as HTMLElement
-          const trigger = context.triggerRef.current
+          const trigger = props.context.triggerRef.current
           if (!(trigger instanceof HTMLElement)) return
           const targetIsTrigger = trigger.contains(target)
           if (targetIsTrigger) event.preventDefault()
@@ -412,6 +417,8 @@ type DialogContentImplProps = DialogContentFrameProps &
      * Can be prevented.
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+
+    context: DialogContextValue
   }
 
 const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProps>(
@@ -426,9 +433,9 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       onPointerDownOutside,
       onFocusOutside,
       onInteractOutside,
+      context,
       ...contentProps
     } = props
-    const context = useDialogContext(CONTENT_NAME, __scopeDialog)
     const contentRef = React.useRef<HTMLDivElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const showSheet = useShowDialogSheet(context)
@@ -584,7 +591,7 @@ function getState(open: boolean) {
 
 const TITLE_WARNING_NAME = 'DialogTitleWarning'
 
-const [WarningProvider, useWarningContext] = createContext(TITLE_WARNING_NAME, {
+const [DialogWarningProvider, useWarningContext] = createContext(TITLE_WARNING_NAME, {
   contentName: CONTENT_NAME,
   titleName: TITLE_NAME,
   docsSlug: 'dialog',
@@ -756,7 +763,7 @@ export {
   DialogDescription,
   DialogClose,
   //
-  WarningProvider,
+  DialogWarningProvider,
 }
 export type {
   DialogProps,

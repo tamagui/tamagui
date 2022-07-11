@@ -5706,6 +5706,38 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@tamagui/alert-dialog@^1.0.1-beta.103, @tamagui/alert-dialog@workspace:packages/alert-dialog":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/alert-dialog@workspace:packages/alert-dialog"
+  dependencies:
+    "@tamagui/animate-presence": ^1.0.1-beta.103
+    "@tamagui/build": ^1.0.1-beta.103
+    "@tamagui/compose-refs": ^1.0.1-beta.103
+    "@tamagui/core": ^1.0.1-beta.103
+    "@tamagui/create-context": ^1.0.1-beta.103
+    "@tamagui/dialog": ^1.0.1-beta.103
+    "@tamagui/dismissable": ^1.0.1-beta.103
+    "@tamagui/focus-scope": ^1.0.1-beta.103
+    "@tamagui/polyfill-dev": ^1.0.1-beta.103
+    "@tamagui/popper": ^1.0.1-beta.103
+    "@tamagui/portal": ^1.0.1-beta.103
+    "@tamagui/stacks": ^1.0.1-beta.103
+    "@tamagui/text": ^1.0.1-beta.103
+    "@tamagui/use-controllable-state": ^1.0.1-beta.103
+    "@types/react-dom": ^18.0.3
+    "@types/react-native": ^0.69.2
+    aria-hidden: ^1.1.3
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+    react-remove-scroll: ^2.5.5
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+    react-native: "*"
+  languageName: unknown
+  linkType: soft
+
 "@tamagui/animate-presence@^1.0.1-beta.103, @tamagui/animate-presence@^1.0.1-beta.99, @tamagui/animate-presence@workspace:packages/animate-presence":
   version: 0.0.0-use.local
   resolution: "@tamagui/animate-presence@workspace:packages/animate-presence"
@@ -26180,6 +26212,7 @@ __metadata:
   dependencies:
     "@radix-ui/react-use-previous": ^0.1.1
     "@react-native-community/blur": ^3.6.0
+    "@tamagui/alert-dialog": ^1.0.1-beta.103
     "@tamagui/animate-presence": ^1.0.1-beta.103
     "@tamagui/avatar": ^1.0.1-beta.103
     "@tamagui/build": ^1.0.1-beta.103
