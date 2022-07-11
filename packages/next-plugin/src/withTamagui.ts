@@ -47,7 +47,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const safeResolves = (
           ...resolves: ([string, string] | [string, string, [string, string]])[]
         ) => {
-          let res: string[][] = []
+          const res: string[][] = []
           for (const [out, mod, replace] of resolves) {
             try {
               const next = [out, require.resolve(mod)]
@@ -71,9 +71,12 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ['react/jsx-runtime', 'react/jsx-runtime'],
             ['react/jsx-dev-runtime.js', 'react/jsx-dev-runtime'],
             ['react/jsx-dev-runtime', 'react/jsx-dev-runtime'],
-            ['react-native$', 'react-native-web'],
             ['react-native-reanimated', 'react-native-reanimated'],
             ['expo-linear-gradient', '@tamagui/expo-linear-gradient'],
+            // match commonjs to react-native-web
+            // i'd do esm but needs better docs, have to transpile
+            ['@tamagui/rnw', '@tamagui/rnw'],
+            ['react-native$', 'react-native-web'],
             ['react-native-web$', 'react-native-web'],
             ['@testing-library/react-native', '@tamagui/proxy-worm'],
             ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']],
@@ -86,8 +89,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 ] as any)
               : [])
           ),
-          // expo fix https://github.com/expo/expo/issues/9999
-          'react-native-web/src': require.resolve('react-native-web/dist'),
           // react: require.resolve('react'),
           // 'react-dom': require.resolve('react-dom'),
         }

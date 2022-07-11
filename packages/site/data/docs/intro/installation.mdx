@@ -66,6 +66,18 @@ const tamaguiOptions = {
 const projectRoot = __dirname
 
 module.exports = {
+  resolve: {
+    alias: {
+      // Resolve react-native to react-native-web
+      'react-native$': require.resolve('react-native-web'),
+      'react-native-web$': require.resolve('react-native-web'),
+      // @tamagui/rnw exports a couple internal hooks from react-native-web
+      // resolve both to CommonJS so they match
+      '@tamagui/rnw': require.resolve('@tamagui/rnw'),
+      // optional, for svg icons
+      'react-native-svg': require.resolve('react-native-svg-web'),
+    }
+  },
   module: {
     rules: [
       {
