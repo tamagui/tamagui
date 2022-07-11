@@ -58,6 +58,7 @@ export const docsRoutes = [
   {
     label: 'Panels',
     pages: [
+      { title: 'AlertDialog', route: '/docs/components/alert-dialog' },
       { title: 'Dialog', route: '/docs/components/dialog' },
       { title: 'Popover', route: '/docs/components/popover' },
       // { title: 'Portal', route: '/docs/components/portal' },

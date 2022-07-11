@@ -6,6 +6,7 @@ export * from '@tamagui/card'
 export * from '@tamagui/compose-refs'
 export * from '@tamagui/create-context'
 export * from '@tamagui/dialog'
+export * from '@tamagui/alert-dialog'
 export * from '@tamagui/font-size'
 export * from '@tamagui/helpers'
 export * from '@tamagui/image'
@@ -58,9 +59,12 @@ export type {
   RNWTextProps,
   RNWViewProps,
   Shorthands,
+  Slot,
+  Slottable,
   SizeTokens,
   SpaceTokens,
   StackPropsBase,
+  TamaguiElement,
   StackPropsBaseShared,
   StaticConfig,
   StaticConfigParsed,

@@ -2,6 +2,7 @@ import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
 import {
+  AlertDialogDemo,
   AnimationsDemo,
   ButtonDemo,
   DialogDemo,
@@ -58,7 +59,8 @@ export const Sandbox = () => {
         }}
       >
         {/* <AnimationsDemo /> */}
-        <SeparatorDemo />
+        {/* <SeparatorDemo /> */}
+        <AlertDialogDemo />
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}

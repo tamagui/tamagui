@@ -26,6 +26,7 @@
   "dependencies": {
     "@radix-ui/react-use-previous": "^0.1.1",
     "@react-native-community/blur": "^3.6.0",
+    "@tamagui/alert-dialog": "^1.0.1-beta.103",
     "@tamagui/animate-presence": "^1.0.1-beta.103",
     "@tamagui/avatar": "^1.0.1-beta.103",
     "@tamagui/button": "^1.0.1-beta.103",
