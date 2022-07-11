@@ -293,6 +293,10 @@ iframe {
 
 .t_dark .bg-grid { opacity: 0.2; }
 
+.tamagui-icon {
+  pointer-events: none;
+}
+
 @media (prefer-color-scheme: dark) {
   .bg-grid { opacity: 0.2; }
 
