@@ -1,16 +1,35 @@
 import { PresenceContext, usePresence } from '@tamagui/animate-presence'
-import { AnimationDriver, AnimationProp } from '@tamagui/core'
-import { useCallback, useContext, useMemo, useRef, useState } from 'react'
+import { AnimationDriver, AnimationProp, isWeb } from '@tamagui/core'
+import { useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Animated } from 'react-native'
 
 type AnimationsConfig<A extends Object = any> = {
   [Key in keyof A]: AnimationConfig
 }
 
-type AnimationConfig = {}
+type AnimationConfig = Partial<
+  Pick<
+    Animated.SpringAnimationConfig,
+    | 'delay'
+    | 'bounciness'
+    | 'damping'
+    | 'friction'
+    | 'mass'
+    | 'overshootClamping'
+    | 'speed'
+    | 'stiffness'
+    | 'tension'
+    | 'velocity'
+  >
+>
 // | ({ type: 'timing'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithTimingConfig)
 // | ({ type: 'spring'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithSpringConfig)
 // | ({ type: 'decay'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithDecayConfig)
+
+const animatedStyleKey = {
+  transform: true,
+  opacity: true,
+}
 
 export function createAnimations<A extends AnimationsConfig>(animations: A): AnimationDriver<A> {
   const AnimatedView = Animated.View
@@ -50,24 +69,71 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         enterVariant: presence?.enterVariant,
       })
 
-      const animatedValues = useRef<Record<string, Animated.Value>>({})
+      const animateStyles = useRef<Record<string, Animated.Value>>({})
+      const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
+      const interpolations = new WeakMap<Animated.Value, string>()
 
       // TODO loop and create values, run them if they change
 
-      const [animatedStyles, nonAnimatedStyle] = [{}, {}]
-      const animatedStyleKey = {
-        transform: true,
-        opacity: true,
-      }
-      for (const key of Object.keys(all)) {
-        if (animatedStyleKey[key]) {
-          animatedStyles[key] = all[key]
+      const runners: Function[] = []
+
+      function update(animated: Animated.Value | undefined, valIn: any) {
+        let val = valIn
+        let postfix = ''
+        if (typeof val === 'string') {
+          const [numbers, after] = val.split(/[0-9]+/)
+          postfix = after
+          val = +numbers
+        }
+        if (animated) {
+          const animationConfig = typeof props.animation === 'string' && animations[props.animation]
+          runners.push(() => {
+            // console.log('animate to', val, animationConfig)
+            Animated.spring(animated, {
+              toValue: val,
+              useNativeDriver: !isWeb,
+              ...animationConfig,
+            }).start()
+          })
+          return animated
         } else {
-          nonAnimatedStyle[key] = all[key]
+          const res = new Animated.Value(val)
+          // console.log('set up', res, (val) =>
+          //   Animated.spring(res, { toValue: val, useNativeDriver: false }).start()
+          // )
+          interpolations.set(res, postfix)
+          return res
         }
       }
 
-      const animatedStyle = {}
+      const nonAnimatedStyle = {}
+      for (const key of Object.keys(all)) {
+        const val = all[key]
+        if (animatedStyleKey[key]) {
+          if (key === 'transform') {
+            // for now just support one transform key
+            if (val) {
+              for (const [index, transform] of val.entries()) {
+                if (!transform) continue
+                const tkey = Object.keys(transform)[0]
+                // console.log('tkey', tkey)
+                animatedTranforms.current[index] = {
+                  [tkey]: update(animatedTranforms.current[index]?.[tkey], transform[tkey]),
+                }
+              }
+            }
+          } else {
+            animateStyles.current[key] = update(animateStyles.current[key], val)
+          }
+        } else {
+          nonAnimatedStyle[key] = val
+        }
+      }
+
+      const animatedStyle = {
+        ...animateStyles.current,
+        transform: animatedTranforms.current,
+      }
 
       const args = [
         JSON.stringify(all),
@@ -83,6 +149,14 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         presence?.exitVariant,
         presence?.enterVariant,
       ]
+
+      useLayoutEffect(() => {
+        //
+        for (const runner of runners) {
+          console.log('gogo')
+          runner()
+        }
+      }, args)
 
       // const callback = (
       //   isExiting: boolean,
