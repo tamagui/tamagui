@@ -13,9 +13,7 @@ import {
   mediaQueryConfig,
   proxyThemeVariables,
   pseudoDescriptors,
-  stylePropsTransform,
 } from '@tamagui/core-node'
-import { difference, pick } from 'lodash'
 import type { ViewStyle } from 'react-native'
 
 import { FAILED_EVAL } from '../constants'
@@ -1706,54 +1704,11 @@ export function createExtractor() {
               }
             }
 
-            function omitInvalidStyles(style: any) {
-              if (staticConfig.validStyles) {
-                for (const key in style) {
-                  if (
-                    stylePropsTransform[key] ||
-                    (!staticConfig.validStyles[key] &&
-                      !pseudoDescriptors[key] &&
-                      !/(hoverStyle|focusStyle|pressStyle)$/.test(key))
-                  ) {
-                    if (shouldPrintDebug) console.log(' delete invalid style', key)
-                    delete style[key]
-                  }
-                }
-              }
-            }
-
             // used to ensure we pass the entire prop bundle to getStyles
             const completeStyles = getStyles(completeProps, 'completeStyles')
 
             if (!completeStyles) {
               throw new Error(`Impossible, no styles`)
-            }
-
-            // any extra styles added in postprocess should be added to first group as they wont be overriden
-            const addInitialStyleKeys = shouldFlatten
-              ? difference(Object.keys(completeStyles), Object.keys(foundStaticProps))
-              : []
-
-            if (addInitialStyleKeys.length) {
-              const toAdd = pick(completeStyles, ...addInitialStyleKeys)
-              const firstGroup = attrs.find((x) => x.type === 'style')
-              if (shouldPrintDebug) {
-                console.log('    toAdd', objToStr(toAdd))
-              }
-              if (!firstGroup) {
-                attrs.unshift({ type: 'style', value: toAdd })
-              } else {
-                // because were adding fully processed, remove any unprocessed from first group
-                omitInvalidStyles(firstGroup.value)
-                Object.assign(firstGroup.value, toAdd)
-              }
-            }
-
-            if (shouldPrintDebug) {
-              // prettier-ignore
-              if (shouldFlatten) console.log('   -- addInitialStyleKeys', addInitialStyleKeys.join(', '))
-              // prettier-ignore
-              // console.log('   -- completeStyles:\n', logLines(objToStr(completeStyles)))
             }
 
             let getStyleError: any = null
@@ -1814,15 +1769,6 @@ export function createExtractor() {
                       if (INLINE_EXTRACTABLE[name]) {
                         // map to HTML only name
                         attr.value.name.name = INLINE_EXTRACTABLE[name]
-                      }
-
-                      // if flattening expand turn variants into styles
-                      if (staticConfig.variants?.[name]) {
-                        const expanded = getStyles({})
-                        // attrs[i] = {
-                        //   type: 'style',
-                        //   value:
-                        // }
                       }
                     }
                   }

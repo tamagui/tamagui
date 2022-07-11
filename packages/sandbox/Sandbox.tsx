@@ -7,6 +7,7 @@ import {
   DialogDemo,
   PopoverDemo,
   SelectDemo,
+  SeparatorDemo,
   SheetDemo,
   SliderDemo,
   SwitchDemo,
@@ -56,7 +57,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <AnimationsDemo />
+        {/* <AnimationsDemo /> */}
+        <SeparatorDemo />
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
