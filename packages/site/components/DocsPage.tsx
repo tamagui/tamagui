@@ -220,6 +220,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
       >
         <YStack
           overflow="hidden"
+          className="custom-scroll"
           $gtSm={{
             position: 'fixed' as any,
             top: 0,

@@ -1,4 +1,5 @@
 import { FastForward } from '@tamagui/feather-icons'
+import React from 'react'
 import { memo, useState } from 'react'
 import { Button, Group, Paragraph, XStack, YStack } from 'tamagui'
 
@@ -34,7 +35,7 @@ export function HeroExampleCode({ examples }) {
                   theme={i === activeIndex ? 'active' : null}
                   key={i}
                   borderRadius={0}
-                  size="$4"
+                  size="$3"
                   fontFamily="$silkscreen"
                 >
                   {example.name}
@@ -103,20 +104,20 @@ export function HeroExampleCode({ examples }) {
 const CodeExamples = memo(({ examples }: any) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const example = examples[activeIndex]
+  const { tint } = useTint()
 
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <Group bordered zi={10} mb="$-2" als="center">
+        <Group theme={tint} bordered zi={10} mb="$-3" als="center">
           {examples.map((example, i) => (
             <Button
               accessibilityLabel="See example"
               onPress={() => setActiveIndex(i)}
               theme={i === activeIndex ? 'active' : 'alt1'}
-              size="$3"
+              size="$2"
               key={i}
               borderRadius="$0"
-              fontWeight="800"
             >
               {example.name}
             </Button>

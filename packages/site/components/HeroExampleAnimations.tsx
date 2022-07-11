@@ -61,6 +61,7 @@ export function HeroExampleAnimations({ animationCode }) {
             zi={100}
             elevation="$4"
             br="$4"
+            theme={tint}
           >
             <ExampleAnimations />
           </YStack>
@@ -115,12 +116,7 @@ export function HeroExampleAnimations({ animationCode }) {
             </Button>
           </Link>
           <Link href="/docs/core/animations#reanimated" passHref>
-            <Button
-              accessibilityLabel="Reanimated docs"
-              fontFamily="$silkscreen"
-              theme={tint}
-              tag="a"
-            >
+            <Button accessibilityLabel="Reanimated docs" fontFamily="$silkscreen" tag="a">
               Reanimated &raquo;
             </Button>
           </Link>
@@ -138,7 +134,6 @@ export function HeroExampleAnimations({ animationCode }) {
 export const ExampleAnimations = memo(() => {
   const [animationI, setAnimationI] = useState(0)
   const animation = animationDescriptions[animationI]
-  const { tint } = useTint()
   const container = useRef(null)
   const [positionI, setPositionI] = useState(2)
   const next = (to = 1) => {
@@ -180,29 +175,27 @@ export const ExampleAnimations = memo(() => {
   return (
     <XStack
       bw={1}
-      boc={`$${tint}5`}
+      boc="$borderColor"
       elevation="$1"
       w="100%"
-      br="$6"
+      br="$4"
       ov="hidden"
       h={305}
       als="center"
       x={0}
       flexDirection="row-reverse"
     >
-      <Theme name={tint}>
-        <YStack
-          ref={container}
-          pos="relative"
-          bc="$background"
-          ai="center"
-          jc="center"
-          width="60%"
-          $sm={{ width: '100%' }}
-        >
-          <AnimationsDemo position={positionI} animation={animation.animation} />
-        </YStack>
-      </Theme>
+      <YStack
+        ref={container}
+        pos="relative"
+        bc="$background"
+        ai="center"
+        jc="center"
+        width="60%"
+        $sm={{ width: '100%' }}
+      >
+        <AnimationsDemo position={positionI} animation={animation.animation} />
+      </YStack>
 
       <Separator vertical />
 
@@ -212,13 +205,12 @@ export const ExampleAnimations = memo(() => {
           {animationDescriptions.map((item, i) => {
             const isActive = item === animation
             return (
-              <Theme key={item.name} name={isActive ? 'active' : 'alt1'}>
+              <Theme key={item.name} name={isActive ? 'active' : 'alt3'}>
                 <YStack
                   {...(isActive && {
                     bc: '$backgroundHover',
                   })}
                   px="$4"
-                  bc="$background"
                   py="$2"
                   cursor="pointer"
                   hoverStyle={{
@@ -238,7 +230,13 @@ export const ExampleAnimations = memo(() => {
                   >
                     {item.name}
                   </Paragraph>
-                  <Paragraph ellipse selectable={false} size="$2" cursor="inherit" theme="alt2">
+                  <Paragraph
+                    ellipse
+                    selectable={false}
+                    size="$2"
+                    cursor="inherit"
+                    color="$colorPress"
+                  >
                     {item.description}
                   </Paragraph>
                 </YStack>

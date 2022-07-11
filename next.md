@@ -22,6 +22,8 @@ render(
 )
 ```
 
+  - button inverse doesn't update on theme change (site)
+  - need to fix safari -webkit-user-select
   - `_active` style offical
     - <SwitchTrack /> gets active theme by default when toggled
 

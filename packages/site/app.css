@@ -538,3 +538,18 @@ input, textarea {
 .t_dark .docs-paragraph {
   opacity: 0.925;
 }
+
+.custom-scroll ::-webkit-scrollbar{
+  height: 14px;
+  width: 14px;
+}
+
+.custom-scroll ::-webkit-scrollbar-button{height:0;width:0}
+.custom-scroll ::-webkit-scrollbar-thumb{
+  border: 5.5px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: rgba(150,150,150,0.15);
+  display:none;
+}
+.custom-scroll:hover ::-webkit-scrollbar-thumb{display:flex;}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { composeEventHandlers, stylePropsView, validStyles } from '@tamagui/helpers'
 import {
   useElementLayout,
@@ -154,21 +155,18 @@ export function createComponent<
 
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
-    const statesUsed = useState<TamaguiComponentState>(defaultComponentState)
-    const setStateShallow = createShallowUpdate(statesUsed[1])
-    let state = statesUsed[0]
+    const [state, setState] = useState<TamaguiComponentState>(defaultComponentState)
+    const setStateShallow = createShallowUpdate(setState)
 
     // allow forcing a pseudo state on
     if (propsIn.forceStyle) {
-      state = {
-        ...state,
-        [propsIn.forceStyle]: true,
-      }
+      state[propsIn.forceStyle] = true
     }
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
     const shouldForcePseudo = !!propsIn.forceStyle
-    const hasTextAncestor = !!(isWeb ? useContext(TextAncestorContext) : false)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const hasTextAncestor = !!(isWeb && isText ? useContext(TextAncestorContext) : false)
     const splitStyleState =
       !shouldAvoidClasses && !shouldForcePseudo
         ? {
@@ -691,6 +689,7 @@ export function createComponent<
                 setStateShallow({
                   press: true,
                   pressIn: true,
+                  hover: false,
                 })
                 onPressIn?.(e)
                 onMouseDown?.(e)

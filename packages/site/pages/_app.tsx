@@ -4,9 +4,11 @@ import '@tamagui/font-silkscreen/css/400.css'
 import '../app.css'
 
 import { Footer } from '@components/Footer'
+import { AnimationsDemo } from '@tamagui/demos'
 import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme'
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
+import React from 'react'
 import { Suspense, useMemo } from 'react'
 
 import { SearchProvider } from '../components/Search'
@@ -34,7 +36,8 @@ export default function App(props: AppProps) {
         }}
       >
         <Tamagui.Provider disableInjectCSS disableRootThemeClass defaultTheme={theme}>
-          <Suspense fallback={null}>{contents}</Suspense>
+          <AnimationsDemo />
+          {/* <Suspense fallback={null}>{contents}</Suspense> */}
         </Tamagui.Provider>
       </NextThemeProvider>
     </>
