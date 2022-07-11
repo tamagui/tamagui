@@ -426,7 +426,7 @@ export const Sheet = withStaticProperties(
 
       if (modal) {
         return (
-          <Portal>
+          <Portal visible={open}>
             <Theme name={themeName}>{contents}</Theme>
           </Portal>
         )

@@ -5,7 +5,7 @@ import { Button, XStack, isWeb } from 'tamagui'
 
 export const SheetDemo = () => {
   const [position, setPosition] = useState(0)
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(isWeb ? false : true)
 
   return (

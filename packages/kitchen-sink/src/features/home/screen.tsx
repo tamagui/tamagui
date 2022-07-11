@@ -73,7 +73,7 @@ const ColorSchemeListItem = () => {
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
       <Switch checked={checked} themeShallow>
-        <Switch.Thumb animation="bouncy" />
+        <Switch.Thumb animation="quick" />
       </Switch>
       <Button chromeless disabled w={20} icon={Sun} />
     </ListItem>

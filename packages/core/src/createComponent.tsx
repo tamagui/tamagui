@@ -874,7 +874,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        console.groupCollapsed(elementType, `props out`, viewProps)
+        console.groupCollapsed('props out', viewProps)
         for (const key in viewProps) {
           console.log(key, viewProps[key])
         }
