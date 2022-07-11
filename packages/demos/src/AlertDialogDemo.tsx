@@ -46,7 +46,7 @@ export function AlertDialogDemo() {
                 <Button>Cancel</Button>
               </AlertDialog.Cancel>
               <AlertDialog.Action asChild>
-                <Button theme="active">Accept</Button>
+                <Button theme="alt3">Accept</Button>
               </AlertDialog.Action>
             </XStack>
           </YStack>

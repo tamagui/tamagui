@@ -61,12 +61,13 @@ function createThemesFrom<Name extends string, GetTheme extends ThemeCreator = T
   })
   // add these after alts since we rely on positioning
   const darkerTheme = getTheme(Math.max(0, shift + (props.isLight ? 1 : -1)), props)
-  const activeTheme =
-    props.activeTheme ||
-    makeActiveTheme({
-      ...theme,
-      background: props.backgrounds[5],
-    })
+  const activeTheme = props.activeTheme || {
+    ...theme,
+    borderColor: props.backgrounds[7],
+    background: props.backgrounds[6],
+    backgroundHover: props.backgrounds[6],
+    backgroundPress: props.backgrounds[6],
+  }
 
   // TODO can be de-duped
   const inverted = altThemes.map(([_name, theme]) => {
@@ -390,24 +391,21 @@ const colorThemes: {
   [key in ColorThemeNames]: MyThemeBase
 } = Object.fromEntries(colorThemeEntries) as any
 
-function makeActiveTheme(theme: any) {
-  const res = { ...theme }
-  res.backgroundHover = res.background
-  res.colorHover = res.color
-  res.backgroundPress = res.background
-  res.colorPress = res.color
-  return res
-}
-
 // add in base _active themes
-baseThemes.dark_active = makeActiveTheme({
+baseThemes.dark_active = {
   ...colorThemes.dark_blue_alt3,
   background: darkColors.blue10,
-})
-baseThemes.light_active = makeActiveTheme({
-  ...colorThemes.light_blue_alt3,
-  background: darkColors.blue10,
-})
+  backgroundHover: darkColors.blue11,
+  backgroundPress: darkColors.blue9,
+  backgroundFocus: darkColors.blue9,
+  color: darkColors.blue12,
+  colorHover: darkColors.blue12,
+  colorPress: darkColors.blue12,
+  colorFocus: darkColors.blue12,
+}
+
+// light active uses light foregound, ios style
+baseThemes.light_active = baseThemes.dark_active
 
 const allThemes = {
   ...baseThemes,

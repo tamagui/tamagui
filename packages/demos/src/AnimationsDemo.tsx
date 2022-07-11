@@ -24,7 +24,8 @@ export function AnimationsDemo(props) {
         animation={props.animation || 'bouncy'}
         onPress={() => next()}
         size={110}
-        bc="$pink10"
+        boc="$color"
+        bw={1}
         br="$9"
         hoverStyle={{
           scale: 1.1,

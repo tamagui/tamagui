@@ -122,6 +122,7 @@ export const getSplitStyles: StyleSplitter = (
   const len = propKeys.length
   const rulesToInsert: RulesToInsert = []
   const style: ViewStyle = {}
+  // TODO make this CSS, not compile-friendly
   if (state.hasTextAncestor) {
     // parity with react-native-web
     style.display = 'inline-flex' as any
