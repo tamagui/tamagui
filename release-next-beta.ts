@@ -58,6 +58,7 @@ async function run() {
 
       await Promise.all([
         //
+        spawnify(`yarn install`),
         exec(`yarn build`),
         exec(`yarn fix`),
       ])
@@ -71,11 +72,6 @@ async function run() {
       await spawnify(
         `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --force-publish --no-push`
       )
-
-      // lerna messes up yarn.lock and always needs a second yarn install + add + push
-      await spawnify(`yarn install`)
-      await spawnify(`git add -A`)
-      await spawnify(`git commit --amend --no-edit`)
     }
 
     console.log((await exec(`git diff`)).stdout)
@@ -114,7 +110,7 @@ async function run() {
       ).filter((x) => !x.json.private)
 
       // publish with tag
-      for (const chunk of _.chunk(packageJsons, 4)) {
+      for (const chunk of _.chunk(packageJsons, 6)) {
         await Promise.all(
           chunk.map(async ({ cwd, name }) => {
             console.log(`Publish ${name}`)
@@ -135,7 +131,7 @@ async function run() {
       console.log(`✅ Published under dist-tag "prepub"\n`)
 
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 4)) {
+      for (const chunk of _.chunk(packageJsons, 8)) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -150,9 +146,12 @@ async function run() {
       }
       console.log(`✅ Published\n`)
 
-      // then push git tag
+      // then push git
+      await spawnify(`git add -A`)
+      await spawnify(`git commit --amend --no-edit`)
+      await spawnify(`git push origin head`)
       await spawnify(`git push origin v${version}`)
-      console.log(`✅ Pushed github tag\n`)
+      console.log(`✅ Pushed and versioned\n`)
     }
   } catch (err) {
     console.log('\nError:\n', err)
