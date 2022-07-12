@@ -1,12 +1,17 @@
+import '@tamagui/static/require'
+
 import {
   TamaguiOptions,
   createExtractor,
   extractToClassNames,
   patchReactNativeWeb,
+  unregisterRequire,
 } from '@tamagui/static'
-import type { LoaderContext, RawLoaderDefinitionFunction } from 'webpack'
+import type { RawLoaderDefinitionFunction } from 'webpack'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
+
+unregisterRequire()
 
 // pass loader as path
 const CSS_LOADER_PATH = require.resolve('./css')
