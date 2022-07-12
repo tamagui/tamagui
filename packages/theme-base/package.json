@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-base",
-  "version": "1.0.1-beta.106",
+  "version": "1.0.1-beta.107",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -17,11 +17,11 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/colors": "^1.0.1-beta.106",
-    "@tamagui/core": "^1.0.1-beta.106"
+    "@tamagui/colors": "^1.0.1-beta.107",
+    "@tamagui/core": "^1.0.1-beta.107"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.106"
+    "@tamagui/build": "^1.0.1-beta.107"
   },
   "publishConfig": {
     "access": "public"
