@@ -93,6 +93,29 @@ Outside of flat style properties, Tamagui adds the following props:
         </span>
       ),
     },
+
+    {
+      name: 'themeInverse',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Invert light or dark theme for the sub-tree.
+        </span>
+      ),
+    },
+
+    {
+      name: 'themeShallow',
+      required: false,
+      type: 'boolean',
+      description: (
+        <span>
+          Used in combination with the theme prop, it prevents the theme from passing to children.
+        </span>
+      ),
+    },
+
     {
       name: 'className',
       required: false,
@@ -157,6 +180,7 @@ Outside of flat style properties, Tamagui adds the following props:
       type: `boolean`,
       description: <span>Sets position absolute, and top, left, right, and bottom all to 0.</span>,
     },
+
     {
       name: 'debug',
       required: false,
