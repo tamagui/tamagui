@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focusable",
-  "version": "1.0.1-beta.106",
+  "version": "1.0.1-beta.107",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -20,15 +20,15 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.1-beta.106",
-    "@tamagui/core": "^1.0.1-beta.106"
+    "@tamagui/compose-refs": "^1.0.1-beta.107",
+    "@tamagui/core": "^1.0.1-beta.107"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.106",
+    "@tamagui/build": "^1.0.1-beta.107",
     "react": "*",
     "react-dom": "*"
   },
