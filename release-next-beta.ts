@@ -93,14 +93,14 @@ async function run() {
     }
 
     if (!skipPublish) {
-      const packagePaths = (await exec(`yarn workspaces list --json`)).stdout.split('\n') as {
+      const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
+      const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
         name: string
         location: string
       }[]
       const packageJsons = (
         await Promise.all(
           packagePaths
-            .map((p) => JSON.parse(p))
             .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
             .map(async ({ name, location }) => {
               const cwd = path.join(__dirname, location)
