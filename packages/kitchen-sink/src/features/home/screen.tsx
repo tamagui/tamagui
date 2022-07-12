@@ -104,6 +104,7 @@ const demos = [
   {
     label: 'Panels',
     pages: [
+      { title: 'AlertDialog', route: '/demo/alert-dialog' },
       { title: 'Dialog', route: '/demo/dialog' },
       { title: 'Sheet', route: '/demo/sheet' },
     ],

@@ -28,7 +28,6 @@ render(
     - <SwitchTrack /> gets active theme by default when toggled
 
   - // TODO still have as const bug
-  - <AlertDialog /> that doesnt adapt to sheet on mobile, just for showing short text + buttons
   - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
   - <Switch /> active state style

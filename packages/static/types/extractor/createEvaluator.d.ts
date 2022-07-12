@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import type { TamaguiConfig } from '@tamagui/core';
+import type { TamaguiConfig } from '@tamagui/core-node';
 export declare function createEvaluator({ tamaguiConfig, staticNamespace, sourcePath, traversePath, shouldPrintDebug, }: {
     tamaguiConfig: TamaguiConfig;
     staticNamespace: Record<string, any>;
