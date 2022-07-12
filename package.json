@@ -30,7 +30,7 @@
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "turbo run test",
     "prettier": "prettier --write \"**/*.{ts,tsx}\" || true",
-    "release:beta": "node ./release-next-beta.js",
+    "release:beta": "node -r esbuild-register ./release-next-beta.ts",
     "publish": "lerna publish --preid beta",
     "publish:no-version": "npm publish --workspaces",
     "publish:canary": "lerna publish --canary --preid beta.0 --force-publish --dist-tag canary",
