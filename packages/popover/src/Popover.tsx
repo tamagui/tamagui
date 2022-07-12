@@ -11,6 +11,7 @@ import {
   useRole,
 } from '@floating-ui/react-dom-interactions'
 import { AnimatePresence } from '@tamagui/animate-presence'
+import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   SizeTokens,
@@ -36,12 +37,11 @@ import {
   createPopperScope,
 } from '@tamagui/popper'
 import { Portal } from '@tamagui/portal'
+import { RemoveScroll, RemoveScrollProps } from '@tamagui/remove-scroll'
 import { YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
 import { View } from 'react-native'
-import { RemoveScroll } from 'react-remove-scroll'
 
 const POPOVER_NAME = 'Popover'
 
@@ -144,7 +144,6 @@ const CONTENT_NAME = 'PopoverContent'
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 type PopoverContentTypeElement = PopoverContentImplElement
 
 export interface PopoverContentTypeProps

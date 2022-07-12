@@ -4,10 +4,10 @@ import type { Scope } from '@tamagui/create-context';
 import { DismissableProps } from '@tamagui/dismissable';
 import { FocusScopeProps } from '@tamagui/focus-scope';
 import { PopperArrowProps, PopperContentProps, PopperProps } from '@tamagui/popper';
+import { RemoveScrollProps } from '@tamagui/remove-scroll';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
 import { View } from 'react-native';
-import { RemoveScroll } from 'react-remove-scroll';
 export declare const usePopoverScope: (scope: Scope<any>) => {
     [__scopeProp: string]: Scope<any>;
 };
@@ -55,7 +55,6 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import
     readonly elevation?: SizeTokens | undefined;
 }>> & React.RefAttributes<PopoverTriggerElement>>;
 export declare type PopoverContentProps = PopoverContentTypeProps;
-declare type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
     disableRemoveScroll?: boolean;

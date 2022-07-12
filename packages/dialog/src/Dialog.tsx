@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
+import { hideOthers } from '@tamagui/aria-hidden'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { useGet } from '@tamagui/core'
 import {
   GetProps,
   MediaPropKeys,
@@ -10,6 +10,7 @@ import {
   composeEventHandlers,
   isWeb,
   styled,
+  useGet,
   useId,
   useMedia,
   useThemeName,
@@ -19,19 +20,20 @@ import { Scope, createContext, createContextScope } from '@tamagui/create-contex
 import { Dismissable, DismissableProps } from '@tamagui/dismissable'
 import { FocusScope, FocusScopeProps } from '@tamagui/focus-scope'
 import { PortalHost, PortalItem, PortalItemProps } from '@tamagui/portal'
+import { RemoveScroll } from '@tamagui/remove-scroll'
 import { Sheet, SheetController } from '@tamagui/sheet'
 import { ThemeableStack, YStack, YStackProps } from '@tamagui/stacks'
 import { H2, Paragraph } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { hideOthers } from 'aria-hidden'
 import * as React from 'react'
-import { RemoveScroll } from 'react-remove-scroll'
 
 const DIALOG_NAME = 'Dialog'
 
 type ScopedProps<P> = P & { __scopeDialog?: Scope }
 
 const [createDialogContext, createDialogScope] = createContextScope(DIALOG_NAME)
+
+type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 
 interface DialogProps {
   sheetBreakpoint?: MediaPropKeys | false
@@ -65,8 +67,6 @@ type DialogContextValue = {
 }
 
 const [DialogProvider, useDialogContext] = createDialogContext<DialogContextValue>(DIALOG_NAME)
-
-type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
 
 /* -------------------------------------------------------------------------------------------------
  * DialogTrigger
@@ -209,25 +209,22 @@ type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame> & {
 const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProps>(
   (props, forwardedRef) => {
     const { context, ...overlayProps } = props
-    const content = (
-      <DialogOverlayFrame
-        data-state={getState(context.open)}
-        // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-        pointerEvents="auto"
-        {...overlayProps}
-        ref={forwardedRef}
-      />
-    )
-
-    if (!isWeb) {
-      return content
-    }
-
     return (
       // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
       // ie. when `Overlay` and `Content` are siblings
-      <RemoveScroll as={Slot} allowPinchZoom={context.allowPinchZoom} shards={[context.contentRef]}>
-        {content}
+      <RemoveScroll
+        enabled={context.open}
+        as={Slot}
+        allowPinchZoom={context.allowPinchZoom}
+        shards={[context.contentRef]}
+      >
+        <DialogOverlayFrame
+          data-state={getState(context.open)}
+          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+          pointerEvents="auto"
+          {...overlayProps}
+          ref={forwardedRef}
+        />
       </RemoveScroll>
     )
   }

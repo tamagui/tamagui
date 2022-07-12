@@ -97,6 +97,7 @@ export const LogoWords = ({
 export const LogoIcon = ({ downscale = 2 }: any) => {
   return (
     <YStack
+      className="unselectable"
       als="center"
       marginVertical={-10}
       pressStyle={{

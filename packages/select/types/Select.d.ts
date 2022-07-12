@@ -1,15 +1,27 @@
-import { GetProps, SizeTokens } from '@tamagui/core';
+import { GetProps, MediaPropKeys, SizeTokens, TamaguiElement } from '@tamagui/core';
 import type { Scope } from '@tamagui/create-context';
 import { ListItemProps } from '@tamagui/list-item';
 import { YStackProps } from '@tamagui/stacks';
 import * as React from 'react';
-import { View } from 'react-native';
-declare type TamaguiElement = HTMLElement | View;
+export interface SelectProps {
+    id?: string;
+    children?: React.ReactNode;
+    value?: string;
+    defaultValue?: string;
+    onValueChange?(value: string): void;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?(open: boolean): void;
+    dir?: Direction;
+    name?: string;
+    autoComplete?: string;
+    size?: SizeTokens;
+    sheetBreakpoint?: MediaPropKeys | false;
+}
 declare type ScopedProps<P> = P & {
     __scopeSelect?: Scope;
 };
 declare const createSelectScope: import("@tamagui/create-context").CreateScope;
-declare type GenericElement = HTMLElement | View;
 declare type Direction = 'ltr' | 'rtl';
 export declare type SelectTriggerProps = ListItemProps;
 export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/helpers-tamagui").TextParentStyles, "TextComponent"> & Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
@@ -86,7 +98,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     scaleSpace?: number | undefined;
     title?: React.ReactNode;
     subTitle?: React.ReactNode;
-} & React.RefAttributes<GenericElement>>;
+} & React.RefAttributes<TamaguiElement>>;
 export declare const SelectIcon: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: SizeTokens | undefined;
@@ -379,20 +391,10 @@ export declare const SelectSeparator: import("@tamagui/core").TamaguiComponent<(
 } & ({} | {
     [x: string]: undefined;
 })>;
-export interface SelectProps {
-    id?: string;
-    children?: React.ReactNode;
-    value?: string;
-    defaultValue?: string;
-    onValueChange?(value: string): void;
-    open?: boolean;
-    defaultOpen?: boolean;
-    onOpenChange?(open: boolean): void;
-    dir?: Direction;
-    name?: string;
-    autoComplete?: string;
-    size?: SizeTokens;
-}
+export declare const SelectSheetContents: {
+    ({ __scopeSelect }: ScopedProps<{}>): JSX.Element;
+    displayName: string;
+};
 export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) & {
     Content: ({ children, __scopeSelect }: ScopedProps<SelectContentProps>) => JSX.Element;
     Group: React.ForwardRefExoticComponent<((Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
@@ -682,7 +684,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         scaleSpace?: number | undefined;
         title?: React.ReactNode;
         subTitle?: React.ReactNode;
-    } & React.RefAttributes<GenericElement>>;
+    } & React.RefAttributes<TamaguiElement>>;
     Value: React.ForwardRefExoticComponent<((Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
         size?: import("@tamagui/core").FontSizeTokens | undefined;
     } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").TextProps, "children"> & import("@tamagui/core").RNWTextProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & Omit<{}, "size"> & {
@@ -801,6 +803,73 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
     }, "size"> & {
         size?: SizeTokens | undefined;
     }>> & React.RefAttributes<TamaguiElement>>;
+    SheetContents: {
+        ({ __scopeSelect }: ScopedProps<{}>): JSX.Element;
+        displayName: string;
+    };
+    Sheet: ((props: Omit<{
+        open?: boolean | undefined;
+        defaultOpen?: boolean | undefined;
+        onChangeOpen?: (React.Dispatch<React.SetStateAction<boolean>> | ((open: boolean) => void)) | undefined;
+        position?: number | undefined;
+        defaultPosition?: number | undefined;
+        snapPoints?: number[] | undefined;
+        onChangePosition?: (React.Dispatch<React.SetStateAction<number>> | ((position: number) => void)) | undefined;
+        children?: React.ReactNode;
+        dismissOnOverlayPress?: boolean | undefined;
+        animationConfig?: import("react-native").Animated.SpringAnimationConfig | undefined;
+        disableDrag?: boolean | undefined;
+        modal?: boolean | undefined;
+        allowPinchZoom?: boolean | undefined;
+    } & {
+        __scopeSheet?: Scope<any>;
+    } & React.RefAttributes<import("react-native").View>, "theme" | "themeInverse"> & {
+        theme?: import("@tamagui/core").ThemeName | null | undefined;
+        themeInverse?: boolean | undefined;
+    }) => React.ReactElement<any, string | React.JSXElementConstructor<any>> | null) & {
+        Handle: ({ __scopeSheet, ...props }: Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        }>> & {
+            __scopeSheet?: Scope<any>;
+        }) => JSX.Element | null;
+        Frame: React.ForwardRefExoticComponent<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        }>> & {
+            __scopeSheet?: Scope<any>;
+        } & React.RefAttributes<unknown>>;
+        Overlay: ({ __scopeSheet, ...props }: Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        }, "closed"> & {
+            closed?: boolean | undefined;
+        } & import("@tamagui/core").MediaProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        }, "closed"> & {
+            closed?: boolean | undefined;
+        }>> & import("@tamagui/core").PseudoProps<Partial<Omit<import("react-native").ViewProps, "display" | "children"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{
+            readonly fullscreen?: boolean | undefined;
+            readonly elevation?: SizeTokens | undefined;
+        }, "closed"> & {
+            closed?: boolean | undefined;
+        }>> & {
+            __scopeSheet?: Scope<any>;
+        }) => JSX.Element;
+    };
 };
 export { createSelectScope };
 //# sourceMappingURL=Select.d.ts.map

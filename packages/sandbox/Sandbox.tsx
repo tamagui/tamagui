@@ -1,6 +1,8 @@
 import '@tamagui/core/reset.css'
 import '@tamagui/polyfill-dev'
 
+import '../site/app.css'
+
 import {
   AlertDialogDemo,
   AnimationsDemo,
@@ -38,7 +40,7 @@ export const Sandbox = () => {
       <button
         style={{
           position: 'absolute',
-          bottom: 20,
+          top: 30,
           left: 20,
         }}
         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
@@ -49,7 +51,8 @@ export const Sandbox = () => {
       <div
         style={{
           width: '100vw',
-          height: '100vh',
+          // test scrolling
+          height: '110vh',
           pointerEvents: 'auto',
           display: 'flex',
           flexDirection: 'column',
@@ -58,14 +61,14 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <AnimationsDemo />
+        {/* <AnimationsDemo /> */}
         {/* <SeparatorDemo /> */}
         {/* <AlertDialogDemo /> */}
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        {/* <SelectDemo /> */}
+        <SelectDemo />
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>

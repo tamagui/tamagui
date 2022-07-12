@@ -270,6 +270,7 @@ iframe {
 .unselectable,
 .unselectable * {
   user-select: none !important;
+  -webkit-user-select: none !important;
 }
 
 .glow {
@@ -421,6 +422,7 @@ iframe {
 .token.deleted.prefix,
 .token.inserted.prefix {
   user-select: none;
+  -webkit-user-select: none;
 }
 
 .highlight-word {
