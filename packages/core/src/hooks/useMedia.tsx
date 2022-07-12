@@ -36,6 +36,7 @@ export const configureMedia = ({
   defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions = {}) => {
   if (hasConfigured) {
+    if (process.env.IS_STATIC === 'is_static') return
     console.warn(
       `Already configured mediaQueries once (you may have called getMedia() before configureMedia())`
     )

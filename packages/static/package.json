@@ -44,6 +44,8 @@
     "@tamagui/helpers": "^1.0.1-beta.104",
     "@tamagui/patch-rnw": "^1.0.1-beta.104",
     "@tamagui/proxy-worm": "^1.0.1-beta.104",
+    "@tamagui/shorthands": "^1.0.1-beta.104",
+    "@tamagui/theme-base": "^1.0.1-beta.104",
     "babel-literal-to-ast": "^2.1.0",
     "esbuild": "^0.14.48",
     "esbuild-register": "^3.3.2",

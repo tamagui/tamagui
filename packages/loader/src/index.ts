@@ -1,5 +1,6 @@
 process.env.TAMAGUI_TARGET = process.env.TAMAGUI_TARGET || 'web'
 process.env.TAMAGUI_COMPILE_PROCESS = '1'
+process.env.IS_STATIC = 'is_static'
 
 export default require('./loader').loader
 

@@ -1,4 +1,3 @@
-
 import { setConfigFont } from './conf'
 import { createFont } from './createFont'
 import { Variable } from './createVariable'
@@ -33,7 +32,7 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
     for (const key in attr) {
       let val = attr[key] as any as Variable
       // is a theme reference
-      if (val.val[0] === '$') {
+      if (val.val?.[0] === '$') {
         val = val.val
       }
       parsed[attrKey][`$${key}`] = val

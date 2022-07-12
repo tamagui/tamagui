@@ -3,6 +3,10 @@ import { join } from 'path'
 import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core'
 import { createTamagui } from '@tamagui/core-node'
 
+import { SHOULD_DEBUG } from '../constants'
+import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
+import { config as defaultTamaguiConfig } from './defaultTamaguiConfig'
+
 let loadedTamagui: any = null
 
 type NameToPaths = {
@@ -37,102 +41,62 @@ export function loadTamagui(props: { components: string[]; config: string }): Ta
       globalThis['__DEV__'] = process.env.NODE_ENV === 'development'
     }
 
-    const proxyWorm = require('@tamagui/proxy-worm')
-    const rnw = require('react-native-web')
-    const Mod = require('module')
-    const og = Mod.prototype.require
-    const nameToPaths: NameToPaths = {}
+    registerRequire()
 
-    Mod.prototype.require = function (path: string) {
-      if (path.endsWith('.css')) {
-        return {}
-      }
-      if (
-        path === '@gorhom/bottom-sheet' ||
-        path.startsWith('react-native-reanimated') ||
-        path === 'expo-linear-gradient'
-      ) {
-        return proxyWorm
-      }
-      if (
-        path.startsWith('react-native') &&
-        // allow our rnw.tsx imports through
-        !path.startsWith('react-native-web/dist/cjs/exports')
-      ) {
-        return rnw
-      }
-      try {
-        const out = og.apply(this, arguments)
-        if (!nameToPaths[path]) {
-          if (out && typeof out === 'object') {
-            for (const key in out) {
-              try {
-                const conf = out[key]?.staticConfig as StaticConfig
-                if (conf) {
-                  if (conf.componentName) {
-                    nameToPaths[conf.componentName] ??= new Set()
-                    const fullName = path.startsWith('.')
-                      ? join(`${this.path.replace(/dist(\/cjs)?/, 'src')}`, path)
-                      : path
-                    nameToPaths[conf.componentName].add(fullName)
-                  } else {
-                    // console.log('no name component', path)
-                  }
-                }
-              } catch {
-                // ok
-              }
-            }
-          }
-        }
-        return out
-      } catch (err: any) {
-        console.error('Tamagui error loading file:\n', path, err.message, '\n', err.stack)
-        // avoid infinite loops
-        process.exit(1)
-      }
-    }
+    try {
+      // import config
+      const exp = require(configPath)
+      const tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
 
-    // import config
-    const exp = require(configPath)
-    const tamaguiConfig = (exp['default'] || exp) as TamaguiInternalConfig
-
-    if (!tamaguiConfig || !tamaguiConfig.parsed) {
-      try {
+      if (!tamaguiConfig || !tamaguiConfig.parsed) {
         const confPath = require.resolve(configPath)
         console.log(`Received:`, tamaguiConfig)
         throw new Error(`Can't find valid config in ${confPath}`)
-      } catch (err) {
-        throw err
       }
-    }
 
-    // import components
-    const components = {}
-    for (const moduleName of props.components) {
-      const exported = require(moduleName)
-      for (const Name in exported) {
-        const val = exported[Name]
-        const staticConfig = val?.staticConfig as StaticConfig | undefined
-        if (staticConfig) {
-          // remove non-stringifyable
-          const { Component, reactNativeWebComponent, ...sc } = staticConfig
-          Object.assign(components, { [Name]: { staticConfig: sc } })
+      // import components
+      const components = {}
+      for (const moduleName of props.components) {
+        const exported = require(moduleName)
+        for (const Name in exported) {
+          const val = exported[Name]
+          const staticConfig = val?.staticConfig as StaticConfig | undefined
+          if (staticConfig) {
+            // remove non-stringifyable
+            const { Component, reactNativeWebComponent, ...sc } = staticConfig
+            Object.assign(components, { [Name]: { staticConfig: sc } })
+          }
         }
       }
-    }
 
-    // undo shims
-    process.env.IS_STATIC = undefined
-    Mod.prototype.require = og
+      // undo shims
+      process.env.IS_STATIC = undefined
 
-    // set up core-node
-    createTamagui(tamaguiConfig as any)
+      // set up core-node
+      createTamagui(tamaguiConfig as any)
 
-    loadedTamagui = {
-      components,
-      tamaguiConfig,
-      nameToPaths,
+      loadedTamagui = {
+        components,
+        tamaguiConfig,
+        nameToPaths: getNameToPaths(),
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        console.warn(
+          `Error loading tamagui.config.ts (set DEBUG=tamagui to see full stack), running tamagui without custom config`
+        )
+        console.log(`\n\n    ${err.message}\n\n`)
+        if (SHOULD_DEBUG) {
+          console.log(err.stack)
+        }
+      } else {
+        console.error(`Error loading tamagui.config.ts`, err)
+      }
+      return {
+        components: {},
+        tamaguiConfig: defaultTamaguiConfig,
+        nameToPaths: {},
+      }
     }
 
     return loadedTamagui
@@ -141,5 +105,6 @@ export function loadTamagui(props: { components: string[]; config: string }): Ta
     throw err
   } finally {
     unregister()
+    unregisterRequire()
   }
 }
