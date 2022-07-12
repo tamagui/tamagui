@@ -1,13 +1,23 @@
 import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
 import React from 'react'
-import { LinearGradient, Select, Text, YStack } from 'tamagui'
+import { ScrollView } from 'react-native'
+import { LinearGradient, Select, YStack } from 'tamagui'
 
 export function SelectDemo() {
   return (
-    <Select defaultValue="apple">
+    <Select sheetBreakpoint="$sm" defaultValue="apple">
       <Select.Trigger w={200} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
+
+      <Select.Sheet modal>
+        <Select.Sheet.Frame>
+          <ScrollView style={{ flex: 1 }}>
+            <Select.SheetContents />
+          </ScrollView>
+        </Select.Sheet.Frame>
+        <Select.Sheet.Overlay />
+      </Select.Sheet>
 
       <Select.Content>
         <Select.ScrollUpButton ai="center" jc="center" pos="relative" w="100%" h="$3">

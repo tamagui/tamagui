@@ -10,7 +10,7 @@ export function DialogDemo() {
       </Dialog.Trigger>
 
       <Dialog.Sheet modal>
-        <Dialog.Sheet.Frame>
+        <Dialog.Sheet.Frame padding="$4">
           <Dialog.SheetContents />
         </Dialog.Sheet.Frame>
         <Dialog.Sheet.Overlay />

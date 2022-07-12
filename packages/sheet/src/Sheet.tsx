@@ -1,5 +1,8 @@
+import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
+  Slot,
+  TamaguiElement,
   Theme,
   isClient,
   isWeb,
@@ -7,13 +10,13 @@ import {
   styled,
   themeable,
   useEvent,
-  useIsomorphicLayoutEffect,
   useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'
 import { Portal } from '@tamagui/portal'
-import { XStack, XStackProps, YStack } from '@tamagui/stacks'
+import { RemoveScroll } from '@tamagui/remove-scroll'
+import { XStack, XStackProps, YStack, YStackProps } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, {
   ReactNode,
@@ -38,6 +41,8 @@ import {
 const SHEET_NAME = 'Sheet'
 const SHEET_HANDLE_NAME = 'SheetHandle'
 
+type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>
+
 export type SheetProps = ScopedProps<
   {
     open?: boolean
@@ -52,6 +57,11 @@ export type SheetProps = ScopedProps<
     animationConfig?: Animated.SpringAnimationConfig
     disableDrag?: boolean
     modal?: boolean
+
+    /**
+     * @see https://github.com/theKashey/react-remove-scroll#usage
+     */
+    allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
   },
   'Sheet'
 >
@@ -68,6 +78,8 @@ type SheetContextValue = Required<
   hidden: boolean
   setPosition: React.Dispatch<React.SetStateAction<number>>
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  allowPinchZoom: RemoveScrollProps['allowPinchZoom']
+  contentRef: React.RefObject<TamaguiElement>
 }
 
 const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
@@ -117,8 +129,10 @@ export const SheetHandle = SheetHandleFrame.extractable(
   }
 )
 
+const SHEET_OVERLAY_NAME = 'SheetOverlay'
+
 export const SheetOverlayFrame = styled(YStack, {
-  name: 'SheetOverlay',
+  name: SHEET_OVERLAY_NAME,
   // TODO this should be $background without opacity and just customized by theme
   backgroundColor: '$color',
   fullscreen: true,
@@ -143,20 +157,27 @@ export type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>
 
 export const SheetOverlay = SheetOverlayFrame.extractable(
   ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => {
-    const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
+    const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
     return (
-      <SheetOverlayFrame
-        closed={!context.open || context.hidden}
-        {...props}
-        onPress={mergeEvent(
-          props.onPress,
-          context.dismissOnOverlayPress
-            ? () => {
-                context.setOpen(false)
-              }
-            : undefined
-        )}
-      />
+      <RemoveScroll
+        enabled={context.open}
+        as={Slot}
+        allowPinchZoom={context.allowPinchZoom}
+        shards={[context.contentRef]}
+      >
+        <SheetOverlayFrame
+          closed={!context.open || context.hidden}
+          {...props}
+          onPress={mergeEvent(
+            props.onPress,
+            context.dismissOnOverlayPress
+              ? () => {
+                  context.setOpen(false)
+                }
+              : undefined
+          )}
+        />
+      </RemoveScroll>
     )
   }
 )
@@ -166,16 +187,27 @@ if (selectionStyleSheet) {
   document.head.appendChild(selectionStyleSheet)
 }
 
-export const SheetFrame = styled(YStack, {
-  name: 'SheetFrame',
+const SHEET_FRAME_NAME = 'SheetFrame'
+
+export const SheetFrameFrame = styled(YStack, {
+  name: SHEET_FRAME_NAME,
   flex: 1,
   backgroundColor: '$background',
   borderTopLeftRadius: '$4',
   borderTopRightRadius: '$4',
-  padding: '$4',
   width: '100%',
+  maxHeight: '100%',
+  overflow: 'hidden',
   pointerEvents: 'auto',
 })
+
+export const SheetFrame = SheetFrameFrame.extractable(
+  forwardRef(({ __scopeSheet, ...props }: SheetScopedProps<YStackProps>, forwardedRef) => {
+    const context = useSheetContext(SHEET_FRAME_NAME, __scopeSheet)
+    const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
+    return <SheetFrameFrame ref={composedContentRef} {...props} />
+  })
+)
 
 // set all the way off screen
 const HIDDEN_SIZE = 10_000
@@ -197,6 +229,7 @@ export const Sheet = withStaticProperties(
         animationConfig,
         disableDrag: disableDragProp,
         modal,
+        allowPinchZoom,
       } = props
 
       // allows for sheets to be controlled by other components
@@ -204,6 +237,7 @@ export const Sheet = withStaticProperties(
       const isHidden = controller?.hidden || false
       const disableDrag = disableDragProp ?? controller?.disableDrag
       const themeName = useThemeName()
+      const contentRef = React.useRef<TamaguiElement>(null)
 
       const onChangeOpenInternal = (val: boolean) => {
         controller?.onChangeOpen?.(val)
@@ -387,7 +421,9 @@ export const Sheet = withStaticProperties(
 
       const contents = (
         <SheetProvider
+          contentRef={contentRef}
           dismissOnOverlayPress={dismissOnOverlayPress}
+          allowPinchZoom={allowPinchZoom}
           open={open}
           hidden={isHidden}
           scope={__scopeSheet}

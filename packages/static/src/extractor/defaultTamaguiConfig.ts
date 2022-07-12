@@ -1,6 +1,6 @@
 import { shorthands } from '@tamagui/shorthands'
 import { themes, tokens } from '@tamagui/theme-base'
-import { createFont, createTamagui } from 'tamagui'
+import { TamaguiInternalConfig, createFont, createTamagui } from 'tamagui'
 
 const font = createFont({
   family: 'System',
@@ -49,4 +49,4 @@ export const config = createTamagui({
     hoverNone: { hover: 'none' },
     pointerCoarse: { pointer: 'coarse' },
   },
-})
+}) as TamaguiInternalConfig

@@ -6,15 +6,11 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import {
   GetProps,
   SizeTokens,
-  Theme,
   calc,
   getSize,
   getVariableValue,
   isWeb,
   styled,
-  themeable,
-  useTheme,
-  useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
 import { ScopedProps, createContextScope } from '@tamagui/create-context'

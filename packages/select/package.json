@@ -29,6 +29,7 @@
     "@tamagui/core": "^1.0.1-beta.104",
     "@tamagui/create-context": "^1.0.1-beta.104",
     "@tamagui/list-item": "^1.0.1-beta.104",
+    "@tamagui/portal": "^1.0.1-beta.104",
     "@tamagui/separator": "^1.0.1-beta.104",
     "@tamagui/stacks": "^1.0.1-beta.104",
     "@tamagui/text": "^1.0.1-beta.104",
