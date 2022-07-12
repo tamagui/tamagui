@@ -71,39 +71,56 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
       const animateStyles = useRef<Record<string, Animated.Value>>({})
       const animatedTranforms = useRef<{ [key: string]: Animated.Value }[]>([])
-      const interpolations = new WeakMap<Animated.Value, string>()
+      const interpolations = useRef(new WeakMap<Animated.Value, Animated.AnimatedInterpolation>())
 
       // TODO loop and create values, run them if they change
 
       const runners: Function[] = []
 
-      function update(animated: Animated.Value | undefined, valIn: any) {
-        let val = valIn
-        let postfix = ''
-        if (typeof val === 'string') {
-          const [numbers, after] = val.split(/[0-9]+/)
-          postfix = after
-          val = +numbers
+      function update(animated: Animated.Value | undefined, valIn: string | number) {
+        if (typeof props.animation !== 'string') {
+          return new Animated.Value(0)
+        }
+        const [val, type] = getValue(valIn)
+        const value = animated || new Animated.Value(val)
+        if (type) {
+          interpolations.current.set(value, getInterpolated(value, type, val))
         }
         if (animated) {
-          const animationConfig = typeof props.animation === 'string' && animations[props.animation]
+          const animationConfig = animations[props.animation]
           runners.push(() => {
-            // console.log('animate to', val, animationConfig)
             Animated.spring(animated, {
               toValue: val,
               useNativeDriver: !isWeb,
               ...animationConfig,
             }).start()
           })
-          return animated
-        } else {
-          const res = new Animated.Value(val)
-          // console.log('set up', res, (val) =>
-          //   Animated.spring(res, { toValue: val, useNativeDriver: false }).start()
-          // )
-          interpolations.set(res, postfix)
-          return res
         }
+        return value
+      }
+
+      function getValue(input: number | string) {
+        if (typeof input !== 'string') {
+          return [input] as const
+        }
+        const neg = input[0] === '-'
+        if (neg) input = input.slice(1)
+        const [_, number, after] = input.match(/([-0-9]+)(deg|%)/) ?? []
+        return [+number * (neg ? -1 : 1), after] as const
+      }
+
+      function getInterpolated(val: Animated.Value, postfix: string, next: number) {
+        const cur = val['_value'] as number
+        const inputRange = [cur, next]
+        const outputRange = [`${cur}deg`, `${next}deg`]
+        if (next < cur) {
+          inputRange.reverse()
+          outputRange.reverse()
+        }
+        return val.interpolate({
+          inputRange,
+          outputRange,
+        })
       }
 
       const nonAnimatedStyle = {}
@@ -116,7 +133,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
               for (const [index, transform] of val.entries()) {
                 if (!transform) continue
                 const tkey = Object.keys(transform)[0]
-                // console.log('tkey', tkey)
                 animatedTranforms.current[index] = {
                   [tkey]: update(animatedTranforms.current[index]?.[tkey], transform[tkey]),
                 }
@@ -131,8 +147,16 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       }
 
       const animatedStyle = {
-        ...animateStyles.current,
-        transform: animatedTranforms.current,
+        ...Object.fromEntries(
+          Object.entries({
+            ...animateStyles.current,
+          }).map(([k, v]) => [k, interpolations.current.get(v) || v])
+        ),
+        transform: animatedTranforms.current.map((r) => {
+          const key = Object.keys(r)[0]
+          const val = interpolations.current.get(r[key]) || r[key]
+          return { [key]: val }
+        }),
       }
 
       const args = [
@@ -153,7 +177,6 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       useLayoutEffect(() => {
         //
         for (const runner of runners) {
-          console.log('gogo')
           runner()
         }
       }, args)

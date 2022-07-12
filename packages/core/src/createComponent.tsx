@@ -913,9 +913,12 @@ export function createComponent<
     // do this to make sure shorthands don't duplicate with.. longhands
     mergeShorthands(staticConfig, tamaguiConfig)
 
-    avoidClasses = !!tamaguiConfig.animations?.avoidClasses
-    AnimatedText = tamaguiConfig.animations?.Text
-    AnimatedView = tamaguiConfig?.animations?.View
+    if (tamaguiConfig.animations) {
+      avoidClasses = !!tamaguiConfig.animations.avoidClasses
+      AnimatedText = tamaguiConfig.animations.Text
+      AnimatedView = tamaguiConfig.animations.View
+    }
+
     initialTheme =
       initialTheme ||
       proxyThemeVariables(conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]])

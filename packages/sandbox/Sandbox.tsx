@@ -19,7 +19,7 @@ import {
 import { Sun } from '@tamagui/feather-icons'
 import React from 'react'
 import { useState } from 'react'
-import { useColorScheme } from 'react-native'
+import { Animated, useColorScheme } from 'react-native'
 import { Anchor, Button, Select, Square, Theme, XStack, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
@@ -61,14 +61,14 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        {/* <AnimationsDemo /> */}
+        <AnimationsDemo />
         {/* <SeparatorDemo /> */}
         {/* <AlertDialogDemo /> */}
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        <SelectDemo />
+        {/* <SelectDemo /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>

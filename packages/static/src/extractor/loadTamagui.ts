@@ -5,7 +5,7 @@ import { createTamagui } from '@tamagui/core-node'
 
 import { SHOULD_DEBUG } from '../constants'
 import { getNameToPaths, registerRequire, unregisterRequire } from '../require'
-import { config as defaultTamaguiConfig } from './defaultTamaguiConfig'
+import { getDefaultTamaguiConfig } from './defaultTamaguiConfig'
 
 let loadedTamagui: any = null
 
@@ -20,8 +20,6 @@ export type TamaguiProjectInfo = {
 }
 
 export function loadTamagui(props: { components: string[]; config: string }): TamaguiProjectInfo {
-  console.trace('load', !!loadedTamagui)
-
   if (loadedTamagui) {
     return loadedTamagui
   }
@@ -96,7 +94,7 @@ export function loadTamagui(props: { components: string[]; config: string }): Ta
       }
       return {
         components: {},
-        tamaguiConfig: defaultTamaguiConfig,
+        tamaguiConfig: getDefaultTamaguiConfig(),
         nameToPaths: {},
       }
     }
