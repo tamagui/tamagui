@@ -3,7 +3,7 @@ import vm from 'vm'
 import generate from '@babel/generator'
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import type { TamaguiConfig } from '@tamagui/core'
+import type { TamaguiConfig } from '@tamagui/core-node'
 import { createCSSVariable } from '@tamagui/core-node'
 import esbuild from 'esbuild'
 

@@ -1,1 +1,1 @@
-require('./dist/cjs/require')
+require('./dist/cjs/require').registerRequire()

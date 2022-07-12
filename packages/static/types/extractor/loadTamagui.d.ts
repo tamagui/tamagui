@@ -1,4 +1,4 @@
-import type { TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core';
+import type { TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node';
 declare type NameToPaths = {
     [key: string]: Set<string>;
 };

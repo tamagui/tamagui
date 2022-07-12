@@ -88,8 +88,6 @@ export function registerRequire() {
   }
 }
 
-registerRequire()
-
 export function unregisterRequire() {
   Mod.prototype.require = og
 }

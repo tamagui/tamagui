@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core'
+import type { StaticConfig, TamaguiComponent, TamaguiInternalConfig } from '@tamagui/core-node'
 import { createTamagui } from '@tamagui/core-node'
 
 import { SHOULD_DEBUG } from '../constants'
@@ -20,6 +20,8 @@ export type TamaguiProjectInfo = {
 }
 
 export function loadTamagui(props: { components: string[]; config: string }): TamaguiProjectInfo {
+  console.trace('load', !!loadedTamagui)
+
   if (loadedTamagui) {
     return loadedTamagui
   }

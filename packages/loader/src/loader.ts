@@ -1,17 +1,14 @@
-import '@tamagui/static/require'
+Error.stackTraceLimit = Infinity
 
 import {
   TamaguiOptions,
   createExtractor,
   extractToClassNames,
   patchReactNativeWeb,
-  unregisterRequire,
 } from '@tamagui/static'
 import type { RawLoaderDefinitionFunction } from 'webpack'
 
 import { extractedInfoByFile, stylePathToFilePath } from './css'
-
-unregisterRequire()
 
 // pass loader as path
 const CSS_LOADER_PATH = require.resolve('./css')
