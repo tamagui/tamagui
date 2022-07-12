@@ -14201,10 +14201,10 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 13 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8>;
-        body: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 13 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8>;
-        mono: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 13 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8>;
-        silkscreen: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 13 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8>;
+        heading: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        body: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        mono: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        silkscreen: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

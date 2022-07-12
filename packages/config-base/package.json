@@ -17,7 +17,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/animations-reanimated": "^1.0.1-beta.106",
+    "@tamagui/animations-react-native": "^1.0.1-beta.106",
     "@tamagui/colors": "^1.0.1-beta.106",
     "@tamagui/core": "^1.0.1-beta.106",
     "@tamagui/font-inter": "^1.0.1-beta.106",

@@ -6,6 +6,7 @@ import '../site/app.css'
 import {
   AlertDialogDemo,
   AnimationsDemo,
+  AnimationsPresenceDemo,
   ButtonDemo,
   DialogDemo,
   PopoverDemo,
@@ -61,7 +62,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <AnimationsDemo />
+        {/* <AnimationsDemo /> */}
+        {/* <AnimationsPresenceDemo /> */}
         {/* <SeparatorDemo /> */}
         {/* <AlertDialogDemo /> */}
         {/* <DialogDemo /> */}

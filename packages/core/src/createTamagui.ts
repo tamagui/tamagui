@@ -95,11 +95,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
   }
 
-  // test env loads a few times as it runs diff tests
-  if (getHasConfigured() && process.env.IS_STATIC !== 'is_static') {
-    console.trace(`Warning: createTamagui called twice (maybe HMR)`)
-  }
-
   configureMedia({
     queries: config.media as any,
     defaultActive: config.mediaQueryDefaultActive,

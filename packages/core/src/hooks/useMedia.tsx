@@ -24,28 +24,30 @@ export const removeMediaQueryListener = (key: string, cb: any) => {
   mediaQueryListeners[key]?.delete(cb)
 }
 
-let hasConfigured = false
 export const mediaQueryConfig: MediaQueries = {}
 
 export const getMedia = () => {
   return mediaState
 }
 
+const dispose = new Set<Function>()
+
 export const configureMedia = ({
   queries,
   defaultActive = ['sm', 'xs'],
 }: ConfigureMediaQueryOptions = {}) => {
-  if (hasConfigured) {
-    if (process.env.IS_STATIC === 'is_static') return
-    console.warn(
-      `Already configured mediaQueries once (you may have called getMedia() before configureMedia())`
-    )
+  if (!queries) return
+  // support hot reload
+  if (mediaQueryConfig) {
+    if (JSON.stringify(queries) === JSON.stringify(mediaQueryConfig)) {
+      // hmr avoid update
+      return
+    }
+    dispose.forEach((cb) => cb())
+    dispose.clear()
   }
 
-  if (queries) {
-    Object.assign(mediaQueryConfig, queries)
-    hasConfigured = true
-  }
+  Object.assign(mediaQueryConfig, queries)
 
   // setup
   for (const key in queries) {
@@ -59,7 +61,9 @@ export const configureMedia = ({
         throw new Error('⚠️ No match (seeing this in RN sometimes)')
       }
       mediaState[propKey] = !!match.matches
+      // note this deprecated api works with polyfills we use now
       match.addListener(update)
+      dispose.add(() => match.removeListener(update))
 
       function update() {
         const next = !!getMatch().matches

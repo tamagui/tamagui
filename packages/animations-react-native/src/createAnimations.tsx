@@ -1,6 +1,6 @@
 import { PresenceContext, usePresence } from '@tamagui/animate-presence'
-import { AnimationDriver, AnimationProp, isWeb } from '@tamagui/core'
-import { useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { AnimationDriver, AnimationProp, isWeb, useIsomorphicLayoutEffect } from '@tamagui/core'
+import { useContext, useMemo, useRef } from 'react'
 import { Animated } from 'react-native'
 
 type AnimationsConfig<A extends Object = any> = {
@@ -22,9 +22,6 @@ type AnimationConfig = Partial<
     | 'velocity'
   >
 >
-// | ({ type: 'timing'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithTimingConfig)
-// | ({ type: 'spring'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithSpringConfig)
-// | ({ type: 'decay'; loop?: number; repeat?: number; repeatReverse?: boolean } & WithDecayConfig)
 
 const animatedStyleKey = {
   transform: true,
@@ -44,20 +41,13 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
     View: AnimatedView,
     Text: AnimatedText,
     useAnimations: (props, helpers) => {
-      const { pseudos, onDidAnimate, delay, getStyle, state, staticConfig } = helpers
+      const { onDidAnimate, delay, getStyle, state } = helpers
       const [isPresent, sendExitComplete] = usePresence()
       const presence = useContext(PresenceContext)
 
-      const exitStyle = presence?.exitVariant
-        ? staticConfig.variantsParsed?.[presence.exitVariant]?.true || pseudos.exitStyle
-        : pseudos.exitStyle
-
-      const onDidAnimateCb = useCallback<NonNullable<typeof onDidAnimate>>(
-        (...args) => {
-          onDidAnimate?.(...args)
-        },
-        [onDidAnimate]
-      )
+      // const exitStyle = presence?.exitVariant
+      //   ? staticConfig.variantsParsed?.[presence.exitVariant]?.true || pseudos.exitStyle
+      //   : pseudos.exitStyle
 
       const isExiting = isPresent === false
       const isEntering = !state.mounted
@@ -76,24 +66,33 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
       // TODO loop and create values, run them if they change
 
       const runners: Function[] = []
+      const completions: Promise<void>[] = []
 
-      function update(animated: Animated.Value | undefined, valIn: string | number) {
-        if (typeof props.animation !== 'string') {
-          return new Animated.Value(0)
-        }
+      function update(key: string, animated: Animated.Value | undefined, valIn: string | number) {
         const [val, type] = getValue(valIn)
         const value = animated || new Animated.Value(val)
         if (type) {
           interpolations.current.set(value, getInterpolated(value, type, val))
         }
         if (animated) {
-          const animationConfig = animations[props.animation]
+          const animationConfig = getAnimationConfig(key, animations, props.animation)
+
+          let resolve
+          const promise = new Promise<void>((res) => {
+            resolve = res
+          })
+          completions.push(promise)
+
           runners.push(() => {
             Animated.spring(animated, {
               toValue: val,
               useNativeDriver: !isWeb,
               ...animationConfig,
-            }).start()
+            }).start(({ finished }) => {
+              if (finished) {
+                resolve()
+              }
+            })
           })
         }
         return value
@@ -134,12 +133,12 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
                 if (!transform) continue
                 const tkey = Object.keys(transform)[0]
                 animatedTranforms.current[index] = {
-                  [tkey]: update(animatedTranforms.current[index]?.[tkey], transform[tkey]),
+                  [tkey]: update(tkey, animatedTranforms.current[index]?.[tkey], transform[tkey]),
                 }
               }
             }
           } else {
-            animateStyles.current[key] = update(animateStyles.current[key], val)
+            animateStyles.current[key] = update(key, animateStyles.current[key], val)
           }
         } else {
           nonAnimatedStyle[key] = val
@@ -169,38 +168,22 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         delay,
         isPresent,
         onDidAnimate,
-        onDidAnimateCb,
         presence?.exitVariant,
         presence?.enterVariant,
       ]
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         //
         for (const runner of runners) {
           runner()
         }
+        Promise.all(completions).then(() => {
+          onDidAnimate?.()
+          if (isExiting) {
+            sendExitComplete?.()
+          }
+        })
       }, args)
-
-      // const callback = (
-      //   isExiting: boolean,
-      //   exitingStyleProps: Record<string, boolean>,
-      //   key: string,
-      //   value: any
-      // ) => {
-      //   return (completed, current) => {
-      //     onDidAnimateCb(key, completed, current, {
-      //       attemptedValue: value,
-      //     })
-      //     if (isExiting) {
-      //       exitingStyleProps[key] = false
-      //       const areStylesExiting = Object.values(exitingStyleProps).some(Boolean)
-      //       // if this is true, then we've finished our exit animations
-      //       if (!areStylesExiting) {
-      //         sendExitComplete?.()
-      //       }
-      //     }
-      //   }
-      // }
 
       return useMemo(() => {
         return {
@@ -208,5 +191,37 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         }
       }, args)
     },
+  }
+}
+
+function getAnimationConfig(key: string, animations: AnimationsConfig, animation?: AnimationProp) {
+  if (typeof animation === 'string') {
+    return animations[animation]
+  }
+  let type = ''
+  let extraConf: any
+  if (Array.isArray(animation)) {
+    type = animation[0] as string
+    const conf = animation[1] && animation[1][key]
+    if (conf) {
+      if (typeof conf === 'string') {
+        type = conf
+      } else {
+        type = (conf as any).type || type
+        extraConf = conf
+      }
+    }
+  } else {
+    const val = animation?.[key]
+    type = val?.type
+    extraConf = val
+  }
+  const found = animations[type]
+  if (!found) {
+    throw new Error(`No animation of type "${type}" for key "${key}"`)
+  }
+  return {
+    ...found,
+    ...extraConf,
   }
 }
