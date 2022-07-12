@@ -29,8 +29,9 @@ import {
 
 export type CreateTamaguiProps =
   // user then re-defines the types after createTamagui returns the typed object they want
-  Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
+  Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations' | 'fonts'>> & {
     animations?: AnimationDriver<any>
+    fonts: GenericTamaguiConfig['fonts']
     tokens: GenericTamaguiConfig['tokens']
     themes: {
       [key: string]: {
@@ -311,7 +312,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const next: TamaguiInternalConfig = {
     defaultTheme: 'light',
-    fonts: {},
     animations: {} as any,
     shorthands: {},
     media: {},

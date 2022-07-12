@@ -2,7 +2,7 @@ import { ConfigureMediaQueryOptions, MediaQueries, MediaQueryObject, MediaQueryS
 export declare const mediaState: MediaQueryState;
 export declare const addMediaQueryListener: (key: string, cb: any) => void;
 export declare const removeMediaQueryListener: (key: string, cb: any) => void;
-export declare let mediaQueryConfig: MediaQueries;
+export declare const mediaQueryConfig: MediaQueries;
 export declare const getMedia: () => MediaQueryState;
 export declare const configureMedia: ({ queries, defaultActive, }?: ConfigureMediaQueryOptions) => void;
 export declare const useMedia: () => {

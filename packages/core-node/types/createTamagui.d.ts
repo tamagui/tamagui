@@ -1,8 +1,9 @@
 import { SpacerProps } from './createComponent';
 import { Variable } from './createVariable';
 import { AnimationDriver, CreateTamaguiConfig, GenericTamaguiConfig, MediaQueryKey, StackProps, TamaguiInternalConfig, TextProps } from './types';
-export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations'>> & {
+export declare type CreateTamaguiProps = Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations' | 'fonts'>> & {
     animations?: AnimationDriver<any>;
+    fonts: GenericTamaguiConfig['fonts'];
     tokens: GenericTamaguiConfig['tokens'];
     themes: {
         [key: string]: {
