@@ -4,6 +4,7 @@ const exec = util.promisify(require('node:child_process').exec)
 const prompts = require('prompts')
 const fs = require('fs-extra')
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
+const _ = require('lodash')
 const path = require('path')
 const nextVersion = `1.0.1-beta.${+curVersion.split('.')[3] + 1}`
 
@@ -11,13 +12,13 @@ const skipVersion = process.argv.includes('--skip-version')
 const skipPublish = process.argv.includes('--skip-publish')
 const isCI = process.argv.includes('--ci')
 
-const spawnify = async (cmd, opts) => {
+const spawnify = async (cmd: string, opts?: any) => {
   console.log('>', cmd)
   const [head, ...rest] = cmd.split(' ')
   return new Promise((res, rej) => {
     const child = spawn(head, rest, { stdio: ['inherit', 'pipe', 'pipe'], ...opts })
-    let outStr = []
-    let errStr = []
+    const outStr = []
+    const errStr = []
     child.stdout.on('data', (data) => {
       outStr.push(data.toString())
     })
@@ -75,9 +76,6 @@ async function run() {
       await spawnify(`yarn install`)
       await spawnify(`git add -A`)
       await spawnify(`git commit --amend --no-edit`)
-
-      // then push tag
-      await spawnify(`git push origin v${version}`)
     }
 
     console.log((await exec(`git diff`)).stdout)
@@ -95,40 +93,66 @@ async function run() {
     }
 
     if (!skipPublish) {
-      const packages = (await exec(`yarn workspaces list --json`)).stdout
+      const packagePaths = (await exec(`yarn workspaces list --json`)).stdout.split('\n') as {
+        name: string
+        location: string
+      }[]
+      const packageJsons = (
+        await Promise.all(
+          packagePaths
+            .map((p) => JSON.parse(p))
+            .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
+            .map(async ({ name, location }) => {
+              const cwd = path.join(__dirname, location)
+              return {
+                name,
+                cwd,
+                json: await fs.readJSON(path.join(cwd, 'package.json')),
+              }
+            })
+        )
+      ).filter((x) => !x.json.private)
 
-      for (const pkjson of packages.split('\n')) {
-        if (!pkjson) continue
-        const { location, name } = JSON.parse(pkjson)
-        if (location === '.') {
-          continue
-        }
-        if (name.startsWith('@takeout')) {
-          console.log('Skip takeout packages')
-          continue
-        }
-        console.log(`\nPublishing ${name}...`)
-        const cwd = path.join(__dirname, location)
-        const pkg = await fs.readJSON(path.join(cwd, 'package.json'))
-        if (pkg.private) {
-          console.log('Private, skipping', name)
-          continue
-        }
-        try {
-          await spawnify(`npm publish`, {
-            cwd,
+      // publish with tag
+      for (const chunk of _.chunk(packageJsons, 4)) {
+        await Promise.all(
+          chunk.map(async ({ cwd, name }) => {
+            console.log(`Publish ${name}`)
+            try {
+              await spawnify(`npm publish --tag prepub`, {
+                cwd,
+              })
+            } catch (err) {
+              if (err.includes(`403`)) {
+                console.log('Already published, skipping')
+                return
+              }
+              throw err
+            }
           })
-        } catch (err) {
-          if (err.includes(`403`)) {
-            console.log('Already published, skipping')
-          } else {
-            console.log('err', err)
-            process.exit(0)
-          }
-        }
+        )
       }
+      console.log(`✅ Published under dist-tag "prepub"\n`)
 
-      console.log(`✅ Published`)
+      // if all successful, re-tag as latest
+      for (const chunk of _.chunk(packageJsons, 4)) {
+        await Promise.all(
+          chunk.map(async ({ name, cwd }) => {
+            console.log(`Release ${name}`)
+            await spawnify(`npm dist-tag remove ${name}@${version} prepub`, {
+              cwd,
+            })
+            await spawnify(`npm dist-tag add ${name}@${version} latest`, {
+              cwd,
+            })
+          })
+        )
+      }
+      console.log(`✅ Published\n`)
+
+      // then push git tag
+      await spawnify(`git push origin v${version}`)
+      console.log(`✅ Pushed github tag\n`)
     }
   } catch (err) {
     console.log('\nError:\n', err)
