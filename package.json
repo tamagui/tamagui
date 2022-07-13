@@ -17,7 +17,7 @@
     "check": "manypkg check",
     "build": "turbo run build",
     "build:force": "yarn clean:build --parallel && turbo run build --force",
-    "build:js": "SKIP_TYPES=1 turbo run build --parallel",
+    "build:js": "SKIP_TYPES=1 turbo run build",
     "build:types": "SKIP_JS=1 turbo run build",
     "watch": "npm-run-all --parallel watch:ts watch:build",
     "watch:ts": "tsc -b -w --preserveWatchOutput tsconfig.build.json",
