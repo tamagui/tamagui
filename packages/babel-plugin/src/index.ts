@@ -59,7 +59,7 @@ export default declare(function snackBabelPlugin(
           }
 
           let hasImportedView = false
-          let sheetStyles = {}
+          const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
           const firstComment = root.node.body[0]?.leadingComments?.[0]?.value?.trim()
           if (firstComment?.includes('tamagui-ignore')) {
@@ -99,7 +99,6 @@ export default declare(function snackBabelPlugin(
               extractStyledDefinitions: options.forceExtractStyleDefinitions || false,
               excludeProps: new Set([
                 'className',
-                'display',
                 'userSelect',
                 'selectable',
                 'whiteSpace',
@@ -125,7 +124,7 @@ export default declare(function snackBabelPlugin(
               onExtractTag(props) {
                 assertValidTag(props.node)
                 const stylesExpr = t.arrayExpression([])
-                let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
+                const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
 
                 function addStyle(expr: any, key: string) {
                   if (props.isFlattened) {

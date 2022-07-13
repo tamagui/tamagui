@@ -85,6 +85,7 @@ const generateAtomicStyles = (
           : typeof value === 'string'
           ? simpleHash(value)
           : `${value}`.replace('.', 'dot')
+
         const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
         const shortProp = reversedShorthands[key] || key
         const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
@@ -96,6 +97,7 @@ const generateAtomicStyles = (
           identifier,
           rules,
         }
+
         cache.set(uid, value, styleObject)
         out.push(styleObject)
       }

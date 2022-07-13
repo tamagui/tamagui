@@ -35,7 +35,7 @@ import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { useIsTouchDevice } from './hooks/useIsTouchDevice'
-import { mediaState } from './hooks/useMedia'
+import { getMedia, mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManager, useTheme } from './hooks/useTheme'
 import { Pressability } from './Pressability'
@@ -1226,7 +1226,7 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 }
 
 function isUnspaced(child: React.ReactNode) {
-  // console.log('unspaced?', child)
+  // console.log('unspaced?', child, getMedia())
   return child?.['type']?.['isVisuallyHidden'] || child?.['type']?.['isUnspaced']
 }
 

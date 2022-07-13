@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { isClient } from '../constants/platform'
 import { ButtonInsideButtonContext } from '../contexts/ButtonInsideButtonContext'
 import { TamaguiInternalConfig, TamaguiProviderProps } from '../types'
 import { TextAncestorProvider } from '../views/TextAncestorContext'
@@ -12,7 +13,8 @@ export function createTamaguiProvider(config: TamaguiInternalConfig) {
     ...themePropsProvider
   }: TamaguiProviderProps) {
     // inject CSS if asked to (not SSR compliant)
-    if (typeof document !== 'undefined') {
+    if (isClient) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       React.useLayoutEffect(() => {
         if (disableInjectCSS) return
         const style = document.createElement('style')
