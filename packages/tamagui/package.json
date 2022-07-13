@@ -24,7 +24,6 @@
     "lint-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
-    "@radix-ui/react-use-previous": "^0.1.1",
     "@react-native-community/blur": "^3.6.0",
     "@tamagui/alert-dialog": "^1.0.1-beta.108",
     "@tamagui/animate-presence": "^1.0.1-beta.108",
@@ -60,7 +59,6 @@
     "@tamagui/use-event": "^1.0.1-beta.108",
     "@tamagui/use-force-update": "^1.0.1-beta.108",
     "expo-linear-gradient": "^11.0.3",
-    "expo-modules-core": "^0.9.1",
     "react": "*",
     "react-dom": "*"
   },
@@ -70,7 +68,7 @@
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.108",
     "@types/node": "^16.11.9",
-    "@types/react": "^18.0.14",
+    "@types/react": "^17.0.21",
     "react-native-web": "^0.18.3"
   },
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "./scripts/dev.sh",
-    "clean:build": "rm -r .next || true; rm -r node_modules/.cache || true",
+    "clean:build": "./scripts/clean.sh",
     "ci:build": "yarn next:build && yarn next:export",
     "dev:analyze": "ANALYZE=true yarn dev",
     "dev:inspect": "PORT=${PORT:-5005} NODE_OPTIONS='--no-deprecation' NODE_ENV=development node --inspect-brk ../../node_modules/next/dist/bin/next dev",

@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.108",
-    "@types/react": "^18.0.14",
+    "@types/react": "^17.0.21",
     "react-native": "*"
   },
   "peerDependencies": {

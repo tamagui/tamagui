@@ -25,7 +25,13 @@ const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
 async function clean() {
   try {
-    await Promise.allSettled([fs.remove('.turbo'), fs.remove('types'), fs.remove('dist')])
+    await Promise.allSettled([
+      //
+      fs.remove('.turbo'),
+      fs.remove('.ultra.cache.json'),
+      fs.remove('types'),
+      fs.remove('dist'),
+    ])
   } catch {}
   if (shouldCleanBuildOnly) {
     console.log('» cleaned', pkg.name)

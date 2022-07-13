@@ -30,9 +30,11 @@ async function build() {
         }),
       ],
     })
-    await Promise.all([fs.remove('./dist'), fs.remove('./types')])
+    await Promise.allSettled([fs.remove('./dist'), fs.remove('./types')])
     await fs.copy(outPath, './dist')
-    await fs.copy('../core/types', './types')
+    if (process.env.SKIP_TYPES !== '1') {
+      await fs.copy('../core/types', './types')
+    }
     // reset
     tries = 0
   } catch (err) {

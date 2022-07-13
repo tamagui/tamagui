@@ -1,8 +1,8 @@
-import type { TamaguiOptions } from '@tamagui/static'
+// import type { TamaguiOptions } from '@tamagui/static'
 import type { Plugin } from 'vite'
 import envPlugin from 'vite-plugin-environment'
 
-export function tamaguiPlugin(options?: TamaguiOptions): Plugin {
+export function tamaguiPlugin(options?: any): Plugin {
   return {
     name: 'tamagui',
     enforce: 'pre',

@@ -46,7 +46,7 @@
     "@tamagui/proxy-worm": "^1.0.1-beta.108",
     "@tamagui/shorthands": "^1.0.1-beta.108",
     "babel-literal-to-ast": "^2.1.0",
-    "esbuild": "^0.14.48",
+    "esbuild": "^0.14.49",
     "esbuild-register": "^3.3.2",
     "find-cache-dir": "^3.3.2",
     "fs-extra": "^10.1.0",
