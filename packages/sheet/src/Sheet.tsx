@@ -23,6 +23,7 @@ import React, {
   createContext,
   forwardRef,
   isValidElement,
+  useCallback,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -54,6 +55,7 @@ export type SheetProps = ScopedProps<
     onChangePosition?: PositionChangeHandler
     children?: ReactNode
     dismissOnOverlayPress?: boolean
+    dismissOnSnapToBottom?: boolean
     animationConfig?: Animated.SpringAnimationConfig
     disableDrag?: boolean
     modal?: boolean
@@ -66,9 +68,7 @@ export type SheetProps = ScopedProps<
   'Sheet'
 >
 
-type PositionChangeHandler =
-  | ((position: number) => void)
-  | React.Dispatch<React.SetStateAction<number>>
+type PositionChangeHandler = (position: number) => void
 
 type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>
 
@@ -76,10 +76,11 @@ type SheetContextValue = Required<
   Pick<SheetProps, 'open' | 'position' | 'snapPoints' | 'dismissOnOverlayPress'>
 > & {
   hidden: boolean
-  setPosition: React.Dispatch<React.SetStateAction<number>>
+  setPosition: PositionChangeHandler
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   allowPinchZoom: RemoveScrollProps['allowPinchZoom']
   contentRef: React.RefObject<TamaguiElement>
+  dismissOnSnapToBottom: boolean
 }
 
 const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
@@ -120,7 +121,9 @@ export const SheetHandle = SheetHandleFrame.extractable(
     return (
       <SheetHandleFrame
         onPress={() => {
-          const nextPos = (context.position + 1) % context.snapPoints.length
+          // don't toggle to the bottom snap position when dismissOnSnapToBottom set
+          const max = context.snapPoints.length + (context.dismissOnSnapToBottom ? -1 : 0)
+          const nextPos = (context.position + 1) % max
           context.setPosition(nextPos)
         }}
         {...props}
@@ -219,7 +222,7 @@ export const Sheet = withStaticProperties(
     forwardRef<View, SheetProps>((props, ref) => {
       const {
         __scopeSheet,
-        snapPoints: snapPointsProp = [80, 10],
+        snapPoints: snapPointsProp = [80],
         open: openProp,
         defaultOpen,
         children: childrenProp,
@@ -229,6 +232,7 @@ export const Sheet = withStaticProperties(
         defaultPosition,
         dismissOnOverlayPress = true,
         animationConfig,
+        dismissOnSnapToBottom = false,
         disableDrag: disableDragProp,
         modal,
         allowPinchZoom,
@@ -254,16 +258,36 @@ export const Sheet = withStaticProperties(
       })
 
       const [frameSize, setFrameSize] = useState<number>(0)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      const snapPoints = useMemo(() => snapPointsProp, [JSON.stringify(snapPointsProp)])
+
+      const snapPoints = useMemo(
+        () => (dismissOnSnapToBottom ? [...snapPointsProp, 0] : snapPointsProp),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [JSON.stringify(snapPointsProp), dismissOnSnapToBottom]
+      )
 
       // lets set -1 to be always the "open = false" position
-      const [position_, setPosition] = useControllableState({
+      const [position_, setPosition_] = useControllableState({
         prop: positionProp,
         defaultProp: defaultPosition || (open ? 0 : -1),
         onChange: onChangePosition,
       })
       const position = open === false ? -1 : position_
+
+      // reset position to fully open on re-open after dismissOnSnapToBottom
+      if (open && dismissOnSnapToBottom && position === snapPoints.length - 1) {
+        setPosition_(0)
+      }
+
+      const setPosition = useCallback(
+        (next: number) => {
+          // close on dismissOnSnapToBottom (and set position so it animates)
+          if (dismissOnSnapToBottom && next === snapPoints.length - 1) {
+            setOpen(false)
+          }
+          setPosition_(next)
+        },
+        [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
+      )
 
       const positionValue = useRef<Animated.Value>()
       if (!positionValue.current) {
@@ -425,6 +449,7 @@ export const Sheet = withStaticProperties(
         <SheetProvider
           contentRef={contentRef}
           dismissOnOverlayPress={dismissOnOverlayPress}
+          dismissOnSnapToBottom={dismissOnSnapToBottom}
           allowPinchZoom={allowPinchZoom}
           open={open}
           hidden={isHidden}

@@ -15,12 +15,13 @@ export declare type SheetProps = ScopedProps<{
     onChangePosition?: PositionChangeHandler;
     children?: ReactNode;
     dismissOnOverlayPress?: boolean;
+    dismissOnSnapToBottom?: boolean;
     animationConfig?: Animated.SpringAnimationConfig;
     disableDrag?: boolean;
     modal?: boolean;
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
 }, 'Sheet'>;
-declare type PositionChangeHandler = ((position: number) => void) | React.Dispatch<React.SetStateAction<number>>;
+declare type PositionChangeHandler = (position: number) => void;
 declare type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
 declare const createSheetScope: import("@tamagui/create-context").CreateScope;
 export declare const SheetHandleFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
@@ -130,6 +131,7 @@ export declare const Sheet: ((props: Omit<{
     onChangePosition?: PositionChangeHandler | undefined;
     children?: ReactNode;
     dismissOnOverlayPress?: boolean | undefined;
+    dismissOnSnapToBottom?: boolean | undefined;
     animationConfig?: Animated.SpringAnimationConfig | undefined;
     disableDrag?: boolean | undefined;
     modal?: boolean | undefined;

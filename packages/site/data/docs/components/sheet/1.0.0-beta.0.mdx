@@ -100,6 +100,11 @@ Contains every component for the sheet.
       type: 'boolean',
       description: `Renders sheet into the root of your app instead of inline.`,
     },
+    {
+      name: 'dismissOnSnapToBottom',
+      type: 'boolean',
+      description: `Adds a snap point to the end of your snap points set to "0", that when snapped to will set open to false (uncontrolled) and call onOpenChange with false (controlled).`
+    }
   ]}
 />
 

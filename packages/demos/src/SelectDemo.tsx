@@ -10,7 +10,7 @@ export function SelectDemo() {
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
-      <Select.Sheet modal>
+      <Select.Sheet modal dismissOnSnapToBottom>
         <Select.Sheet.Frame>
           <ScrollView style={{ flex: 1 }}>
             <Select.SheetContents />
