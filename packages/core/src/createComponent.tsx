@@ -34,8 +34,7 @@ import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
 import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
-import { useIsTouchDevice } from './hooks/useIsTouchDevice'
-import { getMedia, mediaState } from './hooks/useMedia'
+import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManager, useTheme } from './hooks/useTheme'
 import { Pressability } from './Pressability'
@@ -602,8 +601,7 @@ export function createComponent<
       onClick
     )
 
-    const isTouch = useIsTouchDevice()
-    const isHoverable = isWeb && !isTouch
+    const isHoverable = isWeb
     const attachHover =
       isHoverable &&
       !!((pseudos && pseudos.hoverStyle) || onHoverIn || onHoverOut || onMouseEnter || onMouseLeave)
@@ -873,7 +871,8 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development') {
       if (props['debug']) {
-        console.groupCollapsed('props out', viewProps)
+        // prettier-ignore
+        console.groupCollapsed('props out', viewProps, typeof elementType === 'string' ? elementType : 'Component')
         for (const key in viewProps) {
           console.log(key, viewProps[key])
         }

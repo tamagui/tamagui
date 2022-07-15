@@ -5,7 +5,7 @@ import { isSSR, isTouchable, isWeb, useIsomorphicLayoutEffect } from '../constan
 // ssr friendly
 
 export const useIsTouchDevice = () => {
-  const [touchOnly, setTouchOnly] = useState(isTouchable)
+  const [touchOnly, setTouchOnly] = useState(false)
 
   if (isWeb && !isSSR) {
     // only ever false on web SSR (env), so run effect conditionally
