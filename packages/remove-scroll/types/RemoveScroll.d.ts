@@ -1,5 +1,11 @@
-/// <reference types="react" />
-import type { RemoveScroll as RS } from 'react-remove-scroll';
+import React from 'react';
+import { RemoveScroll as RS } from 'react-remove-scroll';
 export declare type RemoveScrollProps = React.ComponentProps<typeof RS>;
-export * from 'react-remove-scroll';
+export declare const RemoveScroll: {
+    (props: RemoveScrollProps): JSX.Element;
+    classNames: {
+        fullWidth: string;
+        zeroRight: string;
+    };
+};
 //# sourceMappingURL=RemoveScroll.d.ts.map

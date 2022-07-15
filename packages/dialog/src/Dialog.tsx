@@ -217,6 +217,8 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
         as={Slot}
         allowPinchZoom={context.allowPinchZoom}
         shards={[context.contentRef]}
+        // causes lots of bugs on touch web on site
+        removeScrollBar={false}
       >
         <DialogOverlayFrame
           data-state={getState(context.open)}

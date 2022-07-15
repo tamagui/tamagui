@@ -164,6 +164,8 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
         as={Slot}
         allowPinchZoom={context.allowPinchZoom}
         shards={[context.contentRef]}
+        // causes lots of bugs on touch web on site
+        removeScrollBar={false}
       >
         <SheetOverlayFrame
           closed={!context.open || context.hidden}

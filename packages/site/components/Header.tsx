@@ -72,7 +72,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
         ai="center"
       >
         <NextLink href="/" passHref>
-          <XStack debug="verbose" pointerEvents="auto" tag="a" als="center">
+          <XStack pointerEvents="auto" tag="a" als="center">
             <LogoWords onHoverLetter={(i) => setTint(tints[i])} />
           </XStack>
         </NextLink>

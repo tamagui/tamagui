@@ -18,6 +18,7 @@ export const Portal = ({ visible, ...props }: PortalProps) => {
       fullscreen
       // @ts-expect-error ok on web
       position={isWeb ? 'fixed' : 'absolute'}
+      maxWidth={isWeb ? '100vw' : '100%'}
       {...props}
     />
   )

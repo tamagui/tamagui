@@ -178,6 +178,8 @@ export const PopoverContent = React.forwardRef<PopoverContentTypeElement, Popove
           <RemoveScroll
             enabled={disableRemoveScroll ? false : context.open}
             allowPinchZoom={allowPinchZoom}
+            // causes lots of bugs on touch web on site
+            removeScrollBar={false}
           >
             <PopoverContentImpl
               {...contentModalProps}
