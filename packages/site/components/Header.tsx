@@ -1,7 +1,7 @@
 import { LogoWords, TamaguiLogo, tints } from '@tamagui/demos'
-import Link from 'next/link'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
+import React from 'react'
 import { Button, Paragraph, Text, VisuallyHidden, XStack, YStack } from 'tamagui'
 
 import { AlphaButton } from './AlphaButton'
@@ -72,7 +72,7 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
         ai="center"
       >
         <NextLink href="/" passHref>
-          <XStack pointerEvents="auto" tag="a" als="center">
+          <XStack debug="verbose" pointerEvents="auto" tag="a" als="center">
             <LogoWords onHoverLetter={(i) => setTint(tints[i])} />
           </XStack>
         </NextLink>

@@ -32,7 +32,7 @@ export const InstallInput = memo(() => {
         bc: '$background',
       }}
     >
-      <Paragraph ta="center" size="$4" fontWeight="500" fontFamily="$mono">
+      <Paragraph ta="center" size="$4" fontWeight="500" fontFamily="$mono" $sm={{ size: '$3' }}>
         {installScript}
       </Paragraph>
       <Spacer size="$6" />

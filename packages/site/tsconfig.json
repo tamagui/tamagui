@@ -39,7 +39,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "resolveJsonModule": true,
     "incremental": true
   },

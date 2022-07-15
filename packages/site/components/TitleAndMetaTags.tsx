@@ -27,8 +27,8 @@ export function TitleAndMetaTags({
   return (
     <Head>
       <title>{title}</title>
-      {/* <meta name="description" content={description} /> */}
-      {/* <meta name="viewport" content="width=device-width" /> */}
+      <meta name="description" content={description} />
+      <meta name="viewport" content="width=device-width, user-scalable=no" />
       <link rel="icon" href="/favicon.png" />
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
