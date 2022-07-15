@@ -1,3 +1,4 @@
+import { ExtractedResponse } from '@tamagui/static';
 import { LoaderContext } from 'webpack';
 export declare const extractedInfoByFile: Map<string, ExtractedResponse>;
 export declare const stylePathToFilePath: Map<string, string>;

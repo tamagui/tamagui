@@ -2,7 +2,7 @@
   "name": "@tamagui/core-node",
   "version": "1.0.1-beta.108",
   "main": "index.js",
-  "types": "types/static",
+  "types": "./types/static.d.ts",
   "scripts": {
     "build": "./build.js",
     "watch": "./build.js --watch"

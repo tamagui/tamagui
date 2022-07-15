@@ -2244,9 +2244,10 @@ declare const Dialog: React.ForwardRefExoticComponent<DialogProps & React.RefAtt
         position?: number | undefined;
         defaultPosition?: number | undefined;
         snapPoints?: number[] | undefined;
-        onChangePosition?: (((position: number) => void) | React.Dispatch<React.SetStateAction<number>>) | undefined;
+        onChangePosition?: ((position: number) => void) | undefined;
         children?: React.ReactNode;
         dismissOnOverlayPress?: boolean | undefined;
+        dismissOnSnapToBottom?: boolean | undefined;
         animationConfig?: import("react-native").Animated.SpringAnimationConfig | undefined;
         disableDrag?: boolean | undefined;
         modal?: boolean | undefined;
