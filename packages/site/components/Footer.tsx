@@ -1,5 +1,6 @@
 import { TamaguiLogo } from '@tamagui/demos'
 import Link from 'next/link'
+import React from 'react'
 import { H4, Paragraph, Spacer, Text, XStack, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'

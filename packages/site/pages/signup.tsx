@@ -4,6 +4,7 @@ import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { LogoIcon } from '@tamagui/demos'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import React from 'react'
 import { FormEvent, useEffect, useState } from 'react'
 import { Button, Input } from 'tamagui'
 

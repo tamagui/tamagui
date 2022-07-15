@@ -1,6 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useIsIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
+import React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import {
   Button,

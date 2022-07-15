@@ -1,3 +1,4 @@
+import React from 'react'
 import { EnsureFlexed, YStack } from 'tamagui'
 
 export const HR = () => (

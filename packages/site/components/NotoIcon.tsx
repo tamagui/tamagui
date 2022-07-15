@@ -1,10 +1,5 @@
-import {
-  FontSizeTokens,
-  Text,
-  TextProps,
-  getConfig,
-  getVariableValue,
-} from 'tamagui'
+import React from 'react'
+import { FontSizeTokens, Text, TextProps, getConfig, getVariableValue } from 'tamagui'
 
 export const NotoIcon = ({
   size: sizeProp = '$4',
@@ -18,9 +13,7 @@ export const NotoIcon = ({
 }) => {
   const conf = getConfig()
   const size = getVariableValue(
-    typeof sizeProp === 'number'
-      ? sizeProp
-      : conf.fonts.noto.size[sizeProp.slice(1)],
+    typeof sizeProp === 'number' ? sizeProp : conf.fonts.noto.size[sizeProp.slice(1)]
   )
   return (
     <Text

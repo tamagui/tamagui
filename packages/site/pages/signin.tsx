@@ -3,6 +3,7 @@ import { useUser } from '@supabase/supabase-auth-helpers/react'
 import { Provider } from '@supabase/supabase-js'
 import { LogoIcon } from '@tamagui/demos'
 import Link from 'next/link'
+import React from 'react'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { Button, Input, Paragraph, Separator, XStack, YStack } from 'tamagui'
 

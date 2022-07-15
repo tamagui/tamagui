@@ -1,5 +1,6 @@
 import { useOnIntersecting } from '@tamagui/demos'
 import Link from 'next/link'
+import React from 'react'
 import { useRef, useState } from 'react'
 import { Button, Paragraph, YStack } from 'tamagui'
 

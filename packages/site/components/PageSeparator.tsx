@@ -1,3 +1,4 @@
+import React from 'react'
 import { YStack } from 'tamagui'
 
 export const PageSeparator = () => (

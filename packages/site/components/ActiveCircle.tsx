@@ -1,3 +1,4 @@
+import React from 'react'
 import { Circle, YStack } from 'tamagui'
 
 export const ActiveCircle = ({ isActive, backgroundColor, opacity, ...props }: any) => {

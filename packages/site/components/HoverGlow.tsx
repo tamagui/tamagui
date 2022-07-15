@@ -1,4 +1,5 @@
 import { throttle as throttleFn } from '@github/mini-throttle'
+import React from 'react'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react'
 import { useIsMounted } from 'tamagui'

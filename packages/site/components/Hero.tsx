@@ -1,5 +1,6 @@
 import { ArrowRight, Play } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
+import React from 'react'
 import { memo } from 'react'
 import {
   Button,

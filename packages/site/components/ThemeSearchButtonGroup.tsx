@@ -1,4 +1,5 @@
 import { ThemeToggle } from '@components/ThemeToggle'
+import React from 'react'
 import { Group, TooltipGroup } from 'tamagui'
 
 import { ColorToggleButton } from './ColorToggleButton'

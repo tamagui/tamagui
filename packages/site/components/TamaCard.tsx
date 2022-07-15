@@ -1,3 +1,4 @@
+import React from 'react'
 import { H3, Paragraph, XStack, YStack, useComposedRefs } from 'tamagui'
 
 import { FancyCard, OuterSubtleBorder } from './FancyCard'

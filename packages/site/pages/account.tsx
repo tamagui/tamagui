@@ -1,4 +1,5 @@
 import { User, withPageAuth } from '@supabase/supabase-auth-helpers/nextjs'
+import React from 'react'
 import { useState } from 'react'
 import { Button, H1, Paragraph, XStack, YStack } from 'tamagui'
 

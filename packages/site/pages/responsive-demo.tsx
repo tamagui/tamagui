@@ -3,6 +3,7 @@ import img1 from '@tamagui/demos/public/photo1.jpg'
 import img2 from '@tamagui/demos/public/photo2.jpg'
 import img3 from '@tamagui/demos/public/photo3.jpg'
 import { MapPin, Star } from '@tamagui/feather-icons'
+import React from 'react'
 import {
   H3,
   H4,

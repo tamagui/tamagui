@@ -1,3 +1,4 @@
+import React from 'react'
 import { Card, Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
 
 import { CheckCircle } from './CheckCircle'

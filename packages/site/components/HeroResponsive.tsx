@@ -2,6 +2,7 @@ import { throttle } from '@github/mini-throttle'
 import { demoMedia } from '@tamagui/config-base'
 import { useOnIntersecting } from '@tamagui/demos'
 import { ChevronLeft, ChevronRight, Lock, MapPin, Monitor, Star } from '@tamagui/feather-icons'
+import React from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import {
   Button,

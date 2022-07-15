@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import React from 'react'
 import { lazy, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Paragraph } from 'tamagui'
@@ -144,8 +145,8 @@ const useSearchKeyboard = ({ isOpen, onOpen, onClose }: any) => {
 }
 
 const isFocusedSomewhere = (event: any) => {
-  let element = event.target
-  let tagName = element.tagName
+  const element = event.target
+  const tagName = element.tagName
   return (
     element.isContentEditable ||
     tagName === 'INPUT' ||

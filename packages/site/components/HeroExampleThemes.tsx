@@ -1,5 +1,6 @@
 import { useOnIntersecting } from '@tamagui/demos'
 import { useTheme } from '@tamagui/next-theme'
+import React from 'react'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Group, Theme, ThemeName, XStack, YStack, debounce, useGet } from 'tamagui'
 

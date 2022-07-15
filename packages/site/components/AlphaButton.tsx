@@ -1,6 +1,7 @@
 import { Tag } from '@tamagui/feather-icons'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
+import React from 'react'
 import { Button, SizableText, Text } from 'tamagui'
 
 import { useTint } from './ColorToggleButton'

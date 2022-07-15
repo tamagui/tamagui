@@ -1,3 +1,4 @@
+import React from 'react'
 import { Grid, H4, Paragraph, YStack } from 'tamagui'
 
 import { ContainerLarge } from './Container'
