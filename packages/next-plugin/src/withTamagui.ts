@@ -1,8 +1,9 @@
-import path from 'path'
+import path, { join } from 'path'
 
 import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import buildResolver from 'esm-resolve'
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
@@ -35,6 +36,16 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
       webpack: (webpackConfig: any, options: any) => {
         const { dir, config, dev, isServer } = options
 
+        const resolver = buildResolver(join(dir, 'index.js'), {
+          constraints: 'node',
+        })
+
+        const resolveEsm = (relativePath: string) => {
+          if (isServer) return require.resolve(relativePath)
+          const esm = resolver(relativePath)
+          return esm ? path.join(dir, esm) : require.resolve(relativePath)
+        }
+
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {
           // @ts-ignore
@@ -44,19 +55,13 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const isNext12 = typeof options.config?.swcMinify === 'boolean'
         const prefix = `${isServer ? ' ssr ' : ' web '} |`
 
-        const safeResolves = (
-          ...resolves: ([string, string] | [string, string, [string, string]])[]
-        ) => {
+        const safeResolves = (...resolves: [string, string][]) => {
           const res: string[][] = []
-          for (const [out, mod, replace] of resolves) {
+          for (const [out, mod] of resolves) {
             try {
-              const next = [out, require.resolve(mod)]
-              if (replace) {
-                next[1] = next[1].replace(...replace)
-              }
-              res.push(next)
+              res.push([out, resolveEsm(mod)])
             } catch (err) {
-              // console.log(prefix, `withTamagui skipping resolving ${out}`)
+              console.log(prefix, `withTamagui skipping resolving ${out}`)
             }
           }
           return Object.fromEntries(res)
@@ -79,7 +84,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
             ['react-native$', 'react-native-web'],
             ['react-native-web$', 'react-native-web'],
             ['@testing-library/react-native', '@tamagui/proxy-worm'],
-            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet', ['commonjs', 'module']],
+            ['@gorhom/bottom-sheet$', '@gorhom/bottom-sheet'],
             // fix reanimated 3
             ['react-native/Libraries/Renderer/shims/ReactFabric', '@tamagui/proxy-worm'],
             ...(tamaguiOptions.aliasReactPackages
@@ -89,8 +94,10 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 ] as any)
               : [])
           ),
-          // react: require.resolve('react'),
-          // 'react-dom': require.resolve('react-dom'),
+        }
+
+        if (process.env.DEBUG) {
+          console.log('Tamagui alias:', alias)
         }
 
         webpackConfig.resolve.alias = alias
@@ -106,13 +113,14 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const excludeExports = tamaguiOptions.excludeReactNativeWebExports
         if (Array.isArray(excludeExports)) {
           try {
+            console.log(resolveEsm('@tamagui/proxy-worm/empty-react-native-view'))
             const regexStr = `\/react-native-web\/.*(${excludeExports.join('|')}).*\/`
             const regex = new RegExp(regexStr)
             // console.log(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
               new webpack.NormalModuleReplacementPlugin(
                 regex,
-                require.resolve('@tamagui/proxy-worm/empty-react-native-view')
+                resolveEsm('@tamagui/proxy-worm/empty-react-native-view')
               )
             )
           } catch (err) {

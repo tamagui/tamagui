@@ -8,6 +8,7 @@ export default require('./loader').loader
 
 export const shouldExclude = (path: string, projectRoot: string) => {
   if (
+    path.includes('react-native-web') ||
     path.includes('react-native-reanimated') ||
     path.includes('react-native-gesture-handler') ||
     path.includes('@gorhom/portal') ||
