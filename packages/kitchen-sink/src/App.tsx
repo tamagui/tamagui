@@ -1,7 +1,6 @@
 import { useFonts } from 'expo-font'
 import React, { useMemo, useState } from 'react'
 import { Appearance } from 'react-native'
-import { Theme } from 'tamagui'
 
 import { Navigation } from './Navigation'
 import { Provider } from './provider'

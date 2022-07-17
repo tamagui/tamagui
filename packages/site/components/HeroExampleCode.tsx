@@ -1,7 +1,7 @@
 import { FastForward } from '@tamagui/feather-icons'
 import React from 'react'
 import { memo, useState } from 'react'
-import { Button, Group, Paragraph, XStack, YStack } from 'tamagui'
+import { Button, Paragraph, XGroup, XStack, YStack } from 'tamagui'
 
 import { CodeInline } from './Code'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
@@ -26,7 +26,7 @@ export function HeroExampleCode({ examples }) {
             <HomeH3>Modern features 🤝 unmatched performance.</HomeH3>
           </YStack>
 
-          <Group bordered theme={tint} maxWidth="100%" als="center" scrollable>
+          <XGroup bordered theme={tint} maxWidth="100%" als="center" scrollable>
             {examples.map((example, i) => {
               return (
                 <Button
@@ -42,7 +42,7 @@ export function HeroExampleCode({ examples }) {
                 </Button>
               )
             })}
-          </Group>
+          </XGroup>
 
           <XStack pos="relative" $sm={{ flexDirection: 'column' }} mt="$2" jc="space-between">
             <YStack
@@ -109,7 +109,7 @@ const CodeExamples = memo(({ examples }: any) => {
   return (
     <YStack overflow="hidden" flex={1}>
       <>
-        <Group theme={tint} bordered zi={10} mb="$-3" als="center">
+        <XGroup theme={tint} bordered zi={10} mb="$-3" als="center">
           {examples.map((example, i) => (
             <Button
               accessibilityLabel="See example"
@@ -122,7 +122,7 @@ const CodeExamples = memo(({ examples }: any) => {
               {example.name}
             </Button>
           ))}
-        </Group>
+        </XGroup>
       </>
       <XStack maxWidth="100%" f={1}>
         <YStack f={1} maxWidth="100%" opacity={0.9} hoverStyle={{ opacity: 1 }}>

@@ -39,7 +39,6 @@ render(
   - <Menu /> somewhat like accordion with ListItems
   - <Radio />
   - <Checkbox />
-  - <Group> working with both
   - <Select multi> (share logic with Grouped Radio/Checkbox)
   - <Select><SearchInput /></Select>
   - <Autocomplete />
@@ -198,7 +197,6 @@ const ornaments = {
 - container queries
 - // TODO only on hoverable/pressable!
 - options to render to native components in more places
-- <Group />
 - transformOrigin
   - may be able to translate to matrix https://www.jianshu.com/p/c67559b8f691
   - https://github.com/sueLan/react-native-anchor-point

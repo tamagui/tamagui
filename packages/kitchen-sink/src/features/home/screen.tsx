@@ -1,19 +1,16 @@
-//! debug
 import { ChevronRight, Moon, Sun } from '@tamagui/feather-icons'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
-  Group,
   H1,
   ListItem,
   ListItemProps,
   Separator,
   Spacer,
-  Square,
   Switch,
-  XStack,
+  YGroup,
   YStack,
   useTheme,
 } from 'tamagui'
@@ -47,14 +44,14 @@ export function HomeScreen() {
           <Square size={50} bc="red" />
         </XStack> */}
 
-        <Group size="$4" vertical>
+        <YGroup size="$4">
           <ColorSchemeListItem />
-        </Group>
+        </YGroup>
 
         <YStack space="$4" maw={600}>
           {demos.map((group, i) => {
             return (
-              <Group size="$4" key={i} vertical separator={<Separator />}>
+              <YGroup size="$4" key={i} separator={<Separator />}>
                 {group.pages.map((page) => {
                   return (
                     <LinkListItem key={page.route} href={page.route} pressTheme size="$4">
@@ -62,7 +59,7 @@ export function HomeScreen() {
                     </LinkListItem>
                   )
                 })}
-              </Group>
+              </YGroup>
             )
           })}
         </YStack>
@@ -78,6 +75,7 @@ const ColorSchemeListItem = () => {
   return (
     <ListItem
       pressTheme
+      paddingVertical={0}
       onPress={() => {
         theme.set(theme.value === 'dark' ? 'light' : 'dark')
       }}
@@ -86,7 +84,16 @@ const ColorSchemeListItem = () => {
       <Spacer flex />
       <Button chromeless disabled w={20} icon={Moon} />
       <Switch checked={checked} themeShallow>
-        <Switch.Thumb animation="quick" />
+        <Switch.Thumb
+          animation={[
+            'quick',
+            {
+              transform: {
+                overshootClamping: true,
+              },
+            },
+          ]}
+        />
       </Switch>
       <Button chromeless disabled w={20} icon={Sun} />
     </ListItem>

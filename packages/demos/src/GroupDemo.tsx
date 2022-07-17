@@ -1,26 +1,27 @@
 import { Activity, Airplay } from '@tamagui/feather-icons'
 import React from 'react'
-import { Button, Group, ListItem, Separator, YStack } from 'tamagui'
+import { Button, ListItem, Separator, XGroup, YGroup, YStack } from 'tamagui'
 
 export function GroupDemo() {
   return (
     <YStack p="$3" space="$2" ai="center">
-      <Group size="$3">
+      <XGroup size="$3">
         <Button>First</Button>
         <Button>Second</Button>
         <Button>Third</Button>
-      </Group>
+      </XGroup>
 
-      <Group size="$5">
+      <XGroup size="$5">
         <Button icon={Activity}>First</Button>
         <Button icon={Airplay}>Second</Button>
-      </Group>
+      </XGroup>
 
-      <Group size="$3" vertical separator={<Separator />}>
-        <ListItem>First</ListItem>
+      <YGroup size="$4" separator={<Separator />}>
+        <ListItem title="First" />
+        <ListItem title="Second" subTitle="Second subtitle" />
         <ListItem>Second</ListItem>
         <ListItem>Third</ListItem>
-      </Group>
+      </YGroup>
     </YStack>
   )
 }

@@ -6,7 +6,6 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
-  Group,
   H1,
   H2,
   H3,
@@ -19,6 +18,7 @@ import {
   Spacer,
   Text,
   Theme,
+  XGroup,
   XStack,
   XStackProps,
   YStack,
@@ -354,11 +354,11 @@ export const components = {
 
   GroupDisabledDemo: () => {
     return (
-      <Group als="center" disabled>
+      <XGroup als="center" disabled>
         <Button>First</Button>
         <Button>Second</Button>
         <Button>Third</Button>
-      </Group>
+      </XGroup>
     )
   },
 

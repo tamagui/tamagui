@@ -1,6 +1,5 @@
 import {
   SizeVariantSpreadFunction,
-  calc,
   getButtonSize,
   getFont,
   getVariableValue,

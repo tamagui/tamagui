@@ -1,6 +1,6 @@
 import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/feather-icons'
 import React from 'react'
-import { Group, ListItem, Separator, XStack } from 'tamagui'
+import { ListItem, Separator, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
   return (
@@ -13,10 +13,8 @@ export function ListItemDemo() {
 
 function ListItemDemo1() {
   return (
-    <Group als="center" bordered w={240} size="$4" vertical>
-      <ListItem hoverTheme icon={Star}>
-        Star
-      </ListItem>
+    <YGroup als="center" bordered w={240} size="$4">
+      <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
       <ListItem hoverTheme icon={Moon}>
         Moon
       </ListItem>
@@ -26,15 +24,15 @@ function ListItemDemo1() {
       <ListItem hoverTheme icon={Cloud}>
         Cloud
       </ListItem>
-    </Group>
+    </YGroup>
   )
 }
 
 function ListItemDemo2() {
   return (
-    <Group als="center" bordered w={240} size="$6" vertical separator={<Separator />}>
+    <YGroup als="center" bordered w={240} size="$5" separator={<Separator />}>
       <ListItem hoverTheme title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
       <ListItem hoverTheme title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
-    </Group>
+    </YGroup>
   )
 }
