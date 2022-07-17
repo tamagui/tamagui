@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "EXPO_NO_TELEMETRY=true expo start --dev-client --offline",
+    "start:android": "yarn start --android",
     "start:clean": "watchman watch-del-all; rm -r $TMPDIR/metro-cache; yarn start -c",
     "android": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:android",
     "ios": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:ios",
@@ -15,7 +16,7 @@
   "dependencies": {
     "@babel/runtime": "^7.15.5",
     "@react-navigation/native": "^6.0.10",
-    "@react-navigation/native-stack": "^6.6.2",
+    "@react-navigation/native-stack": "^6.7.0",
     "@tamagui/animations-reanimated": "^1.0.1-beta.113",
     "@tamagui/colors": "^1.0.1-beta.113",
     "@tamagui/config-base": "^1.0.1-beta.113",
