@@ -192,10 +192,8 @@ if (selectionStyleSheet) {
   document.head.appendChild(selectionStyleSheet)
 }
 
-const SHEET_FRAME_NAME = 'SheetFrame'
-
 export const SheetFrameFrame = styled(YStack, {
-  name: SHEET_FRAME_NAME,
+  name: SHEET_NAME,
   flex: 1,
   backgroundColor: '$background',
   borderTopLeftRadius: '$4',
@@ -208,7 +206,7 @@ export const SheetFrameFrame = styled(YStack, {
 
 export const SheetFrame = SheetFrameFrame.extractable(
   forwardRef(({ __scopeSheet, ...props }: SheetScopedProps<YStackProps>, forwardedRef) => {
-    const context = useSheetContext(SHEET_FRAME_NAME, __scopeSheet)
+    const context = useSheetContext(SHEET_NAME, __scopeSheet)
     const composedContentRef = useComposedRefs(forwardedRef, context.contentRef)
     return <SheetFrameFrame ref={composedContentRef} {...props} />
   })
@@ -338,7 +336,10 @@ export const Sheet = withStaticProperties(
             useNativeDriver: !isWeb,
             toValue,
             duration: 0,
-          }).start()
+          }).start(() => {
+            // fix bug in react-native not updating
+            pos['_value'] = toValue
+          })
           return
         }
         // dont bounce on initial measure to bottom
@@ -349,7 +350,11 @@ export const Sheet = withStaticProperties(
           overshootClamping,
           ...animationConfig,
         })
-        spring.current.start(({ finished }) => finished && stopSpring())
+        spring.current.start(({ finished }) => {
+          if (finished) {
+            stopSpring()
+          }
+        })
       })
 
       useLayoutEffect(() => {
@@ -427,7 +432,7 @@ export const Sheet = withStaticProperties(
             case 'SheetHandle':
               handleComponent = child
               break
-            case 'SheetFrame':
+            case 'Sheet':
               frameComponent = child
               break
             case 'SheetOverlay':
@@ -489,17 +494,14 @@ export const Sheet = withStaticProperties(
 
       if (modal) {
         return (
-          <Portal visible={open}>
+          <Portal>
             <Theme name={themeName}>{contents}</Theme>
           </Portal>
         )
       }
 
       return contents
-    }),
-    {
-      componentName: 'Sheet',
-    }
+    })
   ),
   {
     Handle: SheetHandle,

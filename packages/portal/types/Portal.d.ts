@@ -1,7 +1,8 @@
 import '@tamagui/polyfill-dev';
 import { YStackProps } from '@tamagui/stacks';
+import * as React from 'react';
 export declare type PortalProps = YStackProps & {
-    visible?: boolean;
+    host?: any;
 };
-export declare const Portal: ({ visible, ...props }: PortalProps) => JSX.Element | null;
+export declare const Portal: ({ host, ...props }: PortalProps) => React.ReactPortal | null;
 //# sourceMappingURL=Portal.d.ts.map
