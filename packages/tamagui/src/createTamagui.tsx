@@ -1,5 +1,5 @@
 import * as Core from '@tamagui/core'
-import { CreateTamaguiProps, InferTamaguiConfig, TamaguiProviderProps } from '@tamagui/core'
+import type { CreateTamaguiProps, InferTamaguiConfig, TamaguiProviderProps } from '@tamagui/core'
 import { PortalProvider } from '@tamagui/portal'
 import * as React from 'react'
 

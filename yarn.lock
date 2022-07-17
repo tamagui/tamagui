@@ -4767,23 +4767,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^1.3.3":
-  version: 1.3.3
-  resolution: "@react-navigation/elements@npm:1.3.3"
+"@react-navigation/elements@npm:^1.3.4":
+  version: 1.3.4
+  resolution: "@react-navigation/elements@npm:1.3.4"
   peerDependencies:
     "@react-navigation/native": ^6.0.0
     react: "*"
     react-native: "*"
     react-native-safe-area-context: ">= 3.0.0"
-  checksum: 2a2566dfb947f454387121873a49428096d5730393459842f2d52c1726fe541176be73e482abc49dcf49fc7873850d62e2b424d5280a0154e10745455882cab2
+  checksum: 5dafd137705d3e70a26cf6484d901022d536a5f449e897640366c281df856637382887b95e0cb6f981b4eb27230067c46fa50aaabd23cc627d68a46da41c9383
   languageName: node
   linkType: hard
 
-"@react-navigation/native-stack@npm:^6.6.2":
-  version: 6.6.2
-  resolution: "@react-navigation/native-stack@npm:6.6.2"
+"@react-navigation/native-stack@npm:^6.7.0":
+  version: 6.7.0
+  resolution: "@react-navigation/native-stack@npm:6.7.0"
   dependencies:
-    "@react-navigation/elements": ^1.3.3
+    "@react-navigation/elements": ^1.3.4
     warn-once: ^0.1.0
   peerDependencies:
     "@react-navigation/native": ^6.0.0
@@ -4791,7 +4791,7 @@ __metadata:
     react-native: "*"
     react-native-safe-area-context: ">= 3.0.0"
     react-native-screens: ">= 3.0.0"
-  checksum: 292832d0d78a886ba61ddffc0963b78d45f547245fdf3efa074d82cecced97ae13003f8213ebd96c1fe8ccc00b6a88233e7ce1bfe669ad3fa62e72134990aeeb
+  checksum: 85ff46832662c7054a64475d8a7a4202a0f0108742f9a07f3f5b4e10e9d67c1d472d57e797a75371f5993a449446a53f3bbd85ab5db6beb76fd49868ae3539bf
   languageName: node
   linkType: hard
 
@@ -5743,7 +5743,7 @@ __metadata:
     "@expo/metro-config": ^0.3.18
     "@expo/webpack-config": ^0.16.24
     "@react-navigation/native": ^6.0.10
-    "@react-navigation/native-stack": ^6.6.2
+    "@react-navigation/native-stack": ^6.7.0
     "@rnx-kit/metro-config": ^1.2.32
     "@rnx-kit/metro-resolver-symlinks": ^0.1.20
     "@tamagui/animations-reanimated": ^1.0.1-beta.113

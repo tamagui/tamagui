@@ -38,6 +38,7 @@
     "tamagram:web": "yarn workspace @tamagui/tamagram web",
     "tamagram:native": "yarn workspace @tamagui/tamagram native",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
+    "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
     "site": "cd packages/site && ./scripts/dev.sh",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
