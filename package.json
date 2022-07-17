@@ -9,7 +9,7 @@
     "packages": [
       "packages/*",
       "takeout/*",
-      "takeout-apps/*"
+      "takeout-apps/packages/*"
     ]
   },
   "scripts": {
