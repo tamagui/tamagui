@@ -18,6 +18,7 @@ export * from '@tamagui/progress';
 export * from '@tamagui/select';
 export * from '@tamagui/separator';
 export * from '@tamagui/shapes';
+export * from '@tamagui/sheet';
 export * from '@tamagui/slider';
 export * from '@tamagui/stacks';
 export * from '@tamagui/switch';
