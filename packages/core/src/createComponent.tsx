@@ -1,5 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { composeEventHandlers, stylePropsView, validStyles } from '@tamagui/helpers'
+import {
+  composeEventHandlers,
+  stylePropsView,
+  validPseudoKeys,
+  validStyles,
+} from '@tamagui/helpers'
 import {
   useElementLayout,
   useMergeRefs,
@@ -991,6 +996,7 @@ export function createComponent<
     if (!isWeb) {
       for (const key in staticConfig.defaultProps) {
         const val = staticConfig.defaultProps[key]
+        if (validPseudoKeys[key]) continue
         if ((typeof val === 'string' && val[0] === '$') || !validStyles[key]) {
           defaults[key] = val
         } else {

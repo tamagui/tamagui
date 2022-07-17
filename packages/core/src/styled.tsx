@@ -4,8 +4,6 @@ import { createComponent } from './createComponent'
 import { RNComponents } from './helpers/RNComponents'
 import {
   GetProps,
-  GetStyledVariants,
-  GetVariantProps,
   GetVariantValues,
   MediaProps,
   PseudoProps,
