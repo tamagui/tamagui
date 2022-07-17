@@ -320,31 +320,29 @@ export const Sheet = withStaticProperties(
       )
 
       const animateTo = useEvent((position: number) => {
-        const pos = positionValue.current
+        const current = positionValue.current
         if (isHidden && open) return
-        if (!pos) return
+        if (!current) return
         if (frameSize === 0) return
         const hiddenValue = frameSize === 0 ? HIDDEN_SIZE : frameSize
         const toValue = isHidden || position === -1 ? hiddenValue : positions[position]
-        if (pos['_value'] === toValue) return
+        if (at.current === toValue) return
         stopSpring()
         if (isHidden || isResizing) {
           if (isResizing) {
             setIsResizing(false)
           }
-          Animated.timing(pos, {
+          Animated.timing(current, {
             useNativeDriver: !isWeb,
             toValue,
             duration: 0,
-          }).start(() => {
-            // fix bug in react-native not updating
-            pos['_value'] = toValue
-          })
+          }).start()
+          at.current = toValue
           return
         }
         // dont bounce on initial measure to bottom
-        const overshootClamping = pos['_value'] === HIDDEN_SIZE
-        spring.current = Animated.spring(pos, {
+        const overshootClamping = at.current === HIDDEN_SIZE
+        spring.current = Animated.spring(current, {
           useNativeDriver: !isWeb,
           toValue,
           overshootClamping,
@@ -361,6 +359,17 @@ export const Sheet = withStaticProperties(
         animateTo(position)
       }, [isHidden, frameSize, position, animateTo])
 
+      // native only fix
+      const at = useRef(0)
+      useEffect(() => {
+        positionValue.current!.addListener(({ value }) => {
+          at.current = value
+        })
+        return () => {
+          positionValue.current!.removeAllListeners()
+        }
+      }, [])
+
       const panResponder = useMemo(() => {
         if (disableDrag) return
         if (!frameSize) return
@@ -368,7 +377,7 @@ export const Sheet = withStaticProperties(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const pos = positionValue.current!
         const minY = positions[0]
-        let startY = pos['_value']
+        let startY = at.current
 
         function makeUnselectable(val: boolean) {
           if (!selectionStyleSheet) return
@@ -408,7 +417,7 @@ export const Sheet = withStaticProperties(
           onPanResponderGrant: () => {
             makeUnselectable(true)
             stopSpring()
-            startY = pos['_value']
+            startY = at.current
           },
           onPanResponderMove: (_e, { dy }) => {
             const to = dy + startY
