@@ -2,7 +2,8 @@
   "packages": [
     "packages/*",
     "takeout/*",
-    "takeout-apps/tamagram/*"
+    "takeout-apps/tamagram",
+    "takeout-apps/tamagram/packages/*"
   ],
   "version": "1.0.1-beta.110"
 }
