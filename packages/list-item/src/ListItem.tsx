@@ -11,7 +11,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { TextParentStyles, useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { TextParentStyles, getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef } from 'react'
@@ -60,6 +60,7 @@ export const ListItemFrame = styled(ThemeableStack, {
         return {
           minHeight: tokens.size[val],
           paddingHorizontal: tokens.space[val],
+          paddingVertical: getSpace(val, -2),
         }
       },
     },
