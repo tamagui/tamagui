@@ -881,6 +881,7 @@ export function createComponent<
         for (const key in viewProps) {
           console.log(key, viewProps[key])
         }
+        console.log('children', content)
         console.groupEnd()
         if (typeof window !== 'undefined') {
           // prettier-ignore
