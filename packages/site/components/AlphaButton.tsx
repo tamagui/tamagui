@@ -61,7 +61,7 @@ export const AlphaButton = () => {
         tag="a"
         size="$2"
         icon={Tag}
-        $sm={{ disp: 'none' }}
+        $sm={{ dsp: 'none' }}
       >
         Beta
       </Button>

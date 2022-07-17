@@ -153,7 +153,7 @@ const OverlayCard = () => {
   return (
     <Card bw={1} boc="$borderColor" br="$6" elevation="$6" shadowRadius={60}>
       <YStack jc="center" p="$6" space="$5" maw="calc(min(90vw, 400px))" $sm={{ p: '$5' }}>
-        <Paragraph ta="left" size="$8" fow="400" letsp={-1}>
+        <Paragraph ta="left" size="$8" fow="400" ls={-1}>
           Use, swap and share fonts with typed vertical rhythm.
         </Paragraph>
 

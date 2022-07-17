@@ -96,7 +96,7 @@ export declare const config: {
         readonly blw: "borderLeftWidth";
         readonly boc: "borderColor";
         readonly boxs: "boxSizing";
-        readonly boxsha: "boxShadow";
+        readonly boxsh: "boxShadow";
         readonly br: "borderRadius";
         readonly brc: "borderRightColor";
         readonly brs: "borderRightStyle";
@@ -109,7 +109,7 @@ export declare const config: {
         readonly bw: "borderWidth";
         readonly col: "color";
         readonly cur: "cursor";
-        readonly disp: "display";
+        readonly dsp: "display";
         readonly f: "flex";
         readonly fb: "flexBasis";
         readonly fd: "flexDirection";
@@ -123,7 +123,7 @@ export declare const config: {
         readonly h: "height";
         readonly jc: "justifyContent";
         readonly l: "left";
-        readonly letsp: "letterSpacing";
+        readonly ls: "letterSpacing";
         readonly lh: "lineHeight";
         readonly m: "margin";
         readonly mah: "maxHeight";
@@ -14201,10 +14201,10 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        body: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        mono: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        silkscreen: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        heading: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        body: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        mono: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        silkscreen: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

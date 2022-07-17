@@ -49,7 +49,7 @@ export default function BlogPost({ frontmatter, code, relatedPosts }: BlogPost) 
           {frontmatter.title}
         </H1>
 
-        <H2 theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$1" letsp={-0.5}>
+        <H2 theme="alt2" size="$7" fontWeight="500" fontFamily="$body" mb="$1" ls={-0.5}>
           {frontmatter.description}
         </H2>
 

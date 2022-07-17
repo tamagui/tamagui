@@ -18,7 +18,7 @@ export function FeaturesGrid() {
         <YStack maw={950} als="center">
           <Grid gap={25} itemMinWidth={280}>
             <YStack space="$2" p="$4">
-              <H4 letsp={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Fully typed
               </H4>
               <Paragraph theme="alt2">
@@ -28,7 +28,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space="$2" p="$4">
-              <H4 letsp={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Fast, all ways
               </H4>
               <Paragraph theme="alt2">
@@ -38,7 +38,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space="$2" p="$4">
-              <H4 letsp={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 SSR
               </H4>
               <Paragraph theme="alt2">
@@ -48,7 +48,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space="$2" p="$4">
-              <H4 letsp={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Dev tools
               </H4>
               <Paragraph theme="alt2">
@@ -58,7 +58,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space="$2" p="$4">
-              <H4 letsp={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Accessibility
               </H4>
               <Paragraph theme="alt2">
@@ -68,7 +68,7 @@ export function FeaturesGrid() {
             </YStack>
 
             <YStack space="$2" p="$4">
-              <H4 letsp={0} fontFamily="$silkscreen" ta="center">
+              <H4 ls={0} fontFamily="$silkscreen" ta="center">
                 Components
               </H4>
               <Paragraph theme="alt2">

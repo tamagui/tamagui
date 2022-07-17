@@ -14,7 +14,7 @@ export declare const shorthands: {
     readonly blw: "borderLeftWidth";
     readonly boc: "borderColor";
     readonly boxs: "boxSizing";
-    readonly boxsha: "boxShadow";
+    readonly boxsh: "boxShadow";
     readonly br: "borderRadius";
     readonly brc: "borderRightColor";
     readonly brs: "borderRightStyle";
@@ -27,7 +27,7 @@ export declare const shorthands: {
     readonly bw: "borderWidth";
     readonly col: "color";
     readonly cur: "cursor";
-    readonly disp: "display";
+    readonly dsp: "display";
     readonly f: "flex";
     readonly fb: "flexBasis";
     readonly fd: "flexDirection";
@@ -41,7 +41,7 @@ export declare const shorthands: {
     readonly h: "height";
     readonly jc: "justifyContent";
     readonly l: "left";
-    readonly letsp: "letterSpacing";
+    readonly ls: "letterSpacing";
     readonly lh: "lineHeight";
     readonly m: "margin";
     readonly mah: "maxHeight";

@@ -87,7 +87,7 @@ const HeroTop = memo(() => {
               <span className="rainbow clip-text help">Universal</span>
             </TooltipSimple>{' '}
             design systems for React&nbsp;Native&nbsp;&&nbsp;Web
-            <Text fontSize="inherit" letsp="inherit" fontFamily="inherit" $sm={{ display: 'none' }}>
+            <Text fontSize="inherit" ls="inherit" fontFamily="inherit" $sm={{ display: 'none' }}>
               , faster.
             </Text>
           </H1>
