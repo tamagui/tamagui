@@ -113,7 +113,6 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const excludeExports = tamaguiOptions.excludeReactNativeWebExports
         if (Array.isArray(excludeExports)) {
           try {
-            console.log(resolveEsm('@tamagui/proxy-worm/empty-react-native-view'))
             const regexStr = `\/react-native-web\/.*(${excludeExports.join('|')}).*\/`
             const regex = new RegExp(regexStr)
             // console.log(prefix, 'exclude', regexStr)
