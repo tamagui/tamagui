@@ -28,18 +28,20 @@ component: Group
 ### Usage
 
 ```tsx
-import { Button, Group } from 'tamagui'
+import { Button, XGroup } from 'tamagui'
 
 export default () => (
-  <Group>
+  <XGroup>
     <Button>First</Button>
     <Button>Second</Button>
     <Button>Third</Button>
-  </Group>
+  </XGroup>
 )
 ```
 
-By default, Group will control the border radius of it's children automatically - the first and last children will get their start/end radius set to match group radius. If it's a `vertical` group, it will adjust top/bottom radius, if not, left/right.
+Instead of a generic `Group`, Tamagui prefers `XGroup` and `YGroup` for consistency with stacks.
+
+By default, Groups will control the border radius of their children automatically - the first and last children will get their start/end radius set to match group radius. If it's a `YGroup`, it will adjust top/bottom radius. `XGroup` adjusts the left/right radius.
 
 This ensures any items inside will get appropriately scaled border radius.
 
@@ -48,14 +50,14 @@ This ensures any items inside will get appropriately scaled border radius.
 The `size` property will use your tokens to grab the appropriate radius for borderRadius values. It will also pass the `size` prop directly to `children` unless you set `disablePassSize`:
 
 ```tsx
-import { Button, Group } from 'tamagui'
+import { Button, XGroup } from 'tamagui'
 
 export default () => (
-  <Group size="$6">
+  <XGroup size="$6">
     <Button>First</Button>
     <Button>Second</Button>
     <Button>Third</Button>
-  </Group>
+  </XGroup>
 )
 ```
 
@@ -69,16 +71,10 @@ The `disabled` property will pass to children
 
 ### Group API
 
-Group extends [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
+XGroup and YGroup extend [YStack](/docs/components/stacks), getting [Tamagui standard props](/docs/intro/props), plus:
 
 <PropsTable
   data={[
-    {
-      name: 'vertical',
-      required: false,
-      type: 'boolean',
-      description: `Renders vertical content with rounded edges at top/bottom.`,
-    },
     {
       name: 'size',
       required: false,
@@ -102,6 +98,12 @@ Group extends [YStack](/docs/components/stacks), getting [Tamagui standard props
       required: false,
       type: 'boolean',
       description: `Disables passing size to children.`,
+    },
+    {
+      name: 'vertical',
+      required: false,
+      type: 'boolean',
+      description: `Can be used to force an XGroup to render like a YGroup or vice-versa.`,
     },
   ]}
 />

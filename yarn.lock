@@ -5697,7 +5697,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.113
     "@tamagui/core": ^1.0.1-beta.113
-    "@tamagui/vite-plugin-internal": ^1.0.1-beta.113
+    "@tamagui/helpers": ^1.0.1-beta.113
     react: "*"
     react-native: "*"
     vitest: ^0.17.1

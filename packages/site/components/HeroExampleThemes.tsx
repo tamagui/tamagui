@@ -2,7 +2,7 @@ import { useOnIntersecting } from '@tamagui/demos'
 import { useTheme } from '@tamagui/next-theme'
 import React from 'react'
 import { SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Group, Theme, ThemeName, XStack, YStack, debounce, useGet } from 'tamagui'
+import { Theme, ThemeName, XGroup, XStack, YStack, debounce, useGet } from 'tamagui'
 
 import { ActiveCircle } from './ActiveCircle'
 import { ContainerLarge } from './Container'
@@ -154,7 +154,7 @@ export function HeroExampleThemes() {
       <YStack mt="$6" ai="center" jc="center">
         <XStack className="scroll-horizontal no-scrollbar">
           <XStack px="$4" space="$2">
-            <Group disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
               {(['light', 'dark'] as const).map((name, i) => {
                 const isActive = theme === name
                 return (
@@ -166,9 +166,9 @@ export function HeroExampleThemes() {
                   />
                 )
               })}
-            </Group>
+            </XGroup>
 
-            <Group disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
               {themes[0].map((color, i) => {
                 const isActive = curColorI === i
                 return (
@@ -181,9 +181,9 @@ export function HeroExampleThemes() {
                   </Theme>
                 )
               })}
-            </Group>
+            </XGroup>
 
-            <Group disablePassBorderRadius bordered p="$2" br="$10" als="center">
+            <XGroup disablePassBorderRadius bordered p="$2" br="$10" als="center">
               <Theme name={colorName}>
                 <XStack>
                   {themes[1].map((name, i) => {
@@ -200,7 +200,7 @@ export function HeroExampleThemes() {
                   })}
                 </XStack>
               </Theme>
-            </Group>
+            </XGroup>
           </XStack>
         </XStack>
 
