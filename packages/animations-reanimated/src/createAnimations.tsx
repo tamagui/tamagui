@@ -1,6 +1,6 @@
 import { PresenceContext, usePresence } from '@tamagui/animate-presence'
-import { AnimationDriver, AnimationProp } from '@tamagui/core'
-import { useCallback, useContext, useMemo } from 'react'
+import { AnimationDriver, AnimationProp, useEvent } from '@tamagui/core'
+import { useContext, useMemo } from 'react'
 import Animated, {
   WithDecayConfig,
   WithSpringConfig,
@@ -51,12 +51,9 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         ? staticConfig.variantsParsed?.[presence.exitVariant]?.true || pseudos.exitStyle
         : pseudos.exitStyle
 
-      const reanimatedOnDidAnimated = useCallback<NonNullable<typeof onDidAnimate>>(
-        (...args) => {
-          onDidAnimate?.(...args)
-        },
-        [onDidAnimate]
-      )
+      const reanimatedOnDidAnimated = useEvent<NonNullable<typeof onDidAnimate>>((...args) => {
+        onDidAnimate?.(...args)
+      })
 
       const isExiting = isPresent === false
       const isEntering = !state.mounted
@@ -77,20 +74,21 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         }
       }
 
-      const args = [
-        JSON.stringify(all),
-        state.mounted,
-        state.hover,
-        state.press,
-        state.pressIn,
-        state.focus,
-        delay,
-        isPresent,
-        onDidAnimate,
-        reanimatedOnDidAnimated,
-        presence?.exitVariant,
-        presence?.enterVariant,
-      ]
+      const animatedString = JSON.stringify(animatedStyles)
+      const key =
+        animatedString +
+        JSON.stringify([
+          state.mounted,
+          state.hover,
+          state.press,
+          state.pressIn,
+          state.focus,
+          delay,
+          isPresent,
+          onDidAnimate,
+          presence?.exitVariant,
+          presence?.enterVariant,
+        ])
 
       const callback = (
         isExiting: boolean,
@@ -119,7 +117,9 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
       const animatedStyle = useAnimatedStyle(() => {
         'worklet'
-        const style = animatedStyles
+
+        // getting issues with native unless this :/
+        const style = JSON.parse(animatedString)
 
         const final = {
           transform: [] as any[],
@@ -224,13 +224,13 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         }
 
         return final
-      }, args)
+      }, [key])
 
       return useMemo(() => {
         return {
           style: [nonAnimatedStyle, animatedStyle],
         }
-      }, args)
+      }, [key])
     },
   }
 }
