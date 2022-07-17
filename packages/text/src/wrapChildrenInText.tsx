@@ -1,19 +1,6 @@
 import type { SizeTokens } from '@tamagui/core'
+import { TextParentStyles } from '@tamagui/helpers-tamagui'
 import React from 'react'
-
-import { SizableTextProps } from './SizableText'
-
-export type TextParentStyles = {
-  color?: SizableTextProps['color']
-  fontWeight?: SizableTextProps['fontWeight']
-  fontSize?: SizableTextProps['fontSize']
-  fontFamily?: SizableTextProps['fontFamily']
-  letterSpacing?: SizableTextProps['letterSpacing']
-  textAlign?: SizableTextProps['textAlign']
-  // all the other text controls
-  textProps?: Partial<SizableTextProps>
-  noTextWrap?: boolean
-}
 
 type Props = TextParentStyles & {
   children?: React.ReactNode
@@ -44,8 +31,8 @@ export function wrapChildrenInText(
   // it gives us props.children as ['Hello, ', 'name']
   // but we don't want to wrap multiple SizableText around each part
   // so we group them
-  let allChildren = React.Children.toArray(children)
-  let nextChildren: any[] = []
+  const allChildren = React.Children.toArray(children)
+  const nextChildren: any[] = []
   let lastIsString = false
   const directTextProps: any = {}
   // to avoid setting undefined
