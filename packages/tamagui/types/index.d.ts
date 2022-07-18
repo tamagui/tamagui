@@ -7,7 +7,7 @@ export * from '@tamagui/create-context';
 export * from '@tamagui/dialog';
 export * from '@tamagui/alert-dialog';
 export * from '@tamagui/font-size';
-export * from '@tamagui/helpers';
+export * from '@tamagui/helpers-tamagui';
 export * from '@tamagui/image';
 export * from '@tamagui/label';
 export * from '@tamagui/list-item';
@@ -48,5 +48,4 @@ export * from './views/Table';
 export * from './views/TextArea';
 export * from './views/Toast';
 export * from './views/VisuallyHidden';
-export * from './helpers/prevent';
 //# sourceMappingURL=index.d.ts.map

@@ -1,13 +1,9 @@
 import { Variable } from './createVariable'
 import { createVariables } from './createVariables'
-import { validateTokens } from './helpers/validate'
 import { CreateTokens } from './types'
 
 // tokens.color.dark.red ===> { var: `color-dark-red`, val: '' }
 export function createTokens<T extends CreateTokens>(tokens: T): MakeTokens<T> {
-  if (process.env.NODE_ENV === 'development') {
-    validateTokens(tokens)
-  }
   return createVariables(tokens as any) as any
 }
 

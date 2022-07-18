@@ -1,4 +1,4 @@
-import { configListeners, getHasConfigured, setConfig } from './conf'
+import { configListeners, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
 import { SpacerProps } from './createComponent'

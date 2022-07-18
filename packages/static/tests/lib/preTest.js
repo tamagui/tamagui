@@ -104,6 +104,7 @@ async function extractStaticWebpackApp() {
     devtool: false,
     optimization: {
       minimize: false,
+      minimizer: [],
       concatenateModules: false,
       splitChunks: false,
     },
@@ -130,7 +131,7 @@ async function extractStaticWebpackApp() {
               loader: require.resolve('esbuild-loader'),
               options: {
                 loader: 'tsx',
-                target: 'es2020',
+                target: 'es2021',
                 keepNames: true,
               },
             },

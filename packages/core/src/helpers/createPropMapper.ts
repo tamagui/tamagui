@@ -43,7 +43,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
   ) => {
     const conf = getConfig()
     if (!conf) {
-      console.trace('no conf! err')
+      console.trace(`No tamagui config setup`)
       return
     }
 

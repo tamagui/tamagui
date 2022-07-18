@@ -1,7 +1,6 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import { PseudoStyles } from '@tamagui/core-node'
-import { StyleObject } from '@tamagui/core-node'
+import type { PseudoStyles, StyleObject } from '@tamagui/core-node'
 import { ViewStyle } from 'react-native'
 
 export type { StyleObject } from '@tamagui/helpers'
