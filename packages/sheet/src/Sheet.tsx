@@ -10,6 +10,7 @@ import {
   styled,
   themeable,
   useEvent,
+  useIsomorphicLayoutEffect,
   useThemeName,
   withStaticProperties,
 } from '@tamagui/core'
@@ -26,7 +27,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -293,7 +293,7 @@ export const Sheet = withStaticProperties(
       }
 
       const [isResizing, setIsResizing] = useState(true)
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         if (!isResizing) {
           setIsResizing(true)
         }
@@ -355,7 +355,7 @@ export const Sheet = withStaticProperties(
         })
       })
 
-      useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         animateTo(position)
       }, [isHidden, frameSize, position, animateTo])
 

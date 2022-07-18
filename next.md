@@ -26,6 +26,7 @@ render(
   - `_active` style offical
     - <SwitchTrack /> gets active theme by default when toggled
 
+  - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
   - // TODO still have as const bug
   - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
