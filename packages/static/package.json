@@ -17,11 +17,11 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "test": "NODE_ENV=test TAMAGUI_COMPILE_PROCESS=1 jest --forceExit",
+    "test": "NODE_ENV=test jest --forceExit",
     "test:output": "TAMAGUI_TARGET=web node -r esbuild-register test-output.tsx",
     "test:babel": "DISABLE_PRE_TEST=true yarn test tests/babel-test.tsx",
-    "test:debug": "NODE_ENV=test TAMAGUI_COMPILE_PROCESS=1 DEBUG_FILE=extract-specs.tsx DEBUG=1 yarn test",
-    "test:watch": "NODE_ENV=test TAMAGUI_COMPILE_PROCESS=1 yarn test --watch",
+    "test:debug": "NODE_ENV=test DEBUG_FILE=extract-specs.tsx DEBUG=1 yarn test",
+    "test:watch": "NODE_ENV=test yarn test --watch",
     "test:update-snapshots": "NODE_ENV=test jest --updateSnapshot"
   },
   "tests": {

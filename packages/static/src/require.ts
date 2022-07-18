@@ -24,6 +24,7 @@ export function registerRequire() {
 
   const proxyWorm = require('@tamagui/proxy-worm')
   const rnw = require('react-native-web')
+  const core = require('@tamagui/core-node')
 
   Mod.prototype.require = function (path: string) {
     if (SHOULD_DEBUG) {
@@ -46,6 +47,9 @@ export function registerRequire() {
     ) {
       return rnw
       // return og('react-native-web')
+    }
+    if (path === '@tamagui/core') {
+      return core
     }
     try {
       const out = og.apply(this, arguments)

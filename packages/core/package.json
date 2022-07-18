@@ -12,7 +12,8 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "test": "vitest --run --config ../vite-plugin-internal/vite.config.ts --reporter json"
   },
   "files": [
     "types",
@@ -23,7 +24,6 @@
     "@expo/match-media": "^0.3.0",
     "@tamagui/compose-refs": "^1.0.1-beta.113",
     "@tamagui/helpers": "^1.0.1-beta.113",
-    "@tamagui/ow": "^0.28.1",
     "@tamagui/rnw": "^1.0.1-beta.113",
     "@tamagui/use-debounce": "^1.0.1-beta.113",
     "@tamagui/use-event": "^1.0.1-beta.113",
@@ -43,7 +43,8 @@
     "csstype": "^3.0.10",
     "esbuild": "^0.14.49",
     "react-native-web": "^0.18.3",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "vitest": "^0.18.1"
   },
   "publishConfig": {
     "access": "public"

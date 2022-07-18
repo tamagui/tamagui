@@ -19,7 +19,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "test": "vitest --config ../vite-plugin-internal/vite.config.ts"
+    "test": "vitest --config ../vite-plugin-internal/vite.config.ts --reporter json"
   },
   "dependencies": {
     "@tamagui/core": "^1.0.1-beta.113",
@@ -34,7 +34,7 @@
     "@tamagui/vite-plugin-internal": "^1.0.1-beta.113",
     "react": "*",
     "react-dom": "*",
-    "vitest": "^0.17.1"
+    "vitest": "^0.18.1"
   },
   "publishConfig": {
     "access": "public"

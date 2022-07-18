@@ -1,7 +1,9 @@
-import { dirname, extname, resolve } from 'path'
+import { fork, spawn } from 'child_process'
+import { dirname, extname, join, resolve } from 'path'
 
 import { Binding, NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
+import esbuild from 'esbuild'
 import { existsSync } from 'fs-extra'
 
 import { evaluateAstNode } from './evaluateAstNode'
@@ -20,25 +22,44 @@ function resolveImportPath(sourcePath: string, path: string) {
   return path
 }
 
-function importModule(path: string) {
-  const filenames = [path.replace('.js', '.tsx'), path.replace('.js', '.ts'), path]
-  for (const file of filenames) {
-    if (existsSync(file)) {
-      const { unregister } = require('esbuild-register/dist/node').register({
-        target: 'es2019',
-        format: 'cjs',
-      })
-      try {
-        // TODO we can clear this when we see updates on it later on
-        return require(file)
-      } catch {
-        // doesn't exists
-      } finally {
-        unregister()
-      }
-    }
+const cache = new Map()
+const pending = new Map()
+setInterval(() => {
+  if (cache.size) {
+    cache.clear()
   }
-  return null
+}, 10)
+
+const loadCmd = `${join(__dirname, 'loadFile.js')}`
+const child = fork(loadCmd, [], {
+  execArgv: ['-r', 'esbuild-register'],
+})
+
+function importModule(path: string) {
+  if (pending.has(path)) {
+    return pending.get(path)
+  }
+  const promise = new Promise((res, rej) => {
+    if (cache.has(path)) {
+      return cache.get(path)
+    }
+    const listener = (msg: any) => {
+      if (!msg) return
+      if (typeof msg !== 'string') return
+      if (msg[0] === '-') {
+        rej(new Error(msg.slice(1)))
+        return
+      }
+      child.removeListener('message', listener)
+      const val = JSON.parse(msg)
+      cache.set(path, val)
+      res(val)
+    }
+    child.once('message', listener)
+    child.send(`${path.replace('.js', '')}`)
+  })
+  pending.set(path, promise)
+  return promise
 }
 
 export function getStaticBindingsForScope(

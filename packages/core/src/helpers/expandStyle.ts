@@ -46,6 +46,13 @@ export function expandStyle(key: string, value: any) {
         break
       }
 
+      case 'userSelect': {
+        return [
+          [key, value],
+          ['WebkitUserSelect', value],
+        ]
+      }
+
       case 'textAlignVertical': {
         return [['verticalAlign', value === 'center' ? 'middle' : value]]
       }

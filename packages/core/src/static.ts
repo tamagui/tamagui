@@ -1,25 +1,15 @@
 // only stuff that gets extracted or needed by tamagui-static
 
-export * from './styled'
-export * from './createComponent'
-export * from './createFont'
-export * from './createTokens'
-export * from './createTamagui'
-export * from './createVariable'
-export * from './constants/constants'
+export * from './index'
 
-export * from './hooks/useMedia'
-export * from './hooks/useTheme'
+// for static
 
-export * from './helpers/isObj'
-export * from './helpers/getStylesAtomic'
-export * from './helpers/expandStyles'
-export * from './helpers/pseudoDescriptors'
+export {
+  createDOMProps,
+  useElementLayout,
+  useMergeRefs,
+  usePlatformMethods,
+  useResponderEvents,
+} from '@tamagui/rnw'
+
 export * from './helpers/proxyThemeVariables'
-export * from './helpers/getSplitStyles'
-export * from '@tamagui/helpers'
-
-export * from './types'
-
-// node only rnw export
-export * from '@tamagui/rnw'
