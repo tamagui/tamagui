@@ -116,6 +116,7 @@ const demos = [
       { title: 'Input + Textarea', route: '/demo/inputs' },
       { title: 'Label', route: '/demo/label' },
       { title: 'Progress', route: '/demo/progress' },
+      { title: 'Select', route: '/demo/select' },
       { title: 'Slider', route: '/demo/slider' },
       { title: 'Switch', route: '/demo/switch' },
     ],
