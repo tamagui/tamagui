@@ -34,25 +34,6 @@ export function expandStyle(key: string, value: any) {
         return [[key, value.toString()]]
       }
 
-      // TODO: remove once this issue is fixed
-      // https://github.com/rofrischmann/inline-style-prefixer/issues/159
-      case 'backgroundClip': {
-        if (value === 'text') {
-          return [
-            ['backgroundClip', value],
-            ['WebkitBackgroundClip', value],
-          ]
-        }
-        break
-      }
-
-      case 'userSelect': {
-        return [
-          [key, value],
-          ['WebkitUserSelect', value],
-        ]
-      }
-
       case 'textAlignVertical': {
         return [['verticalAlign', value === 'center' ? 'middle' : value]]
       }

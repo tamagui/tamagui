@@ -176,9 +176,9 @@ function createDeclarationBlock(style: Style, important = false) {
   for (const key in style) {
     const prop = hyphenateStyleName(key)
     const value = style[key]
-    declarations += `${prop}:${value}`
+    declarations += `${prop}:${value}${important ? ` !important` : ''};`
   }
-  return `{${declarations}${important ? ` !important` : ''};}`
+  return `{${declarations}}`
 }
 
 const pseudoSelectorPrefixes = (() => {
@@ -210,6 +210,19 @@ function createAtomicRules(
     case 'placeholderTextColor': {
       const block = createDeclarationBlock({ color: value, opacity: 1 }, important)
       rules.push(`${selector}::placeholder${block}`)
+      break
+    }
+
+    // all webkit prefixed rules
+    case 'backgroundClip':
+    case 'userSelect': {
+      const propertyCapitalized = `${property[0].toUpperCase()}${property.slice(1)}`
+      const webkitProperty = `Webkit${propertyCapitalized}`
+      const block = createDeclarationBlock(
+        { [property]: value, [webkitProperty]: value },
+        important
+      )
+      rules.push(`${selector}${block}`)
       break
     }
 

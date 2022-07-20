@@ -1,5 +1,5 @@
 export * from './Select'
-export {
+export type {
   SelectContentProps,
   SelectProps,
   SelectScrollButtonProps,
