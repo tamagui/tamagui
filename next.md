@@ -1,88 +1,52 @@
 - 1.0
 
-
-font language support:
-
-```
-const enBody = createFont(...)
-const cnBody = createFont(...)
-
-createTamagui({
-  fonts: {
-    body_en:
-    body_cn:
-  }
-})
-
-render(
-  <TamaguiProvider>
-    <FontLanguage default="en" body="en">
-    </FontLanuage>
-  </TamaguiProvider>
-)
-```
-
+  - dialog native
+  - get tests passing
+  - add test that kitchen-sink loads, test a few components
+  - typescript strict
+  - font weight on native
+  - loadTheme, updateTheme
+  - <FontLanguage />
+  - animation accept useAnimatedStyle
+    - make sure loop/multi animations work too
+    - https://twitter.com/FernandoTheRojo/status/1470178294721036290
+  - flicker on some enterStyle animation native
   - mismatch SSR SelectTrigger due to componentName override
   - button inverse doesn't update on theme change (site)
-  - `_active` style offical
-    - <SwitchTrack /> gets active theme by default when toggled
-
   - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
   - // TODO still have as const bug
   - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
-  - <Switch /> active state style
-  - <Sheet /> attach="bottom" os default
-    - <ActionSheet />
-  - <Select /> sheet version on small screen
-  - <Dialog /> sheet version on small screen
-  - <ContextMenu />
-  - <Menu /> somewhat like accordion with ListItems
-  - <Radio />
-  - <Checkbox />
-  - <Select multi> (share logic with Grouped Radio/Checkbox)
-  - <Select><SearchInput /></Select>
-  - <Autocomplete />
-  - <Tabs /> ()
-  - <Accordion />
-  - <Icon /> can use theme values and size values  
+  - fix Label + new form inputs (native too)
+  - fix tabbing (Select)
+  - <Icon />
+    - use theme values and size values
+    - can swap for other icon packs (use createTamagui({ icons }))
   - <Toast />
   - <Form onSubmit /> 
     - native works by attaching state to a FormContext
     - web works by just listening for event and using FormData()
-
-  - principles doc to explain:
-    - everything works runtime + compile the same
-    - designed for apps - so runtime performance key
-      - trades off bigger bundle size / a bit more init/memory
   - Group make media style size use properly
-  - FAQ
-  - need an active theme thats blue in theme-base by default
-  - VisuallyHidden/display: none working with space
-  - // TODO shouldn't need tag="span" if buttoninbutton context works - test + in prod
+  - // TODO shouldn't need tag="span" if buttoninbutton context works
   - sell sizing story better - home hero, blog post?
-  - sell compiler much better in hero
-  - html props: role, tabIndex, input type
+  - html props: role
   - <Input /> variant doesnt override paddingHorizontal set on same input
   - make SimpleTooltip inverse by default
     - make all inverse by default? i think so? or else make sub-themes handle it...
-  - POTENTIAL, i think rnw does support this its just trickier params, amy not want to do this:
-    - input type="email", button type="submit" etc
-      - its fine to wrap input in HOC like button
-      - normalize divergent android/ios:
-        - https://reactnative.dev/docs/textinput
-          - android accepts "autoComplete"
-          - ios accepts "textContentType"
-          - set secureTextEntry automatically for type="password"
+  - input type="email", button type="submit" etc (rnw has submit, email?)
+    - its fine to wrap input in HOC like button
+  - normalize divergent android/ios:
+    - https://reactnative.dev/docs/textinput
+      - android accepts "autoComplete"
+      - ios accepts "textContentType"
+      - set secureTextEntry automatically for type="password"
   - shorthands-only type/docs
   - tokens-only type/docs
   - validate Label with Select, Input, Switch etc all work with it
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
-  - <Spacer /> doesnt work w media query display none
-  - compiler work visually hidden
-  - maybe <UL /> <LI /> <OL />
   - // TODO infer ref
+  - move site back to reanimated if pagespeed is up, because animatepresence is a bit glitched on react-native driver
 
 ---
 
@@ -107,10 +71,25 @@ plan for space + display none, two pronged
     - in the parent if it changes, we setDisplayedElements([0,1,1,1,0]) and remove the Space
       - where 1 = visible, 0 = invisible
 
-
 ---
 
 (potentially 1.0)
+  - <ActionSheet /> (Popover or Dialog on large screen?)
+  - <ContextMenu />
+  - <Menu /> somewhat like accordion with ListItems
+  - <Group toggle>
+  - <Tabs />
+  - <Accordion />
+  - <Autocomplete />
+  - <Select.SearchInput />
+  - <Radio />
+  - <Checkbox />
+  - principles doc to explain:
+    - everything works runtime + compile the same
+    - designed for apps - so runtime performance key
+      - trades off bigger bundle size / a bit more init/memory
+  - sell compiler / open source better on home
+  - maybe <UL /> <LI /> <OL />
   - super short classnames for themes in production
   - Input based on Button for icon/iconAfter
   - cache at variant level (?)
