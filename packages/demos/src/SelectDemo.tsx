@@ -1,6 +1,5 @@
 import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
 import React from 'react'
-import { ScrollView } from 'react-native'
 import { LinearGradient, Select, YStack } from 'tamagui'
 
 export function SelectDemo() {
@@ -12,9 +11,9 @@ export function SelectDemo() {
 
       <Select.Sheet modal dismissOnSnapToBottom>
         <Select.Sheet.Frame>
-          <ScrollView style={{ flex: 1 }}>
+          <Select.Sheet.ScrollView>
             <Select.SheetContents />
-          </ScrollView>
+          </Select.Sheet.ScrollView>
         </Select.Sheet.Frame>
         <Select.Sheet.Overlay />
       </Select.Sheet>

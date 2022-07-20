@@ -9,6 +9,7 @@ import {
   mergeEvent,
   styled,
   themeable,
+  useConstant,
   useEvent,
   useIsomorphicLayoutEffect,
   useThemeName,
@@ -36,6 +37,8 @@ import {
   GestureResponderEvent,
   PanResponder,
   PanResponderGestureState,
+  ScrollView,
+  ScrollViewProps,
   View,
 } from 'react-native'
 
@@ -72,6 +75,14 @@ type PositionChangeHandler = (position: number) => void
 
 type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>
 
+type ScrollBridge = {
+  enabled: boolean
+  y: number
+  scrollStartY: number
+  drag: (dy: number) => void
+  release: (state: { dy: number; vy: number }) => void
+}
+
 type SheetContextValue = Required<
   Pick<SheetProps, 'open' | 'position' | 'snapPoints' | 'dismissOnOverlayPress'>
 > & {
@@ -81,6 +92,7 @@ type SheetContextValue = Required<
   allowPinchZoom: RemoveScrollProps['allowPinchZoom']
   contentRef: React.RefObject<TamaguiElement>
   dismissOnSnapToBottom: boolean
+  scrollBridge: ScrollBridge
 }
 
 const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
@@ -88,6 +100,10 @@ const [SheetProvider, useSheetContext] = createSheetContext<SheetContextValue>(
   SHEET_NAME,
   {} as any
 )
+
+/* -------------------------------------------------------------------------------------------------
+ * SheetHandle
+ * -----------------------------------------------------------------------------------------------*/
 
 export const SheetHandleFrame = styled(XStack, {
   name: SHEET_HANDLE_NAME,
@@ -131,6 +147,10 @@ export const SheetHandle = SheetHandleFrame.extractable(
     )
   }
 )
+
+/* -------------------------------------------------------------------------------------------------
+ * SheetOverlay
+ * -----------------------------------------------------------------------------------------------*/
 
 const SHEET_OVERLAY_NAME = 'SheetOverlay'
 
@@ -187,6 +207,91 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
   }
 )
 
+/* -------------------------------------------------------------------------------------------------
+ * SheetScrollView
+ * -----------------------------------------------------------------------------------------------*/
+
+const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
+
+export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
+  ({ __scopeSheet, ...props }: SheetScopedProps<ScrollViewProps>, ref) => {
+    const { scrollBridge } = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
+    const [scrollEnabled, setScrollEnabled] = useState(true)
+    const state = useRef({
+      dy: 0,
+      // store a few recent dys to get velocity on release
+      dys: [] as number[],
+    })
+
+    const release = () => {
+      setScrollEnabled(true)
+      const recentDys = state.current.dys.slice(-10)
+      const dist = recentDys.length
+        ? recentDys.reduce((a, b, i) => a + b - (recentDys[i - 1] ?? recentDys[0]), 0)
+        : 0
+      const avgDy = dist / recentDys.length
+      const vy = avgDy * 0.1
+      state.current.dys = []
+      scrollBridge.release({
+        dy: state.current.dy,
+        vy,
+      })
+    }
+
+    return (
+      <ScrollView
+        ref={ref}
+        onScrollBeginDrag={() => {
+          console.log('begin drag')
+        }}
+        scrollEventThrottle={16}
+        scrollEnabled={scrollEnabled}
+        onScroll={(e) => {
+          const { y } = e.nativeEvent.contentOffset
+          scrollBridge.y = y
+          if (y > 0) {
+            scrollBridge.scrollStartY = -1
+          }
+        }}
+        onResponderMove={(e) => {
+          const { pageY } = e.nativeEvent
+          if (scrollBridge.y === 0) {
+            if (scrollBridge.scrollStartY === -1) {
+              scrollBridge.scrollStartY = pageY
+            }
+            const dy = pageY - scrollBridge.scrollStartY
+            if (dy <= 0) {
+              setScrollEnabled(true)
+              return
+            }
+            setScrollEnabled(false)
+            scrollBridge.drag(dy)
+            state.current.dy = dy
+            state.current.dys.push(dy)
+            // only do every so often, cut down to 10 again
+            if (state.current.dys.length > 100) {
+              state.current.dys = state.current.dys.slice(-10)
+            }
+          }
+        }}
+        onResponderRelease={release}
+        // todo release we can just grab the last dY and estimate vY using a sample of last dYs
+        {...props}
+        style={[
+          {
+            flex: 1,
+          },
+          props.style,
+        ]}
+      />
+    )
+  }
+)
+
+/* -------------------------------------------------------------------------------------------------
+ * Sheet
+ * -----------------------------------------------------------------------------------------------*/
+
 const selectionStyleSheet = isClient ? document.createElement('style') : null
 if (selectionStyleSheet) {
   document.head.appendChild(selectionStyleSheet)
@@ -236,12 +341,27 @@ export const Sheet = withStaticProperties(
         allowPinchZoom,
       } = props
 
+      if (process.env.NODE_ENV === 'development') {
+        if (snapPointsProp.some((p) => p < 0 || p > 100)) {
+          console.warn(
+            `⚠️ Invalid snapPoint given, snapPoints must be between 0 and 100, equal to percent height of frame`
+          )
+        }
+      }
+
       // allows for sheets to be controlled by other components
       const controller = useContext(SheetControllerContext)
       const isHidden = controller?.hidden || false
       const disableDrag = disableDragProp ?? controller?.disableDrag
       const themeName = useThemeName()
       const contentRef = React.useRef<TamaguiElement>(null)
+      const scrollBridge = useConstant<ScrollBridge>(() => ({
+        enabled: false,
+        y: 0,
+        scrollStartY: -1,
+        drag: () => {},
+        release: () => {},
+      }))
 
       const onChangeOpenInternal = (val: boolean) => {
         controller?.onChangeOpen?.(val)
@@ -370,64 +490,108 @@ export const Sheet = withStaticProperties(
         }
       }, [])
 
-      const panResponder = useMemo(() => {
-        if (disableDrag) return
-        if (!frameSize) return
+      const panResponder = useMemo(
+        () => {
+          if (disableDrag) return
+          if (!frameSize) return
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const pos = positionValue.current!
-        const minY = positions[0]
-        let startY = at.current
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const pos = positionValue.current!
+          const minY = positions[0]
+          let startY = at.current
 
-        function makeUnselectable(val: boolean) {
-          if (!selectionStyleSheet) return
-          if (!val) {
-            selectionStyleSheet.innerText = ``
-          } else {
-            selectionStyleSheet.innerText = `:root * { user-select: none !important; -webkit-user-select: none !important; }`
-          }
-        }
-
-        const finish = (_e: GestureResponderEvent, { vy, dy }: PanResponderGestureState) => {
-          makeUnselectable(false)
-          const at = dy + startY
-          // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
-          // lets base our multiplier on the total layout height
-          const end = at + frameSize * vy * 0.33
-          let closestPoint = 0
-          let dist = Infinity
-          for (let i = 0; i < positions.length; i++) {
-            const position = positions[i]
-            const curDist = end > position ? end - position : position - end
-            if (curDist < dist) {
-              dist = curDist
-              closestPoint = i
+          function makeUnselectable(val: boolean) {
+            if (!selectionStyleSheet) return
+            if (!val) {
+              selectionStyleSheet.innerText = ``
+            } else {
+              selectionStyleSheet.innerText = `:root * { user-select: none !important; -webkit-user-select: none !important; }`
             }
           }
-          // have to call both because state may not change but need to snap back
-          setPosition(closestPoint)
-          animateTo(closestPoint)
-        }
 
-        return PanResponder.create({
-          onMoveShouldSetPanResponder: (_e, { dy }) => {
+          const release = ({ vy, dy }: { dy: number; vy: number }) => {
+            isExternalDrag = false
+            previouslyScrolling = false
+            makeUnselectable(false)
+            const at = dy + startY
+            // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
+            // lets base our multiplier on the total layout height
+            const end = at + frameSize * vy * 0.33
+            let closestPoint = 0
+            let dist = Infinity
+            for (let i = 0; i < positions.length; i++) {
+              const position = positions[i]
+              const curDist = end > position ? end - position : position - end
+              if (curDist < dist) {
+                dist = curDist
+                closestPoint = i
+              }
+            }
+            // have to call both because state may not change but need to snap back
+            setPosition(closestPoint)
+            animateTo(closestPoint)
+          }
+
+          const finish = (_e: GestureResponderEvent, state: PanResponderGestureState) => {
+            release(state)
+          }
+
+          let previouslyScrolling = false
+
+          const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
+            if (scrollBridge.y !== 0) {
+              previouslyScrolling = true
+              return false
+            }
+            if (scrollBridge.y === 0 && dy < 0) {
+              return false
+            }
+            if (previouslyScrolling) {
+              previouslyScrolling = false
+              return true
+            }
             // we could do some detection of other touchables and cancel here..
-            return Math.abs(dy) > 6
-          },
-          onPanResponderGrant: () => {
+            return Math.abs(dy) > 8
+          }
+
+          const grant = () => {
             makeUnselectable(true)
             stopSpring()
             startY = at.current
-          },
-          onPanResponderMove: (_e, { dy }) => {
+          }
+
+          let isExternalDrag = false
+
+          scrollBridge.drag = (dy) => {
+            if (!isExternalDrag) {
+              isExternalDrag = true
+              grant()
+            }
             const to = dy + startY
             pos.setValue(resisted(to, minY))
-          },
-          onPanResponderEnd: finish,
-          onPanResponderTerminate: finish,
-          onPanResponderRelease: finish,
-        })
-      }, [disableDrag, animateTo, frameSize, positions, setPosition])
+          }
+
+          scrollBridge.release = release
+
+          return PanResponder.create({
+            onMoveShouldSetPanResponder: (...args) => {
+              const res = onMoveShouldSet(...args)
+              // console.log('res', res, scrollBridge.y)
+              return res
+            },
+            onPanResponderGrant: grant,
+            onPanResponderMove: (_e, { dy }) => {
+              const to = dy + startY
+              pos.setValue(resisted(to, minY))
+            },
+            onPanResponderEnd: finish,
+            onPanResponderTerminate: finish,
+            onPanResponderRelease: finish,
+          })
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [disableDrag, animateTo, frameSize, positions, setPosition]
+      )
 
       let handleComponent: React.ReactElement | null = null
       let overlayComponent: React.ReactElement | null = null
@@ -472,6 +636,7 @@ export const Sheet = withStaticProperties(
           snapPoints={snapPoints}
           setPosition={setPosition}
           setOpen={setOpen}
+          scrollBridge={scrollBridge}
         >
           {isResizing ? null : overlayComponent}
           {/* no fancy hidden animation etc for handle for now */}
@@ -516,8 +681,11 @@ export const Sheet = withStaticProperties(
     Handle: SheetHandle,
     Frame: SheetFrame,
     Overlay: SheetOverlay,
+    ScrollView: SheetScrollView,
   }
 )
+
+/* -------------------------------------------------------------------------------------------------*/
 
 function getPercentSize(point?: number, frameSize?: number) {
   if (!frameSize) return 0
