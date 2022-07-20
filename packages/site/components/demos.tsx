@@ -1,5 +1,3 @@
-import dynamic from 'next/dynamic'
-
 export { StacksDemo } from '@tamagui/demos'
 export { SheetDemo } from '@tamagui/demos'
 export { ShapesDemo } from '@tamagui/demos'
@@ -18,8 +16,6 @@ export { CardDemo } from '@tamagui/demos'
 export { AvatarDemo } from '@tamagui/demos'
 export { ProgressDemo } from '@tamagui/demos'
 export { ListItemDemo } from '@tamagui/demos'
-
-export const DrawerDemo = dynamic(() => import('./DrawerDemo'))
 
 export { TooltipDemo } from '@tamagui/demos'
 export { PopoverDemo } from '@tamagui/demos'

@@ -78,7 +78,8 @@ export function Header({ floating, disableNew }: { floating?: boolean; disableNe
         </NextLink>
       </XStack>
 
-      <XStack pointerEvents="auto" tag="nav" space="$3">
+      {/* minwidth to prevent layout shift */}
+      <XStack jc="flex-end" miw={204} $xs={{ miw: 120 }} pointerEvents="auto" tag="nav" space="$3">
         {isTakeout ? (
           <XStack ai="center" space="$2">
             <NextLink href="/signin" passHref>

@@ -29,6 +29,7 @@
     "css-minimizer-webpack-plugin": "^4.0.0",
     "esbuild-loader": "^2.19.0",
     "esm-resolve": "^1.0.8",
+    "html-inline-css-webpack-plugin": "^1.11.1",
     "mini-css-extract-plugin": "^2.6.0",
     "next-compose-plugins": "^2.2.1",
     "react-native-svg-web": "^1.0.9",

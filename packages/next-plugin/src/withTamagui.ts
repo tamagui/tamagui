@@ -4,6 +4,7 @@ import type { TamaguiOptions } from '@tamagui/static'
 import browserslist from 'browserslist'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import buildResolver from 'esm-resolve'
+import InlineCSSPlugin from 'html-inline-css-webpack-plugin'
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin'
 import { lazyPostCSS } from 'next/dist/build/webpack/config/blocks/css'
 import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders'
@@ -11,7 +12,10 @@ import { shouldExclude as shouldExcludeDefault } from 'tamagui-loader'
 import webpack from 'webpack'
 
 export type WithTamaguiProps = TamaguiOptions & {
+  disableFontSupport?: boolean
   aliasReactPackages?: boolean
+  includeCSSTest?: RegExp | ((path: string) => boolean)
+  inlineCSS?: boolean
   shouldExtract?: (path: string, projectRoot: string) => boolean | undefined
   shouldExcludeFromServer?: (props: {
     context: string
@@ -113,7 +117,7 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         const excludeExports = tamaguiOptions.excludeReactNativeWebExports
         if (Array.isArray(excludeExports)) {
           try {
-            const regexStr = `\/react-native-web\/.*(${excludeExports.join('|')}).*\/`
+            const regexStr = `react-native-web/.*(${excludeExports.join('|')}).*js`
             const regex = new RegExp(regexStr)
             // console.log(prefix, 'exclude', regexStr)
             webpackConfig.plugins.push(
@@ -254,11 +258,36 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
         )
 
         if (oneOfRule) {
+          if (!tamaguiOptions.disableFontSupport) {
+            // fonts support
+            oneOfRule.oneOf.unshift({
+              test: /\.(woff(2)?|eot|ttf|otf)(\?v=\d+\.\d+\.\d+)?$/,
+              use: [
+                {
+                  loader: require.resolve('url-loader'),
+                  options: {
+                    limit: nextConfig.inlineFontLimit || 8192,
+                    fallback: require.resolve('file-loader'),
+                    publicPath: `${nextConfig.assetPrefix || ''}/_next/static/chunks/fonts/`,
+                    outputPath: `${isServer ? '../' : ''}static/chunks/fonts/`,
+                    name: '[name]-[hash].[ext]',
+                  },
+                },
+              ],
+            })
+          }
+
+          const cssTest =
+            tamaguiOptions.includeCSSTest ??
+            ((file) => {
+              return file.endsWith('.module.css')
+            })
+
           if (!dev) {
             const postCSSLoader = cssLoader[cssLoader.length - 1]
             // replace nextjs picky style rules with simple minicssextract
             oneOfRule.oneOf.unshift({
-              test: /\.css$/i,
+              test: cssTest,
               use: [MiniCSSExtractPlugin.loader, 'css-loader', postCSSLoader],
               sideEffects: true,
             })
@@ -269,9 +298,12 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
                 runtime: false,
               })
             )
+            if (tamaguiOptions.inlineCSS) {
+              webpackConfig.plugins.push(new InlineCSSPlugin())
+            }
           } else {
             oneOfRule.oneOf.unshift({
-              test: /\.css$/i,
+              test: cssTest,
               sideEffects: true,
               use: cssLoader,
             })

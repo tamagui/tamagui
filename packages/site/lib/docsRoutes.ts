@@ -104,11 +104,7 @@ export const docsRoutes = [
   },
 
   {
-    pages: [
-      // { title: 'Drawer', route: '/docs/components/drawer' },
-      // { title: 'Menu', route: '/docs/components/menu' },
-      { title: 'Feather Icons', route: '/docs/components/feather-icons' },
-    ],
+    pages: [{ title: 'Feather Icons', route: '/docs/components/feather-icons' }],
   },
 
   {

@@ -1,6 +1,3 @@
-// export { DrawerDemo } from './DrawerDemo'
-// export { MenuDemo } from './MenuDemo'
-// gorhom bottom-sheet giving kitchen-sink problems
 export { AlertDialogDemo } from './AlertDialogDemo'
 export { AnimationsDemo } from './AnimationsDemo'
 export { AnimationsEnterDemo } from './AnimationsEnterDemo'
