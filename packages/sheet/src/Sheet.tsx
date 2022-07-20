@@ -4,6 +4,7 @@ import {
   Slot,
   TamaguiElement,
   Theme,
+  composeEventHandlers,
   isClient,
   isWeb,
   mergeEvent,
@@ -35,6 +36,8 @@ import React, {
 import {
   Animated,
   GestureResponderEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   PanResponder,
   PanResponderGestureState,
   ScrollView,
@@ -230,7 +233,7 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
         ? recentDys.reduce((a, b, i) => a + b - (recentDys[i - 1] ?? recentDys[0]), 0)
         : 0
       const avgDy = dist / recentDys.length
-      const vy = avgDy * 0.1
+      const vy = avgDy * 0.075
       state.current.dys = []
       scrollBridge.release({
         dy: state.current.dy,
@@ -241,21 +244,22 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
     return (
       <ScrollView
         ref={ref}
-        onScrollBeginDrag={() => {
-          console.log('begin drag')
-        }}
-        scrollEventThrottle={16}
-        scrollEnabled={scrollEnabled}
-        onScroll={(e) => {
-          const { y } = e.nativeEvent.contentOffset
-          scrollBridge.y = y
-          if (y > 0) {
-            scrollBridge.scrollStartY = -1
+        scrollEventThrottle={16} // todo release we can just grab the last dY and estimate vY using a sample of last dYs
+        {...props}
+        scrollEnabled={props.scrollEnabled || scrollEnabled}
+        onScroll={composeEventHandlers<NativeSyntheticEvent<NativeScrollEvent>>(
+          props.onScroll,
+          (e) => {
+            const { y } = e.nativeEvent.contentOffset
+            scrollBridge.y = y
+            if (y > 0) {
+              scrollBridge.scrollStartY = -1
+            }
           }
-        }}
-        onResponderMove={(e) => {
+        )}
+        onResponderMove={composeEventHandlers(props.onResponderMove, (e) => {
           const { pageY } = e.nativeEvent
-          if (scrollBridge.y === 0) {
+          if (scrollBridge.y <= 0) {
             if (scrollBridge.scrollStartY === -1) {
               scrollBridge.scrollStartY = pageY
             }
@@ -273,10 +277,10 @@ export const SheetScrollView = forwardRef<ScrollView, ScrollViewProps>(
               state.current.dys = state.current.dys.slice(-10)
             }
           }
-        }}
-        onResponderRelease={release}
-        // todo release we can just grab the last dY and estimate vY using a sample of last dYs
-        {...props}
+        })}
+        onResponderReject={composeEventHandlers(props.onResponderReject, release)}
+        onResponderTerminate={composeEventHandlers(props.onResponderTerminate, release)}
+        onResponderRelease={composeEventHandlers(props.onResponderRelease, release)}
         style={[
           {
             flex: 1,

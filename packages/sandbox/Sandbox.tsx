@@ -21,6 +21,7 @@ import { Sun } from '@tamagui/feather-icons'
 import React from 'react'
 import { useState } from 'react'
 import { Animated, useColorScheme } from 'react-native'
+import { AppRegistry } from 'react-native'
 import { Anchor, Button, Select, Square, Theme, XStack, YStack, styled } from 'tamagui'
 
 import Tamagui from './tamagui.config'
@@ -34,9 +35,13 @@ export const Sandbox = () => {
   const scheme = useColorScheme()
   const [theme, setTheme] = useState(scheme as any)
 
+  // @ts-ignore
+  const { getStyleElement } = AppRegistry.getApplication('Main')
+
   return (
     <Tamagui.Provider defaultTheme={theme}>
       <link href="/fonts/inter.css" rel="stylesheet" />
+      {getStyleElement()}
 
       <button
         style={{

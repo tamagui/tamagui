@@ -1,7 +1,9 @@
 import { FocusEvent } from 'react';
-import { GestureResponderEvent } from 'react-native';
-export declare type EventHandler<E extends Event | GestureResponderEvent | FocusEvent> = (event: E) => void;
-export declare function composeEventHandlers<E extends Event | GestureResponderEvent | FocusEvent>(og?: EventHandler<E>, next?: EventHandler<E>, { checkDefaultPrevented }?: {
+import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+declare type Events = Event | GestureResponderEvent | FocusEvent | NativeSyntheticEvent<NativeScrollEvent>;
+export declare type EventHandler<E extends Events> = (event: E) => void;
+export declare function composeEventHandlers<E extends Events>(og?: EventHandler<E>, next?: EventHandler<E>, { checkDefaultPrevented }?: {
     checkDefaultPrevented?: boolean | undefined;
 }): (event: E) => void;
+export {};
 //# sourceMappingURL=composeEventHandlers.d.ts.map

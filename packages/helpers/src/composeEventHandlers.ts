@@ -1,16 +1,22 @@
 import { FocusEvent } from 'react'
-import { GestureResponderEvent } from 'react-native'
+import { GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
 
-export type EventHandler<E extends Event | GestureResponderEvent | FocusEvent> = (event: E) => void
+type Events = Event | GestureResponderEvent | FocusEvent | NativeSyntheticEvent<NativeScrollEvent>
 
-export function composeEventHandlers<E extends Event | GestureResponderEvent | FocusEvent>(
+export type EventHandler<E extends Events> = (event: E) => void
+
+export function composeEventHandlers<E extends Events>(
   og?: EventHandler<E>,
   next?: EventHandler<E>,
   { checkDefaultPrevented = true } = {}
 ) {
   return function composedEventHandler(event: E) {
     og?.(event)
-    if (!checkDefaultPrevented || !event.defaultPrevented) {
+    if (
+      !checkDefaultPrevented ||
+      !('defaultPrevented' in event) ||
+      ('defaultPrevented' in event && !event.defaultPrevented)
+    ) {
       return next?.(event)
     }
   }
