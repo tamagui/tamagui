@@ -130,6 +130,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             </YStack>
           </NextLink>
         </XStack>
+
         <Container>{children}</Container>
 
         <Container>

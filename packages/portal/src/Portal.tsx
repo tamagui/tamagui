@@ -18,6 +18,7 @@ export const Portal = ({ host = globalThis.document?.body, ...props }: PortalPro
       // @ts-expect-error ok on web
       position={isWeb ? 'fixed' : 'absolute'}
       maxWidth={isWeb ? '100vw' : '100%'}
+      maxHeight={isWeb ? '100vh' : '100%'}
       {...props}
     />
   )

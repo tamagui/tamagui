@@ -22,6 +22,7 @@ render(
 )
 ```
 
+  - mismatch SSR SelectTrigger due to componentName override
   - button inverse doesn't update on theme change (site)
   - `_active` style offical
     - <SwitchTrack /> gets active theme by default when toggled
