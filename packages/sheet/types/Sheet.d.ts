@@ -3,7 +3,7 @@ import { ScopedProps } from '@tamagui/create-context';
 import { RemoveScroll } from '@tamagui/remove-scroll';
 import { XStackProps } from '@tamagui/stacks';
 import React, { ReactNode } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, ScrollView, ScrollViewProps, View } from 'react-native';
 declare type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;
 export declare type SheetProps = ScopedProps<{
     open?: boolean;
@@ -79,6 +79,7 @@ export declare const SheetOverlayFrame: import("@tamagui/core").TamaguiComponent
 }>;
 export declare type SheetOverlayProps = GetProps<typeof SheetOverlayFrame>;
 export declare const SheetOverlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
+export declare const SheetScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;
 export declare const SheetFrameFrame: import("@tamagui/core").TamaguiComponent<(Omit<import("react-native").ViewProps, "children" | "display"> & import("@tamagui/core").RNWViewProps & import("@tamagui/core").TamaguiComponentPropsBase & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & Omit<{}, "elevation" | "fullscreen"> & {
     readonly fullscreen?: boolean | undefined;
     readonly elevation?: import("@tamagui/core").SizeTokens | undefined;
@@ -156,6 +157,7 @@ export declare const Sheet: ((props: Omit<{
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     } & React.RefAttributes<unknown>>;
     Overlay: ({ __scopeSheet, ...props }: SheetScopedProps<SheetOverlayProps>) => JSX.Element;
+    ScrollView: React.ForwardRefExoticComponent<ScrollViewProps & React.RefAttributes<ScrollView>>;
 };
 declare type SheetControllerContextValue = {
     disableDrag?: boolean;

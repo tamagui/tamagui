@@ -83,6 +83,32 @@ render(
   - maybe <UL /> <LI /> <OL />
   - // TODO infer ref
 
+---
+
+plan for space + display none, two pronged
+
+- web
+  - CSS-only
+  - could just use gap, no?
+  - this handles compiled and not with near-0 overhead
+  - deterministic selectors ~ disp-none, dist-lg-none etc
+  - generate in createTamagui, something like:
+    - .is_spaced > .disp-none + spacer { display: none; }
+    - @media lg { .is_spaced > .disp-lg-none + spacer { display: none; } }
+- native
+  - could just wait for row-gap in native, shouldn't that work with disp none by default?
+  - need to find a prop we can pass to any react-native view that wont error if unused so that non-tamagui views can receive it and basically its null
+  - loop spaced children and add the prop:
+    - a callback of some sort... like onShouldXX except its a fake event that just wraps any existing one
+    - if active we know its spaced and remove it from tamagui
+    - if not tamagui its a null event anyway
+    - then if a child is disp: none at runtime, we call the callback with true/false depending
+    - in the parent if it changes, we setDisplayedElements([0,1,1,1,0]) and remove the Space
+      - where 1 = visible, 0 = invisible
+
+
+---
+
 (potentially 1.0)
   - super short classnames for themes in production
   - Input based on Button for icon/iconAfter
@@ -100,6 +126,8 @@ render(
   - OmitShorthands<> + expandShorthands helper (latter exists already diff name...) (see ActiveCirlce in site)
     - Docs/ability to configure stricted theme values (dont accept anything but tokens)
   - add fonts section to guides
+
+---
 
 takeout:
   - customizable createTheme()
@@ -123,6 +151,8 @@ takeout:
   - <Combobox /> (<SelectInput /> or <InputSelect />)
   - <Scale />
   - List hierarchical (https://developer.apple.com/documentation/swiftui/list)
+
+---
 
 - ornaments system:
     - hooks inside any styled component to add decoration-only elements
@@ -155,6 +185,8 @@ const ornaments = {
 }
 ```
 
+- vite plugin css
+- hoverStyle={{ [XStack]: {} }}
 - next css shaker 
   - loads every page after build and finds all unused styles, produces minimal css
 - <List.Section /> see (https://developer.apple.com/documentation/swiftui/list Section)

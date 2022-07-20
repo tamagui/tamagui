@@ -17,7 +17,6 @@ module.exports = {
     'react/prop-types': 'off',
     'react/display-name': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
-    '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-unused-vars': 'warn',
     'react/no-unescaped-entities': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -28,6 +27,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     'react-hooks/rules-of-hooks': 'off',
     'no-constant-condition': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
   },
   settings: {
     react: {
