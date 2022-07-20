@@ -2,7 +2,6 @@ import { useMedia, withStaticProperties } from '@tamagui/core'
 import { Drawer, DrawerProvider } from '@tamagui/drawer'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { cloneElement, useEffect, useMemo, useState } from 'react'
-import { Popover, YStack } from 'tamagui'
 
 const MenuItem = (props) => {
   return props.children
