@@ -6,7 +6,6 @@ import {
   Slottable,
   TamaguiElement,
   composeEventHandlers,
-  isTamaguiComponent,
   isTamaguiElement,
   isWeb,
   styled,
@@ -356,6 +355,7 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDi
       if (title || description) {
         Alert.alert(title, description, buttons)
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [native, open])
 
     if (native) {

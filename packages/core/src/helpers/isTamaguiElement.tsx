@@ -3,12 +3,12 @@ import React, { isValidElement } from 'react'
 import { StaticConfig } from '../types'
 import { isTamaguiComponent } from './isTamaguiComponent'
 
-export type TamaguiElement = Omit<React.ReactElement, 'type'> & {
-  type: Function & {
+export type TamaguiReactElement = React.ReactElement & {
+  type: {
     staticConfig: StaticConfig
   }
 }
 
-export const isTamaguiElement = (child: any, name?: string): child is TamaguiElement => {
+export const isTamaguiElement = (child: any, name?: string): child is TamaguiReactElement => {
   return isValidElement(child) && isTamaguiComponent(child.type, name)
 }

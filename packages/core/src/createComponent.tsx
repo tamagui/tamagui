@@ -617,8 +617,6 @@ export function createComponent<
     const pressOutKey = handlesPressEvents ? 'onPressOut' : 'onMouseUp'
 
     // check presence to prevent reparenting bugs, allows for onPress={x ? function : undefined} usage
-    // while avoiding reparenting...
-    // once proper reparenting is supported, we can remove this and use that...
     const shouldAttach =
       !asChild &&
       (attachPress ||
