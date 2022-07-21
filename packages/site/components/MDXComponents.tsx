@@ -123,21 +123,36 @@ export const components = {
   h1: (props) => <H1 width="max-content" pos="relative" mb="$2" {...props} />,
 
   h2: ({ children, ...props }) => (
-    <H2 mt="$5" size="$9" letterSpacing={-0.5} data-heading {...props}>
+    <H2
+      pos="relative"
+      width={`fit-content` as any}
+      mt="$5"
+      size="$9"
+      letterSpacing={-0.5}
+      data-heading
+      {...props}
+    >
       {children}
     </H2>
   ),
 
   h3: ({ children, id, ...props }) => (
     <LinkHeading mt="$5" mb="$1" id={id}>
-      <H3 nativeID={id} size="$8" data-heading {...props}>
+      <H3
+        pos="relative"
+        width={`fit-content` as any}
+        nativeID={id}
+        size="$8"
+        data-heading
+        {...props}
+      >
         {children}
       </H3>
       {getNonTextChildren(children)}
     </LinkHeading>
   ),
 
-  h4: (props) => <H4 mt="$6" {...props} />,
+  h4: (props) => <H4 pos="relative" width={`fit-content` as any} mt="$6" {...props} />,
   h5: (props) => <H5 mt="$5" {...props} />,
 
   p: (props) => (

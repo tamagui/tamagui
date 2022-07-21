@@ -96,6 +96,7 @@ type SheetContextValue = Required<
   contentRef: React.RefObject<TamaguiElement>
   dismissOnSnapToBottom: boolean
   scrollBridge: ScrollBridge
+  modal: boolean
 }
 
 const [createSheetContext, createSheetScope] = createContextScope(SHEET_NAME)
@@ -186,7 +187,7 @@ export const SheetOverlay = SheetOverlayFrame.extractable(
     const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
     return (
       <RemoveScroll
-        enabled={context.open}
+        enabled={context.open && context.modal}
         as={Slot}
         allowPinchZoom={context.allowPinchZoom}
         shards={[context.contentRef]}
@@ -341,7 +342,7 @@ export const Sheet = withStaticProperties(
         animationConfig,
         dismissOnSnapToBottom = false,
         disableDrag: disableDragProp,
-        modal,
+        modal = false,
         allowPinchZoom,
       } = props
 
@@ -629,6 +630,7 @@ export const Sheet = withStaticProperties(
 
       const contents = (
         <SheetProvider
+          modal={modal}
           contentRef={contentRef}
           dismissOnOverlayPress={dismissOnOverlayPress}
           dismissOnSnapToBottom={dismissOnSnapToBottom}
