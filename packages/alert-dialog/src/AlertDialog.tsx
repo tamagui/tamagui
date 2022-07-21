@@ -6,7 +6,10 @@ import {
   Slottable,
   TamaguiElement,
   composeEventHandlers,
+  isTamaguiComponent,
+  isTamaguiElement,
   isWeb,
+  styled,
   withStaticProperties,
 } from '@tamagui/core'
 import { Scope, createContextScope } from '@tamagui/create-context'
@@ -30,7 +33,13 @@ import {
   DialogWarningProvider,
   createDialogScope,
 } from '@tamagui/dialog'
+import { YStack } from '@tamagui/stacks'
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialog
+ * -----------------------------------------------------------------------------------------------*/
+import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
+import { Alert } from 'react-native'
 
 const ROOT_NAME = 'AlertDialog'
 
@@ -41,7 +50,9 @@ const [createAlertDialogContext, createAlertDialogScope] = createContextScope(RO
 
 const useDialogScope = createDialogScope()
 
-interface AlertDialogProps extends Omit<DialogProps, 'modal'> {}
+type AlertDialogProps = DialogProps & {
+  native?: boolean
+}
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogTrigger
@@ -50,8 +61,22 @@ const TRIGGER_NAME = 'AlertDialogTrigger'
 
 interface AlertDialogTriggerProps extends DialogTriggerProps {}
 
+const NativeAlertDialogTriggerFrame = styled(YStack, {
+  name: 'DialogTrigger',
+})
+
 const AlertDialogTrigger = React.forwardRef<TamaguiElement, AlertDialogTriggerProps>(
   (props: ScopedProps<AlertDialogTriggerProps>, forwardedRef) => {
+    if (props['__native']) {
+      const { __native, onPress, __onPress, ...rest } = props as any
+      return (
+        <NativeAlertDialogTriggerFrame
+          {...rest}
+          onPress={composeEventHandlers(onPress, __onPress)}
+        />
+      )
+    }
+
     const { __scopeAlertDialog, ...triggerProps } = props
     const dialogScope = useDialogScope(__scopeAlertDialog)
     return <DialogTrigger {...dialogScope} {...triggerProps} ref={forwardedRef} />
@@ -264,14 +289,110 @@ For more information, see https://tamagui.dev/docs/components/alert-dialog`
   return null
 }
 
-/* -------------------------------------------------------------------------------------------------
- * AlertDialog
- * -----------------------------------------------------------------------------------------------*/
-
 const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDialogProps>) => {
-  const { __scopeAlertDialog, ...alertDialogProps } = props
+  const { __scopeAlertDialog, native, ...alertDialogProps } = props
   const dialogScope = useDialogScope(__scopeAlertDialog)
+
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    const [open, setOpen] = useControllableState({
+      prop: props.open,
+      defaultProp: props.defaultOpen || false,
+      onChange: props.onOpenChange,
+    })
+
+    let triggerElement: any = null
+    let title = ''
+    let description = ''
+    const buttons: {
+      text: string
+      onPress: (value?: string | undefined) => void
+      style?: 'default' | 'cancel' | 'destructive'
+    }[] = []
+
+    forEachChildDeep(React.Children.toArray(props.children), (child) => {
+      if (!React.isValidElement(child)) return false
+      const name = isTamaguiElement(child)
+        ? child.type.staticConfig.componentName
+        : (child.type['displayName'] as string | undefined)
+      switch (name) {
+        case TRIGGER_NAME: {
+          triggerElement = React.cloneElement(child as any, {
+            __native: true,
+          })
+          return false
+        }
+        case TITLE_NAME: {
+          title = getStringChildren(child)
+          return false
+        }
+        case DESCRIPTION_NAME: {
+          description = getStringChildren(child)
+          return false
+        }
+        case ACTION_NAME:
+        case CANCEL_NAME: {
+          const style = name === ACTION_NAME ? 'default' : 'cancel'
+          const text = getStringChildren(child)
+          const onPress = () => {
+            ;(child.props as any)?.onPress?.({ native: true })
+            setOpen(false)
+          }
+          buttons.push({
+            style,
+            text,
+            // @ts-ignore
+            onPress,
+          })
+          return false
+        }
+        default: {
+          return true
+        }
+      }
+    })
+
+    React.useLayoutEffect(() => {
+      if (!open || !native) return
+      if (title || description) {
+        Alert.alert(title, description, buttons)
+      }
+    }, [native, open])
+
+    if (native) {
+      return React.cloneElement(triggerElement, {
+        __onPress: () => {
+          setOpen(true)
+        },
+      })
+    }
+  }
+
   return <Dialog {...dialogScope} {...alertDialogProps} modal={true} />
+}
+
+function forEachChildDeep(
+  children: React.ReactNode[],
+  onChild: (el: React.ReactElement) => boolean
+) {
+  for (const child of children) {
+    if (!React.isValidElement(child)) continue
+    if (!onChild(child)) continue
+    if (child.props.children) {
+      forEachChildDeep(React.Children.toArray(child.props.children), onChild)
+    }
+  }
+}
+
+function getStringChildren(child: React.ReactElement) {
+  let string = ''
+  forEachChildDeep(React.Children.toArray(child), (child) => {
+    if (typeof child.props.children === 'string') {
+      string = child.props.children
+      return false
+    }
+    return true
+  })
+  return string
 }
 
 const AlertDialog = withStaticProperties(AlertDialogInner, {

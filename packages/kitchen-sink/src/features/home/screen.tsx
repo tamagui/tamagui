@@ -1,6 +1,6 @@
 import { ChevronRight, Moon, Sun } from '@tamagui/feather-icons'
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { Alert, ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,

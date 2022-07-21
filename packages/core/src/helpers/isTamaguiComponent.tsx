@@ -1,6 +1,6 @@
 import { StaticConfig, StaticConfigParsed } from '../types'
 
-export function isTamaguiComponent<A extends any>(
+export function isTamaguiComponent<A>(
   comp: A,
   name?: string
 ): comp is A & {

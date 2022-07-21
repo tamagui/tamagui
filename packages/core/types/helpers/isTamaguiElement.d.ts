@@ -1,3 +1,9 @@
 import React from 'react';
-export declare const isTamaguiElement: (child: any, name?: string) => child is React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+import { StaticConfig } from '../types';
+export declare type TamaguiElement = Omit<React.ReactElement, 'type'> & {
+    type: Function & {
+        staticConfig: StaticConfig;
+    };
+};
+export declare const isTamaguiElement: (child: any, name?: string) => child is TamaguiElement;
 //# sourceMappingURL=isTamaguiElement.d.ts.map

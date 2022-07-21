@@ -7,7 +7,7 @@
   "scripts": {
     "start": "EXPO_NO_TELEMETRY=true expo start --dev-client --offline",
     "start:android": "yarn start --android",
-    "start:clean": "watchman watch-del-all; rm -r $TMPDIR/metro-cache; yarn start -c",
+    "start:clean": "watchman watch-del-all & rm -r $TMPDIR/metro-cache & yarn start -c",
     "android": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:android",
     "ios": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=native yarn expo run:ios",
     "web": "EXPO_NO_TELEMETRY=true TAMAGUI_TARGET=web yarn expo start --web",
