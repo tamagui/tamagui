@@ -24,7 +24,6 @@
     "lint-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
-    "@react-native-community/blur": "^3.6.0",
     "@tamagui/alert-dialog": "^1.0.1-beta.115",
     "@tamagui/animate-presence": "^1.0.1-beta.115",
     "@tamagui/avatar": "^1.0.1-beta.115",

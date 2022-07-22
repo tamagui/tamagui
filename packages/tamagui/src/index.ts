@@ -29,6 +29,25 @@ export * from '@tamagui/use-controllable-state'
 export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 
+export * from './createTamagui'
+export * from './viewTypes'
+
+export * from './hooks/useKeyboardDismissable'
+
+export * from './views/Anchor'
+export * from './views/EnsureFlexed'
+export * from './views/Fieldset'
+export * from './views/Form'
+export * from './views/Grid'
+export * from './views/Input'
+export * from './views/Group'
+export * from './views/Layouts'
+export * from './views/LinearGradient'
+// export * from './views/Skeleton'
+export * from './views/Spinner'
+export * from './views/TextArea'
+export * from './views/VisuallyHidden'
+
 // since we overlap with StackProps and potentially others
 // lets be explicit on what gets exported
 export type {
@@ -153,26 +172,3 @@ export {
   useThemeName,
   useUnmountEffect,
 } from '@tamagui/core'
-
-export * from './createTamagui'
-export * from './viewTypes'
-
-export * from './hooks/useKeyboardDismissable'
-
-export * from './views/Anchor'
-export * from './views/BlurView'
-export * from './views/EnsureFlexed'
-export * from './views/Fieldset'
-export * from './views/Form'
-export * from './views/Grid'
-export * from './views/Hoverable'
-export * from './views/Input'
-export * from './views/Group'
-export * from './views/Layouts'
-export * from './views/LinearGradient'
-// export * from './views/Skeleton'
-export * from './views/Spinner'
-export * from './views/Table'
-export * from './views/TextArea'
-export * from './views/Toast'
-export * from './views/VisuallyHidden'

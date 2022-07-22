@@ -1,7 +1,7 @@
 import React from 'react';
 import { StaticConfig } from '../types';
 export declare type TamaguiReactElement = React.ReactElement & {
-    type: Function & {
+    type: {
         staticConfig: StaticConfig;
     };
 };
