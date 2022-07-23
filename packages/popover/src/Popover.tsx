@@ -398,7 +398,6 @@ export const Popover = withStaticProperties(
     )
 
     return (
-      // @ts-expect-error
       <FloatingOverrideContext.Provider value={useFloatingContext}>
         <Popper {...popperScope} {...restProps}>
           <PopoverProviderInternal

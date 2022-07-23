@@ -42,6 +42,15 @@ const bodyFont = createInterFont(
   }
 )
 
+// testing
+const body_cn = createInterFont(
+  {},
+  {
+    sizeSize: (size) => Math.round(size * 10),
+    sizeLineHeight: (size) => Math.round(size * 10),
+  }
+)
+
 const config = createTamagui({
   animations,
   defaultTheme: 'light',
@@ -50,7 +59,9 @@ const config = createTamagui({
   shorthands,
   fonts: {
     heading: headingFont,
+    heading_cn: body_cn,
     body: bodyFont,
+    body_cn,
   },
   themes,
   tokens,

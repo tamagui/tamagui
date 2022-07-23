@@ -34,13 +34,13 @@ async function clean() {
     ])
   } catch {}
   if (shouldCleanBuildOnly) {
-    console.log('» cleaned', pkg.name)
+    console.log('🔹 cleaned', pkg.name)
     process.exit(0)
   }
   try {
     await Promise.allSettled([fs.remove('node_modules')])
   } catch {}
-  console.log('» cleaned', pkg.name)
+  console.log('🔹 cleaned', pkg.name)
   process.exit(0)
 }
 
@@ -73,7 +73,7 @@ if (shouldWatch) {
 build()
 
 async function build() {
-  if (process.env.DEBUG) console.log('»', pkg.name)
+  if (process.env.DEBUG) console.log('🔹', pkg.name)
   try {
     const start = Date.now()
     await Promise.all([

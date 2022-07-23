@@ -25,6 +25,7 @@ import {
   TamaguiInternalConfig,
   ThemeObject,
 } from '../types'
+import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types'
 import { createMediaStyle } from './createMediaStyle'
 import { fixStyles } from './expandStyles'
 import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
@@ -76,6 +77,7 @@ type StyleSplitter = (
   theme: ThemeObject,
   state: SplitStyleState,
   defaultClassNames?: any,
+  languageContext?: LanguageContextType,
   debug?: DebugProp
 ) => {
   pseudos: PseudoStyles
@@ -109,6 +111,7 @@ export const getSplitStyles: StyleSplitter = (
   theme,
   state,
   defaultClassNames,
+  languageContext,
   debug
 ) => {
   conf = conf || getConfig()
@@ -159,7 +162,7 @@ export const getSplitStyles: StyleSplitter = (
           }
           if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
             // prettier-ignore
-            console.log('  » getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
+            console.log('  🔹 getSplitStyles mergeClassName transform', { key, val, namespace, transform, insertedTransforms })
           }
         }
         transforms = transforms || {}
@@ -290,10 +293,19 @@ export const getSplitStyles: StyleSplitter = (
     const expanded =
       isMedia || isPseudo
         ? [[keyInit, valInit]]
-        : staticConfig.propMapper(keyInit, valInit, theme, props, state, undefined, debug)
+        : staticConfig.propMapper(
+            keyInit,
+            valInit,
+            theme,
+            props,
+            state,
+            languageContext,
+            undefined,
+            debug
+          )
 
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
-      console.log('  » getSplitStyles', keyInit, valInit, expanded)
+      console.log('  🔹 getSplitStyles', keyInit, valInit, expanded)
     }
 
     if (!expanded) {
@@ -328,7 +340,17 @@ export const getSplitStyles: StyleSplitter = (
           continue
         }
         pseudos[key] = pseudos[key] || {}
-        pseudos[key] = getSubStyle(val, staticConfig, theme, props, state, conf, true)
+        pseudos[key] = getSubStyle(
+          key,
+          val,
+          staticConfig,
+          theme,
+          props,
+          state,
+          conf,
+          languageContext,
+          true
+        )
         if (shouldDoClasses) {
           const pseudoStyles = getAtomicStyle(pseudos[key], pseudoDescriptors[key])
           for (const style of pseudoStyles) {
@@ -362,11 +384,20 @@ export const getSplitStyles: StyleSplitter = (
         // TODO test proxy here instead of merge
         // THIS USED TO PROXY BACK TO REGULAR PROPS BUT THAT IS THE WRONG BEHAVIOR
         // we avoid passing in default props for media queries because that would confuse things like SizableText.size:
-        const mediaStyle = getSubStyle(val, staticConfig, theme, props, state, conf)
+        const mediaStyle = getSubStyle(
+          key,
+          val,
+          staticConfig,
+          theme,
+          props,
+          state,
+          conf,
+          languageContext
+        )
 
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           // prettier-ignore
-          console.log('  » getSplitStyles mediaStyle', { mediaKey, mediaStyle, props, shouldDoClasses })
+          console.log('  🔹 getSplitStyles mediaStyle', { mediaKey, mediaStyle, props, shouldDoClasses })
         }
 
         if (shouldDoClasses) {
@@ -516,7 +547,7 @@ export const getSplitStyles: StyleSplitter = (
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     if (typeof document !== 'undefined') {
       // prettier-ignore
-      console.log('  » getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state, rulesToInsert })
+      console.log('  🔹 getSplitStyles out', { style, pseudos, medias, classNames, viewProps, state, rulesToInsert })
     }
   }
 
@@ -530,20 +561,73 @@ export const getSplitStyles: StyleSplitter = (
   }
 }
 
+/**
+ * getSubStyle calls propMapper with props
+ * those should be specific to the substyle, but fallback to the base props
+ * so given props:
+ *
+ *   { fontSize: 12, color: 'red', $sm: { color: 'blue' } }
+ *
+ * getSubStyle props should be a proxy that ends up like:
+ *
+ *   { fontSize: 12, color: 'blue' }
+ *
+ * and to avoid re-creating it over and over, use a WeakMap
+ */
+const propProxies = new WeakMap()
+function getSubStyleProxiedProps(baseProps: Object, specificProps: Object) {
+  if (!specificProps) {
+    // functional variants may want to eventually do something like:
+    // have a hooks-like rule (no conditionals)
+    // then we run them once on compile with a proxy to capture the keys accessed
+    // then add those keys to `inlineProps` so we know we must inline them
+    // for now this will trigger because compiled away
+    // right now also we don't pass in any pre-extracted styled() props but we should pass them in..
+    return baseProps
+  }
+  // can cache based only on specific it's always referentially consistent with base
+  if (propProxies.has(specificProps)) {
+    return propProxies.get(specificProps)
+  }
+  const next = new Proxy(specificProps, {
+    ownKeys() {
+      return [...new Set([...Object.keys(baseProps), ...Object.keys(specificProps)])]
+    },
+    has(_, key) {
+      return key in specificProps || key in baseProps
+    },
+    get(_, key) {
+      return specificProps[key] ?? baseProps[key]
+    },
+  })
+  propProxies.set(specificProps, next)
+  return next
+}
+
 export const getSubStyle = (
+  subKey: string,
   styleIn: Object,
   staticConfig: StaticConfigParsed,
   theme: ThemeObject,
   props: any,
   state: SplitStyleState,
   conf: TamaguiInternalConfig,
+  languageContext?: FontLanguageProps,
   avoidDefaultProps?: boolean
 ): ViewStyle => {
   const styleOut: ViewStyle = {}
   for (let key in styleIn) {
     const val = styleIn[key]
     key = conf.shorthands[key] || key
-    const expanded = staticConfig.propMapper(key, val, theme, props, state, avoidDefaultProps)
+    const expanded = staticConfig.propMapper(
+      key,
+      val,
+      theme,
+      getSubStyleProxiedProps(props, props[subKey]),
+      state,
+      languageContext,
+      avoidDefaultProps
+    )
     if (!expanded) continue
     for (const [skey, sval] of expanded) {
       if (skey in stylePropsTransform) {

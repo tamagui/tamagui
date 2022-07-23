@@ -1,81 +1,25 @@
 import { configListeners, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
-import { SpacerProps } from './createComponent'
 import { themeToVariableToValueMap } from './createTheme'
 import { Variable, createVariable, isVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
+import { getFontLanguage } from './helpers/getFontLanguage'
 import { getInsertedRules } from './helpers/insertStyleRule'
 import {
   registerCSSVariable,
-  tokenRules,
   tokensValueToVariable,
+  variableToCSS,
 } from './helpers/registerCSSVariable'
 import { GetThemeUnwrapped } from './hooks/getThemeUnwrapped'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
-import {
-  AnimationDriver,
-  CreateTamaguiConfig,
-  GenericTamaguiConfig,
-  MediaQueryKey,
-  StackProps,
-  TamaguiInternalConfig,
-  TextProps,
-  ThemeObject,
-} from './types'
-
-export type CreateTamaguiProps =
-  // user then re-defines the types after createTamagui returns the typed object they want
-  Partial<Omit<GenericTamaguiConfig, 'themes' | 'tokens' | 'animations' | 'fonts'>> & {
-    animations?: AnimationDriver<any>
-    fonts: GenericTamaguiConfig['fonts']
-    tokens: GenericTamaguiConfig['tokens']
-    themes: {
-      [key: string]: {
-        [key: string]: string | number | Variable
-      }
-    }
-
-    defaultProps?: Record<string, any> & {
-      Stack?: StackProps
-      Text?: TextProps
-      Spacer?: SpacerProps
-    }
-
-    // for the first render, determines which media queries are true
-    // useful for SSR
-    mediaQueryDefaultActive?: MediaQueryKey[]
-
-    // what's between each CSS style rule, set to "\n" to be easier to read
-    // defaults: "\n" when NODE_ENV=development, "" otherwise
-    cssStyleSeparator?: string
-
-    // (Advanced)
-    // on the web, tamagui treats `dark` and `light` themes as special and
-    // generates extra CSS to avoid having to re-render the entire page.
-    // this CSS relies on specificity hacks that multiply by your sub-themes.
-    // this sets the maxiumum number of nested dark/light themes you can do
-    // defaults to 3 for a balance, but can be higher if you nest them deeply.
-    maxDarkLightNesting?: number
-
-    // adds @media(prefers-color-scheme) media queries for dark/light
-    shouldAddPrefersColorThemes?: boolean
-
-    // only if you put the theme classname on the html element we have to generate diff
-    themeClassNameOnRoot?: boolean
-  }
+import { CreateTamaguiProps, InferTamaguiConfig, TamaguiInternalConfig, ThemeObject } from './types'
 
 // config is re-run by the @tamagui/static, dont double validate
 const createdConfigs = new WeakMap<any, boolean>()
-
-export type InferTamaguiConfig<Conf extends CreateTamaguiProps> = Conf extends Partial<
-  CreateTamaguiConfig<infer A, infer B, infer C, infer D, infer E, infer F>
->
-  ? TamaguiInternalConfig<A, B, C, D, E, F>
-  : unknown
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
   config: Conf
@@ -86,13 +30,13 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   if (process.env.NODE_ENV === 'development') {
     if (!config.tokens) {
-      throw new Error(`No tokens provided to Tamagui config`)
+      throw new Error(`Must define tokens`)
     }
     if (!config.themes) {
-      throw new Error(`No themes provided to Tamagui config`)
+      throw new Error(`Must define themes`)
     }
     if (!config.fonts) {
-      throw new Error(`No fonts provided to Tamagui config`)
+      throw new Error(`Must define fonts`)
     }
   }
 
@@ -101,7 +45,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultActive: config.mediaQueryDefaultActive,
   })
 
-  const fontTokens = createVariables(config.fonts!)
+  const fontTokens = createVariables(config.fonts!, '', true)
   const fontsParsed = (() => {
     const res = {} as typeof fontTokens
     for (const familyName in fontTokens) {
@@ -112,23 +56,50 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
   const themeConfig = (() => {
     const themes = { ...config.themes }
-    const cssRules: string[] = []
+    const cssRuleSets: string[] = []
 
     if (isWeb) {
+      const declarations: string[] = []
+      const fontDeclarations: Record<
+        string,
+        { name: string; declarations: string[]; language?: string }
+      > = {}
+
       for (const key in config.tokens) {
         for (const skey in config.tokens[key]) {
           const val = config.tokens[key][skey]
           registerCSSVariable(val)
+          declarations.push(variableToCSS(val))
         }
       }
 
       for (const key in fontsParsed) {
         const fontParsed = fontsParsed[key]
-        registerFontVariables(fontParsed)
+        const [name, language] = key.includes('_') ? key.split('_') : [key]
+        const fdecs = registerFontVariables(fontParsed)
+        fontDeclarations[name] = { name: name.slice(1), declarations: fdecs, language }
       }
 
       const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
-      cssRules.push(`:root {${sep}${[...tokenRules].join(`;${sep}`)}${sep}}`)
+
+      function declarationsToRuleSet(decs: string[], selector = '') {
+        return `:root${selector} {${sep}${[...decs].join(`;${sep}`)}${sep}}`
+      }
+
+      // non-font
+      cssRuleSets.push(declarationsToRuleSet(declarations))
+
+      // fonts
+      if (fontDeclarations) {
+        for (const key in fontDeclarations) {
+          const { name, declarations, language } = fontDeclarations[key]
+          const ruleSet = declarationsToRuleSet(
+            declarations,
+            language ? ` .t_lang-${name}-${language}` : undefined
+          )
+          cssRuleSets.push(ruleSet)
+        }
+      }
     }
 
     // special case for SSR
@@ -231,12 +202,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
         const rootSep = config.themeClassNameOnRoot ? '' : ' '
         const css = `${selectors.map((x) => `:root${rootSep}${x}`).join(', ')} {${vars}}`
-        cssRules.push(css)
+        cssRuleSets.push(css)
 
         if (config.shouldAddPrefersColorThemes && isDarkOrLightBase) {
           // add media prefers for dark/light base
           const isDark = themeName.startsWith('dark')
-          cssRules.push(
+          cssRuleSets.push(
             `@media(prefers-color-scheme: ${isDark ? 'dark' : 'light'}) {
       body { background:${theme.background}; color: ${theme.color} }
       :root {${vars} } 
@@ -262,6 +233,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 
       if (!parents.length) continue
 
+      // proxy fallback values to parent theme values
       const og = themes[themeName]
       themes[themeName] = new Proxy(og, {
         get(target, key) {
@@ -287,12 +259,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     }
 
     tokensValueToVariable.clear()
-    Object.freeze(cssRules)
-    const css = cssRules.join('\n')
+    Object.freeze(cssRuleSets)
+    const css = cssRuleSets.join('\n')
 
     return {
       themes,
-      cssRules,
+      cssRuleSets,
       css,
     }
   })()
@@ -311,6 +283,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   const next: TamaguiInternalConfig = {
+    fontLanguages: [],
     defaultTheme: 'light',
     animations: {} as any,
     shorthands: {},
@@ -381,18 +354,3 @@ function ensureThemeVariable(theme: any, key: string) {
     }
   }
 }
-
-// for quick testing types:
-// const x = createTamagui({
-//   shorthands: {},
-//   media: {},
-//   themes: {},
-//   tokens: {
-//     font: {},
-//     color: {},
-//     radius: {},
-//     size: {},
-//     space: {},
-//     zIndex: {},
-//   },
-// })

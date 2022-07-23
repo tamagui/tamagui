@@ -16,6 +16,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'react/prop-types': 'off',
     'react/display-name': 'off',
+    'no-debugger': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     'react/no-unescaped-entities': 'off',

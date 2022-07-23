@@ -41,7 +41,7 @@ export const useTheme = (
 
   if (process.env.NODE_ENV === 'development') {
     if (props?.debug === 'verbose') {
-      console.log('  » useTheme', { themeName, componentName, name, className })
+      console.log('  🔹 useTheme', { themeName, componentName, name, className })
     }
   }
 
@@ -105,18 +105,13 @@ export const useTheme = (
         if (key[0] === '$') {
           key = key.slice(1)
         }
-        const val = themeManager.getValue(key)
-        if (val) {
-          if (state.current.isRendering) {
-            state.current.keys.add(key)
-            if (process.env.NODE_ENV === 'development') {
-              if (props?.['debug'] === 'verbose') {
-                console.log('  » tracking theme key', key)
-              }
-            }
+        if (state.current.isRendering && !state.current.keys.has(key)) {
+          state.current.keys.add(key)
+          if (process.env.NODE_ENV === 'development' && props?.['debug'] === 'verbose') {
+            console.log('  🔸 tracking theme', key)
           }
-          return val
         }
+        return themeManager.getValue(key)
       },
     })
   }, [name, theme, className])

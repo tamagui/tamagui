@@ -20,13 +20,6 @@ import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButt
 import { SelectViewport } from './SelectViewport'
 import { ScopedProps, SelectContextValue, SelectProps } from './types'
 
-// Cross browser fixes for pinch-zooming/backdrop-filter 🙄
-const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) || ''
-export const isFirefox = userAgent.toLowerCase().includes('firefox')
-export function getVisualOffsetTop() {
-  return !/^((?!chrome|android).)*safari/i.test(userAgent) ? visualViewport?.offsetTop ?? 0 : 0
-}
-
 /* -------------------------------------------------------------------------------------------------
  * SelectTrigger
  * -----------------------------------------------------------------------------------------------*/

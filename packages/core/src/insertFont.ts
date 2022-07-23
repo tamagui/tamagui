@@ -2,17 +2,20 @@ import { setConfigFont } from './conf'
 import { createFont } from './createFont'
 import { Variable } from './createVariable'
 import { DeepVariableObject, createVariables } from './createVariables'
-import { registerCSSVariable } from './helpers/registerCSSVariable'
+import { registerCSSVariable, variableToCSS } from './helpers/registerCSSVariable'
 import { GenericFont } from './types'
 
+/**
+ * Runtime dynamic insert font
+ */
 export function insertFont<A extends GenericFont>(name: string, fontIn: A): DeepVariableObject<A> {
   const font = createFont(fontIn)
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
   if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
-    const css = registerFontVariables(parsed, true)
+    const css = registerFontVariables(parsed)
     const style = document.createElement('style')
-    style.innerText = `:root {${css}}`
+    style.innerText = `:root {${css.join(';')}}`
     style.setAttribute('data-tamagui-font', name)
     document.head.appendChild(style)
   }
@@ -41,20 +44,22 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
   return parsed
 }
 
-export function registerFontVariables(parsedFont: any, collect = false) {
-  let vals = ''
+export function registerFontVariables(parsedFont: any) {
+  const vals: string[] = []
   for (const fkey in parsedFont) {
     if (fkey === 'family') {
-      const val = registerCSSVariable(parsedFont[fkey])
-      if (collect) vals += val + ';'
+      const val = parsedFont[fkey]
+      registerCSSVariable(val)
+      vals.push(variableToCSS(val))
     } else {
       for (const fskey in parsedFont[fkey]) {
         const fval = parsedFont[fkey][fskey]
         if (typeof fval === 'string') {
           // no need to add its a theme reference like "$borderColor"
         } else {
-          const val = registerCSSVariable(parsedFont[fkey][fskey])
-          if (collect) vals += val + ';'
+          const val = parsedFont[fkey][fskey]
+          registerCSSVariable(val)
+          vals.push(variableToCSS(val))
         }
       }
     }

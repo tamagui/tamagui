@@ -867,6 +867,7 @@ export function createExtractor() {
                   staticConfig.defaultProps,
                   { resolveVariablesAs: 'auto' },
                   undefined,
+                  undefined,
                   shouldPrintDebug
                 )
 
@@ -1484,6 +1485,7 @@ export function createExtractor() {
                           defaultTheme,
                           completeProps,
                           { ...state, resolveVariablesAs: 'auto' },
+                          undefined,
                           undefined,
                           shouldPrintDebug
                         ) || []

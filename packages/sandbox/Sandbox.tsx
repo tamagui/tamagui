@@ -3,26 +3,10 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import {
-  AlertDialogDemo,
-  AnimationsDemo,
-  AnimationsPresenceDemo,
-  ButtonDemo,
-  DialogDemo,
-  PopoverDemo,
-  SelectDemo,
-  SeparatorDemo,
-  SheetDemo,
-  SliderDemo,
-  SwitchDemo,
-  TooltipDemo,
-} from '@tamagui/demos'
-import { Sun } from '@tamagui/feather-icons'
-import React from 'react'
-import { useState } from 'react'
-import { Animated, useColorScheme } from 'react-native'
-import { AppRegistry } from 'react-native'
-import { Anchor, Button, Select, Square, Theme, XStack, YStack, styled } from 'tamagui'
+import { SelectDemo } from '@tamagui/demos'
+import React, { useState } from 'react'
+import { AppRegistry, useColorScheme } from 'react-native'
+import { FontLanguage, Paragraph } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -67,6 +51,14 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
+        <FontLanguage heading="default" body="cn">
+          <Paragraph fos={100} fontFamily="$body">
+            hello 🇨🇳
+          </Paragraph>
+        </FontLanguage>
+
+        <Paragraph fontFamily="$body">hello english</Paragraph>
+
         {/* <AnimationsDemo /> */}
         {/* <AnimationsPresenceDemo /> */}
         {/* <SeparatorDemo /> */}
@@ -75,18 +67,16 @@ export const Sandbox = () => {
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        <SelectDemo />
+        {/* <SelectDemo /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>
-          <Square size={100} bc="red" />
-          <Square $lg={{ display: 'none' }} size={100} bc="red" />
-          <Square size={100} bc="red" />
-          <Square size={100} bc="red" />
+          <Square size={50} bc="red" />
+          <Square $sm={{ display: 'none' }} size={50} bc="red" />
+          <Square size={50} bc="red" />
+          <Square disp="none" size={50} bc="red" />
+          <Square size={50} bc="red" />
         </XStack> */}
-        {/* <Theme name="dark">
-          <ButtonDemo />
-        </Theme> */}
       </div>
     </Tamagui.Provider>
   )

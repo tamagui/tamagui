@@ -16,7 +16,6 @@ import * as React from 'react'
 
 import { FALLBACK_THRESHOLD, MIN_HEIGHT, SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
 import { SelectProvider, useSelectContext } from './context'
-import { getVisualOffsetTop, isFirefox } from './Select'
 import { ScopedProps, SelectProps } from './types'
 
 export type SelectImplProps = ScopedProps<SelectProps> & {
@@ -508,4 +507,12 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           ) : null} */}
     </SelectProvider>
   )
+}
+
+// Cross browser fixes for pinch-zooming/backdrop-filter 🙄
+const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) || ''
+const isFirefox = userAgent.toLowerCase().includes('firefox')
+
+function getVisualOffsetTop() {
+  return !/^((?!chrome|android).)*safari/i.test(userAgent) ? visualViewport?.offsetTop ?? 0 : 0
 }

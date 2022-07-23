@@ -4,6 +4,7 @@ import { Alert, ScrollView } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
+  FontLanguage,
   H1,
   ListItem,
   ListItemProps,
@@ -32,7 +33,9 @@ export function HomeScreen() {
     // @ts-expect-error
     <ScrollView>
       <YStack bc="$backgroundStrong" p="$3" pb="$8" f={1} space>
-        <H1 size="$9">Demos</H1>
+        <H1 fontFamily="$heading" size="$9">
+          Demos
+        </H1>
 
         {/* fix media + space */}
         {/* 

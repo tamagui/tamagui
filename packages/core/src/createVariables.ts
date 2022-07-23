@@ -14,12 +14,16 @@ export type DeepVariableObject<A extends DeepTokenObject> = {
 
 export const createVariables = <A extends DeepTokenObject>(
   tokens: A,
-  parentPath = ''
+  parentPath = '',
+  isFont = false
 ): DeepVariableObject<A> => {
   const res: any = {}
   for (const key in tokens) {
-    let val = tokens[key]
-    const name = parentPath ? `${parentPath}-${key}` : key
+    const val = tokens[key]
+    let name = parentPath ? `${parentPath}-${key}` : key
+    if (isFont && name.includes('_')) {
+      name = name.replace(/_[a-z0-9]+/i, '')
+    }
     if (isVariable(val)) {
       res[key] = val
     } else if (val && typeof val === 'object') {

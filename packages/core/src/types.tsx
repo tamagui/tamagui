@@ -17,6 +17,7 @@ import {
 import { Variable } from './createVariable'
 import { ResolveVariableTypes } from './helpers/createPropMapper'
 import { RNWTextProps, RNWViewProps } from './types-rnw'
+import { FontLanguageProps } from './views/FontLanguage.types'
 import { ThemeProviderProps } from './views/ThemeProvider'
 
 export type SpaceDirection = 'vertical' | 'horizontal' | 'both'
@@ -122,9 +123,7 @@ type GenericMedia<K extends string = string> = {
   }
 }
 
-export type GenericFonts = {
-  [key: string]: GenericFont
-}
+export type GenericFonts = Record<string, GenericFont>
 
 type GenericAnimations = {
   [key: string]:
@@ -157,15 +156,66 @@ export type CreateTamaguiConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts
-> = Partial<Pick<ThemeProviderProps, 'defaultTheme' | 'disableRootThemeClass'>> & {
-  fonts: F
+> = {
+  fonts: RemoveLanguagePostfixes<F>
+  fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[]
   tokens: A
   themes: B
   shorthands: C
   media: D
   animations: AnimationDriver<E>
-  defaultProps?: Record<string, Object>
 }
+
+type GetLanguagePostfix<Set> = Set extends string
+  ? Set extends `${string}_${infer Postfix}`
+    ? Postfix
+    : never
+  : never
+
+type OmitLanguagePostfix<Set> = Set extends string
+  ? Set extends `${infer Prefix}_${string}`
+    ? Prefix
+    : Set
+  : never
+
+type RemoveLanguagePostfixes<F extends GenericFonts> = {
+  [Key in OmitLanguagePostfix<keyof F>]: F[Key]
+}
+
+type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
+
+// test RemoveLanguagePostfixes
+// type x = CreateTamaguiConfig<any, any, any, any, any, {
+//   body: any,
+//   body_en: any
+// }>['fonts']
+
+type ConfProps<
+  A extends GenericTokens,
+  B extends GenericThemes,
+  C extends GenericShorthands = GenericShorthands,
+  D extends GenericMedia = GenericMedia,
+  E extends GenericAnimations = GenericAnimations,
+  F extends GenericFonts = GenericFonts
+> = {
+  tokens: A
+  themes: B
+  shorthands?: C
+  media?: D
+  animations?: AnimationDriver<E>
+  fonts: F
+}
+
+export type InferTamaguiConfig<Conf> = Conf extends ConfProps<
+  infer A,
+  infer B,
+  infer C,
+  infer D,
+  infer E,
+  infer F
+>
+  ? TamaguiInternalConfig<A, B, C, D, E, F>
+  : unknown
 
 // for use in creation functions so it doesnt get overwrtitten
 export type GenericTamaguiConfig = CreateTamaguiConfig<
@@ -184,12 +234,64 @@ export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
 export type ThemeName = GetAltThemeNames<keyof Themes>
-// export type ThemeNameWithSubThemes = GetSubThemes<ThemeName>
 export type ThemeKeys = keyof ThemeObject
 export type ThemeTokens = `$${ThemeKeys}`
 export type AnimationKeys = Omit<GetAnimationKeys<TamaguiConfig>, number>
+export type FontLanguages = ArrayIntersection<TamaguiConfig['fontLanguages']>
+
+type ArrayIntersection<A extends any[]> = A[keyof A]
 
 type GetAltThemeNames<S> = (S extends `${string}_${infer Alt}` ? GetAltThemeNames<Alt> : S) | S
+
+export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & {
+  size?: number | SpaceTokens | null
+  flex?: boolean | number
+  direction?: SpaceDirection
+}
+
+export type CreateTamaguiProps = {
+  shorthands?: GenericTamaguiConfig['shorthands']
+  media?: GenericTamaguiConfig['media']
+  animations?: AnimationDriver<any>
+  fonts: GenericTamaguiConfig['fonts']
+  tokens: GenericTamaguiConfig['tokens']
+  themes: {
+    [key: string]: {
+      [key: string]: string | number | Variable
+    }
+  }
+
+  defaultTheme?: string
+  disableRootThemeClass?: boolean
+
+  defaultProps?: Record<string, any> & {
+    Stack?: StackProps
+    Text?: TextProps
+    Spacer?: SpacerProps
+  }
+
+  // for the first render, determines which media queries are true
+  // useful for SSR
+  mediaQueryDefaultActive?: MediaQueryKey[]
+
+  // what's between each CSS style rule, set to "\n" to be easier to read
+  // defaults: "\n" when NODE_ENV=development, "" otherwise
+  cssStyleSeparator?: string
+
+  // (Advanced)
+  // on the web, tamagui treats `dark` and `light` themes as special and
+  // generates extra CSS to avoid having to re-render the entire page.
+  // this CSS relies on specificity hacks that multiply by your sub-themes.
+  // this sets the maxiumum number of nested dark/light themes you can do
+  // defaults to 3 for a balance, but can be higher if you nest them deeply.
+  maxDarkLightNesting?: number
+
+  // adds @media(prefers-color-scheme) media queries for dark/light
+  shouldAddPrefersColorThemes?: boolean
+
+  // only if you put the theme classname on the html element we have to generate diff
+  themeClassNameOnRoot?: boolean
+}
 
 // this is the config generated via createTamagui()
 export type TamaguiInternalConfig<
@@ -199,20 +301,21 @@ export type TamaguiInternalConfig<
   D extends GenericMedia = GenericMedia,
   E extends GenericAnimations = GenericAnimations,
   F extends GenericFonts = GenericFonts
-> = CreateTamaguiConfig<A, B, C, D, E, F> & {
-  // TODO need to make it this but this breaks types, revisit
-  // animations: E //AnimationDriver<E>
-  Provider: (props: TamaguiProviderProps) => any
-  // with $ prefixes for fast lookups (one time cost at startup vs every render)
-  tokensParsed: CreateTokens<Variable>
-  themeConfig: any
-  fontsParsed: GenericFonts
-  getCSS: () => string
-  parsed: boolean
+> = Omit<CreateTamaguiProps, keyof GenericTamaguiConfig> &
+  CreateTamaguiConfig<A, B, C, D, E, F> & {
+    // TODO need to make it this but this breaks types, revisit
+    // animations: E //AnimationDriver<E>
+    Provider: (props: TamaguiProviderProps) => any
+    // with $ prefixes for fast lookups (one time cost at startup vs every render)
+    tokensParsed: CreateTokens<Variable>
+    themeConfig: any
+    fontsParsed: GenericFonts
+    getCSS: () => string
+    parsed: boolean
 
-  // just passed in from CreateTamaguiProps
-  themeClassNameOnRoot?: boolean
-}
+    // just passed in from CreateTamaguiProps
+    themeClassNameOnRoot?: boolean
+  }
 
 export type GetAnimationKeys<A extends GenericTamaguiConfig> = keyof A['animations']['animations']
 
@@ -537,6 +640,7 @@ export type PropMapper = (
   theme: ThemeObject,
   props: Record<string, any>,
   state: Partial<SplitStyleState>,
+  languageContext?: FontLanguageProps,
   avoidDefaultProps?: boolean,
   debug?: DebugProp
 ) => undefined | [string, any][]

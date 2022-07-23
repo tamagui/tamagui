@@ -29,6 +29,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { getConfig, onConfiguredOnce } from './conf'
 import { stackDefaultStyles } from './constants/constants'
 import { isWeb, useIsomorphicLayoutEffect } from './constants/platform'
+import { FontLanguageContext } from './contexts/FontLanguageContext'
 import { assignNativePropsToWeb } from './helpers/assignNativePropsToWeb'
 import { getReturnVariablesAs } from './helpers/createPropMapper'
 import { createShallowUpdate } from './helpers/createShallowUpdate'
@@ -37,7 +38,6 @@ import { SplitStyleResult, insertSplitStyles, useSplitStyles } from './helpers/g
 import { getAllSelectors } from './helpers/insertStyleRule'
 import { mergeProps } from './helpers/mergeProps'
 import { proxyThemeVariables } from './helpers/proxyThemeVariables'
-import { wrapThemeManagerContext } from './helpers/wrapThemeManagerContext'
 import { useFeatures } from './hooks/useFeatures'
 import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
@@ -46,7 +46,7 @@ import { Pressability } from './Pressability'
 import {
   SpaceDirection,
   SpaceTokens,
-  StackProps,
+  SpacerProps,
   StaticConfig,
   StaticConfigParsed,
   StylableComponent,
@@ -59,6 +59,7 @@ import {
 } from './types'
 import { Slot, mergeEvent } from './views/Slot'
 import { TextAncestorContext } from './views/TextAncestorContext'
+import { wrapThemeManagerContext } from './views/Theme'
 
 React['keep']
 
@@ -161,6 +162,7 @@ export function createComponent<
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
     const [state, setState] = useState<TamaguiComponentState>(defaultComponentState)
     const setStateShallow = createShallowUpdate(setState)
+    const languageContext = useContext(FontLanguageContext)
 
     // allow forcing a pseudo state on
     if (propsIn.forceStyle) {
@@ -185,12 +187,14 @@ export function createComponent<
             hasTextAncestor,
             resolveVariablesAs: 'value',
           } as const)
+
     const splitStyles = useSplitStyles(
       props,
       staticConfig,
       theme,
       splitStyleState,
       props.asChild ? null : initialSplitStyles.classNames,
+      languageContext || undefined,
       props['debug']
     )
 
@@ -968,6 +972,7 @@ export function createComponent<
         keepVariantsAsProps: true,
       },
       undefined,
+      undefined,
       debug
     )
 
@@ -1068,11 +1073,6 @@ Unspaced['isUnspaced'] = true
 // dont used styled() here to avoid circular deps
 // keep inline to avoid circular deps
 
-export type SpacerProps = Omit<StackProps, 'flex' | 'direction' | 'size'> & {
-  size?: number | SpaceTokens | null
-  flex?: boolean | number
-  direction?: SpaceDirection
-}
 export const Spacer = createComponent<SpacerProps>({
   memo: true,
   componentName: 'Spacer',

@@ -1,9 +1,8 @@
-import React, { memo, useEffect, useMemo, useRef } from 'react'
+import React, { memo, useMemo } from 'react'
 
 import { isWeb } from '../constants/platform'
-import { wrapThemeManagerContext } from '../helpers/wrapThemeManagerContext'
-import { useChangeThemeEffect } from '../hooks/useTheme'
-import { ThemeProps } from '../hooks/useTheme'
+import { ThemeProps, useChangeThemeEffect } from '../hooks/useTheme'
+import { ThemeManager, ThemeManagerContext } from '../ThemeManager'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -51,3 +50,21 @@ export const Theme = memo(function Theme(props: ThemeProps) {
 
   return contents
 })
+
+export function wrapThemeManagerContext(
+  children: any,
+  themeManager?: ThemeManager | null,
+  shouldSetChildrenThemeToParent?: boolean
+) {
+  return themeManager ? (
+    <ThemeManagerContext.Provider value={themeManager}>
+      {shouldSetChildrenThemeToParent ? (
+        <Theme name={themeManager.parentName}>{children}</Theme>
+      ) : (
+        children
+      )}
+    </ThemeManagerContext.Provider>
+  ) : (
+    children
+  )
+}

@@ -1557,7 +1557,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_blue_alt1: {
+        readonly light_blue_alt3: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -1867,317 +1867,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_blue_alt3: {
-            background: any;
-            backgroundStrong: any;
-            backgroundSoft: any;
-            backgroundHover: any;
-            backgroundPress: any;
-            backgroundFocus: any;
-            backgroundTransparent: string | import("@tamagui/core").Variable<any>;
-            color: any;
-            colorHover: any;
-            colorPress: any;
-            colorFocus: any;
-            colorTranslucent: string | import("@tamagui/core").Variable<any>;
-            colorMid: string | import("@tamagui/core").Variable<any>;
-            shadowColor: string | import("@tamagui/core").Variable<any>;
-            shadowColorHover: string | import("@tamagui/core").Variable<any>;
-            shadowColorPress: string | import("@tamagui/core").Variable<any>;
-            shadowColorFocus: string | import("@tamagui/core").Variable<any>;
-            borderColor: string | import("@tamagui/core").Variable<any>;
-            borderColorHover: string | import("@tamagui/core").Variable<any>;
-            borderColorPress: string | import("@tamagui/core").Variable<any>;
-            borderColorFocus: string | import("@tamagui/core").Variable<any>;
-            teal1: string | import("@tamagui/core").Variable<any>;
-            teal2: string | import("@tamagui/core").Variable<any>;
-            teal3: string | import("@tamagui/core").Variable<any>;
-            teal4: string | import("@tamagui/core").Variable<any>;
-            teal5: string | import("@tamagui/core").Variable<any>;
-            teal6: string | import("@tamagui/core").Variable<any>;
-            teal7: string | import("@tamagui/core").Variable<any>;
-            teal8: string | import("@tamagui/core").Variable<any>;
-            teal9: string | import("@tamagui/core").Variable<any>;
-            teal10: string | import("@tamagui/core").Variable<any>;
-            teal11: string | import("@tamagui/core").Variable<any>;
-            teal12: string | import("@tamagui/core").Variable<any>;
-            yellow1: string | import("@tamagui/core").Variable<any>;
-            yellow2: string | import("@tamagui/core").Variable<any>;
-            yellow3: string | import("@tamagui/core").Variable<any>;
-            yellow4: string | import("@tamagui/core").Variable<any>;
-            yellow5: string | import("@tamagui/core").Variable<any>;
-            yellow6: string | import("@tamagui/core").Variable<any>;
-            yellow7: string | import("@tamagui/core").Variable<any>;
-            yellow8: string | import("@tamagui/core").Variable<any>;
-            yellow9: string | import("@tamagui/core").Variable<any>;
-            yellow10: string | import("@tamagui/core").Variable<any>;
-            yellow11: string | import("@tamagui/core").Variable<any>;
-            yellow12: string | import("@tamagui/core").Variable<any>;
-            violet1: string | import("@tamagui/core").Variable<any>;
-            violet2: string | import("@tamagui/core").Variable<any>;
-            violet3: string | import("@tamagui/core").Variable<any>;
-            violet4: string | import("@tamagui/core").Variable<any>;
-            violet5: string | import("@tamagui/core").Variable<any>;
-            violet6: string | import("@tamagui/core").Variable<any>;
-            violet7: string | import("@tamagui/core").Variable<any>;
-            violet8: string | import("@tamagui/core").Variable<any>;
-            violet9: string | import("@tamagui/core").Variable<any>;
-            violet10: string | import("@tamagui/core").Variable<any>;
-            violet11: string | import("@tamagui/core").Variable<any>;
-            violet12: string | import("@tamagui/core").Variable<any>;
-            red1: string | import("@tamagui/core").Variable<any>;
-            red2: string | import("@tamagui/core").Variable<any>;
-            red3: string | import("@tamagui/core").Variable<any>;
-            red4: string | import("@tamagui/core").Variable<any>;
-            red5: string | import("@tamagui/core").Variable<any>;
-            red6: string | import("@tamagui/core").Variable<any>;
-            red7: string | import("@tamagui/core").Variable<any>;
-            red8: string | import("@tamagui/core").Variable<any>;
-            red9: string | import("@tamagui/core").Variable<any>;
-            red10: string | import("@tamagui/core").Variable<any>;
-            red11: string | import("@tamagui/core").Variable<any>;
-            red12: string | import("@tamagui/core").Variable<any>;
-            purple1: string | import("@tamagui/core").Variable<any>;
-            purple2: string | import("@tamagui/core").Variable<any>;
-            purple3: string | import("@tamagui/core").Variable<any>;
-            purple4: string | import("@tamagui/core").Variable<any>;
-            purple5: string | import("@tamagui/core").Variable<any>;
-            purple6: string | import("@tamagui/core").Variable<any>;
-            purple7: string | import("@tamagui/core").Variable<any>;
-            purple8: string | import("@tamagui/core").Variable<any>;
-            purple9: string | import("@tamagui/core").Variable<any>;
-            purple10: string | import("@tamagui/core").Variable<any>;
-            purple11: string | import("@tamagui/core").Variable<any>;
-            purple12: string | import("@tamagui/core").Variable<any>;
-            pink1: string | import("@tamagui/core").Variable<any>;
-            pink2: string | import("@tamagui/core").Variable<any>;
-            pink3: string | import("@tamagui/core").Variable<any>;
-            pink4: string | import("@tamagui/core").Variable<any>;
-            pink5: string | import("@tamagui/core").Variable<any>;
-            pink6: string | import("@tamagui/core").Variable<any>;
-            pink7: string | import("@tamagui/core").Variable<any>;
-            pink8: string | import("@tamagui/core").Variable<any>;
-            pink9: string | import("@tamagui/core").Variable<any>;
-            pink10: string | import("@tamagui/core").Variable<any>;
-            pink11: string | import("@tamagui/core").Variable<any>;
-            pink12: string | import("@tamagui/core").Variable<any>;
-            orange1: string | import("@tamagui/core").Variable<any>;
-            orange2: string | import("@tamagui/core").Variable<any>;
-            orange3: string | import("@tamagui/core").Variable<any>;
-            orange4: string | import("@tamagui/core").Variable<any>;
-            orange5: string | import("@tamagui/core").Variable<any>;
-            orange6: string | import("@tamagui/core").Variable<any>;
-            orange7: string | import("@tamagui/core").Variable<any>;
-            orange8: string | import("@tamagui/core").Variable<any>;
-            orange9: string | import("@tamagui/core").Variable<any>;
-            orange10: string | import("@tamagui/core").Variable<any>;
-            orange11: string | import("@tamagui/core").Variable<any>;
-            orange12: string | import("@tamagui/core").Variable<any>;
-            green1: string | import("@tamagui/core").Variable<any>;
-            green2: string | import("@tamagui/core").Variable<any>;
-            green3: string | import("@tamagui/core").Variable<any>;
-            green4: string | import("@tamagui/core").Variable<any>;
-            green5: string | import("@tamagui/core").Variable<any>;
-            green6: string | import("@tamagui/core").Variable<any>;
-            green7: string | import("@tamagui/core").Variable<any>;
-            green8: string | import("@tamagui/core").Variable<any>;
-            green9: string | import("@tamagui/core").Variable<any>;
-            green10: string | import("@tamagui/core").Variable<any>;
-            green11: string | import("@tamagui/core").Variable<any>;
-            green12: string | import("@tamagui/core").Variable<any>;
-            grayA1: string | import("@tamagui/core").Variable<any>;
-            grayA2: string | import("@tamagui/core").Variable<any>;
-            grayA3: string | import("@tamagui/core").Variable<any>;
-            grayA4: string | import("@tamagui/core").Variable<any>;
-            grayA5: string | import("@tamagui/core").Variable<any>;
-            grayA6: string | import("@tamagui/core").Variable<any>;
-            grayA7: string | import("@tamagui/core").Variable<any>;
-            grayA8: string | import("@tamagui/core").Variable<any>;
-            grayA9: string | import("@tamagui/core").Variable<any>;
-            grayA10: string | import("@tamagui/core").Variable<any>;
-            grayA11: string | import("@tamagui/core").Variable<any>;
-            grayA12: string | import("@tamagui/core").Variable<any>;
-            gray1: string | import("@tamagui/core").Variable<any>;
-            gray2: string | import("@tamagui/core").Variable<any>;
-            gray3: string | import("@tamagui/core").Variable<any>;
-            gray4: string | import("@tamagui/core").Variable<any>;
-            gray5: string | import("@tamagui/core").Variable<any>;
-            gray6: string | import("@tamagui/core").Variable<any>;
-            gray7: string | import("@tamagui/core").Variable<any>;
-            gray8: string | import("@tamagui/core").Variable<any>;
-            gray9: string | import("@tamagui/core").Variable<any>;
-            gray10: string | import("@tamagui/core").Variable<any>;
-            gray11: string | import("@tamagui/core").Variable<any>;
-            gray12: string | import("@tamagui/core").Variable<any>;
-            blue1: string | import("@tamagui/core").Variable<any>;
-            blue2: string | import("@tamagui/core").Variable<any>;
-            blue3: string | import("@tamagui/core").Variable<any>;
-            blue4: string | import("@tamagui/core").Variable<any>;
-            blue5: string | import("@tamagui/core").Variable<any>;
-            blue6: string | import("@tamagui/core").Variable<any>;
-            blue7: string | import("@tamagui/core").Variable<any>;
-            blue8: string | import("@tamagui/core").Variable<any>;
-            blue9: string | import("@tamagui/core").Variable<any>;
-            blue10: string | import("@tamagui/core").Variable<any>;
-            blue11: string | import("@tamagui/core").Variable<any>;
-            blue12: string | import("@tamagui/core").Variable<any>;
-        };
-        readonly light_gray_alt1: {
-            background: any;
-            backgroundStrong: any;
-            backgroundSoft: any;
-            backgroundHover: any;
-            backgroundPress: any;
-            backgroundFocus: any;
-            backgroundTransparent: string | import("@tamagui/core").Variable<any>;
-            color: any;
-            colorHover: any;
-            colorPress: any;
-            colorFocus: any;
-            colorTranslucent: string | import("@tamagui/core").Variable<any>;
-            colorMid: string | import("@tamagui/core").Variable<any>;
-            shadowColor: string | import("@tamagui/core").Variable<any>;
-            shadowColorHover: string | import("@tamagui/core").Variable<any>;
-            shadowColorPress: string | import("@tamagui/core").Variable<any>;
-            shadowColorFocus: string | import("@tamagui/core").Variable<any>;
-            borderColor: string | import("@tamagui/core").Variable<any>;
-            borderColorHover: string | import("@tamagui/core").Variable<any>;
-            borderColorPress: string | import("@tamagui/core").Variable<any>;
-            borderColorFocus: string | import("@tamagui/core").Variable<any>;
-            teal1: string | import("@tamagui/core").Variable<any>;
-            teal2: string | import("@tamagui/core").Variable<any>;
-            teal3: string | import("@tamagui/core").Variable<any>;
-            teal4: string | import("@tamagui/core").Variable<any>;
-            teal5: string | import("@tamagui/core").Variable<any>;
-            teal6: string | import("@tamagui/core").Variable<any>;
-            teal7: string | import("@tamagui/core").Variable<any>;
-            teal8: string | import("@tamagui/core").Variable<any>;
-            teal9: string | import("@tamagui/core").Variable<any>;
-            teal10: string | import("@tamagui/core").Variable<any>;
-            teal11: string | import("@tamagui/core").Variable<any>;
-            teal12: string | import("@tamagui/core").Variable<any>;
-            yellow1: string | import("@tamagui/core").Variable<any>;
-            yellow2: string | import("@tamagui/core").Variable<any>;
-            yellow3: string | import("@tamagui/core").Variable<any>;
-            yellow4: string | import("@tamagui/core").Variable<any>;
-            yellow5: string | import("@tamagui/core").Variable<any>;
-            yellow6: string | import("@tamagui/core").Variable<any>;
-            yellow7: string | import("@tamagui/core").Variable<any>;
-            yellow8: string | import("@tamagui/core").Variable<any>;
-            yellow9: string | import("@tamagui/core").Variable<any>;
-            yellow10: string | import("@tamagui/core").Variable<any>;
-            yellow11: string | import("@tamagui/core").Variable<any>;
-            yellow12: string | import("@tamagui/core").Variable<any>;
-            violet1: string | import("@tamagui/core").Variable<any>;
-            violet2: string | import("@tamagui/core").Variable<any>;
-            violet3: string | import("@tamagui/core").Variable<any>;
-            violet4: string | import("@tamagui/core").Variable<any>;
-            violet5: string | import("@tamagui/core").Variable<any>;
-            violet6: string | import("@tamagui/core").Variable<any>;
-            violet7: string | import("@tamagui/core").Variable<any>;
-            violet8: string | import("@tamagui/core").Variable<any>;
-            violet9: string | import("@tamagui/core").Variable<any>;
-            violet10: string | import("@tamagui/core").Variable<any>;
-            violet11: string | import("@tamagui/core").Variable<any>;
-            violet12: string | import("@tamagui/core").Variable<any>;
-            red1: string | import("@tamagui/core").Variable<any>;
-            red2: string | import("@tamagui/core").Variable<any>;
-            red3: string | import("@tamagui/core").Variable<any>;
-            red4: string | import("@tamagui/core").Variable<any>;
-            red5: string | import("@tamagui/core").Variable<any>;
-            red6: string | import("@tamagui/core").Variable<any>;
-            red7: string | import("@tamagui/core").Variable<any>;
-            red8: string | import("@tamagui/core").Variable<any>;
-            red9: string | import("@tamagui/core").Variable<any>;
-            red10: string | import("@tamagui/core").Variable<any>;
-            red11: string | import("@tamagui/core").Variable<any>;
-            red12: string | import("@tamagui/core").Variable<any>;
-            purple1: string | import("@tamagui/core").Variable<any>;
-            purple2: string | import("@tamagui/core").Variable<any>;
-            purple3: string | import("@tamagui/core").Variable<any>;
-            purple4: string | import("@tamagui/core").Variable<any>;
-            purple5: string | import("@tamagui/core").Variable<any>;
-            purple6: string | import("@tamagui/core").Variable<any>;
-            purple7: string | import("@tamagui/core").Variable<any>;
-            purple8: string | import("@tamagui/core").Variable<any>;
-            purple9: string | import("@tamagui/core").Variable<any>;
-            purple10: string | import("@tamagui/core").Variable<any>;
-            purple11: string | import("@tamagui/core").Variable<any>;
-            purple12: string | import("@tamagui/core").Variable<any>;
-            pink1: string | import("@tamagui/core").Variable<any>;
-            pink2: string | import("@tamagui/core").Variable<any>;
-            pink3: string | import("@tamagui/core").Variable<any>;
-            pink4: string | import("@tamagui/core").Variable<any>;
-            pink5: string | import("@tamagui/core").Variable<any>;
-            pink6: string | import("@tamagui/core").Variable<any>;
-            pink7: string | import("@tamagui/core").Variable<any>;
-            pink8: string | import("@tamagui/core").Variable<any>;
-            pink9: string | import("@tamagui/core").Variable<any>;
-            pink10: string | import("@tamagui/core").Variable<any>;
-            pink11: string | import("@tamagui/core").Variable<any>;
-            pink12: string | import("@tamagui/core").Variable<any>;
-            orange1: string | import("@tamagui/core").Variable<any>;
-            orange2: string | import("@tamagui/core").Variable<any>;
-            orange3: string | import("@tamagui/core").Variable<any>;
-            orange4: string | import("@tamagui/core").Variable<any>;
-            orange5: string | import("@tamagui/core").Variable<any>;
-            orange6: string | import("@tamagui/core").Variable<any>;
-            orange7: string | import("@tamagui/core").Variable<any>;
-            orange8: string | import("@tamagui/core").Variable<any>;
-            orange9: string | import("@tamagui/core").Variable<any>;
-            orange10: string | import("@tamagui/core").Variable<any>;
-            orange11: string | import("@tamagui/core").Variable<any>;
-            orange12: string | import("@tamagui/core").Variable<any>;
-            green1: string | import("@tamagui/core").Variable<any>;
-            green2: string | import("@tamagui/core").Variable<any>;
-            green3: string | import("@tamagui/core").Variable<any>;
-            green4: string | import("@tamagui/core").Variable<any>;
-            green5: string | import("@tamagui/core").Variable<any>;
-            green6: string | import("@tamagui/core").Variable<any>;
-            green7: string | import("@tamagui/core").Variable<any>;
-            green8: string | import("@tamagui/core").Variable<any>;
-            green9: string | import("@tamagui/core").Variable<any>;
-            green10: string | import("@tamagui/core").Variable<any>;
-            green11: string | import("@tamagui/core").Variable<any>;
-            green12: string | import("@tamagui/core").Variable<any>;
-            grayA1: string | import("@tamagui/core").Variable<any>;
-            grayA2: string | import("@tamagui/core").Variable<any>;
-            grayA3: string | import("@tamagui/core").Variable<any>;
-            grayA4: string | import("@tamagui/core").Variable<any>;
-            grayA5: string | import("@tamagui/core").Variable<any>;
-            grayA6: string | import("@tamagui/core").Variable<any>;
-            grayA7: string | import("@tamagui/core").Variable<any>;
-            grayA8: string | import("@tamagui/core").Variable<any>;
-            grayA9: string | import("@tamagui/core").Variable<any>;
-            grayA10: string | import("@tamagui/core").Variable<any>;
-            grayA11: string | import("@tamagui/core").Variable<any>;
-            grayA12: string | import("@tamagui/core").Variable<any>;
-            gray1: string | import("@tamagui/core").Variable<any>;
-            gray2: string | import("@tamagui/core").Variable<any>;
-            gray3: string | import("@tamagui/core").Variable<any>;
-            gray4: string | import("@tamagui/core").Variable<any>;
-            gray5: string | import("@tamagui/core").Variable<any>;
-            gray6: string | import("@tamagui/core").Variable<any>;
-            gray7: string | import("@tamagui/core").Variable<any>;
-            gray8: string | import("@tamagui/core").Variable<any>;
-            gray9: string | import("@tamagui/core").Variable<any>;
-            gray10: string | import("@tamagui/core").Variable<any>;
-            gray11: string | import("@tamagui/core").Variable<any>;
-            gray12: string | import("@tamagui/core").Variable<any>;
-            blue1: string | import("@tamagui/core").Variable<any>;
-            blue2: string | import("@tamagui/core").Variable<any>;
-            blue3: string | import("@tamagui/core").Variable<any>;
-            blue4: string | import("@tamagui/core").Variable<any>;
-            blue5: string | import("@tamagui/core").Variable<any>;
-            blue6: string | import("@tamagui/core").Variable<any>;
-            blue7: string | import("@tamagui/core").Variable<any>;
-            blue8: string | import("@tamagui/core").Variable<any>;
-            blue9: string | import("@tamagui/core").Variable<any>;
-            blue10: string | import("@tamagui/core").Variable<any>;
-            blue11: string | import("@tamagui/core").Variable<any>;
-            blue12: string | import("@tamagui/core").Variable<any>;
-        };
-        readonly light_gray_alt2: {
+        readonly light_blue_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -2487,7 +2177,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_green_alt1: {
+        readonly light_gray_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -2642,7 +2332,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_green_alt2: {
+        readonly light_gray_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -2952,7 +2642,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_orange_alt1: {
+        readonly light_green_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -3107,7 +2797,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_orange_alt2: {
+        readonly light_green_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -3417,7 +3107,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_pink_alt1: {
+        readonly light_orange_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -3572,7 +3262,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_pink_alt2: {
+        readonly light_orange_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -3882,7 +3572,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_purple_alt1: {
+        readonly light_pink_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -4037,7 +3727,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_purple_alt2: {
+        readonly light_pink_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -4347,7 +4037,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_red_alt1: {
+        readonly light_purple_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -4502,7 +4192,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_red_alt2: {
+        readonly light_purple_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -4812,7 +4502,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_yellow_alt1: {
+        readonly light_red_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -4967,7 +4657,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_yellow_alt2: {
+        readonly light_red_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -5277,7 +4967,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_teal_alt1: {
+        readonly light_yellow_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -5432,7 +5122,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_teal_alt2: {
+        readonly light_yellow_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -5742,7 +5432,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_blue_alt1: {
+        readonly light_teal_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -5897,7 +5587,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_blue_alt2: {
+        readonly light_teal_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -6207,7 +5897,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_gray_alt1: {
+        readonly dark_blue_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -6362,7 +6052,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_gray_alt2: {
+        readonly dark_blue_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -6672,7 +6362,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_green_alt1: {
+        readonly dark_gray_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -6827,7 +6517,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_green_alt2: {
+        readonly dark_gray_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -7137,7 +6827,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_orange_alt1: {
+        readonly dark_green_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -7292,7 +6982,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_orange_alt2: {
+        readonly dark_green_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -7602,7 +7292,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_pink_alt1: {
+        readonly dark_orange_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -7757,7 +7447,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_pink_alt2: {
+        readonly dark_orange_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -8067,7 +7757,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_purple_alt1: {
+        readonly dark_pink_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -8222,7 +7912,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_purple_alt2: {
+        readonly dark_pink_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -8532,7 +8222,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_red_alt1: {
+        readonly dark_purple_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -8687,7 +8377,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_red_alt2: {
+        readonly dark_purple_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -8997,7 +8687,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_yellow_alt1: {
+        readonly dark_red_alt2: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -9152,7 +8842,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_yellow_alt2: {
+        readonly dark_red_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -9462,7 +9152,317 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_teal_alt1: {
+        readonly dark_yellow_alt2: {
+            background: any;
+            backgroundStrong: any;
+            backgroundSoft: any;
+            backgroundHover: any;
+            backgroundPress: any;
+            backgroundFocus: any;
+            backgroundTransparent: string | import("@tamagui/core").Variable<any>;
+            color: any;
+            colorHover: any;
+            colorPress: any;
+            colorFocus: any;
+            colorTranslucent: string | import("@tamagui/core").Variable<any>;
+            colorMid: string | import("@tamagui/core").Variable<any>;
+            shadowColor: string | import("@tamagui/core").Variable<any>;
+            shadowColorHover: string | import("@tamagui/core").Variable<any>;
+            shadowColorPress: string | import("@tamagui/core").Variable<any>;
+            shadowColorFocus: string | import("@tamagui/core").Variable<any>;
+            borderColor: string | import("@tamagui/core").Variable<any>;
+            borderColorHover: string | import("@tamagui/core").Variable<any>;
+            borderColorPress: string | import("@tamagui/core").Variable<any>;
+            borderColorFocus: string | import("@tamagui/core").Variable<any>;
+            teal1: string | import("@tamagui/core").Variable<any>;
+            teal2: string | import("@tamagui/core").Variable<any>;
+            teal3: string | import("@tamagui/core").Variable<any>;
+            teal4: string | import("@tamagui/core").Variable<any>;
+            teal5: string | import("@tamagui/core").Variable<any>;
+            teal6: string | import("@tamagui/core").Variable<any>;
+            teal7: string | import("@tamagui/core").Variable<any>;
+            teal8: string | import("@tamagui/core").Variable<any>;
+            teal9: string | import("@tamagui/core").Variable<any>;
+            teal10: string | import("@tamagui/core").Variable<any>;
+            teal11: string | import("@tamagui/core").Variable<any>;
+            teal12: string | import("@tamagui/core").Variable<any>;
+            yellow1: string | import("@tamagui/core").Variable<any>;
+            yellow2: string | import("@tamagui/core").Variable<any>;
+            yellow3: string | import("@tamagui/core").Variable<any>;
+            yellow4: string | import("@tamagui/core").Variable<any>;
+            yellow5: string | import("@tamagui/core").Variable<any>;
+            yellow6: string | import("@tamagui/core").Variable<any>;
+            yellow7: string | import("@tamagui/core").Variable<any>;
+            yellow8: string | import("@tamagui/core").Variable<any>;
+            yellow9: string | import("@tamagui/core").Variable<any>;
+            yellow10: string | import("@tamagui/core").Variable<any>;
+            yellow11: string | import("@tamagui/core").Variable<any>;
+            yellow12: string | import("@tamagui/core").Variable<any>;
+            violet1: string | import("@tamagui/core").Variable<any>;
+            violet2: string | import("@tamagui/core").Variable<any>;
+            violet3: string | import("@tamagui/core").Variable<any>;
+            violet4: string | import("@tamagui/core").Variable<any>;
+            violet5: string | import("@tamagui/core").Variable<any>;
+            violet6: string | import("@tamagui/core").Variable<any>;
+            violet7: string | import("@tamagui/core").Variable<any>;
+            violet8: string | import("@tamagui/core").Variable<any>;
+            violet9: string | import("@tamagui/core").Variable<any>;
+            violet10: string | import("@tamagui/core").Variable<any>;
+            violet11: string | import("@tamagui/core").Variable<any>;
+            violet12: string | import("@tamagui/core").Variable<any>;
+            red1: string | import("@tamagui/core").Variable<any>;
+            red2: string | import("@tamagui/core").Variable<any>;
+            red3: string | import("@tamagui/core").Variable<any>;
+            red4: string | import("@tamagui/core").Variable<any>;
+            red5: string | import("@tamagui/core").Variable<any>;
+            red6: string | import("@tamagui/core").Variable<any>;
+            red7: string | import("@tamagui/core").Variable<any>;
+            red8: string | import("@tamagui/core").Variable<any>;
+            red9: string | import("@tamagui/core").Variable<any>;
+            red10: string | import("@tamagui/core").Variable<any>;
+            red11: string | import("@tamagui/core").Variable<any>;
+            red12: string | import("@tamagui/core").Variable<any>;
+            purple1: string | import("@tamagui/core").Variable<any>;
+            purple2: string | import("@tamagui/core").Variable<any>;
+            purple3: string | import("@tamagui/core").Variable<any>;
+            purple4: string | import("@tamagui/core").Variable<any>;
+            purple5: string | import("@tamagui/core").Variable<any>;
+            purple6: string | import("@tamagui/core").Variable<any>;
+            purple7: string | import("@tamagui/core").Variable<any>;
+            purple8: string | import("@tamagui/core").Variable<any>;
+            purple9: string | import("@tamagui/core").Variable<any>;
+            purple10: string | import("@tamagui/core").Variable<any>;
+            purple11: string | import("@tamagui/core").Variable<any>;
+            purple12: string | import("@tamagui/core").Variable<any>;
+            pink1: string | import("@tamagui/core").Variable<any>;
+            pink2: string | import("@tamagui/core").Variable<any>;
+            pink3: string | import("@tamagui/core").Variable<any>;
+            pink4: string | import("@tamagui/core").Variable<any>;
+            pink5: string | import("@tamagui/core").Variable<any>;
+            pink6: string | import("@tamagui/core").Variable<any>;
+            pink7: string | import("@tamagui/core").Variable<any>;
+            pink8: string | import("@tamagui/core").Variable<any>;
+            pink9: string | import("@tamagui/core").Variable<any>;
+            pink10: string | import("@tamagui/core").Variable<any>;
+            pink11: string | import("@tamagui/core").Variable<any>;
+            pink12: string | import("@tamagui/core").Variable<any>;
+            orange1: string | import("@tamagui/core").Variable<any>;
+            orange2: string | import("@tamagui/core").Variable<any>;
+            orange3: string | import("@tamagui/core").Variable<any>;
+            orange4: string | import("@tamagui/core").Variable<any>;
+            orange5: string | import("@tamagui/core").Variable<any>;
+            orange6: string | import("@tamagui/core").Variable<any>;
+            orange7: string | import("@tamagui/core").Variable<any>;
+            orange8: string | import("@tamagui/core").Variable<any>;
+            orange9: string | import("@tamagui/core").Variable<any>;
+            orange10: string | import("@tamagui/core").Variable<any>;
+            orange11: string | import("@tamagui/core").Variable<any>;
+            orange12: string | import("@tamagui/core").Variable<any>;
+            green1: string | import("@tamagui/core").Variable<any>;
+            green2: string | import("@tamagui/core").Variable<any>;
+            green3: string | import("@tamagui/core").Variable<any>;
+            green4: string | import("@tamagui/core").Variable<any>;
+            green5: string | import("@tamagui/core").Variable<any>;
+            green6: string | import("@tamagui/core").Variable<any>;
+            green7: string | import("@tamagui/core").Variable<any>;
+            green8: string | import("@tamagui/core").Variable<any>;
+            green9: string | import("@tamagui/core").Variable<any>;
+            green10: string | import("@tamagui/core").Variable<any>;
+            green11: string | import("@tamagui/core").Variable<any>;
+            green12: string | import("@tamagui/core").Variable<any>;
+            grayA1: string | import("@tamagui/core").Variable<any>;
+            grayA2: string | import("@tamagui/core").Variable<any>;
+            grayA3: string | import("@tamagui/core").Variable<any>;
+            grayA4: string | import("@tamagui/core").Variable<any>;
+            grayA5: string | import("@tamagui/core").Variable<any>;
+            grayA6: string | import("@tamagui/core").Variable<any>;
+            grayA7: string | import("@tamagui/core").Variable<any>;
+            grayA8: string | import("@tamagui/core").Variable<any>;
+            grayA9: string | import("@tamagui/core").Variable<any>;
+            grayA10: string | import("@tamagui/core").Variable<any>;
+            grayA11: string | import("@tamagui/core").Variable<any>;
+            grayA12: string | import("@tamagui/core").Variable<any>;
+            gray1: string | import("@tamagui/core").Variable<any>;
+            gray2: string | import("@tamagui/core").Variable<any>;
+            gray3: string | import("@tamagui/core").Variable<any>;
+            gray4: string | import("@tamagui/core").Variable<any>;
+            gray5: string | import("@tamagui/core").Variable<any>;
+            gray6: string | import("@tamagui/core").Variable<any>;
+            gray7: string | import("@tamagui/core").Variable<any>;
+            gray8: string | import("@tamagui/core").Variable<any>;
+            gray9: string | import("@tamagui/core").Variable<any>;
+            gray10: string | import("@tamagui/core").Variable<any>;
+            gray11: string | import("@tamagui/core").Variable<any>;
+            gray12: string | import("@tamagui/core").Variable<any>;
+            blue1: string | import("@tamagui/core").Variable<any>;
+            blue2: string | import("@tamagui/core").Variable<any>;
+            blue3: string | import("@tamagui/core").Variable<any>;
+            blue4: string | import("@tamagui/core").Variable<any>;
+            blue5: string | import("@tamagui/core").Variable<any>;
+            blue6: string | import("@tamagui/core").Variable<any>;
+            blue7: string | import("@tamagui/core").Variable<any>;
+            blue8: string | import("@tamagui/core").Variable<any>;
+            blue9: string | import("@tamagui/core").Variable<any>;
+            blue10: string | import("@tamagui/core").Variable<any>;
+            blue11: string | import("@tamagui/core").Variable<any>;
+            blue12: string | import("@tamagui/core").Variable<any>;
+        };
+        readonly dark_yellow_alt1: {
+            background: any;
+            backgroundStrong: any;
+            backgroundSoft: any;
+            backgroundHover: any;
+            backgroundPress: any;
+            backgroundFocus: any;
+            backgroundTransparent: string | import("@tamagui/core").Variable<any>;
+            color: any;
+            colorHover: any;
+            colorPress: any;
+            colorFocus: any;
+            colorTranslucent: string | import("@tamagui/core").Variable<any>;
+            colorMid: string | import("@tamagui/core").Variable<any>;
+            shadowColor: string | import("@tamagui/core").Variable<any>;
+            shadowColorHover: string | import("@tamagui/core").Variable<any>;
+            shadowColorPress: string | import("@tamagui/core").Variable<any>;
+            shadowColorFocus: string | import("@tamagui/core").Variable<any>;
+            borderColor: string | import("@tamagui/core").Variable<any>;
+            borderColorHover: string | import("@tamagui/core").Variable<any>;
+            borderColorPress: string | import("@tamagui/core").Variable<any>;
+            borderColorFocus: string | import("@tamagui/core").Variable<any>;
+            teal1: string | import("@tamagui/core").Variable<any>;
+            teal2: string | import("@tamagui/core").Variable<any>;
+            teal3: string | import("@tamagui/core").Variable<any>;
+            teal4: string | import("@tamagui/core").Variable<any>;
+            teal5: string | import("@tamagui/core").Variable<any>;
+            teal6: string | import("@tamagui/core").Variable<any>;
+            teal7: string | import("@tamagui/core").Variable<any>;
+            teal8: string | import("@tamagui/core").Variable<any>;
+            teal9: string | import("@tamagui/core").Variable<any>;
+            teal10: string | import("@tamagui/core").Variable<any>;
+            teal11: string | import("@tamagui/core").Variable<any>;
+            teal12: string | import("@tamagui/core").Variable<any>;
+            yellow1: string | import("@tamagui/core").Variable<any>;
+            yellow2: string | import("@tamagui/core").Variable<any>;
+            yellow3: string | import("@tamagui/core").Variable<any>;
+            yellow4: string | import("@tamagui/core").Variable<any>;
+            yellow5: string | import("@tamagui/core").Variable<any>;
+            yellow6: string | import("@tamagui/core").Variable<any>;
+            yellow7: string | import("@tamagui/core").Variable<any>;
+            yellow8: string | import("@tamagui/core").Variable<any>;
+            yellow9: string | import("@tamagui/core").Variable<any>;
+            yellow10: string | import("@tamagui/core").Variable<any>;
+            yellow11: string | import("@tamagui/core").Variable<any>;
+            yellow12: string | import("@tamagui/core").Variable<any>;
+            violet1: string | import("@tamagui/core").Variable<any>;
+            violet2: string | import("@tamagui/core").Variable<any>;
+            violet3: string | import("@tamagui/core").Variable<any>;
+            violet4: string | import("@tamagui/core").Variable<any>;
+            violet5: string | import("@tamagui/core").Variable<any>;
+            violet6: string | import("@tamagui/core").Variable<any>;
+            violet7: string | import("@tamagui/core").Variable<any>;
+            violet8: string | import("@tamagui/core").Variable<any>;
+            violet9: string | import("@tamagui/core").Variable<any>;
+            violet10: string | import("@tamagui/core").Variable<any>;
+            violet11: string | import("@tamagui/core").Variable<any>;
+            violet12: string | import("@tamagui/core").Variable<any>;
+            red1: string | import("@tamagui/core").Variable<any>;
+            red2: string | import("@tamagui/core").Variable<any>;
+            red3: string | import("@tamagui/core").Variable<any>;
+            red4: string | import("@tamagui/core").Variable<any>;
+            red5: string | import("@tamagui/core").Variable<any>;
+            red6: string | import("@tamagui/core").Variable<any>;
+            red7: string | import("@tamagui/core").Variable<any>;
+            red8: string | import("@tamagui/core").Variable<any>;
+            red9: string | import("@tamagui/core").Variable<any>;
+            red10: string | import("@tamagui/core").Variable<any>;
+            red11: string | import("@tamagui/core").Variable<any>;
+            red12: string | import("@tamagui/core").Variable<any>;
+            purple1: string | import("@tamagui/core").Variable<any>;
+            purple2: string | import("@tamagui/core").Variable<any>;
+            purple3: string | import("@tamagui/core").Variable<any>;
+            purple4: string | import("@tamagui/core").Variable<any>;
+            purple5: string | import("@tamagui/core").Variable<any>;
+            purple6: string | import("@tamagui/core").Variable<any>;
+            purple7: string | import("@tamagui/core").Variable<any>;
+            purple8: string | import("@tamagui/core").Variable<any>;
+            purple9: string | import("@tamagui/core").Variable<any>;
+            purple10: string | import("@tamagui/core").Variable<any>;
+            purple11: string | import("@tamagui/core").Variable<any>;
+            purple12: string | import("@tamagui/core").Variable<any>;
+            pink1: string | import("@tamagui/core").Variable<any>;
+            pink2: string | import("@tamagui/core").Variable<any>;
+            pink3: string | import("@tamagui/core").Variable<any>;
+            pink4: string | import("@tamagui/core").Variable<any>;
+            pink5: string | import("@tamagui/core").Variable<any>;
+            pink6: string | import("@tamagui/core").Variable<any>;
+            pink7: string | import("@tamagui/core").Variable<any>;
+            pink8: string | import("@tamagui/core").Variable<any>;
+            pink9: string | import("@tamagui/core").Variable<any>;
+            pink10: string | import("@tamagui/core").Variable<any>;
+            pink11: string | import("@tamagui/core").Variable<any>;
+            pink12: string | import("@tamagui/core").Variable<any>;
+            orange1: string | import("@tamagui/core").Variable<any>;
+            orange2: string | import("@tamagui/core").Variable<any>;
+            orange3: string | import("@tamagui/core").Variable<any>;
+            orange4: string | import("@tamagui/core").Variable<any>;
+            orange5: string | import("@tamagui/core").Variable<any>;
+            orange6: string | import("@tamagui/core").Variable<any>;
+            orange7: string | import("@tamagui/core").Variable<any>;
+            orange8: string | import("@tamagui/core").Variable<any>;
+            orange9: string | import("@tamagui/core").Variable<any>;
+            orange10: string | import("@tamagui/core").Variable<any>;
+            orange11: string | import("@tamagui/core").Variable<any>;
+            orange12: string | import("@tamagui/core").Variable<any>;
+            green1: string | import("@tamagui/core").Variable<any>;
+            green2: string | import("@tamagui/core").Variable<any>;
+            green3: string | import("@tamagui/core").Variable<any>;
+            green4: string | import("@tamagui/core").Variable<any>;
+            green5: string | import("@tamagui/core").Variable<any>;
+            green6: string | import("@tamagui/core").Variable<any>;
+            green7: string | import("@tamagui/core").Variable<any>;
+            green8: string | import("@tamagui/core").Variable<any>;
+            green9: string | import("@tamagui/core").Variable<any>;
+            green10: string | import("@tamagui/core").Variable<any>;
+            green11: string | import("@tamagui/core").Variable<any>;
+            green12: string | import("@tamagui/core").Variable<any>;
+            grayA1: string | import("@tamagui/core").Variable<any>;
+            grayA2: string | import("@tamagui/core").Variable<any>;
+            grayA3: string | import("@tamagui/core").Variable<any>;
+            grayA4: string | import("@tamagui/core").Variable<any>;
+            grayA5: string | import("@tamagui/core").Variable<any>;
+            grayA6: string | import("@tamagui/core").Variable<any>;
+            grayA7: string | import("@tamagui/core").Variable<any>;
+            grayA8: string | import("@tamagui/core").Variable<any>;
+            grayA9: string | import("@tamagui/core").Variable<any>;
+            grayA10: string | import("@tamagui/core").Variable<any>;
+            grayA11: string | import("@tamagui/core").Variable<any>;
+            grayA12: string | import("@tamagui/core").Variable<any>;
+            gray1: string | import("@tamagui/core").Variable<any>;
+            gray2: string | import("@tamagui/core").Variable<any>;
+            gray3: string | import("@tamagui/core").Variable<any>;
+            gray4: string | import("@tamagui/core").Variable<any>;
+            gray5: string | import("@tamagui/core").Variable<any>;
+            gray6: string | import("@tamagui/core").Variable<any>;
+            gray7: string | import("@tamagui/core").Variable<any>;
+            gray8: string | import("@tamagui/core").Variable<any>;
+            gray9: string | import("@tamagui/core").Variable<any>;
+            gray10: string | import("@tamagui/core").Variable<any>;
+            gray11: string | import("@tamagui/core").Variable<any>;
+            gray12: string | import("@tamagui/core").Variable<any>;
+            blue1: string | import("@tamagui/core").Variable<any>;
+            blue2: string | import("@tamagui/core").Variable<any>;
+            blue3: string | import("@tamagui/core").Variable<any>;
+            blue4: string | import("@tamagui/core").Variable<any>;
+            blue5: string | import("@tamagui/core").Variable<any>;
+            blue6: string | import("@tamagui/core").Variable<any>;
+            blue7: string | import("@tamagui/core").Variable<any>;
+            blue8: string | import("@tamagui/core").Variable<any>;
+            blue9: string | import("@tamagui/core").Variable<any>;
+            blue10: string | import("@tamagui/core").Variable<any>;
+            blue11: string | import("@tamagui/core").Variable<any>;
+            blue12: string | import("@tamagui/core").Variable<any>;
+        };
+        readonly dark_teal_alt3: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -9772,7 +9772,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_teal_alt3: {
+        readonly dark_teal_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -11322,7 +11322,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_alt1: {
+        readonly dark_alt3: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -11632,7 +11632,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly dark_alt3: {
+        readonly dark_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -13182,7 +13182,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_alt1: {
+        readonly light_alt3: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -13492,7 +13492,7 @@ export declare const config: {
             blue11: string | import("@tamagui/core").Variable<any>;
             blue12: string | import("@tamagui/core").Variable<any>;
         };
-        readonly light_alt3: {
+        readonly light_alt1: {
             background: any;
             backgroundStrong: any;
             backgroundSoft: any;
@@ -14073,30 +14073,31 @@ export declare const config: {
         space: {
             true: import("@tamagui/core").Variable<any>;
             0: import("@tamagui/core").Variable<any>;
-            1: import("@tamagui/core").Variable<any>;
-            4: import("@tamagui/core").Variable<any>;
-            2: import("@tamagui/core").Variable<any>;
-            16: import("@tamagui/core").Variable<any>;
             3: import("@tamagui/core").Variable<any>;
+            5: import("@tamagui/core").Variable<any>;
+            7: import("@tamagui/core").Variable<any>;
+            9: import("@tamagui/core").Variable<any>;
+            10: import("@tamagui/core").Variable<any>;
+            16: import("@tamagui/core").Variable<any>;
+            19: import("@tamagui/core").Variable<any>;
+            2: import("@tamagui/core").Variable<any>;
+            4: import("@tamagui/core").Variable<any>;
             8: import("@tamagui/core").Variable<any>;
             20: import("@tamagui/core").Variable<any>;
             0.25: import("@tamagui/core").Variable<any>;
             0.5: import("@tamagui/core").Variable<any>;
             0.75: import("@tamagui/core").Variable<any>;
+            1: import("@tamagui/core").Variable<any>;
             1.5: import("@tamagui/core").Variable<any>;
             2.5: import("@tamagui/core").Variable<any>;
             3.5: import("@tamagui/core").Variable<any>;
             4.5: import("@tamagui/core").Variable<any>;
-            5: import("@tamagui/core").Variable<any>;
             5.5: import("@tamagui/core").Variable<any>;
             6: import("@tamagui/core").Variable<any>;
             6.5: import("@tamagui/core").Variable<any>;
-            7: import("@tamagui/core").Variable<any>;
             7.6: import("@tamagui/core").Variable<any>;
             8.5: import("@tamagui/core").Variable<any>;
-            9: import("@tamagui/core").Variable<any>;
             9.5: import("@tamagui/core").Variable<any>;
-            10: import("@tamagui/core").Variable<any>;
             11: import("@tamagui/core").Variable<any>;
             12: import("@tamagui/core").Variable<any>;
             13: import("@tamagui/core").Variable<any>;
@@ -14104,33 +14105,33 @@ export declare const config: {
             15: import("@tamagui/core").Variable<any>;
             17: import("@tamagui/core").Variable<any>;
             18: import("@tamagui/core").Variable<any>;
-            19: import("@tamagui/core").Variable<any>;
             "-true": import("@tamagui/core").Variable<any>;
             "-0": import("@tamagui/core").Variable<any>;
-            "-1": import("@tamagui/core").Variable<any>;
-            "-4": import("@tamagui/core").Variable<any>;
-            "-2": import("@tamagui/core").Variable<any>;
-            "-16": import("@tamagui/core").Variable<any>;
             "-3": import("@tamagui/core").Variable<any>;
+            "-5": import("@tamagui/core").Variable<any>;
+            "-7": import("@tamagui/core").Variable<any>;
+            "-9": import("@tamagui/core").Variable<any>;
+            "-10": import("@tamagui/core").Variable<any>;
+            "-16": import("@tamagui/core").Variable<any>;
+            "-19": import("@tamagui/core").Variable<any>;
+            "-2": import("@tamagui/core").Variable<any>;
+            "-4": import("@tamagui/core").Variable<any>;
             "-8": import("@tamagui/core").Variable<any>;
             "-20": import("@tamagui/core").Variable<any>;
             "-0.25": import("@tamagui/core").Variable<any>;
             "-0.5": import("@tamagui/core").Variable<any>;
             "-0.75": import("@tamagui/core").Variable<any>;
+            "-1": import("@tamagui/core").Variable<any>;
             "-1.5": import("@tamagui/core").Variable<any>;
             "-2.5": import("@tamagui/core").Variable<any>;
             "-3.5": import("@tamagui/core").Variable<any>;
             "-4.5": import("@tamagui/core").Variable<any>;
-            "-5": import("@tamagui/core").Variable<any>;
             "-5.5": import("@tamagui/core").Variable<any>;
             "-6": import("@tamagui/core").Variable<any>;
             "-6.5": import("@tamagui/core").Variable<any>;
-            "-7": import("@tamagui/core").Variable<any>;
             "-7.6": import("@tamagui/core").Variable<any>;
             "-8.5": import("@tamagui/core").Variable<any>;
-            "-9": import("@tamagui/core").Variable<any>;
             "-9.5": import("@tamagui/core").Variable<any>;
-            "-10": import("@tamagui/core").Variable<any>;
             "-11": import("@tamagui/core").Variable<any>;
             "-12": import("@tamagui/core").Variable<any>;
             "-13": import("@tamagui/core").Variable<any>;
@@ -14138,7 +14139,6 @@ export declare const config: {
             "-15": import("@tamagui/core").Variable<any>;
             "-17": import("@tamagui/core").Variable<any>;
             "-18": import("@tamagui/core").Variable<any>;
-            "-19": import("@tamagui/core").Variable<any>;
         };
         size: {
             0: import("@tamagui/core").Variable<any>;
@@ -14201,10 +14201,10 @@ export declare const config: {
         };
     };
     fonts: {
-        heading: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        body: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        mono: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
-        silkscreen: import("@tamagui/core").GenericFont<9 | 15 | 10 | 11 | 12 | 14 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 13>;
+        heading: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        body: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        mono: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
+        silkscreen: import("@tamagui/core").GenericFont<11 | 12 | 13 | 14 | 15 | 16 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10>;
     };
 };
 //# sourceMappingURL=tamagui.config.d.ts.map

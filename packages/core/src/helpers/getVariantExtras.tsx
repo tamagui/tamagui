@@ -1,14 +1,28 @@
 import { getConfig } from '../conf'
+import { GenericFonts } from '../types'
+import { LanguageContextType } from '../views/FontLanguage.types'
+
+const extrasCache = new WeakMap()
 
 export function getVariantExtras(
   props: any,
+  languageContext?: LanguageContextType,
   theme?: any,
   defaultProps?: any,
   avoidDefaultProps = false
 ) {
   const conf = getConfig()
-  return {
-    fonts: conf.fontsParsed,
+
+  if (extrasCache.has(props)) {
+    return extrasCache.get(props)
+  }
+
+  const fonts = languageContext
+    ? getFontsForLanguage(conf.fontsParsed, languageContext)
+    : conf.fontsParsed
+
+  const next = {
+    fonts,
     tokens: conf.tokensParsed,
     theme,
     // TODO do this in splitstlye
@@ -28,4 +42,27 @@ export function getVariantExtras(
           },
         }),
   }
+
+  extrasCache.set(props, next)
+
+  return next
+}
+
+const fontLanguageCache = new WeakMap()
+
+export function getFontsForLanguage(fonts: GenericFonts, language: LanguageContextType) {
+  if (fontLanguageCache.has(language)) {
+    return fontLanguageCache.get(language)
+  }
+  const next = {
+    ...fonts,
+    ...Object.fromEntries(
+      Object.entries(language).map(([name, lang]) => {
+        const langKey = `$${name}_${lang}`
+        return [`$${name}`, fonts[langKey]]
+      })
+    ),
+  }
+  fontLanguageCache.set(language, next)
+  return next
 }

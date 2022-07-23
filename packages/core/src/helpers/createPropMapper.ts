@@ -10,9 +10,10 @@ import {
   TamaguiInternalConfig,
   VariantSpreadFunction,
 } from '../types'
+import { LanguageContextType } from '../views/FontLanguage.types'
 import { expandStyle } from './expandStyle'
 import { expandStyles } from './expandStyles'
-import { getVariantExtras } from './getVariantExtras'
+import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { mergeProps } from './mergeProps'
 
@@ -38,6 +39,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
     theme,
     propsIn,
     state,
+    languageContext,
     avoidDefaultProps = false,
     debug
   ) => {
@@ -65,6 +67,7 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
       returnVariablesAs,
       staticConfig,
       '',
+      languageContext,
       avoidDefaultProps
     )
 
@@ -82,8 +85,16 @@ export const createPropMapper = (staticConfig: StaticConfigParsed) => {
 
     if (value) {
       if (value[0] === '$') {
-        // prettier-ignore
-        value = getToken(key, value, conf, theme, fontFamily, returnVariablesAs, debug)
+        value = getToken(
+          key,
+          value,
+          conf,
+          theme,
+          fontFamily,
+          languageContext,
+          returnVariablesAs,
+          debug
+        )
       } else if (isVariable(value)) {
         value = getVariableValue(key, value, returnVariablesAs)
       }
@@ -109,6 +120,7 @@ type StyleResolver = (
   returnVariablesAs: 'auto' | 'value' | 'non-color-value',
   staticConfig: StaticConfigParsed,
   parentVariantKey: string,
+  languageContext?: LanguageContextType,
   avoidDefaultProps?: boolean,
   debug?: DebugProp
 ) => any
@@ -125,57 +137,61 @@ const resolveVariants: StyleResolver = (
   returnVariablesAs,
   staticConfig,
   parentVariantKey,
+  languageContext,
   avoidDefaultProps = false,
   debug
 ) => {
   const variant = variants && variants[key]
-  if (variant && value !== undefined) {
-    let variantValue = getVariantDefinition(variant, key, value, conf)
+  if (!variant || value === undefined) return
+  let variantValue = getVariantDefinition(variant, key, value, conf)
 
-    if (variantValue) {
-      if (typeof variantValue === 'function') {
-        const fn = variantValue as VariantSpreadFunction<any>
-        variantValue = fn(value, getVariantExtras(props, theme, defaultProps, avoidDefaultProps))
+  if (!variantValue) {
+    // variant at key exists, but no matching variant value, return nothing
+    if (process.env.NODE_ENV === 'development') {
+      if (staticConfig.validStyles?.[key]) {
+        return null
       }
-
-      if (isObj(variantValue)) {
-        variantValue = resolveTokensAndVariants(
-          key,
-          variantValue,
-          props,
-          defaultProps,
-          theme,
-          variants,
-          fontFamily,
-          conf,
-          returnVariablesAs,
-          staticConfig,
-          parentVariantKey,
-          avoidDefaultProps,
-          debug
-        )
+      if (value === false) {
+        // don't warn on missing false values, common to only use true
+        return null
       }
-
-      if (variantValue) {
-        return Object.entries(expandStyles(variantValue))
-      }
-    } else {
-      // variant at key exists, but no matching variant value, return nothing
-      if (process.env.NODE_ENV === 'development') {
-        if (staticConfig.validStyles?.[key]) {
-          return null
-        }
-        if (value === false) {
-          // don't warn on missing false values, common to only use true
-          return null
-        }
-        const name = staticConfig.componentName || '[UnnamedComponent]'
-        console.warn(
-          `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
-        )
-      }
-      return null
+      const name = staticConfig.componentName || '[UnnamedComponent]'
+      console.warn(
+        `No variant found: ${name} has variant "${key}", but no matching value "${value}"`
+      )
     }
+    return
+  }
+
+  if (typeof variantValue === 'function') {
+    const fn = variantValue as VariantSpreadFunction<any>
+    variantValue = fn(
+      value,
+      getVariantExtras(props, languageContext, theme, defaultProps, avoidDefaultProps)
+    )
+  }
+
+  if (isObj(variantValue)) {
+    variantValue = resolveTokensAndVariants(
+      key,
+      variantValue,
+      props,
+      defaultProps,
+      theme,
+      variants,
+      fontFamily,
+      conf,
+      returnVariablesAs,
+      staticConfig,
+      parentVariantKey,
+      languageContext,
+      avoidDefaultProps,
+      debug
+    )
+  }
+
+  if (variantValue) {
+    return Object.entries(expandStyles(variantValue))
   }
 }
 
@@ -191,6 +207,7 @@ const resolveTokensAndVariants: StyleResolver = (
   returnVariablesAs,
   staticConfig,
   parentVariantKey,
+  languageContext,
   avoidDefaultProps,
   debug
 ) => {
@@ -221,6 +238,7 @@ const resolveTokensAndVariants: StyleResolver = (
               returnVariablesAs,
               staticConfig,
               key,
+              languageContext,
               avoidDefaultProps,
               debug
             )
@@ -230,7 +248,7 @@ const resolveTokensAndVariants: StyleResolver = (
     } else if (typeof val === 'string') {
       const fVal =
         val[0] === '$'
-          ? getToken(fKey, val, conf, theme, fontFamily, returnVariablesAs, debug)
+          ? getToken(fKey, val, conf, theme, fontFamily, languageContext, returnVariablesAs, debug)
           : val
       res[fKey] = fVal
     } else {
@@ -248,6 +266,7 @@ const resolveTokensAndVariants: StyleResolver = (
           returnVariablesAs,
           staticConfig,
           key,
+          languageContext,
           avoidDefaultProps,
           debug
         )
@@ -309,12 +328,17 @@ const fontShorthand = {
 const getToken = (
   key: string,
   value: string,
-  { tokensParsed, fontsParsed }: TamaguiInternalConfig,
+  conf: TamaguiInternalConfig,
   theme: any,
   fontFamily: string | undefined = '$body',
+  languageContext?: LanguageContextType,
   resolveAs?: ResolveVariableTypes,
   debug?: DebugProp
 ) => {
+  const tokensParsed = conf.tokensParsed
+  const fontsParsed = languageContext
+    ? getFontsForLanguage(conf.fontsParsed, languageContext)
+    : conf.fontsParsed
   let valOrVar: any
   let hasSet = false
   if (theme[value]) {

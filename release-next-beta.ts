@@ -149,8 +149,8 @@ async function run() {
       // then push git
       await spawnify(`git add -A`)
       await spawnify(`git commit --amend --no-edit`)
-      await spawnify(`git push origin head`)
       await spawnify(`git push origin v${version}`)
+      await spawnify(`git push origin head`)
       console.log(`✅ Pushed and versioned\n`)
     }
   } catch (err) {

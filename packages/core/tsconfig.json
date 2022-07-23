@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
+    "strict": true,
     "jsx": "preserve"
   },
   "references": [

@@ -116,6 +116,7 @@ function loadAnimationFeature() {
           const enterStyle = isEntering
             ? enterVariant && staticConfig.variants?.[enterVariant]['true']
               ? getSubStyle(
+                  '',
                   staticConfig.variants?.[enterVariant]['true'],
                   staticConfig,
                   theme,
@@ -129,6 +130,7 @@ function loadAnimationFeature() {
           const exitStyle = isExiting
             ? exitVariant && staticConfig.variants?.[exitVariant]['true']
               ? getSubStyle(
+                  '',
                   staticConfig.variants?.[exitVariant]['true'],
                   staticConfig,
                   theme,

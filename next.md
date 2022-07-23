@@ -1,5 +1,6 @@
 - 1.0
 
+  - hitSlop accept simple number
   - dialog native
   - get tests passing
   - add test that kitchen-sink loads, test a few components
