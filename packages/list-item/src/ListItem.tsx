@@ -3,6 +3,7 @@ import {
   GetProps,
   Spacer,
   TamaguiComponent,
+  TamaguiElement,
   ThemeableProps,
   getSize,
   getVariableValue,
@@ -15,7 +16,6 @@ import { TextParentStyles, getSpace, useGetThemedIcon } from '@tamagui/helpers-t
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef } from 'react'
-import { View } from 'react-native'
 
 // bugfix esbuild strips react jsx: 'preserve'
 React['createElement']
@@ -182,8 +182,9 @@ const ListItemComponent = forwardRef((props: ListItemProps, ref) => {
   )
 })
 
-const ListItemInner: TamaguiComponent<ListItemProps, HTMLLIElement | View> =
-  ListItemFrame.extractable(themeable(ListItemComponent as any) as any, {
+const ListItemInner: TamaguiComponent<ListItemProps, TamaguiElement> = ListItemFrame.extractable(
+  themeable(ListItemComponent as any) as any,
+  {
     inlineProps: new Set([
       // text props go here (can't really optimize them, but we never fully extract listItem anyway)
       'color',
@@ -193,7 +194,8 @@ const ListItemInner: TamaguiComponent<ListItemProps, HTMLLIElement | View> =
       'letterSpacing',
       'textAlign',
     ]),
-  })
+  }
+)
 
 export const ListItem = withStaticProperties(ListItemInner, {
   Text: ListItemText,

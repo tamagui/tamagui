@@ -36,19 +36,18 @@ export function styled<
   staticExtractionOptions?: Partial<StaticConfig>
 ) {
   const staticConfigProps = (() => {
+    const parentStaticConfig =
+      'staticConfig' in Component ? (Component.staticConfig as StaticConfig) : null
     if (options) {
       const { variants, name, defaultVariants, ...defaultProps } = options
       if (defaultVariants) {
         Object.assign(defaultProps, defaultVariants)
       }
-      const isReactNativeWeb =
-        'staticConfig' in Component
-          ? Component.staticConfig.isReactNativeWeb
-          : RNComponents.has(Component)
+      const isReactNativeWeb = parentStaticConfig?.isReactNativeWeb || RNComponents.has(Component)
       const reactNativeWebComponent = isReactNativeWeb
-        ? Component['staticConfig']?.reactNativeWebComponent || Component
+        ? parentStaticConfig?.reactNativeWebComponent || Component
         : null
-      const isTamagui = !isReactNativeWeb && 'staticConfig' in Component
+      const isTamagui = !isReactNativeWeb && !!parentStaticConfig
       const Comp = reactNativeWebComponent || (Component as any)
       const isImage = !!(defaultProps.isImage || (!isTamagui ? Comp === Image : false))
       const isInput = !!(defaultProps.isInput || (!isTamagui ? Comp === TextInput : false))

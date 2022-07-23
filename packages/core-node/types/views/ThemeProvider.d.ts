@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare type ThemeProviderProps = {
     className?: string;
     themes: any;

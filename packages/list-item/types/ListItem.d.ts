@@ -1,7 +1,6 @@
-import { FontSizeTokens, GetProps, TamaguiComponent, ThemeableProps } from '@tamagui/core';
+import { FontSizeTokens, GetProps, TamaguiComponent, TamaguiElement, ThemeableProps } from '@tamagui/core';
 import { TextParentStyles } from '@tamagui/helpers-tamagui';
 import React, { FunctionComponent } from 'react';
-import { View } from 'react-native';
 declare type ListItemIconProps = {
     color?: string;
     size?: number;
@@ -183,7 +182,7 @@ export declare const ListItemSubtitle: TamaguiComponent<(Omit<import("react-nati
 } | {
     [x: string]: undefined;
 })>;
-export declare const ListItem: import("@tamagui/core").ReactComponentWithRef<ListItemProps, View | HTMLLIElement> & {
+export declare const ListItem: import("@tamagui/core").ReactComponentWithRef<ListItemProps, TamaguiElement> & {
     staticConfig: import("@tamagui/core").StaticConfig;
     extractable: <X>(a: X, opts?: Partial<import("@tamagui/core").StaticConfig> | undefined) => X;
 } & {

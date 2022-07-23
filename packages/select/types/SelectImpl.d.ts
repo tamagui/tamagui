@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { ScopedProps, SelectProps } from './types';
 export declare type SelectImplProps = ScopedProps<SelectProps> & {
     activeIndexRef: any;

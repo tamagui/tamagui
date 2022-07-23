@@ -1,19 +1,11 @@
-import {
-  StyleObject,
-  stylePropsText,
-  stylePropsTransform,
-  validPseudoKeys,
-  validStyles,
-} from '@tamagui/helpers'
+import { stylePropsText, stylePropsTransform, validPseudoKeys, validStyles } from '@tamagui/helpers'
 import { useInsertionEffect } from 'react'
 import { ViewStyle } from 'react-native'
 
 import { getConfig } from '../conf'
 import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platform'
-import { themeToVariableToValueMap } from '../createTheme'
-import { getThemeUnwrapped } from '../hooks/getThemeUnwrapped'
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
-import {
+import type {
   DebugProp,
   MediaKeys,
   MediaQueryKey,
@@ -32,7 +24,6 @@ import { getAtomicStyle, getStylesAtomic, styleToCSS } from './getStylesAtomic'
 import {
   PartialStyleObject,
   RulesToInsert,
-  getAllSelectors,
   insertStyleRules,
   insertedTransforms,
   updateInserted,
@@ -259,12 +250,13 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (
-      state.keepVariantsAsProps &&
-      staticConfig.defaultVariants &&
-      keyInit in staticConfig.defaultVariants
-    ) {
-      viewProps[keyInit] = valInit
+    if (state.keepVariantsAsProps) {
+      if (
+        (staticConfig.defaultVariants && keyInit in staticConfig.defaultVariants) ||
+        (staticConfig.variants && keyInit in staticConfig.variants)
+      ) {
+        viewProps[keyInit] = valInit
+      }
     }
 
     /**

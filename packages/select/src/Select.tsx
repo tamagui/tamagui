@@ -28,17 +28,6 @@ const TRIGGER_NAME = 'SelectTrigger'
 
 export type SelectTriggerProps = ListItemProps
 
-const SelectTriggerFrame = styled(ListItem, {
-  componentName: TRIGGER_NAME,
-  backgrounded: true,
-  radiused: true,
-  hoverTheme: true,
-  pressTheme: true,
-  focusTheme: true,
-  focusable: false,
-  borderWidth: 1,
-})
-
 export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
   (props: ScopedProps<SelectTriggerProps>, forwardedRef) => {
     const {
@@ -55,7 +44,15 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
     const labelledBy = ariaLabelledby // || labelId
 
     return (
-      <SelectTriggerFrame
+      <ListItem
+        componentName={TRIGGER_NAME}
+        backgrounded
+        radiused
+        hoverTheme
+        pressTheme
+        focusTheme
+        focusable
+        borderWidth={1}
         size={context.size}
         // aria-controls={context.contentId}
         aria-expanded={context.open}
@@ -434,7 +431,6 @@ const SelectLabel = React.forwardRef<TamaguiElement, SelectLabelProps>(
         id={groupContext.id}
         size={context.size}
         {...labelProps}
-        // @ts-expect-error
         ref={forwardedRef}
       />
     )
