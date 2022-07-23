@@ -1,7 +1,7 @@
 import { TamaguiInternalConfig } from '@tamagui/core-node';
-export declare function getDefaultTamaguiConfig(): TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<import("@tamagui/core-node").VariableVal>, {
+export declare function getDefaultTamaguiConfig(): TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<any>, {
     [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
-        [key: string]: import("@tamagui/core-node").VariableVal;
+        [key: string]: any;
     };
 }, {}, {
     [x: string]: {

@@ -1,5 +1,6 @@
 - 1.0
 
+  - bug: styled(ListItem, { ...styles }) styles not working fully
   - hitSlop accept simple number
   - dialog native
   - get tests passing

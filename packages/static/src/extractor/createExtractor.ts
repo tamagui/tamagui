@@ -46,11 +46,13 @@ const UNTOUCHED_PROPS = {
 const INLINE_EXTRACTABLE = {
   ref: 'ref',
   key: 'key',
-  onPress: 'onClick',
-  onHoverIn: 'onMouseEnter',
-  onHoverOut: 'onMouseLeave',
-  onPressIn: 'onMouseDown',
-  onPressOut: 'onMouseUp',
+  ...(process.env.TAMAGUI_TARGET === 'web' && {
+    onPress: 'onClick',
+    onHoverIn: 'onMouseEnter',
+    onHoverOut: 'onMouseLeave',
+    onPressIn: 'onMouseDown',
+    onPressOut: 'onMouseUp',
+  }),
 }
 
 const isAttr = (x: ExtractedAttr): x is ExtractedAttrAttr => x.type === 'attr'

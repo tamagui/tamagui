@@ -1,6 +1,6 @@
 import { ChevronRight, Moon, Sun } from '@tamagui/feather-icons'
 import React from 'react'
-import { Alert, ScrollView } from 'react-native'
+import { Alert, Pressable, ScrollView, View } from 'react-native'
 import { UseLinkProps, useLink } from 'solito/link'
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   ListItemProps,
   Separator,
   Spacer,
+  Square,
   Switch,
   YGroup,
   YStack,
@@ -36,6 +37,18 @@ export function HomeScreen() {
         <H1 fontFamily="$heading" size="$9">
           Demos
         </H1>
+
+        <Square
+          debug="verbose"
+          size={100}
+          bc="red"
+          hitSlop={100}
+          onPress={() => console.log('hi')}
+        />
+
+        {/* <Pressable onPress={() => console.log('hi2')} hitSlop={100}>
+          <View style={{ width: 100, height: 100, backgroundColor: 'green' }} />
+        </Pressable> */}
 
         {/* fix media + space */}
         {/* 
