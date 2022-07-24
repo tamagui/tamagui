@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/separator",
-  "version": "1.0.1-beta.117",
+  "version": "1.0.1-beta.118",
   "sideEffects": [
     "*.css"
   ],
@@ -19,14 +19,14 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.117"
+    "@tamagui/core": "^1.0.1-beta.118"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.117",
+    "@tamagui/build": "^1.0.1-beta.118",
     "react": "*",
     "react-dom": "*"
   },
