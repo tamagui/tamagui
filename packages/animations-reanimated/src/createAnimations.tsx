@@ -97,7 +97,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
         value: any
       ) => {
         'worklet'
-        return (completed, current) => {
+        return (completed: boolean, current: any) => {
           'worklet'
           runOnJS(reanimatedOnDidAnimated)(key, completed, current, {
             attemptedValue: value,
@@ -120,6 +120,7 @@ export function createAnimations<A extends AnimationsConfig>(animations: A): Ani
 
         // getting issues with native unless this :/
         const style = JSON.parse(animatedString)
+        console.log('go to animate', style)
 
         const final = {
           transform: [] as any[],

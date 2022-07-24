@@ -327,7 +327,7 @@ const HIDDEN_SIZE = 10_000
 
 export const Sheet = withStaticProperties(
   themeable(
-    forwardRef<View, SheetProps>((props, ref) => {
+    forwardRef<View, SheetProps>(function Sheet(props, ref) {
       const {
         __scopeSheet,
         snapPoints: snapPointsProp = [80],

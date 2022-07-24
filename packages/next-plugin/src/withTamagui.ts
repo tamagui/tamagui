@@ -116,6 +116,11 @@ export const withTamagui = (tamaguiOptions: WithTamaguiProps) => {
 
         const excludeExports = tamaguiOptions.excludeReactNativeWebExports
         if (Array.isArray(excludeExports)) {
+          if (excludeExports.includes('PressResponder')) {
+            console.warn(
+              `⚠️ Warning: as of beta 118, PressReponder shouldn't be excluded in excludeReactNativeWebExports`
+            )
+          }
           try {
             const regexStr = `react-native-web/.*(${excludeExports.join('|')}).*js`
             const regex = new RegExp(regexStr)

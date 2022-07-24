@@ -1,26 +1,28 @@
 - 1.0
 
-  - Image is hardcoded to w/h 100
-  - way to use tamagui with custom design system tokens
-  - Dialog close prevents touch for a while
-  - site get live lighthouse score > 90
-    - then try out reanimated again
-    - or get overshoot clamp working for react-native animations driver
-  - sheet cant drag up from bottom (web at least)
-  - popover adapt to sheet ?
-  - AlertSheet
-    - have AlertDialog option to adapt to AlertSheet at a breakpoint
-  - bug: styled(ListItem, { ...styles }) styles not working fully
-    - maybe extractor bug actually
-  - hitSlop accept simple number
-  - dialog native
-  - get tests passing
-  - add test that kitchen-sink loads, test a few components
-  - typescript strict
   - font weight on native
   - loadFont
   - loadTheme, updateTheme
-  - <FontLanguage />
+  - sheet cant drag up from bottom (web at least)
+
+  - fix tabbing
+    - Select
+    - AlertDialog buttons
+    - Dialog
+
+  - <Select /> has selectable cursor on hold down + move
+    - should update to new react-dom-interactions
+  - Image is hardcoded to w/h 100
+  - way to use tamagui with custom design system tokens
+    - basically map any tokens you choose to internal tamagui ones
+  - site get live lighthouse score > 90
+    - then try out reanimated again
+    - or get overshoot clamp working for react-native animations driver
+  - popover adapt to sheet ?
+  - bug: styled(ListItem, { ...styles }) styles not working fully
+    - maybe extractor bug actually
+  - get tests passing
+  - add test that kitchen-sink loads, test a few components
   - animation accept useAnimatedStyle
     - make sure loop/multi animations work too
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290
@@ -32,7 +34,6 @@
   - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
   - fix Label + new form inputs (native too)
-  - fix tabbing (Select)
   - <Icon />
     - use theme values and size values
     - can swap for other icon packs (use createTamagui({ icons }))
@@ -60,7 +61,38 @@
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - // TODO infer ref
-  - move site back to reanimated if pagespeed is up, because animatepresence is a bit glitched on react-native driver
+
+---
+
+<Menu />
+
+- borrow from radix
+  - https://www.radix-ui.com/docs/primitives/components/dropdown-menu
+- basically a popover + mouse helpers + built in item element
+- don't need sub-menu for first iteration but... could if it's easier to at once
+- floating-ui has helpers for this too
+- `native` prop to do ContextMenu in iOS
+  - ios:
+    - Zeego uses react-native-ios-context-menu
+    - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-ios-menu/index.ios.tsx
+  - android:
+    - Zeego uses 
+    - @react-native-menu/menu
+    - https://github.com/nandorojo/zeego/blob/master/packages/zeego/src/menu/create-android-menu/index.android.tsx
+
+<ActionMenu />
+
+- probably extends Menu
+- Popover by default, controls tabbing / focus
+- sheetBreakpoint for mobile web display as sheet by default
+  - make look somewhat like iOS - transparent bg maybe with linear gradient
+  - make cancel item float separately nicely like iOS
+- `native` prop uses ActionSheetIOS for ios 
+  - https://reactnative.dev/docs/actionsheetios
+
+---
+
+<ToggleGroup />
 
 ---
 
@@ -88,16 +120,12 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
-  - <ActionSheet /> (Popover or Dialog on large screen?)
-  - <ContextMenu />
-  - <Menu /> somewhat like accordion with ListItems
   - <Group toggle>
   - <Tabs />
   - <Accordion />
   - <Autocomplete />
   - <Select.SearchInput />
-  - <Radio />
-  - <Checkbox />
+  
   - principles doc to explain:
     - everything works runtime + compile the same
     - designed for apps - so runtime performance key

@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { AlertDialogDemo, SelectDemo } from '@tamagui/demos'
+import { AlertDialogDemo, SelectDemo, SheetDemo } from '@tamagui/demos'
 import { FocusScope } from '@tamagui/focus-scope'
 import React, { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
@@ -52,7 +52,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <AlertDialogDemo />
+        {/* <AlertDialogDemo /> */}
 
         {/* <FontLanguage heading="default" body="cn">
           <Paragraph fos="$4" fontFamily="$body">
@@ -74,7 +74,7 @@ export const Sandbox = () => {
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
-        {/* <SheetDemo /> */}
+        <SheetDemo />
         {/* <SwitchDemo /> */}
         {/* <XStack space>
           <Square size={50} bc="red" />

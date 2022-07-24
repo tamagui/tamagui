@@ -19,24 +19,22 @@ export function useControllableState<T>({
   strategy?: 'prop-wins' | 'most-recent-wins'
   preventUpdate?: boolean
 }): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const currentProp = useRef(prop)
   const [val, setVal] = useState(prop ?? defaultProp)
   const propWins = strategy === 'prop-wins'
 
-  // TODO can try no useEffect here right? just if()
-  if (currentProp.current !== prop && !preventUpdate) {
-    currentProp.current = prop
-    setVal((prev) => {
-      return getNextStateWithCallback(prev, prop, onChange)
-    })
-  }
+  useEffect(() => {
+    const next = getNextStateWithCallback(val, prop)
+    if (next !== undefined && next !== val) {
+      setVal(next)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prop])
 
   return [
     val,
     useEvent((next: unknown) => {
       if (preventUpdate) return
-      if (propWins && currentProp.current !== undefined) {
-        onChange?.(next as T)
+      if (propWins && prop !== undefined) {
         return
       }
       setVal((prev) => {
