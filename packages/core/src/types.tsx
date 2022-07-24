@@ -5,6 +5,7 @@ import React from 'react'
 import {
   GestureResponderEvent,
   Image,
+  PressableProps,
   TextProps as ReactTextProps,
   Text,
   TextInput,
@@ -30,6 +31,7 @@ export type DebugProp = boolean | 'break' | 'verbose'
 // base props that are accepted by createComponent (additional to react-native-web)
 //
 export type TamaguiComponentPropsBase = {
+  hitSlop?: PressableProps['hitSlop']
   asChild?: boolean
   space?: SpaceTokens | null
   spaceDirection?: SpaceDirection

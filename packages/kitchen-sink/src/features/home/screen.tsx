@@ -38,18 +38,6 @@ export function HomeScreen() {
           Demos
         </H1>
 
-        <Square
-          debug="verbose"
-          size={100}
-          bc="red"
-          hitSlop={100}
-          onPress={() => console.log('hi')}
-        />
-
-        {/* <Pressable onPress={() => console.log('hi2')} hitSlop={100}>
-          <View style={{ width: 100, height: 100, backgroundColor: 'green' }} />
-        </Pressable> */}
-
         {/* fix media + space */}
         {/* 
         <XStack space>

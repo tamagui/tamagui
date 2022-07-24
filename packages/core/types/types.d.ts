@@ -1,6 +1,6 @@
 import { Properties } from 'csstype';
 import React from 'react';
-import { GestureResponderEvent, Image, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
+import { GestureResponderEvent, Image, PressableProps, TextProps as ReactTextProps, Text, TextInput, TextStyle, View, ViewProps, ViewStyle } from 'react-native';
 import { Variable } from './createVariable';
 import { ResolveVariableTypes } from './helpers/createPropMapper';
 import { RNWTextProps, RNWViewProps } from './types-rnw';
@@ -10,6 +10,7 @@ export declare type SpaceDirection = 'vertical' | 'horizontal' | 'both';
 export declare type TamaguiElement = HTMLElement | View;
 export declare type DebugProp = boolean | 'break' | 'verbose';
 export declare type TamaguiComponentPropsBase = {
+    hitSlop?: PressableProps['hitSlop'];
     asChild?: boolean;
     space?: SpaceTokens | null;
     spaceDirection?: SpaceDirection;

@@ -1,7 +1,8 @@
+/// <reference types="react" />
 export declare const elevate: {
     true: (_: boolean, extras: any) => {
         [x: `$${string}`]: (import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>> & import("@tamagui/core").PseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStylePropsBase>>>) | import("@tamagui/core").Variable<any> | undefined;
-        hitSlop?: import("@tamagui/core").Variable<any> | import("react-native").Insets | undefined;
+        hitSlop?: (import("react-native").Insets & (number | import("react-native").Insets | null)) | import("@tamagui/core").Variable<any> | undefined;
         onLayout?: import("@tamagui/core").Variable<any> | ((event: import("react-native").LayoutChangeEvent) => void) | undefined;
         pointerEvents?: "box-none" | "none" | "box-only" | "auto" | import("@tamagui/core").Variable<any> | undefined;
         removeClippedSubviews?: boolean | import("@tamagui/core").Variable<any> | undefined;

@@ -1,6 +1,7 @@
 - 1.0
 
   - bug: styled(ListItem, { ...styles }) styles not working fully
+    - maybe extractor bug actually
   - hitSlop accept simple number
   - dialog native
   - get tests passing

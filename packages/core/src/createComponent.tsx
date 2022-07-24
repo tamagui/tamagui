@@ -42,7 +42,7 @@ import { useFeatures } from './hooks/useFeatures'
 import { mediaState } from './hooks/useMedia'
 import { usePressable } from './hooks/usePressable'
 import { getThemeManager, useTheme } from './hooks/useTheme'
-import { Pressability } from './Pressability'
+import { usePressability } from './Pressability'
 import {
   SpaceDirection,
   SpaceTokens,
@@ -817,32 +817,22 @@ export function createComponent<
     }
 
     // EVENTS native
-    // replicates TouchableWithoutFeedback
+    // use Pressability to get smooth unPress when you press + hold + move out
     if (process.env.TAMAGUI_TARGET === 'native') {
       // only ever create once, use .configure() to update later
-      const pressability = useMemo(() => {
-        if (attachPress && events) {
-          const pressability = new Pressability(events)
-          internal.current!.unmountEffects = [
-            () => {
-              pressability.reset()
-            },
-          ]
-          return pressability
-        }
-      }, [])
-
+      const pressability = usePressability(events)
       if (attachPress && events) {
-        pressability.configure(events)
-        const eventHandlers = pressability.getEventHandlers()
-        for (const key in eventHandlers) {
-          if (key === 'onBlur' || key === 'onFocus') {
-            // avoids the default
-            continue
-          }
+        const dontComposePressabilityKeys = {
+          onClick: true,
+        }
+        if (hitSlop) {
+          viewProps.hitSlop = hitSlop
+        }
+        for (const key in pressability) {
           const og = props[key]
-          const val = eventHandlers[key]
-          viewProps[key] = og ? composeEventHandlers(og, val) : val
+          const val = pressability[key]
+          viewProps[key] =
+            og && !dontComposePressabilityKeys[key] ? composeEventHandlers(og, val) : val
         }
       }
     }
