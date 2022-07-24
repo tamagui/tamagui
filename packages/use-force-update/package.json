@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-force-update",
-  "version": "1.0.1-beta.117",
+  "version": "1.0.1-beta.118",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -17,7 +17,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.117",
+    "@tamagui/build": "^1.0.1-beta.118",
     "react": "*"
   },
   "peerDependencies": {
