@@ -544,12 +544,14 @@ export const Sheet = withStaticProperties(
           let previouslyScrolling = false
 
           const onMoveShouldSet = (_e: GestureResponderEvent, { dy }: PanResponderGestureState) => {
-            if (scrollBridge.y !== 0) {
-              previouslyScrolling = true
-              return false
-            }
-            if (scrollBridge.y === 0 && dy < 0) {
-              return false
+            if (scrollBridge.enabled) {
+              if (scrollBridge.y !== 0) {
+                previouslyScrolling = true
+                return false
+              }
+              if (scrollBridge.y === 0 && dy < 0) {
+                return false
+              }
             }
             if (previouslyScrolling) {
               previouslyScrolling = false
@@ -628,6 +630,8 @@ export const Sheet = withStaticProperties(
         return null
       }
 
+      const translateY = frameSize === 0 ? HIDDEN_SIZE : positionValue.current
+
       const contents = (
         <SheetProvider
           modal={modal}
@@ -664,7 +668,7 @@ export const Sheet = withStaticProperties(
               zIndex: 10,
               width: '100%',
               height: '100%',
-              transform: [{ translateY: frameSize === 0 ? HIDDEN_SIZE : positionValue.current }],
+              transform: [{ translateY }],
             }}
           >
             {isResizing ? null : frameComponent}
