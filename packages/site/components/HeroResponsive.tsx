@@ -26,7 +26,7 @@ import {
 
 import favicon from '../public/favicon.svg'
 import { Container, ContainerLarge } from './Container'
-import { HomeH2 } from './HomeH2'
+import { HomeH2, HomeH3 } from './HomeH2'
 
 const breakpoints = [
   { name: 'xs', at: demoMedia[0] },
@@ -248,7 +248,7 @@ export const HeroResponsive = memo(() => {
 const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack className="unselectable" theme={active ? 'pink' : null} pos="absolute" {...props}>
-      <XStack y={-54} ai="flex-start">
+      <XStack y={-60} ai="flex-start">
         <YStack w={1} h={70} bc="$colorHover" opacity={active ? 0.2 : 0.05} />
         <Button
           accessibilityLabel={`Responsive size ${name}`}
@@ -282,13 +282,10 @@ const Header = memo(() => {
         </HomeH2>
       </XStack>
 
-      <Paragraph size="$7" theme="alt2">
-        Share native and web styling <strong>without</strong> performance downside.
-      </Paragraph>
-
-      <Paragraph maxWidth={450} size="$6" theme="alt3">
-        Responsive styles compile to CSS (web) or StyleSheet turning jank into butter. 🧈
-      </Paragraph>
+      <HomeH3 ta="left" als="flex-start" p={0} maxWidth={450} theme="alt3">
+        Simple syntax for universal responsive styling - compiled to @media on the web for amazing
+        performance.
+      </HomeH3>
     </YStack>
   )
 })
@@ -307,7 +304,7 @@ export const Safari = memo(
         br="$4"
         boc="$borderColor"
         borderWidth={1}
-        w="100%"
+        w="99%"
       >
         <YStack bc="$background" px="$4" jc="center" borderBottomWidth={0} h={50}>
           <XStack pos="relative" ai="center" space="$4">

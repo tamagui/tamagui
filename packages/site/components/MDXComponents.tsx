@@ -191,7 +191,9 @@ export const components = {
   li: (props) => {
     return (
       <LI>
-        <Paragraph tag="span">{props.children}</Paragraph>
+        <Paragraph size="$5" tag="span">
+          {props.children}
+        </Paragraph>
       </LI>
     )
   },

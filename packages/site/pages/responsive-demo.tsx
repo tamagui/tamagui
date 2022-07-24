@@ -43,7 +43,11 @@ export default function ResponsiveDemo() {
           <Image width={800} height={200} src={img1.src} />
           <Overlay $gtSmall={{ display: 'none' }} />
         </YStack>
-        <YStack $small={{ p: '$3', px: '$4', fullscreen: true }} $gtSmall={{ display: 'none' }}>
+        <YStack
+          zi={100}
+          $small={{ p: '$3', px: '$4', fullscreen: true }}
+          $gtSmall={{ display: 'none' }}
+        >
           {header}
         </YStack>
       </XStack>
@@ -129,9 +133,10 @@ const Overlay = (props) => {
   return (
     <LinearGradient
       w={800}
-      h={300}
+      h="100%"
       fullscreen
-      colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']}
+      zi={10}
+      colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.85)']}
       {...props}
     />
   )

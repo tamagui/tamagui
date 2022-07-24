@@ -251,10 +251,7 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (state.keepVariantsAsProps) {
-      if (
-        (staticConfig.defaultVariants && keyInit in staticConfig.defaultVariants) ||
-        (staticConfig.variants && keyInit in staticConfig.variants)
-      ) {
+      if (staticConfig.defaultVariants && keyInit in staticConfig.defaultVariants) {
         viewProps[keyInit] = valInit
       }
     }

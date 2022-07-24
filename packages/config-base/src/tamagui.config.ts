@@ -41,14 +41,10 @@ const headingFont = createInterFont(
   { sizeLineHeight: (size) => Math.round(size * 1.1 + (size < 30 ? 10 : 0)) }
 )
 const bodyFont = createInterFont(
-  {
-    size: {
-      4: 15,
-    },
-  },
+  {},
   {
     sizeSize: (size) => Math.round(size),
-    sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 12 : 4)),
+    sizeLineHeight: (size) => Math.round(size * 1.1 + (size >= 12 ? 10 : 4)),
   }
 )
 
@@ -62,7 +58,7 @@ const monoFont = createGenericFont(
       1: 10,
       2: 11,
       3: 12,
-      4: 15,
+      4: 14,
       5: 16,
       6: 18,
       7: 20,

@@ -144,7 +144,7 @@ export function HeroExampleThemes() {
               A colorful <span className="rainbow clip-text">revolution.</span>
             </HomeH2>
             <HomeH3>
-              Powerful themes that compile to clean CSS, with unlimited sub-themes down to the
+              Next-generation theme system that compiles to CSS. Unlimited sub-themes down to the
               element.
             </HomeH3>
           </ContainerLarge>

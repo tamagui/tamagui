@@ -65,7 +65,7 @@ export function PropsTable({
                   fow="800"
                   fontFamily="$mono"
                   textTransform="none"
-                  size="$5"
+                  size="$4"
                   width={200}
                 >
                   {name}
