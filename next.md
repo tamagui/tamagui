@@ -1,5 +1,15 @@
 - 1.0
 
+  - Image is hardcoded to w/h 100
+  - way to use tamagui with custom design system tokens
+  - Dialog close prevents touch for a while
+  - site get live lighthouse score > 90
+    - then try out reanimated again
+    - or get overshoot clamp working for react-native animations driver
+  - sheet cant drag up from bottom (web at least)
+  - popover adapt to sheet ?
+  - AlertSheet
+    - have AlertDialog option to adapt to AlertSheet at a breakpoint
   - bug: styled(ListItem, { ...styles }) styles not working fully
     - maybe extractor bug actually
   - hitSlop accept simple number
@@ -8,6 +18,7 @@
   - add test that kitchen-sink loads, test a few components
   - typescript strict
   - font weight on native
+  - loadFont
   - loadTheme, updateTheme
   - <FontLanguage />
   - animation accept useAnimatedStyle

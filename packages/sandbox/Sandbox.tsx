@@ -3,10 +3,11 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { SelectDemo } from '@tamagui/demos'
+import { AlertDialogDemo, SelectDemo } from '@tamagui/demos'
+import { FocusScope } from '@tamagui/focus-scope'
 import React, { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, FontLanguage, Paragraph, useMedia } from 'tamagui'
+import { Button, FontLanguage, Paragraph, Square, YStack, useMedia } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -51,7 +52,8 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <Button onPress={() => console.log('hi')}>Hello world</Button>
+        <AlertDialogDemo />
+
         {/* <FontLanguage heading="default" body="cn">
           <Paragraph fos="$4" fontFamily="$body">
             hello 🇨🇳

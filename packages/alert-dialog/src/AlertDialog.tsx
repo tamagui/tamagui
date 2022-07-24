@@ -33,12 +33,13 @@ import {
   createDialogScope,
 } from '@tamagui/dialog'
 import { YStack } from '@tamagui/stacks'
-/* -------------------------------------------------------------------------------------------------
- * AlertDialog
- * -----------------------------------------------------------------------------------------------*/
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { Alert } from 'react-native'
+
+/* -------------------------------------------------------------------------------------------------
+ * AlertDialog
+ * -----------------------------------------------------------------------------------------------*/
 
 const ROOT_NAME = 'AlertDialog'
 
@@ -56,6 +57,7 @@ type AlertDialogProps = DialogProps & {
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogTrigger
  * -----------------------------------------------------------------------------------------------*/
+
 const TRIGGER_NAME = 'AlertDialogTrigger'
 
 interface AlertDialogTriggerProps extends DialogTriggerProps {}

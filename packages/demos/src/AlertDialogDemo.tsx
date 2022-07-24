@@ -3,7 +3,7 @@ import { AlertDialog, Button, XStack, YStack } from 'tamagui'
 
 export function AlertDialogDemo() {
   return (
-    <AlertDialog native>
+    <AlertDialog native modal>
       <AlertDialog.Trigger asChild>
         <Button>Show Alert</Button>
       </AlertDialog.Trigger>
@@ -46,7 +46,7 @@ export function AlertDialogDemo() {
                 <Button>Cancel</Button>
               </AlertDialog.Cancel>
               <AlertDialog.Action asChild>
-                <Button theme="alt3">Accept</Button>
+                <Button theme="active">Accept</Button>
               </AlertDialog.Action>
             </XStack>
           </YStack>

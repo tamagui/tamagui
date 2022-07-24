@@ -145,6 +145,7 @@ const DialogPortal: React.FC<DialogPortalProps> = DialogPortalFrame.extractable(
     }
     return (
       <PortalItem>
+        {/* until we can use react-native portals natively */}
         {/* have to re-propogate context, sketch */}
         <DialogProvider scope={__scopeDialog} {...context}>
           <Theme name={themeName}>
@@ -170,7 +171,6 @@ const OVERLAY_NAME = 'DialogOverlay'
 
 const DialogOverlayFrame = styled(ThemeableStack, {
   name: OVERLAY_NAME,
-  pointerEvents: 'auto',
   backgrounded: true,
   fullscreen: true,
 })
@@ -209,6 +209,7 @@ type DialogOverlayImplProps = GetProps<typeof DialogOverlayFrame> & {
 const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProps>(
   (props, forwardedRef) => {
     const { context, ...overlayProps } = props
+
     return (
       // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
       // ie. when `Overlay` and `Content` are siblings
@@ -223,7 +224,7 @@ const DialogOverlayImpl = React.forwardRef<TamaguiElement, DialogOverlayImplProp
         <DialogOverlayFrame
           data-state={getState(context.open)}
           // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-          pointerEvents="auto"
+          pointerEvents={context.open ? 'auto' : 'none'}
           {...overlayProps}
           ref={forwardedRef}
         />
@@ -241,7 +242,6 @@ const CONTENT_NAME = 'DialogContent'
 const DialogContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
   tag: 'dialog',
-  pointerEvents: 'auto',
   position: 'relative',
   backgrounded: true,
   padded: true,
@@ -360,6 +360,7 @@ const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentType
         trapFocus={false}
         disableOutsidePointerEvents={false}
         onCloseAutoFocus={(event) => {
+          console.log('on close autofocus')
           props.onCloseAutoFocus?.(event)
 
           if (!event.defaultPrevented) {
@@ -467,10 +468,12 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
           loop
           trapped={trapFocus}
           onMountAutoFocus={onOpenAutoFocus}
+          forceUnmount={!context.open}
           onUnmountAutoFocus={onCloseAutoFocus}
         >
           <Dismissable
-            disableOutsidePointerEvents={disableOutsidePointerEvents}
+            disableOutsidePointerEvents={context.open && disableOutsidePointerEvents}
+            forceUnmount={!context.open}
             onEscapeKeyDown={onEscapeKeyDown}
             onPointerDownOutside={onPointerDownOutside}
             onFocusOutside={onFocusOutside}
