@@ -77,7 +77,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         const fontParsed = fontsParsed[key]
         const [name, language] = key.includes('_') ? key.split('_') : [key]
         const fdecs = registerFontVariables(fontParsed)
-        fontDeclarations[name] = { name: name.slice(1), declarations: fdecs, language }
+        fontDeclarations[key] = { name: name.slice(1), declarations: fdecs, language }
       }
 
       const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
@@ -93,9 +93,11 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       if (fontDeclarations) {
         for (const key in fontDeclarations) {
           const { name, declarations, language } = fontDeclarations[key]
+          const languageSelector = ` .t_lang-${name}-${language || 'default'}`
           const ruleSet = declarationsToRuleSet(
             declarations,
-            language ? ` .t_lang-${name}-${language}` : undefined
+            // if no language, -default separately for resetting
+            language ? languageSelector : `, :root ${languageSelector}`
           )
           cssRuleSets.push(ruleSet)
         }

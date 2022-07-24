@@ -51,13 +51,16 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
-        <FontLanguage heading="default" body="cn">
-          <Paragraph fos={100} fontFamily="$body">
+        {/* <FontLanguage heading="default" body="cn">
+          <Paragraph fos="$4" fontFamily="$body">
             hello 🇨🇳
           </Paragraph>
-        </FontLanguage>
-
-        <Paragraph fontFamily="$body">hello english</Paragraph>
+          <FontLanguage body="default">
+            <Paragraph fos="$4" fontFamily="$body">
+              hi again
+            </Paragraph>
+          </FontLanguage>
+        </FontLanguage> */}
 
         {/* <AnimationsDemo /> */}
         {/* <AnimationsPresenceDemo /> */}

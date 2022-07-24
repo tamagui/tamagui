@@ -3,6 +3,7 @@ export const widths = [660, 800, 1020, 1280]
 
 export const media = {
   // for site
+  xl: { maxWidth: 1650 },
   lg: { maxWidth: 1280 },
   md: { maxWidth: 1020 },
   sm: { maxWidth: 800 },
@@ -12,6 +13,7 @@ export const media = {
   gtSm: { minWidth: 800 + 1 },
   gtMd: { minWidth: 1020 + 1 },
   gtLg: { minWidth: 1280 + 1 },
+  gtXl: { minWidth: 1650 + 1 },
 
   // for responsive demo only
   tiny: { maxWidth: 500 },

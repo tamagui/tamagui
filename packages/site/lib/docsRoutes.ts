@@ -25,7 +25,8 @@ export const docsRoutes = [
       { title: 'Theme', route: '/docs/core/theme' },
       { title: 'useMedia', route: '/docs/core/use-media' },
       { title: 'useTheme', route: '/docs/core/use-theme' },
-      { title: 'Exports', route: '/docs/core/exports' },
+      { title: 'FontLanguage', route: '/docs/core/font-language' },
+      { title: 'Other exports', route: '/docs/core/exports' },
     ],
   },
 
@@ -46,7 +47,7 @@ export const docsRoutes = [
     label: 'Forms',
     pages: [
       { title: 'Button', route: '/docs/components/button' },
-      { title: 'Input + Textarea', route: '/docs/components/inputs' },
+      { title: 'Input & Textarea', route: '/docs/components/inputs' },
       { title: 'Label', route: '/docs/components/label' },
       { title: 'Progress', route: '/docs/components/progress' },
       { title: 'Select', route: '/docs/components/select' },
@@ -83,7 +84,7 @@ export const docsRoutes = [
     pages: [
       { title: 'LinearGradient', route: '/docs/components/linear-gradient' },
       { title: 'Separator', route: '/docs/components/separator' },
-      { title: 'Square + Circle', route: '/docs/components/shapes' },
+      { title: 'Square & Circle', route: '/docs/components/shapes' },
     ],
   },
 

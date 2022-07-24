@@ -217,6 +217,9 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
         $gtSm={{
           flexDirection: 'row',
         }}
+        maw={1650}
+        pos="relative"
+        ov="hidden"
       >
         <YStack
           overflow="hidden"

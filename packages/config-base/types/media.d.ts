@@ -1,6 +1,9 @@
 export declare const demoMedia: number[];
 export declare const widths: number[];
 export declare const media: {
+    xl: {
+        maxWidth: number;
+    };
     lg: {
         maxWidth: number;
     };
@@ -26,6 +29,9 @@ export declare const media: {
         minWidth: number;
     };
     gtLg: {
+        minWidth: number;
+    };
+    gtXl: {
         minWidth: number;
     };
     tiny: {

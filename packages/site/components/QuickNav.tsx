@@ -61,6 +61,10 @@ export function QuickNav() {
         right: 0,
         top: 94,
       }}
+      $gtXl={{
+        right: 'auto',
+        left: 1650 - 230,
+      }}
     >
       <ScrollView>
         <YStack
