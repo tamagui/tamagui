@@ -24,6 +24,8 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>((props, 
     trapped = false,
     onMountAutoFocus: onMountAutoFocusProp,
     onUnmountAutoFocus: onUnmountAutoFocusProp,
+    children,
+    forceUnmount,
     ...scopeProps
   } = props
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
@@ -44,72 +46,66 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>((props, 
 
   // Takes care of trapping focus if focus is moved outside programmatically for example
   React.useEffect(() => {
-    if (trapped) {
-      function handleFocusIn(event: FocusEvent) {
-        if (focusScope.paused || !container) return
-        const target = event.target as HTMLElement | null
-        if (container.contains(target)) {
-          lastFocusedElementRef.current = target
-        } else {
-          focus(lastFocusedElementRef.current, { select: true })
-        }
-      }
-
-      function handleFocusOut(event: FocusEvent) {
-        if (focusScope.paused || !container) return
-        if (!container.contains(event.relatedTarget as HTMLElement | null)) {
-          focus(lastFocusedElementRef.current, { select: true })
-        }
-      }
-
-      document.addEventListener('focusin', handleFocusIn)
-      document.addEventListener('focusout', handleFocusOut)
-      return () => {
-        document.removeEventListener('focusin', handleFocusIn)
-        document.removeEventListener('focusout', handleFocusOut)
+    if (!trapped) return
+    function handleFocusIn(event: FocusEvent) {
+      if (focusScope.paused || !container) return
+      const target = event.target as HTMLElement | null
+      if (container.contains(target)) {
+        lastFocusedElementRef.current = target
+      } else {
+        focus(lastFocusedElementRef.current, { select: true })
       }
     }
-  }, [trapped, container, focusScope.paused])
+
+    function handleFocusOut(event: FocusEvent) {
+      if (focusScope.paused || !container) return
+      if (!container.contains(event.relatedTarget as HTMLElement | null)) {
+        focus(lastFocusedElementRef.current, { select: true })
+      }
+    }
+
+    document.addEventListener('focusin', handleFocusIn)
+    document.addEventListener('focusout', handleFocusOut)
+    return () => {
+      document.removeEventListener('focusin', handleFocusIn)
+      document.removeEventListener('focusout', handleFocusOut)
+    }
+  }, [trapped, forceUnmount, container, focusScope.paused])
 
   React.useEffect(() => {
-    if (container) {
-      focusScopesStack.add(focusScope)
-      const previouslyFocusedElement = document.activeElement as HTMLElement | null
-      const hasFocusedCandidate = container.contains(previouslyFocusedElement)
+    if (!container) return
+    if (forceUnmount) return
+    focusScopesStack.add(focusScope)
+    const previouslyFocusedElement = document.activeElement as HTMLElement | null
+    const hasFocusedCandidate = container.contains(previouslyFocusedElement)
 
-      if (!hasFocusedCandidate) {
-        const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS)
-        container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
-        container.dispatchEvent(mountEvent)
-        if (!mountEvent.defaultPrevented) {
-          focusFirst(removeLinks(getTabbableCandidates(container)), { select: true })
-          if (document.activeElement === previouslyFocusedElement) {
-            focus(container)
-          }
+    if (!hasFocusedCandidate) {
+      const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS)
+      container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
+      container.dispatchEvent(mountEvent)
+      if (!mountEvent.defaultPrevented) {
+        focusFirst(removeLinks(getTabbableCandidates(container)), { select: true })
+        if (document.activeElement === previouslyFocusedElement) {
+          focus(container)
         }
       }
-
-      return () => {
-        container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
-
-        // We hit a react bug (fixed in v17) with focusing in unmount.
-        // We need to delay the focus a little to get around it for now.
-        // See: https://github.com/facebook/react/issues/17894
-        setTimeout(() => {
-          const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS)
-          container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
-          container.dispatchEvent(unmountEvent)
-          if (!unmountEvent.defaultPrevented) {
-            focus(previouslyFocusedElement ?? document.body, { select: true })
-          }
-          // we need to remove the listener after we `dispatchEvent`
-          container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
-
-          focusScopesStack.remove(focusScope)
-        }, 0)
-      }
     }
-  }, [container, onMountAutoFocus, onUnmountAutoFocus, focusScope])
+
+    return () => {
+      container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus)
+
+      const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS)
+      container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
+      container.dispatchEvent(unmountEvent)
+      if (!unmountEvent.defaultPrevented) {
+        focus(previouslyFocusedElement ?? document.body, { select: true })
+      }
+      // we need to remove the listener after we `dispatchEvent`
+      container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
+
+      focusScopesStack.remove(focusScope)
+    }
+  }, [container, forceUnmount, onMountAutoFocus, onUnmountAutoFocus, focusScope])
 
   // Takes care of looping focus (when tabbing whilst at the edges)
   const handleKeyDown = React.useCallback(
@@ -142,7 +138,7 @@ const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>((props, 
     [loop, trapped, focusScope.paused]
   )
 
-  const child = React.Children.only(props.children)
+  const child = React.Children.only(children)
 
   return React.cloneElement(child as any, {
     tabIndex: -1,

@@ -27,5 +27,10 @@ export interface FocusScopeProps {
    */
   onUnmountAutoFocus?: (event: Event) => void
 
+  /**
+   * If unmount is animated, you want to force re-focus at start of animation not after
+   */
+  forceUnmount?: boolean
+
   children?: React.ReactNode
 }
