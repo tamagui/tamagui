@@ -7,6 +7,7 @@ export interface DismissableProps {
     onFocusOutside?: (event: FocusOutsideEvent) => void;
     onInteractOutside?: (event: PointerDownOutsideEvent | FocusOutsideEvent) => void;
     onDismiss?: () => void;
+    forceUnmount?: boolean;
     children?: React.ReactNode;
 }
 export interface DismissableBranchProps {

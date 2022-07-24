@@ -34,6 +34,7 @@ const DismissableContext = React.createContext({
 const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>((props, forwardedRef) => {
   const {
     disableOutsidePointerEvents = false,
+    forceUnmount,
     onEscapeKeyDown,
     onPointerDownOutside,
     onFocusOutside,
@@ -108,16 +109,19 @@ const Dismissable = React.forwardRef<HTMLDivElement, DismissableProps>((props, f
    * We only want them to be removed from context stacks when unmounted.
    */
   React.useEffect(() => {
+    if (forceUnmount) return
     return () => {
       if (!node) return
       context.layers.delete(node)
       context.layersWithOutsidePointerEventsDisabled.delete(node)
       dispatchUpdate()
     }
-  }, [node, context])
+  }, [node, context, forceUnmount])
 
   React.useEffect(() => {
-    const handleUpdate = () => force({})
+    const handleUpdate = () => {
+      force({})
+    }
     document.addEventListener(CONTEXT_UPDATE, handleUpdate)
     return () => document.removeEventListener(CONTEXT_UPDATE, handleUpdate)
   }, [])
@@ -251,7 +255,7 @@ function usePointerDownOutside(onPointerDownOutside?: (event: PointerDownOutside
      *   })
      * });
      */
-    const timerId = window.setTimeout(() => {
+    const timerId = setTimeout(() => {
       document.addEventListener('pointerdown', handlePointerDown)
     }, 0)
     return () => {
@@ -316,15 +320,6 @@ function handleAndDispatchCustomEvent<E extends CustomEvent, OriginalEvent exten
   }
 }
 
-const Root = Dismissable
-const Branch = DismissableBranch
-
-export {
-  Dismissable,
-  DismissableBranch,
-  //
-  Root,
-  Branch,
-}
+export { Dismissable, DismissableBranch }
 
 export type { DismissableProps }

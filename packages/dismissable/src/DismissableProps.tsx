@@ -35,6 +35,11 @@ export interface DismissableProps {
    */
   onDismiss?: () => void
 
+  /**
+   * When using animations on exit, may want to simualte force unmount early
+   */
+  forceUnmount?: boolean
+
   children?: React.ReactNode
 }
 
