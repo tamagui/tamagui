@@ -7,7 +7,6 @@ import { isClient, isWeb, useIsomorphicLayoutEffect } from '../constants/platfor
 import { mediaQueryConfig, mediaState } from '../hooks/useMedia'
 import type {
   DebugProp,
-  MediaKeys,
   MediaQueryKey,
   PseudoPropKeys,
   PseudoStyles,
@@ -72,7 +71,7 @@ type StyleSplitter = (
   debug?: DebugProp
 ) => {
   pseudos: PseudoStyles
-  medias: Record<MediaKeys, ViewStyle>
+  medias: Record<MediaQueryKey, ViewStyle>
   style: ViewStyle
   classNames: ClassNamesObject
   rulesToInsert: RulesToInsert
@@ -109,7 +108,7 @@ export const getSplitStyles: StyleSplitter = (
   const validStyleProps = staticConfig.isText ? stylePropsText : validStyles
   const viewProps: StackProps = {}
   const pseudos: PseudoStyles = {}
-  const medias: Record<MediaKeys, ViewStyle> = {}
+  const medias: Record<MediaQueryKey, ViewStyle> = {}
   const usedKeys = new Set<string>()
   const propKeys = Object.keys(props)
   const shouldDoClasses = (isWeb || process.env.IS_STATIC === 'is_static') && !state.noClassNames

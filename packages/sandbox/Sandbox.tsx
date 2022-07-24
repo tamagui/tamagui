@@ -6,7 +6,7 @@ import '../site/app.css'
 import { SelectDemo } from '@tamagui/demos'
 import React, { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { FontLanguage, Paragraph } from 'tamagui'
+import { Button, FontLanguage, Paragraph, useMedia } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -51,6 +51,7 @@ export const Sandbox = () => {
           justifyContent: 'center',
         }}
       >
+        <Button onPress={() => console.log('hi')}>Hello world</Button>
         {/* <FontLanguage heading="default" body="cn">
           <Paragraph fos="$4" fontFamily="$body">
             hello 🇨🇳

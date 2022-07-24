@@ -9,7 +9,7 @@ export declare function createExtractor(): {
             [key: string]: import("@tamagui/core-node").VariableVal;
         };
     }, {}, {
-        [x: string]: {
+        [key: string]: {
             [key: string]: string | number;
         };
     }, {

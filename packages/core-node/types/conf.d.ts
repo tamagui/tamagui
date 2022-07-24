@@ -7,7 +7,7 @@ export declare const getConfig: () => TamaguiInternalConfig<import("./types").Cr
         [key: string]: import("./types").VariableVal;
     };
 }, {}, {
-    [x: string]: {
+    [key: string]: {
         [key: string]: string | number;
     };
 }, {

@@ -71,7 +71,6 @@ export type {
   GenericTextVariants,
   GenericStackVariants,
   Media,
-  MediaKeys,
   MediaPropKeys,
   MediaQueries,
   mediaQueryConfig,

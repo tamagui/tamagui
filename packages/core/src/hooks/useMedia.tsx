@@ -1,5 +1,5 @@
 import { useForceUpdate } from '@tamagui/use-force-update'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useIsomorphicLayoutEffect } from '../constants/platform'
 import { matchMedia } from '../helpers/matchMedia'
@@ -15,12 +15,12 @@ import { useConstant } from './useConstant'
 export const mediaState: MediaQueryState = {} as any
 const mediaQueryListeners: { [key: string]: Set<Function> } = {}
 
-export const addMediaQueryListener = (key: string, cb: any) => {
+export function addMediaQueryListener(key: MediaQueryKey, cb: any) {
   mediaQueryListeners[key] = mediaQueryListeners[key] || new Set()
   mediaQueryListeners[key].add(cb)
 }
 
-export const removeMediaQueryListener = (key: string, cb: any) => {
+export function removeMediaQueryListener(key: MediaQueryKey, cb: any) {
   mediaQueryListeners[key]?.delete(cb)
 }
 
@@ -93,7 +93,9 @@ type UseMediaState = {
   isUnmounted: boolean
 }
 
-export const useMedia = () => {
+export function useMedia(): {
+  [key in MediaQueryKey]: boolean
+} {
   const forceUpdate = useForceUpdate()
   const state = useRef() as React.MutableRefObject<UseMediaState>
   if (!state.current) {
@@ -125,7 +127,7 @@ export const useMedia = () => {
   })
 
   // unmount
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     return () => {
       const st = state.current
       st.isUnmounted = true
@@ -141,30 +143,25 @@ export const useMedia = () => {
 
   return useConstant(() => {
     const st = state.current
-    return new Proxy(
-      mediaState as {
-        [key in MediaQueryKey]: boolean
+    return new Proxy(mediaState, {
+      get(target, key: string) {
+        if (key[0] !== '$') {
+          key = `$${key}`
+        }
+        if (!(key in mediaState)) {
+          return Reflect.get(target, key)
+        }
+        if (!st.isUnmounted) {
+          if (st.isRendering) {
+            st.nextSelections[key] = true
+          }
+        }
+        if (key in mediaState) {
+          return mediaState[key]
+        }
+        return Reflect.get(mediaState, key)
       },
-      {
-        get(target, key: string) {
-          if (key[0] !== '$') {
-            key = `$${key}`
-          }
-          if (!(key in mediaState)) {
-            return Reflect.get(target, key)
-          }
-          if (!st.isUnmounted) {
-            if (st.isRendering) {
-              st.nextSelections[key] = true
-            }
-          }
-          if (key in mediaState) {
-            return mediaState[key]
-          }
-          return Reflect.get(mediaState, key)
-        },
-      }
-    )
+    })
   })
 }
 

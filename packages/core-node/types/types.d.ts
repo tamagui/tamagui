@@ -88,8 +88,8 @@ declare type GenericThemes = {
     });
 };
 declare type GenericShorthands = {};
-declare type GenericMedia<K extends string = string> = {
-    [key in K]: {
+declare type GenericMedia = {
+    [key: string]: {
         [key: string]: number | string;
     };
 };
@@ -206,7 +206,6 @@ export declare type GenericFont<Key extends number | string = number | string> =
         [key in Key]: string | Variable;
     }>;
 };
-export declare type MediaKeys = keyof Media;
 export declare type MediaQueryObject = {
     [key: string]: string | number | string;
 };

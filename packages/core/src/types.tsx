@@ -114,13 +114,12 @@ type GenericThemes = {
         [key: string]: VariableVal
       }
 }
-type GenericShorthands = {
-  // [key: string]: string
-}
 
-type GenericMedia<K extends string = string> = {
-  // name => media shorthand name (camelCase) => value
-  [key in K]: {
+type GenericShorthands = {}
+
+// sm: { minWidth: 100 }
+type GenericMedia = {
+  [key: string]: {
     [key: string]: number | string
   }
 }
@@ -340,7 +339,6 @@ export type GenericFont<Key extends number | string = number | string> = {
 }
 
 // media
-export type MediaKeys = keyof Media
 export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`

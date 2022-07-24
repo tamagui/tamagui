@@ -1,5 +1,5 @@
 import { ViewStyle } from 'react-native';
-import type { DebugProp, MediaKeys, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, TamaguiInternalConfig, ThemeObject } from '../types';
+import type { DebugProp, MediaQueryKey, PseudoStyles, SplitStyleState, StackProps, StaticConfigParsed, TamaguiInternalConfig, ThemeObject } from '../types';
 import { FontLanguageProps, LanguageContextType } from '../views/FontLanguage.types';
 import { RulesToInsert } from './insertStyleRule';
 export declare type SplitStyles = ReturnType<typeof getSplitStyles>;
@@ -9,7 +9,7 @@ declare type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfigParsed, theme: ThemeObject, state: SplitStyleState, defaultClassNames?: any, languageContext?: LanguageContextType, debug?: DebugProp) => {
     pseudos: PseudoStyles;
-    medias: Record<MediaKeys, ViewStyle>;
+    medias: Record<MediaQueryKey, ViewStyle>;
     style: ViewStyle;
     classNames: ClassNamesObject;
     rulesToInsert: RulesToInsert;

@@ -8,7 +8,7 @@ declare class TamaguiManager {
             [key: string]: import("./types").VariableVal;
         };
     }, {}, {
-        [x: string]: {
+        [key: string]: {
             [key: string]: string | number;
         };
     }, {
