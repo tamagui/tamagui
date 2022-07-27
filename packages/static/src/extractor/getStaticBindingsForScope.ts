@@ -23,7 +23,7 @@ function resolveImportPath(sourcePath: string, path: string) {
 }
 
 const cache = new Map()
-const pending = new Map()
+const pending = new Map<string, Promise<any>>()
 setInterval(() => {
   if (cache.size) {
     cache.clear()
@@ -62,13 +62,13 @@ function importModule(path: string) {
   return promise
 }
 
-export function getStaticBindingsForScope(
+export async function getStaticBindingsForScope(
   scope: NodePath<t.JSXElement>['scope'],
   whitelist: string[] = [],
   sourcePath: string,
   bindingCache: Record<string, string | null>,
   shouldPrintDebug: boolean | 'verbose'
-): Record<string, any> {
+): Promise<Record<string, any>> {
   const bindings: Record<string, Binding> = scope.getAllBindings() as any
   const ret: Record<string, any> = {}
 
@@ -91,15 +91,19 @@ export function getStaticBindingsForScope(
       const moduleName = resolveImportPath(sourcePath, importPath)
       const isOnWhitelist = whitelist.some((test) => moduleName.endsWith(test))
       if (!isOnWhitelist) continue
-      const src = importModule(moduleName)
-      if (!src) continue
-      for (const specifier of node.specifiers) {
-        if (t.isImportSpecifier(specifier) && t.isIdentifier(specifier.imported)) {
-          if (typeof src[specifier.imported.name] !== 'undefined') {
-            const val = src[specifier.local.name]
-            ret[specifier.local.name] = val
+      try {
+        const src = await importModule(moduleName)
+        if (!src) continue
+        for (const specifier of node.specifiers) {
+          if (t.isImportSpecifier(specifier) && t.isIdentifier(specifier.imported)) {
+            if (typeof src[specifier.imported.name] !== 'undefined') {
+              const val = src[specifier.local.name]
+              ret[specifier.local.name] = val
+            }
           }
         }
+      } catch (err) {
+        console.warn(`⚠️ Failed evaluating module, continuing: ${moduleName}`)
       }
     }
   }
@@ -136,13 +140,7 @@ export function getStaticBindingsForScope(
             ret[k] = src[sourceModule.imported]
           }
         } else {
-          // crude esmodule check
-          // TODO: make sure this actually works
-          // if (src && src.__esModule) {
-          //   ret[k] = src.default
-          // } else {
           ret[k] = src
-          // }
         }
       }
       continue
@@ -192,11 +190,8 @@ export function getStaticBindingsForScope(
       ret[k] = evaluateAstNode(dec.init, undefined, shouldPrintDebug)
       bindingCache[cacheKey] = ret[k]
       continue
-    } catch (e) {
+    } catch {
       // skip
-      // if (shouldPrintDebug) {
-      //   console.error('[🐇] cant eval, skipping', cacheKey) //, e.message)
-      // }
     }
   }
 
