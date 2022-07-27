@@ -52,7 +52,18 @@ export default () => (
 
 #### &lt;AlertDialog /&gt;
 
-Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/intro/props), except modal which is on by default.
+Contains every component for the AlertDialog. Shares all [Dialog Props](/docs/intro/props), except modal which is on by default. Adds:
+
+<PropsTable
+  data={[
+    {
+      name: 'native',
+      type: 'boolean',
+      required: false,
+      description: `When true, on iOS it will render as a native AlertDialog.`,
+    },
+  ]}
+/>
 
 #### &lt;Trigger /&gt;
 

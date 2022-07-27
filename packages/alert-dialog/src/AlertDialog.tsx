@@ -369,7 +369,7 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props: ScopedProps<AlertDi
     }
   }
 
-  return <Dialog {...dialogScope} {...alertDialogProps} modal={true} />
+  return <Dialog {...dialogScope} {...alertDialogProps} modal />
 }
 
 function forEachChildDeep(

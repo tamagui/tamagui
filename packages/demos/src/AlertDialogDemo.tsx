@@ -3,7 +3,7 @@ import { AlertDialog, Button, XStack, YStack } from 'tamagui'
 
 export function AlertDialogDemo() {
   return (
-    <AlertDialog native modal>
+    <AlertDialog native>
       <AlertDialog.Trigger asChild>
         <Button>Show Alert</Button>
       </AlertDialog.Trigger>
