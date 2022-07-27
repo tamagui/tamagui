@@ -140,10 +140,10 @@ const SectionTinted = ({ children, gradient, extraPad, bubble, noBorderTop, ...p
   )
 }
 
-refractor.register(tsx)
-refractor.register(css)
-
 export async function getStaticProps() {
+  refractor.register(tsx)
+  refractor.register(css)
+
   function codeToHTML(source: string, language: 'tsx' | 'css' | string, line = '0') {
     let result: any = refractor.highlight(source, language)
     result = rehypeHighlightLine(result, rangeParser(line))
