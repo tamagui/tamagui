@@ -153,8 +153,6 @@ export interface PopoverContentTypeProps
    * @see https://github.com/theKashey/react-remove-scroll#usage
    */
   allowPinchZoom?: RemoveScrollProps['allowPinchZoom']
-
-  disableRemoveScroll?: boolean
 }
 
 export const PopoverContent = React.forwardRef<PopoverContentTypeElement, PopoverContentTypeProps>(
@@ -176,42 +174,36 @@ export const PopoverContent = React.forwardRef<PopoverContentTypeElement, Popove
     return (
       <Portal>
         <Theme name={themeName}>
-          <RemoveScroll
-            enabled={disableRemoveScroll ? false : context.open}
-            allowPinchZoom={allowPinchZoom}
-            // causes lots of bugs on touch web on site
-            removeScrollBar={false}
-          >
-            <PopoverContentImpl
-              {...contentModalProps}
-              ref={composedRefs}
-              // we make sure we're not trapping once it's been closed
-              // (closed !== unmounted when animating out)
-              trapFocus={trapFocus ?? context.open}
-              disableOutsidePointerEvents
-              onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-                event.preventDefault()
-                if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
-              })}
-              onPointerDownOutside={composeEventHandlers(
-                props.onPointerDownOutside,
-                (event) => {
-                  const originalEvent = event.detail.originalEvent
-                  const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
-                  const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-                  isRightClickOutsideRef.current = isRightClick
-                },
-                { checkDefaultPrevented: false }
-              )}
-              // When focus is trapped, a `focusout` event may still happen.
-              // We make sure we don't trigger our `onDismiss` in such case.
-              onFocusOutside={composeEventHandlers(
-                props.onFocusOutside,
-                (event) => event.preventDefault(),
-                { checkDefaultPrevented: false }
-              )}
-            />
-          </RemoveScroll>
+          <PopoverContentImpl
+            {...contentModalProps}
+            disableRemoveScroll={disableRemoveScroll}
+            ref={composedRefs}
+            // we make sure we're not trapping once it's been closed
+            // (closed !== unmounted when animating out)
+            trapFocus={trapFocus ?? context.open}
+            disableOutsidePointerEvents
+            onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+              event.preventDefault()
+              if (!isRightClickOutsideRef.current) context.triggerRef.current?.focus()
+            })}
+            onPointerDownOutside={composeEventHandlers(
+              props.onPointerDownOutside,
+              (event) => {
+                const originalEvent = event.detail.originalEvent
+                const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true
+                const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+                isRightClickOutsideRef.current = isRightClick
+              },
+              { checkDefaultPrevented: false }
+            )}
+            // When focus is trapped, a `focusout` event may still happen.
+            // We make sure we don't trigger our `onDismiss` in such case.
+            onFocusOutside={composeEventHandlers(
+              props.onFocusOutside,
+              (event) => event.preventDefault(),
+              { checkDefaultPrevented: false }
+            )}
+          />
         </Theme>
       </Portal>
     )
@@ -242,6 +234,8 @@ export interface PopoverContentImplProps
    * Can be prevented.
    */
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
+
+  disableRemoveScroll?: boolean
 }
 
 const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverContentImplProps>(
@@ -257,6 +251,7 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
       onFocusOutside,
       onInteractOutside,
       children,
+      disableRemoveScroll,
       ...contentProps
     } = props
     const popperScope = usePopoverScope(__scopePopover)
@@ -285,18 +280,25 @@ const PopoverContentImpl = React.forwardRef<PopoverContentImplElement, PopoverCo
             {...contentProps}
             ref={forwardedRef}
           >
-            {trapFocus === false ? (
-              children
-            ) : (
-              <FocusScope
-                loop
-                trapped={trapFocus ?? context.open}
-                onMountAutoFocus={onOpenAutoFocus}
-                onUnmountAutoFocus={onCloseAutoFocus}
-              >
-                <div style={{ display: 'contents' }}>{children}</div>
-              </FocusScope>
-            )}
+            <RemoveScroll
+              enabled={disableRemoveScroll ? false : context.open}
+              allowPinchZoom
+              // causes lots of bugs on touch web on site
+              removeScrollBar={false}
+            >
+              {trapFocus === false ? (
+                children
+              ) : (
+                <FocusScope
+                  loop
+                  trapped={trapFocus ?? context.open}
+                  onMountAutoFocus={onOpenAutoFocus}
+                  onUnmountAutoFocus={onCloseAutoFocus}
+                >
+                  <div style={{ display: 'contents' }}>{children}</div>
+                </FocusScope>
+              )}
+            </RemoveScroll>
           </PopperContent>
         )}
       </AnimatePresence>

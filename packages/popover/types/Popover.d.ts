@@ -57,13 +57,13 @@ export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<import
 export declare type PopoverContentProps = PopoverContentTypeProps;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     allowPinchZoom?: RemoveScrollProps['allowPinchZoom'];
-    disableRemoveScroll?: boolean;
 }
 export declare const PopoverContent: React.ForwardRefExoticComponent<PopoverContentTypeProps & React.RefAttributes<HTMLElement | View>>;
 export interface PopoverContentImplProps extends PopperContentProps, Omit<DismissableProps, 'onDismiss' | 'children'> {
     trapFocus?: FocusScopeProps['trapped'];
     onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus'];
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
+    disableRemoveScroll?: boolean;
 }
 declare type PopoverCloseElement = HTMLElement | View;
 export declare type PopoverCloseProps = YStackProps;
