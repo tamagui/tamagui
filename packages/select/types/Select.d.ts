@@ -20,7 +20,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "size" | "disabled" | "active"> & {
+}, "disabled" | "size" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -40,7 +40,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "size" | "disabled" | "active"> & {
+}, "disabled" | "size" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -60,7 +60,7 @@ export declare const SelectTrigger: React.ForwardRefExoticComponent<Omit<import(
     bordered?: number | boolean | undefined;
     transparent?: boolean | undefined;
     chromeless?: boolean | undefined;
-}, "size" | "disabled" | "active"> & {
+}, "disabled" | "size" | "active"> & {
     size?: import("@tamagui/core").SizeTokens | undefined;
     active?: boolean | undefined;
     disabled?: boolean | undefined;
@@ -393,7 +393,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "size" | "disabled" | "active"> & {
+    }, "disabled" | "size" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -413,7 +413,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "size" | "disabled" | "active"> & {
+    }, "disabled" | "size" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -433,7 +433,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "size" | "disabled" | "active"> & {
+    }, "disabled" | "size" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -470,7 +470,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "size" | "disabled" | "active"> & {
+    }, "disabled" | "size" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -490,7 +490,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "size" | "disabled" | "active"> & {
+    }, "disabled" | "size" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;
@@ -510,7 +510,7 @@ export declare const Select: ((props: ScopedProps<SelectProps>) => JSX.Element) 
         bordered?: number | boolean | undefined;
         transparent?: boolean | undefined;
         chromeless?: boolean | undefined;
-    }, "size" | "disabled" | "active"> & {
+    }, "disabled" | "size" | "active"> & {
         size?: import("@tamagui/core").SizeTokens | undefined;
         active?: boolean | undefined;
         disabled?: boolean | undefined;

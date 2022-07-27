@@ -12,6 +12,7 @@ import {
   Spacer,
   Square,
   Switch,
+  Text,
   YGroup,
   YStack,
   useTheme,

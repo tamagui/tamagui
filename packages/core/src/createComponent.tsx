@@ -160,14 +160,11 @@ export function createComponent<
 
     const forceUpdate = useForceUpdate()
     const theme = useTheme(props.theme, componentName, props, forceUpdate)
-    const [state, setState] = useState<TamaguiComponentState>(defaultComponentState)
+    const states = useState<TamaguiComponentState>(defaultComponentState)
+    const state = propsIn.forceStyle ? { ...states[0], [propsIn.forceStyle]: true } : states[0]
+    const setState = states[1]
     const setStateShallow = createShallowUpdate(setState)
     const languageContext = useContext(FontLanguageContext)
-
-    // allow forcing a pseudo state on
-    if (propsIn.forceStyle) {
-      state[propsIn.forceStyle] = true
-    }
 
     const shouldAvoidClasses = !!(props.animation && avoidClasses)
     const shouldForcePseudo = !!propsIn.forceStyle

@@ -53,6 +53,15 @@ export interface SelectContextValue {
   forceUpdate: DispatchWithoutAction
 
   // InlineImpl only:
+  fallback: boolean
+  blockSelection: boolean
+  allowSelectRef?: MutableRefObject<boolean>
+  allowMouseUpRef?: MutableRefObject<boolean>
+  upArrowRef?: MutableRefObject<HTMLDivElement | null>
+  downArrowRef?: MutableRefObject<HTMLDivElement | null>
+  selectTimeoutRef?: MutableRefObject<any>
+  setScrollTop?: Function
+  setInnerOffset?: Function
   dataRef?: MutableRefObject<ContextData>
   controlledScrolling?: boolean
   listRef?: MutableRefObject<Array<HTMLElement | null>>
@@ -60,7 +69,6 @@ export interface SelectContextValue {
   canScrollUp?: boolean
   canScrollDown?: boolean
   floatingContext?: FloatingContext<ReferenceType>
-  increaseHeight?: (floating: HTMLElement, amount?: any) => number | undefined
   interactions?: {
     getReferenceProps: (userProps?: HTMLProps<Element> | undefined) => any
     getFloatingProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any

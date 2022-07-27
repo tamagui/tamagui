@@ -41,7 +41,6 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
   (props: ScopedProps<SelectViewportProps>, forwardedRef) => {
     const { __scopeSelect, children, ...viewportProps } = props
     const context = useSelectContext(VIEWPORT_NAME, __scopeSelect)
-    const { style, ...floatingProps } = context.interactions?.getFloatingProps() ?? {}
     const breakpointActive = useSelectBreakpointActive(context.sheetBreakpoint)
 
     if (breakpointActive || !isWeb) {
@@ -52,16 +51,21 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
       return null
     }
 
-    // TODO
-    delete style['scrollbarWidth']
-    delete style['listStyleType']
+    if (!context.open) {
+      return children
+    }
+
+    const {
+      style: { scrollbarWidth, listStyleType, ...restStyle },
+      ...floatingProps
+    } = context.interactions!.getFloatingProps()
 
     return (
       <>
         {/* Hide scrollbars cross-browser and enable momentum scroll for touch devices */}
         <style
           dangerouslySetInnerHTML={{
-            __html: `[data-tamagui-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-tamagui-select-viewport]::-webkit-scrollbar{display:none}`,
+            __html: disableScrollbarCSS,
           }}
         />
         <FloatingFocusManager context={context.floatingContext} preventTabbing>
@@ -73,7 +77,7 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
             {...viewportProps}
             ref={forwardedRef}
             {...floatingProps}
-            {...style}
+            {...restStyle}
           >
             {children}
           </SelectViewportFrame>
@@ -84,3 +88,5 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
 )
 
 SelectViewport.displayName = VIEWPORT_NAME
+
+const disableScrollbarCSS = `[data-tamagui-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-tamagui-select-viewport]::-webkit-scrollbar{display:none}`

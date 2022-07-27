@@ -1,5 +1,5 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react-dom-interactions'
-import { Theme, useThemeName } from '@tamagui/core'
+import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
 import * as React from 'react'
 
 import { useSelectContext } from './context'
@@ -17,6 +17,7 @@ export const SelectContent = ({ children, __scopeSelect }: SelectContentProps) =
   const themeName = useThemeName()
   const showSheet = useShowSelectSheet(context)
   const contents = <Theme name={themeName}>{children}</Theme>
+  const touch = useIsTouchDevice()
 
   if (showSheet && context.open) {
     return contents
@@ -25,7 +26,8 @@ export const SelectContent = ({ children, __scopeSelect }: SelectContentProps) =
   return (
     <FloatingPortal>
       {context.open ? (
-        <FloatingOverlay lockScroll>{contents}</FloatingOverlay>
+        // TODO inside overlay <FloatingFocusManager context={context} preventTabbing>
+        <FloatingOverlay lockScroll={!touch}>{contents}</FloatingOverlay>
       ) : (
         <div style={{ display: 'none' }}>{contents}</div>
       )}

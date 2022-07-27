@@ -3,11 +3,11 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { AlertDialogDemo, SelectDemo, SheetDemo } from '@tamagui/demos'
+import { AlertDialogDemo, SelectDemo, SheetDemo, SwitchDemo } from '@tamagui/demos'
 import { FocusScope } from '@tamagui/focus-scope'
 import React, { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, FontLanguage, Paragraph, Square, YStack, useMedia } from 'tamagui'
+import { Button, FontLanguage, Paragraph, Square, Text, YStack, useMedia } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -54,6 +54,8 @@ export const Sandbox = () => {
       >
         {/* <AlertDialogDemo /> */}
 
+        <Button>hello</Button>
+
         {/* <FontLanguage heading="default" body="cn">
           <Paragraph fos="$4" fontFamily="$body">
             hello 🇨🇳
@@ -73,8 +75,8 @@ export const Sandbox = () => {
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        {/* <SelectDemo /> */}
-        <SheetDemo />
+        <SelectDemo />
+        {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>
           <Square size={50} bc="red" />

@@ -1,6 +1,5 @@
 - 1.0
 
-  - font weight on native
   - loadFont
   - loadTheme, updateTheme
   - sheet cant drag up from bottom (web at least)
@@ -10,6 +9,7 @@
     - AlertDialog buttons
     - Dialog
 
+  - windows without WSL
   - <Select /> has selectable cursor on hold down + move
     - should update to new react-dom-interactions
   - Image is hardcoded to w/h 100
@@ -61,6 +61,8 @@
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - // TODO infer ref
+  - forms working bubble / label
+  - keyboard nav runthrough
 
 ---
 

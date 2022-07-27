@@ -9,6 +9,8 @@ export default defineConfig({
       fastRefresh: true,
       jsxPure: true,
     }),
-    tamaguiPlugin(),
+    tamaguiPlugin({
+      components: [],
+    }),
   ],
 })

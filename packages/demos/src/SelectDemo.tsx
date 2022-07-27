@@ -1,11 +1,11 @@
-import { ChevronDown, ChevronUp } from '@tamagui/feather-icons'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/feather-icons'
 import React from 'react'
 import { LinearGradient, Select, YStack } from 'tamagui'
 
 export function SelectDemo() {
   return (
     <Select sheetBreakpoint="$sm" defaultValue="apple">
-      <Select.Trigger w={200} iconAfter={ChevronDown}>
+      <Select.Trigger w={240} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>
 
@@ -38,6 +38,9 @@ export function SelectDemo() {
               return (
                 <Select.Item index={i} key={item.name} value={item.name.toLowerCase()}>
                   <Select.ItemText>{item.name}</Select.ItemText>
+                  <Select.ItemIndicator ml="auto">
+                    <Check size={16} />
+                  </Select.ItemIndicator>
                 </Select.Item>
               )
             })}

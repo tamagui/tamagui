@@ -20,7 +20,8 @@
   "dependencies": {
     "@tamagui/proxy-worm": "^1.0.1-beta.119",
     "fs-extra": "^10.1.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "outdent": "^0.8.0"
   },
   "devDependencies": {
     "@tamagui/build": "^1.0.1-beta.119",

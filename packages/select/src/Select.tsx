@@ -148,7 +148,6 @@ type SelectItemContextValue = {
   value: string
   textId: string
   isSelected: boolean
-  onItemTextChange(node: TamaguiElement | null): void
 }
 
 const [SelectItemContextProvider, useSelectItemContext] =
@@ -173,8 +172,6 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
     } = props
     const context = useSelectContext(ITEM_NAME, __scopeSelect)
     const isSelected = context.value === value
-    const [textValue, setTextValue] = React.useState(textValueProp ?? '')
-    const [isFocused, setIsFocused] = React.useState(false)
     const textId = useId()
 
     const {
@@ -184,31 +181,26 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       open,
       setOpen,
       onChange,
-      activeIndex,
       setActiveIndex,
+      allowMouseUpRef,
+      allowSelectRef,
       setValueAtIndex,
+      selectTimeoutRef,
       dataRef,
     } = context
 
-    const composedRefs = useComposedRefs(
-      forwardedRef,
-      (node) => {
-        if (!isWeb) return
-        if (node instanceof HTMLElement) {
-          if (listRef) {
-            listRef.current[index] = node
-          }
+    const composedRefs = useComposedRefs(forwardedRef, (node) => {
+      if (!isWeb) return
+      if (node instanceof HTMLElement) {
+        if (listRef) {
+          listRef.current[index] = node
         }
       }
-      // isSelected ? context.onSelectedItemChange : undefined
-    )
+    })
 
     React.useEffect(() => {
       setValueAtIndex(index, value)
     }, [index, setValueAtIndex, value])
-
-    const timeoutRef = React.useRef<any>()
-    const [allowMouseUp, setAllowMouseUp] = React.useState(false)
 
     function handleSelect() {
       setSelectedIndex(index)
@@ -216,33 +208,42 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
       setOpen(false)
     }
 
-    React.useLayoutEffect(() => {
-      clearTimeout(timeoutRef.current)
-      if (open) {
-        if (selectedIndex !== index) {
-          setAllowMouseUp(true)
-        } else {
-          timeoutRef.current = setTimeout(() => {
-            setAllowMouseUp(true)
-          }, 300)
-        }
-      } else {
-        setAllowMouseUp(false)
-      }
-    }, [open, index, setActiveIndex, selectedIndex])
-
-    function handleKeyDown(event: React.KeyboardEvent) {
-      if (event.key === 'Enter' || (event.key === ' ' && !dataRef?.current.typing)) {
-        event.preventDefault()
-        handleSelect()
-      }
-    }
-
     const selectItemProps = context.interactions
       ? context.interactions.getItemProps({
-          onClick: allowMouseUp ? handleSelect : undefined,
-          onMouseUp: allowMouseUp ? handleSelect : undefined,
-          onKeyDown: handleKeyDown,
+          onTouchStart() {
+            allowSelectRef!.current = true
+            allowMouseUpRef!.current = false
+          },
+          onKeyDown(event) {
+            if (event.key === 'Enter' || (event.key === ' ' && !dataRef?.current.typing)) {
+              event.preventDefault()
+              handleSelect()
+            } else {
+              allowSelectRef!.current = true
+            }
+          },
+          onClick() {
+            if (allowSelectRef!.current) {
+              setSelectedIndex(index)
+              setOpen(false)
+            }
+          },
+          onMouseUp() {
+            if (!allowMouseUpRef!.current) {
+              return
+            }
+
+            if (allowSelectRef!.current) {
+              handleSelect()
+            }
+
+            // On touch devices, prevent the element from
+            // immediately closing `onClick` by deferring it
+            clearTimeout(selectTimeoutRef!.current)
+            selectTimeoutRef!.current = setTimeout(() => {
+              allowSelectRef!.current = true
+            })
+          },
         })
       : {
           onPress: handleSelect,
@@ -254,10 +255,6 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
         value={value}
         textId={textId || ''}
         isSelected={isSelected}
-        onItemTextChange={React.useCallback((node) => {
-          // @ts-ignore
-          setTextValue((prevTextValue) => prevTextValue || (node?.textContent ?? '').trim())
-        }, [])}
       >
         <ListItem
           backgrounded
@@ -266,8 +263,7 @@ export const SelectItem = React.forwardRef<TamaguiElement, SelectItemProps>(
           componentName={ITEM_NAME}
           ref={composedRefs}
           aria-labelledby={textId}
-          // `isFocused` caveat fixes stuttering in VoiceOver
-          aria-selected={isSelected && isFocused}
+          aria-selected={isSelected}
           data-state={isSelected ? 'active' : 'inactive'}
           aria-disabled={disabled || undefined}
           data-disabled={disabled ? '' : undefined}
@@ -302,7 +298,7 @@ const SelectItemText = React.forwardRef<TamaguiElement, SelectItemTextProps>(
     const context = useSelectContext(ITEM_TEXT_NAME, __scopeSelect)
     const itemContext = useSelectItemContext(ITEM_TEXT_NAME, __scopeSelect)
     const ref = React.useRef<TamaguiElement | null>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref, itemContext.onItemTextChange)
+    const composedRefs = useComposedRefs(forwardedRef, ref)
     const isSelected = itemContext.isSelected && context.valueNode && !context.valueNodeHasChildren
 
     const contents = (
@@ -560,7 +556,9 @@ export const Select = withStaticProperties(
     return (
       <SelectProvider
         dir={dir}
+        blockSelection={false}
         size={sizeProp}
+        fallback={false}
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         forceUpdate={forceUpdate}
