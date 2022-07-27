@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "1.0.1-beta.122",
+  "version": "1.0.1-beta.123",
   "sideEffects": [
     "*.css"
   ],
@@ -20,12 +20,12 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/compose-refs": "^1.0.1-beta.122",
-    "@tamagui/core": "^1.0.1-beta.122",
-    "@tamagui/create-context": "^1.0.1-beta.122",
-    "@tamagui/remove-scroll": "^1.0.1-beta.122",
-    "@tamagui/stacks": "^1.0.1-beta.122",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.122"
+    "@tamagui/compose-refs": "^1.0.1-beta.123",
+    "@tamagui/core": "^1.0.1-beta.123",
+    "@tamagui/create-context": "^1.0.1-beta.123",
+    "@tamagui/remove-scroll": "^1.0.1-beta.123",
+    "@tamagui/stacks": "^1.0.1-beta.123",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.123"
   },
   "peerDependencies": {
     "react": "*",
@@ -33,7 +33,7 @@
     "react-native": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.122",
+    "@tamagui/build": "^1.0.1-beta.123",
     "react": "*",
     "react-dom": "*",
     "react-native": "*"
