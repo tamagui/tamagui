@@ -1,5 +1,5 @@
 import { FontSizeTokens, GetProps, TamaguiComponent, TamaguiElement, ThemeableProps } from '@tamagui/core';
-import { TextParentStyles } from '@tamagui/helpers-tamagui';
+import { TextParentStyles } from '@tamagui/text';
 import React, { FunctionComponent } from 'react';
 declare type ListItemIconProps = {
     color?: string;

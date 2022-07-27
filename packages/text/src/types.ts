@@ -1,4 +1,4 @@
-import { SizableTextProps } from '@tamagui/text'
+import { SizableTextProps } from './SizableText'
 
 export type TextParentStyles = {
   color?: SizableTextProps['color']

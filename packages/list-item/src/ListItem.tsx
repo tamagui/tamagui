@@ -12,9 +12,9 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { TextParentStyles, getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { getSpace, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
-import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef } from 'react'
 
 // bugfix esbuild strips react jsx: 'preserve'

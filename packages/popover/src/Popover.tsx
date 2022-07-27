@@ -3,7 +3,8 @@
 import '@tamagui/polyfill-dev'
 
 import {
-  Props,
+  ElementProps,
+  UseFloatingProps,
   useDismiss,
   useFloating,
   useFocus,
@@ -377,7 +378,7 @@ export const Popover = withStaticProperties(
     })
 
     const useFloatingContext = React.useCallback(
-      (props: Props) => {
+      (props: UseFloatingProps) => {
         const floating = useFloating({
           ...props,
           open,
@@ -398,7 +399,7 @@ export const Popover = withStaticProperties(
     )
 
     return (
-      <FloatingOverrideContext.Provider value={useFloatingContext}>
+      <FloatingOverrideContext.Provider value={useFloatingContext as any}>
         <Popper {...popperScope} {...restProps}>
           <PopoverProviderInternal
             scope={__scopePopover}

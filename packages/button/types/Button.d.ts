@@ -1,5 +1,5 @@
 import { GetProps, TamaguiComponent, ThemeableProps } from '@tamagui/core';
-import { TextParentStyles } from '@tamagui/helpers-tamagui';
+import { TextParentStyles } from '@tamagui/text';
 import { FunctionComponent } from 'react';
 import { View } from 'react-native';
 declare type ButtonIconProps = {

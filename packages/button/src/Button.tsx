@@ -10,9 +10,9 @@ import {
   themeable,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { TextParentStyles, useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ThemeableStack } from '@tamagui/stacks'
-import { SizableText, wrapChildrenInText } from '@tamagui/text'
+import { SizableText, TextParentStyles, wrapChildrenInText } from '@tamagui/text'
 import React, { FunctionComponent, forwardRef, useContext } from 'react'
 import { View } from 'react-native'
 
