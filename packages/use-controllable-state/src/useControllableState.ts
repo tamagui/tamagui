@@ -21,37 +21,38 @@ export function useControllableState<T>({
 }): [T, React.Dispatch<React.SetStateAction<T>>] {
   const [val, setVal] = useState(prop ?? defaultProp)
   const propWins = strategy === 'prop-wins'
+  const onChangeCb = useEvent(onChange || idFn)
 
+  // sync prop to state
   useEffect(() => {
-    const next = getNextStateWithCallback(val, prop)
+    const next = getNextState(val, prop)
     if (next !== undefined && next !== val) {
       setVal(next)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prop])
 
+  useEffect(() => {
+    onChangeCb(val)
+  }, [onChangeCb, val])
+
   return [
-    val,
+    propWins ? (prop as T) : val,
     useEvent((next: unknown) => {
       if (preventUpdate) return
       if (propWins && prop !== undefined) {
         return
       }
-      setVal((prev) => {
-        return getNextStateWithCallback(
-          prev,
-          typeof next === 'function' ? next(prev) : next,
-          onChange
-        )
-      })
+      setVal((prev) => getNextState(prev, typeof next === 'function' ? next(prev) : next))
     }),
   ]
 }
 
-const getNextStateWithCallback = (prev: any, next: any, handleChange?: ChangeCb<any>) => {
+const getNextState = (prev: any, next: any) => {
   if (prev === next || next === undefined) {
     return prev
   }
-  handleChange?.(next)
   return next
 }
+
+const idFn = () => {}
