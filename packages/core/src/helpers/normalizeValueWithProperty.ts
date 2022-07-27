@@ -38,6 +38,7 @@ const colorProps = {
 }
 
 const unitlessNumbers = {
+  WebkitLineClamp: true,
   animationIterationCount: true,
   aspectRatio: true,
   borderImageOutset: true,

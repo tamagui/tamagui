@@ -27,16 +27,21 @@ export const Text = createComponent<TextProps, TextView, TextPropsBase>({
   },
 
   variants: {
-    numberOfLines: {
-      1: isWeb ? ellipseStyle : { numberOfLines: 1 },
+    ...(isWeb && {
+      numberOfLines: {
+        1: ellipseStyle,
 
-      ':number': (numberOfLines) =>
-        isWeb
-          ? numberOfLines >= 1
-            ? { WebkitLineClamp: numberOfLines }
-            : null
-          : { numberOfLines },
-    },
+        ':number': (numberOfLines) =>
+          numberOfLines >= 1
+            ? {
+                WebkitLineClamp: numberOfLines,
+                WebkitBoxOrient: 'vertical',
+                display: '-webkit-box',
+                overflow: 'hidden',
+              }
+            : null,
+      },
+    }),
 
     selectable: {
       true: {

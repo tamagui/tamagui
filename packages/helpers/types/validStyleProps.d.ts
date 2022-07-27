@@ -126,6 +126,8 @@ export declare const stylePropsTextOnly: Readonly<{
     userSelect?: true | undefined;
     selectable?: true | undefined;
     cursor?: true | undefined;
+    WebkitLineClamp?: true | undefined;
+    WebkitBoxOrient?: true | undefined;
     color: true;
     fontFamily: true;
     fontSize: true;
@@ -150,6 +152,8 @@ export declare const stylePropsText: Readonly<{
     userSelect?: true | undefined;
     selectable?: true | undefined;
     cursor?: true | undefined;
+    WebkitLineClamp?: true | undefined;
+    WebkitBoxOrient?: true | undefined;
     color: true;
     fontFamily: true;
     fontSize: true;
@@ -275,6 +279,8 @@ export declare const stylePropsAll: Readonly<{
     userSelect?: true | undefined;
     selectable?: true | undefined;
     cursor?: true | undefined;
+    WebkitLineClamp?: true | undefined;
+    WebkitBoxOrient?: true | undefined;
     color: true;
     fontFamily: true;
     fontSize: true;

@@ -139,6 +139,8 @@ export const stylePropsTextOnly = Object.freeze({
     userSelect: true,
     selectable: true,
     cursor: true,
+    WebkitLineClamp: true,
+    WebkitBoxOrient: true,
   }),
 })
 
