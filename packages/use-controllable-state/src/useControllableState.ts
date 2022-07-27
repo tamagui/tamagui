@@ -1,5 +1,5 @@
 import { useEvent } from '@tamagui/use-event'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 // can configure to allow most-recent-wins or prop-wins
 // defaults to prop-wins
@@ -18,41 +18,34 @@ export function useControllableState<T>({
   onChange?: ChangeCb<T>
   strategy?: 'prop-wins' | 'most-recent-wins'
   preventUpdate?: boolean
-}): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const [val, setVal] = useState(prop ?? defaultProp)
+}): [T, (next: T) => void] {
+  const [state, setState] = useState(prop ?? defaultProp)
+  const previous = useRef<any>(state)
+  const value = strategy === 'prop-wins' ? prop : state
   const propWins = strategy === 'prop-wins'
   const onChangeCb = useEvent(onChange || idFn)
 
-  // sync prop to state
   useEffect(() => {
-    const next = getNextState(val, prop)
-    if (next !== undefined && next !== val) {
-      setVal(next)
+    if (state !== previous.current) {
+      previous.current = state
+      onChangeCb(state)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prop])
-
-  useEffect(() => {
-    onChangeCb(val)
-  }, [onChangeCb, val])
+  }, [onChangeCb, state])
 
   return [
-    propWins ? (prop as T) : val,
-    useEvent((next: unknown) => {
-      if (preventUpdate) return
-      if (propWins && prop !== undefined) {
-        return
-      }
-      setVal((prev) => getNextState(prev, typeof next === 'function' ? next(prev) : next))
-    }),
+    value as T,
+    useCallback(
+      (next: T) => {
+        if (preventUpdate) return
+        if (propWins) {
+          onChangeCb(next)
+        } else {
+          setState(next)
+        }
+      },
+      [preventUpdate, propWins, onChangeCb]
+    ),
   ]
-}
-
-const getNextState = (prev: any, next: any) => {
-  if (prev === next || next === undefined) {
-    return prev
-  }
-  return next
 }
 
 const idFn = () => {}

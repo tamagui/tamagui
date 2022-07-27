@@ -73,8 +73,8 @@ export const Sandbox = () => {
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        {/* <SelectDemo /> */}
-        <SheetDemo />
+        <SelectDemo />
+        {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>
           <Square size={50} bc="red" />

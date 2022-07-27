@@ -1,10 +1,11 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/feather-icons'
-import React from 'react'
+import React, { useState } from 'react'
 import { LinearGradient, Select, YStack } from 'tamagui'
 
 export function SelectDemo() {
+  const [val, setVal] = useState('apple')
   return (
-    <Select sheetBreakpoint="$sm" defaultValue="apple">
+    <Select sheetBreakpoint="$sm" value={val} onValueChange={setVal}>
       <Select.Trigger w={240} iconAfter={ChevronDown}>
         <Select.Value placeholder="Something" />
       </Select.Trigger>

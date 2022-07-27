@@ -6,6 +6,6 @@ export declare function useControllableState<T>({ prop, defaultProp, onChange, s
     onChange?: ChangeCb<T>;
     strategy?: 'prop-wins' | 'most-recent-wins';
     preventUpdate?: boolean;
-}): [T, React.Dispatch<React.SetStateAction<T>>];
+}): [T, (next: T) => void];
 export {};
 //# sourceMappingURL=useControllableState.d.ts.map
