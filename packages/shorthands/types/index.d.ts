@@ -74,6 +74,7 @@ export declare const shorthands: {
     readonly shop: "shadowOpacity";
     readonly t: "top";
     readonly ta: "textAlign";
+    readonly tt: "textTransform";
     readonly ussel: "userSelect";
     readonly w: "width";
     readonly ww: "wordWrap";

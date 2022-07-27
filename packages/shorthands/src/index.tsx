@@ -74,6 +74,7 @@ export const shorthands = {
   shop: 'shadowOpacity',
   t: 'top',
   ta: 'textAlign',
+  tt: 'textTransform',
   ussel: 'userSelect',
   w: 'width',
   ww: 'wordWrap',
