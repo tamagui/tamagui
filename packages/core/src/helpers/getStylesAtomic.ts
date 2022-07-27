@@ -110,12 +110,14 @@ const presetHashes = {
   none: true,
 }
 
+const n = (val: any) => normalizeValueWithProperty(val)
+
 export function styleToCSS(style: Record<string, any>) {
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor } = style
   if (style.shadowRadius !== undefined) {
     const offset = shadowOffset || defaultOffset
-    const shadow = `${offset.width} ${offset.height} ${shadowRadius} ${shadowColor}`
+    const shadow = `${n(offset.width)} ${n(offset.height)} ${n(shadowRadius)} ${shadowColor}`
     style.boxShadow = style.boxShadow ? `${style.boxShadow}, ${shadow}` : shadow
     delete style.shadowOffset
     delete style.shadowRadius

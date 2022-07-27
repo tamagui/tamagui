@@ -16,11 +16,11 @@ export const defaultOffset = { height: 0, width: 0 }
  *   3. Expands react-native shorthands, ie paddingHorizontal => paddingLeft, paddingRight
  */
 
-export function expandStyles(style: Record<string, any>) {
+export function expandStyles(style: Record<string, any>, config = getConfig()) {
   const res: Record<string, any> = {}
 
   for (let key in style) {
-    shorthands = shorthands || getConfig().shorthands
+    shorthands = shorthands || (config ? config.shorthands : null)
     if (shorthands) {
       key = shorthands[key] || key
     }

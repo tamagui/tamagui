@@ -3,7 +3,7 @@ process.env.IDENTIFY_TAGS = 'true'
 process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
 
-const { getStylesAtomic } = require('@tamagui/core-node')
+const { getStylesAtomic, expandStyles } = require('@tamagui/core-node')
 
 describe('extract-tests', () => {
   test('converts a style object to class names', () => {
@@ -22,26 +22,25 @@ describe('extract-tests', () => {
     expect(!!style1).toBeTruthy()
     expect(!!style2).toBeTruthy()
     expect(!!style3).toBeTruthy()
-    expect(styles.find((x) => x.property === 'borderBottomStyle')?.value === 'solid').toBeTruthy()
-    expect(style1!.rules[0].includes('background-color:rgba(255,0,0,1.00)')).toBeTruthy()
+    expect(style1!.rules[0].includes('background-color:red')).toBeTruthy()
     expect(style2!.rules[0].includes(`transform:rotateY(10deg)`)).toBeTruthy()
-    expect(style3!.rules[0].includes(`box-shadow:0px 0px 10px rgba(255,0,0,1.00)`)).toBeTruthy()
+    expect(style3!.rules[0].includes(`box-shadow:0px 0px 10px red`)).toBeTruthy()
   })
 
   test('expands and resolves shorthand props', () => {
-    const style = {
+    const style = expandStyles({
       padding: 10,
       paddingVertical: 0,
-    }
+    })
     const [pT, pR, pB, pL] = getStylesAtomic(style)
     expect(pT.value).toBe('0px')
     expect(pB.value).toBe('0px')
     expect(pL.value).toBe('10px')
     expect(pR.value).toBe('10px')
-    const style2 = {
+    const style2 = expandStyles({
       borderColor: 'yellow',
       borderWidth: 10,
-    }
+    })
     const styles2 = getStylesAtomic(style2)
     expect(styles2.some((x) => x.property === 'borderRightStyle')).toBeTruthy()
   })

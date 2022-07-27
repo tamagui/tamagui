@@ -5,7 +5,6 @@
   - sheet cant drag up from bottom (web at least)
 
   - fix tabbing
-    - Select
     - AlertDialog buttons
     - Dialog
 
@@ -62,7 +61,6 @@
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - // TODO infer ref
   - forms working bubble / label
-  - keyboard nav runthrough
 
 ---
 
