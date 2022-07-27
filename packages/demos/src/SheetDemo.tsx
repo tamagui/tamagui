@@ -18,7 +18,8 @@ export const SheetDemo = () => {
         modal={modal}
         open={open}
         onChangeOpen={setOpen}
-        snapPoints={[80, 10]}
+        snapPoints={[80, 30]}
+        dismissOnSnapToBottom
         position={position}
         onChangePosition={setPosition}
       >

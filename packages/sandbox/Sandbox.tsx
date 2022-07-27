@@ -54,8 +54,6 @@ export const Sandbox = () => {
       >
         {/* <AlertDialogDemo /> */}
 
-        <Button>hello</Button>
-
         {/* <FontLanguage heading="default" body="cn">
           <Paragraph fos="$4" fontFamily="$body">
             hello 🇨🇳
@@ -75,8 +73,8 @@ export const Sandbox = () => {
         {/* <PopoverDemo /> */}
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        <SelectDemo />
-        {/* <SheetDemo /> */}
+        {/* <SelectDemo /> */}
+        <SheetDemo />
         {/* <SwitchDemo /> */}
         {/* <XStack space>
           <Square size={50} bc="red" />

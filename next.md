@@ -1,8 +1,8 @@
 - 1.0
 
+  - sheet bug on starters demo
   - loadFont
   - loadTheme, updateTheme
-  - sheet cant drag up from bottom (web at least)
 
   - fix tabbing
     - AlertDialog buttons

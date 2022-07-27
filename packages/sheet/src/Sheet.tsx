@@ -377,7 +377,7 @@ export const Sheet = withStaticProperties(
         prop: controller?.open ?? openProp,
         defaultProp: defaultOpen || true,
         onChange: onChangeOpenInternal,
-        strategy: controller ? 'most-recent-wins' : 'prop-wins',
+        strategy: 'most-recent-wins',
       })
 
       const [frameSize, setFrameSize] = useState<number>(0)
@@ -393,6 +393,7 @@ export const Sheet = withStaticProperties(
         prop: positionProp,
         defaultProp: defaultPosition || (open ? 0 : -1),
         onChange: onChangePosition,
+        strategy: 'most-recent-wins',
       })
       const position = open === false ? -1 : position_
 
@@ -406,8 +407,9 @@ export const Sheet = withStaticProperties(
           // close on dismissOnSnapToBottom (and set position so it animates)
           if (dismissOnSnapToBottom && next === snapPoints.length - 1) {
             setOpen(false)
+          } else {
+            setPosition_(next)
           }
-          setPosition_(next)
         },
         [dismissOnSnapToBottom, snapPoints.length, setPosition_, setOpen]
       )
