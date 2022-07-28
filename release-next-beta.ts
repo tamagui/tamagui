@@ -70,7 +70,7 @@ async function run() {
       }
 
       await spawnify(
-        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --force-publish --no-push`
+        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --no-push --no-git-tag-version`
       )
     }
 
