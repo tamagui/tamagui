@@ -1,6 +1,5 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "packageManager": "yarn@3.2.1",
   "version": "1.0.1-beta.125",
   "private": true,
   "main": "index.js",
