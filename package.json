@@ -5,13 +5,11 @@
   "repository": {
     "url": "https://github.com/tamagui/tamagui"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "takeout/*",
-      "takeout-apps/packages/*"
-    ]
-  },
+  "workspaces": [
+    "packages/*",
+    "takeout/*",
+    "examples/tamagram"
+  ],
   "scripts": {
     "postinstall": "manypkg check",
     "check": "manypkg check",
