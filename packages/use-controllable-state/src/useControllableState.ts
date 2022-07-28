@@ -18,11 +18,11 @@ export function useControllableState<T>({
   onChange?: ChangeCb<T>
   strategy?: 'prop-wins' | 'most-recent-wins'
   preventUpdate?: boolean
-}): [T, (next: T) => void] {
+}): [T, React.Dispatch<React.SetStateAction<T>>] {
   const [state, setState] = useState(prop ?? defaultProp)
   const previous = useRef<any>(state)
-  const value = strategy === 'prop-wins' ? prop : state
-  const propWins = strategy === 'prop-wins'
+  const propWins = strategy === 'prop-wins' && prop !== undefined
+  const value = propWins ? prop : state
   const onChangeCb = useEvent(onChange || idFn)
 
   useEffect(() => {
@@ -32,20 +32,18 @@ export function useControllableState<T>({
     }
   }, [onChangeCb, state])
 
-  return [
-    value as T,
-    useCallback(
-      (next: T) => {
-        if (preventUpdate) return
-        if (propWins) {
-          onChangeCb(next)
-        } else {
-          setState(next)
-        }
-      },
-      [preventUpdate, propWins, onChangeCb]
-    ),
-  ]
+  const setter = useEvent((next) => {
+    if (preventUpdate) return
+    console.log('setting', propWins, prop, next)
+    if (propWins) {
+      const nextValue = typeof next === 'function' ? next(previous.current) : next
+      onChangeCb(nextValue)
+    } else {
+      setState(next)
+    }
+  })
+
+  return [value as T, setter]
 }
 
 const idFn = () => {}
