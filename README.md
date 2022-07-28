@@ -11,15 +11,13 @@ See [tamagui.dev](https://tamagui.dev) for documentation.
 
 Tamagui lets you **share more code between web and native apps while improving, rather than sacrificing, DX, performance, and code maintainability**.
 
-It does this by compiling typed inline styles - even ones containing conditional logic, themes, or responsivity - into efficient atomic CSS (or a hoisted StyleSheet on native).
+It does this with an optimizing compiler that flattens your React trees and outputs platform-specific optimizations like generating atomic CSS and media queries on the web.
 
-This is a **win-win-win**: more performant, easier to write/maintain, and works on every platform. Typically you'd have to trade performance for DX, or both for cross-platform compatibility. With Tamagui, you don't!
+The compiler enables a **win-win-win**: more performance, easier to write, works on every platform. Typically you'd have to choose two of: performant, cross-platform, concise. With Tamagui, you don't!
 
-In exchange you add some complexity with the compiler - but - it's both optional and very easy to granularly introspect or turn off.
+The compiler actually partially evaluates code including imports, logic, spreads, and nested ternaries. Any fully analyzable JSX usage will be flattened entirely (to a `div` on web, or `View` on native, rather than your custom defined component), leading to large reductions in tree-size.
 
-The compiler does a lot, too - it analyzes logic, spreads, and nested ternaries, even flattening fully analyzable components to reduce tree depth signficantly.
-
-[Read more on the website](https://tamagui.dev/docs/intro/introduction).
+[Learn more on the website](https://tamagui.dev/docs/intro/introduction).
 
 ---
 
