@@ -3,7 +3,7 @@ import '@tamagui/polyfill-dev'
 
 import '../site/app.css'
 
-import { AlertDialogDemo, SelectDemo, SheetDemo, SwitchDemo } from '@tamagui/demos'
+import { AlertDialogDemo, PopoverDemo, SelectDemo, SheetDemo, SwitchDemo } from '@tamagui/demos'
 import { FocusScope } from '@tamagui/focus-scope'
 import React, { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
@@ -70,10 +70,10 @@ export const Sandbox = () => {
         {/* <SeparatorDemo /> */}
         {/* <AlertDialogDemo /> */}
         {/* <DialogDemo /> */}
-        {/* <PopoverDemo /> */}
+        <PopoverDemo />
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
-        <SelectDemo />
+        {/* <SelectDemo /> */}
         {/* <SheetDemo /> */}
         {/* <SwitchDemo /> */}
         {/* <XStack space>

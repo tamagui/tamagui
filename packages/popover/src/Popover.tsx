@@ -3,7 +3,6 @@
 import '@tamagui/polyfill-dev'
 
 import {
-  ElementProps,
   UseFloatingProps,
   useDismiss,
   useFloating,
@@ -18,6 +17,7 @@ import {
   SizeTokens,
   Theme,
   composeEventHandlers,
+  useEvent,
   useId,
   useThemeName,
   withStaticProperties,
@@ -409,7 +409,10 @@ export const Popover = withStaticProperties(
             triggerRef={triggerRef}
             open={open}
             onOpenChange={setOpen}
-            onOpenToggle={React.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen])}
+            onOpenToggle={useEvent(() => {
+              console.log('toggle', open)
+              setOpen(!open)
+            })}
             hasCustomAnchor={hasCustomAnchor}
             onCustomAnchorAdd={React.useCallback(() => setHasCustomAnchor(true), [])}
             onCustomAnchorRemove={React.useCallback(() => setHasCustomAnchor(false), [])}

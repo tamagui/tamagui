@@ -1,6 +1,6 @@
 import {
   SideObject,
-  detectOverflow,
+  autoUpdate,
   flip,
   inner,
   offset,
@@ -15,12 +15,11 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react-dom-interactions'
-import { usePrevious } from '@radix-ui/react-use-previous'
-import { useForceUpdate, useIsTouchDevice } from '@tamagui/core'
+import { useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
-import { FALLBACK_THRESHOLD, MIN_HEIGHT, SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
+import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
 import { SelectProvider, useSelectContext } from './context'
 import { ScopedProps, SelectProps } from './types'
 
@@ -47,6 +46,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const allowSelectRef = React.useRef(false)
   const allowMouseUpRef = React.useRef(true)
   const selectTimeoutRef = React.useRef<any>()
+  const state = React.useRef({
+    isMouseOutside: false,
+  })
 
   const [controlledScrolling, setControlledScrolling] = React.useState(false)
   const [fallback, setFallback] = React.useState(false)
@@ -70,6 +72,20 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }
   }, [open, setActiveIndex])
 
+  // close when mouseup outside select
+  React.useEffect(() => {
+    if (!open) return
+    const mouseUp = (e: MouseEvent) => {
+      if (state.current.isMouseOutside) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mouseup', mouseUp)
+    return () => {
+      document.removeEventListener('mouseup', mouseUp)
+    }
+  }, [open])
+
   const updateFloatingSize = size({
     apply({
       availableHeight,
@@ -88,6 +104,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const { x, y, reference, floating, strategy, context, refs } = useFloating({
     open,
     onOpenChange: setOpen,
+    whileElementsMounted: autoUpdate,
     placement: 'bottom-start',
     middleware: fallback
       ? [
@@ -177,6 +194,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         },
         onPointerEnter() {
           setControlledScrolling(false)
+          state.current.isMouseOutside = false
+        },
+        onPointerLeave() {
+          state.current.isMouseOutside = true
         },
         onPointerMove() {
           setControlledScrolling(false)

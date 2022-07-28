@@ -1,5 +1,7 @@
 - 1.0
 
+  - regression on some shadows (elevation i think close buttons in dish)
+
   - sheet bug on starters demo
   - loadFont
   - loadTheme, updateTheme
@@ -10,7 +12,6 @@
 
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
-    - should update to new react-dom-interactions
   - Image is hardcoded to w/h 100
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones

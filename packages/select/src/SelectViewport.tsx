@@ -89,4 +89,8 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
 
 SelectViewport.displayName = VIEWPORT_NAME
 
-const disableScrollbarCSS = `[data-tamagui-select-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-tamagui-select-viewport]::-webkit-scrollbar{display:none}`
+const disableScrollbarCSS = `[data-tamagui-select-viewport]{
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  overscroll-behavior: contain;
+}
+[data-tamagui-select-viewport]::-webkit-scrollbar{display:none}`
