@@ -1,7 +1,7 @@
 {
   "name": "tamagui-monorepo",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1-beta.125",
   "repository": {
     "url": "https://github.com/tamagui/tamagui"
   },
@@ -32,7 +32,6 @@
     "publish": "lerna publish --preid beta",
     "publish:no-version": "npm publish --workspaces",
     "publish:canary": "lerna publish --canary --preid beta.0 --force-publish --dist-tag canary",
-    "version": "lerna version",
     "tamagram:web": "yarn workspace @tamagui/tamagram web",
     "tamagram:native": "yarn workspace @tamagui/tamagram native",
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
@@ -98,5 +97,6 @@
     "turbo": "^1.3.1",
     "typescript": "^4.7.4",
     "ultra-runner": "^3.10.5"
-  }
+  },
+  "stableVersion": "0.0.0"
 }

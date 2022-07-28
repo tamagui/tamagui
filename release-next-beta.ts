@@ -70,7 +70,7 @@ async function run() {
       }
 
       await spawnify(
-        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --force-publish --no-push`
+        `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --no-push --no-git-tag-version`
       )
     }
 
@@ -146,11 +146,12 @@ async function run() {
       }
       console.log(`✅ Published\n`)
 
-      // then push git
+      // then git tag, commit, push
       await spawnify(`git add -A`)
-      await spawnify(`git commit --amend --no-edit`)
-      await spawnify(`git push origin v${version}`)
+      await spawnify(`git commit -m 'v${version}'`)
+      await spawnify(`git tag v${version}`)
       await spawnify(`git push origin head`)
+      await spawnify(`git push origin v${version}`)
       console.log(`✅ Pushed and versioned\n`)
     }
   } catch (err) {
