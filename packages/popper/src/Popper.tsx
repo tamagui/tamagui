@@ -201,9 +201,8 @@ export const PopperContent = PopperContentFrame.extractable(
             key="popper-content-frame"
             data-placement={placement}
             data-strategy={strategy}
-            {...contentProps}
-            // @ts-ignore
             size={contentProps.size || size}
+            {...contentProps}
           />
         )
       }, [placement, strategy, props])
@@ -249,9 +248,17 @@ const PopperArrowFrame = styled(YStack, {
   name: 'PopperArrow',
   borderColor: '$borderColor',
   backgroundColor: '$background',
+  position: 'relative',
+})
+
+const PopperArrowOuterFrame = styled(YStack, {
+  name: 'PopperArrowOuter',
   position: 'absolute',
   zIndex: -1,
   pointerEvents: 'none',
+  overflow: 'hidden',
+  alignItems: 'center',
+  justifyContent: 'center',
 })
 
 const opposites = {
@@ -259,7 +266,9 @@ const opposites = {
   right: 'left',
   bottom: 'top',
   left: 'right',
-}
+} as const
+
+type Sides = keyof typeof opposites
 
 export const PopperArrow = PopperArrowFrame.extractable(
   React.forwardRef<PopperArrowElement, PopperArrowProps>(function PopperArrow(
@@ -276,13 +285,19 @@ export const PopperArrow = PopperArrowFrame.extractable(
     const { x, y } = context.arrowStyle || { x: 0, y: 0 }
     const refs = useComposedRefs(context.arrowRef, forwardedRef)
 
-    const primaryPlacement = placement ? placement.split('-')[0] : 'top'
+    const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
     const arrowStyle: StackProps = { x, y, width: size, height: size }
+    const innerArrowStyle: StackProps = {}
+    const isVertical = primaryPlacement === 'bottom' || primaryPlacement === 'top'
+
     if (primaryPlacement) {
+      // allows for extra diagonal size
+      arrowStyle[isVertical ? 'width' : 'height'] = size * 2
       const oppSide = opposites[primaryPlacement]
       if (oppSide) {
-        arrowStyle[oppSide] = -size / 2
+        arrowStyle[oppSide] = -size
+        innerArrowStyle[oppSide] = size / 2
       }
       if (oppSide === 'top' || oppSide === 'bottom') {
         arrowStyle.left = 0
@@ -297,29 +312,33 @@ export const PopperArrow = PopperArrowFrame.extractable(
       context.onArrowSize?.(size)
     }, [size, context.onArrowSize])
 
+    // outer frame to cut off for ability to have nicer shadows/borders
     return (
-      <PopperArrowFrame
-        {...arrowProps}
-        ref={refs}
-        {...arrowStyle}
-        rotate="45deg"
-        {...(primaryPlacement === 'top' && {
-          borderBottomWidth: borderWidth,
-          borderRightWidth: borderWidth,
-        })}
-        {...(primaryPlacement === 'bottom' && {
-          borderTopWidth: borderWidth,
-          borderLeftWidth: borderWidth,
-        })}
-        {...(primaryPlacement === 'left' && {
-          borderTopWidth: borderWidth,
-          borderRightWidth: borderWidth,
-        })}
-        {...(primaryPlacement === 'right' && {
-          borderBottomWidth: borderWidth,
-          borderLeftWidth: borderWidth,
-        })}
-      />
+      <PopperArrowOuterFrame ref={refs} {...arrowStyle}>
+        <PopperArrowFrame
+          width={size}
+          height={size}
+          {...arrowProps}
+          {...innerArrowStyle}
+          rotate="45deg"
+          {...(primaryPlacement === 'bottom' && {
+            borderBottomWidth: borderWidth,
+            borderRightWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'top' && {
+            borderTopWidth: borderWidth,
+            borderLeftWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'right' && {
+            borderTopWidth: borderWidth,
+            borderRightWidth: borderWidth,
+          })}
+          {...(primaryPlacement === 'left' && {
+            borderBottomWidth: borderWidth,
+            borderLeftWidth: borderWidth,
+          })}
+        />
+      </PopperArrowOuterFrame>
     )
   })
 )
