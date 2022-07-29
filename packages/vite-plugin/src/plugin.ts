@@ -25,12 +25,6 @@ export function tamaguiPlugin(options: TamaguiOptions): Plugin {
           'global.__x': {},
           _frameTimestamp: undefined,
           _WORKLET: false,
-          process: {
-            env: {
-              TAMAGUI_TARGET: process.env.TAMAGUI_TARGET || 'web',
-              NODE_ENV: process.env.NODE_ENV || env.mode,
-            },
-          },
         },
         optimizeDeps: {
           esbuildOptions: {
