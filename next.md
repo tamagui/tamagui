@@ -2,6 +2,13 @@
 
   - regression on some shadows (elevation i think close buttons in dish)
 
+  - `tamagui check`
+    - checks dist/ folders exist based on package.json
+      - including whether it loads properly on node
+      - checks package.json.files fields
+      - checks types/* output actually maps to every input file
+
+    - 
   - sheet bug on starters demo
   - loadFont
   - loadTheme, updateTheme
