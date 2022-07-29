@@ -65,7 +65,6 @@ async function run() {
   ).filter((x) => !x.json.private)
 
   async function checkDistDirs() {
-    console.log(`checking dist directories exist`)
     await Promise.all(
       packageJsons.map(async ({ cwd, json }) => {
         const distDir = join(cwd, 'dist')
@@ -95,7 +94,7 @@ async function run() {
 
       version = answer.version
 
-      console.log('Run build & fix')
+      console.log('running checks')
 
       await Promise.all([
         //

@@ -14,7 +14,7 @@ import {
 import { FocusScope } from '@tamagui/focus-scope'
 import React, { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, FontLanguage, Paragraph, Square, Text, YStack, useMedia } from 'tamagui'
+import { Button, FontLanguage, Paragraph, Sheet, Square, Text, YStack, useMedia } from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -78,7 +78,8 @@ export const Sandbox = () => {
         {/* <AlertDialogDemo /> */}
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
-        <ButtonDemo />
+        {/* <ButtonDemo /> */}
+        <SheetDemo2 />
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
@@ -93,5 +94,43 @@ export const Sandbox = () => {
         </XStack> */}
       </div>
     </Tamagui.Provider>
+  )
+}
+
+function SheetDemo2() {
+  const [open, setOpen] = useState(false)
+  const [position, setPosition] = useState(0)
+  console.log('open', open)
+  return (
+    <>
+      <Button
+        size="$6"
+        // icon={open ? ChevronDown : ChevronUp}
+        circular
+        onPress={() => setOpen((x) => !x)}
+      />
+      <Sheet
+        modal
+        open={open}
+        onChangeOpen={setOpen}
+        snapPoints={[80]}
+        position={position}
+        onChangePosition={setPosition}
+        dismissOnSnapToBottom
+      >
+        <Sheet.Overlay />
+        <Sheet.Frame ai="center" jc="center">
+          <Sheet.Handle />
+          <Button
+            size="$6"
+            circular
+            // icon={ChevronDown}
+            onPress={() => {
+              setOpen(false)
+            }}
+          />
+        </Sheet.Frame>
+      </Sheet>
+    </>
   )
 }

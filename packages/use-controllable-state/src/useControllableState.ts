@@ -26,15 +26,17 @@ export function useControllableState<T>({
   const onChangeCb = useEvent(onChange || idFn)
 
   useEffect(() => {
-    if (state !== previous.current) {
+    if (!propWins && state !== previous.current) {
       previous.current = state
       onChangeCb(state)
     }
-  }, [onChangeCb, state])
+    if (prop !== undefined && prop !== previous.current) {
+      setState(prop)
+    }
+  }, [onChangeCb, state, prop, propWins])
 
   const setter = useEvent((next) => {
     if (preventUpdate) return
-    console.log('setting', propWins, prop, next)
     if (propWins) {
       const nextValue = typeof next === 'function' ? next(previous.current) : next
       onChangeCb(nextValue)
