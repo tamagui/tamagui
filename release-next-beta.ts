@@ -67,8 +67,11 @@ async function run() {
   async function checkDistDirs() {
     console.log(`checking dist directories exist`)
     await Promise.all(
-      packageJsons.map(async ({ cwd }) => {
+      packageJsons.map(async ({ cwd, json }) => {
         const distDir = join(cwd, 'dist')
+        if (!json.scripts || json.scripts.build === 'true') {
+          return
+        }
         if (!(await fs.pathExists(distDir))) {
           console.warn('no dist dir!', distDir)
           process.exit(1)
@@ -102,21 +105,13 @@ async function run() {
         exec(`yarn fix`),
       ])
 
-      console.log('checking no git changes...')
-      const out = await exec(`git status --porcelain`)
-      if (out.stdout) {
-        throw new Error(`Has unsaved git changes: ${out.stdout}`)
+      if (!process.env.SKIP_GIT_CLEAN_CHECK) {
+        console.log('checking no git changes...')
+        const out = await exec(`git status --porcelain`)
+        if (out.stdout) {
+          throw new Error(`Has unsaved git changes: ${out.stdout}`)
+        }
       }
-
-      console.log(`checking dist directories exist`)
-      await Promise.all(
-        packageJsons.map(async ({ cwd }) => {
-          console.log(join(cwd, 'dist'))
-          if (!(await fs.pathExists(join(cwd, 'dist')))) {
-            console.warn('no dist dir!')
-          }
-        })
-      )
 
       await spawnify(
         `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --no-push --no-git-tag-version`
