@@ -103,9 +103,6 @@ export async function getStaticBindingsForScope(
           }
         }
       } catch (err) {
-        if (moduleName.includes('@tamagui/select')) {
-          continue
-        }
         console.warn(`⚠️ Failed evaluating module, continuing: ${moduleName}`)
       }
     }

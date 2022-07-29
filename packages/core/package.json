@@ -13,7 +13,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "test": "vitest --run --config ../vite-plugin-internal/vite.config.ts --reporter json"
+    "test": "vitest --run --config ../vite-plugin-internal/vite.config.ts --threads false"
   },
   "files": [
     "types",
