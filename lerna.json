@@ -1,8 +1,4 @@
 {
-  "packages": [
-    "packages/*",
-    "takeout/*",
-    "examples/**"
-  ],
+  "packages": ["apps/*", "packages/*", "takeout/*", "examples/**"],
   "version": "1.0.1-beta.125"
 }
