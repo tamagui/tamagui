@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/menu",
-  "version": "1.0.1-beta.129",
+  "version": "1.0.1-beta.130",
   "sideEffects": [
     "*.css"
   ],
@@ -21,9 +21,9 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.129",
-    "@tamagui/polyfill-dev": "^1.0.1-beta.129",
-    "@tamagui/use-controllable-state": "^1.0.1-beta.129",
+    "@tamagui/core": "^1.0.1-beta.130",
+    "@tamagui/polyfill-dev": "^1.0.1-beta.130",
+    "@tamagui/use-controllable-state": "^1.0.1-beta.130",
     "react-native-gesture-handler": "*",
     "react-native-reanimated": "^2.8.0"
   },
@@ -32,7 +32,7 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.129",
+    "@tamagui/build": "^1.0.1-beta.130",
     "react": "*",
     "react-dom": "*"
   },

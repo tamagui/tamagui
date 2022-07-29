@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin",
-  "version": "1.0.1-beta.129",
+  "version": "1.0.1-beta.130",
   "types": "./types/index.d.ts",
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -18,14 +18,14 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/proxy-worm": "^1.0.1-beta.129",
-    "@tamagui/static": "^1.0.1-beta.129",
+    "@tamagui/proxy-worm": "^1.0.1-beta.130",
+    "@tamagui/static": "^1.0.1-beta.130",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
     "outdent": "^0.8.0"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.129",
+    "@tamagui/build": "^1.0.1-beta.130",
     "vite-plugin-environment": "^1.1.2"
   },
   "publishConfig": {
