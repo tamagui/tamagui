@@ -74,6 +74,7 @@
     }
   },
   "dependencies": {
+    "@types/fs-extra": "^9.0.13",
     "@babel/runtime": "^7.15.5",
     "@lerna-lite/cli": "^1.6.0",
     "@manypkg/cli": "^0.19.1",

@@ -1,11 +1,16 @@
-const util = require('node:util')
-const spawn = require('node:child_process').spawn
-const exec = util.promisify(require('node:child_process').exec)
-const prompts = require('prompts')
-const fs = require('fs-extra')
+import * as proc from 'node:child_process'
+import { join } from 'node:path'
+import { promisify } from 'node:util'
+import path from 'path'
+
+import fs from 'fs-extra'
+import _ from 'lodash'
+import prompts from 'prompts'
+
+const exec = promisify(proc.exec)
+const spawn = proc.spawn
+
 const curVersion = fs.readJSONSync('./packages/tamagui/package.json').version
-const _ = require('lodash')
-const path = require('path')
 const nextVersion = `1.0.1-beta.${+curVersion.split('.')[3] + 1}`
 
 const skipVersion = process.argv.includes('--skip-version')
@@ -39,6 +44,39 @@ const spawnify = async (cmd: string, opts?: any) => {
 }
 
 async function run() {
+  const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
+  const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
+    name: string
+    location: string
+  }[]
+  const packageJsons = (
+    await Promise.all(
+      packagePaths
+        .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
+        .map(async ({ name, location }) => {
+          const cwd = path.join(__dirname, location)
+          return {
+            name,
+            cwd,
+            json: await fs.readJSON(path.join(cwd, 'package.json')),
+          }
+        })
+    )
+  ).filter((x) => !x.json.private)
+
+  async function checkDistDirs() {
+    console.log(`checking dist directories exist`)
+    await Promise.all(
+      packageJsons.map(async ({ cwd }) => {
+        const distDir = join(cwd, 'dist')
+        if (!(await fs.pathExists(distDir))) {
+          console.warn('no dist dir!', distDir)
+          process.exit(1)
+        }
+      })
+    )
+  }
+
   try {
     let version = curVersion
 
@@ -59,6 +97,7 @@ async function run() {
       await Promise.all([
         //
         spawnify(`yarn install`),
+        checkDistDirs(),
         exec(`yarn build`),
         exec(`yarn fix`),
       ])
@@ -68,6 +107,16 @@ async function run() {
       if (out.stdout) {
         throw new Error(`Has unsaved git changes: ${out.stdout}`)
       }
+
+      console.log(`checking dist directories exist`)
+      await Promise.all(
+        packageJsons.map(async ({ cwd }) => {
+          console.log(join(cwd, 'dist'))
+          if (!(await fs.pathExists(join(cwd, 'dist')))) {
+            console.warn('no dist dir!')
+          }
+        })
+      )
 
       await spawnify(
         `yarn lerna version ${version} --ignore-changes --ignore-scripts --yes --no-push --no-git-tag-version`
@@ -89,26 +138,6 @@ async function run() {
     }
 
     if (!skipPublish) {
-      const workspaces = (await exec(`yarn workspaces list --json`)).stdout.trim().split('\n')
-      const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
-        name: string
-        location: string
-      }[]
-      const packageJsons = (
-        await Promise.all(
-          packagePaths
-            .filter((i) => i.location !== '.' && !i.name.startsWith('@takeout'))
-            .map(async ({ name, location }) => {
-              const cwd = path.join(__dirname, location)
-              return {
-                name,
-                cwd,
-                json: await fs.readJSON(path.join(cwd, 'package.json')),
-              }
-            })
-        )
-      ).filter((x) => !x.json.private)
-
       // publish with tag
       for (const chunk of _.chunk(packageJsons, 6)) {
         await Promise.all(
