@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "1.0.1-beta.127",
+  "version": "1.0.1-beta.128",
   "sideEffects": [
     "*.css"
   ],
@@ -18,10 +18,10 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "tamagui": "^1.0.1-beta.127"
+    "tamagui": "^1.0.1-beta.128"
   },
   "devDependencies": {
     "@expo/vector-icons": "^13.0.0",
-    "@tamagui/build": "^1.0.1-beta.127"
+    "@tamagui/build": "^1.0.1-beta.128"
   }
 }
