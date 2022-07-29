@@ -3,6 +3,10 @@
   "version": "1.0.1-beta.127",
   "main": "index.js",
   "types": "./types/static.d.ts",
+  "files": [
+    "types",
+    "dist"
+  ],
   "scripts": {
     "build": "./build.js",
     "watch": "./build.js --watch"
