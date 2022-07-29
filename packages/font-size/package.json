@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-size",
-  "version": "1.0.1-beta.126",
+  "version": "1.0.1-beta.127",
   "sideEffects": false,
   "source": "src/index.ts",
   "types": "./types/index.d.ts",
@@ -17,14 +17,14 @@
     "watch": "tamagui-build --watch"
   },
   "dependencies": {
-    "@tamagui/core": "^1.0.1-beta.126"
+    "@tamagui/core": "^1.0.1-beta.127"
   },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
   },
   "devDependencies": {
-    "@tamagui/build": "^1.0.1-beta.126",
+    "@tamagui/build": "^1.0.1-beta.127",
     "react": "*",
     "react-dom": "*"
   },
