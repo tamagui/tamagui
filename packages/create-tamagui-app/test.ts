@@ -8,7 +8,7 @@ import { $, ProcessPromise, cd, fetch, fs, sleep } from 'zx'
 let server: ProcessPromise | null = null
 
 test.beforeAll(async () => {
-  test.setTimeout(60000)
+  test.setTimeout(160000)
 
   const dir = join(tmpdir(), `cta-test-${Date.now()}`)
   await fs.ensureDir(dir)

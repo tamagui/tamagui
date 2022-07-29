@@ -5,8 +5,8 @@ import type { StaticConfig } from '@tamagui/core-node'
 import { SHOULD_DEBUG } from './constants'
 
 const nameToPaths = {}
-const Mod = require('module')
-const og = Mod.prototype.require
+const Module = require('module')
+const og = Module.prototype.require
 globalThis['ogRequire'] = og
 
 export const getNameToPaths = () => nameToPaths
@@ -18,7 +18,7 @@ setInterval(() => {
 }, 50)
 
 export function registerRequire() {
-  if (Mod.prototype.require !== globalThis['ogRequire']) {
+  if (Module.prototype.require !== globalThis['ogRequire']) {
     console.warn('didnt unregister before re-registering')
     process.exit(1)
   }
@@ -27,7 +27,7 @@ export function registerRequire() {
   const rnw = require('react-native-web')
   const core = require('@tamagui/core-node')
 
-  Mod.prototype.require = function (path: string) {
+  Module.prototype.require = function (path: string) {
     if (SHOULD_DEBUG) {
       console.log('tamagui require', path)
     }
@@ -98,8 +98,10 @@ export function registerRequire() {
       return proxyWorm
     }
   }
+
+  return Module.prototype.require
 }
 
 export function unregisterRequire() {
-  Mod.prototype.require = og
+  Module.prototype.require = og
 }

@@ -3,11 +3,12 @@ import '@expo/match-media'
 import { act, render } from '@testing-library/react'
 import * as React from 'react'
 import TestRenderer from 'react-test-renderer'
+import { beforeAll, describe, expect, test } from 'vitest'
 
 process.env.TAMAGUI_TARGET = 'web'
 process.env.IS_STATIC = ''
 
-let context: any = {}
+const context: any = {}
 
 describe('webpack-tests', () => {
   const app = require('./spec/out/out-webpack')

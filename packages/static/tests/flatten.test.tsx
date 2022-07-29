@@ -1,9 +1,10 @@
 import * as React from 'react'
+import { describe, expect, test } from 'vitest'
 
 import { extractBabel } from './lib/extract'
 
 Error.stackTraceLimit = Infinity
-process.env.TAMAGUI_TARGET = 'web'
+process.env.TAMAGUI_TARGET = 'native'
 process.env.IS_STATIC = ''
 
 window['React'] = React
@@ -46,18 +47,16 @@ describe('flatten-tests', () => {
     expect(sheetStyles['0']).toEqual({
       transform: [
         {
-          translateY: '10px',
+          translateY: 10,
         },
         {
-          translateX: '20px',
+          translateX: 20,
         },
         {
           rotate: '10deg',
         },
       ],
       flexDirection: 'column',
-      boxSizing: 'border-box',
-      flexBasis: 'auto',
       flexShrink: 0,
       alignItems: 'stretch',
     })
@@ -75,11 +74,11 @@ describe('flatten-tests', () => {
     })
 
     expect(sheetStyles['3']).toEqual({
-      backgroundColor: 'red',
+      backgroundColor: 'rgba(255,0,0,1.00)',
     })
 
     expect(sheetStyles['5']).toEqual({
-      backgroundColor: 'blue',
+      backgroundColor: 'rgba(0,0,255,1.00)',
     })
   })
 })

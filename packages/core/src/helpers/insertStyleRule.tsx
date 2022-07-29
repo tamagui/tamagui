@@ -84,6 +84,9 @@ export function updateInserted() {
 }
 
 function getTamaguiSelector(rule: CSSRule | null): readonly [string, CSSStyleRule] | null {
+  if (process.env.NODE_ENV === 'test') {
+    return null
+  }
   if (rule instanceof CSSStyleRule) {
     if (rule.selectorText.startsWith('._')) {
       return [rule.selectorText.slice(1), rule]

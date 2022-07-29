@@ -11,9 +11,15 @@ export default defineConfig({
       fastRefresh: true,
       jsxPure: true,
     }),
-    tamaguiPlugin(),
+    tamaguiPlugin({
+      components: ['tamagui'],
+      config: './tamagui.config.ts',
+    }),
   ],
   test: {
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    deps: {
+      inline: ['vitest-mock-process', 'react-native-web'],
+    },
   },
 })
