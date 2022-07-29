@@ -154,7 +154,7 @@ async function run() {
       console.log(`✅ Published under dist-tag "prepub"\n`)
 
       // if all successful, re-tag as latest
-      for (const chunk of _.chunk(packageJsons, 8)) {
+      for (const chunk of _.chunk(packageJsons, 20)) {
         await Promise.all(
           chunk.map(async ({ name, cwd }) => {
             console.log(`Release ${name}`)
@@ -170,6 +170,7 @@ async function run() {
       console.log(`✅ Published\n`)
 
       // then git tag, commit, push
+      await spawnify(`yarn install`)
       await spawnify(`git add -A`)
       await spawnify(`git commit -m v${version}`)
       await spawnify(`git tag v${version}`)
