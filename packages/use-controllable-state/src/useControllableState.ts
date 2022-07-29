@@ -31,6 +31,7 @@ export function useControllableState<T>({
       onChangeCb(state)
     }
     if (prop !== undefined && prop !== previous.current) {
+      previous.current = prop
       setState(prop)
     }
   }, [onChangeCb, state, prop, propWins])
