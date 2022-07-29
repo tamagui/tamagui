@@ -1,0 +1,81 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "composite": true,
+    // for jumping to things properly in vscode
+    "baseUrl": ".",
+    "paths": {
+      "tamagui": [
+        "../tamagui"
+      ],
+      "@tamagui/*": [
+        "../*"
+      ],
+      "@takeout/*": [
+        "../../takeout/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@data/*": [
+        "./data/*"
+      ],
+      "react-native": [
+        "react-native-web"
+      ]
+    },
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "strict": false,
+    "allowJs": true,
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "tamagui.config.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".turbo",
+    "out"
+  ],
+  "references": [
+    {
+      "path": "../../packages/colors"
+    },
+    {
+      "path": "../../takeout/studio"
+    },
+    {
+      "path": "../../packages/theme-base"
+    },
+    {
+      "path": "../../packages/feather-icons"
+    },
+    {
+      "path": "../../packages/tamagui"
+    },
+    {
+      "path": "../../packages/next-plugin"
+    },
+    {
+      "path": "../../packages/loader"
+    }
+  ]
+}

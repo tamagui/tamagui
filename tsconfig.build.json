@@ -6,8 +6,8 @@
     "skipLibCheck": true
   },
   "references": [
-    { "path": "packages/site" },
-    { "path": "packages/sandbox" },
-    { "path": "packages/kitchen-sink" },
+    { "path": "apps/site" },
+    { "path": "apps/sandbox" },
+    { "path": "apps/kitchen-sink" },
   ]
 }

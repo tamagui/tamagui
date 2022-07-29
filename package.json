@@ -6,10 +6,12 @@
     "url": "https://github.com/tamagui/tamagui"
   },
   "workspaces": [
+    "apps/*",
     "packages/*",
     "takeout/*",
     "examples/tamagram"
   ],
+  "packageManager": "yarn@3.2.2",
   "scripts": {
     "postinstall": "manypkg check",
     "check": "manypkg check",
@@ -37,11 +39,11 @@
     "kitchen-sink": "yarn workspace @tamagui/kitchen-sink start:clean",
     "kitchen-sink:android": "yarn workspace @tamagui/kitchen-sink start:android",
     "kitchen-sink:web": "yarn workspace @tamagui/kitchen-sink web",
-    "site": "cd packages/site && ./scripts/dev.sh",
+    "site": "cd apps/site && ./scripts/dev.sh",
     "site:extract": "yarn workspace @tamagui/site dev:extract",
     "site:prod": "yarn workspace @tamagui/site ci:build && yarn workspace @tamagui/site next:start",
     "site:prod:analyze": "ANALYZE=true yarn site:prod",
-    "studio": "cd packages/kitchen-sink && ../../node_modules/.bin/tg dev",
+    "studio": "cd apps/kitchen-sink && ../../node_modules/.bin/tg dev",
     "sandbox:webpack": "yarn workspace @tamagui/sandbox dev:webpack",
     "sandbox": "yarn workspace @tamagui/sandbox dev",
     "sandbox:extract": "yarn workspace @tamagui/sandbox dev:extract",

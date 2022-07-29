@@ -160,8 +160,8 @@ takeout:
     - tamagui serve
       - able to focus in on any component without needing to restart anything
       - localhost:3000/FuzzyComponentName
-    - tamagui test ./packages/site/components/OffsetBox.tsx
-    - tamagui debug ./packages/site/components/OffsetBox.tsx
+    - tamagui test ./apps/site/components/OffsetBox.tsx
+    - tamagui debug ./apps/site/components/OffsetBox.tsx
   - ios/android specific themes
   - VSCode
     - move from functional component to styled() and back

@@ -1,4 +1,4 @@
-packages/site/pages/studio/** filter=git-crypt diff=git-crypt
-packages/site/pages/takeout/** filter=git-crypt diff=git-crypt
+apps/site/pages/studio/** filter=git-crypt diff=git-crypt
+apps/site/pages/takeout/** filter=git-crypt diff=git-crypt
 takeout/** filter=git-crypt diff=git-crypt
 examples/tamagram/** filter=git-crypt diff=git-crypt

@@ -11,10 +11,11 @@ globalThis['ogRequire'] = og
 
 export const getNameToPaths = () => nameToPaths
 
+// just for catching egregious amounts of errors in a tight loop
 let tries = 0
 setInterval(() => {
   tries = 0
-}, 500)
+}, 50)
 
 export function registerRequire() {
   if (Mod.prototype.require !== globalThis['ogRequire']) {
@@ -30,13 +31,14 @@ export function registerRequire() {
     if (SHOULD_DEBUG) {
       console.log('tamagui require', path)
     }
-    if (path.endsWith('.css')) {
+    if (path.endsWith('.css') || path.endsWith('.json') || path.endsWith('.ttf')) {
       return {}
     }
     if (
       path === '@gorhom/bottom-sheet' ||
       path.startsWith('react-native-reanimated') ||
-      path === 'expo-linear-gradient'
+      path === 'expo-linear-gradient' ||
+      path === '@expo/vector-icons'
     ) {
       return proxyWorm
     }
@@ -77,17 +79,23 @@ export function registerRequire() {
       }
       return out
     } catch (err: any) {
-      console.error(
-        `Tamagui failed requiring ${path} from your tamagui.config.ts file, ignoring (set DEBUG=tamagui to see stack)\n`,
-        err.message
-      )
       if (SHOULD_DEBUG) {
-        console.log(err.stack)
+        console.error(
+          `Tamagui failed requiring ${path} from your tamagui.config.ts file, ignoring\n`,
+          err.message,
+          err.stack
+        )
       }
-      if (++tries > 10) {
+      const max = process.env.TAMAGUI_MAX_ERRORS ? +process.env.TAMAGUI_MAX_ERRORS : 200
+      if (++tries > max) {
+        console.log(
+          `Too many errors loading design system, exiting (set TAMAGUI_MAX_ERRORS to override)..`
+        )
         // avoid infinite loops
         process.exit(1)
       }
+      // return proxyWorm by default
+      return proxyWorm
     }
   }
 }

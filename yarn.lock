@@ -5820,6 +5820,7 @@ __metadata:
     "@vitejs/plugin-react": ^1.3.2
     eslint: ^8.19.0
     prettier: ^2.6.1
+    tamagui: ^1.0.1-beta.125
     turbo: ^1.3.1
     typescript: ^4.7.4
     ultra-runner: ^3.10.5
@@ -6408,9 +6409,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/kitchen-sink@workspace:packages/kitchen-sink":
+"@tamagui/kitchen-sink@workspace:apps/kitchen-sink":
   version: 0.0.0-use.local
-  resolution: "@tamagui/kitchen-sink@workspace:packages/kitchen-sink"
+  resolution: "@tamagui/kitchen-sink@workspace:apps/kitchen-sink"
   dependencies:
     "@babel/core": ^7.15.5
     "@babel/runtime": ^7.15.5
@@ -6686,9 +6687,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/sandbox@workspace:packages/sandbox":
+"@tamagui/sandbox-ui@^1.0.1-beta.125, @tamagui/sandbox-ui@workspace:apps/sandbox-ui":
   version: 0.0.0-use.local
-  resolution: "@tamagui/sandbox@workspace:packages/sandbox"
+  resolution: "@tamagui/sandbox-ui@workspace:apps/sandbox-ui"
+  dependencies:
+    "@expo/vector-icons": ^13.0.0
+    "@tamagui/build": ^1.0.1-beta.125
+    tamagui: ^1.0.1-beta.125
+  languageName: unknown
+  linkType: soft
+
+"@tamagui/sandbox@workspace:apps/sandbox":
+  version: 0.0.0-use.local
+  resolution: "@tamagui/sandbox@workspace:apps/sandbox"
   dependencies:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
@@ -6702,6 +6713,7 @@ __metadata:
     "@tamagui/drawer": ^1.0.1-beta.125
     "@tamagui/feather-icons": ^1.0.1-beta.125
     "@tamagui/font-inter": ^1.0.1-beta.125
+    "@tamagui/sandbox-ui": ^1.0.1-beta.125
     "@tamagui/select": ^1.0.1-beta.125
     "@tamagui/shorthands": ^1.0.1-beta.125
     "@tamagui/slider": ^1.0.1-beta.125
@@ -6819,9 +6831,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/site@workspace:packages/site":
+"@tamagui/site@workspace:apps/site":
   version: 0.0.0-use.local
-  resolution: "@tamagui/site@workspace:packages/site"
+  resolution: "@tamagui/site@workspace:apps/site"
   dependencies:
     "@docsearch/react": ^3.0.0
     "@github/mini-throttle": ^2.1.0
@@ -6999,7 +7011,6 @@ __metadata:
     "@tamagui/build": ^1.0.1-beta.125
     "@tamagui/core": ^1.0.1-beta.125
     "@tamagui/helpers-tamagui": ^1.0.1-beta.125
-    "@tamagui/vite-plugin-internal": ^1.0.1-beta.125
     react: "*"
     react-dom: "*"
     vitest: ^0.19.0
@@ -7119,7 +7130,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tamagui/vite-plugin-internal@^1.0.1-beta.125, @tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal":
+"@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal":
   version: 0.0.0-use.local
   resolution: "@tamagui/vite-plugin-internal@workspace:packages/vite-plugin-internal"
   dependencies:
@@ -7134,6 +7145,7 @@ __metadata:
   dependencies:
     "@tamagui/build": ^1.0.1-beta.125
     "@tamagui/proxy-worm": ^1.0.1-beta.125
+    "@tamagui/static": ^1.0.1-beta.125
     fs-extra: ^10.1.0
     lodash: ^4.17.21
     outdent: ^0.8.0

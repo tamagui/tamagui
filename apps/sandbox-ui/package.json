@@ -1,0 +1,27 @@
+{
+  "name": "@tamagui/sandbox-ui",
+  "version": "1.0.1-beta.125",
+  "sideEffects": [
+    "*.css"
+  ],
+  "private": true,
+  "types": "./types/index",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "module:jsx": "dist/jsx",
+  "files": [
+    "types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch"
+  },
+  "dependencies": {
+    "tamagui": "^1.0.1-beta.125"
+  },
+  "devDependencies": {
+    "@expo/vector-icons": "^13.0.0",
+    "@tamagui/build": "^1.0.1-beta.125"
+  }
+}

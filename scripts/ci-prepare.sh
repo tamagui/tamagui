@@ -2,8 +2,8 @@
 
 rm -r takeout
 rm -r examples
-rm -r packages/site/pages/studio
-rm -r packages/site/pages/takeout
-rm    packages/site/pages/account.tsx
-rm    packages/site/pages/signup.tsx
-rm    packages/site/pages/signin.tsx
+rm -r apps/site/pages/studio
+rm -r apps/site/pages/takeout
+rm    apps/site/pages/account.tsx
+rm    apps/site/pages/signup.tsx
+rm    apps/site/pages/signin.tsx
