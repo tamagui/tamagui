@@ -148,7 +148,7 @@ async function run() {
 
       // then git tag, commit, push
       await spawnify(`git add -A`)
-      await spawnify(`git commit -m 'v${version}'`)
+      await spawnify(`git commit -m "v${version}"`)
       await spawnify(`git tag v${version}`)
       await spawnify(`git push origin head`)
       await spawnify(`git push origin v${version}`)

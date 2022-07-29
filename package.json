@@ -1,7 +1,7 @@
 {
   "name": "tamagui-monorepo",
   "private": true,
-  "version": "1.0.1-beta.125",
+  "version": "0.0.0",
   "repository": {
     "url": "https://github.com/tamagui/tamagui"
   },
