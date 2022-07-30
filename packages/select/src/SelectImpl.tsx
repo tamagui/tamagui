@@ -15,7 +15,7 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react-dom-interactions'
-import { useIsTouchDevice } from '@tamagui/core'
+import { useIsTouchDevice, useIsomorphicLayoutEffect } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 
@@ -219,7 +219,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   // effects
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (open) {
       selectTimeoutRef.current = setTimeout(() => {
         allowSelectRef.current = true
@@ -239,7 +239,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   // Replacement for `useDismiss` as the arrows are outside of the floating
   // element DOM tree.
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     function onPointerDown(e: PointerEvent) {
       const target = e.target as Node
       if (
@@ -261,7 +261,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   // Scroll the `activeIndex` item into view only in "controlledScrolling"
   // (keyboard nav) mode.
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (open && controlledScrolling) {
       if (activeIndex != null) {
         listItemsRef.current[activeIndex]?.scrollIntoView({ block: 'nearest' })
@@ -272,7 +272,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   }, [open, refs, controlledScrolling, activeIndex])
 
   // Scroll the `selectedIndex` into view upon opening the floating element.
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (open && fallback) {
       if (selectedIndex != null) {
         listItemsRef.current[selectedIndex]?.scrollIntoView({ block: 'nearest' })
@@ -282,7 +282,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   // Unset the height limiting for fallback mode. This gets executed prior to
   // the positioning call.
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (refs.floating.current && fallback) {
       refs.floating.current.style.maxHeight = ''
     }
@@ -338,8 +338,3 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
 // Cross browser fixes for pinch-zooming/backdrop-filter 🙄
 const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) || ''
-const isFirefox = userAgent.toLowerCase().includes('firefox')
-
-function getVisualOffsetTop() {
-  return !/^((?!chrome|android).)*safari/i.test(userAgent) ? visualViewport?.offsetTop ?? 0 : 0
-}
