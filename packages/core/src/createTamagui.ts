@@ -1,3 +1,5 @@
+import { simpleHash } from '@tamagui/helpers'
+
 import { configListeners, setConfig } from './conf'
 import { THEME_CLASSNAME_PREFIX } from './constants/constants'
 import { isWeb } from './constants/platform'
@@ -6,6 +8,7 @@ import { Variable, createVariable, isVariable } from './createVariable'
 import { createVariables } from './createVariables'
 import { createTamaguiProvider } from './helpers/createTamaguiProvider'
 import { getFontLanguage } from './helpers/getFontLanguage'
+import { getAtomicStyle } from './helpers/getStylesAtomic'
 import { getInsertedRules } from './helpers/insertStyleRule'
 import {
   registerCSSVariable,
@@ -276,21 +279,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     return `${themeConfig.css}\n${getInsertedRules().join('\n')}`
   }
 
-  if (config.shorthands) {
-    for (const key in config.shorthands) {
-      reversedShorthands[config.shorthands[key]] = key
-    }
-  }
+  const shorthands = config.shorthands || {}
 
   const next: TamaguiInternalConfig = {
     fontLanguages: [],
     defaultTheme: 'light',
     animations: {} as any,
-    shorthands: {},
     media: {},
     ...config,
-    inverseShorthands: config.shorthands
-      ? Object.fromEntries(Object.entries(config.shorthands).map(([k, v]) => [v, k]))
+    shorthands,
+    inverseShorthands: shorthands
+      ? Object.fromEntries(Object.entries(shorthands).map(([k, v]) => [v, k]))
       : {},
     themes: themeConfig.themes,
     fontsParsed,
@@ -321,8 +320,6 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // @ts-expect-error
   return next
 }
-
-export const reversedShorthands: Record<string, string> = {}
 
 const parseTokens = (tokens: any) => {
   const res: any = {}

@@ -176,6 +176,7 @@ export declare type TamaguiInternalConfig<A extends GenericTokens = GenericToken
     fontsParsed: GenericFonts;
     getCSS: () => string;
     parsed: boolean;
+    fontFamilyClassNameToName: Record<string, string>;
     inverseShorthands: Record<string, string>;
     themeClassNameOnRoot?: boolean;
 };
