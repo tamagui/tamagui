@@ -84,8 +84,10 @@ export const Sandbox = () => {
           </FontLanguage>
         </FontLanguage> */}
 
-        <H1 fontFamily="$alternative">Hello world</H1>
-        <HomeH3>hi</HomeH3>
+        {/* <H1 fontFamily="$alternative">Hello world</H1>
+        <HomeH3>hi</HomeH3> */}
+
+        <SheetDemo2 />
 
         {/* <AnimationsDemo /> */}
         {/* <AnimationsPresenceDemo /> */}
@@ -129,3 +131,34 @@ export const HomeH3 = styled(H3, {
     textTransform: 'none',
   },
 })
+
+function SheetDemo2() {
+  const [open, setOpen] = useState(false)
+  const [position, setPosition] = useState(0)
+  return (
+    <>
+      <Button size="$6" circular onPress={() => setOpen((x) => !x)} />
+      <Sheet
+        modal
+        open={open}
+        onChangeOpen={setOpen}
+        snapPoints={[80]}
+        position={position}
+        onChangePosition={setPosition}
+        dismissOnSnapToBottom
+      >
+        <Sheet.Overlay />
+        <Sheet.Frame ai="center" jc="center">
+          <Sheet.Handle />
+          <Button
+            size="$6"
+            circular
+            onPress={() => {
+              setOpen(false)
+            }}
+          />
+        </Sheet.Frame>
+      </Sheet>
+    </>
+  )
+}
