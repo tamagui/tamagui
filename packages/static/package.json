@@ -18,7 +18,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "pretest": "node -r esbuild-register ./tests/lib/preTest.js",
-    "test": "yarn pretest && vitest --config ../vite-plugin-internal/vite.config.ts --run --dom --threads false"
+    "test": "yarn pretest && vitest --config ../vite-plugin-internal/vite.config.ts --run --dom"
   },
   "tests": {
     "parallel": true

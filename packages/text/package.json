@@ -19,7 +19,7 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "test": "vitest --config ../vite-plugin-internal/vite.config.ts --threads false"
+    "test": "vitest --config ../vite-plugin-internal/vite.config.ts --run"
   },
   "dependencies": {
     "@tamagui/core": "^1.0.1-beta.130",
