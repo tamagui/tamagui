@@ -1,6 +1,6 @@
 import { autoUpdate, offset, useFloating } from '@floating-ui/react-dom-interactions'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { TamaguiElement } from '@tamagui/core'
+import { TamaguiElement, useIsomorphicLayoutEffect } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
@@ -85,7 +85,7 @@ const SelectScrollButtonImpl = React.memo(
         }
       }
 
-      React.useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         return () => {
           // eslint-disable-next-line react-hooks/exhaustive-deps
           cancelAnimationFrame(frameRef.current)

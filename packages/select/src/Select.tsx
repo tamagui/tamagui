@@ -104,7 +104,7 @@ const SelectValue = SelectValueFrame.extractable(
       const hasChildren = childrenProp !== undefined
       const composedRefs = useComposedRefs(forwardedRef, context.onValueNodeChange)
 
-      React.useLayoutEffect(() => {
+      useIsomorphicLayoutEffect(() => {
         onValueNodeHasChildrenChange(hasChildren)
       }, [onValueNodeHasChildrenChange, hasChildren])
 

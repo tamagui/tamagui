@@ -200,6 +200,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           state.current.isMouseOutside = true
         },
         onPointerMove() {
+          state.current.isMouseOutside = false
           setControlledScrolling(false)
         },
         onKeyDown() {
@@ -248,6 +249,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         !downArrowRef.current?.contains(target)
       ) {
         setOpen(false)
+        setControlledScrolling(false)
       }
     }
 

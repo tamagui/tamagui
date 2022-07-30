@@ -29,6 +29,7 @@ export function SelectDemo() {
             end={[0, 1]}
             fullscreen
             colors={['$background', '$backgroundTransparent']}
+            br="$4"
           />
         </Select.ScrollUpButton>
 
@@ -57,6 +58,7 @@ export function SelectDemo() {
             end={[0, 1]}
             fullscreen
             colors={['$backgroundTransparent', '$background']}
+            br="$4"
           />
         </Select.ScrollDownButton>
       </Select.Content>

@@ -1,4 +1,8 @@
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react-dom-interactions'
+import {
+  FloatingFocusManager,
+  FloatingOverlay,
+  FloatingPortal,
+} from '@floating-ui/react-dom-interactions'
 import { Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
 import * as React from 'react'
 
@@ -26,8 +30,11 @@ export const SelectContent = ({ children, __scopeSelect }: SelectContentProps) =
   return (
     <FloatingPortal>
       {context.open ? (
-        // TODO inside overlay <FloatingFocusManager context={context} preventTabbing>
-        <FloatingOverlay lockScroll={!touch}>{contents}</FloatingOverlay>
+        <FloatingOverlay lockScroll={!touch}>
+          <FloatingFocusManager context={context.floatingContext!} preventTabbing>
+            {contents}
+          </FloatingFocusManager>
+        </FloatingOverlay>
       ) : (
         <div style={{ display: 'none' }}>{contents}</div>
       )}
