@@ -1,22 +1,9 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { TamaguiInternalConfig } from '@tamagui/core-node';
 import { ExtractorParseProps } from '../types';
 export declare type Extractor = ReturnType<typeof createExtractor>;
 export declare function createExtractor(): {
-    getTamagui(): TamaguiInternalConfig<import("@tamagui/core-node").CreateTokens<import("@tamagui/core-node").VariableVal>, {
-        [key: string]: Partial<import("@tamagui/core-node").TamaguiBaseTheme> & {
-            [key: string]: import("@tamagui/core-node").VariableVal;
-        };
-    }, {}, {
-        [key: string]: {
-            [key: string]: string | number;
-        };
-    }, {
-        [key: string]: string | {
-            [key: string]: any;
-        };
-    }, import("@tamagui/core-node").GenericFonts>;
+    getTamagui(): TamaguiInternalConfig;
     parse: (fileOrPath: NodePath<t.Program> | t.File, { config, importsWhitelist, evaluateVars, shouldPrintDebug, sourcePath, onExtractTag, onStyleRule, getFlattenedNode, disable, disableExtraction, disableExtractInlineMedia, disableExtractVariables, disableDebugAttr, extractStyledDefinitions, prefixLogs, excludeProps, target, ...props }: ExtractorParseProps) => {
         styled: number;
         flattened: number;

@@ -963,6 +963,10 @@ export function createComponent<
       debug
     )
 
+    if (debug) {
+      console.log('initialSplitStyles', initialSplitStyles)
+    }
+
     // must preserve prop order
     // leave out className because we handle that already with initialSplitStyles.classNames
     // otherwise it confuses variant functions getting className props

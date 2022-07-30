@@ -14,7 +14,19 @@ import {
 import { FocusScope } from '@tamagui/focus-scope'
 import React, { useState } from 'react'
 import { AppRegistry, useColorScheme } from 'react-native'
-import { Button, FontLanguage, Paragraph, Sheet, Square, Text, YStack, useMedia } from 'tamagui'
+import {
+  Button,
+  FontLanguage,
+  H1,
+  H3,
+  Paragraph,
+  Sheet,
+  Square,
+  Text,
+  YStack,
+  styled,
+  useMedia,
+} from 'tamagui'
 
 import Tamagui from './tamagui.config'
 
@@ -72,6 +84,9 @@ export const Sandbox = () => {
           </FontLanguage>
         </FontLanguage> */}
 
+        <H1 fontFamily="$alternative">Hello world</H1>
+        <HomeH3>hi</HomeH3>
+
         {/* <AnimationsDemo /> */}
         {/* <AnimationsPresenceDemo /> */}
         {/* <SeparatorDemo /> */}
@@ -79,7 +94,6 @@ export const Sandbox = () => {
         {/* <DialogDemo /> */}
         {/* <PopoverDemo /> */}
         {/* <ButtonDemo /> */}
-        <SheetDemo2 />
         {/* <TooltipDemo /> */}
         {/* <SliderDemo /> */}
         {/* <SelectDemo /> */}
@@ -97,40 +111,21 @@ export const Sandbox = () => {
   )
 }
 
-function SheetDemo2() {
-  const [open, setOpen] = useState(false)
-  const [position, setPosition] = useState(0)
-  console.log('open', open)
-  return (
-    <>
-      <Button
-        size="$6"
-        // icon={open ? ChevronDown : ChevronUp}
-        circular
-        onPress={() => setOpen((x) => !x)}
-      />
-      <Sheet
-        modal
-        open={open}
-        onChangeOpen={setOpen}
-        snapPoints={[80]}
-        position={position}
-        onChangePosition={setPosition}
-        dismissOnSnapToBottom
-      >
-        <Sheet.Overlay />
-        <Sheet.Frame ai="center" jc="center">
-          <Sheet.Handle />
-          <Button
-            size="$6"
-            circular
-            // icon={ChevronDown}
-            onPress={() => {
-              setOpen(false)
-            }}
-          />
-        </Sheet.Frame>
-      </Sheet>
-    </>
-  )
-}
+export const HomeH3 = styled(H3, {
+  name: 'HomeH3',
+  ta: 'center',
+  theme: 'alt3',
+  als: 'center',
+  fow: '400',
+  px: 30,
+  size: '$8',
+  ls: -0.5,
+  maw: 620,
+
+  $sm: {
+    fow: '400',
+    size: '$6',
+    color: '$color',
+    textTransform: 'none',
+  },
+})

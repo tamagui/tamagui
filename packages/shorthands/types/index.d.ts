@@ -32,7 +32,7 @@ export declare const shorthands: {
     readonly fb: "flexBasis";
     readonly fd: "flexDirection";
     readonly fg: "flexGrow";
-    readonly fofam: "fontFamily";
+    readonly ff: "fontFamily";
     readonly fos: "fontSize";
     readonly fost: "fontStyle";
     readonly fow: "fontWeight";

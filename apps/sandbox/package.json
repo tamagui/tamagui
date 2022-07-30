@@ -46,7 +46,7 @@
     "tamagui-loader": "^1.0.1-beta.130",
     "thread-loader": "^3.0.4",
     "url-loader": "^4.1.1",
-    "vite": "^3.0.2",
+    "vite": "^3.0.4",
     "vite-plugin-environment": "^1.1.2",
     "webpack": "^5.73.0",
     "webpack-bundle-analyzer": "^4.5.0",

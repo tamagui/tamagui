@@ -76,8 +76,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
       for (const key in fontsParsed) {
         const fontParsed = fontsParsed[key]
         const [name, language] = key.includes('_') ? key.split('_') : [key]
-        const fdecs = registerFontVariables(fontParsed)
-        fontDeclarations[key] = { name: name.slice(1), declarations: fdecs, language }
+        const fontVars = registerFontVariables(fontParsed)
+        fontDeclarations[key] = { name: name.slice(1), declarations: fontVars, language }
       }
 
       const sep = process.env.NODE_ENV === 'development' ? config.cssStyleSeparator || ' ' : ''
@@ -94,12 +94,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
         for (const key in fontDeclarations) {
           const { name, declarations, language } = fontDeclarations[key]
           const languageSelector = ` .t_lang-${name}-${language || 'default'}`
-          const ruleSet = declarationsToRuleSet(
-            declarations,
-            // if no language, -default separately for resetting
-            language ? languageSelector : `, :root ${languageSelector}`
-          )
-          cssRuleSets.push(ruleSet)
+          const fontSelector = `.font_${name}`
+          const selectors = ` ${fontSelector}, :root ${languageSelector} ${fontSelector}`
+          const specificRuleSet = declarationsToRuleSet(declarations, selectors)
+          cssRuleSets.push(specificRuleSet)
         }
       }
     }
@@ -291,6 +289,9 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     shorthands: {},
     media: {},
     ...config,
+    inverseShorthands: config.shorthands
+      ? Object.fromEntries(Object.entries(config.shorthands).map(([k, v]) => [v, k]))
+      : {},
     themes: themeConfig.themes,
     fontsParsed,
     themeConfig,

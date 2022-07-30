@@ -32,7 +32,7 @@ export const shorthands = {
   fb: 'flexBasis',
   fd: 'flexDirection',
   fg: 'flexGrow',
-  fofam: 'fontFamily',
+  ff: 'fontFamily',
   fos: 'fontSize',
   fost: 'fontStyle',
   fow: 'fontWeight',

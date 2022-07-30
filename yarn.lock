@@ -5383,7 +5383,7 @@ __metadata:
     morgan: ^1.10.0
     ts-morph: ^15.1.0
     url: ^0.11.0
-    vite: ^3.0.2
+    vite: ^3.0.4
     zx: ^7.0.7
   bin:
     tamagui: ./dist/index.js
@@ -5474,7 +5474,7 @@ __metadata:
     turbo: ^1.3.1
     typescript: ^4.7.4
     ultra-runner: ^3.10.5
-    vite: ^3.0.2
+    vite: ^3.0.4
   languageName: unknown
   linkType: soft
 
@@ -5796,7 +5796,7 @@ __metadata:
     react-dom: "*"
     react-native-web: ^0.18.3
     typescript: ^4.7.4
-    vitest: ^0.19.0
+    vitest: ^0.19.1
   peerDependencies:
     react-native-web: "*"
   languageName: unknown
@@ -6025,7 +6025,7 @@ __metadata:
     "@tamagui/helpers": ^1.0.1-beta.130
     react: "*"
     react-native: "*"
-    vitest: ^0.19.0
+    vitest: ^0.19.1
   peerDependencies:
     react: "*"
     react-native: "*"
@@ -6386,7 +6386,7 @@ __metadata:
     tamagui-loader: ^1.0.1-beta.130
     thread-loader: ^3.0.4
     url-loader: ^4.1.1
-    vite: ^3.0.2
+    vite: ^3.0.4
     vite-plugin-environment: ^1.1.2
     webpack: ^5.73.0
     webpack-bundle-analyzer: ^4.5.0
@@ -6619,7 +6619,7 @@ __metadata:
     style-loader: ^3.3.1
     tamagui: ^1.0.1-beta.130
     typescript: ^4.7.4
-    vitest: ^0.19.0
+    vitest: ^0.19.1
     webpack: ^5.73.0
   peerDependencies:
     react-native-web: "*"
@@ -6659,7 +6659,7 @@ __metadata:
     "@tamagui/helpers-tamagui": ^1.0.1-beta.130
     react: "*"
     react-dom: "*"
-    vitest: ^0.19.0
+    vitest: ^0.19.1
   peerDependencies:
     react: "*"
     react-dom: "*"
@@ -26515,9 +26515,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "vite@npm:3.0.2"
+"vite@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "vite@npm:3.0.4"
   dependencies:
     esbuild: ^0.14.47
     fsevents: ~2.3.2
@@ -26543,7 +26543,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10aebec0df89bbdba9a0c72dc35ec3ec5be0b50216fc7a1e04b5da11de244033b1cbe83a95b1af67be176fc09e05698387d3cc9dcbee64e009dd43811f8717e9
+  checksum: f13eceb94f7b399942ce5e7c10df73314f7b073171d6594228b078cc1203042c4cdb9e8356fe64ad444c3533c31437abb3c64ac56478f0865fab598e924cf68b
   languageName: node
   linkType: hard
 
@@ -26555,45 +26555,6 @@ __metadata:
   peerDependencies:
     vitest: <1
   checksum: 2adb24d8f44ae11b3043be20a865ecdfef6d50946c8a331f0bed2ffba54a97ca5b3e8b4ea9ea2d3a06926f337fdf20aa9f91729087173ae04c5fe2e4de833758
-  languageName: node
-  linkType: hard
-
-"vitest@npm:^0.19.0":
-  version: 0.19.0
-  resolution: "vitest@npm:0.19.0"
-  dependencies:
-    "@types/chai": ^4.3.1
-    "@types/chai-subset": ^1.3.3
-    "@types/node": "*"
-    chai: ^4.3.6
-    debug: ^4.3.4
-    local-pkg: ^0.4.2
-    tinypool: ^0.2.4
-    tinyspy: ^1.0.0
-    vite: ^2.9.12 || ^3.0.0-0
-  peerDependencies:
-    "@edge-runtime/vm": "*"
-    "@vitest/browser": "*"
-    "@vitest/ui": "*"
-    c8: "*"
-    happy-dom: "*"
-    jsdom: "*"
-  peerDependenciesMeta:
-    "@edge-runtime/vm":
-      optional: true
-    "@vitest/browser":
-      optional: true
-    "@vitest/ui":
-      optional: true
-    c8:
-      optional: true
-    happy-dom:
-      optional: true
-    jsdom:
-      optional: true
-  bin:
-    vitest: vitest.mjs
-  checksum: 95be09926e8379a704fe2ffe4a3a9958c0b0cbd2b61f4fafe9c12b5e5ed7a27300e62dc820031f70288b8cfd3d49d7c98eaa42448efd7627f8f857d70d04ecf8
   languageName: node
   linkType: hard
 

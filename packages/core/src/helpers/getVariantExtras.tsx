@@ -30,14 +30,24 @@ export function getVariantExtras(
     props: avoidDefaultProps
       ? props
       : new Proxy(props, {
+          // handles shorthands
           get(target, key) {
             if (Reflect.has(target, key)) {
               return Reflect.get(target, key)
             }
+            const shorthand = conf.inverseShorthands[key as any]
+            if (shorthand && Reflect.has(target, shorthand)) {
+              return Reflect.get(target, shorthand)
+            }
             // these props may be extracted into classNames, but we still want to access them
             // at runtime, so we proxy back to defaultProps but don't pass them
             if (defaultProps) {
-              return Reflect.get(defaultProps, key)
+              if (Reflect.has(defaultProps, key)) {
+                return Reflect.get(defaultProps, key)
+              }
+              if (shorthand && Reflect.has(defaultProps, shorthand)) {
+                return Reflect.get(defaultProps, shorthand)
+              }
             }
           },
         }),
