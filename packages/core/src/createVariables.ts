@@ -20,31 +20,20 @@ export const createVariables = <A extends DeepTokenObject>(
   const res: any = {}
   for (const key in tokens) {
     const val = tokens[key]
+    if (isVariable(val)) {
+      res[key] = val
+      continue
+    }
     let name = parentPath ? `${parentPath}-${key}` : key
     if (isFont && name.includes('_')) {
       name = name.replace(/_[a-z0-9]+/i, '')
     }
-    if (isVariable(val)) {
-      res[key] = val
-    } else if (val && typeof val === 'object') {
-      if (Array.isArray(val)) {
-        res[key] = val.map((val, i) => {
-          const skey = `${key}-${i}`
-          const sname = parentPath ? `${name}-${skey}` : skey
-          return isVariable(val)
-            ? val
-            : createVariable({
-                val,
-                key: skey,
-                name: sname,
-              })
-        })
-      } else {
-        res[key] = createVariables(tokens[key] as any, name === 'color' ? '' : name)
-      }
-    } else {
-      res[key] = isVariable(val) ? val : createVariable({ val, name, key })
+    if (val && typeof val === 'object') {
+      // recurse
+      res[key] = createVariables(tokens[key] as any, isFont ? '' : name)
+      continue
     }
+    res[key] = isVariable(val) ? val : createVariable({ val, name, key })
   }
   return res
 }

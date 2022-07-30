@@ -313,6 +313,7 @@ export type TamaguiInternalConfig<
     fontsParsed: GenericFonts
     getCSS: () => string
     parsed: boolean
+    inverseShorthands: Record<string, string>
 
     // just passed in from CreateTamaguiProps
     themeClassNameOnRoot?: boolean

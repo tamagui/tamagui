@@ -451,8 +451,7 @@ export function createExtractor() {
 
           // debug just one
           const debugPropValue = node.attributes
-            .filter<t.JSXAttribute>(
-              // @ts-ignore
+            .filter(
               (n) => t.isJSXAttribute(n) && t.isJSXIdentifier(n.name) && n.name.name === 'debug'
             )
             .map((n) => {

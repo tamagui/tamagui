@@ -13,9 +13,9 @@ export function insertFont<A extends GenericFont>(name: string, fontIn: A): Deep
   const tokened = createVariables(font, name) as GenericFont
   const parsed = parseFont(tokened) as DeepVariableObject<A>
   if (process.env.TAMAGUI_TARGET === 'web' && typeof document !== 'undefined') {
-    const css = registerFontVariables(parsed)
+    const fontVars = registerFontVariables(parsed)
     const style = document.createElement('style')
-    style.innerText = `:root {${css.join(';')}}`
+    style.innerText = `:root .font_${name} {${fontVars.join(';')}}`
     style.setAttribute('data-tamagui-font', name)
     document.head.appendChild(style)
   }
@@ -45,24 +45,25 @@ export function parseFont<A extends GenericFont>(definition: A): DeepVariableObj
 }
 
 export function registerFontVariables(parsedFont: any) {
-  const vals: string[] = []
+  const response: string[] = []
+
   for (const fkey in parsedFont) {
     if (fkey === 'family') {
-      const val = parsedFont[fkey]
+      const val = parsedFont[fkey] as Variable
       registerCSSVariable(val)
-      vals.push(variableToCSS(val))
+      response.push(variableToCSS(val))
     } else {
       for (const fskey in parsedFont[fkey]) {
         const fval = parsedFont[fkey][fskey]
         if (typeof fval === 'string') {
           // no need to add its a theme reference like "$borderColor"
         } else {
-          const val = parsedFont[fkey][fskey]
+          const val = parsedFont[fkey][fskey] as Variable
           registerCSSVariable(val)
-          vals.push(variableToCSS(val))
+          response.push(variableToCSS(val))
         }
       }
     }
   }
-  return vals
+  return response
 }

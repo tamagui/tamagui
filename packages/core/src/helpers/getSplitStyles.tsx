@@ -250,7 +250,12 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (state.keepVariantsAsProps) {
-      if (staticConfig.defaultVariants && keyInit in staticConfig.defaultVariants) {
+      if (
+        (staticConfig.defaultVariants && keyInit in staticConfig.defaultVariants) ||
+        // may want to just: not compile styled() into classnames, always do this, and always pass in all values in extras.props
+        // but we'd want to add styled({ extracted: true }) or something at compile time to save on parsing a bit...
+        (staticConfig.variants && keyInit in staticConfig.variants)
+      ) {
         viewProps[keyInit] = valInit
       }
     }

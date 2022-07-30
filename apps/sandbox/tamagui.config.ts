@@ -7,9 +7,7 @@ const body_cn = createFont({
     1: 10,
   },
   lineHeight: {},
-  size: {
-    4: 20,
-  },
+  size: config.fonts.body.size,
   weight: {
     4: 800,
   },
@@ -25,6 +23,7 @@ const tamaConf = createTamagui({
   fonts: {
     ...config.fonts,
     body_cn,
+    alternative: body_cn,
   },
   themeClassNameOnRoot: false,
 })
