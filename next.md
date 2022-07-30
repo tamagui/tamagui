@@ -1,24 +1,19 @@
 - 1.0
 
   - regression on some shadows (elevation i think close buttons in dish)
-
   - `tamagui check`
     - checks dist/ folders exist based on package.json
       - including whether it loads properly on node
       - checks package.json.files fields
       - checks types/* output actually maps to every input file
-
-    - 
-  - sheet bug on starters demo
   - loadFont
   - loadTheme, updateTheme
-
   - fix tabbing
     - AlertDialog buttons
     - Dialog
-
   - windows without WSL
   - <Select /> has selectable cursor on hold down + move
+    - re-add increaseHeight
   - Image is hardcoded to w/h 100
   - way to use tamagui with custom design system tokens
     - basically map any tokens you choose to internal tamagui ones
@@ -33,20 +28,16 @@
   - animation accept useAnimatedStyle
     - make sure loop/multi animations work too
     - https://twitter.com/FernandoTheRojo/status/1470178294721036290
-  - flicker on some enterStyle animation native
+  - flicker on some enterStyle animation native (hermes only)
   - mismatch SSR SelectTrigger due to componentName override
   - button inverse doesn't update on theme change (site)
   - load tamagui itself using the loadModule / fork process to avoid all register (this is also shared logic with studio loading tamagui conf..)
   - // TODO still have as const bug
   - try using react-native-web $css object support for classnames
   - add ui package setting custom types example in starter
-  - fix Label + new form inputs (native too)
-  - <Icon />
-    - use theme values and size values
-    - can swap for other icon packs (use createTamagui({ icons }))
-  - <Toast />
+  - fix Label + new form inputs (native too)  
   - <Form onSubmit /> 
-    - native works by attaching state to a FormContext
+    - native works by attaching state (mutable refs) to a FormContext
     - web works by just listening for event and using FormData()
   - Group make media style size use properly
   - // TODO shouldn't need tag="span" if buttoninbutton context works
@@ -64,7 +55,6 @@
       - set secureTextEntry automatically for type="password"
   - shorthands-only type/docs
   - tokens-only type/docs
-  - validate Label with Select, Input, Switch etc all work with it
   - test Android in starters repo
   - if no enterStyle or exitStyle set with AnimatePresence, it doesn't exit
   - // TODO infer ref
@@ -100,10 +90,6 @@
 
 ---
 
-<ToggleGroup />
-
----
-
 plan for space + display none, two pronged
 
 - web
@@ -128,7 +114,11 @@ plan for space + display none, two pronged
 ---
 
 (potentially 1.0)
-  - <Group toggle>
+ - <Icon />
+    - use theme values and size values
+    - can swap for other icon packs (use createTamagui({ icons }))
+  - <Toast />
+  - <Group toggle> / <ToggleGroup />
   - <Tabs />
   - <Accordion />
   - <Autocomplete />

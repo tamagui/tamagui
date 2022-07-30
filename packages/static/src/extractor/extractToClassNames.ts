@@ -104,13 +104,15 @@ export function extractToClassNames({
       lineNumbers,
       programPath,
       isFlattened,
+      completeProps,
+      staticConfig,
     }) => {
       // reset hasFlattened
       const didFlattenThisTag = hasFlattened
       hasFlattened = false
 
       let finalClassNames: ClassNameObject[] = []
-      let finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
+      const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
       let finalStyles: StyleObject[] = []
 
       let viewStyles = {}
@@ -151,7 +153,7 @@ export function extractToClassNames({
       let lastMediaImportance = 1
       for (const attr of attrs) {
         switch (attr.type) {
-          case 'style':
+          case 'style': {
             if (!isFlattened) {
               const styles = getStylesAtomic(attr.value)
 
@@ -179,7 +181,8 @@ export function extractToClassNames({
             }
 
             break
-          case 'attr':
+          }
+          case 'attr': {
             const val = attr.value
             if (t.isJSXSpreadAttribute(val)) {
               if (isSimpleSpread(val)) {
@@ -205,7 +208,8 @@ export function extractToClassNames({
             }
             finalAttrs.push(val)
             break
-          case 'ternary':
+          }
+          case 'ternary': {
             const mediaExtraction = extractMediaStyle(
               attr.value,
               jsxPath,
@@ -241,6 +245,7 @@ export function extractToClassNames({
               ]
             }
             break
+          }
         }
       }
 
@@ -271,9 +276,16 @@ export function extractToClassNames({
 
       if (finalClassNames.length) {
         // inserts the _cn variable and uses it for className
-        let names = buildClassName(finalClassNames)
+        const names = buildClassName(finalClassNames)
         if (t.isStringLiteral(names)) {
           names.value = concatClassName(names.value)
+          if (staticConfig.isText) {
+            let family = completeProps.fontFamily
+            if (family[0] === '$') {
+              family = family.slice(1)
+            }
+            names.value = `font_${family} ${names.value}`
+          }
         }
         const nameExpr = names ? hoistClassNames(jsxPath, existingHoists, names) : null
         let expr = nameExpr

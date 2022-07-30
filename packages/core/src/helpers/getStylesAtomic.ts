@@ -7,17 +7,20 @@ import { StyleObject, simpleHash } from '@tamagui/helpers'
 import hyphenateStyleName from 'hyphenate-style-name'
 import { TextStyle, ViewStyle } from 'react-native'
 
-import { reversedShorthands } from '../createTamagui'
+import { getConfig } from '../conf'
+import { TamaguiInternalConfig } from '../types'
 import { defaultOffset } from './expandStyles'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { PseudoDescriptor, pseudoDescriptors } from './pseudoDescriptors'
 
 // refactor this file away next...
 
-export type ViewStyleWithPseudos = ViewStyle & {
-  hoverStyle?: ViewStyle
-  pressStyle?: ViewStyle
-  focusStyle?: ViewStyle
+type ViewOrTextStyle = ViewStyle | TextStyle
+
+export type ViewStyleWithPseudos = ViewOrTextStyle & {
+  hoverStyle?: ViewOrTextStyle
+  pressStyle?: ViewOrTextStyle
+  focusStyle?: ViewOrTextStyle
 }
 
 const pseudosOrdered = Object.values(pseudoDescriptors)
@@ -40,7 +43,7 @@ export function getStylesAtomic(stylesIn: ViewStyleWithPseudos) {
   return res
 }
 
-export function getAtomicStyle(style: ViewStyle, pseudo?: PseudoDescriptor): StyleObject[] {
+export function getAtomicStyle(style: ViewOrTextStyle, pseudo?: PseudoDescriptor): StyleObject[] {
   if (process.env.NODE_ENV === 'development') {
     if (!style || typeof style !== 'object') {
       throw new Error(`Wrong style type: "${typeof style}": ${style}`)
@@ -55,10 +58,14 @@ export function getAtomicStyle(style: ViewStyle, pseudo?: PseudoDescriptor): Sty
   return generateAtomicStyles(style, pseudo)
 }
 
+let conf: TamaguiInternalConfig
+
 const generateAtomicStyles = (
   styleIn: ViewStyle & TextStyle,
   pseudo?: PseudoDescriptor
 ): StyleObject[] => {
+  conf = conf || getConfig()
+
   // were converting to css styles
   const style = styleIn as Record<string, string | null | undefined>
 
@@ -87,7 +94,7 @@ const generateAtomicStyles = (
           : `${value}`.replace('.', 'dot')
 
         const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
-        const shortProp = reversedShorthands[key] || key
+        const shortProp = conf.inverseShorthands[key] || key
         const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
         const rules = createAtomicRules(identifier, key, value, pseudo)
         const styleObject: StyleObject = {

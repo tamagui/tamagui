@@ -98,6 +98,7 @@ function mergeShorthands({ defaultProps }: StaticConfigParsed, { shorthands }: T
 }
 
 let initialTheme: any
+let config: TamaguiInternalConfig
 
 export function createComponent<
   ComponentPropTypes extends Object = {},
@@ -105,11 +106,11 @@ export function createComponent<
   BaseProps = never
 >(configIn: Partial<StaticConfig> | StaticConfigParsed, ParentComponent?: StylableComponent) {
   const staticConfig = (() => {
-    const config = extendStaticConfig(configIn, ParentComponent)
-    if ('parsed' in config) {
-      return config
+    const next = extendStaticConfig(configIn, ParentComponent)
+    if ('parsed' in next) {
+      return next
     } else {
-      return parseStaticConfig(config)
+      return parseStaticConfig(next)
     }
   })()
 
@@ -563,8 +564,14 @@ export function createComponent<
       const fontFamilyName = isText
         ? props.fontFamily || staticConfig.defaultProps.fontFamily
         : null
-      const fontFamily =
-        fontFamilyName && fontFamilyName[0] === '$' ? fontFamilyName.slice(1) : null
+
+      let fontFamily: string | null = null
+      if (fontFamilyName) {
+        if (fontFamilyName[0] === '$') {
+          fontFamily = fontFamilyName.slice(1)
+        }
+      }
+
       const classList = [
         componentName ? componentClassName : '',
         fontFamily ? `font_${fontFamily}` : '',
@@ -918,7 +925,7 @@ export function createComponent<
       proxyThemeVariables(conf.themes[conf.defaultTheme || Object.keys(conf.themes)[0]])
 
     // adds in user defined default props
-    const config = getConfig()
+    config = getConfig()
 
     let defaultPropsIn = staticConfig.defaultProps || {}
 

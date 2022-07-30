@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse'
 import * as t from '@babel/types'
-import type { PseudoStyles, StyleObject } from '@tamagui/core-node'
+import type { PseudoStyles, StaticConfig, StyleObject } from '@tamagui/core-node'
 import { ViewStyle } from 'react-native'
 
 export type { StyleObject } from '@tamagui/helpers'
@@ -64,6 +64,8 @@ export type ExtractTagProps = {
   lineNumbers: string
   filePath: string
   isFlattened: boolean
+  completeProps: Record<string, any>
+  staticConfig: StaticConfig
 }
 
 export type ExtractorParseProps = TamaguiOptions & {

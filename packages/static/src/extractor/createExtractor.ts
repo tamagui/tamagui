@@ -261,6 +261,7 @@ export function createExtractor() {
           },
         },
 
+        // styled() calls
         CallExpression(path) {
           if (disable || disableExtraction || extractStyledDefinitions === false) {
             return
@@ -1797,10 +1798,11 @@ export function createExtractor() {
 
             // inlineWhenUnflattened
             if (!shouldFlatten) {
-              if (Object.keys(inlineWhenUnflattenedOGVals).length) {
+              if (inlineWhenUnflattened.size) {
                 for (const [index, attr] of attrs.entries()) {
                   if (attr.type === 'style') {
                     for (const key in attr.value) {
+                      if (!inlineWhenUnflattened.has(key)) continue
                       const val = inlineWhenUnflattenedOGVals[key]
                       if (val) {
                         // delete the style
@@ -1808,6 +1810,9 @@ export function createExtractor() {
 
                         // and insert it before
                         attrs.splice(index - 1, 0, val.attr)
+                      } else {
+                        // just delete it, it was added during expansion but should be left inline
+                        delete attr.value[key]
                       }
                     }
                   }
@@ -1843,6 +1848,8 @@ export function createExtractor() {
               originalNodeName,
               isFlattened: shouldFlatten,
               programPath,
+              completeProps,
+              staticConfig,
             })
           } finally {
             if (debugPropValue) {
