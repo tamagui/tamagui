@@ -30,7 +30,7 @@ export const createVariables = <A extends DeepTokenObject>(
     }
     if (val && typeof val === 'object') {
       // recurse
-      res[key] = createVariables(tokens[key] as any, isFont ? '' : name)
+      res[key] = createVariables(tokens[key] as any, isFont ? 'f' : name)
       continue
     }
     res[key] = isVariable(val) ? val : createVariable({ val, name, key })
