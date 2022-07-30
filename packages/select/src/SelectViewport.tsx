@@ -62,16 +62,14 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
 
     return (
       <>
-        {/* Hide scrollbars cross-browser and enable momentum scroll for touch devices */}
         <style
           dangerouslySetInnerHTML={{
-            __html: disableScrollbarCSS,
+            __html: selectViewportCSS,
           }}
         />
         <FloatingFocusManager context={context.floatingContext} preventTabbing>
           <SelectViewportFrame
             size={context.size}
-            data-tamagui-select-viewport=""
             // @ts-ignore
             role="presentation"
             {...viewportProps}
@@ -89,8 +87,14 @@ export const SelectViewport = React.forwardRef<TamaguiElement, SelectViewportPro
 
 SelectViewport.displayName = VIEWPORT_NAME
 
-const disableScrollbarCSS = `[data-tamagui-select-viewport]{
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+const selectViewportCSS = `
+.is_SelectViewport {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
-[data-tamagui-select-viewport]::-webkit-scrollbar{display:none}`
+
+.is_SelectViewport::-webkit-scrollbar{
+  display:none
+}
+`
